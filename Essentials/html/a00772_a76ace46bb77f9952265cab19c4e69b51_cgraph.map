@@ -1,0 +1,8 @@
+<map id="FullSerializer.fsMetaType.CollectProperties" name="FullSerializer.fsMetaType.CollectProperties">
+<area shape="rect" id="node1" title=" " alt="" coords="5,81,276,108"/>
+<area shape="rect" id="node2" href="$a00772.html#a02127b5f87040f5f725b558d5e809e94" title=" " alt="" coords="708,5,981,32"/>
+<area shape="rect" id="node3" href="$a00744.html#a27c03e19e20498f762ff610cb6b1da35" title="Returns true if the given attribute is defined on the given element." alt="" coords="1029,81,1368,108"/>
+<area shape="rect" id="node4" href="$a00772.html#af644cb5bbe4dbf6d91137bceaa2675bb" title="Returns if the given property should be serialized." alt="" coords="345,107,639,133"/>
+<area shape="rect" id="node6" href="$a00744.html#ae83db12a7f0acaa67cfa0f3e8ce097ce" title="Fetches the given attribute from the given MemberInfo. This method applies caching and is allocation ..." alt="" coords="324,157,660,184"/>
+<area shape="rect" id="node5" href="$a00772.html#a1322af2ce5c4b8cb2a78f24feff1daa7" title=" " alt="" coords="715,157,974,184"/>
+</map>

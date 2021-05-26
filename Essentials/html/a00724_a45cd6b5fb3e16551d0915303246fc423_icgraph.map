@@ -1,0 +1,4 @@
+<map id="FullSerializer.fsSerializer.ConvertLegacyData" name="FullSerializer.fsSerializer.ConvertLegacyData">
+<area shape="rect" id="node1" title="This function converts legacy serialization data into the new format, so that the import process can ..." alt="" coords="304,5,585,32"/>
+<area shape="rect" id="node2" href="$a00724.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="5,5,256,32"/>
+</map>

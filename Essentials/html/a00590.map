@@ -1,0 +1,10 @@
+<map id="FullSerializer.Internal.fsWeakReferenceConverter" name="FullSerializer.Internal.fsWeakReferenceConverter">
+<area shape="rect" id="node1" title="Serializes and deserializes WeakReferences." alt="" coords="393,1492,695,1643"/>
+<area shape="rect" id="node2" href="$a00664.html" title="The serialization converter allows for customization of the serialization process." alt="" coords="487,1365,601,1443"/>
+<area shape="rect" id="node3" href="$a00648.html" title="The serialization converter allows for customization of the serialization process." alt="" coords="445,1092,643,1316"/>
+<area shape="rect" id="node4" href="$a00724.html" title=" " alt="" coords="383,277,705,1029"/>
+<area shape="rect" id="node5" href="$a00728.html" title="This manages instance writing so that we do not write unnecessary $id fields. We only need to write o..." alt="" coords="5,49,333,171"/>
+<area shape="rect" id="node6" href="$a00660.html" title="fsContext stores global metadata that can be used to customize how fsConverters operate during serial..." alt="" coords="358,49,514,171"/>
+<area shape="rect" id="node7" href="$a00656.html" title="Enables some top&#45;level customization of Full Serializer." alt="" coords="539,5,765,215"/>
+<area shape="rect" id="node8" href="$a00732.html" title=" " alt="" coords="789,5,1091,215"/>
+</map>

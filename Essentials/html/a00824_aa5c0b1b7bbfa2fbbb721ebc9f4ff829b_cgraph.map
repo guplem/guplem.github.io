@@ -1,0 +1,7 @@
+<map id="UnityEngine.SimpleAnimationsManager.SetProgress" name="UnityEngine.SimpleAnimationsManager.SetProgress">
+<area shape="rect" id="node1" title="Sets the animation at the given progress." alt="" coords="5,31,332,57"/>
+<area shape="rect" id="node2" href="$a00824.html#a081c36cfd63253b80611c99113c48486" title="Obtain an animation configured trough the inspector and stored in the SimpleAnimationsManager&#39;s memor..." alt="" coords="380,5,715,32"/>
+<area shape="rect" id="node3" href="$a00824.html#a6fb27d9a04315c44a4becc43ff996319" title="Sets the animation at the given progress." alt="" coords="384,56,711,83"/>
+<area shape="rect" id="node4" href="$a00820.html#ac7f44fe2fa5238878ec2d87fc3c777e2" title="Sets the animation at the given progress." alt="" coords="763,56,1033,83"/>
+<area shape="rect" id="node5" href="$a00820.html#ae13e0576f045f3da3258fc462f08e873" title="Go forward or backwards in the animation." alt="" coords="1081,56,1307,83"/>
+</map>
