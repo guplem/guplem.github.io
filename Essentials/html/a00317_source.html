@@ -75,20 +75,20 @@ $(function() {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00417.html">UnityEngine</a></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00880.html">    6</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00880.html">ICollectionExtensions</a></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    {</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="a00880.html#a10bd48d7036b2add873466e9e95640d2">   12</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T <a class="code" href="a00880.html#a10bd48d7036b2add873466e9e95640d2">RemoveFirst&lt;T&gt;</a>(<span class="keyword">this</span> ICollection&lt;T&gt; collection)</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            T element = collection.FirstOrDefault();</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <span class="keywordflow">if</span> (element != <span class="keyword">null</span>)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;                collection.Remove(element);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">return</span> element;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00880.html">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00880.html">ICollectionExtensions</a></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="a00880.html#a10bd48d7036b2add873466e9e95640d2">   15</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T <a class="code" href="a00880.html#a10bd48d7036b2add873466e9e95640d2">RemoveFirst&lt;T&gt;</a>(<span class="keyword">this</span> ICollection&lt;T&gt; collection)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            T element = collection.FirstOrDefault();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">if</span> (element != <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                collection.Remove(element);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">return</span> element;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
 <div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00880_html"><div class="ttname"><a href="a00880.html">UnityEngine.ICollectionExtensions</a></div><div class="ttdef"><b>Definition:</b> <a href="a00317_source.html#l00006">ICollectionExtensions.cs:7</a></div></div>
-<div class="ttc" id="aa00880_html_a10bd48d7036b2add873466e9e95640d2"><div class="ttname"><a href="a00880.html#a10bd48d7036b2add873466e9e95640d2">UnityEngine.ICollectionExtensions.RemoveFirst&lt; T &gt;</a></div><div class="ttdeci">static T RemoveFirst&lt; T &gt;(this ICollection&lt; T &gt; collection)</div><div class="ttdoc">Removes the first element of the collection.</div><div class="ttdef"><b>Definition:</b> <a href="a00317_source.html#l00012">ICollectionExtensions.cs:12</a></div></div>
+<div class="ttc" id="aa00880_html"><div class="ttname"><a href="a00880.html">UnityEngine.ICollectionExtensions</a></div><div class="ttdoc">Extensions for ICollection</div><div class="ttdef"><b>Definition:</b> <a href="a00317_source.html#l00009">ICollectionExtensions.cs:10</a></div></div>
+<div class="ttc" id="aa00880_html_a10bd48d7036b2add873466e9e95640d2"><div class="ttname"><a href="a00880.html#a10bd48d7036b2add873466e9e95640d2">UnityEngine.ICollectionExtensions.RemoveFirst&lt; T &gt;</a></div><div class="ttdeci">static T RemoveFirst&lt; T &gt;(this ICollection&lt; T &gt; collection)</div><div class="ttdoc">Removes the first element of the collection.</div><div class="ttdef"><b>Definition:</b> <a href="a00317_source.html#l00015">ICollectionExtensions.cs:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,6 +1,6 @@
 <map id="UnityEngine.Pool" name="UnityEngine.Pool">
 <area shape="rect" id="node1" title="Allows GameObjects pooling by reusing pre&#45;instantiated GameObjects" alt="" coords="131,580,359,863"/>
-<area shape="rect" id="node2" href="$a00948.html" title=" " alt="" coords="5,271,289,378"/>
+<area shape="rect" id="node2" href="$a00948.html" title="Class to handle the default position and rotation where the objects will be instantiated" alt="" coords="5,271,289,378"/>
 <area shape="rect" id="node3" href="$a00952.html" title=" " alt="" coords="314,132,557,517"/>
 <area shape="rect" id="node4" title=" " alt="" coords="374,5,497,83"/>
 </map>

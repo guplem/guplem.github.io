@@ -75,47 +75,49 @@ $(function() {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00417.html">UnityEngine</a></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    [Serializable]</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00924.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00924.html">DoN</a></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">    9</a></span>&#160;        [SerializeField] <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a> = 3;</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">   10</a></span>&#160;        [NonSerialized] <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a> = 0;</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">   11</a></span>&#160;        [SerializeField] <span class="keyword">public</span> UnityEvent <a class="code" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="a00924.html#a2d3da8cbb2f249af084a99ceeb31c04a">   13</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00924.html#a2d3da8cbb2f249af084a99ceeb31c04a">DoN</a>(UnityAction unityAction, <span class="keywordtype">int</span> <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            UnityEvent unityEvent = <span class="keyword">new</span> UnityEvent();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            unityEvent.AddListener(unityAction);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            this.calledEvent = unityEvent;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            this.invokingTimes = <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="a00924.html#a63698b89feb90c0dc409d8076c8029fc">   21</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00924.html#a63698b89feb90c0dc409d8076c8029fc">DoN</a>(UnityEvent <a class="code" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>, <span class="keywordtype">int</span> <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            this.calledEvent = <a class="code" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            this.invokingTimes = <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    [Serializable]</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00924.html">   10</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00924.html">DoN</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        [Tooltip(<span class="stringliteral">&quot;The amount of times the events can be invoked&quot;</span>)]</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">   16</a></span>&#160;        [SerializeField] <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a> = 1;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">   20</a></span>&#160;        [NonSerialized] <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a> = 0;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        [Tooltip(<span class="stringliteral">&quot;The events called at every invoke&quot;</span>)]</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">   25</a></span>&#160;        [SerializeField] <span class="keyword">public</span> UnityEvent <a class="code" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">   27</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">Invoke</a>()</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="a00924.html#a2d3da8cbb2f249af084a99ceeb31c04a">   27</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00924.html#a2d3da8cbb2f249af084a99ceeb31c04a">DoN</a>(UnityAction unityAction, <span class="keywordtype">int</span> <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a> &lt; <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <a class="code" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>?.Invoke();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <a class="code" href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a>++;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            UnityEvent unityEvent = <span class="keyword">new</span> UnityEvent();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            unityEvent.AddListener(unityAction);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            this.calledEvent = unityEvent;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            this.invokingTimes = <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00924.html#a63698b89feb90c0dc409d8076c8029fc">   35</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00924.html#a63698b89feb90c0dc409d8076c8029fc">DoN</a>(UnityEvent <a class="code" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>, <span class="keywordtype">int</span> <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            this.calledEvent = <a class="code" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            this.invokingTimes = <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">   44</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">Invoke</a>()</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a> &lt; <a class="code" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <a class="code" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>?.Invoke();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <a class="code" href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a>++;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
 <div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00924_html"><div class="ttname"><a href="a00924.html">UnityEngine.DoN</a></div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00007">DoN.cs:8</a></div></div>
-<div class="ttc" id="aa00924_html_a019bd25a6fdab686a96897a12fbaea29"><div class="ttname"><a href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">UnityEngine.DoN.invokingTimes</a></div><div class="ttdeci">int invokingTimes</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00009">DoN.cs:9</a></div></div>
-<div class="ttc" id="aa00924_html_a15565d702d2782e3e17a40d2660cbce1"><div class="ttname"><a href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">UnityEngine.DoN.invokedTimes</a></div><div class="ttdeci">int invokedTimes</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00010">DoN.cs:10</a></div></div>
-<div class="ttc" id="aa00924_html_a2d3da8cbb2f249af084a99ceeb31c04a"><div class="ttname"><a href="a00924.html#a2d3da8cbb2f249af084a99ceeb31c04a">UnityEngine.DoN.DoN</a></div><div class="ttdeci">DoN(UnityAction unityAction, int invokingTimes)</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00013">DoN.cs:13</a></div></div>
-<div class="ttc" id="aa00924_html_a63698b89feb90c0dc409d8076c8029fc"><div class="ttname"><a href="a00924.html#a63698b89feb90c0dc409d8076c8029fc">UnityEngine.DoN.DoN</a></div><div class="ttdeci">DoN(UnityEvent calledEvent, int invokingTimes)</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00021">DoN.cs:21</a></div></div>
-<div class="ttc" id="aa00924_html_ae7d0ba6bf0c879e3ad13043a3ad806df"><div class="ttname"><a href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">UnityEngine.DoN.calledEvent</a></div><div class="ttdeci">UnityEvent calledEvent</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00011">DoN.cs:11</a></div></div>
-<div class="ttc" id="aa00924_html_af3a77290a927260e40ccbb7bcd0eedb6"><div class="ttname"><a href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">UnityEngine.DoN.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00027">DoN.cs:27</a></div></div>
+<div class="ttc" id="aa00924_html"><div class="ttname"><a href="a00924.html">UnityEngine.DoN</a></div><div class="ttdoc">Allows the limitation of how many times a set of pre-defined events can be executed.</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00010">DoN.cs:11</a></div></div>
+<div class="ttc" id="aa00924_html_a019bd25a6fdab686a96897a12fbaea29"><div class="ttname"><a href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">UnityEngine.DoN.invokingTimes</a></div><div class="ttdeci">int invokingTimes</div><div class="ttdoc">The amount of times the events can be invoked.</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00016">DoN.cs:16</a></div></div>
+<div class="ttc" id="aa00924_html_a15565d702d2782e3e17a40d2660cbce1"><div class="ttname"><a href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">UnityEngine.DoN.invokedTimes</a></div><div class="ttdeci">int invokedTimes</div><div class="ttdoc">How many times the events have been invoked.</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00020">DoN.cs:20</a></div></div>
+<div class="ttc" id="aa00924_html_a2d3da8cbb2f249af084a99ceeb31c04a"><div class="ttname"><a href="a00924.html#a2d3da8cbb2f249af084a99ceeb31c04a">UnityEngine.DoN.DoN</a></div><div class="ttdeci">DoN(UnityAction unityAction, int invokingTimes)</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00027">DoN.cs:27</a></div></div>
+<div class="ttc" id="aa00924_html_a63698b89feb90c0dc409d8076c8029fc"><div class="ttname"><a href="a00924.html#a63698b89feb90c0dc409d8076c8029fc">UnityEngine.DoN.DoN</a></div><div class="ttdeci">DoN(UnityEvent calledEvent, int invokingTimes)</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00035">DoN.cs:35</a></div></div>
+<div class="ttc" id="aa00924_html_ae7d0ba6bf0c879e3ad13043a3ad806df"><div class="ttname"><a href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">UnityEngine.DoN.calledEvent</a></div><div class="ttdeci">UnityEvent calledEvent</div><div class="ttdoc">The events called at every invoke.</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00025">DoN.cs:25</a></div></div>
+<div class="ttc" id="aa00924_html_af3a77290a927260e40ccbb7bcd0eedb6"><div class="ttname"><a href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">UnityEngine.DoN.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdoc">Invokes all registered events callbacks (runtime and persistent).</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00044">DoN.cs:44</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

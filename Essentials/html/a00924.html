@@ -74,12 +74,15 @@ $(function() {
 <div class="title">UnityEngine.DoN Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Allows the limitation of how many times a set of pre-defined events can be executed.  
+ <a href="a00924.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for UnityEngine.DoN:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00922.png" border="0" usemap="#aUnityEngine_8DoN_coll__map" alt="Collaboration graph"/></div>
 <map name="aUnityEngine_8DoN_coll__map" id="aUnityEngine_8DoN_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,127,141"/>
+<area shape="rect" title="Allows the limitation of how many times a set of pre&#45;defined events can be executed." alt="" coords="5,5,127,141"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -90,20 +93,25 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a63698b89feb90c0dc409d8076c8029fc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00924.html#a63698b89feb90c0dc409d8076c8029fc">DoN</a> (UnityEvent <a class="el" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>, int <a class="el" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</td></tr>
 <tr class="separator:a63698b89feb90c0dc409d8076c8029fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3a77290a927260e40ccbb7bcd0eedb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">Invoke</a> ()</td></tr>
+<tr class="memdesc:af3a77290a927260e40ccbb7bcd0eedb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes all registered events callbacks (runtime and persistent).  <a href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">More...</a><br /></td></tr>
 <tr class="separator:af3a77290a927260e40ccbb7bcd0eedb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a019bd25a6fdab686a96897a12fbaea29"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a> = 3</td></tr>
+<tr class="memitem:a019bd25a6fdab686a96897a12fbaea29"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a> = 1</td></tr>
+<tr class="memdesc:a019bd25a6fdab686a96897a12fbaea29"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of times the events can be invoked.  <a href="a00924.html#a019bd25a6fdab686a96897a12fbaea29">More...</a><br /></td></tr>
 <tr class="separator:a019bd25a6fdab686a96897a12fbaea29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15565d702d2782e3e17a40d2660cbce1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a> = 0</td></tr>
+<tr class="memdesc:a15565d702d2782e3e17a40d2660cbce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many times the events have been invoked.  <a href="a00924.html#a15565d702d2782e3e17a40d2660cbce1">More...</a><br /></td></tr>
 <tr class="separator:a15565d702d2782e3e17a40d2660cbce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7d0ba6bf0c879e3ad13043a3ad806df"><td class="memItemLeft" align="right" valign="top">UnityEvent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a></td></tr>
+<tr class="memdesc:ae7d0ba6bf0c879e3ad13043a3ad806df"><td class="mdescLeft">&#160;</td><td class="mdescRight">The events called at every invoke.  <a href="a00924.html#ae7d0ba6bf0c879e3ad13043a3ad806df">More...</a><br /></td></tr>
 <tr class="separator:ae7d0ba6bf0c879e3ad13043a3ad806df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00007">7</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
+<div class="textblock"><p>Allows the limitation of how many times a set of pre-defined events can be executed. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00010">10</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2d3da8cbb2f249af084a99ceeb31c04a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d3da8cbb2f249af084a99ceeb31c04a">&#9670;&nbsp;</a></span>DoN() <span class="overload">[1/2]</span></h2>
@@ -131,7 +139,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00013">13</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00027">27</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
 
 </div>
 </div>
@@ -161,7 +169,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00021">21</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00035">35</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
 
 </div>
 </div>
@@ -181,13 +189,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00027">27</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
+<p>Invokes all registered events callbacks (runtime and persistent). </p>
+
+<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00044">44</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00924_af3a77290a927260e40ccbb7bcd0eedb6_icgraph.png" border="0" usemap="#aa00924_af3a77290a927260e40ccbb7bcd0eedb6_icgraph" alt=""/></div>
 <map name="aa00924_af3a77290a927260e40ccbb7bcd0eedb6_icgraph" id="aa00924_af3a77290a927260e40ccbb7bcd0eedb6_icgraph">
-<area shape="rect" title=" " alt="" coords="432,31,593,57"/>
+<area shape="rect" title="Invokes all registered events callbacks (runtime and persistent)." alt="" coords="432,31,593,57"/>
 <area shape="rect" href="a00472.html#a5f6cedd4c8a2fb9480bb66e4ba29d637" title=" " alt="" coords="5,5,384,32"/>
 <area shape="rect" href="a00488.html#a7c0be390de8b991bb4ca5d527e286c75" title=" " alt="" coords="23,56,366,83"/>
 </map>
@@ -208,7 +218,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00011">11</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
+<p>The events called at every invoke. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00025">25</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
 
 </div>
 </div>
@@ -224,7 +236,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00010">10</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
+<p>How many times the events have been invoked. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00020">20</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
 
 </div>
 </div>
@@ -235,12 +249,14 @@ Here is the caller graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int UnityEngine.DoN.invokingTimes = 3</td>
+          <td class="memname">int UnityEngine.DoN.invokingTimes = 1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00009">9</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
+<p>The amount of times the events can be invoked. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00353_source.html#l00016">16</a> of file <a class="el" href="a00353_source.html">DoN.cs</a>.</p>
 
 </div>
 </div>

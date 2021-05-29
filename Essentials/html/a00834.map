@@ -1,6 +1,6 @@
 <map id="ConsoleTextUI" name="ConsoleTextUI">
 <area shape="rect" id="node1" title=" " alt="" coords="110,477,235,555"/>
-<area shape="rect" id="node2" href="$a00828.html" title=" " alt="" coords="5,132,156,415"/>
+<area shape="rect" id="node2" href="$a00828.html" title="Base class to handle the console display in&#45;game" alt="" coords="5,132,156,415"/>
 <area shape="rect" id="node3" title=" " alt="" coords="25,5,136,83"/>
 <area shape="rect" id="node4" title=" " alt="" coords="180,235,227,312"/>
 </map>

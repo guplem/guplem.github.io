@@ -8,7 +8,7 @@ var searchData=
   ['addmessages_1241',['AddMessages',['../a00716.html#a7aff2b2f78db0d8e0b9e0daeb08a8f70',1,'FullSerializer::fsResult']]],
   ['addprocessor_1242',['AddProcessor',['../a00720.html#a30ed281d93548dcb4deea1815096f87b',1,'FullSerializer::fsSerializer']]],
   ['addreferencewithid_1243',['AddReferenceWithId',['../a00728.html#aa27a4abcf40a5523a564a6db7cbccd5d',1,'FullSerializer::Internal::fsCyclicReferenceManager']]],
-  ['anchororigin_1244',['AnchorOrigin',['../a00904.html#a30f6067113d4b8b93bf941d0ba85028b',1,'UnityEngine.RectTransformExtensions.AnchorOrigin(this RectTransform rt)'],['../a00904.html#ab15623a1566004c0932b3c75d10d237a',1,'UnityEngine.RectTransformExtensions.AnchorOrigin(Rectangle01 anchor)']]],
+  ['anchororigin_1244',['AnchorOrigin',['../a00904.html#a30f6067113d4b8b93bf941d0ba85028b',1,'UnityEngine.RectTransformExtensions.AnchorOrigin(this RectTransform rt)'],['../a00904.html#aae0c92a239d87f016f97b8371265409b',1,'UnityEngine.RectTransformExtensions.AnchorOrigin(MinMax01 anchor)']]],
   ['anchororiginparent_1245',['AnchorOriginParent',['../a00904.html#a5067d0f4b5467202c915ccec76da2101',1,'UnityEngine::RectTransformExtensions']]],
   ['anchortoparentspace_1246',['AnchorToParentSpace',['../a00904.html#a983633f6b73ea8d4244167d492c2800a',1,'UnityEngine.RectTransformExtensions.AnchorToParentSpace(this RectTransform rt, float x, float y)'],['../a00904.html#ae03cad05558338699558a81f9962341f',1,'UnityEngine.RectTransformExtensions.AnchorToParentSpace(this RectTransform rt, Vector2 point)']]],
   ['apply_1247',['Apply',['../a00848.html#acef6ad74943f613661f53b0fef45cff6',1,'Essentials.EssentialsSettings.Adjustment.Apply()'],['../a00852.html#a64725ddf40edcc3c8091c412a64f5fd7',1,'Essentials.EssentialsSettings.IAdjustment.Apply()']]],

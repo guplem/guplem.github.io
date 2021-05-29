@@ -22,9 +22,9 @@
 <area shape="rect" id="node21" href="$a00516.html" title=" " alt="" coords="231,975,654,1002"/>
 <area shape="rect" id="node22" href="$a00532.html" title=" " alt="" coords="255,1026,630,1052"/>
 <area shape="rect" id="node23" href="$a00524.html" title=" " alt="" coords="379,1076,507,1103"/>
-<area shape="rect" id="node24" href="$a00824.html" title=" " alt="" coords="333,1127,553,1154"/>
-<area shape="rect" id="node25" href="$a00828.html" title=" " alt="" coords="371,1178,514,1204"/>
-<area shape="rect" id="node29" href="$a00820.html" title=" " alt="" coords="317,1228,568,1255"/>
+<area shape="rect" id="node24" href="$a00824.html" title="Component to manage multiple AudioSources (or AudioClips) at the same time (or in the same component)" alt="" coords="333,1127,553,1154"/>
+<area shape="rect" id="node25" href="$a00828.html" title="Base class to handle the console display in&#45;game" alt="" coords="371,1178,514,1204"/>
+<area shape="rect" id="node29" href="$a00820.html" title="Component used to control the behaviour of any SimpleAnimation" alt="" coords="317,1228,568,1255"/>
 <area shape="rect" id="node26" href="$a00832.html" title=" " alt="" coords="777,1127,868,1154"/>
 <area shape="rect" id="node27" href="$a00840.html" title=" " alt="" coords="775,1178,871,1204"/>
 <area shape="rect" id="node28" href="$a00836.html" title=" " alt="" coords="769,1228,876,1255"/>

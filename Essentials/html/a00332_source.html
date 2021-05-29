@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: Rectangle01.cs Source File</title>
+<title>UnityEssentials: MinMax01.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,35 +67,35 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Rectangle01.cs</div>  </div>
+<div class="title">MinMax01.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00332.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00417.html">UnityEngine</a></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;{</div>
-<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="a00900.html">    3</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">struct </span><a class="code" href="a00900.html">Rectangle01</a></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    {</div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00900.html#afb40db08e865828b38fa52a100e53594">    5</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00900.html#afb40db08e865828b38fa52a100e53594">min</a>;</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">    6</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">max</a>;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="a00900.html#a70b44f28c2802e9bbcc4d839bf75854c">    8</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00900.html#a70b44f28c2802e9bbcc4d839bf75854c">Rectangle01</a>(Vector2 <a class="code" href="a00900.html#afb40db08e865828b38fa52a100e53594">min</a>, Vector2 <a class="code" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">max</a>)</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;            this.min = <span class="keyword">new</span> Vector2(Mathf.Clamp01(<a class="code" href="a00900.html#afb40db08e865828b38fa52a100e53594">min</a>.x), Mathf.Clamp01(<a class="code" href="a00900.html#afb40db08e865828b38fa52a100e53594">min</a>.y));</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;            this.max = <span class="keyword">new</span> Vector2(Mathf.Clamp01(<a class="code" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">max</a>.x), Mathf.Clamp01(<a class="code" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">max</a>.y));</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        }</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00900.html#ac0c245d094d21a3852e6b3b0efcc1c7d">   14</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00900.html#ac0c245d094d21a3852e6b3b0efcc1c7d">Rectangle01</a>(<span class="keywordtype">float</span> minx, <span class="keywordtype">float</span> miny, <span class="keywordtype">float</span> maxx, <span class="keywordtype">float</span> maxy)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            this.min = <span class="keyword">new</span> Vector2(Mathf.Clamp01(minx), Mathf.Clamp01(miny));</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            this.max = <span class="keyword">new</span> Vector2(Mathf.Clamp01(maxx), Mathf.Clamp01(maxy));</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00900.html">    6</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">struct </span><a class="code" href="a00900.html">MinMax01</a></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    {</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="a00900.html#a983a8fe5f8252ac478fe814b7535d455">    8</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00900.html#a983a8fe5f8252ac478fe814b7535d455">min</a> { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00900.html#a2781dc6867406c0ace688110dbcf60de">    9</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00900.html#a2781dc6867406c0ace688110dbcf60de">max</a> { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="a00900.html#afb9b047fc3e291c80b328d39b092f670">   11</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00900.html#afb9b047fc3e291c80b328d39b092f670">MinMax01</a>(Vector2 <a class="code" href="a00900.html#a983a8fe5f8252ac478fe814b7535d455">min</a>, Vector2 <a class="code" href="a00900.html#a2781dc6867406c0ace688110dbcf60de">max</a>)</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            this.min = <span class="keyword">new</span> Vector2(Mathf.Clamp01(<a class="code" href="a00900.html#a983a8fe5f8252ac478fe814b7535d455">min</a>.x), Mathf.Clamp01(<a class="code" href="a00900.html#a983a8fe5f8252ac478fe814b7535d455">min</a>.y));</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            this.max = <span class="keyword">new</span> Vector2(Mathf.Clamp01(<a class="code" href="a00900.html#a2781dc6867406c0ace688110dbcf60de">max</a>.x), Mathf.Clamp01(<a class="code" href="a00900.html#a2781dc6867406c0ace688110dbcf60de">max</a>.y));</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        }</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="a00900.html#a7c19bac0cf5889454b679311cd54f2ad">   17</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00900.html#a7c19bac0cf5889454b679311cd54f2ad">MinMax01</a>(<span class="keywordtype">float</span> minx, <span class="keywordtype">float</span> miny, <span class="keywordtype">float</span> maxx, <span class="keywordtype">float</span> maxy)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            this.<a class="code" href="a00900.html#a983a8fe5f8252ac478fe814b7535d455">min</a> = <span class="keyword">new</span> Vector2(Mathf.Clamp01(minx), Mathf.Clamp01(miny));</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            this.<a class="code" href="a00900.html#a2781dc6867406c0ace688110dbcf60de">max</a> = <span class="keyword">new</span> Vector2(Mathf.Clamp01(maxx), Mathf.Clamp01(maxy));</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
 <div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00900_html"><div class="ttname"><a href="a00900.html">UnityEngine.Rectangle01</a></div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00003">Rectangle01.cs:4</a></div></div>
-<div class="ttc" id="aa00900_html_a70b44f28c2802e9bbcc4d839bf75854c"><div class="ttname"><a href="a00900.html#a70b44f28c2802e9bbcc4d839bf75854c">UnityEngine.Rectangle01.Rectangle01</a></div><div class="ttdeci">Rectangle01(Vector2 min, Vector2 max)</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00008">Rectangle01.cs:8</a></div></div>
-<div class="ttc" id="aa00900_html_ac0c245d094d21a3852e6b3b0efcc1c7d"><div class="ttname"><a href="a00900.html#ac0c245d094d21a3852e6b3b0efcc1c7d">UnityEngine.Rectangle01.Rectangle01</a></div><div class="ttdeci">Rectangle01(float minx, float miny, float maxx, float maxy)</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00014">Rectangle01.cs:14</a></div></div>
-<div class="ttc" id="aa00900_html_af9408c0ddb199a73a32b4b75c0b4da5f"><div class="ttname"><a href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">UnityEngine.Rectangle01.max</a></div><div class="ttdeci">Vector2 max</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00006">Rectangle01.cs:6</a></div></div>
-<div class="ttc" id="aa00900_html_afb40db08e865828b38fa52a100e53594"><div class="ttname"><a href="a00900.html#afb40db08e865828b38fa52a100e53594">UnityEngine.Rectangle01.min</a></div><div class="ttdeci">Vector2 min</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00005">Rectangle01.cs:5</a></div></div>
+<div class="ttc" id="aa00900_html"><div class="ttname"><a href="a00900.html">UnityEngine.MinMax01</a></div><div class="ttdoc">Class containing a minimum and max Vectors with its components between 0 and 1</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00006">MinMax01.cs:7</a></div></div>
+<div class="ttc" id="aa00900_html_a2781dc6867406c0ace688110dbcf60de"><div class="ttname"><a href="a00900.html#a2781dc6867406c0ace688110dbcf60de">UnityEngine.MinMax01.max</a></div><div class="ttdeci">Vector2 max</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00009">MinMax01.cs:9</a></div></div>
+<div class="ttc" id="aa00900_html_a7c19bac0cf5889454b679311cd54f2ad"><div class="ttname"><a href="a00900.html#a7c19bac0cf5889454b679311cd54f2ad">UnityEngine.MinMax01.MinMax01</a></div><div class="ttdeci">MinMax01(float minx, float miny, float maxx, float maxy)</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00017">MinMax01.cs:17</a></div></div>
+<div class="ttc" id="aa00900_html_a983a8fe5f8252ac478fe814b7535d455"><div class="ttname"><a href="a00900.html#a983a8fe5f8252ac478fe814b7535d455">UnityEngine.MinMax01.min</a></div><div class="ttdeci">Vector2 min</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00008">MinMax01.cs:8</a></div></div>
+<div class="ttc" id="aa00900_html_afb9b047fc3e291c80b328d39b092f670"><div class="ttname"><a href="a00900.html#afb9b047fc3e291c80b328d39b092f670">UnityEngine.MinMax01.MinMax01</a></div><div class="ttdeci">MinMax01(Vector2 min, Vector2 max)</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00011">MinMax01.cs:11</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

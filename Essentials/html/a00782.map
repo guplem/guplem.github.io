@@ -1,5 +1,5 @@
 <map id="UnityEngine.ColorAnimation" name="UnityEngine.ColorAnimation">
-<area shape="rect" id="node1" title=" " alt="" coords="12,476,196,627"/>
-<area shape="rect" id="node2" href="$a00816.html" title=" " alt="" coords="5,131,203,428"/>
-<area shape="rect" id="node3" href="$a00812.html" title=" " alt="" coords="43,5,165,83"/>
+<area shape="rect" id="node1" title="Allows the animation of a Color." alt="" coords="12,476,196,627"/>
+<area shape="rect" id="node2" href="$a00816.html" title="Base class to create simple animations of any element." alt="" coords="5,131,203,428"/>
+<area shape="rect" id="node3" href="$a00812.html" title="Base interface to create simple animations of any element." alt="" coords="43,5,165,83"/>
 </map>
