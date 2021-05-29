@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: FullSerializer.Internal.fsPortableReflection.AttributeQueryComparator Class Reference</title>
+<title>UnityEssentials: FullSerializer.fsTypeExtensions Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,55 +62,100 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00416.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00417.html">Internal</a></li><li class="navelem"><a class="el" href="a00744.html">fsPortableReflection</a></li><li class="navelem"><a class="el" href="a00752.html">AttributeQueryComparator</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00413.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00752.html">fsTypeExtensions</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="a00749.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">FullSerializer.Internal.fsPortableReflection.AttributeQueryComparator Class Reference</div>  </div>
+<div class="title">FullSerializer.fsTypeExtensions Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
-Collaboration diagram for FullSerializer.Internal.fsPortableReflection.AttributeQueryComparator:</div>
+Collaboration diagram for FullSerializer.fsTypeExtensions:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00750.png" border="0" usemap="#aFullSerializer_8Internal_8fsPortableReflection_8AttributeQueryComparator_coll__map" alt="Collaboration graph"/></div>
-<map name="aFullSerializer_8Internal_8fsPortableReflection_8AttributeQueryComparator_coll__map" id="aFullSerializer_8Internal_8fsPortableReflection_8AttributeQueryComparator_coll__map">
-<area shape="rect" title=" " alt="" coords="5,131,423,223"/>
-<area shape="rect" title=" " alt="" coords="96,5,332,83"/>
+<div class="center"><img src="a00750.png" border="0" usemap="#aFullSerializer_8fsTypeExtensions_coll__map" alt="Collaboration graph"/></div>
+<map name="aFullSerializer_8fsTypeExtensions_coll__map" id="aFullSerializer_8fsTypeExtensions_coll__map">
+<area shape="rect" title=" " alt="" coords="5,5,209,112"/>
 </map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a419f15c2e01f531eb1293799c88fa346"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00752.html#a419f15c2e01f531eb1293799c88fa346">Equals</a> (<a class="el" href="a00748.html">AttributeQuery</a> x, <a class="el" href="a00748.html">AttributeQuery</a> y)</td></tr>
-<tr class="separator:a419f15c2e01f531eb1293799c88fa346"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa9ef7ecee78e307b8b62d91a56cae40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00752.html#aaa9ef7ecee78e307b8b62d91a56cae40">GetHashCode</a> (<a class="el" href="a00748.html">AttributeQuery</a> obj)</td></tr>
-<tr class="separator:aaa9ef7ecee78e307b8b62d91a56cae40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa91162c325e8b3bdeab1c14c478e3f64"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00752.html#aa91162c325e8b3bdeab1c14c478e3f64">CSharpName</a> (this Type type)</td></tr>
+<tr class="memdesc:aa91162c325e8b3bdeab1c14c478e3f64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pretty name for the type in the style of one that you'd see in C# without the namespace.  <a href="a00752.html#aa91162c325e8b3bdeab1c14c478e3f64">More...</a><br /></td></tr>
+<tr class="separator:aa91162c325e8b3bdeab1c14c478e3f64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a500fdb9ec32fb71edb20a9500e757c7b"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00752.html#a500fdb9ec32fb71edb20a9500e757c7b">CSharpName</a> (this Type type, bool includeNamespace, bool ensureSafeDeclarationName)</td></tr>
+<tr class="separator:a500fdb9ec32fb71edb20a9500e757c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afda53aa586780b6cb3d8f68764da496f"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00752.html#afda53aa586780b6cb3d8f68764da496f">CSharpName</a> (this Type type, bool includeNamespace)</td></tr>
+<tr class="memdesc:afda53aa586780b6cb3d8f68764da496f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pretty name for the type in the style of one that you'd see in C#.  <a href="a00752.html#afda53aa586780b6cb3d8f68764da496f">More...</a><br /></td></tr>
+<tr class="separator:afda53aa586780b6cb3d8f68764da496f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00203_source.html#l00141">141</a> of file <a class="el" href="a00203_source.html">fsPortableReflection.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00206_source.html#l00013">13</a> of file <a class="el" href="a00206_source.html">fsTypeExtensions.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a419f15c2e01f531eb1293799c88fa346"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a419f15c2e01f531eb1293799c88fa346">&#9670;&nbsp;</a></span>Equals()</h2>
+<a id="aa91162c325e8b3bdeab1c14c478e3f64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa91162c325e8b3bdeab1c14c478e3f64">&#9670;&nbsp;</a></span>CSharpName() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool FullSerializer.Internal.fsPortableReflection.AttributeQueryComparator.Equals </td>
+          <td class="memname">static string FullSerializer.fsTypeExtensions.CSharpName </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00748.html">AttributeQuery</a>&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
+          <td class="paramtype">this Type&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a pretty name for the type in the style of one that you'd see in C# without the namespace. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00206_source.html#l00017">17</a> of file <a class="el" href="a00206_source.html">fsTypeExtensions.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00752_aa91162c325e8b3bdeab1c14c478e3f64_icgraph.png" border="0" usemap="#aa00752_aa91162c325e8b3bdeab1c14c478e3f64_icgraph" alt=""/></div>
+<map name="aa00752_aa91162c325e8b3bdeab1c14c478e3f64_icgraph" id="aa00752_aa91162c325e8b3bdeab1c14c478e3f64_icgraph">
+<area shape="rect" title="Returns a pretty name for the type in the style of one that you&#39;d see in C# without the namespace." alt="" coords="339,5,624,32"/>
+<area shape="rect" href="a00752.html#a500fdb9ec32fb71edb20a9500e757c7b" title=" " alt="" coords="5,5,291,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="afda53aa586780b6cb3d8f68764da496f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afda53aa586780b6cb3d8f68764da496f">&#9670;&nbsp;</a></span>CSharpName() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string FullSerializer.fsTypeExtensions.CSharpName </td>
+          <td>(</td>
+          <td class="paramtype">this Type&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00748.html">AttributeQuery</a>&#160;</td>
-          <td class="paramname"><em>y</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>includeNamespace</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -118,34 +163,84 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00203_source.html#l00142">142</a> of file <a class="el" href="a00203_source.html">fsPortableReflection.cs</a>.</p>
+<p>Returns a pretty name for the type in the style of one that you'd see in C#. </p>
+<p>&lt;parparam name="includeNamespace"&gt;Should the name include namespaces?&lt;/parparam&gt; </p>
+
+<p class="definition">Definition at line <a class="el" href="a00206_source.html#l00031">31</a> of file <a class="el" href="a00206_source.html">fsTypeExtensions.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00752_afda53aa586780b6cb3d8f68764da496f_cgraph.png" border="0" usemap="#aa00752_afda53aa586780b6cb3d8f68764da496f_cgraph" alt=""/></div>
+<map name="aa00752_afda53aa586780b6cb3d8f68764da496f_cgraph" id="aa00752_afda53aa586780b6cb3d8f68764da496f_cgraph">
+<area shape="rect" title="Returns a pretty name for the type in the style of one that you&#39;d see in C#." alt="" coords="5,5,291,32"/>
+<area shape="rect" href="a00752.html#aa91162c325e8b3bdeab1c14c478e3f64" title="Returns a pretty name for the type in the style of one that you&#39;d see in C# without the namespace." alt="" coords="339,5,624,32"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="aaa9ef7ecee78e307b8b62d91a56cae40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa9ef7ecee78e307b8b62d91a56cae40">&#9670;&nbsp;</a></span>GetHashCode()</h2>
+<a id="a500fdb9ec32fb71edb20a9500e757c7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a500fdb9ec32fb71edb20a9500e757c7b">&#9670;&nbsp;</a></span>CSharpName() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int FullSerializer.Internal.fsPortableReflection.AttributeQueryComparator.GetHashCode </td>
+          <td class="memname">static string FullSerializer.fsTypeExtensions.CSharpName </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00748.html">AttributeQuery</a>&#160;</td>
-          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td class="paramtype">this Type&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>includeNamespace</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ensureSafeDeclarationName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00203_source.html#l00148">148</a> of file <a class="el" href="a00203_source.html">fsPortableReflection.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00206_source.html#l00021">21</a> of file <a class="el" href="a00206_source.html">fsTypeExtensions.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00752_a500fdb9ec32fb71edb20a9500e757c7b_cgraph.png" border="0" usemap="#aa00752_a500fdb9ec32fb71edb20a9500e757c7b_cgraph" alt=""/></div>
+<map name="aa00752_a500fdb9ec32fb71edb20a9500e757c7b_cgraph" id="aa00752_a500fdb9ec32fb71edb20a9500e757c7b_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,291,32"/>
+<area shape="rect" href="a00752.html#aa91162c325e8b3bdeab1c14c478e3f64" title="Returns a pretty name for the type in the style of one that you&#39;d see in C# without the namespace." alt="" coords="339,5,624,32"/>
+</map>
+</div>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00203_source.html">fsPortableReflection.cs</a></li>
+<li><a class="el" href="a00206_source.html">fsTypeExtensions.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

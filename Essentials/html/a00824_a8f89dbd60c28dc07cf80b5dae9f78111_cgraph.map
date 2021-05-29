@@ -1,0 +1,4 @@
+<map id="UnityEngine.AudioSourceManager.StopClip" name="UnityEngine.AudioSourceManager.StopClip">
+<area shape="rect" id="node1" title="Stops playing the clip in all AudioSources related to this AudioSoundManager that are playing it." alt="" coords="5,5,279,32"/>
+<area shape="rect" id="node2" href="$a00824.html#a0c4477dc7665733c94f33bf88db2c6d7" title="Returns all AudioSources that are playing the given clip." alt="" coords="327,5,653,32"/>
+</map>

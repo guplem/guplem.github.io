@@ -70,56 +70,54 @@ $(function() {
 <div class="title">SequenceExample.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00047.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>.UI;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00409.html">Essentials.Examples.FlowControl</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00504.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00504.html">SequenceExample</a> : MonoBehaviour</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00504.html#a054c368bcf49c846a91c671aa7fcd4cf">    9</a></span>&#160;        [SerializeField] <span class="keyword">private</span> <a class="code" href="a00944.html">Sequence</a> <a class="code" href="a00504.html#a054c368bcf49c846a91c671aa7fcd4cf">sequence</a>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="a00504.html#af80c90170d6d7d83aa7953f09f017f73">   11</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00504.html#af80c90170d6d7d83aa7953f09f017f73">Start</a>()</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Press &#39;S&#39; to invoke the Sequence.&quot;</span>);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        }</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="a00504.html#afc6fa7b81e60f4a3a36272b99f4000e9">   16</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00504.html#afc6fa7b81e60f4a3a36272b99f4000e9">Update</a>()</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">if</span> (Input.GetKeyDown(KeyCode.S))</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                <a class="code" href="a00504.html#a054c368bcf49c846a91c671aa7fcd4cf">sequence</a>.<a class="code" href="a00944.html#a8d5e2879768e9b1746ee0141eab2cdf8">Invoke</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="a00504.html#af365f69f202add95fa1a01198b69b20b">   24</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00504.html#af365f69f202add95fa1a01198b69b20b">DummyMethodA</a>()</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Executing method from Sequence (A)&quot;</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        </div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="a00504.html#acbee904ae12dc5202dc67d7d5df02aa7">   29</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00504.html#acbee904ae12dc5202dc67d7d5df02aa7">DummyMethodB</a>()</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Executing method from Sequence (B)&quot;</span>);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00504.html#ade5848889c593b6c15704c6f862ba73d">   34</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00504.html#ade5848889c593b6c15704c6f862ba73d">DummyMethodC</a>()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Executing method from Sequence (C)&quot;</span>);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
-<div class="ttc" id="aa00409_html"><div class="ttname"><a href="a00409.html">Essentials.Examples.FlowControl</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00005">DoNExampleCoded.cs:6</a></div></div>
-<div class="ttc" id="aa00420_html"><div class="ttname"><a href="a00420.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00504_html"><div class="ttname"><a href="a00504.html">Essentials.Examples.FlowControl.SequenceExample</a></div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00007">SequenceExample.cs:8</a></div></div>
-<div class="ttc" id="aa00504_html_a054c368bcf49c846a91c671aa7fcd4cf"><div class="ttname"><a href="a00504.html#a054c368bcf49c846a91c671aa7fcd4cf">Essentials.Examples.FlowControl.SequenceExample.sequence</a></div><div class="ttdeci">Sequence sequence</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00009">SequenceExample.cs:9</a></div></div>
-<div class="ttc" id="aa00504_html_acbee904ae12dc5202dc67d7d5df02aa7"><div class="ttname"><a href="a00504.html#acbee904ae12dc5202dc67d7d5df02aa7">Essentials.Examples.FlowControl.SequenceExample.DummyMethodB</a></div><div class="ttdeci">void DummyMethodB()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00029">SequenceExample.cs:29</a></div></div>
-<div class="ttc" id="aa00504_html_ade5848889c593b6c15704c6f862ba73d"><div class="ttname"><a href="a00504.html#ade5848889c593b6c15704c6f862ba73d">Essentials.Examples.FlowControl.SequenceExample.DummyMethodC</a></div><div class="ttdeci">void DummyMethodC()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00034">SequenceExample.cs:34</a></div></div>
-<div class="ttc" id="aa00504_html_af365f69f202add95fa1a01198b69b20b"><div class="ttname"><a href="a00504.html#af365f69f202add95fa1a01198b69b20b">Essentials.Examples.FlowControl.SequenceExample.DummyMethodA</a></div><div class="ttdeci">void DummyMethodA()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00024">SequenceExample.cs:24</a></div></div>
-<div class="ttc" id="aa00504_html_af80c90170d6d7d83aa7953f09f017f73"><div class="ttname"><a href="a00504.html#af80c90170d6d7d83aa7953f09f017f73">Essentials.Examples.FlowControl.SequenceExample.Start</a></div><div class="ttdeci">void Start()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00011">SequenceExample.cs:11</a></div></div>
-<div class="ttc" id="aa00504_html_afc6fa7b81e60f4a3a36272b99f4000e9"><div class="ttname"><a href="a00504.html#afc6fa7b81e60f4a3a36272b99f4000e9">Essentials.Examples.FlowControl.SequenceExample.Update</a></div><div class="ttdeci">void Update()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00016">SequenceExample.cs:16</a></div></div>
-<div class="ttc" id="aa00944_html"><div class="ttname"><a href="a00944.html">UnityEngine.Sequence</a></div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00008">Sequence.cs:9</a></div></div>
-<div class="ttc" id="aa00944_html_a8d5e2879768e9b1746ee0141eab2cdf8"><div class="ttname"><a href="a00944.html#a8d5e2879768e9b1746ee0141eab2cdf8">UnityEngine.Sequence.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdef"><b>Definition:</b> <a href="a00365_source.html#l00047">Sequence.cs:47</a></div></div>
+<a href="a00047.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00417.html">UnityEngine</a>;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00406.html">Essentials.Examples.FlowControl</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00500.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00500.html">SequenceExample</a> : MonoBehaviour</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00500.html#a054c368bcf49c846a91c671aa7fcd4cf">    7</a></span>&#160;        [SerializeField] <span class="keyword">private</span> <a class="code" href="a00936.html">Sequence</a> <a class="code" href="a00500.html#a054c368bcf49c846a91c671aa7fcd4cf">sequence</a>;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00500.html#af80c90170d6d7d83aa7953f09f017f73">    9</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00500.html#af80c90170d6d7d83aa7953f09f017f73">Start</a>()</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Press &#39;S&#39; to invoke the Sequence.&quot;</span>);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        }</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00500.html#afc6fa7b81e60f4a3a36272b99f4000e9">   14</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00500.html#afc6fa7b81e60f4a3a36272b99f4000e9">Update</a>()</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">if</span> (Input.GetKeyDown(KeyCode.S))</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                <a class="code" href="a00500.html#a054c368bcf49c846a91c671aa7fcd4cf">sequence</a>.<a class="code" href="a00936.html#a8d5e2879768e9b1746ee0141eab2cdf8">Invoke</a>();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            }</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="a00500.html#af365f69f202add95fa1a01198b69b20b">   22</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00500.html#af365f69f202add95fa1a01198b69b20b">DummyMethodA</a>()</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Executing method from Sequence (A)&quot;</span>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="a00500.html#acbee904ae12dc5202dc67d7d5df02aa7">   27</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00500.html#acbee904ae12dc5202dc67d7d5df02aa7">DummyMethodB</a>()</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Executing method from Sequence (B)&quot;</span>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00500.html#ade5848889c593b6c15704c6f862ba73d">   32</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00500.html#ade5848889c593b6c15704c6f862ba73d">DummyMethodC</a>()</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Executing method from Sequence (C)&quot;</span>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
+<div class="ttc" id="aa00406_html"><div class="ttname"><a href="a00406.html">Essentials.Examples.FlowControl</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00003">DoNExampleCoded.cs:4</a></div></div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00500_html"><div class="ttname"><a href="a00500.html">Essentials.Examples.FlowControl.SequenceExample</a></div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00005">SequenceExample.cs:6</a></div></div>
+<div class="ttc" id="aa00500_html_a054c368bcf49c846a91c671aa7fcd4cf"><div class="ttname"><a href="a00500.html#a054c368bcf49c846a91c671aa7fcd4cf">Essentials.Examples.FlowControl.SequenceExample.sequence</a></div><div class="ttdeci">Sequence sequence</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00007">SequenceExample.cs:7</a></div></div>
+<div class="ttc" id="aa00500_html_acbee904ae12dc5202dc67d7d5df02aa7"><div class="ttname"><a href="a00500.html#acbee904ae12dc5202dc67d7d5df02aa7">Essentials.Examples.FlowControl.SequenceExample.DummyMethodB</a></div><div class="ttdeci">void DummyMethodB()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00027">SequenceExample.cs:27</a></div></div>
+<div class="ttc" id="aa00500_html_ade5848889c593b6c15704c6f862ba73d"><div class="ttname"><a href="a00500.html#ade5848889c593b6c15704c6f862ba73d">Essentials.Examples.FlowControl.SequenceExample.DummyMethodC</a></div><div class="ttdeci">void DummyMethodC()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00032">SequenceExample.cs:32</a></div></div>
+<div class="ttc" id="aa00500_html_af365f69f202add95fa1a01198b69b20b"><div class="ttname"><a href="a00500.html#af365f69f202add95fa1a01198b69b20b">Essentials.Examples.FlowControl.SequenceExample.DummyMethodA</a></div><div class="ttdeci">void DummyMethodA()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00022">SequenceExample.cs:22</a></div></div>
+<div class="ttc" id="aa00500_html_af80c90170d6d7d83aa7953f09f017f73"><div class="ttname"><a href="a00500.html#af80c90170d6d7d83aa7953f09f017f73">Essentials.Examples.FlowControl.SequenceExample.Start</a></div><div class="ttdeci">void Start()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00009">SequenceExample.cs:9</a></div></div>
+<div class="ttc" id="aa00500_html_afc6fa7b81e60f4a3a36272b99f4000e9"><div class="ttname"><a href="a00500.html#afc6fa7b81e60f4a3a36272b99f4000e9">Essentials.Examples.FlowControl.SequenceExample.Update</a></div><div class="ttdeci">void Update()</div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00014">SequenceExample.cs:14</a></div></div>
+<div class="ttc" id="aa00936_html"><div class="ttname"><a href="a00936.html">UnityEngine.Sequence</a></div><div class="ttdef"><b>Definition:</b> <a href="a00362_source.html#l00008">Sequence.cs:9</a></div></div>
+<div class="ttc" id="aa00936_html_a8d5e2879768e9b1746ee0141eab2cdf8"><div class="ttname"><a href="a00936.html#a8d5e2879768e9b1746ee0141eab2cdf8">UnityEngine.Sequence.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdef"><b>Definition:</b> <a href="a00362_source.html#l00047">Sequence.cs:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -71,23 +71,22 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a href="a00308.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00420.html">UnityEngine</a></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00872.html">    6</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00872.html">DebugExtensions</a></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="a00872.html#a0821450c1fb228200720f039327dd519">   15</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00872.html#a0821450c1fb228200720f039327dd519">LogEnumerable&lt;T&gt;</a>(<span class="keyword">this</span> Debug db, IEnumerable&lt;T&gt; enumerableToDebug, <span class="keywordtype">string</span> separator = <span class="stringliteral">&quot;, &quot;</span>,</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordtype">string</span> message = <span class="stringliteral">&quot;&quot;</span>, Object context = <span class="keyword">null</span>)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            enumerableToDebug.DebugLog(separator, message, context);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
-<div class="ttc" id="aa00420_html"><div class="ttname"><a href="a00420.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00872_html"><div class="ttname"><a href="a00872.html">UnityEngine.DebugExtensions</a></div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00006">DebugExtensions.cs:7</a></div></div>
-<div class="ttc" id="aa00872_html_a0821450c1fb228200720f039327dd519"><div class="ttname"><a href="a00872.html#a0821450c1fb228200720f039327dd519">UnityEngine.DebugExtensions.LogEnumerable&lt; T &gt;</a></div><div class="ttdeci">static void LogEnumerable&lt; T &gt;(this Debug db, IEnumerable&lt; T &gt; enumerableToDebug, string separator=&quot;, &quot;, string message=&quot;&quot;, Object context=null)</div><div class="ttdoc">Creates a 'Debug.Log' message with all the contents in the enumerable.</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00015">DebugExtensions.cs:15</a></div></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00417.html">UnityEngine</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00868.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00868.html">DebugExtensions</a></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00868.html#a0821450c1fb228200720f039327dd519">   14</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00868.html#a0821450c1fb228200720f039327dd519">LogEnumerable&lt;T&gt;</a>(<span class="keyword">this</span> Debug db, IEnumerable&lt;T&gt; enumerableToDebug, <span class="keywordtype">string</span> separator = <span class="stringliteral">&quot;, &quot;</span>,</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <span class="keywordtype">string</span> message = <span class="stringliteral">&quot;&quot;</span>, Object context = <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            enumerableToDebug.DebugLog(separator, message, context);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    }</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00868_html"><div class="ttname"><a href="a00868.html">UnityEngine.DebugExtensions</a></div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00005">DebugExtensions.cs:6</a></div></div>
+<div class="ttc" id="aa00868_html_a0821450c1fb228200720f039327dd519"><div class="ttname"><a href="a00868.html#a0821450c1fb228200720f039327dd519">UnityEngine.DebugExtensions.LogEnumerable&lt; T &gt;</a></div><div class="ttdeci">static void LogEnumerable&lt; T &gt;(this Debug db, IEnumerable&lt; T &gt; enumerableToDebug, string separator=&quot;, &quot;, string message=&quot;&quot;, Object context=null)</div><div class="ttdoc">Creates a 'Debug.Log' message with all the contents in the enumerable.</div><div class="ttdef"><b>Definition:</b> <a href="a00308_source.html#l00014">DebugExtensions.cs:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

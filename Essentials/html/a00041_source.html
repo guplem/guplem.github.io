@@ -70,45 +70,43 @@ $(function() {
 <div class="title">DoOnceExample.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00041.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>.UI;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00409.html">Essentials.Examples.FlowControl</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00496.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00496.html">DoOnceExample</a> : MonoBehaviour</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00496.html#ad0a23b5929306420b33f70fc31f6294e">    9</a></span>&#160;        [SerializeField] <span class="keyword">private</span> <a class="code" href="a00936.html">DoOnce</a> <a class="code" href="a00496.html#ad0a23b5929306420b33f70fc31f6294e">doOnce</a>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="a00496.html#a3c24b8aafef126dff9a7fcd35e3e673c">   11</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00496.html#a3c24b8aafef126dff9a7fcd35e3e673c">Start</a>()</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Press &#39;O&#39; to invoke the DoOnce.&quot;</span>);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        }</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="a00496.html#a4d446cbf01e003debfbd946da0dab1eb">   16</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00496.html#a4d446cbf01e003debfbd946da0dab1eb">Update</a>()</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">if</span> (Input.GetKeyDown(KeyCode.O))</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                <a class="code" href="a00496.html#ad0a23b5929306420b33f70fc31f6294e">doOnce</a>.<a class="code" href="a00936.html#a263b55b62151dd52fb17b01132359505">Invoke</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="a00496.html#a06a0e887317a5c6db7a49e311c97ecf3">   24</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00496.html#a06a0e887317a5c6db7a49e311c97ecf3">DummyMethod</a>()</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Executing DummyMethod of &#39;DoOnce&#39;&quot;</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
-<div class="ttc" id="aa00409_html"><div class="ttname"><a href="a00409.html">Essentials.Examples.FlowControl</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00005">DoNExampleCoded.cs:6</a></div></div>
-<div class="ttc" id="aa00420_html"><div class="ttname"><a href="a00420.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00496_html"><div class="ttname"><a href="a00496.html">Essentials.Examples.FlowControl.DoOnceExample</a></div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00007">DoOnceExample.cs:8</a></div></div>
-<div class="ttc" id="aa00496_html_a06a0e887317a5c6db7a49e311c97ecf3"><div class="ttname"><a href="a00496.html#a06a0e887317a5c6db7a49e311c97ecf3">Essentials.Examples.FlowControl.DoOnceExample.DummyMethod</a></div><div class="ttdeci">void DummyMethod()</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00024">DoOnceExample.cs:24</a></div></div>
-<div class="ttc" id="aa00496_html_a3c24b8aafef126dff9a7fcd35e3e673c"><div class="ttname"><a href="a00496.html#a3c24b8aafef126dff9a7fcd35e3e673c">Essentials.Examples.FlowControl.DoOnceExample.Start</a></div><div class="ttdeci">void Start()</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00011">DoOnceExample.cs:11</a></div></div>
-<div class="ttc" id="aa00496_html_a4d446cbf01e003debfbd946da0dab1eb"><div class="ttname"><a href="a00496.html#a4d446cbf01e003debfbd946da0dab1eb">Essentials.Examples.FlowControl.DoOnceExample.Update</a></div><div class="ttdeci">void Update()</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00016">DoOnceExample.cs:16</a></div></div>
-<div class="ttc" id="aa00496_html_ad0a23b5929306420b33f70fc31f6294e"><div class="ttname"><a href="a00496.html#ad0a23b5929306420b33f70fc31f6294e">Essentials.Examples.FlowControl.DoOnceExample.doOnce</a></div><div class="ttdeci">DoOnce doOnce</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00009">DoOnceExample.cs:9</a></div></div>
-<div class="ttc" id="aa00936_html"><div class="ttname"><a href="a00936.html">UnityEngine.DoOnce</a></div><div class="ttdef"><b>Definition:</b> <a href="a00359_source.html#l00007">DoOnce.cs:8</a></div></div>
-<div class="ttc" id="aa00936_html_a263b55b62151dd52fb17b01132359505"><div class="ttname"><a href="a00936.html#a263b55b62151dd52fb17b01132359505">UnityEngine.DoOnce.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdef"><b>Definition:</b> <a href="a00359_source.html#l00024">DoOnce.cs:24</a></div></div>
+<a href="a00041.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00417.html">UnityEngine</a>;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00406.html">Essentials.Examples.FlowControl</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00492.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00492.html">DoOnceExample</a> : MonoBehaviour</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00492.html#ad0a23b5929306420b33f70fc31f6294e">    7</a></span>&#160;        [SerializeField] <span class="keyword">private</span> <a class="code" href="a00928.html">DoOnce</a> <a class="code" href="a00492.html#ad0a23b5929306420b33f70fc31f6294e">doOnce</a>;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00492.html#a3c24b8aafef126dff9a7fcd35e3e673c">    9</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00492.html#a3c24b8aafef126dff9a7fcd35e3e673c">Start</a>()</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Press &#39;O&#39; to invoke the DoOnce.&quot;</span>);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        }</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00492.html#a4d446cbf01e003debfbd946da0dab1eb">   14</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00492.html#a4d446cbf01e003debfbd946da0dab1eb">Update</a>()</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">if</span> (Input.GetKeyDown(KeyCode.O))</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                <a class="code" href="a00492.html#ad0a23b5929306420b33f70fc31f6294e">doOnce</a>.<a class="code" href="a00928.html#a263b55b62151dd52fb17b01132359505">Invoke</a>();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            }</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="a00492.html#a06a0e887317a5c6db7a49e311c97ecf3">   22</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00492.html#a06a0e887317a5c6db7a49e311c97ecf3">DummyMethod</a>()</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Executing DummyMethod of &#39;DoOnce&#39;&quot;</span>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
+<div class="ttc" id="aa00406_html"><div class="ttname"><a href="a00406.html">Essentials.Examples.FlowControl</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00003">DoNExampleCoded.cs:4</a></div></div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00492_html"><div class="ttname"><a href="a00492.html">Essentials.Examples.FlowControl.DoOnceExample</a></div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00005">DoOnceExample.cs:6</a></div></div>
+<div class="ttc" id="aa00492_html_a06a0e887317a5c6db7a49e311c97ecf3"><div class="ttname"><a href="a00492.html#a06a0e887317a5c6db7a49e311c97ecf3">Essentials.Examples.FlowControl.DoOnceExample.DummyMethod</a></div><div class="ttdeci">void DummyMethod()</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00022">DoOnceExample.cs:22</a></div></div>
+<div class="ttc" id="aa00492_html_a3c24b8aafef126dff9a7fcd35e3e673c"><div class="ttname"><a href="a00492.html#a3c24b8aafef126dff9a7fcd35e3e673c">Essentials.Examples.FlowControl.DoOnceExample.Start</a></div><div class="ttdeci">void Start()</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00009">DoOnceExample.cs:9</a></div></div>
+<div class="ttc" id="aa00492_html_a4d446cbf01e003debfbd946da0dab1eb"><div class="ttname"><a href="a00492.html#a4d446cbf01e003debfbd946da0dab1eb">Essentials.Examples.FlowControl.DoOnceExample.Update</a></div><div class="ttdeci">void Update()</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00014">DoOnceExample.cs:14</a></div></div>
+<div class="ttc" id="aa00492_html_ad0a23b5929306420b33f70fc31f6294e"><div class="ttname"><a href="a00492.html#ad0a23b5929306420b33f70fc31f6294e">Essentials.Examples.FlowControl.DoOnceExample.doOnce</a></div><div class="ttdeci">DoOnce doOnce</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00007">DoOnceExample.cs:7</a></div></div>
+<div class="ttc" id="aa00928_html"><div class="ttname"><a href="a00928.html">UnityEngine.DoOnce</a></div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00007">DoOnce.cs:8</a></div></div>
+<div class="ttc" id="aa00928_html_a263b55b62151dd52fb17b01132359505"><div class="ttname"><a href="a00928.html#a263b55b62151dd52fb17b01132359505">UnityEngine.DoOnce.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00024">DoOnce.cs:24</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

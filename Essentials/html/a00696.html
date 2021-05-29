@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: FullSerializer.Internal.fsSerializationCallbackReceiverProcessor Class Reference</title>
+<title>UnityEssentials: FullSerializer.fsJsonParser Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,54 +62,107 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00416.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00417.html">Internal</a></li><li class="navelem"><a class="el" href="a00696.html">fsSerializationCallbackReceiverProcessor</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00413.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00696.html">fsJsonParser</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00693.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">FullSerializer.Internal.fsSerializationCallbackReceiverProcessor Class Reference</div>  </div>
+<div class="title">FullSerializer.fsJsonParser Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A simple recursive descent parser for JSON.  
+ <a href="a00696.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for FullSerializer.Internal.fsSerializationCallbackReceiverProcessor:</div>
+Collaboration diagram for FullSerializer.fsJsonParser:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00694.png" border="0" usemap="#aFullSerializer_8Internal_8fsSerializationCallbackReceiverProcessor_coll__map" alt="Collaboration graph"/></div>
-<map name="aFullSerializer_8Internal_8fsSerializationCallbackReceiverProcessor_coll__map" id="aFullSerializer_8Internal_8fsSerializationCallbackReceiverProcessor_coll__map">
-<area shape="rect" title=" " alt="" coords="5,204,392,311"/>
-<area shape="rect" href="a00712.html" title=" " alt="" coords="57,5,341,156"/>
+<div class="center"><img src="a00694.png" border="0" usemap="#aFullSerializer_8fsJsonParser_coll__map" alt="Collaboration graph"/></div>
+<map name="aFullSerializer_8fsJsonParser_coll__map" id="aFullSerializer_8fsJsonParser_coll__map">
+<area shape="rect" title="A simple recursive descent parser for JSON." alt="" coords="5,5,181,449"/>
 </map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ae3e6db6e345aea48bb0cb8e63e8f4d6f"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#ae3e6db6e345aea48bb0cb8e63e8f4d6f">CanProcess</a> (Type type)</td></tr>
-<tr class="memdesc:ae3e6db6e345aea48bb0cb8e63e8f4d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the processor interested in objects of the given type?  <a href="a00696.html#ae3e6db6e345aea48bb0cb8e63e8f4d6f">More...</a><br /></td></tr>
-<tr class="separator:ae3e6db6e345aea48bb0cb8e63e8f4d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8013e3b964d24ee85c19fcd33997c104"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a8013e3b964d24ee85c19fcd33997c104">OnBeforeSerialize</a> (Type storageType, object instance)</td></tr>
-<tr class="memdesc:a8013e3b964d24ee85c19fcd33997c104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before serialization.  <a href="a00696.html#a8013e3b964d24ee85c19fcd33997c104">More...</a><br /></td></tr>
-<tr class="separator:a8013e3b964d24ee85c19fcd33997c104"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29733358c2bfa204e3a043fbc28d644d"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a29733358c2bfa204e3a043fbc28d644d">OnAfterDeserialize</a> (Type storageType, object instance)</td></tr>
-<tr class="memdesc:a29733358c2bfa204e3a043fbc28d644d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after deserialization.  <a href="a00696.html#a29733358c2bfa204e3a043fbc28d644d">More...</a><br /></td></tr>
-<tr class="separator:a29733358c2bfa204e3a043fbc28d644d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1260737d69e95e90ea697620ee24a9ad"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00712.html#a1260737d69e95e90ea697620ee24a9ad">OnAfterSerialize</a> (Type storageType, object instance, ref <a class="el" href="a00668.html">fsData</a> data)</td></tr>
-<tr class="memdesc:a1260737d69e95e90ea697620ee24a9ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after serialization.  <a href="a00712.html#a1260737d69e95e90ea697620ee24a9ad">More...</a><br /></td></tr>
-<tr class="separator:a1260737d69e95e90ea697620ee24a9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1d75938389278b6ceffdc17dd7e6424"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00712.html#af1d75938389278b6ceffdc17dd7e6424">OnBeforeDeserialize</a> (Type storageType, ref <a class="el" href="a00668.html">fsData</a> data)</td></tr>
-<tr class="memdesc:af1d75938389278b6ceffdc17dd7e6424"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before deserialization.  <a href="a00712.html#af1d75938389278b6ceffdc17dd7e6424">More...</a><br /></td></tr>
-<tr class="separator:af1d75938389278b6ceffdc17dd7e6424"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99e0c1a7d896539470bbe7f43565a5a3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00712.html#a99e0c1a7d896539470bbe7f43565a5a3">OnBeforeDeserializeAfterInstanceCreation</a> (Type storageType, object instance, ref <a class="el" href="a00668.html">fsData</a> data)</td></tr>
-<tr class="memdesc:a99e0c1a7d896539470bbe7f43565a5a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before deserialization has begun but <em>after</em> the object instance has been created. This will get invoked even if the user passed in an existing instance.  <a href="a00712.html#a99e0c1a7d896539470bbe7f43565a5a3">More...</a><br /></td></tr>
-<tr class="separator:a99e0c1a7d896539470bbe7f43565a5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ae72b670aad2d571b7f5a04390a80685b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#ae72b670aad2d571b7f5a04390a80685b">Parse</a> (string input, out <a class="el" href="a00664.html">fsData</a> data)</td></tr>
+<tr class="memdesc:ae72b670aad2d571b7f5a04390a80685b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the specified input. Returns a failure state if parsing failed.  <a href="a00696.html#ae72b670aad2d571b7f5a04390a80685b">More...</a><br /></td></tr>
+<tr class="separator:ae72b670aad2d571b7f5a04390a80685b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8becf3dc1005e717f5dc45e8044006a4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00664.html">fsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a8becf3dc1005e717f5dc45e8044006a4">Parse</a> (string input)</td></tr>
+<tr class="memdesc:a8becf3dc1005e717f5dc45e8044006a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method for Parse that does not allow the error information to be recovered.  <a href="a00696.html#a8becf3dc1005e717f5dc45e8044006a4">More...</a><br /></td></tr>
+<tr class="separator:a8becf3dc1005e717f5dc45e8044006a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a8c6a843742fc91b286ff7d51b0394fa0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0">MakeFailure</a> (string message)</td></tr>
+<tr class="separator:a8c6a843742fc91b286ff7d51b0394fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac685396570c45828efbd40b5cc355a8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#aac685396570c45828efbd40b5cc355a8">TryMoveNext</a> ()</td></tr>
+<tr class="separator:aac685396570c45828efbd40b5cc355a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49635ab2ce70fdbeb65f449423406162"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a49635ab2ce70fdbeb65f449423406162">HasValue</a> ()</td></tr>
+<tr class="separator:a49635ab2ce70fdbeb65f449423406162"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49567a4fa6123906dd59ebe411eafdd5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a49567a4fa6123906dd59ebe411eafdd5">HasValue</a> (int offset)</td></tr>
+<tr class="separator:a49567a4fa6123906dd59ebe411eafdd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d8846f1b894ba3e82b7957221f0fe2d"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d">Character</a> ()</td></tr>
+<tr class="separator:a2d8846f1b894ba3e82b7957221f0fe2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a268f4fc4b28be7ca9e4a4d3c32d585a6"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a268f4fc4b28be7ca9e4a4d3c32d585a6">Character</a> (int offset)</td></tr>
+<tr class="separator:a268f4fc4b28be7ca9e4a4d3c32d585a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99aa14a7acd2539b6992c538d7fc3588"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a99aa14a7acd2539b6992c538d7fc3588">SkipSpace</a> ()</td></tr>
+<tr class="memdesc:a99aa14a7acd2539b6992c538d7fc3588"><td class="mdescLeft">&#160;</td><td class="mdescRight">Skips input such that <a class="el" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d">Character()</a> will return a non-whitespace character  <a href="a00696.html#a99aa14a7acd2539b6992c538d7fc3588">More...</a><br /></td></tr>
+<tr class="separator:a99aa14a7acd2539b6992c538d7fc3588"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afde7833501b164970958f7c636bb1a38"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#afde7833501b164970958f7c636bb1a38">IsHex</a> (char c)</td></tr>
+<tr class="separator:afde7833501b164970958f7c636bb1a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b4ccdb0dd3f3176ea15c9dd8383387a"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a4b4ccdb0dd3f3176ea15c9dd8383387a">ParseSingleChar</a> (char c1, uint multipliyer)</td></tr>
+<tr class="separator:a4b4ccdb0dd3f3176ea15c9dd8383387a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a571408f6e39b1def02b8c761cf9ba3e5"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a571408f6e39b1def02b8c761cf9ba3e5">ParseUnicode</a> (char c1, char c2, char c3, char c4)</td></tr>
+<tr class="separator:a571408f6e39b1def02b8c761cf9ba3e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada5a7f2c697a2062f88fcfd8bc96a569"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569">TryUnescapeChar</a> (out char escaped)</td></tr>
+<tr class="separator:ada5a7f2c697a2062f88fcfd8bc96a569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a229608b38c1519bed75a25d5c831b99c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a229608b38c1519bed75a25d5c831b99c">TryParseExact</a> (string content)</td></tr>
+<tr class="separator:a229608b38c1519bed75a25d5c831b99c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d4698776df5efd96ae2973001902fe5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a9d4698776df5efd96ae2973001902fe5">TryParseTrue</a> (out <a class="el" href="a00664.html">fsData</a> data)</td></tr>
+<tr class="separator:a9d4698776df5efd96ae2973001902fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0f56b271c4c4d49ad7e16a1c8550d1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#ac0f56b271c4c4d49ad7e16a1c8550d1d">TryParseFalse</a> (out <a class="el" href="a00664.html">fsData</a> data)</td></tr>
+<tr class="separator:ac0f56b271c4c4d49ad7e16a1c8550d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c89325ec8aaa5f503fca806be221c3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a2c89325ec8aaa5f503fca806be221c3a">TryParseNull</a> (out <a class="el" href="a00664.html">fsData</a> data)</td></tr>
+<tr class="separator:a2c89325ec8aaa5f503fca806be221c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a092125894b43fa8044b393b2c2b9eef1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a092125894b43fa8044b393b2c2b9eef1">IsSeparator</a> (char c)</td></tr>
+<tr class="separator:a092125894b43fa8044b393b2c2b9eef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b361e7b2ede23b166a9867ea6923212"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a9b361e7b2ede23b166a9867ea6923212">TryParseNumber</a> (out <a class="el" href="a00664.html">fsData</a> data)</td></tr>
+<tr class="memdesc:a9b361e7b2ede23b166a9867ea6923212"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses numbers that follow the regular expression <a href="\d+|\d*\.\d*">-+</a>  <a href="a00696.html#a9b361e7b2ede23b166a9867ea6923212">More...</a><br /></td></tr>
+<tr class="separator:a9b361e7b2ede23b166a9867ea6923212"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44b766ba238be033bc4bb2c2c6e41d8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e">TryParseString</a> (out string str)</td></tr>
+<tr class="memdesc:a44b766ba238be033bc4bb2c2c6e41d8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string  <a href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e">More...</a><br /></td></tr>
+<tr class="separator:a44b766ba238be033bc4bb2c2c6e41d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23d2ffb3ed9c677ca555c0f84d22c25d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d">TryParseArray</a> (out <a class="el" href="a00664.html">fsData</a> arr)</td></tr>
+<tr class="memdesc:a23d2ffb3ed9c677ca555c0f84d22c25d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an array  <a href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d">More...</a><br /></td></tr>
+<tr class="separator:a23d2ffb3ed9c677ca555c0f84d22c25d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89bea29385ca891676ef0bbb7ee2e6d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9">TryParseObject</a> (out <a class="el" href="a00664.html">fsData</a> obj)</td></tr>
+<tr class="separator:a89bea29385ca891676ef0bbb7ee2e6d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a128257f4ab84419ddb7bdf5843132135"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00716.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a128257f4ab84419ddb7bdf5843132135">RunParse</a> (out <a class="el" href="a00664.html">fsData</a> data)</td></tr>
+<tr class="separator:a128257f4ab84419ddb7bdf5843132135"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20718ef0fbec2da7b63c2280a19eef56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a20718ef0fbec2da7b63c2280a19eef56">fsJsonParser</a> (string input)</td></tr>
+<tr class="separator:a20718ef0fbec2da7b63c2280a19eef56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5b345b97960eec2c594f88433e53a18f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a5b345b97960eec2c594f88433e53a18f">_start</a></td></tr>
+<tr class="separator:a5b345b97960eec2c594f88433e53a18f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac0a8f27573df51885a200ff563841b5"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#aac0a8f27573df51885a200ff563841b5">_input</a></td></tr>
+<tr class="separator:aac0a8f27573df51885a200ff563841b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52525099e02a84e0320fe1b41a29bce2"><td class="memItemLeft" align="right" valign="top">readonly StringBuilder&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00696.html#a52525099e02a84e0320fe1b41a29bce2">_cachedStringBuilder</a> = new StringBuilder(256)</td></tr>
+<tr class="separator:a52525099e02a84e0320fe1b41a29bce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00079">79</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae3e6db6e345aea48bb0cb8e63e8f4d6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3e6db6e345aea48bb0cb8e63e8f4d6f">&#9670;&nbsp;</a></span>CanProcess()</h2>
+<div class="textblock"><p>A simple recursive descent parser for JSON. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00012">12</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a20718ef0fbec2da7b63c2280a19eef56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20718ef0fbec2da7b63c2280a19eef56">&#9670;&nbsp;</a></span>fsJsonParser()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,37 +171,39 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override bool FullSerializer.Internal.fsSerializationCallbackReceiverProcessor.CanProcess </td>
+          <td class="memname">FullSerializer.fsJsonParser.fsJsonParser </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>input</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Is the processor interested in objects of the given type? </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">type</td><td>The given type.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the processor should be applied, false otherwise.</dd></dl>
-
-<p>Reimplemented from <a class="el" href="a00712.html#a5dc981f868302d15a59def67ed4e8a5d">FullSerializer.fsObjectProcessor</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00080">80</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00500">500</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a20718ef0fbec2da7b63c2280a19eef56_icgraph.png" border="0" usemap="#aa00696_a20718ef0fbec2da7b63c2280a19eef56_icgraph" alt=""/></div>
+<map name="aa00696_a20718ef0fbec2da7b63c2280a19eef56_icgraph" id="aa00696_a20718ef0fbec2da7b63c2280a19eef56_icgraph">
+<area shape="rect" title=" " alt="" coords="723,56,977,83"/>
+<area shape="rect" href="a00696.html#ae72b670aad2d571b7f5a04390a80685b" title="Parses the specified input. Returns a failure state if parsing failed." alt="" coords="460,56,675,83"/>
+<area shape="rect" href="a00964.html#a55974697011e47fb9bdfb5ebb7ea1a01" title="Deserialize the specified object from stream using the encoding." alt="" coords="33,5,384,32"/>
+<area shape="rect" href="a00696.html#a8becf3dc1005e717f5dc45e8044006a4" title="Helper method for Parse that does not allow the error information to be recovered." alt="" coords="101,56,316,83"/>
+<area shape="rect" href="a00632.html#a9b91744cef0f028bfc7a0dbab226f3f8" title="Serialize the actual object into the given data storage." alt="" coords="5,107,412,133"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="a29733358c2bfa204e3a043fbc28d644d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29733358c2bfa204e3a043fbc28d644d">&#9670;&nbsp;</a></span>OnAfterDeserialize()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2d8846f1b894ba3e82b7957221f0fe2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d8846f1b894ba3e82b7957221f0fe2d">&#9670;&nbsp;</a></span>Character() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,47 +212,44 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override void FullSerializer.Internal.fsSerializationCallbackReceiverProcessor.OnAfterDeserialize </td>
+          <td class="memname">char FullSerializer.fsJsonParser.Character </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>instance</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Called after deserialization. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
-    <tr><td class="paramname">instance</td><td>The type of the instance.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented from <a class="el" href="a00712.html#a147c5f6828b9cf92703152ee7e1611dd">FullSerializer.fsObjectProcessor</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00090">90</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00042">42</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a2d8846f1b894ba3e82b7957221f0fe2d_icgraph.png" border="0" usemap="#aa00696_a2d8846f1b894ba3e82b7957221f0fe2d_icgraph" alt=""/></div>
+<map name="aa00696_a2d8846f1b894ba3e82b7957221f0fe2d_icgraph" id="aa00696_a2d8846f1b894ba3e82b7957221f0fe2d_icgraph">
+<area shape="rect" title=" " alt="" coords="1255,195,1491,221"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,209,561,236"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,133,272,160"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,209,276,236"/>
+<area shape="rect" href="a00696.html#a99aa14a7acd2539b6992c538d7fc3588" title="Skips input such that Character() will return a non&#45;whitespace character" alt="" coords="621,64,864,91"/>
+<area shape="rect" href="a00696.html#a229608b38c1519bed75a25d5c831b99c" title=" " alt="" coords="932,223,1199,249"/>
+<area shape="rect" href="a00696.html#a9b361e7b2ede23b166a9867ea6923212" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="927,115,1204,141"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,368,876,395"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="924,299,1207,325"/>
+<area shape="rect" href="a00696.html#ac0f56b271c4c4d49ad7e16a1c8550d1d" title=" " alt="" coords="611,317,875,344"/>
+<area shape="rect" href="a00696.html#a2c89325ec8aaa5f503fca806be221c3a" title=" " alt="" coords="615,216,870,243"/>
+<area shape="rect" href="a00696.html#a9d4698776df5efd96ae2973001902fe5" title=" " alt="" coords="614,267,871,293"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="a1260737d69e95e90ea697620ee24a9ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1260737d69e95e90ea697620ee24a9ad">&#9670;&nbsp;</a></span>OnAfterSerialize()</h2>
+<a id="a268f4fc4b28be7ca9e4a4d3c32d585a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a268f4fc4b28be7ca9e4a4d3c32d585a6">&#9670;&nbsp;</a></span>Character() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,21 +258,291 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void FullSerializer.fsObjectProcessor.OnAfterSerialize </td>
+          <td class="memname">char FullSerializer.fsJsonParser.Character </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em>, </td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00046">46</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+
+</div>
+</div>
+<a id="a49635ab2ce70fdbeb65f449423406162"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49635ab2ce70fdbeb65f449423406162">&#9670;&nbsp;</a></span>HasValue() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsJsonParser.HasValue </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00034">34</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a49635ab2ce70fdbeb65f449423406162_icgraph.png" border="0" usemap="#aa00696_a49635ab2ce70fdbeb65f449423406162_icgraph" alt=""/></div>
+<map name="aa00696_a49635ab2ce70fdbeb65f449423406162_icgraph" id="aa00696_a49635ab2ce70fdbeb65f449423406162_icgraph">
+<area shape="rect" title=" " alt="" coords="1255,160,1491,187"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,160,561,187"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,84,272,111"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,160,276,187"/>
+<area shape="rect" href="a00696.html#a99aa14a7acd2539b6992c538d7fc3588" title="Skips input such that Character() will return a non&#45;whitespace character" alt="" coords="621,59,864,86"/>
+<area shape="rect" href="a00696.html#a9b361e7b2ede23b166a9867ea6923212" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="927,110,1204,136"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,211,876,238"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="924,211,1207,238"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a49567a4fa6123906dd59ebe411eafdd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49567a4fa6123906dd59ebe411eafdd5">&#9670;&nbsp;</a></span>HasValue() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsJsonParser.HasValue </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00038">38</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+
+</div>
+</div>
+<a id="afde7833501b164970958f7c636bb1a38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afde7833501b164970958f7c636bb1a38">&#9670;&nbsp;</a></span>IsHex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsJsonParser.IsHex </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00095">95</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_afde7833501b164970958f7c636bb1a38_icgraph.png" border="0" usemap="#aa00696_afde7833501b164970958f7c636bb1a38_icgraph" alt=""/></div>
+<map name="aa00696_afde7833501b164970958f7c636bb1a38_icgraph" id="aa00696_afde7833501b164970958f7c636bb1a38_icgraph">
+<area shape="rect" title=" " alt="" coords="1255,31,1468,57"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="924,31,1207,57"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,31,876,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,5,561,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a092125894b43fa8044b393b2c2b9eef1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a092125894b43fa8044b393b2c2b9eef1">&#9670;&nbsp;</a></span>IsSeparator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsJsonParser.IsSeparator </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00224">224</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a092125894b43fa8044b393b2c2b9eef1_icgraph.png" border="0" usemap="#aa00696_a092125894b43fa8044b393b2c2b9eef1_icgraph" alt=""/></div>
+<map name="aa00696_a092125894b43fa8044b393b2c2b9eef1_icgraph" id="aa00696_a092125894b43fa8044b393b2c2b9eef1_icgraph">
+<area shape="rect" title=" " alt="" coords="935,31,1181,57"/>
+<area shape="rect" href="a00696.html#a9b361e7b2ede23b166a9867ea6923212" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="609,31,887,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,31,561,57"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8c6a843742fc91b286ff7d51b0394fa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c6a843742fc91b286ff7d51b0394fa0">&#9670;&nbsp;</a></span>MakeFailure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.MakeFailure </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00016">16</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a8c6a843742fc91b286ff7d51b0394fa0_cgraph.png" border="0" usemap="#aa00696_a8c6a843742fc91b286ff7d51b0394fa0_cgraph" alt=""/></div>
+<map name="aa00696_a8c6a843742fc91b286ff7d51b0394fa0_cgraph" id="aa00696_a8c6a843742fc91b286ff7d51b0394fa0_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,256,32"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="304,5,477,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a8c6a843742fc91b286ff7d51b0394fa0_icgraph.png" border="0" usemap="#aa00696_a8c6a843742fc91b286ff7d51b0394fa0_icgraph" alt=""/></div>
+<map name="aa00696_a8c6a843742fc91b286ff7d51b0394fa0_icgraph" id="aa00696_a8c6a843742fc91b286ff7d51b0394fa0_icgraph">
+<area shape="rect" title=" " alt="" coords="1255,234,1505,260"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,183,561,210"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,183,272,210"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,259,276,286"/>
+<area shape="rect" href="a00696.html#a229608b38c1519bed75a25d5c831b99c" title=" " alt="" coords="932,107,1199,134"/>
+<area shape="rect" href="a00696.html#a9b361e7b2ede23b166a9867ea6923212" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="927,234,1204,260"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,284,876,311"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="924,284,1207,311"/>
+<area shape="rect" href="a00696.html#ac0f56b271c4c4d49ad7e16a1c8550d1d" title=" " alt="" coords="611,82,875,108"/>
+<area shape="rect" href="a00696.html#a2c89325ec8aaa5f503fca806be221c3a" title=" " alt="" coords="615,132,870,159"/>
+<area shape="rect" href="a00696.html#a9d4698776df5efd96ae2973001902fe5" title=" " alt="" coords="614,31,871,58"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8becf3dc1005e717f5dc45e8044006a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8becf3dc1005e717f5dc45e8044006a4">&#9670;&nbsp;</a></span>Parse() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="a00664.html">fsData</a> FullSerializer.fsJsonParser.Parse </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>input</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper method for Parse that does not allow the error information to be recovered. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00494">494</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a8becf3dc1005e717f5dc45e8044006a4_cgraph.png" border="0" usemap="#aa00696_a8becf3dc1005e717f5dc45e8044006a4_cgraph" alt=""/></div>
+<map name="aa00696_a8becf3dc1005e717f5dc45e8044006a4_cgraph" id="aa00696_a8becf3dc1005e717f5dc45e8044006a4_cgraph">
+<area shape="rect" title="Helper method for Parse that does not allow the error information to be recovered." alt="" coords="5,31,220,57"/>
+<area shape="rect" href="a00716.html#a2f5ddbcfe4d51a087e1870df76cc2235" title="A simply utility method that will assert that this result is successful. If it is not,..." alt="" coords="268,5,509,32"/>
+<area shape="rect" href="a00696.html#ae72b670aad2d571b7f5a04390a80685b" title="Parses the specified input. Returns a failure state if parsing failed." alt="" coords="281,56,496,83"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="598,31,771,57"/>
+<area shape="rect" href="a00696.html#a20718ef0fbec2da7b63c2280a19eef56" title=" " alt="" coords="557,81,812,108"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae72b670aad2d571b7f5a04390a80685b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae72b670aad2d571b7f5a04390a80685b">&#9670;&nbsp;</a></span>Parse() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.Parse </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>instance</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="a00668.html">fsData</a>&#160;</td>
+          <td class="paramtype">out <a class="el" href="a00664.html">fsData</a>&#160;</td>
           <td class="paramname"><em>data</em>&#160;</td>
         </tr>
         <tr>
@@ -231,29 +553,48 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Called after serialization. </p>
+<p>Parses the specified input. Returns a failure state if parsing failed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
-    <tr><td class="paramname">instance</td><td>The type of the instance.</td></tr>
-    <tr><td class="paramname">data</td><td>The data that was serialized.</td></tr>
+    <tr><td class="paramname">input</td><td>The input to parse.</td></tr>
+    <tr><td class="paramname">data</td><td>The parsed data. This is undefined if parsing fails.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The parsed input.</dd></dl>
 
-<p>Reimplemented in <a class="el" href="a00692.html#aec377284c9f2083c84dfdc75c70e628e">FullSerializer.Internal.fsSerializationCallbackProcessor</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00185_source.html#l00038">38</a> of file <a class="el" href="a00185_source.html">fsObjectProcessor.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00480">480</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_ae72b670aad2d571b7f5a04390a80685b_cgraph.png" border="0" usemap="#aa00696_ae72b670aad2d571b7f5a04390a80685b_cgraph" alt=""/></div>
+<map name="aa00696_ae72b670aad2d571b7f5a04390a80685b_cgraph" id="aa00696_ae72b670aad2d571b7f5a04390a80685b_cgraph">
+<area shape="rect" title="Parses the specified input. Returns a failure state if parsing failed." alt="" coords="5,31,220,57"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="309,5,482,32"/>
+<area shape="rect" href="a00696.html#a20718ef0fbec2da7b63c2280a19eef56" title=" " alt="" coords="268,56,523,83"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_ae72b670aad2d571b7f5a04390a80685b_icgraph.png" border="0" usemap="#aa00696_ae72b670aad2d571b7f5a04390a80685b_icgraph" alt=""/></div>
+<map name="aa00696_ae72b670aad2d571b7f5a04390a80685b_icgraph" id="aa00696_ae72b670aad2d571b7f5a04390a80685b_icgraph">
+<area shape="rect" title="Parses the specified input. Returns a failure state if parsing failed." alt="" coords="460,56,675,83"/>
+<area shape="rect" href="a00964.html#a55974697011e47fb9bdfb5ebb7ea1a01" title="Deserialize the specified object from stream using the encoding." alt="" coords="33,5,384,32"/>
+<area shape="rect" href="a00696.html#a8becf3dc1005e717f5dc45e8044006a4" title="Helper method for Parse that does not allow the error information to be recovered." alt="" coords="101,56,316,83"/>
+<area shape="rect" href="a00632.html#a9b91744cef0f028bfc7a0dbab226f3f8" title="Serialize the actual object into the given data storage." alt="" coords="5,107,412,133"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="af1d75938389278b6ceffdc17dd7e6424"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1d75938389278b6ceffdc17dd7e6424">&#9670;&nbsp;</a></span>OnBeforeDeserialize()</h2>
+<a id="a4b4ccdb0dd3f3176ea15c9dd8383387a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b4ccdb0dd3f3176ea15c9dd8383387a">&#9670;&nbsp;</a></span>ParseSingleChar()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,16 +603,16 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void FullSerializer.fsObjectProcessor.OnBeforeDeserialize </td>
+          <td class="memname">uint FullSerializer.fsJsonParser.ParseSingleChar </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em>, </td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref <a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
+          <td class="paramtype">uint&#160;</td>
+          <td class="paramname"><em>multipliyer</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -281,26 +622,31 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Called before deserialization. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
-    <tr><td class="paramname">data</td><td>The data that will be used for deserialization.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00185_source.html#l00045">45</a> of file <a class="el" href="a00185_source.html">fsObjectProcessor.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00101">101</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a4b4ccdb0dd3f3176ea15c9dd8383387a_icgraph.png" border="0" usemap="#aa00696_a4b4ccdb0dd3f3176ea15c9dd8383387a_icgraph" alt=""/></div>
+<map name="aa00696_a4b4ccdb0dd3f3176ea15c9dd8383387a_icgraph" id="aa00696_a4b4ccdb0dd3f3176ea15c9dd8383387a_icgraph">
+<area shape="rect" title=" " alt="" coords="1564,31,1841,57"/>
+<area shape="rect" href="a00696.html#a571408f6e39b1def02b8c761cf9ba3e5" title=" " alt="" coords="1255,31,1516,57"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="924,31,1207,57"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,31,876,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,5,561,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="a99e0c1a7d896539470bbe7f43565a5a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99e0c1a7d896539470bbe7f43565a5a3">&#9670;&nbsp;</a></span>OnBeforeDeserializeAfterInstanceCreation()</h2>
+<a id="a571408f6e39b1def02b8c761cf9ba3e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a571408f6e39b1def02b8c761cf9ba3e5">&#9670;&nbsp;</a></span>ParseUnicode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,22 +655,28 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void FullSerializer.fsObjectProcessor.OnBeforeDeserializeAfterInstanceCreation </td>
+          <td class="memname">uint FullSerializer.fsJsonParser.ParseUnicode </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em>, </td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>instance</em>, </td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c2</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref <a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c4</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -334,30 +686,39 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Called before deserialization has begun but <em>after</em> the object instance has been created. This will get invoked even if the user passed in an existing instance. </p>
-<p><b>IMPORTANT</b>: The actual instance that gets passed here is <em>not</em> guaranteed to be an a subtype of storageType, since the value for instance is whatever the active converter returned for CreateInstance() - ie, some converters will return dummy types in CreateInstance() if instance creation cannot be separated from deserialization (ie, KeyValuePair). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
-    <tr><td class="paramname">instance</td><td>The created object instance. No deserialization has been applied to it.</td></tr>
-    <tr><td class="paramname">data</td><td>The data that will be used for deserialization.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented in <a class="el" href="a00692.html#ae6668c0ebad8c39d4d0e145efa7fb332">FullSerializer.Internal.fsSerializationCallbackProcessor</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00185_source.html#l00059">59</a> of file <a class="el" href="a00185_source.html">fsObjectProcessor.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00112">112</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a571408f6e39b1def02b8c761cf9ba3e5_cgraph.png" border="0" usemap="#aa00696_a571408f6e39b1def02b8c761cf9ba3e5_cgraph" alt=""/></div>
+<map name="aa00696_a571408f6e39b1def02b8c761cf9ba3e5_cgraph" id="aa00696_a571408f6e39b1def02b8c761cf9ba3e5_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,267,32"/>
+<area shape="rect" href="a00696.html#a4b4ccdb0dd3f3176ea15c9dd8383387a" title=" " alt="" coords="315,5,592,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a571408f6e39b1def02b8c761cf9ba3e5_icgraph.png" border="0" usemap="#aa00696_a571408f6e39b1def02b8c761cf9ba3e5_icgraph" alt=""/></div>
+<map name="aa00696_a571408f6e39b1def02b8c761cf9ba3e5_icgraph" id="aa00696_a571408f6e39b1def02b8c761cf9ba3e5_icgraph">
+<area shape="rect" title=" " alt="" coords="1255,31,1516,57"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="924,31,1207,57"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,31,876,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,5,561,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="a8013e3b964d24ee85c19fcd33997c104"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8013e3b964d24ee85c19fcd33997c104">&#9670;&nbsp;</a></span>OnBeforeSerialize()</h2>
+<a id="a128257f4ab84419ddb7bdf5843132135"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a128257f4ab84419ddb7bdf5843132135">&#9670;&nbsp;</a></span>RunParse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,47 +727,744 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override void FullSerializer.Internal.fsSerializationCallbackReceiverProcessor.OnBeforeSerialize </td>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.RunParse </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">out <a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>instance</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Called before serialization. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
-    <tr><td class="paramname">instance</td><td>The type of the instance.</td></tr>
-  </table>
-  </dd>
-</dl>
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00429">429</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a128257f4ab84419ddb7bdf5843132135_cgraph.png" border="0" usemap="#aa00696_a128257f4ab84419ddb7bdf5843132135_cgraph" alt=""/></div>
+<map name="aa00696_a128257f4ab84419ddb7bdf5843132135_cgraph" id="aa00696_a128257f4ab84419ddb7bdf5843132135_cgraph">
+<area shape="rect" title=" " alt="" coords="5,369,243,396"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="1267,256,1503,283"/>
+<area shape="rect" href="a00696.html#a49635ab2ce70fdbeb65f449423406162" title=" " alt="" coords="1267,661,1503,688"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="1260,864,1511,891"/>
+<area shape="rect" href="a00696.html#a99aa14a7acd2539b6992c538d7fc3588" title="Skips input such that Character() will return a non&#45;whitespace character" alt="" coords="944,307,1187,333"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="611,357,874,384"/>
+<area shape="rect" href="a00696.html#ac0f56b271c4c4d49ad7e16a1c8550d1d" title=" " alt="" coords="294,256,558,283"/>
+<area shape="rect" href="a00696.html#a2c89325ec8aaa5f503fca806be221c3a" title=" " alt="" coords="299,155,553,181"/>
+<area shape="rect" href="a00696.html#a9b361e7b2ede23b166a9867ea6923212" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="927,560,1204,587"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="291,560,561,587"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,712,876,739"/>
+<area shape="rect" href="a00696.html#a9d4698776df5efd96ae2973001902fe5" title=" " alt="" coords="297,205,555,232"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="1616,864,1789,891"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="1258,459,1513,485"/>
+<area shape="rect" href="a00696.html#a229608b38c1519bed75a25d5c831b99c" title=" " alt="" coords="609,155,876,181"/>
+<area shape="rect" href="a00696.html#a092125894b43fa8044b393b2c2b9eef1" title=" " alt="" coords="1262,560,1509,587"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="924,763,1207,789"/>
+<area shape="rect" href="a00696.html#afde7833501b164970958f7c636bb1a38" title=" " alt="" coords="1279,788,1492,815"/>
+<area shape="rect" href="a00696.html#a571408f6e39b1def02b8c761cf9ba3e5" title=" " alt="" coords="1255,737,1516,764"/>
+<area shape="rect" href="a00696.html#a4b4ccdb0dd3f3176ea15c9dd8383387a" title=" " alt="" coords="1564,737,1841,764"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a128257f4ab84419ddb7bdf5843132135_icgraph.png" border="0" usemap="#aa00696_a128257f4ab84419ddb7bdf5843132135_icgraph" alt=""/></div>
+<map name="aa00696_a128257f4ab84419ddb7bdf5843132135_icgraph" id="aa00696_a128257f4ab84419ddb7bdf5843132135_icgraph">
+<area shape="rect" title=" " alt="" coords="324,31,561,57"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+</map>
+</div>
 
-<p>Reimplemented from <a class="el" href="a00712.html#a48818569c78a826069594fb5ce6e32f2">FullSerializer.fsObjectProcessor</a>.</p>
+</div>
+</div>
+<a id="a99aa14a7acd2539b6992c538d7fc3588"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99aa14a7acd2539b6992c538d7fc3588">&#9670;&nbsp;</a></span>SkipSpace()</h2>
 
-<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00084">84</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FullSerializer.fsJsonParser.SkipSpace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Skips input such that <a class="el" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d">Character()</a> will return a non-whitespace character </p>
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00053">53</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a99aa14a7acd2539b6992c538d7fc3588_cgraph.png" border="0" usemap="#aa00696_a99aa14a7acd2539b6992c538d7fc3588_cgraph" alt=""/></div>
+<map name="aa00696_a99aa14a7acd2539b6992c538d7fc3588_cgraph" id="aa00696_a99aa14a7acd2539b6992c538d7fc3588_cgraph">
+<area shape="rect" title="Skips input such that Character() will return a non&#45;whitespace character" alt="" coords="5,56,248,83"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="305,5,541,32"/>
+<area shape="rect" href="a00696.html#a49635ab2ce70fdbeb65f449423406162" title=" " alt="" coords="305,56,541,83"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="296,107,551,133"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a99aa14a7acd2539b6992c538d7fc3588_icgraph.png" border="0" usemap="#aa00696_a99aa14a7acd2539b6992c538d7fc3588_icgraph" alt=""/></div>
+<map name="aa00696_a99aa14a7acd2539b6992c538d7fc3588_icgraph" id="aa00696_a99aa14a7acd2539b6992c538d7fc3588_icgraph">
+<area shape="rect" title="Skips input such that Character() will return a non&#45;whitespace character" alt="" coords="609,31,852,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,31,561,57"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aac685396570c45828efbd40b5cc355a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac685396570c45828efbd40b5cc355a8">&#9670;&nbsp;</a></span>TryMoveNext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsJsonParser.TryMoveNext </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00025">25</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_aac685396570c45828efbd40b5cc355a8_icgraph.png" border="0" usemap="#aa00696_aac685396570c45828efbd40b5cc355a8_icgraph" alt=""/></div>
+<map name="aa00696_aac685396570c45828efbd40b5cc355a8_icgraph" id="aa00696_aac685396570c45828efbd40b5cc355a8_icgraph">
+<area shape="rect" title=" " alt="" coords="1255,212,1509,238"/>
+<area shape="rect" href="a00696.html#a99aa14a7acd2539b6992c538d7fc3588" title="Skips input such that Character() will return a non&#45;whitespace character" alt="" coords="621,60,864,86"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,85,272,112"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,161,276,188"/>
+<area shape="rect" href="a00696.html#a229608b38c1519bed75a25d5c831b99c" title=" " alt="" coords="932,212,1199,238"/>
+<area shape="rect" href="a00696.html#a9b361e7b2ede23b166a9867ea6923212" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="927,136,1204,162"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,313,876,340"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="924,313,1207,340"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,161,561,188"/>
+<area shape="rect" href="a00696.html#ac0f56b271c4c4d49ad7e16a1c8550d1d" title=" " alt="" coords="611,161,875,188"/>
+<area shape="rect" href="a00696.html#a2c89325ec8aaa5f503fca806be221c3a" title=" " alt="" coords="615,212,870,238"/>
+<area shape="rect" href="a00696.html#a9d4698776df5efd96ae2973001902fe5" title=" " alt="" coords="614,262,871,289"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a23d2ffb3ed9c677ca555c0f84d22c25d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23d2ffb3ed9c677ca555c0f84d22c25d">&#9670;&nbsp;</a></span>TryParseArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.TryParseArray </td>
+          <td>(</td>
+          <td class="paramtype">out <a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>arr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses an array </p>
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00321">321</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a23d2ffb3ed9c677ca555c0f84d22c25d_cgraph.png" border="0" usemap="#aa00696_a23d2ffb3ed9c677ca555c0f84d22c25d_cgraph" alt=""/></div>
+<map name="aa00696_a23d2ffb3ed9c677ca555c0f84d22c25d_cgraph" id="aa00696_a23d2ffb3ed9c677ca555c0f84d22c25d_cgraph">
+<area shape="rect" title="Parses an array" alt="" coords="5,499,268,525"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="1578,625,1814,652"/>
+<area shape="rect" href="a00696.html#a49635ab2ce70fdbeb65f449423406162" title=" " alt="" coords="1578,752,1814,779"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="1571,144,1821,171"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="316,499,553,525"/>
+<area shape="rect" href="a00696.html#a99aa14a7acd2539b6992c538d7fc3588" title="Skips input such that Character() will return a non&#45;whitespace character" alt="" coords="1255,752,1497,779"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="1569,397,1823,424"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="1927,144,2100,171"/>
+<area shape="rect" href="a00696.html#ac0f56b271c4c4d49ad7e16a1c8550d1d" title=" " alt="" coords="605,357,869,384"/>
+<area shape="rect" href="a00696.html#a2c89325ec8aaa5f503fca806be221c3a" title=" " alt="" coords="609,420,864,447"/>
+<area shape="rect" href="a00696.html#a9b361e7b2ede23b166a9867ea6923212" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="1237,296,1515,323"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="601,524,872,551"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="920,499,1187,525"/>
+<area shape="rect" href="a00696.html#a9d4698776df5efd96ae2973001902fe5" title=" " alt="" coords="608,300,865,327"/>
+<area shape="rect" href="a00696.html#a229608b38c1519bed75a25d5c831b99c" title=" " alt="" coords="920,297,1187,324"/>
+<area shape="rect" href="a00696.html#a092125894b43fa8044b393b2c2b9eef1" title=" " alt="" coords="1573,296,1819,323"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="1235,499,1517,525"/>
+<area shape="rect" href="a00696.html#afde7833501b164970958f7c636bb1a38" title=" " alt="" coords="1589,473,1803,500"/>
+<area shape="rect" href="a00696.html#a571408f6e39b1def02b8c761cf9ba3e5" title=" " alt="" coords="1565,524,1827,551"/>
+<area shape="rect" href="a00696.html#a4b4ccdb0dd3f3176ea15c9dd8383387a" title=" " alt="" coords="1875,524,2152,551"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a23d2ffb3ed9c677ca555c0f84d22c25d_icgraph.png" border="0" usemap="#aa00696_a23d2ffb3ed9c677ca555c0f84d22c25d_icgraph" alt=""/></div>
+<map name="aa00696_a23d2ffb3ed9c677ca555c0f84d22c25d_icgraph" id="aa00696_a23d2ffb3ed9c677ca555c0f84d22c25d_icgraph">
+<area shape="rect" title="Parses an array" alt="" coords="609,5,872,32"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,5,561,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,5,276,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a229608b38c1519bed75a25d5c831b99c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a229608b38c1519bed75a25d5c831b99c">&#9670;&nbsp;</a></span>TryParseExact()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.TryParseExact </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>content</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00173">173</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a229608b38c1519bed75a25d5c831b99c_cgraph.png" border="0" usemap="#aa00696_a229608b38c1519bed75a25d5c831b99c_cgraph" alt=""/></div>
+<map name="aa00696_a229608b38c1519bed75a25d5c831b99c_cgraph" id="aa00696_a229608b38c1519bed75a25d5c831b99c_cgraph">
+<area shape="rect" title=" " alt="" coords="5,56,272,83"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="329,5,565,32"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="322,56,573,83"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="320,107,575,133"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="623,56,796,83"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a229608b38c1519bed75a25d5c831b99c_icgraph.png" border="0" usemap="#aa00696_a229608b38c1519bed75a25d5c831b99c_icgraph" alt=""/></div>
+<map name="aa00696_a229608b38c1519bed75a25d5c831b99c_icgraph" id="aa00696_a229608b38c1519bed75a25d5c831b99c_icgraph">
+<area shape="rect" title=" " alt="" coords="921,56,1188,83"/>
+<area shape="rect" href="a00696.html#ac0f56b271c4c4d49ad7e16a1c8550d1d" title=" " alt="" coords="609,5,873,32"/>
+<area shape="rect" href="a00696.html#a2c89325ec8aaa5f503fca806be221c3a" title=" " alt="" coords="614,56,869,83"/>
+<area shape="rect" href="a00696.html#a9d4698776df5efd96ae2973001902fe5" title=" " alt="" coords="613,107,870,133"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,56,561,83"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,31,272,57"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,81,276,108"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ac0f56b271c4c4d49ad7e16a1c8550d1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0f56b271c4c4d49ad7e16a1c8550d1d">&#9670;&nbsp;</a></span>TryParseFalse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.TryParseFalse </td>
+          <td>(</td>
+          <td class="paramtype">out <a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00199">199</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_ac0f56b271c4c4d49ad7e16a1c8550d1d_cgraph.png" border="0" usemap="#aa00696_ac0f56b271c4c4d49ad7e16a1c8550d1d_cgraph" alt=""/></div>
+<map name="aa00696_ac0f56b271c4c4d49ad7e16a1c8550d1d_cgraph" id="aa00696_ac0f56b271c4c4d49ad7e16a1c8550d1d_cgraph">
+<area shape="rect" title=" " alt="" coords="5,56,269,83"/>
+<area shape="rect" href="a00696.html#a229608b38c1519bed75a25d5c831b99c" title=" " alt="" coords="317,56,584,83"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="641,5,877,32"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="634,56,885,83"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="632,107,887,133"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="935,56,1108,83"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_ac0f56b271c4c4d49ad7e16a1c8550d1d_icgraph.png" border="0" usemap="#aa00696_ac0f56b271c4c4d49ad7e16a1c8550d1d_icgraph" alt=""/></div>
+<map name="aa00696_ac0f56b271c4c4d49ad7e16a1c8550d1d_icgraph" id="aa00696_ac0f56b271c4c4d49ad7e16a1c8550d1d_icgraph">
+<area shape="rect" title=" " alt="" coords="609,31,873,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,31,561,57"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a2c89325ec8aaa5f503fca806be221c3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c89325ec8aaa5f503fca806be221c3a">&#9670;&nbsp;</a></span>TryParseNull()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.TryParseNull </td>
+          <td>(</td>
+          <td class="paramtype">out <a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00211">211</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a2c89325ec8aaa5f503fca806be221c3a_cgraph.png" border="0" usemap="#aa00696_a2c89325ec8aaa5f503fca806be221c3a_cgraph" alt=""/></div>
+<map name="aa00696_a2c89325ec8aaa5f503fca806be221c3a_cgraph" id="aa00696_a2c89325ec8aaa5f503fca806be221c3a_cgraph">
+<area shape="rect" title=" " alt="" coords="5,56,260,83"/>
+<area shape="rect" href="a00696.html#a229608b38c1519bed75a25d5c831b99c" title=" " alt="" coords="308,56,575,83"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="632,5,868,32"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="625,56,875,83"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="623,107,877,133"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="925,56,1099,83"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a2c89325ec8aaa5f503fca806be221c3a_icgraph.png" border="0" usemap="#aa00696_a2c89325ec8aaa5f503fca806be221c3a_icgraph" alt=""/></div>
+<map name="aa00696_a2c89325ec8aaa5f503fca806be221c3a_icgraph" id="aa00696_a2c89325ec8aaa5f503fca806be221c3a_icgraph">
+<area shape="rect" title=" " alt="" coords="609,31,864,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,31,561,57"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a9b361e7b2ede23b166a9867ea6923212"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b361e7b2ede23b166a9867ea6923212">&#9670;&nbsp;</a></span>TryParseNumber()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.TryParseNumber </td>
+          <td>(</td>
+          <td class="paramtype">out <a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses numbers that follow the regular expression <a href="\d+|\d*\.\d*">-+</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00231">231</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a9b361e7b2ede23b166a9867ea6923212_cgraph.png" border="0" usemap="#aa00696_a9b361e7b2ede23b166a9867ea6923212_cgraph" alt=""/></div>
+<map name="aa00696_a9b361e7b2ede23b166a9867ea6923212_cgraph" id="aa00696_a9b361e7b2ede23b166a9867ea6923212_cgraph">
+<area shape="rect" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="5,107,283,133"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="340,5,576,32"/>
+<area shape="rect" href="a00696.html#a49635ab2ce70fdbeb65f449423406162" title=" " alt="" coords="340,56,576,83"/>
+<area shape="rect" href="a00696.html#a092125894b43fa8044b393b2c2b9eef1" title=" " alt="" coords="335,107,581,133"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="333,157,583,184"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="331,208,585,235"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="633,157,807,184"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a9b361e7b2ede23b166a9867ea6923212_icgraph.png" border="0" usemap="#aa00696_a9b361e7b2ede23b166a9867ea6923212_icgraph" alt=""/></div>
+<map name="aa00696_a9b361e7b2ede23b166a9867ea6923212_icgraph" id="aa00696_a9b361e7b2ede23b166a9867ea6923212_icgraph">
+<area shape="rect" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="609,31,887,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,31,561,57"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a89bea29385ca891676ef0bbb7ee2e6d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89bea29385ca891676ef0bbb7ee2e6d9">&#9670;&nbsp;</a></span>TryParseObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.TryParseObject </td>
+          <td>(</td>
+          <td class="paramtype">out <a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00365">365</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a89bea29385ca891676ef0bbb7ee2e6d9_cgraph.png" border="0" usemap="#aa00696_a89bea29385ca891676ef0bbb7ee2e6d9_cgraph" alt=""/></div>
+<map name="aa00696_a89bea29385ca891676ef0bbb7ee2e6d9_cgraph" id="aa00696_a89bea29385ca891676ef0bbb7ee2e6d9_cgraph">
+<area shape="rect" title=" " alt="" coords="5,446,276,472"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="1267,319,1503,346"/>
+<area shape="rect" href="a00696.html#a49635ab2ce70fdbeb65f449423406162" title=" " alt="" coords="1267,699,1503,726"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="1260,91,1511,118"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,395,561,422"/>
+<area shape="rect" href="a00696.html#a99aa14a7acd2539b6992c538d7fc3588" title="Skips input such that Character() will return a non&#45;whitespace character" alt="" coords="944,496,1187,523"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="1258,496,1513,523"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,547,876,574"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="1616,91,1789,118"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="611,395,874,422"/>
+<area shape="rect" href="a00696.html#ac0f56b271c4c4d49ad7e16a1c8550d1d" title=" " alt="" coords="611,243,875,270"/>
+<area shape="rect" href="a00696.html#a2c89325ec8aaa5f503fca806be221c3a" title=" " alt="" coords="615,142,870,168"/>
+<area shape="rect" href="a00696.html#a9b361e7b2ede23b166a9867ea6923212" title="Parses numbers that follow the regular expression &#45;+" alt="" coords="927,395,1204,422"/>
+<area shape="rect" href="a00696.html#a9d4698776df5efd96ae2973001902fe5" title=" " alt="" coords="614,192,871,219"/>
+<area shape="rect" href="a00696.html#a229608b38c1519bed75a25d5c831b99c" title=" " alt="" coords="932,192,1199,219"/>
+<area shape="rect" href="a00696.html#a092125894b43fa8044b393b2c2b9eef1" title=" " alt="" coords="1262,395,1509,422"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="924,648,1207,675"/>
+<area shape="rect" href="a00696.html#afde7833501b164970958f7c636bb1a38" title=" " alt="" coords="1279,598,1492,624"/>
+<area shape="rect" href="a00696.html#a571408f6e39b1def02b8c761cf9ba3e5" title=" " alt="" coords="1255,648,1516,675"/>
+<area shape="rect" href="a00696.html#a4b4ccdb0dd3f3176ea15c9dd8383387a" title=" " alt="" coords="1564,648,1841,675"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a89bea29385ca891676ef0bbb7ee2e6d9_icgraph.png" border="0" usemap="#aa00696_a89bea29385ca891676ef0bbb7ee2e6d9_icgraph" alt=""/></div>
+<map name="aa00696_a89bea29385ca891676ef0bbb7ee2e6d9_icgraph" id="aa00696_a89bea29385ca891676ef0bbb7ee2e6d9_icgraph">
+<area shape="rect" title=" " alt="" coords="601,5,872,32"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="316,5,553,32"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="5,5,268,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a44b766ba238be033bc4bb2c2c6e41d8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44b766ba238be033bc4bb2c2c6e41d8e">&#9670;&nbsp;</a></span>TryParseString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.TryParseString </td>
+          <td>(</td>
+          <td class="paramtype">out string&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parses a string </p>
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00271">271</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a44b766ba238be033bc4bb2c2c6e41d8e_cgraph.png" border="0" usemap="#aa00696_a44b766ba238be033bc4bb2c2c6e41d8e_cgraph" alt=""/></div>
+<map name="aa00696_a44b766ba238be033bc4bb2c2c6e41d8e_cgraph" id="aa00696_a44b766ba238be033bc4bb2c2c6e41d8e_cgraph">
+<area shape="rect" title="Parses a string" alt="" coords="5,113,272,140"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="663,5,899,32"/>
+<area shape="rect" href="a00696.html#a49635ab2ce70fdbeb65f449423406162" title=" " alt="" coords="663,56,899,83"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="656,208,907,235"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="654,259,909,285"/>
+<area shape="rect" href="a00696.html#ada5a7f2c697a2062f88fcfd8bc96a569" title=" " alt="" coords="320,113,603,140"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="1012,208,1185,235"/>
+<area shape="rect" href="a00696.html#afde7833501b164970958f7c636bb1a38" title=" " alt="" coords="675,107,888,133"/>
+<area shape="rect" href="a00696.html#a571408f6e39b1def02b8c761cf9ba3e5" title=" " alt="" coords="651,157,912,184"/>
+<area shape="rect" href="a00696.html#a4b4ccdb0dd3f3176ea15c9dd8383387a" title=" " alt="" coords="960,157,1237,184"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a44b766ba238be033bc4bb2c2c6e41d8e_icgraph.png" border="0" usemap="#aa00696_a44b766ba238be033bc4bb2c2c6e41d8e_icgraph" alt=""/></div>
+<map name="aa00696_a44b766ba238be033bc4bb2c2c6e41d8e_icgraph" id="aa00696_a44b766ba238be033bc4bb2c2c6e41d8e_icgraph">
+<area shape="rect" title="Parses a string" alt="" coords="609,31,876,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,5,561,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a9d4698776df5efd96ae2973001902fe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d4698776df5efd96ae2973001902fe5">&#9670;&nbsp;</a></span>TryParseTrue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.TryParseTrue </td>
+          <td>(</td>
+          <td class="paramtype">out <a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00187">187</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a9d4698776df5efd96ae2973001902fe5_cgraph.png" border="0" usemap="#aa00696_a9d4698776df5efd96ae2973001902fe5_cgraph" alt=""/></div>
+<map name="aa00696_a9d4698776df5efd96ae2973001902fe5_cgraph" id="aa00696_a9d4698776df5efd96ae2973001902fe5_cgraph">
+<area shape="rect" title=" " alt="" coords="5,56,263,83"/>
+<area shape="rect" href="a00696.html#a229608b38c1519bed75a25d5c831b99c" title=" " alt="" coords="311,56,577,83"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="635,5,871,32"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="627,56,878,83"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="625,107,880,133"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="928,56,1101,83"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_a9d4698776df5efd96ae2973001902fe5_icgraph.png" border="0" usemap="#aa00696_a9d4698776df5efd96ae2973001902fe5_icgraph" alt=""/></div>
+<map name="aa00696_a9d4698776df5efd96ae2973001902fe5_icgraph" id="aa00696_a9d4698776df5efd96ae2973001902fe5_icgraph">
+<area shape="rect" title=" " alt="" coords="609,31,867,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,31,561,57"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ada5a7f2c697a2062f88fcfd8bc96a569"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada5a7f2c697a2062f88fcfd8bc96a569">&#9670;&nbsp;</a></span>TryUnescapeChar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00716.html">fsResult</a> FullSerializer.fsJsonParser.TryUnescapeChar </td>
+          <td>(</td>
+          <td class="paramtype">out char&#160;</td>
+          <td class="paramname"><em>escaped</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00121">121</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_ada5a7f2c697a2062f88fcfd8bc96a569_cgraph.png" border="0" usemap="#aa00696_ada5a7f2c697a2062f88fcfd8bc96a569_cgraph" alt=""/></div>
+<map name="aa00696_ada5a7f2c697a2062f88fcfd8bc96a569_cgraph" id="aa00696_ada5a7f2c697a2062f88fcfd8bc96a569_cgraph">
+<area shape="rect" title=" " alt="" coords="5,132,288,159"/>
+<area shape="rect" href="a00696.html#a2d8846f1b894ba3e82b7957221f0fe2d" title=" " alt="" coords="349,5,585,32"/>
+<area shape="rect" href="a00696.html#a49635ab2ce70fdbeb65f449423406162" title=" " alt="" coords="349,56,585,83"/>
+<area shape="rect" href="a00696.html#afde7833501b164970958f7c636bb1a38" title=" " alt="" coords="360,107,573,133"/>
+<area shape="rect" href="a00696.html#a8c6a843742fc91b286ff7d51b0394fa0" title=" " alt="" coords="341,157,592,184"/>
+<area shape="rect" href="a00696.html#a571408f6e39b1def02b8c761cf9ba3e5" title=" " alt="" coords="336,208,597,235"/>
+<area shape="rect" href="a00696.html#aac685396570c45828efbd40b5cc355a8" title=" " alt="" coords="339,259,594,285"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="697,157,871,184"/>
+<area shape="rect" href="a00696.html#a4b4ccdb0dd3f3176ea15c9dd8383387a" title=" " alt="" coords="645,208,923,235"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00696_ada5a7f2c697a2062f88fcfd8bc96a569_icgraph.png" border="0" usemap="#aa00696_ada5a7f2c697a2062f88fcfd8bc96a569_icgraph" alt=""/></div>
+<map name="aa00696_ada5a7f2c697a2062f88fcfd8bc96a569_icgraph" id="aa00696_ada5a7f2c697a2062f88fcfd8bc96a569_icgraph">
+<area shape="rect" title=" " alt="" coords="924,31,1207,57"/>
+<area shape="rect" href="a00696.html#a44b766ba238be033bc4bb2c2c6e41d8e" title="Parses a string" alt="" coords="609,31,876,57"/>
+<area shape="rect" href="a00696.html#a128257f4ab84419ddb7bdf5843132135" title=" " alt="" coords="324,5,561,32"/>
+<area shape="rect" href="a00696.html#a89bea29385ca891676ef0bbb7ee2e6d9" title=" " alt="" coords="5,56,276,83"/>
+<area shape="rect" href="a00696.html#a23d2ffb3ed9c677ca555c0f84d22c25d" title="Parses an array" alt="" coords="9,5,272,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a52525099e02a84e0320fe1b41a29bce2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52525099e02a84e0320fe1b41a29bce2">&#9670;&nbsp;</a></span>_cachedStringBuilder</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly StringBuilder FullSerializer.fsJsonParser._cachedStringBuilder = new StringBuilder(256)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00267">267</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+
+</div>
+</div>
+<a id="aac0a8f27573df51885a200ff563841b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac0a8f27573df51885a200ff563841b5">&#9670;&nbsp;</a></span>_input</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string FullSerializer.fsJsonParser._input</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00014">14</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
+
+</div>
+</div>
+<a id="a5b345b97960eec2c594f88433e53a18f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b345b97960eec2c594f88433e53a18f">&#9670;&nbsp;</a></span>_start</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int FullSerializer.fsJsonParser._start</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00173_source.html#l00013">13</a> of file <a class="el" href="a00173_source.html">fsJsonParser.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a></li>
+<li><a class="el" href="a00173_source.html">fsJsonParser.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: UnityEngine.SaveDataManager Class Reference</title>
+<title>UnityEssentials: Essentials.SaveData.SD_JsonSerializer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,304 +62,60 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00420.html">UnityEngine</a></li><li class="navelem"><a class="el" href="a00964.html">SaveDataManager</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00398.html">Essentials</a></li><li class="navelem"><a class="el" href="a00419.html">SaveData</a></li><li class="navelem"><a class="el" href="a00964.html">SD_JsonSerializer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="a00961.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">UnityEngine.SaveDataManager Class Reference</div>  </div>
+<div class="title">Essentials.SaveData.SD_JsonSerializer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Save Game Json Serializer.  
+ <a href="a00964.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for UnityEngine.SaveDataManager:</div>
+Collaboration diagram for Essentials.SaveData.SD_JsonSerializer:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00962.png" border="0" usemap="#aUnityEngine_8SaveDataManager_coll__map" alt="Collaboration graph"/></div>
-<map name="aUnityEngine_8SaveDataManager_coll__map" id="aUnityEngine_8SaveDataManager_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,207,171"/>
+<div class="center"><img src="a00962.png" border="0" usemap="#aEssentials_8SaveData_8SD__JsonSerializer_coll__map" alt="Collaboration graph"/></div>
+<map name="aEssentials_8SaveData_8SD__JsonSerializer_coll__map" id="aEssentials_8SaveData_8SD__JsonSerializer_coll__map">
+<area shape="rect" title="Save Game Json Serializer." alt="" coords="5,5,257,97"/>
 </map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9ca1fa9cef36ac5fe6f493a9aabca2b4"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a9ca1fa9cef36ac5fe6f493a9aabca2b4">OpenSavedDataFolder</a> ()</td></tr>
-<tr class="memdesc:a9ca1fa9cef36ac5fe6f493a9aabca2b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens/reveals the folder containing the saved data.  <a href="a00964.html#a9ca1fa9cef36ac5fe6f493a9aabca2b4">More...</a><br /></td></tr>
-<tr class="separator:a9ca1fa9cef36ac5fe6f493a9aabca2b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a548de856d1e37fbe7ce9b744350387e5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a548de856d1e37fbe7ce9b744350387e5">Save&lt; T &gt;</a> (T objectToSave, string filename, string encryptionPassword=null, Encoding encoding=null)</td></tr>
-<tr class="memdesc:a548de856d1e37fbe7ce9b744350387e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves data using the identifier.  <a href="a00964.html#a548de856d1e37fbe7ce9b744350387e5">More...</a><br /></td></tr>
-<tr class="separator:a548de856d1e37fbe7ce9b744350387e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8795b7267f5f711b5884e3faadcdd8bb"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a8795b7267f5f711b5884e3faadcdd8bb">Load&lt; T &gt;</a> (string filename, T defaultValue, string encryptionPassword=null, Encoding encoding=null, bool supressFileNotFoundWarning=false)</td></tr>
-<tr class="memdesc:a8795b7267f5f711b5884e3faadcdd8bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads data using identifier.  <a href="a00964.html#a8795b7267f5f711b5884e3faadcdd8bb">More...</a><br /></td></tr>
-<tr class="separator:a8795b7267f5f711b5884e3faadcdd8bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33bacc3991904042b3389b125e6fe911"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a33bacc3991904042b3389b125e6fe911">Exists</a> (string filename)</td></tr>
-<tr class="memdesc:a33bacc3991904042b3389b125e6fe911"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the specified identifier exists or not.  <a href="a00964.html#a33bacc3991904042b3389b125e6fe911">More...</a><br /></td></tr>
-<tr class="separator:a33bacc3991904042b3389b125e6fe911"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2640a1f5271e28dfca17f0974204af43"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a2640a1f5271e28dfca17f0974204af43">Delete</a> (string filename)</td></tr>
-<tr class="memdesc:a2640a1f5271e28dfca17f0974204af43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the specified identifier and path.  <a href="a00964.html#a2640a1f5271e28dfca17f0974204af43">More...</a><br /></td></tr>
-<tr class="separator:a2640a1f5271e28dfca17f0974204af43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f09deb32c88a770548b6dbd03ce63df"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a6f09deb32c88a770548b6dbd03ce63df">DeleteAll</a> ()</td></tr>
-<tr class="memdesc:a6f09deb32c88a770548b6dbd03ce63df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes all.  <a href="a00964.html#a6f09deb32c88a770548b6dbd03ce63df">More...</a><br /></td></tr>
-<tr class="separator:a6f09deb32c88a770548b6dbd03ce63df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a2aac9b4569d0c7019d26a058bb4555e4"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a2aac9b4569d0c7019d26a058bb4555e4">saveDataPath</a> = Application.persistentDataPath</td></tr>
-<tr class="separator:a2aac9b4569d0c7019d26a058bb4555e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a17296ae6565f150dad52918f6ec64576"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a17296ae6565f150dad52918f6ec64576">GetFilePath</a> (string filename)</td></tr>
-<tr class="separator:a17296ae6565f150dad52918f6ec64576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a1e7aa895bf381ba36cb6bf970206ba31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a1e7aa895bf381ba36cb6bf970206ba31">Serialize&lt; T &gt;</a> (T obj, Stream stream, Encoding encoding)</td></tr>
+<tr class="memdesc:a1e7aa895bf381ba36cb6bf970206ba31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize the specified object to stream with encoding.  <a href="a00964.html#a1e7aa895bf381ba36cb6bf970206ba31">More...</a><br /></td></tr>
+<tr class="separator:a1e7aa895bf381ba36cb6bf970206ba31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55974697011e47fb9bdfb5ebb7ea1a01"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00964.html#a55974697011e47fb9bdfb5ebb7ea1a01">Deserialize&lt; T &gt;</a> (Stream stream, Encoding encoding)</td></tr>
+<tr class="memdesc:a55974697011e47fb9bdfb5ebb7ea1a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialize the specified object from stream using the encoding.  <a href="a00964.html#a55974697011e47fb9bdfb5ebb7ea1a01">More...</a><br /></td></tr>
+<tr class="separator:a55974697011e47fb9bdfb5ebb7ea1a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00380_source.html#l00034">34</a> of file <a class="el" href="a00380_source.html">SaveDataManager.cs</a>.</p>
+<div class="textblock"><p>Save Game Json Serializer. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00383_source.html#l00038">38</a> of file <a class="el" href="a00383_source.html">SD_JsonSerializer.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2640a1f5271e28dfca17f0974204af43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2640a1f5271e28dfca17f0974204af43">&#9670;&nbsp;</a></span>Delete()</h2>
+<a id="a55974697011e47fb9bdfb5ebb7ea1a01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55974697011e47fb9bdfb5ebb7ea1a01">&#9670;&nbsp;</a></span>Deserialize&lt; T &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void UnityEngine.SaveDataManager.Delete </td>
+          <td class="memname">T Essentials.SaveData.SD_JsonSerializer.Deserialize&lt; T &gt; </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Delete the specified identifier and path. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">filename</td><td>Identifier of the file to delete. Can route to a folder relative to the Application.persistentDataPath.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00380_source.html#l00271">271</a> of file <a class="el" href="a00380_source.html">SaveDataManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00964_a2640a1f5271e28dfca17f0974204af43_cgraph.png" border="0" usemap="#aa00964_a2640a1f5271e28dfca17f0974204af43_cgraph" alt=""/></div>
-<map name="aa00964_a2640a1f5271e28dfca17f0974204af43_cgraph" id="aa00964_a2640a1f5271e28dfca17f0974204af43_cgraph">
-<area shape="rect" title="Delete the specified identifier and path." alt="" coords="5,31,248,57"/>
-<area shape="rect" href="a00964.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="296,5,571,32"/>
-<area shape="rect" href="a00980.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="329,56,537,83"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00964_a2640a1f5271e28dfca17f0974204af43_icgraph.png" border="0" usemap="#aa00964_a2640a1f5271e28dfca17f0974204af43_icgraph" alt=""/></div>
-<map name="aa00964_a2640a1f5271e28dfca17f0974204af43_icgraph" id="aa00964_a2640a1f5271e28dfca17f0974204af43_icgraph">
-<area shape="rect" title="Delete the specified identifier and path." alt="" coords="577,5,820,32"/>
-<area shape="rect" href="a00528.html#a5639c00287cfcc7d820ec372b60e3e14" title=" " alt="" coords="331,5,529,32"/>
-<area shape="rect" href="a00524.html#a405b35233bdf085eaf1f1695a394a65e" title=" " alt="" coords="5,5,283,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a6f09deb32c88a770548b6dbd03ce63df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f09deb32c88a770548b6dbd03ce63df">&#9670;&nbsp;</a></span>DeleteAll()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void UnityEngine.SaveDataManager.DeleteAll </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Deletes all. </p>
-<p>Be aware, it will delete all files found in the '</p>
-<p>&gt;</p>
-
-<p class="definition">Definition at line <a class="el" href="a00380_source.html#l00302">302</a> of file <a class="el" href="a00380_source.html">SaveDataManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00964_a6f09deb32c88a770548b6dbd03ce63df_cgraph.png" border="0" usemap="#aa00964_a6f09deb32c88a770548b6dbd03ce63df_cgraph" alt=""/></div>
-<map name="aa00964_a6f09deb32c88a770548b6dbd03ce63df_cgraph" id="aa00964_a6f09deb32c88a770548b6dbd03ce63df_cgraph">
-<area shape="rect" title="Deletes all." alt="" coords="5,5,263,32"/>
-<area shape="rect" href="a00980.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="311,5,519,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00964_a6f09deb32c88a770548b6dbd03ce63df_icgraph.png" border="0" usemap="#aa00964_a6f09deb32c88a770548b6dbd03ce63df_icgraph" alt=""/></div>
-<map name="aa00964_a6f09deb32c88a770548b6dbd03ce63df_icgraph" id="aa00964_a6f09deb32c88a770548b6dbd03ce63df_icgraph">
-<area shape="rect" title="Deletes all." alt="" coords="563,5,820,32"/>
-<area shape="rect" href="a00528.html#afad54e4d5d8ac04d33c9a8dbd9add51c" title=" " alt="" coords="331,5,515,32"/>
-<area shape="rect" href="a00524.html#a405b35233bdf085eaf1f1695a394a65e" title=" " alt="" coords="5,5,283,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a33bacc3991904042b3389b125e6fe911"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33bacc3991904042b3389b125e6fe911">&#9670;&nbsp;</a></span>Exists()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool UnityEngine.SaveDataManager.Exists </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks whether the specified identifier exists or not. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">filename</td><td>Identifier of the file to check. Can route to a folder relative to the Application.persistentDataPath.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00380_source.html#l00225">225</a> of file <a class="el" href="a00380_source.html">SaveDataManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00964_a33bacc3991904042b3389b125e6fe911_cgraph.png" border="0" usemap="#aa00964_a33bacc3991904042b3389b125e6fe911_cgraph" alt=""/></div>
-<map name="aa00964_a33bacc3991904042b3389b125e6fe911_cgraph" id="aa00964_a33bacc3991904042b3389b125e6fe911_cgraph">
-<area shape="rect" title="Checks whether the specified identifier exists or not." alt="" coords="5,31,248,57"/>
-<area shape="rect" href="a00964.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="296,5,571,32"/>
-<area shape="rect" href="a00980.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="329,56,537,83"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00964_a33bacc3991904042b3389b125e6fe911_icgraph.png" border="0" usemap="#aa00964_a33bacc3991904042b3389b125e6fe911_icgraph" alt=""/></div>
-<map name="aa00964_a33bacc3991904042b3389b125e6fe911_icgraph" id="aa00964_a33bacc3991904042b3389b125e6fe911_icgraph">
-<area shape="rect" title="Checks whether the specified identifier exists or not." alt="" coords="317,5,560,32"/>
-<area shape="rect" href="a00964.html#a8795b7267f5f711b5884e3faadcdd8bb" title="Loads data using identifier." alt="" coords="5,5,269,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a17296ae6565f150dad52918f6ec64576"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17296ae6565f150dad52918f6ec64576">&#9670;&nbsp;</a></span>GetFilePath()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static string UnityEngine.SaveDataManager.GetFilePath </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00380_source.html#l00261">261</a> of file <a class="el" href="a00380_source.html">SaveDataManager.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00964_a17296ae6565f150dad52918f6ec64576_icgraph.png" border="0" usemap="#aa00964_a17296ae6565f150dad52918f6ec64576_icgraph" alt=""/></div>
-<map name="aa00964_a17296ae6565f150dad52918f6ec64576_icgraph" id="aa00964_a17296ae6565f150dad52918f6ec64576_icgraph">
-<area shape="rect" title=" " alt="" coords="955,81,1229,108"/>
-<area shape="rect" href="a00964.html#a2640a1f5271e28dfca17f0974204af43" title="Delete the specified identifier and path." alt="" coords="653,5,896,32"/>
-<area shape="rect" href="a00964.html#a33bacc3991904042b3389b125e6fe911" title="Checks whether the specified identifier exists or not." alt="" coords="653,56,896,83"/>
-<area shape="rect" href="a00964.html#a8795b7267f5f711b5884e3faadcdd8bb" title="Loads data using identifier." alt="" coords="331,81,595,108"/>
-<area shape="rect" href="a00964.html#a548de856d1e37fbe7ce9b744350387e5" title="Saves data using the identifier." alt="" coords="643,157,907,184"/>
-<area shape="rect" href="a00528.html#a5639c00287cfcc7d820ec372b60e3e14" title=" " alt="" coords="363,5,562,32"/>
-<area shape="rect" href="a00524.html#a405b35233bdf085eaf1f1695a394a65e" title=" " alt="" coords="5,5,283,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a8795b7267f5f711b5884e3faadcdd8bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8795b7267f5f711b5884e3faadcdd8bb">&#9670;&nbsp;</a></span>Load&lt; T &gt;()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static T UnityEngine.SaveDataManager.Load&lt; T &gt; </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>defaultValue</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>encryptionPassword</em> = <code>null</code>, </td>
+          <td class="paramtype">Stream&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Encoding&#160;</td>
-          <td class="paramname"><em>encoding</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>supressFileNotFoundWarning</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>encoding</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -367,118 +123,62 @@ Here is the caller graph for this function:</div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Loads data using identifier. </p>
+<p>Deserialize the specified object from stream using the encoding. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filename</td><td>Identifier of the file containing the data. Can route to a folder relative to the Application.persistentDataPath.</td></tr>
-    <tr><td class="paramname">defaultValue</td><td>Default Value. Used in case the saved data is not found.</td></tr>
-    <tr><td class="paramname">encryptionPassword</td><td>Encryption Password (set it to the same password you used to save it).</td></tr>
+    <tr><td class="paramname">stream</td><td>Stream.</td></tr>
     <tr><td class="paramname">encoding</td><td>Encoding.</td></tr>
-    <tr><td class="paramname">supressFileNotFoundWarning</td><td>Should the warning be disabled so if the desired data is not found no warning is created? Set it to <code>True</code> for hiding the warning.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>The objectToSave's type.</td></tr>
+    <tr><td class="paramname">T</td><td>The 1st type parameter.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="a00380_source.html#l00143">143</a> of file <a class="el" href="a00380_source.html">SaveDataManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00383_source.html#l00077">77</a> of file <a class="el" href="a00383_source.html">SD_JsonSerializer.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00964_a8795b7267f5f711b5884e3faadcdd8bb_cgraph.png" border="0" usemap="#aa00964_a8795b7267f5f711b5884e3faadcdd8bb_cgraph" alt=""/></div>
-<map name="aa00964_a8795b7267f5f711b5884e3faadcdd8bb_cgraph" id="aa00964_a8795b7267f5f711b5884e3faadcdd8bb_cgraph">
-<area shape="rect" title="Loads data using identifier." alt="" coords="5,81,269,108"/>
-<area shape="rect" href="a00968.html#a0a9b24b8c195fae929c88a27cf4ea539" title="Decode the specified input with password." alt="" coords="317,5,584,32"/>
-<area shape="rect" href="a00964.html#a33bacc3991904042b3389b125e6fe911" title="Checks whether the specified identifier exists or not." alt="" coords="329,107,572,133"/>
-<area shape="rect" href="a00964.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="632,81,907,108"/>
-<area shape="rect" href="a00980.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="665,144,873,171"/>
+<div class="center"><img src="a00964_a55974697011e47fb9bdfb5ebb7ea1a01_cgraph.png" border="0" usemap="#aa00964_a55974697011e47fb9bdfb5ebb7ea1a01_cgraph" alt=""/></div>
+<map name="aa00964_a55974697011e47fb9bdfb5ebb7ea1a01_cgraph" id="aa00964_a55974697011e47fb9bdfb5ebb7ea1a01_cgraph">
+<area shape="rect" title="Deserialize the specified object from stream using the encoding." alt="" coords="5,56,356,83"/>
+<area shape="rect" href="a00696.html#ae72b670aad2d571b7f5a04390a80685b" title="Parses the specified input. Returns a failure state if parsing failed." alt="" coords="422,31,637,57"/>
+<area shape="rect" href="a00720.html#a9ada1781fcc582b65d809815fe2c24e9" title="Attempts to deserialize a value from a serialized state." alt="" coords="404,81,655,108"/>
+<area shape="rect" href="a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="743,5,917,32"/>
+<area shape="rect" href="a00696.html#a20718ef0fbec2da7b63c2280a19eef56" title=" " alt="" coords="703,56,957,83"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a9ca1fa9cef36ac5fe6f493a9aabca2b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ca1fa9cef36ac5fe6f493a9aabca2b4">&#9670;&nbsp;</a></span>OpenSavedDataFolder()</h2>
+<a id="a1e7aa895bf381ba36cb6bf970206ba31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e7aa895bf381ba36cb6bf970206ba31">&#9670;&nbsp;</a></span>Serialize&lt; T &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void UnityEngine.SaveDataManager.OpenSavedDataFolder </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Opens/reveals the folder containing the saved data. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00380_source.html#l00042">42</a> of file <a class="el" href="a00380_source.html">SaveDataManager.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00964_a9ca1fa9cef36ac5fe6f493a9aabca2b4_icgraph.png" border="0" usemap="#aa00964_a9ca1fa9cef36ac5fe6f493a9aabca2b4_icgraph" alt=""/></div>
-<map name="aa00964_a9ca1fa9cef36ac5fe6f493a9aabca2b4_icgraph" id="aa00964_a9ca1fa9cef36ac5fe6f493a9aabca2b4_icgraph">
-<area shape="rect" title="Opens/reveals the folder containing the saved data." alt="" coords="640,5,975,32"/>
-<area shape="rect" href="a00528.html#aab6aada5a5dcac234c79d9d8d18eef3a" title=" " alt="" coords="331,5,592,32"/>
-<area shape="rect" href="a00524.html#a405b35233bdf085eaf1f1695a394a65e" title=" " alt="" coords="5,5,283,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a548de856d1e37fbe7ce9b744350387e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a548de856d1e37fbe7ce9b744350387e5">&#9670;&nbsp;</a></span>Save&lt; T &gt;()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void UnityEngine.SaveDataManager.Save&lt; T &gt; </td>
+          <td class="memname">void Essentials.SaveData.SD_JsonSerializer.Serialize&lt; T &gt; </td>
           <td>(</td>
           <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>objectToSave</em>, </td>
+          <td class="paramname"><em>obj</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>encryptionPassword</em> = <code>null</code>, </td>
+          <td class="paramtype">Stream&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Encoding&#160;</td>
-          <td class="paramname"><em>encoding</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>encoding</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -486,73 +186,43 @@ Here is the caller graph for this function:</div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Saves data using the identifier. </p>
+<p>Serialize the specified object to stream with encoding. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filename</td><td>Identifier of the file containing the data. Can route to a folder relative to the Application.persistentDataPath.</td></tr>
-    <tr><td class="paramname">objectToSave</td><td>Object to save.</td></tr>
-    <tr><td class="paramname">encryptionPassword</td><td>Encryption Password.</td></tr>
+    <tr><td class="paramname">obj</td><td>Object.</td></tr>
+    <tr><td class="paramname">stream</td><td>Stream.</td></tr>
     <tr><td class="paramname">encoding</td><td>Encoding.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>The objectToSave's type.</td></tr>
+    <tr><td class="paramname">T</td><td>The 1st type parameter.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="a00380_source.html#l00055">55</a> of file <a class="el" href="a00380_source.html">SaveDataManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00383_source.html#l00048">48</a> of file <a class="el" href="a00383_source.html">SD_JsonSerializer.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00964_a548de856d1e37fbe7ce9b744350387e5_cgraph.png" border="0" usemap="#aa00964_a548de856d1e37fbe7ce9b744350387e5_cgraph" alt=""/></div>
-<map name="aa00964_a548de856d1e37fbe7ce9b744350387e5_cgraph" id="aa00964_a548de856d1e37fbe7ce9b744350387e5_cgraph">
-<area shape="rect" title="Saves data using the identifier." alt="" coords="5,56,269,83"/>
-<area shape="rect" href="a00968.html#a6e0c4171be00c2341f168656abfed3fb" title="Encode the specified input with password." alt="" coords="321,5,588,32"/>
-<area shape="rect" href="a00964.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="317,56,592,83"/>
-<area shape="rect" href="a00980.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="351,107,559,133"/>
-<area shape="rect" href="a00968.html#a302124fa9b60ba1e890d7911006d0145" title=" " alt="" coords="640,5,1067,32"/>
+<div class="center"><img src="a00964_a1e7aa895bf381ba36cb6bf970206ba31_cgraph.png" border="0" usemap="#aa00964_a1e7aa895bf381ba36cb6bf970206ba31_cgraph" alt=""/></div>
+<map name="aa00964_a1e7aa895bf381ba36cb6bf970206ba31_cgraph" id="aa00964_a1e7aa895bf381ba36cb6bf970206ba31_cgraph">
+<area shape="rect" title="Serialize the specified object to stream with encoding." alt="" coords="5,56,343,83"/>
+<area shape="rect" href="a00700.html#a7d4e78009d040303daf29c9b11e87df4" title="Writes the compressed JSON output data to the given stream." alt="" coords="391,31,671,57"/>
+<area shape="rect" href="a00720.html#a17e5574115d10ded25ac40d46eeae4f2" title="Serialize the given value." alt="" coords="412,81,649,108"/>
+<area shape="rect" href="a00700.html#a3a8ef7964af11b97773d045f68e1c9bb" title=" " alt="" coords="719,31,1035,57"/>
+<area shape="rect" href="a00700.html#a1cdb1e42f8eca717a924a420d2a9c5b4" title="Utility method that converts a double to a string." alt="" coords="1083,5,1393,32"/>
+<area shape="rect" href="a00700.html#aa52965dee1adcff0519563c0281017c5" title="Escapes a string." alt="" coords="1109,56,1367,83"/>
 </map>
 </div>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2aac9b4569d0c7019d26a058bb4555e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2aac9b4569d0c7019d26a058bb4555e4">&#9670;&nbsp;</a></span>saveDataPath</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">string UnityEngine.SaveDataManager.saveDataPath = Application.persistentDataPath</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00380_source.html#l00036">36</a> of file <a class="el" href="a00380_source.html">SaveDataManager.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00380_source.html">SaveDataManager.cs</a></li>
+<li><a class="el" href="a00383_source.html">SD_JsonSerializer.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

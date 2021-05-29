@@ -1,0 +1,7 @@
+<map id="FullSerializer.fsJsonPrinter.BuildCompressedString" name="FullSerializer.fsJsonPrinter.BuildCompressedString">
+<area shape="rect" id="node1" title=" " alt="" coords="803,56,1119,83"/>
+<area shape="rect" id="node2" href="$a00700.html#a7d4e78009d040303daf29c9b11e87df4" title="Writes the compressed JSON output data to the given stream." alt="" coords="475,56,755,83"/>
+<area shape="rect" id="node3" href="$a00964.html#a1e7aa895bf381ba36cb6bf970206ba31" title="Serialize the specified object to stream with encoding." alt="" coords="47,5,385,32"/>
+<area shape="rect" id="node4" href="$a00664.html#ac64cd3d8fa914d376259ff913c208791" title=" " alt="" coords="121,56,311,83"/>
+<area shape="rect" id="node5" href="$a00632.html#acad9c1e7e271c7ab3d0821c86fb12580" title="Deserialize data into the object instance." alt="" coords="5,107,427,133"/>
+</map>

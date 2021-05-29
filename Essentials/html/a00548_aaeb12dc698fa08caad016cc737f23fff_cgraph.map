@@ -1,9 +1,0 @@
-<map id="FullSerializer.Internal.fsDictionaryConverter.TrySerialize" name="FullSerializer.Internal.fsDictionaryConverter.TrySerialize">
-<area shape="rect" id="node1" title="Serialize the actual object into the given data storage." alt="" coords="5,81,347,108"/>
-<area shape="rect" id="node2" href="$a00668.html#a736d3ed458af91620f8eb47447f15233" title="Helper method to create a fsData instance that holds a dictionary." alt="" coords="468,5,707,32"/>
-<area shape="rect" id="node4" href="$a00668.html#ac7c719ebad471a4a00b812097d436a73" title="Helper method to create a fsData instance that holds a list." alt="" coords="487,56,688,83"/>
-<area shape="rect" id="node5" href="$a00548.html#ad9b5a92cba22e37218c9aa8a95b3436b" title=" " alt="" coords="395,107,780,133"/>
-<area shape="rect" id="node7" href="$a00724.html#a17e5574115d10ded25ac40d46eeae4f2" title="Serialize the given value." alt="" coords="469,157,706,184"/>
-<area shape="rect" id="node3" href="$a00668.html#a9b5e13a72849cb6c6a6948fac87260c6" title="Creates a fsData instance that holds null." alt="" coords="899,31,1078,57"/>
-<area shape="rect" id="node6" href="$a00776.html#aadaf150f78f3bbcf7c4d470bc444824d" title="Searches for a particular implementation of the given interface type inside of the type...." alt="" coords="828,107,1149,133"/>
-</map>

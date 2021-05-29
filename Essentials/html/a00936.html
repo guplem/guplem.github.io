@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: UnityEngine.DoOnce Class Reference</title>
+<title>UnityEssentials: UnityEngine.Sequence Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,96 +62,140 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00420.html">UnityEngine</a></li><li class="navelem"><a class="el" href="a00936.html">DoOnce</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00417.html">UnityEngine</a></li><li class="navelem"><a class="el" href="a00936.html">Sequence</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00933.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">UnityEngine.DoOnce Class Reference</div>  </div>
+<div class="title">UnityEngine.Sequence Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
-Collaboration diagram for UnityEngine.DoOnce:</div>
+Collaboration diagram for UnityEngine.Sequence:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00934.png" border="0" usemap="#aUnityEngine_8DoOnce_coll__map" alt="Collaboration graph"/></div>
-<map name="aUnityEngine_8DoOnce_coll__map" id="aUnityEngine_8DoOnce_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,148,127"/>
+<div class="center"><img src="a00934.png" border="0" usemap="#aUnityEngine_8Sequence_coll__map" alt="Collaboration graph"/></div>
+<map name="aUnityEngine_8Sequence_coll__map" id="aUnityEngine_8Sequence_coll__map">
+<area shape="rect" title=" " alt="" coords="49,580,204,731"/>
+<area shape="rect" href="a00952.html" title=" " alt="" coords="5,132,248,517"/>
+<area shape="rect" title=" " alt="" coords="65,5,188,83"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad174586910cc8e9e42987bccf55bdb6e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#ad174586910cc8e9e42987bccf55bdb6e">DoOnce</a> (UnityAction unityAction)</td></tr>
-<tr class="separator:ad174586910cc8e9e42987bccf55bdb6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9212db869b733db5828e09d2a0f7c08d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#a9212db869b733db5828e09d2a0f7c08d">DoOnce</a> (UnityEvent <a class="el" href="a00936.html#a4acbee7b017e5d353514542f3a5dc5bc">calledEvent</a>)</td></tr>
-<tr class="separator:a9212db869b733db5828e09d2a0f7c08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a263b55b62151dd52fb17b01132359505"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#a263b55b62151dd52fb17b01132359505">Invoke</a> ()</td></tr>
-<tr class="separator:a263b55b62151dd52fb17b01132359505"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb8c2701e3bd0e1cb1f5b0ec1a238f60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#adb8c2701e3bd0e1cb1f5b0ec1a238f60">Sequence</a> (UnityAction[] actions, bool <a class="el" href="a00936.html#ab2b07eea098c0b9ab5f0df613b9ab5eb">randomizeOrder</a>=false, int randomizationSeed=-1)</td></tr>
+<tr class="separator:adb8c2701e3bd0e1cb1f5b0ec1a238f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4ab1b8aa8a57a150050d0d6dd9d9c6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#ab4ab1b8aa8a57a150050d0d6dd9d9c6d">Sequence</a> (UnityEvent[] <a class="el" href="a00936.html#a001baaae506d4e5fd71c6b617392b2d1">events</a>, bool <a class="el" href="a00936.html#ab2b07eea098c0b9ab5f0df613b9ab5eb">randomizeOrder</a>=false, int randomizationSeed=-1)</td></tr>
+<tr class="separator:ab4ab1b8aa8a57a150050d0d6dd9d9c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d5e2879768e9b1746ee0141eab2cdf8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#a8d5e2879768e9b1746ee0141eab2cdf8">Invoke</a> ()</td></tr>
+<tr class="separator:a8d5e2879768e9b1746ee0141eab2cdf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4acbee7b017e5d353514542f3a5dc5bc"><td class="memItemLeft" align="right" valign="top">UnityEvent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#a4acbee7b017e5d353514542f3a5dc5bc">calledEvent</a></td></tr>
-<tr class="separator:a4acbee7b017e5d353514542f3a5dc5bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48babc59d60d4e1c88a781488da6387b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#a48babc59d60d4e1c88a781488da6387b">eventInvoked</a> = false</td></tr>
-<tr class="separator:a48babc59d60d4e1c88a781488da6387b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2b07eea098c0b9ab5f0df613b9ab5eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#ab2b07eea098c0b9ab5f0df613b9ab5eb">randomizeOrder</a></td></tr>
+<tr class="separator:ab2b07eea098c0b9ab5f0df613b9ab5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96d4c4962b135069fd218aadb9910a29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00952.html">RandomEssentials</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#a96d4c4962b135069fd218aadb9910a29">random</a> = new <a class="el" href="a00952.html">RandomEssentials</a>()</td></tr>
+<tr class="separator:a96d4c4962b135069fd218aadb9910a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a001baaae506d4e5fd71c6b617392b2d1"><td class="memItemLeft" align="right" valign="top">UnityEvent[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#a001baaae506d4e5fd71c6b617392b2d1">events</a></td></tr>
+<tr class="separator:a001baaae506d4e5fd71c6b617392b2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3fec7703e0697d36befeb19e8ae3887"><td class="memItemLeft" align="right" valign="top">UnityEvent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#ad3fec7703e0697d36befeb19e8ae3887">nextEvent</a> = null</td></tr>
+<tr class="separator:ad3fec7703e0697d36befeb19e8ae3887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a670228c1276a1e78a68e4ebda26ceea6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00936.html#a670228c1276a1e78a68e4ebda26ceea6">nextEventIndex</a> = 0</td></tr>
+<tr class="separator:a670228c1276a1e78a68e4ebda26ceea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00359_source.html#l00007">7</a> of file <a class="el" href="a00359_source.html">DoOnce.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00362_source.html#l00008">8</a> of file <a class="el" href="a00362_source.html">Sequence.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad174586910cc8e9e42987bccf55bdb6e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad174586910cc8e9e42987bccf55bdb6e">&#9670;&nbsp;</a></span>DoOnce() <span class="overload">[1/2]</span></h2>
+<a id="adb8c2701e3bd0e1cb1f5b0ec1a238f60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb8c2701e3bd0e1cb1f5b0ec1a238f60">&#9670;&nbsp;</a></span>Sequence() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">UnityEngine.DoOnce.DoOnce </td>
+          <td class="memname">UnityEngine.Sequence.Sequence </td>
           <td>(</td>
-          <td class="paramtype">UnityAction&#160;</td>
-          <td class="paramname"><em>unityAction</em></td><td>)</td>
+          <td class="paramtype">UnityAction[]&#160;</td>
+          <td class="paramname"><em>actions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>randomizeOrder</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>randomizationSeed</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00359_source.html#l00012">12</a> of file <a class="el" href="a00359_source.html">DoOnce.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00362_source.html#l00016">16</a> of file <a class="el" href="a00362_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
-<a id="a9212db869b733db5828e09d2a0f7c08d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9212db869b733db5828e09d2a0f7c08d">&#9670;&nbsp;</a></span>DoOnce() <span class="overload">[2/2]</span></h2>
+<a id="ab4ab1b8aa8a57a150050d0d6dd9d9c6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4ab1b8aa8a57a150050d0d6dd9d9c6d">&#9670;&nbsp;</a></span>Sequence() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">UnityEngine.DoOnce.DoOnce </td>
+          <td class="memname">UnityEngine.Sequence.Sequence </td>
           <td>(</td>
-          <td class="paramtype">UnityEvent&#160;</td>
-          <td class="paramname"><em>calledEvent</em></td><td>)</td>
+          <td class="paramtype">UnityEvent[]&#160;</td>
+          <td class="paramname"><em>events</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>randomizeOrder</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>randomizationSeed</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00359_source.html#l00019">19</a> of file <a class="el" href="a00359_source.html">DoOnce.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00362_source.html#l00036">36</a> of file <a class="el" href="a00362_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a263b55b62151dd52fb17b01132359505"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a263b55b62151dd52fb17b01132359505">&#9670;&nbsp;</a></span>Invoke()</h2>
+<a id="a8d5e2879768e9b1746ee0141eab2cdf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d5e2879768e9b1746ee0141eab2cdf8">&#9670;&nbsp;</a></span>Invoke()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void UnityEngine.DoOnce.Invoke </td>
+          <td class="memname">void UnityEngine.Sequence.Invoke </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -159,55 +203,120 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00359_source.html#l00024">24</a> of file <a class="el" href="a00359_source.html">DoOnce.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00362_source.html#l00047">47</a> of file <a class="el" href="a00362_source.html">Sequence.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00936_a8d5e2879768e9b1746ee0141eab2cdf8_cgraph.png" border="0" usemap="#aa00936_a8d5e2879768e9b1746ee0141eab2cdf8_cgraph" alt=""/></div>
+<map name="aa00936_a8d5e2879768e9b1746ee0141eab2cdf8_cgraph" id="aa00936_a8d5e2879768e9b1746ee0141eab2cdf8_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,200,32"/>
+<area shape="rect" href="a00952.html#a2f7fb7a9165d38e624457c9738c3d793" title=" " alt="" coords="248,5,540,32"/>
+</map>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00936_a263b55b62151dd52fb17b01132359505_icgraph.png" border="0" usemap="#aa00936_a263b55b62151dd52fb17b01132359505_icgraph" alt=""/></div>
-<map name="aa00936_a263b55b62151dd52fb17b01132359505_icgraph" id="aa00936_a263b55b62151dd52fb17b01132359505_icgraph">
-<area shape="rect" title=" " alt="" coords="455,31,637,57"/>
-<area shape="rect" href="a00480.html#ac91f806f9da5f34f949bc6f600b1715c" title=" " alt="" coords="5,5,407,32"/>
-<area shape="rect" href="a00496.html#a4d446cbf01e003debfbd946da0dab1eb" title=" " alt="" coords="24,56,388,83"/>
+<div class="center"><img src="a00936_a8d5e2879768e9b1746ee0141eab2cdf8_icgraph.png" border="0" usemap="#aa00936_a8d5e2879768e9b1746ee0141eab2cdf8_icgraph" alt=""/></div>
+<map name="aa00936_a8d5e2879768e9b1746ee0141eab2cdf8_icgraph" id="aa00936_a8d5e2879768e9b1746ee0141eab2cdf8_icgraph">
+<area shape="rect" title=" " alt="" coords="465,31,660,57"/>
+<area shape="rect" href="a00484.html#a91f5b83d16aa059b347100ad79bc29cc" title=" " alt="" coords="5,5,417,32"/>
+<area shape="rect" href="a00500.html#afc6fa7b81e60f4a3a36272b99f4000e9" title=" " alt="" coords="24,56,399,83"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a4acbee7b017e5d353514542f3a5dc5bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4acbee7b017e5d353514542f3a5dc5bc">&#9670;&nbsp;</a></span>calledEvent</h2>
+<a id="a001baaae506d4e5fd71c6b617392b2d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a001baaae506d4e5fd71c6b617392b2d1">&#9670;&nbsp;</a></span>events</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">UnityEvent UnityEngine.DoOnce.calledEvent</td>
+          <td class="memname">UnityEvent [] UnityEngine.Sequence.events</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00359_source.html#l00009">9</a> of file <a class="el" href="a00359_source.html">DoOnce.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00362_source.html#l00012">12</a> of file <a class="el" href="a00362_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
-<a id="a48babc59d60d4e1c88a781488da6387b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48babc59d60d4e1c88a781488da6387b">&#9670;&nbsp;</a></span>eventInvoked</h2>
+<a id="ad3fec7703e0697d36befeb19e8ae3887"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3fec7703e0697d36befeb19e8ae3887">&#9670;&nbsp;</a></span>nextEvent</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool UnityEngine.DoOnce.eventInvoked = false</td>
+          <td class="memname">UnityEvent UnityEngine.Sequence.nextEvent = null</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00359_source.html#l00010">10</a> of file <a class="el" href="a00359_source.html">DoOnce.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00362_source.html#l00013">13</a> of file <a class="el" href="a00362_source.html">Sequence.cs</a>.</p>
+
+</div>
+</div>
+<a id="a670228c1276a1e78a68e4ebda26ceea6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a670228c1276a1e78a68e4ebda26ceea6">&#9670;&nbsp;</a></span>nextEventIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int UnityEngine.Sequence.nextEventIndex = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00362_source.html#l00014">14</a> of file <a class="el" href="a00362_source.html">Sequence.cs</a>.</p>
+
+</div>
+</div>
+<a id="a96d4c4962b135069fd218aadb9910a29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96d4c4962b135069fd218aadb9910a29">&#9670;&nbsp;</a></span>random</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00952.html">RandomEssentials</a> UnityEngine.Sequence.random = new <a class="el" href="a00952.html">RandomEssentials</a>()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00362_source.html#l00011">11</a> of file <a class="el" href="a00362_source.html">Sequence.cs</a>.</p>
+
+</div>
+</div>
+<a id="ab2b07eea098c0b9ab5f0df613b9ab5eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2b07eea098c0b9ab5f0df613b9ab5eb">&#9670;&nbsp;</a></span>randomizeOrder</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UnityEngine.Sequence.randomizeOrder</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00362_source.html#l00010">10</a> of file <a class="el" href="a00362_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00359_source.html">DoOnce.cs</a></li>
+<li><a class="el" href="a00362_source.html">Sequence.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

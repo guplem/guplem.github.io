@@ -1,7 +1,5 @@
-<map id="Essentials.Examples.FlowControl.SequenceExampleCoded" name="Essentials.Examples.FlowControl.SequenceExampleCoded">
-<area shape="rect" id="node1" title=" " alt="" coords="5,793,372,929"/>
-<area shape="rect" id="node2" title=" " alt="" coords="112,617,223,694"/>
-<area shape="rect" id="node3" href="$a00944.html" title=" " alt="" coords="247,580,402,731"/>
-<area shape="rect" id="node4" href="$a00960.html" title=" " alt="" coords="203,132,446,517"/>
-<area shape="rect" id="node5" title=" " alt="" coords="263,5,386,83"/>
+<map id="Essentials.Examples.FlowControl.DoNExample" name="Essentials.Examples.FlowControl.DoNExample">
+<area shape="rect" id="node1" title=" " alt="" coords="5,204,303,311"/>
+<area shape="rect" id="node2" title=" " alt="" coords="29,35,140,112"/>
+<area shape="rect" id="node3" href="$a00924.html" title=" " alt="" coords="164,5,285,141"/>
 </map>

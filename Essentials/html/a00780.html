@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: FullSerializer.Internal.fsTypeCache Class Reference</title>
+<title>UnityEssentials: UnityEngine.CameraAnimation Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,75 +62,111 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00416.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00417.html">Internal</a></li><li class="navelem"><a class="el" href="a00780.html">fsTypeCache</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00417.html">UnityEngine</a></li><li class="navelem"><a class="el" href="a00780.html">CameraAnimation</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00777.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">FullSerializer.Internal.fsTypeCache Class Reference</div>  </div>
+<div class="title">UnityEngine.CameraAnimation Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Caches type name to type lookups. Type lookups occur in all loaded assemblies.  
- <a href="a00780.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for FullSerializer.Internal.fsTypeCache:</div>
+Collaboration diagram for UnityEngine.CameraAnimation:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00778.png" border="0" usemap="#aFullSerializer_8Internal_8fsTypeCache_coll__map" alt="Collaboration graph"/></div>
-<map name="aFullSerializer_8Internal_8fsTypeCache_coll__map" id="aFullSerializer_8Internal_8fsTypeCache_coll__map">
-<area shape="rect" title="Caches type name to type lookups. Type lookups occur in all loaded assemblies." alt="" coords="5,5,228,200"/>
+<div class="center"><img src="a00778.png" border="0" usemap="#aUnityEngine_8CameraAnimation_coll__map" alt="Collaboration graph"/></div>
+<map name="aUnityEngine_8CameraAnimation_coll__map" id="aUnityEngine_8CameraAnimation_coll__map">
+<area shape="rect" title=" " alt="" coords="5,476,204,627"/>
+<area shape="rect" href="a00816.html" title=" " alt="" coords="6,131,203,428"/>
+<area shape="rect" href="a00812.html" title=" " alt="" coords="43,5,166,83"/>
 </map>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a321703834e798c9143549f9a088f024d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#a321703834e798c9143549f9a088f024d">WrapMode</a> { <a class="el" href="a00816.html#a321703834e798c9143549f9a088f024dae1a9dc9f23534e63de9df0d540ac1611">Once</a>
+, <a class="el" href="a00816.html#a321703834e798c9143549f9a088f024da89d7b10cb4238977d2b523dfd9ea7745">Loop</a>
+, <a class="el" href="a00816.html#a321703834e798c9143549f9a088f024da99e52704462d3580db3528cad7ea9660">PingPong</a>
+ }</td></tr>
+<tr class="separator:a321703834e798c9143549f9a088f024d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a2edc953ca64cc02127d9696958190f8b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a2edc953ca64cc02127d9696958190f8b">CameraAnimation</a> ()</td></tr>
+<tr class="separator:a2edc953ca64cc02127d9696958190f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dbf1a74d45c5ee37b8a5ce32a4148ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a2dbf1a74d45c5ee37b8a5ce32a4148ef">CameraAnimation</a> (Camera <a class="el" href="a00780.html#a7ec5c8ee23149d152991c041ead55ccd">cameraToAnimate</a>, Camera destination, Camera origin, float <a class="el" href="a00816.html#a3e7571f2cbfdb9e828cef2ce41b074b8">duration</a>=1f, <a class="el" href="a00417.html#a4bdc6a1f5ac3c6bc6afd8337038cceb6">Curve</a> <a class="el" href="a00816.html#a46f99982616a84e4be394f1b3de93f54">curve</a>=<a class="el" href="a00417.html#a4bdc6a1f5ac3c6bc6afd8337038cceb6ab5a2f8abee775e5f5f4c30e031739365">Curve.EaseInOut</a>, <a class="el" href="a00816.html#a321703834e798c9143549f9a088f024d">WrapMode</a> <a class="el" href="a00816.html#abedbc265cc3dd3d4c5fce14f45f5d3c4">wrapMode</a>=<a class="el" href="a00816.html#a321703834e798c9143549f9a088f024dae1a9dc9f23534e63de9df0d540ac1611">WrapMode.Once</a>)</td></tr>
+<tr class="separator:a2dbf1a74d45c5ee37b8a5ce32a4148ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3920fb3bd33d3a9ab77049974a4d9c70"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a3920fb3bd33d3a9ab77049974a4d9c70">Step</a> (float deltaTime, bool inverseIfMirror=true)</td></tr>
+<tr class="memdesc:a3920fb3bd33d3a9ab77049974a4d9c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Go forward or backwards in the animation.  <a href="a00780.html#a3920fb3bd33d3a9ab77049974a4d9c70">More...</a><br /></td></tr>
+<tr class="separator:a3920fb3bd33d3a9ab77049974a4d9c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5311d733c6bac1135c138843ea594cc6"><td class="memItemLeft" align="right" valign="top">override Object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a5311d733c6bac1135c138843ea594cc6">GetAnimatedObject</a> (bool displayWarningIfNotApplicable)</td></tr>
+<tr class="memdesc:a5311d733c6bac1135c138843ea594cc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the UnityEngine.Object animated. If not applicable, return null.  <a href="a00780.html#a5311d733c6bac1135c138843ea594cc6">More...</a><br /></td></tr>
+<tr class="separator:a5311d733c6bac1135c138843ea594cc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa68780dfa74c9f7235b0ce032a1d3697"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#aa68780dfa74c9f7235b0ce032a1d3697">Reset</a> ()</td></tr>
+<tr class="memdesc:aa68780dfa74c9f7235b0ce032a1d3697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the time stamps of the animation to the beginning (the behaviour changes depending on if the animation is set as mirror or not).  <a href="a00816.html#aa68780dfa74c9f7235b0ce032a1d3697">More...</a><br /></td></tr>
+<tr class="separator:aa68780dfa74c9f7235b0ce032a1d3697"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacec93f24898cf800605221e169385bb"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#aacec93f24898cf800605221e169385bb">ToString</a> ()</td></tr>
+<tr class="separator:aacec93f24898cf800605221e169385bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7f44fe2fa5238878ec2d87fc3c777e2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#ac7f44fe2fa5238878ec2d87fc3c777e2">SetProgress</a> (float <a class="el" href="a00816.html#a410113710da3e6f1ad07571b107dc0bf">progress</a>)</td></tr>
+<tr class="memdesc:ac7f44fe2fa5238878ec2d87fc3c777e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the animation at the given progress.  <a href="a00816.html#ac7f44fe2fa5238878ec2d87fc3c777e2">More...</a><br /></td></tr>
+<tr class="separator:ac7f44fe2fa5238878ec2d87fc3c777e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a72547b65b6043378910c89cbdd51f416"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a72547b65b6043378910c89cbdd51f416">Reset</a> ()</td></tr>
-<tr class="memdesc:a72547b65b6043378910c89cbdd51f416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes any cached type lookup results.  <a href="a00780.html#a72547b65b6043378910c89cbdd51f416">More...</a><br /></td></tr>
-<tr class="separator:a72547b65b6043378910c89cbdd51f416"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd2bb1253af70e23a67815c63ce8181b"><td class="memItemLeft" align="right" valign="top">static Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#abd2bb1253af70e23a67815c63ce8181b">GetType</a> (string name)</td></tr>
-<tr class="memdesc:abd2bb1253af70e23a67815c63ce8181b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a type with the given name. An exception is thrown if no type with the given name can be found. This method searches all currently loaded assemblies for the given type. If the type cannot be found, then null will be returned.  <a href="a00780.html#abd2bb1253af70e23a67815c63ce8181b">More...</a><br /></td></tr>
-<tr class="separator:abd2bb1253af70e23a67815c63ce8181b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20c717cc8d35a91d53c688da54f7841f"><td class="memItemLeft" align="right" valign="top">static Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a20c717cc8d35a91d53c688da54f7841f">GetType</a> (string name, string assemblyHint)</td></tr>
-<tr class="memdesc:a20c717cc8d35a91d53c688da54f7841f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a type with the given name. An exception is thrown if no type with the given name can be found. This method searches all currently loaded assemblies for the given type. If the type cannot be found, then null will be returned.  <a href="a00780.html#a20c717cc8d35a91d53c688da54f7841f">More...</a><br /></td></tr>
-<tr class="separator:a20c717cc8d35a91d53c688da54f7841f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace3348b8ef471dc89f901d63ba73bcd9"><td class="memItemLeft" align="right" valign="top">static AnimationCurve&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#ace3348b8ef471dc89f901d63ba73bcd9">GetCurve</a> (<a class="el" href="a00417.html#a4bdc6a1f5ac3c6bc6afd8337038cceb6">Curve</a> <a class="el" href="a00816.html#a46f99982616a84e4be394f1b3de93f54">curve</a>)</td></tr>
+<tr class="memdesc:ace3348b8ef471dc89f901d63ba73bcd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtains the desired type of animation curve with a duration of 1 (starting on 0), the start value being 0 and the end value being 1  <a href="a00816.html#ace3348b8ef471dc89f901d63ba73bcd9">More...</a><br /></td></tr>
+<tr class="separator:ace3348b8ef471dc89f901d63ba73bcd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a052b3b9f1d409b5f3c666a30d27e3756"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a052b3b9f1d409b5f3c666a30d27e3756">fsTypeCache</a> ()</td></tr>
-<tr class="separator:a052b3b9f1d409b5f3c666a30d27e3756"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34423b9cb83e1b7015a9cdc0ac169757"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a34423b9cb83e1b7015a9cdc0ac169757">OnAssemblyLoaded</a> (object sender, AssemblyLoadEventArgs args)</td></tr>
-<tr class="separator:a34423b9cb83e1b7015a9cdc0ac169757"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a504e43d485161c0069572a5bb01c8a86"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a504e43d485161c0069572a5bb01c8a86">TryDirectTypeLookup</a> (string assemblyName, string typeName, out Type type)</td></tr>
-<tr class="memdesc:a504e43d485161c0069572a5bb01c8a86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does a direct lookup for the given type, ie, goes directly to the assembly identified by assembly name and finds it there.  <a href="a00780.html#a504e43d485161c0069572a5bb01c8a86">More...</a><br /></td></tr>
-<tr class="separator:a504e43d485161c0069572a5bb01c8a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bcd05a5db5ab7bee1f6de786d341618"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a7bcd05a5db5ab7bee1f6de786d341618">TryIndirectTypeLookup</a> (string typeName, out Type type)</td></tr>
-<tr class="memdesc:a7bcd05a5db5ab7bee1f6de786d341618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to do an indirect type lookup by scanning through every loaded assembly until the type is found in one of them.  <a href="a00780.html#a7bcd05a5db5ab7bee1f6de786d341618">More...</a><br /></td></tr>
-<tr class="separator:a7bcd05a5db5ab7bee1f6de786d341618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a7ec5c8ee23149d152991c041ead55ccd"><td class="memItemLeft" align="right" valign="top">Camera&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a7ec5c8ee23149d152991c041ead55ccd">cameraToAnimate</a></td></tr>
+<tr class="separator:a7ec5c8ee23149d152991c041ead55ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45649a8d10eef89e21f5130ff7ae69ed"><td class="memItemLeft" align="right" valign="top">Camera&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a45649a8d10eef89e21f5130ff7ae69ed">originCamera</a></td></tr>
+<tr class="separator:a45649a8d10eef89e21f5130ff7ae69ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a277b8cdb5d8c4228e864fd0f6b33a104"><td class="memItemLeft" align="right" valign="top">Camera&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a277b8cdb5d8c4228e864fd0f6b33a104">destinationCamera</a></td></tr>
+<tr class="separator:a277b8cdb5d8c4228e864fd0f6b33a104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf82b5b37ac94a338c622496d23a186a"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#abf82b5b37ac94a338c622496d23a186a">name</a></td></tr>
+<tr class="separator:abf82b5b37ac94a338c622496d23a186a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abedbc265cc3dd3d4c5fce14f45f5d3c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00816.html#a321703834e798c9143549f9a088f024d">WrapMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#abedbc265cc3dd3d4c5fce14f45f5d3c4">wrapMode</a></td></tr>
+<tr class="separator:abedbc265cc3dd3d4c5fce14f45f5d3c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae11a12f3215f60c6e359c1684b6194eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#ae11a12f3215f60c6e359c1684b6194eb">mirror</a></td></tr>
+<tr class="separator:ae11a12f3215f60c6e359c1684b6194eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e7571f2cbfdb9e828cef2ce41b074b8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#a3e7571f2cbfdb9e828cef2ce41b074b8">duration</a></td></tr>
+<tr class="separator:a3e7571f2cbfdb9e828cef2ce41b074b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46f99982616a84e4be394f1b3de93f54"><td class="memItemLeft" align="right" valign="top">AnimationCurve&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#a46f99982616a84e4be394f1b3de93f54">curve</a></td></tr>
+<tr class="separator:a46f99982616a84e4be394f1b3de93f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab69c917718bb4501d595a2d4f2be1c8e"><td class="memItemLeft" align="right" valign="top">UnityEvent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#ab69c917718bb4501d595a2d4f2be1c8e">onStep</a></td></tr>
+<tr class="separator:ab69c917718bb4501d595a2d4f2be1c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a64aef017d8ead9fcb7de288ff02ed4"><td class="memItemLeft" align="right" valign="top">UnityEvent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#a9a64aef017d8ead9fcb7de288ff02ed4">onFinish</a></td></tr>
+<tr class="separator:a9a64aef017d8ead9fcb7de288ff02ed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:ac8db8dfe6b7d135a10ff0a1a91e2c94d"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#ac8db8dfe6b7d135a10ff0a1a91e2c94d">_cachedTypes</a> = new Dictionary&lt;string, Type&gt;()</td></tr>
-<tr class="memdesc:ac8db8dfe6b7d135a10ff0a1a91e2c94d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache from fully qualified type name to type instances.  <a href="a00780.html#ac8db8dfe6b7d135a10ff0a1a91e2c94d">More...</a><br /></td></tr>
-<tr class="separator:ac8db8dfe6b7d135a10ff0a1a91e2c94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a293e2805a7f591f1d8e1a10674c53b19"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, Assembly &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a293e2805a7f591f1d8e1a10674c53b19">_assembliesByName</a></td></tr>
-<tr class="memdesc:a293e2805a7f591f1d8e1a10674c53b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemblies indexed by their name.  <a href="a00780.html#a293e2805a7f591f1d8e1a10674c53b19">More...</a><br /></td></tr>
-<tr class="separator:a293e2805a7f591f1d8e1a10674c53b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68e32d2c50771984b40b47634941448c"><td class="memItemLeft" align="right" valign="top">static List&lt; Assembly &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00780.html#a68e32d2c50771984b40b47634941448c">_assembliesByIndex</a></td></tr>
-<tr class="memdesc:a68e32d2c50771984b40b47634941448c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of assemblies, by index.  <a href="a00780.html#a68e32d2c50771984b40b47634941448c">More...</a><br /></td></tr>
-<tr class="separator:a68e32d2c50771984b40b47634941448c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a32cd2e80509121d85b91d839bbfdd8d8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#a32cd2e80509121d85b91d839bbfdd8d8">timeStamp</a><code> [get, protected set]</code></td></tr>
+<tr class="separator:a32cd2e80509121d85b91d839bbfdd8d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a410113710da3e6f1ad07571b107dc0bf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#a410113710da3e6f1ad07571b107dc0bf">progress</a><code> [get, set]</code></td></tr>
+<tr class="separator:a410113710da3e6f1ad07571b107dc0bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab316daddbab6e43fe1b29fd2fa3e6dc3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#ab316daddbab6e43fe1b29fd2fa3e6dc3">currentAnimationCurveValue</a><code> [get]</code></td></tr>
+<tr class="separator:ab316daddbab6e43fe1b29fd2fa3e6dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a6ee9f972a5354e68e2e510dbd0a9319b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00816.html#a6ee9f972a5354e68e2e510dbd0a9319b">_timeStamp</a></td></tr>
+<tr class="separator:a6ee9f972a5354e68e2e510dbd0a9319b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Caches type name to type lookups. Type lookups occur in all loaded assemblies. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00009">9</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a052b3b9f1d409b5f3c666a30d27e3756"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a052b3b9f1d409b5f3c666a30d27e3756">&#9670;&nbsp;</a></span>fsTypeCache()</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="a00230_source.html#l00006">6</a> of file <a class="el" href="a00230_source.html">CameraAnimation.cs</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a321703834e798c9143549f9a088f024d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a321703834e798c9143549f9a088f024d">&#9670;&nbsp;</a></span>WrapMode</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,35 +175,111 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static FullSerializer.Internal.fsTypeCache.fsTypeCache </td>
+          <td class="memname">enum <a class="el" href="a00816.html#a321703834e798c9143549f9a088f024d">UnityEngine.SimpleAnimation.WrapMode</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a321703834e798c9143549f9a088f024dae1a9dc9f23534e63de9df0d540ac1611"></a>Once&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a321703834e798c9143549f9a088f024da89d7b10cb4238977d2b523dfd9ea7745"></a>Loop&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a321703834e798c9143549f9a088f024da99e52704462d3580db3528cad7ea9660"></a>PingPong&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00029">29</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a2edc953ca64cc02127d9696958190f8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2edc953ca64cc02127d9696958190f8b">&#9670;&nbsp;</a></span>CameraAnimation() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UnityEngine.CameraAnimation.CameraAnimation </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00026">26</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00230_source.html#l00013">13</a> of file <a class="el" href="a00230_source.html">CameraAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="a2dbf1a74d45c5ee37b8a5ce32a4148ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dbf1a74d45c5ee37b8a5ce32a4148ef">&#9670;&nbsp;</a></span>CameraAnimation() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UnityEngine.CameraAnimation.CameraAnimation </td>
+          <td>(</td>
+          <td class="paramtype">Camera&#160;</td>
+          <td class="paramname"><em>cameraToAnimate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Camera&#160;</td>
+          <td class="paramname"><em>destination</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Camera&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>duration</em> = <code>1f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00417.html#a4bdc6a1f5ac3c6bc6afd8337038cceb6">Curve</a>&#160;</td>
+          <td class="paramname"><em>curve</em> = <code><a class="el" href="a00417.html#a4bdc6a1f5ac3c6bc6afd8337038cceb6ab5a2f8abee775e5f5f4c30e031739365">Curve.EaseInOut</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00816.html#a321703834e798c9143549f9a088f024d">WrapMode</a>&#160;</td>
+          <td class="paramname"><em>wrapMode</em> = <code><a class="el" href="a00816.html#a321703834e798c9143549f9a088f024dae1a9dc9f23534e63de9df0d540ac1611">WrapMode.Once</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00230_source.html#l00015">15</a> of file <a class="el" href="a00230_source.html">CameraAnimation.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00780_a052b3b9f1d409b5f3c666a30d27e3756_cgraph.png" border="0" usemap="#aa00780_a052b3b9f1d409b5f3c666a30d27e3756_cgraph" alt=""/></div>
-<map name="aa00780_a052b3b9f1d409b5f3c666a30d27e3756_cgraph" id="aa00780_a052b3b9f1d409b5f3c666a30d27e3756_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,307,32"/>
-<area shape="rect" href="a00780.html#a34423b9cb83e1b7015a9cdc0ac169757" title=" " alt="" coords="355,5,697,32"/>
+<div class="center"><img src="a00780_a2dbf1a74d45c5ee37b8a5ce32a4148ef_cgraph.png" border="0" usemap="#aa00780_a2dbf1a74d45c5ee37b8a5ce32a4148ef_cgraph" alt=""/></div>
+<map name="aa00780_a2dbf1a74d45c5ee37b8a5ce32a4148ef_cgraph" id="aa00780_a2dbf1a74d45c5ee37b8a5ce32a4148ef_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,312,32"/>
+<area shape="rect" href="a00816.html#ace3348b8ef471dc89f901d63ba73bcd9" title="Obtains the desired type of animation curve with a duration of 1 (starting on 0), the start value bei..." alt="" coords="360,5,611,32"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="abd2bb1253af70e23a67815c63ce8181b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd2bb1253af70e23a67815c63ce8181b">&#9670;&nbsp;</a></span>GetType() <span class="overload">[1/2]</span></h2>
+<a id="a5311d733c6bac1135c138843ea594cc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5311d733c6bac1135c138843ea594cc6">&#9670;&nbsp;</a></span>GetAnimatedObject()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,47 +288,83 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static Type FullSerializer.Internal.fsTypeCache.GetType </td>
+          <td class="memname">override Object UnityEngine.CameraAnimation.GetAnimatedObject </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>displayWarningIfNotApplicable</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Find a type with the given name. An exception is thrown if no type with the given name can be found. This method searches all currently loaded assemblies for the given type. If the type cannot be found, then null will be returned. </p>
+<p>Returns the UnityEngine.Object animated. If not applicable, return null. </p>
+
+<p>Implements <a class="el" href="a00816.html#add16de3d4137427a80149c34c259dc30">UnityEngine.SimpleAnimation</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="a00230_source.html#l00036">36</a> of file <a class="el" href="a00230_source.html">CameraAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="ace3348b8ef471dc89f901d63ba73bcd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace3348b8ef471dc89f901d63ba73bcd9">&#9670;&nbsp;</a></span>GetCurve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static AnimationCurve UnityEngine.SimpleAnimation.GetCurve </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00417.html#a4bdc6a1f5ac3c6bc6afd8337038cceb6">Curve</a>&#160;</td>
+          <td class="paramname"><em>curve</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtains the desired type of animation curve with a duration of 1 (starting on 0), the start value being 0 and the end value being 1 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>The fully qualified name of the type.</td></tr>
+    <tr><td class="paramname">curve</td><td>THe desired type of curve.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The desired type of animation curve with a duration of 1 (starting on 0), the start value being 0 and the end value being 1</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00137">137</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00103">103</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00780_abd2bb1253af70e23a67815c63ce8181b_icgraph.png" border="0" usemap="#aa00780_abd2bb1253af70e23a67815c63ce8181b_icgraph" alt=""/></div>
-<map name="aa00780_abd2bb1253af70e23a67815c63ce8181b_icgraph" id="aa00780_abd2bb1253af70e23a67815c63ce8181b_icgraph">
-<area shape="rect" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="1533,31,1808,57"/>
-<area shape="rect" href="a00724.html#ab0a9c3650c92120b7a5a3ee4abc171e9" title=" " alt="" coords="1127,5,1485,32"/>
-<area shape="rect" href="a00588.html#aa94af57c0f67c755cb406529813a13aa" title="Deserialize data into the object instance." alt="" coords="1143,56,1469,83"/>
-<area shape="rect" href="a00724.html#abd29b64f632a01c07ad6bd0c973e00a0" title=" " alt="" coords="739,5,1079,32"/>
-<area shape="rect" href="a00724.html#a048b235379a8cf6fb8c1fb8b6eb466fa" title=" " alt="" coords="304,5,691,32"/>
-<area shape="rect" href="a00724.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="5,5,256,32"/>
+<div class="center"><img src="a00816_ace3348b8ef471dc89f901d63ba73bcd9_icgraph.png" border="0" usemap="#aa00816_ace3348b8ef471dc89f901d63ba73bcd9_icgraph" alt=""/></div>
+<map name="aa00816_ace3348b8ef471dc89f901d63ba73bcd9_icgraph" id="aa00816_ace3348b8ef471dc89f901d63ba73bcd9_icgraph">
+<area shape="rect" title="Obtains the desired type of animation curve with a duration of 1 (starting on 0), the start value bei..." alt="" coords="437,183,688,209"/>
+<area shape="rect" href="a00780.html#a2dbf1a74d45c5ee37b8a5ce32a4148ef" title=" " alt="" coords="44,5,351,32"/>
+<area shape="rect" href="a00784.html#aaf309eb9e263ccd6915f9ce2b70f87e8" title=" " alt="" coords="59,56,335,83"/>
+<area shape="rect" href="a00788.html#a52189f14ba898a07ec251471200ca9ab" title=" " alt="" coords="60,107,335,133"/>
+<area shape="rect" href="a00792.html#a2e4f5004ea1f378334d9c5c90e67b054" title=" " alt="" coords="75,157,319,184"/>
+<area shape="rect" href="a00796.html#ae58b3e22b52b732c95fcc2f18416b8c6" title=" " alt="" coords="5,208,389,235"/>
+<area shape="rect" href="a00800.html#a1529a6f3948ad1db5faa9b72adb55233" title=" " alt="" coords="32,259,363,285"/>
+<area shape="rect" href="a00804.html#ab0542a8621b583e743b0de7acf4587ed" title=" " alt="" coords="44,309,351,336"/>
+<area shape="rect" href="a00808.html#ad19abf0218bf2d5937b9d33201684e49" title=" " alt="" coords="44,360,351,387"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a20c717cc8d35a91d53c688da54f7841f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20c717cc8d35a91d53c688da54f7841f">&#9670;&nbsp;</a></span>GetType() <span class="overload">[2/2]</span></h2>
+<a id="aa68780dfa74c9f7235b0ce032a1d3697"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa68780dfa74c9f7235b0ce032a1d3697">&#9670;&nbsp;</a></span>Reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,111 +373,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static Type FullSerializer.Internal.fsTypeCache.GetType </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>assemblyHint</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Find a type with the given name. An exception is thrown if no type with the given name can be found. This method searches all currently loaded assemblies for the given type. If the type cannot be found, then null will be returned. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>The fully qualified name of the type.</td></tr>
-    <tr><td class="paramname">assemblyHint</td><td>A hint for the assembly to start the search with. Use null if unknown.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00148">148</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00780_a20c717cc8d35a91d53c688da54f7841f_cgraph.png" border="0" usemap="#aa00780_a20c717cc8d35a91d53c688da54f7841f_cgraph" alt=""/></div>
-<map name="aa00780_a20c717cc8d35a91d53c688da54f7841f_cgraph" id="aa00780_a20c717cc8d35a91d53c688da54f7841f_cgraph">
-<area shape="rect" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="5,31,280,57"/>
-<area shape="rect" href="a00780.html#a504e43d485161c0069572a5bb01c8a86" title="Does a direct lookup for the given type, ie, goes directly to the assembly identified by assembly nam..." alt="" coords="332,5,680,32"/>
-<area shape="rect" href="a00780.html#a7bcd05a5db5ab7bee1f6de786d341618" title="Tries to do an indirect type lookup by scanning through every loaded assembly until the type is found..." alt="" coords="328,56,684,83"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a34423b9cb83e1b7015a9cdc0ac169757"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34423b9cb83e1b7015a9cdc0ac169757">&#9670;&nbsp;</a></span>OnAssemblyLoaded()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void FullSerializer.Internal.fsTypeCache.OnAssemblyLoaded </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">AssemblyLoadEventArgs&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00050">50</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00780_a34423b9cb83e1b7015a9cdc0ac169757_icgraph.png" border="0" usemap="#aa00780_a34423b9cb83e1b7015a9cdc0ac169757_icgraph" alt=""/></div>
-<map name="aa00780_a34423b9cb83e1b7015a9cdc0ac169757_icgraph" id="aa00780_a34423b9cb83e1b7015a9cdc0ac169757_icgraph">
-<area shape="rect" title=" " alt="" coords="355,5,697,32"/>
-<area shape="rect" href="a00780.html#a052b3b9f1d409b5f3c666a30d27e3756" title=" " alt="" coords="5,5,307,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a72547b65b6043378910c89cbdd51f416"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72547b65b6043378910c89cbdd51f416">&#9670;&nbsp;</a></span>Reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void FullSerializer.Internal.fsTypeCache.Reset </td>
+          <td class="memname">void UnityEngine.SimpleAnimation.Reset </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -337,19 +381,35 @@ Here is the caller graph for this function:</div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Removes any cached type lookup results. </p>
+<p>Sets the time stamps of the animation to the beginning (the behaviour changes depending on if the animation is set as mirror or not). </p>
 
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00127">127</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00086">86</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00816_aa68780dfa74c9f7235b0ce032a1d3697_icgraph.png" border="0" usemap="#aa00816_aa68780dfa74c9f7235b0ce032a1d3697_icgraph" alt=""/></div>
+<map name="aa00816_aa68780dfa74c9f7235b0ce032a1d3697_icgraph" id="aa00816_aa68780dfa74c9f7235b0ce032a1d3697_icgraph">
+<area shape="rect" title="Sets the time stamps of the animation to the beginning (the behaviour changes depending on if the ani..." alt="" coords="1056,157,1288,184"/>
+<area shape="rect" href="a00820.html#a20d2ae86e732c52efd768b58526d4e35" title="Starts playing the animation." alt="" coords="727,157,1008,184"/>
+<area shape="rect" href="a00452.html#a13e8597a9f0c97e5c38dda7234fcf17e" title=" " alt="" coords="5,5,679,32"/>
+<area shape="rect" href="a00820.html#a7253a77e863eaa118a86b9910b8132cf" title="Starts playing the animation." alt="" coords="201,56,483,83"/>
+<area shape="rect" href="a00440.html#a496410aba65ac9ee5e7706e12d20efa5" title=" " alt="" coords="80,107,604,133"/>
+<area shape="rect" href="a00444.html#acb8caaaa8f9663a33565b86051e3e5e8" title=" " alt="" coords="75,157,609,184"/>
+<area shape="rect" href="a00448.html#a9b3a65cd6d54ea7c652d9e4f32635d68" title=" " alt="" coords="67,208,617,235"/>
+<area shape="rect" href="a00452.html#a3f1023a4592f30da1b2fc1708b6acbcd" title=" " alt="" coords="41,259,643,285"/>
+<area shape="rect" href="a00456.html#a4df3816c163b5b6e23b7cb82d68174bc" title=" " alt="" coords="68,309,616,336"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="a504e43d485161c0069572a5bb01c8a86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a504e43d485161c0069572a5bb01c8a86">&#9670;&nbsp;</a></span>TryDirectTypeLookup()</h2>
+<a id="ac7f44fe2fa5238878ec2d87fc3c777e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7f44fe2fa5238878ec2d87fc3c777e2">&#9670;&nbsp;</a></span>SetProgress()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -358,22 +418,73 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool FullSerializer.Internal.fsTypeCache.TryDirectTypeLookup </td>
+          <td class="memname">virtual void UnityEngine.SimpleAnimation.SetProgress </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>assemblyName</em>, </td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>progress</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the animation at the given progress. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">progress</td><td>The progress of the animation [0,1]</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00120">120</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00816_ac7f44fe2fa5238878ec2d87fc3c777e2_cgraph.png" border="0" usemap="#aa00816_ac7f44fe2fa5238878ec2d87fc3c777e2_cgraph" alt=""/></div>
+<map name="aa00816_ac7f44fe2fa5238878ec2d87fc3c777e2_cgraph" id="aa00816_ac7f44fe2fa5238878ec2d87fc3c777e2_cgraph">
+<area shape="rect" title="Sets the animation at the given progress." alt="" coords="5,5,276,32"/>
+<area shape="rect" href="a00816.html#ae13e0576f045f3da3258fc462f08e873" title="Go forward or backwards in the animation." alt="" coords="324,5,549,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00816_ac7f44fe2fa5238878ec2d87fc3c777e2_icgraph.png" border="0" usemap="#aa00816_ac7f44fe2fa5238878ec2d87fc3c777e2_icgraph" alt=""/></div>
+<map name="aa00816_ac7f44fe2fa5238878ec2d87fc3c777e2_icgraph" id="aa00816_ac7f44fe2fa5238878ec2d87fc3c777e2_icgraph">
+<area shape="rect" title="Sets the animation at the given progress." alt="" coords="755,56,1025,83"/>
+<area shape="rect" href="a00820.html#a6fb27d9a04315c44a4becc43ff996319" title="Sets the animation at the given progress." alt="" coords="380,5,707,32"/>
+<area shape="rect" href="a00816.html#ae13e0576f045f3da3258fc462f08e873" title="Go forward or backwards in the animation." alt="" coords="431,56,656,83"/>
+<area shape="rect" href="a00820.html#aa5c0b1b7bbfa2fbbb721ebc9f4ff829b" title="Sets the animation at the given progress." alt="" coords="5,5,332,32"/>
+<area shape="rect" href="a00820.html#a203b6a3bcac753912241f1f9c3e96df3" title=" " alt="" coords="21,56,317,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a3920fb3bd33d3a9ab77049974a4d9c70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3920fb3bd33d3a9ab77049974a4d9c70">&#9670;&nbsp;</a></span>Step()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override bool UnityEngine.CameraAnimation.Step </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>deltaTime</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>typeName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out Type&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>inverseIfMirror</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -383,37 +494,29 @@ Here is the caller graph for this function:</div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Does a direct lookup for the given type, ie, goes directly to the assembly identified by assembly name and finds it there. </p>
+<p>Go forward or backwards in the animation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">assemblyName</td><td>The assembly to find the type in.</td></tr>
-    <tr><td class="paramname">typeName</td><td>The name of the type.</td></tr>
-    <tr><td class="paramname">type</td><td>The found type.</td></tr>
+    <tr><td class="paramname">deltaTime</td><td>The elapsed time between the last step and the current one.</td></tr>
+    <tr><td class="paramname">inverseIfMirror</td><td>If true, the delta time of the step will be inverted if the animation is set to mirror.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the type was found, false otherwise.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the animation should have ended. False if the animation should still in progress.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00066">66</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00780_a504e43d485161c0069572a5bb01c8a86_icgraph.png" border="0" usemap="#aa00780_a504e43d485161c0069572a5bb01c8a86_icgraph" alt=""/></div>
-<map name="aa00780_a504e43d485161c0069572a5bb01c8a86_icgraph" id="aa00780_a504e43d485161c0069572a5bb01c8a86_icgraph">
-<area shape="rect" title="Does a direct lookup for the given type, ie, goes directly to the assembly identified by assembly nam..." alt="" coords="328,5,676,32"/>
-<area shape="rect" href="a00780.html#a20c717cc8d35a91d53c688da54f7841f" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="5,5,280,32"/>
-</map>
-</div>
+<p>Reimplemented from <a class="el" href="a00816.html#ae13e0576f045f3da3258fc462f08e873">UnityEngine.SimpleAnimation</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="a00230_source.html#l00027">27</a> of file <a class="el" href="a00230_source.html">CameraAnimation.cs</a>.</p>
 
 </div>
 </div>
-<a id="a7bcd05a5db5ab7bee1f6de786d341618"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7bcd05a5db5ab7bee1f6de786d341618">&#9670;&nbsp;</a></span>TryIndirectTypeLookup()</h2>
+<a id="aacec93f24898cf800605221e169385bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacec93f24898cf800605221e169385bb">&#9670;&nbsp;</a></span>ToString()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -422,56 +525,26 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool FullSerializer.Internal.fsTypeCache.TryIndirectTypeLookup </td>
+          <td class="memname">override string UnityEngine.SimpleAnimation.ToString </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>typeName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">out Type&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Tries to do an indirect type lookup by scanning through every loaded assembly until the type is found in one of them. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">typeName</td><td>The name of the type.</td></tr>
-    <tr><td class="paramname">type</td><td>The found type.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the type was found, false otherwise.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00086">86</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00780_a7bcd05a5db5ab7bee1f6de786d341618_icgraph.png" border="0" usemap="#aa00780_a7bcd05a5db5ab7bee1f6de786d341618_icgraph" alt=""/></div>
-<map name="aa00780_a7bcd05a5db5ab7bee1f6de786d341618_icgraph" id="aa00780_a7bcd05a5db5ab7bee1f6de786d341618_icgraph">
-<area shape="rect" title="Tries to do an indirect type lookup by scanning through every loaded assembly until the type is found..." alt="" coords="328,5,684,32"/>
-<area shape="rect" href="a00780.html#a20c717cc8d35a91d53c688da54f7841f" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="5,5,280,32"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00092">92</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a68e32d2c50771984b40b47634941448c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68e32d2c50771984b40b47634941448c">&#9670;&nbsp;</a></span>_assembliesByIndex</h2>
+<a id="a6ee9f972a5354e68e2e510dbd0a9319b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ee9f972a5354e68e2e510dbd0a9319b">&#9670;&nbsp;</a></span>_timeStamp</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -480,24 +553,38 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;Assembly&gt; FullSerializer.Internal.fsTypeCache._assembliesByIndex</td>
+          <td class="memname">float UnityEngine.SimpleAnimation._timeStamp</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>A list of assemblies, by index. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00024">24</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00011">11</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
 
 </div>
 </div>
-<a id="a293e2805a7f591f1d8e1a10674c53b19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a293e2805a7f591f1d8e1a10674c53b19">&#9670;&nbsp;</a></span>_assembliesByName</h2>
+<a id="a7ec5c8ee23149d152991c041ead55ccd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ec5c8ee23149d152991c041ead55ccd">&#9670;&nbsp;</a></span>cameraToAnimate</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Camera UnityEngine.CameraAnimation.cameraToAnimate</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00230_source.html#l00008">8</a> of file <a class="el" href="a00230_source.html">CameraAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="a46f99982616a84e4be394f1b3de93f54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46f99982616a84e4be394f1b3de93f54">&#9670;&nbsp;</a></span>curve</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -506,24 +593,38 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Dictionary&lt;string, Assembly&gt; FullSerializer.Internal.fsTypeCache._assembliesByName</td>
+          <td class="memname">AnimationCurve UnityEngine.SimpleAnimation.curve</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Assemblies indexed by their name. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00019">19</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00024">24</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
 
 </div>
 </div>
-<a id="ac8db8dfe6b7d135a10ff0a1a91e2c94d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8db8dfe6b7d135a10ff0a1a91e2c94d">&#9670;&nbsp;</a></span>_cachedTypes</h2>
+<a id="a277b8cdb5d8c4228e864fd0f6b33a104"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a277b8cdb5d8c4228e864fd0f6b33a104">&#9670;&nbsp;</a></span>destinationCamera</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Camera UnityEngine.CameraAnimation.destinationCamera</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00230_source.html#l00010">10</a> of file <a class="el" href="a00230_source.html">CameraAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="a3e7571f2cbfdb9e828cef2ce41b074b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e7571f2cbfdb9e828cef2ce41b074b8">&#9670;&nbsp;</a></span>duration</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -532,24 +633,231 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Dictionary&lt;string, Type&gt; FullSerializer.Internal.fsTypeCache._cachedTypes = new Dictionary&lt;string, Type&gt;()</td>
+          <td class="memname">float UnityEngine.SimpleAnimation.duration</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Cache from fully qualified type name to type instances. </p>
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00023">23</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00014">14</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+</div>
+</div>
+<a id="ae11a12f3215f60c6e359c1684b6194eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae11a12f3215f60c6e359c1684b6194eb">&#9670;&nbsp;</a></span>mirror</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool UnityEngine.SimpleAnimation.mirror</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00022">22</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="abf82b5b37ac94a338c622496d23a186a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf82b5b37ac94a338c622496d23a186a">&#9670;&nbsp;</a></span>name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string UnityEngine.SimpleAnimation.name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00009">9</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="a9a64aef017d8ead9fcb7de288ff02ed4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a64aef017d8ead9fcb7de288ff02ed4">&#9670;&nbsp;</a></span>onFinish</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">UnityEvent UnityEngine.SimpleAnimation.onFinish</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00027">27</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="ab69c917718bb4501d595a2d4f2be1c8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab69c917718bb4501d595a2d4f2be1c8e">&#9670;&nbsp;</a></span>onStep</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">UnityEvent UnityEngine.SimpleAnimation.onStep</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00026">26</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="a45649a8d10eef89e21f5130ff7ae69ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45649a8d10eef89e21f5130ff7ae69ed">&#9670;&nbsp;</a></span>originCamera</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Camera UnityEngine.CameraAnimation.originCamera</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00230_source.html#l00009">9</a> of file <a class="el" href="a00230_source.html">CameraAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="abedbc265cc3dd3d4c5fce14f45f5d3c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abedbc265cc3dd3d4c5fce14f45f5d3c4">&#9670;&nbsp;</a></span>wrapMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00816.html#a321703834e798c9143549f9a088f024d">WrapMode</a> UnityEngine.SimpleAnimation.wrapMode</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00021">21</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="ab316daddbab6e43fe1b29fd2fa3e6dc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab316daddbab6e43fe1b29fd2fa3e6dc3">&#9670;&nbsp;</a></span>currentAnimationCurveValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float UnityEngine.SimpleAnimation.currentAnimationCurveValue</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00025">25</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="a410113710da3e6f1ad07571b107dc0bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a410113710da3e6f1ad07571b107dc0bf">&#9670;&nbsp;</a></span>progress</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float UnityEngine.SimpleAnimation.progress</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00012">12</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
+
+</div>
+</div>
+<a id="a32cd2e80509121d85b91d839bbfdd8d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32cd2e80509121d85b91d839bbfdd8d8">&#9670;&nbsp;</a></span>timeStamp</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float UnityEngine.SimpleAnimation.timeStamp</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">protected set</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00257_source.html#l00010">10</a> of file <a class="el" href="a00257_source.html">SimpleAnimation.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00224_source.html">fsTypeCache.cs</a></li>
+<li><a class="el" href="a00230_source.html">CameraAnimation.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

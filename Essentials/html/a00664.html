@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: FullSerializer.fsConverter Class Reference</title>
+<title>UnityEssentials: FullSerializer.fsData Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,176 +62,349 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00416.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00664.html">fsConverter</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00413.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00664.html">fsData</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pac-methods">Package Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00661.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">FullSerializer.fsConverter Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">FullSerializer.fsData Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The serialization converter allows for customization of the serialization process.  
+<p>A union type that stores a serialized value. The stored type can be one of six different types: null, boolean, double, Int64, string, Dictionary, or List.  
  <a href="a00664.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for FullSerializer.fsConverter:</div>
+Collaboration diagram for FullSerializer.fsData:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00662.png" border="0" usemap="#aFullSerializer_8fsConverter_coll__map" alt="Collaboration graph"/></div>
-<map name="aFullSerializer_8fsConverter_coll__map" id="aFullSerializer_8fsConverter_coll__map">
-<area shape="rect" title="The serialization converter allows for customization of the serialization process." alt="" coords="461,1365,627,1443"/>
-<area shape="rect" href="a00648.html" title="The serialization converter allows for customization of the serialization process." alt="" coords="445,1092,643,1316"/>
-<area shape="rect" href="a00724.html" title=" " alt="" coords="383,277,705,1029"/>
-<area shape="rect" href="a00728.html" title="This manages instance writing so that we do not write unnecessary $id fields. We only need to write o..." alt="" coords="5,49,333,171"/>
-<area shape="rect" href="a00660.html" title="fsContext stores global metadata that can be used to customize how fsConverters operate during serial..." alt="" coords="358,49,514,171"/>
-<area shape="rect" href="a00656.html" title="Enables some top&#45;level customization of Full Serializer." alt="" coords="539,5,765,215"/>
-<area shape="rect" href="a00732.html" title=" " alt="" coords="789,5,1091,215"/>
+<div class="center"><img src="a00662.png" border="0" usemap="#aFullSerializer_8fsData_coll__map" alt="Collaboration graph"/></div>
+<map name="aFullSerializer_8fsData_coll__map" id="aFullSerializer_8fsData_coll__map">
+<area shape="rect" title="A union type that stores a serialized value. The stored type can be one of six different types: null,..." alt="" coords="5,5,153,552"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6d9e084c5e7f646a8d220705efaecb35"><td class="memItemLeft" align="right" valign="top">abstract bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a6d9e084c5e7f646a8d220705efaecb35">CanProcess</a> (Type type)</td></tr>
-<tr class="memdesc:a6d9e084c5e7f646a8d220705efaecb35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can this converter serialize and deserialize the given object type?  <a href="a00664.html#a6d9e084c5e7f646a8d220705efaecb35">More...</a><br /></td></tr>
-<tr class="separator:a6d9e084c5e7f646a8d220705efaecb35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a415ea2ac9429bbb9927346af7cb7c2e1"><td class="memItemLeft" align="right" valign="top">virtual object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a415ea2ac9429bbb9927346af7cb7c2e1">CreateInstance</a> (<a class="el" href="a00668.html">fsData</a> data, Type storageType)</td></tr>
-<tr class="memdesc:a415ea2ac9429bbb9927346af7cb7c2e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct an object instance that will be passed to TryDeserialize. This should <b>not</b> deserialize the object.  <a href="a00648.html#a415ea2ac9429bbb9927346af7cb7c2e1">More...</a><br /></td></tr>
-<tr class="separator:a415ea2ac9429bbb9927346af7cb7c2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e850ab88cea1b89771c00e0b65febcd"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a4e850ab88cea1b89771c00e0b65febcd">RequestCycleSupport</a> (Type storageType)</td></tr>
-<tr class="memdesc:a4e850ab88cea1b89771c00e0b65febcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the serializer will support cyclic references with the given converted type.  <a href="a00648.html#a4e850ab88cea1b89771c00e0b65febcd">More...</a><br /></td></tr>
-<tr class="separator:a4e850ab88cea1b89771c00e0b65febcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84447285540ab6b51efc2399d144c60c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a84447285540ab6b51efc2399d144c60c">RequestInheritanceSupport</a> (Type storageType)</td></tr>
-<tr class="memdesc:a84447285540ab6b51efc2399d144c60c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the serializer will include inheritance data for the given converter.  <a href="a00648.html#a84447285540ab6b51efc2399d144c60c">More...</a><br /></td></tr>
-<tr class="separator:a84447285540ab6b51efc2399d144c60c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb0065770e53ecaac3f5dd3b5cd670d1"><td class="memItemLeft" align="right" valign="top">abstract <a class="el" href="a00720.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#aeb0065770e53ecaac3f5dd3b5cd670d1">TrySerialize</a> (object instance, out <a class="el" href="a00668.html">fsData</a> serialized, Type storageType)</td></tr>
-<tr class="memdesc:aeb0065770e53ecaac3f5dd3b5cd670d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize the actual object into the given data storage.  <a href="a00648.html#aeb0065770e53ecaac3f5dd3b5cd670d1">More...</a><br /></td></tr>
-<tr class="separator:aeb0065770e53ecaac3f5dd3b5cd670d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38d3d1b042eb788819883354073a224e"><td class="memItemLeft" align="right" valign="top">abstract <a class="el" href="a00720.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a38d3d1b042eb788819883354073a224e">TryDeserialize</a> (<a class="el" href="a00668.html">fsData</a> data, ref object instance, Type storageType)</td></tr>
-<tr class="memdesc:a38d3d1b042eb788819883354073a224e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialize data into the object instance.  <a href="a00648.html#a38d3d1b042eb788819883354073a224e">More...</a><br /></td></tr>
-<tr class="separator:a38d3d1b042eb788819883354073a224e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b5e13a72849cb6c6a6948fac87260c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">fsData</a> ()</td></tr>
+<tr class="memdesc:a9b5e13a72849cb6c6a6948fac87260c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds null.  <a href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">More...</a><br /></td></tr>
+<tr class="separator:a9b5e13a72849cb6c6a6948fac87260c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0316b6b5db7d953fdfe6b352aa1af8e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#ab0316b6b5db7d953fdfe6b352aa1af8e">fsData</a> (bool boolean)</td></tr>
+<tr class="memdesc:ab0316b6b5db7d953fdfe6b352aa1af8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a boolean.  <a href="a00664.html#ab0316b6b5db7d953fdfe6b352aa1af8e">More...</a><br /></td></tr>
+<tr class="separator:ab0316b6b5db7d953fdfe6b352aa1af8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a694c04538e4e37df718316eff8e15635"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a694c04538e4e37df718316eff8e15635">fsData</a> (double f)</td></tr>
+<tr class="memdesc:a694c04538e4e37df718316eff8e15635"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a double.  <a href="a00664.html#a694c04538e4e37df718316eff8e15635">More...</a><br /></td></tr>
+<tr class="separator:a694c04538e4e37df718316eff8e15635"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab942e5e4fb36b7e815ce0f4195cc84da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#ab942e5e4fb36b7e815ce0f4195cc84da">fsData</a> (Int64 i)</td></tr>
+<tr class="memdesc:ab942e5e4fb36b7e815ce0f4195cc84da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds an integer.  <a href="a00664.html#ab942e5e4fb36b7e815ce0f4195cc84da">More...</a><br /></td></tr>
+<tr class="separator:ab942e5e4fb36b7e815ce0f4195cc84da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18d00eb27ffcbbd57ab7372856ae30f7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a18d00eb27ffcbbd57ab7372856ae30f7">fsData</a> (string str)</td></tr>
+<tr class="memdesc:a18d00eb27ffcbbd57ab7372856ae30f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a string.  <a href="a00664.html#a18d00eb27ffcbbd57ab7372856ae30f7">More...</a><br /></td></tr>
+<tr class="separator:a18d00eb27ffcbbd57ab7372856ae30f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8897bc4f6c2f0ff7acdcd0195746fc09"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a8897bc4f6c2f0ff7acdcd0195746fc09">fsData</a> (Dictionary&lt; string, <a class="el" href="a00664.html">fsData</a> &gt; dict)</td></tr>
+<tr class="memdesc:a8897bc4f6c2f0ff7acdcd0195746fc09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a dictionary of values.  <a href="a00664.html#a8897bc4f6c2f0ff7acdcd0195746fc09">More...</a><br /></td></tr>
+<tr class="separator:a8897bc4f6c2f0ff7acdcd0195746fc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6e99c4d2e08a96957ccd44491026e92"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#af6e99c4d2e08a96957ccd44491026e92">fsData</a> (List&lt; <a class="el" href="a00664.html">fsData</a> &gt; list)</td></tr>
+<tr class="memdesc:af6e99c4d2e08a96957ccd44491026e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a list of values.  <a href="a00664.html#af6e99c4d2e08a96957ccd44491026e92">More...</a><br /></td></tr>
+<tr class="separator:af6e99c4d2e08a96957ccd44491026e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac64cd3d8fa914d376259ff913c208791"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#ac64cd3d8fa914d376259ff913c208791">ToString</a> ()</td></tr>
+<tr class="separator:ac64cd3d8fa914d376259ff913c208791"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29d15c3ea23372768eea41226c322415"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a29d15c3ea23372768eea41226c322415">Equals</a> (object obj)</td></tr>
+<tr class="memdesc:a29d15c3ea23372768eea41226c322415"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the specified object is equal to the current object.  <a href="a00664.html#a29d15c3ea23372768eea41226c322415">More...</a><br /></td></tr>
+<tr class="separator:a29d15c3ea23372768eea41226c322415"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31f0be7076e3aeea8051eef9b4bff6c3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a31f0be7076e3aeea8051eef9b4bff6c3">Equals</a> (<a class="el" href="a00664.html">fsData</a> other)</td></tr>
+<tr class="memdesc:a31f0be7076e3aeea8051eef9b4bff6c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether the specified object is equal to the current object.  <a href="a00664.html#a31f0be7076e3aeea8051eef9b4bff6c3">More...</a><br /></td></tr>
+<tr class="separator:a31f0be7076e3aeea8051eef9b4bff6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a915cae40a9014f6027c2b88e35d74e8c"><td class="memItemLeft" align="right" valign="top">override int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a915cae40a9014f6027c2b88e35d74e8c">GetHashCode</a> ()</td></tr>
+<tr class="memdesc:a915cae40a9014f6027c2b88e35d74e8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a hash code for this instance.  <a href="a00664.html#a915cae40a9014f6027c2b88e35d74e8c">More...</a><br /></td></tr>
+<tr class="separator:a915cae40a9014f6027c2b88e35d74e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a6d55e268772d23da10ce9ca3dc0e415f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00724.html">fsSerializer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a6d55e268772d23da10ce9ca3dc0e415f">Serializer</a></td></tr>
-<tr class="memdesc:a6d55e268772d23da10ce9ca3dc0e415f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The serializer that was owns this converter.  <a href="a00648.html#a6d55e268772d23da10ce9ca3dc0e415f">More...</a><br /></td></tr>
-<tr class="separator:a6d55e268772d23da10ce9ca3dc0e415f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a736d3ed458af91620f8eb47447f15233"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00664.html">fsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a736d3ed458af91620f8eb47447f15233">CreateDictionary</a> ()</td></tr>
+<tr class="memdesc:a736d3ed458af91620f8eb47447f15233"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to create a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a dictionary.  <a href="a00664.html#a736d3ed458af91620f8eb47447f15233">More...</a><br /></td></tr>
+<tr class="separator:a736d3ed458af91620f8eb47447f15233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7c719ebad471a4a00b812097d436a73"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00664.html">fsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#ac7c719ebad471a4a00b812097d436a73">CreateList</a> ()</td></tr>
+<tr class="memdesc:ac7c719ebad471a4a00b812097d436a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to create a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a list.  <a href="a00664.html#ac7c719ebad471a4a00b812097d436a73">More...</a><br /></td></tr>
+<tr class="separator:ac7c719ebad471a4a00b812097d436a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a884600697b7b552fa3908e86b60e9216"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00664.html">fsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a884600697b7b552fa3908e86b60e9216">CreateList</a> (int capacity)</td></tr>
+<tr class="memdesc:a884600697b7b552fa3908e86b60e9216"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to create a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a list with the initial capacity.  <a href="a00664.html#a884600697b7b552fa3908e86b60e9216">More...</a><br /></td></tr>
+<tr class="separator:a884600697b7b552fa3908e86b60e9216"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cfc078433d539f5aefc16078accfc15"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a0cfc078433d539f5aefc16078accfc15">operator==</a> (<a class="el" href="a00664.html">fsData</a> a, <a class="el" href="a00664.html">fsData</a> b)</td></tr>
+<tr class="memdesc:a0cfc078433d539f5aefc16078accfc15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true iff a == b.  <a href="a00664.html#a0cfc078433d539f5aefc16078accfc15">More...</a><br /></td></tr>
+<tr class="separator:a0cfc078433d539f5aefc16078accfc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae595530d43b82d4f7e6190b880932624"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#ae595530d43b82d4f7e6190b880932624">operator!=</a> (<a class="el" href="a00664.html">fsData</a> a, <a class="el" href="a00664.html">fsData</a> b)</td></tr>
+<tr class="memdesc:ae595530d43b82d4f7e6190b880932624"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true iff a != b.  <a href="a00664.html#ae595530d43b82d4f7e6190b880932624">More...</a><br /></td></tr>
+<tr class="separator:ae595530d43b82d4f7e6190b880932624"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a764855bf8818b5ff93077ea0a9e944b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00720.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a764855bf8818b5ff93077ea0a9e944b0">FailExpectedType</a> (<a class="el" href="a00668.html">fsData</a> data, params <a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>[] types)</td></tr>
-<tr class="separator:a764855bf8818b5ff93077ea0a9e944b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dbb1442ec90c3100b09308b9c53aab9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00720.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a2dbb1442ec90c3100b09308b9c53aab9">CheckType</a> (<a class="el" href="a00668.html">fsData</a> data, <a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a> type)</td></tr>
-<tr class="separator:a2dbb1442ec90c3100b09308b9c53aab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab42a513c517a3ed26ea228bb33aedd47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00720.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#ab42a513c517a3ed26ea228bb33aedd47">CheckKey</a> (<a class="el" href="a00668.html">fsData</a> data, string key, out <a class="el" href="a00668.html">fsData</a> subitem)</td></tr>
-<tr class="separator:ab42a513c517a3ed26ea228bb33aedd47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92ebde736d45f36473691936e6cd0147"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00720.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a92ebde736d45f36473691936e6cd0147">CheckKey</a> (Dictionary&lt; string, <a class="el" href="a00668.html">fsData</a> &gt; data, string key, out <a class="el" href="a00668.html">fsData</a> subitem)</td></tr>
-<tr class="separator:a92ebde736d45f36473691936e6cd0147"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a024019330f070b9fb3d49a5213c9aae8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00720.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a024019330f070b9fb3d49a5213c9aae8">SerializeMember&lt; T &gt;</a> (Dictionary&lt; string, <a class="el" href="a00668.html">fsData</a> &gt; data, Type overrideConverterType, string name, T value)</td></tr>
-<tr class="separator:a024019330f070b9fb3d49a5213c9aae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6df76d1eac0b4a6577845b4c9ddaa79d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00720.html">fsResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html#a6df76d1eac0b4a6577845b4c9ddaa79d">DeserializeMember&lt; T &gt;</a> (Dictionary&lt; string, <a class="el" href="a00668.html">fsData</a> &gt; data, Type overrideConverterType, string name, out T value)</td></tr>
-<tr class="separator:a6df76d1eac0b4a6577845b4c9ddaa79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:af36a1f41bbcf0f17e56b77cc80e0e0b3"><td class="memItemLeft" align="right" valign="top">static readonly <a class="el" href="a00664.html">fsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#af36a1f41bbcf0f17e56b77cc80e0e0b3">True</a> = new <a class="el" href="a00664.html">fsData</a>(true)</td></tr>
+<tr class="separator:af36a1f41bbcf0f17e56b77cc80e0e0b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55dbf6381c50c95a042334c119fccdfc"><td class="memItemLeft" align="right" valign="top">static readonly <a class="el" href="a00664.html">fsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a55dbf6381c50c95a042334c119fccdfc">False</a> = new <a class="el" href="a00664.html">fsData</a>(false)</td></tr>
+<tr class="separator:a55dbf6381c50c95a042334c119fccdfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcb3ce2b86c6f317a74ee3ecfe9c41be"><td class="memItemLeft" align="right" valign="top">static readonly <a class="el" href="a00664.html">fsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#adcb3ce2b86c6f317a74ee3ecfe9c41be">Null</a> = new <a class="el" href="a00664.html">fsData</a>()</td></tr>
+<tr class="separator:adcb3ce2b86c6f317a74ee3ecfe9c41be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-methods"></a>
+Package Functions</h2></td></tr>
+<tr class="memitem:a5f645e9833e65845caf4cdbc4fd5e943"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a5f645e9833e65845caf4cdbc4fd5e943">BecomeDictionary</a> ()</td></tr>
+<tr class="memdesc:a5f645e9833e65845caf4cdbc4fd5e943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the internal <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance into a dictionary.  <a href="a00664.html#a5f645e9833e65845caf4cdbc4fd5e943">More...</a><br /></td></tr>
+<tr class="separator:a5f645e9833e65845caf4cdbc4fd5e943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d897576bd21e0e957fcb022f7ad02b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00664.html">fsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a0d897576bd21e0e957fcb022f7ad02b1">Clone</a> ()</td></tr>
+<tr class="memdesc:a0d897576bd21e0e957fcb022f7ad02b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a shallow clone of this data instance.  <a href="a00664.html#a0d897576bd21e0e957fcb022f7ad02b1">More...</a><br /></td></tr>
+<tr class="separator:a0d897576bd21e0e957fcb022f7ad02b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a1103886f8029af3fb3e9adef1685072a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a1103886f8029af3fb3e9adef1685072a">Type</a><code> [get]</code></td></tr>
+<tr class="separator:a1103886f8029af3fb3e9adef1685072a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af434698e3ebdea70932122c1b326c0a8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#af434698e3ebdea70932122c1b326c0a8">IsNull</a><code> [get]</code></td></tr>
+<tr class="memdesc:af434698e3ebdea70932122c1b326c0a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to null.  <a href="a00664.html#af434698e3ebdea70932122c1b326c0a8">More...</a><br /></td></tr>
+<tr class="separator:af434698e3ebdea70932122c1b326c0a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a346ac35da58a28836daed508ecf32b3f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a346ac35da58a28836daed508ecf32b3f">IsDouble</a><code> [get]</code></td></tr>
+<tr class="memdesc:a346ac35da58a28836daed508ecf32b3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a double.  <a href="a00664.html#a346ac35da58a28836daed508ecf32b3f">More...</a><br /></td></tr>
+<tr class="separator:a346ac35da58a28836daed508ecf32b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80a85a78dda84fe0c68f7a163355e8c1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a80a85a78dda84fe0c68f7a163355e8c1">IsInt64</a><code> [get]</code></td></tr>
+<tr class="memdesc:a80a85a78dda84fe0c68f7a163355e8c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to an Int64.  <a href="a00664.html#a80a85a78dda84fe0c68f7a163355e8c1">More...</a><br /></td></tr>
+<tr class="separator:a80a85a78dda84fe0c68f7a163355e8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0150291174c11e0880aee949b14c8741"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a0150291174c11e0880aee949b14c8741">IsBool</a><code> [get]</code></td></tr>
+<tr class="memdesc:a0150291174c11e0880aee949b14c8741"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a boolean.  <a href="a00664.html#a0150291174c11e0880aee949b14c8741">More...</a><br /></td></tr>
+<tr class="separator:a0150291174c11e0880aee949b14c8741"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95589f68382f863386617a0dd4055ae4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a95589f68382f863386617a0dd4055ae4">IsString</a><code> [get]</code></td></tr>
+<tr class="memdesc:a95589f68382f863386617a0dd4055ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a string.  <a href="a00664.html#a95589f68382f863386617a0dd4055ae4">More...</a><br /></td></tr>
+<tr class="separator:a95589f68382f863386617a0dd4055ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493e25ed3252e4a381a1cd47b9a1559e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a493e25ed3252e4a381a1cd47b9a1559e">IsDictionary</a><code> [get]</code></td></tr>
+<tr class="memdesc:a493e25ed3252e4a381a1cd47b9a1559e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a Dictionary.  <a href="a00664.html#a493e25ed3252e4a381a1cd47b9a1559e">More...</a><br /></td></tr>
+<tr class="separator:a493e25ed3252e4a381a1cd47b9a1559e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d61e9ed3a74d32dc46f9a4d4c1285f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a1d61e9ed3a74d32dc46f9a4d4c1285f7">IsList</a><code> [get]</code></td></tr>
+<tr class="memdesc:a1d61e9ed3a74d32dc46f9a4d4c1285f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a List.  <a href="a00664.html#a1d61e9ed3a74d32dc46f9a4d4c1285f7">More...</a><br /></td></tr>
+<tr class="separator:a1d61e9ed3a74d32dc46f9a4d4c1285f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b742582f73e3eb166bcc6df88b2ffd9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">AsDouble</a><code> [get]</code></td></tr>
+<tr class="memdesc:a3b742582f73e3eb166bcc6df88b2ffd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a double. Throws an exception if it is not a double.  <a href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">More...</a><br /></td></tr>
+<tr class="separator:a3b742582f73e3eb166bcc6df88b2ffd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47a5cdaefdb6afc7f2bdaa026befdc00"><td class="memItemLeft" align="right" valign="top">Int64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a47a5cdaefdb6afc7f2bdaa026befdc00">AsInt64</a><code> [get]</code></td></tr>
+<tr class="memdesc:a47a5cdaefdb6afc7f2bdaa026befdc00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to an Int64. Throws an exception if it is not an Int64.  <a href="a00664.html#a47a5cdaefdb6afc7f2bdaa026befdc00">More...</a><br /></td></tr>
+<tr class="separator:a47a5cdaefdb6afc7f2bdaa026befdc00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e4be12fbd0ac616b08823a6b09529f8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a9e4be12fbd0ac616b08823a6b09529f8">AsBool</a><code> [get]</code></td></tr>
+<tr class="memdesc:a9e4be12fbd0ac616b08823a6b09529f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a boolean. Throws an exception if it is not a boolean.  <a href="a00664.html#a9e4be12fbd0ac616b08823a6b09529f8">More...</a><br /></td></tr>
+<tr class="separator:a9e4be12fbd0ac616b08823a6b09529f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69c34ee326b025ae8781eb7029943444"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#a69c34ee326b025ae8781eb7029943444">AsString</a><code> [get]</code></td></tr>
+<tr class="memdesc:a69c34ee326b025ae8781eb7029943444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a string. Throws an exception if it is not a string.  <a href="a00664.html#a69c34ee326b025ae8781eb7029943444">More...</a><br /></td></tr>
+<tr class="separator:a69c34ee326b025ae8781eb7029943444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0592f7d7f713ddbf1f89cab77608c57"><td class="memItemLeft" align="right" valign="top">Dictionary&lt; string, <a class="el" href="a00664.html">fsData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#ad0592f7d7f713ddbf1f89cab77608c57">AsDictionary</a><code> [get]</code></td></tr>
+<tr class="memdesc:ad0592f7d7f713ddbf1f89cab77608c57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a Dictionary. Throws an exception if it is not a Dictionary.  <a href="a00664.html#ad0592f7d7f713ddbf1f89cab77608c57">More...</a><br /></td></tr>
+<tr class="separator:ad0592f7d7f713ddbf1f89cab77608c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebf459f479691aa88d9712f53a2d85ee"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00664.html">fsData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#aebf459f479691aa88d9712f53a2d85ee">AsList</a><code> [get]</code></td></tr>
+<tr class="memdesc:aebf459f479691aa88d9712f53a2d85ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a List. Throws an exception if it is not a List.  <a href="a00664.html#aebf459f479691aa88d9712f53a2d85ee">More...</a><br /></td></tr>
+<tr class="separator:aebf459f479691aa88d9712f53a2d85ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aa94c2aa2a3804712d37b8762f24d4221"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#aa94c2aa2a3804712d37b8762f24d4221">Cast&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:aa94c2aa2a3804712d37b8762f24d4221"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00414.html">Internal</a> helper method to cast the underlying storage to the given type or throw a pretty printed exception on failure.  <a href="a00664.html#aa94c2aa2a3804712d37b8762f24d4221">More...</a><br /></td></tr>
+<tr class="separator:aa94c2aa2a3804712d37b8762f24d4221"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:afc64f478caac3865a63dcb13f888d0b6"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a></td></tr>
+<tr class="memdesc:afc64f478caac3865a63dcb13f888d0b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raw value that this serialized data stores. It can be one of six different types; a boolean, a double, Int64, a string, a Dictionary, or a List.  <a href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">More...</a><br /></td></tr>
+<tr class="separator:afc64f478caac3865a63dcb13f888d0b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The serialization converter allows for customization of the serialization process. </p>
+<div class="textblock"><p>A union type that stores a serialized value. The stored type can be one of six different types: null, boolean, double, Int64, string, Dictionary, or List. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00152_source.html#l00007">7</a> of file <a class="el" href="a00152_source.html">fsConverter.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6d9e084c5e7f646a8d220705efaecb35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d9e084c5e7f646a8d220705efaecb35">&#9670;&nbsp;</a></span>CanProcess()</h2>
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00023">23</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a9b5e13a72849cb6c6a6948fac87260c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b5e13a72849cb6c6a6948fac87260c6">&#9670;&nbsp;</a></span>fsData() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abstract bool FullSerializer.fsConverter.CanProcess </td>
+          <td class="memname">FullSerializer.fsData.fsData </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Can this converter serialize and deserialize the given object type? </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">type</td><td>The given object type.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the converter can serialize it, false otherwise.</dd></dl>
+<p>Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds null. </p>
 
-<p>Implemented in <a class="el" href="a00636.html#a98db577455b325edf5035170c6297474">FullSerializer.Internal.Converters.UnityEvent_Converter</a>, <a class="el" href="a00592.html#ac0c327bc319e20e3648e58239ac90888">FullSerializer.Internal.fsWeakReferenceConverter</a>, <a class="el" href="a00588.html#afbf95621a91efff18569544dee5134fe">FullSerializer.Internal.fsTypeConverter</a>, <a class="el" href="a00584.html#a36c564a35f373263c7da7c4de140ba0e">FullSerializer.Internal.fsReflectedConverter</a>, <a class="el" href="a00580.html#a07017626af98ba7a48a3947b7d49a08c">FullSerializer.Internal.fsPrimitiveConverter</a>, <a class="el" href="a00576.html#aae7da556bba4e45495162611e24e8d68">FullSerializer.Internal.fsNullableConverter</a>, <a class="el" href="a00572.html#acedb142bdabfb30c6cd43874734cbc33">FullSerializer.Internal.fsKeyValuePairConverter</a>, <a class="el" href="a00568.html#a10f24874fda7fcb99a6a8380127dc8d0">FullSerializer.Internal.fsIEnumerableConverter</a>, <a class="el" href="a00564.html#af5e30658913957e51c7caa51622c2627">FullSerializer.Internal.fsGuidConverter</a>, <a class="el" href="a00560.html#a252f2f0a0391e2099be798b1749a2582">FullSerializer.Internal.fsForwardConverter</a>, <a class="el" href="a00552.html#a93dc5222263e0354440a14a8dac74128">FullSerializer.Internal.fsEnumConverter</a>, <a class="el" href="a00548.html#a00582c5fe666a61ae4d528848bdffbd7">FullSerializer.Internal.fsDictionaryConverter</a>, <a class="el" href="a00544.html#a4728edb68d03760970cb536f9c376cc0">FullSerializer.Internal.fsDateConverter</a>, and <a class="el" href="a00540.html#af02bc420e26cbf123cadecb15b06f1ed">FullSerializer.Internal.fsArrayConverter</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00034">34</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00664_a9b5e13a72849cb6c6a6948fac87260c6_icgraph.png" border="0" usemap="#aa00664_a9b5e13a72849cb6c6a6948fac87260c6_icgraph" alt=""/></div>
+<map name="aa00664_a9b5e13a72849cb6c6a6948fac87260c6_icgraph" id="aa00664_a9b5e13a72849cb6c6a6948fac87260c6_icgraph">
+<area shape="rect" title="Creates a fsData instance that holds null." alt="" coords="2352,233,2531,260"/>
+<area shape="rect" href="a00664.html#a0d897576bd21e0e957fcb022f7ad02b1" title="Returns a shallow clone of this data instance." alt="" coords="2097,120,2272,147"/>
+<area shape="rect" href="a00664.html#a736d3ed458af91620f8eb47447f15233" title="Helper method to create a fsData instance that holds a dictionary." alt="" coords="2065,233,2304,260"/>
+<area shape="rect" href="a00664.html#ac7c719ebad471a4a00b812097d436a73" title="Helper method to create a fsData instance that holds a list." alt="" coords="2084,385,2285,412"/>
+<area shape="rect" href="a00720.html#a22ad8b47b0e4bcb60a61f22a67466287" title="Ensures that the data is a dictionary. If it is not, then it is wrapped inside of one." alt="" coords="1696,56,1964,83"/>
+<area shape="rect" href="a00720.html#a45cd6b5fb3e16551d0915303246fc423" title="This function converts legacy serialization data into the new format, so that the import process can ..." alt="" coords="1243,208,1525,235"/>
+<area shape="rect" href="a00720.html#a7ee160c6b34dddada700d0f5a73ebf23" title=" " alt="" coords="745,56,1090,83"/>
+<area shape="rect" href="a00720.html#a788f63e064e685727cac9361a356ba30" title=" " alt="" coords="1189,5,1579,32"/>
+<area shape="rect" href="a00724.html#ae884d1bf467ebc7087d274c8f2a328ec" title=" " alt="" coords="709,107,1125,133"/>
+<area shape="rect" href="a00724.html#a1a289733c12497c79fd3cf27c39ed362" title=" " alt="" coords="1173,157,1595,184"/>
+<area shape="rect" href="a00720.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="792,208,1043,235"/>
+<area shape="rect" href="a00720.html#ab603e4cc661d21bfeefd1d2817b0aad8" title=" " alt="" coords="291,132,661,159"/>
+<area shape="rect" href="a00720.html#a02eb0a2533b600eada768fcbaba86d63" title="Serialize the given value." alt="" coords="5,132,243,159"/>
+<area shape="rect" href="a00568.html#a14c04b4be8e3bb4533966a4b3eabb554" title="Serialize the actual object into the given data storage." alt="" coords="1649,107,2011,133"/>
+<area shape="rect" href="a00580.html#ac8ed8672fc0d4ff7aad52606ce4bcced" title="Serialize the actual object into the given data storage." alt="" coords="1661,157,1999,184"/>
+<area shape="rect" href="a00588.html#a2faaa58d3ec0a68a9f8aed9e94d92b27" title="Serialize the actual object into the given data storage." alt="" coords="1643,259,2017,285"/>
+<area shape="rect" href="a00544.html#aaeb12dc698fa08caad016cc737f23fff" title="Serialize the actual object into the given data storage." alt="" coords="1659,360,2001,387"/>
+<area shape="rect" href="a00536.html#abb09e7cf9f1a6b9a359e780c0c53b454" title="Serialize the actual object into the given data storage." alt="" coords="1673,411,1987,437"/>
+<area shape="rect" href="a00564.html#a7aaf3b51583371f787df64c3eefc8c87" title="Serialize the actual object into the given data storage." alt="" coords="1653,461,2007,488"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="a92ebde736d45f36473691936e6cd0147"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92ebde736d45f36473691936e6cd0147">&#9670;&nbsp;</a></span>CheckKey() <span class="overload">[1/2]</span></h2>
+<a id="ab0316b6b5db7d953fdfe6b352aa1af8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0316b6b5db7d953fdfe6b352aa1af8e">&#9670;&nbsp;</a></span>fsData() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00720.html">fsResult</a> FullSerializer.fsBaseConverter.CheckKey </td>
+          <td class="memname">FullSerializer.fsData.fsData </td>
           <td>(</td>
-          <td class="paramtype">Dictionary&lt; string, <a class="el" href="a00668.html">fsData</a> &gt;&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>boolean</em></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a boolean. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00041">41</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a694c04538e4e37df718316eff8e15635"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a694c04538e4e37df718316eff8e15635">&#9670;&nbsp;</a></span>fsData() <span class="overload">[3/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FullSerializer.fsData.fsData </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a double. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00048">48</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="ab942e5e4fb36b7e815ce0f4195cc84da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab942e5e4fb36b7e815ce0f4195cc84da">&#9670;&nbsp;</a></span>fsData() <span class="overload">[4/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FullSerializer.fsData.fsData </td>
+          <td>(</td>
+          <td class="paramtype">Int64&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds an integer. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00055">55</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a18d00eb27ffcbbd57ab7372856ae30f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18d00eb27ffcbbd57ab7372856ae30f7">&#9670;&nbsp;</a></span>fsData() <span class="overload">[5/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FullSerializer.fsData.fsData </td>
+          <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">out <a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>subitem</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00092">92</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00648_a92ebde736d45f36473691936e6cd0147_cgraph.png" border="0" usemap="#aa00648_a92ebde736d45f36473691936e6cd0147_cgraph" alt=""/></div>
-<map name="aa00648_a92ebde736d45f36473691936e6cd0147_cgraph" id="aa00648_a92ebde736d45f36473691936e6cd0147_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,264,32"/>
-<area shape="rect" href="a00720.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="312,5,485,32"/>
-</map>
-</div>
+<p>Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a string. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00062">62</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
 
 </div>
 </div>
-<a id="ab42a513c517a3ed26ea228bb33aedd47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab42a513c517a3ed26ea228bb33aedd47">&#9670;&nbsp;</a></span>CheckKey() <span class="overload">[2/2]</span></h2>
+<a id="a8897bc4f6c2f0ff7acdcd0195746fc09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8897bc4f6c2f0ff7acdcd0195746fc09">&#9670;&nbsp;</a></span>fsData() <span class="overload">[6/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FullSerializer.fsData.fsData </td>
+          <td>(</td>
+          <td class="paramtype">Dictionary&lt; string, <a class="el" href="a00664.html">fsData</a> &gt;&#160;</td>
+          <td class="paramname"><em>dict</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a dictionary of values. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00069">69</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="af6e99c4d2e08a96957ccd44491026e92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6e99c4d2e08a96957ccd44491026e92">&#9670;&nbsp;</a></span>fsData() <span class="overload">[7/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FullSerializer.fsData.fsData </td>
+          <td>(</td>
+          <td class="paramtype">List&lt; <a class="el" href="a00664.html">fsData</a> &gt;&#160;</td>
+          <td class="paramname"><em>list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a list of values. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00076">76</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5f645e9833e65845caf4cdbc4fd5e943"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f645e9833e65845caf4cdbc4fd5e943">&#9670;&nbsp;</a></span>BecomeDictionary()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -240,52 +413,44 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00720.html">fsResult</a> FullSerializer.fsBaseConverter.CheckKey </td>
+          <td class="memname">void FullSerializer.fsData.BecomeDictionary </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out <a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>subitem</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00088">88</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
+<p>Transforms the internal <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance into a dictionary. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00111">111</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00648_ab42a513c517a3ed26ea228bb33aedd47_icgraph.png" border="0" usemap="#aa00648_ab42a513c517a3ed26ea228bb33aedd47_icgraph" alt=""/></div>
-<map name="aa00648_ab42a513c517a3ed26ea228bb33aedd47_icgraph" id="aa00648_ab42a513c517a3ed26ea228bb33aedd47_icgraph">
-<area shape="rect" title=" " alt="" coords="429,31,688,57"/>
-<area shape="rect" href="a00572.html#ab4698a9f8ed356f17a68c3936808d5d3" title="Deserialize data into the object instance." alt="" coords="5,5,381,32"/>
-<area shape="rect" href="a00548.html#a8dc0adbffb181451bb37c6e6a0ed13b8" title="Deserialize data into the object instance." alt="" coords="16,56,371,83"/>
+<div class="center"><img src="a00664_a5f645e9833e65845caf4cdbc4fd5e943_icgraph.png" border="0" usemap="#aa00664_a5f645e9833e65845caf4cdbc4fd5e943_icgraph" alt=""/></div>
+<map name="aa00664_a5f645e9833e65845caf4cdbc4fd5e943_icgraph" id="aa00664_a5f645e9833e65845caf4cdbc4fd5e943_icgraph">
+<area shape="rect" title="Transforms the internal fsData instance into a dictionary." alt="" coords="1959,107,2207,133"/>
+<area shape="rect" href="a00720.html#a22ad8b47b0e4bcb60a61f22a67466287" title="Ensures that the data is a dictionary. If it is not, then it is wrapped inside of one." alt="" coords="1643,107,1911,133"/>
+<area shape="rect" href="a00720.html#a45cd6b5fb3e16551d0915303246fc423" title="This function converts legacy serialization data into the new format, so that the import process can ..." alt="" coords="1246,5,1527,32"/>
+<area shape="rect" href="a00720.html#a7ee160c6b34dddada700d0f5a73ebf23" title=" " alt="" coords="747,107,1093,133"/>
+<area shape="rect" href="a00720.html#a788f63e064e685727cac9361a356ba30" title=" " alt="" coords="1191,107,1582,133"/>
+<area shape="rect" href="a00724.html#ae884d1bf467ebc7087d274c8f2a328ec" title=" " alt="" coords="1179,157,1595,184"/>
+<area shape="rect" href="a00724.html#a1a289733c12497c79fd3cf27c39ed362" title=" " alt="" coords="709,208,1131,235"/>
+<area shape="rect" href="a00720.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="795,5,1045,32"/>
+<area shape="rect" href="a00720.html#ab603e4cc661d21bfeefd1d2817b0aad8" title=" " alt="" coords="291,157,661,184"/>
+<area shape="rect" href="a00720.html#a02eb0a2533b600eada768fcbaba86d63" title="Serialize the given value." alt="" coords="5,157,243,184"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a2dbb1442ec90c3100b09308b9c53aab9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dbb1442ec90c3100b09308b9c53aab9">&#9670;&nbsp;</a></span>CheckType()</h2>
+<a id="aa94c2aa2a3804712d37b8762f24d4221"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa94c2aa2a3804712d37b8762f24d4221">&#9670;&nbsp;</a></span>Cast&lt; T &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,60 +459,27 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00720.html">fsResult</a> FullSerializer.fsBaseConverter.CheckType </td>
+          <td class="memname">T FullSerializer.fsData.Cast&lt; T &gt; </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00081">81</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00648_a2dbb1442ec90c3100b09308b9c53aab9_cgraph.png" border="0" usemap="#aa00648_a2dbb1442ec90c3100b09308b9c53aab9_cgraph" alt=""/></div>
-<map name="aa00648_a2dbb1442ec90c3100b09308b9c53aab9_cgraph" id="aa00648_a2dbb1442ec90c3100b09308b9c53aab9_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,269,32"/>
-<area shape="rect" href="a00720.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="317,5,491,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00648_a2dbb1442ec90c3100b09308b9c53aab9_icgraph.png" border="0" usemap="#aa00648_a2dbb1442ec90c3100b09308b9c53aab9_icgraph" alt=""/></div>
-<map name="aa00648_a2dbb1442ec90c3100b09308b9c53aab9_icgraph" id="aa00648_a2dbb1442ec90c3100b09308b9c53aab9_icgraph">
-<area shape="rect" title=" " alt="" coords="443,157,707,184"/>
-<area shape="rect" href="a00540.html#af88d4b3c78572356be0a07e841aa4a95" title="Deserialize data into the object instance." alt="" coords="36,5,364,32"/>
-<area shape="rect" href="a00584.html#a1963e8f217bbe10f747bdbb3ceebf739" title="Deserialize data into the object instance." alt="" coords="25,56,375,83"/>
-<area shape="rect" href="a00592.html#a0b1b66f55b2e380a0b17f2944dc0ff84" title="Deserialize data into the object instance." alt="" coords="5,107,395,133"/>
-<area shape="rect" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a" title="Deserialize data into the object instance." alt="" coords="57,157,343,184"/>
-<area shape="rect" href="a00548.html#a8dc0adbffb181451bb37c6e6a0ed13b8" title="Deserialize data into the object instance." alt="" coords="23,208,377,235"/>
-<area shape="rect" href="a00568.html#a1585e62338f2abf99911f4fde9599daa" title="Deserialize data into the object instance." alt="" coords="15,259,385,285"/>
-<area shape="rect" href="a00580.html#a5143547d92eb9578d027c0a676ad0613" title="Deserialize data into the object instance." alt="" coords="27,309,373,336"/>
-</map>
-</div>
+<p><a class="el" href="a00414.html">Internal</a> helper method to cast the underlying storage to the given type or throw a pretty printed exception on failure. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00271">271</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
 
 </div>
 </div>
-<a id="a415ea2ac9429bbb9927346af7cb7c2e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a415ea2ac9429bbb9927346af7cb7c2e1">&#9670;&nbsp;</a></span>CreateInstance()</h2>
+<a id="a0d897576bd21e0e957fcb022f7ad02b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d897576bd21e0e957fcb022f7ad02b1">&#9670;&nbsp;</a></span>Clone()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -356,77 +488,53 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual object FullSerializer.fsBaseConverter.CreateInstance </td>
+          <td class="memname"><a class="el" href="a00664.html">fsData</a> FullSerializer.fsData.Clone </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Construct an object instance that will be passed to TryDeserialize. This should <b>not</b> deserialize the object. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>The data the object was serialized with.</td></tr>
-    <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An object instance</dd></dl>
+<p>Returns a shallow clone of this data instance. </p>
 
-<p>Reimplemented in <a class="el" href="a00632.html#ab4ba48643e3a02b19257a4ab965f6a1d">FullSerializer.Internal.DirectConverters.RectOffset_DirectConverter</a>, <a class="el" href="a00628.html#ae48648354077452a90727bbaa8915172">FullSerializer.Internal.DirectConverters.Rect_DirectConverter</a>, <a class="el" href="a00624.html#a137b60e8c056f96e17449e04ad563f67">FullSerializer.Internal.DirectConverters.LayerMask_DirectConverter</a>, <a class="el" href="a00620.html#aea3c4d54715cc2bc0d057c870916238b">FullSerializer.Internal.DirectConverters.Keyframe_DirectConverter</a>, <a class="el" href="a00616.html#a11870a07fd7aade8717b1764137d9dbb">FullSerializer.Internal.DirectConverters.GUIStyleState_DirectConverter</a>, <a class="el" href="a00612.html#a6e9709e22125ee8f1f11449524257748">FullSerializer.Internal.DirectConverters.GUIStyle_DirectConverter</a>, <a class="el" href="a00608.html#ab258e764b6b9ca08f1b0d38de248b7e1">FullSerializer.Internal.DirectConverters.Gradient_DirectConverter</a>, <a class="el" href="a00604.html#a51f328e67770f34468f7218b4a4a2af6">FullSerializer.Internal.DirectConverters.Bounds_DirectConverter</a>, <a class="el" href="a00600.html#ade5d37cdc1d926982bc5523d3745cfb7">FullSerializer.Internal.DirectConverters.AnimationCurve_DirectConverter</a>, <a class="el" href="a00592.html#a8732fca2359367dbf78c687898625406">FullSerializer.Internal.fsWeakReferenceConverter</a>, <a class="el" href="a00588.html#af2049f4529f9138347b63bee54aa7397">FullSerializer.Internal.fsTypeConverter</a>, <a class="el" href="a00584.html#ad5d48348410d9fc61794476ee9b282d6">FullSerializer.Internal.fsReflectedConverter</a>, <a class="el" href="a00576.html#ab47b05197a1f68036cecb45318b49233">FullSerializer.Internal.fsNullableConverter</a>, <a class="el" href="a00568.html#a787950b2cb51b536dc9fc01f5870f0d9">FullSerializer.Internal.fsIEnumerableConverter</a>, <a class="el" href="a00564.html#a86f7beefe9d841a8f3235a805ec43691">FullSerializer.Internal.fsGuidConverter</a>, <a class="el" href="a00560.html#ac060a50ae6f3241ea0f9465e1d261d12">FullSerializer.Internal.fsForwardConverter</a>, <a class="el" href="a00552.html#a1d20e736fc995f6d127a312ae19f55b2">FullSerializer.Internal.fsEnumConverter</a>, <a class="el" href="a00548.html#aa35564498ee62b6d5e072e845ef0d8f6">FullSerializer.Internal.fsDictionaryConverter</a>, and <a class="el" href="a00540.html#a03e9dd52440176acd87f3047ababe392">FullSerializer.Internal.fsArrayConverter</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00025">25</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00118">118</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00648_a415ea2ac9429bbb9927346af7cb7c2e1_cgraph.png" border="0" usemap="#aa00648_a415ea2ac9429bbb9927346af7cb7c2e1_cgraph" alt=""/></div>
-<map name="aa00648_a415ea2ac9429bbb9927346af7cb7c2e1_cgraph" id="aa00648_a415ea2ac9429bbb9927346af7cb7c2e1_cgraph">
-<area shape="rect" title="Construct an object instance that will be passed to TryDeserialize. This should not deserialize the o..." alt="" coords="5,5,292,32"/>
-<area shape="rect" href="a00648.html#a4e850ab88cea1b89771c00e0b65febcd" title="If true, then the serializer will support cyclic references with the given converted type." alt="" coords="340,5,665,32"/>
+<div class="center"><img src="a00664_a0d897576bd21e0e957fcb022f7ad02b1_cgraph.png" border="0" usemap="#aa00664_a0d897576bd21e0e957fcb022f7ad02b1_cgraph" alt=""/></div>
+<map name="aa00664_a0d897576bd21e0e957fcb022f7ad02b1_cgraph" id="aa00664_a0d897576bd21e0e957fcb022f7ad02b1_cgraph">
+<area shape="rect" title="Returns a shallow clone of this data instance." alt="" coords="5,5,180,32"/>
+<area shape="rect" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6" title="Creates a fsData instance that holds null." alt="" coords="228,5,407,32"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00648_a415ea2ac9429bbb9927346af7cb7c2e1_icgraph.png" border="0" usemap="#aa00648_a415ea2ac9429bbb9927346af7cb7c2e1_icgraph" alt=""/></div>
-<map name="aa00648_a415ea2ac9429bbb9927346af7cb7c2e1_icgraph" id="aa00648_a415ea2ac9429bbb9927346af7cb7c2e1_icgraph">
-<area shape="rect" title="Construct an object instance that will be passed to TryDeserialize. This should not deserialize the o..." alt="" coords="2693,57,2980,84"/>
-<area shape="rect" href="a00724.html#aba2d7ff786011da03d0813609419aa11" title="Fetches a converter that can serialize/deserialize the given type." alt="" coords="2401,108,2645,135"/>
-<area shape="rect" href="a00724.html#ab0a9c3650c92120b7a5a3ee4abc171e9" title=" " alt="" coords="1157,32,1516,59"/>
-<area shape="rect" href="a00724.html#ad9ca29ced1e05f4bdb1789c74cba0ae6" title=" " alt="" coords="2003,83,2353,109"/>
-<area shape="rect" href="a00724.html#ab603e4cc661d21bfeefd1d2817b0aad8" title=" " alt="" coords="739,209,1109,236"/>
-<area shape="rect" href="a00724.html#a7ee160c6b34dddada700d0f5a73ebf23" title=" " alt="" coords="1164,184,1509,211"/>
-<area shape="rect" href="a00724.html#af250f776c80ffec21b08c92c77978b2c" title=" " alt="" coords="2010,184,2346,211"/>
-<area shape="rect" href="a00724.html#abd29b64f632a01c07ad6bd0c973e00a0" title=" " alt="" coords="754,32,1094,59"/>
-<area shape="rect" href="a00724.html#a048b235379a8cf6fb8c1fb8b6eb466fa" title=" " alt="" coords="304,32,691,59"/>
-<area shape="rect" href="a00724.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="5,32,256,59"/>
-<area shape="rect" href="a00724.html#a47a6bb84a2a7df070e5f16fa44f062b2" title=" " alt="" coords="1591,83,1927,109"/>
-<area shape="rect" href="a00724.html#a02eb0a2533b600eada768fcbaba86d63" title="Serialize the given value." alt="" coords="379,209,616,236"/>
-<area shape="rect" href="a00724.html#a788f63e064e685727cac9361a356ba30" title=" " alt="" coords="1564,184,1955,211"/>
+<div class="center"><img src="a00664_a0d897576bd21e0e957fcb022f7ad02b1_icgraph.png" border="0" usemap="#aa00664_a0d897576bd21e0e957fcb022f7ad02b1_icgraph" alt=""/></div>
+<map name="aa00664_a0d897576bd21e0e957fcb022f7ad02b1_icgraph" id="aa00664_a0d897576bd21e0e957fcb022f7ad02b1_icgraph">
+<area shape="rect" title="Returns a shallow clone of this data instance." alt="" coords="1959,107,2133,133"/>
+<area shape="rect" href="a00720.html#a22ad8b47b0e4bcb60a61f22a67466287" title="Ensures that the data is a dictionary. If it is not, then it is wrapped inside of one." alt="" coords="1643,107,1911,133"/>
+<area shape="rect" href="a00720.html#a45cd6b5fb3e16551d0915303246fc423" title="This function converts legacy serialization data into the new format, so that the import process can ..." alt="" coords="1246,5,1527,32"/>
+<area shape="rect" href="a00720.html#a7ee160c6b34dddada700d0f5a73ebf23" title=" " alt="" coords="747,107,1093,133"/>
+<area shape="rect" href="a00720.html#a788f63e064e685727cac9361a356ba30" title=" " alt="" coords="1191,107,1582,133"/>
+<area shape="rect" href="a00724.html#ae884d1bf467ebc7087d274c8f2a328ec" title=" " alt="" coords="1179,157,1595,184"/>
+<area shape="rect" href="a00724.html#a1a289733c12497c79fd3cf27c39ed362" title=" " alt="" coords="709,208,1131,235"/>
+<area shape="rect" href="a00720.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="795,5,1045,32"/>
+<area shape="rect" href="a00720.html#ab603e4cc661d21bfeefd1d2817b0aad8" title=" " alt="" coords="291,157,661,184"/>
+<area shape="rect" href="a00720.html#a02eb0a2533b600eada768fcbaba86d63" title="Serialize the given value." alt="" coords="5,157,243,184"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a6df76d1eac0b4a6577845b4c9ddaa79d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6df76d1eac0b4a6577845b4c9ddaa79d">&#9670;&nbsp;</a></span>DeserializeMember&lt; T &gt;()</h2>
+<a id="a736d3ed458af91620f8eb47447f15233"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a736d3ed458af91620f8eb47447f15233">&#9670;&nbsp;</a></span>CreateDictionary()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -435,114 +543,52 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00720.html">fsResult</a> FullSerializer.fsBaseConverter.DeserializeMember&lt; T &gt; </td>
+          <td class="memname">static <a class="el" href="a00664.html">fsData</a> FullSerializer.fsData.CreateDictionary </td>
           <td>(</td>
-          <td class="paramtype">Dictionary&lt; string, <a class="el" href="a00668.html">fsData</a> &gt;&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>overrideConverterType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out T&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00106">106</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
+<p>Helper method to create a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a dictionary. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00083">83</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00648_a6df76d1eac0b4a6577845b4c9ddaa79d_cgraph.png" border="0" usemap="#aa00648_a6df76d1eac0b4a6577845b4c9ddaa79d_cgraph" alt=""/></div>
-<map name="aa00648_a6df76d1eac0b4a6577845b4c9ddaa79d_cgraph" id="aa00648_a6df76d1eac0b4a6577845b4c9ddaa79d_cgraph">
-<area shape="rect" title=" " alt="" coords="5,31,347,57"/>
-<area shape="rect" href="a00720.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="433,5,607,32"/>
-<area shape="rect" href="a00724.html#a9ada1781fcc582b65d809815fe2c24e9" title="Attempts to deserialize a value from a serialized state." alt="" coords="395,56,645,83"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a764855bf8818b5ff93077ea0a9e944b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a764855bf8818b5ff93077ea0a9e944b0">&#9670;&nbsp;</a></span>FailExpectedType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00720.html">fsResult</a> FullSerializer.fsBaseConverter.FailExpectedType </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">params <a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>[]&#160;</td>
-          <td class="paramname"><em>types</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00075">75</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00648_a764855bf8818b5ff93077ea0a9e944b0_cgraph.png" border="0" usemap="#aa00648_a764855bf8818b5ff93077ea0a9e944b0_cgraph" alt=""/></div>
-<map name="aa00648_a764855bf8818b5ff93077ea0a9e944b0_cgraph" id="aa00648_a764855bf8818b5ff93077ea0a9e944b0_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,308,32"/>
-<area shape="rect" href="a00720.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="356,5,529,32"/>
+<div class="center"><img src="a00664_a736d3ed458af91620f8eb47447f15233_cgraph.png" border="0" usemap="#aa00664_a736d3ed458af91620f8eb47447f15233_cgraph" alt=""/></div>
+<map name="aa00664_a736d3ed458af91620f8eb47447f15233_cgraph" id="aa00664_a736d3ed458af91620f8eb47447f15233_cgraph">
+<area shape="rect" title="Helper method to create a fsData instance that holds a dictionary." alt="" coords="5,5,244,32"/>
+<area shape="rect" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6" title="Creates a fsData instance that holds null." alt="" coords="292,5,471,32"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00648_a764855bf8818b5ff93077ea0a9e944b0_icgraph.png" border="0" usemap="#aa00648_a764855bf8818b5ff93077ea0a9e944b0_icgraph" alt=""/></div>
-<map name="aa00648_a764855bf8818b5ff93077ea0a9e944b0_icgraph" id="aa00648_a764855bf8818b5ff93077ea0a9e944b0_icgraph">
-<area shape="rect" title=" " alt="" coords="408,5,711,32"/>
-<area shape="rect" href="a00548.html#a8dc0adbffb181451bb37c6e6a0ed13b8" title="Deserialize data into the object instance." alt="" coords="5,5,360,32"/>
+<div class="center"><img src="a00664_a736d3ed458af91620f8eb47447f15233_icgraph.png" border="0" usemap="#aa00664_a736d3ed458af91620f8eb47447f15233_icgraph" alt=""/></div>
+<map name="aa00664_a736d3ed458af91620f8eb47447f15233_icgraph" id="aa00664_a736d3ed458af91620f8eb47447f15233_icgraph">
+<area shape="rect" title="Helper method to create a fsData instance that holds a dictionary." alt="" coords="727,132,965,159"/>
+<area shape="rect" href="a00720.html#a45cd6b5fb3e16551d0915303246fc423" title="This function converts legacy serialization data into the new format, so that the import process can ..." alt="" coords="351,5,632,32"/>
+<area shape="rect" href="a00720.html#ab603e4cc661d21bfeefd1d2817b0aad8" title=" " alt="" coords="306,56,677,83"/>
+<area shape="rect" href="a00568.html#a14c04b4be8e3bb4533966a4b3eabb554" title="Serialize the actual object into the given data storage." alt="" coords="310,107,673,133"/>
+<area shape="rect" href="a00580.html#ac8ed8672fc0d4ff7aad52606ce4bcced" title="Serialize the actual object into the given data storage." alt="" coords="323,157,660,184"/>
+<area shape="rect" href="a00588.html#a2faaa58d3ec0a68a9f8aed9e94d92b27" title="Serialize the actual object into the given data storage." alt="" coords="304,208,679,235"/>
+<area shape="rect" href="a00544.html#aaeb12dc698fa08caad016cc737f23fff" title="Serialize the actual object into the given data storage." alt="" coords="321,259,662,285"/>
+<area shape="rect" href="a00720.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="5,5,256,32"/>
+<area shape="rect" href="a00720.html#a02eb0a2533b600eada768fcbaba86d63" title="Serialize the given value." alt="" coords="12,56,249,83"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a4e850ab88cea1b89771c00e0b65febcd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e850ab88cea1b89771c00e0b65febcd">&#9670;&nbsp;</a></span>RequestCycleSupport()</h2>
+<a id="ac7c719ebad471a4a00b812097d436a73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7c719ebad471a4a00b812097d436a73">&#9670;&nbsp;</a></span>CreateList() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -551,154 +597,47 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool FullSerializer.fsBaseConverter.RequestCycleSupport </td>
+          <td class="memname">static <a class="el" href="a00664.html">fsData</a> FullSerializer.fsData.CreateList </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>If true, then the serializer will support cyclic references with the given converted type. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">storageType</td><td>The field/property type that is currently storing the object that is being serialized.</td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Helper method to create a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a list. </p>
 
-<p>Reimplemented in <a class="el" href="a00588.html#a60f6421c5356bcf6954d3c888bbaf860">FullSerializer.Internal.fsTypeConverter</a>, <a class="el" href="a00636.html#af4489bd5a993a32021e1ab24fcd6a42f">FullSerializer.Internal.Converters.UnityEvent_Converter</a>, <a class="el" href="a00592.html#a917bdcf70205871ef02577d31b3216f3">FullSerializer.Internal.fsWeakReferenceConverter</a>, <a class="el" href="a00580.html#a69a650703493e76171dff70be6ebec7c">FullSerializer.Internal.fsPrimitiveConverter</a>, <a class="el" href="a00572.html#a0a18762f776b7e00ab59d7827d3e50cc">FullSerializer.Internal.fsKeyValuePairConverter</a>, <a class="el" href="a00564.html#aaeaf4b6d5206b2b70f0d9d2d79a5efe7">FullSerializer.Internal.fsGuidConverter</a>, <a class="el" href="a00552.html#a9f297d3fbac4eecd05de362227a1161e">FullSerializer.Internal.fsEnumConverter</a>, and <a class="el" href="a00540.html#a491c874399362934670610d5f232d6e6">FullSerializer.Internal.fsArrayConverter</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00042">42</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00648_a4e850ab88cea1b89771c00e0b65febcd_icgraph.png" border="0" usemap="#aa00648_a4e850ab88cea1b89771c00e0b65febcd_icgraph" alt=""/></div>
-<map name="aa00648_a4e850ab88cea1b89771c00e0b65febcd_icgraph" id="aa00648_a4e850ab88cea1b89771c00e0b65febcd_icgraph">
-<area shape="rect" title="If true, then the serializer will support cyclic references with the given converted type." alt="" coords="3028,57,3353,84"/>
-<area shape="rect" href="a00648.html#a415ea2ac9429bbb9927346af7cb7c2e1" title="Construct an object instance that will be passed to TryDeserialize. This should not deserialize the o..." alt="" coords="2693,57,2980,84"/>
-<area shape="rect" href="a00724.html#aba2d7ff786011da03d0813609419aa11" title="Fetches a converter that can serialize/deserialize the given type." alt="" coords="2401,108,2645,135"/>
-<area shape="rect" href="a00724.html#ab0a9c3650c92120b7a5a3ee4abc171e9" title=" " alt="" coords="1157,32,1516,59"/>
-<area shape="rect" href="a00724.html#ad9ca29ced1e05f4bdb1789c74cba0ae6" title=" " alt="" coords="2003,83,2353,109"/>
-<area shape="rect" href="a00724.html#ab603e4cc661d21bfeefd1d2817b0aad8" title=" " alt="" coords="739,209,1109,236"/>
-<area shape="rect" href="a00724.html#a7ee160c6b34dddada700d0f5a73ebf23" title=" " alt="" coords="1164,184,1509,211"/>
-<area shape="rect" href="a00724.html#af250f776c80ffec21b08c92c77978b2c" title=" " alt="" coords="2010,184,2346,211"/>
-<area shape="rect" href="a00724.html#abd29b64f632a01c07ad6bd0c973e00a0" title=" " alt="" coords="754,32,1094,59"/>
-<area shape="rect" href="a00724.html#a048b235379a8cf6fb8c1fb8b6eb466fa" title=" " alt="" coords="304,32,691,59"/>
-<area shape="rect" href="a00724.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="5,32,256,59"/>
-<area shape="rect" href="a00724.html#a47a6bb84a2a7df070e5f16fa44f062b2" title=" " alt="" coords="1591,83,1927,109"/>
-<area shape="rect" href="a00724.html#a02eb0a2533b600eada768fcbaba86d63" title="Serialize the given value." alt="" coords="379,209,616,236"/>
-<area shape="rect" href="a00724.html#a788f63e064e685727cac9361a356ba30" title=" " alt="" coords="1564,184,1955,211"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a84447285540ab6b51efc2399d144c60c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84447285540ab6b51efc2399d144c60c">&#9670;&nbsp;</a></span>RequestInheritanceSupport()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool FullSerializer.fsBaseConverter.RequestInheritanceSupport </td>
-          <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>If true, then the serializer will include inheritance data for the given converter. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">storageType</td><td>The field/property type that is currently storing the object that is being serialized.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented in <a class="el" href="a00588.html#a3f4750a4e8a6a6ae582c73cf5d8142e5">FullSerializer.Internal.fsTypeConverter</a>, <a class="el" href="a00592.html#a4f8dd86c002f7a3e6b25a1b16d791c60">FullSerializer.Internal.fsWeakReferenceConverter</a>, <a class="el" href="a00580.html#a96bfa5776105d8d9fffb1fd01c53af2e">FullSerializer.Internal.fsPrimitiveConverter</a>, <a class="el" href="a00572.html#af20b5573e313464e13c17735746a2267">FullSerializer.Internal.fsKeyValuePairConverter</a>, <a class="el" href="a00564.html#a4556062bfaec5d51b7c1120bf1388a4c">FullSerializer.Internal.fsGuidConverter</a>, <a class="el" href="a00552.html#a4af727f1cb13c61c7e5f57bb6c3e682b">FullSerializer.Internal.fsEnumConverter</a>, and <a class="el" href="a00540.html#a0c8625b10aee6ed789981e1f14c09ca1">FullSerializer.Internal.fsArrayConverter</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00053">53</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
-
-</div>
-</div>
-<a id="a024019330f070b9fb3d49a5213c9aae8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a024019330f070b9fb3d49a5213c9aae8">&#9670;&nbsp;</a></span>SerializeMember&lt; T &gt;()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00720.html">fsResult</a> FullSerializer.fsBaseConverter.SerializeMember&lt; T &gt; </td>
-          <td>(</td>
-          <td class="paramtype">Dictionary&lt; string, <a class="el" href="a00668.html">fsData</a> &gt;&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>overrideConverterType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00099">99</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00091">91</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00648_a024019330f070b9fb3d49a5213c9aae8_cgraph.png" border="0" usemap="#aa00648_a024019330f070b9fb3d49a5213c9aae8_cgraph" alt=""/></div>
-<map name="aa00648_a024019330f070b9fb3d49a5213c9aae8_cgraph" id="aa00648_a024019330f070b9fb3d49a5213c9aae8_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,332,32"/>
-<area shape="rect" href="a00724.html#a17e5574115d10ded25ac40d46eeae4f2" title="Serialize the given value." alt="" coords="380,5,617,32"/>
+<div class="center"><img src="a00664_ac7c719ebad471a4a00b812097d436a73_cgraph.png" border="0" usemap="#aa00664_ac7c719ebad471a4a00b812097d436a73_cgraph" alt=""/></div>
+<map name="aa00664_ac7c719ebad471a4a00b812097d436a73_cgraph" id="aa00664_ac7c719ebad471a4a00b812097d436a73_cgraph">
+<area shape="rect" title="Helper method to create a fsData instance that holds a list." alt="" coords="5,5,207,32"/>
+<area shape="rect" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6" title="Creates a fsData instance that holds null." alt="" coords="255,5,433,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00664_ac7c719ebad471a4a00b812097d436a73_icgraph.png" border="0" usemap="#aa00664_ac7c719ebad471a4a00b812097d436a73_icgraph" alt=""/></div>
+<map name="aa00664_ac7c719ebad471a4a00b812097d436a73_icgraph" id="aa00664_ac7c719ebad471a4a00b812097d436a73_icgraph">
+<area shape="rect" title="Helper method to create a fsData instance that holds a list." alt="" coords="408,56,609,83"/>
+<area shape="rect" href="a00536.html#abb09e7cf9f1a6b9a359e780c0c53b454" title="Serialize the actual object into the given data storage." alt="" coords="25,5,340,32"/>
+<area shape="rect" href="a00544.html#aaeb12dc698fa08caad016cc737f23fff" title="Serialize the actual object into the given data storage." alt="" coords="12,56,353,83"/>
+<area shape="rect" href="a00564.html#a7aaf3b51583371f787df64c3eefc8c87" title="Serialize the actual object into the given data storage." alt="" coords="5,107,360,133"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a38d3d1b042eb788819883354073a224e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38d3d1b042eb788819883354073a224e">&#9670;&nbsp;</a></span>TryDeserialize()</h2>
+<a id="a884600697b7b552fa3908e86b60e9216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a884600697b7b552fa3908e86b60e9216">&#9670;&nbsp;</a></span>CreateList() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -707,91 +646,140 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abstract <a class="el" href="a00720.html">fsResult</a> FullSerializer.fsBaseConverter.TryDeserialize </td>
+          <td class="memname">static <a class="el" href="a00664.html">fsData</a> FullSerializer.fsData.CreateList </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>capacity</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">ref object&#160;</td>
-          <td class="paramname"><em>instance</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Deserialize data into the object instance. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>Serialization data to deserialize from.</td></tr>
-    <tr><td class="paramname">instance</td><td>The object instance to deserialize into.</td></tr>
-    <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if serialization was successful, false otherwise.</dd></dl>
+<p>Helper method to create a <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance that holds a list with the initial capacity. </p>
 
-<p>Implemented in <a class="el" href="a00580.html#a5143547d92eb9578d027c0a676ad0613">FullSerializer.Internal.fsPrimitiveConverter</a>, <a class="el" href="a00568.html#a1585e62338f2abf99911f4fde9599daa">FullSerializer.Internal.fsIEnumerableConverter</a>, <a class="el" href="a00548.html#a8dc0adbffb181451bb37c6e6a0ed13b8">FullSerializer.Internal.fsDictionaryConverter</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; TModel &gt;</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; GUIStyle &gt;</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; Bounds &gt;</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; Gradient &gt;</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; Rect &gt;</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; Keyframe &gt;</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; AnimationCurve &gt;</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; GUIStyleState &gt;</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; RectOffset &gt;</a>, <a class="el" href="a00672.html#a099c31a32168fa233bbe2a3ab9e33c5a">FullSerializer.fsDirectConverter&lt; LayerMask &gt;</a>, <a class="el" href="a00636.html#acad9c1e7e271c7ab3d0821c86fb12580">FullSerializer.Internal.Converters.UnityEvent_Converter</a>, <a class="el" href="a00592.html#a0b1b66f55b2e380a0b17f2944dc0ff84">FullSerializer.Internal.fsWeakReferenceConverter</a>, <a class="el" href="a00588.html#aa94af57c0f67c755cb406529813a13aa">FullSerializer.Internal.fsTypeConverter</a>, <a class="el" href="a00584.html#a1963e8f217bbe10f747bdbb3ceebf739">FullSerializer.Internal.fsReflectedConverter</a>, <a class="el" href="a00576.html#a6b72c06300a1efb2daf2a35753aa0ed9">FullSerializer.Internal.fsNullableConverter</a>, <a class="el" href="a00572.html#ab4698a9f8ed356f17a68c3936808d5d3">FullSerializer.Internal.fsKeyValuePairConverter</a>, <a class="el" href="a00564.html#aea7e0849acaab5508aa34246f2702832">FullSerializer.Internal.fsGuidConverter</a>, <a class="el" href="a00560.html#a81d2d460112d57d67e8156cd5a52e1e1">FullSerializer.Internal.fsForwardConverter</a>, <a class="el" href="a00552.html#a083b9f0f694869aa476f0e6a333051da">FullSerializer.Internal.fsEnumConverter</a>, <a class="el" href="a00544.html#ad439c675a33e91ca71370886f113e459">FullSerializer.Internal.fsDateConverter</a>, and <a class="el" href="a00540.html#af88d4b3c78572356be0a07e841aa4a95">FullSerializer.Internal.fsArrayConverter</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00098">98</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
 <div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00648_a38d3d1b042eb788819883354073a224e_icgraph.png" border="0" usemap="#aa00648_a38d3d1b042eb788819883354073a224e_icgraph" alt=""/></div>
-<map name="aa00648_a38d3d1b042eb788819883354073a224e_icgraph" id="aa00648_a38d3d1b042eb788819883354073a224e_icgraph">
-<area shape="rect" title="Deserialize data into the object instance." alt="" coords="2316,5,2597,32"/>
-<area shape="rect" href="a00724.html#ad9ca29ced1e05f4bdb1789c74cba0ae6" title=" " alt="" coords="1917,5,2268,32"/>
-<area shape="rect" href="a00724.html#a47a6bb84a2a7df070e5f16fa44f062b2" title=" " alt="" coords="1533,5,1869,32"/>
-<area shape="rect" href="a00724.html#ab0a9c3650c92120b7a5a3ee4abc171e9" title=" " alt="" coords="1127,5,1485,32"/>
-<area shape="rect" href="a00724.html#abd29b64f632a01c07ad6bd0c973e00a0" title=" " alt="" coords="739,5,1079,32"/>
-<area shape="rect" href="a00724.html#a048b235379a8cf6fb8c1fb8b6eb466fa" title=" " alt="" coords="304,5,691,32"/>
-<area shape="rect" href="a00724.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="5,5,256,32"/>
+<div class="center"><img src="a00664_a884600697b7b552fa3908e86b60e9216_cgraph.png" border="0" usemap="#aa00664_a884600697b7b552fa3908e86b60e9216_cgraph" alt=""/></div>
+<map name="aa00664_a884600697b7b552fa3908e86b60e9216_cgraph" id="aa00664_a884600697b7b552fa3908e86b60e9216_cgraph">
+<area shape="rect" title="Helper method to create a fsData instance that holds a list with the initial capacity." alt="" coords="5,5,207,32"/>
+<area shape="rect" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6" title="Creates a fsData instance that holds null." alt="" coords="255,5,433,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="aeb0065770e53ecaac3f5dd3b5cd670d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb0065770e53ecaac3f5dd3b5cd670d1">&#9670;&nbsp;</a></span>TrySerialize()</h2>
+<a id="a31f0be7076e3aeea8051eef9b4bff6c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31f0be7076e3aeea8051eef9b4bff6c3">&#9670;&nbsp;</a></span>Equals() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abstract <a class="el" href="a00720.html">fsResult</a> FullSerializer.fsBaseConverter.TrySerialize </td>
+          <td class="memname">bool FullSerializer.fsData.Equals </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines whether the specified object is equal to the current object. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00298">298</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00664_a31f0be7076e3aeea8051eef9b4bff6c3_cgraph.png" border="0" usemap="#aa00664_a31f0be7076e3aeea8051eef9b4bff6c3_cgraph" alt=""/></div>
+<map name="aa00664_a31f0be7076e3aeea8051eef9b4bff6c3_cgraph" id="aa00664_a31f0be7076e3aeea8051eef9b4bff6c3_cgraph">
+<area shape="rect" title="Determines whether the specified object is equal to the current object." alt="" coords="5,5,188,32"/>
+<area shape="rect" href="a00664.html#a29d15c3ea23372768eea41226c322415" title="Determines whether the specified object is equal to the current object." alt="" coords="236,5,419,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a29d15c3ea23372768eea41226c322415"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29d15c3ea23372768eea41226c322415">&#9670;&nbsp;</a></span>Equals() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override bool FullSerializer.fsData.Equals </td>
           <td>(</td>
           <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>instance</em>, </td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines whether the specified object is equal to the current object. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00291">291</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00664_a29d15c3ea23372768eea41226c322415_icgraph.png" border="0" usemap="#aa00664_a29d15c3ea23372768eea41226c322415_icgraph" alt=""/></div>
+<map name="aa00664_a29d15c3ea23372768eea41226c322415_icgraph" id="aa00664_a29d15c3ea23372768eea41226c322415_icgraph">
+<area shape="rect" title="Determines whether the specified object is equal to the current object." alt="" coords="259,31,441,57"/>
+<area shape="rect" href="a00664.html#a31f0be7076e3aeea8051eef9b4bff6c3" title="Determines whether the specified object is equal to the current object." alt="" coords="17,5,199,32"/>
+<area shape="rect" href="a00664.html#a0cfc078433d539f5aefc16078accfc15" title="Returns true iff a == b." alt="" coords="5,56,211,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a915cae40a9014f6027c2b88e35d74e8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a915cae40a9014f6027c2b88e35d74e8c">&#9670;&nbsp;</a></span>GetHashCode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override int FullSerializer.fsData.GetHashCode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a hash code for this instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00388">388</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="ae595530d43b82d4f7e6190b880932624"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae595530d43b82d4f7e6190b880932624">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool FullSerializer.fsData.operator!= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">out <a class="el" href="a00668.html">fsData</a>&#160;</td>
-          <td class="paramname"><em>serialized</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -801,42 +789,100 @@ Here is the caller graph for this function:</div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Serialize the actual object into the given data storage. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">instance</td><td>The object instance to serialize. This will never be null.</td></tr>
-    <tr><td class="paramname">serialized</td><td>The serialized state.</td></tr>
-    <tr><td class="paramname">storageType</td><td>The field/property type that is storing this instance.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>If serialization was successful.</dd></dl>
+<p>Returns true iff a != b. </p>
 
-<p>Implemented in <a class="el" href="a00568.html#a7aaf3b51583371f787df64c3eefc8c87">FullSerializer.Internal.fsIEnumerableConverter</a>, <a class="el" href="a00548.html#aaeb12dc698fa08caad016cc737f23fff">FullSerializer.Internal.fsDictionaryConverter</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; TModel &gt;</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; GUIStyle &gt;</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; Bounds &gt;</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; Gradient &gt;</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; Rect &gt;</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; Keyframe &gt;</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; AnimationCurve &gt;</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; GUIStyleState &gt;</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; RectOffset &gt;</a>, <a class="el" href="a00672.html#af741809aa0db9a1fa192f0e1dcfc245a">FullSerializer.fsDirectConverter&lt; LayerMask &gt;</a>, <a class="el" href="a00636.html#a9b91744cef0f028bfc7a0dbab226f3f8">FullSerializer.Internal.Converters.UnityEvent_Converter</a>, <a class="el" href="a00592.html#a2faaa58d3ec0a68a9f8aed9e94d92b27">FullSerializer.Internal.fsWeakReferenceConverter</a>, <a class="el" href="a00588.html#aced300086882c6f0ce70ff8ff7ae46c2">FullSerializer.Internal.fsTypeConverter</a>, <a class="el" href="a00584.html#ac8ed8672fc0d4ff7aad52606ce4bcced">FullSerializer.Internal.fsReflectedConverter</a>, <a class="el" href="a00580.html#a6415a8256e0ab38b10e938c7aab8fcea">FullSerializer.Internal.fsPrimitiveConverter</a>, <a class="el" href="a00576.html#ab4bb180f4c413c45ef22bbf4d2a34d60">FullSerializer.Internal.fsNullableConverter</a>, <a class="el" href="a00572.html#a14c04b4be8e3bb4533966a4b3eabb554">FullSerializer.Internal.fsKeyValuePairConverter</a>, <a class="el" href="a00564.html#a82f96f76d4b66fdb39edab0721416df7">FullSerializer.Internal.fsGuidConverter</a>, <a class="el" href="a00560.html#a71b51a115cf749f1a3232fb1498f2d6f">FullSerializer.Internal.fsForwardConverter</a>, <a class="el" href="a00552.html#a6072af5ab89cf19592d346e37b09b140">FullSerializer.Internal.fsEnumConverter</a>, <a class="el" href="a00544.html#a4e7733527b03e6a6f8381d3f79b6ac79">FullSerializer.Internal.fsDateConverter</a>, and <a class="el" href="a00540.html#abb09e7cf9f1a6b9a359e780c0c53b454">FullSerializer.Internal.fsArrayConverter</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00379">379</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a0cfc078433d539f5aefc16078accfc15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cfc078433d539f5aefc16078accfc15">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool FullSerializer.fsData.operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true iff a == b. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00358">358</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
 <div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00648_aeb0065770e53ecaac3f5dd3b5cd670d1_icgraph.png" border="0" usemap="#aa00648_aeb0065770e53ecaac3f5dd3b5cd670d1_icgraph" alt=""/></div>
-<map name="aa00648_aeb0065770e53ecaac3f5dd3b5cd670d1_icgraph" id="aa00648_aeb0065770e53ecaac3f5dd3b5cd670d1_icgraph">
-<area shape="rect" title="Serialize the actual object into the given data storage." alt="" coords="1925,5,2192,32"/>
-<area shape="rect" href="a00724.html#af250f776c80ffec21b08c92c77978b2c" title=" " alt="" coords="1541,5,1877,32"/>
-<area shape="rect" href="a00724.html#a788f63e064e685727cac9361a356ba30" title=" " alt="" coords="1103,5,1493,32"/>
-<area shape="rect" href="a00724.html#a7ee160c6b34dddada700d0f5a73ebf23" title=" " alt="" coords="709,5,1055,32"/>
-<area shape="rect" href="a00724.html#ab603e4cc661d21bfeefd1d2817b0aad8" title=" " alt="" coords="291,5,661,32"/>
-<area shape="rect" href="a00724.html#a02eb0a2533b600eada768fcbaba86d63" title="Serialize the given value." alt="" coords="5,5,243,32"/>
+<div class="center"><img src="a00664_a0cfc078433d539f5aefc16078accfc15_cgraph.png" border="0" usemap="#aa00664_a0cfc078433d539f5aefc16078accfc15_cgraph" alt=""/></div>
+<map name="aa00664_a0cfc078433d539f5aefc16078accfc15_cgraph" id="aa00664_a0cfc078433d539f5aefc16078accfc15_cgraph">
+<area shape="rect" title="Returns true iff a == b." alt="" coords="5,5,211,32"/>
+<area shape="rect" href="a00664.html#a29d15c3ea23372768eea41226c322415" title="Determines whether the specified object is equal to the current object." alt="" coords="259,5,441,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ac64cd3d8fa914d376259ff913c208791"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac64cd3d8fa914d376259ff913c208791">&#9670;&nbsp;</a></span>ToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override string FullSerializer.fsData.ToString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00282">282</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00664_ac64cd3d8fa914d376259ff913c208791_cgraph.png" border="0" usemap="#aa00664_ac64cd3d8fa914d376259ff913c208791_cgraph" alt=""/></div>
+<map name="aa00664_ac64cd3d8fa914d376259ff913c208791_cgraph" id="aa00664_ac64cd3d8fa914d376259ff913c208791_cgraph">
+<area shape="rect" title=" " alt="" coords="5,31,196,57"/>
+<area shape="rect" href="a00700.html#a7d4e78009d040303daf29c9b11e87df4" title="Writes the compressed JSON output data to the given stream." alt="" coords="244,31,524,57"/>
+<area shape="rect" href="a00700.html#a3a8ef7964af11b97773d045f68e1c9bb" title=" " alt="" coords="572,31,888,57"/>
+<area shape="rect" href="a00700.html#a1cdb1e42f8eca717a924a420d2a9c5b4" title="Utility method that converts a double to a string." alt="" coords="936,5,1247,32"/>
+<area shape="rect" href="a00700.html#aa52965dee1adcff0519563c0281017c5" title="Escapes a string." alt="" coords="962,56,1221,83"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a6d55e268772d23da10ce9ca3dc0e415f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d55e268772d23da10ce9ca3dc0e415f">&#9670;&nbsp;</a></span>Serializer</h2>
+<a id="afc64f478caac3865a63dcb13f888d0b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc64f478caac3865a63dcb13f888d0b6">&#9670;&nbsp;</a></span>_value</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -845,24 +891,459 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00724.html">fsSerializer</a> FullSerializer.fsBaseConverter.Serializer</td>
+          <td class="memname">object FullSerializer.fsData._value</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>The serializer that was owns this converter. </p>
+<p>The raw value that this serialized data stores. It can be one of six different types; a boolean, a double, Int64, a string, a Dictionary, or a List. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00143_source.html#l00016">16</a> of file <a class="el" href="a00143_source.html">fsBaseConverter.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00028">28</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a55dbf6381c50c95a042334c119fccdfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55dbf6381c50c95a042334c119fccdfc">&#9670;&nbsp;</a></span>False</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="a00664.html">fsData</a> FullSerializer.fsData.False = new <a class="el" href="a00664.html">fsData</a>(false)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00103">103</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="adcb3ce2b86c6f317a74ee3ecfe9c41be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcb3ce2b86c6f317a74ee3ecfe9c41be">&#9670;&nbsp;</a></span>Null</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="a00664.html">fsData</a> FullSerializer.fsData.Null = new <a class="el" href="a00664.html">fsData</a>()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00104">104</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="af36a1f41bbcf0f17e56b77cc80e0e0b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af36a1f41bbcf0f17e56b77cc80e0e0b3">&#9670;&nbsp;</a></span>True</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="a00664.html">fsData</a> FullSerializer.fsData.True = new <a class="el" href="a00664.html">fsData</a>(true)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00102">102</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a9e4be12fbd0ac616b08823a6b09529f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e4be12fbd0ac616b08823a6b09529f8">&#9670;&nbsp;</a></span>AsBool</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsData.AsBool</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a boolean. Throws an exception if it is not a boolean. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00230">230</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="ad0592f7d7f713ddbf1f89cab77608c57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0592f7d7f713ddbf1f89cab77608c57">&#9670;&nbsp;</a></span>AsDictionary</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Dictionary&lt;string, <a class="el" href="a00664.html">fsData</a>&gt; FullSerializer.fsData.AsDictionary</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a Dictionary. Throws an exception if it is not a Dictionary. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00251">251</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a3b742582f73e3eb166bcc6df88b2ffd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b742582f73e3eb166bcc6df88b2ffd9">&#9670;&nbsp;</a></span>AsDouble</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double FullSerializer.fsData.AsDouble</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a double. Throws an exception if it is not a double. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00209">209</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a47a5cdaefdb6afc7f2bdaa026befdc00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47a5cdaefdb6afc7f2bdaa026befdc00">&#9670;&nbsp;</a></span>AsInt64</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Int64 FullSerializer.fsData.AsInt64</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to an Int64. Throws an exception if it is not an Int64. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00219">219</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="aebf459f479691aa88d9712f53a2d85ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebf459f479691aa88d9712f53a2d85ee">&#9670;&nbsp;</a></span>AsList</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;<a class="el" href="a00664.html">fsData</a>&gt; FullSerializer.fsData.AsList</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a List. Throws an exception if it is not a List. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00261">261</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a69c34ee326b025ae8781eb7029943444"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69c34ee326b025ae8781eb7029943444">&#9670;&nbsp;</a></span>AsString</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string FullSerializer.fsData.AsString</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> to a string. Throws an exception if it is not a string. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00240">240</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a0150291174c11e0880aee949b14c8741"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0150291174c11e0880aee949b14c8741">&#9670;&nbsp;</a></span>IsBool</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsData.IsBool</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a boolean. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00170">170</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a493e25ed3252e4a381a1cd47b9a1559e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a493e25ed3252e4a381a1cd47b9a1559e">&#9670;&nbsp;</a></span>IsDictionary</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsData.IsDictionary</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a Dictionary. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00188">188</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a346ac35da58a28836daed508ecf32b3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a346ac35da58a28836daed508ecf32b3f">&#9670;&nbsp;</a></span>IsDouble</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsData.IsDouble</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a double. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00152">152</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a80a85a78dda84fe0c68f7a163355e8c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80a85a78dda84fe0c68f7a163355e8c1">&#9670;&nbsp;</a></span>IsInt64</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsData.IsInt64</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to an Int64. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00161">161</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a1d61e9ed3a74d32dc46f9a4d4c1285f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d61e9ed3a74d32dc46f9a4d4c1285f7">&#9670;&nbsp;</a></span>IsList</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsData.IsList</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a List. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00197">197</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="af434698e3ebdea70932122c1b326c0a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af434698e3ebdea70932122c1b326c0a8">&#9670;&nbsp;</a></span>IsNull</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsData.IsNull</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to null. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00143">143</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a95589f68382f863386617a0dd4055ae4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95589f68382f863386617a0dd4055ae4">&#9670;&nbsp;</a></span>IsString</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FullSerializer.fsData.IsString</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if this <a class="el" href="a00664.html" title="A union type that stores a serialized value. The stored type can be one of six different types: null,...">fsData</a> instance maps back to a string. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00179">179</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a1103886f8029af3fb3e9adef1685072a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1103886f8029af3fb3e9adef1685072a">&#9670;&nbsp;</a></span>Type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a> FullSerializer.fsData.Type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00126">126</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00152_source.html">fsConverter.cs</a></li>
+<li><a class="el" href="a00158_source.html">fsData.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

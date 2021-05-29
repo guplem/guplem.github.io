@@ -1,0 +1,7 @@
+<map id="FullSerializer.fsSerializer.fsLazyCycleDefinitionWriter.WriteReference" name="FullSerializer.fsSerializer.fsLazyCycleDefinitionWriter.WriteReference">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,427,57"/>
+<area shape="rect" id="node2" href="$a00720.html#a22ad8b47b0e4bcb60a61f22a67466287" title="Ensures that the data is a dictionary. If it is not, then it is wrapped inside of one." alt="" coords="475,31,743,57"/>
+<area shape="rect" id="node3" href="$a00664.html#a5f645e9833e65845caf4cdbc4fd5e943" title="Transforms the internal fsData instance into a dictionary." alt="" coords="791,5,1039,32"/>
+<area shape="rect" id="node4" href="$a00664.html#a0d897576bd21e0e957fcb022f7ad02b1" title="Returns a shallow clone of this data instance." alt="" coords="827,56,1002,83"/>
+<area shape="rect" id="node5" href="$a00664.html#a9b5e13a72849cb6c6a6948fac87260c6" title="Creates a fsData instance that holds null." alt="" coords="1087,56,1265,83"/>
+</map>

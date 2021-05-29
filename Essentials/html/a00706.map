@@ -1,4 +1,3 @@
-<map id="FullSerializer.fsObjectAttribute" name="FullSerializer.fsObjectAttribute">
-<area shape="rect" id="node1" title="This attribute controls some serialization behavior for a type. See the comments on each of the field..." alt="" coords="5,131,204,281"/>
-<area shape="rect" id="node2" title=" " alt="" coords="69,5,140,83"/>
+<map id="FullSerializer.fsObjectProcessor" name="FullSerializer.fsObjectProcessor">
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,289,156"/>
 </map>

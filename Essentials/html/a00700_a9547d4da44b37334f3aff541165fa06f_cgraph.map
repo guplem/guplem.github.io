@@ -1,0 +1,6 @@
+<map id="FullSerializer.fsJsonPrinter.BuildPrettyString" name="FullSerializer.fsJsonPrinter.BuildPrettyString">
+<area shape="rect" id="node1" title="Formats this data into the given builder." alt="" coords="5,56,284,83"/>
+<area shape="rect" id="node2" href="$a00700.html#a1cdb1e42f8eca717a924a420d2a9c5b4" title="Utility method that converts a double to a string." alt="" coords="332,5,643,32"/>
+<area shape="rect" id="node3" href="$a00700.html#aa52965dee1adcff0519563c0281017c5" title="Escapes a string." alt="" coords="358,56,617,83"/>
+<area shape="rect" id="node4" href="$a00700.html#afd225bd50079f2f1dd592aed4cea281c" title="Inserts the given number of indents into the builder." alt="" coords="358,107,617,133"/>
+</map>

@@ -1,4 +1,3 @@
-<map id="UnityEngine.RandomEssentials" name="UnityEngine.RandomEssentials">
-<area shape="rect" id="node1" title=" " alt="" coords="5,131,248,516"/>
-<area shape="rect" id="node2" title=" " alt="" coords="65,5,188,83"/>
+<map id="Essentials.SaveData.SD_Encoder" name="Essentials.SaveData.SD_Encoder">
+<area shape="rect" id="node1" title="Save Game Simple Encoder. Grabbed from https://stackoverflow.com/questions/10168240/encrypting&#45;decryp..." alt="" coords="5,5,247,127"/>
 </map>

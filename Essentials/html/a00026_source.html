@@ -70,47 +70,45 @@ $(function() {
 <div class="title">DoNExampleCoded.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00026.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>.UI;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00409.html">    5</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="a00409.html">Essentials.Examples.FlowControl</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00476.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00476.html">DoNExampleCoded</a> : MonoBehaviour</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00476.html#aca32cbdd6538b025e76c01605d0fa6ac">    9</a></span>&#160;        <span class="keyword">private</span> <a class="code" href="a00932.html">DoN</a> <a class="code" href="a00476.html#aca32cbdd6538b025e76c01605d0fa6ac">doN</a>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="a00476.html#ad2d57b59915380e5f1c8ab87234b456e">   11</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00476.html#ad2d57b59915380e5f1c8ab87234b456e">Start</a>()</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            <a class="code" href="a00476.html#aca32cbdd6538b025e76c01605d0fa6ac">doN</a> = <span class="keyword">new</span> <a class="code" href="a00932.html">DoN</a>(<a class="code" href="a00476.html#ad00ecab79867a5465cde2f7c2a7776fe">DummyMethod</a>, 4);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Press &#39;N&#39; to invoke the DoN.&quot;</span>);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        }</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="a00476.html#a5f6cedd4c8a2fb9480bb66e4ba29d637">   18</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00476.html#a5f6cedd4c8a2fb9480bb66e4ba29d637">Update</a>()</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">if</span> (Input.GetKeyDown(KeyCode.N))</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                <a class="code" href="a00476.html#aca32cbdd6538b025e76c01605d0fa6ac">doN</a>.<a class="code" href="a00932.html#af3a77290a927260e40ccbb7bcd0eedb6">Invoke</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            }</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        }</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="a00476.html#ad00ecab79867a5465cde2f7c2a7776fe">   26</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00476.html#ad00ecab79867a5465cde2f7c2a7776fe">DummyMethod</a>()</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            Debug.Log($<span class="stringliteral">&quot;Executing DummyMethod of &#39;DoN&#39;. Execution number {doN.invokedTimes}&quot;</span>);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
-<div class="ttc" id="aa00409_html"><div class="ttname"><a href="a00409.html">Essentials.Examples.FlowControl</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00005">DoNExampleCoded.cs:6</a></div></div>
-<div class="ttc" id="aa00420_html"><div class="ttname"><a href="a00420.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00476_html"><div class="ttname"><a href="a00476.html">Essentials.Examples.FlowControl.DoNExampleCoded</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00007">DoNExampleCoded.cs:8</a></div></div>
-<div class="ttc" id="aa00476_html_a5f6cedd4c8a2fb9480bb66e4ba29d637"><div class="ttname"><a href="a00476.html#a5f6cedd4c8a2fb9480bb66e4ba29d637">Essentials.Examples.FlowControl.DoNExampleCoded.Update</a></div><div class="ttdeci">void Update()</div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00018">DoNExampleCoded.cs:18</a></div></div>
-<div class="ttc" id="aa00476_html_aca32cbdd6538b025e76c01605d0fa6ac"><div class="ttname"><a href="a00476.html#aca32cbdd6538b025e76c01605d0fa6ac">Essentials.Examples.FlowControl.DoNExampleCoded.doN</a></div><div class="ttdeci">DoN doN</div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00009">DoNExampleCoded.cs:9</a></div></div>
-<div class="ttc" id="aa00476_html_ad00ecab79867a5465cde2f7c2a7776fe"><div class="ttname"><a href="a00476.html#ad00ecab79867a5465cde2f7c2a7776fe">Essentials.Examples.FlowControl.DoNExampleCoded.DummyMethod</a></div><div class="ttdeci">void DummyMethod()</div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00026">DoNExampleCoded.cs:26</a></div></div>
-<div class="ttc" id="aa00476_html_ad2d57b59915380e5f1c8ab87234b456e"><div class="ttname"><a href="a00476.html#ad2d57b59915380e5f1c8ab87234b456e">Essentials.Examples.FlowControl.DoNExampleCoded.Start</a></div><div class="ttdeci">void Start()</div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00011">DoNExampleCoded.cs:11</a></div></div>
-<div class="ttc" id="aa00932_html"><div class="ttname"><a href="a00932.html">UnityEngine.DoN</a></div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00007">DoN.cs:8</a></div></div>
-<div class="ttc" id="aa00932_html_af3a77290a927260e40ccbb7bcd0eedb6"><div class="ttname"><a href="a00932.html#af3a77290a927260e40ccbb7bcd0eedb6">UnityEngine.DoN.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00027">DoN.cs:27</a></div></div>
+<a href="a00026.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00417.html">UnityEngine</a>;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="a00406.html">    3</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="a00406.html">Essentials.Examples.FlowControl</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00472.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00472.html">DoNExampleCoded</a> : MonoBehaviour</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00472.html#aca32cbdd6538b025e76c01605d0fa6ac">    7</a></span>&#160;        <span class="keyword">private</span> <a class="code" href="a00924.html">DoN</a> <a class="code" href="a00472.html#aca32cbdd6538b025e76c01605d0fa6ac">doN</a>;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00472.html#ad2d57b59915380e5f1c8ab87234b456e">    9</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00472.html#ad2d57b59915380e5f1c8ab87234b456e">Start</a>()</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;            <a class="code" href="a00472.html#aca32cbdd6538b025e76c01605d0fa6ac">doN</a> = <span class="keyword">new</span> <a class="code" href="a00924.html">DoN</a>(<a class="code" href="a00472.html#ad00ecab79867a5465cde2f7c2a7776fe">DummyMethod</a>, 4);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;            </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Press &#39;N&#39; to invoke the DoN.&quot;</span>);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        }</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="a00472.html#a5f6cedd4c8a2fb9480bb66e4ba29d637">   16</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00472.html#a5f6cedd4c8a2fb9480bb66e4ba29d637">Update</a>()</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">if</span> (Input.GetKeyDown(KeyCode.N))</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                <a class="code" href="a00472.html#aca32cbdd6538b025e76c01605d0fa6ac">doN</a>.<a class="code" href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">Invoke</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="a00472.html#ad00ecab79867a5465cde2f7c2a7776fe">   24</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00472.html#ad00ecab79867a5465cde2f7c2a7776fe">DummyMethod</a>()</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            Debug.Log($<span class="stringliteral">&quot;Executing DummyMethod of &#39;DoN&#39;. Execution number {doN.invokedTimes}&quot;</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="ttc" id="aa00406_html"><div class="ttname"><a href="a00406.html">Essentials.Examples.FlowControl</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00003">DoNExampleCoded.cs:4</a></div></div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00472_html"><div class="ttname"><a href="a00472.html">Essentials.Examples.FlowControl.DoNExampleCoded</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00005">DoNExampleCoded.cs:6</a></div></div>
+<div class="ttc" id="aa00472_html_a5f6cedd4c8a2fb9480bb66e4ba29d637"><div class="ttname"><a href="a00472.html#a5f6cedd4c8a2fb9480bb66e4ba29d637">Essentials.Examples.FlowControl.DoNExampleCoded.Update</a></div><div class="ttdeci">void Update()</div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00016">DoNExampleCoded.cs:16</a></div></div>
+<div class="ttc" id="aa00472_html_aca32cbdd6538b025e76c01605d0fa6ac"><div class="ttname"><a href="a00472.html#aca32cbdd6538b025e76c01605d0fa6ac">Essentials.Examples.FlowControl.DoNExampleCoded.doN</a></div><div class="ttdeci">DoN doN</div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00007">DoNExampleCoded.cs:7</a></div></div>
+<div class="ttc" id="aa00472_html_ad00ecab79867a5465cde2f7c2a7776fe"><div class="ttname"><a href="a00472.html#ad00ecab79867a5465cde2f7c2a7776fe">Essentials.Examples.FlowControl.DoNExampleCoded.DummyMethod</a></div><div class="ttdeci">void DummyMethod()</div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00024">DoNExampleCoded.cs:24</a></div></div>
+<div class="ttc" id="aa00472_html_ad2d57b59915380e5f1c8ab87234b456e"><div class="ttname"><a href="a00472.html#ad2d57b59915380e5f1c8ab87234b456e">Essentials.Examples.FlowControl.DoNExampleCoded.Start</a></div><div class="ttdeci">void Start()</div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00009">DoNExampleCoded.cs:9</a></div></div>
+<div class="ttc" id="aa00924_html"><div class="ttname"><a href="a00924.html">UnityEngine.DoN</a></div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00007">DoN.cs:8</a></div></div>
+<div class="ttc" id="aa00924_html_af3a77290a927260e40ccbb7bcd0eedb6"><div class="ttname"><a href="a00924.html#af3a77290a927260e40ccbb7bcd0eedb6">UnityEngine.DoN.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdef"><b>Definition:</b> <a href="a00353_source.html#l00027">DoN.cs:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

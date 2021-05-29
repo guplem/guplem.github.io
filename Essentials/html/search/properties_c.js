@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['rawmessages_1904',['RawMessages',['../a00720.html#aaeea44c75b0b24e759e6e46c7259eab1',1,'FullSerializer::fsResult']]],
-  ['revertbuttontext_1905',['revertButtonText',['../a00856.html#a5d2da3eaa2f5dd795b22f0aee1487abc',1,'Essentials.EssentialsSettings.IModification.revertButtonText()'],['../a00860.html#a0c4931f17409dc980d3132cbaf1d3d3d',1,'Essentials.EssentialsSettings.Modification.revertButtonText()']]],
-  ['revertmodificationshorteplanation_1906',['revertModificationShortEplanation',['../a00856.html#a49424f4a0ef01f2ef6337bdcc1189cc8',1,'Essentials.EssentialsSettings.IModification.revertModificationShortEplanation()'],['../a00860.html#a15420245aab6ef7f2ddbede5a68d0198',1,'Essentials.EssentialsSettings.Modification.revertModificationShortEplanation()']]]
+  ['rawmessages_1898',['RawMessages',['../a00716.html#aaeea44c75b0b24e759e6e46c7259eab1',1,'FullSerializer::fsResult']]],
+  ['revertadjustmentshorteplanation_1899',['revertAdjustmentShortEplanation',['../a00848.html#abeef5ee9c84fdcadaa3d39c6ecf3b77d',1,'Essentials.EssentialsSettings.Adjustment.revertAdjustmentShortEplanation()'],['../a00852.html#aa1f5e6f24f489071d2f2e7898ffbf6a8',1,'Essentials.EssentialsSettings.IAdjustment.revertAdjustmentShortEplanation()']]],
+  ['revertbuttontext_1900',['revertButtonText',['../a00848.html#ac2de5310fb692b68d18e373abe0dc403',1,'Essentials.EssentialsSettings.Adjustment.revertButtonText()'],['../a00852.html#af352dccc5258dfbaee581d90e08cc029',1,'Essentials.EssentialsSettings.IAdjustment.revertButtonText()']]]
 ];

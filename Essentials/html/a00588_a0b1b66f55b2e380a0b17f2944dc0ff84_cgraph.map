@@ -1,0 +1,6 @@
+<map id="FullSerializer.Internal.fsWeakReferenceConverter.TryDeserialize" name="FullSerializer.Internal.fsWeakReferenceConverter.TryDeserialize">
+<area shape="rect" id="node1" title="Deserialize data into the object instance." alt="" coords="5,31,395,57"/>
+<area shape="rect" id="node2" href="$a00644.html#a2dbb1442ec90c3100b09308b9c53aab9" title=" " alt="" coords="443,5,707,32"/>
+<area shape="rect" id="node4" href="$a00720.html#a9ada1781fcc582b65d809815fe2c24e9" title="Attempts to deserialize a value from a serialized state." alt="" coords="449,56,700,83"/>
+<area shape="rect" id="node3" href="$a00716.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="755,5,928,32"/>
+</map>

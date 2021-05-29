@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: Essentials.SaveData.SD_JsonSerializer Class Reference</title>
+<title>UnityEssentials: UnityEngine.Utils Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,167 +62,253 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00401.html">Essentials</a></li><li class="navelem"><a class="el" href="a00422.html">SaveData</a></li><li class="navelem"><a class="el" href="a00972.html">SD_JsonSerializer</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00417.html">UnityEngine</a></li><li class="navelem"><a class="el" href="a00972.html">Utils</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="a00969.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Essentials.SaveData.SD_JsonSerializer Class Reference</div>  </div>
+<div class="title">UnityEngine.Utils Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Save Game Json Serializer.  
- <a href="a00972.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Essentials.SaveData.SD_JsonSerializer:</div>
+Collaboration diagram for UnityEngine.Utils:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00970.png" border="0" usemap="#aEssentials_8SaveData_8SD__JsonSerializer_coll__map" alt="Collaboration graph"/></div>
-<map name="aEssentials_8SaveData_8SD__JsonSerializer_coll__map" id="aEssentials_8SaveData_8SD__JsonSerializer_coll__map">
-<area shape="rect" title="Save Game Json Serializer." alt="" coords="5,5,257,97"/>
+<div class="center"><img src="a00970.png" border="0" usemap="#aUnityEngine_8Utils_coll__map" alt="Collaboration graph"/></div>
+<map name="aUnityEngine_8Utils_coll__map" id="aUnityEngine_8Utils_coll__map">
+<area shape="rect" title=" " alt="" coords="5,5,311,141"/>
 </map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e7aa895bf381ba36cb6bf970206ba31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00972.html#a1e7aa895bf381ba36cb6bf970206ba31">Serialize&lt; T &gt;</a> (T obj, Stream stream, Encoding encoding)</td></tr>
-<tr class="memdesc:a1e7aa895bf381ba36cb6bf970206ba31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize the specified object to stream with encoding.  <a href="a00972.html#a1e7aa895bf381ba36cb6bf970206ba31">More...</a><br /></td></tr>
-<tr class="separator:a1e7aa895bf381ba36cb6bf970206ba31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55974697011e47fb9bdfb5ebb7ea1a01"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00972.html#a55974697011e47fb9bdfb5ebb7ea1a01">Deserialize&lt; T &gt;</a> (Stream stream, Encoding encoding)</td></tr>
-<tr class="memdesc:a55974697011e47fb9bdfb5ebb7ea1a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deserialize the specified object from stream using the encoding.  <a href="a00972.html#a55974697011e47fb9bdfb5ebb7ea1a01">More...</a><br /></td></tr>
-<tr class="separator:a55974697011e47fb9bdfb5ebb7ea1a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a02cda9ae71dee3339dee7e7204fc8a8f"><td class="memItemLeft" align="right" valign="top">static Type[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00972.html#a02cda9ae71dee3339dee7e7204fc8a8f">GetTypeImplementationsNotUnityObject&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:a02cda9ae71dee3339dee7e7204fc8a8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find all implementations of the given parameter type except from those that are a subclass of 'UnityEngine.Object'.  <a href="a00972.html#a02cda9ae71dee3339dee7e7204fc8a8f">More...</a><br /></td></tr>
+<tr class="separator:a02cda9ae71dee3339dee7e7204fc8a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5932306005d3629d7c04f2b2d2f52b3d"><td class="memItemLeft" align="right" valign="top">static IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00972.html#a5932306005d3629d7c04f2b2d2f52b3d">GetTypeImplementations&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:a5932306005d3629d7c04f2b2d2f52b3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find all implementations of the given parameter type.  <a href="a00972.html#a5932306005d3629d7c04f2b2d2f52b3d">More...</a><br /></td></tr>
+<tr class="separator:a5932306005d3629d7c04f2b2d2f52b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ffd6211dcd7185ede254c93bbefc5ff"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00972.html#a8ffd6211dcd7185ede254c93bbefc5ff">GetProjectName</a> ()</td></tr>
+<tr class="memdesc:a8ffd6211dcd7185ede254c93bbefc5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of the project  <a href="a00972.html#a8ffd6211dcd7185ede254c93bbefc5ff">More...</a><br /></td></tr>
+<tr class="separator:a8ffd6211dcd7185ede254c93bbefc5ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaf95229bffab29518f7e82c3168d7f8"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00972.html#aaaf95229bffab29518f7e82c3168d7f8">IsIOSupported</a> ()</td></tr>
+<tr class="memdesc:aaaf95229bffab29518f7e82c3168d7f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the IO is supported on current platform or not.  <a href="a00972.html#aaaf95229bffab29518f7e82c3168d7f8">More...</a><br /></td></tr>
+<tr class="separator:aaaf95229bffab29518f7e82c3168d7f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10cf6527a5c56377f7ded6a67c62d544"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00972.html#a10cf6527a5c56377f7ded6a67c62d544">IsFilePath</a> (string str)</td></tr>
+<tr class="memdesc:a10cf6527a5c56377f7ded6a67c62d544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the string is file path.  <a href="a00972.html#a10cf6527a5c56377f7ded6a67c62d544">More...</a><br /></td></tr>
+<tr class="separator:a10cf6527a5c56377f7ded6a67c62d544"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Save Game Json Serializer. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00386_source.html#l00038">38</a> of file <a class="el" href="a00386_source.html">SD_JsonSerializer.cs</a>.</p>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="a00395_source.html#l00010">10</a> of file <a class="el" href="a00395_source.html">Utils.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a55974697011e47fb9bdfb5ebb7ea1a01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55974697011e47fb9bdfb5ebb7ea1a01">&#9670;&nbsp;</a></span>Deserialize&lt; T &gt;()</h2>
+<a id="a8ffd6211dcd7185ede254c93bbefc5ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ffd6211dcd7185ede254c93bbefc5ff">&#9670;&nbsp;</a></span>GetProjectName()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T Essentials.SaveData.SD_JsonSerializer.Deserialize&lt; T &gt; </td>
+          <td class="memname">static string UnityEngine.Utils.GetProjectName </td>
           <td>(</td>
-          <td class="paramtype">Stream&#160;</td>
-          <td class="paramname"><em>stream</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">Encoding&#160;</td>
-          <td class="paramname"><em>encoding</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Deserialize the specified object from stream using the encoding. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">stream</td><td>Stream.</td></tr>
-    <tr><td class="paramname">encoding</td><td>Encoding.</td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Returns the name of the project </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00395_source.html#l00107">107</a> of file <a class="el" href="a00395_source.html">Utils.cs</a>.</p>
+
+</div>
+</div>
+<a id="a5932306005d3629d7c04f2b2d2f52b3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5932306005d3629d7c04f2b2d2f52b3d">&#9670;&nbsp;</a></span>GetTypeImplementations&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static IEnumerable&lt;Type&gt; UnityEngine.Utils.GetTypeImplementations&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Find all implementations of the given parameter type. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>The 1st type parameter.</td></tr>
+    <tr><td class="paramname">T</td><td>The type from whom all the implementations are.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00386_source.html#l00077">77</a> of file <a class="el" href="a00386_source.html">SD_JsonSerializer.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00395_source.html#l00027">27</a> of file <a class="el" href="a00395_source.html">Utils.cs</a>.</p>
 <div class="dynheader">
-Here is the call graph for this function:</div>
+Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00972_a55974697011e47fb9bdfb5ebb7ea1a01_cgraph.png" border="0" usemap="#aa00972_a55974697011e47fb9bdfb5ebb7ea1a01_cgraph" alt=""/></div>
-<map name="aa00972_a55974697011e47fb9bdfb5ebb7ea1a01_cgraph" id="aa00972_a55974697011e47fb9bdfb5ebb7ea1a01_cgraph">
-<area shape="rect" title="Deserialize the specified object from stream using the encoding." alt="" coords="5,56,356,83"/>
-<area shape="rect" href="a00700.html#ae72b670aad2d571b7f5a04390a80685b" title="Parses the specified input. Returns a failure state if parsing failed." alt="" coords="422,31,637,57"/>
-<area shape="rect" href="a00724.html#a9ada1781fcc582b65d809815fe2c24e9" title="Attempts to deserialize a value from a serialized state." alt="" coords="404,81,655,108"/>
-<area shape="rect" href="a00720.html#a668c1169410a20364aa7c53f98d00617" title="Create a result that failed." alt="" coords="743,5,917,32"/>
-<area shape="rect" href="a00700.html#a20718ef0fbec2da7b63c2280a19eef56" title=" " alt="" coords="703,56,957,83"/>
+<div class="center"><img src="a00972_a5932306005d3629d7c04f2b2d2f52b3d_icgraph.png" border="0" usemap="#aa00972_a5932306005d3629d7c04f2b2d2f52b3d_icgraph" alt=""/></div>
+<map name="aa00972_a5932306005d3629d7c04f2b2d2f52b3d_icgraph" id="aa00972_a5932306005d3629d7c04f2b2d2f52b3d_icgraph">
+<area shape="rect" title="Find all implementations of the given parameter type." alt="" coords="443,5,744,32"/>
+<area shape="rect" href="a00972.html#a02cda9ae71dee3339dee7e7204fc8a8f" title="Find all implementations of the given parameter type except from those that are a subclass of &#39;UnityE..." alt="" coords="5,5,395,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a1e7aa895bf381ba36cb6bf970206ba31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e7aa895bf381ba36cb6bf970206ba31">&#9670;&nbsp;</a></span>Serialize&lt; T &gt;()</h2>
+<a id="a02cda9ae71dee3339dee7e7204fc8a8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02cda9ae71dee3339dee7e7204fc8a8f">&#9670;&nbsp;</a></span>GetTypeImplementationsNotUnityObject&lt; T &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Essentials.SaveData.SD_JsonSerializer.Serialize&lt; T &gt; </td>
+          <td class="memname">static Type [] UnityEngine.Utils.GetTypeImplementationsNotUnityObject&lt; T &gt; </td>
           <td>(</td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>obj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">Stream&#160;</td>
-          <td class="paramname"><em>stream</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Encoding&#160;</td>
-          <td class="paramname"><em>encoding</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Serialize the specified object to stream with encoding. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">obj</td><td>Object.</td></tr>
-    <tr><td class="paramname">stream</td><td>Stream.</td></tr>
-    <tr><td class="paramname">encoding</td><td>Encoding.</td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Find all implementations of the given parameter type except from those that are a subclass of 'UnityEngine.Object'. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>The 1st type parameter.</td></tr>
+    <tr><td class="paramname">T</td><td>The type from whom all the implementations are.</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00386_source.html#l00048">48</a> of file <a class="el" href="a00386_source.html">SD_JsonSerializer.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00395_source.html#l00017">17</a> of file <a class="el" href="a00395_source.html">Utils.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00972_a1e7aa895bf381ba36cb6bf970206ba31_cgraph.png" border="0" usemap="#aa00972_a1e7aa895bf381ba36cb6bf970206ba31_cgraph" alt=""/></div>
-<map name="aa00972_a1e7aa895bf381ba36cb6bf970206ba31_cgraph" id="aa00972_a1e7aa895bf381ba36cb6bf970206ba31_cgraph">
-<area shape="rect" title="Serialize the specified object to stream with encoding." alt="" coords="5,56,343,83"/>
-<area shape="rect" href="a00704.html#a7d4e78009d040303daf29c9b11e87df4" title="Writes the compressed JSON output data to the given stream." alt="" coords="391,31,671,57"/>
-<area shape="rect" href="a00724.html#a17e5574115d10ded25ac40d46eeae4f2" title="Serialize the given value." alt="" coords="412,81,649,108"/>
-<area shape="rect" href="a00704.html#a3a8ef7964af11b97773d045f68e1c9bb" title=" " alt="" coords="719,31,1035,57"/>
-<area shape="rect" href="a00704.html#a1cdb1e42f8eca717a924a420d2a9c5b4" title="Utility method that converts a double to a string." alt="" coords="1083,5,1393,32"/>
-<area shape="rect" href="a00704.html#aa52965dee1adcff0519563c0281017c5" title="Escapes a string." alt="" coords="1109,56,1367,83"/>
+<div class="center"><img src="a00972_a02cda9ae71dee3339dee7e7204fc8a8f_cgraph.png" border="0" usemap="#aa00972_a02cda9ae71dee3339dee7e7204fc8a8f_cgraph" alt=""/></div>
+<map name="aa00972_a02cda9ae71dee3339dee7e7204fc8a8f_cgraph" id="aa00972_a02cda9ae71dee3339dee7e7204fc8a8f_cgraph">
+<area shape="rect" title="Find all implementations of the given parameter type except from those that are a subclass of &#39;UnityE..." alt="" coords="5,5,395,32"/>
+<area shape="rect" href="a00972.html#a5932306005d3629d7c04f2b2d2f52b3d" title="Find all implementations of the given parameter type." alt="" coords="443,5,744,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a10cf6527a5c56377f7ded6a67c62d544"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10cf6527a5c56377f7ded6a67c62d544">&#9670;&nbsp;</a></span>IsFilePath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool UnityEngine.Utils.IsFilePath </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if the string is file path. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if is file path the specified str; otherwise, <code>false</code>.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>String.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00395_source.html#l00133">133</a> of file <a class="el" href="a00395_source.html">Utils.cs</a>.</p>
+
+</div>
+</div>
+<a id="aaaf95229bffab29518f7e82c3168d7f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaf95229bffab29518f7e82c3168d7f8">&#9670;&nbsp;</a></span>IsIOSupported()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool UnityEngine.Utils.IsIOSupported </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the IO is supported on current platform or not. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code>, if supported was IOed, <code>false</code> otherwise.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00395_source.html#l00118">118</a> of file <a class="el" href="a00395_source.html">Utils.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00972_aaaf95229bffab29518f7e82c3168d7f8_icgraph.png" border="0" usemap="#aa00972_aaaf95229bffab29518f7e82c3168d7f8_icgraph" alt=""/></div>
+<map name="aa00972_aaaf95229bffab29518f7e82c3168d7f8_icgraph" id="aa00972_aaaf95229bffab29518f7e82c3168d7f8_icgraph">
+<area shape="rect" title="Checks if the IO is supported on current platform or not." alt="" coords="955,107,1163,133"/>
+<area shape="rect" href="a00956.html#a2640a1f5271e28dfca17f0974204af43" title="Delete the specified identifier and path." alt="" coords="653,5,896,32"/>
+<area shape="rect" href="a00956.html#a6f09deb32c88a770548b6dbd03ce63df" title="Deletes all." alt="" coords="646,56,903,83"/>
+<area shape="rect" href="a00956.html#a33bacc3991904042b3389b125e6fe911" title="Checks whether the specified identifier exists or not." alt="" coords="653,107,896,133"/>
+<area shape="rect" href="a00956.html#a8795b7267f5f711b5884e3faadcdd8bb" title="Loads data using identifier." alt="" coords="331,132,595,159"/>
+<area shape="rect" href="a00956.html#a548de856d1e37fbe7ce9b744350387e5" title="Saves data using the identifier." alt="" coords="643,208,907,235"/>
+<area shape="rect" href="a00524.html#a5639c00287cfcc7d820ec372b60e3e14" title=" " alt="" coords="363,5,562,32"/>
+<area shape="rect" href="a00520.html#a405b35233bdf085eaf1f1695a394a65e" title=" " alt="" coords="5,31,283,57"/>
+<area shape="rect" href="a00524.html#afad54e4d5d8ac04d33c9a8dbd9add51c" title=" " alt="" coords="371,56,555,83"/>
 </map>
 </div>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00386_source.html">SD_JsonSerializer.cs</a></li>
+<li><a class="el" href="a00395_source.html">Utils.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

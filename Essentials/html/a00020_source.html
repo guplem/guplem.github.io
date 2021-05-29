@@ -70,47 +70,45 @@ $(function() {
 <div class="title">ConsoleExample.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00020.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System.Collections;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00468.html">    5</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00468.html">ConsoleExample</a> : MonoBehaviour</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00468.html#af1cb681e205048164d8614fac132107b">    7</a></span>&#160;    [SerializeField] <span class="keyword">private</span> <a class="code" href="a00832.html">Console</a>[] <a class="code" href="a00468.html#af1cb681e205048164d8614fac132107b">consoles</a>;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    </div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00468.html#a9b8e03786dc1c15a192a57df8d4ff421">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00468.html#a9b8e03786dc1c15a192a57df8d4ff421">LogSomething</a>()</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <span class="keywordtype">int</span> randomInt = Random.Range(0,5);</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keywordflow">switch</span> (randomInt)</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <span class="keywordflow">case</span> 0: Debug.Log(<span class="stringliteral">&quot;I really have no idea what to write here...&quot;</span>);</div>
+<a href="a00020.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00417.html">UnityEngine</a>;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="a00464.html">    3</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00464.html">ConsoleExample</a> : MonoBehaviour</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00464.html#af1cb681e205048164d8614fac132107b">    5</a></span>&#160;    [SerializeField] <span class="keyword">private</span> <a class="code" href="a00828.html">Console</a>[] <a class="code" href="a00464.html#af1cb681e205048164d8614fac132107b">consoles</a>;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    </div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00464.html#a9b8e03786dc1c15a192a57df8d4ff421">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00464.html#a9b8e03786dc1c15a192a57df8d4ff421">LogSomething</a>()</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        <span class="keywordtype">int</span> randomInt = Random.Range(0,5);</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <span class="keywordflow">switch</span> (randomInt)</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;            <span class="keywordflow">case</span> 0: Debug.Log(<span class="stringliteral">&quot;I really have no idea what to write here...&quot;</span>);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <span class="keywordflow">case</span> 1: Debug.Log(<span class="stringliteral">&quot;I hope you are enjoying this asset!&quot;</span>);</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">case</span> 1: Debug.Log(<span class="stringliteral">&quot;I hope you are enjoying this asset!&quot;</span>);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">case</span> 2: Debug.LogWarning(<span class="stringliteral">&quot;Will anybody ready this?... ever? (this is a warning)&quot;</span>);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">case</span> 2: Debug.LogWarning(<span class="stringliteral">&quot;Will anybody ready this?... ever? (this is a warning)&quot;</span>);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">case</span> 3: Debug.LogError(<span class="stringliteral">&quot;Maaaan...., I really wish to finish this feature soon... (this is an error)&quot;</span>);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">case</span> 3: Debug.LogError(<span class="stringliteral">&quot;Maaaan...., I really wish to finish this feature soon... (this is an error)&quot;</span>);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">case</span> 4: Debug.Log(<span class="stringliteral">&quot;I hope you are having a nice day!  : )&quot;</span>);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <span class="keywordflow">case</span> 4: Debug.Log(<span class="stringliteral">&quot;I hope you are having a nice day!  : )&quot;</span>);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        }</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    }</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="a00468.html#a9f0efa4bc3e2e475312b8e9729ca63f2">   27</a></span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00468.html#a9f0efa4bc3e2e475312b8e9729ca63f2">ClearAll</a>()</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">foreach</span> (<a class="code" href="a00832.html">Console</a> console <span class="keywordflow">in</span> <a class="code" href="a00468.html#af1cb681e205048164d8614fac132107b">consoles</a>)</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            console.<a class="code" href="a00832.html#a71bf40f8d3e7a3fd560290cd3b43e6c7">Clear</a>();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
-<div class="ttc" id="aa00420_html"><div class="ttname"><a href="a00420.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00468_html"><div class="ttname"><a href="a00468.html">ConsoleExample</a></div><div class="ttdef"><b>Definition:</b> <a href="a00020_source.html#l00005">ConsoleExample.cs:6</a></div></div>
-<div class="ttc" id="aa00468_html_a9b8e03786dc1c15a192a57df8d4ff421"><div class="ttname"><a href="a00468.html#a9b8e03786dc1c15a192a57df8d4ff421">ConsoleExample.LogSomething</a></div><div class="ttdeci">void LogSomething()</div><div class="ttdef"><b>Definition:</b> <a href="a00020_source.html#l00009">ConsoleExample.cs:9</a></div></div>
-<div class="ttc" id="aa00468_html_a9f0efa4bc3e2e475312b8e9729ca63f2"><div class="ttname"><a href="a00468.html#a9f0efa4bc3e2e475312b8e9729ca63f2">ConsoleExample.ClearAll</a></div><div class="ttdeci">void ClearAll()</div><div class="ttdef"><b>Definition:</b> <a href="a00020_source.html#l00027">ConsoleExample.cs:27</a></div></div>
-<div class="ttc" id="aa00468_html_af1cb681e205048164d8614fac132107b"><div class="ttname"><a href="a00468.html#af1cb681e205048164d8614fac132107b">ConsoleExample.consoles</a></div><div class="ttdeci">Console[] consoles</div><div class="ttdef"><b>Definition:</b> <a href="a00020_source.html#l00007">ConsoleExample.cs:7</a></div></div>
-<div class="ttc" id="aa00832_html"><div class="ttname"><a href="a00832.html">UnityEngine.Console</a></div><div class="ttdef"><b>Definition:</b> <a href="a00266_source.html#l00007">Console.cs:8</a></div></div>
-<div class="ttc" id="aa00832_html_a71bf40f8d3e7a3fd560290cd3b43e6c7"><div class="ttname"><a href="a00832.html#a71bf40f8d3e7a3fd560290cd3b43e6c7">UnityEngine.Console.Clear</a></div><div class="ttdeci">void Clear()</div><div class="ttdoc">Clears the console and starts a new file for the saved logs.</div><div class="ttdef"><b>Definition:</b> <a href="a00266_source.html#l00110">Console.cs:110</a></div></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="a00464.html#a9f0efa4bc3e2e475312b8e9729ca63f2">   25</a></span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00464.html#a9f0efa4bc3e2e475312b8e9729ca63f2">ClearAll</a>()</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordflow">foreach</span> (<a class="code" href="a00828.html">Console</a> console <span class="keywordflow">in</span> <a class="code" href="a00464.html#af1cb681e205048164d8614fac132107b">consoles</a>)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            console.<a class="code" href="a00828.html#a71bf40f8d3e7a3fd560290cd3b43e6c7">Clear</a>();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00464_html"><div class="ttname"><a href="a00464.html">ConsoleExample</a></div><div class="ttdef"><b>Definition:</b> <a href="a00020_source.html#l00003">ConsoleExample.cs:4</a></div></div>
+<div class="ttc" id="aa00464_html_a9b8e03786dc1c15a192a57df8d4ff421"><div class="ttname"><a href="a00464.html#a9b8e03786dc1c15a192a57df8d4ff421">ConsoleExample.LogSomething</a></div><div class="ttdeci">void LogSomething()</div><div class="ttdef"><b>Definition:</b> <a href="a00020_source.html#l00007">ConsoleExample.cs:7</a></div></div>
+<div class="ttc" id="aa00464_html_a9f0efa4bc3e2e475312b8e9729ca63f2"><div class="ttname"><a href="a00464.html#a9f0efa4bc3e2e475312b8e9729ca63f2">ConsoleExample.ClearAll</a></div><div class="ttdeci">void ClearAll()</div><div class="ttdef"><b>Definition:</b> <a href="a00020_source.html#l00025">ConsoleExample.cs:25</a></div></div>
+<div class="ttc" id="aa00464_html_af1cb681e205048164d8614fac132107b"><div class="ttname"><a href="a00464.html#af1cb681e205048164d8614fac132107b">ConsoleExample.consoles</a></div><div class="ttdeci">Console[] consoles</div><div class="ttdef"><b>Definition:</b> <a href="a00020_source.html#l00005">ConsoleExample.cs:5</a></div></div>
+<div class="ttc" id="aa00828_html"><div class="ttname"><a href="a00828.html">UnityEngine.Console</a></div><div class="ttdef"><b>Definition:</b> <a href="a00266_source.html#l00006">Console.cs:7</a></div></div>
+<div class="ttc" id="aa00828_html_a71bf40f8d3e7a3fd560290cd3b43e6c7"><div class="ttname"><a href="a00828.html#a71bf40f8d3e7a3fd560290cd3b43e6c7">UnityEngine.Console.Clear</a></div><div class="ttdeci">void Clear()</div><div class="ttdoc">Clears the console and starts a new file for the saved logs.</div><div class="ttdef"><b>Definition:</b> <a href="a00266_source.html#l00109">Console.cs:109</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

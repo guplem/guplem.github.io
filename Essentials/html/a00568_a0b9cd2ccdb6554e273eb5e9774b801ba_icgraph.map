@@ -1,5 +1,0 @@
-<map id="FullSerializer.Internal.fsIEnumerableConverter.GetElementType" name="FullSerializer.Internal.fsIEnumerableConverter.GetElementType">
-<area shape="rect" id="node1" title="Fetches the element type for objects inside of the collection." alt="" coords="423,31,807,57"/>
-<area shape="rect" id="node2" href="$a00568.html#a1585e62338f2abf99911f4fde9599daa" title="Deserialize data into the object instance." alt="" coords="5,5,375,32"/>
-<area shape="rect" id="node3" href="$a00568.html#a7aaf3b51583371f787df64c3eefc8c87" title="Serialize the actual object into the given data storage." alt="" coords="13,56,367,83"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="FullSerializer.Internal.fsTypeCache.GetType" name="FullSerializer.Internal.fsTypeCache.GetType">
-<area shape="rect" id="node1" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="1533,31,1808,57"/>
-<area shape="rect" id="node2" href="$a00724.html#ab0a9c3650c92120b7a5a3ee4abc171e9" title=" " alt="" coords="1127,5,1485,32"/>
-<area shape="rect" id="node6" href="$a00588.html#aa94af57c0f67c755cb406529813a13aa" title="Deserialize data into the object instance." alt="" coords="1143,56,1469,83"/>
-<area shape="rect" id="node3" href="$a00724.html#abd29b64f632a01c07ad6bd0c973e00a0" title=" " alt="" coords="739,5,1079,32"/>
-<area shape="rect" id="node4" href="$a00724.html#a048b235379a8cf6fb8c1fb8b6eb466fa" title=" " alt="" coords="304,5,691,32"/>
-<area shape="rect" id="node5" href="$a00724.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="5,5,256,32"/>
-</map>

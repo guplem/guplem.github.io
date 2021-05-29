@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: FullSerializer Namespace Reference</title>
+<title>UnityEssentials: FullSerializer.Internal.Converters Namespace Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -60,179 +60,24 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="a00413.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00414.html">Internal</a></li><li class="navelem"><a class="el" href="a00416.html">Converters</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
-<div class="title">FullSerializer Namespace Reference</div>  </div>
+<div class="title">FullSerializer.Internal.Converters Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:a00417"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00417.html">Internal</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00556.html">fsForwardAttribute</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This allows you to forward serialization of an object to one of its members. For example,  <a href="a00556.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00632.html">UnityEvent_Converter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00596.html">fsConverterRegistrar</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class allows arbitrary code to easily register global converters. To add a converter, simply declare a new field called "Register_*" that stores the type of converter you would like to add. Alternatively, you can do the same with a method called "Register_*"; just add the converter type to the <code>Converters</code> list.  <a href="a00596.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00640.html">fsAotCompilationManager</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The AOT compilation manager  <a href="a00640.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00648.html">fsBaseConverter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The serialization converter allows for customization of the serialization process.  <a href="a00648.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00652.html">fsGlobalConfig</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00656.html">fsConfig</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables some top-level customization of Full Serializer.  <a href="a00656.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00660.html">fsContext</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00660.html" title="fsContext stores global metadata that can be used to customize how fsConverters operate during serial...">fsContext</a> stores global metadata that can be used to customize how fsConverters operate during serialization.  <a href="a00660.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00664.html">fsConverter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The serialization converter allows for customization of the serialization process.  <a href="a00664.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00668.html">fsData</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A union type that stores a serialized value. The stored type can be one of six different types: null, boolean, double, Int64, string, Dictionary, or List.  <a href="a00668.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00672.html">fsDirectConverter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The direct converter is similar to a regular converter, except that it targets specifically only one type. This means that it can be used without performance impact when discovering converters. It is strongly recommended that you derive from <a class="el" href="a00672.html" title="The direct converter is similar to a regular converter, except that it targets specifically only one ...">fsDirectConverter</a>{TModel}.  <a href="a00672.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00676.html">fsMissingVersionConstructorException</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00680.html">fsDuplicateVersionNameException</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00684.html">fsIgnoreAttribute</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The given property or field annotated with [JsonIgnore] will not be serialized.  <a href="a00684.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html">fsISerializationCallbacks</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extend this interface on your type to receive notifications about serialization/deserialization events. If you don't have access to the type itself, then you can write an <a class="el" href="a00712.html">fsObjectProcessor</a> instead.  <a href="a00688.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00700.html">fsJsonParser</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple recursive descent parser for JSON.  <a href="a00700.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00704.html">fsJsonPrinter</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html">fsObjectAttribute</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This attribute controls some serialization behavior for a type. See the comments on each of the fields for more information.  <a href="a00708.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00712.html">fsObjectProcessor</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00716.html">fsPropertyAttribute</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicitly mark a property to be serialized. This can also be used to give the name that the property should use during serialization.  <a href="a00716.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00720.html">fsResult</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of some sort of operation. A result is either successful or not, but if it is successful then there may be a set of warnings/messages associated with it. These warnings describe the performed error recovery operations.  <a href="a00720.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00724.html">fsSerializer</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00756.html">fsTypeExtensions</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00772.html">fsMetaType</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">MetaType contains metadata about a type. This is used by the reflection serializer.  <a href="a00772.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a6eee33d63b94e40fdfcfc59af9fcfc82"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a> { <br />
-&#160;&#160;<a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82a4410ec34d9e6c1a68100ca0ce033fb17">Array</a>
-, <a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82a497031794414a552435f90151ac3b54b">Object</a>
-, <a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82ad909d38d705ce75386dd86e611a82f5b">Double</a>
-, <a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82afbde23b11d7e59af7828e81144c8b487">Int64</a>
-, <br />
-&#160;&#160;<a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82a27226c864bac7454a8504f8edb15d95b">Boolean</a>
-, <a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82a27118326006d3829667a400ad23d5d98">String</a>
-, <a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82abbb93ef26e3c101ff11cdd21cab08a94">Null</a>
-<br />
- }</td></tr>
-<tr class="memdesc:a6eee33d63b94e40fdfcfc59af9fcfc82"><td class="mdescLeft">&#160;</td><td class="mdescRight">The actual type that a JsonData instance can store.  <a href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82">More...</a><br /></td></tr>
-<tr class="separator:a6eee33d63b94e40fdfcfc59af9fcfc82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0dc98cd54a3d07f8c579d82585906f8"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00416.html#ad0dc98cd54a3d07f8c579d82585906f8">fsMemberSerialization</a> { <a class="el" href="a00416.html#ad0dc98cd54a3d07f8c579d82585906f8aea85bf11bf435701420717c07f3fbb6d">OptIn</a>
-, <a class="el" href="a00416.html#ad0dc98cd54a3d07f8c579d82585906f8a416ca54b14eaffaf58722fc0441a0f2a">OptOut</a>
-, <a class="el" href="a00416.html#ad0dc98cd54a3d07f8c579d82585906f8a7a1920d61156abc05a60135aefe8bc67">Default</a>
- }</td></tr>
-<tr class="memdesc:ad0dc98cd54a3d07f8c579d82585906f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls how the reflected converter handles member serialization.  <a href="a00416.html#ad0dc98cd54a3d07f8c579d82585906f8">More...</a><br /></td></tr>
-<tr class="separator:ad0dc98cd54a3d07f8c579d82585906f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a6eee33d63b94e40fdfcfc59af9fcfc82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6eee33d63b94e40fdfcfc59af9fcfc82">&#9670;&nbsp;</a></span>fsDataType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00416.html#a6eee33d63b94e40fdfcfc59af9fcfc82">FullSerializer.fsDataType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The actual type that a JsonData instance can store. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6eee33d63b94e40fdfcfc59af9fcfc82a4410ec34d9e6c1a68100ca0ce033fb17"></a>Array&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6eee33d63b94e40fdfcfc59af9fcfc82a497031794414a552435f90151ac3b54b"></a>Object&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6eee33d63b94e40fdfcfc59af9fcfc82ad909d38d705ce75386dd86e611a82f5b"></a>Double&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6eee33d63b94e40fdfcfc59af9fcfc82afbde23b11d7e59af7828e81144c8b487"></a>Int64&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6eee33d63b94e40fdfcfc59af9fcfc82a27226c864bac7454a8504f8edb15d95b"></a>Boolean&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6eee33d63b94e40fdfcfc59af9fcfc82a27118326006d3829667a400ad23d5d98"></a>String&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a6eee33d63b94e40fdfcfc59af9fcfc82abbb93ef26e3c101ff11cdd21cab08a94"></a>Null&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="a00158_source.html#l00009">9</a> of file <a class="el" href="a00158_source.html">fsData.cs</a>.</p>
-
-</div>
-</div>
-<a id="ad0dc98cd54a3d07f8c579d82585906f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0dc98cd54a3d07f8c579d82585906f8">&#9670;&nbsp;</a></span>fsMemberSerialization</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00416.html#ad0dc98cd54a3d07f8c579d82585906f8">FullSerializer.fsMemberSerialization</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Controls how the reflected converter handles member serialization. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad0dc98cd54a3d07f8c579d82585906f8aea85bf11bf435701420717c07f3fbb6d"></a>OptIn&#160;</td><td class="fielddoc"><p>Only members with [SerializeField] or [fsProperty] attributes are serialized. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ad0dc98cd54a3d07f8c579d82585906f8a416ca54b14eaffaf58722fc0441a0f2a"></a>OptOut&#160;</td><td class="fielddoc"><p>Only members with [NotSerialized] or [fsIgnore] will not be serialized. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ad0dc98cd54a3d07f8c579d82585906f8a7a1920d61156abc05a60135aefe8bc67"></a>Default&#160;</td><td class="fielddoc"><p>The default member serialization behavior is applied. </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="a00179_source.html#l00005">5</a> of file <a class="el" href="a00179_source.html">fsMemberSerialization.cs</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,6 +1,0 @@
-<map id="FullSerializer.Internal.fsVersionManager.GetVersionedType" name="FullSerializer.Internal.fsVersionManager.GetVersionedType">
-<area shape="rect" id="node1" title=" " alt="" coords="5,56,368,83"/>
-<area shape="rect" id="node2" href="$a00744.html#ae83db12a7f0acaa67cfa0f3e8ce097ce" title="Fetches the given attribute from the given MemberInfo. This method applies caching and is allocation ..." alt="" coords="455,5,791,32"/>
-<area shape="rect" id="node3" href="$a00764.html#af4dd7e1b495a14a3fa77fb7aea0693ae" title="Verifies that the given type has constructors to migrate from all ancestor types." alt="" coords="441,56,804,83"/>
-<area shape="rect" id="node4" href="$a00764.html#a45c66c77e55371562c7695db5a2cab05" title="Verifies that the given version graph contains only unique versions." alt="" coords="416,107,829,133"/>
-</map>

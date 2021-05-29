@@ -1,7 +1,0 @@
-<map id="FullSerializer.fsData.ToString" name="FullSerializer.fsData.ToString">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,196,57"/>
-<area shape="rect" id="node2" href="$a00704.html#a7d4e78009d040303daf29c9b11e87df4" title="Writes the compressed JSON output data to the given stream." alt="" coords="244,31,524,57"/>
-<area shape="rect" id="node3" href="$a00704.html#a3a8ef7964af11b97773d045f68e1c9bb" title=" " alt="" coords="572,31,888,57"/>
-<area shape="rect" id="node4" href="$a00704.html#a1cdb1e42f8eca717a924a420d2a9c5b4" title="Utility method that converts a double to a string." alt="" coords="936,5,1247,32"/>
-<area shape="rect" id="node5" href="$a00704.html#aa52965dee1adcff0519563c0281017c5" title="Escapes a string." alt="" coords="962,56,1221,83"/>
-</map>

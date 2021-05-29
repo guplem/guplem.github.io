@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: FullSerializer.fsISerializationCallbacks Interface Reference</title>
+<title>UnityEssentials: FullSerializer.Internal.fsSerializationCallbackProcessor Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00416.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00688.html">fsISerializationCallbacks</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00413.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00414.html">Internal</a></li><li class="navelem"><a class="el" href="a00688.html">fsSerializationCallbackProcessor</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -70,55 +70,115 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="a00685.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">FullSerializer.fsISerializationCallbacks Interface Reference</div>  </div>
+<div class="title">FullSerializer.Internal.fsSerializationCallbackProcessor Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Extend this interface on your type to receive notifications about serialization/deserialization events. If you don't have access to the type itself, then you can write an <a class="el" href="a00712.html">fsObjectProcessor</a> instead.  
- <a href="a00688.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for FullSerializer.fsISerializationCallbacks:</div>
+Collaboration diagram for FullSerializer.Internal.fsSerializationCallbackProcessor:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00686.png" border="0" usemap="#aFullSerializer_8fsISerializationCallbacks_coll__map" alt="Collaboration graph"/></div>
-<map name="aFullSerializer_8fsISerializationCallbacks_coll__map" id="aFullSerializer_8fsISerializationCallbacks_coll__map">
-<area shape="rect" title="Extend this interface on your type to receive notifications about serialization/deserialization event..." alt="" coords="5,5,248,127"/>
+<div class="center"><img src="a00686.png" border="0" usemap="#aFullSerializer_8Internal_8fsSerializationCallbackProcessor_coll__map" alt="Collaboration graph"/></div>
+<map name="aFullSerializer_8Internal_8fsSerializationCallbackProcessor_coll__map" id="aFullSerializer_8Internal_8fsSerializationCallbackProcessor_coll__map">
+<area shape="rect" title=" " alt="" coords="5,204,343,340"/>
+<area shape="rect" href="a00708.html" title=" " alt="" coords="32,5,316,156"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a65a034ba3c5a1326d606bd286e78f196"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html#a65a034ba3c5a1326d606bd286e78f196">OnBeforeSerialize</a> (Type storageType)</td></tr>
-<tr class="memdesc:a65a034ba3c5a1326d606bd286e78f196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before serialization.  <a href="a00688.html#a65a034ba3c5a1326d606bd286e78f196">More...</a><br /></td></tr>
-<tr class="separator:a65a034ba3c5a1326d606bd286e78f196"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5780792dded246dabf71cf38f22d1ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html#ae5780792dded246dabf71cf38f22d1ac">OnAfterSerialize</a> (Type storageType, ref <a class="el" href="a00668.html">fsData</a> data)</td></tr>
-<tr class="memdesc:ae5780792dded246dabf71cf38f22d1ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after serialization.  <a href="a00688.html#ae5780792dded246dabf71cf38f22d1ac">More...</a><br /></td></tr>
-<tr class="separator:ae5780792dded246dabf71cf38f22d1ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a059856f60ed9d1b124ef4582820e6cde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html#a059856f60ed9d1b124ef4582820e6cde">OnBeforeDeserialize</a> (Type storageType, ref <a class="el" href="a00668.html">fsData</a> data)</td></tr>
-<tr class="memdesc:a059856f60ed9d1b124ef4582820e6cde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before deserialization.  <a href="a00688.html#a059856f60ed9d1b124ef4582820e6cde">More...</a><br /></td></tr>
-<tr class="separator:a059856f60ed9d1b124ef4582820e6cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02ea7926810ee12b131e62a8a8d9e931"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html#a02ea7926810ee12b131e62a8a8d9e931">OnAfterDeserialize</a> (Type storageType)</td></tr>
-<tr class="memdesc:a02ea7926810ee12b131e62a8a8d9e931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after deserialization.  <a href="a00688.html#a02ea7926810ee12b131e62a8a8d9e931">More...</a><br /></td></tr>
-<tr class="separator:a02ea7926810ee12b131e62a8a8d9e931"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78a0e22235867c360c341f0772d506a1"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html#a78a0e22235867c360c341f0772d506a1">CanProcess</a> (Type type)</td></tr>
+<tr class="memdesc:a78a0e22235867c360c341f0772d506a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the processor interested in objects of the given type?  <a href="a00688.html#a78a0e22235867c360c341f0772d506a1">More...</a><br /></td></tr>
+<tr class="separator:a78a0e22235867c360c341f0772d506a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee2943e2bf0bacad3957dfb15b32de8"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html#adee2943e2bf0bacad3957dfb15b32de8">OnBeforeSerialize</a> (Type storageType, object instance)</td></tr>
+<tr class="memdesc:adee2943e2bf0bacad3957dfb15b32de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before serialization.  <a href="a00688.html#adee2943e2bf0bacad3957dfb15b32de8">More...</a><br /></td></tr>
+<tr class="separator:adee2943e2bf0bacad3957dfb15b32de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec377284c9f2083c84dfdc75c70e628e"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html#aec377284c9f2083c84dfdc75c70e628e">OnAfterSerialize</a> (Type storageType, object instance, ref <a class="el" href="a00664.html">fsData</a> data)</td></tr>
+<tr class="memdesc:aec377284c9f2083c84dfdc75c70e628e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after serialization.  <a href="a00688.html#aec377284c9f2083c84dfdc75c70e628e">More...</a><br /></td></tr>
+<tr class="separator:aec377284c9f2083c84dfdc75c70e628e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6668c0ebad8c39d4d0e145efa7fb332"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html#ae6668c0ebad8c39d4d0e145efa7fb332">OnBeforeDeserializeAfterInstanceCreation</a> (Type storageType, object instance, ref <a class="el" href="a00664.html">fsData</a> data)</td></tr>
+<tr class="memdesc:ae6668c0ebad8c39d4d0e145efa7fb332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before deserialization has begun but <em>after</em> the object instance has been created. This will get invoked even if the user passed in an existing instance.  <a href="a00688.html#ae6668c0ebad8c39d4d0e145efa7fb332">More...</a><br /></td></tr>
+<tr class="separator:ae6668c0ebad8c39d4d0e145efa7fb332"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18c88f0c5eb32dc01457fbbeaffe9f4a"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00688.html#a18c88f0c5eb32dc01457fbbeaffe9f4a">OnAfterDeserialize</a> (Type storageType, object instance)</td></tr>
+<tr class="memdesc:a18c88f0c5eb32dc01457fbbeaffe9f4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after deserialization.  <a href="a00688.html#a18c88f0c5eb32dc01457fbbeaffe9f4a">More...</a><br /></td></tr>
+<tr class="separator:a18c88f0c5eb32dc01457fbbeaffe9f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1d75938389278b6ceffdc17dd7e6424"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00708.html#af1d75938389278b6ceffdc17dd7e6424">OnBeforeDeserialize</a> (Type storageType, ref <a class="el" href="a00664.html">fsData</a> data)</td></tr>
+<tr class="memdesc:af1d75938389278b6ceffdc17dd7e6424"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before deserialization.  <a href="a00708.html#af1d75938389278b6ceffdc17dd7e6424">More...</a><br /></td></tr>
+<tr class="separator:af1d75938389278b6ceffdc17dd7e6424"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Extend this interface on your type to receive notifications about serialization/deserialization events. If you don't have access to the type itself, then you can write an <a class="el" href="a00712.html">fsObjectProcessor</a> instead. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00016">16</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00046">46</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a02ea7926810ee12b131e62a8a8d9e931"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02ea7926810ee12b131e62a8a8d9e931">&#9670;&nbsp;</a></span>OnAfterDeserialize()</h2>
+<a id="a78a0e22235867c360c341f0772d506a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78a0e22235867c360c341f0772d506a1">&#9670;&nbsp;</a></span>CanProcess()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void FullSerializer.fsISerializationCallbacks.OnAfterDeserialize </td>
+          <td class="memname">override bool FullSerializer.Internal.fsSerializationCallbackProcessor.CanProcess </td>
           <td>(</td>
           <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em></td><td>)</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is the processor interested in objects of the given type? </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The given type.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the processor should be applied, false otherwise.</dd></dl>
+
+<p>Reimplemented from <a class="el" href="a00708.html#a5dc981f868302d15a59def67ed4e8a5d">FullSerializer.fsObjectProcessor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00047">47</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
+
+</div>
+</div>
+<a id="a18c88f0c5eb32dc01457fbbeaffe9f4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18c88f0c5eb32dc01457fbbeaffe9f4a">&#9670;&nbsp;</a></span>OnAfterDeserialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void FullSerializer.Internal.fsSerializationCallbackProcessor.OnAfterDeserialize </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>storageType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>instance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Called after deserialization. </p>
@@ -130,16 +190,23 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
+<p>Reimplemented from <a class="el" href="a00708.html#a147c5f6828b9cf92703152ee7e1611dd">FullSerializer.fsObjectProcessor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00071">71</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
+
 </div>
 </div>
-<a id="ae5780792dded246dabf71cf38f22d1ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5780792dded246dabf71cf38f22d1ac">&#9670;&nbsp;</a></span>OnAfterSerialize()</h2>
+<a id="aec377284c9f2083c84dfdc75c70e628e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec377284c9f2083c84dfdc75c70e628e">&#9670;&nbsp;</a></span>OnAfterSerialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void FullSerializer.fsISerializationCallbacks.OnAfterSerialize </td>
+          <td class="memname">override void FullSerializer.Internal.fsSerializationCallbackProcessor.OnAfterSerialize </td>
           <td>(</td>
           <td class="paramtype">Type&#160;</td>
           <td class="paramname"><em>storageType</em>, </td>
@@ -147,7 +214,13 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref <a class="el" href="a00668.html">fsData</a>&#160;</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>instance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref <a class="el" href="a00664.html">fsData</a>&#160;</td>
           <td class="paramname"><em>data</em>&#160;</td>
         </tr>
         <tr>
@@ -156,27 +229,40 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Called after serialization. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
+    <tr><td class="paramname">instance</td><td>The type of the instance.</td></tr>
     <tr><td class="paramname">data</td><td>The data that was serialized.</td></tr>
   </table>
   </dd>
 </dl>
 
+<p>Reimplemented from <a class="el" href="a00708.html#a1260737d69e95e90ea697620ee24a9ad">FullSerializer.fsObjectProcessor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00057">57</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
+
 </div>
 </div>
-<a id="a059856f60ed9d1b124ef4582820e6cde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a059856f60ed9d1b124ef4582820e6cde">&#9670;&nbsp;</a></span>OnBeforeDeserialize()</h2>
+<a id="af1d75938389278b6ceffdc17dd7e6424"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1d75938389278b6ceffdc17dd7e6424">&#9670;&nbsp;</a></span>OnBeforeDeserialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void FullSerializer.fsISerializationCallbacks.OnBeforeDeserialize </td>
+          <td class="memname">virtual void FullSerializer.fsObjectProcessor.OnBeforeDeserialize </td>
           <td>(</td>
           <td class="paramtype">Type&#160;</td>
           <td class="paramname"><em>storageType</em>, </td>
@@ -184,7 +270,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref <a class="el" href="a00668.html">fsData</a>&#160;</td>
+          <td class="paramtype">ref <a class="el" href="a00664.html">fsData</a>&#160;</td>
           <td class="paramname"><em>data</em>&#160;</td>
         </tr>
         <tr>
@@ -193,6 +279,11 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Called before deserialization. </p>
@@ -204,29 +295,117 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
+<p class="definition">Definition at line <a class="el" href="a00185_source.html#l00045">45</a> of file <a class="el" href="a00185_source.html">fsObjectProcessor.cs</a>.</p>
+
 </div>
 </div>
-<a id="a65a034ba3c5a1326d606bd286e78f196"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65a034ba3c5a1326d606bd286e78f196">&#9670;&nbsp;</a></span>OnBeforeSerialize()</h2>
+<a id="ae6668c0ebad8c39d4d0e145efa7fb332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6668c0ebad8c39d4d0e145efa7fb332">&#9670;&nbsp;</a></span>OnBeforeDeserializeAfterInstanceCreation()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void FullSerializer.fsISerializationCallbacks.OnBeforeSerialize </td>
+          <td class="memname">override void FullSerializer.Internal.fsSerializationCallbackProcessor.OnBeforeDeserializeAfterInstanceCreation </td>
           <td>(</td>
           <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>storageType</em></td><td>)</td>
+          <td class="paramname"><em>storageType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>instance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref <a class="el" href="a00664.html">fsData</a>&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called before deserialization has begun but <em>after</em> the object instance has been created. This will get invoked even if the user passed in an existing instance. </p>
+<p><b>IMPORTANT</b>: The actual instance that gets passed here is <em>not</em> guaranteed to be an a subtype of storageType, since the value for instance is whatever the active converter returned for CreateInstance() - ie, some converters will return dummy types in CreateInstance() if instance creation cannot be separated from deserialization (ie, KeyValuePair). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
+    <tr><td class="paramname">instance</td><td>The created object instance. No deserialization has been applied to it.</td></tr>
+    <tr><td class="paramname">data</td><td>The data that will be used for deserialization.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="a00708.html#a99e0c1a7d896539470bbe7f43565a5a3">FullSerializer.fsObjectProcessor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00063">63</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
+
+</div>
+</div>
+<a id="adee2943e2bf0bacad3957dfb15b32de8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adee2943e2bf0bacad3957dfb15b32de8">&#9670;&nbsp;</a></span>OnBeforeSerialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void FullSerializer.Internal.fsSerializationCallbackProcessor.OnBeforeSerialize </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>storageType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>instance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Called before serialization. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">storageType</td><td>The field/property type that is storing the instance.</td></tr>
+    <tr><td class="paramname">instance</td><td>The type of the instance.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="a00708.html#a48818569c78a826069594fb5ce6e32f2">FullSerializer.fsObjectProcessor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="a00170_source.html#l00051">51</a> of file <a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this interface was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="a00170_source.html">fsISerializationCallbacks.cs</a></li>
 </ul>
 </div><!-- contents -->

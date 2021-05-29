@@ -1,0 +1,13 @@
+<map id="SaveDataExampleInspector.OnInspectorGUI" name="SaveDataExampleInspector.OnInspectorGUI">
+<area shape="rect" id="node1" title=" " alt="" coords="5,107,283,133"/>
+<area shape="rect" id="node2" href="$a00524.html#afad54e4d5d8ac04d33c9a8dbd9add51c" title=" " alt="" coords="369,5,553,32"/>
+<area shape="rect" id="node5" href="$a00524.html#a5639c00287cfcc7d820ec372b60e3e14" title=" " alt="" coords="362,56,561,83"/>
+<area shape="rect" id="node8" href="$a00524.html#aa7cfc61de56732cafd100867dd95eb7c" title=" " alt="" coords="374,107,549,133"/>
+<area shape="rect" id="node9" href="$a00524.html#aab6aada5a5dcac234c79d9d8d18eef3a" title=" " alt="" coords="331,157,592,184"/>
+<area shape="rect" id="node11" href="$a00524.html#a14911cc7c4f3a2a5230841ac365ce10c" title=" " alt="" coords="374,208,549,235"/>
+<area shape="rect" id="node3" href="$a00956.html#a6f09deb32c88a770548b6dbd03ce63df" title="Deletes all." alt="" coords="679,5,936,32"/>
+<area shape="rect" id="node4" href="$a00972.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="1056,5,1264,32"/>
+<area shape="rect" id="node6" href="$a00956.html#a2640a1f5271e28dfca17f0974204af43" title="Delete the specified identifier and path." alt="" coords="686,56,929,83"/>
+<area shape="rect" id="node7" href="$a00956.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="1023,56,1297,83"/>
+<area shape="rect" id="node10" href="$a00956.html#a9ca1fa9cef36ac5fe6f493a9aabca2b4" title="Opens/reveals the folder containing the saved data." alt="" coords="640,157,975,184"/>
+</map>

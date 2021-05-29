@@ -70,26 +70,24 @@ $(function() {
 <div class="title">ComponentExtensions.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00305.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00420.html">UnityEngine</a></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00868.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00868.html">ComponentExtensions</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="a00868.html#a07476fed3f73c0f8f7dae54ee62b714e">   12</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T <a class="code" href="a00868.html#a07476fed3f73c0f8f7dae54ee62b714e">GetComponentRequired&lt;T&gt;</a>(<span class="keyword">this</span> Component <span class="keyword">self</span>) where T : Component</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            T component = <span class="keyword">self</span>.GetComponent&lt;T&gt;();</div>
+<a href="a00305.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00417.html">UnityEngine</a></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;{</div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="a00864.html">    3</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00864.html">ComponentExtensions</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    {</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00864.html#a07476fed3f73c0f8f7dae54ee62b714e">   10</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T <a class="code" href="a00864.html#a07476fed3f73c0f8f7dae54ee62b714e">GetComponentRequired&lt;T&gt;</a>(<span class="keyword">this</span> Component <span class="keyword">self</span>) where T : Component</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;            T component = <span class="keyword">self</span>.GetComponent&lt;T&gt;();</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <span class="keywordflow">if</span> (component == <span class="keyword">null</span>) Debug.LogError(<span class="stringliteral">&quot;Could not find &quot;</span> + typeof(T) + <span class="stringliteral">&quot; on &quot;</span> + <span class="keyword">self</span>.name);</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">if</span> (component == <span class="keyword">null</span>) Debug.LogError(<span class="stringliteral">&quot;Could not find &quot;</span> + typeof(T) + <span class="stringliteral">&quot; on &quot;</span> + <span class="keyword">self</span>.name);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">return</span> component;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="ttc" id="aa00420_html"><div class="ttname"><a href="a00420.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00868_html"><div class="ttname"><a href="a00868.html">UnityEngine.ComponentExtensions</a></div><div class="ttdef"><b>Definition:</b> <a href="a00305_source.html#l00005">ComponentExtensions.cs:6</a></div></div>
-<div class="ttc" id="aa00868_html_a07476fed3f73c0f8f7dae54ee62b714e"><div class="ttname"><a href="a00868.html#a07476fed3f73c0f8f7dae54ee62b714e">UnityEngine.ComponentExtensions.GetComponentRequired&lt; T &gt;</a></div><div class="ttdeci">static T GetComponentRequired&lt; T &gt;(this Component self)</div><div class="ttdoc">Get a component. Log an error if it is not found.</div><div class="ttdef"><b>Definition:</b> <a href="a00305_source.html#l00012">ComponentExtensions.cs:12</a></div></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">return</span> component;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        }</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00864_html"><div class="ttname"><a href="a00864.html">UnityEngine.ComponentExtensions</a></div><div class="ttdef"><b>Definition:</b> <a href="a00305_source.html#l00003">ComponentExtensions.cs:4</a></div></div>
+<div class="ttc" id="aa00864_html_a07476fed3f73c0f8f7dae54ee62b714e"><div class="ttname"><a href="a00864.html#a07476fed3f73c0f8f7dae54ee62b714e">UnityEngine.ComponentExtensions.GetComponentRequired&lt; T &gt;</a></div><div class="ttdeci">static T GetComponentRequired&lt; T &gt;(this Component self)</div><div class="ttdoc">Get a component. Log an error if it is not found.</div><div class="ttdef"><b>Definition:</b> <a href="a00305_source.html#l00010">ComponentExtensions.cs:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

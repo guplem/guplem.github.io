@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: EssentialsSettings.cs Source File</title>
+<title>UnityEssentials: Adjustment.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,45 +67,54 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">EssentialsSettings.cs</div>  </div>
+<div class="title">Adjustment.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00281.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="a00421.html">    4</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="a00421.html">Essentials.EssentialsSettings</a></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00852.html">    6</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00852.html">EssentialsSettings</a></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">        #region WelcomeSettingsScreen</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="a00852.html#aa56977e64428b6deda597aa6d51528a2">   11</a></span>&#160;            <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00852.html#aa56977e64428b6deda597aa6d51528a2">_settingsShown</a>;</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="a00852.html#adef382fe6c55b5d90ec4c68a86e2f34f">   12</a></span>&#160;            <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00852.html#adef382fe6c55b5d90ec4c68a86e2f34f">settingsShown</a></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;                <span class="keyword">get</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;                {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;                    <a class="code" href="a00852.html#aa56977e64428b6deda597aa6d51528a2">_settingsShown</a> = PlayerPrefs.GetInt(nameof(<a class="code" href="a00852.html#adef382fe6c55b5d90ec4c68a86e2f34f">settingsShown</a>))==1;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="a00852.html#aa56977e64428b6deda597aa6d51528a2">_settingsShown</a>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                }</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                <span class="keyword">set</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                    <span class="keywordflow">if</span> (<a class="code" href="a00852.html#aa56977e64428b6deda597aa6d51528a2">_settingsShown</a> == value) </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                    <a class="code" href="a00852.html#aa56977e64428b6deda597aa6d51528a2">_settingsShown</a> = value;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                    PlayerPrefs.SetInt(nameof(<a class="code" href="a00852.html#adef382fe6c55b5d90ec4c68a86e2f34f">settingsShown</a>), value? 1 : 0);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                }</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">        #endregion</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
-<div class="ttc" id="aa00420_html"><div class="ttname"><a href="a00420.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00421_html"><div class="ttname"><a href="a00421.html">Essentials.EssentialsSettings</a></div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00004">EssentialsSettings.cs:5</a></div></div>
-<div class="ttc" id="aa00852_html"><div class="ttname"><a href="a00852.html">Essentials.EssentialsSettings.EssentialsSettings</a></div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00006">EssentialsSettings.cs:7</a></div></div>
-<div class="ttc" id="aa00852_html_aa56977e64428b6deda597aa6d51528a2"><div class="ttname"><a href="a00852.html#aa56977e64428b6deda597aa6d51528a2">Essentials.EssentialsSettings.EssentialsSettings._settingsShown</a></div><div class="ttdeci">static bool _settingsShown</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00011">EssentialsSettings.cs:11</a></div></div>
-<div class="ttc" id="aa00852_html_adef382fe6c55b5d90ec4c68a86e2f34f"><div class="ttname"><a href="a00852.html#adef382fe6c55b5d90ec4c68a86e2f34f">Essentials.EssentialsSettings.EssentialsSettings.settingsShown</a></div><div class="ttdeci">static bool? settingsShown</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00012">EssentialsSettings.cs:13</a></div></div>
+<a href="a00281.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00417.html">UnityEngine</a>;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="a00418.html">    3</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="a00418.html">Essentials.EssentialsSettings</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00848.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class </span><a class="code" href="a00848.html">Adjustment</a> : <a class="code" href="a00852.html">IAdjustment</a></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00848.html#a93aa338aa3d51a9564c81f5abdceb003">   10</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keywordtype">string</span> <a class="code" href="a00848.html#a93aa338aa3d51a9564c81f5abdceb003">title</a> { <span class="keyword">get</span>; }</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    </div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="a00848.html#acef6ad74943f613661f53b0fef45cff6">   15</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keywordtype">void</span> <a class="code" href="a00848.html#acef6ad74943f613661f53b0fef45cff6">Apply</a>();</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="a00848.html#a1c90ab9f68d8b599799379a5b9678d39">   20</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keywordtype">void</span> <a class="code" href="a00848.html#a1c90ab9f68d8b599799379a5b9678d39">Revert</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="a00848.html#a7e5037780964c613e9436e9f872f1dc9">   26</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">string</span> <a class="code" href="a00848.html#a7e5037780964c613e9436e9f872f1dc9">applyAdjustmentShortEplanation</a> { <span class="keyword">get</span> =&gt; <a class="code" href="a00848.html#a93aa338aa3d51a9564c81f5abdceb003">title</a> + <span class="stringliteral">&quot; (apply)&quot;</span>; }</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00848.html#abeef5ee9c84fdcadaa3d39c6ecf3b77d">   30</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">string</span> <a class="code" href="a00848.html#abeef5ee9c84fdcadaa3d39c6ecf3b77d">revertAdjustmentShortEplanation</a> { <span class="keyword">get</span> =&gt; <a class="code" href="a00848.html#a93aa338aa3d51a9564c81f5abdceb003">title</a> + <span class="stringliteral">&quot; (revert)&quot;</span>; }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00848.html#acf9bbc55ad60bc6a068b3e8993bab201">   35</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keywordtype">string</span> <a class="code" href="a00848.html#acf9bbc55ad60bc6a068b3e8993bab201">applyButtonText</a> { <span class="keyword">get</span>; }</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00848.html#ac2de5310fb692b68d18e373abe0dc403">   39</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keywordtype">string</span> <a class="code" href="a00848.html#ac2de5310fb692b68d18e373abe0dc403">revertButtonText</a> { <span class="keyword">get</span>; }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00848.html#acfa8baf46a3e912881d2ddba48103669">   44</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">string</span> <a class="code" href="a00848.html#acfa8baf46a3e912881d2ddba48103669">infoButtonText</a> =&gt; <span class="stringliteral">&quot;Info&quot;</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00848.html#af1251ddf05fc628524761849b272b067">   48</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keywordtype">string</span> <a class="code" href="a00848.html#af1251ddf05fc628524761849b272b067">infoURL</a> { <span class="keyword">get</span>; }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00848.html#a2630d65af754e5d16f749c45070a8ccd">   53</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="a00848.html#a2630d65af754e5d16f749c45070a8ccd">showInSettingsWindow</a> =&gt; <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="a00848.html#a658005b829dbd062ee61bf66f362504e">   58</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00848.html#a658005b829dbd062ee61bf66f362504e">OpenInfoURL</a>()</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            Application.OpenURL(<a class="code" href="a00848.html#af1251ddf05fc628524761849b272b067">infoURL</a>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00418_html"><div class="ttname"><a href="a00418.html">Essentials.EssentialsSettings</a></div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00003">Adjustment.cs:4</a></div></div>
+<div class="ttc" id="aa00848_html"><div class="ttname"><a href="a00848.html">Essentials.EssentialsSettings.Adjustment</a></div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00005">Adjustment.cs:6</a></div></div>
+<div class="ttc" id="aa00848_html_a1c90ab9f68d8b599799379a5b9678d39"><div class="ttname"><a href="a00848.html#a1c90ab9f68d8b599799379a5b9678d39">Essentials.EssentialsSettings.Adjustment.Revert</a></div><div class="ttdeci">abstract void Revert()</div><div class="ttdoc">Reverts the modification leaving the state of the platform as it was before applying it.</div></div>
+<div class="ttc" id="aa00848_html_a2630d65af754e5d16f749c45070a8ccd"><div class="ttname"><a href="a00848.html#a2630d65af754e5d16f749c45070a8ccd">Essentials.EssentialsSettings.Adjustment.showInSettingsWindow</a></div><div class="ttdeci">virtual bool showInSettingsWindow</div><div class="ttdoc">If the modification should be displayed or not in the Essentials' settings window</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00053">Adjustment.cs:53</a></div></div>
+<div class="ttc" id="aa00848_html_a658005b829dbd062ee61bf66f362504e"><div class="ttname"><a href="a00848.html#a658005b829dbd062ee61bf66f362504e">Essentials.EssentialsSettings.Adjustment.OpenInfoURL</a></div><div class="ttdeci">void OpenInfoURL()</div><div class="ttdoc">Opens the URL containing the information of the modification</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00058">Adjustment.cs:58</a></div></div>
+<div class="ttc" id="aa00848_html_a7e5037780964c613e9436e9f872f1dc9"><div class="ttname"><a href="a00848.html#a7e5037780964c613e9436e9f872f1dc9">Essentials.EssentialsSettings.Adjustment.applyAdjustmentShortEplanation</a></div><div class="ttdeci">virtual string applyAdjustmentShortEplanation</div><div class="ttdoc">Short explanation of what will be the actions done while applying the modification</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00026">Adjustment.cs:26</a></div></div>
+<div class="ttc" id="aa00848_html_a93aa338aa3d51a9564c81f5abdceb003"><div class="ttname"><a href="a00848.html#a93aa338aa3d51a9564c81f5abdceb003">Essentials.EssentialsSettings.Adjustment.title</a></div><div class="ttdeci">abstract string title</div><div class="ttdoc">Title or short definition of the configuration modification</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00010">Adjustment.cs:10</a></div></div>
+<div class="ttc" id="aa00848_html_abeef5ee9c84fdcadaa3d39c6ecf3b77d"><div class="ttname"><a href="a00848.html#abeef5ee9c84fdcadaa3d39c6ecf3b77d">Essentials.EssentialsSettings.Adjustment.revertAdjustmentShortEplanation</a></div><div class="ttdeci">virtual string revertAdjustmentShortEplanation</div><div class="ttdoc">Short explanation of what will be the actions done while reverting the modification</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00030">Adjustment.cs:30</a></div></div>
+<div class="ttc" id="aa00848_html_ac2de5310fb692b68d18e373abe0dc403"><div class="ttname"><a href="a00848.html#ac2de5310fb692b68d18e373abe0dc403">Essentials.EssentialsSettings.Adjustment.revertButtonText</a></div><div class="ttdeci">abstract string revertButtonText</div><div class="ttdoc">Text displayed on the button to revert the modification</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00039">Adjustment.cs:39</a></div></div>
+<div class="ttc" id="aa00848_html_acef6ad74943f613661f53b0fef45cff6"><div class="ttname"><a href="a00848.html#acef6ad74943f613661f53b0fef45cff6">Essentials.EssentialsSettings.Adjustment.Apply</a></div><div class="ttdeci">abstract void Apply()</div><div class="ttdoc">Applies the desired modification.</div></div>
+<div class="ttc" id="aa00848_html_acf9bbc55ad60bc6a068b3e8993bab201"><div class="ttname"><a href="a00848.html#acf9bbc55ad60bc6a068b3e8993bab201">Essentials.EssentialsSettings.Adjustment.applyButtonText</a></div><div class="ttdeci">abstract string applyButtonText</div><div class="ttdoc">Text displayed on the button to apply the modification</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00035">Adjustment.cs:35</a></div></div>
+<div class="ttc" id="aa00848_html_acfa8baf46a3e912881d2ddba48103669"><div class="ttname"><a href="a00848.html#acfa8baf46a3e912881d2ddba48103669">Essentials.EssentialsSettings.Adjustment.infoButtonText</a></div><div class="ttdeci">string infoButtonText</div><div class="ttdoc">Text displayed on the button to get more information about the modification</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00044">Adjustment.cs:44</a></div></div>
+<div class="ttc" id="aa00848_html_af1251ddf05fc628524761849b272b067"><div class="ttname"><a href="a00848.html#af1251ddf05fc628524761849b272b067">Essentials.EssentialsSettings.Adjustment.infoURL</a></div><div class="ttdeci">abstract string infoURL</div><div class="ttdoc">URL where the information regarding the modification can be found</div><div class="ttdef"><b>Definition:</b> <a href="a00281_source.html#l00048">Adjustment.cs:48</a></div></div>
+<div class="ttc" id="aa00852_html"><div class="ttname"><a href="a00852.html">Essentials.EssentialsSettings.IAdjustment</a></div><div class="ttdef"><b>Definition:</b> <a href="a00284_source.html#l00003">IAdjustment.cs:4</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

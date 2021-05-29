@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: TypeSerializable.cs Source File</title>
+<title>UnityEssentials: Utils.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,121 +67,142 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">TypeSerializable.cs</div>  </div>
+<div class="title">Utils.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00395.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Simple helper class that allows you to serialize System.Type objects.</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Written by Bryan Keiren (http://www.bryankeiren.com)</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// Found in: https://forum.unity.com/threads/serializable-system-type-get-it-while-its-hot.187557/</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">using</span> System.Runtime.Serialization;</div>
+<a href="a00395.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> System.Linq;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> System.Reflection;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">using</span> UnityEditor;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">using</span> System.IO;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00420.html">UnityEngine</a></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00417.html">UnityEngine</a></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    [System.Serializable]</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="a00976.html">   11</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00976.html">TypeSerializable</a></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        [SerializeField]</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00976.html#aa7439399f54ad668f960b7bd00a020ef">   14</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">string</span> <a class="code" href="a00976.html#aa7439399f54ad668f960b7bd00a020ef">m_Name</a>;</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="a00976.html#a42dfc449bcbe0a82dde0518f39d8aa8d">   15</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">string</span> <a class="code" href="a00976.html#a42dfc449bcbe0a82dde0518f39d8aa8d">Name</a> =&gt; <a class="code" href="a00976.html#aa7439399f54ad668f960b7bd00a020ef">m_Name</a>;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        [SerializeField]</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="a00976.html#a0e1335c5e0f90065cf82614a7353e2df">   18</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">string</span> <a class="code" href="a00976.html#a0e1335c5e0f90065cf82614a7353e2df">m_AssemblyQualifiedName</a>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="a00976.html#a8bece0f577c698bddbdd615d1f56f0f7">   19</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">string</span> <a class="code" href="a00976.html#a8bece0f577c698bddbdd615d1f56f0f7">AssemblyQualifiedName</a> =&gt; <a class="code" href="a00976.html#a0e1335c5e0f90065cf82614a7353e2df">m_AssemblyQualifiedName</a>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        [SerializeField]</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="a00976.html#a30fc350d8cc19c00b2ba45df33a8eb7a">   22</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">string</span> <a class="code" href="a00976.html#a30fc350d8cc19c00b2ba45df33a8eb7a">m_AssemblyName</a>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="a00976.html#ac6de628c82735d032852dd2855406973">   23</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">string</span> <a class="code" href="a00976.html#ac6de628c82735d032852dd2855406973">AssemblyName</a> =&gt; <a class="code" href="a00976.html#a30fc350d8cc19c00b2ba45df33a8eb7a">m_AssemblyName</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="a00976.html#abad6c107ab317e0aad401dcfc1920fca">   25</a></span>&#160;        <span class="keyword">private</span> System.Type <a class="code" href="a00976.html#abad6c107ab317e0aad401dcfc1920fca">m_SystemType</a>;   </div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="a00976.html#a9b48214cfa32aa6919d90d5f91fb59b3">   26</a></span>&#160;        <span class="keyword">public</span> System.Type <a class="code" href="a00976.html#a9b48214cfa32aa6919d90d5f91fb59b3">SystemType</a></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <span class="keyword">get</span>     </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00976.html#abad6c107ab317e0aad401dcfc1920fca">m_SystemType</a> == <span class="keyword">null</span>)   </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                    <a class="code" href="a00976.html#ac6727fa85d1d8ba93b5815e37b566321">GetSystemType</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00976.html#abad6c107ab317e0aad401dcfc1920fca">m_SystemType</a>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        </div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00976.html#ac6727fa85d1d8ba93b5815e37b566321">   38</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00976.html#ac6727fa85d1d8ba93b5815e37b566321">GetSystemType</a>()</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <a class="code" href="a00976.html#abad6c107ab317e0aad401dcfc1920fca">m_SystemType</a> = System.Type.GetType(<a class="code" href="a00976.html#a0e1335c5e0f90065cf82614a7353e2df">m_AssemblyQualifiedName</a>);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        </div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="a00976.html#a3495fe82453797fda7e9987663838346">   43</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00976.html#a3495fe82453797fda7e9987663838346">TypeSerializable</a>( System.Type _SystemType )</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <a class="code" href="a00976.html#abad6c107ab317e0aad401dcfc1920fca">m_SystemType</a> = _SystemType;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <a class="code" href="a00976.html#aa7439399f54ad668f960b7bd00a020ef">m_Name</a> = _SystemType.Name;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <a class="code" href="a00976.html#a0e1335c5e0f90065cf82614a7353e2df">m_AssemblyQualifiedName</a> = _SystemType.AssemblyQualifiedName;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <a class="code" href="a00976.html#a30fc350d8cc19c00b2ba45df33a8eb7a">m_AssemblyName</a> = _SystemType.Assembly.FullName;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00976.html#a435345953e2972e7f1975188aa793268">   51</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">bool</span> <a class="code" href="a00976.html#a435345953e2972e7f1975188aa793268">Equals</a>( System.Object obj )</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <a class="code" href="a00976.html">TypeSerializable</a> temp = obj as <a class="code" href="a00976.html#a3495fe82453797fda7e9987663838346">TypeSerializable</a>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">if</span> ((<span class="keywordtype">object</span>)temp == <span class="keyword">null</span>)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">return</span> this.<a class="code" href="a00976.html#a435345953e2972e7f1975188aa793268">Equals</a>(temp);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="a00976.html#a8f9751f0bf043d177d64b50e7b5e0050">   61</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00976.html#a8f9751f0bf043d177d64b50e7b5e0050">Equals</a>( <a class="code" href="a00976.html">TypeSerializable</a> _Object )</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="comment">//return m_AssemblyQualifiedName.Equals(_Object.m_AssemblyQualifiedName);</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">return</span> _Object.<a class="code" href="a00976.html#a9b48214cfa32aa6919d90d5f91fb59b3">SystemType</a>.Equals(<a class="code" href="a00976.html#a9b48214cfa32aa6919d90d5f91fb59b3">SystemType</a>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        </div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="a00976.html#acb6f0792fcd8b7f8b6bb6761990a796b">   67</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00976.html#acb6f0792fcd8b7f8b6bb6761990a796b">operator ==</a>( <a class="code" href="a00976.html">TypeSerializable</a> a, <a class="code" href="a00976.html">TypeSerializable</a> b )</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="comment">// If both are null, or both are same instance, return true.</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">if</span> (System.Object.ReferenceEquals(a, b))</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="comment">// If one is null, but not both, return false.</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">if</span> (((<span class="keywordtype">object</span>)a == <span class="keyword">null</span>) || ((<span class="keywordtype">object</span>)b == <span class="keyword">null</span>))</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            }</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00972.html">   10</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00972.html">Utils</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="a00972.html#a02cda9ae71dee3339dee7e7204fc8a8f">   17</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Type[] <a class="code" href="a00972.html#a02cda9ae71dee3339dee7e7204fc8a8f">GetTypeImplementationsNotUnityObject&lt;T&gt;</a>()</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00972.html#a5932306005d3629d7c04f2b2d2f52b3d">GetTypeImplementations&lt;T&gt;</a>().Where(impl=&gt;!impl.IsSubclassOf(typeof(<a class="code" href="a00417.html">UnityEngine</a>.Object))).ToArray();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="a00972.html#a5932306005d3629d7c04f2b2d2f52b3d">   27</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;Type&gt; <a class="code" href="a00972.html#a5932306005d3629d7c04f2b2d2f52b3d">GetTypeImplementations&lt;T&gt;</a>()</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            IEnumerable&lt;Type&gt; types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly =&gt; assembly.GetTypes());</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            Type interfaceType = typeof(T);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">return</span> types.Where(p =&gt; interfaceType.IsAssignableFrom(p) &amp;&amp; !p.IsAbstract).ToArray();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">    #region GetMainWindowCenteredPosition</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">        #if UNITY_EDITOR</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Rect GetEditorWindowCenteredPosition(Vector2 windowSize)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            Rect mainWindowRect = GetEditorMainWindowPos();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">return</span> GetCenteredWindowPosition(mainWindowRect, windowSize);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;       </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <a class="code" href="a00417.html">UnityEngine</a>.Object sMainWindow = <span class="keyword">null</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> Rect GetEditorMainWindowPos()</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">if</span> (sMainWindow == <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                var containerWinType = AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(ScriptableObject)).FirstOrDefault(t =&gt; t.Name == <span class="stringliteral">&quot;ContainerWindow&quot;</span>);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keywordflow">if</span> (containerWinType == <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                    <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingMemberException(<span class="stringliteral">&quot;Can&#39;t find internal type ContainerWindow. Maybe something has changed inside Unity&quot;</span>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                var showModeField = containerWinType.GetField(<span class="stringliteral">&quot;m_ShowMode&quot;</span>, BindingFlags.NonPublic | BindingFlags.Instance);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">if</span> (showModeField == <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingFieldException(<span class="stringliteral">&quot;Can&#39;t find internal fields &#39;m_ShowMode&#39;. Maybe something has changed inside Unity&quot;</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                var windows = Resources.FindObjectsOfTypeAll(containerWinType);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">foreach</span> (var win <span class="keywordflow">in</span> windows)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    <span class="keywordtype">int</span> showMode = (int)showModeField.GetValue(win);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    <span class="keywordflow">if</span> (showMode == 4) <span class="comment">// main window</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                    {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                        sMainWindow = win;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">if</span> (sMainWindow == <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">new</span> Rect(0, 0, 800, 600);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            var positionProperty = sMainWindow.GetType().GetProperty(<span class="stringliteral">&quot;position&quot;</span>, BindingFlags.Public | BindingFlags.Instance);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">if</span> (positionProperty == <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> MissingFieldException(<span class="stringliteral">&quot;Can&#39;t find internal fields &#39;position&#39;. Maybe something has changed inside Unity.&quot;</span>);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span> (Rect)positionProperty.GetValue(sMainWindow, <span class="keyword">null</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">return</span> a.<a class="code" href="a00976.html#a435345953e2972e7f1975188aa793268">Equals</a>(b);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        </div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="a00976.html#a560402d037f688f930eb64f08f67857f">   84</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00976.html#a560402d037f688f930eb64f08f67857f">operator !=</a>( <a class="code" href="a00976.html">TypeSerializable</a> a, <a class="code" href="a00976.html">TypeSerializable</a> b )</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">return</span> !(a == b);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        </div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="a00976.html#aa33accf8ca6d16bfe24ad15bfa5c2577">   89</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">int</span> <a class="code" href="a00976.html#aa33accf8ca6d16bfe24ad15bfa5c2577">GetHashCode</a>()</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00976.html#a9b48214cfa32aa6919d90d5f91fb59b3">SystemType</a> != <span class="keyword">null</span> ? <a class="code" href="a00976.html#a9b48214cfa32aa6919d90d5f91fb59b3">SystemType</a>.GetHashCode() : 0;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
-<div class="ttc" id="aa00420_html"><div class="ttname"><a href="a00420.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00976_html"><div class="ttname"><a href="a00976.html">UnityEngine.TypeSerializable</a></div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00011">TypeSerializable.cs:12</a></div></div>
-<div class="ttc" id="aa00976_html_a0e1335c5e0f90065cf82614a7353e2df"><div class="ttname"><a href="a00976.html#a0e1335c5e0f90065cf82614a7353e2df">UnityEngine.TypeSerializable.m_AssemblyQualifiedName</a></div><div class="ttdeci">string m_AssemblyQualifiedName</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00018">TypeSerializable.cs:18</a></div></div>
-<div class="ttc" id="aa00976_html_a30fc350d8cc19c00b2ba45df33a8eb7a"><div class="ttname"><a href="a00976.html#a30fc350d8cc19c00b2ba45df33a8eb7a">UnityEngine.TypeSerializable.m_AssemblyName</a></div><div class="ttdeci">string m_AssemblyName</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00022">TypeSerializable.cs:22</a></div></div>
-<div class="ttc" id="aa00976_html_a3495fe82453797fda7e9987663838346"><div class="ttname"><a href="a00976.html#a3495fe82453797fda7e9987663838346">UnityEngine.TypeSerializable.TypeSerializable</a></div><div class="ttdeci">TypeSerializable(System.Type _SystemType)</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00043">TypeSerializable.cs:43</a></div></div>
-<div class="ttc" id="aa00976_html_a42dfc449bcbe0a82dde0518f39d8aa8d"><div class="ttname"><a href="a00976.html#a42dfc449bcbe0a82dde0518f39d8aa8d">UnityEngine.TypeSerializable.Name</a></div><div class="ttdeci">string Name</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00015">TypeSerializable.cs:15</a></div></div>
-<div class="ttc" id="aa00976_html_a435345953e2972e7f1975188aa793268"><div class="ttname"><a href="a00976.html#a435345953e2972e7f1975188aa793268">UnityEngine.TypeSerializable.Equals</a></div><div class="ttdeci">override bool Equals(System.Object obj)</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00051">TypeSerializable.cs:51</a></div></div>
-<div class="ttc" id="aa00976_html_a560402d037f688f930eb64f08f67857f"><div class="ttname"><a href="a00976.html#a560402d037f688f930eb64f08f67857f">UnityEngine.TypeSerializable.operator!=</a></div><div class="ttdeci">static bool operator!=(TypeSerializable a, TypeSerializable b)</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00084">TypeSerializable.cs:84</a></div></div>
-<div class="ttc" id="aa00976_html_a8bece0f577c698bddbdd615d1f56f0f7"><div class="ttname"><a href="a00976.html#a8bece0f577c698bddbdd615d1f56f0f7">UnityEngine.TypeSerializable.AssemblyQualifiedName</a></div><div class="ttdeci">string AssemblyQualifiedName</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00019">TypeSerializable.cs:19</a></div></div>
-<div class="ttc" id="aa00976_html_a8f9751f0bf043d177d64b50e7b5e0050"><div class="ttname"><a href="a00976.html#a8f9751f0bf043d177d64b50e7b5e0050">UnityEngine.TypeSerializable.Equals</a></div><div class="ttdeci">bool Equals(TypeSerializable _Object)</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00061">TypeSerializable.cs:61</a></div></div>
-<div class="ttc" id="aa00976_html_a9b48214cfa32aa6919d90d5f91fb59b3"><div class="ttname"><a href="a00976.html#a9b48214cfa32aa6919d90d5f91fb59b3">UnityEngine.TypeSerializable.SystemType</a></div><div class="ttdeci">System.Type SystemType</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00026">TypeSerializable.cs:27</a></div></div>
-<div class="ttc" id="aa00976_html_aa33accf8ca6d16bfe24ad15bfa5c2577"><div class="ttname"><a href="a00976.html#aa33accf8ca6d16bfe24ad15bfa5c2577">UnityEngine.TypeSerializable.GetHashCode</a></div><div class="ttdeci">override int GetHashCode()</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00089">TypeSerializable.cs:89</a></div></div>
-<div class="ttc" id="aa00976_html_aa7439399f54ad668f960b7bd00a020ef"><div class="ttname"><a href="a00976.html#aa7439399f54ad668f960b7bd00a020ef">UnityEngine.TypeSerializable.m_Name</a></div><div class="ttdeci">string m_Name</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00014">TypeSerializable.cs:14</a></div></div>
-<div class="ttc" id="aa00976_html_abad6c107ab317e0aad401dcfc1920fca"><div class="ttname"><a href="a00976.html#abad6c107ab317e0aad401dcfc1920fca">UnityEngine.TypeSerializable.m_SystemType</a></div><div class="ttdeci">System.Type m_SystemType</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00025">TypeSerializable.cs:25</a></div></div>
-<div class="ttc" id="aa00976_html_ac6727fa85d1d8ba93b5815e37b566321"><div class="ttname"><a href="a00976.html#ac6727fa85d1d8ba93b5815e37b566321">UnityEngine.TypeSerializable.GetSystemType</a></div><div class="ttdeci">void GetSystemType()</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00038">TypeSerializable.cs:38</a></div></div>
-<div class="ttc" id="aa00976_html_ac6de628c82735d032852dd2855406973"><div class="ttname"><a href="a00976.html#ac6de628c82735d032852dd2855406973">UnityEngine.TypeSerializable.AssemblyName</a></div><div class="ttdeci">string AssemblyName</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00023">TypeSerializable.cs:23</a></div></div>
-<div class="ttc" id="aa00976_html_acb6f0792fcd8b7f8b6bb6761990a796b"><div class="ttname"><a href="a00976.html#acb6f0792fcd8b7f8b6bb6761990a796b">UnityEngine.TypeSerializable.operator==</a></div><div class="ttdeci">static bool operator==(TypeSerializable a, TypeSerializable b)</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00067">TypeSerializable.cs:67</a></div></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> Type[] GetAllDerivedTypes(<span class="keyword">this</span> AppDomain aAppDomain, Type aType)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">return</span> TypeCache.GetTypesDerivedFrom(aType).ToArray();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> Rect GetCenteredWindowPosition(Rect parentWindowPosition, Vector2 size)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            var pos = <span class="keyword">new</span> Rect</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                x = 0, y = 0,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                width = Mathf.Min(size.x, parentWindowPosition.width * 0.90f),</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                height = Mathf.Min(size.y, parentWindowPosition.height * 0.90f)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            };</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordtype">float</span> w = (parentWindowPosition.width - pos.width) * 0.5f;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordtype">float</span> h = (parentWindowPosition.height - pos.height) * 0.5f;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            pos.x = parentWindowPosition.x + w;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            pos.y = parentWindowPosition.y + h;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">return</span> pos;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">    #endregion</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        </div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="a00972.html#a8ffd6211dcd7185ede254c93bbefc5ff">  107</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code" href="a00972.html#a8ffd6211dcd7185ede254c93bbefc5ff">GetProjectName</a>()</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordtype">string</span>[] s = Application.dataPath.Split(<span class="charliteral">&#39;/&#39;</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordtype">string</span> projectName = s[s.Length - 2];</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">return</span> projectName;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        </div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="a00972.html#aaaf95229bffab29518f7e82c3168d7f8">  118</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00972.html#aaaf95229bffab29518f7e82c3168d7f8">IsIOSupported</a>()</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">return</span> Application.platform != RuntimePlatform.WebGLPlayer &amp;&amp;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                   Application.platform != RuntimePlatform.WSAPlayerARM &amp;&amp;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                   Application.platform != RuntimePlatform.WSAPlayerX64 &amp;&amp;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                   Application.platform != RuntimePlatform.WSAPlayerX86 &amp;&amp;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                   Application.platform != RuntimePlatform.tvOS &amp;&amp;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                   Application.platform != RuntimePlatform.PS4;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="a00972.html#a10cf6527a5c56377f7ded6a67c62d544">  133</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00972.html#a10cf6527a5c56377f7ded6a67c62d544">IsFilePath</a>(<span class="keywordtype">string</span> str)</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            <span class="keywordtype">bool</span> result = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">            #if !UNITY_SAMSUNGTV &amp;&amp; !UNITY_TVOS &amp;&amp; !UNITY_WEBGL</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keywordflow">if</span> (Path.IsPathRooted(str))</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            {</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                <span class="keywordflow">try</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                {</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                    <span class="keywordtype">string</span> fullPath = Path.GetFullPath(str);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                    result = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                }</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                <span class="keywordflow">catch</span> (System.Exception)</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                {</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                    result = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                }</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            }</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">            #endif</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        }</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    }</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00972_html"><div class="ttname"><a href="a00972.html">UnityEngine.Utils</a></div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00010">Utils.cs:11</a></div></div>
+<div class="ttc" id="aa00972_html_a02cda9ae71dee3339dee7e7204fc8a8f"><div class="ttname"><a href="a00972.html#a02cda9ae71dee3339dee7e7204fc8a8f">UnityEngine.Utils.GetTypeImplementationsNotUnityObject&lt; T &gt;</a></div><div class="ttdeci">static Type[] GetTypeImplementationsNotUnityObject&lt; T &gt;()</div><div class="ttdoc">Find all implementations of the given parameter type except from those that are a subclass of 'UnityE...</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00017">Utils.cs:17</a></div></div>
+<div class="ttc" id="aa00972_html_a10cf6527a5c56377f7ded6a67c62d544"><div class="ttname"><a href="a00972.html#a10cf6527a5c56377f7ded6a67c62d544">UnityEngine.Utils.IsFilePath</a></div><div class="ttdeci">static bool IsFilePath(string str)</div><div class="ttdoc">Determines if the string is file path.</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00133">Utils.cs:133</a></div></div>
+<div class="ttc" id="aa00972_html_a5932306005d3629d7c04f2b2d2f52b3d"><div class="ttname"><a href="a00972.html#a5932306005d3629d7c04f2b2d2f52b3d">UnityEngine.Utils.GetTypeImplementations&lt; T &gt;</a></div><div class="ttdeci">static IEnumerable&lt; Type &gt; GetTypeImplementations&lt; T &gt;()</div><div class="ttdoc">Find all implementations of the given parameter type.</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00027">Utils.cs:27</a></div></div>
+<div class="ttc" id="aa00972_html_a8ffd6211dcd7185ede254c93bbefc5ff"><div class="ttname"><a href="a00972.html#a8ffd6211dcd7185ede254c93bbefc5ff">UnityEngine.Utils.GetProjectName</a></div><div class="ttdeci">static string GetProjectName()</div><div class="ttdoc">Returns the name of the project</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00107">Utils.cs:107</a></div></div>
+<div class="ttc" id="aa00972_html_aaaf95229bffab29518f7e82c3168d7f8"><div class="ttname"><a href="a00972.html#aaaf95229bffab29518f7e82c3168d7f8">UnityEngine.Utils.IsIOSupported</a></div><div class="ttdeci">static bool IsIOSupported()</div><div class="ttdoc">Checks if the IO is supported on current platform or not.</div><div class="ttdef"><b>Definition:</b> <a href="a00395_source.html#l00118">Utils.cs:118</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: FullSerializer.Internal.fsReflectionUtility Class Reference</title>
+<title>UnityEssentials: FullSerializer.Internal.fsTypeCache Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,38 +62,75 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00416.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00417.html">Internal</a></li><li class="navelem"><a class="el" href="a00776.html">fsReflectionUtility</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00413.html">FullSerializer</a></li><li class="navelem"><a class="el" href="a00414.html">Internal</a></li><li class="navelem"><a class="el" href="a00776.html">fsTypeCache</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="a00773.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">FullSerializer.Internal.fsReflectionUtility Class Reference</div>  </div>
+<div class="title">FullSerializer.Internal.fsTypeCache Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Caches type name to type lookups. Type lookups occur in all loaded assemblies.  
+ <a href="a00776.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for FullSerializer.Internal.fsReflectionUtility:</div>
+Collaboration diagram for FullSerializer.Internal.fsTypeCache:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00774.png" border="0" usemap="#aFullSerializer_8Internal_8fsReflectionUtility_coll__map" alt="Collaboration graph"/></div>
-<map name="aFullSerializer_8Internal_8fsReflectionUtility_coll__map" id="aFullSerializer_8Internal_8fsReflectionUtility_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,252,83"/>
+<div class="center"><img src="a00774.png" border="0" usemap="#aFullSerializer_8Internal_8fsTypeCache_coll__map" alt="Collaboration graph"/></div>
+<map name="aFullSerializer_8Internal_8fsTypeCache_coll__map" id="aFullSerializer_8Internal_8fsTypeCache_coll__map">
+<area shape="rect" title="Caches type name to type lookups. Type lookups occur in all loaded assemblies." alt="" coords="5,5,228,200"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aadaf150f78f3bbcf7c4d470bc444824d"><td class="memItemLeft" align="right" valign="top">static Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#aadaf150f78f3bbcf7c4d470bc444824d">GetInterface</a> (Type type, Type interfaceType)</td></tr>
-<tr class="memdesc:aadaf150f78f3bbcf7c4d470bc444824d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches for a particular implementation of the given interface type inside of the type. This is particularly useful if the interface type is an open type, ie, typeof(IFace{}), because this method will then return IFace{} but with appropriate type parameters inserted.  <a href="a00776.html#aadaf150f78f3bbcf7c4d470bc444824d">More...</a><br /></td></tr>
-<tr class="separator:aadaf150f78f3bbcf7c4d470bc444824d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72547b65b6043378910c89cbdd51f416"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#a72547b65b6043378910c89cbdd51f416">Reset</a> ()</td></tr>
+<tr class="memdesc:a72547b65b6043378910c89cbdd51f416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes any cached type lookup results.  <a href="a00776.html#a72547b65b6043378910c89cbdd51f416">More...</a><br /></td></tr>
+<tr class="separator:a72547b65b6043378910c89cbdd51f416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd2bb1253af70e23a67815c63ce8181b"><td class="memItemLeft" align="right" valign="top">static Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#abd2bb1253af70e23a67815c63ce8181b">GetType</a> (string name)</td></tr>
+<tr class="memdesc:abd2bb1253af70e23a67815c63ce8181b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a type with the given name. An exception is thrown if no type with the given name can be found. This method searches all currently loaded assemblies for the given type. If the type cannot be found, then null will be returned.  <a href="a00776.html#abd2bb1253af70e23a67815c63ce8181b">More...</a><br /></td></tr>
+<tr class="separator:abd2bb1253af70e23a67815c63ce8181b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20c717cc8d35a91d53c688da54f7841f"><td class="memItemLeft" align="right" valign="top">static Type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#a20c717cc8d35a91d53c688da54f7841f">GetType</a> (string name, string assemblyHint)</td></tr>
+<tr class="memdesc:a20c717cc8d35a91d53c688da54f7841f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a type with the given name. An exception is thrown if no type with the given name can be found. This method searches all currently loaded assemblies for the given type. If the type cannot be found, then null will be returned.  <a href="a00776.html#a20c717cc8d35a91d53c688da54f7841f">More...</a><br /></td></tr>
+<tr class="separator:a20c717cc8d35a91d53c688da54f7841f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:a052b3b9f1d409b5f3c666a30d27e3756"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#a052b3b9f1d409b5f3c666a30d27e3756">fsTypeCache</a> ()</td></tr>
+<tr class="separator:a052b3b9f1d409b5f3c666a30d27e3756"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34423b9cb83e1b7015a9cdc0ac169757"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#a34423b9cb83e1b7015a9cdc0ac169757">OnAssemblyLoaded</a> (object sender, AssemblyLoadEventArgs args)</td></tr>
+<tr class="separator:a34423b9cb83e1b7015a9cdc0ac169757"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a504e43d485161c0069572a5bb01c8a86"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#a504e43d485161c0069572a5bb01c8a86">TryDirectTypeLookup</a> (string assemblyName, string typeName, out Type type)</td></tr>
+<tr class="memdesc:a504e43d485161c0069572a5bb01c8a86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does a direct lookup for the given type, ie, goes directly to the assembly identified by assembly name and finds it there.  <a href="a00776.html#a504e43d485161c0069572a5bb01c8a86">More...</a><br /></td></tr>
+<tr class="separator:a504e43d485161c0069572a5bb01c8a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bcd05a5db5ab7bee1f6de786d341618"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#a7bcd05a5db5ab7bee1f6de786d341618">TryIndirectTypeLookup</a> (string typeName, out Type type)</td></tr>
+<tr class="memdesc:a7bcd05a5db5ab7bee1f6de786d341618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to do an indirect type lookup by scanning through every loaded assembly until the type is found in one of them.  <a href="a00776.html#a7bcd05a5db5ab7bee1f6de786d341618">More...</a><br /></td></tr>
+<tr class="separator:a7bcd05a5db5ab7bee1f6de786d341618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:ac8db8dfe6b7d135a10ff0a1a91e2c94d"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#ac8db8dfe6b7d135a10ff0a1a91e2c94d">_cachedTypes</a> = new Dictionary&lt;string, Type&gt;()</td></tr>
+<tr class="memdesc:ac8db8dfe6b7d135a10ff0a1a91e2c94d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache from fully qualified type name to type instances.  <a href="a00776.html#ac8db8dfe6b7d135a10ff0a1a91e2c94d">More...</a><br /></td></tr>
+<tr class="separator:ac8db8dfe6b7d135a10ff0a1a91e2c94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a293e2805a7f591f1d8e1a10674c53b19"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, Assembly &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#a293e2805a7f591f1d8e1a10674c53b19">_assembliesByName</a></td></tr>
+<tr class="memdesc:a293e2805a7f591f1d8e1a10674c53b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assemblies indexed by their name.  <a href="a00776.html#a293e2805a7f591f1d8e1a10674c53b19">More...</a><br /></td></tr>
+<tr class="separator:a293e2805a7f591f1d8e1a10674c53b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68e32d2c50771984b40b47634941448c"><td class="memItemLeft" align="right" valign="top">static List&lt; Assembly &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00776.html#a68e32d2c50771984b40b47634941448c">_assembliesByIndex</a></td></tr>
+<tr class="memdesc:a68e32d2c50771984b40b47634941448c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of assemblies, by index.  <a href="a00776.html#a68e32d2c50771984b40b47634941448c">More...</a><br /></td></tr>
+<tr class="separator:a68e32d2c50771984b40b47634941448c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00221_source.html#l00009">9</a> of file <a class="el" href="a00221_source.html">fsReflectionUtility.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aadaf150f78f3bbcf7c4d470bc444824d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aadaf150f78f3bbcf7c4d470bc444824d">&#9670;&nbsp;</a></span>GetInterface()</h2>
+<div class="textblock"><p>Caches type name to type lookups. Type lookups occur in all loaded assemblies. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00009">9</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a052b3b9f1d409b5f3c666a30d27e3756"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a052b3b9f1d409b5f3c666a30d27e3756">&#9670;&nbsp;</a></span>fsTypeCache()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -102,16 +139,102 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static Type FullSerializer.Internal.fsReflectionUtility.GetInterface </td>
+          <td class="memname">static FullSerializer.Internal.fsTypeCache.fsTypeCache </td>
           <td>(</td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00026">26</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00776_a052b3b9f1d409b5f3c666a30d27e3756_cgraph.png" border="0" usemap="#aa00776_a052b3b9f1d409b5f3c666a30d27e3756_cgraph" alt=""/></div>
+<map name="aa00776_a052b3b9f1d409b5f3c666a30d27e3756_cgraph" id="aa00776_a052b3b9f1d409b5f3c666a30d27e3756_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,307,32"/>
+<area shape="rect" href="a00776.html#a34423b9cb83e1b7015a9cdc0ac169757" title=" " alt="" coords="355,5,697,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="abd2bb1253af70e23a67815c63ce8181b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd2bb1253af70e23a67815c63ce8181b">&#9670;&nbsp;</a></span>GetType() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Type FullSerializer.Internal.fsTypeCache.GetType </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Find a type with the given name. An exception is thrown if no type with the given name can be found. This method searches all currently loaded assemblies for the given type. If the type cannot be found, then null will be returned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The fully qualified name of the type.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00137">137</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00776_abd2bb1253af70e23a67815c63ce8181b_icgraph.png" border="0" usemap="#aa00776_abd2bb1253af70e23a67815c63ce8181b_icgraph" alt=""/></div>
+<map name="aa00776_abd2bb1253af70e23a67815c63ce8181b_icgraph" id="aa00776_abd2bb1253af70e23a67815c63ce8181b_icgraph">
+<area shape="rect" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="1533,31,1808,57"/>
+<area shape="rect" href="a00720.html#ab0a9c3650c92120b7a5a3ee4abc171e9" title=" " alt="" coords="1127,5,1485,32"/>
+<area shape="rect" href="a00584.html#aa94af57c0f67c755cb406529813a13aa" title="Deserialize data into the object instance." alt="" coords="1143,56,1469,83"/>
+<area shape="rect" href="a00720.html#abd29b64f632a01c07ad6bd0c973e00a0" title=" " alt="" coords="739,5,1079,32"/>
+<area shape="rect" href="a00720.html#a048b235379a8cf6fb8c1fb8b6eb466fa" title=" " alt="" coords="304,5,691,32"/>
+<area shape="rect" href="a00720.html#a16a24f10dfdc70f69e2ace4f2e4d891e" title="Attempts to deserialize a value from a serialized state." alt="" coords="5,5,256,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a20c717cc8d35a91d53c688da54f7841f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20c717cc8d35a91d53c688da54f7841f">&#9670;&nbsp;</a></span>GetType() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Type FullSerializer.Internal.fsTypeCache.GetType </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Type&#160;</td>
-          <td class="paramname"><em>interfaceType</em>&#160;</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>assemblyHint</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -126,39 +249,307 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Searches for a particular implementation of the given interface type inside of the type. This is particularly useful if the interface type is an open type, ie, typeof(IFace{}), because this method will then return IFace{} but with appropriate type parameters inserted. </p>
+<p>Find a type with the given name. An exception is thrown if no type with the given name can be found. This method searches all currently loaded assemblies for the given type. If the type cannot be found, then null will be returned. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td>The base type to search for interface</td></tr>
-    <tr><td class="paramname">interfaceType</td><td>The interface type to search for. Can be an open generic type.</td></tr>
+    <tr><td class="paramname">name</td><td>The fully qualified name of the type.</td></tr>
+    <tr><td class="paramname">assemblyHint</td><td>A hint for the assembly to start the search with. Use null if unknown.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The actual interface type that the type contains, or null if there is no implementation of the given interfaceType on type.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00221_source.html#l00021">21</a> of file <a class="el" href="a00221_source.html">fsReflectionUtility.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00148">148</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
 <div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00776_aadaf150f78f3bbcf7c4d470bc444824d_icgraph.png" border="0" usemap="#aa00776_aadaf150f78f3bbcf7c4d470bc444824d_icgraph" alt=""/></div>
-<map name="aa00776_aadaf150f78f3bbcf7c4d470bc444824d_icgraph" id="aa00776_aadaf150f78f3bbcf7c4d470bc444824d_icgraph">
-<area shape="rect" title="Searches for a particular implementation of the given interface type inside of the type...." alt="" coords="864,81,1185,108"/>
-<area shape="rect" href="a00548.html#ad9b38a5c848b694977a7b751a9c4dec4" title=" " alt="" coords="423,5,816,32"/>
-<area shape="rect" href="a00568.html#aa728a36f29439e73342716bb98bdd306" title=" " alt="" coords="432,107,807,133"/>
-<area shape="rect" href="a00568.html#a0b9cd2ccdb6554e273eb5e9774b801ba" title="Fetches the element type for objects inside of the collection." alt="" coords="427,157,811,184"/>
-<area shape="rect" href="a00548.html#ad9b5a92cba22e37218c9aa8a95b3436b" title=" " alt="" coords="427,56,812,83"/>
-<area shape="rect" href="a00548.html#a8dc0adbffb181451bb37c6e6a0ed13b8" title="Deserialize data into the object instance." alt="" coords="13,5,367,32"/>
-<area shape="rect" href="a00568.html#a10f24874fda7fcb99a6a8380127dc8d0" title="Can this converter serialize and deserialize the given object type?" alt="" coords="11,107,369,133"/>
-<area shape="rect" href="a00568.html#a1585e62338f2abf99911f4fde9599daa" title="Deserialize data into the object instance." alt="" coords="5,157,375,184"/>
-<area shape="rect" href="a00568.html#a7aaf3b51583371f787df64c3eefc8c87" title="Serialize the actual object into the given data storage." alt="" coords="13,208,367,235"/>
-<area shape="rect" href="a00548.html#aaeb12dc698fa08caad016cc737f23fff" title="Serialize the actual object into the given data storage." alt="" coords="19,56,361,83"/>
+<div class="center"><img src="a00776_a20c717cc8d35a91d53c688da54f7841f_cgraph.png" border="0" usemap="#aa00776_a20c717cc8d35a91d53c688da54f7841f_cgraph" alt=""/></div>
+<map name="aa00776_a20c717cc8d35a91d53c688da54f7841f_cgraph" id="aa00776_a20c717cc8d35a91d53c688da54f7841f_cgraph">
+<area shape="rect" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="5,31,280,57"/>
+<area shape="rect" href="a00776.html#a504e43d485161c0069572a5bb01c8a86" title="Does a direct lookup for the given type, ie, goes directly to the assembly identified by assembly nam..." alt="" coords="332,5,680,32"/>
+<area shape="rect" href="a00776.html#a7bcd05a5db5ab7bee1f6de786d341618" title="Tries to do an indirect type lookup by scanning through every loaded assembly until the type is found..." alt="" coords="328,56,684,83"/>
 </map>
 </div>
 
 </div>
 </div>
+<a id="a34423b9cb83e1b7015a9cdc0ac169757"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34423b9cb83e1b7015a9cdc0ac169757">&#9670;&nbsp;</a></span>OnAssemblyLoaded()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void FullSerializer.Internal.fsTypeCache.OnAssemblyLoaded </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>sender</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AssemblyLoadEventArgs&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00050">50</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00776_a34423b9cb83e1b7015a9cdc0ac169757_icgraph.png" border="0" usemap="#aa00776_a34423b9cb83e1b7015a9cdc0ac169757_icgraph" alt=""/></div>
+<map name="aa00776_a34423b9cb83e1b7015a9cdc0ac169757_icgraph" id="aa00776_a34423b9cb83e1b7015a9cdc0ac169757_icgraph">
+<area shape="rect" title=" " alt="" coords="355,5,697,32"/>
+<area shape="rect" href="a00776.html#a052b3b9f1d409b5f3c666a30d27e3756" title=" " alt="" coords="5,5,307,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a72547b65b6043378910c89cbdd51f416"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72547b65b6043378910c89cbdd51f416">&#9670;&nbsp;</a></span>Reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void FullSerializer.Internal.fsTypeCache.Reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes any cached type lookup results. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00127">127</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+
+</div>
+</div>
+<a id="a504e43d485161c0069572a5bb01c8a86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a504e43d485161c0069572a5bb01c8a86">&#9670;&nbsp;</a></span>TryDirectTypeLookup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool FullSerializer.Internal.fsTypeCache.TryDirectTypeLookup </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>assemblyName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>typeName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out Type&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does a direct lookup for the given type, ie, goes directly to the assembly identified by assembly name and finds it there. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">assemblyName</td><td>The assembly to find the type in.</td></tr>
+    <tr><td class="paramname">typeName</td><td>The name of the type.</td></tr>
+    <tr><td class="paramname">type</td><td>The found type.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the type was found, false otherwise.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00066">66</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00776_a504e43d485161c0069572a5bb01c8a86_icgraph.png" border="0" usemap="#aa00776_a504e43d485161c0069572a5bb01c8a86_icgraph" alt=""/></div>
+<map name="aa00776_a504e43d485161c0069572a5bb01c8a86_icgraph" id="aa00776_a504e43d485161c0069572a5bb01c8a86_icgraph">
+<area shape="rect" title="Does a direct lookup for the given type, ie, goes directly to the assembly identified by assembly nam..." alt="" coords="328,5,676,32"/>
+<area shape="rect" href="a00776.html#a20c717cc8d35a91d53c688da54f7841f" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="5,5,280,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a7bcd05a5db5ab7bee1f6de786d341618"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bcd05a5db5ab7bee1f6de786d341618">&#9670;&nbsp;</a></span>TryIndirectTypeLookup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool FullSerializer.Internal.fsTypeCache.TryIndirectTypeLookup </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>typeName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out Type&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tries to do an indirect type lookup by scanning through every loaded assembly until the type is found in one of them. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">typeName</td><td>The name of the type.</td></tr>
+    <tr><td class="paramname">type</td><td>The found type.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the type was found, false otherwise.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00086">86</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00776_a7bcd05a5db5ab7bee1f6de786d341618_icgraph.png" border="0" usemap="#aa00776_a7bcd05a5db5ab7bee1f6de786d341618_icgraph" alt=""/></div>
+<map name="aa00776_a7bcd05a5db5ab7bee1f6de786d341618_icgraph" id="aa00776_a7bcd05a5db5ab7bee1f6de786d341618_icgraph">
+<area shape="rect" title="Tries to do an indirect type lookup by scanning through every loaded assembly until the type is found..." alt="" coords="328,5,684,32"/>
+<area shape="rect" href="a00776.html#a20c717cc8d35a91d53c688da54f7841f" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="5,5,280,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a68e32d2c50771984b40b47634941448c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68e32d2c50771984b40b47634941448c">&#9670;&nbsp;</a></span>_assembliesByIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;Assembly&gt; FullSerializer.Internal.fsTypeCache._assembliesByIndex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A list of assemblies, by index. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00024">24</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+
+</div>
+</div>
+<a id="a293e2805a7f591f1d8e1a10674c53b19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a293e2805a7f591f1d8e1a10674c53b19">&#9670;&nbsp;</a></span>_assembliesByName</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Dictionary&lt;string, Assembly&gt; FullSerializer.Internal.fsTypeCache._assembliesByName</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assemblies indexed by their name. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00019">19</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+
+</div>
+</div>
+<a id="ac8db8dfe6b7d135a10ff0a1a91e2c94d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8db8dfe6b7d135a10ff0a1a91e2c94d">&#9670;&nbsp;</a></span>_cachedTypes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Dictionary&lt;string, Type&gt; FullSerializer.Internal.fsTypeCache._cachedTypes = new Dictionary&lt;string, Type&gt;()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Cache from fully qualified type name to type instances. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00224_source.html#l00014">14</a> of file <a class="el" href="a00224_source.html">fsTypeCache.cs</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00221_source.html">fsReflectionUtility.cs</a></li>
+<li><a class="el" href="a00224_source.html">fsTypeCache.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

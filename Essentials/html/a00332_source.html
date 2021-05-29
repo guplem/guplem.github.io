@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: RectExtensions.cs Source File</title>
+<title>UnityEssentials: Rectangle01.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,29 +62,40 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_44d69f3798c1687b4d2cacebeb7d861e.html">Scripts</a></li><li class="navelem"><a class="el" href="dir_c2ab0532ebaba5c73453d6a7ec398ec4.html">Extensions</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_44d69f3798c1687b4d2cacebeb7d861e.html">Scripts</a></li><li class="navelem"><a class="el" href="dir_c2ab0532ebaba5c73453d6a7ec398ec4.html">Extensions</a></li><li class="navelem"><a class="el" href="dir_5257ed12736dd9f8d6adb98267779114.html">RectTransformExtensions</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">RectExtensions.cs</div>  </div>
+<div class="title">Rectangle01.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00332.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System.Collections;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> <a class="code" href="a00420.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00420.html">UnityEngine</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00904.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00904.html">RectExtensions</a></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    }</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<a href="a00332.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00417.html">UnityEngine</a></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;{</div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="a00900.html">    3</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">struct </span><a class="code" href="a00900.html">Rectangle01</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    {</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00900.html#afb40db08e865828b38fa52a100e53594">    5</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00900.html#afb40db08e865828b38fa52a100e53594">min</a>;</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">    6</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">max</a>;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="a00900.html#a70b44f28c2802e9bbcc4d839bf75854c">    8</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00900.html#a70b44f28c2802e9bbcc4d839bf75854c">Rectangle01</a>(Vector2 <a class="code" href="a00900.html#afb40db08e865828b38fa52a100e53594">min</a>, Vector2 <a class="code" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">max</a>)</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;            this.min = <span class="keyword">new</span> Vector2(Mathf.Clamp01(<a class="code" href="a00900.html#afb40db08e865828b38fa52a100e53594">min</a>.x), Mathf.Clamp01(<a class="code" href="a00900.html#afb40db08e865828b38fa52a100e53594">min</a>.y));</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;            this.max = <span class="keyword">new</span> Vector2(Mathf.Clamp01(<a class="code" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">max</a>.x), Mathf.Clamp01(<a class="code" href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">max</a>.y));</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        }</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="ttc" id="aa00420_html"><div class="ttname"><a href="a00420.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00904_html"><div class="ttname"><a href="a00904.html">UnityEngine.RectExtensions</a></div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00007">RectExtensions.cs:8</a></div></div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00900.html#ac0c245d094d21a3852e6b3b0efcc1c7d">   14</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00900.html#ac0c245d094d21a3852e6b3b0efcc1c7d">Rectangle01</a>(<span class="keywordtype">float</span> minx, <span class="keywordtype">float</span> miny, <span class="keywordtype">float</span> maxx, <span class="keywordtype">float</span> maxy)</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            this.min = <span class="keyword">new</span> Vector2(Mathf.Clamp01(minx), Mathf.Clamp01(miny));</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            this.max = <span class="keyword">new</span> Vector2(Mathf.Clamp01(maxx), Mathf.Clamp01(maxy));</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    }</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00900_html"><div class="ttname"><a href="a00900.html">UnityEngine.Rectangle01</a></div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00003">Rectangle01.cs:4</a></div></div>
+<div class="ttc" id="aa00900_html_a70b44f28c2802e9bbcc4d839bf75854c"><div class="ttname"><a href="a00900.html#a70b44f28c2802e9bbcc4d839bf75854c">UnityEngine.Rectangle01.Rectangle01</a></div><div class="ttdeci">Rectangle01(Vector2 min, Vector2 max)</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00008">Rectangle01.cs:8</a></div></div>
+<div class="ttc" id="aa00900_html_ac0c245d094d21a3852e6b3b0efcc1c7d"><div class="ttname"><a href="a00900.html#ac0c245d094d21a3852e6b3b0efcc1c7d">UnityEngine.Rectangle01.Rectangle01</a></div><div class="ttdeci">Rectangle01(float minx, float miny, float maxx, float maxy)</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00014">Rectangle01.cs:14</a></div></div>
+<div class="ttc" id="aa00900_html_af9408c0ddb199a73a32b4b75c0b4da5f"><div class="ttname"><a href="a00900.html#af9408c0ddb199a73a32b4b75c0b4da5f">UnityEngine.Rectangle01.max</a></div><div class="ttdeci">Vector2 max</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00006">Rectangle01.cs:6</a></div></div>
+<div class="ttc" id="aa00900_html_afb40db08e865828b38fa52a100e53594"><div class="ttname"><a href="a00900.html#afb40db08e865828b38fa52a100e53594">UnityEngine.Rectangle01.min</a></div><div class="ttdeci">Vector2 min</div><div class="ttdef"><b>Definition:</b> <a href="a00332_source.html#l00005">Rectangle01.cs:5</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
