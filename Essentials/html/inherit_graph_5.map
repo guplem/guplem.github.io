@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00940.html" title=" " alt="" coords="5,5,115,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,116,83"/>
+<area shape="rect" id="node2" href="$a00239.html" title="Component to manage multiple AudioSources (or AudioClips) at the same time (or in the same component)" alt="" coords="179,5,399,32"/>
+<area shape="rect" id="node3" href="$a00243.html" title="Base class to handle the console display in&#45;game" alt="" coords="218,56,361,83"/>
+<area shape="rect" id="node7" href="$a00235.html" title="Component used to control the behaviour of any SimpleAnimation" alt="" coords="164,107,415,133"/>
+<area shape="rect" id="node4" href="$a00247.html" title=" " alt="" coords="470,5,635,32"/>
+<area shape="rect" id="node5" href="$a00255.html" title=" " alt="" coords="467,56,638,83"/>
+<area shape="rect" id="node6" href="$a00251.html" title=" " alt="" coords="463,107,643,133"/>
 </map>

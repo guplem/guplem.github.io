@@ -1,6 +1,0 @@
-<map id="Essentials.Examples.RandomEssentials.RandomEssentialsExample.Update" name="Essentials.Examples.RandomEssentials.RandomEssentialsExample.Update">
-<area shape="rect" id="node1" title=" " alt="" coords="5,56,472,83"/>
-<area shape="rect" id="node2" href="$a00952.html#a4a74be2fd90b10219ba316ef6ea10900" title="Returns a random bool using pseudo&#45;random distribution." alt="" coords="520,5,931,32"/>
-<area shape="rect" id="node3" href="$a00952.html#ae9af3c863846577b9d7f66b37e6c21d2" title="Returns a random bool." alt="" coords="979,31,1283,57"/>
-<area shape="rect" id="node4" href="$a00952.html#a22416f36fc59d256a7c96585af902270" title="Returns a random float between 0 (included) and 1 (excluded)" alt="" coords="572,107,879,133"/>
-</map>

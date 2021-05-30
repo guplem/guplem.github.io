@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['fsdatatype_1836',['fsDataType',['../a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82',1,'FullSerializer']]],
-  ['fsmemberserialization_1837',['fsMemberSerialization',['../a00413.html#ad0dc98cd54a3d07f8c579d82585906f8',1,'FullSerializer']]]
+  ['wrapmode_774',['WrapMode',['../a00231.html#a321703834e798c9143549f9a088f024d',1,'UnityEngine::SimpleAnimation']]]
 ];

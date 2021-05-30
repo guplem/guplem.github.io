@@ -1,0 +1,5 @@
+<map id="UnityEngine.Pool.InstantiateNewAt" name="UnityEngine.Pool.InstantiateNewAt">
+<area shape="rect" id="node1" title="Instantiates an object for the pool." alt="" coords="5,5,229,32"/>
+<area shape="rect" id="node2" href="$a00359.html#a1c70b9fc0d0b69afdaaefe1b7a8fd1e8" title="Returns the next BaseObject to be spawned" alt="" coords="277,5,593,32"/>
+<area shape="rect" id="node3" href="$a00367.html#a2f7fb7a9165d38e624457c9738c3d793" title=" " alt="" coords="641,5,933,32"/>
+</map>

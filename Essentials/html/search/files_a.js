@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['mathfextensions_2ecs_1193',['MathfExtensions.cs',['../a00329.html',1,'']]],
-  ['minmax01_2ecs_1194',['MinMax01.cs',['../a00332.html',1,'']]]
+  ['quicksearch_2ecs_476',['QuickSearch.cs',['../a00071.html',1,'']]]
 ];

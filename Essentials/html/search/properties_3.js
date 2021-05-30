@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['failed_1871',['Failed',['../a00716.html#ac6770cd3b068004050fc45f82736564c',1,'FullSerializer::fsResult']]],
-  ['formattedmessages_1872',['FormattedMessages',['../a00716.html#a4930e1ef04bc46c9b31b324bb130e251',1,'FullSerializer::fsResult']]]
+  ['max_788',['max',['../a00315.html#a2781dc6867406c0ace688110dbcf60de',1,'UnityEngine::MinMax01']]],
+  ['min_789',['min',['../a00315.html#a983a8fe5f8252ac478fe814b7535d455',1,'UnityEngine::MinMax01']]]
 ];

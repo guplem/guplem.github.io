@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: DoOnceExampleCoded.cs Source File</title>
+<title>UnityEssentials: ISimpleAnimation.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,53 +62,20 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_b9ff57e0f73d53ce9f43345813791f8b.html">Examples</a></li><li class="navelem"><a class="el" href="dir_cd83b1176fa3f5b8b7e03b887659e184.html">FlowControl</a></li><li class="navelem"><a class="el" href="dir_d166a96153f4ad54f32fa36dc40f2feb.html">Coded</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_44d69f3798c1687b4d2cacebeb7d861e.html">Scripts</a></li><li class="navelem"><a class="el" href="dir_d394f8db7aae9a1d1d53ca1b76358aa5.html">Animations</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">DoOnceExampleCoded.cs</div>  </div>
+<div class="title">ISimpleAnimation.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00029.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00417.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00406.html">Essentials.Examples.FlowControl</a></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00476.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00476.html">DoOnceExampleCoded</a> : MonoBehaviour</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00476.html#a4c87be6c3edc68f9f3b7e32d4ae4154a">    7</a></span>&#160;        <span class="keyword">private</span> <a class="code" href="a00928.html">DoOnce</a> <a class="code" href="a00476.html#a4c87be6c3edc68f9f3b7e32d4ae4154a">doOnce</a>;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00476.html#acfe87d8762cb2953989a907b51fec2be">    9</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00476.html#acfe87d8762cb2953989a907b51fec2be">Start</a>()</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;            <a class="code" href="a00476.html#a4c87be6c3edc68f9f3b7e32d4ae4154a">doOnce</a> = <span class="keyword">new</span> <a class="code" href="a00928.html">DoOnce</a>(<a class="code" href="a00476.html#a2aa10283cc6f9917164cbde32aa64a5c">DummyMethod</a>);</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;            </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Press &#39;O&#39; to invoke the DoOnce.&quot;</span>);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        }</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="a00476.html#ac91f806f9da5f34f949bc6f600b1715c">   16</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00476.html#ac91f806f9da5f34f949bc6f600b1715c">Update</a>()</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">if</span> (Input.GetKeyDown(KeyCode.O))</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                <a class="code" href="a00476.html#a4c87be6c3edc68f9f3b7e32d4ae4154a">doOnce</a>.<a class="code" href="a00928.html#a263b55b62151dd52fb17b01132359505">Invoke</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="a00476.html#a2aa10283cc6f9917164cbde32aa64a5c">   24</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00476.html#a2aa10283cc6f9917164cbde32aa64a5c">DummyMethod</a>()</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Executing DummyMethod of &#39;DoOnce&#39;&quot;</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
-<div class="ttc" id="aa00406_html"><div class="ttname"><a href="a00406.html">Essentials.Examples.FlowControl</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00003">DoNExampleCoded.cs:4</a></div></div>
-<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00476_html"><div class="ttname"><a href="a00476.html">Essentials.Examples.FlowControl.DoOnceExampleCoded</a></div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00005">DoOnceExampleCoded.cs:6</a></div></div>
-<div class="ttc" id="aa00476_html_a2aa10283cc6f9917164cbde32aa64a5c"><div class="ttname"><a href="a00476.html#a2aa10283cc6f9917164cbde32aa64a5c">Essentials.Examples.FlowControl.DoOnceExampleCoded.DummyMethod</a></div><div class="ttdeci">void DummyMethod()</div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00024">DoOnceExampleCoded.cs:24</a></div></div>
-<div class="ttc" id="aa00476_html_a4c87be6c3edc68f9f3b7e32d4ae4154a"><div class="ttname"><a href="a00476.html#a4c87be6c3edc68f9f3b7e32d4ae4154a">Essentials.Examples.FlowControl.DoOnceExampleCoded.doOnce</a></div><div class="ttdeci">DoOnce doOnce</div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00007">DoOnceExampleCoded.cs:7</a></div></div>
-<div class="ttc" id="aa00476_html_ac91f806f9da5f34f949bc6f600b1715c"><div class="ttname"><a href="a00476.html#ac91f806f9da5f34f949bc6f600b1715c">Essentials.Examples.FlowControl.DoOnceExampleCoded.Update</a></div><div class="ttdeci">void Update()</div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00016">DoOnceExampleCoded.cs:16</a></div></div>
-<div class="ttc" id="aa00476_html_acfe87d8762cb2953989a907b51fec2be"><div class="ttname"><a href="a00476.html#acfe87d8762cb2953989a907b51fec2be">Essentials.Examples.FlowControl.DoOnceExampleCoded.Start</a></div><div class="ttdeci">void Start()</div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00009">DoOnceExampleCoded.cs:9</a></div></div>
-<div class="ttc" id="aa00928_html"><div class="ttname"><a href="a00928.html">UnityEngine.DoOnce</a></div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00007">DoOnce.cs:8</a></div></div>
-<div class="ttc" id="aa00928_html_a263b55b62151dd52fb17b01132359505"><div class="ttname"><a href="a00928.html#a263b55b62151dd52fb17b01132359505">UnityEngine.DoOnce.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00024">DoOnce.cs:24</a></div></div>
+<a href="a00029.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00173.html">UnityEngine</a></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;{</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00227.html">    6</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">interface </span><a class="code" href="a00227.html">ISimpleAnimation</a> { }</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;}</div>
+<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00227_html"><div class="ttname"><a href="a00227.html">UnityEngine.ISimpleAnimation</a></div><div class="ttdoc">Base interface to create simple animations of any element.</div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00006">ISimpleAnimation.cs:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

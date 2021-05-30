@@ -1,6 +1,0 @@
-<map id="FullSerializer.Internal.fsKeyValuePairConverter.TrySerialize" name="FullSerializer.Internal.fsKeyValuePairConverter.TrySerialize">
-<area shape="rect" id="node1" title="Serialize the actual object into the given data storage." alt="" coords="5,31,368,57"/>
-<area shape="rect" id="node2" href="$a00664.html#a736d3ed458af91620f8eb47447f15233" title="Helper method to create a fsData instance that holds a dictionary." alt="" coords="416,5,655,32"/>
-<area shape="rect" id="node4" href="$a00720.html#a17e5574115d10ded25ac40d46eeae4f2" title="Serialize the given value." alt="" coords="417,56,654,83"/>
-<area shape="rect" id="node3" href="$a00664.html#a9b5e13a72849cb6c6a6948fac87260c6" title="Creates a fsData instance that holds null." alt="" coords="703,5,881,32"/>
-</map>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: fsData.cs Source File</title>
+<title>UnityEssentials: SD_JsonSerializer.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,351 +62,110 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_82411d44058643970fb6de65e973b669.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_ae51aa8457af0e91fae67ea1b2c6d7f4.html">FullSerializer</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_44d69f3798c1687b4d2cacebeb7d861e.html">Scripts</a></li><li class="navelem"><a class="el" href="dir_96c364de9a4b45c4ca9fd0ce5a228895.html">SaveData</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">fsData.cs</div>  </div>
+<div class="title">SD_JsonSerializer.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00158.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> System.Diagnostics;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00413.html">FullSerializer</a> {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">enum</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a> {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82a4410ec34d9e6c1a68100ca0ce033fb17">Array</a>,</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82a497031794414a552435f90151ac3b54b">Object</a>,</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82ad909d38d705ce75386dd86e611a82f5b">Double</a>,</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82afbde23b11d7e59af7828e81144c8b487">Int64</a>,</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82a27226c864bac7454a8504f8edb15d95b">Boolean</a>,</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82a27118326006d3829667a400ad23d5d98">String</a>,</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82abbb93ef26e3c101ff11cdd21cab08a94">Null</a></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    }</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="a00664.html">   23</a></span>&#160;    <span class="keyword">public</span> sealed <span class="keyword">class </span><a class="code" href="a00664.html">fsData</a> {</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">   28</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">object</span> <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">        #region Constructors</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">   34</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">fsData</a>() {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> = <span class="keyword">null</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="a00664.html#ab0316b6b5db7d953fdfe6b352aa1af8e">   41</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00664.html#ab0316b6b5db7d953fdfe6b352aa1af8e">fsData</a>(<span class="keywordtype">bool</span> <span class="keywordtype">boolean</span>) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> = boolean;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00664.html#a694c04538e4e37df718316eff8e15635">   48</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00664.html#a694c04538e4e37df718316eff8e15635">fsData</a>(<span class="keywordtype">double</span> f) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> = f;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00664.html#ab942e5e4fb36b7e815ce0f4195cc84da">   55</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00664.html#ab942e5e4fb36b7e815ce0f4195cc84da">fsData</a>(Int64 i) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> = i;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="a00664.html#a18d00eb27ffcbbd57ab7372856ae30f7">   62</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00664.html#a18d00eb27ffcbbd57ab7372856ae30f7">fsData</a>(<span class="keywordtype">string</span> str) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> = str;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00664.html#a8897bc4f6c2f0ff7acdcd0195746fc09">   69</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00664.html#a8897bc4f6c2f0ff7acdcd0195746fc09">fsData</a>(Dictionary&lt;string, fsData&gt; dict) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> = dict;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00664.html#af6e99c4d2e08a96957ccd44491026e92">   76</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00664.html#af6e99c4d2e08a96957ccd44491026e92">fsData</a>(List&lt;fsData&gt; list) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> = list;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00664.html#a736d3ed458af91620f8eb47447f15233">   83</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="a00664.html">fsData</a> <a class="code" href="a00664.html#a736d3ed458af91620f8eb47447f15233">CreateDictionary</a>() {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">fsData</a>(<span class="keyword">new</span> Dictionary&lt;string, fsData&gt;(</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                <a class="code" href="a00648.html">fsGlobalConfig</a>.<a class="code" href="a00648.html#a1cdca01a46d27d0bfa79fb74031a499e">IsCaseSensitive</a> ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase));</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="a00664.html#ac7c719ebad471a4a00b812097d436a73">   91</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="a00664.html">fsData</a> <a class="code" href="a00664.html#ac7c719ebad471a4a00b812097d436a73">CreateList</a>() {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">fsData</a>(<span class="keyword">new</span> List&lt;fsData&gt;());</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="a00664.html#a884600697b7b552fa3908e86b60e9216">   98</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="a00664.html">fsData</a> <a class="code" href="a00664.html#a884600697b7b552fa3908e86b60e9216">CreateList</a>(<span class="keywordtype">int</span> capacity) {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">fsData</a>(<span class="keyword">new</span> List&lt;fsData&gt;(capacity));</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="a00664.html#af36a1f41bbcf0f17e56b77cc80e0e0b3">  102</a></span>&#160;        <span class="keyword">public</span> readonly <span class="keyword">static</span> <a class="code" href="a00664.html">fsData</a> <a class="code" href="a00664.html#af36a1f41bbcf0f17e56b77cc80e0e0b3">True</a> = <span class="keyword">new</span> <a class="code" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">fsData</a>(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="a00664.html#a55dbf6381c50c95a042334c119fccdfc">  103</a></span>&#160;        <span class="keyword">public</span> readonly <span class="keyword">static</span> <a class="code" href="a00664.html">fsData</a> <a class="code" href="a00664.html#a55dbf6381c50c95a042334c119fccdfc">False</a> = <span class="keyword">new</span> <a class="code" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">fsData</a>(<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="a00664.html#adcb3ce2b86c6f317a74ee3ecfe9c41be">  104</a></span>&#160;        <span class="keyword">public</span> readonly <span class="keyword">static</span> <a class="code" href="a00664.html">fsData</a> <a class="code" href="a00664.html#adcb3ce2b86c6f317a74ee3ecfe9c41be">Null</a> = <span class="keyword">new</span> <a class="code" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">fsData</a>();</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<a href="a00158.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//      MIT License</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//      </span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//      Copyright (c) 2020 Bronson Zgeb</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">//      </span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">//      Permission is hereby granted, free of charge, to any person obtaining a copy</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//          of this software and associated documentation files (the &quot;Software&quot;), to deal</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">//          in the Software without restriction, including without limitation the rights</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">//      copies of the Software, and to permit persons to whom the Software is</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">//          furnished to do so, subject to the following conditions:</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//      </span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//      The above copyright notice and this permission notice shall be included in all</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">//          copies or substantial portions of the Software.</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//      </span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">//          THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">//          IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//          FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">//          AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//          LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">//      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//      SOFTWARE.</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//  Significant parts of the code are extracted from this GitHub repository: https://github.com/BayatGames/SaveGameFree and https://github.com/UnityTechnologies/UniteNow20-Persistent-Data</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using</span> System;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">using</span> System.IO;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">using</span> FullSerializer;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">using</span> System.Text;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">using</span> <a class="code" href="a00173.html">UnityEngine</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00176.html">Essentials.SaveData</a></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00379.html">   38</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00379.html">SD_JsonSerializer</a></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00379.html#a1e7aa895bf381ba36cb6bf970206ba31">   48</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00379.html#a1e7aa895bf381ba36cb6bf970206ba31">Serialize&lt;T&gt;</a>(T obj, Stream stream, Encoding encoding)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">            #if !UNITY_WSA || !UNITY_WINRT</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">try</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                StreamWriter writer = <span class="keyword">new</span> StreamWriter(stream, encoding);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                fsSerializer serializer = <span class="keyword">new</span> fsSerializer();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                fsData data = <span class="keyword">new</span> fsData();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                serializer.TrySerialize(obj, out data);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                writer.Write(fsJsonPrinter.CompressedJson(data));</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                writer.Dispose();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">catch</span> (Exception ex)</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                Debug.LogException(ex);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">            #else</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            StreamWriter writer = <span class="keyword">new</span> StreamWriter ( stream, encoding );</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            writer.Write ( JsonUtility.ToJson ( obj ) );</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            writer.Dispose ();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">            #endif</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00379.html#a55974697011e47fb9bdfb5ebb7ea1a01">   77</a></span>&#160;        <span class="keyword">public</span> T <a class="code" href="a00379.html#a55974697011e47fb9bdfb5ebb7ea1a01">Deserialize&lt;T&gt;</a>(Stream stream, Encoding encoding)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            T result = <span class="keywordflow">default</span>(T);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">            #if !UNITY_WSA || !UNITY_WINRT</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">try</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                StreamReader reader = <span class="keyword">new</span> StreamReader(stream, encoding);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                fsSerializer serializer = <span class="keyword">new</span> fsSerializer();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                fsData data = fsJsonParser.Parse(reader.ReadToEnd());</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                serializer.TryDeserialize(data, ref result);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keywordflow">if</span> (result == <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    result = <span class="keywordflow">default</span>(T);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                reader.Dispose();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">catch</span> (Exception ex)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            {</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                Debug.LogException(ex);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">            #else</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            StreamReader reader = <span class="keyword">new</span> StreamReader ( stream, encoding );</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            result = JsonUtility.FromJson&lt;T&gt; ( reader.ReadToEnd () );</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            reader.Dispose ();</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">            #endif</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    }</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">        #region Internal Helper Methods</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="a00664.html#a5f645e9833e65845caf4cdbc4fd5e943">  111</a></span>&#160;        <span class="keyword">internal</span> <span class="keywordtype">void</span> <a class="code" href="a00664.html#a5f645e9833e65845caf4cdbc4fd5e943">BecomeDictionary</a>() {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> = <span class="keyword">new</span> Dictionary&lt;string, fsData&gt;();</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="a00664.html#a0d897576bd21e0e957fcb022f7ad02b1">  118</a></span>&#160;        <span class="keyword">internal</span> <a class="code" href="a00664.html">fsData</a> <a class="code" href="a00664.html#a0d897576bd21e0e957fcb022f7ad02b1">Clone</a>() {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            var clone = <span class="keyword">new</span> <a class="code" href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">fsData</a>();</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            clone._value = <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a>;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <span class="keywordflow">return</span> clone;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">        #endregion</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">        #region Casting Predicates</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="a00664.html#a1103886f8029af3fb3e9adef1685072a">  126</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a> <a class="code" href="a00664.html#a1103886f8029af3fb3e9adef1685072a">Type</a> {</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> == <span class="keyword">null</span>) <span class="keywordflow">return</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Null;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is <span class="keywordtype">double</span>) <span class="keywordflow">return</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Double;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82afbde23b11d7e59af7828e81144c8b487">Int64</a>) <span class="keywordflow">return</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Int64;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is <span class="keywordtype">bool</span>) <span class="keywordflow">return</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Boolean;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is <span class="keywordtype">string</span>) <span class="keywordflow">return</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.String;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is Dictionary&lt;string, fsData&gt;) <span class="keywordflow">return</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Object;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is List&lt;fsData&gt;) <span class="keywordflow">return</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Array;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> InvalidOperationException(<span class="stringliteral">&quot;unknown JSON data type&quot;</span>);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            }</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        }</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="a00664.html#af434698e3ebdea70932122c1b326c0a8">  143</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#af434698e3ebdea70932122c1b326c0a8">IsNull</a> {</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> == <span class="keyword">null</span>;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            }</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="a00664.html#a346ac35da58a28836daed508ecf32b3f">  152</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a346ac35da58a28836daed508ecf32b3f">IsDouble</a> {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is double;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            }</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        }</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="a00664.html#a80a85a78dda84fe0c68f7a163355e8c1">  161</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a80a85a78dda84fe0c68f7a163355e8c1">IsInt64</a> {</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82afbde23b11d7e59af7828e81144c8b487">Int64</a>;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            }</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="a00664.html#a0150291174c11e0880aee949b14c8741">  170</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a0150291174c11e0880aee949b14c8741">IsBool</a> {</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is bool;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            }</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        }</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="a00664.html#a95589f68382f863386617a0dd4055ae4">  179</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a95589f68382f863386617a0dd4055ae4">IsString</a> {</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is string;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            }</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        }</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="a00664.html#a493e25ed3252e4a381a1cd47b9a1559e">  188</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a493e25ed3252e4a381a1cd47b9a1559e">IsDictionary</a> {</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is Dictionary&lt;string, fsData&gt;;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            }</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        }</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="a00664.html#a1d61e9ed3a74d32dc46f9a4d4c1285f7">  197</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a1d61e9ed3a74d32dc46f9a4d4c1285f7">IsList</a> {</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is List&lt;fsData&gt;;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            }</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">        #endregion</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="preprocessor">        #region Casts</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        [DebuggerBrowsable(DebuggerBrowsableState.Never)]</div>
-<div class="line"><a name="l00209"></a><span class="lineno"><a class="line" href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">  209</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">double</span> <a class="code" href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">AsDouble</a> {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                <span class="keywordflow">return</span> Cast&lt;double&gt;();</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            }</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        }</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        [DebuggerBrowsable(DebuggerBrowsableState.Never)]</div>
-<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="a00664.html#a47a5cdaefdb6afc7f2bdaa026befdc00">  219</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82afbde23b11d7e59af7828e81144c8b487">Int64</a> <a class="code" href="a00664.html#a47a5cdaefdb6afc7f2bdaa026befdc00">AsInt64</a> {</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                <span class="keywordflow">return</span> Cast&lt;Int64&gt;();</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            }</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        }</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        [DebuggerBrowsable(DebuggerBrowsableState.Never)]</div>
-<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="a00664.html#a9e4be12fbd0ac616b08823a6b09529f8">  230</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a9e4be12fbd0ac616b08823a6b09529f8">AsBool</a> {</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                <span class="keywordflow">return</span> Cast&lt;bool&gt;();</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            }</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        }</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        [DebuggerBrowsable(DebuggerBrowsableState.Never)]</div>
-<div class="line"><a name="l00240"></a><span class="lineno"><a class="line" href="a00664.html#a69c34ee326b025ae8781eb7029943444">  240</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">string</span> <a class="code" href="a00664.html#a69c34ee326b025ae8781eb7029943444">AsString</a> {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;                <span class="keywordflow">return</span> Cast&lt;string&gt;();</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            }</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        }</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        [DebuggerBrowsable(DebuggerBrowsableState.Never)]</div>
-<div class="line"><a name="l00251"></a><span class="lineno"><a class="line" href="a00664.html#ad0592f7d7f713ddbf1f89cab77608c57">  251</a></span>&#160;        <span class="keyword">public</span> Dictionary&lt;string, fsData&gt; <a class="code" href="a00664.html#ad0592f7d7f713ddbf1f89cab77608c57">AsDictionary</a> {</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                <span class="keywordflow">return</span> Cast&lt;Dictionary&lt;string, fsData&gt;&gt;();</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            }</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        }</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        [DebuggerBrowsable(DebuggerBrowsableState.Never)]</div>
-<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="a00664.html#aebf459f479691aa88d9712f53a2d85ee">  261</a></span>&#160;        <span class="keyword">public</span> List&lt;fsData&gt; <a class="code" href="a00664.html#aebf459f479691aa88d9712f53a2d85ee">AsList</a> {</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <span class="keyword">get</span> {</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                <span class="keywordflow">return</span> Cast&lt;List&lt;fsData&gt;&gt;();</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            }</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        }</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="a00664.html#aa94c2aa2a3804712d37b8762f24d4221">  271</a></span>&#160;        <span class="keyword">private</span> T <a class="code" href="a00664.html#aa94c2aa2a3804712d37b8762f24d4221">Cast&lt;T&gt;</a>() {</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a> is T) {</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                <span class="keywordflow">return</span> (T)<a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a>;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            }</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> InvalidCastException(<span class="stringliteral">&quot;Unable to cast &lt;&quot;</span> + <span class="keyword">this</span> + <span class="stringliteral">&quot;&gt; (with type = &quot;</span> +</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a>.GetType() + <span class="stringliteral">&quot;) to type &quot;</span> + typeof(T));</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        }</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="preprocessor">        #endregion</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="preprocessor">        #region ToString Implementation</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno"><a class="line" href="a00664.html#ac64cd3d8fa914d376259ff913c208791">  282</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="a00664.html#ac64cd3d8fa914d376259ff913c208791">ToString</a>() {</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00700.html">fsJsonPrinter</a>.<a class="code" href="a00700.html#a7d4e78009d040303daf29c9b11e87df4">CompressedJson</a>(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        }</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="preprocessor">        #endregion</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">        #region Equality Comparisons</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno"><a class="line" href="a00664.html#a29d15c3ea23372768eea41226c322415">  291</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a29d15c3ea23372768eea41226c322415">Equals</a>(<span class="keywordtype">object</span> obj) {</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00664.html#a29d15c3ea23372768eea41226c322415">Equals</a>(obj as <a class="code" href="a00664.html">fsData</a>);</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        }</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
-<div class="line"><a name="l00298"></a><span class="lineno"><a class="line" href="a00664.html#a31f0be7076e3aeea8051eef9b4bff6c3">  298</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a31f0be7076e3aeea8051eef9b4bff6c3">Equals</a>(<a class="code" href="a00664.html">fsData</a> other) {</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;            <span class="keywordflow">if</span> (other == <span class="keyword">null</span> || <a class="code" href="a00664.html#a1103886f8029af3fb3e9adef1685072a">Type</a> != other.<a class="code" href="a00664.html#a1103886f8029af3fb3e9adef1685072a">Type</a>) {</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            }</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            <span class="keywordflow">switch</span> (<a class="code" href="a00664.html#a1103886f8029af3fb3e9adef1685072a">Type</a>) {</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Null:</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Double:</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">AsDouble</a> == other.<a class="code" href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">AsDouble</a> || Math.Abs(<a class="code" href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">AsDouble</a> - other.<a class="code" href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">AsDouble</a>) &lt; <span class="keywordtype">double</span>.Epsilon;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Int64:</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="a00664.html#a47a5cdaefdb6afc7f2bdaa026befdc00">AsInt64</a> == other.<a class="code" href="a00664.html#a47a5cdaefdb6afc7f2bdaa026befdc00">AsInt64</a>;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Boolean:</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="a00664.html#a9e4be12fbd0ac616b08823a6b09529f8">AsBool</a> == other.<a class="code" href="a00664.html#a9e4be12fbd0ac616b08823a6b09529f8">AsBool</a>;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.String:</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="a00664.html#a69c34ee326b025ae8781eb7029943444">AsString</a> == other.<a class="code" href="a00664.html#a69c34ee326b025ae8781eb7029943444">AsString</a>;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Array:</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                    var thisList = <a class="code" href="a00664.html#aebf459f479691aa88d9712f53a2d85ee">AsList</a>;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                    var otherList = other.<a class="code" href="a00664.html#aebf459f479691aa88d9712f53a2d85ee">AsList</a>;</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                    <span class="keywordflow">if</span> (thisList.Count != otherList.Count) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; thisList.Count; ++i) {</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                        <span class="keywordflow">if</span> (thisList[i].<a class="code" href="a00664.html#a29d15c3ea23372768eea41226c322415">Equals</a>(otherList[i]) == <span class="keyword">false</span>) {</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;                        }</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;                    }</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">fsDataType</a>.Object:</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;                    var thisDict = <a class="code" href="a00664.html#ad0592f7d7f713ddbf1f89cab77608c57">AsDictionary</a>;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;                    var otherDict = other.<a class="code" href="a00664.html#ad0592f7d7f713ddbf1f89cab77608c57">AsDictionary</a>;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;                    <span class="keywordflow">if</span> (thisDict.Count != otherDict.Count) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160; </div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;                    <span class="keywordflow">foreach</span> (<span class="keywordtype">string</span> key <span class="keywordflow">in</span> thisDict.Keys) {</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                        <span class="keywordflow">if</span> (otherDict.ContainsKey(key) == <span class="keyword">false</span>) {</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                        }</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; </div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                        <span class="keywordflow">if</span> (thisDict[key].<a class="code" href="a00664.html#a29d15c3ea23372768eea41226c322415">Equals</a>(otherDict[key]) == <span class="keyword">false</span>) {</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                        }</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                    }</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;            }</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(<span class="stringliteral">&quot;Unknown data type&quot;</span>);</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        }</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; </div>
-<div class="line"><a name="l00358"></a><span class="lineno"><a class="line" href="a00664.html#a0cfc078433d539f5aefc16078accfc15">  358</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#a0cfc078433d539f5aefc16078accfc15">operator ==</a>(<a class="code" href="a00664.html">fsData</a> a, <a class="code" href="a00664.html">fsData</a> b) {</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;            <span class="comment">// If both are null, or both are same instance, return true.</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;            <span class="keywordflow">if</span> (ReferenceEquals(a, b)) {</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            }</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160; </div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;            <span class="comment">// If one is null, but not both, return false.</span></div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;            <span class="keywordflow">if</span> (((<span class="keywordtype">object</span>)a == <span class="keyword">null</span>) || ((<span class="keywordtype">object</span>)b == <span class="keyword">null</span>)) {</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;            }</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            <span class="keywordflow">if</span> (a.<a class="code" href="a00664.html#a346ac35da58a28836daed508ecf32b3f">IsDouble</a> &amp;&amp; b.<a class="code" href="a00664.html#a346ac35da58a28836daed508ecf32b3f">IsDouble</a>) {</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                <span class="keywordflow">return</span> Math.Abs(a.<a class="code" href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">AsDouble</a> - b.<a class="code" href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">AsDouble</a>) &lt; <span class="keywordtype">double</span>.Epsilon;</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            }</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;            <span class="keywordflow">return</span> a.<a class="code" href="a00664.html#a29d15c3ea23372768eea41226c322415">Equals</a>(b);</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        }</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
-<div class="line"><a name="l00379"></a><span class="lineno"><a class="line" href="a00664.html#ae595530d43b82d4f7e6190b880932624">  379</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00664.html#ae595530d43b82d4f7e6190b880932624">operator !=</a>(<a class="code" href="a00664.html">fsData</a> a, <a class="code" href="a00664.html">fsData</a> b) {</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            <span class="keywordflow">return</span> !(a == b);</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        }</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
-<div class="line"><a name="l00388"></a><span class="lineno"><a class="line" href="a00664.html#a915cae40a9014f6027c2b88e35d74e8c">  388</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">int</span> <a class="code" href="a00664.html#a915cae40a9014f6027c2b88e35d74e8c">GetHashCode</a>() {</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">_value</a>.GetHashCode();</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        }</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="preprocessor">        #endregion</span></div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    }</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160; </div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;}</div>
-<div class="ttc" id="aa00413_html"><div class="ttname"><a href="a00413.html">FullSerializer</a></div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00004">fsArrayConverter.cs:4</a></div></div>
-<div class="ttc" id="aa00413_html_a6eee33d63b94e40fdfcfc59af9fcfc82"><div class="ttname"><a href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82">FullSerializer.fsDataType</a></div><div class="ttdeci">fsDataType</div><div class="ttdoc">The actual type that a JsonData instance can store.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00009">fsData.cs:9</a></div></div>
-<div class="ttc" id="aa00413_html_a6eee33d63b94e40fdfcfc59af9fcfc82a27118326006d3829667a400ad23d5d98"><div class="ttname"><a href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82a27118326006d3829667a400ad23d5d98">FullSerializer.fsDataType.String</a></div><div class="ttdeci">@ String</div></div>
-<div class="ttc" id="aa00413_html_a6eee33d63b94e40fdfcfc59af9fcfc82a27226c864bac7454a8504f8edb15d95b"><div class="ttname"><a href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82a27226c864bac7454a8504f8edb15d95b">FullSerializer.fsDataType.Boolean</a></div><div class="ttdeci">@ Boolean</div></div>
-<div class="ttc" id="aa00413_html_a6eee33d63b94e40fdfcfc59af9fcfc82a4410ec34d9e6c1a68100ca0ce033fb17"><div class="ttname"><a href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82a4410ec34d9e6c1a68100ca0ce033fb17">FullSerializer.fsDataType.Array</a></div><div class="ttdeci">@ Array</div></div>
-<div class="ttc" id="aa00413_html_a6eee33d63b94e40fdfcfc59af9fcfc82a497031794414a552435f90151ac3b54b"><div class="ttname"><a href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82a497031794414a552435f90151ac3b54b">FullSerializer.fsDataType.Object</a></div><div class="ttdeci">@ Object</div></div>
-<div class="ttc" id="aa00413_html_a6eee33d63b94e40fdfcfc59af9fcfc82abbb93ef26e3c101ff11cdd21cab08a94"><div class="ttname"><a href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82abbb93ef26e3c101ff11cdd21cab08a94">FullSerializer.fsDataType.Null</a></div><div class="ttdeci">@ Null</div></div>
-<div class="ttc" id="aa00413_html_a6eee33d63b94e40fdfcfc59af9fcfc82ad909d38d705ce75386dd86e611a82f5b"><div class="ttname"><a href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82ad909d38d705ce75386dd86e611a82f5b">FullSerializer.fsDataType.Double</a></div><div class="ttdeci">@ Double</div></div>
-<div class="ttc" id="aa00413_html_a6eee33d63b94e40fdfcfc59af9fcfc82afbde23b11d7e59af7828e81144c8b487"><div class="ttname"><a href="a00413.html#a6eee33d63b94e40fdfcfc59af9fcfc82afbde23b11d7e59af7828e81144c8b487">FullSerializer.fsDataType.Int64</a></div><div class="ttdeci">@ Int64</div></div>
-<div class="ttc" id="aa00648_html"><div class="ttname"><a href="a00648.html">FullSerializer.fsGlobalConfig</a></div><div class="ttdef"><b>Definition:</b> <a href="a00146_source.html#l00006">fsConfig.cs:6</a></div></div>
-<div class="ttc" id="aa00648_html_a1cdca01a46d27d0bfa79fb74031a499e"><div class="ttname"><a href="a00648.html#a1cdca01a46d27d0bfa79fb74031a499e">FullSerializer.fsGlobalConfig.IsCaseSensitive</a></div><div class="ttdeci">static bool IsCaseSensitive</div><div class="ttdoc">Should deserialization be case sensitive? If this is false and the JSON has multiple members with the...</div><div class="ttdef"><b>Definition:</b> <a href="a00146_source.html#l00011">fsConfig.cs:11</a></div></div>
-<div class="ttc" id="aa00664_html"><div class="ttname"><a href="a00664.html">FullSerializer.fsData</a></div><div class="ttdoc">A union type that stores a serialized value. The stored type can be one of six different types: null,...</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00023">fsData.cs:23</a></div></div>
-<div class="ttc" id="aa00664_html_a0150291174c11e0880aee949b14c8741"><div class="ttname"><a href="a00664.html#a0150291174c11e0880aee949b14c8741">FullSerializer.fsData.IsBool</a></div><div class="ttdeci">bool IsBool</div><div class="ttdoc">Returns true if this fsData instance maps back to a boolean.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00170">fsData.cs:170</a></div></div>
-<div class="ttc" id="aa00664_html_a0cfc078433d539f5aefc16078accfc15"><div class="ttname"><a href="a00664.html#a0cfc078433d539f5aefc16078accfc15">FullSerializer.fsData.operator==</a></div><div class="ttdeci">static bool operator==(fsData a, fsData b)</div><div class="ttdoc">Returns true iff a == b.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00358">fsData.cs:358</a></div></div>
-<div class="ttc" id="aa00664_html_a0d897576bd21e0e957fcb022f7ad02b1"><div class="ttname"><a href="a00664.html#a0d897576bd21e0e957fcb022f7ad02b1">FullSerializer.fsData.Clone</a></div><div class="ttdeci">fsData Clone()</div><div class="ttdoc">Returns a shallow clone of this data instance.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00118">fsData.cs:118</a></div></div>
-<div class="ttc" id="aa00664_html_a1103886f8029af3fb3e9adef1685072a"><div class="ttname"><a href="a00664.html#a1103886f8029af3fb3e9adef1685072a">FullSerializer.fsData.Type</a></div><div class="ttdeci">fsDataType Type</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00126">fsData.cs:126</a></div></div>
-<div class="ttc" id="aa00664_html_a18d00eb27ffcbbd57ab7372856ae30f7"><div class="ttname"><a href="a00664.html#a18d00eb27ffcbbd57ab7372856ae30f7">FullSerializer.fsData.fsData</a></div><div class="ttdeci">fsData(string str)</div><div class="ttdoc">Creates a fsData instance that holds a string.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00062">fsData.cs:62</a></div></div>
-<div class="ttc" id="aa00664_html_a1d61e9ed3a74d32dc46f9a4d4c1285f7"><div class="ttname"><a href="a00664.html#a1d61e9ed3a74d32dc46f9a4d4c1285f7">FullSerializer.fsData.IsList</a></div><div class="ttdeci">bool IsList</div><div class="ttdoc">Returns true if this fsData instance maps back to a List.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00197">fsData.cs:197</a></div></div>
-<div class="ttc" id="aa00664_html_a29d15c3ea23372768eea41226c322415"><div class="ttname"><a href="a00664.html#a29d15c3ea23372768eea41226c322415">FullSerializer.fsData.Equals</a></div><div class="ttdeci">override bool Equals(object obj)</div><div class="ttdoc">Determines whether the specified object is equal to the current object.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00291">fsData.cs:291</a></div></div>
-<div class="ttc" id="aa00664_html_a31f0be7076e3aeea8051eef9b4bff6c3"><div class="ttname"><a href="a00664.html#a31f0be7076e3aeea8051eef9b4bff6c3">FullSerializer.fsData.Equals</a></div><div class="ttdeci">bool Equals(fsData other)</div><div class="ttdoc">Determines whether the specified object is equal to the current object.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00298">fsData.cs:298</a></div></div>
-<div class="ttc" id="aa00664_html_a346ac35da58a28836daed508ecf32b3f"><div class="ttname"><a href="a00664.html#a346ac35da58a28836daed508ecf32b3f">FullSerializer.fsData.IsDouble</a></div><div class="ttdeci">bool IsDouble</div><div class="ttdoc">Returns true if this fsData instance maps back to a double.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00152">fsData.cs:152</a></div></div>
-<div class="ttc" id="aa00664_html_a3b742582f73e3eb166bcc6df88b2ffd9"><div class="ttname"><a href="a00664.html#a3b742582f73e3eb166bcc6df88b2ffd9">FullSerializer.fsData.AsDouble</a></div><div class="ttdeci">double AsDouble</div><div class="ttdoc">Casts this fsData to a double. Throws an exception if it is not a double.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00209">fsData.cs:209</a></div></div>
-<div class="ttc" id="aa00664_html_a47a5cdaefdb6afc7f2bdaa026befdc00"><div class="ttname"><a href="a00664.html#a47a5cdaefdb6afc7f2bdaa026befdc00">FullSerializer.fsData.AsInt64</a></div><div class="ttdeci">Int64 AsInt64</div><div class="ttdoc">Casts this fsData to an Int64. Throws an exception if it is not an Int64.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00219">fsData.cs:219</a></div></div>
-<div class="ttc" id="aa00664_html_a493e25ed3252e4a381a1cd47b9a1559e"><div class="ttname"><a href="a00664.html#a493e25ed3252e4a381a1cd47b9a1559e">FullSerializer.fsData.IsDictionary</a></div><div class="ttdeci">bool IsDictionary</div><div class="ttdoc">Returns true if this fsData instance maps back to a Dictionary.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00188">fsData.cs:188</a></div></div>
-<div class="ttc" id="aa00664_html_a55dbf6381c50c95a042334c119fccdfc"><div class="ttname"><a href="a00664.html#a55dbf6381c50c95a042334c119fccdfc">FullSerializer.fsData.False</a></div><div class="ttdeci">static readonly fsData False</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00103">fsData.cs:103</a></div></div>
-<div class="ttc" id="aa00664_html_a5f645e9833e65845caf4cdbc4fd5e943"><div class="ttname"><a href="a00664.html#a5f645e9833e65845caf4cdbc4fd5e943">FullSerializer.fsData.BecomeDictionary</a></div><div class="ttdeci">void BecomeDictionary()</div><div class="ttdoc">Transforms the internal fsData instance into a dictionary.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00111">fsData.cs:111</a></div></div>
-<div class="ttc" id="aa00664_html_a694c04538e4e37df718316eff8e15635"><div class="ttname"><a href="a00664.html#a694c04538e4e37df718316eff8e15635">FullSerializer.fsData.fsData</a></div><div class="ttdeci">fsData(double f)</div><div class="ttdoc">Creates a fsData instance that holds a double.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00048">fsData.cs:48</a></div></div>
-<div class="ttc" id="aa00664_html_a69c34ee326b025ae8781eb7029943444"><div class="ttname"><a href="a00664.html#a69c34ee326b025ae8781eb7029943444">FullSerializer.fsData.AsString</a></div><div class="ttdeci">string AsString</div><div class="ttdoc">Casts this fsData to a string. Throws an exception if it is not a string.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00240">fsData.cs:240</a></div></div>
-<div class="ttc" id="aa00664_html_a736d3ed458af91620f8eb47447f15233"><div class="ttname"><a href="a00664.html#a736d3ed458af91620f8eb47447f15233">FullSerializer.fsData.CreateDictionary</a></div><div class="ttdeci">static fsData CreateDictionary()</div><div class="ttdoc">Helper method to create a fsData instance that holds a dictionary.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00083">fsData.cs:83</a></div></div>
-<div class="ttc" id="aa00664_html_a80a85a78dda84fe0c68f7a163355e8c1"><div class="ttname"><a href="a00664.html#a80a85a78dda84fe0c68f7a163355e8c1">FullSerializer.fsData.IsInt64</a></div><div class="ttdeci">bool IsInt64</div><div class="ttdoc">Returns true if this fsData instance maps back to an Int64.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00161">fsData.cs:161</a></div></div>
-<div class="ttc" id="aa00664_html_a884600697b7b552fa3908e86b60e9216"><div class="ttname"><a href="a00664.html#a884600697b7b552fa3908e86b60e9216">FullSerializer.fsData.CreateList</a></div><div class="ttdeci">static fsData CreateList(int capacity)</div><div class="ttdoc">Helper method to create a fsData instance that holds a list with the initial capacity.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00098">fsData.cs:98</a></div></div>
-<div class="ttc" id="aa00664_html_a8897bc4f6c2f0ff7acdcd0195746fc09"><div class="ttname"><a href="a00664.html#a8897bc4f6c2f0ff7acdcd0195746fc09">FullSerializer.fsData.fsData</a></div><div class="ttdeci">fsData(Dictionary&lt; string, fsData &gt; dict)</div><div class="ttdoc">Creates a fsData instance that holds a dictionary of values.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00069">fsData.cs:69</a></div></div>
-<div class="ttc" id="aa00664_html_a915cae40a9014f6027c2b88e35d74e8c"><div class="ttname"><a href="a00664.html#a915cae40a9014f6027c2b88e35d74e8c">FullSerializer.fsData.GetHashCode</a></div><div class="ttdeci">override int GetHashCode()</div><div class="ttdoc">Returns a hash code for this instance.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00388">fsData.cs:388</a></div></div>
-<div class="ttc" id="aa00664_html_a95589f68382f863386617a0dd4055ae4"><div class="ttname"><a href="a00664.html#a95589f68382f863386617a0dd4055ae4">FullSerializer.fsData.IsString</a></div><div class="ttdeci">bool IsString</div><div class="ttdoc">Returns true if this fsData instance maps back to a string.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00179">fsData.cs:179</a></div></div>
-<div class="ttc" id="aa00664_html_a9b5e13a72849cb6c6a6948fac87260c6"><div class="ttname"><a href="a00664.html#a9b5e13a72849cb6c6a6948fac87260c6">FullSerializer.fsData.fsData</a></div><div class="ttdeci">fsData()</div><div class="ttdoc">Creates a fsData instance that holds null.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00034">fsData.cs:34</a></div></div>
-<div class="ttc" id="aa00664_html_a9e4be12fbd0ac616b08823a6b09529f8"><div class="ttname"><a href="a00664.html#a9e4be12fbd0ac616b08823a6b09529f8">FullSerializer.fsData.AsBool</a></div><div class="ttdeci">bool AsBool</div><div class="ttdoc">Casts this fsData to a boolean. Throws an exception if it is not a boolean.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00230">fsData.cs:230</a></div></div>
-<div class="ttc" id="aa00664_html_aa94c2aa2a3804712d37b8762f24d4221"><div class="ttname"><a href="a00664.html#aa94c2aa2a3804712d37b8762f24d4221">FullSerializer.fsData.Cast&lt; T &gt;</a></div><div class="ttdeci">T Cast&lt; T &gt;()</div><div class="ttdoc">Internal helper method to cast the underlying storage to the given type or throw a pretty printed exc...</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00271">fsData.cs:271</a></div></div>
-<div class="ttc" id="aa00664_html_ab0316b6b5db7d953fdfe6b352aa1af8e"><div class="ttname"><a href="a00664.html#ab0316b6b5db7d953fdfe6b352aa1af8e">FullSerializer.fsData.fsData</a></div><div class="ttdeci">fsData(bool boolean)</div><div class="ttdoc">Creates a fsData instance that holds a boolean.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00041">fsData.cs:41</a></div></div>
-<div class="ttc" id="aa00664_html_ab942e5e4fb36b7e815ce0f4195cc84da"><div class="ttname"><a href="a00664.html#ab942e5e4fb36b7e815ce0f4195cc84da">FullSerializer.fsData.fsData</a></div><div class="ttdeci">fsData(Int64 i)</div><div class="ttdoc">Creates a new fsData instance that holds an integer.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00055">fsData.cs:55</a></div></div>
-<div class="ttc" id="aa00664_html_ac64cd3d8fa914d376259ff913c208791"><div class="ttname"><a href="a00664.html#ac64cd3d8fa914d376259ff913c208791">FullSerializer.fsData.ToString</a></div><div class="ttdeci">override string ToString()</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00282">fsData.cs:282</a></div></div>
-<div class="ttc" id="aa00664_html_ac7c719ebad471a4a00b812097d436a73"><div class="ttname"><a href="a00664.html#ac7c719ebad471a4a00b812097d436a73">FullSerializer.fsData.CreateList</a></div><div class="ttdeci">static fsData CreateList()</div><div class="ttdoc">Helper method to create a fsData instance that holds a list.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00091">fsData.cs:91</a></div></div>
-<div class="ttc" id="aa00664_html_ad0592f7d7f713ddbf1f89cab77608c57"><div class="ttname"><a href="a00664.html#ad0592f7d7f713ddbf1f89cab77608c57">FullSerializer.fsData.AsDictionary</a></div><div class="ttdeci">Dictionary&lt; string, fsData &gt; AsDictionary</div><div class="ttdoc">Casts this fsData to a Dictionary. Throws an exception if it is not a Dictionary.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00251">fsData.cs:251</a></div></div>
-<div class="ttc" id="aa00664_html_adcb3ce2b86c6f317a74ee3ecfe9c41be"><div class="ttname"><a href="a00664.html#adcb3ce2b86c6f317a74ee3ecfe9c41be">FullSerializer.fsData.Null</a></div><div class="ttdeci">static readonly fsData Null</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00104">fsData.cs:104</a></div></div>
-<div class="ttc" id="aa00664_html_ae595530d43b82d4f7e6190b880932624"><div class="ttname"><a href="a00664.html#ae595530d43b82d4f7e6190b880932624">FullSerializer.fsData.operator!=</a></div><div class="ttdeci">static bool operator!=(fsData a, fsData b)</div><div class="ttdoc">Returns true iff a != b.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00379">fsData.cs:379</a></div></div>
-<div class="ttc" id="aa00664_html_aebf459f479691aa88d9712f53a2d85ee"><div class="ttname"><a href="a00664.html#aebf459f479691aa88d9712f53a2d85ee">FullSerializer.fsData.AsList</a></div><div class="ttdeci">List&lt; fsData &gt; AsList</div><div class="ttdoc">Casts this fsData to a List. Throws an exception if it is not a List.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00261">fsData.cs:261</a></div></div>
-<div class="ttc" id="aa00664_html_af36a1f41bbcf0f17e56b77cc80e0e0b3"><div class="ttname"><a href="a00664.html#af36a1f41bbcf0f17e56b77cc80e0e0b3">FullSerializer.fsData.True</a></div><div class="ttdeci">static readonly fsData True</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00102">fsData.cs:102</a></div></div>
-<div class="ttc" id="aa00664_html_af434698e3ebdea70932122c1b326c0a8"><div class="ttname"><a href="a00664.html#af434698e3ebdea70932122c1b326c0a8">FullSerializer.fsData.IsNull</a></div><div class="ttdeci">bool IsNull</div><div class="ttdoc">Returns true if this fsData instance maps back to null.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00143">fsData.cs:143</a></div></div>
-<div class="ttc" id="aa00664_html_af6e99c4d2e08a96957ccd44491026e92"><div class="ttname"><a href="a00664.html#af6e99c4d2e08a96957ccd44491026e92">FullSerializer.fsData.fsData</a></div><div class="ttdeci">fsData(List&lt; fsData &gt; list)</div><div class="ttdoc">Creates a fsData instance that holds a list of values.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00076">fsData.cs:76</a></div></div>
-<div class="ttc" id="aa00664_html_afc64f478caac3865a63dcb13f888d0b6"><div class="ttname"><a href="a00664.html#afc64f478caac3865a63dcb13f888d0b6">FullSerializer.fsData._value</a></div><div class="ttdeci">object _value</div><div class="ttdoc">The raw value that this serialized data stores. It can be one of six different types; a boolean,...</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00028">fsData.cs:28</a></div></div>
-<div class="ttc" id="aa00700_html"><div class="ttname"><a href="a00700.html">FullSerializer.fsJsonPrinter</a></div><div class="ttdef"><b>Definition:</b> <a href="a00176_source.html#l00007">fsJsonPrinter.cs:7</a></div></div>
-<div class="ttc" id="aa00700_html_a7d4e78009d040303daf29c9b11e87df4"><div class="ttname"><a href="a00700.html#a7d4e78009d040303daf29c9b11e87df4">FullSerializer.fsJsonPrinter.CompressedJson</a></div><div class="ttdeci">static void CompressedJson(fsData data, StreamWriter outputStream)</div><div class="ttdoc">Writes the compressed JSON output data to the given stream.</div><div class="ttdef"><b>Definition:</b> <a href="a00176_source.html#l00251">fsJsonPrinter.cs:251</a></div></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
+<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00176_html"><div class="ttname"><a href="a00176.html">Essentials.SaveData</a></div><div class="ttdef"><b>Definition:</b> <a href="a00155_source.html#l00033">SD_Encoder.cs:34</a></div></div>
+<div class="ttc" id="aa00379_html"><div class="ttname"><a href="a00379.html">Essentials.SaveData.SD_JsonSerializer</a></div><div class="ttdoc">Json Serializer used by the SaveData class.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00038">SD_JsonSerializer.cs:39</a></div></div>
+<div class="ttc" id="aa00379_html_a1e7aa895bf381ba36cb6bf970206ba31"><div class="ttname"><a href="a00379.html#a1e7aa895bf381ba36cb6bf970206ba31">Essentials.SaveData.SD_JsonSerializer.Serialize&lt; T &gt;</a></div><div class="ttdeci">void Serialize&lt; T &gt;(T obj, Stream stream, Encoding encoding)</div><div class="ttdoc">Serialize the specified object to stream with encoding.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00048">SD_JsonSerializer.cs:48</a></div></div>
+<div class="ttc" id="aa00379_html_a55974697011e47fb9bdfb5ebb7ea1a01"><div class="ttname"><a href="a00379.html#a55974697011e47fb9bdfb5ebb7ea1a01">Essentials.SaveData.SD_JsonSerializer.Deserialize&lt; T &gt;</a></div><div class="ttdeci">T Deserialize&lt; T &gt;(Stream stream, Encoding encoding)</div><div class="ttdoc">Deserialize the specified object from stream using the encoding.</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00077">SD_JsonSerializer.cs:77</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

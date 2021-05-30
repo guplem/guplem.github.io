@@ -1,4 +1,0 @@
-<map id="FullSerializer.Internal.fsTypeCache.TryIndirectTypeLookup" name="FullSerializer.Internal.fsTypeCache.TryIndirectTypeLookup">
-<area shape="rect" id="node1" title="Tries to do an indirect type lookup by scanning through every loaded assembly until the type is found..." alt="" coords="328,5,684,32"/>
-<area shape="rect" id="node2" href="$a00776.html#a20c717cc8d35a91d53c688da54f7841f" title="Find a type with the given name. An exception is thrown if no type with the given name can be found...." alt="" coords="5,5,280,32"/>
-</map>

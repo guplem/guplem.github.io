@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: fsContext.cs Source File</title>
+<title>UnityEssentials: RandomEssentials.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,49 +62,237 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_82411d44058643970fb6de65e973b669.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_ae51aa8457af0e91fae67ea1b2c6d7f4.html">FullSerializer</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_44d69f3798c1687b4d2cacebeb7d861e.html">Scripts</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">fsContext.cs</div>  </div>
+<div class="title">RandomEssentials.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00149.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00413.html">FullSerializer</a> {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00656.html">    9</a></span>&#160;    <span class="keyword">public</span> sealed <span class="keyword">class </span><a class="code" href="a00656.html">fsContext</a> {</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="a00656.html#a7cb5197f3b60fd1ea5e6cc35748ffa56">   13</a></span>&#160;        <span class="keyword">private</span> readonly Dictionary&lt;Type, object&gt; <a class="code" href="a00656.html#a7cb5197f3b60fd1ea5e6cc35748ffa56">_contextObjects</a> = <span class="keyword">new</span> Dictionary&lt;Type, object&gt;();</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="a00656.html#a8f3833f4c3987347e2e458928d850311">   18</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00656.html#a8f3833f4c3987347e2e458928d850311">Reset</a>() {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <a class="code" href="a00656.html#a7cb5197f3b60fd1ea5e6cc35748ffa56">_contextObjects</a>.Clear();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="a00656.html#a689299ad9ae689ac177d27ab719f2b2d">   25</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00656.html#a689299ad9ae689ac177d27ab719f2b2d">Set&lt;T&gt;</a>(T obj) {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <a class="code" href="a00656.html#a7cb5197f3b60fd1ea5e6cc35748ffa56">_contextObjects</a>[typeof(T)] = obj;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00656.html#a14c6ce0bb8c65b94701a204d7ff93fe4">   32</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00656.html#a14c6ce0bb8c65b94701a204d7ff93fe4">Has&lt;T&gt;</a>() {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00656.html#a7cb5197f3b60fd1ea5e6cc35748ffa56">_contextObjects</a>.ContainsKey(typeof(T));</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00656.html#a637b364bdcf19255fbd25f6b58e81983">   39</a></span>&#160;        <span class="keyword">public</span> T <a class="code" href="a00656.html#a637b364bdcf19255fbd25f6b58e81983">Get&lt;T&gt;</a>() {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordtype">object</span> val;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="a00656.html#a7cb5197f3b60fd1ea5e6cc35748ffa56">_contextObjects</a>.TryGetValue(typeof(T), out val)) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="keywordflow">return</span> (T)val;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> InvalidOperationException(<span class="stringliteral">&quot;There is no context object of type &quot;</span> + typeof(T));</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
-<div class="ttc" id="aa00413_html"><div class="ttname"><a href="a00413.html">FullSerializer</a></div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00004">fsArrayConverter.cs:4</a></div></div>
-<div class="ttc" id="aa00656_html"><div class="ttname"><a href="a00656.html">FullSerializer.fsContext</a></div><div class="ttdoc">fsContext stores global metadata that can be used to customize how fsConverters operate during serial...</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00009">fsContext.cs:9</a></div></div>
-<div class="ttc" id="aa00656_html_a14c6ce0bb8c65b94701a204d7ff93fe4"><div class="ttname"><a href="a00656.html#a14c6ce0bb8c65b94701a204d7ff93fe4">FullSerializer.fsContext.Has&lt; T &gt;</a></div><div class="ttdeci">bool Has&lt; T &gt;()</div><div class="ttdoc">Returns true if there is a context object for the given type.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00032">fsContext.cs:32</a></div></div>
-<div class="ttc" id="aa00656_html_a637b364bdcf19255fbd25f6b58e81983"><div class="ttname"><a href="a00656.html#a637b364bdcf19255fbd25f6b58e81983">FullSerializer.fsContext.Get&lt; T &gt;</a></div><div class="ttdeci">T Get&lt; T &gt;()</div><div class="ttdoc">Fetches the context object for the given type.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00039">fsContext.cs:39</a></div></div>
-<div class="ttc" id="aa00656_html_a689299ad9ae689ac177d27ab719f2b2d"><div class="ttname"><a href="a00656.html#a689299ad9ae689ac177d27ab719f2b2d">FullSerializer.fsContext.Set&lt; T &gt;</a></div><div class="ttdeci">void Set&lt; T &gt;(T obj)</div><div class="ttdoc">Sets the context object for the given type with the given value.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00025">fsContext.cs:25</a></div></div>
-<div class="ttc" id="aa00656_html_a7cb5197f3b60fd1ea5e6cc35748ffa56"><div class="ttname"><a href="a00656.html#a7cb5197f3b60fd1ea5e6cc35748ffa56">FullSerializer.fsContext._contextObjects</a></div><div class="ttdeci">readonly Dictionary&lt; Type, object &gt; _contextObjects</div><div class="ttdoc">All of the context objects.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00013">fsContext.cs:13</a></div></div>
-<div class="ttc" id="aa00656_html_a8f3833f4c3987347e2e458928d850311"><div class="ttname"><a href="a00656.html#a8f3833f4c3987347e2e458928d850311">FullSerializer.fsContext.Reset</a></div><div class="ttdeci">void Reset()</div><div class="ttdoc">Removes all context objects from the context.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00018">fsContext.cs:18</a></div></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00173.html">UnityEngine</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00367.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00367.html">RandomEssentials</a> : System.Random</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">        #region Constructors</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00367.html#aaf460547fdd2d8672873406bf72e3428">   14</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00367.html#aaf460547fdd2d8672873406bf72e3428">RandomEssentials</a>()</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        }</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="a00367.html#a17ed96410c35dc160dab1d67cb2e7462">   24</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00367.html#a17ed96410c35dc160dab1d67cb2e7462">RandomEssentials</a>(<span class="keywordtype">int</span> seed) : base(seed)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        }</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00367.html#a3f58ec95dfc18b389083927dcacb9f18">   33</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="a00367.html">RandomEssentials</a> <a class="code" href="a00367.html#a3f58ec95dfc18b389083927dcacb9f18">GetNew</a>()</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00367.html#aaf460547fdd2d8672873406bf72e3428">RandomEssentials</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="a00367.html#aa2eb609b7e8b9f506f3de19d76920894">   43</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="a00367.html">RandomEssentials</a> <a class="code" href="a00367.html#aa2eb609b7e8b9f506f3de19d76920894">GetNew</a>(<span class="keywordtype">int</span> seed)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="a00367.html#aaf460547fdd2d8672873406bf72e3428">RandomEssentials</a>(seed);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">        #region Int</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00367.html#a2f7fb7a9165d38e624457c9738c3d793">   57</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00367.html#a2f7fb7a9165d38e624457c9738c3d793">GetRandomInt</a>()</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">return</span> Next();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="a00367.html#aa73a2dad373c4f0a656776aad4962db5">   67</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00367.html#aa73a2dad373c4f0a656776aad4962db5">GetRandomInt</a>(<span class="keywordtype">int</span> exclusiveMaximum)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> Next(exclusiveMaximum);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00367.html#a2e975a8bd4c4b8dd144b2071dc84742f">   78</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00367.html#a2e975a8bd4c4b8dd144b2071dc84742f">GetRandomInt</a>(<span class="keywordtype">int</span> inclusiveMinimum, <span class="keywordtype">int</span> exclusiveMaximum)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">return</span> Next(inclusiveMinimum, exclusiveMaximum);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">        #region Sign</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00367.html#ae3686352560601a2a2429f74a85a6e89">   92</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00367.html#ae3686352560601a2a2429f74a85a6e89">GetRandomSign</a>(<span class="keywordtype">float</span> negativeProbability = 0.5f)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00367.html#ae9af3c863846577b9d7f66b37e6c21d2">GetRandomBool</a>(negativeProbability) ? -1 : 1;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">        #region Bool</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00367.html#ae9af3c863846577b9d7f66b37e6c21d2">  106</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00367.html#ae9af3c863846577b9d7f66b37e6c21d2">GetRandomBool</a>(<span class="keywordtype">float</span> probability = 0.5f)</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        {</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">return</span> NextDouble() &gt;= 1 - probability;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="a00367.html#adb54ffdf5caf4b961fd7132c84131097">  117</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00367.html#adb54ffdf5caf4b961fd7132c84131097">GetRandomBoolTrueEnsured</a>(<span class="keywordtype">int</span> tryNumberSinceLastPositive, <span class="keywordtype">int</span> maxNumberOfTries)</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        {</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00367.html#ae9af3c863846577b9d7f66b37e6c21d2">GetRandomBool</a>((<span class="keywordtype">float</span>) tryNumberSinceLastPositive / (<span class="keywordtype">float</span>) maxNumberOfTries);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="a00367.html#a4a74be2fd90b10219ba316ef6ea10900">  130</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00367.html#a4a74be2fd90b10219ba316ef6ea10900">GetPseudoRandomDistributedBool</a>(<span class="keywordtype">int</span> tryNumberSinceLastPositive, <span class="keywordtype">float</span> probability)</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        {</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00367.html#ae9af3c863846577b9d7f66b37e6c21d2">GetRandomBool</a>(Mathf.Pow(probability, 1.72689f) * tryNumberSinceLastPositive);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="comment">// An image of how the results should distribute (in blue): https://gamepedia.cursecdn.com/dota2_gamepedia/8/8b/AttacksUntilNextProc25.jpg?version=459537150af02c929fd939495fa78033</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="comment">/* The true formula to calculate each try&#39;s probability is: &quot;C * tryNumber&quot;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">            // In this method&#39;s implementation, &quot;C&quot; is calculated using the formula: &quot;probability^1.72689&quot;</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">            // However, the accuracy of the results could be improved by using this table instead of the previous calculus:</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">                Probability    Associated &quot;C&quot;                              </span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">                5%             0.003801658303553139101756466</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">                10%            0.014745844781072675877050816</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">                15%            0.032220914373087674975117359</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">                20%            0.055704042949781851858398652</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">                25%            0.084744091852316990275274806</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">                30%            0.118949192725403987583755553</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">                35%            0.157983098125747077557540462</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">                40%            0.201547413607754017070679639</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">                45%            0.249306998440163189714677100</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">                50%            0.302103025348741965169160432</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">                55%            0.360397850933168697104686803</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">                60%            0.422649730810374235490851220</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">                65%            0.481125478337229174401911323</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">                70%            0.571428571428571428571428572</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">                75%            0.666666666666666666666666667</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">                80%            0.750000000000000000000000000</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">                85%            0.823529411764705882352941177</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">                90%            0.888888888888888888888888889</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">                95%            0.947368421052631578947368421</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">             */</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">        #region Float</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="a00367.html#a22416f36fc59d256a7c96585af902270">  170</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">float</span> <a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>()</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <span class="keywordflow">return</span> Convert.ToSingle(NextDouble());</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        }</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="a00367.html#abb15ee9a54d969268bc59e0e0521f1bc">  180</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">float</span> <a class="code" href="a00367.html#abb15ee9a54d969268bc59e0e0521f1bc">GetRandomFloat</a>(<span class="keywordtype">float</span> exclusiveMaximum)</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        {</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keywordflow">return</span> Convert.ToSingle(NextDouble() * exclusiveMaximum);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        }</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="a00367.html#a7f6788201236cc4e8d0d456c75251e0c">  191</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">float</span> <a class="code" href="a00367.html#a7f6788201236cc4e8d0d456c75251e0c">GetRandomFloat</a>(<span class="keywordtype">float</span> inclusiveMinimum, <span class="keywordtype">float</span> exclusiveMaximum)</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            <span class="keywordflow">return</span> Convert.ToSingle(NextDouble() * (exclusiveMaximum - inclusiveMinimum)) + inclusiveMinimum;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        }</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">        #region Vectors</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno"><a class="line" href="a00367.html#ac6d7d8da2c7add0951441191138f2091">  206</a></span>&#160;        <span class="keyword">public</span> Vector3 <a class="code" href="a00367.html#ac6d7d8da2c7add0951441191138f2091">GetRandomVector3</a>(<span class="keywordtype">float</span> inclusiveMinimum, <span class="keywordtype">float</span> exclusiveMaximum)</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        {</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> Vector3(<a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>(inclusiveMinimum, exclusiveMaximum), <a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>(inclusiveMinimum, exclusiveMaximum), <a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>(inclusiveMinimum, exclusiveMaximum));</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        }</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="a00367.html#a46b1f25c644ffbb4be09eb84ae280337">  217</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00367.html#a46b1f25c644ffbb4be09eb84ae280337">GetRandomVector2</a>(<span class="keywordtype">float</span> inclusiveMinimum, <span class="keywordtype">float</span> exclusiveMaximum)</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> Vector2(<a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>(inclusiveMinimum, exclusiveMaximum), <a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>(inclusiveMinimum, exclusiveMaximum));</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        }</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="preprocessor">        #region Bytes</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="a00367.html#a752be48bae12e5406f48c4a4c9523459">  230</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00367.html#a752be48bae12e5406f48c4a4c9523459">SetRandomBytes</a>(Byte[] bytesArray)</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        {</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            NextBytes(bytesArray);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        }</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="preprocessor">        #region Geometry</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        </div>
+<div class="line"><a name="l00245"></a><span class="lineno"><a class="line" href="a00367.html#aa14e42baca23bcbc9af65bf9f9e9ad31">  245</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00367.html#aa14e42baca23bcbc9af65bf9f9e9ad31">GetPointInsideCircle</a>(Vector2 center, <span class="keywordtype">float</span> radius = 1f)</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        {</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            <span class="keywordtype">double</span> angle = this.NextDouble() * 2 * Math.PI;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keywordtype">double</span> r = radius * Math.Sqrt(NextDouble());</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            <span class="keywordtype">double</span> x = center.x + r * Math.Cos(angle);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keywordtype">double</span> y = center.y + r * Math.Sin(angle);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> Vector2( Convert.ToSingle(x), Convert.ToSingle(y) );</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        }   </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        </div>
+<div class="line"><a name="l00259"></a><span class="lineno"><a class="line" href="a00367.html#a0c555151a400d4bdd4eb445b4965b8f2">  259</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00367.html#a0c555151a400d4bdd4eb445b4965b8f2">GetPointInsideCircle</a>( <span class="keywordtype">float</span> radius = 1f)</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        {</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00367.html#aa14e42baca23bcbc9af65bf9f9e9ad31">GetPointInsideCircle</a>(Vector2.zero, radius);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        }   </div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        </div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        </div>
+<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="a00367.html#af6f0013faf622491b326c5bd7624eae6">  271</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00367.html#af6f0013faf622491b326c5bd7624eae6">GetPointOnCircle</a>(Vector2 center, <span class="keywordtype">float</span> radius = 1f)</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        {</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            <span class="keywordtype">double</span> angle = 2.0 * Math.PI * this.NextDouble();</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;            <span class="keywordtype">double</span> x = center.x + radius * Math.Cos(angle);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            <span class="keywordtype">double</span> y = center.y + radius * Math.Sin(angle);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> Vector2( Convert.ToSingle(x), Convert.ToSingle(y) );</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        }   </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        </div>
+<div class="line"><a name="l00284"></a><span class="lineno"><a class="line" href="a00367.html#a6f6183bdd168d69a35a05892a890bf5a">  284</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00367.html#a6f6183bdd168d69a35a05892a890bf5a">GetPointOnCircle</a>( <span class="keywordtype">float</span> radius = 1f)</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        {</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00367.html#aa14e42baca23bcbc9af65bf9f9e9ad31">GetPointInsideCircle</a>(Vector2.zero, radius);</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }   </div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        </div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="comment">// Similar methods to the ones Unity&#39;s Random class has</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="comment">//To-do: public Vector3 GetPointInsideSphere(float radius = 1){}    //Returns a random point inside a sphere</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="comment">//To-do: public Vector3 GetPointOnSphere(float radius = 1){}    //Returns a random point on the surface of a sphere</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <span class="comment">// Similar methods to the ones Unity&#39;s Random class has</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="comment">//To-do: public Quaternion GetRotation(){}  //Returns a random rotation</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="comment">//To-do: public Quaternion GetRotationUniform(){}   //Returns a random rotation with uniform distribution</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="preprocessor">        #region Color</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
+<div class="line"><a name="l00301"></a><span class="lineno"><a class="line" href="a00367.html#a82f0f65b0d816e7172929c12980c503f">  301</a></span>&#160;        <span class="keyword">public</span> Color <a class="code" href="a00367.html#a82f0f65b0d816e7172929c12980c503f">GetColorHSV</a>(<span class="keywordtype">float</span> hueMin = 0.0f, <span class="keywordtype">float</span> hueMax = 1f, <span class="keywordtype">float</span> saturationMin = 0.0f, <span class="keywordtype">float</span> saturationMax = 1f, <span class="keywordtype">float</span> valueMin = 0.0f, <span class="keywordtype">float</span> valueMax = 1f, <span class="keywordtype">float</span> alphaMin = 1f, <span class="keywordtype">float</span> alphaMax = 1f)</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        {</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;            Color rgb = Color.HSVToRGB(Mathf.Lerp(hueMin, hueMax, <a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>()), Mathf.Lerp(saturationMin, saturationMax, <a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>()), Mathf.Lerp(valueMin, valueMax, <a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>()), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            rgb.a = Mathf.Lerp(alphaMin, alphaMax, <a class="code" href="a00367.html#a22416f36fc59d256a7c96585af902270">GetRandomFloat</a>());</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            <span class="keywordflow">return</span> rgb;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        }</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="preprocessor">        #endregion</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    }</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;}</div>
+<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00367_html"><div class="ttname"><a href="a00367.html">UnityEngine.RandomEssentials</a></div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00005">RandomEssentials.cs:6</a></div></div>
+<div class="ttc" id="aa00367_html_a0c555151a400d4bdd4eb445b4965b8f2"><div class="ttname"><a href="a00367.html#a0c555151a400d4bdd4eb445b4965b8f2">UnityEngine.RandomEssentials.GetPointInsideCircle</a></div><div class="ttdeci">Vector2 GetPointInsideCircle(float radius=1f)</div><div class="ttdoc">Returns a random point inside a circle with center (0, 0).</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00259">RandomEssentials.cs:259</a></div></div>
+<div class="ttc" id="aa00367_html_a17ed96410c35dc160dab1d67cb2e7462"><div class="ttname"><a href="a00367.html#a17ed96410c35dc160dab1d67cb2e7462">UnityEngine.RandomEssentials.RandomEssentials</a></div><div class="ttdeci">RandomEssentials(int seed)</div><div class="ttdoc">Creates a pseudo-random number generator, which is an algorithm that produces a sequence of numbers t...</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00024">RandomEssentials.cs:24</a></div></div>
+<div class="ttc" id="aa00367_html_a22416f36fc59d256a7c96585af902270"><div class="ttname"><a href="a00367.html#a22416f36fc59d256a7c96585af902270">UnityEngine.RandomEssentials.GetRandomFloat</a></div><div class="ttdeci">float GetRandomFloat()</div><div class="ttdoc">Returns a random float between 0 (included) and 1 (excluded)</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00170">RandomEssentials.cs:170</a></div></div>
+<div class="ttc" id="aa00367_html_a2e975a8bd4c4b8dd144b2071dc84742f"><div class="ttname"><a href="a00367.html#a2e975a8bd4c4b8dd144b2071dc84742f">UnityEngine.RandomEssentials.GetRandomInt</a></div><div class="ttdeci">int GetRandomInt(int inclusiveMinimum, int exclusiveMaximum)</div><div class="ttdoc">Returns a random integer that is within a specified range.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00078">RandomEssentials.cs:78</a></div></div>
+<div class="ttc" id="aa00367_html_a2f7fb7a9165d38e624457c9738c3d793"><div class="ttname"><a href="a00367.html#a2f7fb7a9165d38e624457c9738c3d793">UnityEngine.RandomEssentials.GetRandomInt</a></div><div class="ttdeci">int GetRandomInt()</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00057">RandomEssentials.cs:57</a></div></div>
+<div class="ttc" id="aa00367_html_a3f58ec95dfc18b389083927dcacb9f18"><div class="ttname"><a href="a00367.html#a3f58ec95dfc18b389083927dcacb9f18">UnityEngine.RandomEssentials.GetNew</a></div><div class="ttdeci">static RandomEssentials GetNew()</div><div class="ttdoc">Creates a pseudo-random number generator, which is an algorithm that produces a sequence of numbers t...</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00033">RandomEssentials.cs:33</a></div></div>
+<div class="ttc" id="aa00367_html_a46b1f25c644ffbb4be09eb84ae280337"><div class="ttname"><a href="a00367.html#a46b1f25c644ffbb4be09eb84ae280337">UnityEngine.RandomEssentials.GetRandomVector2</a></div><div class="ttdeci">Vector2 GetRandomVector2(float inclusiveMinimum, float exclusiveMaximum)</div><div class="ttdoc">Returns a random Vector2 with each parameter within a specified range.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00217">RandomEssentials.cs:217</a></div></div>
+<div class="ttc" id="aa00367_html_a4a74be2fd90b10219ba316ef6ea10900"><div class="ttname"><a href="a00367.html#a4a74be2fd90b10219ba316ef6ea10900">UnityEngine.RandomEssentials.GetPseudoRandomDistributedBool</a></div><div class="ttdeci">bool GetPseudoRandomDistributedBool(int tryNumberSinceLastPositive, float probability)</div><div class="ttdoc">Returns a random bool using pseudo-random distribution.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00130">RandomEssentials.cs:130</a></div></div>
+<div class="ttc" id="aa00367_html_a6f6183bdd168d69a35a05892a890bf5a"><div class="ttname"><a href="a00367.html#a6f6183bdd168d69a35a05892a890bf5a">UnityEngine.RandomEssentials.GetPointOnCircle</a></div><div class="ttdeci">Vector2 GetPointOnCircle(float radius=1f)</div><div class="ttdoc">Returns a random point inside a circle with center (0, 0).</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00284">RandomEssentials.cs:284</a></div></div>
+<div class="ttc" id="aa00367_html_a752be48bae12e5406f48c4a4c9523459"><div class="ttname"><a href="a00367.html#a752be48bae12e5406f48c4a4c9523459">UnityEngine.RandomEssentials.SetRandomBytes</a></div><div class="ttdeci">void SetRandomBytes(Byte[] bytesArray)</div><div class="ttdoc">Fills the elements of a specified array of bytes with random numbers.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00230">RandomEssentials.cs:230</a></div></div>
+<div class="ttc" id="aa00367_html_a7f6788201236cc4e8d0d456c75251e0c"><div class="ttname"><a href="a00367.html#a7f6788201236cc4e8d0d456c75251e0c">UnityEngine.RandomEssentials.GetRandomFloat</a></div><div class="ttdeci">float GetRandomFloat(float inclusiveMinimum, float exclusiveMaximum)</div><div class="ttdoc">Returns a random float that is within a specified range.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00191">RandomEssentials.cs:191</a></div></div>
+<div class="ttc" id="aa00367_html_a82f0f65b0d816e7172929c12980c503f"><div class="ttname"><a href="a00367.html#a82f0f65b0d816e7172929c12980c503f">UnityEngine.RandomEssentials.GetColorHSV</a></div><div class="ttdeci">Color GetColorHSV(float hueMin=0.0f, float hueMax=1f, float saturationMin=0.0f, float saturationMax=1f, float valueMin=0.0f, float valueMax=1f, float alphaMin=1f, float alphaMax=1f)</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00301">RandomEssentials.cs:301</a></div></div>
+<div class="ttc" id="aa00367_html_aa14e42baca23bcbc9af65bf9f9e9ad31"><div class="ttname"><a href="a00367.html#aa14e42baca23bcbc9af65bf9f9e9ad31">UnityEngine.RandomEssentials.GetPointInsideCircle</a></div><div class="ttdeci">Vector2 GetPointInsideCircle(Vector2 center, float radius=1f)</div><div class="ttdoc">Returns a random point inside a circle.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00245">RandomEssentials.cs:245</a></div></div>
+<div class="ttc" id="aa00367_html_aa2eb609b7e8b9f506f3de19d76920894"><div class="ttname"><a href="a00367.html#aa2eb609b7e8b9f506f3de19d76920894">UnityEngine.RandomEssentials.GetNew</a></div><div class="ttdeci">static RandomEssentials GetNew(int seed)</div><div class="ttdoc">Creates a pseudo-random number generator, which is an algorithm that produces a sequence of numbers t...</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00043">RandomEssentials.cs:43</a></div></div>
+<div class="ttc" id="aa00367_html_aa73a2dad373c4f0a656776aad4962db5"><div class="ttname"><a href="a00367.html#aa73a2dad373c4f0a656776aad4962db5">UnityEngine.RandomEssentials.GetRandomInt</a></div><div class="ttdeci">int GetRandomInt(int exclusiveMaximum)</div><div class="ttdoc">Returns a non-negative random integer that is less than the specified maximum.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00067">RandomEssentials.cs:67</a></div></div>
+<div class="ttc" id="aa00367_html_aaf460547fdd2d8672873406bf72e3428"><div class="ttname"><a href="a00367.html#aaf460547fdd2d8672873406bf72e3428">UnityEngine.RandomEssentials.RandomEssentials</a></div><div class="ttdeci">RandomEssentials()</div><div class="ttdoc">Creates a pseudo-random number generator, which is an algorithm that produces a sequence of numbers t...</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00014">RandomEssentials.cs:14</a></div></div>
+<div class="ttc" id="aa00367_html_abb15ee9a54d969268bc59e0e0521f1bc"><div class="ttname"><a href="a00367.html#abb15ee9a54d969268bc59e0e0521f1bc">UnityEngine.RandomEssentials.GetRandomFloat</a></div><div class="ttdeci">float GetRandomFloat(float exclusiveMaximum)</div><div class="ttdoc">Returns a random float that is less than the specified maximum.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00180">RandomEssentials.cs:180</a></div></div>
+<div class="ttc" id="aa00367_html_ac6d7d8da2c7add0951441191138f2091"><div class="ttname"><a href="a00367.html#ac6d7d8da2c7add0951441191138f2091">UnityEngine.RandomEssentials.GetRandomVector3</a></div><div class="ttdeci">Vector3 GetRandomVector3(float inclusiveMinimum, float exclusiveMaximum)</div><div class="ttdoc">Returns a random Vector3 with each parameter within a specified range.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00206">RandomEssentials.cs:206</a></div></div>
+<div class="ttc" id="aa00367_html_adb54ffdf5caf4b961fd7132c84131097"><div class="ttname"><a href="a00367.html#adb54ffdf5caf4b961fd7132c84131097">UnityEngine.RandomEssentials.GetRandomBoolTrueEnsured</a></div><div class="ttdeci">bool GetRandomBoolTrueEnsured(int tryNumberSinceLastPositive, int maxNumberOfTries)</div><div class="ttdoc">Returns a random bool that will be true before the maximum number of tries is exceeded.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00117">RandomEssentials.cs:117</a></div></div>
+<div class="ttc" id="aa00367_html_ae3686352560601a2a2429f74a85a6e89"><div class="ttname"><a href="a00367.html#ae3686352560601a2a2429f74a85a6e89">UnityEngine.RandomEssentials.GetRandomSign</a></div><div class="ttdeci">int GetRandomSign(float negativeProbability=0.5f)</div><div class="ttdoc">Returns a random sign as -1 or +1.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00092">RandomEssentials.cs:92</a></div></div>
+<div class="ttc" id="aa00367_html_ae9af3c863846577b9d7f66b37e6c21d2"><div class="ttname"><a href="a00367.html#ae9af3c863846577b9d7f66b37e6c21d2">UnityEngine.RandomEssentials.GetRandomBool</a></div><div class="ttdeci">bool GetRandomBool(float probability=0.5f)</div><div class="ttdoc">Returns a random bool.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00106">RandomEssentials.cs:106</a></div></div>
+<div class="ttc" id="aa00367_html_af6f0013faf622491b326c5bd7624eae6"><div class="ttname"><a href="a00367.html#af6f0013faf622491b326c5bd7624eae6">UnityEngine.RandomEssentials.GetPointOnCircle</a></div><div class="ttdeci">Vector2 GetPointOnCircle(Vector2 center, float radius=1f)</div><div class="ttdoc">Returns a random point on a circle.</div><div class="ttdef"><b>Definition:</b> <a href="a00149_source.html#l00271">RandomEssentials.cs:271</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

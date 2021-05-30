@@ -1,5 +1,0 @@
-<map id="FullSerializer.fsJsonPrinter.InsertSpacing" name="FullSerializer.fsJsonPrinter.InsertSpacing">
-<area shape="rect" id="node1" title="Inserts the given number of indents into the builder." alt="" coords="623,5,881,32"/>
-<area shape="rect" id="node2" href="$a00700.html#a9547d4da44b37334f3aff541165fa06f" title="Formats this data into the given builder." alt="" coords="296,5,575,32"/>
-<area shape="rect" id="node3" href="$a00700.html#ab52aa6ae8da2e19364e6c9f09e71287c" title="Writes the pretty JSON output data to the given stream." alt="" coords="5,5,248,32"/>
-</map>

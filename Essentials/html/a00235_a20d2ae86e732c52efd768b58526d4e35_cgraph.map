@@ -1,0 +1,4 @@
+<map id="UnityEngine.SimpleAnimationsManager.Play" name="UnityEngine.SimpleAnimationsManager.Play">
+<area shape="rect" id="node1" title="Starts playing the animation." alt="" coords="5,5,287,32"/>
+<area shape="rect" id="node2" href="$a00231.html#aa68780dfa74c9f7235b0ce032a1d3697" title="Sets the time stamps of the animation to the beginning (the behaviour changes depending on if the ani..." alt="" coords="335,5,567,32"/>
+</map>

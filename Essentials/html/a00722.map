@@ -1,3 +1,0 @@
-<map id="FullSerializer.fsSerializer.fsLazyCycleDefinitionWriter" name="FullSerializer.fsSerializer.fsLazyCycleDefinitionWriter">
-<area shape="rect" id="node1" title="This manages instance writing so that we do not write unnecessary $id fields. We only need to write o..." alt="" coords="5,5,333,127"/>
-</map>

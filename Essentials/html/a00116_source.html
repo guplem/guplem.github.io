@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: Gradient_DirectConverter.cs Source File</title>
+<title>UnityEssentials: StringExtensions.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,68 +62,43 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_82411d44058643970fb6de65e973b669.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_ae51aa8457af0e91fae67ea1b2c6d7f4.html">FullSerializer</a></li><li class="navelem"><a class="el" href="dir_7f8822ba10cdb56ba796bd717fda760b.html">Converters</a></li><li class="navelem"><a class="el" href="dir_df123f0e3f93782ecd046e356bcb0e2d.html">Unity</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_44d69f3798c1687b4d2cacebeb7d861e.html">Scripts</a></li><li class="navelem"><a class="el" href="dir_c2ab0532ebaba5c73453d6a7ec398ec4.html">Extensions</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Gradient_DirectConverter.cs</div>  </div>
+<div class="title">StringExtensions.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00116.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !NO_UNITY</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> <a class="code" href="a00417.html">UnityEngine</a>;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00413.html">FullSerializer</a> {</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="keyword">partial class </span>fsConverterRegistrar {</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="a00592.html#afc9cb33054876efd305dc172af2ee085">    8</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Internal.DirectConverters.Gradient_DirectConverter <a class="code" href="a00592.html#afc9cb33054876efd305dc172af2ee085">Register_Gradient_DirectConverter</a>;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    }</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00415.html">FullSerializer.Internal.DirectConverters</a> {</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="a00604.html">   13</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00604.html">Gradient_DirectConverter</a> : <a class="code" href="a00668.html">fsDirectConverter</a>&lt;Gradient&gt; {</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00604.html#a9fdf07059a4318c6942e358749930ace">   14</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">override</span> <a class="code" href="a00716.html">fsResult</a> <a class="code" href="a00604.html#a9fdf07059a4318c6942e358749930ace">DoSerialize</a>(Gradient model, Dictionary&lt;string, fsData&gt; serialized) {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            var result = <a class="code" href="a00716.html">fsResult</a>.<a class="code" href="a00716.html#a21c921f6a0a99b1ba5acc993e669f3cc">Success</a>;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            result += SerializeMember(serialized, <span class="keyword">null</span>, <span class="stringliteral">&quot;alphaKeys&quot;</span>, model.alphaKeys);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            result += SerializeMember(serialized, <span class="keyword">null</span>, <span class="stringliteral">&quot;colorKeys&quot;</span>, model.colorKeys);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="a00604.html#a73df87f1f589a688bbf15bf41f8e6f25">   23</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">override</span> <a class="code" href="a00716.html">fsResult</a> <a class="code" href="a00604.html#a73df87f1f589a688bbf15bf41f8e6f25">DoDeserialize</a>(Dictionary&lt;string, fsData&gt; data, ref Gradient model) {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            var result = <a class="code" href="a00716.html">fsResult</a>.<a class="code" href="a00716.html#a21c921f6a0a99b1ba5acc993e669f3cc">Success</a>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            var t0 = model.alphaKeys;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            result += DeserializeMember(data, <span class="keyword">null</span>, <span class="stringliteral">&quot;alphaKeys&quot;</span>, out t0);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            model.alphaKeys = t0;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            var t1 = model.colorKeys;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            result += DeserializeMember(data, <span class="keyword">null</span>, <span class="stringliteral">&quot;colorKeys&quot;</span>, out t1);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            model.colorKeys = t1;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="a00604.html#ab258e764b6b9ca08f1b0d38de248b7e1">   37</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">object</span> <a class="code" href="a00604.html#ab258e764b6b9ca08f1b0d38de248b7e1">CreateInstance</a>(<a class="code" href="a00664.html">fsData</a> data, Type storageType) {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> Gradient();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aa00413_html"><div class="ttname"><a href="a00413.html">FullSerializer</a></div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00004">fsArrayConverter.cs:4</a></div></div>
-<div class="ttc" id="aa00415_html"><div class="ttname"><a href="a00415.html">FullSerializer.Internal.DirectConverters</a></div><div class="ttdef"><b>Definition:</b> <a href="a00110_source.html#l00012">AnimationCurve_DirectConverter.cs:12</a></div></div>
-<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00592_html_afc9cb33054876efd305dc172af2ee085"><div class="ttname"><a href="a00592.html#afc9cb33054876efd305dc172af2ee085">FullSerializer.fsConverterRegistrar.Register_Gradient_DirectConverter</a></div><div class="ttdeci">static Internal.DirectConverters.Gradient_DirectConverter Register_Gradient_DirectConverter</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00008">Gradient_DirectConverter.cs:8</a></div></div>
-<div class="ttc" id="aa00604_html"><div class="ttname"><a href="a00604.html">FullSerializer.Internal.DirectConverters.Gradient_DirectConverter</a></div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00013">Gradient_DirectConverter.cs:13</a></div></div>
-<div class="ttc" id="aa00604_html_a73df87f1f589a688bbf15bf41f8e6f25"><div class="ttname"><a href="a00604.html#a73df87f1f589a688bbf15bf41f8e6f25">FullSerializer.Internal.DirectConverters.Gradient_DirectConverter.DoDeserialize</a></div><div class="ttdeci">override fsResult DoDeserialize(Dictionary&lt; string, fsData &gt; data, ref Gradient model)</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00023">Gradient_DirectConverter.cs:23</a></div></div>
-<div class="ttc" id="aa00604_html_a9fdf07059a4318c6942e358749930ace"><div class="ttname"><a href="a00604.html#a9fdf07059a4318c6942e358749930ace">FullSerializer.Internal.DirectConverters.Gradient_DirectConverter.DoSerialize</a></div><div class="ttdeci">override fsResult DoSerialize(Gradient model, Dictionary&lt; string, fsData &gt; serialized)</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00014">Gradient_DirectConverter.cs:14</a></div></div>
-<div class="ttc" id="aa00604_html_ab258e764b6b9ca08f1b0d38de248b7e1"><div class="ttname"><a href="a00604.html#ab258e764b6b9ca08f1b0d38de248b7e1">FullSerializer.Internal.DirectConverters.Gradient_DirectConverter.CreateInstance</a></div><div class="ttdeci">override object CreateInstance(fsData data, Type storageType)</div><div class="ttdoc">Construct an object instance that will be passed to TryDeserialize. This should not deserialize the o...</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00037">Gradient_DirectConverter.cs:37</a></div></div>
-<div class="ttc" id="aa00664_html"><div class="ttname"><a href="a00664.html">FullSerializer.fsData</a></div><div class="ttdoc">A union type that stores a serialized value. The stored type can be one of six different types: null,...</div><div class="ttdef"><b>Definition:</b> <a href="a00158_source.html#l00023">fsData.cs:23</a></div></div>
-<div class="ttc" id="aa00668_html"><div class="ttname"><a href="a00668.html">FullSerializer.fsDirectConverter</a></div><div class="ttdoc">The direct converter is similar to a regular converter, except that it targets specifically only one ...</div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00016">fsDirectConverter.cs:16</a></div></div>
-<div class="ttc" id="aa00716_html"><div class="ttname"><a href="a00716.html">FullSerializer.fsResult</a></div><div class="ttdoc">The result of some sort of operation. A result is either successful or not, but if it is successful t...</div><div class="ttdef"><b>Definition:</b> <a href="a00191_source.html#l00011">fsResult.cs:11</a></div></div>
-<div class="ttc" id="aa00716_html_a21c921f6a0a99b1ba5acc993e669f3cc"><div class="ttname"><a href="a00716.html#a21c921f6a0a99b1ba5acc993e669f3cc">FullSerializer.fsResult.Success</a></div><div class="ttdeci">static fsResult Success</div><div class="ttdoc">A successful result.</div><div class="ttdef"><b>Definition:</b> <a href="a00191_source.html#l00080">fsResult.cs:80</a></div></div>
+<a href="a00116.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00173.html">UnityEngine</a></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;{</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    </div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00323.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00323.html">StringExtensions</a></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00323.html#a0e54300bfc71828748015722f58e5f36">   14</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code" href="a00323.html#a0e54300bfc71828748015722f58e5f36">EnsureEndsWithDot</a>(<span class="keyword">this</span> <span class="keywordtype">string</span> str)</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">if</span> (!str.EndsWith(<span class="stringliteral">&quot;.&quot;</span>)) <span class="keywordflow">return</span> str + <span class="stringliteral">&quot;.&quot;</span>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">return</span> str;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="a00323.html#ac8c2c0cf3b3e4709a649fc5c7beaa877">   24</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00323.html#ac8c2c0cf3b3e4709a649fc5c7beaa877">IsNullEmptyOrWhiteSpace</a>(<span class="keyword">this</span> <span class="keywordtype">string</span> str)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keywordflow">return</span> <span class="comment">/*string.IsNullOrEmpty(str) ||*/</span> <span class="keywordtype">string</span>.IsNullOrWhiteSpace(str); <span class="comment">// &#39;IsNullOrWhiteSpace&#39; already checks for emptiness</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00323.html#a547b30eebc2c089f210a2bcf40664020">   33</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00323.html#a547b30eebc2c089f210a2bcf40664020">IsNullOrEmpty</a>(<span class="keyword">this</span> <span class="keywordtype">string</span> str)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span> <span class="keywordtype">string</span>.IsNullOrEmpty(str);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
+<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00323_html"><div class="ttname"><a href="a00323.html">UnityEngine.StringExtensions</a></div><div class="ttdoc">Extensions for string</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00007">StringExtensions.cs:8</a></div></div>
+<div class="ttc" id="aa00323_html_a0e54300bfc71828748015722f58e5f36"><div class="ttname"><a href="a00323.html#a0e54300bfc71828748015722f58e5f36">UnityEngine.StringExtensions.EnsureEndsWithDot</a></div><div class="ttdeci">static string EnsureEndsWithDot(this string str)</div><div class="ttdoc">Ensures that the string ends with a dot ('.').</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00014">StringExtensions.cs:14</a></div></div>
+<div class="ttc" id="aa00323_html_a547b30eebc2c089f210a2bcf40664020"><div class="ttname"><a href="a00323.html#a547b30eebc2c089f210a2bcf40664020">UnityEngine.StringExtensions.IsNullOrEmpty</a></div><div class="ttdeci">static bool IsNullOrEmpty(this string str)</div><div class="ttdoc">Indicates whether the specified string is null or an empty string (&quot;&quot;).</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00033">StringExtensions.cs:33</a></div></div>
+<div class="ttc" id="aa00323_html_ac8c2c0cf3b3e4709a649fc5c7beaa877"><div class="ttname"><a href="a00323.html#ac8c2c0cf3b3e4709a649fc5c7beaa877">UnityEngine.StringExtensions.IsNullEmptyOrWhiteSpace</a></div><div class="ttdeci">static bool IsNullEmptyOrWhiteSpace(this string str)</div><div class="ttdoc">Indicates whether a specified string is null, empty, or consists only of white-space characters.</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00024">StringExtensions.cs:24</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

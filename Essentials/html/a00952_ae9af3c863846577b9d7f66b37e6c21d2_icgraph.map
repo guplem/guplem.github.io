@@ -1,8 +1,0 @@
-<map id="UnityEngine.RandomEssentials.GetRandomBool" name="UnityEngine.RandomEssentials.GetRandomBool">
-<area shape="rect" id="node1" title="Returns a random bool." alt="" coords="979,84,1283,111"/>
-<area shape="rect" id="node2" href="$a00952.html#a4a74be2fd90b10219ba316ef6ea10900" title="Returns a random bool using pseudo&#45;random distribution." alt="" coords="520,135,931,162"/>
-<area shape="rect" id="node3" href="$a00516.html#af4f6fd027b5edfb758177eaca125c5c7" title=" " alt="" coords="11,59,466,86"/>
-<area shape="rect" id="node4" href="$a00516.html#a4e390166f1b5890ad6d1e7897d29d911" title=" " alt="" coords="5,160,472,187"/>
-<area shape="rect" id="node5" href="$a00952.html#adb54ffdf5caf4b961fd7132c84131097" title="Returns a random bool that will be true before the maximum number of tries is exceeded." alt="" coords="537,34,914,60"/>
-<area shape="rect" id="node6" href="$a00952.html#ae3686352560601a2a2429f74a85a6e89" title="Returns a random sign as &#45;1 or +1." alt="" coords="573,84,877,111"/>
-</map>

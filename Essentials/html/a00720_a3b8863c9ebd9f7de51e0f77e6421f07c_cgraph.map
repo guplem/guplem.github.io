@@ -1,4 +1,0 @@
-<map id="FullSerializer.fsSerializer.TrySerialize&lt; T &gt;" name="FullSerializer.fsSerializer.TrySerialize&lt; T &gt;">
-<area shape="rect" id="node1" title="Helper method that simply forwards the call to TrySerialize(typeof(T), instance, out data);" alt="" coords="5,5,273,32"/>
-<area shape="rect" id="node2" href="$a00720.html#a17e5574115d10ded25ac40d46eeae4f2" title="Serialize the given value." alt="" coords="321,5,559,32"/>
-</map>

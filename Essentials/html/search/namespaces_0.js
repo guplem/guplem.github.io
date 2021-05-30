@@ -1,20 +1,6 @@
 var searchData=
 [
-  ['animations_1082',['Animations',['../a00400.html',1,'Essentials::Examples']]],
-  ['cameraanimation_1083',['CameraAnimation',['../a00401.html',1,'Essentials::Examples::Animations']]],
-  ['debug_5fessentials_1084',['Debug_Essentials',['../a00405.html',1,'Essentials::Examples']]],
-  ['essentials_1085',['Essentials',['../a00398.html',1,'']]],
-  ['essentialssettings_1086',['EssentialsSettings',['../a00418.html',1,'Essentials']]],
-  ['examples_1087',['Examples',['../a00399.html',1,'Essentials']]],
-  ['flowcontrol_1088',['FlowControl',['../a00406.html',1,'Essentials::Examples']]],
-  ['miscellanyanimations_1089',['MiscellanyAnimations',['../a00402.html',1,'Essentials::Examples::Animations']]],
-  ['pool_1090',['Pool',['../a00407.html',1,'Essentials::Examples']]],
-  ['poolbig_1091',['PoolBig',['../a00408.html',1,'Essentials::Examples::Pool']]],
-  ['poolmultiobjects_1092',['PoolMultiObjects',['../a00409.html',1,'Essentials::Examples::Pool']]],
-  ['poolsmall_1093',['PoolSmall',['../a00410.html',1,'Essentials::Examples::Pool']]],
-  ['randomessentials_1094',['RandomEssentials',['../a00411.html',1,'Essentials::Examples']]],
-  ['recttransformanimation_1095',['RectTransformAnimation',['../a00403.html',1,'Essentials::Examples::Animations']]],
-  ['savedata_1096',['SaveData',['../a00419.html',1,'Essentials']]],
-  ['transformanimation_1097',['TransformAnimation',['../a00404.html',1,'Essentials::Examples::Animations']]],
-  ['warningcs0649_1098',['WarningCS0649',['../a00412.html',1,'Essentials::Examples']]]
+  ['essentials_440',['Essentials',['../a00174.html',1,'']]],
+  ['essentialssettings_441',['EssentialsSettings',['../a00175.html',1,'Essentials']]],
+  ['savedata_442',['SaveData',['../a00176.html',1,'Essentials']]]
 ];

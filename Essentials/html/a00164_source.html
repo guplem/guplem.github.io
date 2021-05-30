@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: fsExceptions.cs Source File</title>
+<title>UnityEssentials: SaveShortcuts.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,35 +62,43 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_82411d44058643970fb6de65e973b669.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_ae51aa8457af0e91fae67ea1b2c6d7f4.html">FullSerializer</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_44d69f3798c1687b4d2cacebeb7d861e.html">Scripts</a></li><li class="navelem"><a class="el" href="dir_bd0ed76b7cf7a2b0b9247ddf17b10470.html">Shortcuts</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">fsExceptions.cs</div>  </div>
+<div class="title">SaveShortcuts.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00164.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// note: This file contains exceptions used by FullSerializer. Exceptions are never used at runtime</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//       in FullSerializer; they are only used when validating annotations and code-based models.</span></div>
+<a href="a00164.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> UnityEditor;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00173.html">UnityEngine</a>;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> System;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00413.html">FullSerializer</a> {</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00672.html">    7</a></span>&#160;    <span class="keyword">public</span> sealed <span class="keyword">class </span><a class="code" href="a00672.html">fsMissingVersionConstructorException</a> : Exception {</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="a00672.html#a4bf3e78b5009a68188abfb9bdc8b4f0f">    8</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00672.html#a4bf3e78b5009a68188abfb9bdc8b4f0f">fsMissingVersionConstructorException</a>(Type versionedType, Type constructorType) :</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;            base(versionedType + <span class="stringliteral">&quot; is missing a constructor for previous model type &quot;</span> + constructorType) { }</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    }</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="a00676.html">   12</a></span>&#160;    <span class="keyword">public</span> sealed <span class="keyword">class </span><a class="code" href="a00676.html">fsDuplicateVersionNameException</a> : Exception {</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="a00676.html#a848dfbf7e1f94b5cbc894e7050541269">   13</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00676.html#a848dfbf7e1f94b5cbc894e7050541269">fsDuplicateVersionNameException</a>(Type typeA, Type typeB, <span class="keywordtype">string</span> version) :</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            base(typeA + <span class="stringliteral">&quot; and &quot;</span> + typeB + <span class="stringliteral">&quot; have the same version string (&quot;</span> + version + <span class="stringliteral">&quot;); please change one of them.&quot;</span>) { }</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    }</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
-<div class="ttc" id="aa00413_html"><div class="ttname"><a href="a00413.html">FullSerializer</a></div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00004">fsArrayConverter.cs:4</a></div></div>
-<div class="ttc" id="aa00672_html"><div class="ttname"><a href="a00672.html">FullSerializer.fsMissingVersionConstructorException</a></div><div class="ttdef"><b>Definition:</b> <a href="a00164_source.html#l00007">fsExceptions.cs:7</a></div></div>
-<div class="ttc" id="aa00672_html_a4bf3e78b5009a68188abfb9bdc8b4f0f"><div class="ttname"><a href="a00672.html#a4bf3e78b5009a68188abfb9bdc8b4f0f">FullSerializer.fsMissingVersionConstructorException.fsMissingVersionConstructorException</a></div><div class="ttdeci">fsMissingVersionConstructorException(Type versionedType, Type constructorType)</div><div class="ttdef"><b>Definition:</b> <a href="a00164_source.html#l00008">fsExceptions.cs:8</a></div></div>
-<div class="ttc" id="aa00676_html"><div class="ttname"><a href="a00676.html">FullSerializer.fsDuplicateVersionNameException</a></div><div class="ttdef"><b>Definition:</b> <a href="a00164_source.html#l00012">fsExceptions.cs:12</a></div></div>
-<div class="ttc" id="aa00676_html_a848dfbf7e1f94b5cbc894e7050541269"><div class="ttname"><a href="a00676.html#a848dfbf7e1f94b5cbc894e7050541269">FullSerializer.fsDuplicateVersionNameException.fsDuplicateVersionNameException</a></div><div class="ttdeci">fsDuplicateVersionNameException(Type typeA, Type typeB, string version)</div><div class="ttdef"><b>Definition:</b> <a href="a00164_source.html#l00013">fsExceptions.cs:13</a></div></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#if UNITY_EDITOR</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>Essentials.Shortcuts</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span>SaveShortcuts : MonoBehaviour</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        [MenuItem(<span class="stringliteral">&quot;File/Save Scene and Project %#&amp;s&quot;</span>, <span class="keyword">false</span>, 180)]</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> SaveSceneAndProject()</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            EditorApplication.ExecuteMenuItem(<span class="stringliteral">&quot;File/Save&quot;</span>);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            EditorApplication.ExecuteMenuItem(<span class="stringliteral">&quot;File/Save Project&quot;</span>);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Saved scene and project&quot;</span>);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        [MenuItem(<span class="stringliteral">&quot;File/Save project %&amp;s&quot;</span>, <span class="keyword">false</span>, 200)]</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> SaveProject()</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            EditorApplication.ExecuteMenuItem(<span class="stringliteral">&quot;File/Save Project&quot;</span>);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Saved project&quot;</span>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;}</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

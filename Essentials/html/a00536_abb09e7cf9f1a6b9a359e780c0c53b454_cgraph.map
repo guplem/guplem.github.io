@@ -1,7 +1,0 @@
-<map id="FullSerializer.Internal.fsArrayConverter.TrySerialize" name="FullSerializer.Internal.fsArrayConverter.TrySerialize">
-<area shape="rect" id="node1" title="Serialize the actual object into the given data storage." alt="" coords="5,56,320,83"/>
-<area shape="rect" id="node2" href="$a00716.html#a7aff2b2f78db0d8e0b9e0daeb08a8f70" title="Adds only the messages from the other result into this result, ignoring the success/failure status of..." alt="" coords="369,5,604,32"/>
-<area shape="rect" id="node3" href="$a00664.html#ac7c719ebad471a4a00b812097d436a73" title="Helper method to create a fsData instance that holds a list." alt="" coords="386,56,587,83"/>
-<area shape="rect" id="node5" href="$a00720.html#a17e5574115d10ded25ac40d46eeae4f2" title="Serialize the given value." alt="" coords="368,107,605,133"/>
-<area shape="rect" id="node4" href="$a00664.html#a9b5e13a72849cb6c6a6948fac87260c6" title="Creates a fsData instance that holds null." alt="" coords="653,56,832,83"/>
-</map>

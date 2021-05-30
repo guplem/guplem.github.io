@@ -1,0 +1,5 @@
+<map id="UnityEngine.SaveDataManager.Delete" name="UnityEngine.SaveDataManager.Delete">
+<area shape="rect" id="node1" title="Delete the specified identifier and path." alt="" coords="5,31,248,57"/>
+<area shape="rect" id="node2" href="$a00371.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="296,5,571,32"/>
+<area shape="rect" id="node3" href="$a00387.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="329,56,537,83"/>
+</map>
