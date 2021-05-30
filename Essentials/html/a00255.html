@@ -79,12 +79,15 @@ $(function() {
 <div class="title">UnityEngine.ConsoleTMP Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Component to display the console (debug logs) in-game using a TMP_Text component  
+ <a href="a00255.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for UnityEngine.ConsoleTMP:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00253.png" border="0" usemap="#aUnityEngine_8ConsoleTMP_coll__map" alt="Collaboration graph"/></div>
 <map name="aUnityEngine_8ConsoleTMP_coll__map" id="aUnityEngine_8ConsoleTMP_coll__map">
-<area shape="rect" title=" " alt="" coords="5,461,176,539"/>
+<area shape="rect" title="Component to display the console (debug logs) in&#45;game using a TMP_Text component" alt="" coords="5,461,176,539"/>
 <area shape="rect" href="a00243.html" title="Base class to handle the console display in&#45;game" alt="" coords="15,131,166,413"/>
 <area shape="rect" title=" " alt="" coords="35,5,146,83"/>
 </map>
@@ -105,6 +108,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a3c7931811751a2c447c263a90f01412d"><td class="memItemLeft" align="right" valign="top">TMP_Text&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00255.html#a3c7931811751a2c447c263a90f01412d">textTMP</a></td></tr>
+<tr class="memdesc:a3c7931811751a2c447c263a90f01412d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The TMP_Text component that is going to be updated to display all the log messages.  <a href="a00255.html#a3c7931811751a2c447c263a90f01412d">More...</a><br /></td></tr>
 <tr class="separator:a3c7931811751a2c447c263a90f01412d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a331be5a2391a093da364791066b49fe2"><td class="memItemLeft" align="right" valign="top">KeyCode&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00243.html#a331be5a2391a093da364791066b49fe2">toggleKey</a> = KeyCode.Space</td></tr>
 <tr class="memdesc:a331be5a2391a093da364791066b49fe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key to toggle on-off the in-game console.  <a href="a00243.html#a331be5a2391a093da364791066b49fe2">More...</a><br /></td></tr>
@@ -119,12 +123,16 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a9fc630d9a7fb49e76700e6077073add0"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00255.html#a9fc630d9a7fb49e76700e6077073add0">UpdateVisuals</a> ()</td></tr>
+<tr class="memdesc:a9fc630d9a7fb49e76700e6077073add0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the visuals of the console  <a href="a00255.html#a9fc630d9a7fb49e76700e6077073add0">More...</a><br /></td></tr>
 <tr class="separator:a9fc630d9a7fb49e76700e6077073add0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17face047f1bcca43e15a4e0bbd12293"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00243.html#a17face047f1bcca43e15a4e0bbd12293">OnEnable</a> ()</td></tr>
+<tr class="memdesc:a17face047f1bcca43e15a4e0bbd12293"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers the console to handle any log messages received and updates the visuals calling UpdateVisuals.  <a href="a00243.html#a17face047f1bcca43e15a4e0bbd12293">More...</a><br /></td></tr>
 <tr class="separator:a17face047f1bcca43e15a4e0bbd12293"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a001c7a9e131da1a978e07f3dbfb477ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00243.html#a001c7a9e131da1a978e07f3dbfb477ed">OnDisable</a> ()</td></tr>
+<tr class="memdesc:a001c7a9e131da1a978e07f3dbfb477ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters the console from the handling of the any log messages.  <a href="a00243.html#a001c7a9e131da1a978e07f3dbfb477ed">More...</a><br /></td></tr>
 <tr class="separator:a001c7a9e131da1a978e07f3dbfb477ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab98b85e87b72209306664544f123dbd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00243.html#ab98b85e87b72209306664544f123dbd4">Awake</a> ()</td></tr>
+<tr class="memdesc:ab98b85e87b72209306664544f123dbd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the console's visuals calling UpdateVisuals  <a href="a00243.html#ab98b85e87b72209306664544f123dbd4">More...</a><br /></td></tr>
 <tr class="separator:ab98b85e87b72209306664544f123dbd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -139,23 +147,28 @@ Protected Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-attribs"></a>
 Package Attributes</h2></td></tr>
 <tr class="memitem:a5e996c7b39981eda04afdb69e8093c1c"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00243.html#a5e996c7b39981eda04afdb69e8093c1c">fullLog</a> = &quot;&quot;</td></tr>
+<tr class="memdesc:a5e996c7b39981eda04afdb69e8093c1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The log messages of the console.  <a href="a00243.html#a5e996c7b39981eda04afdb69e8093c1c">More...</a><br /></td></tr>
 <tr class="separator:a5e996c7b39981eda04afdb69e8093c1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:aa05f97f6c23b1674dc48cda7a8c27a10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00243.html#aa05f97f6c23b1674dc48cda7a8c27a10">Update</a> ()</td></tr>
+<tr class="memdesc:aa05f97f6c23b1674dc48cda7a8c27a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the toggling ON and OFF of the console  <a href="a00243.html#aa05f97f6c23b1674dc48cda7a8c27a10">More...</a><br /></td></tr>
 <tr class="separator:aa05f97f6c23b1674dc48cda7a8c27a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d94345215c8dba483838569253b5d28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00243.html#a7d94345215c8dba483838569253b5d28">Log</a> (string logString, string stackTrace, LogType type)</td></tr>
+<tr class="memdesc:a7d94345215c8dba483838569253b5d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the logging of any log messages  <a href="a00243.html#a7d94345215c8dba483838569253b5d28">More...</a><br /></td></tr>
 <tr class="separator:a7d94345215c8dba483838569253b5d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:adb0821e29b7270d5e6b7d445d91d6e92"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00243.html#adb0821e29b7270d5e6b7d445d91d6e92">filename</a> = &quot;&quot;</td></tr>
+<tr class="memdesc:adb0821e29b7270d5e6b7d445d91d6e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">The filename that will store the logs of the console.  <a href="a00243.html#adb0821e29b7270d5e6b7d445d91d6e92">More...</a><br /></td></tr>
 <tr class="separator:adb0821e29b7270d5e6b7d445d91d6e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00009">9</a> of file <a class="el" href="a00050_source.html">ConsoleTMP.cs</a>.</p>
+<div class="textblock"><p>Component to display the console (debug logs) in-game using a TMP_Text component </p>
+
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00012">12</a> of file <a class="el" href="a00050_source.html">ConsoleTMP.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab98b85e87b72209306664544f123dbd4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab98b85e87b72209306664544f123dbd4">&#9670;&nbsp;</a></span>Awake()</h2>
@@ -180,14 +193,16 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00045">45</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p>Updates the console's visuals calling UpdateVisuals </p>
+
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00061">61</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00243_ab98b85e87b72209306664544f123dbd4_cgraph.png" border="0" usemap="#aa00243_ab98b85e87b72209306664544f123dbd4_cgraph" alt=""/></div>
 <map name="aa00243_ab98b85e87b72209306664544f123dbd4_cgraph" id="aa00243_ab98b85e87b72209306664544f123dbd4_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,192,32"/>
-<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title=" " alt="" coords="240,5,471,32"/>
+<area shape="rect" title="Updates the console&#39;s visuals calling UpdateVisuals" alt="" coords="5,5,192,32"/>
+<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title="Updates the visuals of the console" alt="" coords="240,5,471,32"/>
 </map>
 </div>
 
@@ -218,14 +233,14 @@ Here is the call graph for this function:</div>
 
 <p>Clears the console and starts a new file for the saved logs. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00111">111</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00136">136</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00243_a71bf40f8d3e7a3fd560290cd3b43e6c7_cgraph.png" border="0" usemap="#aa00243_a71bf40f8d3e7a3fd560290cd3b43e6c7_cgraph" alt=""/></div>
 <map name="aa00243_a71bf40f8d3e7a3fd560290cd3b43e6c7_cgraph" id="aa00243_a71bf40f8d3e7a3fd560290cd3b43e6c7_cgraph">
 <area shape="rect" title="Clears the console and starts a new file for the saved logs." alt="" coords="5,5,183,32"/>
-<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title=" " alt="" coords="231,5,461,32"/>
+<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title="Updates the visuals of the console" alt="" coords="231,5,461,32"/>
 </map>
 </div>
 
@@ -271,14 +286,16 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00073">73</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p>Handles the logging of any log messages </p>
+
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00095">95</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00243_a7d94345215c8dba483838569253b5d28_cgraph.png" border="0" usemap="#aa00243_a7d94345215c8dba483838569253b5d28_cgraph" alt=""/></div>
 <map name="aa00243_a7d94345215c8dba483838569253b5d28_cgraph" id="aa00243_a7d94345215c8dba483838569253b5d28_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,173,32"/>
-<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title=" " alt="" coords="221,5,452,32"/>
+<area shape="rect" title="Handles the logging of any log messages" alt="" coords="5,5,173,32"/>
+<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title="Updates the visuals of the console" alt="" coords="221,5,452,32"/>
 </map>
 </div>
 <div class="dynheader">
@@ -286,9 +303,9 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00243_a7d94345215c8dba483838569253b5d28_icgraph.png" border="0" usemap="#aa00243_a7d94345215c8dba483838569253b5d28_icgraph" alt=""/></div>
 <map name="aa00243_a7d94345215c8dba483838569253b5d28_icgraph" id="aa00243_a7d94345215c8dba483838569253b5d28_icgraph">
-<area shape="rect" title=" " alt="" coords="260,31,428,57"/>
-<area shape="rect" href="a00243.html#a001c7a9e131da1a978e07f3dbfb477ed" title=" " alt="" coords="5,5,212,32"/>
-<area shape="rect" href="a00243.html#a17face047f1bcca43e15a4e0bbd12293" title=" " alt="" coords="7,56,211,83"/>
+<area shape="rect" title="Handles the logging of any log messages" alt="" coords="260,31,428,57"/>
+<area shape="rect" href="a00243.html#a001c7a9e131da1a978e07f3dbfb477ed" title="Unregisters the console from the handling of the any log messages." alt="" coords="5,5,212,32"/>
+<area shape="rect" href="a00243.html#a17face047f1bcca43e15a4e0bbd12293" title="Registers the console to handle any log messages received and updates the visuals calling UpdateVisua..." alt="" coords="7,56,211,83"/>
 </map>
 </div>
 
@@ -317,15 +334,17 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00044">44</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p>Unregisters the console from the handling of the any log messages. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00057">57</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00243_a001c7a9e131da1a978e07f3dbfb477ed_cgraph.png" border="0" usemap="#aa00243_a001c7a9e131da1a978e07f3dbfb477ed_cgraph" alt=""/></div>
 <map name="aa00243_a001c7a9e131da1a978e07f3dbfb477ed_cgraph" id="aa00243_a001c7a9e131da1a978e07f3dbfb477ed_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,212,32"/>
-<area shape="rect" href="a00243.html#a7d94345215c8dba483838569253b5d28" title=" " alt="" coords="260,5,428,32"/>
-<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title=" " alt="" coords="476,5,707,32"/>
+<area shape="rect" title="Unregisters the console from the handling of the any log messages." alt="" coords="5,5,212,32"/>
+<area shape="rect" href="a00243.html#a7d94345215c8dba483838569253b5d28" title="Handles the logging of any log messages" alt="" coords="260,5,428,32"/>
+<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title="Updates the visuals of the console" alt="" coords="476,5,707,32"/>
 </map>
 </div>
 
@@ -354,15 +373,17 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00043">43</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p>Registers the console to handle any log messages received and updates the visuals calling UpdateVisuals. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00053">53</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00243_a17face047f1bcca43e15a4e0bbd12293_cgraph.png" border="0" usemap="#aa00243_a17face047f1bcca43e15a4e0bbd12293_cgraph" alt=""/></div>
 <map name="aa00243_a17face047f1bcca43e15a4e0bbd12293_cgraph" id="aa00243_a17face047f1bcca43e15a4e0bbd12293_cgraph">
-<area shape="rect" title=" " alt="" coords="5,31,209,57"/>
-<area shape="rect" href="a00243.html#a7d94345215c8dba483838569253b5d28" title=" " alt="" coords="257,5,425,32"/>
-<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title=" " alt="" coords="473,31,704,57"/>
+<area shape="rect" title="Registers the console to handle any log messages received and updates the visuals calling UpdateVisua..." alt="" coords="5,31,209,57"/>
+<area shape="rect" href="a00243.html#a7d94345215c8dba483838569253b5d28" title="Handles the logging of any log messages" alt="" coords="257,5,425,32"/>
+<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title="Updates the visuals of the console" alt="" coords="473,31,704,57"/>
 </map>
 </div>
 
@@ -400,14 +421,14 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00059">59</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00075">75</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00243_a4453d724488f3861226a81fb71ec5e56_cgraph.png" border="0" usemap="#aa00243_a4453d724488f3861226a81fb71ec5e56_cgraph" alt=""/></div>
 <map name="aa00243_a4453d724488f3861226a81fb71ec5e56_cgraph" id="aa00243_a4453d724488f3861226a81fb71ec5e56_cgraph">
 <area shape="rect" title="Displays or not the console in&#45;game" alt="" coords="5,5,204,32"/>
-<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title=" " alt="" coords="252,5,483,32"/>
+<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title="Updates the visuals of the console" alt="" coords="252,5,483,32"/>
 </map>
 </div>
 <div class="dynheader">
@@ -417,7 +438,7 @@ Here is the caller graph for this function:</div>
 <map name="aa00243_a4453d724488f3861226a81fb71ec5e56_icgraph" id="aa00243_a4453d724488f3861226a81fb71ec5e56_icgraph">
 <area shape="rect" title="Displays or not the console in&#45;game" alt="" coords="507,5,705,32"/>
 <area shape="rect" href="a00243.html#a6967d63578ec9d287cc69cc97064ecc3" title="Inverts the &quot;show&quot; state of the console. If it was being displayed, it will no longer be...." alt="" coords="241,5,459,32"/>
-<area shape="rect" href="a00243.html#aa05f97f6c23b1674dc48cda7a8c27a10" title=" " alt="" coords="5,5,193,32"/>
+<area shape="rect" href="a00243.html#aa05f97f6c23b1674dc48cda7a8c27a10" title="Handles the toggling ON and OFF of the console" alt="" coords="5,5,193,32"/>
 </map>
 </div>
 
@@ -448,7 +469,7 @@ Here is the caller graph for this function:</div>
 
 <p>Inverts the "show" state of the console. If it was being displayed, it will no longer be. If it was not, it will be. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00050">50</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00066">66</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -456,7 +477,7 @@ Here is the call graph for this function:</div>
 <map name="aa00243_a6967d63578ec9d287cc69cc97064ecc3_cgraph" id="aa00243_a6967d63578ec9d287cc69cc97064ecc3_cgraph">
 <area shape="rect" title="Inverts the &quot;show&quot; state of the console. If it was being displayed, it will no longer be...." alt="" coords="5,5,223,32"/>
 <area shape="rect" href="a00243.html#a4453d724488f3861226a81fb71ec5e56" title="Displays or not the console in&#45;game" alt="" coords="271,5,469,32"/>
-<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title=" " alt="" coords="517,5,748,32"/>
+<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title="Updates the visuals of the console" alt="" coords="517,5,748,32"/>
 </map>
 </div>
 <div class="dynheader">
@@ -465,7 +486,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="a00243_a6967d63578ec9d287cc69cc97064ecc3_icgraph.png" border="0" usemap="#aa00243_a6967d63578ec9d287cc69cc97064ecc3_icgraph" alt=""/></div>
 <map name="aa00243_a6967d63578ec9d287cc69cc97064ecc3_icgraph" id="aa00243_a6967d63578ec9d287cc69cc97064ecc3_icgraph">
 <area shape="rect" title="Inverts the &quot;show&quot; state of the console. If it was being displayed, it will no longer be...." alt="" coords="241,5,459,32"/>
-<area shape="rect" href="a00243.html#aa05f97f6c23b1674dc48cda7a8c27a10" title=" " alt="" coords="5,5,193,32"/>
+<area shape="rect" href="a00243.html#aa05f97f6c23b1674dc48cda7a8c27a10" title="Handles the toggling ON and OFF of the console" alt="" coords="5,5,193,32"/>
 </map>
 </div>
 
@@ -494,16 +515,18 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00065">65</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p>Handles the toggling ON and OFF of the console </p>
+
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00084">84</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00243_aa05f97f6c23b1674dc48cda7a8c27a10_cgraph.png" border="0" usemap="#aa00243_aa05f97f6c23b1674dc48cda7a8c27a10_cgraph" alt=""/></div>
 <map name="aa00243_aa05f97f6c23b1674dc48cda7a8c27a10_cgraph" id="aa00243_aa05f97f6c23b1674dc48cda7a8c27a10_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,193,32"/>
+<area shape="rect" title="Handles the toggling ON and OFF of the console" alt="" coords="5,5,193,32"/>
 <area shape="rect" href="a00243.html#a6967d63578ec9d287cc69cc97064ecc3" title="Inverts the &quot;show&quot; state of the console. If it was being displayed, it will no longer be...." alt="" coords="241,5,459,32"/>
 <area shape="rect" href="a00243.html#a4453d724488f3861226a81fb71ec5e56" title="Displays or not the console in&#45;game" alt="" coords="507,5,705,32"/>
-<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title=" " alt="" coords="753,5,984,32"/>
+<area shape="rect" href="a00243.html#a9356e489e597032f5e6ab541d663e423" title="Updates the visuals of the console" alt="" coords="753,5,984,32"/>
 </map>
 </div>
 
@@ -532,9 +555,11 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
+<p>Updates the visuals of the console </p>
+
 <p>Implements <a class="el" href="a00243.html#a9356e489e597032f5e6ab541d663e423">UnityEngine.Console</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00013">13</a> of file <a class="el" href="a00050_source.html">ConsoleTMP.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00019">19</a> of file <a class="el" href="a00050_source.html">ConsoleTMP.cs</a>.</p>
 
 </div>
 </div>
@@ -561,7 +586,7 @@ Here is the call graph for this function:</div>
 
 <p>Should the console toggle on and off pressing the toggleKey?" </p>
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00023">23</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00030">30</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 
 </div>
 </div>
@@ -585,7 +610,9 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00011">11</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p>The filename that will store the logs of the console. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00018">18</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 
 </div>
 </div>
@@ -609,7 +636,9 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00010">10</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p>The log messages of the console. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00013">13</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 
 </div>
 </div>
@@ -635,7 +664,7 @@ Here is the call graph for this function:</div>
 
 <p>Maximum amount of characters displayed by the console. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00041">41</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00048">48</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 
 </div>
 </div>
@@ -661,7 +690,7 @@ Here is the call graph for this function:</div>
 
 <p>Should the logs be saved to a file in the desktop? </p>
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00035">35</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00042">42</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 
 </div>
 </div>
@@ -687,7 +716,7 @@ Here is the call graph for this function:</div>
 
 <p>If the console must be displayed or not. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00017">17</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00024">24</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 
 </div>
 </div>
@@ -703,7 +732,9 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00011">11</a> of file <a class="el" href="a00050_source.html">ConsoleTMP.cs</a>.</p>
+<p>The TMP_Text component that is going to be updated to display all the log messages. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00017">17</a> of file <a class="el" href="a00050_source.html">ConsoleTMP.cs</a>.</p>
 
 </div>
 </div>
@@ -729,7 +760,7 @@ Here is the call graph for this function:</div>
 
 <p>Key to toggle on-off the in-game console. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00029">29</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00041_source.html#l00036">36</a> of file <a class="el" href="a00041_source.html">Console.cs</a>.</p>
 
 </div>
 </div>

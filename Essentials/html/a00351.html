@@ -75,13 +75,16 @@ $(function() {
 <div class="title">UnityEngine.Sequence Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Allows you to execute different events every time the Invoke method of this is class called.  
+ <a href="a00351.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for UnityEngine.Sequence:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00349.png" border="0" usemap="#aUnityEngine_8Sequence_coll__map" alt="Collaboration graph"/></div>
 <map name="aUnityEngine_8Sequence_coll__map" id="aUnityEngine_8Sequence_coll__map">
-<area shape="rect" title=" " alt="" coords="49,580,204,731"/>
-<area shape="rect" href="a00367.html" title=" " alt="" coords="5,132,248,517"/>
+<area shape="rect" title="Allows you to execute different events every time the Invoke method of this is class called." alt="" coords="49,580,204,731"/>
+<area shape="rect" href="a00367.html" title="An easier to use and a feature&#45;rich class to generate pseudo&#45;random results." alt="" coords="5,132,248,517"/>
 <area shape="rect" title=" " alt="" coords="65,5,188,83"/>
 </map>
 </div>
@@ -98,22 +101,28 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab2b07eea098c0b9ab5f0df613b9ab5eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00351.html#ab2b07eea098c0b9ab5f0df613b9ab5eb">randomizeOrder</a></td></tr>
+<tr class="memdesc:ab2b07eea098c0b9ab5f0df613b9ab5eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should the order of execution of the events be random? If false, the order will be the same as in the events array.  <a href="a00351.html#ab2b07eea098c0b9ab5f0df613b9ab5eb">More...</a><br /></td></tr>
 <tr class="separator:ab2b07eea098c0b9ab5f0df613b9ab5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96d4c4962b135069fd218aadb9910a29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00367.html">RandomEssentials</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00351.html#a96d4c4962b135069fd218aadb9910a29">random</a> = new <a class="el" href="a00367.html">RandomEssentials</a>()</td></tr>
-<tr class="separator:a96d4c4962b135069fd218aadb9910a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a001baaae506d4e5fd71c6b617392b2d1"><td class="memItemLeft" align="right" valign="top">UnityEvent[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00351.html#a001baaae506d4e5fd71c6b617392b2d1">events</a></td></tr>
+<tr class="memdesc:a001baaae506d4e5fd71c6b617392b2d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Each of the events to execute at every call of the Invoke method.  <a href="a00351.html#a001baaae506d4e5fd71c6b617392b2d1">More...</a><br /></td></tr>
 <tr class="separator:a001baaae506d4e5fd71c6b617392b2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3fec7703e0697d36befeb19e8ae3887"><td class="memItemLeft" align="right" valign="top">UnityEvent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00351.html#ad3fec7703e0697d36befeb19e8ae3887">nextEvent</a> = null</td></tr>
-<tr class="separator:ad3fec7703e0697d36befeb19e8ae3887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:a96d4c4962b135069fd218aadb9910a29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00367.html">RandomEssentials</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00351.html#a96d4c4962b135069fd218aadb9910a29">random</a> = new <a class="el" href="a00367.html">RandomEssentials</a>()</td></tr>
+<tr class="memdesc:a96d4c4962b135069fd218aadb9910a29"><td class="mdescLeft">&#160;</td><td class="mdescRight">The randomness generation object to choose the next event to execute.  <a href="a00351.html#a96d4c4962b135069fd218aadb9910a29">More...</a><br /></td></tr>
+<tr class="separator:a96d4c4962b135069fd218aadb9910a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3fec7703e0697d36befeb19e8ae3887"><td class="memItemLeft" align="right" valign="top">UnityEvent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00351.html#ad3fec7703e0697d36befeb19e8ae3887">nextEvent</a> = null</td></tr>
+<tr class="memdesc:ad3fec7703e0697d36befeb19e8ae3887"><td class="mdescLeft">&#160;</td><td class="mdescRight">The next UnityEvent to be executed. If null, firstEvent is going to be executed next .  <a href="a00351.html#ad3fec7703e0697d36befeb19e8ae3887">More...</a><br /></td></tr>
+<tr class="separator:ad3fec7703e0697d36befeb19e8ae3887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a670228c1276a1e78a68e4ebda26ceea6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00351.html#a670228c1276a1e78a68e4ebda26ceea6">nextEventIndex</a> = 0</td></tr>
+<tr class="memdesc:a670228c1276a1e78a68e4ebda26ceea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of the next UnityEvent to be executed.  <a href="a00351.html#a670228c1276a1e78a68e4ebda26ceea6">More...</a><br /></td></tr>
 <tr class="separator:a670228c1276a1e78a68e4ebda26ceea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00008">8</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
+<div class="textblock"><p>Allows you to execute different events every time the Invoke method of this is class called. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00011">11</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="adb8c2701e3bd0e1cb1f5b0ec1a238f60"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb8c2701e3bd0e1cb1f5b0ec1a238f60">&#9670;&nbsp;</a></span>Sequence() <span class="overload">[1/2]</span></h2>
@@ -147,7 +156,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00016">16</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00036">36</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
@@ -183,7 +192,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00036">36</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00056">56</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
@@ -203,7 +212,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00047">47</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00067">67</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -229,7 +238,9 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00012">12</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
+<p>Each of the events to execute at every call of the Invoke method. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00026">26</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
@@ -238,14 +249,24 @@ Here is the call graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">UnityEvent UnityEngine.Sequence.nextEvent = null</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00013">13</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
+<p>The next UnityEvent to be executed. If null, firstEvent is going to be executed next . </p>
+
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00030">30</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
@@ -269,7 +290,9 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00014">14</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
+<p>The index of the next UnityEvent to be executed. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00034">34</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
@@ -278,14 +301,24 @@ Here is the call graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="a00367.html">RandomEssentials</a> UnityEngine.Sequence.random = new <a class="el" href="a00367.html">RandomEssentials</a>()</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00011">11</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
+<p>The randomness generation object to choose the next event to execute. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00021">21</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>
@@ -301,7 +334,9 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00010">10</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
+<p>Should the order of execution of the events be random? If false, the order will be the same as in the events array. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00017">17</a> of file <a class="el" href="a00137_source.html">Sequence.cs</a>.</p>
 
 </div>
 </div>

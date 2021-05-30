@@ -74,12 +74,15 @@ $(function() {
 <div class="title">UnityEngine.DoOnce Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Limits the execution of an event so it can only be executed one time.  
+ <a href="a00343.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for UnityEngine.DoOnce:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00341.png" border="0" usemap="#aUnityEngine_8DoOnce_coll__map" alt="Collaboration graph"/></div>
 <map name="aUnityEngine_8DoOnce_coll__map" id="aUnityEngine_8DoOnce_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,148,127"/>
+<area shape="rect" title="Limits the execution of an event so it can only be executed one time." alt="" coords="5,5,148,127"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -90,18 +93,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9212db869b733db5828e09d2a0f7c08d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00343.html#a9212db869b733db5828e09d2a0f7c08d">DoOnce</a> (UnityEvent <a class="el" href="a00343.html#a4acbee7b017e5d353514542f3a5dc5bc">calledEvent</a>)</td></tr>
 <tr class="separator:a9212db869b733db5828e09d2a0f7c08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a263b55b62151dd52fb17b01132359505"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00343.html#a263b55b62151dd52fb17b01132359505">Invoke</a> ()</td></tr>
+<tr class="memdesc:a263b55b62151dd52fb17b01132359505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes all registered events callbacks (runtime and persistent).  <a href="a00343.html#a263b55b62151dd52fb17b01132359505">More...</a><br /></td></tr>
 <tr class="separator:a263b55b62151dd52fb17b01132359505"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a4acbee7b017e5d353514542f3a5dc5bc"><td class="memItemLeft" align="right" valign="top">UnityEvent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00343.html#a4acbee7b017e5d353514542f3a5dc5bc">calledEvent</a></td></tr>
+<tr class="memdesc:a4acbee7b017e5d353514542f3a5dc5bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The events called at the invoke.  <a href="a00343.html#a4acbee7b017e5d353514542f3a5dc5bc">More...</a><br /></td></tr>
 <tr class="separator:a4acbee7b017e5d353514542f3a5dc5bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48babc59d60d4e1c88a781488da6387b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00343.html#a48babc59d60d4e1c88a781488da6387b">eventInvoked</a> = false</td></tr>
+<tr class="memdesc:a48babc59d60d4e1c88a781488da6387b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weather or not the even has been executed already.  <a href="a00343.html#a48babc59d60d4e1c88a781488da6387b">More...</a><br /></td></tr>
 <tr class="separator:a48babc59d60d4e1c88a781488da6387b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00007">7</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
+<div class="textblock"><p>Limits the execution of an event so it can only be executed one time. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00010">10</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad174586910cc8e9e42987bccf55bdb6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad174586910cc8e9e42987bccf55bdb6e">&#9670;&nbsp;</a></span>DoOnce() <span class="overload">[1/2]</span></h2>
@@ -119,7 +126,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00012">12</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00022">22</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
 
 </div>
 </div>
@@ -139,7 +146,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00019">19</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00029">29</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
 
 </div>
 </div>
@@ -159,7 +166,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00024">24</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
+<p>Invokes all registered events callbacks (runtime and persistent). </p>
+
+<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00037">37</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
 
 </div>
 </div>
@@ -176,7 +185,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00009">9</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
+<p>The events called at the invoke. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00016">16</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
 
 </div>
 </div>
@@ -192,7 +203,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00010">10</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
+<p>Weather or not the even has been executed already. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00131_source.html#l00020">20</a> of file <a class="el" href="a00131_source.html">DoOnce.cs</a>.</p>
 
 </div>
 </div>
