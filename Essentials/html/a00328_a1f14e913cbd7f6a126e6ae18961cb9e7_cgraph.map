@@ -1,0 +1,4 @@
+<map id="UnityEngine.RectTransformExtensions.MoveFrom" name="UnityEngine.RectTransformExtensions.MoveFrom">
+<area shape="rect" id="node1" title="Moves the RectTransform relative to an arbitrary anchor point. This is effectively like setting the a..." alt="" coords="5,5,315,32"/>
+<area shape="rect" id="node2" href="$a00328.html#a30f6067113d4b8b93bf941d0ba85028b" title="The center of the rectangle the two anchors represent, which is the origin that a RectTransform&#39;s anc..." alt="" coords="363,5,687,32"/>
+</map>

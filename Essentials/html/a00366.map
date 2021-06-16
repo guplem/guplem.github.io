@@ -1,0 +1,6 @@
+<map id="UnityEngine.Pool" name="UnityEngine.Pool">
+<area shape="rect" id="node1" title="Allows GameObjects pooling by reusing pre&#45;instantiated GameObjects" alt="" coords="131,580,359,863"/>
+<area shape="rect" id="node2" href="$a00372.html" title="Class to handle the default position and rotation where the objects are first instantiated" alt="" coords="5,271,289,378"/>
+<area shape="rect" id="node3" href="$a00376.html" title="An easier to use and a feature&#45;rich class to generate pseudo&#45;random results." alt="" coords="314,132,557,517"/>
+<area shape="rect" id="node4" title=" " alt="" coords="374,5,497,83"/>
+</map>

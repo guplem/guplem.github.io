@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: GameObjectExtensions.cs Source File</title>
+<title>UnityEssentials: ComponentExtensions.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,46 +67,27 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">GameObjectExtensions.cs</div>  </div>
+<div class="title">ComponentExtensions.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00089.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00173.html">UnityEngine</a></div>
+<a href="a00089.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00179.html">UnityEngine</a></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00291.html">    6</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00291.html">GameObjectExtensions</a></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    {</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="a00291.html#ada973328a1e0d797070cb5bde123c96d">   13</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T <a class="code" href="a00291.html#ada973328a1e0d797070cb5bde123c96d">GetComponentRequired&lt;T&gt;</a>(<span class="keyword">this</span> GameObject <span class="keyword">self</span>) where T : Component</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            T component = <span class="keyword">self</span>.GetComponent&lt;T&gt;();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">if</span> (component == <span class="keyword">null</span>) Debug.LogError(<span class="stringliteral">&quot;Could not find &quot;</span> + typeof(T) + <span class="stringliteral">&quot; on &quot;</span> + <span class="keyword">self</span>.name);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordflow">return</span> component;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="a00291.html#a83d60f6a9a83b133ec741449ec91c221">   22</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00291.html#a83d60f6a9a83b133ec741449ec91c221">SetLayerRecursively</a>(<span class="keyword">this</span> GameObject <span class="keyword">self</span>, <span class="keywordtype">int</span> newLayer)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="keywordflow">if</span> (<span class="keyword">null</span> == <span class="keyword">self</span>)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keyword">self</span>.layer = newLayer;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordflow">foreach</span> (Transform child <span class="keywordflow">in</span> <span class="keyword">self</span>.transform)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                <span class="keywordflow">if</span> (<span class="keyword">null</span> == child)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                    <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                <a class="code" href="a00291.html#a83d60f6a9a83b133ec741449ec91c221">SetLayerRecursively</a>(child.gameObject, newLayer);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
-<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00291_html"><div class="ttname"><a href="a00291.html">UnityEngine.GameObjectExtensions</a></div><div class="ttdoc">Extensions for GameObject</div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00006">GameObjectExtensions.cs:7</a></div></div>
-<div class="ttc" id="aa00291_html_a83d60f6a9a83b133ec741449ec91c221"><div class="ttname"><a href="a00291.html#a83d60f6a9a83b133ec741449ec91c221">UnityEngine.GameObjectExtensions.SetLayerRecursively</a></div><div class="ttdeci">static void SetLayerRecursively(this GameObject self, int newLayer)</div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00022">GameObjectExtensions.cs:22</a></div></div>
-<div class="ttc" id="aa00291_html_ada973328a1e0d797070cb5bde123c96d"><div class="ttname"><a href="a00291.html#ada973328a1e0d797070cb5bde123c96d">UnityEngine.GameObjectExtensions.GetComponentRequired&lt; T &gt;</a></div><div class="ttdeci">static T GetComponentRequired&lt; T &gt;(this GameObject self)</div><div class="ttdoc">Get a component. Log an error if it is not found.</div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00013">GameObjectExtensions.cs:13</a></div></div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00284.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00284.html">ComponentExtensions</a></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00284.html#a07476fed3f73c0f8f7dae54ee62b714e">   14</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T <a class="code" href="a00284.html#a07476fed3f73c0f8f7dae54ee62b714e">GetComponentRequired&lt;T&gt;</a>(<span class="keyword">this</span> Component <span class="keyword">self</span>) where T : Component</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            T component = <span class="keyword">self</span>.GetComponent&lt;T&gt;();</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">if</span> (component == <span class="keyword">null</span>) Debug.LogError(<span class="stringliteral">&quot;Could not find &quot;</span> + typeof(T) + <span class="stringliteral">&quot; on &quot;</span> + <span class="keyword">self</span>.name);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">return</span> component;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="ttc" id="aa00179_html"><div class="ttname"><a href="a00179.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00284_html"><div class="ttname"><a href="a00284.html">UnityEngine.ComponentExtensions</a></div><div class="ttdoc">Extensions for Component</div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00007">ComponentExtensions.cs:8</a></div></div>
+<div class="ttc" id="aa00284_html_a07476fed3f73c0f8f7dae54ee62b714e"><div class="ttname"><a href="a00284.html#a07476fed3f73c0f8f7dae54ee62b714e">UnityEngine.ComponentExtensions.GetComponentRequired&lt; T &gt;</a></div><div class="ttdeci">static T GetComponentRequired&lt; T &gt;(this Component self)</div><div class="ttdoc">Get a component. Log an error if it is not found.</div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00014">ComponentExtensions.cs:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,0 +1,6 @@
+<map id="UnityEngine.Console.Update" name="UnityEngine.Console.Update">
+<area shape="rect" id="node1" title="Handles the toggling ON and OFF of the console" alt="" coords="5,5,193,32"/>
+<area shape="rect" id="node2" href="$a00248.html#a6967d63578ec9d287cc69cc97064ecc3" title="Inverts the &quot;show&quot; state of the console. If it was being displayed, it will no longer be...." alt="" coords="241,5,459,32"/>
+<area shape="rect" id="node3" href="$a00248.html#a4453d724488f3861226a81fb71ec5e56" title="Displays or not the console in&#45;game" alt="" coords="507,5,705,32"/>
+<area shape="rect" id="node4" href="$a00248.html#a9356e489e597032f5e6ab541d663e423" title="Updates the visuals of the console" alt="" coords="753,5,984,32"/>
+</map>

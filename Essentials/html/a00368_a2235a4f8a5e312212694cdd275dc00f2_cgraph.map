@@ -1,0 +1,6 @@
+<map id="UnityEngine.Pool.Spawn" name="UnityEngine.Pool.Spawn">
+<area shape="rect" id="node1" title="Activates an object from the pool." alt="" coords="5,5,171,32"/>
+<area shape="rect" id="node2" href="$a00368.html#a273e3aad6a275526203b6b828502462c" title="Instantiates an object for the pool." alt="" coords="219,5,443,32"/>
+<area shape="rect" id="node3" href="$a00368.html#a1c70b9fc0d0b69afdaaefe1b7a8fd1e8" title="Returns the next BaseObject to be spawned" alt="" coords="491,5,807,32"/>
+<area shape="rect" id="node4" href="$a00376.html#a2f7fb7a9165d38e624457c9738c3d793" title=" " alt="" coords="855,5,1147,32"/>
+</map>

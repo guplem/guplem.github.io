@@ -1,0 +1,5 @@
+<map id="UnityEngine.AudioSourceManager.LowerVolumeAndStopSounds" name="UnityEngine.AudioSourceManager.LowerVolumeAndStopSounds">
+<area shape="rect" id="node1" title=" " alt="" coords="744,5,1140,32"/>
+<area shape="rect" id="node2" href="$a00244.html#a0a21088847ae3eab308b8b66b6224604" title=" " alt="" coords="348,5,696,32"/>
+<area shape="rect" id="node3" href="$a00244.html#a994ab1a50acd5e176ac3baba3572eea0" title="Stops playing all clips i all AudioSources related to this AudioSourceManager." alt="" coords="5,5,300,32"/>
+</map>

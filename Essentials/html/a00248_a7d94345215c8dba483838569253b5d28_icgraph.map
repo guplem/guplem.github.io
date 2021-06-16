@@ -1,0 +1,5 @@
+<map id="UnityEngine.Console.Log" name="UnityEngine.Console.Log">
+<area shape="rect" id="node1" title="Handles the logging of any log messages" alt="" coords="260,31,428,57"/>
+<area shape="rect" id="node2" href="$a00248.html#a001c7a9e131da1a978e07f3dbfb477ed" title="Unregisters the console from the handling of the any log messages." alt="" coords="5,5,212,32"/>
+<area shape="rect" id="node3" href="$a00248.html#a17face047f1bcca43e15a4e0bbd12293" title="Registers the console to handle any log messages received and updates the visuals calling UpdateVisua..." alt="" coords="7,56,211,83"/>
+</map>

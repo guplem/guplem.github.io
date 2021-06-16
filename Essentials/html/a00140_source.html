@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: EssentialsHelp.cs Source File</title>
+<title>UnityEssentials: DoN.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,57 +62,62 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_44d69f3798c1687b4d2cacebeb7d861e.html">Scripts</a></li><li class="navelem"><a class="el" href="dir_dab7424a8730666b2ec134ec664bc610.html">Help</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_0542c1c707e6cb7c4fcb01d37b0b878a.html">UnityEssentials</a></li><li class="navelem"><a class="el" href="dir_fa6ac8cf4cd83c7d3844cb72503cda5f.html">Unity Essentials</a></li><li class="navelem"><a class="el" href="dir_2cbe3c23fb2255cf4dcc0ad3328b918f.html">Assets</a></li><li class="navelem"><a class="el" href="dir_e72c5582ddf9d02555a7477562ca0fae.html">Essentials</a></li><li class="navelem"><a class="el" href="dir_44d69f3798c1687b4d2cacebeb7d861e.html">Scripts</a></li><li class="navelem"><a class="el" href="dir_b18de4e34014a415476221336e82c8b5.html">FlowControl</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">EssentialsHelp.cs</div>  </div>
+<div class="title">DoN.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00140.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> UnityEditor;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00173.html">UnityEngine</a>;</div>
+<a href="a00140.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00179.html">UnityEngine</a>.Events;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00174.html">Essentials</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00179.html">UnityEngine</a></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00355.html">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00355.html">EssentialsHelp</a></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Rate the asset! ❤️&quot;</span>, <span class="keyword">false</span>, 0)]</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="a00355.html#adc8f03b9dbb3ddb30f139449c25e0e1f">   15</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00355.html#adc8f03b9dbb3ddb30f139449c25e0e1f">OpenLinkRateAsset</a>(){</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://assetstore.unity.com/packages/slug/161141&quot;</span>);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Give feedback or any ideas! 💡&quot;</span>,<span class="keyword">false</span>, 0)]</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="a00355.html#a7b7fcafbcd876c19a67357f720978d4f">   22</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00355.html#a7b7fcafbcd876c19a67357f720978d4f">OpenLinkFeedback</a>(){</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://forms.gle/diuUu6nZHAf5T67C9&quot;</span>);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        }        </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Documentation&quot;</span>,<span class="keyword">false</span>, 50)]</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00355.html#a581056c86322e4fb836e9f995b59e505">   31</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00355.html#a581056c86322e4fb836e9f995b59e505">OpenLinkDocumentation</a>(){</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://docs.google.com/document/d/1-strmOzT7ka8uO8hEH_W3Xjlr-ajjKcJ0b6h5KYnpJQ/edit?usp=sharing&quot;</span>);</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    [Serializable]</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00348.html">   10</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00348.html">DoN</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        [Tooltip(<span class="stringliteral">&quot;The amount of times the events can be invoked&quot;</span>)]</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="a00348.html#a019bd25a6fdab686a96897a12fbaea29">   16</a></span>&#160;        [SerializeField] <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00348.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a> = 1;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="a00348.html#a15565d702d2782e3e17a40d2660cbce1">   20</a></span>&#160;        [NonSerialized] <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00348.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a> = 0;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        [Tooltip(<span class="stringliteral">&quot;The events called at every invoke&quot;</span>)]</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="a00348.html#ae7d0ba6bf0c879e3ad13043a3ad806df">   25</a></span>&#160;        [SerializeField] <span class="keyword">public</span> UnityEvent <a class="code" href="a00348.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="a00348.html#a2d3da8cbb2f249af084a99ceeb31c04a">   27</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00348.html#a2d3da8cbb2f249af084a99ceeb31c04a">DoN</a>(UnityAction unityAction, <span class="keywordtype">int</span> <a class="code" href="a00348.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            UnityEvent unityEvent = <span class="keyword">new</span> UnityEvent();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            unityEvent.AddListener(unityAction);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            this.calledEvent = unityEvent;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            this.invokingTimes = <a class="code" href="a00348.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Scripting Documentation&quot;</span>,<span class="keyword">false</span>, 50)]</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00355.html#ad4c396dad6f805752bb506bbe64b40e7">   38</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00355.html#ad4c396dad6f805752bb506bbe64b40e7">OpenLinkScriptingDocumentation</a>(){</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://guplem.github.io/Essentials/html/&quot;</span>);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/About me  : )&quot;</span>, <span class="keyword">false</span>, 100)]</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00355.html#ad91ed6addef03c10f77d0d8fcd04ea51">   47</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00355.html#ad91ed6addef03c10f77d0d8fcd04ea51">OpenLinkAboutMe</a>(){</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://TriunityStudios.com&quot;</span>);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00174_html"><div class="ttname"><a href="a00174.html">Essentials</a></div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00003">Adjustment.cs:4</a></div></div>
-<div class="ttc" id="aa00355_html"><div class="ttname"><a href="a00355.html">Essentials.EssentialsHelp</a></div><div class="ttdoc">Useful information for the usage and understanding of the asset.</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00009">EssentialsHelp.cs:10</a></div></div>
-<div class="ttc" id="aa00355_html_a581056c86322e4fb836e9f995b59e505"><div class="ttname"><a href="a00355.html#a581056c86322e4fb836e9f995b59e505">Essentials.EssentialsHelp.OpenLinkDocumentation</a></div><div class="ttdeci">static void OpenLinkDocumentation()</div><div class="ttdoc">Opens a web page containing the latest documentation available for the asset</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00031">EssentialsHelp.cs:31</a></div></div>
-<div class="ttc" id="aa00355_html_a7b7fcafbcd876c19a67357f720978d4f"><div class="ttname"><a href="a00355.html#a7b7fcafbcd876c19a67357f720978d4f">Essentials.EssentialsHelp.OpenLinkFeedback</a></div><div class="ttdeci">static void OpenLinkFeedback()</div><div class="ttdoc">Opens a web page with a form to give feedback related to the asset</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00022">EssentialsHelp.cs:22</a></div></div>
-<div class="ttc" id="aa00355_html_ad4c396dad6f805752bb506bbe64b40e7"><div class="ttname"><a href="a00355.html#ad4c396dad6f805752bb506bbe64b40e7">Essentials.EssentialsHelp.OpenLinkScriptingDocumentation</a></div><div class="ttdeci">static void OpenLinkScriptingDocumentation()</div><div class="ttdoc">Opens a web page containing the documentation related to the scripts of the asset</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00038">EssentialsHelp.cs:38</a></div></div>
-<div class="ttc" id="aa00355_html_ad91ed6addef03c10f77d0d8fcd04ea51"><div class="ttname"><a href="a00355.html#ad91ed6addef03c10f77d0d8fcd04ea51">Essentials.EssentialsHelp.OpenLinkAboutMe</a></div><div class="ttdeci">static void OpenLinkAboutMe()</div><div class="ttdoc">Opens the web page of the creator of the asset</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00047">EssentialsHelp.cs:47</a></div></div>
-<div class="ttc" id="aa00355_html_adc8f03b9dbb3ddb30f139449c25e0e1f"><div class="ttname"><a href="a00355.html#adc8f03b9dbb3ddb30f139449c25e0e1f">Essentials.EssentialsHelp.OpenLinkRateAsset</a></div><div class="ttdeci">static void OpenLinkRateAsset()</div><div class="ttdoc">Opens the web page of the asset in the Asset Store</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00015">EssentialsHelp.cs:15</a></div></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00348.html#a63698b89feb90c0dc409d8076c8029fc">   35</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00348.html#a63698b89feb90c0dc409d8076c8029fc">DoN</a>(UnityEvent <a class="code" href="a00348.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>, <span class="keywordtype">int</span> <a class="code" href="a00348.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            this.calledEvent = <a class="code" href="a00348.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            this.invokingTimes = <a class="code" href="a00348.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00348.html#af3a77290a927260e40ccbb7bcd0eedb6">   44</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00348.html#af3a77290a927260e40ccbb7bcd0eedb6">Invoke</a>()</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="a00348.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a> &lt; <a class="code" href="a00348.html#a019bd25a6fdab686a96897a12fbaea29">invokingTimes</a>)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <a class="code" href="a00348.html#ae7d0ba6bf0c879e3ad13043a3ad806df">calledEvent</a>?.Invoke();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <a class="code" href="a00348.html#a15565d702d2782e3e17a40d2660cbce1">invokedTimes</a>++;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="ttc" id="aa00179_html"><div class="ttname"><a href="a00179.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00348_html"><div class="ttname"><a href="a00348.html">UnityEngine.DoN</a></div><div class="ttdoc">Allows the limitation of how many times an event can be executed.</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00010">DoN.cs:11</a></div></div>
+<div class="ttc" id="aa00348_html_a019bd25a6fdab686a96897a12fbaea29"><div class="ttname"><a href="a00348.html#a019bd25a6fdab686a96897a12fbaea29">UnityEngine.DoN.invokingTimes</a></div><div class="ttdeci">int invokingTimes</div><div class="ttdoc">The amount of times the events can be invoked.</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00016">DoN.cs:16</a></div></div>
+<div class="ttc" id="aa00348_html_a15565d702d2782e3e17a40d2660cbce1"><div class="ttname"><a href="a00348.html#a15565d702d2782e3e17a40d2660cbce1">UnityEngine.DoN.invokedTimes</a></div><div class="ttdeci">int invokedTimes</div><div class="ttdoc">How many times the events have been invoked.</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00020">DoN.cs:20</a></div></div>
+<div class="ttc" id="aa00348_html_a2d3da8cbb2f249af084a99ceeb31c04a"><div class="ttname"><a href="a00348.html#a2d3da8cbb2f249af084a99ceeb31c04a">UnityEngine.DoN.DoN</a></div><div class="ttdeci">DoN(UnityAction unityAction, int invokingTimes)</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00027">DoN.cs:27</a></div></div>
+<div class="ttc" id="aa00348_html_a63698b89feb90c0dc409d8076c8029fc"><div class="ttname"><a href="a00348.html#a63698b89feb90c0dc409d8076c8029fc">UnityEngine.DoN.DoN</a></div><div class="ttdeci">DoN(UnityEvent calledEvent, int invokingTimes)</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00035">DoN.cs:35</a></div></div>
+<div class="ttc" id="aa00348_html_ae7d0ba6bf0c879e3ad13043a3ad806df"><div class="ttname"><a href="a00348.html#ae7d0ba6bf0c879e3ad13043a3ad806df">UnityEngine.DoN.calledEvent</a></div><div class="ttdeci">UnityEvent calledEvent</div><div class="ttdoc">The events called at every invoke.</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00025">DoN.cs:25</a></div></div>
+<div class="ttc" id="aa00348_html_af3a77290a927260e40ccbb7bcd0eedb6"><div class="ttname"><a href="a00348.html#af3a77290a927260e40ccbb7bcd0eedb6">UnityEngine.DoN.Invoke</a></div><div class="ttdeci">void Invoke()</div><div class="ttdoc">Invokes all registered events callbacks (runtime and persistent).</div><div class="ttdef"><b>Definition:</b> <a href="a00140_source.html#l00044">DoN.cs:44</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

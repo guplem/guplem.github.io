@@ -1,8 +1,13 @@
 var searchData=
 [
-  ['withx_386',['WithX',['../a00331.html#a28a3f5f0b65a0c5aa59e3c4b56020f7f',1,'UnityEngine.VectorExtensions.WithX(this Vector2 v, float x=0f)'],['../a00331.html#aa1c1354e67eb1fa18304a5906b7d0cec',1,'UnityEngine.VectorExtensions.WithX(this Vector3 v, float x=0f)'],['../a00335.html#a92561abe4b3720f74f0b7839f2c38e32',1,'UnityEngine.VectorIntExtensions.WithX(this Vector2Int v, int x=0)'],['../a00335.html#a27d058e5fa4d99ede55ba11e87caf4bb',1,'UnityEngine.VectorIntExtensions.WithX(this Vector3Int v, int x=0)']]],
-  ['withy_387',['WithY',['../a00331.html#af84e3dc7da98e0433d372413fb0967a8',1,'UnityEngine.VectorExtensions.WithY(this Vector2 v, float y=0f)'],['../a00331.html#a990c64c6b319100687ecccfa34c41de7',1,'UnityEngine.VectorExtensions.WithY(this Vector3 v, float y=0f)'],['../a00335.html#a20f808c451394146176f94a15a0f0f49',1,'UnityEngine.VectorIntExtensions.WithY(this Vector2Int v, int y=0)'],['../a00335.html#a5f6bcfd31abb783f02687d36d3ac59a0',1,'UnityEngine.VectorIntExtensions.WithY(this Vector3Int v, int y=0)']]],
-  ['withz_388',['WithZ',['../a00331.html#a50a2ceac2ed5961f4a311d5f5fb50fcb',1,'UnityEngine.VectorExtensions.WithZ()'],['../a00335.html#a025920dc480470a93a047393b8cd56fb',1,'UnityEngine.VectorIntExtensions.WithZ()']]],
-  ['wrapmode_389',['wrapMode',['../a00231.html#abedbc265cc3dd3d4c5fce14f45f5d3c4',1,'UnityEngine::SimpleAnimation']]],
-  ['wrapmode_390',['WrapMode',['../a00231.html#a321703834e798c9143549f9a088f024d',1,'UnityEngine::SimpleAnimation']]]
+  ['vector2animation_385',['Vector2Animation',['../a00224.html',1,'UnityEngine.Vector2Animation'],['../a00224.html#abf93c8b80fd6f1b4f08144cf08d74ade',1,'UnityEngine.Vector2Animation.Vector2Animation()'],['../a00224.html#ab0542a8621b583e743b0de7acf4587ed',1,'UnityEngine.Vector2Animation.Vector2Animation(Vector2 vector2ToAnimate, Vector2 destination, Vector2 origin, float duration=1f, Curve curve=Curve.EaseInOut, WrapMode wrapMode=WrapMode.Once)']]],
+  ['vector2animation_2ecs_386',['Vector2Animation.cs',['../a00023.html',1,'']]],
+  ['vector2toanimate_387',['vector2ToAnimate',['../a00224.html#a3d5171f7f1ace5adc92c0d071a08e4ad',1,'UnityEngine::Vector2Animation']]],
+  ['vector3animation_388',['Vector3Animation',['../a00228.html',1,'UnityEngine.Vector3Animation'],['../a00228.html#a1c3de33a51e9b477678859f21eff6626',1,'UnityEngine.Vector3Animation.Vector3Animation()'],['../a00228.html#ad19abf0218bf2d5937b9d33201684e49',1,'UnityEngine.Vector3Animation.Vector3Animation(Vector3 vector3ToAnimate, Vector3 destination, Vector3 origin, float duration=1f, Curve curve=Curve.EaseInOut, WrapMode wrapMode=WrapMode.Once)']]],
+  ['vector3animation_2ecs_389',['Vector3Animation.cs',['../a00026.html',1,'']]],
+  ['vector3toanimate_390',['vector3ToAnimate',['../a00228.html#af63f62c2cdcb81f2fa898186a2c94e95',1,'UnityEngine::Vector3Animation']]],
+  ['vectorextensions_391',['VectorExtensions',['../a00340.html',1,'UnityEngine']]],
+  ['vectorextensions_2ecs_392',['VectorExtensions.cs',['../a00134.html',1,'']]],
+  ['vectorintextensions_393',['VectorIntExtensions',['../a00344.html',1,'UnityEngine']]],
+  ['vectorintextensions_2ecs_394',['VectorIntExtensions.cs',['../a00137.html',1,'']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: MathfExtensions.cs Source File</title>
+<title>UnityEssentials: IEnumerableExtensions.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,41 +67,94 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">MathfExtensions.cs</div>  </div>
+<div class="title">IEnumerableExtensions.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00104.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00173.html">UnityEngine</a></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    </div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00311.html">   10</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00311.html">MathfExtensions</a></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="a00311.html#a2b9fecfe561d0e2fdb43615ab2b6ca3a">   18</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00311.html#a2b9fecfe561d0e2fdb43615ab2b6ca3a">IsMultipleOf</a>(<span class="keyword">this</span> <span class="keywordtype">float</span> v, <span class="keywordtype">float</span> n, <span class="keywordtype">float</span> tolerance = 0.001f)</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">return</span> Math.Abs(v % n) &lt; tolerance;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="a00311.html#aa082d99a375f2588e581a62f9005b249">   28</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00311.html#aa082d99a375f2588e581a62f9005b249">IsMultipleOf</a>(<span class="keyword">this</span> <span class="keywordtype">float</span> v, <span class="keywordtype">int</span> n, <span class="keywordtype">float</span> tolerance = 0.001f)</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> System.Linq;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00179.html">UnityEngine</a></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    </div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="a00304.html">   11</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00304.html">IEnumerableExtensions</a></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="a00304.html#a78b01ab8314ee67fc03bf581ff50159c">   17</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;T&gt; <a class="code" href="a00304.html#a78b01ab8314ee67fc03bf581ff50159c">CloneAll&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; enumerable) where T: ICloneable</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordflow">return</span> enumerable.Select(item =&gt; (T) item.Clone());</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="a00304.html#ac0e22e5f802a21c5ff0e9040f1588b85">   28</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00304.html#ac0e22e5f802a21c5ff0e9040f1588b85">DebugLog&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; enumerable, <span class="keywordtype">string</span> separator = <span class="stringliteral">&quot;, &quot;</span>, <span class="keywordtype">string</span> message = <span class="stringliteral">&quot;&quot;</span>, Object context = <span class="keyword">null</span>)</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">return</span> Math.Abs(Math.Abs(v % n)) &lt; tolerance;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            Debug.Log(message + enumerable.ToStringAllElements(separator), context);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="a00311.html#a92065c874a7b8710e0cb19ff01a23ca9">   37</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00311.html#a92065c874a7b8710e0cb19ff01a23ca9">IsMultipleOf</a>(<span class="keyword">this</span> <span class="keywordtype">int</span> v, <span class="keywordtype">int</span> n)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="keywordflow">return</span> v % n == 0;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00311.html#a8fc73527143b3fd6838ff14dfc1ebac1">   47</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00311.html#a8fc73527143b3fd6838ff14dfc1ebac1">IsMultipleOf</a>(<span class="keyword">this</span> <span class="keywordtype">int</span> v, <span class="keywordtype">float</span> n, <span class="keywordtype">float</span> tolerance = 0.001f)</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">return</span> Math.Abs(Math.Abs(v % n)) &lt; tolerance;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00311_html"><div class="ttname"><a href="a00311.html">UnityEngine.MathfExtensions</a></div><div class="ttdoc">Extensions for the Mathf class</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00010">MathfExtensions.cs:11</a></div></div>
-<div class="ttc" id="aa00311_html_a2b9fecfe561d0e2fdb43615ab2b6ca3a"><div class="ttname"><a href="a00311.html#a2b9fecfe561d0e2fdb43615ab2b6ca3a">UnityEngine.MathfExtensions.IsMultipleOf</a></div><div class="ttdeci">static bool IsMultipleOf(this float v, float n, float tolerance=0.001f)</div><div class="ttdoc">Calculates if the float is multiple of another float.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00018">MathfExtensions.cs:18</a></div></div>
-<div class="ttc" id="aa00311_html_a8fc73527143b3fd6838ff14dfc1ebac1"><div class="ttname"><a href="a00311.html#a8fc73527143b3fd6838ff14dfc1ebac1">UnityEngine.MathfExtensions.IsMultipleOf</a></div><div class="ttdeci">static bool IsMultipleOf(this int v, float n, float tolerance=0.001f)</div><div class="ttdoc">Calculates if the int is multiple of a float.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00047">MathfExtensions.cs:47</a></div></div>
-<div class="ttc" id="aa00311_html_a92065c874a7b8710e0cb19ff01a23ca9"><div class="ttname"><a href="a00311.html#a92065c874a7b8710e0cb19ff01a23ca9">UnityEngine.MathfExtensions.IsMultipleOf</a></div><div class="ttdeci">static bool IsMultipleOf(this int v, int n)</div><div class="ttdoc">Calculates if the int is multiple of another int.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00037">MathfExtensions.cs:37</a></div></div>
-<div class="ttc" id="aa00311_html_aa082d99a375f2588e581a62f9005b249"><div class="ttname"><a href="a00311.html#aa082d99a375f2588e581a62f9005b249">UnityEngine.MathfExtensions.IsMultipleOf</a></div><div class="ttdeci">static bool IsMultipleOf(this float v, int n, float tolerance=0.001f)</div><div class="ttdoc">Calculates if the float is multiple of an int.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00028">MathfExtensions.cs:28</a></div></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        </div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00304.html#a6d5ae0ffdc6203cbadc0c7a44ee694da">   39</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00304.html#a6d5ae0ffdc6203cbadc0c7a44ee694da">DebugLogWarning&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; enumerable, <span class="keywordtype">string</span> separator = <span class="stringliteral">&quot;, &quot;</span>, <span class="keywordtype">string</span> message = <span class="stringliteral">&quot;&quot;</span>, Object context = <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            Debug.LogWarning(message + enumerable.ToStringAllElements(separator), context);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        </div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="a00304.html#a34aeeab1541aa90c9b1114e61e979ed2">   50</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00304.html#a34aeeab1541aa90c9b1114e61e979ed2">DebugLogError&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; enumerable, <span class="keywordtype">string</span> separator = <span class="stringliteral">&quot;, &quot;</span>, <span class="keywordtype">string</span> message = <span class="stringliteral">&quot;&quot;</span>, Object context = <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            Debug.LogError(message + enumerable.ToStringAllElements(separator), context);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    </div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="a00304.html#a8e9bf4a1307b2881a53037782a504a31">   60</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code" href="a00304.html#a8e9bf4a1307b2881a53037782a504a31">ToStringAllElements&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; enumerable, <span class="keywordtype">string</span> separator = <span class="stringliteral">&quot;, &quot;</span>)</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Join(separator, <span class="keyword">new</span> List&lt;T&gt;(enumerable));</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00304.html#a5957240cce7bc7295745761d471dbcfd">   69</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;T&gt; <a class="code" href="a00304.html#a5957240cce7bc7295745761d471dbcfd">GetShuffled&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; enumerable)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">return</span> enumerable.GetShuffled(<span class="keyword">new</span> System.Random());</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="a00304.html#aff7e11dcbdd394b34fc6ab7ca681a23d">   79</a></span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> IEnumerable&lt;T&gt; <a class="code" href="a00304.html#a5957240cce7bc7295745761d471dbcfd">GetShuffled&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; source, System.Random rnd)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            List&lt;T&gt; buffer = source.ToList();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; buffer.Count; i++)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                <span class="keywordtype">int</span> j = rnd.Next(i, buffer.Count);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                yield <span class="keywordflow">return</span> buffer[j];</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                buffer[j] = buffer[i];</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00304.html#a1e7d55e1b44ce703b212509ff3b32b40">   95</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T <a class="code" href="a00304.html#a1e7d55e1b44ce703b212509ff3b32b40">GetRandomElement&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; enumerable)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">return</span> enumerable.GetRandomElement&lt;T&gt;(<span class="keyword">new</span> System.Random());</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="a00304.html#aab548088ad09ad5b9ccc6889836ff1e1">  105</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T <a class="code" href="a00304.html#a1e7d55e1b44ce703b212509ff3b32b40">GetRandomElement&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; enumerable, System.Random rnd)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordtype">int</span> index = rnd.Next(0, enumerable.Count());</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordflow">return</span> enumerable.ElementAt(index);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    </div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="a00304.html#a9508321c4fb1bbb957c6efa570de0ad5">  116</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> HashSet&lt;T&gt; <a class="code" href="a00304.html#a9508321c4fb1bbb957c6efa570de0ad5">ToHashSet&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; source, IEqualityComparer&lt;T&gt; comparer = <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">new</span> HashSet&lt;T&gt;(source, comparer);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        </div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="a00304.html#a6280b72ea4a546ecc93d3749c820a1de">  125</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00304.html#a6280b72ea4a546ecc93d3749c820a1de">IsNullOrEmpty&lt;T&gt;</a>(<span class="keyword">this</span> IEnumerable&lt;T&gt; source)</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">return</span> source == <span class="keyword">null</span> || !source.Any();</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}</div>
+<div class="ttc" id="aa00179_html"><div class="ttname"><a href="a00179.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00304_html"><div class="ttname"><a href="a00304.html">UnityEngine.IEnumerableExtensions</a></div><div class="ttdoc">Extensions for IEnumerable</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00011">IEnumerableExtensions.cs:12</a></div></div>
+<div class="ttc" id="aa00304_html_a1e7d55e1b44ce703b212509ff3b32b40"><div class="ttname"><a href="a00304.html#a1e7d55e1b44ce703b212509ff3b32b40">UnityEngine.IEnumerableExtensions.GetRandomElement&lt; T &gt;</a></div><div class="ttdeci">static T GetRandomElement&lt; T &gt;(this IEnumerable&lt; T &gt; enumerable)</div><div class="ttdoc">Return a random element.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00095">IEnumerableExtensions.cs:95</a></div></div>
+<div class="ttc" id="aa00304_html_a34aeeab1541aa90c9b1114e61e979ed2"><div class="ttname"><a href="a00304.html#a34aeeab1541aa90c9b1114e61e979ed2">UnityEngine.IEnumerableExtensions.DebugLogError&lt; T &gt;</a></div><div class="ttdeci">static void DebugLogError&lt; T &gt;(this IEnumerable&lt; T &gt; enumerable, string separator=&quot;, &quot;, string message=&quot;&quot;, Object context=null)</div><div class="ttdoc">Creates a 'Debug.LogError' message with all the contents in the enumerable.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00050">IEnumerableExtensions.cs:50</a></div></div>
+<div class="ttc" id="aa00304_html_a5957240cce7bc7295745761d471dbcfd"><div class="ttname"><a href="a00304.html#a5957240cce7bc7295745761d471dbcfd">UnityEngine.IEnumerableExtensions.GetShuffled&lt; T &gt;</a></div><div class="ttdeci">static IEnumerable&lt; T &gt; GetShuffled&lt; T &gt;(this IEnumerable&lt; T &gt; enumerable)</div><div class="ttdoc">Shuffles the enumerable using the Fisher-Yates-Durstenfeld method.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00069">IEnumerableExtensions.cs:69</a></div></div>
+<div class="ttc" id="aa00304_html_a6280b72ea4a546ecc93d3749c820a1de"><div class="ttname"><a href="a00304.html#a6280b72ea4a546ecc93d3749c820a1de">UnityEngine.IEnumerableExtensions.IsNullOrEmpty&lt; T &gt;</a></div><div class="ttdeci">static bool IsNullOrEmpty&lt; T &gt;(this IEnumerable&lt; T &gt; source)</div><div class="ttdoc">Indicates whether the IEnumerable is null or does not contain any element.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00125">IEnumerableExtensions.cs:125</a></div></div>
+<div class="ttc" id="aa00304_html_a6d5ae0ffdc6203cbadc0c7a44ee694da"><div class="ttname"><a href="a00304.html#a6d5ae0ffdc6203cbadc0c7a44ee694da">UnityEngine.IEnumerableExtensions.DebugLogWarning&lt; T &gt;</a></div><div class="ttdeci">static void DebugLogWarning&lt; T &gt;(this IEnumerable&lt; T &gt; enumerable, string separator=&quot;, &quot;, string message=&quot;&quot;, Object context=null)</div><div class="ttdoc">Creates a 'Debug.LogWarning' message with all the contents in the enumerable.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00039">IEnumerableExtensions.cs:39</a></div></div>
+<div class="ttc" id="aa00304_html_a78b01ab8314ee67fc03bf581ff50159c"><div class="ttname"><a href="a00304.html#a78b01ab8314ee67fc03bf581ff50159c">UnityEngine.IEnumerableExtensions.CloneAll&lt; T &gt;</a></div><div class="ttdeci">static IEnumerable&lt; T &gt; CloneAll&lt; T &gt;(this IEnumerable&lt; T &gt; enumerable)</div><div class="ttdoc">Creates a new enumerable with all the elements of the original one cloned in it.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00017">IEnumerableExtensions.cs:17</a></div></div>
+<div class="ttc" id="aa00304_html_a8e9bf4a1307b2881a53037782a504a31"><div class="ttname"><a href="a00304.html#a8e9bf4a1307b2881a53037782a504a31">UnityEngine.IEnumerableExtensions.ToStringAllElements&lt; T &gt;</a></div><div class="ttdeci">static string ToStringAllElements&lt; T &gt;(this IEnumerable&lt; T &gt; enumerable, string separator=&quot;, &quot;)</div><div class="ttdoc">Get an string of all elements.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00060">IEnumerableExtensions.cs:60</a></div></div>
+<div class="ttc" id="aa00304_html_a9508321c4fb1bbb957c6efa570de0ad5"><div class="ttname"><a href="a00304.html#a9508321c4fb1bbb957c6efa570de0ad5">UnityEngine.IEnumerableExtensions.ToHashSet&lt; T &gt;</a></div><div class="ttdeci">static HashSet&lt; T &gt; ToHashSet&lt; T &gt;(this IEnumerable&lt; T &gt; source, IEqualityComparer&lt; T &gt; comparer=null)</div><div class="ttdoc">Copies the elements to a new HashSet.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00116">IEnumerableExtensions.cs:116</a></div></div>
+<div class="ttc" id="aa00304_html_ac0e22e5f802a21c5ff0e9040f1588b85"><div class="ttname"><a href="a00304.html#ac0e22e5f802a21c5ff0e9040f1588b85">UnityEngine.IEnumerableExtensions.DebugLog&lt; T &gt;</a></div><div class="ttdeci">static void DebugLog&lt; T &gt;(this IEnumerable&lt; T &gt; enumerable, string separator=&quot;, &quot;, string message=&quot;&quot;, Object context=null)</div><div class="ttdoc">Creates a 'Debug.Log' message with all the contents in the enumerable.</div><div class="ttdef"><b>Definition:</b> <a href="a00104_source.html#l00028">IEnumerableExtensions.cs:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

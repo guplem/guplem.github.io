@@ -1,0 +1,7 @@
+<map id="UnityEngine.SaveDataManager.GetFilePath" name="UnityEngine.SaveDataManager.GetFilePath">
+<area shape="rect" id="node1" title=" " alt="" coords="629,81,904,108"/>
+<area shape="rect" id="node2" href="$a00380.html#a2640a1f5271e28dfca17f0974204af43" title="Delete the specified identifier and path." alt="" coords="328,5,571,32"/>
+<area shape="rect" id="node3" href="$a00380.html#a33bacc3991904042b3389b125e6fe911" title="Checks whether the specified identifier exists or not." alt="" coords="328,56,571,83"/>
+<area shape="rect" id="node4" href="$a00380.html#a8795b7267f5f711b5884e3faadcdd8bb" title="Loads data using identifier." alt="" coords="5,81,269,108"/>
+<area shape="rect" id="node5" href="$a00380.html#a548de856d1e37fbe7ce9b744350387e5" title="Saves data using the identifier." alt="" coords="317,157,581,184"/>
+</map>

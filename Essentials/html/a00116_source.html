@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: StringExtensions.cs Source File</title>
+<title>UnityEssentials: MeshRendererExtensions.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,38 +67,42 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">StringExtensions.cs</div>  </div>
+<div class="title">MeshRendererExtensions.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00116.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00173.html">UnityEngine</a></div>
+<a href="a00116.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00179.html">UnityEngine</a></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    </div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00323.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00323.html">StringExtensions</a></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00323.html#a0e54300bfc71828748015722f58e5f36">   14</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code" href="a00323.html#a0e54300bfc71828748015722f58e5f36">EnsureEndsWithDot</a>(<span class="keyword">this</span> <span class="keywordtype">string</span> str)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">if</span> (!str.EndsWith(<span class="stringliteral">&quot;.&quot;</span>)) <span class="keywordflow">return</span> str + <span class="stringliteral">&quot;.&quot;</span>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">return</span> str;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="a00323.html#ac8c2c0cf3b3e4709a649fc5c7beaa877">   24</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00323.html#ac8c2c0cf3b3e4709a649fc5c7beaa877">IsNullEmptyOrWhiteSpace</a>(<span class="keyword">this</span> <span class="keywordtype">string</span> str)</div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="a00320.html">    3</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00320.html">MeshRendererExtensions</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    {</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="a00320.html#ae4096c6af97e514ff90daed0d574eb66">   12</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Material <a class="code" href="a00320.html#ae4096c6af97e514ff90daed0d574eb66">materialOfObject</a>(<span class="keyword">this</span> MeshRenderer meshRenderer)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <span class="keywordflow">return</span> meshRenderer.material;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        }</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="a00320.html#a656eebd56600b9ac29c0948bd9db9de1">   24</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Material[] <a class="code" href="a00320.html#a656eebd56600b9ac29c0948bd9db9de1">materialsOfObject</a>(<span class="keyword">this</span> MeshRenderer meshRenderer)</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keywordflow">return</span> <span class="comment">/*string.IsNullOrEmpty(str) ||*/</span> <span class="keywordtype">string</span>.IsNullOrWhiteSpace(str); <span class="comment">// &#39;IsNullOrWhiteSpace&#39; already checks for emptiness</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keywordflow">return</span> meshRenderer.materials;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    </div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00323.html#a547b30eebc2c089f210a2bcf40664020">   33</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00323.html#a547b30eebc2c089f210a2bcf40664020">IsNullOrEmpty</a>(<span class="keyword">this</span> <span class="keywordtype">string</span> str)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span> <span class="keywordtype">string</span>.IsNullOrEmpty(str);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
-<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00323_html"><div class="ttname"><a href="a00323.html">UnityEngine.StringExtensions</a></div><div class="ttdoc">Extensions for string</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00007">StringExtensions.cs:8</a></div></div>
-<div class="ttc" id="aa00323_html_a0e54300bfc71828748015722f58e5f36"><div class="ttname"><a href="a00323.html#a0e54300bfc71828748015722f58e5f36">UnityEngine.StringExtensions.EnsureEndsWithDot</a></div><div class="ttdeci">static string EnsureEndsWithDot(this string str)</div><div class="ttdoc">Ensures that the string ends with a dot ('.').</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00014">StringExtensions.cs:14</a></div></div>
-<div class="ttc" id="aa00323_html_a547b30eebc2c089f210a2bcf40664020"><div class="ttname"><a href="a00323.html#a547b30eebc2c089f210a2bcf40664020">UnityEngine.StringExtensions.IsNullOrEmpty</a></div><div class="ttdeci">static bool IsNullOrEmpty(this string str)</div><div class="ttdoc">Indicates whether the specified string is null or an empty string (&quot;&quot;).</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00033">StringExtensions.cs:33</a></div></div>
-<div class="ttc" id="aa00323_html_ac8c2c0cf3b3e4709a649fc5c7beaa877"><div class="ttname"><a href="a00323.html#ac8c2c0cf3b3e4709a649fc5c7beaa877">UnityEngine.StringExtensions.IsNullEmptyOrWhiteSpace</a></div><div class="ttdeci">static bool IsNullEmptyOrWhiteSpace(this string str)</div><div class="ttdoc">Indicates whether a specified string is null, empty, or consists only of white-space characters.</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00024">StringExtensions.cs:24</a></div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00320.html#af12645f049d7068664f4d5de4056b98f">   36</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Material <a class="code" href="a00320.html#af12645f049d7068664f4d5de4056b98f">materialAsset</a>(<span class="keyword">this</span> MeshRenderer meshRenderer)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordflow">return</span> meshRenderer.sharedMaterial;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        </div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00320.html#a6dda88a0e03a92ec5f6dd8c06754773e">   48</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> Material[] <a class="code" href="a00320.html#a6dda88a0e03a92ec5f6dd8c06754773e">materialsAsset</a>(<span class="keyword">this</span> MeshRenderer meshRenderer)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> meshRenderer.sharedMaterials;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="ttc" id="aa00179_html"><div class="ttname"><a href="a00179.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00320_html"><div class="ttname"><a href="a00320.html">UnityEngine.MeshRendererExtensions</a></div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00003">MeshRendererExtensions.cs:4</a></div></div>
+<div class="ttc" id="aa00320_html_a656eebd56600b9ac29c0948bd9db9de1"><div class="ttname"><a href="a00320.html#a656eebd56600b9ac29c0948bd9db9de1">UnityEngine.MeshRendererExtensions.materialsOfObject</a></div><div class="ttdeci">static Material[] materialsOfObject(this MeshRenderer meshRenderer)</div><div class="ttdoc">Returns all the instantiated materials of this object.</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00024">MeshRendererExtensions.cs:24</a></div></div>
+<div class="ttc" id="aa00320_html_a6dda88a0e03a92ec5f6dd8c06754773e"><div class="ttname"><a href="a00320.html#a6dda88a0e03a92ec5f6dd8c06754773e">UnityEngine.MeshRendererExtensions.materialsAsset</a></div><div class="ttdeci">static Material[] materialsAsset(this MeshRenderer meshRenderer)</div><div class="ttdoc">The shared materials of this object.</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00048">MeshRendererExtensions.cs:48</a></div></div>
+<div class="ttc" id="aa00320_html_ae4096c6af97e514ff90daed0d574eb66"><div class="ttname"><a href="a00320.html#ae4096c6af97e514ff90daed0d574eb66">UnityEngine.MeshRendererExtensions.materialOfObject</a></div><div class="ttdeci">static Material materialOfObject(this MeshRenderer meshRenderer)</div><div class="ttdoc">Returns the first instantiated Material assigned to the renderer.</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00012">MeshRendererExtensions.cs:12</a></div></div>
+<div class="ttc" id="aa00320_html_af12645f049d7068664f4d5de4056b98f"><div class="ttname"><a href="a00320.html#af12645f049d7068664f4d5de4056b98f">UnityEngine.MeshRendererExtensions.materialAsset</a></div><div class="ttdeci">static Material materialAsset(this MeshRenderer meshRenderer)</div><div class="ttdoc">The shared material of this object.</div><div class="ttdef"><b>Definition:</b> <a href="a00116_source.html#l00036">MeshRendererExtensions.cs:36</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

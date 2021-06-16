@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: ICollectionExtensions.cs Source File</title>
+<title>UnityEssentials: DebugExtensions.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,28 +67,25 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ICollectionExtensions.cs</div>  </div>
+<div class="title">DebugExtensions.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00092.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Linq;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00173.html">UnityEngine</a></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00295.html">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00295.html">ICollectionExtensions</a></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00179.html">UnityEngine</a></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00288.html">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00288.html">DebugExtensions</a></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="a00295.html#a10bd48d7036b2add873466e9e95640d2">   15</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T <a class="code" href="a00295.html#a10bd48d7036b2add873466e9e95640d2">RemoveFirst&lt;T&gt;</a>(<span class="keyword">this</span> ICollection&lt;T&gt; collection)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            T element = collection.FirstOrDefault();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">if</span> (element != <span class="keyword">null</span>)</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                collection.Remove(element);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">return</span> element;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="a00288.html#a0821450c1fb228200720f039327dd519">   17</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00288.html#a0821450c1fb228200720f039327dd519">LogEnumerable&lt;T&gt;</a>(<span class="keyword">this</span> Debug db, IEnumerable&lt;T&gt; enumerableToDebug, <span class="keywordtype">string</span> separator = <span class="stringliteral">&quot;, &quot;</span>,</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordtype">string</span> message = <span class="stringliteral">&quot;&quot;</span>, Object context = <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            enumerableToDebug.DebugLog(separator, message, context);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
-<div class="ttc" id="aa00173_html"><div class="ttname"><a href="a00173.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
-<div class="ttc" id="aa00295_html"><div class="ttname"><a href="a00295.html">UnityEngine.ICollectionExtensions</a></div><div class="ttdoc">Extensions for ICollection</div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00009">ICollectionExtensions.cs:10</a></div></div>
-<div class="ttc" id="aa00295_html_a10bd48d7036b2add873466e9e95640d2"><div class="ttname"><a href="a00295.html#a10bd48d7036b2add873466e9e95640d2">UnityEngine.ICollectionExtensions.RemoveFirst&lt; T &gt;</a></div><div class="ttdeci">static T RemoveFirst&lt; T &gt;(this ICollection&lt; T &gt; collection)</div><div class="ttdoc">Removes the first element of the collection.</div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00015">ICollectionExtensions.cs:15</a></div></div>
+<div class="ttc" id="aa00179_html"><div class="ttname"><a href="a00179.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
+<div class="ttc" id="aa00288_html"><div class="ttname"><a href="a00288.html">UnityEngine.DebugExtensions</a></div><div class="ttdoc">Extensions for Debug</div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00009">DebugExtensions.cs:10</a></div></div>
+<div class="ttc" id="aa00288_html_a0821450c1fb228200720f039327dd519"><div class="ttname"><a href="a00288.html#a0821450c1fb228200720f039327dd519">UnityEngine.DebugExtensions.LogEnumerable&lt; T &gt;</a></div><div class="ttdeci">static void LogEnumerable&lt; T &gt;(this Debug db, IEnumerable&lt; T &gt; enumerableToDebug, string separator=&quot;, &quot;, string message=&quot;&quot;, Object context=null)</div><div class="ttdoc">Creates a 'Debug.Log' message with all the contents in the enumerable.</div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00017">DebugExtensions.cs:17</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
