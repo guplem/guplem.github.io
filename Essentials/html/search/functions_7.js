@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['instantiatenewat_592',['InstantiateNewAt',['../a00368.html#a273e3aad6a275526203b6b828502462c',1,'UnityEngine::Pool']]],
+  ['instantiatenewat_592',['InstantiateNewAt',['../a00368.html#a06ded56f8fd41e3b66a201973d581cb6',1,'UnityEngine::PoolEssentials']]],
   ['intanimation_593',['IntAnimation',['../a00212.html#a2753a4ad702168bbbcab5ec55a241316',1,'UnityEngine.IntAnimation.IntAnimation()'],['../a00212.html#a2e4f5004ea1f378334d9c5c90e67b054',1,'UnityEngine.IntAnimation.IntAnimation(int intToAnimate, int destination, int origin, float duration=1f, Curve curve=Curve.EaseInOut, WrapMode wrapMode=WrapMode.Once)']]],
   ['invoke_594',['Invoke',['../a00348.html#af3a77290a927260e40ccbb7bcd0eedb6',1,'UnityEngine.DoN.Invoke()'],['../a00352.html#a263b55b62151dd52fb17b01132359505',1,'UnityEngine.DoOnce.Invoke()'],['../a00356.html#a048a690973569e819501305d00999ee6',1,'UnityEngine.FlipFlop.Invoke()'],['../a00360.html#a8d5e2879768e9b1746ee0141eab2cdf8',1,'UnityEngine.Sequence.Invoke()']]],
   ['isfilepath_595',['IsFilePath',['../a00396.html#a10cf6527a5c56377f7ded6a67c62d544',1,'UnityEngine::Utils']]],

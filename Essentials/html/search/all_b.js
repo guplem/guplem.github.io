@@ -4,7 +4,7 @@ var searchData=
   ['layermaskextensions_2ecs_183',['LayerMaskExtensions.cs',['../a00110.html',1,'']]],
   ['left_184',['Left',['../a00328.html#a4bb928c380d035624956d9e0f19c6991',1,'UnityEngine::RectTransformExtensions']]],
   ['linear_185',['Linear',['../a00179.html#a4bdc6a1f5ac3c6bc6afd8337038cceb6a32a843da6ea40ab3b17a3421ccdf671b',1,'UnityEngine']]],
-  ['load_186',['Load',['../a00368.html#a738b83a60b89c5256e92ee4e0f6e5a33',1,'UnityEngine::Pool']]],
+  ['load_186',['Load',['../a00368.html#af37fd6fd58ae827e8b192b3ddf9da844',1,'UnityEngine::PoolEssentials']]],
   ['load_3c_20t_20_3e_187',['Load&lt; T &gt;',['../a00380.html#a8795b7267f5f711b5884e3faadcdd8bb',1,'UnityEngine::SaveDataManager']]],
   ['log_188',['Log',['../a00248.html#a7d94345215c8dba483838569253b5d28',1,'UnityEngine::Console']]],
   ['logenumerable_3c_20t_20_3e_189',['LogEnumerable&lt; T &gt;',['../a00264.html#a3fb30fc0ca0345e5d083d310092bb5a2',1,'UnityEngine.DebugEssentials.LogEnumerable&lt; T &gt;()'],['../a00288.html#a0821450c1fb228200720f039327dd519',1,'UnityEngine.DebugExtensions.LogEnumerable&lt; T &gt;()']]],

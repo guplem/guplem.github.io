@@ -1,0 +1,6 @@
+<map id="UnityEngine.PoolEssentials.InstantiateNewAt" name="UnityEngine.PoolEssentials.InstantiateNewAt">
+<area shape="rect" id="node1" title="Instantiates an object for the pool." alt="" coords="328,56,613,83"/>
+<area shape="rect" id="node2" href="$a00368.html#af37fd6fd58ae827e8b192b3ddf9da844" title="Loads an objet to be later activated/used." alt="" coords="35,5,250,32"/>
+<area shape="rect" id="node3" href="$a00368.html#a55be8dd50b4256943c8e62315139f0b7" title="Creates a Pool instance." alt="" coords="5,56,280,83"/>
+<area shape="rect" id="node4" href="$a00368.html#a0dd5fef5f0f3de1ae113e336883782be" title="Activates an object from the pool." alt="" coords="29,107,256,133"/>
+</map>

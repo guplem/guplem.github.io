@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['defaultpositionandrotation_727',['defaultPositionAndRotation',['../a00368.html#a5bb8887604ecf8c752b5ec1e11fa4997',1,'UnityEngine::Pool']]],
+  ['defaultpositionandrotation_727',['defaultPositionAndRotation',['../a00368.html#a2d24bb3bb1ad2b4898b16bcd9e90c4ef',1,'UnityEngine::PoolEssentials']]],
   ['derivationiterations_728',['DerivationIterations',['../a00384.html#ac3d90a76dd33c73888fb06ef499f9dad',1,'Essentials::SaveData::SD_Encoder']]],
   ['destinationcamera_729',['destinationCamera',['../a00200.html#a277b8cdb5d8c4228e864fd0f6b33a104',1,'UnityEngine::CameraAnimation']]],
   ['destinationcolor_730',['destinationColor',['../a00204.html#adec122d76cae8b20babb7608d27969dd',1,'UnityEngine::ColorAnimation']]],
