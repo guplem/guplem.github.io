@@ -1,3 +1,4 @@
-<map id="Essentials.SaveData.SD_JsonSerializer" name="Essentials.SaveData.SD_JsonSerializer">
-<area shape="rect" id="node1" title="Json Serializer used by the SaveData class." alt="" coords="5,5,257,97"/>
+<map id="UnityEngine.TypeSerializable" name="UnityEngine.TypeSerializable">
+<area shape="rect" id="node1" title="Simple helper class that allows you to serialize System.Type objects" alt="" coords="5,145,196,399"/>
+<area shape="rect" id="node2" title=" " alt="" coords="67,5,134,83"/>
 </map>

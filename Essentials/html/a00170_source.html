@@ -104,10 +104,10 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00182.html">Essentials.SaveData</a></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00388.html">   38</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00388.html">SD_JsonSerializer</a></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00384.html">   38</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00384.html">SD_JsonSerializer</a></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00388.html#a1e7aa895bf381ba36cb6bf970206ba31">   48</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00388.html#a1e7aa895bf381ba36cb6bf970206ba31">Serialize&lt;T&gt;</a>(T obj, Stream stream, Encoding encoding)</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00384.html#a1e7aa895bf381ba36cb6bf970206ba31">   48</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00384.html#a1e7aa895bf381ba36cb6bf970206ba31">Serialize&lt;T&gt;</a>(T obj, Stream stream, Encoding encoding)</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">            #if !UNITY_WSA || !UNITY_WINRT</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="keywordflow">try</span></div>
@@ -130,7 +130,7 @@ $(function() {
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">            #endif</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00388.html#a55974697011e47fb9bdfb5ebb7ea1a01">   77</a></span>&#160;        <span class="keyword">public</span> T <a class="code" href="a00388.html#a55974697011e47fb9bdfb5ebb7ea1a01">Deserialize&lt;T&gt;</a>(Stream stream, Encoding encoding)</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00384.html#a55974697011e47fb9bdfb5ebb7ea1a01">   77</a></span>&#160;        <span class="keyword">public</span> T <a class="code" href="a00384.html#a55974697011e47fb9bdfb5ebb7ea1a01">Deserialize&lt;T&gt;</a>(Stream stream, Encoding encoding)</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            T result = <span class="keywordflow">default</span>(T);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">            #if !UNITY_WSA || !UNITY_WINRT</span></div>
@@ -163,9 +163,9 @@ $(function() {
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
 <div class="ttc" id="aa00179_html"><div class="ttname"><a href="a00179.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
 <div class="ttc" id="aa00182_html"><div class="ttname"><a href="a00182.html">Essentials.SaveData</a></div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00033">SD_Encoder.cs:34</a></div></div>
-<div class="ttc" id="aa00388_html"><div class="ttname"><a href="a00388.html">Essentials.SaveData.SD_JsonSerializer</a></div><div class="ttdoc">Json Serializer used by the SaveData class.</div><div class="ttdef"><b>Definition:</b> <a href="a00170_source.html#l00038">SD_JsonSerializer.cs:39</a></div></div>
-<div class="ttc" id="aa00388_html_a1e7aa895bf381ba36cb6bf970206ba31"><div class="ttname"><a href="a00388.html#a1e7aa895bf381ba36cb6bf970206ba31">Essentials.SaveData.SD_JsonSerializer.Serialize&lt; T &gt;</a></div><div class="ttdeci">void Serialize&lt; T &gt;(T obj, Stream stream, Encoding encoding)</div><div class="ttdoc">Serialize the specified object to stream with encoding.</div><div class="ttdef"><b>Definition:</b> <a href="a00170_source.html#l00048">SD_JsonSerializer.cs:48</a></div></div>
-<div class="ttc" id="aa00388_html_a55974697011e47fb9bdfb5ebb7ea1a01"><div class="ttname"><a href="a00388.html#a55974697011e47fb9bdfb5ebb7ea1a01">Essentials.SaveData.SD_JsonSerializer.Deserialize&lt; T &gt;</a></div><div class="ttdeci">T Deserialize&lt; T &gt;(Stream stream, Encoding encoding)</div><div class="ttdoc">Deserialize the specified object from stream using the encoding.</div><div class="ttdef"><b>Definition:</b> <a href="a00170_source.html#l00077">SD_JsonSerializer.cs:77</a></div></div>
+<div class="ttc" id="aa00384_html"><div class="ttname"><a href="a00384.html">Essentials.SaveData.SD_JsonSerializer</a></div><div class="ttdoc">Json Serializer used by the SaveData class.</div><div class="ttdef"><b>Definition:</b> <a href="a00170_source.html#l00038">SD_JsonSerializer.cs:39</a></div></div>
+<div class="ttc" id="aa00384_html_a1e7aa895bf381ba36cb6bf970206ba31"><div class="ttname"><a href="a00384.html#a1e7aa895bf381ba36cb6bf970206ba31">Essentials.SaveData.SD_JsonSerializer.Serialize&lt; T &gt;</a></div><div class="ttdeci">void Serialize&lt; T &gt;(T obj, Stream stream, Encoding encoding)</div><div class="ttdoc">Serialize the specified object to stream with encoding.</div><div class="ttdef"><b>Definition:</b> <a href="a00170_source.html#l00048">SD_JsonSerializer.cs:48</a></div></div>
+<div class="ttc" id="aa00384_html_a55974697011e47fb9bdfb5ebb7ea1a01"><div class="ttname"><a href="a00384.html#a55974697011e47fb9bdfb5ebb7ea1a01">Essentials.SaveData.SD_JsonSerializer.Deserialize&lt; T &gt;</a></div><div class="ttdeci">T Deserialize&lt; T &gt;(Stream stream, Encoding encoding)</div><div class="ttdoc">Deserialize the specified object from stream using the encoding.</div><div class="ttdef"><b>Definition:</b> <a href="a00170_source.html#l00077">SD_JsonSerializer.cs:77</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

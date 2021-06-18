@@ -1,3 +1,3 @@
-<map id="Essentials.SaveData.SD_Encoder" name="Essentials.SaveData.SD_Encoder">
-<area shape="rect" id="node1" title="Simple Encoder used by the SaveData class." alt="" coords="5,5,247,127"/>
+<map id="Essentials.SaveData.SD_JsonSerializer" name="Essentials.SaveData.SD_JsonSerializer">
+<area shape="rect" id="node1" title="Json Serializer used by the SaveData class." alt="" coords="5,5,257,97"/>
 </map>

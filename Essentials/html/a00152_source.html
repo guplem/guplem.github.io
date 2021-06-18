@@ -73,51 +73,46 @@ $(function() {
 <a href="a00152.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> UnityEditor;</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00179.html">UnityEngine</a>;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00180.html">Essentials</a></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00364.html">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00364.html">EssentialsHelp</a></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Rate the asset! ❤️&quot;</span>, <span class="keyword">false</span>, 0)]</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="a00364.html#adc8f03b9dbb3ddb30f139449c25e0e1f">   15</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00364.html#adc8f03b9dbb3ddb30f139449c25e0e1f">OpenLinkRateAsset</a>(){</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://assetstore.unity.com/packages/slug/161141&quot;</span>);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Give feedback or any ideas! 💡&quot;</span>,<span class="keyword">false</span>, 0)]</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="a00364.html#a7b7fcafbcd876c19a67357f720978d4f">   22</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00364.html#a7b7fcafbcd876c19a67357f720978d4f">OpenLinkFeedback</a>(){</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://forms.gle/diuUu6nZHAf5T67C9&quot;</span>);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        }        </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#if UNITY_EDITOR</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00180.html">Essentials</a></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span>EssentialsHelp</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Rate the asset! ❤️&quot;</span>, <span class="keyword">false</span>, 0)]</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> OpenLinkRateAsset(){</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://assetstore.unity.com/packages/slug/161141&quot;</span>);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Give feedback or any ideas! 💡&quot;</span>,<span class="keyword">false</span>, 0)]</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> OpenLinkFeedback(){</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://forms.gle/diuUu6nZHAf5T67C9&quot;</span>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }        </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Documentation&quot;</span>,<span class="keyword">false</span>, 50)]</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00364.html#a581056c86322e4fb836e9f995b59e505">   31</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00364.html#a581056c86322e4fb836e9f995b59e505">OpenLinkDocumentation</a>(){</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://docs.google.com/document/d/1-strmOzT7ka8uO8hEH_W3Xjlr-ajjKcJ0b6h5KYnpJQ/edit?usp=sharing&quot;</span>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Scripting Documentation&quot;</span>,<span class="keyword">false</span>, 50)]</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00364.html#ad4c396dad6f805752bb506bbe64b40e7">   38</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00364.html#ad4c396dad6f805752bb506bbe64b40e7">OpenLinkScriptingDocumentation</a>(){</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://guplem.github.io/Essentials/html/&quot;</span>);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Scripting Documentation&quot;</span>,<span class="keyword">false</span>, 50)]</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00364.html#ab0acb21210f5c656abbeea1a262fbe41">   46</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00364.html#ab0acb21210f5c656abbeea1a262fbe41">OpenLinkGitHubRepository</a>(){</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://github.com/guplem/UnityEssentials&quot;</span>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/About me  : )&quot;</span>, <span class="keyword">false</span>, 100)]</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00364.html#ad91ed6addef03c10f77d0d8fcd04ea51">   54</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00364.html#ad91ed6addef03c10f77d0d8fcd04ea51">OpenLinkAboutMe</a>(){</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://TriunityStudios.com&quot;</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Documentation&quot;</span>,<span class="keyword">false</span>, 50)]</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> OpenLinkDocumentation(){</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://docs.google.com/document/d/1-strmOzT7ka8uO8hEH_W3Xjlr-ajjKcJ0b6h5KYnpJQ/edit?usp=sharing&quot;</span>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Scripting Documentation&quot;</span>,<span class="keyword">false</span>, 50)]</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> OpenLinkScriptingDocumentation(){</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://guplem.github.io/Essentials/html/&quot;</span>);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/Scripting Documentation&quot;</span>,<span class="keyword">false</span>, 50)]</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> OpenLinkGitHubRepository(){</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://github.com/guplem/UnityEssentials&quot;</span>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        [MenuItem(<span class="stringliteral">&quot;Help/Essentials/About me  : )&quot;</span>, <span class="keyword">false</span>, 100)]</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> OpenLinkAboutMe(){</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            Application.OpenURL(<span class="stringliteral">&quot;https://TriunityStudios.com&quot;</span>);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aa00179_html"><div class="ttname"><a href="a00179.html">UnityEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00003">CameraAnimation.cs:4</a></div></div>
 <div class="ttc" id="aa00180_html"><div class="ttname"><a href="a00180.html">Essentials</a></div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00003">Adjustment.cs:4</a></div></div>
-<div class="ttc" id="aa00364_html"><div class="ttname"><a href="a00364.html">Essentials.EssentialsHelp</a></div><div class="ttdoc">Useful information for the usage and understanding of the asset.</div><div class="ttdef"><b>Definition:</b> <a href="a00152_source.html#l00009">EssentialsHelp.cs:10</a></div></div>
-<div class="ttc" id="aa00364_html_a581056c86322e4fb836e9f995b59e505"><div class="ttname"><a href="a00364.html#a581056c86322e4fb836e9f995b59e505">Essentials.EssentialsHelp.OpenLinkDocumentation</a></div><div class="ttdeci">static void OpenLinkDocumentation()</div><div class="ttdoc">Opens a web page containing the latest documentation available for the asset</div><div class="ttdef"><b>Definition:</b> <a href="a00152_source.html#l00031">EssentialsHelp.cs:31</a></div></div>
-<div class="ttc" id="aa00364_html_a7b7fcafbcd876c19a67357f720978d4f"><div class="ttname"><a href="a00364.html#a7b7fcafbcd876c19a67357f720978d4f">Essentials.EssentialsHelp.OpenLinkFeedback</a></div><div class="ttdeci">static void OpenLinkFeedback()</div><div class="ttdoc">Opens a web page with a form to give feedback related to the asset</div><div class="ttdef"><b>Definition:</b> <a href="a00152_source.html#l00022">EssentialsHelp.cs:22</a></div></div>
-<div class="ttc" id="aa00364_html_ab0acb21210f5c656abbeea1a262fbe41"><div class="ttname"><a href="a00364.html#ab0acb21210f5c656abbeea1a262fbe41">Essentials.EssentialsHelp.OpenLinkGitHubRepository</a></div><div class="ttdeci">static void OpenLinkGitHubRepository()</div><div class="ttdoc">Opens a web page containing the GitHub repository of the asset</div><div class="ttdef"><b>Definition:</b> <a href="a00152_source.html#l00046">EssentialsHelp.cs:46</a></div></div>
-<div class="ttc" id="aa00364_html_ad4c396dad6f805752bb506bbe64b40e7"><div class="ttname"><a href="a00364.html#ad4c396dad6f805752bb506bbe64b40e7">Essentials.EssentialsHelp.OpenLinkScriptingDocumentation</a></div><div class="ttdeci">static void OpenLinkScriptingDocumentation()</div><div class="ttdoc">Opens a web page containing the documentation related to the scripts of the asset</div><div class="ttdef"><b>Definition:</b> <a href="a00152_source.html#l00038">EssentialsHelp.cs:38</a></div></div>
-<div class="ttc" id="aa00364_html_ad91ed6addef03c10f77d0d8fcd04ea51"><div class="ttname"><a href="a00364.html#ad91ed6addef03c10f77d0d8fcd04ea51">Essentials.EssentialsHelp.OpenLinkAboutMe</a></div><div class="ttdeci">static void OpenLinkAboutMe()</div><div class="ttdoc">Opens the web page of the creator of the asset</div><div class="ttdef"><b>Definition:</b> <a href="a00152_source.html#l00054">EssentialsHelp.cs:54</a></div></div>
-<div class="ttc" id="aa00364_html_adc8f03b9dbb3ddb30f139449c25e0e1f"><div class="ttname"><a href="a00364.html#adc8f03b9dbb3ddb30f139449c25e0e1f">Essentials.EssentialsHelp.OpenLinkRateAsset</a></div><div class="ttdeci">static void OpenLinkRateAsset()</div><div class="ttdoc">Opens the web page of the asset in the Asset Store</div><div class="ttdef"><b>Definition:</b> <a href="a00152_source.html#l00015">EssentialsHelp.cs:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

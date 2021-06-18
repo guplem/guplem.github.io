@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UnityEssentials: UnityEngine.SaveDataManager Class Reference</title>
+<title>UnityEssentials: Essentials.SaveData.SD_Encoder Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,210 +62,166 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00179.html">UnityEngine</a></li><li class="navelem"><a class="el" href="a00380.html">SaveDataManager</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00180.html">Essentials</a></li><li class="navelem"><a class="el" href="a00182.html">SaveData</a></li><li class="navelem"><a class="el" href="a00380.html">SD_Encoder</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="a00377.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">UnityEngine.SaveDataManager Class Reference</div>  </div>
+<div class="title">Essentials.SaveData.SD_Encoder Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A class to save almost any kind of data on almost all devices (not heavily tested).  
+<p>Simple Encoder used by the <a class="el" href="a00182.html">SaveData</a> class.  
  <a href="a00380.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for UnityEngine.SaveDataManager:</div>
+Collaboration diagram for Essentials.SaveData.SD_Encoder:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00378.png" border="0" usemap="#aUnityEngine_8SaveDataManager_coll__map" alt="Collaboration graph"/></div>
-<map name="aUnityEngine_8SaveDataManager_coll__map" id="aUnityEngine_8SaveDataManager_coll__map">
-<area shape="rect" title="A class to save almost any kind of data on almost all devices (not heavily tested)." alt="" coords="5,5,207,171"/>
+<div class="center"><img src="a00378.png" border="0" usemap="#aEssentials_8SaveData_8SD__Encoder_coll__map" alt="Collaboration graph"/></div>
+<map name="aEssentials_8SaveData_8SD__Encoder_coll__map" id="aEssentials_8SaveData_8SD__Encoder_coll__map">
+<area shape="rect" title="Simple Encoder used by the SaveData class." alt="" coords="5,5,247,127"/>
 </map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9ca1fa9cef36ac5fe6f493a9aabca2b4"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a9ca1fa9cef36ac5fe6f493a9aabca2b4">OpenSavedDataFolder</a> ()</td></tr>
-<tr class="memdesc:a9ca1fa9cef36ac5fe6f493a9aabca2b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens/reveals the folder containing the saved data.  <a href="a00380.html#a9ca1fa9cef36ac5fe6f493a9aabca2b4">More...</a><br /></td></tr>
-<tr class="separator:a9ca1fa9cef36ac5fe6f493a9aabca2b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a548de856d1e37fbe7ce9b744350387e5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a548de856d1e37fbe7ce9b744350387e5">Save&lt; T &gt;</a> (T objectToSave, string filename, string encryptionPassword=null, Encoding encoding=null)</td></tr>
-<tr class="memdesc:a548de856d1e37fbe7ce9b744350387e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves data using the identifier.  <a href="a00380.html#a548de856d1e37fbe7ce9b744350387e5">More...</a><br /></td></tr>
-<tr class="separator:a548de856d1e37fbe7ce9b744350387e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8795b7267f5f711b5884e3faadcdd8bb"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a8795b7267f5f711b5884e3faadcdd8bb">Load&lt; T &gt;</a> (string filename, T defaultValue, string encryptionPassword=null, Encoding encoding=null, bool supressFileNotFoundWarning=false)</td></tr>
-<tr class="memdesc:a8795b7267f5f711b5884e3faadcdd8bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads data using identifier.  <a href="a00380.html#a8795b7267f5f711b5884e3faadcdd8bb">More...</a><br /></td></tr>
-<tr class="separator:a8795b7267f5f711b5884e3faadcdd8bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33bacc3991904042b3389b125e6fe911"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a33bacc3991904042b3389b125e6fe911">Exists</a> (string filename)</td></tr>
-<tr class="memdesc:a33bacc3991904042b3389b125e6fe911"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the specified identifier exists or not.  <a href="a00380.html#a33bacc3991904042b3389b125e6fe911">More...</a><br /></td></tr>
-<tr class="separator:a33bacc3991904042b3389b125e6fe911"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2640a1f5271e28dfca17f0974204af43"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a2640a1f5271e28dfca17f0974204af43">Delete</a> (string filename)</td></tr>
-<tr class="memdesc:a2640a1f5271e28dfca17f0974204af43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the specified identifier and path.  <a href="a00380.html#a2640a1f5271e28dfca17f0974204af43">More...</a><br /></td></tr>
-<tr class="separator:a2640a1f5271e28dfca17f0974204af43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f09deb32c88a770548b6dbd03ce63df"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a6f09deb32c88a770548b6dbd03ce63df">DeleteAll</a> ()</td></tr>
-<tr class="memdesc:a6f09deb32c88a770548b6dbd03ce63df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes all.  <a href="a00380.html#a6f09deb32c88a770548b6dbd03ce63df">More...</a><br /></td></tr>
-<tr class="separator:a6f09deb32c88a770548b6dbd03ce63df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a2aac9b4569d0c7019d26a058bb4555e4"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a2aac9b4569d0c7019d26a058bb4555e4">saveDataPath</a> = Application.persistentDataPath</td></tr>
-<tr class="separator:a2aac9b4569d0c7019d26a058bb4555e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a6e0c4171be00c2341f168656abfed3fb"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a6e0c4171be00c2341f168656abfed3fb">Encode</a> (string input, string password)</td></tr>
+<tr class="memdesc:a6e0c4171be00c2341f168656abfed3fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode the specified input with password.  <a href="a00380.html#a6e0c4171be00c2341f168656abfed3fb">More...</a><br /></td></tr>
+<tr class="separator:a6e0c4171be00c2341f168656abfed3fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a9b24b8c195fae929c88a27cf4ea539"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a0a9b24b8c195fae929c88a27cf4ea539">Decode</a> (string input, string password)</td></tr>
+<tr class="memdesc:a0a9b24b8c195fae929c88a27cf4ea539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decode the specified input with password.  <a href="a00380.html#a0a9b24b8c195fae929c88a27cf4ea539">More...</a><br /></td></tr>
+<tr class="separator:a0a9b24b8c195fae929c88a27cf4ea539"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a17296ae6565f150dad52918f6ec64576"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a17296ae6565f150dad52918f6ec64576">GetFilePath</a> (string filename)</td></tr>
-<tr class="separator:a17296ae6565f150dad52918f6ec64576"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a302124fa9b60ba1e890d7911006d0145"><td class="memItemLeft" align="right" valign="top">static byte[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a302124fa9b60ba1e890d7911006d0145">Generate256BitsOfRandomEntropy</a> ()</td></tr>
+<tr class="separator:a302124fa9b60ba1e890d7911006d0145"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a8ecb9351fe115899f3e713663bd6332a"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#a8ecb9351fe115899f3e713663bd6332a">Keysize</a> = 256</td></tr>
+<tr class="separator:a8ecb9351fe115899f3e713663bd6332a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3d90a76dd33c73888fb06ef499f9dad"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00380.html#ac3d90a76dd33c73888fb06ef499f9dad">DerivationIterations</a> = 1000</td></tr>
+<tr class="separator:ac3d90a76dd33c73888fb06ef499f9dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class to save almost any kind of data on almost all devices (not heavily tested). </p>
-
-<p class="definition">Definition at line <a class="el" href="a00164_source.html#l00037">37</a> of file <a class="el" href="a00164_source.html">SaveDataManager.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2640a1f5271e28dfca17f0974204af43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2640a1f5271e28dfca17f0974204af43">&#9670;&nbsp;</a></span>Delete()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void UnityEngine.SaveDataManager.Delete </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Delete the specified identifier and path. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">filename</td><td>Identifier of the file to delete. Can route to a folder relative to the Application.persistentDataPath.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00164_source.html#l00274">274</a> of file <a class="el" href="a00164_source.html">SaveDataManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00380_a2640a1f5271e28dfca17f0974204af43_cgraph.png" border="0" usemap="#aa00380_a2640a1f5271e28dfca17f0974204af43_cgraph" alt=""/></div>
-<map name="aa00380_a2640a1f5271e28dfca17f0974204af43_cgraph" id="aa00380_a2640a1f5271e28dfca17f0974204af43_cgraph">
-<area shape="rect" title="Delete the specified identifier and path." alt="" coords="5,31,248,57"/>
-<area shape="rect" href="a00380.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="296,5,571,32"/>
-<area shape="rect" href="a00396.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="329,56,537,83"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a6f09deb32c88a770548b6dbd03ce63df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f09deb32c88a770548b6dbd03ce63df">&#9670;&nbsp;</a></span>DeleteAll()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void UnityEngine.SaveDataManager.DeleteAll </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Deletes all. </p>
-<p>Be aware, it will delete all files found in the '</p>
+<div class="textblock"><p>Simple Encoder used by the <a class="el" href="a00182.html">SaveData</a> class. </p>
+<p>Grabbed from <a href="https://stackoverflow.com/questions/10168240/encrypting-decrypting-a-string-in-c-sharp">https://stackoverflow.com/questions/10168240/encrypting-decrypting-a-string-in-c-sharp</a></p>
 <p>&gt;</p>
 
-<p class="definition">Definition at line <a class="el" href="a00164_source.html#l00305">305</a> of file <a class="el" href="a00164_source.html">SaveDataManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00167_source.html#l00040">40</a> of file <a class="el" href="a00167_source.html">SD_Encoder.cs</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0a9b24b8c195fae929c88a27cf4ea539"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a9b24b8c195fae929c88a27cf4ea539">&#9670;&nbsp;</a></span>Decode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Essentials.SaveData.SD_Encoder.Decode </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>password</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Decode the specified input with password. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td>Input.</td></tr>
+    <tr><td class="paramname">password</td><td>Password.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00167_source.html#l00092">92</a> of file <a class="el" href="a00167_source.html">SD_Encoder.cs</a>.</p>
 <div class="dynheader">
-Here is the call graph for this function:</div>
+Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00380_a6f09deb32c88a770548b6dbd03ce63df_cgraph.png" border="0" usemap="#aa00380_a6f09deb32c88a770548b6dbd03ce63df_cgraph" alt=""/></div>
-<map name="aa00380_a6f09deb32c88a770548b6dbd03ce63df_cgraph" id="aa00380_a6f09deb32c88a770548b6dbd03ce63df_cgraph">
-<area shape="rect" title="Deletes all." alt="" coords="5,5,263,32"/>
-<area shape="rect" href="a00396.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="311,5,519,32"/>
+<div class="center"><img src="a00380_a0a9b24b8c195fae929c88a27cf4ea539_icgraph.png" border="0" usemap="#aa00380_a0a9b24b8c195fae929c88a27cf4ea539_icgraph" alt=""/></div>
+<map name="aa00380_a0a9b24b8c195fae929c88a27cf4ea539_icgraph" id="aa00380_a0a9b24b8c195fae929c88a27cf4ea539_icgraph">
+<area shape="rect" title="Decode the specified input with password." alt="" coords="317,5,584,32"/>
+<area shape="rect" href="a00376.html#a8795b7267f5f711b5884e3faadcdd8bb" title="Loads data using identifier." alt="" coords="5,5,269,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a33bacc3991904042b3389b125e6fe911"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33bacc3991904042b3389b125e6fe911">&#9670;&nbsp;</a></span>Exists()</h2>
+<a id="a6e0c4171be00c2341f168656abfed3fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e0c4171be00c2341f168656abfed3fb">&#9670;&nbsp;</a></span>Encode()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool UnityEngine.SaveDataManager.Exists </td>
+          <td class="memname">string Essentials.SaveData.SD_Encoder.Encode </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>password</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Checks whether the specified identifier exists or not. </p>
+<p>Encode the specified input with password. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filename</td><td>Identifier of the file to check. Can route to a folder relative to the Application.persistentDataPath.</td></tr>
+    <tr><td class="paramname">input</td><td>Input.</td></tr>
+    <tr><td class="paramname">password</td><td>Password.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="a00164_source.html#l00228">228</a> of file <a class="el" href="a00164_source.html">SaveDataManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00167_source.html#l00051">51</a> of file <a class="el" href="a00167_source.html">SD_Encoder.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00380_a33bacc3991904042b3389b125e6fe911_cgraph.png" border="0" usemap="#aa00380_a33bacc3991904042b3389b125e6fe911_cgraph" alt=""/></div>
-<map name="aa00380_a33bacc3991904042b3389b125e6fe911_cgraph" id="aa00380_a33bacc3991904042b3389b125e6fe911_cgraph">
-<area shape="rect" title="Checks whether the specified identifier exists or not." alt="" coords="5,31,248,57"/>
-<area shape="rect" href="a00380.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="296,5,571,32"/>
-<area shape="rect" href="a00396.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="329,56,537,83"/>
+<div class="center"><img src="a00380_a6e0c4171be00c2341f168656abfed3fb_cgraph.png" border="0" usemap="#aa00380_a6e0c4171be00c2341f168656abfed3fb_cgraph" alt=""/></div>
+<map name="aa00380_a6e0c4171be00c2341f168656abfed3fb_cgraph" id="aa00380_a6e0c4171be00c2341f168656abfed3fb_cgraph">
+<area shape="rect" title="Encode the specified input with password." alt="" coords="5,5,272,32"/>
+<area shape="rect" href="a00380.html#a302124fa9b60ba1e890d7911006d0145" title=" " alt="" coords="320,5,747,32"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00380_a33bacc3991904042b3389b125e6fe911_icgraph.png" border="0" usemap="#aa00380_a33bacc3991904042b3389b125e6fe911_icgraph" alt=""/></div>
-<map name="aa00380_a33bacc3991904042b3389b125e6fe911_icgraph" id="aa00380_a33bacc3991904042b3389b125e6fe911_icgraph">
-<area shape="rect" title="Checks whether the specified identifier exists or not." alt="" coords="317,5,560,32"/>
-<area shape="rect" href="a00380.html#a8795b7267f5f711b5884e3faadcdd8bb" title="Loads data using identifier." alt="" coords="5,5,269,32"/>
+<div class="center"><img src="a00380_a6e0c4171be00c2341f168656abfed3fb_icgraph.png" border="0" usemap="#aa00380_a6e0c4171be00c2341f168656abfed3fb_icgraph" alt=""/></div>
+<map name="aa00380_a6e0c4171be00c2341f168656abfed3fb_icgraph" id="aa00380_a6e0c4171be00c2341f168656abfed3fb_icgraph">
+<area shape="rect" title="Encode the specified input with password." alt="" coords="317,5,584,32"/>
+<area shape="rect" href="a00376.html#a548de856d1e37fbe7ce9b744350387e5" title="Saves data using the identifier." alt="" coords="5,5,269,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a17296ae6565f150dad52918f6ec64576"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17296ae6565f150dad52918f6ec64576">&#9670;&nbsp;</a></span>GetFilePath()</h2>
+<a id="a302124fa9b60ba1e890d7911006d0145"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a302124fa9b60ba1e890d7911006d0145">&#9670;&nbsp;</a></span>Generate256BitsOfRandomEntropy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -274,10 +230,9 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static string UnityEngine.SaveDataManager.GetFilePath </td>
+          <td class="memname">static byte [] Essentials.SaveData.SD_Encoder.Generate256BitsOfRandomEntropy </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -288,219 +243,23 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00164_source.html#l00264">264</a> of file <a class="el" href="a00164_source.html">SaveDataManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00167_source.html#l00127">127</a> of file <a class="el" href="a00167_source.html">SD_Encoder.cs</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00380_a17296ae6565f150dad52918f6ec64576_icgraph.png" border="0" usemap="#aa00380_a17296ae6565f150dad52918f6ec64576_icgraph" alt=""/></div>
-<map name="aa00380_a17296ae6565f150dad52918f6ec64576_icgraph" id="aa00380_a17296ae6565f150dad52918f6ec64576_icgraph">
-<area shape="rect" title=" " alt="" coords="629,81,904,108"/>
-<area shape="rect" href="a00380.html#a2640a1f5271e28dfca17f0974204af43" title="Delete the specified identifier and path." alt="" coords="328,5,571,32"/>
-<area shape="rect" href="a00380.html#a33bacc3991904042b3389b125e6fe911" title="Checks whether the specified identifier exists or not." alt="" coords="328,56,571,83"/>
-<area shape="rect" href="a00380.html#a8795b7267f5f711b5884e3faadcdd8bb" title="Loads data using identifier." alt="" coords="5,81,269,108"/>
-<area shape="rect" href="a00380.html#a548de856d1e37fbe7ce9b744350387e5" title="Saves data using the identifier." alt="" coords="317,157,581,184"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a8795b7267f5f711b5884e3faadcdd8bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8795b7267f5f711b5884e3faadcdd8bb">&#9670;&nbsp;</a></span>Load&lt; T &gt;()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static T UnityEngine.SaveDataManager.Load&lt; T &gt; </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>defaultValue</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>encryptionPassword</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Encoding&#160;</td>
-          <td class="paramname"><em>encoding</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>supressFileNotFoundWarning</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Loads data using identifier. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">filename</td><td>Identifier of the file containing the data. Can route to a folder relative to the Application.persistentDataPath.</td></tr>
-    <tr><td class="paramname">defaultValue</td><td>Default Value. Used in case the saved data is not found.</td></tr>
-    <tr><td class="paramname">encryptionPassword</td><td>Encryption Password (set it to the same password you used to save it).</td></tr>
-    <tr><td class="paramname">encoding</td><td>Encoding.</td></tr>
-    <tr><td class="paramname">supressFileNotFoundWarning</td><td>Should the warning be disabled so if the desired data is not found no warning is created? Set it to <code>True</code> for hiding the warning.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>The objectToSave's type.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00164_source.html#l00146">146</a> of file <a class="el" href="a00164_source.html">SaveDataManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00380_a8795b7267f5f711b5884e3faadcdd8bb_cgraph.png" border="0" usemap="#aa00380_a8795b7267f5f711b5884e3faadcdd8bb_cgraph" alt=""/></div>
-<map name="aa00380_a8795b7267f5f711b5884e3faadcdd8bb_cgraph" id="aa00380_a8795b7267f5f711b5884e3faadcdd8bb_cgraph">
-<area shape="rect" title="Loads data using identifier." alt="" coords="5,81,269,108"/>
-<area shape="rect" href="a00384.html#a0a9b24b8c195fae929c88a27cf4ea539" title="Decode the specified input with password." alt="" coords="317,5,584,32"/>
-<area shape="rect" href="a00380.html#a33bacc3991904042b3389b125e6fe911" title="Checks whether the specified identifier exists or not." alt="" coords="329,107,572,133"/>
-<area shape="rect" href="a00380.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="632,81,907,108"/>
-<area shape="rect" href="a00396.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="665,144,873,171"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a9ca1fa9cef36ac5fe6f493a9aabca2b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ca1fa9cef36ac5fe6f493a9aabca2b4">&#9670;&nbsp;</a></span>OpenSavedDataFolder()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void UnityEngine.SaveDataManager.OpenSavedDataFolder </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Opens/reveals the folder containing the saved data. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00164_source.html#l00045">45</a> of file <a class="el" href="a00164_source.html">SaveDataManager.cs</a>.</p>
-
-</div>
-</div>
-<a id="a548de856d1e37fbe7ce9b744350387e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a548de856d1e37fbe7ce9b744350387e5">&#9670;&nbsp;</a></span>Save&lt; T &gt;()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void UnityEngine.SaveDataManager.Save&lt; T &gt; </td>
-          <td>(</td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>objectToSave</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>encryptionPassword</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Encoding&#160;</td>
-          <td class="paramname"><em>encoding</em> = <code>null</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Saves data using the identifier. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">filename</td><td>Identifier of the file containing the data. Can route to a folder relative to the Application.persistentDataPath.</td></tr>
-    <tr><td class="paramname">objectToSave</td><td>Object to save.</td></tr>
-    <tr><td class="paramname">encryptionPassword</td><td>Encryption Password.</td></tr>
-    <tr><td class="paramname">encoding</td><td>Encoding.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>The objectToSave's type.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00164_source.html#l00058">58</a> of file <a class="el" href="a00164_source.html">SaveDataManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00380_a548de856d1e37fbe7ce9b744350387e5_cgraph.png" border="0" usemap="#aa00380_a548de856d1e37fbe7ce9b744350387e5_cgraph" alt=""/></div>
-<map name="aa00380_a548de856d1e37fbe7ce9b744350387e5_cgraph" id="aa00380_a548de856d1e37fbe7ce9b744350387e5_cgraph">
-<area shape="rect" title="Saves data using the identifier." alt="" coords="5,56,269,83"/>
-<area shape="rect" href="a00384.html#a6e0c4171be00c2341f168656abfed3fb" title="Encode the specified input with password." alt="" coords="321,5,588,32"/>
-<area shape="rect" href="a00380.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="317,56,592,83"/>
-<area shape="rect" href="a00396.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="351,107,559,133"/>
-<area shape="rect" href="a00384.html#a302124fa9b60ba1e890d7911006d0145" title=" " alt="" coords="640,5,1067,32"/>
+<div class="center"><img src="a00380_a302124fa9b60ba1e890d7911006d0145_icgraph.png" border="0" usemap="#aa00380_a302124fa9b60ba1e890d7911006d0145_icgraph" alt=""/></div>
+<map name="aa00380_a302124fa9b60ba1e890d7911006d0145_icgraph" id="aa00380_a302124fa9b60ba1e890d7911006d0145_icgraph">
+<area shape="rect" title=" " alt="" coords="632,5,1059,32"/>
+<area shape="rect" href="a00380.html#a6e0c4171be00c2341f168656abfed3fb" title="Encode the specified input with password." alt="" coords="317,5,584,32"/>
+<area shape="rect" href="a00376.html#a548de856d1e37fbe7ce9b744350387e5" title="Saves data using the identifier." alt="" coords="5,5,269,32"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2aac9b4569d0c7019d26a058bb4555e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2aac9b4569d0c7019d26a058bb4555e4">&#9670;&nbsp;</a></span>saveDataPath</h2>
+<a id="ac3d90a76dd33c73888fb06ef499f9dad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3d90a76dd33c73888fb06ef499f9dad">&#9670;&nbsp;</a></span>DerivationIterations</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -509,22 +268,46 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">string UnityEngine.SaveDataManager.saveDataPath = Application.persistentDataPath</td>
+          <td class="memname">const int Essentials.SaveData.SD_Encoder.DerivationIterations = 1000</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00164_source.html#l00039">39</a> of file <a class="el" href="a00164_source.html">SaveDataManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00167_source.html#l00044">44</a> of file <a class="el" href="a00167_source.html">SD_Encoder.cs</a>.</p>
+
+</div>
+</div>
+<a id="a8ecb9351fe115899f3e713663bd6332a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ecb9351fe115899f3e713663bd6332a">&#9670;&nbsp;</a></span>Keysize</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int Essentials.SaveData.SD_Encoder.Keysize = 256</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00167_source.html#l00043">43</a> of file <a class="el" href="a00167_source.html">SD_Encoder.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00164_source.html">SaveDataManager.cs</a></li>
+<li><a class="el" href="a00167_source.html">SD_Encoder.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

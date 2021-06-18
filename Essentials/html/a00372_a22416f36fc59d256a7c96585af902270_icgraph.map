@@ -1,0 +1,6 @@
+<map id="UnityEngine.RandomEssentials.GetRandomFloat" name="UnityEngine.RandomEssentials.GetRandomFloat">
+<area shape="rect" id="node1" title="Returns a random float between 0 (included) and 1 (excluded)" alt="" coords="376,56,683,83"/>
+<area shape="rect" id="node2" href="$a00372.html#a82f0f65b0d816e7172929c12980c503f" title=" " alt="" coords="23,5,310,32"/>
+<area shape="rect" id="node3" href="$a00372.html#a46b1f25c644ffbb4be09eb84ae280337" title="Returns a random Vector2 with each parameter within a specified range." alt="" coords="5,56,328,83"/>
+<area shape="rect" id="node4" href="$a00372.html#ac6d7d8da2c7add0951441191138f2091" title="Returns a random Vector3 with each parameter within a specified range." alt="" coords="5,107,328,133"/>
+</map>

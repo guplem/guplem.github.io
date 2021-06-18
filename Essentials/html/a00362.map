@@ -1,3 +1,6 @@
-<map id="Essentials.EssentialsHelp" name="Essentials.EssentialsHelp">
-<area shape="rect" id="node1" title="Useful information for the usage and understanding of the asset." alt="" coords="5,5,240,156"/>
+<map id="UnityEngine.PoolEssentials" name="UnityEngine.PoolEssentials">
+<area shape="rect" id="node1" title="Allows GameObjects pooling by reusing pre&#45;instantiated GameObjects" alt="" coords="173,580,401,863"/>
+<area shape="rect" id="node2" href="$a00372.html" title="An easier to use and a feature&#45;rich class to generate pseudo&#45;random results." alt="" coords="5,132,248,517"/>
+<area shape="rect" id="node3" title=" " alt="" coords="65,5,188,83"/>
+<area shape="rect" id="node4" href="$a00368.html" title="Class to handle the default position and rotation where the objects are first instantiated" alt="" coords="273,271,618,378"/>
 </map>

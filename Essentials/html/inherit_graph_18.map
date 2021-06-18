@@ -1,12 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00232.html" title="Base interface to create simple animations of any element." alt="" coords="5,183,203,209"/>
-<area shape="rect" id="node2" href="$a00236.html" title="Base class to create simple animations of any element." alt="" coords="251,183,445,209"/>
-<area shape="rect" id="node3" href="$a00200.html" title="Allows the animation of Camera components." alt="" coords="513,5,712,32"/>
-<area shape="rect" id="node4" href="$a00204.html" title="Allows the animation of a Color." alt="" coords="521,56,705,83"/>
-<area shape="rect" id="node5" href="$a00208.html" title="Allows the animation of a float." alt="" coords="521,107,704,133"/>
-<area shape="rect" id="node6" href="$a00212.html" title="Allows the animation of an int." alt="" coords="529,157,697,184"/>
-<area shape="rect" id="node7" href="$a00216.html" title="Allows the animation of RectTransform components." alt="" coords="493,208,732,235"/>
-<area shape="rect" id="node8" href="$a00220.html" title="Allows the animation of Transform components." alt="" coords="507,259,718,285"/>
-<area shape="rect" id="node9" href="$a00224.html" title="Allows the animation of a Vector2." alt="" coords="513,309,712,336"/>
-<area shape="rect" id="node10" href="$a00228.html" title="Allows the animation of a Vector3." alt="" coords="513,360,712,387"/>
+<area shape="rect" id="node1" href="$a00312.html" title="Extensions for LayerMask" alt="" coords="5,5,231,32"/>
 </map>

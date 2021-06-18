@@ -1,0 +1,4 @@
+<map id="UnityEngine.PoolEssentials.Disable" name="UnityEngine.PoolEssentials.Disable">
+<area shape="rect" id="node1" title="Disables the gameObject in the given index" alt="" coords="5,5,236,32"/>
+<area shape="rect" id="node2" href="$a00364.html#a283b9e27bbc8e5447ea2ea1b6c340a46" title="Disables the given gameObject if it belongs to the pool." alt="" coords="284,5,515,32"/>
+</map>

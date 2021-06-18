@@ -1,3 +1,3 @@
-<map id="UnityEngine.SaveDataManager" name="UnityEngine.SaveDataManager">
-<area shape="rect" id="node1" title="A class to save almost any kind of data on almost all devices (not heavily tested)." alt="" coords="5,5,207,171"/>
+<map id="Essentials.SaveData.SD_Encoder" name="Essentials.SaveData.SD_Encoder">
+<area shape="rect" id="node1" title="Simple Encoder used by the SaveData class." alt="" coords="5,5,247,127"/>
 </map>
