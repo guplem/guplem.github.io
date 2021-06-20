@@ -1,7 +1,7 @@
 <map id="Thoughts.Game.GameMap.Map.GetExecutionPlanToCover" name="Thoughts.Game.GameMap.Map.GetExecutionPlanToCover">
 <area shape="rect" id="node1" title="Look for all MapEvents available in the map that, as consequence of the event, they make a desired at..." alt="" coords="5,56,368,83"/>
 <area shape="rect" id="node2" href="$a00156.html#aee77f1447bb87bfe7c431147e690fb83" title=" " alt="" coords="416,56,848,83"/>
-<area shape="rect" id="node3" href="$a00172.html#a0d33b65f31b92a707ced994884e4ed50" title="Checks if the consequences of the execution of this event will increase the value of an attribute own..." alt="" coords="930,5,1291,32"/>
+<area shape="rect" id="node3" href="$a00172.html#a0d33b65f31b92a707ced994884e4ed50" title="Indicates if the consequences of the execution of this event will increase the value of an attribute ..." alt="" coords="930,5,1291,32"/>
 <area shape="rect" id="node4" href="$a00172.html#a0020010282bd7d8098157ed079827f1c" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="917,56,1304,83"/>
 <area shape="rect" id="node5" href="$a00168.html#a73061d76809b93f4ff341a6660c267fd" title="Sets the amount of times remaining to execute this plan&#39;s MapEvent to the same amount needed to to co..." alt="" coords="896,107,1325,133"/>
 <area shape="rect" id="node6" href="$a00168.html#ae3774516e408b7cfdfa36945f06d334b" title="Calculates the amount of times that the execution of this ExecutionPlan&#39;s MapElement is needed to cov..." alt="" coords="1373,107,1852,133"/>

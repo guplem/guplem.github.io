@@ -75,7 +75,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The execution configuration for a <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>. A plan to execute a <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> owned by a <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a>, executed by a <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> and with a targeted <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a>.  
+<p>The execution configuration for a <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>. A plan to execute a <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> owned by a <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a>, executed by a <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> and with a targeted <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a>.  
  <a href="a00168.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Thoughts.Game.GameMap.ExecutionPlan:</div>
@@ -97,7 +97,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6154817d2838590e1f5bfa892bba3e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">If possible, executes the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> of this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a> with its configuration the amount of times set in the executionTimes field of this instance.  <a href="a00168.html#a6154817d2838590e1f5bfa892bba3e92">More...</a><br /></td></tr>
 <tr class="separator:a6154817d2838590e1f5bfa892bba3e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a239c4bf3075212ec2a5af3f908762446"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00168.html#a239c4bf3075212ec2a5af3f908762446">IsDistanceMet</a> ()</td></tr>
-<tr class="memdesc:a239c4bf3075212ec2a5af3f908762446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the distance to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> is met.  <a href="a00168.html#a239c4bf3075212ec2a5af3f908762446">More...</a><br /></td></tr>
+<tr class="memdesc:a239c4bf3075212ec2a5af3f908762446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the distance to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> is met.  <a href="a00168.html#a239c4bf3075212ec2a5af3f908762446">More...</a><br /></td></tr>
 <tr class="separator:a239c4bf3075212ec2a5af3f908762446"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7804174682edfe2b40290abb5c4c87c9"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00176.html">OwnedAttribute</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00168.html#a7804174682edfe2b40290abb5c4c87c9">GetRequirementsNotMet</a> (out List&lt; int &gt; remainingValueToCoverInRequirementsNotMet)</td></tr>
 <tr class="memdesc:a7804174682edfe2b40290abb5c4c87c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of the requirements that are not met at the moment to execute the event, it and outputs a list of the value missing for each one of the requirements that are not met (in the same order).  <a href="a00168.html#a7804174682edfe2b40290abb5c4c87c9">More...</a><br /></td></tr>
@@ -112,13 +112,13 @@ Properties</h2></td></tr>
 <tr class="memdesc:aa99957c7a8e3f6c5d679e696cd08f57c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> to execute  <a href="a00168.html#aa99957c7a8e3f6c5d679e696cd08f57c">More...</a><br /></td></tr>
 <tr class="separator:aa99957c7a8e3f6c5d679e696cd08f57c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f78aa192ceb2087f43159feb03375e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00180.html">MapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00168.html#a7f78aa192ceb2087f43159feb03375e3">eventOwner</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:a7f78aa192ceb2087f43159feb03375e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> that owns the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> to execute (in one of its owned <a class="el" href="a00079.html">Attributes</a>)  <a href="a00168.html#a7f78aa192ceb2087f43159feb03375e3">More...</a><br /></td></tr>
+<tr class="memdesc:a7f78aa192ceb2087f43159feb03375e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> that owns the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> to execute (in one of its owned <a class="el" href="a00079.html">Attributes</a>)  <a href="a00168.html#a7f78aa192ceb2087f43159feb03375e3">More...</a><br /></td></tr>
 <tr class="separator:a7f78aa192ceb2087f43159feb03375e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36dea879ee42352d043ab4a6d4271704"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00180.html">MapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00168.html#a36dea879ee42352d043ab4a6d4271704">executer</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:a36dea879ee42352d043ab4a6d4271704"><td class="mdescLeft">&#160;</td><td class="mdescRight">The executor <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> of the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>  <a href="a00168.html#a36dea879ee42352d043ab4a6d4271704">More...</a><br /></td></tr>
+<tr class="memdesc:a36dea879ee42352d043ab4a6d4271704"><td class="mdescLeft">&#160;</td><td class="mdescRight">The executor <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> of the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>  <a href="a00168.html#a36dea879ee42352d043ab4a6d4271704">More...</a><br /></td></tr>
 <tr class="separator:a36dea879ee42352d043ab4a6d4271704"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bf4fcda6f5dae540073d92c80bd4410"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00180.html">MapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00168.html#a4bf4fcda6f5dae540073d92c80bd4410">target</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:a4bf4fcda6f5dae540073d92c80bd4410"><td class="mdescLeft">&#160;</td><td class="mdescRight">The targeted <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> with the execution of the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>  <a href="a00168.html#a4bf4fcda6f5dae540073d92c80bd4410">More...</a><br /></td></tr>
+<tr class="memdesc:a4bf4fcda6f5dae540073d92c80bd4410"><td class="mdescLeft">&#160;</td><td class="mdescRight">The targeted <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> with the execution of the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>  <a href="a00168.html#a4bf4fcda6f5dae540073d92c80bd4410">More...</a><br /></td></tr>
 <tr class="separator:a4bf4fcda6f5dae540073d92c80bd4410"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ee0a61c55497675b398a1c27bd111bf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00168.html#a7ee0a61c55497675b398a1c27bd111bf">executionTimes</a><code> [get, private set]</code></td></tr>
 <tr class="memdesc:a7ee0a61c55497675b398a1c27bd111bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of times remaining to execute this plan's <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>.  <a href="a00168.html#a7ee0a61c55497675b398a1c27bd111bf">More...</a><br /></td></tr>
@@ -130,14 +130,14 @@ Properties</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ae4021f73ea5cc357706dfd6e95851ae7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00168.html#ae4021f73ea5cc357706dfd6e95851ae7">CanBeExecuted</a> (out string requirementsNotMetMessage)</td></tr>
-<tr class="memdesc:ae4021f73ea5cc357706dfd6e95851ae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if all the requirements to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> are met.  <a href="a00168.html#ae4021f73ea5cc357706dfd6e95851ae7">More...</a><br /></td></tr>
+<tr class="memdesc:ae4021f73ea5cc357706dfd6e95851ae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if all the requirements to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> are met.  <a href="a00168.html#ae4021f73ea5cc357706dfd6e95851ae7">More...</a><br /></td></tr>
 <tr class="separator:ae4021f73ea5cc357706dfd6e95851ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3774516e408b7cfdfa36945f06d334b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00168.html#ae3774516e408b7cfdfa36945f06d334b">CalculateExecutionsNeededToCover</a> (<a class="el" href="a00176.html">OwnedAttribute</a> attributeToCover, int remainingValueToCover)</td></tr>
-<tr class="memdesc:ae3774516e408b7cfdfa36945f06d334b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the amount of times that the execution of this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> is needed to cover a given attribute (to increase its value a defined amount).  <a href="a00168.html#ae3774516e408b7cfdfa36945f06d334b">More...</a><br /></td></tr>
+<tr class="memdesc:ae3774516e408b7cfdfa36945f06d334b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the amount of times that the execution of this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> is needed to cover a given attribute (to increase its value a defined amount).  <a href="a00168.html#ae3774516e408b7cfdfa36945f06d334b">More...</a><br /></td></tr>
 <tr class="separator:ae3774516e408b7cfdfa36945f06d334b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The execution configuration for a <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>. A plan to execute a <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> owned by a <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a>, executed by a <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> and with a targeted <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a>. </p>
+<div class="textblock"><p>The execution configuration for a <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>. A plan to execute a <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> owned by a <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a>, executed by a <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> and with a targeted <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a>. </p>
 
 <p class="definition">Definition at line <a class="el" href="a00062_source.html#l00011">11</a> of file <a class="el" href="a00062_source.html">ExecutionPlan.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -226,10 +226,10 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Calculates the amount of times that the execution of this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> is needed to cover a given attribute (to increase its value a defined amount). </p>
+<p>Calculates the amount of times that the execution of this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> is needed to cover a given attribute (to increase its value a defined amount). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">attributeToCover</td><td>The Attribute that is desired to cover (to increase its value in the <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a>'s AttributeManager)</td></tr>
+    <tr><td class="paramname">attributeToCover</td><td>The Attribute that is desired to cover (to increase its value in the <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a>'s AttributeManager)</td></tr>
     <tr><td class="paramname">remainingValueToCover</td><td>The remaining value to cover for the given Attribute.</td></tr>
   </table>
   </dd>
@@ -276,7 +276,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Determines if all the requirements to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> are met. </p>
+<p>Determines if all the requirements to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> are met. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">requirementsNotMetMessage</td><td>A debug message listing the requirements that are not met.</td></tr>
@@ -295,7 +295,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" href="a00168.html#a7804174682edfe2b40290abb5c4c87c9" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="417,5,831,32"/>
 <area shape="rect" href="a00168.html#a239c4bf3075212ec2a5af3f908762446" title="Determines if the distance to execute this ExecutionPlan&#39;s MapElement is met." alt="" coords="447,56,801,83"/>
 <area shape="rect" href="a00172.html#a0020010282bd7d8098157ed079827f1c" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="879,5,1265,32"/>
-<area shape="rect" href="a00172.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Determines if the maximum distance allowed to execute the event is met or not." alt="" coords="909,56,1235,83"/>
+<area shape="rect" href="a00172.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Indicates if the maximum distance allowed to execute the event is met or not." alt="" coords="909,56,1235,83"/>
 </map>
 </div>
 <div class="dynheader">
@@ -343,7 +343,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" href="a00168.html#a7804174682edfe2b40290abb5c4c87c9" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="784,5,1197,32"/>
 <area shape="rect" href="a00168.html#a239c4bf3075212ec2a5af3f908762446" title="Determines if the distance to execute this ExecutionPlan&#39;s MapElement is met." alt="" coords="814,56,1167,83"/>
 <area shape="rect" href="a00172.html#a0020010282bd7d8098157ed079827f1c" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1245,5,1632,32"/>
-<area shape="rect" href="a00172.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Determines if the maximum distance allowed to execute the event is met or not." alt="" coords="1275,56,1602,83"/>
+<area shape="rect" href="a00172.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Indicates if the maximum distance allowed to execute the event is met or not." alt="" coords="1275,56,1602,83"/>
 </map>
 </div>
 <div class="dynheader">
@@ -427,8 +427,8 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Determines if the distance to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> is met. </p>
-<dl class="section return"><dt>Returns</dt><dd>True, if the distance to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> is met. False, otherwise.</dd></dl>
+<p>Determines if the distance to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> is met. </p>
+<dl class="section return"><dt>Returns</dt><dd>True, if the distance to execute this <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>'s <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> is met. False, otherwise.</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="a00062_source.html#l00119">119</a> of file <a class="el" href="a00062_source.html">ExecutionPlan.cs</a>.</p>
 <div class="dynheader">
@@ -437,7 +437,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="a00168_a239c4bf3075212ec2a5af3f908762446_cgraph.png" border="0" usemap="#aa00168_a239c4bf3075212ec2a5af3f908762446_cgraph" alt=""/></div>
 <map name="aa00168_a239c4bf3075212ec2a5af3f908762446_cgraph" id="aa00168_a239c4bf3075212ec2a5af3f908762446_cgraph">
 <area shape="rect" title="Determines if the distance to execute this ExecutionPlan&#39;s MapElement is met." alt="" coords="5,5,359,32"/>
-<area shape="rect" href="a00172.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Determines if the maximum distance allowed to execute the event is met or not." alt="" coords="407,5,733,32"/>
+<area shape="rect" href="a00172.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Indicates if the maximum distance allowed to execute the event is met or not." alt="" coords="407,5,733,32"/>
 </map>
 </div>
 <div class="dynheader">
@@ -485,7 +485,7 @@ Here is the caller graph for this function:</div>
 <p>Sets the amount of times remaining to execute this plan's <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> to the same amount needed to to cover a given attribute (to increase its value a defined amount). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">attributeToCover</td><td>The Attribute that is desired to cover (to increase its value in the <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a>'s AttributeManager)</td></tr>
+    <tr><td class="paramname">attributeToCover</td><td>The Attribute that is desired to cover (to increase its value in the <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a>'s AttributeManager)</td></tr>
     <tr><td class="paramname">remainingValueToCover</td><td>The remaining value to cover for the given Attribute.</td></tr>
   </table>
   </dd>
@@ -555,7 +555,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>The <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> that owns the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> to execute (in one of its owned <a class="el" href="a00079.html">Attributes</a>) </p>
+<p>The <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> that owns the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> to execute (in one of its owned <a class="el" href="a00079.html">Attributes</a>) </p>
 
 <p class="definition">Definition at line <a class="el" href="a00062_source.html#l00021">21</a> of file <a class="el" href="a00062_source.html">ExecutionPlan.cs</a>.</p>
 
@@ -581,7 +581,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>The executor <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> of the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> </p>
+<p>The executor <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> of the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> </p>
 
 <p class="definition">Definition at line <a class="el" href="a00062_source.html#l00026">26</a> of file <a class="el" href="a00062_source.html">ExecutionPlan.cs</a>.</p>
 
@@ -686,7 +686,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>The targeted <a class="el" href="a00180.html" title="A spawned element of the map.">MapElement</a> with the execution of the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> </p>
+<p>The targeted <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> with the execution of the <a class="el" href="a00172.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> </p>
 
 <p class="definition">Definition at line <a class="el" href="a00062_source.html#l00031">31</a> of file <a class="el" href="a00062_source.html">ExecutionPlan.cs</a>.</p>
 
