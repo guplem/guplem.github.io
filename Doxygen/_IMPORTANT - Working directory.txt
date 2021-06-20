@@ -1,3 +1,0 @@
-C:\Users\guple\Documents\GitHub\guplem.github.io\Doxygen
-
-Relative paths are used, so the repositories for "Thoughts", "Essentials", ... should be placed in the same location as the one for "guplem.github.io"
