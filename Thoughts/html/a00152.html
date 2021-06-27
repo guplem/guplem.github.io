@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.GameMap.Map Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Game.GameManager Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,245 +61,76 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00074.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00077.html">Game</a></li><li class="navelem"><a class="el" href="a00078.html">GameMap</a></li><li class="navelem"><a class="el" href="a00152.html">Map</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00077.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00080.html">Game</a></li><li class="navelem"><a class="el" href="a00152.html">GameManager</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00149.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.GameMap.Map Class Reference</div>  </div>
+<div class="title">Thoughts.Game.GameManager Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The map of the game.  
+<p>Controls the core aspects of the a game: Participant (with ControlSystem), Map setup, ...  
  <a href="a00152.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Game.GameMap.Map:</div>
+Collaboration diagram for Thoughts.Game.GameManager:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00150.png" border="0" usemap="#aThoughts_8Game_8GameMap_8Map_coll__map" alt="Collaboration graph"/></div>
-<map name="aThoughts_8Game_8GameMap_8Map_coll__map" id="aThoughts_8Game_8GameMap_8Map_coll__map">
-<area shape="rect" title="The map of the game." alt="" coords="5,131,212,325"/>
-<area shape="rect" title=" " alt="" coords="53,5,164,83"/>
+<div class="center"><img src="a00150.png" border="0" usemap="#aThoughts_8Game_8GameManager_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Game_8GameManager_coll__map" id="aThoughts_8Game_8GameManager_coll__map">
+<area shape="rect" title="Controls the core aspects of the a game: Participant (with ControlSystem), Map setup,..." alt="" coords="5,389,208,511"/>
+<area shape="rect" title=" " alt="" coords="46,5,157,83"/>
+<area shape="rect" href="a00156.html" title="The map of the game." alt="" coords="123,132,330,327"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8b25dde9de166fedec8979eb0c3558d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a8b25dde9de166fedec8979eb0c3558d7">GenerateNew</a> (List&lt; <a class="el" href="a00144.html">Participant</a> &gt; participants)</td></tr>
-<tr class="memdesc:a8b25dde9de166fedec8979eb0c3558d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a new map.  <a href="a00152.html#a8b25dde9de166fedec8979eb0c3558d7">More...</a><br /></td></tr>
-<tr class="separator:a8b25dde9de166fedec8979eb0c3558d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaeaab706752d6112da49c2642970e52c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00168.html">ExecutionPlan</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#aaeaab706752d6112da49c2642970e52c">GetExecutionPlanToCover</a> ([NotNull] <a class="el" href="a00176.html">OwnedAttribute</a> attributeToCover, int valueToCover, <a class="el" href="a00180.html">MapElement</a> executer)</td></tr>
-<tr class="memdesc:aaeaab706752d6112da49c2642970e52c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look for all MapEvents available in the map that, as consequence of the event, they make a desired attribute value increase for the owner/executer/target (the needed participant).  <a href="a00152.html#aaeaab706752d6112da49c2642970e52c">More...</a><br /></td></tr>
-<tr class="separator:aaeaab706752d6112da49c2642970e52c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d515fc1b62a4b466a2247ed1f6cee46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a8d515fc1b62a4b466a2247ed1f6cee46">StartNewGame</a> ()</td></tr>
+<tr class="memdesc:a8d515fc1b62a4b466a2247ed1f6cee46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a new game by setting up the participants and generating a new world.  <a href="a00152.html#a8d515fc1b62a4b466a2247ed1f6cee46">More...</a><br /></td></tr>
+<tr class="separator:a8d515fc1b62a4b466a2247ed1f6cee46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a267b873f0974f59f2e7cb21c27879025"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00176.html">ExecutionPlan</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a267b873f0974f59f2e7cb21c27879025">GetExecutionPlanToCover</a> (<a class="el" href="a00168.html">AttributeOwnership</a> attributeOwnershipToCover, int valueToCover, <a class="el" href="a00188.html">MapElement</a> executer, List&lt; <a class="el" href="a00176.html">ExecutionPlan</a> &gt; mapEventsToExecute=null, int iteration=0)</td></tr>
+<tr class="memdesc:a267b873f0974f59f2e7cb21c27879025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively look for all MapEvents available in the game's map that, as consequence of the event, they make a desired attribute value increase for the owner/executer/target (the needed participant).  <a href="a00152.html#a267b873f0974f59f2e7cb21c27879025">More...</a><br /></td></tr>
+<tr class="separator:a267b873f0974f59f2e7cb21c27879025"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:aedcb62dc3659bb4dee190fac3ed061ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00180.html">MapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#aedcb62dc3659bb4dee190fac3ed061ca">SpawnMapElement</a> (GameObject spawnableGameObject, Vector3 position, Quaternion rotation)</td></tr>
-<tr class="memdesc:aedcb62dc3659bb4dee190fac3ed061ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a map element spawn.  <a href="a00152.html#aedcb62dc3659bb4dee190fac3ed061ca">More...</a><br /></td></tr>
-<tr class="separator:aedcb62dc3659bb4dee190fac3ed061ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a90ffe0fdc67821244b6c4989cec8ab"><td class="memItemLeft" align="right" valign="top">GameObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a4a90ffe0fdc67821244b6c4989cec8ab">GetSpawnableGameObject</a> (string name)</td></tr>
-<tr class="memdesc:a4a90ffe0fdc67821244b6c4989cec8ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtains the GameObject with the given name from the spawnableMapElement list.  <a href="a00152.html#a4a90ffe0fdc67821244b6c4989cec8ab">More...</a><br /></td></tr>
-<tr class="separator:a4a90ffe0fdc67821244b6c4989cec8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76b9b13bed3b4bb6ef14c7aa16502307"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00180.html">MapElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a76b9b13bed3b4bb6ef14c7aa16502307">GenerateMapElements</a> ()</td></tr>
-<tr class="memdesc:a76b9b13bed3b4bb6ef14c7aa16502307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates MapElements in the map (not mobs).  <a href="a00152.html#a76b9b13bed3b4bb6ef14c7aa16502307">More...</a><br /></td></tr>
-<tr class="separator:a76b9b13bed3b4bb6ef14c7aa16502307"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4244c867225274151d92f26abc3a0f58"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00180.html">MapElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a4244c867225274151d92f26abc3a0f58">SpawnRandom</a> (string prefabName, int quantity, RandomEssentials random)</td></tr>
-<tr class="memdesc:a4244c867225274151d92f26abc3a0f58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Randomly generates the <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> with the given name a determined amount of times.  <a href="a00152.html#a4244c867225274151d92f26abc3a0f58">More...</a><br /></td></tr>
-<tr class="separator:a4244c867225274151d92f26abc3a0f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad567ecac23ffda9dca0fdd7d7c1406be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#ad567ecac23ffda9dca0fdd7d7c1406be">SetupNewNavMeshes</a> ()</td></tr>
-<tr class="memdesc:ad567ecac23ffda9dca0fdd7d7c1406be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the NavMesh for all the NavMeshAgents in the spawnableMapElement list.  <a href="a00152.html#ad567ecac23ffda9dca0fdd7d7c1406be">More...</a><br /></td></tr>
-<tr class="separator:ad567ecac23ffda9dca0fdd7d7c1406be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a542cec4f7f8e4b3923c54bc7edbe30a3"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00180.html">MapElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a542cec4f7f8e4b3923c54bc7edbe30a3">GenerateMobs</a> ()</td></tr>
-<tr class="memdesc:a542cec4f7f8e4b3923c54bc7edbe30a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates Mobs in the map.  <a href="a00152.html#a542cec4f7f8e4b3923c54bc7edbe30a3">More...</a><br /></td></tr>
-<tr class="separator:a542cec4f7f8e4b3923c54bc7edbe30a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a4383320509b838c2cccb0d318b70a8ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00156.html">Map</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a4383320509b838c2cccb0d318b70a8ba">map</a></td></tr>
+<tr class="memdesc:a4383320509b838c2cccb0d318b70a8ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">The map of the game.  <a href="a00152.html#a4383320509b838c2cccb0d318b70a8ba">More...</a><br /></td></tr>
+<tr class="separator:a4383320509b838c2cccb0d318b70a8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8913b44c8b4c1d27683facdbdf06a512"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a8913b44c8b4c1d27683facdbdf06a512">gameClockInterval</a> = 1f</td></tr>
+<tr class="memdesc:a8913b44c8b4c1d27683facdbdf06a512"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of time between each update of the MapElements of the game  <a href="a00152.html#a8913b44c8b4c1d27683facdbdf06a512">More...</a><br /></td></tr>
+<tr class="separator:a8913b44c8b4c1d27683facdbdf06a512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a5d24ead577586e2bb2d37f400f5aa559"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00180.html">MapElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#a5d24ead577586e2bb2d37f400f5aa559">mapElements</a> = new List&lt;<a class="el" href="a00180.html">MapElement</a>&gt;()</td></tr>
-<tr class="memdesc:a5d24ead577586e2bb2d37f400f5aa559"><td class="mdescLeft">&#160;</td><td class="mdescRight">All the map elements present in the map.  <a href="a00152.html#a5d24ead577586e2bb2d37f400f5aa559">More...</a><br /></td></tr>
-<tr class="separator:a5d24ead577586e2bb2d37f400f5aa559"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac80495929ac85dd2e423e244ddca9bbe"><td class="memItemLeft" align="right" valign="top">List&lt; GameObject &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#ac80495929ac85dd2e423e244ddca9bbe">spawnableMapElements</a></td></tr>
-<tr class="memdesc:ac80495929ac85dd2e423e244ddca9bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">All the map elements' prefabs that can be spawned in the map.  <a href="a00152.html#ac80495929ac85dd2e423e244ddca9bbe">More...</a><br /></td></tr>
-<tr class="separator:ac80495929ac85dd2e423e244ddca9bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc29eb5917861e9f9f128fbd7a4f0910"><td class="memItemLeft" align="right" valign="top">GameObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#afc29eb5917861e9f9f128fbd7a4f0910">manualControlSystemPrefab</a></td></tr>
+<tr class="memdesc:afc29eb5917861e9f9f128fbd7a4f0910"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GameObject prefab of the local human (manual) control system for a participant.  <a href="a00152.html#afc29eb5917861e9f9f128fbd7a4f0910">More...</a><br /></td></tr>
+<tr class="separator:afc29eb5917861e9f9f128fbd7a4f0910"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd717cba797997d7ae9a924e84069a46"><td class="memItemLeft" align="right" valign="top">readonly List&lt; <a class="el" href="a00148.html">Participant</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00152.html#abd717cba797997d7ae9a924e84069a46">participants</a> = new List&lt;<a class="el" href="a00148.html">Participant</a>&gt;()</td></tr>
+<tr class="memdesc:abd717cba797997d7ae9a924e84069a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">The different participants (players, AI, ...) of the game.  <a href="a00152.html#abd717cba797997d7ae9a924e84069a46">More...</a><br /></td></tr>
+<tr class="separator:abd717cba797997d7ae9a924e84069a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The map of the game. </p>
+<div class="textblock"><p>Controls the core aspects of the a game: Participant (with ControlSystem), Map setup, ... </p>
 
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00015">15</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00014">14</a> of file <a class="el" href="a00044_source.html">GameManager.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a76b9b13bed3b4bb6ef14c7aa16502307"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76b9b13bed3b4bb6ef14c7aa16502307">&#9670;&nbsp;</a></span>GenerateMapElements()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;<a class="el" href="a00180.html">MapElement</a>&gt; Thoughts.Game.GameMap.Map.GenerateMapElements </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Generates MapElements in the map (not mobs). </p>
-<dl class="section return"><dt>Returns</dt><dd>A list of the generated map elements.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00076">76</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_a76b9b13bed3b4bb6ef14c7aa16502307_cgraph.png" border="0" usemap="#aa00152_a76b9b13bed3b4bb6ef14c7aa16502307_cgraph" alt=""/></div>
-<map name="aa00152_a76b9b13bed3b4bb6ef14c7aa16502307_cgraph" id="aa00152_a76b9b13bed3b4bb6ef14c7aa16502307_cgraph">
-<area shape="rect" title="Generates MapElements in the map (not mobs)." alt="" coords="5,31,349,57"/>
-<area shape="rect" href="a00152.html#a4244c867225274151d92f26abc3a0f58" title="Randomly generates the MapElement with the given name a determined amount of times." alt="" coords="397,31,696,57"/>
-<area shape="rect" href="a00152.html#a4a90ffe0fdc67821244b6c4989cec8ab" title="Obtains the GameObject with the given name from the spawnableMapElement list." alt="" coords="744,5,1112,32"/>
-<area shape="rect" href="a00152.html#aedcb62dc3659bb4dee190fac3ed061ca" title="Makes a map element spawn." alt="" coords="767,56,1089,83"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_a76b9b13bed3b4bb6ef14c7aa16502307_icgraph.png" border="0" usemap="#aa00152_a76b9b13bed3b4bb6ef14c7aa16502307_icgraph" alt=""/></div>
-<map name="aa00152_a76b9b13bed3b4bb6ef14c7aa16502307_icgraph" id="aa00152_a76b9b13bed3b4bb6ef14c7aa16502307_icgraph">
-<area shape="rect" title="Generates MapElements in the map (not mobs)." alt="" coords="1209,5,1553,32"/>
-<area shape="rect" href="a00152.html#a8b25dde9de166fedec8979eb0c3558d7" title="Generates a new map." alt="" coords="872,5,1161,32"/>
-<area shape="rect" href="a00148.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and generating a new world." alt="" coords="529,5,824,32"/>
-<area shape="rect" href="a00092.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by instantiating the GameManager prefab and triggering its method StartNewGame." alt="" coords="237,5,481,32"/>
-<area shape="rect" href="a00092.html#a0bb22cc2b3cc5aa16c793157c0bef3b1" title="Triggers the start of a new game." alt="" coords="5,5,189,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a542cec4f7f8e4b3923c54bc7edbe30a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a542cec4f7f8e4b3923c54bc7edbe30a3">&#9670;&nbsp;</a></span>GenerateMobs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;<a class="el" href="a00180.html">MapElement</a>&gt; Thoughts.Game.GameMap.Map.GenerateMobs </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Generates Mobs in the map. </p>
-<dl class="section return"><dt>Returns</dt><dd>A list of the generated map elements (mobs).</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00146">146</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_a542cec4f7f8e4b3923c54bc7edbe30a3_cgraph.png" border="0" usemap="#aa00152_a542cec4f7f8e4b3923c54bc7edbe30a3_cgraph" alt=""/></div>
-<map name="aa00152_a542cec4f7f8e4b3923c54bc7edbe30a3_cgraph" id="aa00152_a542cec4f7f8e4b3923c54bc7edbe30a3_cgraph">
-<area shape="rect" title="Generates Mobs in the map." alt="" coords="5,31,301,57"/>
-<area shape="rect" href="a00152.html#a4a90ffe0fdc67821244b6c4989cec8ab" title="Obtains the GameObject with the given name from the spawnableMapElement list." alt="" coords="349,5,717,32"/>
-<area shape="rect" href="a00152.html#aedcb62dc3659bb4dee190fac3ed061ca" title="Makes a map element spawn." alt="" coords="372,56,695,83"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_a542cec4f7f8e4b3923c54bc7edbe30a3_icgraph.png" border="0" usemap="#aa00152_a542cec4f7f8e4b3923c54bc7edbe30a3_icgraph" alt=""/></div>
-<map name="aa00152_a542cec4f7f8e4b3923c54bc7edbe30a3_icgraph" id="aa00152_a542cec4f7f8e4b3923c54bc7edbe30a3_icgraph">
-<area shape="rect" title="Generates Mobs in the map." alt="" coords="1209,5,1505,32"/>
-<area shape="rect" href="a00152.html#a8b25dde9de166fedec8979eb0c3558d7" title="Generates a new map." alt="" coords="872,5,1161,32"/>
-<area shape="rect" href="a00148.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and generating a new world." alt="" coords="529,5,824,32"/>
-<area shape="rect" href="a00092.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by instantiating the GameManager prefab and triggering its method StartNewGame." alt="" coords="237,5,481,32"/>
-<area shape="rect" href="a00092.html#a0bb22cc2b3cc5aa16c793157c0bef3b1" title="Triggers the start of a new game." alt="" coords="5,5,189,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a8b25dde9de166fedec8979eb0c3558d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b25dde9de166fedec8979eb0c3558d7">&#9670;&nbsp;</a></span>GenerateNew()</h2>
+<a id="a267b873f0974f59f2e7cb21c27879025"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a267b873f0974f59f2e7cb21c27879025">&#9670;&nbsp;</a></span>GetExecutionPlanToCover()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.Game.GameMap.Map.GenerateNew </td>
+          <td class="memname">List&lt;<a class="el" href="a00176.html">ExecutionPlan</a>&gt; Thoughts.Game.GameManager.GetExecutionPlanToCover </td>
           <td>(</td>
-          <td class="paramtype">List&lt; <a class="el" href="a00144.html">Participant</a> &gt;&#160;</td>
-          <td class="paramname"><em>participants</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Generates a new map. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">participants</td><td>The participants of the game that must be in the map.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00033">33</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_a8b25dde9de166fedec8979eb0c3558d7_cgraph.png" border="0" usemap="#aa00152_a8b25dde9de166fedec8979eb0c3558d7_cgraph" alt=""/></div>
-<map name="aa00152_a8b25dde9de166fedec8979eb0c3558d7_cgraph" id="aa00152_a8b25dde9de166fedec8979eb0c3558d7_cgraph">
-<area shape="rect" title="Generates a new map." alt="" coords="5,56,295,83"/>
-<area shape="rect" href="a00152.html#a76b9b13bed3b4bb6ef14c7aa16502307" title="Generates MapElements in the map (not mobs)." alt="" coords="343,5,687,32"/>
-<area shape="rect" href="a00152.html#a542cec4f7f8e4b3923c54bc7edbe30a3" title="Generates Mobs in the map." alt="" coords="736,56,1032,83"/>
-<area shape="rect" href="a00152.html#ad567ecac23ffda9dca0fdd7d7c1406be" title="Sets up the NavMesh for all the NavMeshAgents in the spawnableMapElement list." alt="" coords="346,107,683,133"/>
-<area shape="rect" href="a00152.html#a4244c867225274151d92f26abc3a0f58" title="Randomly generates the MapElement with the given name a determined amount of times." alt="" coords="735,5,1033,32"/>
-<area shape="rect" href="a00152.html#a4a90ffe0fdc67821244b6c4989cec8ab" title="Obtains the GameObject with the given name from the spawnableMapElement list." alt="" coords="1081,5,1449,32"/>
-<area shape="rect" href="a00152.html#aedcb62dc3659bb4dee190fac3ed061ca" title="Makes a map element spawn." alt="" coords="1104,56,1427,83"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_a8b25dde9de166fedec8979eb0c3558d7_icgraph.png" border="0" usemap="#aa00152_a8b25dde9de166fedec8979eb0c3558d7_icgraph" alt=""/></div>
-<map name="aa00152_a8b25dde9de166fedec8979eb0c3558d7_icgraph" id="aa00152_a8b25dde9de166fedec8979eb0c3558d7_icgraph">
-<area shape="rect" title="Generates a new map." alt="" coords="872,5,1161,32"/>
-<area shape="rect" href="a00148.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and generating a new world." alt="" coords="529,5,824,32"/>
-<area shape="rect" href="a00092.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by instantiating the GameManager prefab and triggering its method StartNewGame." alt="" coords="237,5,481,32"/>
-<area shape="rect" href="a00092.html#a0bb22cc2b3cc5aa16c793157c0bef3b1" title="Triggers the start of a new game." alt="" coords="5,5,189,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="aaeaab706752d6112da49c2642970e52c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaeaab706752d6112da49c2642970e52c">&#9670;&nbsp;</a></span>GetExecutionPlanToCover()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00168.html">ExecutionPlan</a> Thoughts.Game.GameMap.Map.GetExecutionPlanToCover </td>
-          <td>(</td>
-          <td class="paramtype">[NotNull] <a class="el" href="a00176.html">OwnedAttribute</a>&#160;</td>
-          <td class="paramname"><em>attributeToCover</em>, </td>
+          <td class="paramtype"><a class="el" href="a00168.html">AttributeOwnership</a>&#160;</td>
+          <td class="paramname"><em>attributeOwnershipToCover</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -310,243 +141,20 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00180.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>executer</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Look for all MapEvents available in the map that, as consequence of the event, they make a desired attribute value increase for the owner/executer/target (the needed participant). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">attributeToCover</td><td>The owned attribute to increase the value of.</td></tr>
-    <tr><td class="paramname">valueToCover</td><td>The amount of value needed to be covered (increased).</td></tr>
-    <tr><td class="paramname">executer</td><td><a class="el" href="a00152.html" title="The map of the game.">Map</a> element that is going to execute the <a class="el" href="a00168.html" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,...">ExecutionPlan</a>.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The Execution Plan needed to achieve the goal (to increase the value of the attributeToCover by valueToCover)</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00172">172</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_aaeaab706752d6112da49c2642970e52c_cgraph.png" border="0" usemap="#aa00152_aaeaab706752d6112da49c2642970e52c_cgraph" alt=""/></div>
-<map name="aa00152_aaeaab706752d6112da49c2642970e52c_cgraph" id="aa00152_aaeaab706752d6112da49c2642970e52c_cgraph">
-<area shape="rect" title="Look for all MapEvents available in the map that, as consequence of the event, they make a desired at..." alt="" coords="5,56,368,83"/>
-<area shape="rect" href="a00156.html#aee77f1447bb87bfe7c431147e690fb83" title=" " alt="" coords="416,56,848,83"/>
-<area shape="rect" href="a00172.html#a0d33b65f31b92a707ced994884e4ed50" title="Indicates if the consequences of the execution of this event will increase the value of an attribute ..." alt="" coords="930,5,1291,32"/>
-<area shape="rect" href="a00172.html#a0020010282bd7d8098157ed079827f1c" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="917,56,1304,83"/>
-<area shape="rect" href="a00168.html#a73061d76809b93f4ff341a6660c267fd" title="Sets the amount of times remaining to execute this plan&#39;s MapEvent to the same amount needed to to co..." alt="" coords="896,107,1325,133"/>
-<area shape="rect" href="a00168.html#ae3774516e408b7cfdfa36945f06d334b" title="Calculates the amount of times that the execution of this ExecutionPlan&#39;s MapElement is needed to cov..." alt="" coords="1373,107,1852,133"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_aaeaab706752d6112da49c2642970e52c_icgraph.png" border="0" usemap="#aa00152_aaeaab706752d6112da49c2642970e52c_icgraph" alt=""/></div>
-<map name="aa00152_aaeaab706752d6112da49c2642970e52c_icgraph" id="aa00152_aaeaab706752d6112da49c2642970e52c_icgraph">
-<area shape="rect" title="Look for all MapEvents available in the map that, as consequence of the event, they make a desired at..." alt="" coords="412,5,775,32"/>
-<area shape="rect" href="a00148.html#a681979efa883e7985a9243c5345c4b09" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="5,5,364,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a4a90ffe0fdc67821244b6c4989cec8ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a90ffe0fdc67821244b6c4989cec8ab">&#9670;&nbsp;</a></span>GetSpawnableGameObject()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">GameObject Thoughts.Game.GameMap.Map.GetSpawnableGameObject </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Obtains the GameObject with the given name from the spawnableMapElement list. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>The name of the GameObject.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The GameObject with a matching name from inside the spawnableMapElements list. Null if no object is found with the given name in the list.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00059">59</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_a4a90ffe0fdc67821244b6c4989cec8ab_icgraph.png" border="0" usemap="#aa00152_a4a90ffe0fdc67821244b6c4989cec8ab_icgraph" alt=""/></div>
-<map name="aa00152_a4a90ffe0fdc67821244b6c4989cec8ab_icgraph" id="aa00152_a4a90ffe0fdc67821244b6c4989cec8ab_icgraph">
-<area shape="rect" title="Obtains the GameObject with the given name from the spawnableMapElement list." alt="" coords="1948,31,2316,57"/>
-<area shape="rect" href="a00152.html#a542cec4f7f8e4b3923c54bc7edbe30a3" title="Generates Mobs in the map." alt="" coords="1233,5,1529,32"/>
-<area shape="rect" href="a00152.html#a4244c867225274151d92f26abc3a0f58" title="Randomly generates the MapElement with the given name a determined amount of times." alt="" coords="1601,56,1900,83"/>
-<area shape="rect" href="a00152.html#a8b25dde9de166fedec8979eb0c3558d7" title="Generates a new map." alt="" coords="872,31,1161,57"/>
-<area shape="rect" href="a00148.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and generating a new world." alt="" coords="529,31,824,57"/>
-<area shape="rect" href="a00092.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by instantiating the GameManager prefab and triggering its method StartNewGame." alt="" coords="237,31,481,57"/>
-<area shape="rect" href="a00092.html#a0bb22cc2b3cc5aa16c793157c0bef3b1" title="Triggers the start of a new game." alt="" coords="5,31,189,57"/>
-<area shape="rect" href="a00152.html#a76b9b13bed3b4bb6ef14c7aa16502307" title="Generates MapElements in the map (not mobs)." alt="" coords="1209,56,1553,83"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="ad567ecac23ffda9dca0fdd7d7c1406be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad567ecac23ffda9dca0fdd7d7c1406be">&#9670;&nbsp;</a></span>SetupNewNavMeshes()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.GameMap.Map.SetupNewNavMeshes </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets up the NavMesh for all the NavMeshAgents in the spawnableMapElement list. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00114">114</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_ad567ecac23ffda9dca0fdd7d7c1406be_icgraph.png" border="0" usemap="#aa00152_ad567ecac23ffda9dca0fdd7d7c1406be_icgraph" alt=""/></div>
-<map name="aa00152_ad567ecac23ffda9dca0fdd7d7c1406be_icgraph" id="aa00152_ad567ecac23ffda9dca0fdd7d7c1406be_icgraph">
-<area shape="rect" title="Sets up the NavMesh for all the NavMeshAgents in the spawnableMapElement list." alt="" coords="1209,5,1547,32"/>
-<area shape="rect" href="a00152.html#a8b25dde9de166fedec8979eb0c3558d7" title="Generates a new map." alt="" coords="872,5,1161,32"/>
-<area shape="rect" href="a00148.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and generating a new world." alt="" coords="529,5,824,32"/>
-<area shape="rect" href="a00092.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by instantiating the GameManager prefab and triggering its method StartNewGame." alt="" coords="237,5,481,32"/>
-<area shape="rect" href="a00092.html#a0bb22cc2b3cc5aa16c793157c0bef3b1" title="Triggers the start of a new game." alt="" coords="5,5,189,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="aedcb62dc3659bb4dee190fac3ed061ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedcb62dc3659bb4dee190fac3ed061ca">&#9670;&nbsp;</a></span>SpawnMapElement()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00180.html">MapElement</a> Thoughts.Game.GameMap.Map.SpawnMapElement </td>
-          <td>(</td>
-          <td class="paramtype">GameObject&#160;</td>
-          <td class="paramname"><em>spawnableGameObject</em>, </td>
+          <td class="paramtype"><a class="el" href="a00188.html">MapElement</a>&#160;</td>
+          <td class="paramname"><em>executer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Vector3&#160;</td>
-          <td class="paramname"><em>position</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Quaternion&#160;</td>
-          <td class="paramname"><em>rotation</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Makes a map element spawn. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">spawnableGameObject</td><td>The map element's prefab to spawn</td></tr>
-    <tr><td class="paramname">position</td><td>Position for the new object.</td></tr>
-    <tr><td class="paramname">rotation</td><td>Orientation of the new object.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00048">48</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00152_aedcb62dc3659bb4dee190fac3ed061ca_icgraph.png" border="0" usemap="#aa00152_aedcb62dc3659bb4dee190fac3ed061ca_icgraph" alt=""/></div>
-<map name="aa00152_aedcb62dc3659bb4dee190fac3ed061ca_icgraph" id="aa00152_aedcb62dc3659bb4dee190fac3ed061ca_icgraph">
-<area shape="rect" title="Makes a map element spawn." alt="" coords="1948,31,2271,57"/>
-<area shape="rect" href="a00152.html#a542cec4f7f8e4b3923c54bc7edbe30a3" title="Generates Mobs in the map." alt="" coords="1233,5,1529,32"/>
-<area shape="rect" href="a00152.html#a4244c867225274151d92f26abc3a0f58" title="Randomly generates the MapElement with the given name a determined amount of times." alt="" coords="1601,56,1900,83"/>
-<area shape="rect" href="a00152.html#a8b25dde9de166fedec8979eb0c3558d7" title="Generates a new map." alt="" coords="872,31,1161,57"/>
-<area shape="rect" href="a00148.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and generating a new world." alt="" coords="529,31,824,57"/>
-<area shape="rect" href="a00092.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by instantiating the GameManager prefab and triggering its method StartNewGame." alt="" coords="237,31,481,57"/>
-<area shape="rect" href="a00092.html#a0bb22cc2b3cc5aa16c793157c0bef3b1" title="Triggers the start of a new game." alt="" coords="5,31,189,57"/>
-<area shape="rect" href="a00152.html#a76b9b13bed3b4bb6ef14c7aa16502307" title="Generates MapElements in the map (not mobs)." alt="" coords="1209,56,1553,83"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a4244c867225274151d92f26abc3a0f58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4244c867225274151d92f26abc3a0f58">&#9670;&nbsp;</a></span>SpawnRandom()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;<a class="el" href="a00180.html">MapElement</a>&gt; Thoughts.Game.GameMap.Map.SpawnRandom </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>prefabName</em>, </td>
+          <td class="paramtype">List&lt; <a class="el" href="a00176.html">ExecutionPlan</a> &gt;&#160;</td>
+          <td class="paramname"><em>mapEventsToExecute</em> = <code>null</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>quantity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">RandomEssentials&#160;</td>
-          <td class="paramname"><em>random</em>&#160;</td>
+          <td class="paramname"><em>iteration</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -554,55 +162,102 @@ Here is the caller graph for this function:</div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Randomly generates the <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a> with the given name a determined amount of times. </p>
-<p>The <a class="el" href="a00180.html" title="A spawned element of the Map.">MapElement</a>'s prefab is obtained from the spawnableMapElement list.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">prefabName</td><td>The name of the GameObject to generate.</td></tr>
-    <tr><td class="paramname">quantity</td><td>The amount of GameObjects to generate.</td></tr>
-    <tr><td class="paramname">random</td><td>Random object to be used in the process.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Recursively look for all MapEvents available in the game's map that, as consequence of the event, they make a desired attribute value increase for the owner/executer/target (the needed participant). </p>
+<p>&lt;param name="attributeOwnershipToCovered attribute to increase the value of.&lt;/param&gt;
+&lt;param name="valueToCover"&gt;The amount of value needed to be covered (increased).&lt;/param&gt;
+&lt;param name="executer"&gt;Map element that is going to execute the list of ExecutionPlans.&lt;/param&gt;
+&lt;param name="mapEventsToExecute"&gt;Execution plans wanted to be executed previously to the ones to cover the attributeToCover.&lt;/param&gt;
+&lt;param name="iteration"&gt;The iteration number of the this method's recursive execution. Should start as 0.</p>
+<dl class="section return"><dt>Returns</dt><dd>An ordered list of the Execution Plans needed to achieve the goal (to increase the value of the attributeToCover by valueToCover)</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00098">98</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00063">63</a> of file <a class="el" href="a00044_source.html">GameManager.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00152_a4244c867225274151d92f26abc3a0f58_cgraph.png" border="0" usemap="#aa00152_a4244c867225274151d92f26abc3a0f58_cgraph" alt=""/></div>
-<map name="aa00152_a4244c867225274151d92f26abc3a0f58_cgraph" id="aa00152_a4244c867225274151d92f26abc3a0f58_cgraph">
-<area shape="rect" title="Randomly generates the MapElement with the given name a determined amount of times." alt="" coords="5,31,304,57"/>
-<area shape="rect" href="a00152.html#a4a90ffe0fdc67821244b6c4989cec8ab" title="Obtains the GameObject with the given name from the spawnableMapElement list." alt="" coords="352,5,720,32"/>
-<area shape="rect" href="a00152.html#aedcb62dc3659bb4dee190fac3ed061ca" title="Makes a map element spawn." alt="" coords="375,56,697,83"/>
+<div class="center"><img src="a00152_a267b873f0974f59f2e7cb21c27879025_cgraph.png" border="0" usemap="#aa00152_a267b873f0974f59f2e7cb21c27879025_cgraph" alt=""/></div>
+<map name="aa00152_a267b873f0974f59f2e7cb21c27879025_cgraph" id="aa00152_a267b873f0974f59f2e7cb21c27879025_cgraph">
+<area shape="rect" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="5,81,364,108"/>
+<area shape="rect" href="a00156.html#a1336488cef85bdd96b908173832cc0c1" title="Look for all MapEvents available in the map that, as consequence of the event, they make a desired at..." alt="" coords="412,56,775,83"/>
+<area shape="rect" href="a00176.html#ab3c78ec19c4203666b36844e5fad8846" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="832,107,1245,133"/>
+<area shape="rect" href="a00160.html#a5eecb953309547dcb9fdf9f9696241d3" title=" " alt="" coords="823,56,1255,83"/>
+<area shape="rect" href="a00180.html#a898e073b96f00766ce5d35c4ffe68a85" title="Indicates if the consequences of the execution of this event will increase the value of an attribute ..." alt="" coords="1337,5,1698,32"/>
+<area shape="rect" href="a00180.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1324,107,1711,133"/>
+<area shape="rect" href="a00176.html#a9afb2a5b2f8c152a92f9d5db9ecdf86c" title="Sets the amount of times remaining to execute this plan&#39;s MapEvent to the same amount needed to to co..." alt="" coords="1303,56,1732,83"/>
+<area shape="rect" href="a00176.html#ab0fe3fe2e7928d46a5b1483064fdab21" title="Calculates the amount of times that the execution of this ExecutionPlan&#39;s MapElement is needed to cov..." alt="" coords="1780,56,2259,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8d515fc1b62a4b466a2247ed1f6cee46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d515fc1b62a4b466a2247ed1f6cee46">&#9670;&nbsp;</a></span>StartNewGame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Game.GameManager.StartNewGame </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Starts a new game by setting up the participants and generating a new world. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00042">42</a> of file <a class="el" href="a00044_source.html">GameManager.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00152_a8d515fc1b62a4b466a2247ed1f6cee46_cgraph.png" border="0" usemap="#aa00152_a8d515fc1b62a4b466a2247ed1f6cee46_cgraph" alt=""/></div>
+<map name="aa00152_a8d515fc1b62a4b466a2247ed1f6cee46_cgraph" id="aa00152_a8d515fc1b62a4b466a2247ed1f6cee46_cgraph">
+<area shape="rect" title="Starts a new game by setting up the participants and generating a new world." alt="" coords="5,56,300,83"/>
+<area shape="rect" href="a00156.html#a8b25dde9de166fedec8979eb0c3558d7" title="Generates a new map." alt="" coords="348,56,637,83"/>
+<area shape="rect" href="a00156.html#a76b9b13bed3b4bb6ef14c7aa16502307" title="Generates MapElements in the map (not mobs)." alt="" coords="685,5,1029,32"/>
+<area shape="rect" href="a00156.html#a542cec4f7f8e4b3923c54bc7edbe30a3" title="Generates Mobs in the map." alt="" coords="1079,56,1375,83"/>
+<area shape="rect" href="a00156.html#ad567ecac23ffda9dca0fdd7d7c1406be" title="Sets up the NavMesh for all the NavMeshAgents in the spawnableMapElement list." alt="" coords="689,107,1026,133"/>
+<area shape="rect" href="a00156.html#a4244c867225274151d92f26abc3a0f58" title="Randomly generates the MapElement with the given name a determined amount of times." alt="" coords="1077,5,1376,32"/>
+<area shape="rect" href="a00156.html#a4a90ffe0fdc67821244b6c4989cec8ab" title="Obtains the GameObject with the given name from the spawnableMapElement list." alt="" coords="1424,5,1792,32"/>
+<area shape="rect" href="a00156.html#aedcb62dc3659bb4dee190fac3ed061ca" title="Makes a map element spawn." alt="" coords="1447,56,1769,83"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00152_a4244c867225274151d92f26abc3a0f58_icgraph.png" border="0" usemap="#aa00152_a4244c867225274151d92f26abc3a0f58_icgraph" alt=""/></div>
-<map name="aa00152_a4244c867225274151d92f26abc3a0f58_icgraph" id="aa00152_a4244c867225274151d92f26abc3a0f58_icgraph">
-<area shape="rect" title="Randomly generates the MapElement with the given name a determined amount of times." alt="" coords="1601,5,1900,32"/>
-<area shape="rect" href="a00152.html#a76b9b13bed3b4bb6ef14c7aa16502307" title="Generates MapElements in the map (not mobs)." alt="" coords="1209,5,1553,32"/>
-<area shape="rect" href="a00152.html#a8b25dde9de166fedec8979eb0c3558d7" title="Generates a new map." alt="" coords="872,5,1161,32"/>
-<area shape="rect" href="a00148.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and generating a new world." alt="" coords="529,5,824,32"/>
-<area shape="rect" href="a00092.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by instantiating the GameManager prefab and triggering its method StartNewGame." alt="" coords="237,5,481,32"/>
-<area shape="rect" href="a00092.html#a0bb22cc2b3cc5aa16c793157c0bef3b1" title="Triggers the start of a new game." alt="" coords="5,5,189,32"/>
+<div class="center"><img src="a00152_a8d515fc1b62a4b466a2247ed1f6cee46_icgraph.png" border="0" usemap="#aa00152_a8d515fc1b62a4b466a2247ed1f6cee46_icgraph" alt=""/></div>
+<map name="aa00152_a8d515fc1b62a4b466a2247ed1f6cee46_icgraph" id="aa00152_a8d515fc1b62a4b466a2247ed1f6cee46_icgraph">
+<area shape="rect" title="Starts a new game by setting up the participants and generating a new world." alt="" coords="529,5,824,32"/>
+<area shape="rect" href="a00096.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by instantiating the GameManager prefab and triggering its method StartNewGame." alt="" coords="237,5,481,32"/>
+<area shape="rect" href="a00096.html#a0bb22cc2b3cc5aa16c793157c0bef3b1" title="Triggers the start of a new game." alt="" coords="5,5,189,32"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a5d24ead577586e2bb2d37f400f5aa559"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d24ead577586e2bb2d37f400f5aa559">&#9670;&nbsp;</a></span>mapElements</h2>
+<a id="a8913b44c8b4c1d27683facdbdf06a512"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8913b44c8b4c1d27683facdbdf06a512">&#9670;&nbsp;</a></span>gameClockInterval</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.Game.GameManager.gameClockInterval = 1f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The amount of time between each update of the MapElements of the game </p>
+
+<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00037">37</a> of file <a class="el" href="a00044_source.html">GameManager.cs</a>.</p>
+
+</div>
+</div>
+<a id="afc29eb5917861e9f9f128fbd7a4f0910"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc29eb5917861e9f9f128fbd7a4f0910">&#9670;&nbsp;</a></span>manualControlSystemPrefab</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -611,7 +266,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;<a class="el" href="a00180.html">MapElement</a>&gt; Thoughts.Game.GameMap.Map.mapElements = new List&lt;<a class="el" href="a00180.html">MapElement</a>&gt;()</td>
+          <td class="memname">GameObject Thoughts.Game.GameManager.manualControlSystemPrefab</td>
         </tr>
       </table>
   </td>
@@ -621,14 +276,33 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>All the map elements present in the map. </p>
+<p>The GameObject prefab of the local human (manual) control system for a participant. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00020">20</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00020">20</a> of file <a class="el" href="a00044_source.html">GameManager.cs</a>.</p>
 
 </div>
 </div>
-<a id="ac80495929ac85dd2e423e244ddca9bbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac80495929ac85dd2e423e244ddca9bbe">&#9670;&nbsp;</a></span>spawnableMapElements</h2>
+<a id="a4383320509b838c2cccb0d318b70a8ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4383320509b838c2cccb0d318b70a8ba">&#9670;&nbsp;</a></span>map</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00156.html">Map</a> Thoughts.Game.GameManager.map</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The map of the game. </p>
+<p>A component in a GameObject</p>
+
+<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00027">27</a> of file <a class="el" href="a00044_source.html">GameManager.cs</a>.</p>
+
+</div>
+</div>
+<a id="abd717cba797997d7ae9a924e84069a46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd717cba797997d7ae9a924e84069a46">&#9670;&nbsp;</a></span>participants</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -637,7 +311,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;GameObject&gt; Thoughts.Game.GameMap.Map.spawnableMapElements</td>
+          <td class="memname">readonly List&lt;<a class="el" href="a00148.html">Participant</a>&gt; Thoughts.Game.GameManager.participants = new List&lt;<a class="el" href="a00148.html">Participant</a>&gt;()</td>
         </tr>
       </table>
   </td>
@@ -647,14 +321,14 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>All the map elements' prefabs that can be spawned in the map. </p>
+<p>The different participants (players, AI, ...) of the game. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00047_source.html#l00027">27</a> of file <a class="el" href="a00047_source.html">Map.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00032">32</a> of file <a class="el" href="a00044_source.html">GameManager.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00047_source.html">Map.cs</a></li>
+<li><a class="el" href="a00044_source.html">GameManager.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

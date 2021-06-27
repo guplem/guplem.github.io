@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['attribute_382',['attribute',['../a00124.html#a04b0dd274f6e9b1e7d2b9a1c8e97acb7',1,'Thoughts::ControlSystems::UI::UIAttribute']]]
+  ['attributeownership_391',['attributeOwnership',['../a00128.html#acf1102a1a39d1616a8226c4ac1b7aadd',1,'Thoughts::ControlSystems::UI::UIAttribute']]],
+  ['attributeownershiptocover_392',['attributeOwnershipToCover',['../a00188.html#ab418f3db13585dce557595a1959b775d',1,'Thoughts::Game::GameMap::MapElement']]]
 ];

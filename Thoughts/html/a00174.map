@@ -1,6 +1,3 @@
-<map id="Thoughts.Game.Attributes.OwnedAttribute" name="Thoughts.Game.Attributes.OwnedAttribute">
-<area shape="rect" id="node1" title="A relation between an Attribute and a MapElement that owns it." alt="" coords="11,404,278,599"/>
-<area shape="rect" id="node2" href="$a00160.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="31,132,258,341"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,124,83"/>
-<area shape="rect" id="node4" title=" " alt="" coords="148,5,304,83"/>
+<map id="Thoughts.Game.GameMap.ExecutionPlan" name="Thoughts.Game.GameMap.ExecutionPlan">
+<area shape="rect" id="node1" title="The execution configuration for a MapEvent. A plan to execute a MapEvent owned by a MapElement,..." alt="" coords="5,5,272,259"/>
 </map>

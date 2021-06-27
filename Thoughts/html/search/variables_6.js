@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['locationspreviewamount_334',['locationsPreviewAmount',['../a00136.html#a4aea7d4b8d3fce6b75769f346a35ea2c',1,'Thoughts::ControlSystems::UI::UIPovRow']]],
-  ['lookattarget_335',['lookAtTarget',['../a00140.html#a9f1e1b050ab9f45634822ab09c88e424',1,'Thoughts::ControlSystems::UI::UIPovRowElement']]]
+  ['gameclockinterval_340',['gameClockInterval',['../a00152.html#a8913b44c8b4c1d27683facdbdf06a512',1,'Thoughts::Game::GameManager']]],
+  ['gamemanagerprefab_341',['gameManagerPrefab',['../a00096.html#a5a549870df0329b83ce69a4621eece45',1,'Thoughts::AppManager']]],
+  ['gameuimanager_342',['gameUIManager',['../a00112.html#abf08c45eed8231211ad755dd1c749436',1,'Thoughts::ControlSystems::Manual']]]
 ];

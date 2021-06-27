@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['value_403',['value',['../a00176.html#ae11ac29b67d190d7c526faaa3ab68d7a',1,'Thoughts::Game::Attributes::OwnedAttribute']]]
+  ['value_412',['value',['../a00168.html#abfc35d3d4b31616e4f94e2d1768b0192',1,'Thoughts::Game::Attributes::AttributeOwnership']]]
 ];

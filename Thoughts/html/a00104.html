@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.ControlSystems.InputHandler Class Reference</title>
+<title>TS20-Thoughts: Thoughts.ControlSystems.CameraController Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,69 +61,111 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00074.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00075.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00104.html">InputHandler</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00077.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00078.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00104.html">CameraController</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00101.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.ControlSystems.InputHandler Class Reference</div>  </div>
+<div class="title">Thoughts.ControlSystems.CameraController Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
-Collaboration diagram for Thoughts.ControlSystems.InputHandler:</div>
+Collaboration diagram for Thoughts.ControlSystems.CameraController:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00102.png" border="0" usemap="#aThoughts_8ControlSystems_8InputHandler_coll__map" alt="Collaboration graph"/></div>
-<map name="aThoughts_8ControlSystems_8InputHandler_coll__map" id="aThoughts_8ControlSystems_8InputHandler_coll__map">
-<area shape="rect" title=" " alt="" coords="1109,1717,1357,1853"/>
-<area shape="rect" title=" " alt="" coords="1073,198,1184,275"/>
-<area shape="rect" href="a00096.html" title=" " alt="" coords="1199,637,1351,729"/>
-<area shape="rect" href="a00180.html" title="A spawned element of the Map." alt="" coords="100,753,419,992"/>
-<area shape="rect" href="a00112.html" title=" " alt="" coords="948,1379,1237,1456"/>
-<area shape="rect" href="a00132.html" title=" " alt="" coords="867,1239,1142,1316"/>
-<area shape="rect" href="a00136.html" title=" " alt="" coords="911,441,1091,577"/>
-<area shape="rect" href="a00140.html" title=" " alt="" coords="746,455,874,562"/>
-<area shape="rect" href="a00108.html" title=" " alt="" coords="1029,1519,1247,1655"/>
-<area shape="rect" href="a00128.html" title=" " alt="" coords="725,1055,1036,1176"/>
-<area shape="rect" href="a00156.html" title=" " alt="" coords="302,404,598,613"/>
-<area shape="rect" href="a00176.html" title="A relation between an Attribute and a MapElement that owns it." alt="" coords="11,411,278,606"/>
-<area shape="rect" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="31,132,258,341"/>
-<area shape="rect" title=" " alt="" coords="5,5,124,83"/>
-<area shape="rect" title=" " alt="" coords="148,5,304,83"/>
-<area shape="rect" href="a00120.html" title=" " alt="" coords="721,819,1040,926"/>
-<area shape="rect" href="a00124.html" title=" " alt="" coords="443,812,697,933"/>
+<div class="center"><img src="a00102.png" border="0" usemap="#aThoughts_8ControlSystems_8CameraController_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8ControlSystems_8CameraController_coll__map" id="aThoughts_8ControlSystems_8CameraController_coll__map">
+<area shape="rect" title=" " alt="" coords="1109,1717,1385,2044"/>
+<area shape="rect" title=" " alt="" coords="1087,198,1198,275"/>
+<area shape="rect" href="a00100.html" title=" " alt="" coords="1213,637,1365,729"/>
+<area shape="rect" href="a00188.html" title="A spawned element of the Map." alt="" coords="114,753,433,992"/>
+<area shape="rect" href="a00116.html" title=" " alt="" coords="962,1379,1251,1456"/>
+<area shape="rect" href="a00136.html" title=" " alt="" coords="881,1239,1156,1316"/>
+<area shape="rect" href="a00140.html" title=" " alt="" coords="925,441,1105,577"/>
+<area shape="rect" href="a00144.html" title=" " alt="" coords="760,455,888,562"/>
+<area shape="rect" href="a00112.html" title=" " alt="" coords="1043,1519,1261,1655"/>
+<area shape="rect" href="a00132.html" title=" " alt="" coords="739,1055,1050,1176"/>
+<area shape="rect" href="a00160.html" title=" " alt="" coords="317,404,613,613"/>
+<area shape="rect" href="a00168.html" title="A relation between an Attribute and a MapElement that owns it." alt="" coords="5,411,293,606"/>
+<area shape="rect" href="a00164.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="36,132,263,341"/>
+<area shape="rect" title=" " alt="" coords="10,5,129,83"/>
+<area shape="rect" title=" " alt="" coords="153,5,309,83"/>
+<area shape="rect" href="a00124.html" title=" " alt="" coords="735,819,1054,926"/>
+<area shape="rect" href="a00128.html" title=" " alt="" coords="457,812,711,933"/>
 </map>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aecb59def0c99f3e9f6f33a618aa148ec"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#aecb59def0c99f3e9f6f33a618aa148ec">CameraView</a> { <a class="el" href="a00104.html#aecb59def0c99f3e9f6f33a618aa148eca6d886540bba0d7ff5af96d12a5831469">overworld</a>
+, <a class="el" href="a00104.html#aecb59def0c99f3e9f6f33a618aa148eca26f005fa864d50d584590486c0dbedaa">pov</a>
+ }</td></tr>
+<tr class="separator:aecb59def0c99f3e9f6f33a618aa148ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a903b1ad55450139e7ec82c779805a842"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a903b1ad55450139e7ec82c779805a842">GetAxisCustom</a> (string axisName)</td></tr>
+<tr class="separator:a903b1ad55450139e7ec82c779805a842"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9046407371e09b376f01728cdf595861"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a9046407371e09b376f01728cdf595861">Move</a> (Vector3 desiredTranslation, bool isFastSpeed)</td></tr>
+<tr class="separator:a9046407371e09b376f01728cdf595861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf6b62ab5121b0dd7d8ad24b2c10a6fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#adf6b62ab5121b0dd7d8ad24b2c10a6fd">Rotate</a> (Vector2 desiredRotation, bool isFastSpeed)</td></tr>
+<tr class="separator:adf6b62ab5121b0dd7d8ad24b2c10a6fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a616b8eed1fc64fee2e0d92ad4c0cffcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a616b8eed1fc64fee2e0d92ad4c0cffcb">SwitchCamera</a> (<a class="el" href="a00104.html#aecb59def0c99f3e9f6f33a618aa148ec">CameraView</a> desiredView, Transform povCameraParent=null)</td></tr>
+<tr class="separator:a616b8eed1fc64fee2e0d92ad4c0cffcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a5e9ab11064c5b9e3eafe21a2ac106404"><td class="memItemLeft" align="right" valign="top">new Camera&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a5e9ab11064c5b9e3eafe21a2ac106404">camera</a><code> [get]</code></td></tr>
+<tr class="separator:a5e9ab11064c5b9e3eafe21a2ac106404"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a4e199f44155f0d9b783a162e4566b8e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a4e199f44155f0d9b783a162e4566b8e5">Awake</a> ()</td></tr>
-<tr class="separator:a4e199f44155f0d9b783a162e4566b8e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5915c581747657a3159edc5eb2e403d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ac5915c581747657a3159edc5eb2e403d">Update</a> ()</td></tr>
-<tr class="separator:ac5915c581747657a3159edc5eb2e403d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6a4c463986d87d63612d28b143e7e96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ac6a4c463986d87d63612d28b143e7e96">HandleSelection</a> ()</td></tr>
-<tr class="separator:ac6a4c463986d87d63612d28b143e7e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a966fd2a597da6bbd229d96b10c9b399a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a966fd2a597da6bbd229d96b10c9b399a">HandleCameraInput</a> ()</td></tr>
-<tr class="separator:a966fd2a597da6bbd229d96b10c9b399a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18629830910f13c62b47dbd695828911"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a18629830910f13c62b47dbd695828911">Awake</a> ()</td></tr>
+<tr class="separator:a18629830910f13c62b47dbd695828911"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14ed166b6dea5b26e89c5985edc6e3cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a14ed166b6dea5b26e89c5985edc6e3cc">Start</a> ()</td></tr>
+<tr class="separator:a14ed166b6dea5b26e89c5985edc6e3cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeee720f238eb31a54cbf3afdee6b5468"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#aeee720f238eb31a54cbf3afdee6b5468">Update</a> ()</td></tr>
+<tr class="separator:aeee720f238eb31a54cbf3afdee6b5468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2768eba27fbca83616e180732201f699"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a2768eba27fbca83616e180732201f699">HandleTransformUpdates</a> ()</td></tr>
+<tr class="separator:a2768eba27fbca83616e180732201f699"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a323e38aaf7d23e55795b1f25f15c739f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00108.html">Manual</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a323e38aaf7d23e55795b1f25f15c739f">manualControlSystem</a></td></tr>
-<tr class="separator:a323e38aaf7d23e55795b1f25f15c739f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab3741da34ae834c74c88411ba45288b"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#aab3741da34ae834c74c88411ba45288b">mouseStartRotation</a></td></tr>
-<tr class="separator:aab3741da34ae834c74c88411ba45288b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a649903381c0001667cf2e5d31593ae78"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a649903381c0001667cf2e5d31593ae78">mouseCurrentRotation</a></td></tr>
-<tr class="separator:a649903381c0001667cf2e5d31593ae78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67e1c1221fc95a1274a2d508a485c33d"><td class="memItemLeft" align="right" valign="top">Camera&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a67e1c1221fc95a1274a2d508a485c33d">_camera</a></td></tr>
+<tr class="separator:a67e1c1221fc95a1274a2d508a485c33d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf19aaf8c20bcf29c6149f549f6e2ed3"><td class="memItemLeft" align="right" valign="top">Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#abf19aaf8c20bcf29c6149f549f6e2ed3">cameraRig</a></td></tr>
+<tr class="separator:abf19aaf8c20bcf29c6149f549f6e2ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aca09e275f69cda38d67bc6e6143f4a"><td class="memItemLeft" align="right" valign="top">CinemachineVirtualCameraBase&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a3aca09e275f69cda38d67bc6e6143f4a">overworldCamera</a></td></tr>
+<tr class="separator:a3aca09e275f69cda38d67bc6e6143f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a526ea4dd2f83c8fb49e29b7e02d36cf1"><td class="memItemLeft" align="right" valign="top">CinemachineVirtualCameraBase&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a526ea4dd2f83c8fb49e29b7e02d36cf1">povCamera</a></td></tr>
+<tr class="separator:a526ea4dd2f83c8fb49e29b7e02d36cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a8a8f3938de2442d892ed358fb0292f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00112.html">Manual</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a2a8a8f3938de2442d892ed358fb0292f">manualControlSystem</a></td></tr>
+<tr class="separator:a2a8a8f3938de2442d892ed358fb0292f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c6373fca4ebc7c472113d0985fa880"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a30c6373fca4ebc7c472113d0985fa880">moveSpeed</a> = 2f</td></tr>
+<tr class="separator:a30c6373fca4ebc7c472113d0985fa880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21220fb2c56f8c481285d02c665ffb8f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a21220fb2c56f8c481285d02c665ffb8f">rotationSpeed</a> = 2f</td></tr>
+<tr class="separator:a21220fb2c56f8c481285d02c665ffb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3ee8769418c0c6f0d5c08f0f50fcdf3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#aa3ee8769418c0c6f0d5c08f0f50fcdf3">fastSpeedMultiplier</a> = 2f</td></tr>
+<tr class="separator:aa3ee8769418c0c6f0d5c08f0f50fcdf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1f88f1884453f19b57ec624891d226c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#aa1f88f1884453f19b57ec624891d226c">movementSmoothing</a> = 5f</td></tr>
+<tr class="separator:aa1f88f1884453f19b57ec624891d226c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6fa5a880809571450eb8437bbdb0eb1"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ac6fa5a880809571450eb8437bbdb0eb1">newPosition</a></td></tr>
+<tr class="separator:ac6fa5a880809571450eb8437bbdb0eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b371c1470f99d2e553b9160503e6692"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a7b371c1470f99d2e553b9160503e6692">newRotation</a></td></tr>
+<tr class="separator:a7b371c1470f99d2e553b9160503e6692"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00007">7</a> of file <a class="el" href="a00011_source.html">InputHandler.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4e199f44155f0d9b783a162e4566b8e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e199f44155f0d9b783a162e4566b8e5">&#9670;&nbsp;</a></span>Awake()</h2>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00007">7</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="aecb59def0c99f3e9f6f33a618aa148ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecb59def0c99f3e9f6f33a618aa148ec">&#9670;&nbsp;</a></span>CameraView</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -132,7 +174,36 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.ControlSystems.InputHandler.Awake </td>
+          <td class="memname">enum <a class="el" href="a00104.html#aecb59def0c99f3e9f6f33a618aa148ec">Thoughts.ControlSystems.CameraController.CameraView</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aecb59def0c99f3e9f6f33a618aa148eca6d886540bba0d7ff5af96d12a5831469"></a>overworld&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aecb59def0c99f3e9f6f33a618aa148eca26f005fa864d50d584590486c0dbedaa"></a>pov&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00016">16</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a18629830910f13c62b47dbd695828911"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18629830910f13c62b47dbd695828911">&#9670;&nbsp;</a></span>Awake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.ControlSystems.CameraController.Awake </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -145,94 +216,41 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00011">11</a> of file <a class="el" href="a00011_source.html">InputHandler.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00033">33</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
 
 </div>
 </div>
-<a id="a966fd2a597da6bbd229d96b10c9b399a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a966fd2a597da6bbd229d96b10c9b399a">&#9670;&nbsp;</a></span>HandleCameraInput()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.ControlSystems.InputHandler.HandleCameraInput </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00042">42</a> of file <a class="el" href="a00011_source.html">InputHandler.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00104_a966fd2a597da6bbd229d96b10c9b399a_cgraph.png" border="0" usemap="#aa00104_a966fd2a597da6bbd229d96b10c9b399a_cgraph" alt=""/></div>
-<map name="aa00104_a966fd2a597da6bbd229d96b10c9b399a_cgraph" id="aa00104_a966fd2a597da6bbd229d96b10c9b399a_cgraph">
-<area shape="rect" title=" " alt="" coords="5,31,371,57"/>
-<area shape="rect" href="a00100.html#a9046407371e09b376f01728cdf595861" title=" " alt="" coords="423,5,733,32"/>
-<area shape="rect" href="a00100.html#adf6b62ab5121b0dd7d8ad24b2c10a6fd" title=" " alt="" coords="419,56,737,83"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00104_a966fd2a597da6bbd229d96b10c9b399a_icgraph.png" border="0" usemap="#aa00104_a966fd2a597da6bbd229d96b10c9b399a_icgraph" alt=""/></div>
-<map name="aa00104_a966fd2a597da6bbd229d96b10c9b399a_icgraph" id="aa00104_a966fd2a597da6bbd229d96b10c9b399a_icgraph">
-<area shape="rect" title=" " alt="" coords="347,5,712,32"/>
-<area shape="rect" href="a00104.html#ac5915c581747657a3159edc5eb2e403d" title=" " alt="" coords="5,5,299,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="ac6a4c463986d87d63612d28b143e7e96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6a4c463986d87d63612d28b143e7e96">&#9670;&nbsp;</a></span>HandleSelection()</h2>
+<a id="a903b1ad55450139e7ec82c779805a842"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a903b1ad55450139e7ec82c779805a842">&#9670;&nbsp;</a></span>GetAxisCustom()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.ControlSystems.InputHandler.HandleSelection </td>
+          <td class="memname">float Thoughts.ControlSystems.CameraController.GetAxisCustom </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>axisName</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00024">24</a> of file <a class="el" href="a00011_source.html">InputHandler.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00044">44</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00104_ac6a4c463986d87d63612d28b143e7e96_icgraph.png" border="0" usemap="#aa00104_ac6a4c463986d87d63612d28b143e7e96_icgraph" alt=""/></div>
-<map name="aa00104_ac6a4c463986d87d63612d28b143e7e96_icgraph" id="aa00104_ac6a4c463986d87d63612d28b143e7e96_icgraph">
-<area shape="rect" title=" " alt="" coords="347,5,693,32"/>
-<area shape="rect" href="a00104.html#ac5915c581747657a3159edc5eb2e403d" title=" " alt="" coords="5,5,299,32"/>
+<div class="center"><img src="a00104_a903b1ad55450139e7ec82c779805a842_icgraph.png" border="0" usemap="#aa00104_a903b1ad55450139e7ec82c779805a842_icgraph" alt=""/></div>
+<map name="aa00104_a903b1ad55450139e7ec82c779805a842_icgraph" id="aa00104_a903b1ad55450139e7ec82c779805a842_icgraph">
+<area shape="rect" title=" " alt="" coords="361,5,733,32"/>
+<area shape="rect" href="a00104.html#a14ed166b6dea5b26e89c5985edc6e3cc" title=" " alt="" coords="5,5,313,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="ac5915c581747657a3159edc5eb2e403d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5915c581747657a3159edc5eb2e403d">&#9670;&nbsp;</a></span>Update()</h2>
+<a id="a2768eba27fbca83616e180732201f699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2768eba27fbca83616e180732201f699">&#9670;&nbsp;</a></span>HandleTransformUpdates()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,7 +259,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.ControlSystems.InputHandler.Update </td>
+          <td class="memname">void Thoughts.ControlSystems.CameraController.HandleTransformUpdates </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -254,25 +272,204 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00018">18</a> of file <a class="el" href="a00011_source.html">InputHandler.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00059">59</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00104_a2768eba27fbca83616e180732201f699_icgraph.png" border="0" usemap="#aa00104_a2768eba27fbca83616e180732201f699_icgraph" alt=""/></div>
+<map name="aa00104_a2768eba27fbca83616e180732201f699_icgraph" id="aa00104_a2768eba27fbca83616e180732201f699_icgraph">
+<area shape="rect" title=" " alt="" coords="375,5,800,32"/>
+<area shape="rect" href="a00104.html#aeee720f238eb31a54cbf3afdee6b5468" title=" " alt="" coords="5,5,327,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a9046407371e09b376f01728cdf595861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9046407371e09b376f01728cdf595861">&#9670;&nbsp;</a></span>Move()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.ControlSystems.CameraController.Move </td>
+          <td>(</td>
+          <td class="paramtype">Vector3&#160;</td>
+          <td class="paramname"><em>desiredTranslation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isFastSpeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00064">64</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00104_a9046407371e09b376f01728cdf595861_icgraph.png" border="0" usemap="#aa00104_a9046407371e09b376f01728cdf595861_icgraph" alt=""/></div>
+<map name="aa00104_a9046407371e09b376f01728cdf595861_icgraph" id="aa00104_a9046407371e09b376f01728cdf595861_icgraph">
+<area shape="rect" title=" " alt="" coords="760,5,1071,32"/>
+<area shape="rect" href="a00108.html#a966fd2a597da6bbd229d96b10c9b399a" title=" " alt="" coords="347,5,712,32"/>
+<area shape="rect" href="a00108.html#ac5915c581747657a3159edc5eb2e403d" title=" " alt="" coords="5,5,299,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="adf6b62ab5121b0dd7d8ad24b2c10a6fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf6b62ab5121b0dd7d8ad24b2c10a6fd">&#9670;&nbsp;</a></span>Rotate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.ControlSystems.CameraController.Rotate </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>desiredRotation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isFastSpeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00069">69</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00104_adf6b62ab5121b0dd7d8ad24b2c10a6fd_icgraph.png" border="0" usemap="#aa00104_adf6b62ab5121b0dd7d8ad24b2c10a6fd_icgraph" alt=""/></div>
+<map name="aa00104_adf6b62ab5121b0dd7d8ad24b2c10a6fd_icgraph" id="aa00104_adf6b62ab5121b0dd7d8ad24b2c10a6fd_icgraph">
+<area shape="rect" title=" " alt="" coords="760,5,1079,32"/>
+<area shape="rect" href="a00108.html#a966fd2a597da6bbd229d96b10c9b399a" title=" " alt="" coords="347,5,712,32"/>
+<area shape="rect" href="a00108.html#ac5915c581747657a3159edc5eb2e403d" title=" " alt="" coords="5,5,299,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a14ed166b6dea5b26e89c5985edc6e3cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14ed166b6dea5b26e89c5985edc6e3cc">&#9670;&nbsp;</a></span>Start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.ControlSystems.CameraController.Start </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00039">39</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00104_ac5915c581747657a3159edc5eb2e403d_cgraph.png" border="0" usemap="#aa00104_ac5915c581747657a3159edc5eb2e403d_cgraph" alt=""/></div>
-<map name="aa00104_ac5915c581747657a3159edc5eb2e403d_cgraph" id="aa00104_ac5915c581747657a3159edc5eb2e403d_cgraph">
-<area shape="rect" title=" " alt="" coords="5,56,299,83"/>
-<area shape="rect" href="a00104.html#a966fd2a597da6bbd229d96b10c9b399a" title=" " alt="" coords="347,31,712,57"/>
-<area shape="rect" href="a00104.html#ac6a4c463986d87d63612d28b143e7e96" title=" " alt="" coords="356,81,703,108"/>
-<area shape="rect" href="a00100.html#a9046407371e09b376f01728cdf595861" title=" " alt="" coords="764,5,1075,32"/>
-<area shape="rect" href="a00100.html#adf6b62ab5121b0dd7d8ad24b2c10a6fd" title=" " alt="" coords="760,56,1079,83"/>
+<div class="center"><img src="a00104_a14ed166b6dea5b26e89c5985edc6e3cc_cgraph.png" border="0" usemap="#aa00104_a14ed166b6dea5b26e89c5985edc6e3cc_cgraph" alt=""/></div>
+<map name="aa00104_a14ed166b6dea5b26e89c5985edc6e3cc_cgraph" id="aa00104_a14ed166b6dea5b26e89c5985edc6e3cc_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,313,32"/>
+<area shape="rect" href="a00104.html#a903b1ad55450139e7ec82c779805a842" title=" " alt="" coords="361,5,733,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a616b8eed1fc64fee2e0d92ad4c0cffcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a616b8eed1fc64fee2e0d92ad4c0cffcb">&#9670;&nbsp;</a></span>SwitchCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.ControlSystems.CameraController.SwitchCamera </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00104.html#aecb59def0c99f3e9f6f33a618aa148ec">CameraView</a>&#160;</td>
+          <td class="paramname"><em>desiredView</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Transform&#160;</td>
+          <td class="paramname"><em>povCameraParent</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00074">74</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="aeee720f238eb31a54cbf3afdee6b5468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeee720f238eb31a54cbf3afdee6b5468">&#9670;&nbsp;</a></span>Update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.ControlSystems.CameraController.Update </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00054">54</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00104_aeee720f238eb31a54cbf3afdee6b5468_cgraph.png" border="0" usemap="#aa00104_aeee720f238eb31a54cbf3afdee6b5468_cgraph" alt=""/></div>
+<map name="aa00104_aeee720f238eb31a54cbf3afdee6b5468_cgraph" id="aa00104_aeee720f238eb31a54cbf3afdee6b5468_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,327,32"/>
+<area shape="rect" href="a00104.html#a2768eba27fbca83616e180732201f699" title=" " alt="" coords="375,5,800,32"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a323e38aaf7d23e55795b1f25f15c739f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a323e38aaf7d23e55795b1f25f15c739f">&#9670;&nbsp;</a></span>manualControlSystem</h2>
+<a id="a67e1c1221fc95a1274a2d508a485c33d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67e1c1221fc95a1274a2d508a485c33d">&#9670;&nbsp;</a></span>_camera</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,7 +478,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00108.html">Manual</a> Thoughts.ControlSystems.InputHandler.manualControlSystem</td>
+          <td class="memname">Camera Thoughts.ControlSystems.CameraController._camera</td>
         </tr>
       </table>
   </td>
@@ -291,12 +488,12 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00009">9</a> of file <a class="el" href="a00011_source.html">InputHandler.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00011">11</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
 
 </div>
 </div>
-<a id="a649903381c0001667cf2e5d31593ae78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a649903381c0001667cf2e5d31593ae78">&#9670;&nbsp;</a></span>mouseCurrentRotation</h2>
+<a id="abf19aaf8c20bcf29c6149f549f6e2ed3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf19aaf8c20bcf29c6149f549f6e2ed3">&#9670;&nbsp;</a></span>cameraRig</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,7 +502,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Vector3 Thoughts.ControlSystems.InputHandler.mouseCurrentRotation</td>
+          <td class="memname">Transform Thoughts.ControlSystems.CameraController.cameraRig</td>
         </tr>
       </table>
   </td>
@@ -315,12 +512,12 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00041">41</a> of file <a class="el" href="a00011_source.html">InputHandler.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00013">13</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
 
 </div>
 </div>
-<a id="aab3741da34ae834c74c88411ba45288b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab3741da34ae834c74c88411ba45288b">&#9670;&nbsp;</a></span>mouseStartRotation</h2>
+<a id="aa3ee8769418c0c6f0d5c08f0f50fcdf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3ee8769418c0c6f0d5c08f0f50fcdf3">&#9670;&nbsp;</a></span>fastSpeedMultiplier</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -329,7 +526,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Vector3 Thoughts.ControlSystems.InputHandler.mouseStartRotation</td>
+          <td class="memname">float Thoughts.ControlSystems.CameraController.fastSpeedMultiplier = 2f</td>
         </tr>
       </table>
   </td>
@@ -339,12 +536,229 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00041">41</a> of file <a class="el" href="a00011_source.html">InputHandler.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00027">27</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a2a8a8f3938de2442d892ed358fb0292f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a8a8f3938de2442d892ed358fb0292f">&#9670;&nbsp;</a></span>manualControlSystem</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00112.html">Manual</a> Thoughts.ControlSystems.CameraController.manualControlSystem</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00022">22</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="aa1f88f1884453f19b57ec624891d226c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1f88f1884453f19b57ec624891d226c">&#9670;&nbsp;</a></span>movementSmoothing</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.ControlSystems.CameraController.movementSmoothing = 5f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00028">28</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a30c6373fca4ebc7c472113d0985fa880"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30c6373fca4ebc7c472113d0985fa880">&#9670;&nbsp;</a></span>moveSpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.ControlSystems.CameraController.moveSpeed = 2f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00025">25</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="ac6fa5a880809571450eb8437bbdb0eb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6fa5a880809571450eb8437bbdb0eb1">&#9670;&nbsp;</a></span>newPosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector3 Thoughts.ControlSystems.CameraController.newPosition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00030">30</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a7b371c1470f99d2e553b9160503e6692"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b371c1470f99d2e553b9160503e6692">&#9670;&nbsp;</a></span>newRotation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector2 Thoughts.ControlSystems.CameraController.newRotation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00031">31</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a3aca09e275f69cda38d67bc6e6143f4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aca09e275f69cda38d67bc6e6143f4a">&#9670;&nbsp;</a></span>overworldCamera</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CinemachineVirtualCameraBase Thoughts.ControlSystems.CameraController.overworldCamera</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00014">14</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a526ea4dd2f83c8fb49e29b7e02d36cf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a526ea4dd2f83c8fb49e29b7e02d36cf1">&#9670;&nbsp;</a></span>povCamera</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CinemachineVirtualCameraBase Thoughts.ControlSystems.CameraController.povCamera</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00015">15</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a21220fb2c56f8c481285d02c665ffb8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21220fb2c56f8c481285d02c665ffb8f">&#9670;&nbsp;</a></span>rotationSpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.ControlSystems.CameraController.rotationSpeed = 2f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00026">26</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a5e9ab11064c5b9e3eafe21a2ac106404"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e9ab11064c5b9e3eafe21a2ac106404">&#9670;&nbsp;</a></span>camera</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">new Camera Thoughts.ControlSystems.CameraController.camera</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00008_source.html#l00012">12</a> of file <a class="el" href="a00008_source.html">CameraController.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00011_source.html">InputHandler.cs</a></li>
+<li><a class="el" href="a00008_source.html">CameraController.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.Attributes.Attribute Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Game.Attributes.AttributeManager Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,238 +61,118 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00074.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00077.html">Game</a></li><li class="navelem"><a class="el" href="a00079.html">Attributes</a></li><li class="navelem"><a class="el" href="a00160.html">Attribute</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00077.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00080.html">Game</a></li><li class="navelem"><a class="el" href="a00082.html">Attributes</a></li><li class="navelem"><a class="el" href="a00160.html">AttributeManager</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00157.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.Attributes.Attribute Class Reference</div>  </div>
+<div class="title">Thoughts.Game.Attributes.AttributeManager Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>A quality, characteristic or object ascribed to a MapElement.  
- <a href="a00160.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Game.Attributes.Attribute:</div>
+Collaboration diagram for Thoughts.Game.Attributes.AttributeManager:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00158.png" border="0" usemap="#aThoughts_8Game_8Attributes_8Attribute_coll__map" alt="Collaboration graph"/></div>
-<map name="aThoughts_8Game_8Attributes_8Attribute_coll__map" id="aThoughts_8Game_8Attributes_8Attribute_coll__map">
-<area shape="rect" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="31,131,258,340"/>
-<area shape="rect" title=" " alt="" coords="5,5,124,83"/>
-<area shape="rect" title=" " alt="" coords="148,5,304,83"/>
+<div class="center"><img src="a00158.png" border="0" usemap="#aThoughts_8Game_8Attributes_8AttributeManager_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Game_8Attributes_8AttributeManager_coll__map" id="aThoughts_8Game_8Attributes_8AttributeManager_coll__map">
+<area shape="rect" title=" " alt="" coords="5,5,301,215"/>
 </map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a45c798f1f1f7a67f2836a5ac196e0078"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078">NeedPriority</a> { <br />
-&#160;&#160;<a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078a209c60194acd5bc5f274cdec8d84f77a">SelfActualization</a> = 5
-, <a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078ae30e078961bd2dccd5c97eca8d1a4325">Esteem</a> = 4
-, <a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078a8bd7a1153a88761ad9d37e2f2394c947">Love</a> = 3
-, <a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078a6472ce41c26babff27b4c28028093d77">Safety</a> = 2
-, <br />
-&#160;&#160;<a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078a3887565dec9409476ad429e0b542420d">Physiological</a> = 1
-, <a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078a6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
-<br />
- }</td></tr>
-<tr class="memdesc:a45c798f1f1f7a67f2836a5ac196e0078"><td class="mdescLeft">&#160;</td><td class="mdescRight">The levels of priority an attribute can have.  <a href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078">More...</a><br /></td></tr>
-<tr class="separator:a45c798f1f1f7a67f2836a5ac196e0078"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2181931c58d46a51edd4f4bb02a89c0d"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a2181931c58d46a51edd4f4bb02a89c0d">ToString</a> ()</td></tr>
-<tr class="memdesc:a2181931c58d46a51edd4f4bb02a89c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string that represents the current object.  <a href="a00160.html#a2181931c58d46a51edd4f4bb02a89c0d">More...</a><br /></td></tr>
-<tr class="separator:a2181931c58d46a51edd4f4bb02a89c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc97275c609e82b9682641e93e1edb79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#acc97275c609e82b9682641e93e1edb79">IsMorePrioritaryThan</a> (<a class="el" href="a00160.html">Attribute</a> attribute)</td></tr>
-<tr class="memdesc:acc97275c609e82b9682641e93e1edb79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if this <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a> is more prioritary than another given <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a>.  <a href="a00160.html#acc97275c609e82b9682641e93e1edb79">More...</a><br /></td></tr>
-<tr class="separator:acc97275c609e82b9682641e93e1edb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1b2d6d164e1a040b7ba5979a98d9059"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#aa1b2d6d164e1a040b7ba5979a98d9059">IsNeed</a> ()</td></tr>
-<tr class="memdesc:aa1b2d6d164e1a040b7ba5979a98d9059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if this <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a> is considered a Need.  <a href="a00160.html#aa1b2d6d164e1a040b7ba5979a98d9059">More...</a><br /></td></tr>
-<tr class="separator:aa1b2d6d164e1a040b7ba5979a98d9059"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a938e4ed640c1a2da3cd042a34efd1cb3"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a938e4ed640c1a2da3cd042a34efd1cb3">Equals</a> (object obj)</td></tr>
-<tr class="memdesc:a938e4ed640c1a2da3cd042a34efd1cb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates whether the current object is equal to another object of the same type.  <a href="a00160.html#a938e4ed640c1a2da3cd042a34efd1cb3">More...</a><br /></td></tr>
-<tr class="separator:a938e4ed640c1a2da3cd042a34efd1cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eae376606ab8db29043f07bd86eedb3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a8eae376606ab8db29043f07bd86eedb3">Equals</a> (<a class="el" href="a00160.html">Attribute</a> other)</td></tr>
-<tr class="memdesc:a8eae376606ab8db29043f07bd86eedb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates whether the current object is equal to another object of the same type.  <a href="a00160.html#a8eae376606ab8db29043f07bd86eedb3">More...</a><br /></td></tr>
-<tr class="separator:a8eae376606ab8db29043f07bd86eedb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51d6331a5fd9ac0044fd795d042fe1e4"><td class="memItemLeft" align="right" valign="top">override int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a51d6331a5fd9ac0044fd795d042fe1e4">GetHashCode</a> ()</td></tr>
-<tr class="memdesc:a51d6331a5fd9ac0044fd795d042fe1e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the hash code for the object (given by its name).  <a href="a00160.html#a51d6331a5fd9ac0044fd795d042fe1e4">More...</a><br /></td></tr>
-<tr class="separator:a51d6331a5fd9ac0044fd795d042fe1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac3209f87be14f3822be64ae4e64e6899"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#ac3209f87be14f3822be64ae4e64e6899">operator==</a> (<a class="el" href="a00160.html">Attribute</a> left, <a class="el" href="a00160.html">Attribute</a> right)</td></tr>
-<tr class="memdesc:ac3209f87be14f3822be64ae4e64e6899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override to the equal operator so two <a class="el" href="a00079.html">Attributes</a> are considered the same if their names are the same.  <a href="a00160.html#ac3209f87be14f3822be64ae4e64e6899">More...</a><br /></td></tr>
-<tr class="separator:ac3209f87be14f3822be64ae4e64e6899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a726d47b71c3469d4abfadcadb8b02dc3"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a726d47b71c3469d4abfadcadb8b02dc3">operator!=</a> (<a class="el" href="a00160.html">Attribute</a> left, <a class="el" href="a00160.html">Attribute</a> right)</td></tr>
-<tr class="memdesc:a726d47b71c3469d4abfadcadb8b02dc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override to the mot-equal operator so two <a class="el" href="a00079.html">Attributes</a> are considered different the same if their names are different.  <a href="a00160.html#a726d47b71c3469d4abfadcadb8b02dc3">More...</a><br /></td></tr>
-<tr class="separator:a726d47b71c3469d4abfadcadb8b02dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:afa3ba0d2943c3081184791d5a2721a53"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00172.html">MapEvent</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#afa3ba0d2943c3081184791d5a2721a53">mapEvents</a></td></tr>
-<tr class="memdesc:afa3ba0d2943c3081184791d5a2721a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">The MapEvents made available by the <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a>.  <a href="a00160.html#afa3ba0d2943c3081184791d5a2721a53">More...</a><br /></td></tr>
-<tr class="separator:afa3ba0d2943c3081184791d5a2721a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae96eef2441e33c6fc8bad5b947a5b9ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#ae96eef2441e33c6fc8bad5b947a5b9ff">Initialize</a> (<a class="el" href="a00188.html">MapElement</a> <a class="el" href="a00160.html#a026cdf8aa7fc32c1b9038e50c1823523">owner</a>)</td></tr>
+<tr class="separator:ae96eef2441e33c6fc8bad5b947a5b9ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36b4b4bbc76abf4bf9e05b6b532a1a99"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a36b4b4bbc76abf4bf9e05b6b532a1a99">ToString</a> ()</td></tr>
+<tr class="separator:a36b4b4bbc76abf4bf9e05b6b532a1a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa85b1ecfb57d63b4bca4ed6bfbd786a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#aa85b1ecfb57d63b4bca4ed6bfbd786a7">ExecuteMapEventsWithTimeElapseEnabled</a> ()</td></tr>
+<tr class="separator:aa85b1ecfb57d63b4bca4ed6bfbd786a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbede99c0c0a70fb079efbcda9ea0603"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#abbede99c0c0a70fb079efbcda9ea0603">UpdateAttribute</a> (<a class="el" href="a00164.html">Attributes.Attribute</a> attributeToUpdate, int deltaValue)</td></tr>
+<tr class="separator:abbede99c0c0a70fb079efbcda9ea0603"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5967dd95d0468f5da078b63faa0e120"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00168.html">AttributeOwnership</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#ac5967dd95d0468f5da078b63faa0e120">GetAttributesThatNeedCare</a> ()</td></tr>
+<tr class="separator:ac5967dd95d0468f5da078b63faa0e120"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d92494d600898b9a642bce319f0d9be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a2d92494d600898b9a642bce319f0d9be">CanCover</a> (<a class="el" href="a00184.html">Requirement</a> requirement, int times, out int missingValueToCoverInThisAttributeManager)</td></tr>
+<tr class="separator:a2d92494d600898b9a642bce319f0d9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1adcebf6588ef130c54876ab24b82b5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00168.html">AttributeOwnership</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a1adcebf6588ef130c54876ab24b82b5b">GetOwnedAttributeOf</a> (<a class="el" href="a00164.html">Attributes.Attribute</a> attribute)</td></tr>
+<tr class="separator:a1adcebf6588ef130c54876ab24b82b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eecb953309547dcb9fdf9f9696241d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00176.html">ExecutionPlan</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a5eecb953309547dcb9fdf9f9696241d3">GetExecutionPlanToCover</a> (<a class="el" href="a00168.html">AttributeOwnership</a> attributeOwnershipToCover, int remainingValueToCover, <a class="el" href="a00188.html">MapElement</a> executer)</td></tr>
+<tr class="separator:a5eecb953309547dcb9fdf9f9696241d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:aaac06fe22f0e16957f0dfcac6d8858b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078">NeedPriority</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#aaac06fe22f0e16957f0dfcac6d8858b1">needPriority</a><code> [get]</code></td></tr>
-<tr class="memdesc:aaac06fe22f0e16957f0dfcac6d8858b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The level of priority of the attribute.  <a href="a00160.html#aaac06fe22f0e16957f0dfcac6d8858b1">More...</a><br /></td></tr>
-<tr class="separator:aaac06fe22f0e16957f0dfcac6d8858b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a026cdf8aa7fc32c1b9038e50c1823523"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00188.html">MapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a026cdf8aa7fc32c1b9038e50c1823523">owner</a><code> [get, private set]</code></td></tr>
+<tr class="separator:a026cdf8aa7fc32c1b9038e50c1823523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40035b7dfda59e694e71bad82018fd0b"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00168.html">AttributeOwnership</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a40035b7dfda59e694e71bad82018fd0b">ownedAttributes</a><code> [get, private set]</code></td></tr>
+<tr class="separator:a40035b7dfda59e694e71bad82018fd0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:aef42fbb67bffc87789e252e7bd6dd965"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078">NeedPriority</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#aef42fbb67bffc87789e252e7bd6dd965">_needPriority</a> = <a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078a6adf97f83acf6453d4a6a4b1070f3754">NeedPriority.None</a></td></tr>
-<tr class="memdesc:aef42fbb67bffc87789e252e7bd6dd965"><td class="mdescLeft">&#160;</td><td class="mdescRight">The level of priority of the attribute.  <a href="a00160.html#aef42fbb67bffc87789e252e7bd6dd965">More...</a><br /></td></tr>
-<tr class="separator:aef42fbb67bffc87789e252e7bd6dd965"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b713966ba728f828f3c5ac4cde385e2"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00168.html">AttributeOwnership</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00160.html#a9b713966ba728f828f3c5ac4cde385e2">_ownedAttributes</a> = new List&lt;<a class="el" href="a00168.html">AttributeOwnership</a>&gt;()</td></tr>
+<tr class="separator:a9b713966ba728f828f3c5ac4cde385e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A quality, characteristic or object ascribed to a MapElement. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00012">12</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a45c798f1f1f7a67f2836a5ac196e0078"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45c798f1f1f7a67f2836a5ac196e0078">&#9670;&nbsp;</a></span>NeedPriority</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078">Thoughts.Game.Attributes.Attribute.NeedPriority</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The levels of priority an attribute can have. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a45c798f1f1f7a67f2836a5ac196e0078a209c60194acd5bc5f274cdec8d84f77a"></a>SelfActualization&#160;</td><td class="fielddoc"><p>Level of priority = 5. MINIMUM level of priority </p>
-<p>Examples: Becoming the most that one can be, creative activities, ...</p>
-</td></tr>
-<tr><td class="fieldname"><a id="a45c798f1f1f7a67f2836a5ac196e0078ae30e078961bd2dccd5c97eca8d1a4325"></a>Esteem&#160;</td><td class="fielddoc"><p>Level of priority = 4. </p>
-<p>Examples: Respect,Self-esteem, status, recognition/prestige, strength, freedom, accomplishment, ...</p>
-</td></tr>
-<tr><td class="fieldname"><a id="a45c798f1f1f7a67f2836a5ac196e0078a8bd7a1153a88761ad9d37e2f2394c947"></a>Love&#160;</td><td class="fielddoc"><p>Level of priority = 3. </p>
-<p>Examples: Friendship, intimacy, family, sense of connection, ...</p>
-</td></tr>
-<tr><td class="fieldname"><a id="a45c798f1f1f7a67f2836a5ac196e0078a6472ce41c26babff27b4c28028093d77"></a>Safety&#160;</td><td class="fielddoc"><p>Level of priority = 2. </p>
-<p>Examples: Personal security, employment, resources, heath, property, ...</p>
-</td></tr>
-<tr><td class="fieldname"><a id="a45c798f1f1f7a67f2836a5ac196e0078a3887565dec9409476ad429e0b542420d"></a>Physiological&#160;</td><td class="fielddoc"><p>Level of priority = 1. MAXIMUM level of priority </p>
-<p>Examples: Hydration, satiety, shelter, sleep/Rest, clothing, reproduction, warmth, ...</p>
-</td></tr>
-<tr><td class="fieldname"><a id="a45c798f1f1f7a67f2836a5ac196e0078a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>Level of priority = 0. No priority. If it is not a need, it should have this level of priority </p>
-<p>Examples: Objects like water (not hydration), wood, berries (not satiety), ...</p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00045">45</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8eae376606ab8db29043f07bd86eedb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8eae376606ab8db29043f07bd86eedb3">&#9670;&nbsp;</a></span>Equals() <span class="overload">[1/2]</span></h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00009">9</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2d92494d600898b9a642bce319f0d9be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d92494d600898b9a642bce319f0d9be">&#9670;&nbsp;</a></span>CanCover()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Thoughts.Game.Attributes.Attribute.Equals </td>
+          <td class="memname">bool Thoughts.Game.Attributes.AttributeManager.CanCover </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00160.html">Attribute</a>&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00184.html">Requirement</a>&#160;</td>
+          <td class="paramname"><em>requirement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>times</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out int&#160;</td>
+          <td class="paramname"><em>missingValueToCoverInThisAttributeManager</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Indicates whether the current object is equal to another object of the same type. </p>
-<p>The equality is considered checking only the name of the <a class="el" href="a00079.html">Attributes</a>.</p>
+<p></p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td>The object to check against</td></tr>
+    <tr><td class="paramname">requirement</td><td></td></tr>
+    <tr><td class="paramname">times</td><td>The amount of times the requirement will have to be met</td></tr>
+    <tr><td class="paramname">missingValueToCoverInThisAttributeManager</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the specified object is equal to the current object; otherwise, false.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if it contains an attribute with a value higher or equal than the one in the requirement/AttributeUpdate n times</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00132">132</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00160_a8eae376606ab8db29043f07bd86eedb3_cgraph.png" border="0" usemap="#aa00160_a8eae376606ab8db29043f07bd86eedb3_cgraph" alt=""/></div>
-<map name="aa00160_a8eae376606ab8db29043f07bd86eedb3_cgraph" id="aa00160_a8eae376606ab8db29043f07bd86eedb3_cgraph">
-<area shape="rect" title="Indicates whether the current object is equal to another object of the same type." alt="" coords="5,5,276,32"/>
-<area shape="rect" href="a00160.html#a938e4ed640c1a2da3cd042a34efd1cb3" title="Indicates whether the current object is equal to another object of the same type." alt="" coords="324,5,595,32"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00086">86</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
 
 </div>
 </div>
-<a id="a938e4ed640c1a2da3cd042a34efd1cb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a938e4ed640c1a2da3cd042a34efd1cb3">&#9670;&nbsp;</a></span>Equals() <span class="overload">[2/2]</span></h2>
+<a id="aa85b1ecfb57d63b4bca4ed6bfbd786a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa85b1ecfb57d63b4bca4ed6bfbd786a7">&#9670;&nbsp;</a></span>ExecuteMapEventsWithTimeElapseEnabled()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">override bool Thoughts.Game.Attributes.Attribute.Equals </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>obj</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Indicates whether the current object is equal to another object of the same type. </p>
-<p>The equality is considered checking only the name of the <a class="el" href="a00079.html">Attributes</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">obj</td><td>The object to check against</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the specified object is equal to the current object; otherwise, false.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00115">115</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00160_a938e4ed640c1a2da3cd042a34efd1cb3_icgraph.png" border="0" usemap="#aa00160_a938e4ed640c1a2da3cd042a34efd1cb3_icgraph" alt=""/></div>
-<map name="aa00160_a938e4ed640c1a2da3cd042a34efd1cb3_icgraph" id="aa00160_a938e4ed640c1a2da3cd042a34efd1cb3_icgraph">
-<area shape="rect" title="Indicates whether the current object is equal to another object of the same type." alt="" coords="348,31,619,57"/>
-<area shape="rect" href="a00160.html#a8eae376606ab8db29043f07bd86eedb3" title="Indicates whether the current object is equal to another object of the same type." alt="" coords="17,5,288,32"/>
-<area shape="rect" href="a00160.html#ac3209f87be14f3822be64ae4e64e6899" title="Override to the equal operator so two Attributes are considered the same if their names are the same." alt="" coords="5,56,300,83"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a51d6331a5fd9ac0044fd795d042fe1e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51d6331a5fd9ac0044fd795d042fe1e4">&#9670;&nbsp;</a></span>GetHashCode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">override int Thoughts.Game.Attributes.Attribute.GetHashCode </td>
+          <td class="memname">void Thoughts.Game.Attributes.AttributeManager.ExecuteMapEventsWithTimeElapseEnabled </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -300,70 +180,193 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the hash code for the object (given by its name). </p>
-<dl class="section return"><dt>Returns</dt><dd>The hash code for the object.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00141">141</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00032">32</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00160_aa85b1ecfb57d63b4bca4ed6bfbd786a7_cgraph.png" border="0" usemap="#aa00160_aa85b1ecfb57d63b4bca4ed6bfbd786a7_cgraph" alt=""/></div>
+<map name="aa00160_aa85b1ecfb57d63b4bca4ed6bfbd786a7_cgraph" id="aa00160_aa85b1ecfb57d63b4bca4ed6bfbd786a7_cgraph">
+<area shape="rect" title=" " alt="" coords="5,31,540,57"/>
+<area shape="rect" href="a00180.html#a82c4116beecc7775ba234fa6000829ef" title="Executes the event applying the consequences of it." alt="" coords="636,5,927,32"/>
+<area shape="rect" href="a00180.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="588,56,975,83"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00160_aa85b1ecfb57d63b4bca4ed6bfbd786a7_icgraph.png" border="0" usemap="#aa00160_aa85b1ecfb57d63b4bca4ed6bfbd786a7_icgraph" alt=""/></div>
+<map name="aa00160_aa85b1ecfb57d63b4bca4ed6bfbd786a7_icgraph" id="aa00160_aa85b1ecfb57d63b4bca4ed6bfbd786a7_icgraph">
+<area shape="rect" title=" " alt="" coords="743,5,1277,32"/>
+<area shape="rect" href="a00188.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
+<area shape="rect" href="a00188.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
+</map>
+</div>
 
 </div>
 </div>
-<a id="acc97275c609e82b9682641e93e1edb79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc97275c609e82b9682641e93e1edb79">&#9670;&nbsp;</a></span>IsMorePrioritaryThan()</h2>
+<a id="ac5967dd95d0468f5da078b63faa0e120"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5967dd95d0468f5da078b63faa0e120">&#9670;&nbsp;</a></span>GetAttributesThatNeedCare()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Thoughts.Game.Attributes.Attribute.IsMorePrioritaryThan </td>
+          <td class="memname">List&lt;<a class="el" href="a00168.html">AttributeOwnership</a>&gt; Thoughts.Game.Attributes.AttributeManager.GetAttributesThatNeedCare </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00160.html">Attribute</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00068">68</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00160_ac5967dd95d0468f5da078b63faa0e120_cgraph.png" border="0" usemap="#aa00160_ac5967dd95d0468f5da078b63faa0e120_cgraph" alt=""/></div>
+<map name="aa00160_ac5967dd95d0468f5da078b63faa0e120_cgraph" id="aa00160_ac5967dd95d0468f5da078b63faa0e120_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,445,32"/>
+<area shape="rect" href="a00168.html#a22a2fce8f7752ff5bf74f3db72cf25df" title="Indicates whether the attribute has a value of 0 or less and it has been indicated that it is intende..." alt="" coords="493,5,849,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00160_ac5967dd95d0468f5da078b63faa0e120_icgraph.png" border="0" usemap="#aa00160_ac5967dd95d0468f5da078b63faa0e120_icgraph" alt=""/></div>
+<map name="aa00160_ac5967dd95d0468f5da078b63faa0e120_icgraph" id="aa00160_ac5967dd95d0468f5da078b63faa0e120_icgraph">
+<area shape="rect" title=" " alt="" coords="1239,5,1679,32"/>
+<area shape="rect" href="a00188.html#a29c70fa3beeb9e73f6e3870e8a7e6532" title="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement." alt="" coords="743,5,1191,32"/>
+<area shape="rect" href="a00188.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
+<area shape="rect" href="a00188.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a5eecb953309547dcb9fdf9f9696241d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5eecb953309547dcb9fdf9f9696241d3">&#9670;&nbsp;</a></span>GetExecutionPlanToCover()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00176.html">ExecutionPlan</a> Thoughts.Game.Attributes.AttributeManager.GetExecutionPlanToCover </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00168.html">AttributeOwnership</a>&#160;</td>
+          <td class="paramname"><em>attributeOwnershipToCover</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>remainingValueToCover</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00188.html">MapElement</a>&#160;</td>
+          <td class="paramname"><em>executer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00126">126</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00160_a5eecb953309547dcb9fdf9f9696241d3_cgraph.png" border="0" usemap="#aa00160_a5eecb953309547dcb9fdf9f9696241d3_cgraph" alt=""/></div>
+<map name="aa00160_a5eecb953309547dcb9fdf9f9696241d3_cgraph" id="aa00160_a5eecb953309547dcb9fdf9f9696241d3_cgraph">
+<area shape="rect" title=" " alt="" coords="5,56,437,83"/>
+<area shape="rect" href="a00180.html#a898e073b96f00766ce5d35c4ffe68a85" title="Indicates if the consequences of the execution of this event will increase the value of an attribute ..." alt="" coords="519,5,881,32"/>
+<area shape="rect" href="a00180.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="507,56,893,83"/>
+<area shape="rect" href="a00176.html#a9afb2a5b2f8c152a92f9d5db9ecdf86c" title="Sets the amount of times remaining to execute this plan&#39;s MapEvent to the same amount needed to to co..." alt="" coords="485,107,915,133"/>
+<area shape="rect" href="a00176.html#ab0fe3fe2e7928d46a5b1483064fdab21" title="Calculates the amount of times that the execution of this ExecutionPlan&#39;s MapElement is needed to cov..." alt="" coords="963,107,1441,133"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00160_a5eecb953309547dcb9fdf9f9696241d3_icgraph.png" border="0" usemap="#aa00160_a5eecb953309547dcb9fdf9f9696241d3_icgraph" alt=""/></div>
+<map name="aa00160_a5eecb953309547dcb9fdf9f9696241d3_icgraph" id="aa00160_a5eecb953309547dcb9fdf9f9696241d3_icgraph">
+<area shape="rect" title=" " alt="" coords="823,5,1255,32"/>
+<area shape="rect" href="a00156.html#a1336488cef85bdd96b908173832cc0c1" title="Look for all MapEvents available in the map that, as consequence of the event, they make a desired at..." alt="" coords="412,5,775,32"/>
+<area shape="rect" href="a00152.html#a267b873f0974f59f2e7cb21c27879025" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="5,5,364,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a1adcebf6588ef130c54876ab24b82b5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1adcebf6588ef130c54876ab24b82b5b">&#9670;&nbsp;</a></span>GetOwnedAttributeOf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00168.html">AttributeOwnership</a> Thoughts.Game.Attributes.AttributeManager.GetOwnedAttributeOf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00164.html">Attributes.Attribute</a>&#160;</td>
           <td class="paramname"><em>attribute</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Indicates if this <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a> is more prioritary than another given <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">attribute</td><td>The <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a> against which to check the priority.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True, if this <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a> is more prioritary than the given <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a>. False, otherwise.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00084">84</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00160_acc97275c609e82b9682641e93e1edb79_cgraph.png" border="0" usemap="#aa00160_acc97275c609e82b9682641e93e1edb79_cgraph" alt=""/></div>
-<map name="aa00160_acc97275c609e82b9682641e93e1edb79_cgraph" id="aa00160_acc97275c609e82b9682641e93e1edb79_cgraph">
-<area shape="rect" title="Indicates if this Attribute is more prioritary than another given Attribute." alt="" coords="5,5,356,32"/>
-<area shape="rect" href="a00160.html#aa1b2d6d164e1a040b7ba5979a98d9059" title="Indicates if this Attribute is considered a Need." alt="" coords="404,5,675,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00160_acc97275c609e82b9682641e93e1edb79_icgraph.png" border="0" usemap="#aa00160_acc97275c609e82b9682641e93e1edb79_icgraph" alt=""/></div>
-<map name="aa00160_acc97275c609e82b9682641e93e1edb79_icgraph" id="aa00160_acc97275c609e82b9682641e93e1edb79_icgraph">
-<area shape="rect" title="Indicates if this Attribute is more prioritary than another given Attribute." alt="" coords="1239,5,1589,32"/>
-<area shape="rect" href="a00180.html#a29c70fa3beeb9e73f6e3870e8a7e6532" title="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement." alt="" coords="743,5,1191,32"/>
-<area shape="rect" href="a00180.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
-<area shape="rect" href="a00180.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00113">113</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
 
 </div>
 </div>
-<a id="aa1b2d6d164e1a040b7ba5979a98d9059"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1b2d6d164e1a040b7ba5979a98d9059">&#9670;&nbsp;</a></span>IsNeed()</h2>
+<a id="ae96eef2441e33c6fc8bad5b947a5b9ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae96eef2441e33c6fc8bad5b947a5b9ff">&#9670;&nbsp;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Thoughts.Game.Attributes.Attribute.IsNeed </td>
+          <td class="memname">void Thoughts.Game.Attributes.AttributeManager.Initialize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00188.html">MapElement</a>&#160;</td>
+          <td class="paramname"><em>owner</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00020">20</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00160_ae96eef2441e33c6fc8bad5b947a5b9ff_cgraph.png" border="0" usemap="#aa00160_ae96eef2441e33c6fc8bad5b947a5b9ff_cgraph" alt=""/></div>
+<map name="aa00160_ae96eef2441e33c6fc8bad5b947a5b9ff_cgraph" id="aa00160_ae96eef2441e33c6fc8bad5b947a5b9ff_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,333,32"/>
+<area shape="rect" href="a00168.html#aa5ffc25f23a7bcb7443201117b8c3ea0" title="Sets up a new owner for this relationship." alt="" coords="381,5,752,32"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00160_ae96eef2441e33c6fc8bad5b947a5b9ff_icgraph.png" border="0" usemap="#aa00160_ae96eef2441e33c6fc8bad5b947a5b9ff_icgraph" alt=""/></div>
+<map name="aa00160_ae96eef2441e33c6fc8bad5b947a5b9ff_icgraph" id="aa00160_ae96eef2441e33c6fc8bad5b947a5b9ff_icgraph">
+<area shape="rect" title=" " alt="" coords="352,5,680,32"/>
+<area shape="rect" href="a00188.html#a9fadea0db7b00081ec2189bfbc8ae4ce" title="Sets up and the MapElement" alt="" coords="5,5,304,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a36b4b4bbc76abf4bf9e05b6b532a1a99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36b4b4bbc76abf4bf9e05b6b532a1a99">&#9670;&nbsp;</a></span>ToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override string Thoughts.Game.Attributes.AttributeManager.ToString </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -371,45 +374,27 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Indicates if this <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a> is considered a Need. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if the level of priority is &gt; 0 (meaning that it is a need). False, otherwise.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00102">102</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00160_aa1b2d6d164e1a040b7ba5979a98d9059_icgraph.png" border="0" usemap="#aa00160_aa1b2d6d164e1a040b7ba5979a98d9059_icgraph" alt=""/></div>
-<map name="aa00160_aa1b2d6d164e1a040b7ba5979a98d9059_icgraph" id="aa00160_aa1b2d6d164e1a040b7ba5979a98d9059_icgraph">
-<area shape="rect" title="Indicates if this Attribute is considered a Need." alt="" coords="1637,5,1908,32"/>
-<area shape="rect" href="a00160.html#acc97275c609e82b9682641e93e1edb79" title="Indicates if this Attribute is more prioritary than another given Attribute." alt="" coords="1239,5,1589,32"/>
-<area shape="rect" href="a00180.html#a29c70fa3beeb9e73f6e3870e8a7e6532" title="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement." alt="" coords="743,5,1191,32"/>
-<area shape="rect" href="a00180.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
-<area shape="rect" href="a00180.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00027">27</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
 
 </div>
 </div>
-<a id="a726d47b71c3469d4abfadcadb8b02dc3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a726d47b71c3469d4abfadcadb8b02dc3">&#9670;&nbsp;</a></span>operator!=()</h2>
+<a id="abbede99c0c0a70fb079efbcda9ea0603"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbede99c0c0a70fb079efbcda9ea0603">&#9670;&nbsp;</a></span>UpdateAttribute()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool Thoughts.Game.Attributes.Attribute.operator!= </td>
+          <td class="memname">void Thoughts.Game.Attributes.AttributeManager.UpdateAttribute </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00160.html">Attribute</a>&#160;</td>
-          <td class="paramname"><em>left</em>, </td>
+          <td class="paramtype"><a class="el" href="a00164.html">Attributes.Attribute</a>&#160;</td>
+          <td class="paramname"><em>attributeToUpdate</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00160.html">Attribute</a>&#160;</td>
-          <td class="paramname"><em>right</em>&#160;</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>deltaValue</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -417,97 +402,24 @@ Here is the caller graph for this function:</div>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Override to the mot-equal operator so two <a class="el" href="a00079.html">Attributes</a> are considered different the same if their names are different. </p>
-<p>This is because the Equals method is used, and it uses the GetHasCode method to compare equality while it uses the name to obtain it. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if the left object's name is different to the right object's name; otherwise, false.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00167">167</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
-
-</div>
-</div>
-<a id="ac3209f87be14f3822be64ae4e64e6899"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3209f87be14f3822be64ae4e64e6899">&#9670;&nbsp;</a></span>operator==()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool Thoughts.Game.Attributes.Attribute.operator== </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00160.html">Attribute</a>&#160;</td>
-          <td class="paramname"><em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00160.html">Attribute</a>&#160;</td>
-          <td class="paramname"><em>right</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Override to the equal operator so two <a class="el" href="a00079.html">Attributes</a> are considered the same if their names are the same. </p>
-<p>This is because the Equals method is used, and it uses the GetHasCode method to compare equality while it uses the name to obtain it. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if the left object's name is equal to the right object's name; otherwise, false.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00151">151</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00051">51</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00160_ac3209f87be14f3822be64ae4e64e6899_cgraph.png" border="0" usemap="#aa00160_ac3209f87be14f3822be64ae4e64e6899_cgraph" alt=""/></div>
-<map name="aa00160_ac3209f87be14f3822be64ae4e64e6899_cgraph" id="aa00160_ac3209f87be14f3822be64ae4e64e6899_cgraph">
-<area shape="rect" title="Override to the equal operator so two Attributes are considered the same if their names are the same." alt="" coords="5,5,300,32"/>
-<area shape="rect" href="a00160.html#a938e4ed640c1a2da3cd042a34efd1cb3" title="Indicates whether the current object is equal to another object of the same type." alt="" coords="348,5,619,32"/>
+<div class="center"><img src="a00160_abbede99c0c0a70fb079efbcda9ea0603_cgraph.png" border="0" usemap="#aa00160_abbede99c0c0a70fb079efbcda9ea0603_cgraph" alt=""/></div>
+<map name="aa00160_abbede99c0c0a70fb079efbcda9ea0603_cgraph" id="aa00160_abbede99c0c0a70fb079efbcda9ea0603_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,376,32"/>
+<area shape="rect" href="a00168.html#aac7436fc30b1d2400d6087e132437975" title="Updates the value of this relationship." alt="" coords="424,5,791,32"/>
 </map>
 </div>
-
-</div>
-</div>
-<a id="a2181931c58d46a51edd4f4bb02a89c0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2181931c58d46a51edd4f4bb02a89c0d">&#9670;&nbsp;</a></span>ToString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">override string Thoughts.Game.Attributes.Attribute.ToString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns a string that represents the current object. </p>
-<dl class="section return"><dt>Returns</dt><dd>A string that represents the current object.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00037">37</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aef42fbb67bffc87789e252e7bd6dd965"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef42fbb67bffc87789e252e7bd6dd965">&#9670;&nbsp;</a></span>_needPriority</h2>
+<a id="a9b713966ba728f828f3c5ac4cde385e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b713966ba728f828f3c5ac4cde385e2">&#9670;&nbsp;</a></span>_ownedAttributes</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -516,7 +428,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078">NeedPriority</a> Thoughts.Game.Attributes.Attribute._needPriority = <a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078a6adf97f83acf6453d4a6a4b1070f3754">NeedPriority.None</a></td>
+          <td class="memname">List&lt;<a class="el" href="a00168.html">AttributeOwnership</a>&gt; Thoughts.Game.Attributes.AttributeManager._ownedAttributes = new List&lt;<a class="el" href="a00168.html">AttributeOwnership</a>&gt;()</td>
         </tr>
       </table>
   </td>
@@ -526,34 +438,13 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>The level of priority of the attribute. </p>
-<p>More than 0 if it is a need. 0 otherwise.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00025">25</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
-
-</div>
-</div>
-<a id="afa3ba0d2943c3081184791d5a2721a53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa3ba0d2943c3081184791d5a2721a53">&#9670;&nbsp;</a></span>mapEvents</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;<a class="el" href="a00172.html">MapEvent</a>&gt; Thoughts.Game.Attributes.Attribute.mapEvents</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The MapEvents made available by the <a class="el" href="a00160.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00031">31</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00018">18</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="aaac06fe22f0e16957f0dfcac6d8858b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaac06fe22f0e16957f0dfcac6d8858b1">&#9670;&nbsp;</a></span>needPriority</h2>
+<a id="a40035b7dfda59e694e71bad82018fd0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40035b7dfda59e694e71bad82018fd0b">&#9670;&nbsp;</a></span>ownedAttributes</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -562,25 +453,46 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00160.html#a45c798f1f1f7a67f2836a5ac196e0078">NeedPriority</a> Thoughts.Game.Attributes.Attribute.needPriority</td>
+          <td class="memname">List&lt;<a class="el" href="a00168.html">AttributeOwnership</a>&gt; Thoughts.Game.Attributes.AttributeManager.ownedAttributes</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>The level of priority of the attribute. </p>
-<p>More than 0 if it is a need. 0 otherwise.</p>
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00013">13</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="a00053_source.html#l00018">18</a> of file <a class="el" href="a00053_source.html">Attribute.cs</a>.</p>
+</div>
+</div>
+<a id="a026cdf8aa7fc32c1b9038e50c1823523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a026cdf8aa7fc32c1b9038e50c1823523">&#9670;&nbsp;</a></span>owner</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00188.html">MapElement</a> Thoughts.Game.Attributes.AttributeManager.owner</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00011">11</a> of file <a class="el" href="a00050_source.html">AttributeManager.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00053_source.html">Attribute.cs</a></li>
+<li><a class="el" href="a00050_source.html">AttributeManager.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
