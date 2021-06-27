@@ -1,9 +1,9 @@
 <map id="Thoughts.ControlSystems.Manual" name="Thoughts.ControlSystems.Manual">
-<area shape="rect" id="node1" title=" " alt="" coords="1036,1519,1255,1655"/>
-<area shape="rect" id="node2" href="$a00100.html" title=" " alt="" coords="1292,637,1444,729"/>
+<area shape="rect" id="node1" title="A local manual control of a participant." alt="" coords="1036,1519,1255,1655"/>
+<area shape="rect" id="node2" href="$a00100.html" title="A way of controlling a participant." alt="" coords="1292,637,1444,729"/>
 <area shape="rect" id="node3" title=" " alt="" coords="1125,198,1235,275"/>
 <area shape="rect" id="node4" href="$a00188.html" title="A spawned element of the Map." alt="" coords="193,753,511,992"/>
-<area shape="rect" id="node10" href="$a00116.html" title=" " alt="" coords="1001,1379,1290,1456"/>
+<area shape="rect" id="node10" href="$a00116.html" title="Controls the UI of the game" alt="" coords="1001,1379,1290,1456"/>
 <area shape="rect" id="node11" href="$a00136.html" title=" " alt="" coords="960,1239,1235,1316"/>
 <area shape="rect" id="node13" href="$a00140.html" title=" " alt="" coords="697,441,877,577"/>
 <area shape="rect" id="node15" href="$a00144.html" title=" " alt="" coords="1025,455,1153,562"/>
