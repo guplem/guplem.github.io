@@ -170,10 +170,15 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Indicates if the consequences of the execution of this event will increase the value of an attribute owned by a map element. </p>
-<p>&lt;param name="attributeOwnershipToCoverired attribute owned by a MapElement to cover.&lt;/param&gt;
-&lt;param name="executer"&gt;The MapElement that is going to execute/trigger the event.&lt;/param&gt;
-&lt;param name="target"&gt;The MapElement target of the execution of the event.&lt;/param&gt;
-&lt;param name="owner"&gt;The <a class="el" href="a00188.html" title="A spawned element of the Map.">MapElement</a> that owns the event.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attributeOwnershipToCover</td><td>AttributeOwnership to cover.</td></tr>
+    <tr><td class="paramname">executer</td><td>The <a class="el" href="a00188.html" title="A spawned element of the Map.">MapElement</a> that is going to execute/trigger the event.</td></tr>
+    <tr><td class="paramname">target</td><td>The <a class="el" href="a00188.html" title="A spawned element of the Map.">MapElement</a> target of the execution of the event.</td></tr>
+    <tr><td class="paramname">owner</td><td>The <a class="el" href="a00188.html" title="A spawned element of the Map.">MapElement</a> that owns the event.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>True, if the execution of this <a class="el" href="a00180.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> with this target, executer and owner would increase the value of the given attribute. False, otherwise.</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="a00068_source.html#l00196">196</a> of file <a class="el" href="a00068_source.html">MapEvent.cs</a>.</p>
@@ -183,8 +188,8 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="a00180_a898e073b96f00766ce5d35c4ffe68a85_icgraph.png" border="0" usemap="#aa00180_a898e073b96f00766ce5d35c4ffe68a85_icgraph" alt=""/></div>
 <map name="aa00180_a898e073b96f00766ce5d35c4ffe68a85_icgraph" id="aa00180_a898e073b96f00766ce5d35c4ffe68a85_icgraph">
 <area shape="rect" title="Indicates if the consequences of the execution of this event will increase the value of an attribute ..." alt="" coords="1303,5,1664,32"/>
-<area shape="rect" href="a00160.html#a5eecb953309547dcb9fdf9f9696241d3" title=" " alt="" coords="823,5,1255,32"/>
-<area shape="rect" href="a00156.html#a1336488cef85bdd96b908173832cc0c1" title="Look for all MapEvents available in the map that, as consequence of the event, they make a desired at..." alt="" coords="412,5,775,32"/>
+<area shape="rect" href="a00160.html#a5eecb953309547dcb9fdf9f9696241d3" title="Looks for an ExecutionPlan to cover the Attribute in the given AttributeOwnership relation using the ..." alt="" coords="823,5,1255,32"/>
+<area shape="rect" href="a00156.html#a1336488cef85bdd96b908173832cc0c1" title="Look for all MapEvents available in the map that, as consequence of a MapEvent in an Attribute they o..." alt="" coords="412,5,775,32"/>
 <area shape="rect" href="a00152.html#a267b873f0974f59f2e7cb21c27879025" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="5,5,364,32"/>
 </map>
 </div>
@@ -241,7 +246,7 @@ Here is the caller graph for this function:</div>
 <map name="aa00180_a82c4116beecc7775ba234fa6000829ef_icgraph" id="aa00180_a82c4116beecc7775ba234fa6000829ef_icgraph">
 <area shape="rect" title="Executes the event applying the consequences of it." alt="" coords="1692,31,1983,57"/>
 <area shape="rect" href="a00176.html#a6154817d2838590e1f5bfa892bba3e92" title="If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s..." alt="" coords="1325,5,1644,32"/>
-<area shape="rect" href="a00160.html#aa85b1ecfb57d63b4bca4ed6bfbd786a7" title=" " alt="" coords="743,56,1277,83"/>
+<area shape="rect" href="a00160.html#aa85b1ecfb57d63b4bca4ed6bfbd786a7" title="Executes the MapEvents of all the Attributes that are part of the AttributeOwnership of this Attribut..." alt="" coords="743,56,1277,83"/>
 <area shape="rect" href="a00188.html#a12d0c94d46387b1b6d6438a18abe1ae1" title="Tries to execute the next planned even in the executionPlans list." alt="" coords="807,5,1213,32"/>
 <area shape="rect" href="a00188.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,31,695,57"/>
 <area shape="rect" href="a00188.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,31,292,57"/>
@@ -314,12 +319,12 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="a00180_a5c45259396f965e5a2f294710c1b8c4d_icgraph.png" border="0" usemap="#aa00180_a5c45259396f965e5a2f294710c1b8c4d_icgraph" alt=""/></div>
 <map name="aa00180_a5c45259396f965e5a2f294710c1b8c4d_icgraph" id="aa00180_a5c45259396f965e5a2f294710c1b8c4d_icgraph">
 <area shape="rect" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="2624,32,3011,59"/>
-<area shape="rect" href="a00160.html#aa85b1ecfb57d63b4bca4ed6bfbd786a7" title=" " alt="" coords="743,32,1277,59"/>
-<area shape="rect" href="a00160.html#a5eecb953309547dcb9fdf9f9696241d3" title=" " alt="" coords="2144,32,2576,59"/>
+<area shape="rect" href="a00160.html#aa85b1ecfb57d63b4bca4ed6bfbd786a7" title="Executes the MapEvents of all the Attributes that are part of the AttributeOwnership of this Attribut..." alt="" coords="743,32,1277,59"/>
+<area shape="rect" href="a00160.html#a5eecb953309547dcb9fdf9f9696241d3" title="Looks for an ExecutionPlan to cover the Attribute in the given AttributeOwnership relation using the ..." alt="" coords="2144,32,2576,59"/>
 <area shape="rect" href="a00176.html#ab3c78ec19c4203666b36844e5fad8846" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="2153,83,2567,110"/>
 <area shape="rect" href="a00188.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,70,695,96"/>
 <area shape="rect" href="a00188.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,70,292,96"/>
-<area shape="rect" href="a00156.html#a1336488cef85bdd96b908173832cc0c1" title="Look for all MapEvents available in the map that, as consequence of the event, they make a desired at..." alt="" coords="1733,32,2095,59"/>
+<area shape="rect" href="a00156.html#a1336488cef85bdd96b908173832cc0c1" title="Look for all MapEvents available in the map that, as consequence of a MapEvent in an Attribute they o..." alt="" coords="1733,32,2095,59"/>
 <area shape="rect" href="a00152.html#a267b873f0974f59f2e7cb21c27879025" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="1325,44,1684,71"/>
 <area shape="rect" href="a00176.html#ae4021f73ea5cc357706dfd6e95851ae7" title="Determines if all the requirements to execute this ExecutionPlan&#39;s MapElement are met." alt="" coords="1732,134,2096,160"/>
 <area shape="rect" href="a00176.html#a6154817d2838590e1f5bfa892bba3e92" title="If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s..." alt="" coords="1345,120,1664,147"/>

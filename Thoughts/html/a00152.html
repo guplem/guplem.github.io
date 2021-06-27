@@ -165,11 +165,16 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Recursively look for all MapEvents available in the game's map that, as consequence of the event, they make a desired attribute value increase for the owner/executer/target (the needed participant). </p>
-<p>&lt;param name="attributeOwnershipToCovered attribute to increase the value of.&lt;/param&gt;
-&lt;param name="valueToCover"&gt;The amount of value needed to be covered (increased).&lt;/param&gt;
-&lt;param name="executer"&gt;Map element that is going to execute the list of ExecutionPlans.&lt;/param&gt;
-&lt;param name="mapEventsToExecute"&gt;Execution plans wanted to be executed previously to the ones to cover the attributeToCover.&lt;/param&gt;
-&lt;param name="iteration"&gt;The iteration number of the this method's recursive execution. Should start as 0.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attributeOwnershipToCover</td><td>AttributeOwnership to increase the value of.</td></tr>
+    <tr><td class="paramname">valueToCover</td><td>The amount of value needed to be covered (increased).</td></tr>
+    <tr><td class="paramname">executer</td><td>Map element that is going to execute the list of ExecutionPlans.</td></tr>
+    <tr><td class="paramname">mapEventsToExecute</td><td>Execution plans wanted to be executed previously to the ones to cover the attributeToCover.</td></tr>
+    <tr><td class="paramname">iteration</td><td>The iteration number of the this method's recursive execution. Should start as 0.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>An ordered list of the Execution Plans needed to achieve the goal (to increase the value of the attributeToCover by valueToCover)</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="a00044_source.html#l00063">63</a> of file <a class="el" href="a00044_source.html">GameManager.cs</a>.</p>
@@ -179,9 +184,9 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="a00152_a267b873f0974f59f2e7cb21c27879025_cgraph.png" border="0" usemap="#aa00152_a267b873f0974f59f2e7cb21c27879025_cgraph" alt=""/></div>
 <map name="aa00152_a267b873f0974f59f2e7cb21c27879025_cgraph" id="aa00152_a267b873f0974f59f2e7cb21c27879025_cgraph">
 <area shape="rect" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="5,81,364,108"/>
-<area shape="rect" href="a00156.html#a1336488cef85bdd96b908173832cc0c1" title="Look for all MapEvents available in the map that, as consequence of the event, they make a desired at..." alt="" coords="412,56,775,83"/>
+<area shape="rect" href="a00156.html#a1336488cef85bdd96b908173832cc0c1" title="Look for all MapEvents available in the map that, as consequence of a MapEvent in an Attribute they o..." alt="" coords="412,56,775,83"/>
 <area shape="rect" href="a00176.html#ab3c78ec19c4203666b36844e5fad8846" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="832,107,1245,133"/>
-<area shape="rect" href="a00160.html#a5eecb953309547dcb9fdf9f9696241d3" title=" " alt="" coords="823,56,1255,83"/>
+<area shape="rect" href="a00160.html#a5eecb953309547dcb9fdf9f9696241d3" title="Looks for an ExecutionPlan to cover the Attribute in the given AttributeOwnership relation using the ..." alt="" coords="823,56,1255,83"/>
 <area shape="rect" href="a00180.html#a898e073b96f00766ce5d35c4ffe68a85" title="Indicates if the consequences of the execution of this event will increase the value of an attribute ..." alt="" coords="1337,5,1698,32"/>
 <area shape="rect" href="a00180.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1324,107,1711,133"/>
 <area shape="rect" href="a00176.html#a9afb2a5b2f8c152a92f9d5db9ecdf86c" title="Sets the amount of times remaining to execute this plan&#39;s MapEvent to the same amount needed to to co..." alt="" coords="1303,56,1732,83"/>

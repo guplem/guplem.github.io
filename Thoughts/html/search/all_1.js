@@ -11,10 +11,10 @@ var searchData=
   ['attributemanager_17',['attributeManager',['../a00188.html#a20d7ea24fbc380b2e02afa46463bbd39',1,'Thoughts::Game::GameMap::MapElement']]],
   ['attributemanager_18',['AttributeManager',['../a00160.html',1,'Thoughts::Game::Attributes']]],
   ['attributemanager_2ecs_19',['AttributeManager.cs',['../a00050.html',1,'']]],
-  ['attributeownership_20',['AttributeOwnership',['../a00168.html#ae745221d09bb36fe082be52389a1ee7c',1,'Thoughts::Game::Attributes::AttributeOwnership']]],
-  ['attributeownership_21',['attributeOwnership',['../a00128.html#acf1102a1a39d1616a8226c4ac1b7aadd',1,'Thoughts::ControlSystems::UI::UIAttribute']]],
-  ['attributeownership_22',['AttributeOwnership',['../a00168.html',1,'Thoughts::Game::Attributes']]],
-  ['attributeownership_2ecs_23',['AttributeOwnership.cs',['../a00056.html',1,'']]],
+  ['attributeownership_20',['attributeOwnership',['../a00128.html#acf1102a1a39d1616a8226c4ac1b7aadd',1,'Thoughts::ControlSystems::UI::UIAttribute']]],
+  ['attributeownership_21',['AttributeOwnership',['../a00168.html#ae745221d09bb36fe082be52389a1ee7c',1,'Thoughts.Game.Attributes.AttributeOwnership.AttributeOwnership()'],['../a00168.html',1,'Thoughts.Game.Attributes.AttributeOwnership']]],
+  ['attributeownership_2ecs_22',['AttributeOwnership.cs',['../a00056.html',1,'']]],
+  ['attributeownerships_23',['attributeOwnerships',['../a00160.html#a0779e0682d68245a4202889ba5845b7b',1,'Thoughts::Game::Attributes::AttributeManager']]],
   ['attributeownershiptocover_24',['attributeOwnershipToCover',['../a00188.html#ab418f3db13585dce557595a1959b775d',1,'Thoughts::Game::GameMap::MapElement']]],
   ['awake_25',['Awake',['../a00096.html#a4cdaadd22e5c3f4136991f02afe33298',1,'Thoughts.AppManager.Awake()'],['../a00104.html#a18629830910f13c62b47dbd695828911',1,'Thoughts.ControlSystems.CameraController.Awake()'],['../a00108.html#a4e199f44155f0d9b783a162e4566b8e5',1,'Thoughts.ControlSystems.InputHandler.Awake()'],['../a00112.html#a7eb17dee05cb8f582f286a13a13e1521',1,'Thoughts.ControlSystems.Manual.Awake()'],['../a00188.html#a9fadea0db7b00081ec2189bfbc8ae4ce',1,'Thoughts.Game.GameMap.MapElement.Awake()']]]
 ];
