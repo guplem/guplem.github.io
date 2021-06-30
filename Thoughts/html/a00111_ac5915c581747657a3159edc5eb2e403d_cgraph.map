@@ -1,0 +1,7 @@
+<map id="Thoughts.ControlSystems.InputHandler.Update" name="Thoughts.ControlSystems.InputHandler.Update">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,299,83"/>
+<area shape="rect" id="node2" href="$a00111.html#a966fd2a597da6bbd229d96b10c9b399a" title="Handles the input to control the camera" alt="" coords="347,31,712,57"/>
+<area shape="rect" id="node5" href="$a00111.html#ac6a4c463986d87d63612d28b143e7e96" title="Handles the input to control the selection" alt="" coords="356,81,703,108"/>
+<area shape="rect" id="node3" href="$a00107.html#a873f427a4d0a85021e24d1615f9cefa5" title="Moves the camera in a given direction" alt="" coords="764,5,1075,32"/>
+<area shape="rect" id="node4" href="$a00107.html#aee2415d7df5c8d00cd8f97b9fb2cc45a" title="Sets a new rotation for the camera." alt="" coords="760,56,1079,83"/>
+</map>

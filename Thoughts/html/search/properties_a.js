@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['value_411',['value',['../a00168.html#abfc35d3d4b31616e4f94e2d1768b0192',1,'Thoughts::Game::Attributes::AttributeOwnership']]]
+  ['takecare_439',['takeCare',['../a00171.html#a1c06ff08d1a5546f2dbd503b141b3bfd',1,'Thoughts::Game::Attributes::AttributeOwnership']]],
+  ['target_440',['target',['../a00183.html#a4bf4fcda6f5dae540073d92c80bd4410',1,'Thoughts::Game::GameMap::ExecutionPlan']]]
 ];
