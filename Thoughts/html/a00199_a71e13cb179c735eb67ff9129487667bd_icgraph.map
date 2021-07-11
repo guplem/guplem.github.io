@@ -1,0 +1,7 @@
+<map id="Thoughts.Game.GameMap.StateManager.GetAnimationTriggerId" name="Thoughts.Game.GameMap.StateManager.GetAnimationTriggerId">
+<area shape="rect" id="node1" title="Returns the id of the trigger for the animation of the given state" alt="" coords="1452,5,1847,32"/>
+<area shape="rect" id="node2" href="$a00199.html#affb7daa430225ab13757917ba3108d80" title="Sets a new State with a remaining time to finish it and plays the animation of the given state at thi..." alt="" coords="1085,5,1404,32"/>
+<area shape="rect" id="node3" href="$a00199.html#adad27ccb75c525005518039c84670f5b" title="Updates the remaining time in the current State and, if the remaining time is less than 0,..." alt="" coords="743,5,1037,32"/>
+<area shape="rect" id="node4" href="$a00195.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
+<area shape="rect" id="node5" href="$a00195.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
+</map>

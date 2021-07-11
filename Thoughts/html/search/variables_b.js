@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['participants_383',['participants',['../a00155.html#abd717cba797997d7ae9a924e84069a46',1,'Thoughts::Game::GameManager']]],
-  ['povcamera_384',['povCamera',['../a00107.html#a526ea4dd2f83c8fb49e29b7e02d36cf1',1,'Thoughts::ControlSystems::CameraController']]],
-  ['povcameraposition_385',['povCameraPosition',['../a00195.html#a44f2f0c1ab5af0e823a22d1b764d0d00',1,'Thoughts::Game::GameMap::MapElement']]],
-  ['povdistance_386',['povDistance',['../a00143.html#a17943362b8a872e646de15bc30fd9bc5',1,'Thoughts::ControlSystems::UI::UIPovRow']]]
+  ['overworldcamera_395',['overworldCamera',['../a00107.html#a3aca09e275f69cda38d67bc6e6143f4a',1,'Thoughts::ControlSystems::CameraController']]],
+  ['owner_396',['owner',['../a00199.html#aa127b31d37d1a317a85422c2271d3b80',1,'Thoughts::Game::GameMap::StateManager']]]
 ];
