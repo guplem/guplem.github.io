@@ -1,5 +1,6 @@
-<map id="Thoughts.Game.Attributes.Attribute" name="Thoughts.Game.Attributes.Attribute">
-<area shape="rect" id="node1" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="31,131,258,340"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,124,83"/>
-<area shape="rect" id="node3" title=" " alt="" coords="148,5,304,83"/>
+<map id="Thoughts.Game.Attributes.AttributeOwnership" name="Thoughts.Game.Attributes.AttributeOwnership">
+<area shape="rect" id="node1" title="A relation between an Attribute and a MapElement that owns it." alt="" coords="5,404,293,599"/>
+<area shape="rect" id="node2" href="$a00160.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="36,132,263,341"/>
+<area shape="rect" id="node3" title=" " alt="" coords="10,5,129,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="153,5,309,83"/>
 </map>

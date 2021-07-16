@@ -1,0 +1,4 @@
+<map id="SelectionUI.Setup" name="SelectionUI.Setup">
+<area shape="rect" id="node1" title="Displays the information regarding the given selected MapElement" alt="" coords="5,5,132,32"/>
+<area shape="rect" id="node2" href="$a00132.html#abf4057c2ff74d61781d9a8a521840274" title="Displays the the information of the given MapElement in the UI" alt="" coords="180,5,403,32"/>
+</map>

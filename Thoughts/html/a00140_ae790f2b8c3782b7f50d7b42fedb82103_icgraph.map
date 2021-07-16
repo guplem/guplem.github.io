@@ -1,0 +1,7 @@
+<map id="AttributeUI.Setup" name="AttributeUI.Setup">
+<area shape="rect" id="node1" title="Displays the given Attribute in the UI" alt="" coords="1249,5,1371,32"/>
+<area shape="rect" id="node2" href="$a00116.html#a49eb6b2f0c324c979e681da0f486e6e5" title="Displays the given Attribute as the objective in the UI" alt="" coords="969,5,1201,32"/>
+<area shape="rect" id="node3" href="$a00128.html#afd1f5dcc6a99a6bbddb3be03a74fbf9c" title="Displays the UI related to the given MapElement and subscribes the UI to changes on that mapElement t..." alt="" coords="385,5,752,32"/>
+<area shape="rect" id="node5" href="$a00116.html#af4addc0f9199b11bf83d636a14a53f07" title="Displays the behavior information regarding the given selected MapElement" alt="" coords="800,31,921,57"/>
+<area shape="rect" id="node4" href="$a00128.html#a76cc83438c832475b9407c8498e7a8d1" title="Setup of the initial UI for the game (displays the UI for nothing, so no UI)" alt="" coords="5,5,337,32"/>
+</map>
