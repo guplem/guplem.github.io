@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['ondrawgizmosselected_140',['OnDrawGizmosSelected',['../a00143.html#a93b201df75a90df55d4dbc33736149b3',1,'Thoughts::ControlSystems::UI::UIPovRow']]],
-  ['operator_21_3d_141',['operator!=',['../a00167.html#a726d47b71c3469d4abfadcadb8b02dc3',1,'Thoughts::Game::Attributes::Attribute']]],
-  ['operator_3d_3d_142',['operator==',['../a00167.html#ac3209f87be14f3822be64ae4e64e6899',1,'Thoughts::Game::Attributes::Attribute']]],
-  ['overworld_143',['overworld',['../a00107.html#aecb59def0c99f3e9f6f33a618aa148eca6d886540bba0d7ff5af96d12a5831469',1,'Thoughts::ControlSystems::CameraController']]],
-  ['overworldcamera_144',['overworldCamera',['../a00107.html#a3aca09e275f69cda38d67bc6e6143f4a',1,'Thoughts::ControlSystems::CameraController']]],
-  ['owner_145',['owner',['../a00163.html#a026cdf8aa7fc32c1b9038e50c1823523',1,'Thoughts.Game.Attributes.AttributeManager.owner()'],['../a00171.html#ae1b85f86c5dd5348993d89f662b66f6b',1,'Thoughts.Game.Attributes.AttributeOwnership.owner()'],['../a00199.html#aa127b31d37d1a317a85422c2271d3b80',1,'Thoughts.Game.GameMap.StateManager.owner()']]]
+  ['name_145',['name',['../a00180.html#a3b98cd19e62d9de4d26ea2f43567d418',1,'Thoughts::Game::GameMap::MapEvent']]],
+  ['navmeshagent_146',['navMeshAgent',['../a00188.html#a6466203bf188ce36f82e391238853737',1,'Thoughts::Game::GameMap::MapElement']]],
+  ['needpriority_147',['NeedPriority',['../a00160.html#a45c798f1f1f7a67f2836a5ac196e0078',1,'Thoughts::Game::Attributes::Attribute']]],
+  ['needpriority_148',['needPriority',['../a00160.html#aaac06fe22f0e16957f0dfcac6d8858b1',1,'Thoughts::Game::Attributes::Attribute']]],
+  ['needscare_149',['NeedsCare',['../a00164.html#a22a2fce8f7752ff5bf74f3db72cf25df',1,'Thoughts::Game::Attributes::AttributeOwnership']]],
+  ['newstate_150',['newState',['../a00172.html#a24d6e28a2a22d31639b7c0540c6e7c36',1,'Thoughts::Game::Attributes::StateUpdate']]],
+  ['newstateduration_151',['newStateDuration',['../a00172.html#a5ddb8d351b957bbf7184a45a6112b711',1,'Thoughts::Game::Attributes::StateUpdate']]],
+  ['none_152',['None',['../a00160.html#a45c798f1f1f7a67f2836a5ac196e0078a6adf97f83acf6453d4a6a4b1070f3754',1,'Thoughts.Game.Attributes.Attribute.None()'],['../a00081.html#a44959bf769c4051c92b70b2cfecd73bda6adf97f83acf6453d4a6a4b1070f3754',1,'Thoughts.Game.GameMap.None()']]]
 ];

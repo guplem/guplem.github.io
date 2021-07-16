@@ -1,0 +1,28 @@
+digraph "Thoughts.Game.GameMap.MapElement.DoNextPlanedMapEvents"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Thoughts.Game.GameMap.MapElement.DoNextPlanedMapEvents",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Tries to execute the next planned even in the executionPlans list."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.GameMap.ExecutionPlan.Execute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00176.html#a6154817d2838590e1f5bfa892bba3e92",tooltip="If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s..."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Thoughts.Game.GameMap.ExecutionPlan.CanBeExecuted",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00176.html#ae4021f73ea5cc357706dfd6e95851ae7",tooltip="Determines if all the requirements to execute this ExecutionPlan's MapElement are met."];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Thoughts.Game.GameMap.ExecutionPlan.GetRequirementsNotMet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00176.html#ab3c78ec19c4203666b36844e5fad8846",tooltip="Returns a list of the requirements that are not met at the moment to execute the event,..."];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Thoughts.Game.GameMap.MapEvent.GetRequirementsNotMet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00180.html#a5c45259396f965e5a2f294710c1b8c4d",tooltip="Returns a list of the requirements that are not met at the moment to execute the event,..."];
+  Node3 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Thoughts.Game.GameMap.ExecutionPlan.IsDistanceMet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00176.html#a239c4bf3075212ec2a5af3f908762446",tooltip="Determines if the distance to execute this ExecutionPlan's MapElement is met."];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Thoughts.Game.GameMap.MapEvent.IsDistanceMet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00180.html#a6e2d2fd65ec3da26f8a03bf35d397701",tooltip="Indicates if the maximum distance allowed to execute the event is met or not."];
+  Node2 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="Thoughts.Game.GameMap.MapEvent.Execute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00180.html#a82c4116beecc7775ba234fa6000829ef",tooltip="Executes the event applying the consequences of it."];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Thoughts.Game.GameMap.MapElement.MoveTo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00188.html#adb6866daa33e7ccdf8f66c4e9bce635a",tooltip="Sets the destination of this object's NavMeshAgent, resumes its movement and plays the 'Move' animati..."];
+  Node1 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Thoughts.Game.GameMap.MapElement.RemoveExecutionPlanElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00188.html#ab24596af1e3046a321e7f2d9b5514a85",tooltip="Removes an ExecutonPlan from the executionPlans list"];
+}

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: MapElement.cs File Reference</title>
+<title>TS20-Thoughts: StateManager.cs File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,9 +67,10 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
-<div class="title">MapElement.cs File Reference</div>  </div>
+<div class="title">StateManager.cs File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -77,18 +78,27 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html">Thoughts.Game.GameMap.MapElement</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A spawned element of the <a class="el" href="a00159.html" title="The map of the game.">Map</a>.  <a href="a00195.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00192.html">Thoughts.Game.GameMap.StateManager</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manages the current state of a <a class="el" href="a00188.html" title="A spawned element of the Map.">MapElement</a>  <a href="a00192.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00080"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.html">Thoughts</a></td></tr>
+<tr class="memitem:a00077"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00077.html">Thoughts</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00083"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00083.html">Thoughts.Game</a></td></tr>
+<tr class="memitem:a00080"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00080.html">Thoughts.Game</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00084"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00084.html">Thoughts.Game.GameMap</a></td></tr>
+<tr class="memitem:a00081"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00081.html">Thoughts.Game.GameMap</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a44959bf769c4051c92b70b2cfecd73bd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00081.html#a44959bf769c4051c92b70b2cfecd73bd">Thoughts.Game.GameMap.State</a> { <a class="el" href="a00081.html#a44959bf769c4051c92b70b2cfecd73bda6adf97f83acf6453d4a6a4b1070f3754">Thoughts.Game.GameMap.None</a>
+, <a class="el" href="a00081.html#a44959bf769c4051c92b70b2cfecd73bda04ef591d0f3f79dfafcae27152a0424d">Thoughts.Game.GameMap.Resting</a>
+, <a class="el" href="a00081.html#a44959bf769c4051c92b70b2cfecd73bda829eadc8e29caab50cc26bc6a451a1f1">Thoughts.Game.GameMap.Working</a>
+ }</td></tr>
+<tr class="memdesc:a44959bf769c4051c92b70b2cfecd73bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current condition of a MapElement.  <a href="a00081.html#a44959bf769c4051c92b70b2cfecd73bd">More...</a><br /></td></tr>
+<tr class="separator:a44959bf769c4051c92b70b2cfecd73bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['idleanimtriggerid_375',['idleAnimTriggerId',['../a00199.html#a13b90bfa7826384975f98c8a14808780',1,'Thoughts::Game::GameMap::StateManager']]]
+  ['gameclockinterval_366',['gameClockInterval',['../a00148.html#a8913b44c8b4c1d27683facdbdf06a512',1,'Thoughts::Game::GameManager']]],
+  ['gamemanagerprefab_367',['gameManagerPrefab',['../a00096.html#a5a549870df0329b83ce69a4621eece45',1,'Thoughts::AppManager']]],
+  ['gameuimanager_368',['gameUIManager',['../a00112.html#abf08c45eed8231211ad755dd1c749436',1,'Thoughts::ControlSystems::Manual']]]
 ];

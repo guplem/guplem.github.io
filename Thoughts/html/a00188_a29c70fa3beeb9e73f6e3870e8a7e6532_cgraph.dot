@@ -1,0 +1,18 @@
+digraph "Thoughts.Game.GameMap.MapElement.UpdateObjectiveAttributeToCover"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Thoughts.Game.GameMap.MapElement.UpdateObjectiveAttributeToCover",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.Attributes.AttributeManager.GetAttributesThatNeedCare",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00156.html#ac5967dd95d0468f5da078b63faa0e120",tooltip="Returns a list of all the AttributeOwnership in this AttributeManager that need care...."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Thoughts.Game.Attributes.AttributeOwnership.NeedsCare",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00164.html#a22a2fce8f7752ff5bf74f3db72cf25df",tooltip="Indicates whether the attribute has a value of 0 or less and it has been indicated that it is intende..."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Thoughts.Game.Attributes.Attribute.IsMorePrioritaryThan",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00160.html#acc97275c609e82b9682641e93e1edb79",tooltip="Indicates if this Attribute is more prioritary than another given Attribute."];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Thoughts.Game.Attributes.Attribute.IsNeed",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00160.html#aa1b2d6d164e1a040b7ba5979a98d9059",tooltip="Indicates if this Attribute is considered a Need."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}
