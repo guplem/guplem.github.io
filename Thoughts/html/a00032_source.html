@@ -69,37 +69,39 @@ $(function() {
 <div class="title">SelectionUI.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00032.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System.Collections;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> <a class="code" href="a00077.html">Thoughts</a>.<a class="code" href="a00080.html">Game</a>.<a class="code" href="a00081.html">GameMap</a>;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00136.html">    6</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00136.html">SelectionUI</a> : MonoBehaviour</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
+<a href="a00032.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00077.html">Thoughts</a>.<a class="code" href="a00080.html">Game</a>.<a class="code" href="a00081.html">GameMap</a>;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00079.html">Thoughts.ControlSystems.UI</a></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00136.html">    6</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00136.html">SelectionUI</a> : MonoBehaviour</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    {</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    [Tooltip(<span class="stringliteral">&quot;Reference to the visualization of the descriptive information of the selected MapElement&quot;</span>)]</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="a00136.html#a362f752d502dad7f615cd8f9d72a9118">   13</a></span>&#160;    [SerializeField] <span class="keyword">private</span> <a class="code" href="a00132.html">DescriptionUI</a> <a class="code" href="a00136.html#a362f752d502dad7f615cd8f9d72a9118">descriptionUI</a>;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="a00136.html#a3578a9862e611bb75218032b0f4ff1b5">   19</a></span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00136.html#a3578a9862e611bb75218032b0f4ff1b5">Setup</a>(<a class="code" href="a00188.html">MapElement</a> selectedMapElement)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordtype">bool</span> showUI = selectedMapElement != <span class="keyword">null</span>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        gameObject.SetActive(showUI);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        [Tooltip(<span class="stringliteral">&quot;Reference to the visualization of the descriptive information of the selected MapElement&quot;</span>)]</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="a00136.html#a96d170aa9343ea0bf39ec7b0a28941a9">   13</a></span>&#160;        [SerializeField] <span class="keyword">private</span> <a class="code" href="a00132.html">DescriptionUI</a> <a class="code" href="a00136.html#a96d170aa9343ea0bf39ec7b0a28941a9">descriptionUI</a>;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="a00136.html#a5e9472b717f84983534858f20b97e5fd">   19</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00136.html#a5e9472b717f84983534858f20b97e5fd">Setup</a>(<a class="code" href="a00188.html">MapElement</a> selectedMapElement)</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <span class="keywordtype">bool</span> showUI = selectedMapElement != <span class="keyword">null</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            gameObject.SetActive(showUI);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordflow">if</span> (showUI)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <a class="code" href="a00136.html#a362f752d502dad7f615cd8f9d72a9118">descriptionUI</a>.<a class="code" href="a00132.html#abf4057c2ff74d61781d9a8a521840274">DisplayInformationOf</a>(selectedMapElement);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">if</span> (showUI)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <a class="code" href="a00136.html#a96d170aa9343ea0bf39ec7b0a28941a9">descriptionUI</a>.<a class="code" href="a00132.html#a90753160f10af9dd029ba9dd4beac882">DisplayInformationOf</a>(selectedMapElement);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            }</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
 <div class="ttc" id="aa00077_html"><div class="ttname"><a href="a00077.html">Thoughts</a></div><div class="ttdef"><b>Definition:</b> <a href="a00002_source.html#l00004">AppManager.cs:5</a></div></div>
+<div class="ttc" id="aa00079_html"><div class="ttname"><a href="a00079.html">Thoughts.ControlSystems.UI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00017_source.html#l00006">BehaviorUI.cs:7</a></div></div>
 <div class="ttc" id="aa00080_html"><div class="ttname"><a href="a00080.html">Thoughts.Game</a></div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00009">GameManager.cs:10</a></div></div>
 <div class="ttc" id="aa00081_html"><div class="ttname"><a href="a00081.html">Thoughts.Game.GameMap</a></div><div class="ttdef"><b>Definition:</b> <a href="a00044_source.html#l00009">Map.cs:10</a></div></div>
-<div class="ttc" id="aa00132_html"><div class="ttname"><a href="a00132.html">DescriptionUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00007">DescriptionUI.cs:8</a></div></div>
-<div class="ttc" id="aa00132_html_abf4057c2ff74d61781d9a8a521840274"><div class="ttname"><a href="a00132.html#abf4057c2ff74d61781d9a8a521840274">DescriptionUI.DisplayInformationOf</a></div><div class="ttdeci">void DisplayInformationOf(MapElement selectedMapElement)</div><div class="ttdoc">Displays the the information of the given MapElement in the UI</div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00025">DescriptionUI.cs:25</a></div></div>
-<div class="ttc" id="aa00136_html"><div class="ttname"><a href="a00136.html">SelectionUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00006">SelectionUI.cs:7</a></div></div>
-<div class="ttc" id="aa00136_html_a3578a9862e611bb75218032b0f4ff1b5"><div class="ttname"><a href="a00136.html#a3578a9862e611bb75218032b0f4ff1b5">SelectionUI.Setup</a></div><div class="ttdeci">void Setup(MapElement selectedMapElement)</div><div class="ttdoc">Displays the information regarding the given selected MapElement</div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00019">SelectionUI.cs:19</a></div></div>
-<div class="ttc" id="aa00136_html_a362f752d502dad7f615cd8f9d72a9118"><div class="ttname"><a href="a00136.html#a362f752d502dad7f615cd8f9d72a9118">SelectionUI.descriptionUI</a></div><div class="ttdeci">DescriptionUI descriptionUI</div><div class="ttdoc">Reference to the visualization of the descriptive information of the selected MapElement</div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00013">SelectionUI.cs:13</a></div></div>
+<div class="ttc" id="aa00132_html"><div class="ttname"><a href="a00132.html">Thoughts.ControlSystems.UI.DescriptionUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00007">DescriptionUI.cs:8</a></div></div>
+<div class="ttc" id="aa00132_html_a90753160f10af9dd029ba9dd4beac882"><div class="ttname"><a href="a00132.html#a90753160f10af9dd029ba9dd4beac882">Thoughts.ControlSystems.UI.DescriptionUI.DisplayInformationOf</a></div><div class="ttdeci">void DisplayInformationOf(MapElement selectedMapElement)</div><div class="ttdoc">Displays the the information of the given MapElement in the UI</div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00025">DescriptionUI.cs:25</a></div></div>
+<div class="ttc" id="aa00136_html"><div class="ttname"><a href="a00136.html">Thoughts.ControlSystems.UI.SelectionUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00006">SelectionUI.cs:7</a></div></div>
+<div class="ttc" id="aa00136_html_a5e9472b717f84983534858f20b97e5fd"><div class="ttname"><a href="a00136.html#a5e9472b717f84983534858f20b97e5fd">Thoughts.ControlSystems.UI.SelectionUI.Setup</a></div><div class="ttdeci">void Setup(MapElement selectedMapElement)</div><div class="ttdoc">Displays the information regarding the given selected MapElement</div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00019">SelectionUI.cs:19</a></div></div>
+<div class="ttc" id="aa00136_html_a96d170aa9343ea0bf39ec7b0a28941a9"><div class="ttname"><a href="a00136.html#a96d170aa9343ea0bf39ec7b0a28941a9">Thoughts.ControlSystems.UI.SelectionUI.descriptionUI</a></div><div class="ttdeci">DescriptionUI descriptionUI</div><div class="ttdoc">Reference to the visualization of the descriptive information of the selected MapElement</div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00013">SelectionUI.cs:13</a></div></div>
 <div class="ttc" id="aa00188_html"><div class="ttname"><a href="a00188.html">Thoughts.Game.GameMap.MapElement</a></div><div class="ttdoc">A spawned element of the Map.</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00016">MapElement.cs:17</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
