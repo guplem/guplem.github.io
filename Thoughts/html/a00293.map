@@ -1,0 +1,3 @@
+<map id="LODInfo" name="LODInfo">
+<area shape="rect" id="node1" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="5,5,181,97"/>
+</map>

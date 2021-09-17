@@ -1,0 +1,4 @@
+<map id="Thoughts.Game.GameManager.StartNewGame" name="Thoughts.Game.GameManager.StartNewGame">
+<area shape="rect" id="node1" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="288,5,583,32"/>
+<area shape="rect" id="node2" href="$a00270.html#a8988494ad2b97cefb2f5f86ab74d21c0" title="Starts a new game." alt="" coords="5,5,240,32"/>
+</map>

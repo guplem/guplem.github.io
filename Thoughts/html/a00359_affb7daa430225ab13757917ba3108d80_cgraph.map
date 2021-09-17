@@ -1,0 +1,4 @@
+<map id="Thoughts.Game.GameMap.StateManager.SetState" name="Thoughts.Game.GameMap.StateManager.SetState">
+<area shape="rect" id="node1" title="Sets a new State with a remaining time to finish it and plays the animation of the given state at thi..." alt="" coords="5,5,324,32"/>
+<area shape="rect" id="node2" href="$a00359.html#a71e13cb179c735eb67ff9129487667bd" title="Returns the id of the trigger for the animation of the given state" alt="" coords="372,5,767,32"/>
+</map>

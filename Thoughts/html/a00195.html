@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.GameMap.MapElement Class Reference</title>
+<title>TS20-Thoughts: Thoughts.ControlSystems.UI.ExecutionPlanUI Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,493 +61,79 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00080.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00083.html">Game</a></li><li class="navelem"><a class="el" href="a00084.html">GameMap</a></li><li class="navelem"><a class="el" href="a00195.html">MapElement</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00143.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00144.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00145.html">UI</a></li><li class="navelem"><a class="el" href="a00195.html">ExecutionPlanUI</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="a00192.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.GameMap.MapElement Class Reference</div>  </div>
+<div class="title">Thoughts.ControlSystems.UI.ExecutionPlanUI Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A spawned element of the <a class="el" href="a00159.html" title="The map of the game.">Map</a>.  
+<p>Controls the display of a single ExecutionPlan in the <a class="el" href="a00145.html">UI</a>  
  <a href="a00195.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Game.GameMap.MapElement:</div>
+Collaboration diagram for Thoughts.ControlSystems.UI.ExecutionPlanUI:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00193.png" border="0" usemap="#aThoughts_8Game_8GameMap_8MapElement_coll__map" alt="Collaboration graph"/></div>
-<map name="aThoughts_8Game_8GameMap_8MapElement_coll__map" id="aThoughts_8Game_8GameMap_8MapElement_coll__map">
-<area shape="rect" title="A spawned element of the Map." alt="" coords="129,676,448,973"/>
-<area shape="rect" title=" " alt="" coords="5,470,116,547"/>
-<area shape="rect" href="a00163.html" title="Manages a set of AttributeOwnerships all owned by the same MapElement" alt="" coords="141,404,437,613"/>
-<area shape="rect" href="a00171.html" title="A relation between an Attribute and a MapElement that owns it." alt="" coords="461,411,749,606"/>
-<area shape="rect" href="a00167.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="491,132,718,341"/>
-<area shape="rect" title=" " alt="" coords="465,5,584,83"/>
-<area shape="rect" title=" " alt="" coords="608,5,764,83"/>
+<div class="center"><img src="a00193.png" border="0" usemap="#aThoughts_8ControlSystems_8UI_8ExecutionPlanUI_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8ControlSystems_8UI_8ExecutionPlanUI_coll__map" id="aThoughts_8ControlSystems_8UI_8ExecutionPlanUI_coll__map">
+<area shape="rect" title="Controls the display of a single ExecutionPlan in the UI" alt="" coords="5,131,293,208"/>
+<area shape="rect" title=" " alt="" coords="94,5,205,83"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a17509cb81e6bb1d81ff58d0d005e5b21"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a17509cb81e6bb1d81ff58d0d005e5b21">ToString</a> ()</td></tr>
-<tr class="memdesc:a17509cb81e6bb1d81ff58d0d005e5b21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string that represents the current object.  <a href="a00195.html#a17509cb81e6bb1d81ff58d0d005e5b21">More...</a><br /></td></tr>
-<tr class="separator:a17509cb81e6bb1d81ff58d0d005e5b21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a20d7ea24fbc380b2e02afa46463bbd39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00163.html">AttributeManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a20d7ea24fbc380b2e02afa46463bbd39">attributeManager</a> = new <a class="el" href="a00163.html">AttributeManager</a>()</td></tr>
-<tr class="memdesc:a20d7ea24fbc380b2e02afa46463bbd39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collection (and manager) of the owned attributes of this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>.  <a href="a00195.html#a20d7ea24fbc380b2e02afa46463bbd39">More...</a><br /></td></tr>
-<tr class="separator:a20d7ea24fbc380b2e02afa46463bbd39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44f2f0c1ab5af0e823a22d1b764d0d00"><td class="memItemLeft" align="right" valign="top">Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a44f2f0c1ab5af0e823a22d1b764d0d00">povCameraPosition</a></td></tr>
-<tr class="memdesc:a44f2f0c1ab5af0e823a22d1b764d0d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location of the camera for the POV view of the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>.  <a href="a00195.html#a44f2f0c1ab5af0e823a22d1b764d0d00">More...</a><br /></td></tr>
-<tr class="separator:a44f2f0c1ab5af0e823a22d1b764d0d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa15f67d056086103560404923261a8b9"><td class="memItemLeft" align="right" valign="top">Animator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#aa15f67d056086103560404923261a8b9">animator</a></td></tr>
-<tr class="memdesc:aa15f67d056086103560404923261a8b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the Animator handling the animations of this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>.  <a href="a00195.html#aa15f67d056086103560404923261a8b9">More...</a><br /></td></tr>
-<tr class="separator:aa15f67d056086103560404923261a8b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:ac9d0e2bd6cf7fc301f0b849ef1a1dcfe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00199.html">StateManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#ac9d0e2bd6cf7fc301f0b849ef1a1dcfe">stateManager</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:ac9d0e2bd6cf7fc301f0b849ef1a1dcfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The manager of the current state of this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>  <a href="a00195.html#ac9d0e2bd6cf7fc301f0b849ef1a1dcfe">More...</a><br /></td></tr>
-<tr class="separator:ac9d0e2bd6cf7fc301f0b849ef1a1dcfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab418f3db13585dce557595a1959b775d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00171.html">AttributeOwnership</a>?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#ab418f3db13585dce557595a1959b775d">attributeOwnershipToCover</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:ab418f3db13585dce557595a1959b775d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current MAIN goal of the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>. After setting it, an overwrite of the executionPlans is going to be done.  <a href="a00195.html#ab418f3db13585dce557595a1959b775d">More...</a><br /></td></tr>
-<tr class="separator:ab418f3db13585dce557595a1959b775d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a9fadea0db7b00081ec2189bfbc8ae4ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a9fadea0db7b00081ec2189bfbc8ae4ce">Awake</a> ()</td></tr>
-<tr class="memdesc:a9fadea0db7b00081ec2189bfbc8ae4ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up and the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>  <a href="a00195.html#a9fadea0db7b00081ec2189bfbc8ae4ce">More...</a><br /></td></tr>
-<tr class="separator:a9fadea0db7b00081ec2189bfbc8ae4ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ea4d63b54905bfb93e1236242ee6afe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a7ea4d63b54905bfb93e1236242ee6afe">Start</a> ()</td></tr>
-<tr class="memdesc:a7ea4d63b54905bfb93e1236242ee6afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts running the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>'s clock.  <a href="a00195.html#a7ea4d63b54905bfb93e1236242ee6afe">More...</a><br /></td></tr>
-<tr class="separator:a7ea4d63b54905bfb93e1236242ee6afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adee97d919cd347b64624b88c0803b304"><td class="memItemLeft" align="right" valign="top">IEnumerator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#adee97d919cd347b64624b88c0803b304">UpdateCoroutine</a> ()</td></tr>
-<tr class="memdesc:adee97d919cd347b64624b88c0803b304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls the internal clock of the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>.  <a href="a00195.html#adee97d919cd347b64624b88c0803b304">More...</a><br /></td></tr>
-<tr class="separator:adee97d919cd347b64624b88c0803b304"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2eba3241b58897588d13261fb39b0815"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a2eba3241b58897588d13261fb39b0815">UpdateExecutionPlansToCoverObjectiveAttribute</a> ()</td></tr>
-<tr class="memdesc:a2eba3241b58897588d13261fb39b0815"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrites the executionPlans with a plan to cover (at least increasing the value by 1) of the current objectiveAttributeToCover (in this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>).  <a href="a00195.html#a2eba3241b58897588d13261fb39b0815">More...</a><br /></td></tr>
-<tr class="separator:a2eba3241b58897588d13261fb39b0815"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29c70fa3beeb9e73f6e3870e8a7e6532"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a29c70fa3beeb9e73f6e3870e8a7e6532">UpdateObjectiveAttributeToCover</a> ()</td></tr>
-<tr class="memdesc:a29c70fa3beeb9e73f6e3870e8a7e6532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the objectiveAttributeToCover to the most needy attribute owned by this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>.  <a href="a00195.html#a29c70fa3beeb9e73f6e3870e8a7e6532">More...</a><br /></td></tr>
-<tr class="separator:a29c70fa3beeb9e73f6e3870e8a7e6532"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12d0c94d46387b1b6d6438a18abe1ae1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a12d0c94d46387b1b6d6438a18abe1ae1">DoNextPlanedMapEvents</a> ()</td></tr>
-<tr class="memdesc:a12d0c94d46387b1b6d6438a18abe1ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to execute the next planned even in the executionPlans list.  <a href="a00195.html#a12d0c94d46387b1b6d6438a18abe1ae1">More...</a><br /></td></tr>
-<tr class="separator:a12d0c94d46387b1b6d6438a18abe1ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb6866daa33e7ccdf8f66c4e9bce635a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#adb6866daa33e7ccdf8f66c4e9bce635a">MoveTo</a> (Vector3 location)</td></tr>
-<tr class="memdesc:adb6866daa33e7ccdf8f66c4e9bce635a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the destination of this object's NavMeshAgent, resumes its movement and plays the 'Move' animation.  <a href="a00195.html#adb6866daa33e7ccdf8f66c4e9bce635a">More...</a><br /></td></tr>
-<tr class="separator:adb6866daa33e7ccdf8f66c4e9bce635a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6af1907e476d6024e143cb57ccb3daf3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a6af1907e476d6024e143cb57ccb3daf3">Setup</a> (<a class="el" href="a00339.html">ExecutionPlan</a> executionPlan)</td></tr>
+<tr class="memdesc:a6af1907e476d6024e143cb57ccb3daf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays the given execution plan in the <a class="el" href="a00145.html">UI</a>  <a href="a00195.html#a6af1907e476d6024e143cb57ccb3daf3">More...</a><br /></td></tr>
+<tr class="separator:a6af1907e476d6024e143cb57ccb3daf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a411f0866c74d60ea636b964357c66b5e"><td class="memItemLeft" align="right" valign="top">IEnumerator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a411f0866c74d60ea636b964357c66b5e">updateCoroutineHolder</a></td></tr>
-<tr class="memdesc:a411f0866c74d60ea636b964357c66b5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holder of the UpdateCoroutine of this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>  <a href="a00195.html#a411f0866c74d60ea636b964357c66b5e">More...</a><br /></td></tr>
-<tr class="separator:a411f0866c74d60ea636b964357c66b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b22fd9dd731b247f0f8050c0b266a09"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00183.html">ExecutionPlan</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a4b22fd9dd731b247f0f8050c0b266a09">executionPlans</a> = new List&lt;<a class="el" href="a00183.html">ExecutionPlan</a>&gt;()</td></tr>
-<tr class="memdesc:a4b22fd9dd731b247f0f8050c0b266a09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remaining execution plans to cover the objective attribute to cover  <a href="a00195.html#a4b22fd9dd731b247f0f8050c0b266a09">More...</a><br /></td></tr>
-<tr class="separator:a4b22fd9dd731b247f0f8050c0b266a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbbdd85472857f5304c8094f896297f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00171.html">AttributeOwnership</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#afbbdd85472857f5304c8094f896297f2">_attributeOwnershipToCover</a></td></tr>
-<tr class="separator:afbbdd85472857f5304c8094f896297f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6466203bf188ce36f82e391238853737"><td class="memItemLeft" align="right" valign="top">NavMeshAgent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a6466203bf188ce36f82e391238853737">navMeshAgent</a></td></tr>
-<tr class="memdesc:a6466203bf188ce36f82e391238853737"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference to this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>'s NavMeshAgent. Can be null if the GameObject does not have it as a component.  <a href="a00195.html#a6466203bf188ce36f82e391238853737">More...</a><br /></td></tr>
-<tr class="separator:a6466203bf188ce36f82e391238853737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab45ea74fb3c37ef74a8f2bb6ff04ea15"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#ab45ea74fb3c37ef74a8f2bb6ff04ea15">lastRequestedDestination</a></td></tr>
-<tr class="memdesc:ab45ea74fb3c37ef74a8f2bb6ff04ea15"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last location requested as destination for this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>.  <a href="a00195.html#ab45ea74fb3c37ef74a8f2bb6ff04ea15">More...</a><br /></td></tr>
-<tr class="separator:ab45ea74fb3c37ef74a8f2bb6ff04ea15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:aeca46fb18f1450a26d041b51793dd24c"><td class="memItemLeft" align="right" valign="top">static readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#aeca46fb18f1450a26d041b51793dd24c">moveAnimTriggerId</a> = Animator.StringToHash(&quot;Move&quot;)</td></tr>
-<tr class="memdesc:aeca46fb18f1450a26d041b51793dd24c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Id of the trigger for the animation 'Move' used in the Animator  <a href="a00195.html#aeca46fb18f1450a26d041b51793dd24c">More...</a><br /></td></tr>
-<tr class="separator:aeca46fb18f1450a26d041b51793dd24c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a104957c9e1281648bde4315ff0acd203"><td class="memItemLeft" align="right" valign="top">TMP_Text&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00195.html#a104957c9e1281648bde4315ff0acd203">executionPlanText</a></td></tr>
+<tr class="memdesc:a104957c9e1281648bde4315ff0acd203"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference to the text component that displays the information regarding the displayed ExecutionPlan  <a href="a00195.html#a104957c9e1281648bde4315ff0acd203">More...</a><br /></td></tr>
+<tr class="separator:a104957c9e1281648bde4315ff0acd203"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A spawned element of the <a class="el" href="a00159.html" title="The map of the game.">Map</a>. </p>
+<div class="textblock"><p>Controls the display of a single ExecutionPlan in the <a class="el" href="a00145.html">UI</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00015">15</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00023_source.html#l00010">10</a> of file <a class="el" href="a00023_source.html">ExecutionPlanUI.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9fadea0db7b00081ec2189bfbc8ae4ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fadea0db7b00081ec2189bfbc8ae4ce">&#9670;&nbsp;</a></span>Awake()</h2>
+<a id="a6af1907e476d6024e143cb57ccb3daf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6af1907e476d6024e143cb57ccb3daf3">&#9670;&nbsp;</a></span>Setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.Game.GameMap.MapElement.Awake </td>
+          <td class="memname">void Thoughts.ControlSystems.UI.ExecutionPlanUI.Setup </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00339.html">ExecutionPlan</a>&#160;</td>
+          <td class="paramname"><em>executionPlan</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Sets up and the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a> </p>
-<p>Initializes its attribute manager and looks up for its NavMeshAgent (initializes the variable).</p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00047">47</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00195_a9fadea0db7b00081ec2189bfbc8ae4ce_cgraph.png" border="0" usemap="#aa00195_a9fadea0db7b00081ec2189bfbc8ae4ce_cgraph" alt=""/></div>
-<map name="aa00195_a9fadea0db7b00081ec2189bfbc8ae4ce_cgraph" id="aa00195_a9fadea0db7b00081ec2189bfbc8ae4ce_cgraph">
-<area shape="rect" title="Sets up and the MapElement" alt="" coords="5,5,304,32"/>
-<area shape="rect" href="a00163.html#ae96eef2441e33c6fc8bad5b947a5b9ff" title="Initialized the AttributeManager by setting up the owner of all AttributeOwnerships to the given MapE..." alt="" coords="352,5,680,32"/>
-<area shape="rect" href="a00171.html#aa5ffc25f23a7bcb7443201117b8c3ea0" title="Sets up a new owner for this relationship." alt="" coords="728,5,1099,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a12d0c94d46387b1b6d6438a18abe1ae1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12d0c94d46387b1b6d6438a18abe1ae1">&#9670;&nbsp;</a></span>DoNextPlanedMapEvents()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Thoughts.Game.GameMap.MapElement.DoNextPlanedMapEvents </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tries to execute the next planned even in the executionPlans list. </p>
-<p>If the distance to execute the <a class="el" href="a00187.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> is not met, an order to move this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a> is given instead.</p>
-<p>After executing the next planned event, an order to execute the next one is going to be given immediately.</p>
-<p>It is considered the "next" map event the last one added in the list.</p>
-<dl class="section return"><dt>Returns</dt><dd>True if the behaviour was expected (the planned event was executed successfully, the distance was not met so the object was moved, ...). False if the planned event could not be executed due to unexpected reasons.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00185">185</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00195_a12d0c94d46387b1b6d6438a18abe1ae1_cgraph.png" border="0" usemap="#aa00195_a12d0c94d46387b1b6d6438a18abe1ae1_cgraph" alt=""/></div>
-<map name="aa00195_a12d0c94d46387b1b6d6438a18abe1ae1_cgraph" id="aa00195_a12d0c94d46387b1b6d6438a18abe1ae1_cgraph">
-<area shape="rect" title="Tries to execute the next planned even in the executionPlans list." alt="" coords="5,107,412,133"/>
-<area shape="rect" href="a00183.html#a6154817d2838590e1f5bfa892bba3e92" title="If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s..." alt="" coords="460,56,779,83"/>
-<area shape="rect" href="a00183.html#a239c4bf3075212ec2a5af3f908762446" title="Determines if the distance to execute this ExecutionPlan&#39;s MapElement is met." alt="" coords="1269,81,1622,108"/>
-<area shape="rect" href="a00195.html#adb6866daa33e7ccdf8f66c4e9bce635a" title="Sets the destination of this object&#39;s NavMeshAgent, resumes its movement and plays the &#39;Move&#39; animati..." alt="" coords="468,157,771,184"/>
-<area shape="rect" href="a00183.html#ae4021f73ea5cc357706dfd6e95851ae7" title="Determines if all the requirements to execute this ExecutionPlan&#39;s MapElement are met." alt="" coords="827,5,1191,32"/>
-<area shape="rect" href="a00187.html#a82c4116beecc7775ba234fa6000829ef" title="Executes the event applying the consequences of it." alt="" coords="863,56,1154,83"/>
-<area shape="rect" href="a00183.html#ab3c78ec19c4203666b36844e5fad8846" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1239,5,1652,32"/>
-<area shape="rect" href="a00187.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1700,5,2087,32"/>
-<area shape="rect" href="a00187.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Indicates if the maximum distance allowed to execute the event is met or not." alt="" coords="1730,81,2057,108"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00195_a12d0c94d46387b1b6d6438a18abe1ae1_icgraph.png" border="0" usemap="#aa00195_a12d0c94d46387b1b6d6438a18abe1ae1_icgraph" alt=""/></div>
-<map name="aa00195_a12d0c94d46387b1b6d6438a18abe1ae1_icgraph" id="aa00195_a12d0c94d46387b1b6d6438a18abe1ae1_icgraph">
-<area shape="rect" title="Tries to execute the next planned even in the executionPlans list." alt="" coords="743,5,1149,32"/>
-<area shape="rect" href="a00195.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
-<area shape="rect" href="a00195.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="adb6866daa33e7ccdf8f66c4e9bce635a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb6866daa33e7ccdf8f66c4e9bce635a">&#9670;&nbsp;</a></span>MoveTo()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Thoughts.Game.GameMap.MapElement.MoveTo </td>
-          <td>(</td>
-          <td class="paramtype">Vector3&#160;</td>
-          <td class="paramname"><em>location</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the destination of this object's NavMeshAgent, resumes its movement and plays the 'Move' animation. </p>
+<p>Displays the given execution plan in the <a class="el" href="a00145.html">UI</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">location</td><td>The location to move to.</td></tr>
+    <tr><td class="paramname">executionPlan</td><td>The ExecutionPlan to display in the <a class="el" href="a00145.html">UI</a>.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the destination was requested successfully. Otherwise, false.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00251">251</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00195_adb6866daa33e7ccdf8f66c4e9bce635a_icgraph.png" border="0" usemap="#aa00195_adb6866daa33e7ccdf8f66c4e9bce635a_icgraph" alt=""/></div>
-<map name="aa00195_adb6866daa33e7ccdf8f66c4e9bce635a_icgraph" id="aa00195_adb6866daa33e7ccdf8f66c4e9bce635a_icgraph">
-<area shape="rect" title="Sets the destination of this object&#39;s NavMeshAgent, resumes its movement and plays the &#39;Move&#39; animati..." alt="" coords="1197,5,1500,32"/>
-<area shape="rect" href="a00195.html#a12d0c94d46387b1b6d6438a18abe1ae1" title="Tries to execute the next planned even in the executionPlans list." alt="" coords="743,5,1149,32"/>
-<area shape="rect" href="a00195.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
-<area shape="rect" href="a00195.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a7ea4d63b54905bfb93e1236242ee6afe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ea4d63b54905bfb93e1236242ee6afe">&#9670;&nbsp;</a></span>Start()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.GameMap.MapElement.Start </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Starts running the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>'s clock. </p>
-<p>Starts the "UpdateCoroutine" coroutine.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00058">58</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00195_a7ea4d63b54905bfb93e1236242ee6afe_cgraph.png" border="0" usemap="#aa00195_a7ea4d63b54905bfb93e1236242ee6afe_cgraph" alt=""/></div>
-<map name="aa00195_a7ea4d63b54905bfb93e1236242ee6afe_cgraph" id="aa00195_a7ea4d63b54905bfb93e1236242ee6afe_cgraph">
-<area shape="rect" title="Starts running the MapElement&#39;s clock." alt="" coords="5,167,292,193"/>
-<area shape="rect" href="a00195.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,167,695,193"/>
-<area shape="rect" href="a00195.html#a12d0c94d46387b1b6d6438a18abe1ae1" title="Tries to execute the next planned even in the executionPlans list." alt="" coords="763,65,1170,92"/>
-<area shape="rect" href="a00163.html#aa85b1ecfb57d63b4bca4ed6bfbd786a7" title="Executes the MapEvents of all the Attributes that are part of the AttributeOwnership of this Attribut..." alt="" coords="1239,141,1773,168"/>
-<area shape="rect" href="a00199.html#adad27ccb75c525005518039c84670f5b" title="Updates the remaining time in the current State and, if the remaining time is less than 0,..." alt="" coords="819,192,1114,219"/>
-<area shape="rect" href="a00195.html#a29c70fa3beeb9e73f6e3870e8a7e6532" title="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement." alt="" coords="743,268,1191,295"/>
-<area shape="rect" href="a00183.html#a6154817d2838590e1f5bfa892bba3e92" title="If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s..." alt="" coords="1347,91,1665,117"/>
-<area shape="rect" href="a00183.html#a239c4bf3075212ec2a5af3f908762446" title="Determines if the distance to execute this ExecutionPlan&#39;s MapElement is met." alt="" coords="2294,15,2647,41"/>
-<area shape="rect" href="a00195.html#adb6866daa33e7ccdf8f66c4e9bce635a" title="Sets the destination of this object&#39;s NavMeshAgent, resumes its movement and plays the &#39;Move&#39; animati..." alt="" coords="1355,40,1657,67"/>
-<area shape="rect" href="a00183.html#ae4021f73ea5cc357706dfd6e95851ae7" title="Determines if all the requirements to execute this ExecutionPlan&#39;s MapElement are met." alt="" coords="1837,40,2201,67"/>
-<area shape="rect" href="a00187.html#a82c4116beecc7775ba234fa6000829ef" title="Executes the event applying the consequences of it." alt="" coords="1873,91,2164,117"/>
-<area shape="rect" href="a00183.html#ab3c78ec19c4203666b36844e5fad8846" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="2264,65,2677,92"/>
-<area shape="rect" href="a00187.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="2725,103,3112,129"/>
-<area shape="rect" href="a00187.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Indicates if the maximum distance allowed to execute the event is met or not." alt="" coords="2755,15,3082,41"/>
-<area shape="rect" href="a00199.html#affb7daa430225ab13757917ba3108d80" title="Sets a new State with a remaining time to finish it and plays the animation of the given state at thi..." alt="" coords="1347,192,1665,219"/>
-<area shape="rect" href="a00199.html#a71e13cb179c735eb67ff9129487667bd" title="Returns the id of the trigger for the animation of the given state" alt="" coords="1821,192,2216,219"/>
-<area shape="rect" href="a00163.html#ac5967dd95d0468f5da078b63faa0e120" title="Returns a list of all the AttributeOwnership in this AttributeManager that need care...." alt="" coords="1286,344,1726,371"/>
-<area shape="rect" href="a00171.html#a22a2fce8f7752ff5bf74f3db72cf25df" title="Indicates whether the attribute has a value of 0 or less and it has been indicated that it is intende..." alt="" coords="1841,319,2197,345"/>
-<area shape="rect" href="a00167.html#acc97275c609e82b9682641e93e1edb79" title="Indicates if this Attribute is more prioritary than another given Attribute." alt="" coords="1331,243,1681,269"/>
-<area shape="rect" href="a00167.html#aa1b2d6d164e1a040b7ba5979a98d9059" title="Indicates if this Attribute is considered a Need." alt="" coords="1883,243,2154,269"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a17509cb81e6bb1d81ff58d0d005e5b21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17509cb81e6bb1d81ff58d0d005e5b21">&#9670;&nbsp;</a></span>ToString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">override string Thoughts.Game.GameMap.MapElement.ToString </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns a string that represents the current object. </p>
-<dl class="section return"><dt>Returns</dt><dd>A string that represents the current object.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00222">222</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="adee97d919cd347b64624b88c0803b304"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adee97d919cd347b64624b88c0803b304">&#9670;&nbsp;</a></span>UpdateCoroutine()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">IEnumerator Thoughts.Game.GameMap.MapElement.UpdateCoroutine </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Controls the internal clock of the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>. </p>
-<p>Executes the map events with "execute with time elapse" enabled, updates the objective attribute to cover and tries to execute the next planned event.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00080">80</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00195_adee97d919cd347b64624b88c0803b304_cgraph.png" border="0" usemap="#aa00195_adee97d919cd347b64624b88c0803b304_cgraph" alt=""/></div>
-<map name="aa00195_adee97d919cd347b64624b88c0803b304_cgraph" id="aa00195_adee97d919cd347b64624b88c0803b304_cgraph">
-<area shape="rect" title="Controls the internal clock of the MapElement." alt="" coords="5,167,360,193"/>
-<area shape="rect" href="a00195.html#a12d0c94d46387b1b6d6438a18abe1ae1" title="Tries to execute the next planned even in the executionPlans list." alt="" coords="429,65,835,92"/>
-<area shape="rect" href="a00163.html#aa85b1ecfb57d63b4bca4ed6bfbd786a7" title="Executes the MapEvents of all the Attributes that are part of the AttributeOwnership of this Attribut..." alt="" coords="904,141,1439,168"/>
-<area shape="rect" href="a00199.html#adad27ccb75c525005518039c84670f5b" title="Updates the remaining time in the current State and, if the remaining time is less than 0,..." alt="" coords="485,192,779,219"/>
-<area shape="rect" href="a00195.html#a29c70fa3beeb9e73f6e3870e8a7e6532" title="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement." alt="" coords="408,268,856,295"/>
-<area shape="rect" href="a00183.html#a6154817d2838590e1f5bfa892bba3e92" title="If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s..." alt="" coords="1012,91,1331,117"/>
-<area shape="rect" href="a00183.html#a239c4bf3075212ec2a5af3f908762446" title="Determines if the distance to execute this ExecutionPlan&#39;s MapElement is met." alt="" coords="1959,15,2313,41"/>
-<area shape="rect" href="a00195.html#adb6866daa33e7ccdf8f66c4e9bce635a" title="Sets the destination of this object&#39;s NavMeshAgent, resumes its movement and plays the &#39;Move&#39; animati..." alt="" coords="1020,40,1323,67"/>
-<area shape="rect" href="a00183.html#ae4021f73ea5cc357706dfd6e95851ae7" title="Determines if all the requirements to execute this ExecutionPlan&#39;s MapElement are met." alt="" coords="1502,40,1866,67"/>
-<area shape="rect" href="a00187.html#a82c4116beecc7775ba234fa6000829ef" title="Executes the event applying the consequences of it." alt="" coords="1539,91,1829,117"/>
-<area shape="rect" href="a00183.html#ab3c78ec19c4203666b36844e5fad8846" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1929,65,2343,92"/>
-<area shape="rect" href="a00187.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="2391,103,2777,129"/>
-<area shape="rect" href="a00187.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Indicates if the maximum distance allowed to execute the event is met or not." alt="" coords="2421,15,2747,41"/>
-<area shape="rect" href="a00199.html#affb7daa430225ab13757917ba3108d80" title="Sets a new State with a remaining time to finish it and plays the animation of the given state at thi..." alt="" coords="1012,192,1331,219"/>
-<area shape="rect" href="a00199.html#a71e13cb179c735eb67ff9129487667bd" title="Returns the id of the trigger for the animation of the given state" alt="" coords="1487,192,1881,219"/>
-<area shape="rect" href="a00163.html#ac5967dd95d0468f5da078b63faa0e120" title="Returns a list of all the AttributeOwnership in this AttributeManager that need care...." alt="" coords="951,344,1391,371"/>
-<area shape="rect" href="a00171.html#a22a2fce8f7752ff5bf74f3db72cf25df" title="Indicates whether the attribute has a value of 0 or less and it has been indicated that it is intende..." alt="" coords="1506,319,1862,345"/>
-<area shape="rect" href="a00167.html#acc97275c609e82b9682641e93e1edb79" title="Indicates if this Attribute is more prioritary than another given Attribute." alt="" coords="996,243,1347,269"/>
-<area shape="rect" href="a00167.html#aa1b2d6d164e1a040b7ba5979a98d9059" title="Indicates if this Attribute is considered a Need." alt="" coords="1549,243,1819,269"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00195_adee97d919cd347b64624b88c0803b304_icgraph.png" border="0" usemap="#aa00195_adee97d919cd347b64624b88c0803b304_icgraph" alt=""/></div>
-<map name="aa00195_adee97d919cd347b64624b88c0803b304_icgraph" id="aa00195_adee97d919cd347b64624b88c0803b304_icgraph">
-<area shape="rect" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
-<area shape="rect" href="a00195.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a2eba3241b58897588d13261fb39b0815"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2eba3241b58897588d13261fb39b0815">&#9670;&nbsp;</a></span>UpdateExecutionPlansToCoverObjectiveAttribute()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.GameMap.MapElement.UpdateExecutionPlansToCoverObjectiveAttribute </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Overwrites the executionPlans with a plan to cover (at least increasing the value by 1) of the current objectiveAttributeToCover (in this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>). </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00133">133</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="a29c70fa3beeb9e73f6e3870e8a7e6532"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29c70fa3beeb9e73f6e3870e8a7e6532">&#9670;&nbsp;</a></span>UpdateObjectiveAttributeToCover()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.GameMap.MapElement.UpdateObjectiveAttributeToCover </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the objectiveAttributeToCover to the most needy attribute owned by this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00153">153</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00195_a29c70fa3beeb9e73f6e3870e8a7e6532_cgraph.png" border="0" usemap="#aa00195_a29c70fa3beeb9e73f6e3870e8a7e6532_cgraph" alt=""/></div>
-<map name="aa00195_a29c70fa3beeb9e73f6e3870e8a7e6532_cgraph" id="aa00195_a29c70fa3beeb9e73f6e3870e8a7e6532_cgraph">
-<area shape="rect" title="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement." alt="" coords="5,56,453,83"/>
-<area shape="rect" href="a00163.html#ac5967dd95d0468f5da078b63faa0e120" title="Returns a list of all the AttributeOwnership in this AttributeManager that need care...." alt="" coords="501,5,941,32"/>
-<area shape="rect" href="a00171.html#a22a2fce8f7752ff5bf74f3db72cf25df" title="Indicates whether the attribute has a value of 0 or less and it has been indicated that it is intende..." alt="" coords="989,31,1345,57"/>
-<area shape="rect" href="a00167.html#acc97275c609e82b9682641e93e1edb79" title="Indicates if this Attribute is more prioritary than another given Attribute." alt="" coords="546,107,897,133"/>
-<area shape="rect" href="a00167.html#aa1b2d6d164e1a040b7ba5979a98d9059" title="Indicates if this Attribute is considered a Need." alt="" coords="1032,107,1303,133"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00195_a29c70fa3beeb9e73f6e3870e8a7e6532_icgraph.png" border="0" usemap="#aa00195_a29c70fa3beeb9e73f6e3870e8a7e6532_icgraph" alt=""/></div>
-<map name="aa00195_a29c70fa3beeb9e73f6e3870e8a7e6532_icgraph" id="aa00195_a29c70fa3beeb9e73f6e3870e8a7e6532_icgraph">
-<area shape="rect" title="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement." alt="" coords="743,5,1191,32"/>
-<area shape="rect" href="a00195.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
-<area shape="rect" href="a00195.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="a00023_source.html#l00022">22</a> of file <a class="el" href="a00023_source.html">ExecutionPlanUI.cs</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="afbbdd85472857f5304c8094f896297f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbbdd85472857f5304c8094f896297f2">&#9670;&nbsp;</a></span>_attributeOwnershipToCover</h2>
+<a id="a104957c9e1281648bde4315ff0acd203"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a104957c9e1281648bde4315ff0acd203">&#9670;&nbsp;</a></span>executionPlanText</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -556,7 +142,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00171.html">AttributeOwnership</a> Thoughts.Game.GameMap.MapElement._attributeOwnershipToCover</td>
+          <td class="memname">TMP_Text Thoughts.ControlSystems.UI.ExecutionPlanUI.executionPlanText</td>
         </tr>
       </table>
   </td>
@@ -566,250 +152,14 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00128">128</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
+<p>A reference to the text component that displays the information regarding the displayed ExecutionPlan </p>
 
-</div>
-</div>
-<a id="aa15f67d056086103560404923261a8b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa15f67d056086103560404923261a8b9">&#9670;&nbsp;</a></span>animator</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Animator Thoughts.Game.GameMap.MapElement.animator</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reference to the Animator handling the animations of this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00034">34</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="a20d7ea24fbc380b2e02afa46463bbd39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20d7ea24fbc380b2e02afa46463bbd39">&#9670;&nbsp;</a></span>attributeManager</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00163.html">AttributeManager</a> Thoughts.Game.GameMap.MapElement.attributeManager = new <a class="el" href="a00163.html">AttributeManager</a>()</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Collection (and manager) of the owned attributes of this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00022">22</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="a4b22fd9dd731b247f0f8050c0b266a09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b22fd9dd731b247f0f8050c0b266a09">&#9670;&nbsp;</a></span>executionPlans</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;<a class="el" href="a00183.html">ExecutionPlan</a>&gt; Thoughts.Game.GameMap.MapElement.executionPlans = new List&lt;<a class="el" href="a00183.html">ExecutionPlan</a>&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Remaining execution plans to cover the objective attribute to cover </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00108">108</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="ab45ea74fb3c37ef74a8f2bb6ff04ea15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab45ea74fb3c37ef74a8f2bb6ff04ea15">&#9670;&nbsp;</a></span>lastRequestedDestination</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Vector3 Thoughts.Game.GameMap.MapElement.lastRequestedDestination</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The last location requested as destination for this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00239">239</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="aeca46fb18f1450a26d041b51793dd24c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeca46fb18f1450a26d041b51793dd24c">&#9670;&nbsp;</a></span>moveAnimTriggerId</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly int Thoughts.Game.GameMap.MapElement.moveAnimTriggerId = Animator.StringToHash(&quot;Move&quot;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Id of the trigger for the animation 'Move' used in the Animator </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00244">244</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="a6466203bf188ce36f82e391238853737"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6466203bf188ce36f82e391238853737">&#9670;&nbsp;</a></span>navMeshAgent</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">NavMeshAgent Thoughts.Game.GameMap.MapElement.navMeshAgent</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>A reference to this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>'s NavMeshAgent. Can be null if the GameObject does not have it as a component. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00234">234</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="a44f2f0c1ab5af0e823a22d1b764d0d00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44f2f0c1ab5af0e823a22d1b764d0d00">&#9670;&nbsp;</a></span>povCameraPosition</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Transform Thoughts.Game.GameMap.MapElement.povCameraPosition</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The location of the camera for the POV view of the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00028">28</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="a411f0866c74d60ea636b964357c66b5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a411f0866c74d60ea636b964357c66b5e">&#9670;&nbsp;</a></span>updateCoroutineHolder</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">IEnumerator Thoughts.Game.GameMap.MapElement.updateCoroutineHolder</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Holder of the UpdateCoroutine of this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a> </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00074">74</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="ab418f3db13585dce557595a1959b775d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab418f3db13585dce557595a1959b775d">&#9670;&nbsp;</a></span>attributeOwnershipToCover</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00171.html">AttributeOwnership</a>? Thoughts.Game.GameMap.MapElement.attributeOwnershipToCover</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The current MAIN goal of the <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>. After setting it, an overwrite of the executionPlans is going to be done. </p>
-<p>Attribute whose value is to be increased. The attribute's value that is going to be increased must be owned by this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00114">114</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="ac9d0e2bd6cf7fc301f0b849ef1a1dcfe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9d0e2bd6cf7fc301f0b849ef1a1dcfe">&#9670;&nbsp;</a></span>stateManager</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00199.html">StateManager</a> Thoughts.Game.GameMap.MapElement.stateManager</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The manager of the current state of this <a class="el" href="a00195.html" title="A spawned element of the Map.">MapElement</a> </p>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00039">39</a> of file <a class="el" href="a00074_source.html">MapElement.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00023_source.html#l00016">16</a> of file <a class="el" href="a00023_source.html">ExecutionPlanUI.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00074_source.html">MapElement.cs</a></li>
+<li><a class="el" href="a00023_source.html">ExecutionPlanUI.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

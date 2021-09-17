@@ -1,0 +1,4 @@
+<map id="MapGenerator.DeleteCurrentMap" name="MapGenerator.DeleteCurrentMap">
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,217,32"/>
+<area shape="rect" id="node2" href="$a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="265,5,464,32"/>
+</map>

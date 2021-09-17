@@ -1,0 +1,5 @@
+<map id="Thoughts.ControlSystems.UI.SimpleAnimationUIElement.SwitchState" name="Thoughts.ControlSystems.UI.SimpleAnimationUIElement.SwitchState">
+<area shape="rect" id="node1" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="5,31,429,57"/>
+<area shape="rect" id="node2" href="$a00258.html#aef481bbe18ae527197fdd71564ef7361" title="Plays the animation to hide this UI Element" alt="" coords="481,5,861,32"/>
+<area shape="rect" id="node3" href="$a00258.html#af5cff6394f1026f5614d5852e7b471a0" title="Plays the animation to show/display this UI Element" alt="" coords="477,56,864,83"/>
+</map>

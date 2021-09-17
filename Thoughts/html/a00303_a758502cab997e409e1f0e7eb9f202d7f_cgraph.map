@@ -1,0 +1,11 @@
+<map id="TerrainChunk.OnHeightMapReceived" name="TerrainChunk.OnHeightMapReceived">
+<area shape="rect" id="node1" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="5,56,239,83"/>
+<area shape="rect" id="node2" href="$a00303.html#aa6df03f570aa6158181c137fc36a0b96" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="287,56,467,83"/>
+<area shape="rect" id="node3" href="$a00303.html#a8405c3182273af0abc72c21b0db7837e" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="519,31,721,57"/>
+<area shape="rect" id="node8" href="$a00303.html#a7f4fb4b4c58a79b41736ffe470d56a82" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="515,81,725,108"/>
+<area shape="rect" id="node4" href="$a00307.html#aeaf1be489394a7aac474b7138f55a75e" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="788,31,952,57"/>
+<area shape="rect" id="node5" href="$a00307.html#a5f407bc787b38b9111d529828fad222e" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="1029,5,1241,32"/>
+<area shape="rect" id="node6" href="$a00311.html#a51c10f83bd17c992b4c2399c54fcce33" title=" " alt="" coords="1015,56,1255,83"/>
+<area shape="rect" id="node7" href="$a00311.html#a480eeda51d735d389ed7521ea34b64e9" title=" " alt="" coords="1303,56,1533,83"/>
+<area shape="rect" id="node9" href="$a00303.html#a4e68798b1e866f75cec335d6ca4b8220" title="Sets a new state for the visibility of the Mesh" alt="" coords="773,81,967,108"/>
+</map>

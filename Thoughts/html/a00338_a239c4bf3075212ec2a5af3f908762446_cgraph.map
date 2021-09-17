@@ -1,0 +1,4 @@
+<map id="Thoughts.Game.GameMap.ExecutionPlan.IsDistanceMet" name="Thoughts.Game.GameMap.ExecutionPlan.IsDistanceMet">
+<area shape="rect" id="node1" title="Determines if the distance to execute this ExecutionPlan&#39;s MapElement is met." alt="" coords="5,5,359,32"/>
+<area shape="rect" id="node2" href="$a00342.html#a6e2d2fd65ec3da26f8a03bf35d397701" title="Indicates if the maximum distance allowed to execute the event is met or not." alt="" coords="407,5,733,32"/>
+</map>

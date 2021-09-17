@@ -1,0 +1,12 @@
+<map id="Thoughts.ControlSystems.UI.GameUIManager.DisplayUIFor" name="Thoughts.ControlSystems.UI.GameUIManager.DisplayUIFor">
+<area shape="rect" id="node1" title="Displays the UI related to the given MapElement and subscribes the UI to changes on that mapElement t..." alt="" coords="5,81,372,108"/>
+<area shape="rect" id="node2" href="$a00187.html#a2908eff4d17fe58ef245e99862cc4a31" title="Displays the given execution plan in the UI" alt="" coords="770,5,1161,32"/>
+<area shape="rect" id="node4" href="$a00187.html#a2541e60e9818015335fd129365795e7c" title="Displays the given Attribute as the objective in the UI" alt="" coords="764,56,1167,83"/>
+<area shape="rect" id="node6" href="$a00187.html#ad6277c7cb27f9ed9d0f0b4f367ee907d" title="Displays the behavior information regarding the given selected MapElement" alt="" coords="423,56,713,83"/>
+<area shape="rect" id="node7" href="$a00255.html#a5e9472b717f84983534858f20b97e5fd" title="Displays the information regarding the given selected MapElement" alt="" coords="420,157,716,184"/>
+<area shape="rect" id="node3" href="$a00191.html#adb4797c1284ca1a3030ddcdfaffd6fa4" title="Displays the given ExecutionPlans in the UI" alt="" coords="1215,5,1548,32"/>
+<area shape="rect" id="node5" href="$a00263.html#a0679f5145bbbff5591da7278da974ff2" title="Displays the given Attribute in the UI. Disables the GameObject if the Attribute is null." alt="" coords="1236,56,1527,83"/>
+<area shape="rect" id="node8" href="$a00239.html#a90753160f10af9dd029ba9dd4beac882" title="Displays the the information of the given MapElement in the UI" alt="" coords="769,107,1161,133"/>
+<area shape="rect" id="node9" href="$a00247.html#a244fdaa3fcd57029e32e4ede09f3957f" title="Prepares the NeedUI to be shown" alt="" coords="826,157,1105,184"/>
+<area shape="rect" id="node10" href="$a00251.html#aac2c1e99d0709ba387c02439aafae505" title="Prepares the NeedUI to be shown" alt="" coords="822,208,1109,235"/>
+</map>

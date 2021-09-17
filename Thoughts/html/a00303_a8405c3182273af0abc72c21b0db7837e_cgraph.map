@@ -1,0 +1,7 @@
+<map id="TerrainChunk.SetCollisionMesh" name="TerrainChunk.SetCollisionMesh">
+<area shape="rect" id="node1" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="5,31,208,57"/>
+<area shape="rect" id="node2" href="$a00307.html#aeaf1be489394a7aac474b7138f55a75e" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="256,31,420,57"/>
+<area shape="rect" id="node3" href="$a00307.html#a5f407bc787b38b9111d529828fad222e" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="482,5,694,32"/>
+<area shape="rect" id="node4" href="$a00311.html#a51c10f83bd17c992b4c2399c54fcce33" title=" " alt="" coords="468,56,708,83"/>
+<area shape="rect" id="node5" href="$a00311.html#a480eeda51d735d389ed7521ea34b64e9" title=" " alt="" coords="756,56,987,83"/>
+</map>

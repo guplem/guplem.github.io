@@ -1,0 +1,5 @@
+<map id="Thoughts.Game.GameMap.Map.GetExecutionPlanToCover" name="Thoughts.Game.GameMap.Map.GetExecutionPlanToCover">
+<area shape="rect" id="node1" title="Look for all MapEvents available in the map that, as consequence of a MapEvent in an Attribute they o..." alt="" coords="999,5,1361,32"/>
+<area shape="rect" id="node2" href="$a00271.html#a267b873f0974f59f2e7cb21c27879025" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="592,5,951,32"/>
+<area shape="rect" id="node3" href="$a00355.html#a2eba3241b58897588d13261fb39b0815" title="Overwrites the executionPlans with a plan to cover (at least increasing the value by 1) of the curren..." alt="" coords="5,5,544,32"/>
+</map>

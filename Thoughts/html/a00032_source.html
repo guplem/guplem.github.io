@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: SelectionUI.cs Source File</title>
+<title>TS20-Thoughts: HumanoidUI.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,48 +61,27 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_dc17276953a27803d66b6e65275a778a.html">ControlSystems</a></li><li class="navelem"><a class="el" href="dir_521aec7fbacb8fe7138e743f6ee8f398.html">Manual</a></li><li class="navelem"><a class="el" href="dir_597bcf632b864f7491993f1f71a5885f.html">UI</a></li><li class="navelem"><a class="el" href="dir_eab7c8cb1dd3b40ed721297874a74be1.html">Game</a></li><li class="navelem"><a class="el" href="dir_e5305b8f3c51927feedb75b69c8ce897.html">SelectionUI</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_dc17276953a27803d66b6e65275a778a.html">ControlSystems</a></li><li class="navelem"><a class="el" href="dir_521aec7fbacb8fe7138e743f6ee8f398.html">Manual</a></li><li class="navelem"><a class="el" href="dir_597bcf632b864f7491993f1f71a5885f.html">UI</a></li><li class="navelem"><a class="el" href="dir_eab7c8cb1dd3b40ed721297874a74be1.html">Game</a></li><li class="navelem"><a class="el" href="dir_a75825789c61b4facf0ff37ca25cb9ba.html">CreationStepsUI</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">SelectionUI.cs</div>  </div>
+<div class="title">HumanoidUI.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00032.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00077.html">Thoughts</a>.<a class="code" href="a00080.html">Game</a>.<a class="code" href="a00081.html">GameMap</a>;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00079.html">Thoughts.ControlSystems.UI</a></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00136.html">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00136.html">SelectionUI</a> : MonoBehaviour</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        [Tooltip(<span class="stringliteral">&quot;Reference to the visualization of the descriptive information of the selected MapElement&quot;</span>)]</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="a00136.html#a96d170aa9343ea0bf39ec7b0a28941a9">   16</a></span>&#160;        [SerializeField] <span class="keyword">private</span> <a class="code" href="a00132.html">DescriptionUI</a> <a class="code" href="a00136.html#a96d170aa9343ea0bf39ec7b0a28941a9">descriptionUI</a>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="a00136.html#a5e9472b717f84983534858f20b97e5fd">   22</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00136.html#a5e9472b717f84983534858f20b97e5fd">Setup</a>(<a class="code" href="a00188.html">MapElement</a> selectedMapElement)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="keywordtype">bool</span> showUI = selectedMapElement != <span class="keyword">null</span>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            gameObject.SetActive(showUI);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <span class="keywordflow">if</span> (showUI)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                <a class="code" href="a00136.html#a96d170aa9343ea0bf39ec7b0a28941a9">descriptionUI</a>.<a class="code" href="a00132.html#a90753160f10af9dd029ba9dd4beac882">DisplayInformationOf</a>(selectedMapElement);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            }</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    }</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
-<div class="ttc" id="aa00077_html"><div class="ttname"><a href="a00077.html">Thoughts</a></div><div class="ttdef"><b>Definition:</b> <a href="a00002_source.html#l00004">AppManager.cs:5</a></div></div>
-<div class="ttc" id="aa00079_html"><div class="ttname"><a href="a00079.html">Thoughts.ControlSystems.UI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00017_source.html#l00006">BehaviorUI.cs:7</a></div></div>
-<div class="ttc" id="aa00080_html"><div class="ttname"><a href="a00080.html">Thoughts.Game</a></div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00009">GameManager.cs:10</a></div></div>
-<div class="ttc" id="aa00081_html"><div class="ttname"><a href="a00081.html">Thoughts.Game.GameMap</a></div><div class="ttdef"><b>Definition:</b> <a href="a00044_source.html#l00009">Map.cs:10</a></div></div>
-<div class="ttc" id="aa00132_html"><div class="ttname"><a href="a00132.html">Thoughts.ControlSystems.UI.DescriptionUI</a></div><div class="ttdoc">Controls the display of the descriptive information of a MapElement (name, description ....</div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00010">DescriptionUI.cs:11</a></div></div>
-<div class="ttc" id="aa00132_html_a90753160f10af9dd029ba9dd4beac882"><div class="ttname"><a href="a00132.html#a90753160f10af9dd029ba9dd4beac882">Thoughts.ControlSystems.UI.DescriptionUI.DisplayInformationOf</a></div><div class="ttdeci">void DisplayInformationOf(MapElement selectedMapElement)</div><div class="ttdoc">Displays the the information of the given MapElement in the UI</div><div class="ttdef"><b>Definition:</b> <a href="a00029_source.html#l00028">DescriptionUI.cs:28</a></div></div>
-<div class="ttc" id="aa00136_html"><div class="ttname"><a href="a00136.html">Thoughts.ControlSystems.UI.SelectionUI</a></div><div class="ttdoc">Controls the display of the information related to a MapElement (needs -Attributes-,...</div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00009">SelectionUI.cs:10</a></div></div>
-<div class="ttc" id="aa00136_html_a5e9472b717f84983534858f20b97e5fd"><div class="ttname"><a href="a00136.html#a5e9472b717f84983534858f20b97e5fd">Thoughts.ControlSystems.UI.SelectionUI.Setup</a></div><div class="ttdeci">void Setup(MapElement selectedMapElement)</div><div class="ttdoc">Displays the information regarding the given selected MapElement</div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00022">SelectionUI.cs:22</a></div></div>
-<div class="ttc" id="aa00136_html_a96d170aa9343ea0bf39ec7b0a28941a9"><div class="ttname"><a href="a00136.html#a96d170aa9343ea0bf39ec7b0a28941a9">Thoughts.ControlSystems.UI.SelectionUI.descriptionUI</a></div><div class="ttdeci">DescriptionUI descriptionUI</div><div class="ttdoc">Reference to the visualization of the descriptive information of the selected MapElement</div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00016">SelectionUI.cs:16</a></div></div>
-<div class="ttc" id="aa00188_html"><div class="ttname"><a href="a00188.html">Thoughts.Game.GameMap.MapElement</a></div><div class="ttdoc">A spawned element of the Map.</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00016">MapElement.cs:17</a></div></div>
+<a href="a00032.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System.Collections;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00146.html">Thoughts.ControlSystems.UI.CreationSteps</a></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00207.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00207.html">HumanoidUI</a> : <a class="code" href="a00199.html">CreationStepUI</a> <span class="comment">// Like UserNameUI</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    }</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
+<div class="ttc" id="aa00146_html"><div class="ttname"><a href="a00146.html">Thoughts.ControlSystems.UI.CreationSteps</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00006">CreationStepUI.cs:7</a></div></div>
+<div class="ttc" id="aa00199_html"><div class="ttname"><a href="a00199.html">Thoughts.ControlSystems.UI.CreationSteps.CreationStepUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00026_source.html#l00009">CreationStepUI.cs:10</a></div></div>
+<div class="ttc" id="aa00207_html"><div class="ttname"><a href="a00207.html">Thoughts.ControlSystems.UI.CreationSteps.HumanoidUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00032_source.html#l00007">HumanoidUI.cs:8</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

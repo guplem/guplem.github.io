@@ -1,0 +1,4 @@
+<map id="Thoughts.ControlSystems.UI.NeedsUI.SetupNeedGroups" name="Thoughts.ControlSystems.UI.NeedsUI.SetupNeedGroups">
+<area shape="rect" id="node1" title="Populates the NeedGroupUIs with all the needed elements" alt="" coords="368,5,719,32"/>
+<area shape="rect" id="node2" href="$a00247.html#adf940ab088d873c8717879859d3fa6cf" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="5,5,320,32"/>
+</map>

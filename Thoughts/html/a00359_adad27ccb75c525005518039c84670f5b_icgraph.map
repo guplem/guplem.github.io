@@ -1,0 +1,5 @@
+<map id="Thoughts.Game.GameMap.StateManager.Step" name="Thoughts.Game.GameMap.StateManager.Step">
+<area shape="rect" id="node1" title="Updates the remaining time in the current State and, if the remaining time is less than 0,..." alt="" coords="743,5,1037,32"/>
+<area shape="rect" id="node2" href="$a00355.html#adee97d919cd347b64624b88c0803b304" title="Controls the internal clock of the MapElement." alt="" coords="340,5,695,32"/>
+<area shape="rect" id="node3" href="$a00355.html#a7ea4d63b54905bfb93e1236242ee6afe" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,292,32"/>
+</map>

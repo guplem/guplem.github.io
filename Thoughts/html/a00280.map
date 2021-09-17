@@ -1,0 +1,3 @@
+<map id="HeightMap" name="HeightMap">
+<area shape="rect" id="node1" title="Contains values relative to the height of a terrain" alt="" coords="5,5,163,141"/>
+</map>

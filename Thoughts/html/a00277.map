@@ -1,0 +1,11 @@
+<map id="MapGenerator" name="MapGenerator">
+<area shape="rect" id="node1" title=" " alt="" coords="98,823,285,973"/>
+<area shape="rect" id="node7" href="$a00291.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="28,1036,299,1289"/>
+<area shape="rect" id="node2" title=" " alt="" coords="59,227,169,305"/>
+<area shape="rect" id="node9" href="$a00311.html" title=" " alt="" coords="41,565,203,672"/>
+<area shape="rect" id="node3" href="$a00275.html" title=" " alt="" coords="316,477,504,760"/>
+<area shape="rect" id="node4" title=" " alt="" coords="401,5,507,83"/>
+<area shape="rect" id="node6" href="$a00299.html" title=" " alt="" coords="476,132,635,400"/>
+<area shape="rect" id="node5" title=" " alt="" coords="193,227,400,305"/>
+<area shape="rect" id="node8" href="$a00295.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="309,852,485,944"/>
+</map>

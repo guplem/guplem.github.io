@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['inputhandler_235',['InputHandler',['../a00108.html',1,'Thoughts::ControlSystems']]]
+  ['gamemanager_405',['GameManager',['../a00271.html',1,'Thoughts::Game']]],
+  ['gameuimanager_406',['GameUIManager',['../a00235.html',1,'Thoughts::ControlSystems::UI']]]
 ];

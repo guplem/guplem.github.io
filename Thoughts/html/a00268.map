@@ -1,0 +1,13 @@
+<map id="Thoughts.Game.GameManager" name="Thoughts.Game.GameManager">
+<area shape="rect" id="node1" title="Controls the core aspects of the a game: Participant (with ControlSystem), Map setup,..." alt="" coords="5,1396,208,1591"/>
+<area shape="rect" id="node2" title=" " alt="" coords="178,227,289,305"/>
+<area shape="rect" id="node3" href="$a00314.html" title="The map of the game." alt="" coords="123,1095,330,1304"/>
+<area shape="rect" id="node4" href="$a00278.html" title=" " alt="" coords="256,852,443,1003"/>
+<area shape="rect" id="node9" href="$a00290.html" title=" " alt="" coords="409,1065,679,1333"/>
+<area shape="rect" id="node11" href="$a00310.html" title=" " alt="" coords="271,580,433,687"/>
+<area shape="rect" id="node5" href="$a00274.html" title=" " alt="" coords="658,477,849,789"/>
+<area shape="rect" id="node6" title=" " alt="" coords="595,5,701,83"/>
+<area shape="rect" id="node8" href="$a00298.html" title=" " alt="" coords="901,132,1059,400"/>
+<area shape="rect" id="node7" title=" " alt="" coords="670,227,877,305"/>
+<area shape="rect" id="node10" href="$a00294.html" title=" " alt="" coords="637,874,835,981"/>
+</map>

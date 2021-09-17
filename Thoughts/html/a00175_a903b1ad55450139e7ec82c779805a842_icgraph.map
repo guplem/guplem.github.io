@@ -1,0 +1,4 @@
+<map id="Thoughts.ControlSystems.CameraController.GetAxisCustom" name="Thoughts.ControlSystems.CameraController.GetAxisCustom">
+<area shape="rect" id="node1" title="Returns the customized input values overriding the default axis for the Cinemachine camera." alt="" coords="361,5,733,32"/>
+<area shape="rect" id="node2" href="$a00175.html#a14ed166b6dea5b26e89c5985edc6e3cc" title="Startup setup, after awake" alt="" coords="5,5,313,32"/>
+</map>

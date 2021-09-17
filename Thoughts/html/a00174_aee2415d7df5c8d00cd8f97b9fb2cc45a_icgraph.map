@@ -1,0 +1,5 @@
+<map id="Thoughts.ControlSystems.CameraController.Rotate" name="Thoughts.ControlSystems.CameraController.Rotate">
+<area shape="rect" id="node1" title="Sets a new rotation for the camera." alt="" coords="760,5,1079,32"/>
+<area shape="rect" id="node2" href="$a00178.html#a966fd2a597da6bbd229d96b10c9b399a" title="Handles the input to control the camera" alt="" coords="347,5,712,32"/>
+<area shape="rect" id="node3" href="$a00178.html#ac5915c581747657a3159edc5eb2e403d" title=" " alt="" coords="5,5,299,32"/>
+</map>
