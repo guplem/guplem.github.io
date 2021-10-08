@@ -70,20 +70,23 @@ $(function() {
 <div class="title">MapGenerator Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Component in charge of generating a Map  
+ <a href="a00279.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for MapGenerator:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00277.png" border="0" usemap="#aMapGenerator_coll__map" alt="Collaboration graph"/></div>
 <map name="aMapGenerator_coll__map" id="aMapGenerator_coll__map">
-<area shape="rect" title=" " alt="" coords="98,823,285,973"/>
-<area shape="rect" href="a00291.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="28,1036,299,1289"/>
-<area shape="rect" title=" " alt="" coords="59,227,169,305"/>
-<area shape="rect" href="a00311.html" title=" " alt="" coords="41,565,203,672"/>
-<area shape="rect" href="a00275.html" title=" " alt="" coords="316,477,504,760"/>
-<area shape="rect" title=" " alt="" coords="401,5,507,83"/>
-<area shape="rect" href="a00299.html" title=" " alt="" coords="476,132,635,400"/>
-<area shape="rect" title=" " alt="" coords="193,227,400,305"/>
-<area shape="rect" href="a00295.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="309,852,485,944"/>
+<area shape="rect" title="Component in charge of generating a Map" alt="" coords="94,764,286,900"/>
+<area shape="rect" href="a00291.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="28,963,299,1216"/>
+<area shape="rect" title=" " alt="" coords="56,227,167,305"/>
+<area shape="rect" href="a00311.html" title="component in charge doing threaded requests of data" alt="" coords="39,529,200,635"/>
+<area shape="rect" href="a00275.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="313,463,501,701"/>
+<area shape="rect" title=" " alt="" coords="398,5,505,83"/>
+<area shape="rect" href="a00299.html" title="The configuration of the texture of the terrain of the map" alt="" coords="473,132,632,400"/>
+<area shape="rect" title=" " alt="" coords="191,227,397,305"/>
+<area shape="rect" href="a00295.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="310,786,486,878"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -92,8 +95,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a194d3ac2a48cab976070d550fccd1296"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#a194d3ac2a48cab976070d550fccd1296">OnValidate</a> ()</td></tr>
 <tr class="separator:a194d3ac2a48cab976070d550fccd1296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab433ff7ef9942b9f4579b6308197b8c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7">GenerateMap</a> (bool clearPreviousMap)</td></tr>
+<tr class="memdesc:ab433ff7ef9942b9f4579b6308197b8c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates or generates the map.  <a href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7">More...</a><br /></td></tr>
 <tr class="separator:ab433ff7ef9942b9f4579b6308197b8c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49c72f7741c8e43efef4d323f0f26643"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#a49c72f7741c8e43efef4d323f0f26643">DeleteCurrentMap</a> ()</td></tr>
+<tr class="memdesc:a49c72f7741c8e43efef4d323f0f26643"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the currently (generated) existent map  <a href="a00279.html#a49c72f7741c8e43efef4d323f0f26643">More...</a><br /></td></tr>
 <tr class="separator:a49c72f7741c8e43efef4d323f0f26643"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -101,23 +106,27 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a2ea65019bcecd5b121037c2b4dd4353e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#a2ea65019bcecd5b121037c2b4dd4353e">autoRegenerateInEditor</a> = false</td></tr>
 <tr class="separator:a2ea65019bcecd5b121037c2b4dd4353e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1afed69a6ae21e08cf677a47c433346a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00291.html">TerrainGenerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#a1afed69a6ae21e08cf677a47c433346a">terrainGenerator</a></td></tr>
+<tr class="memdesc:a1afed69a6ae21e08cf677a47c433346a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00291.html" title="Unity Component in charge of generating a terrain in the scene">TerrainGenerator</a> component in charge of generating the Terrain  <a href="a00279.html#a1afed69a6ae21e08cf677a47c433346a">More...</a><br /></td></tr>
 <tr class="separator:a1afed69a6ae21e08cf677a47c433346a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87eab680c27d80af225954552c1a8101"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00275.html">MapConfiguration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#a87eab680c27d80af225954552c1a8101">mapConfiguration</a></td></tr>
+<tr class="memdesc:a87eab680c27d80af225954552c1a8101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00275.html" title="Holds all the configuration/settings used to generate the Map">MapConfiguration</a> with he settings to generate a map  <a href="a00279.html#a87eab680c27d80af225954552c1a8101">More...</a><br /></td></tr>
 <tr class="separator:a87eab680c27d80af225954552c1a8101"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedff6fc35848175fb4c9e0502f011283"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00311.html">ThreadedDataRequester</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#aedff6fc35848175fb4c9e0502f011283">threadedDataRequester</a></td></tr>
+<tr class="memdesc:aedff6fc35848175fb4c9e0502f011283"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00311.html" title="component in charge doing threaded requests of data">ThreadedDataRequester</a> component in charge doing threaded requests of data  <a href="a00279.html#aedff6fc35848175fb4c9e0502f011283">More...</a><br /></td></tr>
 <tr class="separator:aedff6fc35848175fb4c9e0502f011283"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a8b5cf2d45c6b2b747f7d3f134f53264e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#a8b5cf2d45c6b2b747f7d3f134f53264e">OnDrawGizmos</a> ()</td></tr>
-<tr class="separator:a8b5cf2d45c6b2b747f7d3f134f53264e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7484d0a42166d7b667e34d7fcb58119"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#af7484d0a42166d7b667e34d7fcb58119">OnValuesUpdated</a> ()</td></tr>
-<tr class="separator:af7484d0a42166d7b667e34d7fcb58119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99027f3be3cd53117a9892ec7baf6e2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#a99027f3be3cd53117a9892ec7baf6e2f">RegenerateMapNotPlaying</a> ()</td></tr>
+<tr class="memdesc:a99027f3be3cd53117a9892ec7baf6e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the app is not in Play Mode, the previously created map is destroyed and a new map is generated.  <a href="a00279.html#a99027f3be3cd53117a9892ec7baf6e2f">More...</a><br /></td></tr>
+<tr class="separator:a99027f3be3cd53117a9892ec7baf6e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01991491e4a07e50ba2cb2ababedb57d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00279.html#a01991491e4a07e50ba2cb2ababedb57d">OnTextureValuesUpdated</a> ()</td></tr>
+<tr class="memdesc:a01991491e4a07e50ba2cb2ababedb57d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manages the update of the <a class="el" href="a00299.html" title="The configuration of the texture of the terrain of the map">TextureSettings</a> by applying them to the map's Material  <a href="a00279.html#a01991491e4a07e50ba2cb2ababedb57d">More...</a><br /></td></tr>
 <tr class="separator:a01991491e4a07e50ba2cb2ababedb57d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
+<div class="textblock"><p>Component in charge of generating a Map </p>
+
 <p class="definition">Definition at line <a class="el" href="a00086_source.html#l00007">7</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a49c72f7741c8e43efef4d323f0f26643"></a>
@@ -135,13 +144,15 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00076">76</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
+<p>Deletes the currently (generated) existent map </p>
+
+<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00102">102</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00279_a49c72f7741c8e43efef4d323f0f26643_cgraph.png" border="0" usemap="#aa00279_a49c72f7741c8e43efef4d323f0f26643_cgraph" alt=""/></div>
 <map name="aa00279_a49c72f7741c8e43efef4d323f0f26643_cgraph" id="aa00279_a49c72f7741c8e43efef4d323f0f26643_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,217,32"/>
+<area shape="rect" title="Deletes the currently (generated) existent map" alt="" coords="5,5,217,32"/>
 <area shape="rect" href="a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="265,5,464,32"/>
 </map>
 </div>
@@ -150,8 +161,8 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00279_a49c72f7741c8e43efef4d323f0f26643_icgraph.png" border="0" usemap="#aa00279_a49c72f7741c8e43efef4d323f0f26643_icgraph" alt=""/></div>
 <map name="aa00279_a49c72f7741c8e43efef4d323f0f26643_icgraph" id="aa00279_a49c72f7741c8e43efef4d323f0f26643_icgraph">
-<area shape="rect" title=" " alt="" coords="927,5,1139,32"/>
-<area shape="rect" href="a00315.html#a7f8ce7add5ba29896422dcd6e3470e89" title=" " alt="" coords="631,5,879,32"/>
+<area shape="rect" title="Deletes the currently (generated) existent map" alt="" coords="927,5,1139,32"/>
+<area shape="rect" href="a00315.html#a7f8ce7add5ba29896422dcd6e3470e89" title="Deletes the currently (generated) existent map" alt="" coords="631,5,879,32"/>
 <area shape="rect" href="a00271.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="288,5,583,32"/>
 <area shape="rect" href="a00271.html#a8988494ad2b97cefb2f5f86ab74d21c0" title="Starts a new game." alt="" coords="5,5,240,32"/>
 </map>
@@ -175,13 +186,21 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00070">70</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
+<p>Updates or generates the map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clearPreviousMap</td><td>If existent, should the previously created map be deleted?</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00093">93</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00279_ab433ff7ef9942b9f4579b6308197b8c7_cgraph.png" border="0" usemap="#aa00279_ab433ff7ef9942b9f4579b6308197b8c7_cgraph" alt=""/></div>
 <map name="aa00279_ab433ff7ef9942b9f4579b6308197b8c7_cgraph" id="aa00279_ab433ff7ef9942b9f4579b6308197b8c7_cgraph">
-<area shape="rect" title=" " alt="" coords="5,81,192,108"/>
+<area shape="rect" title="Updates or generates the map." alt="" coords="5,81,192,108"/>
 <area shape="rect" href="a00291.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="240,81,447,108"/>
 <area shape="rect" href="a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="495,31,693,57"/>
 <area shape="rect" href="a00303.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="529,81,659,108"/>
@@ -205,38 +224,11 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00279_ab433ff7ef9942b9f4579b6308197b8c7_icgraph.png" border="0" usemap="#aa00279_ab433ff7ef9942b9f4579b6308197b8c7_icgraph" alt=""/></div>
 <map name="aa00279_ab433ff7ef9942b9f4579b6308197b8c7_icgraph" id="aa00279_ab433ff7ef9942b9f4579b6308197b8c7_icgraph">
-<area shape="rect" title=" " alt="" coords="487,5,673,32"/>
-<area shape="rect" href="a00279.html#af7484d0a42166d7b667e34d7fcb58119" title=" " alt="" coords="225,5,439,32"/>
+<area shape="rect" title="Updates or generates the map." alt="" coords="536,5,723,32"/>
+<area shape="rect" href="a00279.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,5,488,32"/>
 <area shape="rect" href="a00279.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
 </map>
 </div>
-
-</div>
-</div>
-<a id="a8b5cf2d45c6b2b747f7d3f134f53264e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b5cf2d45c6b2b747f7d3f134f53264e">&#9670;&nbsp;</a></span>OnDrawGizmos()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void MapGenerator.OnDrawGizmos </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00020">20</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 
 </div>
 </div>
@@ -263,13 +255,15 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00064">64</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
+<p>Manages the update of the <a class="el" href="a00299.html" title="The configuration of the texture of the terrain of the map">TextureSettings</a> by applying them to the map's Material </p>
+
+<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00083">83</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00279_a01991491e4a07e50ba2cb2ababedb57d_cgraph.png" border="0" usemap="#aa00279_a01991491e4a07e50ba2cb2ababedb57d_cgraph" alt=""/></div>
 <map name="aa00279_a01991491e4a07e50ba2cb2ababedb57d_cgraph" id="aa00279_a01991491e4a07e50ba2cb2ababedb57d_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,261,32"/>
+<area shape="rect" title="Manages the update of the TextureSettings by applying them to the map&#39;s Material" alt="" coords="5,5,261,32"/>
 <area shape="rect" href="a00299.html#a42409cebff16b95c9feee7dbcc90fa9e" title=" " alt="" coords="309,5,520,32"/>
 <area shape="rect" href="a00299.html#acfb079714b858560786f85bbe702e3f8" title=" " alt="" coords="568,5,803,32"/>
 </map>
@@ -279,7 +273,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00279_a01991491e4a07e50ba2cb2ababedb57d_icgraph.png" border="0" usemap="#aa00279_a01991491e4a07e50ba2cb2ababedb57d_icgraph" alt=""/></div>
 <map name="aa00279_a01991491e4a07e50ba2cb2ababedb57d_icgraph" id="aa00279_a01991491e4a07e50ba2cb2ababedb57d_icgraph">
-<area shape="rect" title=" " alt="" coords="225,5,481,32"/>
+<area shape="rect" title="Manages the update of the TextureSettings by applying them to the map&#39;s Material" alt="" coords="225,5,481,32"/>
 <area shape="rect" href="a00279.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
 </map>
 </div>
@@ -301,41 +295,41 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00041">41</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00057">57</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00279_a194d3ac2a48cab976070d550fccd1296_cgraph.png" border="0" usemap="#aa00279_a194d3ac2a48cab976070d550fccd1296_cgraph" alt=""/></div>
 <map name="aa00279_a194d3ac2a48cab976070d550fccd1296_cgraph" id="aa00279_a194d3ac2a48cab976070d550fccd1296_cgraph">
 <area shape="rect" title=" " alt="" coords="5,56,177,83"/>
-<area shape="rect" href="a00279.html#a01991491e4a07e50ba2cb2ababedb57d" title=" " alt="" coords="225,31,481,57"/>
-<area shape="rect" href="a00279.html#af7484d0a42166d7b667e34d7fcb58119" title=" " alt="" coords="247,81,460,108"/>
-<area shape="rect" href="a00299.html#a42409cebff16b95c9feee7dbcc90fa9e" title=" " alt="" coords="529,31,740,57"/>
-<area shape="rect" href="a00299.html#acfb079714b858560786f85bbe702e3f8" title=" " alt="" coords="788,31,1023,57"/>
-<area shape="rect" href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title=" " alt="" coords="541,81,728,108"/>
-<area shape="rect" href="a00291.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="802,81,1009,108"/>
-<area shape="rect" href="a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="1071,31,1269,57"/>
-<area shape="rect" href="a00303.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1105,81,1235,108"/>
-<area shape="rect" href="a00303.html#a826c703400d6d9f8df0af0efc7f8289e" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1366,169,1502,196"/>
-<area shape="rect" href="a00283.html#a397bce27d4d739635f014d1d83c8eefe" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1333,68,1535,95"/>
-<area shape="rect" href="a00303.html#a758502cab997e409e1f0e7eb9f202d7f" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1317,119,1551,145"/>
-<area shape="rect" href="a00311.html#a51c10f83bd17c992b4c2399c54fcce33" title=" " alt="" coords="2327,17,2567,44"/>
-<area shape="rect" href="a00283.html#a2e1f68e1ca4250565c3a9b9db7e0ad22" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="1601,43,1777,69"/>
-<area shape="rect" href="a00283.html#ae7714c3d98b43c7ac86a50717e8b5f5e" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="1613,93,1764,120"/>
-<area shape="rect" href="a00303.html#aa6df03f570aa6158181c137fc36a0b96" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="1599,144,1779,171"/>
-<area shape="rect" href="a00303.html#a8405c3182273af0abc72c21b0db7837e" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="1831,93,2033,120"/>
-<area shape="rect" href="a00303.html#a7f4fb4b4c58a79b41736ffe470d56a82" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="1827,144,2037,171"/>
-<area shape="rect" href="a00307.html#aeaf1be489394a7aac474b7138f55a75e" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="2100,93,2264,120"/>
-<area shape="rect" href="a00307.html#a5f407bc787b38b9111d529828fad222e" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="2341,93,2553,120"/>
-<area shape="rect" href="a00311.html#a480eeda51d735d389ed7521ea34b64e9" title=" " alt="" coords="2615,17,2845,44"/>
-<area shape="rect" href="a00303.html#a4e68798b1e866f75cec335d6ca4b8220" title="Sets a new state for the visibility of the Mesh" alt="" coords="2085,169,2279,196"/>
+<area shape="rect" href="a00279.html#a01991491e4a07e50ba2cb2ababedb57d" title="Manages the update of the TextureSettings by applying them to the map&#39;s Material" alt="" coords="229,31,485,57"/>
+<area shape="rect" href="a00279.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,81,488,108"/>
+<area shape="rect" href="a00299.html#a42409cebff16b95c9feee7dbcc90fa9e" title=" " alt="" coords="536,31,747,57"/>
+<area shape="rect" href="a00299.html#acfb079714b858560786f85bbe702e3f8" title=" " alt="" coords="795,31,1029,57"/>
+<area shape="rect" href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="548,81,735,108"/>
+<area shape="rect" href="a00291.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="809,81,1015,108"/>
+<area shape="rect" href="a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="1077,31,1276,57"/>
+<area shape="rect" href="a00303.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1111,81,1242,108"/>
+<area shape="rect" href="a00303.html#a826c703400d6d9f8df0af0efc7f8289e" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1373,169,1509,196"/>
+<area shape="rect" href="a00283.html#a397bce27d4d739635f014d1d83c8eefe" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1339,68,1542,95"/>
+<area shape="rect" href="a00303.html#a758502cab997e409e1f0e7eb9f202d7f" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1324,119,1557,145"/>
+<area shape="rect" href="a00311.html#a51c10f83bd17c992b4c2399c54fcce33" title=" " alt="" coords="2333,17,2573,44"/>
+<area shape="rect" href="a00283.html#a2e1f68e1ca4250565c3a9b9db7e0ad22" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="1607,43,1783,69"/>
+<area shape="rect" href="a00283.html#ae7714c3d98b43c7ac86a50717e8b5f5e" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="1620,93,1771,120"/>
+<area shape="rect" href="a00303.html#aa6df03f570aa6158181c137fc36a0b96" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="1605,144,1785,171"/>
+<area shape="rect" href="a00303.html#a8405c3182273af0abc72c21b0db7837e" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="1837,93,2040,120"/>
+<area shape="rect" href="a00303.html#a7f4fb4b4c58a79b41736ffe470d56a82" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="1833,144,2044,171"/>
+<area shape="rect" href="a00307.html#aeaf1be489394a7aac474b7138f55a75e" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="2107,93,2271,120"/>
+<area shape="rect" href="a00307.html#a5f407bc787b38b9111d529828fad222e" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="2347,93,2559,120"/>
+<area shape="rect" href="a00311.html#a480eeda51d735d389ed7521ea34b64e9" title=" " alt="" coords="2621,17,2852,44"/>
+<area shape="rect" href="a00303.html#a4e68798b1e866f75cec335d6ca4b8220" title="Sets a new state for the visibility of the Mesh" alt="" coords="2092,169,2285,196"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="af7484d0a42166d7b667e34d7fcb58119"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7484d0a42166d7b667e34d7fcb58119">&#9670;&nbsp;</a></span>OnValuesUpdated()</h2>
+<a id="a99027f3be3cd53117a9892ec7baf6e2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99027f3be3cd53117a9892ec7baf6e2f">&#9670;&nbsp;</a></span>RegenerateMapNotPlaying()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -344,7 +338,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void MapGenerator.OnValuesUpdated </td>
+          <td class="memname">void MapGenerator.RegenerateMapNotPlaying </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -357,38 +351,40 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00032">32</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
+<p>If the app is not in Play Mode, the previously created map is destroyed and a new map is generated. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00047">47</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00279_af7484d0a42166d7b667e34d7fcb58119_cgraph.png" border="0" usemap="#aa00279_af7484d0a42166d7b667e34d7fcb58119_cgraph" alt=""/></div>
-<map name="aa00279_af7484d0a42166d7b667e34d7fcb58119_cgraph" id="aa00279_af7484d0a42166d7b667e34d7fcb58119_cgraph">
-<area shape="rect" title=" " alt="" coords="5,81,219,108"/>
-<area shape="rect" href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title=" " alt="" coords="267,81,453,108"/>
-<area shape="rect" href="a00291.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="501,81,708,108"/>
-<area shape="rect" href="a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="756,31,955,57"/>
-<area shape="rect" href="a00303.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="790,81,921,108"/>
-<area shape="rect" href="a00303.html#a826c703400d6d9f8df0af0efc7f8289e" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1051,169,1187,196"/>
-<area shape="rect" href="a00283.html#a397bce27d4d739635f014d1d83c8eefe" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1018,68,1221,95"/>
-<area shape="rect" href="a00303.html#a758502cab997e409e1f0e7eb9f202d7f" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1003,119,1236,145"/>
-<area shape="rect" href="a00311.html#a51c10f83bd17c992b4c2399c54fcce33" title=" " alt="" coords="2012,17,2252,44"/>
-<area shape="rect" href="a00283.html#a2e1f68e1ca4250565c3a9b9db7e0ad22" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="1286,43,1462,69"/>
-<area shape="rect" href="a00283.html#ae7714c3d98b43c7ac86a50717e8b5f5e" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="1299,93,1449,120"/>
-<area shape="rect" href="a00303.html#aa6df03f570aa6158181c137fc36a0b96" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="1284,144,1464,171"/>
-<area shape="rect" href="a00303.html#a8405c3182273af0abc72c21b0db7837e" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="1516,93,1719,120"/>
-<area shape="rect" href="a00303.html#a7f4fb4b4c58a79b41736ffe470d56a82" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="1512,144,1723,171"/>
-<area shape="rect" href="a00307.html#aeaf1be489394a7aac474b7138f55a75e" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="1785,93,1949,120"/>
-<area shape="rect" href="a00307.html#a5f407bc787b38b9111d529828fad222e" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="2026,93,2238,120"/>
-<area shape="rect" href="a00311.html#a480eeda51d735d389ed7521ea34b64e9" title=" " alt="" coords="2300,17,2531,44"/>
-<area shape="rect" href="a00303.html#a4e68798b1e866f75cec335d6ca4b8220" title="Sets a new state for the visibility of the Mesh" alt="" coords="1771,169,1964,196"/>
+<div class="center"><img src="a00279_a99027f3be3cd53117a9892ec7baf6e2f_cgraph.png" border="0" usemap="#aa00279_a99027f3be3cd53117a9892ec7baf6e2f_cgraph" alt=""/></div>
+<map name="aa00279_a99027f3be3cd53117a9892ec7baf6e2f_cgraph" id="aa00279_a99027f3be3cd53117a9892ec7baf6e2f_cgraph">
+<area shape="rect" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="5,81,268,108"/>
+<area shape="rect" href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="316,81,503,108"/>
+<area shape="rect" href="a00291.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="551,81,757,108"/>
+<area shape="rect" href="a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="805,31,1004,57"/>
+<area shape="rect" href="a00303.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="839,81,970,108"/>
+<area shape="rect" href="a00303.html#a826c703400d6d9f8df0af0efc7f8289e" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1101,169,1237,196"/>
+<area shape="rect" href="a00283.html#a397bce27d4d739635f014d1d83c8eefe" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1067,68,1270,95"/>
+<area shape="rect" href="a00303.html#a758502cab997e409e1f0e7eb9f202d7f" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1052,119,1285,145"/>
+<area shape="rect" href="a00311.html#a51c10f83bd17c992b4c2399c54fcce33" title=" " alt="" coords="2061,17,2301,44"/>
+<area shape="rect" href="a00283.html#a2e1f68e1ca4250565c3a9b9db7e0ad22" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="1335,43,1511,69"/>
+<area shape="rect" href="a00283.html#ae7714c3d98b43c7ac86a50717e8b5f5e" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="1348,93,1499,120"/>
+<area shape="rect" href="a00303.html#aa6df03f570aa6158181c137fc36a0b96" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="1333,144,1513,171"/>
+<area shape="rect" href="a00303.html#a8405c3182273af0abc72c21b0db7837e" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="1565,93,1768,120"/>
+<area shape="rect" href="a00303.html#a7f4fb4b4c58a79b41736ffe470d56a82" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="1561,144,1772,171"/>
+<area shape="rect" href="a00307.html#aeaf1be489394a7aac474b7138f55a75e" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="1835,93,1999,120"/>
+<area shape="rect" href="a00307.html#a5f407bc787b38b9111d529828fad222e" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="2075,93,2287,120"/>
+<area shape="rect" href="a00311.html#a480eeda51d735d389ed7521ea34b64e9" title=" " alt="" coords="2349,17,2580,44"/>
+<area shape="rect" href="a00303.html#a4e68798b1e866f75cec335d6ca4b8220" title="Sets a new state for the visibility of the Mesh" alt="" coords="1820,169,2013,196"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00279_af7484d0a42166d7b667e34d7fcb58119_icgraph.png" border="0" usemap="#aa00279_af7484d0a42166d7b667e34d7fcb58119_icgraph" alt=""/></div>
-<map name="aa00279_af7484d0a42166d7b667e34d7fcb58119_icgraph" id="aa00279_af7484d0a42166d7b667e34d7fcb58119_icgraph">
-<area shape="rect" title=" " alt="" coords="225,5,439,32"/>
+<div class="center"><img src="a00279_a99027f3be3cd53117a9892ec7baf6e2f_icgraph.png" border="0" usemap="#aa00279_a99027f3be3cd53117a9892ec7baf6e2f_icgraph" alt=""/></div>
+<map name="aa00279_a99027f3be3cd53117a9892ec7baf6e2f_icgraph" id="aa00279_a99027f3be3cd53117a9892ec7baf6e2f_icgraph">
+<area shape="rect" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,5,488,32"/>
 <area shape="rect" href="a00279.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
 </map>
 </div>
@@ -424,7 +420,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00016">16</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
+<p>Reference to the <a class="el" href="a00275.html" title="Holds all the configuration/settings used to generate the Map">MapConfiguration</a> with he settings to generate a map </p>
+
+<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00024">24</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 
 </div>
 </div>
@@ -440,7 +438,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00014">14</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
+<p>Reference to the <a class="el" href="a00291.html" title="Unity Component in charge of generating a terrain in the scene">TerrainGenerator</a> component in charge of generating the Terrain </p>
+
+<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00018">18</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 
 </div>
 </div>
@@ -456,7 +456,9 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00018">18</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
+<p>Reference to the <a class="el" href="a00311.html" title="component in charge doing threaded requests of data">ThreadedDataRequester</a> component in charge doing threaded requests of data </p>
+
+<p class="definition">Definition at line <a class="el" href="a00086_source.html#l00030">30</a> of file <a class="el" href="a00086_source.html">MapGenerator.cs</a>.</p>
 
 </div>
 </div>

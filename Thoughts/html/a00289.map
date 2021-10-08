@@ -1,11 +1,11 @@
 <map id="TerrainGenerator" name="TerrainGenerator">
-<area shape="rect" id="node1" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="239,492,510,745"/>
-<area shape="rect" id="node4" href="$a00279.html" title=" " alt="" coords="221,823,408,973"/>
-<area shape="rect" id="node2" title=" " alt="" coords="79,227,190,305"/>
-<area shape="rect" id="node9" href="$a00311.html" title=" " alt="" coords="54,565,215,672"/>
-<area shape="rect" id="node3" href="$a00295.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="251,220,427,312"/>
-<area shape="rect" id="node5" href="$a00275.html" title=" " alt="" coords="603,477,791,760"/>
-<area shape="rect" id="node6" title=" " alt="" coords="651,5,757,83"/>
-<area shape="rect" id="node8" href="$a00299.html" title=" " alt="" coords="451,132,610,400"/>
-<area shape="rect" id="node7" title=" " alt="" coords="634,227,841,305"/>
+<area shape="rect" id="node1" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="236,463,507,716"/>
+<area shape="rect" id="node4" href="$a00279.html" title="Component in charge of generating a Map" alt="" coords="215,779,407,915"/>
+<area shape="rect" id="node2" title=" " alt="" coords="76,227,187,305"/>
+<area shape="rect" id="node9" href="$a00311.html" title="component in charge doing threaded requests of data" alt="" coords="51,536,212,643"/>
+<area shape="rect" id="node3" href="$a00295.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="247,220,423,312"/>
+<area shape="rect" id="node5" href="$a00275.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="600,470,788,709"/>
+<area shape="rect" id="node6" title=" " alt="" coords="647,5,754,83"/>
+<area shape="rect" id="node8" href="$a00299.html" title="The configuration of the texture of the terrain of the map" alt="" coords="448,132,607,400"/>
+<area shape="rect" id="node7" title=" " alt="" coords="631,227,837,305"/>
 </map>

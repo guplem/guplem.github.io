@@ -81,15 +81,15 @@ Collaboration diagram for TerrainGenerator:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00289.png" border="0" usemap="#aTerrainGenerator_coll__map" alt="Collaboration graph"/></div>
 <map name="aTerrainGenerator_coll__map" id="aTerrainGenerator_coll__map">
-<area shape="rect" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="239,492,510,745"/>
-<area shape="rect" href="a00279.html" title=" " alt="" coords="221,823,408,973"/>
-<area shape="rect" title=" " alt="" coords="79,227,190,305"/>
-<area shape="rect" href="a00311.html" title=" " alt="" coords="54,565,215,672"/>
-<area shape="rect" href="a00295.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="251,220,427,312"/>
-<area shape="rect" href="a00275.html" title=" " alt="" coords="603,477,791,760"/>
-<area shape="rect" title=" " alt="" coords="651,5,757,83"/>
-<area shape="rect" href="a00299.html" title=" " alt="" coords="451,132,610,400"/>
-<area shape="rect" title=" " alt="" coords="634,227,841,305"/>
+<area shape="rect" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="236,463,507,716"/>
+<area shape="rect" href="a00279.html" title="Component in charge of generating a Map" alt="" coords="215,779,407,915"/>
+<area shape="rect" title=" " alt="" coords="76,227,187,305"/>
+<area shape="rect" href="a00311.html" title="component in charge doing threaded requests of data" alt="" coords="51,536,212,643"/>
+<area shape="rect" href="a00295.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="247,220,423,312"/>
+<area shape="rect" href="a00275.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="600,470,788,709"/>
+<area shape="rect" title=" " alt="" coords="647,5,754,83"/>
+<area shape="rect" href="a00299.html" title="The configuration of the texture of the terrain of the map" alt="" coords="448,132,607,400"/>
+<area shape="rect" title=" " alt="" coords="631,227,837,305"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -119,7 +119,7 @@ Properties</h2></td></tr>
 <tr class="memdesc:a9816599e16d6be089b834c87894d1d4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the viewer (usually the player) of the terrain. If null at Start, it will be set to 'Camera.main' then.  <a href="a00291.html#a9816599e16d6be089b834c87894d1d4e">More...</a><br /></td></tr>
 <tr class="separator:a9816599e16d6be089b834c87894d1d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4760b59a632c6cb6a0ab79f51e6eeba2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00291.html#a4760b59a632c6cb6a0ab79f51e6eeba2">totalChunksInMap</a><code> [get]</code></td></tr>
-<tr class="memdesc:a4760b59a632c6cb6a0ab79f51e6eeba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many chunks are visible based on the chunkSize and the maxViewDistance,  <a href="a00291.html#a4760b59a632c6cb6a0ab79f51e6eeba2">More...</a><br /></td></tr>
+<tr class="memdesc:a4760b59a632c6cb6a0ab79f51e6eeba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many chunks exist in the map  <a href="a00291.html#a4760b59a632c6cb6a0ab79f51e6eeba2">More...</a><br /></td></tr>
 <tr class="separator:a4760b59a632c6cb6a0ab79f51e6eeba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -146,7 +146,7 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a7e2d9b5fe2df8d026c81c86c039d21d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The previous to the latest known position of the viewer.  <a href="a00291.html#a7e2d9b5fe2df8d026c81c86c039d21d6">More...</a><br /></td></tr>
 <tr class="separator:a7e2d9b5fe2df8d026c81c86c039d21d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f27df5fc910f725e27a0df2a5ee2ce"><td class="memItemLeft" align="right" valign="top">Dictionary&lt; Vector2, <a class="el" href="a00303.html">TerrainChunk</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00291.html#a09f27df5fc910f725e27a0df2a5ee2ce">terrainChunks</a> = new Dictionary&lt;Vector2, <a class="el" href="a00303.html">TerrainChunk</a>&gt;()</td></tr>
-<tr class="memdesc:a09f27df5fc910f725e27a0df2a5ee2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference to all spawned GameObjects containing a <a class="el" href="a00303.html">TerrainChunk</a>  <a href="a00291.html#a09f27df5fc910f725e27a0df2a5ee2ce">More...</a><br /></td></tr>
+<tr class="memdesc:a09f27df5fc910f725e27a0df2a5ee2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference to all spawned GameObjects containing a <a class="el" href="a00303.html">TerrainChunk</a> / Terrain chunks  <a href="a00291.html#a09f27df5fc910f725e27a0df2a5ee2ce">More...</a><br /></td></tr>
 <tr class="separator:a09f27df5fc910f725e27a0df2a5ee2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
@@ -187,14 +187,14 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="a00291_ab5187ae35e0fd9badac754d8c73a70e2_icgraph.png" border="0" usemap="#aa00291_ab5187ae35e0fd9badac754d8c73a70e2_icgraph" alt=""/></div>
 <map name="aa00291_ab5187ae35e0fd9badac754d8c73a70e2_icgraph" id="aa00291_ab5187ae35e0fd9badac754d8c73a70e2_icgraph">
 <area shape="rect" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="1187,31,1385,57"/>
-<area shape="rect" href="a00279.html#a49c72f7741c8e43efef4d323f0f26643" title=" " alt="" coords="927,5,1139,32"/>
+<area shape="rect" href="a00279.html#a49c72f7741c8e43efef4d323f0f26643" title="Deletes the currently (generated) existent map" alt="" coords="927,5,1139,32"/>
 <area shape="rect" href="a00291.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="929,56,1136,83"/>
-<area shape="rect" href="a00315.html#a7f8ce7add5ba29896422dcd6e3470e89" title=" " alt="" coords="631,5,879,32"/>
+<area shape="rect" href="a00315.html#a7f8ce7add5ba29896422dcd6e3470e89" title="Deletes the currently (generated) existent map" alt="" coords="631,5,879,32"/>
 <area shape="rect" href="a00271.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="288,5,583,32"/>
 <area shape="rect" href="a00271.html#a8988494ad2b97cefb2f5f86ab74d21c0" title="Starts a new game." alt="" coords="5,5,240,32"/>
-<area shape="rect" href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title=" " alt="" coords="661,56,848,83"/>
+<area shape="rect" href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="661,56,848,83"/>
 <area shape="rect" href="a00291.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="673,107,836,133"/>
-<area shape="rect" href="a00279.html#af7484d0a42166d7b667e34d7fcb58119" title=" " alt="" coords="329,56,542,83"/>
+<area shape="rect" href="a00279.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="304,56,567,83"/>
 <area shape="rect" href="a00279.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="37,56,209,83"/>
 </map>
 </div>
@@ -336,10 +336,10 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00291_a4db4f9309aae517f302184e631c6b52e_icgraph.png" border="0" usemap="#aa00291_a4db4f9309aae517f302184e631c6b52e_icgraph" alt=""/></div>
 <map name="aa00291_a4db4f9309aae517f302184e631c6b52e_icgraph" id="aa00291_a4db4f9309aae517f302184e631c6b52e_icgraph">
-<area shape="rect" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="721,31,928,57"/>
-<area shape="rect" href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title=" " alt="" coords="487,5,673,32"/>
-<area shape="rect" href="a00291.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="499,56,661,83"/>
-<area shape="rect" href="a00279.html#af7484d0a42166d7b667e34d7fcb58119" title=" " alt="" coords="225,5,439,32"/>
+<area shape="rect" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="771,31,977,57"/>
+<area shape="rect" href="a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="536,5,723,32"/>
+<area shape="rect" href="a00291.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="548,56,711,83"/>
+<area shape="rect" href="a00279.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,5,488,32"/>
 <area shape="rect" href="a00279.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
 </map>
 </div>
@@ -497,7 +497,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>A reference to all spawned GameObjects containing a <a class="el" href="a00303.html">TerrainChunk</a> </p>
+<p>A reference to all spawned GameObjects containing a <a class="el" href="a00303.html">TerrainChunk</a> / Terrain chunks </p>
 
 <p class="definition">Definition at line <a class="el" href="a00098_source.html#l00076">76</a> of file <a class="el" href="a00098_source.html">TerrainGenerator.cs</a>.</p>
 
@@ -602,7 +602,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>How many chunks are visible based on the chunkSize and the maxViewDistance, </p>
+<p>How many chunks exist in the map </p>
 
 <p class="definition">Definition at line <a class="el" href="a00098_source.html#l00071">71</a> of file <a class="el" href="a00098_source.html">TerrainGenerator.cs</a>.</p>
 

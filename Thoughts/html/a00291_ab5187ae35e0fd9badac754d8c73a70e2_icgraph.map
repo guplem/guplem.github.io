@@ -1,12 +1,12 @@
 <map id="TerrainGenerator.DeleteTerrain" name="TerrainGenerator.DeleteTerrain">
 <area shape="rect" id="node1" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="1187,31,1385,57"/>
-<area shape="rect" id="node2" href="$a00279.html#a49c72f7741c8e43efef4d323f0f26643" title=" " alt="" coords="927,5,1139,32"/>
+<area shape="rect" id="node2" href="$a00279.html#a49c72f7741c8e43efef4d323f0f26643" title="Deletes the currently (generated) existent map" alt="" coords="927,5,1139,32"/>
 <area shape="rect" id="node6" href="$a00291.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="929,56,1136,83"/>
-<area shape="rect" id="node3" href="$a00315.html#a7f8ce7add5ba29896422dcd6e3470e89" title=" " alt="" coords="631,5,879,32"/>
+<area shape="rect" id="node3" href="$a00315.html#a7f8ce7add5ba29896422dcd6e3470e89" title="Deletes the currently (generated) existent map" alt="" coords="631,5,879,32"/>
 <area shape="rect" id="node4" href="$a00271.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="288,5,583,32"/>
 <area shape="rect" id="node5" href="$a00271.html#a8988494ad2b97cefb2f5f86ab74d21c0" title="Starts a new game." alt="" coords="5,5,240,32"/>
-<area shape="rect" id="node7" href="$a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title=" " alt="" coords="661,56,848,83"/>
+<area shape="rect" id="node7" href="$a00279.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="661,56,848,83"/>
 <area shape="rect" id="node10" href="$a00291.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="673,107,836,133"/>
-<area shape="rect" id="node8" href="$a00279.html#af7484d0a42166d7b667e34d7fcb58119" title=" " alt="" coords="329,56,542,83"/>
+<area shape="rect" id="node8" href="$a00279.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="304,56,567,83"/>
 <area shape="rect" id="node9" href="$a00279.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="37,56,209,83"/>
 </map>

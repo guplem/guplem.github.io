@@ -82,16 +82,16 @@ Collaboration diagram for Thoughts.Game.GameMap.Map:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00313.png" border="0" usemap="#aThoughts_8Game_8GameMap_8Map_coll__map" alt="Collaboration graph"/></div>
 <map name="aThoughts_8Game_8GameMap_8Map_coll__map" id="aThoughts_8Game_8GameMap_8Map_coll__map">
-<area shape="rect" title="The map of the game." alt="" coords="5,1058,212,1267"/>
-<area shape="rect" title=" " alt="" coords="72,227,183,305"/>
-<area shape="rect" href="a00279.html" title=" " alt="" coords="231,823,418,973"/>
-<area shape="rect" href="a00291.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="269,1036,540,1289"/>
-<area shape="rect" href="a00311.html" title=" " alt="" coords="215,565,376,672"/>
-<area shape="rect" href="a00275.html" title=" " alt="" coords="400,477,588,760"/>
-<area shape="rect" title=" " alt="" coords="522,5,629,83"/>
-<area shape="rect" href="a00299.html" title=" " alt="" coords="437,132,596,400"/>
-<area shape="rect" title=" " alt="" coords="207,227,413,305"/>
-<area shape="rect" href="a00295.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="515,852,691,944"/>
+<area shape="rect" title="The map of the game." alt="" coords="5,985,212,1194"/>
+<area shape="rect" title=" " alt="" coords="71,227,181,305"/>
+<area shape="rect" href="a00279.html" title="Component in charge of generating a Map" alt="" coords="230,764,422,900"/>
+<area shape="rect" href="a00291.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="269,963,540,1216"/>
+<area shape="rect" href="a00311.html" title="component in charge doing threaded requests of data" alt="" coords="217,529,379,635"/>
+<area shape="rect" href="a00275.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="407,463,595,701"/>
+<area shape="rect" title=" " alt="" coords="521,5,627,83"/>
+<area shape="rect" href="a00299.html" title="The configuration of the texture of the terrain of the map" alt="" coords="436,132,595,400"/>
+<area shape="rect" title=" " alt="" coords="205,227,412,305"/>
+<area shape="rect" href="a00295.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="515,786,691,878"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -104,6 +104,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1336488cef85bdd96b908173832cc0c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look for all MapEvents available in the map that, as consequence of a <a class="el" href="a00343.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> in an Attribute they own, they make a desired AttributeOwnership's value increase for the owner/executer/target (the needed participant).  <a href="a00315.html#a1336488cef85bdd96b908173832cc0c1">More...</a><br /></td></tr>
 <tr class="separator:a1336488cef85bdd96b908173832cc0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f8ce7add5ba29896422dcd6e3470e89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00315.html#a7f8ce7add5ba29896422dcd6e3470e89">Delete</a> ()</td></tr>
+<tr class="memdesc:a7f8ce7add5ba29896422dcd6e3470e89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the currently (generated) existent map  <a href="a00315.html#a7f8ce7add5ba29896422dcd6e3470e89">More...</a><br /></td></tr>
 <tr class="separator:a7f8ce7add5ba29896422dcd6e3470e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -133,7 +134,7 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a5d24ead577586e2bb2d37f400f5aa559"><td class="mdescLeft">&#160;</td><td class="mdescRight">All the map elements present in the map.  <a href="a00315.html#a5d24ead577586e2bb2d37f400f5aa559">More...</a><br /></td></tr>
 <tr class="separator:a5d24ead577586e2bb2d37f400f5aa559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6bc923380319c67d448172cee5246ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00279.html">MapGenerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00315.html#ab6bc923380319c67d448172cee5246ec">mapGenerator</a></td></tr>
-<tr class="memdesc:ab6bc923380319c67d448172cee5246ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00279.html">MapGenerator</a> component  <a href="a00315.html#ab6bc923380319c67d448172cee5246ec">More...</a><br /></td></tr>
+<tr class="memdesc:ab6bc923380319c67d448172cee5246ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00279.html" title="Component in charge of generating a Map">MapGenerator</a> component  <a href="a00315.html#ab6bc923380319c67d448172cee5246ec">More...</a><br /></td></tr>
 <tr class="separator:ab6bc923380319c67d448172cee5246ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac80495929ac85dd2e423e244ddca9bbe"><td class="memItemLeft" align="right" valign="top">List&lt; GameObject &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00315.html#ac80495929ac85dd2e423e244ddca9bbe">spawnableMapElements</a></td></tr>
 <tr class="memdesc:ac80495929ac85dd2e423e244ddca9bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">All the map elements' prefabs that can be spawned in the map.  <a href="a00315.html#ac80495929ac85dd2e423e244ddca9bbe">More...</a><br /></td></tr>
@@ -159,14 +160,16 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00110_source.html#l00200">200</a> of file <a class="el" href="a00110_source.html">Map.cs</a>.</p>
+<p>Deletes the currently (generated) existent map </p>
+
+<p class="definition">Definition at line <a class="el" href="a00110_source.html#l00203">203</a> of file <a class="el" href="a00110_source.html">Map.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00315_a7f8ce7add5ba29896422dcd6e3470e89_cgraph.png" border="0" usemap="#aa00315_a7f8ce7add5ba29896422dcd6e3470e89_cgraph" alt=""/></div>
 <map name="aa00315_a7f8ce7add5ba29896422dcd6e3470e89_cgraph" id="aa00315_a7f8ce7add5ba29896422dcd6e3470e89_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,253,32"/>
-<area shape="rect" href="a00279.html#a49c72f7741c8e43efef4d323f0f26643" title=" " alt="" coords="301,5,513,32"/>
+<area shape="rect" title="Deletes the currently (generated) existent map" alt="" coords="5,5,253,32"/>
+<area shape="rect" href="a00279.html#a49c72f7741c8e43efef4d323f0f26643" title="Deletes the currently (generated) existent map" alt="" coords="301,5,513,32"/>
 <area shape="rect" href="a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="561,5,760,32"/>
 </map>
 </div>
@@ -175,7 +178,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="a00315_a7f8ce7add5ba29896422dcd6e3470e89_icgraph.png" border="0" usemap="#aa00315_a7f8ce7add5ba29896422dcd6e3470e89_icgraph" alt=""/></div>
 <map name="aa00315_a7f8ce7add5ba29896422dcd6e3470e89_icgraph" id="aa00315_a7f8ce7add5ba29896422dcd6e3470e89_icgraph">
-<area shape="rect" title=" " alt="" coords="631,5,879,32"/>
+<area shape="rect" title="Deletes the currently (generated) existent map" alt="" coords="631,5,879,32"/>
 <area shape="rect" href="a00271.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="288,5,583,32"/>
 <area shape="rect" href="a00271.html#a8988494ad2b97cefb2f5f86ab74d21c0" title="Starts a new game." alt="" coords="5,5,240,32"/>
 </map>
@@ -620,7 +623,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Reference to the <a class="el" href="a00279.html">MapGenerator</a> component </p>
+<p>Reference to the <a class="el" href="a00279.html" title="Component in charge of generating a Map">MapGenerator</a> component </p>
 
 <p class="definition">Definition at line <a class="el" href="a00110_source.html#l00027">27</a> of file <a class="el" href="a00110_source.html">Map.cs</a>.</p>
 

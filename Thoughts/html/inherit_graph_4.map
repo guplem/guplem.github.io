@@ -1,6 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" title=" " alt="" coords="5,512,116,539"/>
-<area shape="rect" id="node2" href="$a00279.html" title=" " alt="" coords="287,5,391,32"/>
+<area shape="rect" id="node2" href="$a00279.html" title="Component in charge of generating a Map" alt="" coords="287,5,391,32"/>
 <area shape="rect" id="node3" href="$a00287.html" title="Handles the generation of the terrain of the map" alt="" coords="270,56,409,83"/>
 <area shape="rect" id="node4" href="$a00303.html" title=" " alt="" coords="290,107,389,133"/>
 <area shape="rect" id="node5" href="$a00291.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="280,157,399,184"/>
@@ -20,7 +20,7 @@
 <area shape="rect" id="node31" href="$a00271.html" title="Controls the core aspects of the a game: Participant (with ControlSystem), Map setup,..." alt="" coords="238,867,441,893"/>
 <area shape="rect" id="node32" href="$a00315.html" title="The map of the game." alt="" coords="236,917,443,944"/>
 <area shape="rect" id="node33" href="$a00351.html" title="A spawned element of the Map." alt="" coords="212,968,467,995"/>
-<area shape="rect" id="node34" href="$a00311.html" title=" " alt="" coords="259,1019,420,1045"/>
+<area shape="rect" id="node34" href="$a00311.html" title="component in charge doing threaded requests of data" alt="" coords="259,1019,420,1045"/>
 <area shape="rect" id="node9" href="$a00183.html" title="A local manual control of a participant." alt="" coords="636,309,855,336"/>
 <area shape="rect" id="node20" href="$a00199.html" title=" " alt="" coords="563,765,928,792"/>
 <area shape="rect" id="node29" href="$a00247.html" title=" " alt="" coords="625,816,866,843"/>

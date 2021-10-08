@@ -1,5 +1,5 @@
 <map id="MapGenerator.OnTextureValuesUpdated" name="MapGenerator.OnTextureValuesUpdated">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,261,32"/>
+<area shape="rect" id="node1" title="Manages the update of the TextureSettings by applying them to the map&#39;s Material" alt="" coords="5,5,261,32"/>
 <area shape="rect" id="node2" href="$a00299.html#a42409cebff16b95c9feee7dbcc90fa9e" title=" " alt="" coords="309,5,520,32"/>
 <area shape="rect" id="node3" href="$a00299.html#acfb079714b858560786f85bbe702e3f8" title=" " alt="" coords="568,5,803,32"/>
 </map>

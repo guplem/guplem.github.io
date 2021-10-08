@@ -1,7 +1,7 @@
 <map id="Thoughts.Game.GameManager.Start" name="Thoughts.Game.GameManager.Start">
 <area shape="rect" id="node1" title="Starts a new game." alt="" coords="5,5,240,32"/>
 <area shape="rect" id="node2" href="$a00271.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="288,5,583,32"/>
-<area shape="rect" id="node3" href="$a00315.html#a7f8ce7add5ba29896422dcd6e3470e89" title=" " alt="" coords="631,5,879,32"/>
-<area shape="rect" id="node4" href="$a00279.html#a49c72f7741c8e43efef4d323f0f26643" title=" " alt="" coords="927,5,1139,32"/>
+<area shape="rect" id="node3" href="$a00315.html#a7f8ce7add5ba29896422dcd6e3470e89" title="Deletes the currently (generated) existent map" alt="" coords="631,5,879,32"/>
+<area shape="rect" id="node4" href="$a00279.html#a49c72f7741c8e43efef4d323f0f26643" title="Deletes the currently (generated) existent map" alt="" coords="927,5,1139,32"/>
 <area shape="rect" id="node5" href="$a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="1187,5,1385,32"/>
 </map>

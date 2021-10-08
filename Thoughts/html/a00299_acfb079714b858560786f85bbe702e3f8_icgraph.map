@@ -1,6 +1,6 @@
 <map id="TextureSettings.UpdateMeshHeights" name="TextureSettings.UpdateMeshHeights">
 <area shape="rect" id="node1" title=" " alt="" coords="788,5,1023,32"/>
 <area shape="rect" id="node2" href="$a00299.html#a42409cebff16b95c9feee7dbcc90fa9e" title=" " alt="" coords="529,5,740,32"/>
-<area shape="rect" id="node3" href="$a00279.html#a01991491e4a07e50ba2cb2ababedb57d" title=" " alt="" coords="225,5,481,32"/>
+<area shape="rect" id="node3" href="$a00279.html#a01991491e4a07e50ba2cb2ababedb57d" title="Manages the update of the TextureSettings by applying them to the map&#39;s Material" alt="" coords="225,5,481,32"/>
 <area shape="rect" id="node4" href="$a00279.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
 </map>

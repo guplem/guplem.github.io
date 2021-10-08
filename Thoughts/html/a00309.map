@@ -1,4 +1,4 @@
 <map id="ThreadedDataRequester" name="ThreadedDataRequester">
-<area shape="rect" id="node1" title=" " alt="" coords="5,131,167,237"/>
+<area shape="rect" id="node1" title="component in charge doing threaded requests of data" alt="" coords="5,131,167,237"/>
 <area shape="rect" id="node2" title=" " alt="" coords="31,5,141,83"/>
 </map>
