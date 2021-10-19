@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.Attributes.StateUpdate Class Reference</title>
+<title>TS20-Thoughts: LODInfo Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,83 +59,80 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="a00143.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00146.html">Game</a></li><li class="navelem"><a class="el" href="a00148.html">Attributes</a></li><li class="navelem"><a class="el" href="a00334.html">StateUpdate</a></li>  </ul>
-</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00331.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.Attributes.StateUpdate Class Reference</div>  </div>
+<div class="title">LODInfo Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>An update of the State of a MapElement  
+<p>Data that relates a LOD with the distance to the viewer at which it should stop being used and a worse LOD should be used instead.  
  <a href="a00334.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Game.Attributes.StateUpdate:</div>
+Collaboration diagram for LODInfo:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00332.png" border="0" usemap="#aThoughts_8Game_8Attributes_8StateUpdate_coll__map" alt="Collaboration graph"/></div>
-<map name="aThoughts_8Game_8Attributes_8StateUpdate_coll__map" id="aThoughts_8Game_8Attributes_8StateUpdate_coll__map">
-<area shape="rect" title="An update of the State of a MapElement" alt="" coords="5,5,256,97"/>
+<div class="center"><img src="a00332.png" border="0" usemap="#aLODInfo_coll__map" alt="Collaboration graph"/></div>
+<map name="aLODInfo_coll__map" id="aLODInfo_coll__map">
+<area shape="rect" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="5,5,181,97"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a24d6e28a2a22d31639b7c0540c6e7c36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00147.html#a44959bf769c4051c92b70b2cfecd73bd">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00334.html#a24d6e28a2a22d31639b7c0540c6e7c36">newState</a></td></tr>
-<tr class="memdesc:a24d6e28a2a22d31639b7c0540c6e7c36"><td class="mdescLeft">&#160;</td><td class="mdescRight">The new state of the affected MapElement  <a href="a00334.html#a24d6e28a2a22d31639b7c0540c6e7c36">More...</a><br /></td></tr>
-<tr class="separator:a24d6e28a2a22d31639b7c0540c6e7c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ddb8d351b957bbf7184a45a6112b711"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00334.html#a5ddb8d351b957bbf7184a45a6112b711">newStateDuration</a></td></tr>
-<tr class="memdesc:a5ddb8d351b957bbf7184a45a6112b711"><td class="mdescLeft">&#160;</td><td class="mdescRight">The duration of the new state of the affected MapElement  <a href="a00334.html#a5ddb8d351b957bbf7184a45a6112b711">More...</a><br /></td></tr>
-<tr class="separator:a5ddb8d351b957bbf7184a45a6112b711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aa27c7150ccfe4ef65f6b55634cec68"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00334.html#a9aa27c7150ccfe4ef65f6b55634cec68">lod</a></td></tr>
+<tr class="memdesc:a9aa27c7150ccfe4ef65f6b55634cec68"><td class="mdescLeft">&#160;</td><td class="mdescRight">The LOD linked to the visibleDistanceThreshold data  <a href="a00334.html#a9aa27c7150ccfe4ef65f6b55634cec68">More...</a><br /></td></tr>
+<tr class="separator:a9aa27c7150ccfe4ef65f6b55634cec68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86968cb4f724ab0771255ad80e74ed63"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00334.html#a86968cb4f724ab0771255ad80e74ed63">visibleDistanceThreshold</a></td></tr>
+<tr class="memdesc:a86968cb4f724ab0771255ad80e74ed63"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distance to the viewer at which it should stop being used and a worse LOD should be used instead  <a href="a00334.html#a86968cb4f724ab0771255ad80e74ed63">More...</a><br /></td></tr>
+<tr class="separator:a86968cb4f724ab0771255ad80e74ed63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>An update of the State of a MapElement </p>
+<div class="textblock"><p>Data that relates a LOD with the distance to the viewer at which it should stop being used and a worse LOD should be used instead. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00122_source.html#l00054">54</a> of file <a class="el" href="a00122_source.html">Consequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00098_source.html#l00172">172</a> of file <a class="el" href="a00098_source.html">TerrainGenerator.cs</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a24d6e28a2a22d31639b7c0540c6e7c36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24d6e28a2a22d31639b7c0540c6e7c36">&#9670;&nbsp;</a></span>newState</h2>
+<a id="a9aa27c7150ccfe4ef65f6b55634cec68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aa27c7150ccfe4ef65f6b55634cec68">&#9670;&nbsp;</a></span>lod</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00147.html#a44959bf769c4051c92b70b2cfecd73bd">State</a> Thoughts.Game.Attributes.StateUpdate.newState</td>
+          <td class="memname">int LODInfo.lod</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The new state of the affected MapElement </p>
+<p>The LOD linked to the visibleDistanceThreshold data </p>
 
-<p class="definition">Definition at line <a class="el" href="a00122_source.html#l00059">59</a> of file <a class="el" href="a00122_source.html">Consequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00098_source.html#l00178">178</a> of file <a class="el" href="a00098_source.html">TerrainGenerator.cs</a>.</p>
 
 </div>
 </div>
-<a id="a5ddb8d351b957bbf7184a45a6112b711"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ddb8d351b957bbf7184a45a6112b711">&#9670;&nbsp;</a></span>newStateDuration</h2>
+<a id="a86968cb4f724ab0771255ad80e74ed63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86968cb4f724ab0771255ad80e74ed63">&#9670;&nbsp;</a></span>visibleDistanceThreshold</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float Thoughts.Game.Attributes.StateUpdate.newStateDuration</td>
+          <td class="memname">float LODInfo.visibleDistanceThreshold</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The duration of the new state of the affected MapElement </p>
+<p>The distance to the viewer at which it should stop being used and a worse LOD should be used instead </p>
+<p>Once the viewer is outside of the threshold, it will switch over to the next level of detail lower resolution version)</p>
 
-<p class="definition">Definition at line <a class="el" href="a00122_source.html#l00064">64</a> of file <a class="el" href="a00122_source.html">Consequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00098_source.html#l00184">184</a> of file <a class="el" href="a00098_source.html">TerrainGenerator.cs</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00122_source.html">Consequence.cs</a></li>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00098_source.html">TerrainGenerator.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -1,4 +1,3 @@
-<map id="Thoughts.Game.Attributes.Requirement" name="Thoughts.Game.Attributes.Requirement">
-<area shape="rect" id="node1" title="Requirement for the execution of a MapEvent" alt="" coords="5,145,256,237"/>
-<area shape="rect" id="node2" title=" " alt="" coords="102,5,159,83"/>
+<map id="LODMesh" name="LODMesh">
+<area shape="rect" id="node1" title="A Mesh holder with related data meant to be used with an specified LOD" alt="" coords="5,5,172,156"/>
 </map>

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['usernameui_433',['UserNameUI',['../a00227.html',1,'Thoughts::ControlSystems::UI::CreationSteps']]]
+  ['updatabledata_528',['UpdatableData',['../a00454.html',1,'']]],
+  ['usernameui_529',['UserNameUI',['../a00266.html',1,'Thoughts::ControlSystems::UI::CreationSteps']]]
 ];

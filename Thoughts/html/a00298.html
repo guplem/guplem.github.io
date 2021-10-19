@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: TextureSettings Class Reference</title>
+<title>TS20-Thoughts: Thoughts.ControlSystems.UI.SimpleAnimationUIElement Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,339 +59,215 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="a00179.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00180.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00181.html">UI</a></li><li class="navelem"><a class="el" href="a00298.html">SimpleAnimationUIElement</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00295.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TextureSettings Class Reference</div>  </div>
+<div class="title">Thoughts.ControlSystems.UI.SimpleAnimationUIElement Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
-Collaboration diagram for TextureSettings:</div>
+Collaboration diagram for Thoughts.ControlSystems.UI.SimpleAnimationUIElement:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00296.png" border="0" usemap="#aTextureSettings_coll__map" alt="Collaboration graph"/></div>
-<map name="aTextureSettings_coll__map" id="aTextureSettings_coll__map">
-<area shape="rect" title=" " alt="" coords="5,131,164,399"/>
-<area shape="rect" title=" " alt="" coords="31,5,138,83"/>
+<div class="center"><img src="a00296.png" border="0" usemap="#aThoughts_8ControlSystems_8UI_8SimpleAnimationUIElement_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8ControlSystems_8UI_8SimpleAnimationUIElement_coll__map" id="aThoughts_8ControlSystems_8UI_8SimpleAnimationUIElement_coll__map">
+<area shape="rect" title=" " alt="" coords="5,131,356,281"/>
+<area shape="rect" title=" " alt="" coords="125,5,236,83"/>
 </map>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a905e13734ea4164c7673ba16ff0bad35"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a905e13734ea4164c7673ba16ff0bad35">VisualizationState</a> { <a class="el" href="a00298.html#a905e13734ea4164c7673ba16ff0bad35ab4e6101378d2a08d80df7e5da0625128">Showing</a>
+, <a class="el" href="a00298.html#a905e13734ea4164c7673ba16ff0bad35a891abfc8e08b549204d42bb0e4bb1a01">Hiding</a>
+ }</td></tr>
+<tr class="memdesc:a905e13734ea4164c7673ba16ff0bad35"><td class="mdescLeft">&#160;</td><td class="mdescRight">The possible states of the <a class="el" href="a00181.html">UI</a> Element  <a href="a00298.html#a905e13734ea4164c7673ba16ff0bad35">More...</a><br /></td></tr>
+<tr class="separator:a905e13734ea4164c7673ba16ff0bad35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a42409cebff16b95c9feee7dbcc90fa9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a42409cebff16b95c9feee7dbcc90fa9e">ApplyToMaterial</a> (float <a class="el" href="a00298.html#ae0a9b68d593cb15ecff8a0db7a396294">minHeight</a>, float <a class="el" href="a00298.html#a0c66dab9a898a15cd4c1e19f192ff20f">maxHeight</a>)</td></tr>
-<tr class="separator:a42409cebff16b95c9feee7dbcc90fa9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfb079714b858560786f85bbe702e3f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#acfb079714b858560786f85bbe702e3f8">UpdateMeshHeights</a> (float <a class="el" href="a00298.html#ae0a9b68d593cb15ecff8a0db7a396294">minHeight</a>, float <a class="el" href="a00298.html#a0c66dab9a898a15cd4c1e19f192ff20f">maxHeight</a>)</td></tr>
-<tr class="separator:acfb079714b858560786f85bbe702e3f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a504c0fb30f6da4f759552b2454977bd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a504c0fb30f6da4f759552b2454977bd1">SwitchState</a> (bool initialStateIsShowing=false)</td></tr>
+<tr class="memdesc:a504c0fb30f6da4f759552b2454977bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the Show or the Hide animation depending on the current state of the <a class="el" href="a00181.html">UI</a> Element. If state is Show, it plays the Hide animation and vice-versa.  <a href="a00298.html#a504c0fb30f6da4f759552b2454977bd1">More...</a><br /></td></tr>
+<tr class="separator:a504c0fb30f6da4f759552b2454977bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5cff6394f1026f5614d5852e7b471a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#af5cff6394f1026f5614d5852e7b471a0">Show</a> ()</td></tr>
+<tr class="memdesc:af5cff6394f1026f5614d5852e7b471a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the animation to show/display this <a class="el" href="a00181.html">UI</a> Element  <a href="a00298.html#af5cff6394f1026f5614d5852e7b471a0">More...</a><br /></td></tr>
+<tr class="separator:af5cff6394f1026f5614d5852e7b471a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef481bbe18ae527197fdd71564ef7361"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#aef481bbe18ae527197fdd71564ef7361">Hide</a> ()</td></tr>
+<tr class="memdesc:aef481bbe18ae527197fdd71564ef7361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the animation to hide this <a class="el" href="a00181.html">UI</a> Element  <a href="a00298.html#aef481bbe18ae527197fdd71564ef7361">More...</a><br /></td></tr>
+<tr class="separator:aef481bbe18ae527197fdd71564ef7361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a05e1bc024f365ccb3490d3b55d641b3b"><td class="memItemLeft" align="right" valign="top">Material&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a05e1bc024f365ccb3490d3b55d641b3b">material</a></td></tr>
-<tr class="separator:a05e1bc024f365ccb3490d3b55d641b3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12fe4cc4ea39c0b3e59fa0c4278121c3"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a12fe4cc4ea39c0b3e59fa0c4278121c3">color0</a></td></tr>
-<tr class="separator:a12fe4cc4ea39c0b3e59fa0c4278121c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf9940cabdc008f837854ab83ab22404"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#acf9940cabdc008f837854ab83ab22404">color1Start</a></td></tr>
-<tr class="separator:acf9940cabdc008f837854ab83ab22404"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7af43335d50be2f8103db162e945d0f"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#ad7af43335d50be2f8103db162e945d0f">color1</a></td></tr>
-<tr class="separator:ad7af43335d50be2f8103db162e945d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1455a919a902dad7564c049c33a7d283"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a1455a919a902dad7564c049c33a7d283">color1BaseBlend</a></td></tr>
-<tr class="separator:a1455a919a902dad7564c049c33a7d283"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9db31112fed7c4c57c74ed388832140"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#af9db31112fed7c4c57c74ed388832140">color2Start</a></td></tr>
-<tr class="separator:af9db31112fed7c4c57c74ed388832140"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae38b679f68d1fd149a384a9bd526a5c4"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#ae38b679f68d1fd149a384a9bd526a5c4">color2</a></td></tr>
-<tr class="separator:ae38b679f68d1fd149a384a9bd526a5c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15bb1f935dfc88b4cdb4d3af4a341391"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a15bb1f935dfc88b4cdb4d3af4a341391">color2BaseBlend</a></td></tr>
-<tr class="separator:a15bb1f935dfc88b4cdb4d3af4a341391"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66730093a376c03b1bc67b3839a149c7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a66730093a376c03b1bc67b3839a149c7">color3Start</a></td></tr>
-<tr class="separator:a66730093a376c03b1bc67b3839a149c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa440add92a65e881c5797663391642f"><td class="memItemLeft" align="right" valign="top">Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#afa440add92a65e881c5797663391642f">color3</a></td></tr>
-<tr class="separator:afa440add92a65e881c5797663391642f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6fac399a0e24a66c238b7c544adae3f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#af6fac399a0e24a66c238b7c544adae3f">color3BaseBlend</a></td></tr>
-<tr class="separator:af6fac399a0e24a66c238b7c544adae3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a9114a5108559e6af7f64b0b758def69e"><td class="memItemLeft" align="right" valign="top">FlipFlop&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a9114a5108559e6af7f64b0b758def69e">flipFlop</a></td></tr>
+<tr class="memdesc:a9114a5108559e6af7f64b0b758def69e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls the current state of the AnimationUIElement  <a href="a00298.html#a9114a5108559e6af7f64b0b758def69e">More...</a><br /></td></tr>
+<tr class="separator:a9114a5108559e6af7f64b0b758def69e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a30881b88e2c7d7d7495aef9002b7efb1"><td class="memItemLeft" align="right" valign="top">SimpleAnimationsManager&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a30881b88e2c7d7d7495aef9002b7efb1">simpleAnimationsManager</a><code> [get]</code></td></tr>
+<tr class="memdesc:a30881b88e2c7d7d7495aef9002b7efb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference to the SimpleAnimationsManager used for the animations of thi <a class="el" href="a00181.html">UI</a> Eement  <a href="a00298.html#a30881b88e2c7d7d7495aef9002b7efb1">More...</a><br /></td></tr>
+<tr class="separator:a30881b88e2c7d7d7495aef9002b7efb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5ef14f700ecbd242016b28b3a3cf213"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00298.html#a905e13734ea4164c7673ba16ff0bad35">VisualizationState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#aa5ef14f700ecbd242016b28b3a3cf213">state</a><code> [get, private set]</code></td></tr>
+<tr class="memdesc:aa5ef14f700ecbd242016b28b3a3cf213"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current state of the <a class="el" href="a00181.html">UI</a> Element.  <a href="a00298.html#aa5ef14f700ecbd242016b28b3a3cf213">More...</a><br /></td></tr>
+<tr class="separator:aa5ef14f700ecbd242016b28b3a3cf213"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:ae0a9b68d593cb15ecff8a0db7a396294"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#ae0a9b68d593cb15ecff8a0db7a396294">minHeight</a></td></tr>
-<tr class="separator:ae0a9b68d593cb15ecff8a0db7a396294"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c66dab9a898a15cd4c1e19f192ff20f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a0c66dab9a898a15cd4c1e19f192ff20f">maxHeight</a></td></tr>
-<tr class="separator:a0c66dab9a898a15cd4c1e19f192ff20f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84f505508b976e8d2b75f678b1fcfab8"><td class="memItemLeft" align="right" valign="top">SimpleAnimationsManager&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html#a84f505508b976e8d2b75f678b1fcfab8">_simpleAnimationsManager</a></td></tr>
+<tr class="separator:a84f505508b976e8d2b75f678b1fcfab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00006">6</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a42409cebff16b95c9feee7dbcc90fa9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42409cebff16b95c9feee7dbcc90fa9e">&#9670;&nbsp;</a></span>ApplyToMaterial()</h2>
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00008">8</a> of file <a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a905e13734ea4164c7673ba16ff0bad35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a905e13734ea4164c7673ba16ff0bad35">&#9670;&nbsp;</a></span>VisualizationState</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="a00298.html#a905e13734ea4164c7673ba16ff0bad35">Thoughts.ControlSystems.UI.SimpleAnimationUIElement.VisualizationState</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The possible states of the <a class="el" href="a00181.html">UI</a> Element </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a905e13734ea4164c7673ba16ff0bad35ab4e6101378d2a08d80df7e5da0625128"></a>Showing&#160;</td><td class="fielddoc"><p>The element is being shown/displayed </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a905e13734ea4164c7673ba16ff0bad35a891abfc8e08b549204d42bb0e4bb1a01"></a>Hiding&#160;</td><td class="fielddoc"><p>The element is being hid/not visible </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00033">33</a> of file <a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aef481bbe18ae527197fdd71564ef7361"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef481bbe18ae527197fdd71564ef7361">&#9670;&nbsp;</a></span>Hide()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void TextureSettings.ApplyToMaterial </td>
+          <td class="memname">void Thoughts.ControlSystems.UI.SimpleAnimationUIElement.Hide </td>
           <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>minHeight</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>maxHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00034">34</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
+<p>Plays the animation to hide this <a class="el" href="a00181.html">UI</a> Element </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00078">78</a> of file <a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00298_aef481bbe18ae527197fdd71564ef7361_icgraph.png" border="0" usemap="#aa00298_aef481bbe18ae527197fdd71564ef7361_icgraph" alt=""/></div>
+<map name="aa00298_aef481bbe18ae527197fdd71564ef7361_icgraph" id="aa00298_aef481bbe18ae527197fdd71564ef7361_icgraph">
+<area shape="rect" title="Plays the animation to hide this UI Element" alt="" coords="541,56,921,83"/>
+<area shape="rect" href="a00274.html#a76cc83438c832475b9407c8498e7a8d1" title="Setup of the initial UI for the game (displays the UI for nothing, so no UI)" alt="" coords="83,5,415,32"/>
+<area shape="rect" href="a00238.html#aef028530ba4ce1f3ee0e69108aa2354a" title=" " alt="" coords="5,56,493,83"/>
+<area shape="rect" href="a00298.html#a504c0fb30f6da4f759552b2454977bd1" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="37,107,461,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="af5cff6394f1026f5614d5852e7b471a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5cff6394f1026f5614d5852e7b471a0">&#9670;&nbsp;</a></span>Show()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.ControlSystems.UI.SimpleAnimationUIElement.Show </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Plays the animation to show/display this <a class="el" href="a00181.html">UI</a> Element </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00068">68</a> of file <a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00298_af5cff6394f1026f5614d5852e7b471a0_icgraph.png" border="0" usemap="#aa00298_af5cff6394f1026f5614d5852e7b471a0_icgraph" alt=""/></div>
+<map name="aa00298_af5cff6394f1026f5614d5852e7b471a0_icgraph" id="aa00298_af5cff6394f1026f5614d5852e7b471a0_icgraph">
+<area shape="rect" title="Plays the animation to show/display this UI Element" alt="" coords="541,56,928,83"/>
+<area shape="rect" href="a00274.html#a76cc83438c832475b9407c8498e7a8d1" title="Setup of the initial UI for the game (displays the UI for nothing, so no UI)" alt="" coords="83,5,415,32"/>
+<area shape="rect" href="a00238.html#aef028530ba4ce1f3ee0e69108aa2354a" title=" " alt="" coords="5,56,493,83"/>
+<area shape="rect" href="a00298.html#a504c0fb30f6da4f759552b2454977bd1" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="37,107,461,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a504c0fb30f6da4f759552b2454977bd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a504c0fb30f6da4f759552b2454977bd1">&#9670;&nbsp;</a></span>SwitchState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.ControlSystems.UI.SimpleAnimationUIElement.SwitchState </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>initialStateIsShowing</em> = <code>false</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Plays the Show or the Hide animation depending on the current state of the <a class="el" href="a00181.html">UI</a> Element. If state is Show, it plays the Hide animation and vice-versa. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initialStateIsShowing</td><td>Should the fist call set the <a class="el" href="a00181.html">UI</a> Element to the state "hide"?</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00054">54</a> of file <a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00298_a42409cebff16b95c9feee7dbcc90fa9e_cgraph.png" border="0" usemap="#aa00298_a42409cebff16b95c9feee7dbcc90fa9e_cgraph" alt=""/></div>
-<map name="aa00298_a42409cebff16b95c9feee7dbcc90fa9e_cgraph" id="aa00298_a42409cebff16b95c9feee7dbcc90fa9e_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,216,32"/>
-<area shape="rect" href="a00298.html#acfb079714b858560786f85bbe702e3f8" title=" " alt="" coords="264,5,499,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00298_a42409cebff16b95c9feee7dbcc90fa9e_icgraph.png" border="0" usemap="#aa00298_a42409cebff16b95c9feee7dbcc90fa9e_icgraph" alt=""/></div>
-<map name="aa00298_a42409cebff16b95c9feee7dbcc90fa9e_icgraph" id="aa00298_a42409cebff16b95c9feee7dbcc90fa9e_icgraph">
-<area shape="rect" title=" " alt="" coords="529,5,740,32"/>
-<area shape="rect" href="a00278.html#a01991491e4a07e50ba2cb2ababedb57d" title=" " alt="" coords="225,5,481,32"/>
-<area shape="rect" href="a00278.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="acfb079714b858560786f85bbe702e3f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acfb079714b858560786f85bbe702e3f8">&#9670;&nbsp;</a></span>UpdateMeshHeights()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TextureSettings.UpdateMeshHeights </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>minHeight</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>maxHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00053">53</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00298_acfb079714b858560786f85bbe702e3f8_icgraph.png" border="0" usemap="#aa00298_acfb079714b858560786f85bbe702e3f8_icgraph" alt=""/></div>
-<map name="aa00298_acfb079714b858560786f85bbe702e3f8_icgraph" id="aa00298_acfb079714b858560786f85bbe702e3f8_icgraph">
-<area shape="rect" title=" " alt="" coords="788,5,1023,32"/>
-<area shape="rect" href="a00298.html#a42409cebff16b95c9feee7dbcc90fa9e" title=" " alt="" coords="529,5,740,32"/>
-<area shape="rect" href="a00278.html#a01991491e4a07e50ba2cb2ababedb57d" title=" " alt="" coords="225,5,481,32"/>
-<area shape="rect" href="a00278.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
+<div class="center"><img src="a00298_a504c0fb30f6da4f759552b2454977bd1_cgraph.png" border="0" usemap="#aa00298_a504c0fb30f6da4f759552b2454977bd1_cgraph" alt=""/></div>
+<map name="aa00298_a504c0fb30f6da4f759552b2454977bd1_cgraph" id="aa00298_a504c0fb30f6da4f759552b2454977bd1_cgraph">
+<area shape="rect" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="5,31,429,57"/>
+<area shape="rect" href="a00298.html#aef481bbe18ae527197fdd71564ef7361" title="Plays the animation to hide this UI Element" alt="" coords="481,5,861,32"/>
+<area shape="rect" href="a00298.html#af5cff6394f1026f5614d5852e7b471a0" title="Plays the animation to show/display this UI Element" alt="" coords="477,56,864,83"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a12fe4cc4ea39c0b3e59fa0c4278121c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12fe4cc4ea39c0b3e59fa0c4278121c3">&#9670;&nbsp;</a></span>color0</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Color TextureSettings.color0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00011">11</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="ad7af43335d50be2f8103db162e945d0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7af43335d50be2f8103db162e945d0f">&#9670;&nbsp;</a></span>color1</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Color TextureSettings.color1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00015">15</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="a1455a919a902dad7564c049c33a7d283"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1455a919a902dad7564c049c33a7d283">&#9670;&nbsp;</a></span>color1BaseBlend</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float TextureSettings.color1BaseBlend</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00017">17</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="acf9940cabdc008f837854ab83ab22404"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf9940cabdc008f837854ab83ab22404">&#9670;&nbsp;</a></span>color1Start</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float TextureSettings.color1Start</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00014">14</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="ae38b679f68d1fd149a384a9bd526a5c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae38b679f68d1fd149a384a9bd526a5c4">&#9670;&nbsp;</a></span>color2</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Color TextureSettings.color2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00021">21</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="a15bb1f935dfc88b4cdb4d3af4a341391"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15bb1f935dfc88b4cdb4d3af4a341391">&#9670;&nbsp;</a></span>color2BaseBlend</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float TextureSettings.color2BaseBlend</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00023">23</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="af9db31112fed7c4c57c74ed388832140"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9db31112fed7c4c57c74ed388832140">&#9670;&nbsp;</a></span>color2Start</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float TextureSettings.color2Start</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00020">20</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="afa440add92a65e881c5797663391642f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa440add92a65e881c5797663391642f">&#9670;&nbsp;</a></span>color3</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Color TextureSettings.color3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00027">27</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="af6fac399a0e24a66c238b7c544adae3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6fac399a0e24a66c238b7c544adae3f">&#9670;&nbsp;</a></span>color3BaseBlend</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float TextureSettings.color3BaseBlend</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00029">29</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="a66730093a376c03b1bc67b3839a149c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66730093a376c03b1bc67b3839a149c7">&#9670;&nbsp;</a></span>color3Start</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float TextureSettings.color3Start</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00026">26</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="a05e1bc024f365ccb3490d3b55d641b3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05e1bc024f365ccb3490d3b55d641b3b">&#9670;&nbsp;</a></span>material</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Material TextureSettings.material</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00008">8</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
-
-</div>
-</div>
-<a id="a0c66dab9a898a15cd4c1e19f192ff20f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c66dab9a898a15cd4c1e19f192ff20f">&#9670;&nbsp;</a></span>maxHeight</h2>
+<a id="a84f505508b976e8d2b75f678b1fcfab8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84f505508b976e8d2b75f678b1fcfab8">&#9670;&nbsp;</a></span>_simpleAnimationsManager</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -400,7 +276,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">float TextureSettings.maxHeight</td>
+          <td class="memname">SimpleAnimationsManager Thoughts.ControlSystems.UI.SimpleAnimationUIElement._simpleAnimationsManager</td>
         </tr>
       </table>
   </td>
@@ -410,12 +286,12 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00032">32</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00023">23</a> of file <a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a>.</p>
 
 </div>
 </div>
-<a id="ae0a9b68d593cb15ecff8a0db7a396294"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0a9b68d593cb15ecff8a0db7a396294">&#9670;&nbsp;</a></span>minHeight</h2>
+<a id="a9114a5108559e6af7f64b0b758def69e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9114a5108559e6af7f64b0b758def69e">&#9670;&nbsp;</a></span>flipFlop</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -424,22 +300,77 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">float TextureSettings.minHeight</td>
+          <td class="memname">FlipFlop Thoughts.ControlSystems.UI.SimpleAnimationUIElement.flipFlop</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00101_source.html#l00031">31</a> of file <a class="el" href="a00101_source.html">TextureSettings.cs</a>.</p>
+<p>Controls the current state of the AnimationUIElement </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00028">28</a> of file <a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a30881b88e2c7d7d7495aef9002b7efb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30881b88e2c7d7d7495aef9002b7efb1">&#9670;&nbsp;</a></span>simpleAnimationsManager</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SimpleAnimationsManager Thoughts.ControlSystems.UI.SimpleAnimationUIElement.simpleAnimationsManager</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A reference to the SimpleAnimationsManager used for the animations of thi <a class="el" href="a00181.html">UI</a> Eement </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00013">13</a> of file <a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a>.</p>
+
+</div>
+</div>
+<a id="aa5ef14f700ecbd242016b28b3a3cf213"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5ef14f700ecbd242016b28b3a3cf213">&#9670;&nbsp;</a></span>state</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00298.html#a905e13734ea4164c7673ba16ff0bad35">VisualizationState</a> Thoughts.ControlSystems.UI.SimpleAnimationUIElement.state</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The current state of the <a class="el" href="a00181.html">UI</a> Element. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00048">48</a> of file <a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00101_source.html">TextureSettings.cs</a></li>
+<li><a class="el" href="a00071_source.html">SimpleAnimationUIElement.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

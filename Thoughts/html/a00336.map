@@ -1,3 +1,5 @@
-<map id="Thoughts.Game.GameMap.ExecutionPlan" name="Thoughts.Game.GameMap.ExecutionPlan">
-<area shape="rect" id="node1" title="The execution configuration for a MapEvent. A plan to execute a MapEvent (of an Attribute) owned by a..." alt="" coords="5,5,272,259"/>
+<map id="TextureSettings" name="TextureSettings">
+<area shape="rect" id="node1" title="The configuration of the texture of the terrain of the map" alt="" coords="5,256,164,524"/>
+<area shape="rect" id="node2" href="$a00454.html" title=" " alt="" coords="31,131,138,208"/>
+<area shape="rect" id="node3" title=" " alt="" coords="25,5,144,83"/>
 </map>

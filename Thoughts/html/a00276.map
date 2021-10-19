@@ -1,11 +1,4 @@
-<map id="MapGenerator" name="MapGenerator">
-<area shape="rect" id="node1" title=" " alt="" coords="99,852,285,1003"/>
-<area shape="rect" id="node7" href="$a00290.html" title=" " alt="" coords="35,1065,306,1333"/>
-<area shape="rect" id="node2" title=" " alt="" coords="59,227,170,305"/>
-<area shape="rect" id="node9" href="$a00310.html" title=" " alt="" coords="42,580,203,687"/>
-<area shape="rect" id="node3" href="$a00274.html" title=" " alt="" coords="315,477,506,789"/>
-<area shape="rect" id="node4" title=" " alt="" coords="401,5,508,83"/>
-<area shape="rect" id="node6" href="$a00298.html" title=" " alt="" coords="477,132,635,400"/>
-<area shape="rect" id="node5" title=" " alt="" coords="194,227,401,305"/>
-<area shape="rect" id="node8" href="$a00294.html" title=" " alt="" coords="310,874,509,981"/>
+<map id="Thoughts.ControlSystems.UI.DescriptionUI" name="Thoughts.ControlSystems.UI.DescriptionUI">
+<area shape="rect" id="node1" title="Controls the display of the descriptive information of a MapElement (name, description ...." alt="" coords="5,131,275,223"/>
+<area shape="rect" id="node2" title=" " alt="" coords="85,5,195,83"/>
 </map>

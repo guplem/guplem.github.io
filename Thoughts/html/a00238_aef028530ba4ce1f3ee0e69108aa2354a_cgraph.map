@@ -1,0 +1,5 @@
+<map id="Thoughts.ControlSystems.UI.CreationSteps.CreationStepUI.ContinueToNextStep" name="Thoughts.ControlSystems.UI.CreationSteps.CreationStepUI.ContinueToNextStep">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,493,57"/>
+<area shape="rect" id="node2" href="$a00298.html#aef481bbe18ae527197fdd71564ef7361" title="Plays the animation to hide this UI Element" alt="" coords="545,5,925,32"/>
+<area shape="rect" id="node3" href="$a00298.html#af5cff6394f1026f5614d5852e7b471a0" title="Plays the animation to show/display this UI Element" alt="" coords="541,56,928,83"/>
+</map>

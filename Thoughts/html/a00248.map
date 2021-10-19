@@ -1,11 +1,7 @@
-<map id="Thoughts.ControlSystems.UI.ObjectsUI" name="Thoughts.ControlSystems.UI.ObjectsUI">
-<area shape="rect" id="node1" title=" " alt="" coords="115,1109,364,1245"/>
-<area shape="rect" id="node2" href="$a00258.html" title=" " alt="" coords="5,786,196,937"/>
-<area shape="rect" id="node3" title=" " alt="" coords="83,477,193,555"/>
-<area shape="rect" id="node4" href="$a00350.html" title="A spawned element of the Map." alt="" coords="220,691,539,1032"/>
-<area shape="rect" id="node5" href="$a00318.html" title="Manages a set of AttributeOwnerships all owned by the same MapElement" alt="" coords="225,404,521,628"/>
-<area shape="rect" id="node6" href="$a00326.html" title="A relation between an Attribute and a MapElement that owns it." alt="" coords="545,419,833,613"/>
-<area shape="rect" id="node7" href="$a00322.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="575,132,802,341"/>
-<area shape="rect" id="node8" title=" " alt="" coords="549,5,668,83"/>
-<area shape="rect" id="node9" title=" " alt="" coords="692,5,848,83"/>
+<map id="Thoughts.ControlSystems.UI.CreationSteps.LandAnimalsUI" name="Thoughts.ControlSystems.UI.CreationSteps.LandAnimalsUI">
+<area shape="rect" id="node1" title=" " alt="" coords="5,599,371,676"/>
+<area shape="rect" id="node2" href="$a00238.html" title=" " alt="" coords="107,472,269,549"/>
+<area shape="rect" id="node3" href="$a00298.html" title=" " alt="" coords="87,132,278,283"/>
+<area shape="rect" id="node5" href="$a00238.html" title=" " alt="" coords="204,332,569,409"/>
+<area shape="rect" id="node4" title=" " alt="" coords="127,5,238,83"/>
 </map>

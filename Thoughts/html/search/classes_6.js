@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['gamemanager_402',['GameManager',['../a00271.html',1,'Thoughts::Game']]],
-  ['gameuimanager_403',['GameUIManager',['../a00235.html',1,'Thoughts::ControlSystems::UI']]]
+  ['gamemanager_488',['GameManager',['../a00310.html',1,'Thoughts::Game']]],
+  ['gameuimanager_489',['GameUIManager',['../a00274.html',1,'Thoughts::ControlSystems::UI']]]
 ];

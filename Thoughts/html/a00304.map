@@ -1,3 +1,5 @@
-<map id="LODMesh" name="LODMesh">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,172,156"/>
+<map id="Thoughts.ControlSystems.Participant" name="Thoughts.ControlSystems.Participant">
+<area shape="rect" id="node1" title="Each of the members of the the game." alt="" coords="17,287,256,379"/>
+<area shape="rect" id="node2" href="$a00210.html" title="A way of controlling a participant." alt="" coords="5,132,268,224"/>
+<area shape="rect" id="node3" title=" " alt="" coords="81,5,192,83"/>
 </map>
