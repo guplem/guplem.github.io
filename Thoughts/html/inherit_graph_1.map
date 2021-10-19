@@ -22,7 +22,7 @@
 <area shape="rect" id="node33" href="$a00310.html" title="Controls the core aspects of the a game: Participant (with ControlSystem), Map setup,..." alt="" coords="238,968,441,995"/>
 <area shape="rect" id="node34" href="$a00354.html" title="The map of the game." alt="" coords="236,1019,443,1045"/>
 <area shape="rect" id="node35" href="$a00390.html" title="A spawned element of the Map." alt="" coords="212,1069,467,1096"/>
-<area shape="rect" id="node36" href="$a00350.html" title="component in charge doing threaded requests of data" alt="" coords="259,1120,420,1147"/>
+<area shape="rect" id="node36" href="$a00350.html" title="Component in charge doing threaded requests of data" alt="" coords="259,1120,420,1147"/>
 <area shape="rect" id="node11" href="$a00222.html" title="A local manual control of a participant." alt="" coords="636,411,855,437"/>
 <area shape="rect" id="node22" href="$a00238.html" title=" " alt="" coords="563,867,928,893"/>
 <area shape="rect" id="node31" href="$a00286.html" title=" " alt="" coords="625,917,866,944"/>

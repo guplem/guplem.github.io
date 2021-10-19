@@ -5,7 +5,7 @@
 <area shape="rect" id="node25" href="$a00342.html#a826c703400d6d9f8df0af0efc7f8289e" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="555,201,691,228"/>
 <area shape="rect" id="node4" href="$a00322.html#a397bce27d4d739635f014d1d83c8eefe" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="522,100,725,127"/>
 <area shape="rect" id="node8" href="$a00342.html#a758502cab997e409e1f0e7eb9f202d7f" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="507,151,740,177"/>
-<area shape="rect" id="node21" href="$a00350.html#a51c10f83bd17c992b4c2399c54fcce33" title=" " alt="" coords="1535,5,1775,32"/>
+<area shape="rect" id="node21" href="$a00350.html#a51c10f83bd17c992b4c2399c54fcce33" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="1535,5,1775,32"/>
 <area shape="rect" id="node5" href="$a00414.html#a6739e5043d6ddbf659e2d1509c5a83e3" title="Generates a perlin noise map of a given width and height." alt="" coords="793,151,963,177"/>
 <area shape="rect" id="node6" href="$a00322.html#a2e1f68e1ca4250565c3a9b9db7e0ad22" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="790,49,966,76"/>
 <area shape="rect" id="node7" href="$a00322.html#ae7714c3d98b43c7ac86a50717e8b5f5e" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="803,100,953,127"/>

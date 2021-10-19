@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="231,689,502,943"/>
 <area shape="rect" id="node4" href="$a00318.html" title="Component in charge of generating a Map" alt="" coords="375,1005,567,1141"/>
 <area shape="rect" id="node2" title=" " alt="" coords="311,454,422,531"/>
-<area shape="rect" id="node13" href="$a00350.html" title="component in charge doing threaded requests of data" alt="" coords="526,763,687,869"/>
+<area shape="rect" id="node13" href="$a00350.html" title="Component in charge doing threaded requests of data" alt="" coords="526,763,687,869"/>
 <area shape="rect" id="node3" href="$a00334.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="5,447,181,539"/>
 <area shape="rect" id="node5" href="$a00314.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="711,704,899,928"/>
 <area shape="rect" id="node6" href="$a00454.html" title=" " alt="" coords="853,182,960,259"/>

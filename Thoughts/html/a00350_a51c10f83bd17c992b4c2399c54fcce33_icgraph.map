@@ -1,5 +1,5 @@
 <map id="ThreadedDataRequester.RequestData" name="ThreadedDataRequester.RequestData">
-<area shape="rect" id="node1" title=" " alt="" coords="2189,17,2429,44"/>
+<area shape="rect" id="node1" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="2189,17,2429,44"/>
 <area shape="rect" id="node2" href="$a00342.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1028,43,1159,69"/>
 <area shape="rect" id="node8" href="$a00346.html#aeaf1be489394a7aac474b7138f55a75e" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="1977,43,2141,69"/>
 <area shape="rect" id="node3" href="$a00330.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="771,68,977,95"/>

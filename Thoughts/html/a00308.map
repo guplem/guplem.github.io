@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" href="$a00354.html" title="The map of the game." alt="" coords="123,1197,330,1406"/>
 <area shape="rect" id="node4" href="$a00318.html" title="Component in charge of generating a Map" alt="" coords="328,976,520,1112"/>
 <area shape="rect" id="node13" href="$a00330.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="409,1175,679,1428"/>
-<area shape="rect" id="node15" href="$a00350.html" title="component in charge doing threaded requests of data" alt="" coords="525,748,686,855"/>
+<area shape="rect" id="node15" href="$a00350.html" title="Component in charge doing threaded requests of data" alt="" coords="525,748,686,855"/>
 <area shape="rect" id="node5" href="$a00314.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="710,689,898,913"/>
 <area shape="rect" id="node6" href="$a00454.html" title=" " alt="" coords="691,182,797,259"/>
 <area shape="rect" id="node9" href="$a00338.html" title="The configuration of the texture of the terrain of the map" alt="" coords="782,359,941,627"/>
