@@ -1,7 +1,3 @@
-<map id="Thoughts.ControlSystems.UI.CreationSteps.LightUI" name="Thoughts.ControlSystems.UI.CreationSteps.LightUI">
-<area shape="rect" id="node1" title=" " alt="" coords="5,599,324,676"/>
-<area shape="rect" id="node2" href="$a00238.html" title=" " alt="" coords="84,472,245,549"/>
-<area shape="rect" id="node3" href="$a00298.html" title=" " alt="" coords="64,132,255,283"/>
-<area shape="rect" id="node5" href="$a00238.html" title=" " alt="" coords="181,332,546,409"/>
-<area shape="rect" id="node4" title=" " alt="" coords="104,5,215,83"/>
+<map id="Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent" name="Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent">
+<area shape="rect" id="node1" title="An event that must be executed by a MapElement. It is part of an attribute." alt="" coords="5,5,421,229"/>
 </map>

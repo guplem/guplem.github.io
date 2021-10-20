@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: OldTerrainGenerator Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Participants.ControlSystems.Manual.CameraController Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,60 +59,133 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="a00176.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00183.html">Participants</a></li><li class="navelem"><a class="el" href="a00184.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00185.html">Manual</a></li><li class="navelem"><a class="el" href="a00326.html">CameraController</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00323.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">OldTerrainGenerator Class Reference</div>  </div>
+<div class="title">Thoughts.Participants.ControlSystems.Manual.CameraController Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Handles the generation of the terrain of the map  
+<p>A controller for a Camera  
  <a href="a00326.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for OldTerrainGenerator:</div>
+Collaboration diagram for Thoughts.Participants.ControlSystems.Manual.CameraController:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00324.png" border="0" usemap="#aOldTerrainGenerator_coll__map" alt="Collaboration graph"/></div>
-<map name="aOldTerrainGenerator_coll__map" id="aOldTerrainGenerator_coll__map">
-<area shape="rect" title="Handles the generation of the terrain of the map" alt="" coords="1222,1035,1361,1112"/>
-<area shape="rect" title=" " alt="" coords="891,454,1001,531"/>
-<area shape="rect" href="a00330.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="905,689,1176,943"/>
-<area shape="rect" href="a00318.html" title="Component in charge of generating a Map" alt="" coords="629,1005,821,1141"/>
-<area shape="rect" href="a00350.html" title="Component in charge doing threaded requests of data" alt="" coords="720,763,881,869"/>
-<area shape="rect" href="a00430.html" title=" " alt="" coords="1329,777,1496,855"/>
-<area shape="rect" href="a00334.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="1247,447,1423,539"/>
-<area shape="rect" href="a00314.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="432,704,620,928"/>
-<area shape="rect" href="a00454.html" title=" " alt="" coords="477,182,583,259"/>
-<area shape="rect" href="a00338.html" title="The configuration of the texture of the terrain of the map" alt="" coords="451,359,609,627"/>
-<area shape="rect" href="a00410.html" title="The configuration of the height of the terrain of the map" alt="" coords="5,410,196,575"/>
-<area shape="rect" title=" " alt="" coords="471,5,589,83"/>
-<area shape="rect" title=" " alt="" coords="220,454,427,531"/>
-<area shape="rect" href="a00418.html" title="Collection of settings used to generate a noise map" alt="" coords="36,145,165,296"/>
-<area shape="rect" href="a00414.html" title=" " alt="" coords="24,5,177,83"/>
+<div class="center"><img src="a00324.png" border="0" usemap="#aThoughts_8Participants_8ControlSystems_8Manual_8CameraController_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Participants_8ControlSystems_8Manual_8CameraController_coll__map" id="aThoughts_8Participants_8ControlSystems_8Manual_8CameraController_coll__map">
+<area shape="rect" title="A controller for a Camera" alt="" coords="5,1095,400,1451"/>
+<area shape="rect" title=" " alt="" coords="105,477,215,555"/>
+<area shape="rect" href="a00262.html" title="A spawned element of the Map." alt="" coords="259,691,578,1032"/>
+<area shape="rect" href="a00238.html" title="Manages a set of AttributeOwnerships all owned by the same MapElement" alt="" coords="240,404,637,628"/>
+<area shape="rect" href="a00234.html" title="A relation between an Attribute and a MapElement that owns it." alt="" coords="662,419,1063,613"/>
+<area shape="rect" href="a00230.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="693,132,1033,341"/>
+<area shape="rect" title=" " alt="" coords="723,5,842,83"/>
+<area shape="rect" title=" " alt="" coords="866,5,1022,83"/>
 </map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a7f0e0242381012dce60cb1fef4130e35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00330.html">TerrainGenerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a7f0e0242381012dce60cb1fef4130e35">terrainGenerator</a></td></tr>
-<tr class="separator:a7f0e0242381012dce60cb1fef4130e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ab610cbfa44bb64287c26caaa5a3a97e3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#ab610cbfa44bb64287c26caaa5a3a97e3">CameraView</a> { <a class="el" href="a00326.html#ab610cbfa44bb64287c26caaa5a3a97e3a6d886540bba0d7ff5af96d12a5831469">overworld</a>
+, <a class="el" href="a00326.html#ab610cbfa44bb64287c26caaa5a3a97e3a26f005fa864d50d584590486c0dbedaa">pov</a>
+ }</td></tr>
+<tr class="memdesc:ab610cbfa44bb64287c26caaa5a3a97e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The possible views/types of cameras available  <a href="a00326.html#ab610cbfa44bb64287c26caaa5a3a97e3">More...</a><br /></td></tr>
+<tr class="separator:ab610cbfa44bb64287c26caaa5a3a97e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:af81c7b2d875ce8d74526748989d46f98"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#af81c7b2d875ce8d74526748989d46f98">GetAxisCustom</a> (string axisName)</td></tr>
+<tr class="memdesc:af81c7b2d875ce8d74526748989d46f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the customized input values overriding the default axis for the Cinemachine camera.  <a href="a00326.html#af81c7b2d875ce8d74526748989d46f98">More...</a><br /></td></tr>
+<tr class="separator:af81c7b2d875ce8d74526748989d46f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a1fd0aa711c78c30cef722f611ee8bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a3a1fd0aa711c78c30cef722f611ee8bf">Move</a> (Vector3 direction, bool isFastSpeed)</td></tr>
+<tr class="memdesc:a3a1fd0aa711c78c30cef722f611ee8bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the camera in a given direction  <a href="a00326.html#a3a1fd0aa711c78c30cef722f611ee8bf">More...</a><br /></td></tr>
+<tr class="separator:a3a1fd0aa711c78c30cef722f611ee8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5c76b990ec6be77aea622d071618893"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#aa5c76b990ec6be77aea622d071618893">Rotate</a> (Vector2 direction, bool isFastSpeed)</td></tr>
+<tr class="memdesc:aa5c76b990ec6be77aea622d071618893"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a new rotation for the camera.  <a href="a00326.html#aa5c76b990ec6be77aea622d071618893">More...</a><br /></td></tr>
+<tr class="separator:aa5c76b990ec6be77aea622d071618893"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a199dbbb714c0ba51cb1c6a898f485f44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a199dbbb714c0ba51cb1c6a898f485f44">SwitchCamera</a> (<a class="el" href="a00326.html#ab610cbfa44bb64287c26caaa5a3a97e3">CameraView</a> desiredView, Transform followTransform=null)</td></tr>
+<tr class="memdesc:a199dbbb714c0ba51cb1c6a898f485f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switches the CinemachineVirtualCamera used to handle the camera by switching its priorities.  <a href="a00326.html#a199dbbb714c0ba51cb1c6a898f485f44">More...</a><br /></td></tr>
+<tr class="separator:a199dbbb714c0ba51cb1c6a898f485f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeca7e86497aa6f62304747bfc76638c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#aeca7e86497aa6f62304747bfc76638c2">FollowMapElement</a> (<a class="el" href="a00262.html">MapElement</a> <a class="el" href="a00326.html#a126a053622bdd1407d734332cd19a0c1">followedMapElement</a>)</td></tr>
+<tr class="memdesc:aeca7e86497aa6f62304747bfc76638c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forces the camera to follow a MapElement or to stop following it.  <a href="a00326.html#aeca7e86497aa6f62304747bfc76638c2">More...</a><br /></td></tr>
+<tr class="separator:aeca7e86497aa6f62304747bfc76638c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:ac2a2493c7f7ade5d06d01fa4485d9678"><td class="memItemLeft" align="right" valign="top">new Camera&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#ac2a2493c7f7ade5d06d01fa4485d9678">camera</a><code> [get]</code></td></tr>
+<tr class="separator:ac2a2493c7f7ade5d06d01fa4485d9678"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a3d469d1a0018a3ce70e87d73154cdc1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a3d469d1a0018a3ce70e87d73154cdc1b">Awake</a> ()</td></tr>
+<tr class="memdesc:a3d469d1a0018a3ce70e87d73154cdc1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial setup  <a href="a00326.html#a3d469d1a0018a3ce70e87d73154cdc1b">More...</a><br /></td></tr>
+<tr class="separator:a3d469d1a0018a3ce70e87d73154cdc1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f454f193b3bb38a43836b6b9887b367"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a1f454f193b3bb38a43836b6b9887b367">Start</a> ()</td></tr>
+<tr class="memdesc:a1f454f193b3bb38a43836b6b9887b367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Startup setup, after awake  <a href="a00326.html#a1f454f193b3bb38a43836b6b9887b367">More...</a><br /></td></tr>
+<tr class="separator:a1f454f193b3bb38a43836b6b9887b367"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a718ae3475101c6b012699b2223aa7a93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a718ae3475101c6b012699b2223aa7a93">Update</a> ()</td></tr>
+<tr class="separator:a718ae3475101c6b012699b2223aa7a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaab247c1ef726e3fcba4104344d840a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#acaab247c1ef726e3fcba4104344d840a">HandleTransformUpdates</a> ()</td></tr>
+<tr class="memdesc:acaab247c1ef726e3fcba4104344d840a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the rig position to get closer to the desired position  <a href="a00326.html#acaab247c1ef726e3fcba4104344d840a">More...</a><br /></td></tr>
+<tr class="separator:acaab247c1ef726e3fcba4104344d840a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a2342f4e832a128366b5c894bee0fd242"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00430.html">TerrainMeshGenerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a2342f4e832a128366b5c894bee0fd242">terrainDrawer</a></td></tr>
-<tr class="memdesc:a2342f4e832a128366b5c894bee0fd242"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visualization manager for the terrain.  <a href="a00326.html#a2342f4e832a128366b5c894bee0fd242">More...</a><br /></td></tr>
-<tr class="separator:a2342f4e832a128366b5c894bee0fd242"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b63c8eb685013a87aa1ee4b893649d2"><td class="memItemLeft" align="right" valign="top">Camera&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a6b63c8eb685013a87aa1ee4b893649d2">_camera</a></td></tr>
+<tr class="memdesc:a6b63c8eb685013a87aa1ee4b893649d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Camera to control  <a href="a00326.html#a6b63c8eb685013a87aa1ee4b893649d2">More...</a><br /></td></tr>
+<tr class="separator:a6b63c8eb685013a87aa1ee4b893649d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5288cb55437e141256e661ddad82e24e"><td class="memItemLeft" align="right" valign="top">Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a5288cb55437e141256e661ddad82e24e">cameraRig</a></td></tr>
+<tr class="memdesc:a5288cb55437e141256e661ddad82e24e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rig of the overworld camera  <a href="a00326.html#a5288cb55437e141256e661ddad82e24e">More...</a><br /></td></tr>
+<tr class="separator:a5288cb55437e141256e661ddad82e24e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a344f354bcf5067a3eac0e5a3dd784f8f"><td class="memItemLeft" align="right" valign="top">CinemachineVirtualCameraBase&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a344f354bcf5067a3eac0e5a3dd784f8f">overworldCamera</a></td></tr>
+<tr class="memdesc:a344f354bcf5067a3eac0e5a3dd784f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the CinemachineVirtualCamera linked to the overworld view  <a href="a00326.html#a344f354bcf5067a3eac0e5a3dd784f8f">More...</a><br /></td></tr>
+<tr class="separator:a344f354bcf5067a3eac0e5a3dd784f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99a3e912d603715c11d4c4aee771a8ca"><td class="memItemLeft" align="right" valign="top">CinemachineVirtualCameraBase&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a99a3e912d603715c11d4c4aee771a8ca">povCamera</a></td></tr>
+<tr class="memdesc:a99a3e912d603715c11d4c4aee771a8ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the CinemachineVirtualCamera linked to the POV views  <a href="a00326.html#a99a3e912d603715c11d4c4aee771a8ca">More...</a><br /></td></tr>
+<tr class="separator:a99a3e912d603715c11d4c4aee771a8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb520594eb55cbb2424a9a54845a95e1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#aeb520594eb55cbb2424a9a54845a95e1">moveSpeed</a> = 2f</td></tr>
+<tr class="memdesc:aeb520594eb55cbb2424a9a54845a95e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed of the camera moving around  <a href="a00326.html#aeb520594eb55cbb2424a9a54845a95e1">More...</a><br /></td></tr>
+<tr class="separator:aeb520594eb55cbb2424a9a54845a95e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ee46777014194cd9635d103635786b0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a1ee46777014194cd9635d103635786b0">rotationSpeed</a> = 1.5f</td></tr>
+<tr class="memdesc:a1ee46777014194cd9635d103635786b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The speed of the camera rotating  <a href="a00326.html#a1ee46777014194cd9635d103635786b0">More...</a><br /></td></tr>
+<tr class="separator:a1ee46777014194cd9635d103635786b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad63749d88b90c2f8b07bb1e09410e24f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#ad63749d88b90c2f8b07bb1e09410e24f">fastSpeedMultiplier</a> = 2f</td></tr>
+<tr class="memdesc:ad63749d88b90c2f8b07bb1e09410e24f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplier of the speed when the camera is moved in "fast speed" mode  <a href="a00326.html#ad63749d88b90c2f8b07bb1e09410e24f">More...</a><br /></td></tr>
+<tr class="separator:ad63749d88b90c2f8b07bb1e09410e24f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adef74f5929b234b59947a6bb2f93a8a4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#adef74f5929b234b59947a6bb2f93a8a4">heightBoost</a> = 1.2f</td></tr>
+<tr class="memdesc:adef74f5929b234b59947a6bb2f93a8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplier of the speed when the camera is at its highest position. 0 is none, 1 is double.  <a href="a00326.html#adef74f5929b234b59947a6bb2f93a8a4">More...</a><br /></td></tr>
+<tr class="separator:adef74f5929b234b59947a6bb2f93a8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04c588eac10e664c139b0a1abfdb7a81"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a04c588eac10e664c139b0a1abfdb7a81">movementSmoothing</a> = 95f</td></tr>
+<tr class="memdesc:a04c588eac10e664c139b0a1abfdb7a81"><td class="mdescLeft">&#160;</td><td class="mdescRight">The smoothness on the movement of the camera  <a href="a00326.html#a04c588eac10e664c139b0a1abfdb7a81">More...</a><br /></td></tr>
+<tr class="separator:a04c588eac10e664c139b0a1abfdb7a81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4baaa823d6cc98ba6da2a5878881a2d2"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a4baaa823d6cc98ba6da2a5878881a2d2">desiredPosition</a></td></tr>
+<tr class="memdesc:a4baaa823d6cc98ba6da2a5878881a2d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The desired position of the Camera  <a href="a00326.html#a4baaa823d6cc98ba6da2a5878881a2d2">More...</a><br /></td></tr>
+<tr class="separator:a4baaa823d6cc98ba6da2a5878881a2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b25c02de76a37e2c06ac01c9c69af35"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a5b25c02de76a37e2c06ac01c9c69af35">desiredRotation</a></td></tr>
+<tr class="memdesc:a5b25c02de76a37e2c06ac01c9c69af35"><td class="mdescLeft">&#160;</td><td class="mdescRight">The desired rotation of the camera  <a href="a00326.html#a5b25c02de76a37e2c06ac01c9c69af35">More...</a><br /></td></tr>
+<tr class="separator:a5b25c02de76a37e2c06ac01c9c69af35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a126a053622bdd1407d734332cd19a0c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00262.html">MapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html#a126a053622bdd1407d734332cd19a0c1">followedMapElement</a></td></tr>
+<tr class="memdesc:a126a053622bdd1407d734332cd19a0c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The MapElement followed by the camera  <a href="a00326.html#a126a053622bdd1407d734332cd19a0c1">More...</a><br /></td></tr>
+<tr class="separator:a126a053622bdd1407d734332cd19a0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Handles the generation of the terrain of the map </p>
+<div class="textblock"><p>A controller for a Camera </p>
 
-<p class="definition">Definition at line <a class="el" href="a00095_source.html#l00009">9</a> of file <a class="el" href="a00095_source.html">Old_TerrainGenerator.cs</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2342f4e832a128366b5c894bee0fd242"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2342f4e832a128366b5c894bee0fd242">&#9670;&nbsp;</a></span>terrainDrawer</h2>
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00011">11</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="ab610cbfa44bb64287c26caaa5a3a97e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab610cbfa44bb64287c26caaa5a3a97e3">&#9670;&nbsp;</a></span>CameraView</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -121,7 +194,41 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00430.html">TerrainMeshGenerator</a> OldTerrainGenerator.terrainDrawer</td>
+          <td class="memname">enum <a class="el" href="a00326.html#ab610cbfa44bb64287c26caaa5a3a97e3">Thoughts.Participants.ControlSystems.Manual.CameraController.CameraView</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The possible views/types of cameras available </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab610cbfa44bb64287c26caaa5a3a97e3a6d886540bba0d7ff5af96d12a5831469"></a>overworld&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab610cbfa44bb64287c26caaa5a3a97e3a26f005fa864d50d584590486c0dbedaa"></a>pov&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00043">43</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3d469d1a0018a3ce70e87d73154cdc1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d469d1a0018a3ce70e87d73154cdc1b">&#9670;&nbsp;</a></span>Awake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.CameraController.Awake </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -131,30 +238,667 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The visualization manager for the terrain. </p>
+<p>Initial setup </p>
 
-<p class="definition">Definition at line <a class="el" href="a00095_source.html#l00014">14</a> of file <a class="el" href="a00095_source.html">Old_TerrainGenerator.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00099">99</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
 
 </div>
 </div>
-<a id="a7f0e0242381012dce60cb1fef4130e35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f0e0242381012dce60cb1fef4130e35">&#9670;&nbsp;</a></span>terrainGenerator</h2>
+<a id="aeca7e86497aa6f62304747bfc76638c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeca7e86497aa6f62304747bfc76638c2">&#9670;&nbsp;</a></span>FollowMapElement()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00330.html">TerrainGenerator</a> OldTerrainGenerator.terrainGenerator</td>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.CameraController.FollowMapElement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00262.html">MapElement</a>&#160;</td>
+          <td class="paramname"><em>followedMapElement</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00095_source.html#l00016">16</a> of file <a class="el" href="a00095_source.html">Old_TerrainGenerator.cs</a>.</p>
+<p>Forces the camera to follow a MapElement or to stop following it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">followedMapElement</td><td>The MapElement to follow, or null if no more following is desired.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00205">205</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="af81c7b2d875ce8d74526748989d46f98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af81c7b2d875ce8d74526748989d46f98">&#9670;&nbsp;</a></span>GetAxisCustom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.Participants.ControlSystems.Manual.CameraController.GetAxisCustom </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>axisName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the customized input values overriding the default axis for the Cinemachine camera. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">axisName</td><td>The name of the axis to get the current value of.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The current value for the given axis to get to the desired rotation of the camera.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00117">117</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00326_af81c7b2d875ce8d74526748989d46f98_icgraph.png" border="0" usemap="#aa00326_af81c7b2d875ce8d74526748989d46f98_icgraph" alt=""/></div>
+<map name="aa00326_af81c7b2d875ce8d74526748989d46f98_icgraph" id="aa00326_af81c7b2d875ce8d74526748989d46f98_icgraph">
+<area shape="rect" title="Returns the customized input values overriding the default axis for the Cinemachine camera." alt="" coords="480,5,971,32"/>
+<area shape="rect" href="a00326.html#a1f454f193b3bb38a43836b6b9887b367" title="Startup setup, after awake" alt="" coords="5,5,432,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="acaab247c1ef726e3fcba4104344d840a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaab247c1ef726e3fcba4104344d840a">&#9670;&nbsp;</a></span>HandleTransformUpdates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.CameraController.HandleTransformUpdates </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Updates the rig position to get closer to the desired position </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00135">135</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00326_acaab247c1ef726e3fcba4104344d840a_icgraph.png" border="0" usemap="#aa00326_acaab247c1ef726e3fcba4104344d840a_icgraph" alt=""/></div>
+<map name="aa00326_acaab247c1ef726e3fcba4104344d840a_icgraph" id="aa00326_acaab247c1ef726e3fcba4104344d840a_icgraph">
+<area shape="rect" title="Updates the rig position to get closer to the desired position" alt="" coords="493,5,1037,32"/>
+<area shape="rect" href="a00326.html#a718ae3475101c6b012699b2223aa7a93" title=" " alt="" coords="5,5,445,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a3a1fd0aa711c78c30cef722f611ee8bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a1fd0aa711c78c30cef722f611ee8bf">&#9670;&nbsp;</a></span>Move()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.CameraController.Move </td>
+          <td>(</td>
+          <td class="paramtype">Vector3&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isFastSpeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Moves the camera in a given direction </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>The desired direction of the camera's translation.</td></tr>
+    <tr><td class="paramname">isFastSpeed</td><td>If true, the amount of movement (moveSpeed) will be multiplied by fastSpeedMultiplier</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00162">162</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00326_a3a1fd0aa711c78c30cef722f611ee8bf_icgraph.png" border="0" usemap="#aa00326_a3a1fd0aa711c78c30cef722f611ee8bf_icgraph" alt=""/></div>
+<map name="aa00326_a3a1fd0aa711c78c30cef722f611ee8bf_icgraph" id="aa00326_a3a1fd0aa711c78c30cef722f611ee8bf_icgraph">
+<area shape="rect" title="Moves the camera in a given direction" alt="" coords="997,5,1427,32"/>
+<area shape="rect" href="a00330.html#a2cb13a5a6d10bc41147524ff978a54fb" title="Handles the input to control the camera" alt="" coords="465,5,949,32"/>
+<area shape="rect" href="a00330.html#aafb24476fc6ce0e9b4f1edebbd2062c7" title=" " alt="" coords="5,5,417,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aa5c76b990ec6be77aea622d071618893"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5c76b990ec6be77aea622d071618893">&#9670;&nbsp;</a></span>Rotate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.CameraController.Rotate </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isFastSpeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets a new rotation for the camera. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>The direction of the desired rotation relative to the current </td></tr>
+    <tr><td class="paramname">isFastSpeed</td><td>If true, the amount of rotation (rotationSpeed) will be multiplied by fastSpeedMultiplier</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00180">180</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00326_aa5c76b990ec6be77aea622d071618893_icgraph.png" border="0" usemap="#aa00326_aa5c76b990ec6be77aea622d071618893_icgraph" alt=""/></div>
+<map name="aa00326_aa5c76b990ec6be77aea622d071618893_icgraph" id="aa00326_aa5c76b990ec6be77aea622d071618893_icgraph">
+<area shape="rect" title="Sets a new rotation for the camera." alt="" coords="997,5,1435,32"/>
+<area shape="rect" href="a00330.html#a2cb13a5a6d10bc41147524ff978a54fb" title="Handles the input to control the camera" alt="" coords="465,5,949,32"/>
+<area shape="rect" href="a00330.html#aafb24476fc6ce0e9b4f1edebbd2062c7" title=" " alt="" coords="5,5,417,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a1f454f193b3bb38a43836b6b9887b367"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f454f193b3bb38a43836b6b9887b367">&#9670;&nbsp;</a></span>Start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.CameraController.Start </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Startup setup, after awake </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00107">107</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00326_a1f454f193b3bb38a43836b6b9887b367_cgraph.png" border="0" usemap="#aa00326_a1f454f193b3bb38a43836b6b9887b367_cgraph" alt=""/></div>
+<map name="aa00326_a1f454f193b3bb38a43836b6b9887b367_cgraph" id="aa00326_a1f454f193b3bb38a43836b6b9887b367_cgraph">
+<area shape="rect" title="Startup setup, after awake" alt="" coords="5,5,432,32"/>
+<area shape="rect" href="a00326.html#af81c7b2d875ce8d74526748989d46f98" title="Returns the customized input values overriding the default axis for the Cinemachine camera." alt="" coords="480,5,971,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a199dbbb714c0ba51cb1c6a898f485f44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a199dbbb714c0ba51cb1c6a898f485f44">&#9670;&nbsp;</a></span>SwitchCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.CameraController.SwitchCamera </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00326.html#ab610cbfa44bb64287c26caaa5a3a97e3">CameraView</a>&#160;</td>
+          <td class="paramname"><em>desiredView</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Transform&#160;</td>
+          <td class="paramname"><em>followTransform</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Switches the CinemachineVirtualCamera used to handle the camera by switching its priorities. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">desiredView</td><td>The desired view of the camera</td></tr>
+    <tr><td class="paramname">followTransform</td><td>The transform that the camera must follow. Usually not needed (only in some occasions such as POV).</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00190">190</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a718ae3475101c6b012699b2223aa7a93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a718ae3475101c6b012699b2223aa7a93">&#9670;&nbsp;</a></span>Update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.CameraController.Update </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00127">127</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00326_a718ae3475101c6b012699b2223aa7a93_cgraph.png" border="0" usemap="#aa00326_a718ae3475101c6b012699b2223aa7a93_cgraph" alt=""/></div>
+<map name="aa00326_a718ae3475101c6b012699b2223aa7a93_cgraph" id="aa00326_a718ae3475101c6b012699b2223aa7a93_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,445,32"/>
+<area shape="rect" href="a00326.html#acaab247c1ef726e3fcba4104344d840a" title="Updates the rig position to get closer to the desired position" alt="" coords="493,5,1037,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a6b63c8eb685013a87aa1ee4b893649d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b63c8eb685013a87aa1ee4b893649d2">&#9670;&nbsp;</a></span>_camera</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Camera Thoughts.Participants.ControlSystems.Manual.CameraController._camera</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The Camera to control </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00019">19</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a5288cb55437e141256e661ddad82e24e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5288cb55437e141256e661ddad82e24e">&#9670;&nbsp;</a></span>cameraRig</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Transform Thoughts.Participants.ControlSystems.Manual.CameraController.cameraRig</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The rig of the overworld camera </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00026">26</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a4baaa823d6cc98ba6da2a5878881a2d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4baaa823d6cc98ba6da2a5878881a2d2">&#9670;&nbsp;</a></span>desiredPosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector3 Thoughts.Participants.ControlSystems.Manual.CameraController.desiredPosition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The desired position of the Camera </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00084">84</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a5b25c02de76a37e2c06ac01c9c69af35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b25c02de76a37e2c06ac01c9c69af35">&#9670;&nbsp;</a></span>desiredRotation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector2 Thoughts.Participants.ControlSystems.Manual.CameraController.desiredRotation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The desired rotation of the camera </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00089">89</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="ad63749d88b90c2f8b07bb1e09410e24f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad63749d88b90c2f8b07bb1e09410e24f">&#9670;&nbsp;</a></span>fastSpeedMultiplier</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.Participants.ControlSystems.Manual.CameraController.fastSpeedMultiplier = 2f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multiplier of the speed when the camera is moved in "fast speed" mode </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00066">66</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a126a053622bdd1407d734332cd19a0c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a126a053622bdd1407d734332cd19a0c1">&#9670;&nbsp;</a></span>followedMapElement</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00262.html">MapElement</a> Thoughts.Participants.ControlSystems.Manual.CameraController.followedMapElement</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The MapElement followed by the camera </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00094">94</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="adef74f5929b234b59947a6bb2f93a8a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adef74f5929b234b59947a6bb2f93a8a4">&#9670;&nbsp;</a></span>heightBoost</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.Participants.ControlSystems.Manual.CameraController.heightBoost = 1.2f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multiplier of the speed when the camera is at its highest position. 0 is none, 1 is double. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00072">72</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a04c588eac10e664c139b0a1abfdb7a81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04c588eac10e664c139b0a1abfdb7a81">&#9670;&nbsp;</a></span>movementSmoothing</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.Participants.ControlSystems.Manual.CameraController.movementSmoothing = 95f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The smoothness on the movement of the camera </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00079">79</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="aeb520594eb55cbb2424a9a54845a95e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb520594eb55cbb2424a9a54845a95e1">&#9670;&nbsp;</a></span>moveSpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.Participants.ControlSystems.Manual.CameraController.moveSpeed = 2f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The speed of the camera moving around </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00054">54</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a344f354bcf5067a3eac0e5a3dd784f8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a344f354bcf5067a3eac0e5a3dd784f8f">&#9670;&nbsp;</a></span>overworldCamera</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CinemachineVirtualCameraBase Thoughts.Participants.ControlSystems.Manual.CameraController.overworldCamera</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference to the CinemachineVirtualCamera linked to the overworld view </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00032">32</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a99a3e912d603715c11d4c4aee771a8ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99a3e912d603715c11d4c4aee771a8ca">&#9670;&nbsp;</a></span>povCamera</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CinemachineVirtualCameraBase Thoughts.Participants.ControlSystems.Manual.CameraController.povCamera</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference to the CinemachineVirtualCamera linked to the POV views </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00038">38</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<a id="a1ee46777014194cd9635d103635786b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ee46777014194cd9635d103635786b0">&#9670;&nbsp;</a></span>rotationSpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.Participants.ControlSystems.Manual.CameraController.rotationSpeed = 1.5f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The speed of the camera rotating </p>
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00060">60</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="ac2a2493c7f7ade5d06d01fa4485d9678"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2a2493c7f7ade5d06d01fa4485d9678">&#9670;&nbsp;</a></span>camera</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">new Camera Thoughts.Participants.ControlSystems.Manual.CameraController.camera</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00071_source.html#l00020">20</a> of file <a class="el" href="a00071_source.html">CameraController.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00095_source.html">Old_TerrainGenerator.cs</a></li>
+<li><a class="el" href="a00071_source.html">CameraController.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

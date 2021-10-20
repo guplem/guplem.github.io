@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.GameManager Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Game.Map.Terrain.EdgeConnectionVertexData Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,173 +61,76 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00179.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00183.html">Game</a></li><li class="navelem"><a class="el" href="a00310.html">GameManager</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00176.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00177.html">Game</a></li><li class="navelem"><a class="el" href="a00178.html">Map</a></li><li class="navelem"><a class="el" href="a00182.html">Terrain</a></li><li class="navelem"><a class="el" href="a00310.html">EdgeConnectionVertexData</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00307.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.GameManager Class Reference</div>  </div>
+<div class="title">Thoughts.Game.Map.Terrain.EdgeConnectionVertexData Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Controls the core aspects of the a game: Participant (with ControlSystem), Map setup, ...  
- <a href="a00310.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Game.GameManager:</div>
+Collaboration diagram for Thoughts.Game.Map.Terrain.EdgeConnectionVertexData:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00308.png" border="0" usemap="#aThoughts_8Game_8GameManager_coll__map" alt="Collaboration graph"/></div>
-<map name="aThoughts_8Game_8GameManager_coll__map" id="aThoughts_8Game_8GameManager_coll__map">
-<area shape="rect" title="Controls the core aspects of the a game: Participant (with ControlSystem), Map setup,..." alt="" coords="5,1491,208,1685"/>
-<area shape="rect" title=" " alt="" coords="369,454,479,531"/>
-<area shape="rect" href="a00354.html" title="The map of the game." alt="" coords="123,1197,330,1406"/>
-<area shape="rect" href="a00318.html" title="Component in charge of generating a Map" alt="" coords="328,976,520,1112"/>
-<area shape="rect" href="a00330.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="409,1175,679,1428"/>
-<area shape="rect" href="a00350.html" title="Component in charge doing threaded requests of data" alt="" coords="525,748,686,855"/>
-<area shape="rect" href="a00314.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="710,689,898,913"/>
-<area shape="rect" href="a00454.html" title=" " alt="" coords="691,182,797,259"/>
-<area shape="rect" href="a00338.html" title="The configuration of the texture of the terrain of the map" alt="" coords="782,359,941,627"/>
-<area shape="rect" href="a00410.html" title="The configuration of the height of the terrain of the map" alt="" coords="507,410,698,575"/>
-<area shape="rect" title=" " alt="" coords="685,5,803,83"/>
-<area shape="rect" title=" " alt="" coords="965,454,1171,531"/>
-<area shape="rect" href="a00418.html" title="Collection of settings used to generate a noise map" alt="" coords="471,145,601,296"/>
-<area shape="rect" href="a00414.html" title=" " alt="" coords="459,5,613,83"/>
-<area shape="rect" href="a00334.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="595,998,771,1090"/>
+<div class="center"><img src="a00308.png" border="0" usemap="#aThoughts_8Game_8Map_8Terrain_8EdgeConnectionVertexData_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Game_8Map_8Terrain_8EdgeConnectionVertexData_coll__map" id="aThoughts_8Game_8Map_8Terrain_8EdgeConnectionVertexData_coll__map">
+<area shape="rect" title=" " alt="" coords="5,5,356,127"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8d515fc1b62a4b466a2247ed1f6cee46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a8d515fc1b62a4b466a2247ed1f6cee46">StartNewGame</a> ()</td></tr>
-<tr class="memdesc:a8d515fc1b62a4b466a2247ed1f6cee46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a new game by setting up the participants and deleting the previously generated world.  <a href="a00310.html#a8d515fc1b62a4b466a2247ed1f6cee46">More...</a><br /></td></tr>
-<tr class="separator:a8d515fc1b62a4b466a2247ed1f6cee46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a267b873f0974f59f2e7cb21c27879025"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00378.html">ExecutionPlan</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a267b873f0974f59f2e7cb21c27879025">GetExecutionPlanToCover</a> (<a class="el" href="a00366.html">AttributeOwnership</a> attributeOwnershipToCover, int valueToCover, <a class="el" href="a00390.html">MapElement</a> executer, List&lt; <a class="el" href="a00378.html">ExecutionPlan</a> &gt; mapEventsToExecute=null, int iteration=0)</td></tr>
-<tr class="memdesc:a267b873f0974f59f2e7cb21c27879025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively look for all MapEvents available in the game's map that, as consequence of the event, they make a desired attribute value increase for the owner/executer/target (the needed participant).  <a href="a00310.html#a267b873f0974f59f2e7cb21c27879025">More...</a><br /></td></tr>
-<tr class="separator:a267b873f0974f59f2e7cb21c27879025"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad32afc0cfdbc736b650529cf79f92563"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#ad32afc0cfdbc736b650529cf79f92563">EdgeConnectionVertexData</a> (int <a class="el" href="a00310.html#a72afd54ad636cfcc6dd7d05311c256ab">vertexIndex</a>, int <a class="el" href="a00310.html#a1c00df9120e477346e942a08795c11be">mainVertexAIndex</a>, int <a class="el" href="a00310.html#a73e011ca1371658d8098aa0a45dc5a00">mainVertexBIndex</a>, float <a class="el" href="a00310.html#a1801a17e646a1f127ebc4359a4d75706">dstPercentFromAToB</a>)</td></tr>
+<tr class="separator:ad32afc0cfdbc736b650529cf79f92563"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4383320509b838c2cccb0d318b70a8ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00354.html">Map</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a4383320509b838c2cccb0d318b70a8ba">map</a></td></tr>
-<tr class="memdesc:a4383320509b838c2cccb0d318b70a8ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">The map of the game.  <a href="a00310.html#a4383320509b838c2cccb0d318b70a8ba">More...</a><br /></td></tr>
-<tr class="separator:a4383320509b838c2cccb0d318b70a8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8913b44c8b4c1d27683facdbdf06a512"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a8913b44c8b4c1d27683facdbdf06a512">gameClockInterval</a> = 1f</td></tr>
-<tr class="memdesc:a8913b44c8b4c1d27683facdbdf06a512"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of time between each update of the MapElements of the game  <a href="a00310.html#a8913b44c8b4c1d27683facdbdf06a512">More...</a><br /></td></tr>
-<tr class="separator:a8913b44c8b4c1d27683facdbdf06a512"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:a8380aedd8f5304b87424a7b384c4e3c3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00310.html">GameManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a8380aedd8f5304b87424a7b384c4e3c3">instance</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:a8380aedd8f5304b87424a7b384c4e3c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The singleton reference to this class  <a href="a00310.html#a8380aedd8f5304b87424a7b384c4e3c3">More...</a><br /></td></tr>
-<tr class="separator:a8380aedd8f5304b87424a7b384c4e3c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a2482d5e6aedf4582693fd57fed64e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00306.html">Participant</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a9a2482d5e6aedf4582693fd57fed64e0">localManualParticipant</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:a9a2482d5e6aedf4582693fd57fed64e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The participant playing manually in the local machine  <a href="a00310.html#a9a2482d5e6aedf4582693fd57fed64e0">More...</a><br /></td></tr>
-<tr class="separator:a9a2482d5e6aedf4582693fd57fed64e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:aa4beaa7e47e992771e162c47106ef6ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#aa4beaa7e47e992771e162c47106ef6ab">Awake</a> ()</td></tr>
-<tr class="memdesc:aa4beaa7e47e992771e162c47106ef6ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to set up this instance as the singleton instance. Additionally, it checks for the existence of an <a class="el" href="a00206.html" title="Object that must be kept always alive while running the app. It initializes the game process and keep...">AppManager</a>, which might be needed in some parts of the game  <a href="a00310.html#aa4beaa7e47e992771e162c47106ef6ab">More...</a><br /></td></tr>
-<tr class="separator:aa4beaa7e47e992771e162c47106ef6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bfffe7f6e454bb8af6dd9a4368c7c42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a4bfffe7f6e454bb8af6dd9a4368c7c42">InitializeSingleton</a> ()</td></tr>
-<tr class="memdesc:a4bfffe7f6e454bb8af6dd9a4368c7c42"><td class="mdescLeft">&#160;</td><td class="mdescRight">If there is no other singleton instance of this class, this is set as it. Being the only one, following the Singleton pattern.  <a href="a00310.html#a4bfffe7f6e454bb8af6dd9a4368c7c42">More...</a><br /></td></tr>
-<tr class="separator:a4bfffe7f6e454bb8af6dd9a4368c7c42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8988494ad2b97cefb2f5f86ab74d21c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a8988494ad2b97cefb2f5f86ab74d21c0">Start</a> ()</td></tr>
-<tr class="memdesc:a8988494ad2b97cefb2f5f86ab74d21c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a new game.  <a href="a00310.html#a8988494ad2b97cefb2f5f86ab74d21c0">More...</a><br /></td></tr>
-<tr class="separator:a8988494ad2b97cefb2f5f86ab74d21c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:afc29eb5917861e9f9f128fbd7a4f0910"><td class="memItemLeft" align="right" valign="top">GameObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#afc29eb5917861e9f9f128fbd7a4f0910">manualControlSystemPrefab</a></td></tr>
-<tr class="memdesc:afc29eb5917861e9f9f128fbd7a4f0910"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GameObject prefab of the local human (manual) control system for a participant.  <a href="a00310.html#afc29eb5917861e9f9f128fbd7a4f0910">More...</a><br /></td></tr>
-<tr class="separator:afc29eb5917861e9f9f128fbd7a4f0910"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd717cba797997d7ae9a924e84069a46"><td class="memItemLeft" align="right" valign="top">readonly List&lt; <a class="el" href="a00306.html">Participant</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#abd717cba797997d7ae9a924e84069a46">participants</a> = new List&lt;<a class="el" href="a00306.html">Participant</a>&gt;()</td></tr>
-<tr class="memdesc:abd717cba797997d7ae9a924e84069a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">The different participants (players, AI, ...) of the game.  <a href="a00310.html#abd717cba797997d7ae9a924e84069a46">More...</a><br /></td></tr>
-<tr class="separator:abd717cba797997d7ae9a924e84069a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72afd54ad636cfcc6dd7d05311c256ab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a72afd54ad636cfcc6dd7d05311c256ab">vertexIndex</a></td></tr>
+<tr class="separator:a72afd54ad636cfcc6dd7d05311c256ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c00df9120e477346e942a08795c11be"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a1c00df9120e477346e942a08795c11be">mainVertexAIndex</a></td></tr>
+<tr class="separator:a1c00df9120e477346e942a08795c11be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73e011ca1371658d8098aa0a45dc5a00"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a73e011ca1371658d8098aa0a45dc5a00">mainVertexBIndex</a></td></tr>
+<tr class="separator:a73e011ca1371658d8098aa0a45dc5a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1801a17e646a1f127ebc4359a4d75706"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html#a1801a17e646a1f127ebc4359a4d75706">dstPercentFromAToB</a></td></tr>
+<tr class="separator:a1801a17e646a1f127ebc4359a4d75706"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Controls the core aspects of the a game: Participant (with ControlSystem), Map setup, ... </p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00015">15</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa4beaa7e47e992771e162c47106ef6ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4beaa7e47e992771e162c47106ef6ab">&#9670;&nbsp;</a></span>Awake()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.GameManager.Awake </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tries to set up this instance as the singleton instance. Additionally, it checks for the existence of an <a class="el" href="a00206.html" title="Object that must be kept always alive while running the app. It initializes the game process and keep...">AppManager</a>, which might be needed in some parts of the game </p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00116">116</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00310_aa4beaa7e47e992771e162c47106ef6ab_cgraph.png" border="0" usemap="#aa00310_aa4beaa7e47e992771e162c47106ef6ab_cgraph" alt=""/></div>
-<map name="aa00310_aa4beaa7e47e992771e162c47106ef6ab_cgraph" id="aa00310_aa4beaa7e47e992771e162c47106ef6ab_cgraph">
-<area shape="rect" title="Tries to set up this instance as the singleton instance. Additionally, it checks for the existence of..." alt="" coords="5,5,252,32"/>
-<area shape="rect" href="a00310.html#a4bfffe7f6e454bb8af6dd9a4368c7c42" title="If there is no other singleton instance of this class, this is set as it. Being the only one,..." alt="" coords="300,5,608,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a267b873f0974f59f2e7cb21c27879025"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a267b873f0974f59f2e7cb21c27879025">&#9670;&nbsp;</a></span>GetExecutionPlanToCover()</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="a00062_source.html#l00105">105</a> of file <a class="el" href="a00062_source.html">TerrainMeshGenerator.cs</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ad32afc0cfdbc736b650529cf79f92563"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad32afc0cfdbc736b650529cf79f92563">&#9670;&nbsp;</a></span>EdgeConnectionVertexData()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;<a class="el" href="a00378.html">ExecutionPlan</a>&gt; Thoughts.Game.GameManager.GetExecutionPlanToCover </td>
+          <td class="memname">Thoughts.Game.Map.Terrain.EdgeConnectionVertexData.EdgeConnectionVertexData </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00366.html">AttributeOwnership</a>&#160;</td>
-          <td class="paramname"><em>attributeOwnershipToCover</em>, </td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>vertexIndex</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>valueToCover</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00390.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>executer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">List&lt; <a class="el" href="a00378.html">ExecutionPlan</a> &gt;&#160;</td>
-          <td class="paramname"><em>mapEventsToExecute</em> = <code>null</code>, </td>
+          <td class="paramname"><em>mainVertexAIndex</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>iteration</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>mainVertexBIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dstPercentFromAToB</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -237,313 +140,77 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Recursively look for all MapEvents available in the game's map that, as consequence of the event, they make a desired attribute value increase for the owner/executer/target (the needed participant). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">attributeOwnershipToCover</td><td>AttributeOwnership to increase the value of.</td></tr>
-    <tr><td class="paramname">valueToCover</td><td>The amount of value needed to be covered (increased).</td></tr>
-    <tr><td class="paramname">executer</td><td>Map element that is going to execute the list of ExecutionPlans.</td></tr>
-    <tr><td class="paramname">mapEventsToExecute</td><td>Execution plans wanted to be executed previously to the ones to cover the attributeToCover.</td></tr>
-    <tr><td class="paramname">iteration</td><td>The iteration number of the this method's recursive execution. Should start as 0.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An ordered list of the Execution Plans needed to achieve the goal (to increase the value of the attributeToCover by valueToCover)</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00076">76</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00310_a267b873f0974f59f2e7cb21c27879025_cgraph.png" border="0" usemap="#aa00310_a267b873f0974f59f2e7cb21c27879025_cgraph" alt=""/></div>
-<map name="aa00310_a267b873f0974f59f2e7cb21c27879025_cgraph" id="aa00310_a267b873f0974f59f2e7cb21c27879025_cgraph">
-<area shape="rect" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="5,81,364,108"/>
-<area shape="rect" href="a00354.html#a1336488cef85bdd96b908173832cc0c1" title="Look for all MapEvents available in the map that, as consequence of a MapEvent in an Attribute they o..." alt="" coords="412,56,775,83"/>
-<area shape="rect" href="a00378.html#ab3c78ec19c4203666b36844e5fad8846" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="832,107,1245,133"/>
-<area shape="rect" href="a00358.html#a5eecb953309547dcb9fdf9f9696241d3" title="Looks for an ExecutionPlan to cover the Attribute in the given AttributeOwnership relation using the ..." alt="" coords="823,56,1255,83"/>
-<area shape="rect" href="a00382.html#a898e073b96f00766ce5d35c4ffe68a85" title="Indicates if the consequences of the execution of this event will increase the value of an attribute ..." alt="" coords="1337,5,1698,32"/>
-<area shape="rect" href="a00382.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1324,107,1711,133"/>
-<area shape="rect" href="a00378.html#a9afb2a5b2f8c152a92f9d5db9ecdf86c" title="Sets the amount of times remaining to execute this plan&#39;s MapEvent to the same amount needed to to co..." alt="" coords="1303,56,1732,83"/>
-<area shape="rect" href="a00378.html#ab0fe3fe2e7928d46a5b1483064fdab21" title="Calculates the amount of times that the execution of this ExecutionPlan&#39;s MapElement is needed to cov..." alt="" coords="1780,56,2259,83"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00310_a267b873f0974f59f2e7cb21c27879025_icgraph.png" border="0" usemap="#aa00310_a267b873f0974f59f2e7cb21c27879025_icgraph" alt=""/></div>
-<map name="aa00310_a267b873f0974f59f2e7cb21c27879025_icgraph" id="aa00310_a267b873f0974f59f2e7cb21c27879025_icgraph">
-<area shape="rect" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="592,5,951,32"/>
-<area shape="rect" href="a00390.html#a2eba3241b58897588d13261fb39b0815" title="Overwrites the executionPlans with a plan to cover (at least increasing the value by 1) of the curren..." alt="" coords="5,5,544,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a4bfffe7f6e454bb8af6dd9a4368c7c42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bfffe7f6e454bb8af6dd9a4368c7c42">&#9670;&nbsp;</a></span>InitializeSingleton()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Thoughts.Game.GameManager.InitializeSingleton </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>If there is no other singleton instance of this class, this is set as it. Being the only one, following the Singleton pattern. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if it became the singleton instance, false if another instance declared as the singleton one already exists.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00128">128</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00310_a4bfffe7f6e454bb8af6dd9a4368c7c42_icgraph.png" border="0" usemap="#aa00310_a4bfffe7f6e454bb8af6dd9a4368c7c42_icgraph" alt=""/></div>
-<map name="aa00310_a4bfffe7f6e454bb8af6dd9a4368c7c42_icgraph" id="aa00310_a4bfffe7f6e454bb8af6dd9a4368c7c42_icgraph">
-<area shape="rect" title="If there is no other singleton instance of this class, this is set as it. Being the only one,..." alt="" coords="300,5,608,32"/>
-<area shape="rect" href="a00310.html#aa4beaa7e47e992771e162c47106ef6ab" title="Tries to set up this instance as the singleton instance. Additionally, it checks for the existence of..." alt="" coords="5,5,252,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a8988494ad2b97cefb2f5f86ab74d21c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8988494ad2b97cefb2f5f86ab74d21c0">&#9670;&nbsp;</a></span>Start()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.GameManager.Start </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Starts a new game. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00143">143</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00310_a8988494ad2b97cefb2f5f86ab74d21c0_cgraph.png" border="0" usemap="#aa00310_a8988494ad2b97cefb2f5f86ab74d21c0_cgraph" alt=""/></div>
-<map name="aa00310_a8988494ad2b97cefb2f5f86ab74d21c0_cgraph" id="aa00310_a8988494ad2b97cefb2f5f86ab74d21c0_cgraph">
-<area shape="rect" title="Starts a new game." alt="" coords="5,5,240,32"/>
-<area shape="rect" href="a00310.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="288,5,583,32"/>
-<area shape="rect" href="a00354.html#a7f8ce7add5ba29896422dcd6e3470e89" title="Deletes the currently (generated) existent map" alt="" coords="631,5,879,32"/>
-<area shape="rect" href="a00318.html#a49c72f7741c8e43efef4d323f0f26643" title="Deletes the currently (generated) existent map" alt="" coords="927,5,1139,32"/>
-<area shape="rect" href="a00330.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="1187,5,1385,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<a id="a8d515fc1b62a4b466a2247ed1f6cee46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d515fc1b62a4b466a2247ed1f6cee46">&#9670;&nbsp;</a></span>StartNewGame()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.GameManager.StartNewGame </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Starts a new game by setting up the participants and deleting the previously generated world. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00053">53</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00310_a8d515fc1b62a4b466a2247ed1f6cee46_cgraph.png" border="0" usemap="#aa00310_a8d515fc1b62a4b466a2247ed1f6cee46_cgraph" alt=""/></div>
-<map name="aa00310_a8d515fc1b62a4b466a2247ed1f6cee46_cgraph" id="aa00310_a8d515fc1b62a4b466a2247ed1f6cee46_cgraph">
-<area shape="rect" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="5,5,300,32"/>
-<area shape="rect" href="a00354.html#a7f8ce7add5ba29896422dcd6e3470e89" title="Deletes the currently (generated) existent map" alt="" coords="348,5,596,32"/>
-<area shape="rect" href="a00318.html#a49c72f7741c8e43efef4d323f0f26643" title="Deletes the currently (generated) existent map" alt="" coords="644,5,856,32"/>
-<area shape="rect" href="a00330.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="904,5,1103,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00310_a8d515fc1b62a4b466a2247ed1f6cee46_icgraph.png" border="0" usemap="#aa00310_a8d515fc1b62a4b466a2247ed1f6cee46_icgraph" alt=""/></div>
-<map name="aa00310_a8d515fc1b62a4b466a2247ed1f6cee46_icgraph" id="aa00310_a8d515fc1b62a4b466a2247ed1f6cee46_icgraph">
-<area shape="rect" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="288,5,583,32"/>
-<area shape="rect" href="a00310.html#a8988494ad2b97cefb2f5f86ab74d21c0" title="Starts a new game." alt="" coords="5,5,240,32"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="a00062_source.html#l00111">111</a> of file <a class="el" href="a00062_source.html">TerrainMeshGenerator.cs</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a8913b44c8b4c1d27683facdbdf06a512"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8913b44c8b4c1d27683facdbdf06a512">&#9670;&nbsp;</a></span>gameClockInterval</h2>
+<a id="a1801a17e646a1f127ebc4359a4d75706"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1801a17e646a1f127ebc4359a4d75706">&#9670;&nbsp;</a></span>dstPercentFromAToB</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float Thoughts.Game.GameManager.gameClockInterval = 1f</td>
+          <td class="memname">float Thoughts.Game.Map.Terrain.EdgeConnectionVertexData.dstPercentFromAToB</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The amount of time between each update of the MapElements of the game </p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00048">48</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00062_source.html#l00109">109</a> of file <a class="el" href="a00062_source.html">TerrainMeshGenerator.cs</a>.</p>
 
 </div>
 </div>
-<a id="afc29eb5917861e9f9f128fbd7a4f0910"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc29eb5917861e9f9f128fbd7a4f0910">&#9670;&nbsp;</a></span>manualControlSystemPrefab</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">GameObject Thoughts.Game.GameManager.manualControlSystemPrefab</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The GameObject prefab of the local human (manual) control system for a participant. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00026">26</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
-
-</div>
-</div>
-<a id="a4383320509b838c2cccb0d318b70a8ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4383320509b838c2cccb0d318b70a8ba">&#9670;&nbsp;</a></span>map</h2>
+<a id="a1c00df9120e477346e942a08795c11be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c00df9120e477346e942a08795c11be">&#9670;&nbsp;</a></span>mainVertexAIndex</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00354.html">Map</a> Thoughts.Game.GameManager.map</td>
+          <td class="memname">int Thoughts.Game.Map.Terrain.EdgeConnectionVertexData.mainVertexAIndex</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The map of the game. </p>
-<p>A component in a GameObject</p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00033">33</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00062_source.html#l00107">107</a> of file <a class="el" href="a00062_source.html">TerrainMeshGenerator.cs</a>.</p>
 
 </div>
 </div>
-<a id="abd717cba797997d7ae9a924e84069a46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd717cba797997d7ae9a924e84069a46">&#9670;&nbsp;</a></span>participants</h2>
+<a id="a73e011ca1371658d8098aa0a45dc5a00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73e011ca1371658d8098aa0a45dc5a00">&#9670;&nbsp;</a></span>mainVertexBIndex</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">readonly List&lt;<a class="el" href="a00306.html">Participant</a>&gt; Thoughts.Game.GameManager.participants = new List&lt;<a class="el" href="a00306.html">Participant</a>&gt;()</td>
+          <td class="memname">int Thoughts.Game.Map.Terrain.EdgeConnectionVertexData.mainVertexBIndex</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>The different participants (players, AI, ...) of the game. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00038">38</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00062_source.html#l00108">108</a> of file <a class="el" href="a00062_source.html">TerrainMeshGenerator.cs</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="a8380aedd8f5304b87424a7b384c4e3c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8380aedd8f5304b87424a7b384c4e3c3">&#9670;&nbsp;</a></span>instance</h2>
+<a id="a72afd54ad636cfcc6dd7d05311c256ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72afd54ad636cfcc6dd7d05311c256ab">&#9670;&nbsp;</a></span>vertexIndex</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00310.html">GameManager</a> Thoughts.Game.GameManager.instance</td>
+          <td class="memname">int Thoughts.Game.Map.Terrain.EdgeConnectionVertexData.vertexIndex</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>The singleton reference to this class </p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00020">20</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
-
-</div>
-</div>
-<a id="a9a2482d5e6aedf4582693fd57fed64e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a2482d5e6aedf4582693fd57fed64e0">&#9670;&nbsp;</a></span>localManualParticipant</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00306.html">Participant</a> Thoughts.Game.GameManager.localManualParticipant</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The participant playing manually in the local machine </p>
-
-<p class="definition">Definition at line <a class="el" href="a00080_source.html#l00043">43</a> of file <a class="el" href="a00080_source.html">GameManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00062_source.html#l00106">106</a> of file <a class="el" href="a00062_source.html">TerrainMeshGenerator.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00080_source.html">GameManager.cs</a></li>
+<li><a class="el" href="a00062_source.html">TerrainMeshGenerator.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

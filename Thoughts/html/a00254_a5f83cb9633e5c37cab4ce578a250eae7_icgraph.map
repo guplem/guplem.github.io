@@ -1,0 +1,8 @@
+<map id="Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.Execute" name="Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.Execute">
+<area shape="rect" id="node1" title="Executes the event applying the consequences of it." alt="" coords="2087,31,2555,57"/>
+<area shape="rect" id="node2" href="$a00250.html#a3a9255b72ac66af15b85571be60a20c9" title="If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s..." alt="" coords="1544,5,2039,32"/>
+<area shape="rect" id="node6" href="$a00238.html#a0b17ee9e912b5e16c043d0d5f5d476ad" title="Executes the MapEvents of all the Attributes that are part of the AttributeOwnership of this Attribut..." alt="" coords="841,56,1496,83"/>
+<area shape="rect" id="node3" href="$a00262.html#acdf56d22ae1b2a644c2d0d58192e9c46" title="Tries to execute the next planned even in the executionPlans list." alt="" coords="941,5,1396,32"/>
+<area shape="rect" id="node4" href="$a00262.html#af3e11e868f05d7c6449734669e350774" title="Controls the internal clock of the MapElement." alt="" coords="389,31,793,57"/>
+<area shape="rect" id="node5" href="$a00262.html#a38fe6cacc3395a39b0c56393bffe2fcc" title="Starts running the MapElement&#39;s clock." alt="" coords="5,31,341,57"/>
+</map>

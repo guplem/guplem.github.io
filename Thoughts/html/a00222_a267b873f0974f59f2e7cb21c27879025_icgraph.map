@@ -1,0 +1,4 @@
+<map id="Thoughts.Game.GameManager.GetExecutionPlanToCover" name="Thoughts.Game.GameManager.GetExecutionPlanToCover">
+<area shape="rect" id="node1" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="641,5,1000,32"/>
+<area shape="rect" id="node2" href="$a00262.html#a939cc158480459889707c738f66499c7" title="Overwrites the executionPlans with a plan to cover (at least increasing the value by 1) of the curren..." alt="" coords="5,5,593,32"/>
+</map>

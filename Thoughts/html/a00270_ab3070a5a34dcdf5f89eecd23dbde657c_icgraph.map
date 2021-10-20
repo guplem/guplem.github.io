@@ -1,0 +1,4 @@
+<map id="Thoughts.Game.Map.MapGenerator.RegenerateMapNotPlaying" name="Thoughts.Game.Map.MapGenerator.RegenerateMapNotPlaying">
+<area shape="rect" id="node1" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="351,5,737,32"/>
+<area shape="rect" id="node2" href="$a00270.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,5,303,32"/>
+</map>

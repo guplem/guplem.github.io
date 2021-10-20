@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: HeightMap Struct Reference</title>
+<title>TS20-Thoughts: Thoughts.Participants.ControlSystems.ControlSystem Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,137 +59,55 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="a00176.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00183.html">Participants</a></li><li class="navelem"><a class="el" href="a00184.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00322.html">ControlSystem</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="a00319.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">HeightMap Struct Reference</div>  </div>
+<div class="title">Thoughts.Participants.ControlSystems.ControlSystem Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Contains values relative to the height of a terrain  
+<p>A way of controlling a participant.  
  <a href="a00322.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for HeightMap:</div>
+Collaboration diagram for Thoughts.Participants.ControlSystems.ControlSystem:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00320.png" border="0" usemap="#aHeightMap_coll__map" alt="Collaboration graph"/></div>
-<map name="aHeightMap_coll__map" id="aHeightMap_coll__map">
-<area shape="rect" title="Contains values relative to the height of a terrain" alt="" coords="5,5,163,141"/>
+<div class="center"><img src="a00320.png" border="0" usemap="#aThoughts_8Participants_8ControlSystems_8ControlSystem_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Participants_8ControlSystems_8ControlSystem_coll__map" id="aThoughts_8Participants_8ControlSystems_8ControlSystem_coll__map">
+<area shape="rect" title="A way of controlling a participant." alt="" coords="5,131,340,223"/>
+<area shape="rect" title=" " alt="" coords="117,5,228,83"/>
 </map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a397bce27d4d739635f014d1d83c8eefe"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00322.html">HeightMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html#a397bce27d4d739635f014d1d83c8eefe">GenerateHeightMap</a> (int width, int height, float mapRadius, <a class="el" href="a00410.html">HeightMapSettings</a> settings, Vector2 sampleCenter)</td></tr>
-<tr class="memdesc:a397bce27d4d739635f014d1d83c8eefe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a> that contains values relative to the height of a terrain  <a href="a00322.html#a397bce27d4d739635f014d1d83c8eefe">More...</a><br /></td></tr>
-<tr class="separator:a397bce27d4d739635f014d1d83c8eefe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:abf248a249454bea0c4b595eb8a24070d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html#abf248a249454bea0c4b595eb8a24070d">Initialize</a> (<a class="el" href="a00418.html">Participant</a> participant)</td></tr>
+<tr class="memdesc:abf248a249454bea0c4b595eb8a24070d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the <a class="el" href="a00322.html" title="A way of controlling a participant.">ControlSystem</a> by giving it reference to the participant that will use it.  <a href="a00322.html#abf248a249454bea0c4b595eb8a24070d">More...</a><br /></td></tr>
+<tr class="separator:abf248a249454bea0c4b595eb8a24070d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12c12374d49136efc756ed4ce90c4b1d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html#a12c12374d49136efc756ed4ce90c4b1d">Disable</a> ()</td></tr>
+<tr class="memdesc:a12c12374d49136efc756ed4ce90c4b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables the <a class="el" href="a00322.html" title="A way of controlling a participant.">ControlSystem</a> by removing reference to the controlled <a class="el" href="a00418.html" title="Each of the members of the the game.">Participant</a>.  <a href="a00322.html#a12c12374d49136efc756ed4ce90c4b1d">More...</a><br /></td></tr>
+<tr class="separator:a12c12374d49136efc756ed4ce90c4b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:af0aefe06b2d27557eb18bce797875db6"><td class="memItemLeft" align="right" valign="top">readonly float[,]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html#af0aefe06b2d27557eb18bce797875db6">values</a></td></tr>
-<tr class="memdesc:af0aefe06b2d27557eb18bce797875db6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main data stored in the <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a> (should be relative to the height of a terrain).  <a href="a00322.html#af0aefe06b2d27557eb18bce797875db6">More...</a><br /></td></tr>
-<tr class="separator:af0aefe06b2d27557eb18bce797875db6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb44dcd529b447cdc562598d4bc578c1"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html#abb44dcd529b447cdc562598d4bc578c1">minValue</a></td></tr>
-<tr class="memdesc:abb44dcd529b447cdc562598d4bc578c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pre recorded minimum value contained within the main data.  <a href="a00322.html#abb44dcd529b447cdc562598d4bc578c1">More...</a><br /></td></tr>
-<tr class="separator:abb44dcd529b447cdc562598d4bc578c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a514be5360af75c44a1ba691fab789248"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html#a514be5360af75c44a1ba691fab789248">maxValue</a></td></tr>
-<tr class="memdesc:a514be5360af75c44a1ba691fab789248"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pre recorded maximum value contained within the main data.  <a href="a00322.html#a514be5360af75c44a1ba691fab789248">More...</a><br /></td></tr>
-<tr class="separator:a514be5360af75c44a1ba691fab789248"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:ae7714c3d98b43c7ac86a50717e8b5f5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html#ae7714c3d98b43c7ac86a50717e8b5f5e">HeightMap</a> (float[,] <a class="el" href="a00322.html#af0aefe06b2d27557eb18bce797875db6">values</a>, float <a class="el" href="a00322.html#abb44dcd529b447cdc562598d4bc578c1">minValue</a>, float <a class="el" href="a00322.html#a514be5360af75c44a1ba691fab789248">maxValue</a>)</td></tr>
-<tr class="memdesc:ae7714c3d98b43c7ac86a50717e8b5f5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor of a <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a> that contains values relative to the height of a terrain  <a href="a00322.html#ae7714c3d98b43c7ac86a50717e8b5f5e">More...</a><br /></td></tr>
-<tr class="separator:ae7714c3d98b43c7ac86a50717e8b5f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a2e1f68e1ca4250565c3a9b9db7e0ad22"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html#a2e1f68e1ca4250565c3a9b9db7e0ad22">GetFalloffValue</a> (Vector2 coords, AnimationCurve falloffIntensity, float mapRadius)</td></tr>
-<tr class="memdesc:a2e1f68e1ca4250565c3a9b9db7e0ad22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain  <a href="a00322.html#a2e1f68e1ca4250565c3a9b9db7e0ad22">More...</a><br /></td></tr>
-<tr class="separator:a2e1f68e1ca4250565c3a9b9db7e0ad22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a551160a4456ce5eb05dfe74b5dc87b23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00418.html">Participant</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html#a551160a4456ce5eb05dfe74b5dc87b23">controlledParticipant</a><code> [get, private set]</code></td></tr>
+<tr class="memdesc:a551160a4456ce5eb05dfe74b5dc87b23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tha participant using this <a class="el" href="a00322.html" title="A way of controlling a participant.">ControlSystem</a>  <a href="a00322.html#a551160a4456ce5eb05dfe74b5dc87b23">More...</a><br /></td></tr>
+<tr class="separator:a551160a4456ce5eb05dfe74b5dc87b23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Contains values relative to the height of a terrain </p>
+<div class="textblock"><p>A way of controlling a participant. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00092_source.html#l00007">7</a> of file <a class="el" href="a00092_source.html">HeightMap.cs</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae7714c3d98b43c7ac86a50717e8b5f5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7714c3d98b43c7ac86a50717e8b5f5e">&#9670;&nbsp;</a></span>HeightMap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">HeightMap.HeightMap </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>values</em>[,], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>minValue</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>maxValue</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Constructor of a <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a> that contains values relative to the height of a terrain </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">values</td><td>The main data stored in the <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a> relative to the height of a terrain</td></tr>
-    <tr><td class="paramname">minValue</td><td>The pre calculated minimum value contained within the main data</td></tr>
-    <tr><td class="paramname">maxValue</td><td>The pre calculated maximum value contained within the main data</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00092_source.html#l00028">28</a> of file <a class="el" href="a00092_source.html">HeightMap.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00322_ae7714c3d98b43c7ac86a50717e8b5f5e_icgraph.png" border="0" usemap="#aa00322_ae7714c3d98b43c7ac86a50717e8b5f5e_icgraph" alt=""/></div>
-<map name="aa00322_ae7714c3d98b43c7ac86a50717e8b5f5e_icgraph" id="aa00322_ae7714c3d98b43c7ac86a50717e8b5f5e_icgraph">
-<area shape="rect" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="1455,31,1605,57"/>
-<area shape="rect" href="a00322.html#a397bce27d4d739635f014d1d83c8eefe" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1204,31,1407,57"/>
-<area shape="rect" href="a00342.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1025,31,1156,57"/>
-<area shape="rect" href="a00330.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="771,31,977,57"/>
-<area shape="rect" href="a00318.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="536,5,723,32"/>
-<area shape="rect" href="a00330.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="548,56,711,83"/>
-<area shape="rect" href="a00318.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,5,488,32"/>
-<area shape="rect" href="a00318.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
-</map>
-</div>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a397bce27d4d739635f014d1d83c8eefe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a397bce27d4d739635f014d1d83c8eefe">&#9670;&nbsp;</a></span>GenerateHeightMap()</h2>
+<p class="definition">Definition at line <a class="el" href="a00068_source.html#l00008">8</a> of file <a class="el" href="a00068_source.html">ControlSystem.cs</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a12c12374d49136efc756ed4ce90c4b1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12c12374d49136efc756ed4ce90c4b1d">&#9670;&nbsp;</a></span>Disable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,92 +116,29 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="a00322.html">HeightMap</a> HeightMap.GenerateHeightMap </td>
+          <td class="memname">virtual void Thoughts.Participants.ControlSystems.ControlSystem.Disable </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>width</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>height</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>mapRadius</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00410.html">HeightMapSettings</a>&#160;</td>
-          <td class="paramname"><em>settings</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Vector2&#160;</td>
-          <td class="paramname"><em>sampleCenter</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Generates <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a> that contains values relative to the height of a terrain </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">width</td><td>The desired width for the generated <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a></td></tr>
-    <tr><td class="paramname">height</td><td>The desired height for the generated <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a></td></tr>
-    <tr><td class="paramname">mapRadius</td><td>The theoretical radius of the map containing this terrain</td></tr>
-    <tr><td class="paramname">settings</td><td>The <a class="el" href="a00410.html" title="The configuration of the height of the terrain of the map">HeightMapSettings</a> for this <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a>'s pattern</td></tr>
-    <tr><td class="paramname">sampleCenter</td><td>The cords at the center of this <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a> relative to the center of the whole (scene) map</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Disables the <a class="el" href="a00322.html" title="A way of controlling a participant.">ControlSystem</a> by removing reference to the controlled <a class="el" href="a00418.html" title="Each of the members of the the game.">Participant</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00092_source.html#l00045">45</a> of file <a class="el" href="a00092_source.html">HeightMap.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00322_a397bce27d4d739635f014d1d83c8eefe_cgraph.png" border="0" usemap="#aa00322_a397bce27d4d739635f014d1d83c8eefe_cgraph" alt=""/></div>
-<map name="aa00322_a397bce27d4d739635f014d1d83c8eefe_cgraph" id="aa00322_a397bce27d4d739635f014d1d83c8eefe_cgraph">
-<area shape="rect" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="5,56,208,83"/>
-<area shape="rect" href="a00414.html#a6739e5043d6ddbf659e2d1509c5a83e3" title="Generates a perlin noise map of a given width and height." alt="" coords="259,5,429,32"/>
-<area shape="rect" href="a00322.html#a2e1f68e1ca4250565c3a9b9db7e0ad22" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="256,56,432,83"/>
-<area shape="rect" href="a00322.html#ae7714c3d98b43c7ac86a50717e8b5f5e" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="269,107,419,133"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00322_a397bce27d4d739635f014d1d83c8eefe_icgraph.png" border="0" usemap="#aa00322_a397bce27d4d739635f014d1d83c8eefe_icgraph" alt=""/></div>
-<map name="aa00322_a397bce27d4d739635f014d1d83c8eefe_icgraph" id="aa00322_a397bce27d4d739635f014d1d83c8eefe_icgraph">
-<area shape="rect" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1204,31,1407,57"/>
-<area shape="rect" href="a00342.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1025,31,1156,57"/>
-<area shape="rect" href="a00330.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="771,31,977,57"/>
-<area shape="rect" href="a00318.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="536,5,723,32"/>
-<area shape="rect" href="a00330.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="548,56,711,83"/>
-<area shape="rect" href="a00318.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,5,488,32"/>
-<area shape="rect" href="a00318.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
-</map>
-</div>
+<p>Reimplemented in <a class="el" href="a00334.html#a3bebe21647bdcf9561d607a14735bdb4">Thoughts.Participants.ControlSystems.Manual.Manual</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="a00068_source.html#l00027">27</a> of file <a class="el" href="a00068_source.html">ControlSystem.cs</a>.</p>
 
 </div>
 </div>
-<a id="a2e1f68e1ca4250565c3a9b9db7e0ad22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e1f68e1ca4250565c3a9b9db7e0ad22">&#9670;&nbsp;</a></span>GetFalloffValue()</h2>
+<a id="abf248a249454bea0c4b595eb8a24070d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf248a249454bea0c4b595eb8a24070d">&#9670;&nbsp;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,123 +147,63 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static float HeightMap.GetFalloffValue </td>
+          <td class="memname">virtual void Thoughts.Participants.ControlSystems.ControlSystem.Initialize </td>
           <td>(</td>
-          <td class="paramtype">Vector2&#160;</td>
-          <td class="paramname"><em>coords</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="a00418.html">Participant</a>&#160;</td>
+          <td class="paramname"><em>participant</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">AnimationCurve&#160;</td>
-          <td class="paramname"><em>falloffIntensity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>mapRadius</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain </p>
+<p>Initializes the <a class="el" href="a00322.html" title="A way of controlling a participant.">ControlSystem</a> by giving it reference to the participant that will use it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">coords</td><td>The coords of the map to calculate the intensity of the falloff in that location</td></tr>
-    <tr><td class="paramname">falloffIntensity</td><td>The AnimationCurve that defines the intensity of the falloff relative to the radius of the center of the map</td></tr>
-    <tr><td class="paramname">mapRadius</td><td>The radius of the center of the map</td></tr>
+    <tr><td class="paramname">participant</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00092_source.html#l00092">92</a> of file <a class="el" href="a00092_source.html">HeightMap.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00322_a2e1f68e1ca4250565c3a9b9db7e0ad22_icgraph.png" border="0" usemap="#aa00322_a2e1f68e1ca4250565c3a9b9db7e0ad22_icgraph" alt=""/></div>
-<map name="aa00322_a2e1f68e1ca4250565c3a9b9db7e0ad22_icgraph" id="aa00322_a2e1f68e1ca4250565c3a9b9db7e0ad22_icgraph">
-<area shape="rect" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="1455,31,1631,57"/>
-<area shape="rect" href="a00322.html#a397bce27d4d739635f014d1d83c8eefe" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1204,31,1407,57"/>
-<area shape="rect" href="a00342.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1025,31,1156,57"/>
-<area shape="rect" href="a00330.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="771,31,977,57"/>
-<area shape="rect" href="a00318.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="536,5,723,32"/>
-<area shape="rect" href="a00330.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="548,56,711,83"/>
-<area shape="rect" href="a00318.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,5,488,32"/>
-<area shape="rect" href="a00318.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
-</map>
-</div>
+<p>Reimplemented in <a class="el" href="a00334.html#acefa1b42e6282ca4e711a11480c0abff">Thoughts.Participants.ControlSystems.Manual.Manual</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="a00068_source.html#l00019">19</a> of file <a class="el" href="a00068_source.html">ControlSystem.cs</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a514be5360af75c44a1ba691fab789248"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a514be5360af75c44a1ba691fab789248">&#9670;&nbsp;</a></span>maxValue</h2>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a551160a4456ce5eb05dfe74b5dc87b23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a551160a4456ce5eb05dfe74b5dc87b23">&#9670;&nbsp;</a></span>controlledParticipant</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">readonly float HeightMap.maxValue</td>
+          <td class="memname"><a class="el" href="a00418.html">Participant</a> Thoughts.Participants.ControlSystems.ControlSystem.controlledParticipant</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>The pre recorded maximum value contained within the main data. </p>
+<p>Tha participant using this <a class="el" href="a00322.html" title="A way of controlling a participant.">ControlSystem</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="a00092_source.html#l00020">20</a> of file <a class="el" href="a00092_source.html">HeightMap.cs</a>.</p>
-
-</div>
-</div>
-<a id="abb44dcd529b447cdc562598d4bc578c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb44dcd529b447cdc562598d4bc578c1">&#9670;&nbsp;</a></span>minValue</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly float HeightMap.minValue</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The pre recorded minimum value contained within the main data. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00092_source.html#l00016">16</a> of file <a class="el" href="a00092_source.html">HeightMap.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00068_source.html#l00013">13</a> of file <a class="el" href="a00068_source.html">ControlSystem.cs</a>.</p>
 
 </div>
 </div>
-<a id="af0aefe06b2d27557eb18bce797875db6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0aefe06b2d27557eb18bce797875db6">&#9670;&nbsp;</a></span>values</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly float [,] HeightMap.values</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The main data stored in the <a class="el" href="a00322.html" title="Contains values relative to the height of a terrain">HeightMap</a> (should be relative to the height of a terrain). </p>
-
-<p class="definition">Definition at line <a class="el" href="a00092_source.html#l00012">12</a> of file <a class="el" href="a00092_source.html">HeightMap.cs</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li><a class="el" href="a00092_source.html">HeightMap.cs</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li><a class="el" href="a00068_source.html">ControlSystem.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

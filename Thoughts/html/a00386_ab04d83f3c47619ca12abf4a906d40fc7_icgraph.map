@@ -1,0 +1,4 @@
+<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.GameUIManager.DisplayUIFor" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.GameUIManager.DisplayUIFor">
+<area shape="rect" id="node1" title="Displays the UI related to the given MapElement and subscribes the UI to changes on that mapElement t..." alt="" coords="544,5,1069,32"/>
+<area shape="rect" id="node2" href="$a00386.html#a28e6bd626c77dbf779538bedac923aaf" title="Setup of the initial UI for the game (displays the UI for nothing, so no UI)" alt="" coords="5,5,496,32"/>
+</map>

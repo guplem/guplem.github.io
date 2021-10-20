@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00438.html" title=" " alt="" coords="5,5,188,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="23,7,106,33"/>
+<area shape="rect" id="node2" href="$a00226.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="587,5,833,32"/>
+<area shape="rect" id="node3" href="$a00230.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="172,44,512,71"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,69,124,96"/>
+<area shape="rect" id="node5" href="$a00434.html" title=" " alt="" coords="217,95,467,121"/>
+<area shape="rect" id="node6" href="$a00282.html" title="The configuration of the height of the terrain of the map" alt="" coords="560,81,860,108"/>
+<area shape="rect" id="node7" href="$a00318.html" title="The configuration of the texture of the terrain of the map" alt="" coords="569,132,851,159"/>
 </map>

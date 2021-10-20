@@ -1,5 +1,7 @@
-<map id="Thoughts.Game.Attributes.Attribute" name="Thoughts.Game.Attributes.Attribute">
-<area shape="rect" id="node1" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="31,131,258,340"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,124,83"/>
-<area shape="rect" id="node3" title=" " alt="" coords="148,5,304,83"/>
+<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.LandAnimalsUI" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.LandAnimalsUI">
+<area shape="rect" id="node1" title=" " alt="" coords="5,599,540,676"/>
+<area shape="rect" id="node2" href="$a00350.html" title=" " alt="" coords="192,472,353,549"/>
+<area shape="rect" id="node3" href="$a00410.html" title=" " alt="" coords="172,132,363,283"/>
+<area shape="rect" id="node5" href="$a00350.html" title=" " alt="" coords="289,332,824,409"/>
+<area shape="rect" id="node4" title=" " alt="" coords="212,5,323,83"/>
 </map>

@@ -1,0 +1,6 @@
+<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.GameUIManager.Awake" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.GameUIManager.Awake">
+<area shape="rect" id="node1" title="Setup of the initial UI for the game (displays the UI for nothing, so no UI)" alt="" coords="5,56,496,83"/>
+<area shape="rect" id="node2" href="$a00386.html#ab04d83f3c47619ca12abf4a906d40fc7" title="Displays the UI related to the given MapElement and subscribes the UI to changes on that mapElement t..." alt="" coords="589,5,1114,32"/>
+<area shape="rect" id="node3" href="$a00410.html#a0fa627f1f236774c1bf2af82b75344eb" title="Plays the animation to hide this UI Element" alt="" coords="547,56,1155,83"/>
+<area shape="rect" id="node4" href="$a00410.html#a0d0c76a6da4f3e48c19dd64ebba6b652" title="Plays the animation to show/display this UI Element" alt="" coords="544,107,1159,133"/>
+</map>

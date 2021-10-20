@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: ThreadedDataRequester Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,56 +59,88 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="a00176.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00183.html">Participants</a></li><li class="navelem"><a class="el" href="a00184.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00185.html">Manual</a></li><li class="navelem"><a class="el" href="a00186.html">UI</a></li><li class="navelem"><a class="el" href="a00187.html">Game</a></li><li class="navelem"><a class="el" href="a00189.html">CreationStepsUI</a></li><li class="navelem"><a class="el" href="a00350.html">CreationStepUI</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00347.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ThreadedDataRequester Class Reference</div>  </div>
+<div class="title">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Component in charge doing threaded requests of data  
- <a href="a00350.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for ThreadedDataRequester:</div>
+Collaboration diagram for Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00348.png" border="0" usemap="#aThreadedDataRequester_coll__map" alt="Collaboration graph"/></div>
-<map name="aThreadedDataRequester_coll__map" id="aThreadedDataRequester_coll__map">
-<area shape="rect" title="Component in charge doing threaded requests of data" alt="" coords="5,131,167,237"/>
-<area shape="rect" title=" " alt="" coords="31,5,141,83"/>
+<div class="center"><img src="a00348.png" border="0" usemap="#aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8CreationStepsUI_8CreationStepUI_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8CreationStepsUI_8CreationStepUI_coll__map" id="aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8CreationStepsUI_8CreationStepUI_coll__map">
+<area shape="rect" title=" " alt="" coords="5,332,540,409"/>
+<area shape="rect" href="a00410.html" title=" " alt="" coords="177,132,368,283"/>
+<area shape="rect" title=" " alt="" coords="217,5,328,83"/>
 </map>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ac759e0a4fcb6c19c010611359c78bf99"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a> { <a class="el" href="a00410.html#ac759e0a4fcb6c19c010611359c78bf99ab4e6101378d2a08d80df7e5da0625128">Showing</a>
+, <a class="el" href="a00410.html#ac759e0a4fcb6c19c010611359c78bf99a891abfc8e08b549204d42bb0e4bb1a01">Hiding</a>
+ }</td></tr>
+<tr class="memdesc:ac759e0a4fcb6c19c010611359c78bf99"><td class="mdescLeft">&#160;</td><td class="mdescRight">The possible states of the <a class="el" href="a00186.html">UI</a> Element  <a href="a00410.html#ac759e0a4fcb6c19c010611359c78bf99">More...</a><br /></td></tr>
+<tr class="separator:ac759e0a4fcb6c19c010611359c78bf99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a51c10f83bd17c992b4c2399c54fcce33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00350.html#a51c10f83bd17c992b4c2399c54fcce33">RequestData</a> (Func&lt; object &gt; generateDataMethod, Action&lt; object &gt; callback)</td></tr>
-<tr class="memdesc:a51c10f83bd17c992b4c2399c54fcce33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Requests to a thread to execute the given method to obtain desired data and, once the logic is completed, call the callback method to share the data with it  <a href="a00350.html#a51c10f83bd17c992b4c2399c54fcce33">More...</a><br /></td></tr>
-<tr class="separator:a51c10f83bd17c992b4c2399c54fcce33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9af22c66a2b7eb256e64c2f354119a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00350.html#aa9af22c66a2b7eb256e64c2f354119a4">ContinueToNextStep</a> ()</td></tr>
+<tr class="separator:aa9af22c66a2b7eb256e64c2f354119a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7af46dbfcd0e211e42f3b8d409ebe9ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a7af46dbfcd0e211e42f3b8d409ebe9ec">SwitchState</a> (bool initialStateIsShowing=false)</td></tr>
+<tr class="memdesc:a7af46dbfcd0e211e42f3b8d409ebe9ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the Show or the Hide animation depending on the current state of the <a class="el" href="a00186.html">UI</a> Element. If state is Show, it plays the Hide animation and vice-versa.  <a href="a00410.html#a7af46dbfcd0e211e42f3b8d409ebe9ec">More...</a><br /></td></tr>
+<tr class="separator:a7af46dbfcd0e211e42f3b8d409ebe9ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0c76a6da4f3e48c19dd64ebba6b652"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a0d0c76a6da4f3e48c19dd64ebba6b652">Show</a> ()</td></tr>
+<tr class="memdesc:a0d0c76a6da4f3e48c19dd64ebba6b652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the animation to show/display this <a class="el" href="a00186.html">UI</a> Element  <a href="a00410.html#a0d0c76a6da4f3e48c19dd64ebba6b652">More...</a><br /></td></tr>
+<tr class="separator:a0d0c76a6da4f3e48c19dd64ebba6b652"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fa627f1f236774c1bf2af82b75344eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a0fa627f1f236774c1bf2af82b75344eb">Hide</a> ()</td></tr>
+<tr class="memdesc:a0fa627f1f236774c1bf2af82b75344eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the animation to hide this <a class="el" href="a00186.html">UI</a> Element  <a href="a00410.html#a0fa627f1f236774c1bf2af82b75344eb">More...</a><br /></td></tr>
+<tr class="separator:a0fa627f1f236774c1bf2af82b75344eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a480eeda51d735d389ed7521ea34b64e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00350.html#a480eeda51d735d389ed7521ea34b64e9">DataThread</a> (Func&lt; object &gt; generateDataMethod, Action&lt; object &gt; callback)</td></tr>
-<tr class="separator:a480eeda51d735d389ed7521ea34b64e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ca568f7f972c91170d1c71b4889f8da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00350.html#a1ca568f7f972c91170d1c71b4889f8da">Update</a> ()</td></tr>
-<tr class="separator:a1ca568f7f972c91170d1c71b4889f8da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ac9e6c598fb3c699ed5e4129026a219ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00350.html">CreationStepUI</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00350.html#ac9e6c598fb3c699ed5e4129026a219ed">nextStepMainPanel</a></td></tr>
+<tr class="separator:ac9e6c598fb3c699ed5e4129026a219ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:acd9d043e69c8d9eb4a4ed3b7382d3dd5"><td class="memItemLeft" align="right" valign="top">FlipFlop&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">flipFlop</a></td></tr>
+<tr class="memdesc:acd9d043e69c8d9eb4a4ed3b7382d3dd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls the current state of the AnimationUIElement  <a href="a00410.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">More...</a><br /></td></tr>
+<tr class="separator:acd9d043e69c8d9eb4a4ed3b7382d3dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a3ba8b3c55e0ace54c2acc5001def44cd"><td class="memItemLeft" align="right" valign="top">SimpleAnimationsManager&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a3ba8b3c55e0ace54c2acc5001def44cd">simpleAnimationsManager</a><code> [get]</code></td></tr>
+<tr class="memdesc:a3ba8b3c55e0ace54c2acc5001def44cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference to the SimpleAnimationsManager used for the animations of thi <a class="el" href="a00186.html">UI</a> Eement  <a href="a00410.html#a3ba8b3c55e0ace54c2acc5001def44cd">More...</a><br /></td></tr>
+<tr class="separator:a3ba8b3c55e0ace54c2acc5001def44cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab603f85a799be152e4151a04964b0b6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00410.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#ab603f85a799be152e4151a04964b0b6d">state</a><code> [get, private set]</code></td></tr>
+<tr class="memdesc:ab603f85a799be152e4151a04964b0b6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current state of the <a class="el" href="a00186.html">UI</a> Element.  <a href="a00410.html#ab603f85a799be152e4151a04964b0b6d">More...</a><br /></td></tr>
+<tr class="separator:ab603f85a799be152e4151a04964b0b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a35e8d60b07c9dead814fa343d11e4d3a"><td class="memItemLeft" align="right" valign="top">Queue&lt; <a class="el" href="a00450.html">ThreadInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00350.html#a35e8d60b07c9dead814fa343d11e4d3a">dataQueue</a> = new Queue&lt;<a class="el" href="a00450.html">ThreadInfo</a>&gt;()</td></tr>
-<tr class="memdesc:a35e8d60b07c9dead814fa343d11e4d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue containing data obtained in threads waiting to be shared with the callbacks that were given during the request  <a href="a00350.html#a35e8d60b07c9dead814fa343d11e4d3a">More...</a><br /></td></tr>
-<tr class="separator:a35e8d60b07c9dead814fa343d11e4d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c2d79d6dbed71199504ff2a2c3705f3"><td class="memItemLeft" align="right" valign="top">SimpleAnimationsManager&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00410.html#a5c2d79d6dbed71199504ff2a2c3705f3">_simpleAnimationsManager</a></td></tr>
+<tr class="separator:a5c2d79d6dbed71199504ff2a2c3705f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Component in charge doing threaded requests of data </p>
-
-<p class="definition">Definition at line <a class="el" href="a00107_source.html#l00011">11</a> of file <a class="el" href="a00107_source.html">ThreadedDataRequester.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a480eeda51d735d389ed7521ea34b64e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a480eeda51d735d389ed7521ea34b64e9">&#9670;&nbsp;</a></span>DataThread()</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="a00089_source.html#l00007">7</a> of file <a class="el" href="a00089_source.html">CreationStepUI.cs</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="ac759e0a4fcb6c19c010611359c78bf99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac759e0a4fcb6c19c010611359c78bf99">&#9670;&nbsp;</a></span>VisualizationState</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -117,125 +149,60 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ThreadedDataRequester.DataThread </td>
-          <td>(</td>
-          <td class="paramtype">Func&lt; object &gt;&#160;</td>
-          <td class="paramname"><em>generateDataMethod</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Action&lt; object &gt;&#160;</td>
-          <td class="paramname"><em>callback</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">enum <a class="el" href="a00410.html#ac759e0a4fcb6c19c010611359c78bf99">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.VisualizationState</a></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">strong</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00107_source.html#l00046">46</a> of file <a class="el" href="a00107_source.html">ThreadedDataRequester.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00350_a480eeda51d735d389ed7521ea34b64e9_icgraph.png" border="0" usemap="#aa00350_a480eeda51d735d389ed7521ea34b64e9_icgraph" alt=""/></div>
-<map name="aa00350_a480eeda51d735d389ed7521ea34b64e9_icgraph" id="aa00350_a480eeda51d735d389ed7521ea34b64e9_icgraph">
-<area shape="rect" title=" " alt="" coords="2477,17,2708,44"/>
-<area shape="rect" href="a00350.html#a51c10f83bd17c992b4c2399c54fcce33" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="2189,17,2429,44"/>
-<area shape="rect" href="a00342.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1028,43,1159,69"/>
-<area shape="rect" href="a00346.html#aeaf1be489394a7aac474b7138f55a75e" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="1977,43,2141,69"/>
-<area shape="rect" href="a00330.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="771,68,977,95"/>
-<area shape="rect" href="a00318.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="536,43,723,69"/>
-<area shape="rect" href="a00330.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="548,93,711,120"/>
-<area shape="rect" href="a00318.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,43,488,69"/>
-<area shape="rect" href="a00318.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,43,177,69"/>
-<area shape="rect" href="a00342.html#a8405c3182273af0abc72c21b0db7837e" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="1723,43,1925,69"/>
-<area shape="rect" href="a00342.html#a7f4fb4b4c58a79b41736ffe470d56a82" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="1719,93,1929,120"/>
-<area shape="rect" href="a00342.html#aa6df03f570aa6158181c137fc36a0b96" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="1491,93,1671,120"/>
-<area shape="rect" href="a00342.html#a758502cab997e409e1f0e7eb9f202d7f" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1209,43,1443,69"/>
-<area shape="rect" href="a00342.html#a826c703400d6d9f8df0af0efc7f8289e" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1025,93,1161,120"/>
-</map>
-</div>
+<p>The possible states of the <a class="el" href="a00186.html">UI</a> Element </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac759e0a4fcb6c19c010611359c78bf99ab4e6101378d2a08d80df7e5da0625128"></a>Showing&#160;</td><td class="fielddoc"><p>The element is being shown/displayed </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ac759e0a4fcb6c19c010611359c78bf99a891abfc8e08b549204d42bb0e4bb1a01"></a>Hiding&#160;</td><td class="fielddoc"><p>The element is being hid/not visible </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="a00134_source.html#l00032">32</a> of file <a class="el" href="a00134_source.html">SimpleAnimationUIElement.cs</a>.</p>
 
 </div>
 </div>
-<a id="a51c10f83bd17c992b4c2399c54fcce33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51c10f83bd17c992b4c2399c54fcce33">&#9670;&nbsp;</a></span>RequestData()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa9af22c66a2b7eb256e64c2f354119a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9af22c66a2b7eb256e64c2f354119a4">&#9670;&nbsp;</a></span>ContinueToNextStep()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ThreadedDataRequester.RequestData </td>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI.ContinueToNextStep </td>
           <td>(</td>
-          <td class="paramtype">Func&lt; object &gt;&#160;</td>
-          <td class="paramname"><em>generateDataMethod</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">Action&lt; object &gt;&#160;</td>
-          <td class="paramname"><em>callback</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Requests to a thread to execute the given method to obtain desired data and, once the logic is completed, call the callback method to share the data with it </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">generateDataMethod</td><td>The method containing the logic to generate the data in a thread</td></tr>
-    <tr><td class="paramname">callback</td><td>The method to call once the computation has been completed</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00107_source.html#l00034">34</a> of file <a class="el" href="a00107_source.html">ThreadedDataRequester.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00089_source.html#l00011">11</a> of file <a class="el" href="a00089_source.html">CreationStepUI.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00350_a51c10f83bd17c992b4c2399c54fcce33_cgraph.png" border="0" usemap="#aa00350_a51c10f83bd17c992b4c2399c54fcce33_cgraph" alt=""/></div>
-<map name="aa00350_a51c10f83bd17c992b4c2399c54fcce33_cgraph" id="aa00350_a51c10f83bd17c992b4c2399c54fcce33_cgraph">
-<area shape="rect" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="5,5,245,32"/>
-<area shape="rect" href="a00350.html#a480eeda51d735d389ed7521ea34b64e9" title=" " alt="" coords="293,5,524,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00350_a51c10f83bd17c992b4c2399c54fcce33_icgraph.png" border="0" usemap="#aa00350_a51c10f83bd17c992b4c2399c54fcce33_icgraph" alt=""/></div>
-<map name="aa00350_a51c10f83bd17c992b4c2399c54fcce33_icgraph" id="aa00350_a51c10f83bd17c992b4c2399c54fcce33_icgraph">
-<area shape="rect" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="2189,17,2429,44"/>
-<area shape="rect" href="a00342.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1028,43,1159,69"/>
-<area shape="rect" href="a00346.html#aeaf1be489394a7aac474b7138f55a75e" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="1977,43,2141,69"/>
-<area shape="rect" href="a00330.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="771,68,977,95"/>
-<area shape="rect" href="a00318.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="536,43,723,69"/>
-<area shape="rect" href="a00330.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="548,93,711,120"/>
-<area shape="rect" href="a00318.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,43,488,69"/>
-<area shape="rect" href="a00318.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,43,177,69"/>
-<area shape="rect" href="a00342.html#a8405c3182273af0abc72c21b0db7837e" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="1723,43,1925,69"/>
-<area shape="rect" href="a00342.html#a7f4fb4b4c58a79b41736ffe470d56a82" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="1719,93,1929,120"/>
-<area shape="rect" href="a00342.html#aa6df03f570aa6158181c137fc36a0b96" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="1491,93,1671,120"/>
-<area shape="rect" href="a00342.html#a758502cab997e409e1f0e7eb9f202d7f" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1209,43,1443,69"/>
-<area shape="rect" href="a00342.html#a826c703400d6d9f8df0af0efc7f8289e" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1025,93,1161,120"/>
+<div class="center"><img src="a00350_aa9af22c66a2b7eb256e64c2f354119a4_cgraph.png" border="0" usemap="#aa00350_aa9af22c66a2b7eb256e64c2f354119a4_cgraph" alt=""/></div>
+<map name="aa00350_aa9af22c66a2b7eb256e64c2f354119a4_cgraph" id="aa00350_aa9af22c66a2b7eb256e64c2f354119a4_cgraph">
+<area shape="rect" title=" " alt="" coords="5,31,664,57"/>
+<area shape="rect" href="a00410.html#a0fa627f1f236774c1bf2af82b75344eb" title="Plays the animation to hide this UI Element" alt="" coords="715,5,1323,32"/>
+<area shape="rect" href="a00410.html#a0d0c76a6da4f3e48c19dd64ebba6b652" title="Plays the animation to show/display this UI Element" alt="" coords="712,56,1327,83"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a1ca568f7f972c91170d1c71b4889f8da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ca568f7f972c91170d1c71b4889f8da">&#9670;&nbsp;</a></span>Update()</h2>
+<a id="a0fa627f1f236774c1bf2af82b75344eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fa627f1f236774c1bf2af82b75344eb">&#9670;&nbsp;</a></span>Hide()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,7 +211,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ThreadedDataRequester.Update </td>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Hide </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -252,18 +219,30 @@ Here is the caller graph for this function:</div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00107_source.html#l00075">75</a> of file <a class="el" href="a00107_source.html">ThreadedDataRequester.cs</a>.</p>
+<p>Plays the animation to hide this <a class="el" href="a00186.html">UI</a> Element </p>
+
+<p class="definition">Definition at line <a class="el" href="a00134_source.html#l00077">77</a> of file <a class="el" href="a00134_source.html">SimpleAnimationUIElement.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00410_a0fa627f1f236774c1bf2af82b75344eb_icgraph.png" border="0" usemap="#aa00410_a0fa627f1f236774c1bf2af82b75344eb_icgraph" alt=""/></div>
+<map name="aa00410_a0fa627f1f236774c1bf2af82b75344eb_icgraph" id="aa00410_a0fa627f1f236774c1bf2af82b75344eb_icgraph">
+<area shape="rect" title="Plays the animation to hide this UI Element" alt="" coords="712,56,1320,83"/>
+<area shape="rect" href="a00386.html#a28e6bd626c77dbf779538bedac923aaf" title="Setup of the initial UI for the game (displays the UI for nothing, so no UI)" alt="" coords="89,5,580,32"/>
+<area shape="rect" href="a00350.html#aa9af22c66a2b7eb256e64c2f354119a4" title=" " alt="" coords="5,56,664,83"/>
+<area shape="rect" href="a00410.html#a7af46dbfcd0e211e42f3b8d409ebe9ec" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="9,107,661,133"/>
+</map>
+</div>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a35e8d60b07c9dead814fa343d11e4d3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35e8d60b07c9dead814fa343d11e4d3a">&#9670;&nbsp;</a></span>dataQueue</h2>
+<a id="a0d0c76a6da4f3e48c19dd64ebba6b652"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d0c76a6da4f3e48c19dd64ebba6b652">&#9670;&nbsp;</a></span>Show()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -272,24 +251,204 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Queue&lt;<a class="el" href="a00450.html">ThreadInfo</a>&gt; ThreadedDataRequester.dataQueue = new Queue&lt;<a class="el" href="a00450.html">ThreadInfo</a>&gt;()</td>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Show </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Queue containing data obtained in threads waiting to be shared with the callbacks that were given during the request </p>
+<p>Plays the animation to show/display this <a class="el" href="a00186.html">UI</a> Element </p>
 
-<p class="definition">Definition at line <a class="el" href="a00107_source.html#l00027">27</a> of file <a class="el" href="a00107_source.html">ThreadedDataRequester.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00134_source.html#l00067">67</a> of file <a class="el" href="a00134_source.html">SimpleAnimationUIElement.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00410_a0d0c76a6da4f3e48c19dd64ebba6b652_icgraph.png" border="0" usemap="#aa00410_a0d0c76a6da4f3e48c19dd64ebba6b652_icgraph" alt=""/></div>
+<map name="aa00410_a0d0c76a6da4f3e48c19dd64ebba6b652_icgraph" id="aa00410_a0d0c76a6da4f3e48c19dd64ebba6b652_icgraph">
+<area shape="rect" title="Plays the animation to show/display this UI Element" alt="" coords="712,56,1327,83"/>
+<area shape="rect" href="a00386.html#a28e6bd626c77dbf779538bedac923aaf" title="Setup of the initial UI for the game (displays the UI for nothing, so no UI)" alt="" coords="89,5,580,32"/>
+<area shape="rect" href="a00350.html#aa9af22c66a2b7eb256e64c2f354119a4" title=" " alt="" coords="5,56,664,83"/>
+<area shape="rect" href="a00410.html#a7af46dbfcd0e211e42f3b8d409ebe9ec" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="9,107,661,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a7af46dbfcd0e211e42f3b8d409ebe9ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7af46dbfcd0e211e42f3b8d409ebe9ec">&#9670;&nbsp;</a></span>SwitchState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.SwitchState </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>initialStateIsShowing</em> = <code>false</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Plays the Show or the Hide animation depending on the current state of the <a class="el" href="a00186.html">UI</a> Element. If state is Show, it plays the Hide animation and vice-versa. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initialStateIsShowing</td><td>Should the fist call set the <a class="el" href="a00186.html">UI</a> Element to the state "hide"?</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00134_source.html#l00053">53</a> of file <a class="el" href="a00134_source.html">SimpleAnimationUIElement.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00410_a7af46dbfcd0e211e42f3b8d409ebe9ec_cgraph.png" border="0" usemap="#aa00410_a7af46dbfcd0e211e42f3b8d409ebe9ec_cgraph" alt=""/></div>
+<map name="aa00410_a7af46dbfcd0e211e42f3b8d409ebe9ec_cgraph" id="aa00410_a7af46dbfcd0e211e42f3b8d409ebe9ec_cgraph">
+<area shape="rect" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="5,31,657,57"/>
+<area shape="rect" href="a00410.html#a0fa627f1f236774c1bf2af82b75344eb" title="Plays the animation to hide this UI Element" alt="" coords="709,5,1317,32"/>
+<area shape="rect" href="a00410.html#a0d0c76a6da4f3e48c19dd64ebba6b652" title="Plays the animation to show/display this UI Element" alt="" coords="705,56,1320,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a5c2d79d6dbed71199504ff2a2c3705f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c2d79d6dbed71199504ff2a2c3705f3">&#9670;&nbsp;</a></span>_simpleAnimationsManager</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SimpleAnimationsManager Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement._simpleAnimationsManager</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00134_source.html#l00022">22</a> of file <a class="el" href="a00134_source.html">SimpleAnimationUIElement.cs</a>.</p>
+
+</div>
+</div>
+<a id="acd9d043e69c8d9eb4a4ed3b7382d3dd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd9d043e69c8d9eb4a4ed3b7382d3dd5">&#9670;&nbsp;</a></span>flipFlop</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">FlipFlop Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.flipFlop</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Controls the current state of the AnimationUIElement </p>
+
+<p class="definition">Definition at line <a class="el" href="a00134_source.html#l00027">27</a> of file <a class="el" href="a00134_source.html">SimpleAnimationUIElement.cs</a>.</p>
+
+</div>
+</div>
+<a id="ac9e6c598fb3c699ed5e4129026a219ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9e6c598fb3c699ed5e4129026a219ed">&#9670;&nbsp;</a></span>nextStepMainPanel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00350.html">CreationStepUI</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI.nextStepMainPanel</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00089_source.html#l00009">9</a> of file <a class="el" href="a00089_source.html">CreationStepUI.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a3ba8b3c55e0ace54c2acc5001def44cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ba8b3c55e0ace54c2acc5001def44cd">&#9670;&nbsp;</a></span>simpleAnimationsManager</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SimpleAnimationsManager Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.simpleAnimationsManager</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A reference to the SimpleAnimationsManager used for the animations of thi <a class="el" href="a00186.html">UI</a> Eement </p>
+
+<p class="definition">Definition at line <a class="el" href="a00134_source.html#l00012">12</a> of file <a class="el" href="a00134_source.html">SimpleAnimationUIElement.cs</a>.</p>
+
+</div>
+</div>
+<a id="ab603f85a799be152e4151a04964b0b6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab603f85a799be152e4151a04964b0b6d">&#9670;&nbsp;</a></span>state</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00410.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.state</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The current state of the <a class="el" href="a00186.html">UI</a> Element. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00134_source.html#l00047">47</a> of file <a class="el" href="a00134_source.html">SimpleAnimationUIElement.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00107_source.html">ThreadedDataRequester.cs</a></li>
+<li><a class="el" href="a00089_source.html">CreationStepUI.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

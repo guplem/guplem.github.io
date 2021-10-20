@@ -1,0 +1,4 @@
+<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.Setup" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.Setup">
+<area shape="rect" id="node1" title="Prepares the NeedUI to be shown" alt="" coords="577,5,1084,32"/>
+<area shape="rect" id="node2" href="$a00406.html#aa0ea33ea90fd92571ec5044b6c86c7c2" title="Displays the information regarding the given selected MapElement" alt="" coords="5,5,529,32"/>
+</map>

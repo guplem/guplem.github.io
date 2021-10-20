@@ -1,4 +1,13 @@
-<map id="Thoughts.Game.Attributes.Requirement" name="Thoughts.Game.Attributes.Requirement">
-<area shape="rect" id="node1" title="Requirement for the execution of a MapEvent" alt="" coords="5,145,256,237"/>
-<area shape="rect" id="node2" title=" " alt="" coords="102,5,159,83"/>
+<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.GameUIManager" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.GameUIManager">
+<area shape="rect" id="node1" title="Controls the UI of the game" alt="" coords="394,1095,840,1201"/>
+<area shape="rect" id="node2" title=" " alt="" coords="292,198,403,275"/>
+<area shape="rect" id="node4" href="$a00410.html" title=" " alt="" coords="252,441,443,591"/>
+<area shape="rect" id="node6" href="$a00262.html" title="A spawned element of the Map." alt="" coords="788,691,1107,1032"/>
+<area shape="rect" id="node3" href="$a00350.html" title=" " alt="" coords="80,823,615,900"/>
+<area shape="rect" id="node5" title=" " alt="" coords="1132,823,1220,900"/>
+<area shape="rect" id="node7" href="$a00238.html" title="Manages a set of AttributeOwnerships all owned by the same MapElement" alt="" coords="665,404,1062,628"/>
+<area shape="rect" id="node8" href="$a00234.html" title="A relation between an Attribute and a MapElement that owns it." alt="" coords="1087,419,1488,613"/>
+<area shape="rect" id="node9" href="$a00230.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="1118,132,1458,341"/>
+<area shape="rect" id="node10" title=" " alt="" coords="1147,5,1266,83"/>
+<area shape="rect" id="node11" title=" " alt="" coords="1290,5,1446,83"/>
 </map>

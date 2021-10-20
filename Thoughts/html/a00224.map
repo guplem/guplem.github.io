@@ -1,6 +1,10 @@
-<map id="Thoughts.ControlSystems.UI.BehaviorUI" name="Thoughts.ControlSystems.UI.BehaviorUI">
-<area shape="rect" id="node1" title="Controls the display of the information in the UI related to the behavior of a MapElement (objective ..." alt="" coords="54,287,307,393"/>
-<area shape="rect" id="node2" title=" " alt="" coords="125,5,236,83"/>
-<area shape="rect" id="node3" href="$a00230.html" title="Controls the display of the planned ExecutionPlans in the UI" alt="" coords="33,132,328,224"/>
-<area shape="rect" id="node4" href="$a00302.html" title="Controls the display of a single Attribute in the UI" alt="" coords="352,139,606,217"/>
+<map id="Thoughts.Game.Map.MapConfiguration" name="Thoughts.Game.Map.MapConfiguration">
+<area shape="rect" id="node1" title="Holds all the configuration/settings used to generate the Map" alt="" coords="309,689,556,913"/>
+<area shape="rect" id="node2" href="$a00434.html" title=" " alt="" coords="290,182,397,259"/>
+<area shape="rect" id="node5" href="$a00282.html" title="The configuration of the height of the terrain of the map" alt="" coords="5,410,305,575"/>
+<area shape="rect" id="node8" href="$a00318.html" title="The configuration of the texture of the terrain of the map" alt="" coords="381,359,663,627"/>
+<area shape="rect" id="node3" title=" " alt="" coords="284,5,403,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="687,454,893,531"/>
+<area shape="rect" id="node6" href="$a00446.html" title="Collection of settings used to generate a noise map" alt="" coords="8,145,263,296"/>
+<area shape="rect" id="node7" href="$a00442.html" title=" " alt="" coords="44,5,227,83"/>
 </map>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Noise Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Participants.ControlSystems.Manual.UI.Game.Shared.AttributeUI Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -59,143 +59,117 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="a00176.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00183.html">Participants</a></li><li class="navelem"><a class="el" href="a00184.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00185.html">Manual</a></li><li class="navelem"><a class="el" href="a00186.html">UI</a></li><li class="navelem"><a class="el" href="a00187.html">Game</a></li><li class="navelem"><a class="el" href="a00191.html">Shared</a></li><li class="navelem"><a class="el" href="a00414.html">AttributeUI</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00411.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Noise Class Reference</div>  </div>
+<div class="title">Thoughts.Participants.ControlSystems.Manual.UI.Game.Shared.AttributeUI Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Controls the display of a single Attribute in the <a class="el" href="a00186.html">UI</a>  
+ <a href="a00414.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Noise:</div>
+Collaboration diagram for Thoughts.Participants.ControlSystems.Manual.UI.Game.Shared.AttributeUI:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00412.png" border="0" usemap="#aNoise_coll__map" alt="Collaboration graph"/></div>
-<map name="aNoise_coll__map" id="aNoise_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,159,83"/>
+<div class="center"><img src="a00412.png" border="0" usemap="#aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8Shared_8AttributeUI_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8Shared_8AttributeUI_coll__map" id="aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8Shared_8AttributeUI_coll__map">
+<area shape="rect" title="Controls the display of a single Attribute in the UI" alt="" coords="5,131,461,208"/>
+<area shape="rect" title=" " alt="" coords="178,5,289,83"/>
 </map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:abf51442447c46df6f01d4e9422b67f09"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00414.html#abf51442447c46df6f01d4e9422b67f09">NormalizeMode</a> { <a class="el" href="a00414.html#abf51442447c46df6f01d4e9422b67f09a509820290d57f333403f490dde7316f4">Local</a>
-, <a class="el" href="a00414.html#abf51442447c46df6f01d4e9422b67f09a4cc6684df7b4a92b1dec6fce3264fac8">Global</a>
- }</td></tr>
-<tr class="separator:abf51442447c46df6f01d4e9422b67f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aca03c6ea26b3a9621f9e9073e20ba096"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00414.html#aca03c6ea26b3a9621f9e9073e20ba096">Setup</a> (<a class="el" href="a00234.html">AttributeOwnership</a> attributeOwnership)</td></tr>
+<tr class="memdesc:aca03c6ea26b3a9621f9e9073e20ba096"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays the given Attribute in the <a class="el" href="a00186.html">UI</a>. Disables the GameObject if the Attribute is null.  <a href="a00414.html#aca03c6ea26b3a9621f9e9073e20ba096">More...</a><br /></td></tr>
+<tr class="separator:aca03c6ea26b3a9621f9e9073e20ba096"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a6739e5043d6ddbf659e2d1509c5a83e3"><td class="memItemLeft" align="right" valign="top">static float[,]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00414.html#a6739e5043d6ddbf659e2d1509c5a83e3">GenerateNoiseMap</a> (int width, int height, <a class="el" href="a00418.html">NoiseMapSettings</a> mapSettings, Vector2 sampleCenter)</td></tr>
-<tr class="memdesc:a6739e5043d6ddbf659e2d1509c5a83e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a perlin noise map of a given width and height.  <a href="a00414.html#a6739e5043d6ddbf659e2d1509c5a83e3">More...</a><br /></td></tr>
-<tr class="separator:a6739e5043d6ddbf659e2d1509c5a83e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a4fdec87642cd6a375fc784f7e52de6f5"><td class="memItemLeft" align="right" valign="top">TMP_Text&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00414.html#a4fdec87642cd6a375fc784f7e52de6f5">attributeText</a></td></tr>
+<tr class="memdesc:a4fdec87642cd6a375fc784f7e52de6f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference to the text component that displays the name of the displayed Attribute  <a href="a00414.html#a4fdec87642cd6a375fc784f7e52de6f5">More...</a><br /></td></tr>
+<tr class="separator:a4fdec87642cd6a375fc784f7e52de6f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00155_source.html#l00005">5</a> of file <a class="el" href="a00155_source.html">Noise.cs</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="abf51442447c46df6f01d4e9422b67f09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf51442447c46df6f01d4e9422b67f09">&#9670;&nbsp;</a></span>NormalizeMode</h2>
+<div class="textblock"><p>Controls the display of a single Attribute in the <a class="el" href="a00186.html">UI</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00010">10</a> of file <a class="el" href="a00137_source.html">AttributeUI.cs</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aca03c6ea26b3a9621f9e9073e20ba096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca03c6ea26b3a9621f9e9073e20ba096">&#9670;&nbsp;</a></span>Setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="a00414.html#abf51442447c46df6f01d4e9422b67f09">Noise.NormalizeMode</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abf51442447c46df6f01d4e9422b67f09a509820290d57f333403f490dde7316f4"></a>Local&#160;</td><td class="fielddoc"><p>Using the local minimum and maximum </p>
-</td></tr>
-<tr><td class="fieldname"><a id="abf51442447c46df6f01d4e9422b67f09a4cc6684df7b4a92b1dec6fce3264fac8"></a>Global&#160;</td><td class="fielddoc"><p>Estimating the global minimum and maximum </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="a00155_source.html#l00007">7</a> of file <a class="el" href="a00155_source.html">Noise.cs</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6739e5043d6ddbf659e2d1509c5a83e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6739e5043d6ddbf659e2d1509c5a83e3">&#9670;&nbsp;</a></span>GenerateNoiseMap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static float [,] Noise.GenerateNoiseMap </td>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.Shared.AttributeUI.Setup </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>width</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="a00234.html">AttributeOwnership</a>&#160;</td>
+          <td class="paramname"><em>attributeOwnership</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>height</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00418.html">NoiseMapSettings</a>&#160;</td>
-          <td class="paramname"><em>mapSettings</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Vector2&#160;</td>
-          <td class="paramname"><em>sampleCenter</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Generates a perlin noise map of a given width and height. </p>
-<dl class="section return"><dt>Returns</dt><dd>An 2D array of floats containing the perlin noise map.</dd></dl>
+<p>Displays the given Attribute in the <a class="el" href="a00186.html">UI</a>. Disables the GameObject if the Attribute is null. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attributeOwnership</td><td>The AttributeOwnership to display in the <a class="el" href="a00186.html">UI</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="a00155_source.html#l00024">24</a> of file <a class="el" href="a00155_source.html">Noise.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00023">23</a> of file <a class="el" href="a00137_source.html">AttributeUI.cs</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00414_a6739e5043d6ddbf659e2d1509c5a83e3_icgraph.png" border="0" usemap="#aa00414_a6739e5043d6ddbf659e2d1509c5a83e3_icgraph" alt=""/></div>
-<map name="aa00414_a6739e5043d6ddbf659e2d1509c5a83e3_icgraph" id="aa00414_a6739e5043d6ddbf659e2d1509c5a83e3_icgraph">
-<area shape="rect" title="Generates a perlin noise map of a given width and height." alt="" coords="1455,31,1625,57"/>
-<area shape="rect" href="a00322.html#a397bce27d4d739635f014d1d83c8eefe" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1204,31,1407,57"/>
-<area shape="rect" href="a00342.html#a0da9a77a76a5577010efc3afeebb1167" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1025,31,1156,57"/>
-<area shape="rect" href="a00330.html#a4db4f9309aae517f302184e631c6b52e" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="771,31,977,57"/>
-<area shape="rect" href="a00318.html#ab433ff7ef9942b9f4579b6308197b8c7" title="Updates or generates the map." alt="" coords="536,5,723,32"/>
-<area shape="rect" href="a00330.html#a9819b1123ad591ca53caeae6101e2535" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="548,56,711,83"/>
-<area shape="rect" href="a00318.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,5,488,32"/>
-<area shape="rect" href="a00318.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
+<div class="center"><img src="a00414_aca03c6ea26b3a9621f9e9073e20ba096_icgraph.png" border="0" usemap="#aa00414_aca03c6ea26b3a9621f9e9073e20ba096_icgraph" alt=""/></div>
+<map name="aa00414_aca03c6ea26b3a9621f9e9073e20ba096_icgraph" id="aa00414_aca03c6ea26b3a9621f9e9073e20ba096_icgraph">
+<area shape="rect" title="Displays the given Attribute in the UI. Disables the GameObject if the Attribute is null." alt="" coords="1241,5,1736,32"/>
+<area shape="rect" href="a00338.html#a686c329b883a6649d7946b1762d59fe8" title="Displays the given Attribute as the objective in the UI" alt="" coords="568,5,1193,32"/>
+<area shape="rect" href="a00338.html#af71d283ee4ef5daf2e51fec9debd3c53" title="Displays the behavior information regarding the given selected MapElement" alt="" coords="5,5,520,32"/>
 </map>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a4fdec87642cd6a375fc784f7e52de6f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fdec87642cd6a375fc784f7e52de6f5">&#9670;&nbsp;</a></span>attributeText</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TMP_Text Thoughts.Participants.ControlSystems.Manual.UI.Game.Shared.AttributeUI.attributeText</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A reference to the text component that displays the name of the displayed Attribute </p>
+
+<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00017">17</a> of file <a class="el" href="a00137_source.html">AttributeUI.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00155_source.html">Noise.cs</a></li>
+<li><a class="el" href="a00137_source.html">AttributeUI.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -1,5 +1,3 @@
-<map id="Thoughts.ControlSystems.UI.CreationSteps.CreationStepUI" name="Thoughts.ControlSystems.UI.CreationSteps.CreationStepUI">
-<area shape="rect" id="node1" title=" " alt="" coords="5,332,371,409"/>
-<area shape="rect" id="node2" href="$a00298.html" title=" " alt="" coords="93,132,283,283"/>
-<area shape="rect" id="node3" title=" " alt="" coords="133,5,243,83"/>
+<map id="Thoughts.Game.Map.MapElements.Attributes.AttributesManager" name="Thoughts.Game.Map.MapElements.Attributes.AttributesManager">
+<area shape="rect" id="node1" title="Manages a set of AttributeOwnerships all owned by the same MapElement" alt="" coords="5,5,403,229"/>
 </map>

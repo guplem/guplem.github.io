@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['falloffgenerator_486',['FalloffGenerator',['../a00406.html',1,'']]],
-  ['fishandbirdsui_487',['FishAndBirdsUI',['../a00242.html',1,'Thoughts::ControlSystems::UI::CreationSteps']]]
+  ['falloffgenerator_494',['FalloffGenerator',['../a00438.html',1,'Thoughts::Utils::Maths']]],
+  ['fishandbirdsui_495',['FishAndBirdsUI',['../a00354.html',1,'Thoughts::Participants::ControlSystems::Manual::UI::Game::CreationStepsUI']]]
 ];

@@ -1,0 +1,5 @@
+<map id="Thoughts.Game.Map.MapGenerator.GenerateMap" name="Thoughts.Game.Map.MapGenerator.GenerateMap">
+<area shape="rect" id="node1" title="Updates or generates the map." alt="" coords="785,5,1096,32"/>
+<area shape="rect" id="node2" href="$a00270.html#ab3070a5a34dcdf5f89eecd23dbde657c" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="351,5,737,32"/>
+<area shape="rect" id="node3" href="$a00270.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,5,303,32"/>
+</map>

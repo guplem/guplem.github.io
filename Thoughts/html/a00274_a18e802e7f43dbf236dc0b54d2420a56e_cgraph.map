@@ -1,0 +1,5 @@
+<map id="Thoughts.Game.Map.MapManager.GenerateMobs" name="Thoughts.Game.Map.MapManager.GenerateMobs">
+<area shape="rect" id="node1" title="Generates Mobs in the map." alt="" coords="5,31,316,57"/>
+<area shape="rect" id="node2" href="$a00274.html#a7604ae38e58b7f2083cb16d0ad0e3d13" title="Obtains the GameObject with the given name from the spawnableMapElement list." alt="" coords="364,5,747,32"/>
+<area shape="rect" id="node3" href="$a00274.html#a82177c572c5e9d3a1eb915e1605d35ea" title="Makes a map element spawn." alt="" coords="386,56,725,83"/>
+</map>
