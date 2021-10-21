@@ -1,0 +1,15 @@
+digraph "Thoughts.Game.Map.MapManager.SpawnMapElement"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Thoughts.Game.Map.MapManager.SpawnMapElement",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Makes a map element spawn."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.Map.MapManager.GenerateMobs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00281.html#a18e802e7f43dbf236dc0b54d2420a56e",tooltip="Generates Mobs in the map."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Thoughts.Game.Map.MapManager.SpawnRandom",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00281.html#a58c26077f3c34c93dcce40fa5be57183",tooltip="Randomly generates the MapElement with the given name a determined amount of times."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Thoughts.Game.Map.MapManager.GenerateMapElements",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00281.html#a1a48a12fb8f507b91e5cddc5ceead414",tooltip="Generates MapElements in the map (not mobs)."];
+}

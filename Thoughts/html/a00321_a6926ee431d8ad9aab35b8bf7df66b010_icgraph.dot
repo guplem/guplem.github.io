@@ -1,0 +1,35 @@
+digraph "Thoughts.Game.Map.Terrain.MeshData.DeclareEdgeConnectionVertex"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Thoughts.Game.Map.Terrain.MeshData.DeclareEdgeConnectionVertex",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.Map.Terrain.TerrainMeshGenerator.GenerateTerrainMesh",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00309.html#ac604c7f058b5e5269886290d0ad18303",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Thoughts.Game.Map.Terrain.LODMesh.RequestMesh",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00297.html#a84c6b6666675bc04ac1222bbfb4c0e84",tooltip="Requests data to automatically create and store a Mesh in this LODMesh object."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Thoughts.Game.Map.Terrain.TerrainChunk.SetCollisionMesh",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00293.html#afc8b2ec369764d037b7d0015e28b5046",tooltip="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..."];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Thoughts.Game.Map.Terrain.TerrainChunk.UpdateChunk",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00293.html#a3bc34836e0f4046c7eb7aaa2a8525cd4",tooltip="Updates the visual mesh and tries to set the collision mesh if it has not been set before"];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Thoughts.Game.Map.Terrain.TerrainChunk.OnHeightMapReceived",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00293.html#a3963ea6eed2f1f6c64300890c0659d08",tooltip="Saves the HeightMap received and updates the TerrainChunk"];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Thoughts.Game.Map.Terrain.TerrainChunk.Load",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00293.html#a21c40372bab50552db42be4fb417126d",tooltip="Starts the process of loading and displaying this TerrainChunk"];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="Thoughts.Game.Map.Terrain.TerrainGenerator.UpdateChunks",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00301.html#a0aed29dfb5a52c6524a481dff00c11ef",tooltip="Updates the TerrainChunks by creating it (if missing) or updating its visuals."];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Thoughts.Game.Map.MapGenerator.GenerateTerrain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00277.html#a32f40432e6e60d7be4a464ca75d82305",tooltip=" "];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Thoughts.Game.Map.MapGenerator.Regenerate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00277.html#a9e7ecd14bfaa4fafa083265f445e0fdd",tooltip="Regenerates the things related to the given creation step"];
+  Node8 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="Thoughts.Game.Map.Terrain.TerrainGenerator.Update",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00301.html#a573677fc0dc69b1a5c2043df5776de2e",tooltip="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..."];
+  Node5 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Thoughts.Game.Map.Terrain.TerrainChunk.Setup",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00293.html#ab16f2542353fef283ab91e3c8a58ea97",tooltip="Stores all the needed data and sets up the managing of the LOD meshes"];
+  Node12 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="Thoughts.Game.Map.Terrain.TerrainChunk.UpdateVisualMesh",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00293.html#a25a03a79a26c461ff9492d1d00cb018c",tooltip="Updates the LOD and visibility of the TerrainChunk"];
+  Node13 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

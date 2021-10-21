@@ -1,0 +1,14 @@
+digraph "Thoughts.Game.Map.Terrain.HeightMapSettings"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{Thoughts.Game.Map.Terrain.HeightMapSettings\n|+ useFalloff\l+ falloffIntensity\l+ heightMultiplier\l+ heightCurve\l+ numSupportedTerrainLODs\l+ minHeight\l+ maxHeight\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="The configuration of the height of the terrain of the map"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{UpdatableData\n|+ autoUpdate\l|}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00441.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node3 [label="{ScriptableObject\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +terrainNoiseMapSettings" ,arrowhead="odiamond",fontname="Helvetica"];
+  Node4 [label="{Thoughts.Utils.Maths.NoiseMapSettings\n|+ scale\l+ octaves\l+ lacunarity\l+ persistance\l+ offset\l+ normalizeMode\l|+ ValidateValues()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00453.html",tooltip="Collection of settings used to generate a noise map More info about the settings here: https://www...."];
+}

@@ -1,0 +1,13 @@
+digraph "Thoughts.Game.Map.MapElements.Attributes.AttributesManager.ExecuteMapEventsWithTimeElapseEnabled"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Thoughts.Game.Map.MapElements.Attributes.AttributesManager.ExecuteMapEventsWithTimeElapseEnabled",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Executes the MapEvents of all the Attributes that are part of the AttributeOwnership of this Attribut..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.Execute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00257.html#a5f83cb9633e5c37cab4ce578a250eae7",tooltip="Executes the event applying the consequences of it."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.GetRequirementsNotMet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00257.html#a4bd684dcc313c0237517b3cc6ac5f556",tooltip="Returns a list of the requirements that are not met at the moment to execute the event,..."];
+}

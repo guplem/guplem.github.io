@@ -1,0 +1,11 @@
+digraph "Thoughts.Game.Map.MapConfiguration.operator=="
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Thoughts.Game.Map.MapConfiguration.operator==",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Override to the equal operator so two MapConfigurations are considered the same if their names are th..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.Map.MapConfiguration.Equals",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00229.html#acb5f4d3f43bc7b3daf57950e041eb40c",tooltip="Indicates whether the current object is equal to another object of the same type."];
+}

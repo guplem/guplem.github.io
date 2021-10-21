@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: FishAndBirdsUI.cs Source File</title>
+<title>TS20-Thoughts: CreationStepUI.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,19 +66,62 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">FishAndBirdsUI.cs</div>  </div>
+<div class="title">CreationStepUI.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00092.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00189.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI</a></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;{</div>
-<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="a00354.html">    3</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00354.html">FishAndBirdsUI</a> : <a class="code" href="a00350.html">CreationStepUI</a> <span class="comment">// Like UserNameUI</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    {</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    }</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;}</div>
-<div class="ttc" id="aa00189_html"><div class="ttname"><a href="a00189.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00004">CreationStepUI.cs:5</a></div></div>
-<div class="ttc" id="aa00350_html"><div class="ttname"><a href="a00350.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00007">CreationStepUI.cs:8</a></div></div>
-<div class="ttc" id="aa00354_html"><div class="ttname"><a href="a00354.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.FishAndBirdsUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00003">FishAndBirdsUI.cs:4</a></div></div>
+<a href="a00092.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00179.html">Thoughts</a>.<a class="code" href="a00180.html">Game</a>;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00179.html">Thoughts</a>.<a class="code" href="a00180.html">Game</a>.<a class="code" href="a00181.html">Map</a>;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> <a class="code" href="a00179.html">Thoughts</a>.<a class="code" href="a00186.html">Participants</a>.<a class="code" href="a00187.html">ControlSystems</a>.<a class="code" href="a00188.html">Manual</a>.<a class="code" href="a00189.html">UI</a>.<a class="code" href="a00190.html">Game</a>.<a class="code" href="a00193.html">SelectionUI</a>;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00192.html">    6</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="a00192.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI</a></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00357.html">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class </span><a class="code" href="a00357.html">CreationStepUI</a> : <a class="code" href="a00417.html">SimpleAnimationUIElement</a></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="a00357.html#ac9e6c598fb3c699ed5e4129026a219ed">   11</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00357.html">CreationStepUI</a> <a class="code" href="a00357.html#ac9e6c598fb3c699ed5e4129026a219ed">nextStepMainPanel</a>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="a00357.html#a361c8e77c875cc6f11b0dc7019293adf">   12</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00181.html#abb0355236cc4bf3f0e7277c252871abf">CreationStep</a> <a class="code" href="a00357.html#a361c8e77c875cc6f11b0dc7019293adf">creationStep</a>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00357.html#aa9af22c66a2b7eb256e64c2f354119a4">   14</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00357.html#aa9af22c66a2b7eb256e64c2f354119a4">ContinueToNextStep</a>()</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            Debug.Log(<span class="stringliteral">&quot;Continuing to the next creation step&quot;</span>);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            this.<a class="code" href="a00417.html#a0fa627f1f236774c1bf2af82b75344eb">Hide</a>();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordflow">if</span> (nextStepMainPanel != <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                <a class="code" href="a00357.html#ac9e6c598fb3c699ed5e4129026a219ed">nextStepMainPanel</a>.<a class="code" href="a00417.html#a0d0c76a6da4f3e48c19dd64ebba6b652">Show</a>();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="a00357.html#aabe7dbea463f4a99d7e6dc2bbfb9b6ee">   25</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00357.html#aabe7dbea463f4a99d7e6dc2bbfb9b6ee">GenerateStep</a>()</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <a class="code" href="a00225.html">GameManager</a>.<a class="code" href="a00225.html#a8380aedd8f5304b87424a7b384c4e3c3">instance</a>.<a class="code" href="a00225.html#a5326a1622047e21fc4dd8487d4b1d503">mapManager</a>.<a class="code" href="a00281.html#a4c0c4fc6ac65794f3c16c23ed3f9b5ca">GenerateCreationStep</a>(<a class="code" href="a00357.html#a361c8e77c875cc6f11b0dc7019293adf">creationStep</a>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        }</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="ttc" id="aa00179_html"><div class="ttname"><a href="a00179.html">Thoughts</a></div><div class="ttdef"><b>Definition:</b> <a href="a00002_source.html#l00005">AppManager.cs:6</a></div></div>
+<div class="ttc" id="aa00180_html"><div class="ttname"><a href="a00180.html">Thoughts.Game</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00011">GameManager.cs:12</a></div></div>
+<div class="ttc" id="aa00181_html"><div class="ttname"><a href="a00181.html">Thoughts.Game.Map</a></div><div class="ttdef"><b>Definition:</b> <a href="a00008_source.html#l00007">MapConfiguration.cs:8</a></div></div>
+<div class="ttc" id="aa00181_html_abb0355236cc4bf3f0e7277c252871abf"><div class="ttname"><a href="a00181.html#abb0355236cc4bf3f0e7277c252871abf">Thoughts.Game.Map.CreationStep</a></div><div class="ttdeci">CreationStep</div><div class="ttdoc">Listing of all the possible creation steps that will appear at the beginning of each game</div><div class="ttdef"><b>Definition:</b> <a href="a00044_source.html#l00257">MapGenerator.cs:258</a></div></div>
+<div class="ttc" id="aa00186_html"><div class="ttname"><a href="a00186.html">Thoughts.Participants</a></div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00003">ControlSystem.cs:4</a></div></div>
+<div class="ttc" id="aa00187_html"><div class="ttname"><a href="a00187.html">Thoughts.Participants.ControlSystems</a></div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00003">ControlSystem.cs:4</a></div></div>
+<div class="ttc" id="aa00188_html"><div class="ttname"><a href="a00188.html">Thoughts.Participants.ControlSystems.Manual</a></div><div class="ttdef"><b>Definition:</b> <a href="a00074_source.html#l00006">CameraController.cs:7</a></div></div>
+<div class="ttc" id="aa00189_html"><div class="ttname"><a href="a00189.html">Thoughts.Participants.ControlSystems.Manual.UI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00083_source.html#l00008">BehaviorUI.cs:9</a></div></div>
+<div class="ttc" id="aa00190_html"><div class="ttname"><a href="a00190.html">Thoughts.Participants.ControlSystems.Manual.UI.Game</a></div><div class="ttdef"><b>Definition:</b> <a href="a00083_source.html#l00008">BehaviorUI.cs:9</a></div></div>
+<div class="ttc" id="aa00192_html"><div class="ttname"><a href="a00192.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00006">CreationStepUI.cs:7</a></div></div>
+<div class="ttc" id="aa00193_html"><div class="ttname"><a href="a00193.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00122_source.html#l00005">DescriptionUI.cs:6</a></div></div>
+<div class="ttc" id="aa00225_html"><div class="ttname"><a href="a00225.html">Thoughts.Game.GameManager</a></div><div class="ttdoc">Controls the core aspects of the a game: Participant (with ControlSystem), Map setup,...</div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00016">GameManager.cs:17</a></div></div>
+<div class="ttc" id="aa00225_html_a5326a1622047e21fc4dd8487d4b1d503"><div class="ttname"><a href="a00225.html#a5326a1622047e21fc4dd8487d4b1d503">Thoughts.Game.GameManager.mapManager</a></div><div class="ttdeci">MapManager mapManager</div><div class="ttdoc">The map of the game.</div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00035">GameManager.cs:35</a></div></div>
+<div class="ttc" id="aa00225_html_a8380aedd8f5304b87424a7b384c4e3c3"><div class="ttname"><a href="a00225.html#a8380aedd8f5304b87424a7b384c4e3c3">Thoughts.Game.GameManager.instance</a></div><div class="ttdeci">static GameManager instance</div><div class="ttdoc">The singleton reference to this class</div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00021">GameManager.cs:21</a></div></div>
+<div class="ttc" id="aa00281_html_a4c0c4fc6ac65794f3c16c23ed3f9b5ca"><div class="ttname"><a href="a00281.html#a4c0c4fc6ac65794f3c16c23ed3f9b5ca">Thoughts.Game.Map.MapManager.GenerateCreationStep</a></div><div class="ttdeci">void GenerateCreationStep(CreationStep creationStep)</div><div class="ttdoc">Generates the contents of a creation step</div><div class="ttdef"><b>Definition:</b> <a href="a00050_source.html#l00040">MapManager.cs:40</a></div></div>
+<div class="ttc" id="aa00357_html"><div class="ttname"><a href="a00357.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00009">CreationStepUI.cs:10</a></div></div>
+<div class="ttc" id="aa00357_html_a361c8e77c875cc6f11b0dc7019293adf"><div class="ttname"><a href="a00357.html#a361c8e77c875cc6f11b0dc7019293adf">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI.creationStep</a></div><div class="ttdeci">CreationStep creationStep</div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00012">CreationStepUI.cs:12</a></div></div>
+<div class="ttc" id="aa00357_html_aa9af22c66a2b7eb256e64c2f354119a4"><div class="ttname"><a href="a00357.html#aa9af22c66a2b7eb256e64c2f354119a4">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI.ContinueToNextStep</a></div><div class="ttdeci">void ContinueToNextStep()</div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00014">CreationStepUI.cs:14</a></div></div>
+<div class="ttc" id="aa00357_html_aabe7dbea463f4a99d7e6dc2bbfb9b6ee"><div class="ttname"><a href="a00357.html#aabe7dbea463f4a99d7e6dc2bbfb9b6ee">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI.GenerateStep</a></div><div class="ttdeci">void GenerateStep()</div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00025">CreationStepUI.cs:25</a></div></div>
+<div class="ttc" id="aa00357_html_ac9e6c598fb3c699ed5e4129026a219ed"><div class="ttname"><a href="a00357.html#ac9e6c598fb3c699ed5e4129026a219ed">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI.nextStepMainPanel</a></div><div class="ttdeci">CreationStepUI nextStepMainPanel</div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00011">CreationStepUI.cs:11</a></div></div>
+<div class="ttc" id="aa00417_html"><div class="ttname"><a href="a00417.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement</a></div><div class="ttdef"><b>Definition:</b> <a href="a00137_source.html#l00007">SimpleAnimationUIElement.cs:8</a></div></div>
+<div class="ttc" id="aa00417_html_a0d0c76a6da4f3e48c19dd64ebba6b652"><div class="ttname"><a href="a00417.html#a0d0c76a6da4f3e48c19dd64ebba6b652">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Show</a></div><div class="ttdeci">void Show()</div><div class="ttdoc">Plays the animation to show/display this UI Element</div><div class="ttdef"><b>Definition:</b> <a href="a00137_source.html#l00067">SimpleAnimationUIElement.cs:67</a></div></div>
+<div class="ttc" id="aa00417_html_a0fa627f1f236774c1bf2af82b75344eb"><div class="ttname"><a href="a00417.html#a0fa627f1f236774c1bf2af82b75344eb">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Hide</a></div><div class="ttdeci">void Hide()</div><div class="ttdoc">Plays the animation to hide this UI Element</div><div class="ttdef"><b>Definition:</b> <a href="a00137_source.html#l00077">SimpleAnimationUIElement.cs:77</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

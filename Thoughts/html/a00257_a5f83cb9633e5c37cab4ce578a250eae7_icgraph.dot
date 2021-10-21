@@ -1,0 +1,20 @@
+digraph "Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.Execute"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.Execute",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Executes the event applying the consequences of it."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.Execute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00253.html#a3a9255b72ac66af15b85571be60a20c9",tooltip="If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s..."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Thoughts.Game.Map.MapElements.MapElement.DoNextPlanedMapEvents",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00265.html#acdf56d22ae1b2a644c2d0d58192e9c46",tooltip="Tries to execute the next planned even in the executionPlans list."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Thoughts.Game.Map.MapElements.MapElement.UpdateCoroutine",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00265.html#af3e11e868f05d7c6449734669e350774",tooltip="Controls the internal clock of the MapElement."];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Thoughts.Game.Map.MapElements.MapElement.Start",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00265.html#a38fe6cacc3395a39b0c56393bffe2fcc",tooltip="Starts running the MapElement's clock."];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Thoughts.Game.Map.MapElements.Attributes.AttributesManager.ExecuteMapEventsWithTimeElapseEnabled",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00241.html#a0b17ee9e912b5e16c043d0d5f5d476ad",tooltip="Executes the MapEvents of all the Attributes that are part of the AttributeOwnership of this Attribut..."];
+  Node6 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

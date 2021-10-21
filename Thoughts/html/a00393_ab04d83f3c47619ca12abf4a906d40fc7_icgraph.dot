@@ -1,0 +1,11 @@
+digraph "Thoughts.Participants.ControlSystems.Manual.UI.Game.GameUIManager.DisplayUIFor"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Thoughts.Participants.ControlSystems.Manual.UI.Game.GameUIManager.DisplayUIFor",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Displays the UI related to the given MapElement and subscribes the UI to changes on that mapElement t..."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Participants.ControlSystems.Manual.UI.Game.GameUIManager.Awake",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00393.html#a28e6bd626c77dbf779538bedac923aaf",tooltip="Setup of the initial UI for the game (displays the UI for nothing, so no UI)"];
+}

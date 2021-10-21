@@ -1,0 +1,11 @@
+digraph "Thoughts.Game.Map.MapElements.Attributes.AttributeOwnership.UpdateValue"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Thoughts.Game.Map.MapElements.Attributes.AttributeOwnership.UpdateValue",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Updates the value of this relationship."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.Map.MapElements.Attributes.AttributesManager.UpdateAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00241.html#a8a5d28ec2111c70b0cd08d0bc8393c58",tooltip="Updates the value of the AttributeOwnerships with the given Attribute. If no AttributeOwnerships rela..."];
+}

@@ -1,0 +1,11 @@
+digraph "Thoughts.Participants.ControlSystems.Manual.CameraController.GetAxisCustom"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Thoughts.Participants.ControlSystems.Manual.CameraController.GetAxisCustom",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Returns the customized input values overriding the default axis for the Cinemachine camera."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Participants.ControlSystems.Manual.CameraController.Start",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00333.html#a1f454f193b3bb38a43836b6b9887b367",tooltip="Startup setup, after awake"];
+}

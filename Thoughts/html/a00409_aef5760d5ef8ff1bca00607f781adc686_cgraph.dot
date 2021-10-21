@@ -1,0 +1,13 @@
+digraph "Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.ObjectsUI.SwitchState"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.ObjectsUI.SwitchState",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Plays the Show or the Hide animation depending on the current state of the UI Element...."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.ObjectsUI.DisplayObjects",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00409.html#ac067b22fe23a12f59b9ff6414436353a",tooltip="Populates the NeedGroupUIs with all the needed elements"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Thoughts.Game.Map.MapElements.Attributes.AttributesManager.GetAttributesWithPriority",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00241.html#aff62d8e10bcc03b5eab91d57b5b875b5",tooltip="Looks for all the Attributes that have the same level of priority as the given one"];
+}

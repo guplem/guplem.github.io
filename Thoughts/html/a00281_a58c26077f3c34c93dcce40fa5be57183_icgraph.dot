@@ -1,0 +1,11 @@
+digraph "Thoughts.Game.Map.MapManager.SpawnRandom"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Thoughts.Game.Map.MapManager.SpawnRandom",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Randomly generates the MapElement with the given name a determined amount of times."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.Map.MapManager.GenerateMapElements",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00281.html#a1a48a12fb8f507b91e5cddc5ceead414",tooltip="Generates MapElements in the map (not mobs)."];
+}

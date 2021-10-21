@@ -1,0 +1,17 @@
+digraph "Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.CanBeExecuted"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.CanBeExecuted",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Determines if all the requirements to execute this ExecutionPlan's MapElement are met."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.GetRequirementsNotMet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00253.html#a23c55e262c40409bb49f4a7c0793fd9a",tooltip="Returns a list of the requirements that are not met at the moment to execute the event,..."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.GetRequirementsNotMet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00257.html#a4bd684dcc313c0237517b3cc6ac5f556",tooltip="Returns a list of the requirements that are not met at the moment to execute the event,..."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.IsDistanceMet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00253.html#a0a5540534e1ecb80229a675cec79153f",tooltip="Determines if the distance to execute this ExecutionPlan's MapElement is met."];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.IsDistanceMet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00257.html#a70e0494bca9e956692cadd2eb32fbb46",tooltip="Indicates if the maximum distance allowed to execute the event is met or not."];
+}

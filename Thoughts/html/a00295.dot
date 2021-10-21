@@ -1,0 +1,8 @@
+digraph "Thoughts.Game.Map.Terrain.LODMesh"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{Thoughts.Game.Map.Terrain.LODMesh\n|+ mesh\l+ hasRequestedMesh\l+ hasMesh\l- lod\l|+ LODMesh()\l+ RequestMesh()\l- OnMeshDataReceived()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="A Mesh holder with related data meant to be used with an specified LOD"];
+}

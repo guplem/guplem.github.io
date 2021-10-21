@@ -1,0 +1,12 @@
+digraph "Thoughts.Game.Map.Terrain.TextureSettings"
+{
+ // INTERACTIVE_SVG=YES
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{Thoughts.Game.Map.Terrain.TextureSettings\n|+ material\l+ color0\l+ color1\l+ color1Start\l+ color1BaseBlend\l+ color2\l+ color2Start\l+ color2BaseBlend\l+ color3\l+ color3Start\l+ color3BaseBlend\l- minHeight\l- maxHeight\l|+ ApplyToMaterial()\l+ UpdateMeshHeights()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="The configuration of the texture of the terrain of the map"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{UpdatableData\n|+ autoUpdate\l|}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00441.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node3 [label="{ScriptableObject\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}
