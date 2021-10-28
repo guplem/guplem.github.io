@@ -1,0 +1,4 @@
+<map id="Thoughts.AppManager.Start" name="Thoughts.AppManager.Start">
+<area shape="rect" id="node1" title="Triggers the start of a new game." alt="" coords="5,5,189,32"/>
+<area shape="rect" id="node2" href="$a00245.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by loading the Game scene." alt="" coords="237,5,481,32"/>
+</map>

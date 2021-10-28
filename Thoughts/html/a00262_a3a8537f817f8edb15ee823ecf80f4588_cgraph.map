@@ -1,5 +1,0 @@
-<map id="Thoughts.Game.Map.MapElements.MapElement.Awake" name="Thoughts.Game.Map.MapElements.MapElement.Awake">
-<area shape="rect" id="node1" title="Sets up and the MapElement" alt="" coords="5,5,352,32"/>
-<area shape="rect" id="node2" href="$a00238.html#a77a5152c9a512d590493ab7837c5382d" title="Initialized the AttributeManager by setting up the owner of all AttributeOwnerships to the given MapE..." alt="" coords="400,5,848,32"/>
-<area shape="rect" id="node3" href="$a00234.html#a965327f4229e5a84b3a8610a30b6bbcd" title="Sets up a new owner for this relationship." alt="" coords="896,5,1379,32"/>
-</map>

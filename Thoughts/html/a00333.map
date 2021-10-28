@@ -1,3 +1,5 @@
-<map id="Thoughts.Game.Attributes.StateUpdate" name="Thoughts.Game.Attributes.StateUpdate">
-<area shape="rect" id="node1" title="An update of the State of a MapElement" alt="" coords="5,5,256,97"/>
+<map id="Thoughts.Game.Map.Terrain.TextureSettings" name="Thoughts.Game.Map.Terrain.TextureSettings">
+<area shape="rect" id="node1" title="The configuration of the texture of the terrain of the map" alt="" coords="5,256,287,524"/>
+<area shape="rect" id="node2" href="$a00455.html" title=" " alt="" coords="93,131,199,208"/>
+<area shape="rect" id="node3" title=" " alt="" coords="87,5,205,83"/>
 </map>

@@ -1,5 +1,0 @@
-<map id="Thoughts.ControlSystems.UI.SelectionUI.Setup" name="Thoughts.ControlSystems.UI.SelectionUI.Setup">
-<area shape="rect" id="node1" title="Displays the information regarding the given selected MapElement" alt="" coords="800,5,1096,32"/>
-<area shape="rect" id="node2" href="$a00234.html#afd1f5dcc6a99a6bbddb3be03a74fbf9c" title="Displays the UI related to the given MapElement and subscribes the UI to changes on that mapElement t..." alt="" coords="385,5,752,32"/>
-<area shape="rect" id="node3" href="$a00234.html#a76cc83438c832475b9407c8498e7a8d1" title="Setup of the initial UI for the game (displays the UI for nothing, so no UI)" alt="" coords="5,5,337,32"/>
-</map>

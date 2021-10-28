@@ -1,4 +1,0 @@
-<map id="Thoughts.Game.GameMap.Map.SpawnRandom" name="Thoughts.Game.GameMap.Map.SpawnRandom">
-<area shape="rect" id="node1" title="Randomly generates the MapElement with the given name a determined amount of times." alt="" coords="397,5,696,32"/>
-<area shape="rect" id="node2" href="$a00314.html#a76b9b13bed3b4bb6ef14c7aa16502307" title="Generates MapElements in the map (not mobs)." alt="" coords="5,5,349,32"/>
-</map>

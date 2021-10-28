@@ -59,21 +59,30 @@ $(function() {
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="a00185.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00186.html">Game</a></li><li class="navelem"><a class="el" href="a00187.html">Map</a></li><li class="navelem"><a class="el" href="a00188.html">MapElements</a></li><li class="navelem"><a class="el" href="a00283.html">StateManager</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">HeightMap Member List</div>  </div>
+<div class="title">Thoughts.Game.Map.MapElements.StateManager Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="a00283.html">HeightMap</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="a00283.html#a397bce27d4d739635f014d1d83c8eefe">GenerateHeightMap</a>(int width, int height, float mapRadius, HeightMapSettings settings, Vector2 sampleCenter)</td><td class="entry"><a class="el" href="a00283.html">HeightMap</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00283.html#a2e1f68e1ca4250565c3a9b9db7e0ad22">GetFalloffValue</a>(Vector2 coords, AnimationCurve falloffIntensity, float mapRadius)</td><td class="entry"><a class="el" href="a00283.html">HeightMap</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00283.html#ae7714c3d98b43c7ac86a50717e8b5f5e">HeightMap</a>(float[,] values, float minValue, float maxValue)</td><td class="entry"><a class="el" href="a00283.html">HeightMap</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00283.html#a514be5360af75c44a1ba691fab789248">maxValue</a></td><td class="entry"><a class="el" href="a00283.html">HeightMap</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00283.html#abb44dcd529b447cdc562598d4bc578c1">minValue</a></td><td class="entry"><a class="el" href="a00283.html">HeightMap</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="a00283.html#af0aefe06b2d27557eb18bce797875db6">values</a></td><td class="entry"><a class="el" href="a00283.html">HeightMap</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00283.html#acf792afd3cc4928ecc49baa80a61d00a">currentState</a></td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00283.html#a6034324eda7bde5dd2eacf8ca64fec2d">GetAnimationTriggerId</a>(State state)</td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00283.html#a517f397b56d89ad5fb3fd50851f7c1c0">idleAnimTriggerId</a></td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00283.html#ad7823da45ec7a370cb59f32474f7cf67">owner</a></td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00283.html#a4a2401a33989588fcb29c662fc4780fe">remainingStateTime</a></td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00283.html#ab2e7dbd7828fa8689aa54ee949aa8c9a">restAnimTriggerId</a></td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00283.html#a3a8f9f0fb6099a237638ed218b3d9b72">SetState</a>(State newState, float timeInState)</td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00283.html#a1ddbae8dff107fb5fe57bbf06d26e3a1">StateManager</a>(MapElement owner, State currentState=State.None, float remainingStateTime=0)</td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00283.html#a230c2c0aaecaf991de361cb55502df4e">Step</a>(float deltaTime)</td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00283.html#a256f379cf81446ba4d53185762b271ff">ToString</a>()</td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00283.html#af1d9c330d87bd257160416498190c6a4">workAnimTriggerId</a></td><td class="entry"><a class="el" href="a00283.html">Thoughts.Game.Map.MapElements.StateManager</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">static</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

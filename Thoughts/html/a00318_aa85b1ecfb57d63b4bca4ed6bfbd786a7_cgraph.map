@@ -1,5 +1,0 @@
-<map id="Thoughts.Game.Attributes.AttributeManager.ExecuteMapEventsWithTimeElapseEnabled" name="Thoughts.Game.Attributes.AttributeManager.ExecuteMapEventsWithTimeElapseEnabled">
-<area shape="rect" id="node1" title="Executes the MapEvents of all the Attributes that are part of the AttributeOwnership of this Attribut..." alt="" coords="5,31,540,57"/>
-<area shape="rect" id="node2" href="$a00342.html#a82c4116beecc7775ba234fa6000829ef" title="Executes the event applying the consequences of it." alt="" coords="636,5,927,32"/>
-<area shape="rect" id="node3" href="$a00342.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="588,56,975,83"/>
-</map>

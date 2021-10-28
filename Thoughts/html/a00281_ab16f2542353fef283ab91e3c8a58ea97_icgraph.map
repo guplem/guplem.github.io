@@ -1,0 +1,13 @@
+<map id="Thoughts.Game.Map.Terrain.TerrainChunk.Setup" name="Thoughts.Game.Map.Terrain.TerrainChunk.Setup">
+<area shape="rect" id="node1" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1577,157,1881,184"/>
+<area shape="rect" id="node2" href="$a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" id="node3" href="$a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" id="node11" href="$a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" id="node4" href="$a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" id="node6" href="$a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" id="node7" href="$a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" id="node8" href="$a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" id="node9" href="$a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" id="node10" href="$a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" id="node5" href="$a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>

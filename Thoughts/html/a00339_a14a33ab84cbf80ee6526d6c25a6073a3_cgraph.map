@@ -1,0 +1,8 @@
+<map id="Thoughts.Game.Map.VegetationGenerator.GenerateVegetation" name="Thoughts.Game.Map.VegetationGenerator.GenerateVegetation">
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,391,57"/>
+<area shape="rect" id="node2" href="$a00339.html#ab999cf0892320a183a0e4fc46c72c8be" title=" " alt="" coords="509,5,879,32"/>
+<area shape="rect" id="node3" href="$a00287.html#a572e42f9e52c518cb5a78681d19321db" title="Spawns a group of MapElements in the map using a pseudo random perlin noise distribution." alt="" coords="439,56,949,83"/>
+<area shape="rect" id="node4" href="$a00463.html#afb38ca73e5ee55ec0695ce56d16b7941" title="Generates a perlin noise map of a given width and height." alt="" coords="1025,5,1323,32"/>
+<area shape="rect" id="node5" href="$a00287.html#ac0dd6f6a2bbcdb739686cd26eb475fc5" title="Checks if a MapElement can be spawned or not in a given position." alt="" coords="997,56,1351,83"/>
+<area shape="rect" id="node6" href="$a00287.html#aecb5bde57b11e70570dc6b7d1785197d" title="Makes a map element spawn." alt="" coords="1001,107,1347,133"/>
+</map>

@@ -1,7 +1,0 @@
-<map id="Thoughts.Game.Map.Terrain.HeightMapSettings" name="Thoughts.Game.Map.Terrain.HeightMapSettings">
-<area shape="rect" id="node1" title="The configuration of the height of the terrain of the map" alt="" coords="16,359,316,524"/>
-<area shape="rect" id="node2" href="$a00434.html" title=" " alt="" coords="11,182,118,259"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,124,83"/>
-<area shape="rect" id="node4" href="$a00446.html" title="Collection of settings used to generate a noise map" alt="" coords="143,145,397,296"/>
-<area shape="rect" id="node5" href="$a00442.html" title=" " alt="" coords="179,5,361,83"/>
-</map>

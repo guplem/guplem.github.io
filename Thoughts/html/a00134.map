@@ -1,5 +1,0 @@
-<map id="Thoughts.ControlSystems.UI.SelectionUI" name="Thoughts.ControlSystems.UI.SelectionUI">
-<area shape="rect" id="node1" title="Controls the display of the information related to a MapElement (needs &#45;Attributes&#45;,..." alt="" coords="5,287,264,364"/>
-<area shape="rect" id="node2" title=" " alt="" coords="74,5,185,83"/>
-<area shape="rect" id="node3" href="$a00132.html" title="Controls the display of the descriptive information of a MapElement (name, description ...." alt="" coords="151,132,420,224"/>
-</map>

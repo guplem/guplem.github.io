@@ -1,6 +1,0 @@
-<map id="Thoughts.Game.GameMap.Map.GetSpawnableGameObject" name="Thoughts.Game.GameMap.Map.GetSpawnableGameObject">
-<area shape="rect" id="node1" title="Obtains the GameObject with the given name from the spawnableMapElement list." alt="" coords="744,31,1112,57"/>
-<area shape="rect" id="node2" href="$a00354.html#a542cec4f7f8e4b3923c54bc7edbe30a3" title="Generates Mobs in the map." alt="" coords="399,5,695,32"/>
-<area shape="rect" id="node3" href="$a00354.html#a4244c867225274151d92f26abc3a0f58" title="Randomly generates the MapElement with the given name a determined amount of times." alt="" coords="397,56,696,83"/>
-<area shape="rect" id="node4" href="$a00354.html#a76b9b13bed3b4bb6ef14c7aa16502307" title="Generates MapElements in the map (not mobs)." alt="" coords="5,56,349,83"/>
-</map>

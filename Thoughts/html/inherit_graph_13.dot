@@ -1,9 +1,0 @@
-digraph "Graphical Class Hierarchy"
-{
- // INTERACTIVE_SVG=YES
- // LATEX_PDF_SIZE
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node0 [label="Thoughts.Game.Map.Terrain.LODInfo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$a00305.html",tooltip="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..."];
-}

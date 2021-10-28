@@ -1,7 +1,6 @@
-<map id="Thoughts.ControlSystems.UI.CreationSteps.UserNameUI" name="Thoughts.ControlSystems.UI.CreationSteps.UserNameUI">
-<area shape="rect" id="node1" title=" " alt="" coords="5,599,356,676"/>
-<area shape="rect" id="node2" href="$a00199.html" title=" " alt="" coords="100,472,261,549"/>
-<area shape="rect" id="node3" href="$a00259.html" title=" " alt="" coords="80,132,271,283"/>
-<area shape="rect" id="node5" href="$a00199.html" title=" " alt="" coords="197,332,562,409"/>
-<area shape="rect" id="node4" title=" " alt="" coords="120,5,231,83"/>
+<map id="Thoughts.AppManager" name="Thoughts.AppManager">
+<area shape="rect" id="node1" title="Object that must be kept always alive while running the app. It initializes the game process and keep..." alt="" coords="6,331,158,452"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,161,116,239"/>
+<area shape="rect" id="node3" href="$a00451.html" title="A wrapper that provides the means to safely serialize Scene Asset References." alt="" coords="141,132,402,268"/>
+<area shape="rect" id="node4" title=" " alt="" coords="174,5,369,83"/>
 </map>

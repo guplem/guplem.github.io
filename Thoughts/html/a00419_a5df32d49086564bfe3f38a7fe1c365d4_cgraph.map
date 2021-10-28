@@ -1,0 +1,6 @@
+<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.SwitchState" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.SwitchState">
+<area shape="rect" id="node1" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="5,5,548,32"/>
+<area shape="rect" id="node2" href="$a00419.html#a96ece1df7dc98ae69c329c5593c59df4" title="Populates the NeedGroupUIs with all the needed elements" alt="" coords="596,5,1175,32"/>
+<area shape="rect" id="node3" href="$a00415.html#a23d821b41c5e3fb8488687ae6f83ef3c" title="Displays the attributes of the given MapElement, with the given priority, using as header the given n..." alt="" coords="1223,5,1757,32"/>
+<area shape="rect" id="node4" href="$a00251.html#aff62d8e10bcc03b5eab91d57b5b875b5" title="Looks for all the Attributes that have the same level of priority as the given one" alt="" coords="1805,5,2352,32"/>
+</map>

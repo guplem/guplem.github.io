@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.Map.MapGenerator Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Game.Map.Terrain.HeightMap Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,119 +61,69 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00179.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00180.html">Game</a></li><li class="navelem"><a class="el" href="a00181.html">Map</a></li><li class="navelem"><a class="el" href="a00277.html">MapGenerator</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00203.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00204.html">Game</a></li><li class="navelem"><a class="el" href="a00205.html">Map</a></li><li class="navelem"><a class="el" href="a00206.html">Terrain</a></li><li class="navelem"><a class="el" href="a00277.html">HeightMap</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="a00274.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.Map.MapGenerator Class Reference</div>  </div>
+<div class="title">Thoughts.Game.Map.Terrain.HeightMap Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Component in charge of generating a <a class="el" href="a00181.html">Map</a>  
+<p>Contains values relative to the height of a terrain  
  <a href="a00277.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Game.Map.MapGenerator:</div>
+Collaboration diagram for Thoughts.Game.Map.Terrain.HeightMap:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00275.png" border="0" usemap="#aThoughts_8Game_8Map_8MapGenerator_coll__map" alt="Collaboration graph"/></div>
+<div class="center"><img src="a00275.png" border="0" usemap="#aThoughts_8Game_8Map_8Terrain_8HeightMap_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Game_8Map_8Terrain_8HeightMap_coll__map" id="aThoughts_8Game_8Map_8Terrain_8HeightMap_coll__map">
+<area shape="rect" title="Contains values relative to the height of a terrain" alt="" coords="5,5,257,141"/>
+</map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ac780ea885aa746aecaca5341087585ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#ac780ea885aa746aecaca5341087585ed">OnValidate</a> ()</td></tr>
-<tr class="separator:ac780ea885aa746aecaca5341087585ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa49456bae5f40ef9f52f1cc4ef4c2c4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#aa49456bae5f40ef9f52f1cc4ef4c2c4c">DeleteCurrentMap</a> ()</td></tr>
-<tr class="memdesc:aa49456bae5f40ef9f52f1cc4ef4c2c4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the currently (generated) existent map  <a href="a00277.html#aa49456bae5f40ef9f52f1cc4ef4c2c4c">More...</a><br /></td></tr>
-<tr class="separator:aa49456bae5f40ef9f52f1cc4ef4c2c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e7ecd14bfaa4fafa083265f445e0fdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#a9e7ecd14bfaa4fafa083265f445e0fdd">Regenerate</a> (<a class="el" href="a00181.html#abb0355236cc4bf3f0e7277c252871abf">CreationStep</a> step)</td></tr>
-<tr class="memdesc:a9e7ecd14bfaa4fafa083265f445e0fdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regenerates the things related to the given creation step  <a href="a00277.html#a9e7ecd14bfaa4fafa083265f445e0fdd">More...</a><br /></td></tr>
-<tr class="separator:a9e7ecd14bfaa4fafa083265f445e0fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a6b79153aaca9eac7539b8d5d6b69c4d7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00277.html">HeightMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#a6b79153aaca9eac7539b8d5d6b69c4d7">GenerateHeightMap</a> (int width, int height, float mapRadius, <a class="el" href="a00297.html">TerrainHeightSettings</a> settings, Vector2 sampleCenter, int seed)</td></tr>
+<tr class="memdesc:a6b79153aaca9eac7539b8d5d6b69c4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> that contains values relative to the height of a terrain  <a href="a00277.html#a6b79153aaca9eac7539b8d5d6b69c4d7">More...</a><br /></td></tr>
+<tr class="separator:a6b79153aaca9eac7539b8d5d6b69c4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4fb7e11c8336680913be5d1f48038092"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#a4fb7e11c8336680913be5d1f48038092">autoRegenerateInEditor</a> = false</td></tr>
-<tr class="separator:a4fb7e11c8336680913be5d1f48038092"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb2a845cbc020b907b34af6d2c7f2d2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00301.html">TerrainGenerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#acb2a845cbc020b907b34af6d2c7f2d2c">terrainGenerator</a></td></tr>
-<tr class="memdesc:acb2a845cbc020b907b34af6d2c7f2d2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the TerrainGenerator component in charge of generating the <a class="el" href="a00185.html">Terrain</a>  <a href="a00277.html#acb2a845cbc020b907b34af6d2c7f2d2c">More...</a><br /></td></tr>
-<tr class="separator:acb2a845cbc020b907b34af6d2c7f2d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9a3e6a37943e3e25506d59d57ec316a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00229.html">MapConfiguration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#ae9a3e6a37943e3e25506d59d57ec316a">mapConfiguration</a></td></tr>
-<tr class="memdesc:ae9a3e6a37943e3e25506d59d57ec316a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00229.html" title="Holds all the configuration/settings used to generate the Map">MapConfiguration</a> with he settings to generate a map  <a href="a00277.html#ae9a3e6a37943e3e25506d59d57ec316a">More...</a><br /></td></tr>
-<tr class="separator:ae9a3e6a37943e3e25506d59d57ec316a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d2baee6027acaa63c14d289bee4897b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00465.html">ThreadedDataRequester</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#a8d2baee6027acaa63c14d289bee4897b">threadedDataRequester</a></td></tr>
-<tr class="memdesc:a8d2baee6027acaa63c14d289bee4897b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the ThreadedDataRequester component in charge doing threaded requests of data  <a href="a00277.html#a8d2baee6027acaa63c14d289bee4897b">More...</a><br /></td></tr>
-<tr class="separator:a8d2baee6027acaa63c14d289bee4897b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4005f7d70c18ed0fb5a0dc6042b1f65"><td class="memItemLeft" align="right" valign="top">Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#aa4005f7d70c18ed0fb5a0dc6042b1f65">vegetationHolder</a></td></tr>
-<tr class="memdesc:aa4005f7d70c18ed0fb5a0dc6042b1f65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the transform that is going to be parent of all generated vegetation  <a href="a00277.html#aa4005f7d70c18ed0fb5a0dc6042b1f65">More...</a><br /></td></tr>
-<tr class="separator:aa4005f7d70c18ed0fb5a0dc6042b1f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae10427256a41cf2ec2f869bfa988ee68"><td class="memItemLeft" align="right" valign="top">readonly float[,]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#ae10427256a41cf2ec2f869bfa988ee68">values</a></td></tr>
+<tr class="memdesc:ae10427256a41cf2ec2f869bfa988ee68"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main data stored in the <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> (should be relative to the height of a terrain).  <a href="a00277.html#ae10427256a41cf2ec2f869bfa988ee68">More...</a><br /></td></tr>
+<tr class="separator:ae10427256a41cf2ec2f869bfa988ee68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad25684853630a3a10edf19d9e5843fcc"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#ad25684853630a3a10edf19d9e5843fcc">minValue</a></td></tr>
+<tr class="memdesc:ad25684853630a3a10edf19d9e5843fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pre recorded minimum value contained within the main data.  <a href="a00277.html#ad25684853630a3a10edf19d9e5843fcc">More...</a><br /></td></tr>
+<tr class="separator:ad25684853630a3a10edf19d9e5843fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7b09e99e1420fbd3aab8cf3d2aaca16"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#ab7b09e99e1420fbd3aab8cf3d2aaca16">maxValue</a></td></tr>
+<tr class="memdesc:ab7b09e99e1420fbd3aab8cf3d2aaca16"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pre recorded maximum value contained within the main data.  <a href="a00277.html#ab7b09e99e1420fbd3aab8cf3d2aaca16">More...</a><br /></td></tr>
+<tr class="separator:ab7b09e99e1420fbd3aab8cf3d2aaca16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:ab3070a5a34dcdf5f89eecd23dbde657c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#ab3070a5a34dcdf5f89eecd23dbde657c">RegenerateMapNotPlaying</a> ()</td></tr>
-<tr class="memdesc:ab3070a5a34dcdf5f89eecd23dbde657c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the app is not in Play Mode, the previously created map is destroyed and a new map is generated.  <a href="a00277.html#ab3070a5a34dcdf5f89eecd23dbde657c">More...</a><br /></td></tr>
-<tr class="separator:ab3070a5a34dcdf5f89eecd23dbde657c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0236913c4c92d788568aef7b1ec476e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#a0236913c4c92d788568aef7b1ec476e1">OnTextureValuesUpdated</a> ()</td></tr>
-<tr class="memdesc:a0236913c4c92d788568aef7b1ec476e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manages the update of the TextureSettings by applying them to the map's Material  <a href="a00277.html#a0236913c4c92d788568aef7b1ec476e1">More...</a><br /></td></tr>
-<tr class="separator:a0236913c4c92d788568aef7b1ec476e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8120249eb4ffc552a2808ede4faced5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#af8120249eb4ffc552a2808ede4faced5">GenerateLight</a> (bool clearPrevious)</td></tr>
-<tr class="separator:af8120249eb4ffc552a2808ede4faced5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32f40432e6e60d7be4a464ca75d82305"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#a32f40432e6e60d7be4a464ca75d82305">GenerateTerrain</a> (bool clearPrevious)</td></tr>
-<tr class="separator:a32f40432e6e60d7be4a464ca75d82305"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add66db4fe292dcf029c0d8bf723229ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#add66db4fe292dcf029c0d8bf723229ba">GenerateVegetation</a> (bool clearPrevious)</td></tr>
-<tr class="separator:add66db4fe292dcf029c0d8bf723229ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2a401bfffcba218ec893614d50a9bd9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#aa2a401bfffcba218ec893614d50a9bd9">DeleteVegetation</a> ()</td></tr>
-<tr class="separator:aa2a401bfffcba218ec893614d50a9bd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0247d9cdbd8f2ec3f531080d488c36b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#a0247d9cdbd8f2ec3f531080d488c36b8">GenerateNight</a> (bool clearPrevious)</td></tr>
-<tr class="separator:a0247d9cdbd8f2ec3f531080d488c36b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6a930faca29a0a03b3ea8c443b01e96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#ad6a930faca29a0a03b3ea8c443b01e96">GenerateFishAndBirds</a> (bool clearPrevious)</td></tr>
-<tr class="separator:ad6a930faca29a0a03b3ea8c443b01e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f13aea43d32861bd9bdeeeb647ce564"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#a6f13aea43d32861bd9bdeeeb647ce564">GenerateLandAnimals</a> (bool clearPrevious)</td></tr>
-<tr class="separator:a6f13aea43d32861bd9bdeeeb647ce564"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2831c1c72b8ac8423a6e67b1603c596"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#af2831c1c72b8ac8423a6e67b1603c596">GenerateHumanoids</a> (bool clearPrevious)</td></tr>
-<tr class="separator:af2831c1c72b8ac8423a6e67b1603c596"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2a8faff2ec34ae33cac44aa98582520"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#ae2a8faff2ec34ae33cac44aa98582520">HeightMap</a> (float[,] <a class="el" href="a00277.html#ae10427256a41cf2ec2f869bfa988ee68">values</a>, float <a class="el" href="a00277.html#ad25684853630a3a10edf19d9e5843fcc">minValue</a>, float <a class="el" href="a00277.html#ab7b09e99e1420fbd3aab8cf3d2aaca16">maxValue</a>)</td></tr>
+<tr class="memdesc:ae2a8faff2ec34ae33cac44aa98582520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor of a <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> that contains values relative to the height of a terrain  <a href="a00277.html#ae2a8faff2ec34ae33cac44aa98582520">More...</a><br /></td></tr>
+<tr class="separator:ae2a8faff2ec34ae33cac44aa98582520"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:adfdb1caef6fbc5c926a654ca4c59852f"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00277.html#adfdb1caef6fbc5c926a654ca4c59852f">GetFalloffValue</a> (Vector2 coords, AnimationCurve falloffIntensity, float mapRadius)</td></tr>
+<tr class="memdesc:adfdb1caef6fbc5c926a654ca4c59852f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain  <a href="a00277.html#adfdb1caef6fbc5c926a654ca4c59852f">More...</a><br /></td></tr>
+<tr class="separator:adfdb1caef6fbc5c926a654ca4c59852f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Component in charge of generating a <a class="el" href="a00181.html">Map</a> </p>
+<div class="textblock"><p>Contains values relative to the height of a terrain </p>
 
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00013">13</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa49456bae5f40ef9f52f1cc4ef4c2c4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa49456bae5f40ef9f52f1cc4ef4c2c4c">&#9670;&nbsp;</a></span>DeleteCurrentMap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.DeleteCurrentMap </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Deletes the currently (generated) existent map </p>
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00106">106</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_aa49456bae5f40ef9f52f1cc4ef4c2c4c_cgraph.png" border="0" usemap="#aa00277_aa49456bae5f40ef9f52f1cc4ef4c2c4c_cgraph" alt=""/></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_aa49456bae5f40ef9f52f1cc4ef4c2c4c_icgraph.png" border="0" usemap="#aa00277_aa49456bae5f40ef9f52f1cc4ef4c2c4c_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="aa2a401bfffcba218ec893614d50a9bd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2a401bfffcba218ec893614d50a9bd9">&#9670;&nbsp;</a></span>DeleteVegetation()</h2>
+<p class="definition">Definition at line <a class="el" href="a00026_source.html#l00009">9</a> of file <a class="el" href="a00026_source.html">HeightMap.cs</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae2a8faff2ec34ae33cac44aa98582520"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2a8faff2ec34ae33cac44aa98582520">&#9670;&nbsp;</a></span>HeightMap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,10 +132,27 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.DeleteVegetation </td>
+          <td class="memname">Thoughts.Game.Map.Terrain.HeightMap.HeightMap </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>values</em>[,], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>minValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>maxValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -195,354 +162,43 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00218">218</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_aa2a401bfffcba218ec893614d50a9bd9_icgraph.png" border="0" usemap="#aa00277_aa2a401bfffcba218ec893614d50a9bd9_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="ad6a930faca29a0a03b3ea8c443b01e96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6a930faca29a0a03b3ea8c443b01e96">&#9670;&nbsp;</a></span>GenerateFishAndBirds()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.GenerateFishAndBirds </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>clearPrevious</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00232">232</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_ad6a930faca29a0a03b3ea8c443b01e96_icgraph.png" border="0" usemap="#aa00277_ad6a930faca29a0a03b3ea8c443b01e96_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="af2831c1c72b8ac8423a6e67b1603c596"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2831c1c72b8ac8423a6e67b1603c596">&#9670;&nbsp;</a></span>GenerateHumanoids()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.GenerateHumanoids </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>clearPrevious</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00244">244</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_af2831c1c72b8ac8423a6e67b1603c596_icgraph.png" border="0" usemap="#aa00277_af2831c1c72b8ac8423a6e67b1603c596_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a6f13aea43d32861bd9bdeeeb647ce564"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f13aea43d32861bd9bdeeeb647ce564">&#9670;&nbsp;</a></span>GenerateLandAnimals()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.GenerateLandAnimals </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>clearPrevious</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00238">238</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_a6f13aea43d32861bd9bdeeeb647ce564_icgraph.png" border="0" usemap="#aa00277_a6f13aea43d32861bd9bdeeeb647ce564_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="af8120249eb4ffc552a2808ede4faced5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8120249eb4ffc552a2808ede4faced5">&#9670;&nbsp;</a></span>GenerateLight()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.GenerateLight </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>clearPrevious</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00178">178</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_af8120249eb4ffc552a2808ede4faced5_icgraph.png" border="0" usemap="#aa00277_af8120249eb4ffc552a2808ede4faced5_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a0247d9cdbd8f2ec3f531080d488c36b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0247d9cdbd8f2ec3f531080d488c36b8">&#9670;&nbsp;</a></span>GenerateNight()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.GenerateNight </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>clearPrevious</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00226">226</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_a0247d9cdbd8f2ec3f531080d488c36b8_icgraph.png" border="0" usemap="#aa00277_a0247d9cdbd8f2ec3f531080d488c36b8_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a32f40432e6e60d7be4a464ca75d82305"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32f40432e6e60d7be4a464ca75d82305">&#9670;&nbsp;</a></span>GenerateTerrain()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.GenerateTerrain </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>clearPrevious</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00184">184</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_a32f40432e6e60d7be4a464ca75d82305_cgraph.png" border="0" usemap="#aa00277_a32f40432e6e60d7be4a464ca75d82305_cgraph" alt=""/></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_a32f40432e6e60d7be4a464ca75d82305_icgraph.png" border="0" usemap="#aa00277_a32f40432e6e60d7be4a464ca75d82305_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="add66db4fe292dcf029c0d8bf723229ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add66db4fe292dcf029c0d8bf723229ba">&#9670;&nbsp;</a></span>GenerateVegetation()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.GenerateVegetation </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>clearPrevious</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00189">189</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_add66db4fe292dcf029c0d8bf723229ba_cgraph.png" border="0" usemap="#aa00277_add66db4fe292dcf029c0d8bf723229ba_cgraph" alt=""/></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_add66db4fe292dcf029c0d8bf723229ba_icgraph.png" border="0" usemap="#aa00277_add66db4fe292dcf029c0d8bf723229ba_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a0236913c4c92d788568aef7b1ec476e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0236913c4c92d788568aef7b1ec476e1">&#9670;&nbsp;</a></span>OnTextureValuesUpdated()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.OnTextureValuesUpdated </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Manages the update of the TextureSettings by applying them to the map's Material </p>
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00098">98</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_a0236913c4c92d788568aef7b1ec476e1_cgraph.png" border="0" usemap="#aa00277_a0236913c4c92d788568aef7b1ec476e1_cgraph" alt=""/></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_a0236913c4c92d788568aef7b1ec476e1_icgraph.png" border="0" usemap="#aa00277_a0236913c4c92d788568aef7b1ec476e1_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="ac780ea885aa746aecaca5341087585ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac780ea885aa746aecaca5341087585ed">&#9670;&nbsp;</a></span>OnValidate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.OnValidate </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00074">74</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00277_ac780ea885aa746aecaca5341087585ed_cgraph.png" border="0" usemap="#aa00277_ac780ea885aa746aecaca5341087585ed_cgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a9e7ecd14bfaa4fafa083265f445e0fdd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e7ecd14bfaa4fafa083265f445e0fdd">&#9670;&nbsp;</a></span>Regenerate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.Regenerate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00181.html#abb0355236cc4bf3f0e7277c252871abf">CreationStep</a>&#160;</td>
-          <td class="paramname"><em>step</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Regenerates the things related to the given creation step </p>
+<p>Constructor of a <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> that contains values relative to the height of a terrain </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">step</td><td>The creation step that contains the things that are wanted to be regenerated</td></tr>
+    <tr><td class="paramname">values</td><td>The main data stored in the <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> relative to the height of a terrain</td></tr>
+    <tr><td class="paramname">minValue</td><td>The pre calculated minimum value contained within the main data</td></tr>
+    <tr><td class="paramname">maxValue</td><td>The pre calculated maximum value contained within the main data</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00148">148</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00026_source.html#l00030">30</a> of file <a class="el" href="a00026_source.html">HeightMap.cs</a>.</p>
 <div class="dynheader">
-Here is the call graph for this function:</div>
+Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00277_a9e7ecd14bfaa4fafa083265f445e0fdd_cgraph.png" border="0" usemap="#aa00277_a9e7ecd14bfaa4fafa083265f445e0fdd_cgraph" alt=""/></div>
+<div class="center"><img src="a00277_ae2a8faff2ec34ae33cac44aa98582520_icgraph.png" border="0" usemap="#aa00277_ae2a8faff2ec34ae33cac44aa98582520_icgraph" alt=""/></div>
+<map name="aa00277_ae2a8faff2ec34ae33cac44aa98582520_icgraph" id="aa00277_ae2a8faff2ec34ae33cac44aa98582520_icgraph">
+<area shape="rect" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="2343,157,2661,184"/>
+<area shape="rect" href="a00277.html#a6b79153aaca9eac7539b8d5d6b69c4d7" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1924,157,2295,184"/>
+<area shape="rect" href="a00281.html#a21c40372bab50552db42be4fb417126d" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1577,157,1876,184"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
 </div>
 
 </div>
 </div>
-<a id="ab3070a5a34dcdf5f89eecd23dbde657c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3070a5a34dcdf5f89eecd23dbde657c">&#9670;&nbsp;</a></span>RegenerateMapNotPlaying()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6b79153aaca9eac7539b8d5d6b69c4d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b79153aaca9eac7539b8d5d6b69c4d7">&#9670;&nbsp;</a></span>GenerateHeightMap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -551,121 +207,233 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.Game.Map.MapGenerator.RegenerateMapNotPlaying </td>
+          <td class="memname">static <a class="el" href="a00277.html">HeightMap</a> Thoughts.Game.Map.Terrain.HeightMap.GenerateHeightMap </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>mapRadius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00297.html">TerrainHeightSettings</a>&#160;</td>
+          <td class="paramname"><em>settings</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>sampleCenter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>If the app is not in Play Mode, the previously created map is destroyed and a new map is generated. </p>
+<p>Generates <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> that contains values relative to the height of a terrain </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>The desired width for the generated <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a></td></tr>
+    <tr><td class="paramname">height</td><td>The desired height for the generated <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a></td></tr>
+    <tr><td class="paramname">mapRadius</td><td>The theoretical radius of the map containing this terrain</td></tr>
+    <tr><td class="paramname">settings</td><td>The HeightMapSettings for this <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a>'s pattern</td></tr>
+    <tr><td class="paramname">sampleCenter</td><td>The cords at the center of this <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> relative to the center of the whole (scene) map</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00060">60</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00026_source.html#l00047">47</a> of file <a class="el" href="a00026_source.html">HeightMap.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00277_a6b79153aaca9eac7539b8d5d6b69c4d7_cgraph.png" border="0" usemap="#aa00277_a6b79153aaca9eac7539b8d5d6b69c4d7_cgraph" alt=""/></div>
+<map name="aa00277_a6b79153aaca9eac7539b8d5d6b69c4d7_cgraph" id="aa00277_a6b79153aaca9eac7539b8d5d6b69c4d7_cgraph">
+<area shape="rect" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="5,56,376,83"/>
+<area shape="rect" href="a00505.html#afb38ca73e5ee55ec0695ce56d16b7941" title="Generates a perlin noise map of a given width and height." alt="" coords="447,5,745,32"/>
+<area shape="rect" href="a00277.html#adfdb1caef6fbc5c926a654ca4c59852f" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="424,56,768,83"/>
+<area shape="rect" href="a00277.html#ae2a8faff2ec34ae33cac44aa98582520" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="437,107,755,133"/>
+</map>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00277_ab3070a5a34dcdf5f89eecd23dbde657c_icgraph.png" border="0" usemap="#aa00277_ab3070a5a34dcdf5f89eecd23dbde657c_icgraph" alt=""/></div>
+<div class="center"><img src="a00277_a6b79153aaca9eac7539b8d5d6b69c4d7_icgraph.png" border="0" usemap="#aa00277_a6b79153aaca9eac7539b8d5d6b69c4d7_icgraph" alt=""/></div>
+<map name="aa00277_a6b79153aaca9eac7539b8d5d6b69c4d7_icgraph" id="aa00277_a6b79153aaca9eac7539b8d5d6b69c4d7_icgraph">
+<area shape="rect" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1924,157,2295,184"/>
+<area shape="rect" href="a00281.html#a21c40372bab50552db42be4fb417126d" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1577,157,1876,184"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="adfdb1caef6fbc5c926a654ca4c59852f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfdb1caef6fbc5c926a654ca4c59852f">&#9670;&nbsp;</a></span>GetFalloffValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Thoughts.Game.Map.Terrain.HeightMap.GetFalloffValue </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>coords</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AnimationCurve&#160;</td>
+          <td class="paramname"><em>falloffIntensity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>mapRadius</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coords</td><td>The coords of the map to calculate the intensity of the falloff in that location</td></tr>
+    <tr><td class="paramname">falloffIntensity</td><td>The AnimationCurve that defines the intensity of the falloff relative to the radius of the center of the map</td></tr>
+    <tr><td class="paramname">mapRadius</td><td>The radius of the center of the map</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00026_source.html#l00088">88</a> of file <a class="el" href="a00026_source.html">HeightMap.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00277_adfdb1caef6fbc5c926a654ca4c59852f_icgraph.png" border="0" usemap="#aa00277_adfdb1caef6fbc5c926a654ca4c59852f_icgraph" alt=""/></div>
+<map name="aa00277_adfdb1caef6fbc5c926a654ca4c59852f_icgraph" id="aa00277_adfdb1caef6fbc5c926a654ca4c59852f_icgraph">
+<area shape="rect" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="2343,157,2687,184"/>
+<area shape="rect" href="a00277.html#a6b79153aaca9eac7539b8d5d6b69c4d7" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="1924,157,2295,184"/>
+<area shape="rect" href="a00281.html#a21c40372bab50552db42be4fb417126d" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1577,157,1876,184"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a4fb7e11c8336680913be5d1f48038092"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fb7e11c8336680913be5d1f48038092">&#9670;&nbsp;</a></span>autoRegenerateInEditor</h2>
+<a id="ab7b09e99e1420fbd3aab8cf3d2aaca16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7b09e99e1420fbd3aab8cf3d2aaca16">&#9670;&nbsp;</a></span>maxValue</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Thoughts.Game.Map.MapGenerator.autoRegenerateInEditor = false</td>
+          <td class="memname">readonly float Thoughts.Game.Map.Terrain.HeightMap.maxValue</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00018">18</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
+<p>The pre recorded maximum value contained within the main data. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00026_source.html#l00022">22</a> of file <a class="el" href="a00026_source.html">HeightMap.cs</a>.</p>
 
 </div>
 </div>
-<a id="ae9a3e6a37943e3e25506d59d57ec316a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9a3e6a37943e3e25506d59d57ec316a">&#9670;&nbsp;</a></span>mapConfiguration</h2>
+<a id="ad25684853630a3a10edf19d9e5843fcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad25684853630a3a10edf19d9e5843fcc">&#9670;&nbsp;</a></span>minValue</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00229.html">MapConfiguration</a> Thoughts.Game.Map.MapGenerator.mapConfiguration</td>
+          <td class="memname">readonly float Thoughts.Game.Map.Terrain.HeightMap.minValue</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reference to the <a class="el" href="a00229.html" title="Holds all the configuration/settings used to generate the Map">MapConfiguration</a> with he settings to generate a map </p>
+<p>The pre recorded minimum value contained within the main data. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00030">30</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00026_source.html#l00018">18</a> of file <a class="el" href="a00026_source.html">HeightMap.cs</a>.</p>
 
 </div>
 </div>
-<a id="acb2a845cbc020b907b34af6d2c7f2d2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb2a845cbc020b907b34af6d2c7f2d2c">&#9670;&nbsp;</a></span>terrainGenerator</h2>
+<a id="ae10427256a41cf2ec2f869bfa988ee68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae10427256a41cf2ec2f869bfa988ee68">&#9670;&nbsp;</a></span>values</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00301.html">TerrainGenerator</a> Thoughts.Game.Map.MapGenerator.terrainGenerator</td>
+          <td class="memname">readonly float [,] Thoughts.Game.Map.Terrain.HeightMap.values</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reference to the TerrainGenerator component in charge of generating the <a class="el" href="a00185.html">Terrain</a> </p>
+<p>The main data stored in the <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> (should be relative to the height of a terrain). </p>
 
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00024">24</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-
-</div>
-</div>
-<a id="a8d2baee6027acaa63c14d289bee4897b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d2baee6027acaa63c14d289bee4897b">&#9670;&nbsp;</a></span>threadedDataRequester</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00465.html">ThreadedDataRequester</a> Thoughts.Game.Map.MapGenerator.threadedDataRequester</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reference to the ThreadedDataRequester component in charge doing threaded requests of data </p>
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00036">36</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00026_source.html#l00014">14</a> of file <a class="el" href="a00026_source.html">HeightMap.cs</a>.</p>
 
 </div>
 </div>
-<a id="aa4005f7d70c18ed0fb5a0dc6042b1f65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4005f7d70c18ed0fb5a0dc6042b1f65">&#9670;&nbsp;</a></span>vegetationHolder</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Transform Thoughts.Game.Map.MapGenerator.vegetationHolder</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reference to the transform that is going to be parent of all generated vegetation </p>
-
-<p class="definition">Definition at line <a class="el" href="a00044_source.html#l00042">42</a> of file <a class="el" href="a00044_source.html">MapGenerator.cs</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00044_source.html">MapGenerator.cs</a></li>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00026_source.html">HeightMap.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

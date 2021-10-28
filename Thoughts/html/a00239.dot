@@ -1,8 +1,0 @@
-digraph "Thoughts.Game.Map.MapElements.Attributes.AttributesManager"
-{
- // INTERACTIVE_SVG=YES
- // LATEX_PDF_SIZE
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="{Thoughts.Game.Map.MapElements.Attributes.AttributesManager\n|+ owner\l+ attributeOwnerships\l- _attributeOwnerships\l|+ Initialize()\l+ ToString()\l+ ExecuteMapEventsWithTimeElapseEnabled()\l+ UpdateAttribute()\l+ GetAttributesThatNeedCare()\l+ CanCover()\l+ GetOwnedAttributeOf()\l+ GetExecutionPlanToCover()\l+ GetAttributesWithPriority()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Manages a set of AttributeOwnerships all owned by the same MapElement"];
-}

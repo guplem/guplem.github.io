@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: UserNameUI.cs Source File</title>
+<title>TS20-Thoughts: ExecutionPlanUI.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,37 +61,50 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_73028e39970dacc30de607f846e863c0.html">Participants</a></li><li class="navelem"><a class="el" href="dir_f21a534e5292db297709d43bd4342987.html">ControlSystems</a></li><li class="navelem"><a class="el" href="dir_878cc41a4e5b4f4810ffb673d3067b22.html">Manual</a></li><li class="navelem"><a class="el" href="dir_c238b6fdf46591bbda06b251055079bf.html">UI</a></li><li class="navelem"><a class="el" href="dir_66560018674e3a2a0df7615eecb3f3e3.html">Game</a></li><li class="navelem"><a class="el" href="dir_015387ffb7cb71bae82917bd7d32eea7.html">CreationStepsUI</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_73028e39970dacc30de607f846e863c0.html">Participants</a></li><li class="navelem"><a class="el" href="dir_f21a534e5292db297709d43bd4342987.html">ControlSystems</a></li><li class="navelem"><a class="el" href="dir_878cc41a4e5b4f4810ffb673d3067b22.html">Manual</a></li><li class="navelem"><a class="el" href="dir_c238b6fdf46591bbda06b251055079bf.html">UI</a></li><li class="navelem"><a class="el" href="dir_66560018674e3a2a0df7615eecb3f3e3.html">Game</a></li><li class="navelem"><a class="el" href="dir_5e9eefb3bab9c817e85412f06356a8cd.html">BehaviorUI</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">UserNameUI.cs</div>  </div>
+<div class="title">ExecutionPlanUI.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00113.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00179.html">Thoughts</a>.<a class="code" href="a00180.html">Game</a>;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00192.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI</a></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00385.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00385.html">UserNameUI</a> : <a class="code" href="a00357.html">CreationStepUI</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="a00385.html#a0afd8e80792cc25ab128c7c4c8d6dd3e">    8</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00385.html#a0afd8e80792cc25ab128c7c4c8d6dd3e">SetNewName</a>(<span class="keywordtype">string</span> newName)</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;            <a class="code" href="a00225.html">GameManager</a>.<a class="code" href="a00225.html#a8380aedd8f5304b87424a7b384c4e3c3">instance</a>.<a class="code" href="a00225.html#a9a2482d5e6aedf4582693fd57fed64e0">localManualParticipant</a>.name = newName;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        }</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    }</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
-<div class="ttc" id="aa00179_html"><div class="ttname"><a href="a00179.html">Thoughts</a></div><div class="ttdef"><b>Definition:</b> <a href="a00002_source.html#l00005">AppManager.cs:6</a></div></div>
-<div class="ttc" id="aa00180_html"><div class="ttname"><a href="a00180.html">Thoughts.Game</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00011">GameManager.cs:12</a></div></div>
-<div class="ttc" id="aa00192_html"><div class="ttname"><a href="a00192.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00006">CreationStepUI.cs:7</a></div></div>
-<div class="ttc" id="aa00225_html"><div class="ttname"><a href="a00225.html">Thoughts.Game.GameManager</a></div><div class="ttdoc">Controls the core aspects of the a game: Participant (with ControlSystem), Map setup,...</div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00016">GameManager.cs:17</a></div></div>
-<div class="ttc" id="aa00225_html_a8380aedd8f5304b87424a7b384c4e3c3"><div class="ttname"><a href="a00225.html#a8380aedd8f5304b87424a7b384c4e3c3">Thoughts.Game.GameManager.instance</a></div><div class="ttdeci">static GameManager instance</div><div class="ttdoc">The singleton reference to this class</div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00021">GameManager.cs:21</a></div></div>
-<div class="ttc" id="aa00225_html_a9a2482d5e6aedf4582693fd57fed64e0"><div class="ttname"><a href="a00225.html#a9a2482d5e6aedf4582693fd57fed64e0">Thoughts.Game.GameManager.localManualParticipant</a></div><div class="ttdeci">Participant localManualParticipant</div><div class="ttdoc">The participant playing manually in the local machine</div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00045">GameManager.cs:45</a></div></div>
-<div class="ttc" id="aa00357_html"><div class="ttname"><a href="a00357.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.CreationStepUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00092_source.html#l00009">CreationStepUI.cs:10</a></div></div>
-<div class="ttc" id="aa00385_html"><div class="ttname"><a href="a00385.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.UserNameUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00113_source.html#l00005">UserNameUI.cs:6</a></div></div>
-<div class="ttc" id="aa00385_html_a0afd8e80792cc25ab128c7c4c8d6dd3e"><div class="ttname"><a href="a00385.html#a0afd8e80792cc25ab128c7c4c8d6dd3e">Thoughts.Participants.ControlSystems.Manual.UI.Game.CreationStepsUI.UserNameUI.SetNewName</a></div><div class="ttdeci">void SetNewName(string newName)</div><div class="ttdef"><b>Definition:</b> <a href="a00113_source.html#l00008">UserNameUI.cs:8</a></div></div>
+<a href="a00113.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00203.html">Thoughts</a>.<a class="code" href="a00204.html">Game</a>.<a class="code" href="a00205.html">Map</a>.<a class="code" href="a00207.html">MapElements</a>.<a class="code" href="a00208.html">Attributes</a>.<a class="code" href="a00209.html">MapEvents</a>;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> TMPro;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00215.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI</a></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00409.html">   10</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00409.html">ExecutionPlanUI</a> : MonoBehaviour</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        [Tooltip(<span class="stringliteral">&quot;A reference to the text component that displays the information regarding the displayed ExecutionPlan&quot;</span>)]</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="a00409.html#a49ce93a1cdc3c555e26555d5931b71a1">   16</a></span>&#160;        [SerializeField] <span class="keyword">private</span> TMP_Text <a class="code" href="a00409.html#a49ce93a1cdc3c555e26555d5931b71a1">executionPlanText</a>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="a00409.html#afd15d8df49110a28cbe131682561155c">   22</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00409.html#afd15d8df49110a28cbe131682561155c">Setup</a>(<a class="code" href="a00357.html">ExecutionPlan</a> executionPlan)</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="keywordtype">bool</span> display = executionPlan != <span class="keyword">null</span>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            gameObject.SetActive(display);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <span class="keywordflow">if</span> (display)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                <a class="code" href="a00409.html#a49ce93a1cdc3c555e26555d5931b71a1">executionPlanText</a>.text = executionPlan.<a class="code" href="a00357.html#a9c57b548e43c76ea151561551a692d60">mapEvent</a>.<a class="code" href="a00361.html#af30c1c1cb16c60a387278bdebfeaf8a1">name</a>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    }</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;}</div>
+<div class="ttc" id="aa00203_html"><div class="ttname"><a href="a00203.html">Thoughts</a></div><div class="ttdef"><b>Definition:</b> <a href="a00002_source.html#l00005">AppManager.cs:6</a></div></div>
+<div class="ttc" id="aa00204_html"><div class="ttname"><a href="a00204.html">Thoughts.Game</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00011">GameManager.cs:12</a></div></div>
+<div class="ttc" id="aa00205_html"><div class="ttname"><a href="a00205.html">Thoughts.Game.Map</a></div><div class="ttdef"><b>Definition:</b> <a href="a00011_source.html#l00004">HumanoidsGenerator.cs:5</a></div></div>
+<div class="ttc" id="aa00207_html"><div class="ttname"><a href="a00207.html">Thoughts.Game.Map.MapElements</a></div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00006">Attribute.cs:7</a></div></div>
+<div class="ttc" id="aa00208_html"><div class="ttname"><a href="a00208.html">Thoughts.Game.Map.MapElements.Attributes</a></div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00006">Attribute.cs:7</a></div></div>
+<div class="ttc" id="aa00209_html"><div class="ttname"><a href="a00209.html">Thoughts.Game.Map.MapElements.Attributes.MapEvents</a></div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00005">ExecutionPlan.cs:6</a></div></div>
+<div class="ttc" id="aa00215_html"><div class="ttname"><a href="a00215.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00107_source.html#l00008">BehaviorUI.cs:9</a></div></div>
+<div class="ttc" id="aa00357_html"><div class="ttname"><a href="a00357.html">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan</a></div><div class="ttdoc">The execution configuration for a MapEvent. A plan to execute a MapEvent (of an Attribute) owned by a...</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00010">ExecutionPlan.cs:11</a></div></div>
+<div class="ttc" id="aa00357_html_a9c57b548e43c76ea151561551a692d60"><div class="ttname"><a href="a00357.html#a9c57b548e43c76ea151561551a692d60">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.mapEvent</a></div><div class="ttdeci">MapEvent mapEvent</div><div class="ttdoc">The MapEvent to execute</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00015">ExecutionPlan.cs:15</a></div></div>
+<div class="ttc" id="aa00361_html_af30c1c1cb16c60a387278bdebfeaf8a1"><div class="ttname"><a href="a00361.html#af30c1c1cb16c60a387278bdebfeaf8a1">Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.name</a></div><div class="ttdeci">string name</div><div class="ttdoc">The name of the event</div><div class="ttdef"><b>Definition:</b> <a href="a00074_source.html#l00018">MapEvent.cs:18</a></div></div>
+<div class="ttc" id="aa00409_html"><div class="ttname"><a href="a00409.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlanUI</a></div><div class="ttdoc">Controls the display of a single ExecutionPlan in the UI</div><div class="ttdef"><b>Definition:</b> <a href="a00113_source.html#l00010">ExecutionPlanUI.cs:11</a></div></div>
+<div class="ttc" id="aa00409_html_a49ce93a1cdc3c555e26555d5931b71a1"><div class="ttname"><a href="a00409.html#a49ce93a1cdc3c555e26555d5931b71a1">Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlanUI.executionPlanText</a></div><div class="ttdeci">TMP_Text executionPlanText</div><div class="ttdoc">A reference to the text component that displays the information regarding the displayed ExecutionPlan</div><div class="ttdef"><b>Definition:</b> <a href="a00113_source.html#l00016">ExecutionPlanUI.cs:16</a></div></div>
+<div class="ttc" id="aa00409_html_afd15d8df49110a28cbe131682561155c"><div class="ttname"><a href="a00409.html#afd15d8df49110a28cbe131682561155c">Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlanUI.Setup</a></div><div class="ttdeci">void Setup(ExecutionPlan executionPlan)</div><div class="ttdoc">Displays the given execution plan in the UI</div><div class="ttdef"><b>Definition:</b> <a href="a00113_source.html#l00022">ExecutionPlanUI.cs:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

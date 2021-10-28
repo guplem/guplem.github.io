@@ -1,0 +1,5 @@
+<map id="Thoughts.Game.Map.MapConfiguration.Equals" name="Thoughts.Game.Map.MapConfiguration.Equals">
+<area shape="rect" id="node1" title="Indicates whether the current object is equal to another object of the same type." alt="" coords="368,31,659,57"/>
+<area shape="rect" id="node2" href="$a00329.html#a15c9969ea8db95989673dc73b94e4083" title="Indicates whether the current object is equal to another object of the same type." alt="" coords="17,5,308,32"/>
+<area shape="rect" id="node3" href="$a00329.html#ac35a1e4ebdf80c888111204796a66999" title="Override to the equal operator so two MapConfigurations are considered the same if their names are th..." alt="" coords="5,56,320,83"/>
+</map>

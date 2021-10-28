@@ -1,0 +1,6 @@
+<map id="Thoughts.Game.Map.MapElements.Attributes.AttributesManager.GetAttributesThatNeedCare" name="Thoughts.Game.Map.MapElements.Attributes.AttributesManager.GetAttributesThatNeedCare">
+<area shape="rect" id="node1" title="Returns a list of all the AttributeOwnership in this AttributeManager that need care...." alt="" coords="1387,5,1947,32"/>
+<area shape="rect" id="node2" href="$a00369.html#a7f3ac83b21ccd1672f8c0c97918f5598" title="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement." alt="" coords="841,5,1339,32"/>
+<area shape="rect" id="node3" href="$a00369.html#af3e11e868f05d7c6449734669e350774" title="Controls the internal clock of the MapElement." alt="" coords="389,5,793,32"/>
+<area shape="rect" id="node4" href="$a00369.html#a38fe6cacc3395a39b0c56393bffe2fcc" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,341,32"/>
+</map>

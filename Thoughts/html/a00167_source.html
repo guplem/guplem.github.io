@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: PlaySimpleAnimationOnStart.cs Source File</title>
+<title>TS20-Thoughts: Participant.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,41 +61,60 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_ba68b83da1c23134d6506c4488446a0c.html">Utils</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_73028e39970dacc30de607f846e863c0.html">Participants</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">PlaySimpleAnimationOnStart.cs</div>  </div>
+<div class="title">Participant.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00167.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00195.html">Thoughts.Utils</a></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    [RequireComponent(typeof(SimpleAnimationsManager))]</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="a00457.html">    6</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00457.html">PlaySimpleAnimationOnStart</a> : MonoBehaviour</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    {</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="a00457.html#ab1e6a61b992c3d85c1184cb2e0d5cf8c">    8</a></span>&#160;        <span class="keyword">private</span> SimpleAnimationsManager <a class="code" href="a00457.html#ab1e6a61b992c3d85c1184cb2e0d5cf8c">simpleAnimationsManager</a>;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00457.html#a3bff4e4689c1ecfccbad45d7fb3e1433">   10</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> <a class="code" href="a00457.html#a3bff4e4689c1ecfccbad45d7fb3e1433">Awake</a>()</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;            <a class="code" href="a00457.html#ab1e6a61b992c3d85c1184cb2e0d5cf8c">simpleAnimationsManager</a> = gameObject.GetComponentRequired&lt;SimpleAnimationsManager&gt;();</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        }</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="a00457.html#a6adb7c393429847b2032b142dd0ec5d0">   15</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="a00457.html#a6adb7c393429847b2032b142dd0ec5d0">Start</a>()</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <a class="code" href="a00457.html#ab1e6a61b992c3d85c1184cb2e0d5cf8c">simpleAnimationsManager</a>.Play(0);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            Debug.LogWarning(<span class="stringliteral">&quot;Playing&quot;</span>);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
-<div class="ttc" id="aa00195_html"><div class="ttname"><a href="a00195.html">Thoughts.Utils</a></div><div class="ttdef"><b>Definition:</b> <a href="a00146_source.html#l00003">DisableAtStart.cs:4</a></div></div>
-<div class="ttc" id="aa00457_html"><div class="ttname"><a href="a00457.html">Thoughts.Utils.PlaySimpleAnimationOnStart</a></div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00006">PlaySimpleAnimationOnStart.cs:7</a></div></div>
-<div class="ttc" id="aa00457_html_a3bff4e4689c1ecfccbad45d7fb3e1433"><div class="ttname"><a href="a00457.html#a3bff4e4689c1ecfccbad45d7fb3e1433">Thoughts.Utils.PlaySimpleAnimationOnStart.Awake</a></div><div class="ttdeci">void Awake()</div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00010">PlaySimpleAnimationOnStart.cs:10</a></div></div>
-<div class="ttc" id="aa00457_html_a6adb7c393429847b2032b142dd0ec5d0"><div class="ttname"><a href="a00457.html#a6adb7c393429847b2032b142dd0ec5d0">Thoughts.Utils.PlaySimpleAnimationOnStart.Start</a></div><div class="ttdeci">void Start()</div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00015">PlaySimpleAnimationOnStart.cs:15</a></div></div>
-<div class="ttc" id="aa00457_html_ab1e6a61b992c3d85c1184cb2e0d5cf8c"><div class="ttname"><a href="a00457.html#ab1e6a61b992c3d85c1184cb2e0d5cf8c">Thoughts.Utils.PlaySimpleAnimationOnStart.simpleAnimationsManager</a></div><div class="ttdeci">SimpleAnimationsManager simpleAnimationsManager</div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00008">PlaySimpleAnimationOnStart.cs:8</a></div></div>
+<a href="a00167.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00203.html">Thoughts</a>.<a class="code" href="a00210.html">Participants</a>.<a class="code" href="a00211.html">ControlSystems</a>;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00210.html">Thoughts.Participants</a></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="a00481.html">    9</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00481.html">Participant</a></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="a00481.html#ae15d56447848b2a8ebc6320223c7e023">   14</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00385.html">ControlSystem</a> <a class="code" href="a00481.html#ae15d56447848b2a8ebc6320223c7e023">controlSystem</a></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keyword">get</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00481.html#af9d69cc01c105361d1506c4b0d730d64">_controlSystem</a>;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            }</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keyword">private</span> <span class="keyword">set</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00481.html#af9d69cc01c105361d1506c4b0d730d64">_controlSystem</a> != <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                    <a class="code" href="a00481.html#af9d69cc01c105361d1506c4b0d730d64">_controlSystem</a>.<a class="code" href="a00385.html#a12c12374d49136efc756ed4ce90c4b1d">Disable</a>();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                <a class="code" href="a00481.html#af9d69cc01c105361d1506c4b0d730d64">_controlSystem</a> = value;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00481.html#af9d69cc01c105361d1506c4b0d730d64">_controlSystem</a> != <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                    <a class="code" href="a00481.html#af9d69cc01c105361d1506c4b0d730d64">_controlSystem</a>.<a class="code" href="a00385.html#abf248a249454bea0c4b595eb8a24070d">Initialize</a>(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00481.html#af9d69cc01c105361d1506c4b0d730d64">   31</a></span>&#160;        <span class="keyword">private</span> <a class="code" href="a00385.html">ControlSystem</a> <a class="code" href="a00481.html#af9d69cc01c105361d1506c4b0d730d64">_controlSystem</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="a00481.html#a4bedbdc7d3ecb00344a0c04412d89d45">   37</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">string</span> <a class="code" href="a00481.html#a4bedbdc7d3ecb00344a0c04412d89d45">name</a>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="a00481.html#a9ae2848953f32d5754e0b54863e518eb">   43</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00481.html#a9ae2848953f32d5754e0b54863e518eb">Participant</a>(GameObject <a class="code" href="a00481.html#ae15d56447848b2a8ebc6320223c7e023">controlSystem</a>)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            this.controlSystem = <a class="code" href="a00481.html#ae15d56447848b2a8ebc6320223c7e023">controlSystem</a>.GetComponentRequired&lt;<a class="code" href="a00385.html">ControlSystem</a>&gt;();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="ttc" id="aa00203_html"><div class="ttname"><a href="a00203.html">Thoughts</a></div><div class="ttdef"><b>Definition:</b> <a href="a00002_source.html#l00005">AppManager.cs:6</a></div></div>
+<div class="ttc" id="aa00210_html"><div class="ttname"><a href="a00210.html">Thoughts.Participants</a></div><div class="ttdef"><b>Definition:</b> <a href="a00095_source.html#l00003">ControlSystem.cs:4</a></div></div>
+<div class="ttc" id="aa00211_html"><div class="ttname"><a href="a00211.html">Thoughts.Participants.ControlSystems</a></div><div class="ttdef"><b>Definition:</b> <a href="a00095_source.html#l00003">ControlSystem.cs:4</a></div></div>
+<div class="ttc" id="aa00385_html"><div class="ttname"><a href="a00385.html">Thoughts.Participants.ControlSystems.ControlSystem</a></div><div class="ttdoc">A way of controlling a participant.</div><div class="ttdef"><b>Definition:</b> <a href="a00095_source.html#l00008">ControlSystem.cs:9</a></div></div>
+<div class="ttc" id="aa00385_html_a12c12374d49136efc756ed4ce90c4b1d"><div class="ttname"><a href="a00385.html#a12c12374d49136efc756ed4ce90c4b1d">Thoughts.Participants.ControlSystems.ControlSystem.Disable</a></div><div class="ttdeci">virtual void Disable()</div><div class="ttdoc">Disables the ControlSystem by removing reference to the controlled Participant.</div><div class="ttdef"><b>Definition:</b> <a href="a00095_source.html#l00027">ControlSystem.cs:27</a></div></div>
+<div class="ttc" id="aa00385_html_abf248a249454bea0c4b595eb8a24070d"><div class="ttname"><a href="a00385.html#abf248a249454bea0c4b595eb8a24070d">Thoughts.Participants.ControlSystems.ControlSystem.Initialize</a></div><div class="ttdeci">virtual void Initialize(Participant participant)</div><div class="ttdoc">Initializes the ControlSystem by giving it reference to the participant that will use it.</div><div class="ttdef"><b>Definition:</b> <a href="a00095_source.html#l00019">ControlSystem.cs:19</a></div></div>
+<div class="ttc" id="aa00481_html"><div class="ttname"><a href="a00481.html">Thoughts.Participants.Participant</a></div><div class="ttdoc">Each of the members of the the game.</div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00009">Participant.cs:10</a></div></div>
+<div class="ttc" id="aa00481_html_a4bedbdc7d3ecb00344a0c04412d89d45"><div class="ttname"><a href="a00481.html#a4bedbdc7d3ecb00344a0c04412d89d45">Thoughts.Participants.Participant.name</a></div><div class="ttdeci">string name</div><div class="ttdoc">The name of the participant</div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00037">Participant.cs:37</a></div></div>
+<div class="ttc" id="aa00481_html_a9ae2848953f32d5754e0b54863e518eb"><div class="ttname"><a href="a00481.html#a9ae2848953f32d5754e0b54863e518eb">Thoughts.Participants.Participant.Participant</a></div><div class="ttdeci">Participant(GameObject controlSystem)</div><div class="ttdoc">The class constructor.</div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00043">Participant.cs:43</a></div></div>
+<div class="ttc" id="aa00481_html_ae15d56447848b2a8ebc6320223c7e023"><div class="ttname"><a href="a00481.html#ae15d56447848b2a8ebc6320223c7e023">Thoughts.Participants.Participant.controlSystem</a></div><div class="ttdeci">ControlSystem controlSystem</div><div class="ttdoc">The control system of the participant.</div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00014">Participant.cs:15</a></div></div>
+<div class="ttc" id="aa00481_html_af9d69cc01c105361d1506c4b0d730d64"><div class="ttname"><a href="a00481.html#af9d69cc01c105361d1506c4b0d730d64">Thoughts.Participants.Participant._controlSystem</a></div><div class="ttdeci">ControlSystem _controlSystem</div><div class="ttdef"><b>Definition:</b> <a href="a00167_source.html#l00031">Participant.cs:31</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

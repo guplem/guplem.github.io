@@ -1,4 +1,0 @@
-<map id="Thoughts.ControlSystems.InputHandler.HandleSelection" name="Thoughts.ControlSystems.InputHandler.HandleSelection">
-<area shape="rect" id="node1" title="Handles the input to control the selection" alt="" coords="5,5,352,32"/>
-<area shape="rect" id="node2" href="$a00178.html#a0b2d841170d8609f363012292500d666" title="Checks if the mouse is over a UI element" alt="" coords="400,5,739,32"/>
-</map>

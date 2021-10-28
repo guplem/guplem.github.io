@@ -1,4 +1,0 @@
-<map id="Thoughts.Game.GameManager.Awake" name="Thoughts.Game.GameManager.Awake">
-<area shape="rect" id="node1" title="Tries to set up this instance as the singleton instance. Additionally, it checks for the existence of..." alt="" coords="5,5,252,32"/>
-<area shape="rect" id="node2" href="$a00271.html#a4bfffe7f6e454bb8af6dd9a4368c7c42" title="If there is no other singleton instance of this class, this is set as it. Being the only one,..." alt="" coords="300,5,608,32"/>
-</map>

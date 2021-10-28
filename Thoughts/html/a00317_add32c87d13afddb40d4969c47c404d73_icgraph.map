@@ -1,0 +1,5 @@
+<map id="Thoughts.Game.Map.Terrain.TerrainTextureSettings.ApplyToMaterial" name="Thoughts.Game.Map.Terrain.TerrainTextureSettings.ApplyToMaterial">
+<area shape="rect" id="node1" title="Applies the current texture settings to the terrain&#39;s material" alt="" coords="819,5,1236,32"/>
+<area shape="rect" id="node2" href="$a00377.html#ae70c9029ddc4eb9683787de98d715085" title="Manages the update of the TextureSettings by applying them to the map&#39;s Material" alt="" coords="351,5,771,32"/>
+<area shape="rect" id="node3" href="$a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,5,303,32"/>
+</map>

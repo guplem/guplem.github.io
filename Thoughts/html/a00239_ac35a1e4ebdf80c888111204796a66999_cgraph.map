@@ -1,0 +1,4 @@
+<map id="Thoughts.Game.Map.MapConfiguration.operator==" name="Thoughts.Game.Map.MapConfiguration.operator==">
+<area shape="rect" id="node1" title="Override to the equal operator so two MapConfigurations are considered the same if their names are th..." alt="" coords="5,5,320,32"/>
+<area shape="rect" id="node2" href="$a00239.html#acb5f4d3f43bc7b3daf57950e041eb40c" title="Indicates whether the current object is equal to another object of the same type." alt="" coords="368,5,659,32"/>
+</map>

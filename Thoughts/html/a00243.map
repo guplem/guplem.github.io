@@ -1,0 +1,6 @@
+<map id="Thoughts.AppManager" name="Thoughts.AppManager">
+<area shape="rect" id="node1" title="Object that must be kept always alive while running the app. It initializes the game process and keep..." alt="" coords="6,331,158,452"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,161,116,239"/>
+<area shape="rect" id="node3" href="$a00493.html" title="A wrapper that provides the means to safely serialize Scene Asset References." alt="" coords="141,132,402,268"/>
+<area shape="rect" id="node4" title=" " alt="" coords="174,5,369,83"/>
+</map>

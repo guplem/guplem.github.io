@@ -1,6 +1,0 @@
-<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Hide" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Hide">
-<area shape="rect" id="node1" title="Plays the animation to hide this UI Element" alt="" coords="712,56,1320,83"/>
-<area shape="rect" id="node2" href="$a00386.html#a28e6bd626c77dbf779538bedac923aaf" title="Setup of the initial UI for the game (displays the UI for nothing, so no UI)" alt="" coords="89,5,580,32"/>
-<area shape="rect" id="node3" href="$a00350.html#aa9af22c66a2b7eb256e64c2f354119a4" title=" " alt="" coords="5,56,664,83"/>
-<area shape="rect" id="node4" href="$a00410.html#a7af46dbfcd0e211e42f3b8d409ebe9ec" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="9,107,661,133"/>
-</map>

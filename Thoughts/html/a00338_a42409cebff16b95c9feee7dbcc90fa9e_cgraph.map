@@ -1,4 +1,0 @@
-<map id="TextureSettings.ApplyToMaterial" name="TextureSettings.ApplyToMaterial">
-<area shape="rect" id="node1" title="Applies the current texture settings to the terrain&#39;s material" alt="" coords="5,5,216,32"/>
-<area shape="rect" id="node2" href="$a00338.html#acfb079714b858560786f85bbe702e3f8" title="Updates the minimum and maximum height of the terrain" alt="" coords="264,5,499,32"/>
-</map>

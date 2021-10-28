@@ -1,5 +1,0 @@
-<map id="MapGenerator.GenerateMap" name="MapGenerator.GenerateMap">
-<area shape="rect" id="node1" title="Updates or generates the map." alt="" coords="536,5,723,32"/>
-<area shape="rect" id="node2" href="$a00279.html#a99027f3be3cd53117a9892ec7baf6e2f" title="If the app is not in Play Mode, the previously created map is destroyed and a new map is generated." alt="" coords="225,5,488,32"/>
-<area shape="rect" id="node3" href="$a00279.html#a194d3ac2a48cab976070d550fccd1296" title=" " alt="" coords="5,5,177,32"/>
-</map>

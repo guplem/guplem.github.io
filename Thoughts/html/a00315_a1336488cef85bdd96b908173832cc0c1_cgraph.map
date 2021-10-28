@@ -1,8 +1,0 @@
-<map id="Thoughts.Game.GameMap.Map.GetExecutionPlanToCover" name="Thoughts.Game.GameMap.Map.GetExecutionPlanToCover">
-<area shape="rect" id="node1" title="Look for all MapEvents available in the map that, as consequence of a MapEvent in an Attribute they o..." alt="" coords="5,56,368,83"/>
-<area shape="rect" id="node2" href="$a00319.html#a5eecb953309547dcb9fdf9f9696241d3" title="Looks for an ExecutionPlan to cover the Attribute in the given AttributeOwnership relation using the ..." alt="" coords="416,56,848,83"/>
-<area shape="rect" id="node3" href="$a00343.html#a898e073b96f00766ce5d35c4ffe68a85" title="Indicates if the consequences of the execution of this event will increase the value of an attribute ..." alt="" coords="930,5,1291,32"/>
-<area shape="rect" id="node4" href="$a00343.html#a5c45259396f965e5a2f294710c1b8c4d" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="917,56,1304,83"/>
-<area shape="rect" id="node5" href="$a00339.html#a9afb2a5b2f8c152a92f9d5db9ecdf86c" title="Sets the amount of times remaining to execute this plan&#39;s MapEvent to the same amount needed to to co..." alt="" coords="896,107,1325,133"/>
-<area shape="rect" id="node6" href="$a00339.html#ab0fe3fe2e7928d46a5b1483064fdab21" title="Calculates the amount of times that the execution of this ExecutionPlan&#39;s MapElement is needed to cov..." alt="" coords="1373,107,1852,133"/>
-</map>

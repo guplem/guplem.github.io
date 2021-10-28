@@ -1,0 +1,5 @@
+<map id="Thoughts.Game.Map.MapElements.StateManager.Step" name="Thoughts.Game.Map.MapElements.StateManager.Step">
+<area shape="rect" id="node1" title="Updates the remaining time in the current State and, if the remaining time is less than 0,..." alt="" coords="5,5,348,32"/>
+<area shape="rect" id="node2" href="$a00283.html#a3a8f9f0fb6099a237638ed218b3d9b72" title="Sets a new State with a remaining time to finish it and plays the animation of the given state at thi..." alt="" coords="396,5,763,32"/>
+<area shape="rect" id="node3" href="$a00283.html#a6034324eda7bde5dd2eacf8ca64fec2d" title="Returns the id of the trigger for the animation of the given state" alt="" coords="811,5,1255,32"/>
+</map>

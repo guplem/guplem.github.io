@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: FalloffGenerator.cs Source File</title>
+<title>TS20-Thoughts: SimpleAnimationUIElement.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,64 +61,84 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_ba68b83da1c23134d6506c4488446a0c.html">Utils</a></li><li class="navelem"><a class="el" href="dir_7c40ac29030c180901b19b76230254d9.html">Maths</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_73028e39970dacc30de607f846e863c0.html">Participants</a></li><li class="navelem"><a class="el" href="dir_f21a534e5292db297709d43bd4342987.html">ControlSystems</a></li><li class="navelem"><a class="el" href="dir_878cc41a4e5b4f4810ffb673d3067b22.html">Manual</a></li><li class="navelem"><a class="el" href="dir_c238b6fdf46591bbda06b251055079bf.html">UI</a></li><li class="navelem"><a class="el" href="dir_66560018674e3a2a0df7615eecb3f3e3.html">Game</a></li><li class="navelem"><a class="el" href="dir_5ef144e7ebe6b2cfcedd0778586ddb3d.html">SelectionUI</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">FalloffGenerator.cs</div>  </div>
+<div class="title">SimpleAnimationUIElement.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00161.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="a00197.html">    1</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="a00197.html">Thoughts.Utils.Maths</a></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;{</div>
-<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="a00445.html">    3</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00445.html">FalloffGenerator</a> <span class="comment">// Delete?</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    {</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;        <span class="comment">/*public static float[,] GenerateFalloffMap(int size, float percentageOfMapWithoutMaxFalloff, float mapRadius)</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">    {</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">        Debug.Log($&quot;Generating FalloffMap. Size: {size}, p = {percentageOfMapWithoutMaxFalloff}, mapRadius = {mapRadius}&quot;);</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">        float[,] map = new float[size, size];</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">        for (int i = 0; i &lt; size; i++)</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">        {</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">            for (int j = 0; j &lt; size; j++)</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">            {</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">                // OLD METHOD =&gt; Falloff only applied to one chucnk</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">                //float x = i/(float)size * 2 -1;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">                //float y = j/(float)size * 2 -1;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">                //float value = Mathf.Min(Mathf.Abs(x), Mathf.Abs(y));</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">                //map[i, j] = Evaluate(value);</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">                </span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">                Vector2 realCoords = new Vector2( - ((float)size / 2) + i,  - ((float)size / 2) + j);</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">                float distanceToCenter = Mathf.Sqrt(realCoords.x*realCoords.x + realCoords.y*realCoords.y);</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">                float falloffValue = ((distanceToCenter*distanceToCenter)/(mapRadius*mapRadius*percentageOfMapWithoutMaxFalloff));</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">                float value = Mathf.Clamp01(falloffValue);</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">                map[i, j] = value;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">                //if (distanceToCenter &lt; 500) Debug.Log($&quot;distanceToCenter: {distanceToCenter}, falloffValue: {falloffValue}, realCoords: {realCoords}, FINAL value: {value}&quot; );</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">            }</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">        float min = float.PositiveInfinity;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">        float max = float.NegativeInfinity;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">        foreach (float f in map) {</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">            if (f &lt; min) min = f;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">            if (f &gt; max) max = f;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">        Debug.Log($&quot;Generated FalloffMap. Size: {size}, p = {percentageOfMapWithoutMaxFalloff}, mapRadius = {mapRadius}. Min = {min}, Max = {max}&quot;);</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">        </span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">        return map;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">    </span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">    static float Evaluate(float value) </span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">    {</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">        float a = 3;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">        float b = 2.2f;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">        // This formula defines the &quot;shape&quot; of the falloff</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">        return Mathf.Pow(value, a) / (Mathf.Pow(value, a) + Mathf.Pow(b - b * value, 1));</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">    }*/</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="ttc" id="aa00197_html"><div class="ttname"><a href="a00197.html">Thoughts.Utils.Maths</a></div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00001">FalloffGenerator.cs:2</a></div></div>
-<div class="ttc" id="aa00445_html"><div class="ttname"><a href="a00445.html">Thoughts.Utils.Maths.FalloffGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00003">FalloffGenerator.cs:4</a></div></div>
+<a href="a00161.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> JetBrains.Annotations;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00217.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI</a></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    [RequireComponent(typeof(SimpleAnimationsManager))]</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00473.html">    7</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class </span><a class="code" href="a00473.html">SimpleAnimationUIElement</a> : MonoBehaviour</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="a00473.html#a3ba8b3c55e0ace54c2acc5001def44cd">   12</a></span>&#160;        <span class="keyword">protected</span> SimpleAnimationsManager <a class="code" href="a00473.html#a3ba8b3c55e0ace54c2acc5001def44cd">simpleAnimationsManager</a></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <span class="keyword">get</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00473.html#a5c2d79d6dbed71199504ff2a2c3705f3">_simpleAnimationsManager</a> == <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                    <a class="code" href="a00473.html#a5c2d79d6dbed71199504ff2a2c3705f3">_simpleAnimationsManager</a> = gameObject.GetComponentRequired&lt;SimpleAnimationsManager&gt;();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00473.html#a5c2d79d6dbed71199504ff2a2c3705f3">_simpleAnimationsManager</a>;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            }</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        [CanBeNull]</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="a00473.html#a5c2d79d6dbed71199504ff2a2c3705f3">   22</a></span>&#160;        <span class="keyword">private</span> SimpleAnimationsManager <a class="code" href="a00473.html#a5c2d79d6dbed71199504ff2a2c3705f3">_simpleAnimationsManager</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="a00473.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">   27</a></span>&#160;        <span class="keyword">protected</span> FlipFlop <a class="code" href="a00473.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">flipFlop</a>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00473.html#ac759e0a4fcb6c19c010611359c78bf99">   32</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">enum</span> <a class="code" href="a00473.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            Showing,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            Hiding</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00473.html#ab603f85a799be152e4151a04964b0b6d">   47</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00473.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a> <a class="code" href="a00473.html#ab603f85a799be152e4151a04964b0b6d">state</a> { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00473.html#a7af46dbfcd0e211e42f3b8d409ebe9ec">   53</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00473.html#a7af46dbfcd0e211e42f3b8d409ebe9ec">SwitchState</a>(<span class="keywordtype">bool</span> initialStateIsShowing = <span class="keyword">false</span>)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="a00473.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">flipFlop</a> == <span class="keyword">null</span>)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">if</span> (initialStateIsShowing)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    <a class="code" href="a00473.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">flipFlop</a> = <span class="keyword">new</span> FlipFlop(<a class="code" href="a00473.html#a0fa627f1f236774c1bf2af82b75344eb">Hide</a>, <a class="code" href="a00473.html#a0d0c76a6da4f3e48c19dd64ebba6b652">Show</a>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <a class="code" href="a00473.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">flipFlop</a> = <span class="keyword">new</span> FlipFlop(<a class="code" href="a00473.html#a0d0c76a6da4f3e48c19dd64ebba6b652">Show</a>, <a class="code" href="a00473.html#a0fa627f1f236774c1bf2af82b75344eb">Hide</a>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <a class="code" href="a00473.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">flipFlop</a>.Invoke();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="a00473.html#a0d0c76a6da4f3e48c19dd64ebba6b652">   67</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00473.html#a0d0c76a6da4f3e48c19dd64ebba6b652">Show</a>()</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="comment">//Debug.Log($&quot;Playing simple animation to show an UIElement&quot;, this);</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <a class="code" href="a00473.html#a3ba8b3c55e0ace54c2acc5001def44cd">simpleAnimationsManager</a>.Play(<span class="stringliteral">&quot;Show&quot;</span>, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <a class="code" href="a00473.html#ab603f85a799be152e4151a04964b0b6d">state</a> = <a class="code" href="a00473.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a>.Showing;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00473.html#a0fa627f1f236774c1bf2af82b75344eb">   77</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00473.html#a0fa627f1f236774c1bf2af82b75344eb">Hide</a>()</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="comment">//Debug.Log($&quot;Playing simple animation to hide an UIElement&quot;);</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <a class="code" href="a00473.html#a3ba8b3c55e0ace54c2acc5001def44cd">simpleAnimationsManager</a>.Play(<span class="stringliteral">&quot;Hide&quot;</span>, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="a00473.html#ab603f85a799be152e4151a04964b0b6d">state</a> = <a class="code" href="a00473.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a>.Hiding;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="ttc" id="aa00217_html"><div class="ttname"><a href="a00217.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI</a></div><div class="ttdef"><b>Definition:</b> <a href="a00146_source.html#l00005">DescriptionUI.cs:6</a></div></div>
+<div class="ttc" id="aa00473_html"><div class="ttname"><a href="a00473.html">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement</a></div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00007">SimpleAnimationUIElement.cs:8</a></div></div>
+<div class="ttc" id="aa00473_html_a0d0c76a6da4f3e48c19dd64ebba6b652"><div class="ttname"><a href="a00473.html#a0d0c76a6da4f3e48c19dd64ebba6b652">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Show</a></div><div class="ttdeci">void Show()</div><div class="ttdoc">Plays the animation to show/display this UI Element</div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00067">SimpleAnimationUIElement.cs:67</a></div></div>
+<div class="ttc" id="aa00473_html_a0fa627f1f236774c1bf2af82b75344eb"><div class="ttname"><a href="a00473.html#a0fa627f1f236774c1bf2af82b75344eb">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Hide</a></div><div class="ttdeci">void Hide()</div><div class="ttdoc">Plays the animation to hide this UI Element</div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00077">SimpleAnimationUIElement.cs:77</a></div></div>
+<div class="ttc" id="aa00473_html_a3ba8b3c55e0ace54c2acc5001def44cd"><div class="ttname"><a href="a00473.html#a3ba8b3c55e0ace54c2acc5001def44cd">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.simpleAnimationsManager</a></div><div class="ttdeci">SimpleAnimationsManager simpleAnimationsManager</div><div class="ttdoc">A reference to the SimpleAnimationsManager used for the animations of thi UI Eement</div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00012">SimpleAnimationUIElement.cs:13</a></div></div>
+<div class="ttc" id="aa00473_html_a5c2d79d6dbed71199504ff2a2c3705f3"><div class="ttname"><a href="a00473.html#a5c2d79d6dbed71199504ff2a2c3705f3">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement._simpleAnimationsManager</a></div><div class="ttdeci">SimpleAnimationsManager _simpleAnimationsManager</div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00022">SimpleAnimationUIElement.cs:22</a></div></div>
+<div class="ttc" id="aa00473_html_a7af46dbfcd0e211e42f3b8d409ebe9ec"><div class="ttname"><a href="a00473.html#a7af46dbfcd0e211e42f3b8d409ebe9ec">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.SwitchState</a></div><div class="ttdeci">void SwitchState(bool initialStateIsShowing=false)</div><div class="ttdoc">Plays the Show or the Hide animation depending on the current state of the UI Element....</div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00053">SimpleAnimationUIElement.cs:53</a></div></div>
+<div class="ttc" id="aa00473_html_ab603f85a799be152e4151a04964b0b6d"><div class="ttname"><a href="a00473.html#ab603f85a799be152e4151a04964b0b6d">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.state</a></div><div class="ttdeci">VisualizationState state</div><div class="ttdoc">The current state of the UI Element.</div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00047">SimpleAnimationUIElement.cs:47</a></div></div>
+<div class="ttc" id="aa00473_html_ac759e0a4fcb6c19c010611359c78bf99"><div class="ttname"><a href="a00473.html#ac759e0a4fcb6c19c010611359c78bf99">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.VisualizationState</a></div><div class="ttdeci">VisualizationState</div><div class="ttdoc">The possible states of the UI Element</div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00032">SimpleAnimationUIElement.cs:33</a></div></div>
+<div class="ttc" id="aa00473_html_acd9d043e69c8d9eb4a4ed3b7382d3dd5"><div class="ttname"><a href="a00473.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.flipFlop</a></div><div class="ttdeci">FlipFlop flipFlop</div><div class="ttdoc">Controls the current state of the AnimationUIElement</div><div class="ttdef"><b>Definition:</b> <a href="a00161_source.html#l00027">SimpleAnimationUIElement.cs:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

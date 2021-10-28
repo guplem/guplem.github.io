@@ -1,0 +1,4 @@
+<map id="Thoughts.Game.Map.MapElements.Attributes.Attribute.IsMorePrioritaryThan" name="Thoughts.Game.Map.MapElements.Attributes.Attribute.IsMorePrioritaryThan">
+<area shape="rect" id="node1" title="Indicates if this Attribute is more prioritary than another given Attribute." alt="" coords="5,5,468,32"/>
+<area shape="rect" id="node2" href="$a00337.html#ae487be39fb9482723d434d92d292edbb" title="Indicates if this Attribute is considered a Need." alt="" coords="516,5,900,32"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.BehaviorUI.DisplayObjectiveAttribute" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.BehaviorUI.DisplayObjectiveAttribute">
+<area shape="rect" id="node1" title="Displays the given Attribute as the objective in the UI" alt="" coords="568,5,1193,32"/>
+<area shape="rect" id="node2" href="$a00401.html#af71d283ee4ef5daf2e51fec9debd3c53" title="Displays the behavior information regarding the given selected MapElement" alt="" coords="5,5,520,32"/>
+</map>

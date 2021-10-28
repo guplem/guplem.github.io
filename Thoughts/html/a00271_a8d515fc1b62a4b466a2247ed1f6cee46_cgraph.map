@@ -1,6 +1,0 @@
-<map id="Thoughts.Game.GameManager.StartNewGame" name="Thoughts.Game.GameManager.StartNewGame">
-<area shape="rect" id="node1" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="5,5,300,32"/>
-<area shape="rect" id="node2" href="$a00315.html#a7f8ce7add5ba29896422dcd6e3470e89" title="Deletes the currently (generated) existent map" alt="" coords="348,5,596,32"/>
-<area shape="rect" id="node3" href="$a00279.html#a49c72f7741c8e43efef4d323f0f26643" title="Deletes the currently (generated) existent map" alt="" coords="644,5,856,32"/>
-<area shape="rect" id="node4" href="$a00291.html#ab5187ae35e0fd9badac754d8c73a70e2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="904,5,1103,32"/>
-</map>

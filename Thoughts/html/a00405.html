@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlansUI Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,299 +61,92 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00179.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00186.html">Participants</a></li><li class="navelem"><a class="el" href="a00187.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00188.html">Manual</a></li><li class="navelem"><a class="el" href="a00189.html">UI</a></li><li class="navelem"><a class="el" href="a00190.html">Game</a></li><li class="navelem"><a class="el" href="a00193.html">SelectionUI</a></li><li class="navelem"><a class="el" href="a00405.html">NeedsUI</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00203.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00210.html">Participants</a></li><li class="navelem"><a class="el" href="a00211.html">ControlSystems</a></li><li class="navelem"><a class="el" href="a00212.html">Manual</a></li><li class="navelem"><a class="el" href="a00213.html">UI</a></li><li class="navelem"><a class="el" href="a00214.html">Game</a></li><li class="navelem"><a class="el" href="a00215.html">BehaviorUI</a></li><li class="navelem"><a class="el" href="a00405.html">ExecutionPlansUI</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="#properties">Properties</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00402.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI Class Reference</div>  </div>
+<div class="title">Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlansUI Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Controls the display of the planned ExecutionPlans in the <a class="el" href="a00213.html">UI</a>  
+ <a href="a00405.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI:</div>
+Collaboration diagram for Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlansUI:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00403.png" border="0" usemap="#aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8SelectionUI_8NeedsUI_coll__map" alt="Collaboration graph"/></div>
+<div class="center"><img src="a00403.png" border="0" usemap="#aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8BehaviorUI_8ExecutionPlansUI_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8BehaviorUI_8ExecutionPlansUI_coll__map" id="aThoughts_8Participants_8ControlSystems_8Manual_8UI_8Game_8BehaviorUI_8ExecutionPlansUI_coll__map">
+<area shape="rect" title="Controls the display of the planned ExecutionPlans in the UI" alt="" coords="5,131,524,223"/>
+<area shape="rect" title=" " alt="" coords="209,5,320,83"/>
+</map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:ac759e0a4fcb6c19c010611359c78bf99"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00417.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a> { <a class="el" href="a00417.html#ac759e0a4fcb6c19c010611359c78bf99ab4e6101378d2a08d80df7e5da0625128">Showing</a>
-, <a class="el" href="a00417.html#ac759e0a4fcb6c19c010611359c78bf99a891abfc8e08b549204d42bb0e4bb1a01">Hiding</a>
- }</td></tr>
-<tr class="memdesc:ac759e0a4fcb6c19c010611359c78bf99"><td class="mdescLeft">&#160;</td><td class="mdescRight">The possible states of the <a class="el" href="a00189.html">UI</a> Element  <a href="a00417.html#ac759e0a4fcb6c19c010611359c78bf99">More...</a><br /></td></tr>
-<tr class="separator:ac759e0a4fcb6c19c010611359c78bf99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac9e037e3b0f5c01dd59a81c090cabd3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#ac9e037e3b0f5c01dd59a81c090cabd3d">Setup</a> (<a class="el" href="a00265.html">MapElement</a> <a class="el" href="a00405.html#a4a8719a3d17c08dbe06bb2769056055f">selectedMapElement</a>)</td></tr>
-<tr class="memdesc:ac9e037e3b0f5c01dd59a81c090cabd3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepares the NeedUI to be shown  <a href="a00405.html#ac9e037e3b0f5c01dd59a81c090cabd3d">More...</a><br /></td></tr>
-<tr class="separator:ac9e037e3b0f5c01dd59a81c090cabd3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96ece1df7dc98ae69c329c5593c59df4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#a96ece1df7dc98ae69c329c5593c59df4">SetupNeedGroups</a> ()</td></tr>
-<tr class="memdesc:a96ece1df7dc98ae69c329c5593c59df4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates the NeedGroupUIs with all the needed elements  <a href="a00405.html#a96ece1df7dc98ae69c329c5593c59df4">More...</a><br /></td></tr>
-<tr class="separator:a96ece1df7dc98ae69c329c5593c59df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5df32d49086564bfe3f38a7fe1c365d4"><td class="memItemLeft" align="right" valign="top">new void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#a5df32d49086564bfe3f38a7fe1c365d4">SwitchState</a> (bool initialStateIsShowing=false)</td></tr>
-<tr class="memdesc:a5df32d49086564bfe3f38a7fe1c365d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the Show or the Hide animation depending on the current state of the <a class="el" href="a00189.html">UI</a> Element. If state is Show, it plays the Hide animation and vice-versa.  <a href="a00405.html#a5df32d49086564bfe3f38a7fe1c365d4">More...</a><br /></td></tr>
-<tr class="separator:a5df32d49086564bfe3f38a7fe1c365d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d0c76a6da4f3e48c19dd64ebba6b652"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00417.html#a0d0c76a6da4f3e48c19dd64ebba6b652">Show</a> ()</td></tr>
-<tr class="memdesc:a0d0c76a6da4f3e48c19dd64ebba6b652"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the animation to show/display this <a class="el" href="a00189.html">UI</a> Element  <a href="a00417.html#a0d0c76a6da4f3e48c19dd64ebba6b652">More...</a><br /></td></tr>
-<tr class="separator:a0d0c76a6da4f3e48c19dd64ebba6b652"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fa627f1f236774c1bf2af82b75344eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00417.html#a0fa627f1f236774c1bf2af82b75344eb">Hide</a> ()</td></tr>
-<tr class="memdesc:a0fa627f1f236774c1bf2af82b75344eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the animation to hide this <a class="el" href="a00189.html">UI</a> Element  <a href="a00417.html#a0fa627f1f236774c1bf2af82b75344eb">More...</a><br /></td></tr>
-<tr class="separator:a0fa627f1f236774c1bf2af82b75344eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:acd9d043e69c8d9eb4a4ed3b7382d3dd5"><td class="memItemLeft" align="right" valign="top">FlipFlop&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00417.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">flipFlop</a></td></tr>
-<tr class="memdesc:acd9d043e69c8d9eb4a4ed3b7382d3dd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls the current state of the AnimationUIElement  <a href="a00417.html#acd9d043e69c8d9eb4a4ed3b7382d3dd5">More...</a><br /></td></tr>
-<tr class="separator:acd9d043e69c8d9eb4a4ed3b7382d3dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:a3ba8b3c55e0ace54c2acc5001def44cd"><td class="memItemLeft" align="right" valign="top">SimpleAnimationsManager&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00417.html#a3ba8b3c55e0ace54c2acc5001def44cd">simpleAnimationsManager</a><code> [get]</code></td></tr>
-<tr class="memdesc:a3ba8b3c55e0ace54c2acc5001def44cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference to the SimpleAnimationsManager used for the animations of thi <a class="el" href="a00189.html">UI</a> Eement  <a href="a00417.html#a3ba8b3c55e0ace54c2acc5001def44cd">More...</a><br /></td></tr>
-<tr class="separator:a3ba8b3c55e0ace54c2acc5001def44cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab603f85a799be152e4151a04964b0b6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00417.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00417.html#ab603f85a799be152e4151a04964b0b6d">state</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:ab603f85a799be152e4151a04964b0b6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current state of the <a class="el" href="a00189.html">UI</a> Element.  <a href="a00417.html#ab603f85a799be152e4151a04964b0b6d">More...</a><br /></td></tr>
-<tr class="separator:ab603f85a799be152e4151a04964b0b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf55290bd9a26d9d2dfa424cbef056ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#adf55290bd9a26d9d2dfa424cbef056ad">Setup</a> (List&lt; <a class="el" href="a00357.html">ExecutionPlan</a> &gt; executionPlans)</td></tr>
+<tr class="memdesc:adf55290bd9a26d9d2dfa424cbef056ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Displays the given ExecutionPlans in the <a class="el" href="a00213.html">UI</a>  <a href="a00405.html#adf55290bd9a26d9d2dfa424cbef056ad">More...</a><br /></td></tr>
+<tr class="separator:adf55290bd9a26d9d2dfa424cbef056ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a77b753658ebcfb20c3424782cea73c2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00401.html">NeedGroupUI</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#a77b753658ebcfb20c3424782cea73c2a">needGroup5</a></td></tr>
-<tr class="memdesc:a77b753658ebcfb20c3424782cea73c2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 5  <a href="a00405.html#a77b753658ebcfb20c3424782cea73c2a">More...</a><br /></td></tr>
-<tr class="separator:a77b753658ebcfb20c3424782cea73c2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27a2baa5641e2f91f71058dde4db8d6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00401.html">NeedGroupUI</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#a27a2baa5641e2f91f71058dde4db8d6b">needGroup4</a></td></tr>
-<tr class="memdesc:a27a2baa5641e2f91f71058dde4db8d6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 4  <a href="a00405.html#a27a2baa5641e2f91f71058dde4db8d6b">More...</a><br /></td></tr>
-<tr class="separator:a27a2baa5641e2f91f71058dde4db8d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1f4b31e4486387ec8b39a63abd91312"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00401.html">NeedGroupUI</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#aa1f4b31e4486387ec8b39a63abd91312">needGroup3</a></td></tr>
-<tr class="memdesc:aa1f4b31e4486387ec8b39a63abd91312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 3  <a href="a00405.html#aa1f4b31e4486387ec8b39a63abd91312">More...</a><br /></td></tr>
-<tr class="separator:aa1f4b31e4486387ec8b39a63abd91312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1553f0e7e10b6c85382187227a9ecffe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00401.html">NeedGroupUI</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#a1553f0e7e10b6c85382187227a9ecffe">needGroup2</a></td></tr>
-<tr class="memdesc:a1553f0e7e10b6c85382187227a9ecffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 2  <a href="a00405.html#a1553f0e7e10b6c85382187227a9ecffe">More...</a><br /></td></tr>
-<tr class="separator:a1553f0e7e10b6c85382187227a9ecffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15233fc94f0ca229b38dc178a9b3c807"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00401.html">NeedGroupUI</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#a15233fc94f0ca229b38dc178a9b3c807">needGroup1</a></td></tr>
-<tr class="memdesc:a15233fc94f0ca229b38dc178a9b3c807"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 1  <a href="a00405.html#a15233fc94f0ca229b38dc178a9b3c807">More...</a><br /></td></tr>
-<tr class="separator:a15233fc94f0ca229b38dc178a9b3c807"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a8719a3d17c08dbe06bb2769056055f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00265.html">MapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#a4a8719a3d17c08dbe06bb2769056055f">selectedMapElement</a></td></tr>
-<tr class="memdesc:a4a8719a3d17c08dbe06bb2769056055f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The MapElement to show the information of  <a href="a00405.html#a4a8719a3d17c08dbe06bb2769056055f">More...</a><br /></td></tr>
-<tr class="separator:a4a8719a3d17c08dbe06bb2769056055f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48d0f5621074f0b2d50a39cbf5a61839"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00265.html">MapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#a48d0f5621074f0b2d50a39cbf5a61839">lastShownMapElement</a></td></tr>
-<tr class="memdesc:a48d0f5621074f0b2d50a39cbf5a61839"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last map element from which the in  <a href="a00405.html#a48d0f5621074f0b2d50a39cbf5a61839">More...</a><br /></td></tr>
-<tr class="separator:a48d0f5621074f0b2d50a39cbf5a61839"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c2d79d6dbed71199504ff2a2c3705f3"><td class="memItemLeft" align="right" valign="top">SimpleAnimationsManager&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00417.html#a5c2d79d6dbed71199504ff2a2c3705f3">_simpleAnimationsManager</a></td></tr>
-<tr class="separator:a5c2d79d6dbed71199504ff2a2c3705f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1ac73b9fe4816f2b0201f574e9a4bbc"><td class="memItemLeft" align="right" valign="top">GameObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#ab1ac73b9fe4816f2b0201f574e9a4bbc">executionPlanUIPrefab</a></td></tr>
+<tr class="memdesc:ab1ac73b9fe4816f2b0201f574e9a4bbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prefab used to display an execution plan  <a href="a00405.html#ab1ac73b9fe4816f2b0201f574e9a4bbc">More...</a><br /></td></tr>
+<tr class="separator:ab1ac73b9fe4816f2b0201f574e9a4bbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06fe9e45ac16c0275c08248a037d8619"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00409.html">ExecutionPlanUI</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00405.html#a06fe9e45ac16c0275c08248a037d8619">executionPlanUIs</a> = new List&lt;<a class="el" href="a00409.html">ExecutionPlanUI</a>&gt;()</td></tr>
+<tr class="memdesc:a06fe9e45ac16c0275c08248a037d8619"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list holding a reference to all <a class="el" href="a00409.html" title="Controls the display of a single ExecutionPlan in the UI">ExecutionPlanUI</a> elements currently existent  <a href="a00405.html#a06fe9e45ac16c0275c08248a037d8619">More...</a><br /></td></tr>
+<tr class="separator:a06fe9e45ac16c0275c08248a037d8619"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00007">7</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="ac759e0a4fcb6c19c010611359c78bf99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac759e0a4fcb6c19c010611359c78bf99">&#9670;&nbsp;</a></span>VisualizationState</h2>
+<div class="textblock"><p>Controls the display of the planned ExecutionPlans in the <a class="el" href="a00213.html">UI</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="a00110_source.html#l00010">10</a> of file <a class="el" href="a00110_source.html">ExecutionPlansUI.cs</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="adf55290bd9a26d9d2dfa424cbef056ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf55290bd9a26d9d2dfa424cbef056ad">&#9670;&nbsp;</a></span>Setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="a00417.html#ac759e0a4fcb6c19c010611359c78bf99">Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.VisualizationState</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The possible states of the <a class="el" href="a00189.html">UI</a> Element </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac759e0a4fcb6c19c010611359c78bf99ab4e6101378d2a08d80df7e5da0625128"></a>Showing&#160;</td><td class="fielddoc"><p>The element is being shown/displayed </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ac759e0a4fcb6c19c010611359c78bf99a891abfc8e08b549204d42bb0e4bb1a01"></a>Hiding&#160;</td><td class="fielddoc"><p>The element is being hid/not visible </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00032">32</a> of file <a class="el" href="a00137_source.html">SimpleAnimationUIElement.cs</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0fa627f1f236774c1bf2af82b75344eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fa627f1f236774c1bf2af82b75344eb">&#9670;&nbsp;</a></span>Hide()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Hide </td>
+          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlansUI.Setup </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Plays the animation to hide this <a class="el" href="a00189.html">UI</a> Element </p>
-
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00077">77</a> of file <a class="el" href="a00137_source.html">SimpleAnimationUIElement.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00417_a0fa627f1f236774c1bf2af82b75344eb_icgraph.png" border="0" usemap="#aa00417_a0fa627f1f236774c1bf2af82b75344eb_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="ac9e037e3b0f5c01dd59a81c090cabd3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9e037e3b0f5c01dd59a81c090cabd3d">&#9670;&nbsp;</a></span>Setup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.Setup </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>selectedMapElement</em></td><td>)</td>
+          <td class="paramtype">List&lt; <a class="el" href="a00357.html">ExecutionPlan</a> &gt;&#160;</td>
+          <td class="paramname"><em>executionPlans</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Prepares the NeedUI to be shown </p>
+<p>Displays the given ExecutionPlans in the <a class="el" href="a00213.html">UI</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">selectedMapElement</td><td>The MapElement to show the information of</td></tr>
+    <tr><td class="paramname">executionPlans</td><td>The ExecutionPlans to display in the <a class="el" href="a00213.html">UI</a>.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00050">50</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00110_source.html#l00028">28</a> of file <a class="el" href="a00110_source.html">ExecutionPlansUI.cs</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00405_ac9e037e3b0f5c01dd59a81c090cabd3d_icgraph.png" border="0" usemap="#aa00405_ac9e037e3b0f5c01dd59a81c090cabd3d_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a96ece1df7dc98ae69c329c5593c59df4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96ece1df7dc98ae69c329c5593c59df4">&#9670;&nbsp;</a></span>SetupNeedGroups()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.SetupNeedGroups </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Populates the NeedGroupUIs with all the needed elements </p>
-
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00058">58</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00405_a96ece1df7dc98ae69c329c5593c59df4_cgraph.png" border="0" usemap="#aa00405_a96ece1df7dc98ae69c329c5593c59df4_cgraph" alt=""/></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00405_a96ece1df7dc98ae69c329c5593c59df4_icgraph.png" border="0" usemap="#aa00405_a96ece1df7dc98ae69c329c5593c59df4_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a0d0c76a6da4f3e48c19dd64ebba6b652"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d0c76a6da4f3e48c19dd64ebba6b652">&#9670;&nbsp;</a></span>Show()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.Show </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Plays the animation to show/display this <a class="el" href="a00189.html">UI</a> Element </p>
-
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00067">67</a> of file <a class="el" href="a00137_source.html">SimpleAnimationUIElement.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00417_a0d0c76a6da4f3e48c19dd64ebba6b652_icgraph.png" border="0" usemap="#aa00417_a0d0c76a6da4f3e48c19dd64ebba6b652_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a5df32d49086564bfe3f38a7fe1c365d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5df32d49086564bfe3f38a7fe1c365d4">&#9670;&nbsp;</a></span>SwitchState()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">new void Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.SwitchState </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>initialStateIsShowing</em> = <code>false</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Plays the Show or the Hide animation depending on the current state of the <a class="el" href="a00189.html">UI</a> Element. If state is Show, it plays the Hide animation and vice-versa. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">initialStateIsShowing</td><td>Should the fist call set the <a class="el" href="a00189.html">UI</a> Element to the state "hide"?</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00075">75</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00405_a5df32d49086564bfe3f38a7fe1c365d4_cgraph.png" border="0" usemap="#aa00405_a5df32d49086564bfe3f38a7fe1c365d4_cgraph" alt=""/></div>
+<div class="center"><img src="a00405_adf55290bd9a26d9d2dfa424cbef056ad_icgraph.png" border="0" usemap="#aa00405_adf55290bd9a26d9d2dfa424cbef056ad_icgraph" alt=""/></div>
+<map name="aa00405_adf55290bd9a26d9d2dfa424cbef056ad_icgraph" id="aa00405_adf55290bd9a26d9d2dfa424cbef056ad_icgraph">
+<area shape="rect" title="Displays the given ExecutionPlans in the UI" alt="" coords="1231,5,1787,32"/>
+<area shape="rect" href="a00401.html#a43deae5c2634457c478933f1fe72d4ae" title="Displays the given execution plan in the UI" alt="" coords="568,5,1183,32"/>
+<area shape="rect" href="a00401.html#af71d283ee4ef5daf2e51fec9debd3c53" title="Displays the behavior information regarding the given selected MapElement" alt="" coords="5,5,520,32"/>
+</map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a5c2d79d6dbed71199504ff2a2c3705f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c2d79d6dbed71199504ff2a2c3705f3">&#9670;&nbsp;</a></span>_simpleAnimationsManager</h2>
+<a id="ab1ac73b9fe4816f2b0201f574e9a4bbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1ac73b9fe4816f2b0201f574e9a4bbc">&#9670;&nbsp;</a></span>executionPlanUIPrefab</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -362,57 +155,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">SimpleAnimationsManager Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement._simpleAnimationsManager</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00022">22</a> of file <a class="el" href="a00137_source.html">SimpleAnimationUIElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="acd9d043e69c8d9eb4a4ed3b7382d3dd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd9d043e69c8d9eb4a4ed3b7382d3dd5">&#9670;&nbsp;</a></span>flipFlop</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">FlipFlop Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.flipFlop</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Controls the current state of the AnimationUIElement </p>
-
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00027">27</a> of file <a class="el" href="a00137_source.html">SimpleAnimationUIElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="a48d0f5621074f0b2d50a39cbf5a61839"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48d0f5621074f0b2d50a39cbf5a61839">&#9670;&nbsp;</a></span>lastShownMapElement</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00265.html">MapElement</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.lastShownMapElement</td>
+          <td class="memname">GameObject Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlansUI.executionPlanUIPrefab</td>
         </tr>
       </table>
   </td>
@@ -422,14 +165,14 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>The last map element from which the in </p>
+<p>The prefab used to display an execution plan </p>
 
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00044">44</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00110_source.html#l00017">17</a> of file <a class="el" href="a00110_source.html">ExecutionPlansUI.cs</a>.</p>
 
 </div>
 </div>
-<a id="a15233fc94f0ca229b38dc178a9b3c807"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15233fc94f0ca229b38dc178a9b3c807">&#9670;&nbsp;</a></span>needGroup1</h2>
+<a id="a06fe9e45ac16c0275c08248a037d8619"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06fe9e45ac16c0275c08248a037d8619">&#9670;&nbsp;</a></span>executionPlanUIs</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -438,7 +181,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00401.html">NeedGroupUI</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.needGroup1</td>
+          <td class="memname">List&lt;<a class="el" href="a00409.html">ExecutionPlanUI</a>&gt; Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlansUI.executionPlanUIs = new List&lt;<a class="el" href="a00409.html">ExecutionPlanUI</a>&gt;()</td>
         </tr>
       </table>
   </td>
@@ -448,197 +191,14 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 1 </p>
+<p>A list holding a reference to all <a class="el" href="a00409.html" title="Controls the display of a single ExecutionPlan in the UI">ExecutionPlanUI</a> elements currently existent </p>
 
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00034">34</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
-
-</div>
-</div>
-<a id="a1553f0e7e10b6c85382187227a9ecffe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1553f0e7e10b6c85382187227a9ecffe">&#9670;&nbsp;</a></span>needGroup2</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00401.html">NeedGroupUI</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.needGroup2</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 2 </p>
-
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00029">29</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
-
-</div>
-</div>
-<a id="aa1f4b31e4486387ec8b39a63abd91312"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1f4b31e4486387ec8b39a63abd91312">&#9670;&nbsp;</a></span>needGroup3</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00401.html">NeedGroupUI</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.needGroup3</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 3 </p>
-
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00024">24</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
-
-</div>
-</div>
-<a id="a27a2baa5641e2f91f71058dde4db8d6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27a2baa5641e2f91f71058dde4db8d6b">&#9670;&nbsp;</a></span>needGroup4</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00401.html">NeedGroupUI</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.needGroup4</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 4 </p>
-
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00019">19</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
-
-</div>
-</div>
-<a id="a77b753658ebcfb20c3424782cea73c2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77b753658ebcfb20c3424782cea73c2a">&#9670;&nbsp;</a></span>needGroup5</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00401.html">NeedGroupUI</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.needGroup5</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reference to the <a class="el" href="a00401.html">NeedGroupUI</a> hosting the information of the Needs with priority = 5 </p>
-
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00014">14</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
-
-</div>
-</div>
-<a id="a4a8719a3d17c08dbe06bb2769056055f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a8719a3d17c08dbe06bb2769056055f">&#9670;&nbsp;</a></span>selectedMapElement</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00265.html">MapElement</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.selectedMapElement</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The MapElement to show the information of </p>
-
-<p class="definition">Definition at line <a class="el" href="a00128_source.html#l00039">39</a> of file <a class="el" href="a00128_source.html">NeedsUI.cs</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="a3ba8b3c55e0ace54c2acc5001def44cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ba8b3c55e0ace54c2acc5001def44cd">&#9670;&nbsp;</a></span>simpleAnimationsManager</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SimpleAnimationsManager Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.simpleAnimationsManager</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>A reference to the SimpleAnimationsManager used for the animations of thi <a class="el" href="a00189.html">UI</a> Eement </p>
-
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00012">12</a> of file <a class="el" href="a00137_source.html">SimpleAnimationUIElement.cs</a>.</p>
-
-</div>
-</div>
-<a id="ab603f85a799be152e4151a04964b0b6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab603f85a799be152e4151a04964b0b6d">&#9670;&nbsp;</a></span>state</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00417.html#ac759e0a4fcb6c19c010611359c78bf99">VisualizationState</a> Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.SimpleAnimationUIElement.state</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The current state of the <a class="el" href="a00189.html">UI</a> Element. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00137_source.html#l00047">47</a> of file <a class="el" href="a00137_source.html">SimpleAnimationUIElement.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00110_source.html#l00022">22</a> of file <a class="el" href="a00110_source.html">ExecutionPlansUI.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00128_source.html">NeedsUI.cs</a></li>
+<li><a class="el" href="a00110_source.html">ExecutionPlansUI.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

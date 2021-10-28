@@ -61,23 +61,25 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00179.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00180.html">Game</a></li><li class="navelem"><a class="el" href="a00181.html">Map</a></li><li class="navelem"><a class="el" href="a00185.html">Terrain</a></li><li class="navelem"><a class="el" href="a00285.html">HeightMap</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00203.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00204.html">Game</a></li><li class="navelem"><a class="el" href="a00205.html">Map</a></li><li class="navelem"><a class="el" href="a00206.html">Terrain</a></li><li class="navelem"><a class="el" href="a00285.html">LODMesh</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Thoughts.Game.Map.Terrain.HeightMap Member List</div>  </div>
+<div class="title">Thoughts.Game.Map.Terrain.LODMesh Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.HeightMap</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.LODMesh</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="a00285.html#a2aee64e1b2f32eabfd4bfaedca5adce7">GenerateHeightMap</a>(int width, int height, float mapRadius, HeightMapSettings settings, Vector2 sampleCenter, int seed)</td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.HeightMap</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00285.html#adfdb1caef6fbc5c926a654ca4c59852f">GetFalloffValue</a>(Vector2 coords, AnimationCurve falloffIntensity, float mapRadius)</td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.HeightMap</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00285.html#ae2a8faff2ec34ae33cac44aa98582520">HeightMap</a>(float[,] values, float minValue, float maxValue)</td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.HeightMap</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00285.html#ab7b09e99e1420fbd3aab8cf3d2aaca16">maxValue</a></td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.HeightMap</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00285.html#ad25684853630a3a10edf19d9e5843fcc">minValue</a></td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.HeightMap</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="a00285.html#ae10427256a41cf2ec2f869bfa988ee68">values</a></td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.HeightMap</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00285.html#a287f3de6605be3ec584ab8929836afd2">hasMesh</a></td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.LODMesh</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00285.html#a359c355b8a3acbc96950689e386897f5">hasRequestedMesh</a></td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.LODMesh</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00285.html#ad8c1fc1c55ff2533f067231117cc44ce">lod</a></td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.LODMesh</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00285.html#a4f4538c2c446095674456d43acb86279">LODMesh</a>(int lod)</td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.LODMesh</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00285.html#aa6ce8d7a0a3eb11940b3cb572b9b36cc">mesh</a></td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.LODMesh</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00285.html#a72d70bc9ef63f10ea74645a5be118916">OnMeshDataReceived</a>(object meshData)</td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.LODMesh</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00285.html#a84c6b6666675bc04ac1222bbfb4c0e84">RequestMesh</a>(HeightMap heightMap, ThreadedDataRequester threadedDataRequester, MapConfiguration mapConfiguration)</td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.LODMesh</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00285.html#a13ca2f1b5dafc5a81c7e98f0884ab171">updateCallback</a></td><td class="entry"><a class="el" href="a00285.html">Thoughts.Game.Map.Terrain.LODMesh</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

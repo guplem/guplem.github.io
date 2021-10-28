@@ -1,5 +1,0 @@
-<map id="Thoughts.Game.Map.MapManager.Delete" name="Thoughts.Game.Map.MapManager.Delete">
-<area shape="rect" id="node1" title="Deletes the currently (generated) existent map" alt="" coords="5,5,268,32"/>
-<area shape="rect" id="node2" href="$a00270.html#aa49456bae5f40ef9f52f1cc4ef4c2c4c" title="Deletes the currently (generated) existent map" alt="" coords="316,5,653,32"/>
-<area shape="rect" id="node3" href="$a00294.html#a17dc85ce1bac38a82555fed3987478f2" title="Destroys all the references to the TerrainChunks and the GameObjects themselves" alt="" coords="701,5,1068,32"/>
-</map>

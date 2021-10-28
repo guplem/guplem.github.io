@@ -1,5 +1,0 @@
-<map id="HeightMap.GenerateHeightMap" name="HeightMap.GenerateHeightMap">
-<area shape="rect" id="node1" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="5,31,208,57"/>
-<area shape="rect" id="node2" href="$a00282.html#a2e1f68e1ca4250565c3a9b9db7e0ad22" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="256,5,432,32"/>
-<area shape="rect" id="node3" href="$a00282.html#ae7714c3d98b43c7ac86a50717e8b5f5e" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="269,56,419,83"/>
-</map>

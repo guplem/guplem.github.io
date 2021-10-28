@@ -1,4 +1,0 @@
-<map id="Thoughts.ControlSystems.UI.BehaviorUI.DisplayObjectiveAttribute" name="Thoughts.ControlSystems.UI.BehaviorUI.DisplayObjectiveAttribute">
-<area shape="rect" id="node1" title="Displays the given Attribute as the objective in the UI" alt="" coords="5,5,408,32"/>
-<area shape="rect" id="node2" href="$a00302.html#a0679f5145bbbff5591da7278da974ff2" title="Displays the given Attribute in the UI. Disables the GameObject if the Attribute is null." alt="" coords="456,5,747,32"/>
-</map>

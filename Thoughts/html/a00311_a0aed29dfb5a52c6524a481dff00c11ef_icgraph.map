@@ -1,0 +1,5 @@
+<map id="Thoughts.Game.Map.Terrain.TerrainGenerator.UpdateChunks" name="Thoughts.Game.Map.Terrain.TerrainGenerator.UpdateChunks">
+<area shape="rect" id="node1" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="384,31,759,57"/>
+<area shape="rect" id="node2" href="$a00287.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="21,5,320,32"/>
+<area shape="rect" id="node3" href="$a00311.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="5,56,336,83"/>
+</map>

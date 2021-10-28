@@ -1,0 +1,4 @@
+<map id="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.SetExecutionTimesToCover" name="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.SetExecutionTimesToCover">
+<area shape="rect" id="node1" title="Sets the amount of times remaining to execute this plan&#39;s MapEvent to the same amount needed to to co..." alt="" coords="5,5,612,32"/>
+<area shape="rect" id="node2" href="$a00263.html#ac14d2bb3d78be408e57c85a5c3309b78" title="Calculates the amount of times that the execution of this ExecutionPlan&#39;s MapElement is needed to cov..." alt="" coords="660,5,1316,32"/>
+</map>

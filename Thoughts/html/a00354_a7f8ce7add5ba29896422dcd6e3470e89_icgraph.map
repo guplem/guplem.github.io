@@ -1,5 +1,0 @@
-<map id="Thoughts.Game.GameMap.Map.Delete" name="Thoughts.Game.GameMap.Map.Delete">
-<area shape="rect" id="node1" title="Deletes the currently (generated) existent map" alt="" coords="631,5,879,32"/>
-<area shape="rect" id="node2" href="$a00310.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="288,5,583,32"/>
-<area shape="rect" id="node3" href="$a00310.html#a8988494ad2b97cefb2f5f86ab74d21c0" title="Starts a new game." alt="" coords="5,5,240,32"/>
-</map>

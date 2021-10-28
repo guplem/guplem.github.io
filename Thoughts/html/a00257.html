@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Game.Map.HumanoidsGenerator Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,311 +61,84 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00179.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00180.html">Game</a></li><li class="navelem"><a class="el" href="a00181.html">Map</a></li><li class="navelem"><a class="el" href="a00182.html">MapElements</a></li><li class="navelem"><a class="el" href="a00183.html">Attributes</a></li><li class="navelem"><a class="el" href="a00184.html">MapEvents</a></li><li class="navelem"><a class="el" href="a00257.html">MapEvent</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00203.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00204.html">Game</a></li><li class="navelem"><a class="el" href="a00205.html">Map</a></li><li class="navelem"><a class="el" href="a00257.html">HumanoidsGenerator</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="a00254.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent Class Reference</div>  </div>
+<div class="title">Thoughts.Game.Map.HumanoidsGenerator Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>An event that must be executed by a <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a>. It is part of an attribute.  
- <a href="a00257.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent:</div>
+Collaboration diagram for Thoughts.Game.Map.HumanoidsGenerator:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00255.png" border="0" usemap="#aThoughts_8Game_8Map_8MapElements_8Attributes_8MapEvents_8MapEvent_coll__map" alt="Collaboration graph"/></div>
+<div class="center"><img src="a00255.png" border="0" usemap="#aThoughts_8Game_8Map_8HumanoidsGenerator_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Game_8Map_8HumanoidsGenerator_coll__map" id="aThoughts_8Game_8Map_8HumanoidsGenerator_coll__map">
+<area shape="rect" title=" " alt="" coords="429,821,698,928"/>
+<area shape="rect" href="a00377.html" title="Component in charge of generating a Map" alt="" coords="379,1049,697,1361"/>
+<area shape="rect" title=" " alt="" coords="448,498,559,575"/>
+<area shape="rect" href="a00321.html" title=" " alt="" coords="275,1497,542,1604"/>
+<area shape="rect" href="a00289.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="740,1424,1027,1677"/>
+<area shape="rect" href="a00381.html" title="The map of the game." alt="" coords="5,1483,228,1619"/>
+<area shape="rect" href="a00521.html" title="Component in charge doing threaded requests of data" alt="" coords="722,821,1095,928"/>
+<area shape="rect" href="a00293.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="828,1159,1064,1251"/>
+<area shape="rect" href="a00329.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="1508,763,1755,987"/>
+<area shape="rect" href="a00497.html" title=" " alt="" coords="1526,241,1633,318"/>
+<area shape="rect" href="a00261.html" title=" " alt="" coords="2137,483,2397,590"/>
+<area shape="rect" href="a00317.html" title="The configuration of the texture of the terrain of the map" alt="" coords="982,403,1302,671"/>
+<area shape="rect" href="a00273.html" title=" " alt="" coords="1327,498,1427,575"/>
+<area shape="rect" href="a00325.html" title=" " alt="" coords="1451,498,1708,575"/>
+<area shape="rect" href="a00269.html" title=" " alt="" coords="1963,498,2062,575"/>
+<area shape="rect" href="a00297.html" title="The configuration of the height of the terrain of the map" alt="" coords="643,454,958,619"/>
+<area shape="rect" title=" " alt="" coords="1520,42,1639,119"/>
+<area shape="rect" title=" " alt="" coords="1732,498,1939,575"/>
+<area shape="rect" href="a00333.html" title=" " alt="" coords="1114,219,1445,340"/>
+<area shape="rect" href="a00509.html" title="Collection of settings used to generate a noise map More info about the settings here: https://www...." alt="" coords="933,5,1188,156"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5f83cb9633e5c37cab4ce578a250eae7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a5f83cb9633e5c37cab4ce578a250eae7">Execute</a> (<a class="el" href="a00265.html">MapElement</a> executer, <a class="el" href="a00265.html">MapElement</a> target, <a class="el" href="a00265.html">MapElement</a> owner)</td></tr>
-<tr class="memdesc:a5f83cb9633e5c37cab4ce578a250eae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the event applying the consequences of it.  <a href="a00257.html#a5f83cb9633e5c37cab4ce578a250eae7">More...</a><br /></td></tr>
-<tr class="separator:a5f83cb9633e5c37cab4ce578a250eae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fc8fdb573b0dfcf1e61e873fdfb7e07"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a4fc8fdb573b0dfcf1e61e873fdfb7e07">ToString</a> ()</td></tr>
-<tr class="separator:a4fc8fdb573b0dfcf1e61e873fdfb7e07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70e0494bca9e956692cadd2eb32fbb46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a70e0494bca9e956692cadd2eb32fbb46">IsDistanceMet</a> (<a class="el" href="a00265.html">MapElement</a> executer, <a class="el" href="a00265.html">MapElement</a> target, <a class="el" href="a00265.html">MapElement</a> owner)</td></tr>
-<tr class="memdesc:a70e0494bca9e956692cadd2eb32fbb46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if the maximum distance allowed to execute the event is met or not.  <a href="a00257.html#a70e0494bca9e956692cadd2eb32fbb46">More...</a><br /></td></tr>
-<tr class="separator:a70e0494bca9e956692cadd2eb32fbb46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bd684dcc313c0237517b3cc6ac5f556"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00237.html">AttributeOwnership</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a4bd684dcc313c0237517b3cc6ac5f556">GetRequirementsNotMet</a> (<a class="el" href="a00265.html">MapElement</a> executer, <a class="el" href="a00265.html">MapElement</a> target, <a class="el" href="a00265.html">MapElement</a> owner, int executionTimes, out List&lt; int &gt; remainingValueToCoverInRequirementsNotMet)</td></tr>
-<tr class="memdesc:a4bd684dcc313c0237517b3cc6ac5f556"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of the requirements that are not met at the moment to execute the event, it and outputs a list of the value missing for each one of the requirements that are not met (in the same order).  <a href="a00257.html#a4bd684dcc313c0237517b3cc6ac5f556">More...</a><br /></td></tr>
-<tr class="separator:a4bd684dcc313c0237517b3cc6ac5f556"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8aff39c6bf75d53090f914f7313ea733"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a8aff39c6bf75d53090f914f7313ea733">ConsequencesCover</a> (<a class="el" href="a00237.html">AttributeOwnership</a> attributeOwnershipToCover, <a class="el" href="a00265.html">MapElement</a> target, <a class="el" href="a00265.html">MapElement</a> executer, <a class="el" href="a00265.html">MapElement</a> owner)</td></tr>
-<tr class="memdesc:a8aff39c6bf75d53090f914f7313ea733"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if the consequences of the execution of this event will increase the value of an attribute owned by a map element.  <a href="a00257.html#a8aff39c6bf75d53090f914f7313ea733">More...</a><br /></td></tr>
-<tr class="separator:a8aff39c6bf75d53090f914f7313ea733"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad93ae661ab46ae5f8866dca50d92bb92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#ad93ae661ab46ae5f8866dca50d92bb92">GenerateHumanoids</a> (bool clearPrevious)</td></tr>
+<tr class="separator:ad93ae661ab46ae5f8866dca50d92bb92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ea006f290f9884e566a9e4ca6b60299"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a9ea006f290f9884e566a9e4ca6b60299">DeleteHumanoids</a> ()</td></tr>
+<tr class="separator:a9ea006f290f9884e566a9e4ca6b60299"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:af30c1c1cb16c60a387278bdebfeaf8a1"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#af30c1c1cb16c60a387278bdebfeaf8a1">name</a> = &quot;&quot;</td></tr>
-<tr class="memdesc:af30c1c1cb16c60a387278bdebfeaf8a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the event  <a href="a00257.html#af30c1c1cb16c60a387278bdebfeaf8a1">More...</a><br /></td></tr>
-<tr class="separator:af30c1c1cb16c60a387278bdebfeaf8a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af253d36d7f7b905a11652e04685c216c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#af253d36d7f7b905a11652e04685c216c">maxDistance</a> = 5f</td></tr>
-<tr class="memdesc:af253d36d7f7b905a11652e04685c216c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum distance allowed to execute the event. The distance is checked between the executer and the target, and between the executer and the event owner. Ignored if it is less than 0 or if executeWithTimeElapse is true.  <a href="a00257.html#af253d36d7f7b905a11652e04685c216c">More...</a><br /></td></tr>
-<tr class="separator:af253d36d7f7b905a11652e04685c216c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2324c5d3b3054c2be4fb524cd557841"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#af2324c5d3b3054c2be4fb524cd557841">executeWithTimeElapse</a> = false</td></tr>
-<tr class="memdesc:af2324c5d3b3054c2be4fb524cd557841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the event should be executed every time the time elapses in the map.  <a href="a00257.html#af2324c5d3b3054c2be4fb524cd557841">More...</a><br /></td></tr>
-<tr class="separator:af2324c5d3b3054c2be4fb524cd557841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac98c4171f0e0b1782f8f35c83fcc852a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#ac98c4171f0e0b1782f8f35c83fcc852a">executerMustOwnAttribute</a> = false</td></tr>
-<tr class="memdesc:ac98c4171f0e0b1782f8f35c83fcc852a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the executer of the event must own the attribute where this event lives in.  <a href="a00257.html#ac98c4171f0e0b1782f8f35c83fcc852a">More...</a><br /></td></tr>
-<tr class="separator:ac98c4171f0e0b1782f8f35c83fcc852a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af02ba3459da73a9cb4c43e62975b864e"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00245.html">Consequence</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#af02ba3459da73a9cb4c43e62975b864e">consequences</a> = new List&lt;<a class="el" href="a00245.html">Consequence</a>&gt;()</td></tr>
-<tr class="memdesc:af02ba3459da73a9cb4c43e62975b864e"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of update to attributes that will be triggered as a consequence of the execution of the <a class="el" href="a00257.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>.  <a href="a00257.html#af02ba3459da73a9cb4c43e62975b864e">More...</a><br /></td></tr>
-<tr class="separator:af02ba3459da73a9cb4c43e62975b864e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4231d738d529536b3783da71cb732bd3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a4231d738d529536b3783da71cb732bd3">tryToCoverRequirementsIfNotMet</a> = true</td></tr>
-<tr class="memdesc:a4231d738d529536b3783da71cb732bd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether a plan should be made to cover requirements that are not met at the time of attempting to execute the event.  <a href="a00257.html#a4231d738d529536b3783da71cb732bd3">More...</a><br /></td></tr>
-<tr class="separator:a4231d738d529536b3783da71cb732bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1747c8891179f074728ec75ce7b6c22"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00261.html">Requirement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#ad1747c8891179f074728ec75ce7b6c22">requirements</a> = new List&lt;<a class="el" href="a00261.html">Requirement</a>&gt;()</td></tr>
-<tr class="memdesc:ad1747c8891179f074728ec75ce7b6c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of attributes with specific values that must be met in order to execute the event..  <a href="a00257.html#ad1747c8891179f074728ec75ce7b6c22">More...</a><br /></td></tr>
-<tr class="separator:ad1747c8891179f074728ec75ce7b6c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a8de3f50831b994c8df70d7e48bb66c8e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a8de3f50831b994c8df70d7e48bb66c8e">humanoidsSeed</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8de3f50831b994c8df70d7e48bb66c8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The seed used by the <a class="el" href="a00321.html">VegetationGenerator</a> to generate vegetation. It is an alteration of the main map's seed.  <a href="a00257.html#a8de3f50831b994c8df70d7e48bb66c8e">More...</a><br /></td></tr>
+<tr class="separator:a8de3f50831b994c8df70d7e48bb66c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a2ec34481b1f654d7081bc72074659f0b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00377.html">MapGenerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a2ec34481b1f654d7081bc72074659f0b">mapGenerator</a></td></tr>
+<tr class="memdesc:a2ec34481b1f654d7081bc72074659f0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the mapGenerator managing the generation of the map that contains this generator's vegetation.  <a href="a00257.html#a2ec34481b1f654d7081bc72074659f0b">More...</a><br /></td></tr>
+<tr class="separator:a2ec34481b1f654d7081bc72074659f0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a5c5ed822ae870601d4e5deea9bdb1656"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00257.html#a5c5ed822ae870601d4e5deea9bdb1656">_randomNumberToAlterMainSeed</a> = 345678</td></tr>
+<tr class="separator:a5c5ed822ae870601d4e5deea9bdb1656"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>An event that must be executed by a <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a>. It is part of an attribute. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00012">12</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00006">6</a> of file <a class="el" href="a00011_source.html">HumanoidsGenerator.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8aff39c6bf75d53090f914f7313ea733"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8aff39c6bf75d53090f914f7313ea733">&#9670;&nbsp;</a></span>ConsequencesCover()</h2>
+<a id="a9ea006f290f9884e566a9e4ca6b60299"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ea006f290f9884e566a9e4ca6b60299">&#9670;&nbsp;</a></span>DeleteHumanoids()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.ConsequencesCover </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00237.html">AttributeOwnership</a>&#160;</td>
-          <td class="paramname"><em>attributeOwnershipToCover</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>executer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>owner</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Indicates if the consequences of the execution of this event will increase the value of an attribute owned by a map element. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">attributeOwnershipToCover</td><td><a class="el" href="a00237.html" title="A relation between an Attribute and a MapElement that owns it.">AttributeOwnership</a> to cover.</td></tr>
-    <tr><td class="paramname">executer</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that is going to execute/trigger the event.</td></tr>
-    <tr><td class="paramname">target</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> target of the execution of the event.</td></tr>
-    <tr><td class="paramname">owner</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that owns the event.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True, if the execution of this <a class="el" href="a00257.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> with this target, executer and owner would increase the value of the given attribute. False, otherwise.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00204">204</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00257_a8aff39c6bf75d53090f914f7313ea733_icgraph.png" border="0" usemap="#aa00257_a8aff39c6bf75d53090f914f7313ea733_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a5f83cb9633e5c37cab4ce578a250eae7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f83cb9633e5c37cab4ce578a250eae7">&#9670;&nbsp;</a></span>Execute()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.Execute </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>executer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>owner</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Executes the event applying the consequences of it. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">executer</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that is going to execute/trigger the event.</td></tr>
-    <tr><td class="paramname">target</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> target of the execution of the event.</td></tr>
-    <tr><td class="paramname">owner</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that owns the event.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00063">63</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00257_a5f83cb9633e5c37cab4ce578a250eae7_icgraph.png" border="0" usemap="#aa00257_a5f83cb9633e5c37cab4ce578a250eae7_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a4bd684dcc313c0237517b3cc6ac5f556"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bd684dcc313c0237517b3cc6ac5f556">&#9670;&nbsp;</a></span>GetRequirementsNotMet()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;<a class="el" href="a00237.html">AttributeOwnership</a>&gt; Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.GetRequirementsNotMet </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>executer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>owner</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>executionTimes</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out List&lt; int &gt;&#160;</td>
-          <td class="paramname"><em>remainingValueToCoverInRequirementsNotMet</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns a list of the requirements that are not met at the moment to execute the event, it and outputs a list of the value missing for each one of the requirements that are not met (in the same order). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">executer</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that is going to execute/trigger the event.</td></tr>
-    <tr><td class="paramname">target</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> target of the execution of the event.</td></tr>
-    <tr><td class="paramname">owner</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that owns the event.</td></tr>
-    <tr><td class="paramname">executionTimes</td><td>The amount of times that is desired to execute the event.</td></tr>
-    <tr><td class="paramname">remainingValueToCoverInRequirementsNotMet</td><td>A list of the value missing for each one of the requirements that are not met (in the same order than the returned list of requirements not met)</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A list of the requirements that are not met at the moment to execute the event.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00138">138</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00257_a4bd684dcc313c0237517b3cc6ac5f556_icgraph.png" border="0" usemap="#aa00257_a4bd684dcc313c0237517b3cc6ac5f556_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a70e0494bca9e956692cadd2eb32fbb46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70e0494bca9e956692cadd2eb32fbb46">&#9670;&nbsp;</a></span>IsDistanceMet()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.IsDistanceMet </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>executer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>owner</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Indicates if the maximum distance allowed to execute the event is met or not. </p>
-<p>The distance is checked between the executer and the target, and between the executer and the event owner.</p>
-<p>The distance will be always considered as met if the field maxDistance of the event is less than 0 or if the field executeWithTimeElapse of the event is true.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">executer</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that is going to execute/trigger the event.</td></tr>
-    <tr><td class="paramname">target</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> target of the execution of the event.</td></tr>
-    <tr><td class="paramname">owner</td><td>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that owns the event.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00109">109</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00257_a70e0494bca9e956692cadd2eb32fbb46_icgraph.png" border="0" usemap="#aa00257_a70e0494bca9e956692cadd2eb32fbb46_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a4fc8fdb573b0dfcf1e61e873fdfb7e07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fc8fdb573b0dfcf1e61e873fdfb7e07">&#9670;&nbsp;</a></span>ToString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">override string Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.ToString </td>
+          <td class="memname">void Thoughts.Game.Map.HumanoidsGenerator.DeleteHumanoids </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -373,140 +146,160 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00095">95</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00038">38</a> of file <a class="el" href="a00011_source.html">HumanoidsGenerator.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00257_a9ea006f290f9884e566a9e4ca6b60299_icgraph.png" border="0" usemap="#aa00257_a9ea006f290f9884e566a9e4ca6b60299_icgraph" alt=""/></div>
+<map name="aa00257_a9ea006f290f9884e566a9e4ca6b60299_icgraph" id="aa00257_a9ea006f290f9884e566a9e4ca6b60299_icgraph">
+<area shape="rect" title=" " alt="" coords="1561,81,1936,108"/>
+<area shape="rect" href="a00377.html#aa49456bae5f40ef9f52f1cc4ef4c2c4c" title="Deletes the currently (generated) existent map" alt="" coords="1149,31,1487,57"/>
+<area shape="rect" href="a00257.html#ad93ae661ab46ae5f8866dca50d92bb92" title=" " alt="" coords="1123,107,1513,133"/>
+<area shape="rect" href="a00381.html#a26c7d42cfa11e2e6ebc89cd87af320a3" title="Deletes the currently (generated) existent map" alt="" coords="781,19,1069,45"/>
+<area shape="rect" href="a00249.html#a8d515fc1b62a4b466a2247ed1f6cee46" title="Starts a new game by setting up the participants and deleting the previously generated world." alt="" coords="392,5,687,32"/>
+<area shape="rect" href="a00249.html#a8988494ad2b97cefb2f5f86ab74d21c0" title="Starts a new game." alt="" coords="37,5,271,32"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="776,157,1075,184"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,56,728,83"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,107,721,133"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,157,727,184"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,208,703,235"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,259,704,285"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,309,720,336"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,183,303,209"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad93ae661ab46ae5f8866dca50d92bb92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad93ae661ab46ae5f8866dca50d92bb92">&#9670;&nbsp;</a></span>GenerateHumanoids()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Game.Map.HumanoidsGenerator.GenerateHumanoids </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>clearPrevious</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00020">20</a> of file <a class="el" href="a00011_source.html">HumanoidsGenerator.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00257_ad93ae661ab46ae5f8866dca50d92bb92_cgraph.png" border="0" usemap="#aa00257_ad93ae661ab46ae5f8866dca50d92bb92_cgraph" alt=""/></div>
+<map name="aa00257_ad93ae661ab46ae5f8866dca50d92bb92_cgraph" id="aa00257_ad93ae661ab46ae5f8866dca50d92bb92_cgraph">
+<area shape="rect" title=" " alt="" coords="5,56,396,83"/>
+<area shape="rect" href="a00257.html#a9ea006f290f9884e566a9e4ca6b60299" title=" " alt="" coords="462,5,837,32"/>
+<area shape="rect" href="a00377.html#a1e43b6a3bae1defc0bc2d0f24c45407f" title="Sets up the NavMesh the given NavMeshAgent" alt="" coords="467,56,831,83"/>
+<area shape="rect" href="a00377.html#a266f4d9a9825ea1b7e9e7117bfb8255c" title="Randomly spawns in the map a given number of MapElements." alt="" coords="444,107,855,133"/>
+<area shape="rect" href="a00377.html#ac0dd6f6a2bbcdb739686cd26eb475fc5" title="Checks if a MapElement can be spawned or not in a given position." alt="" coords="903,81,1256,108"/>
+<area shape="rect" href="a00377.html#aecb5bde57b11e70570dc6b7d1785197d" title="Makes a map element spawn." alt="" coords="907,132,1252,159"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00257_ad93ae661ab46ae5f8866dca50d92bb92_icgraph.png" border="0" usemap="#aa00257_ad93ae661ab46ae5f8866dca50d92bb92_icgraph" alt=""/></div>
+<map name="aa00257_ad93ae661ab46ae5f8866dca50d92bb92_icgraph" id="aa00257_ad93ae661ab46ae5f8866dca50d92bb92_icgraph">
+<area shape="rect" title=" " alt="" coords="1123,132,1513,159"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="776,132,1075,159"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
+</div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="af02ba3459da73a9cb4c43e62975b864e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af02ba3459da73a9cb4c43e62975b864e">&#9670;&nbsp;</a></span>consequences</h2>
+<a id="a5c5ed822ae870601d4e5deea9bdb1656"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c5ed822ae870601d4e5deea9bdb1656">&#9670;&nbsp;</a></span>_randomNumberToAlterMainSeed</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;<a class="el" href="a00245.html">Consequence</a>&gt; Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.consequences = new List&lt;<a class="el" href="a00245.html">Consequence</a>&gt;()</td>
+          <td class="memname">const int Thoughts.Game.Map.HumanoidsGenerator._randomNumberToAlterMainSeed = 345678</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>List of update to attributes that will be triggered as a consequence of the execution of the <a class="el" href="a00257.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00042">42</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00018">18</a> of file <a class="el" href="a00011_source.html">HumanoidsGenerator.cs</a>.</p>
 
 </div>
 </div>
-<a id="ac98c4171f0e0b1782f8f35c83fcc852a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac98c4171f0e0b1782f8f35c83fcc852a">&#9670;&nbsp;</a></span>executerMustOwnAttribute</h2>
+<a id="a2ec34481b1f654d7081bc72074659f0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ec34481b1f654d7081bc72074659f0b">&#9670;&nbsp;</a></span>mapGenerator</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.executerMustOwnAttribute = false</td>
+          <td class="memname"><a class="el" href="a00377.html">MapGenerator</a> Thoughts.Game.Map.HumanoidsGenerator.mapGenerator</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Determines if the executer of the event must own the attribute where this event lives in. </p>
+<p>Reference to the mapGenerator managing the generation of the map that contains this generator's vegetation. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00036">36</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00012">12</a> of file <a class="el" href="a00011_source.html">HumanoidsGenerator.cs</a>.</p>
 
 </div>
 </div>
-<a id="af2324c5d3b3054c2be4fb524cd557841"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2324c5d3b3054c2be4fb524cd557841">&#9670;&nbsp;</a></span>executeWithTimeElapse</h2>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a8de3f50831b994c8df70d7e48bb66c8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8de3f50831b994c8df70d7e48bb66c8e">&#9670;&nbsp;</a></span>humanoidsSeed</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.executeWithTimeElapse = false</td>
+          <td class="memname">int Thoughts.Game.Map.HumanoidsGenerator.humanoidsSeed</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Determines if the event should be executed every time the time elapses in the map. </p>
+<p>The seed used by the <a class="el" href="a00321.html">VegetationGenerator</a> to generate vegetation. It is an alteration of the main map's seed. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00030">30</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
-
-</div>
-</div>
-<a id="af253d36d7f7b905a11652e04685c216c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af253d36d7f7b905a11652e04685c216c">&#9670;&nbsp;</a></span>maxDistance</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.maxDistance = 5f</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The maximum distance allowed to execute the event. The distance is checked between the executer and the target, and between the executer and the event owner. Ignored if it is less than 0 or if executeWithTimeElapse is true. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00024">24</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
-
-</div>
-</div>
-<a id="af30c1c1cb16c60a387278bdebfeaf8a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af30c1c1cb16c60a387278bdebfeaf8a1">&#9670;&nbsp;</a></span>name</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">string Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.name = &quot;&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The name of the event </p>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00018">18</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
-
-</div>
-</div>
-<a id="ad1747c8891179f074728ec75ce7b6c22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1747c8891179f074728ec75ce7b6c22">&#9670;&nbsp;</a></span>requirements</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;<a class="el" href="a00261.html">Requirement</a>&gt; Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.requirements = new List&lt;<a class="el" href="a00261.html">Requirement</a>&gt;()</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>List of attributes with specific values that must be met in order to execute the event.. </p>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00055">55</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
-
-</div>
-</div>
-<a id="a4231d738d529536b3783da71cb732bd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4231d738d529536b3783da71cb732bd3">&#9670;&nbsp;</a></span>tryToCoverRequirementsIfNotMet</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.tryToCoverRequirementsIfNotMet = true</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Determines whether a plan should be made to cover requirements that are not met at the time of attempting to execute the event. </p>
-<p>If false, in case the requirements are not met and the event can not be executed, this event is going to be ignored (so no map element is going to 'try' to fix the requirements so it can be executed).</p>
-
-<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00049">49</a> of file <a class="el" href="a00029_source.html">MapEvent.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00011_source.html#l00017">17</a> of file <a class="el" href="a00011_source.html">HumanoidsGenerator.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00029_source.html">MapEvent.cs</a></li>
+<li><a class="el" href="a00011_source.html">HumanoidsGenerator.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

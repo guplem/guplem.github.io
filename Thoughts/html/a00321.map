@@ -1,5 +1,3 @@
-<map id="Thoughts.Game.Attributes.Attribute" name="Thoughts.Game.Attributes.Attribute">
-<area shape="rect" id="node1" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="31,131,258,340"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,124,83"/>
-<area shape="rect" id="node3" title=" " alt="" coords="148,5,304,83"/>
+<map id="Thoughts.Game.Map.Terrain.TerrainMeshGenerator.Coord" name="Thoughts.Game.Map.Terrain.TerrainMeshGenerator.Coord">
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,361,97"/>
 </map>

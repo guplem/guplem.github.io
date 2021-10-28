@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.Map.MapManager Class Reference</title>
+<title>TS20-Thoughts: Thoughts.Game.Map.Terrain.TerrainChunk Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,86 +61,159 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00179.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00180.html">Game</a></li><li class="navelem"><a class="el" href="a00181.html">Map</a></li><li class="navelem"><a class="el" href="a00281.html">MapManager</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00203.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00204.html">Game</a></li><li class="navelem"><a class="el" href="a00205.html">Map</a></li><li class="navelem"><a class="el" href="a00206.html">Terrain</a></li><li class="navelem"><a class="el" href="a00281.html">TerrainChunk</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00278.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.Map.MapManager Class Reference</div>  </div>
+<div class="title">Thoughts.Game.Map.Terrain.TerrainChunk Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The map of the game.  
+<p>Manager of a chunk of the terrain of the map  
  <a href="a00281.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Game.Map.MapManager:</div>
+Collaboration diagram for Thoughts.Game.Map.Terrain.TerrainChunk:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00279.png" border="0" usemap="#aThoughts_8Game_8Map_8MapManager_coll__map" alt="Collaboration graph"/></div>
+<div class="center"><img src="a00279.png" border="0" usemap="#aThoughts_8Game_8Map_8Terrain_8TerrainChunk_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8Game_8Map_8Terrain_8TerrainChunk_coll__map" id="aThoughts_8Game_8Map_8Terrain_8TerrainChunk_coll__map">
+<area shape="rect" title="Manager of a chunk of the terrain of the map" alt="" coords="3062,1424,3329,1809"/>
+<area shape="rect" title=" " alt="" coords="2353,498,2464,575"/>
+<area shape="rect" href="a00377.html" title="Component in charge of generating a Map" alt="" coords="1999,1049,2317,1361"/>
+<area shape="rect" href="a00321.html" title=" " alt="" coords="1562,1563,1829,1670"/>
+<area shape="rect" href="a00289.html" title="Unity Component in charge of generating a terrain in the scene" alt="" coords="1929,1490,2216,1743"/>
+<area shape="rect" href="a00381.html" title="The map of the game." alt="" coords="2387,1549,2609,1685"/>
+<area shape="rect" href="a00257.html" title=" " alt="" coords="2639,1563,2909,1670"/>
+<area shape="rect" href="a00521.html" title="Component in charge doing threaded requests of data" alt="" coords="1998,821,2371,928"/>
+<area shape="rect" href="a00285.html" title="A Mesh holder with related data meant to be used with an specified LOD" alt="" coords="2961,1130,3209,1281"/>
+<area shape="rect" href="a00277.html" title="Contains values relative to the height of a terrain" alt="" coords="3233,1137,3485,1273"/>
+<area shape="rect" href="a00293.html" title="Data that relates a LOD with the distance to the viewer at which it should stop being used and a wors..." alt="" coords="2341,1159,2577,1251"/>
+<area shape="rect" href="a00329.html" title="Holds all the configuration/settings used to generate the Map" alt="" coords="1021,763,1268,987"/>
+<area shape="rect" href="a00497.html" title=" " alt="" coords="967,241,1074,318"/>
+<area shape="rect" href="a00261.html" title=" " alt="" coords="1501,483,1761,590"/>
+<area shape="rect" href="a00317.html" title="The configuration of the texture of the terrain of the map" alt="" coords="626,403,946,671"/>
+<area shape="rect" href="a00273.html" title=" " alt="" coords="971,498,1071,575"/>
+<area shape="rect" href="a00325.html" title=" " alt="" coords="5,498,263,575"/>
+<area shape="rect" href="a00269.html" title=" " alt="" coords="1095,498,1194,575"/>
+<area shape="rect" href="a00297.html" title="The configuration of the height of the terrain of the map" alt="" coords="287,454,602,619"/>
+<area shape="rect" title=" " alt="" coords="961,42,1080,119"/>
+<area shape="rect" title=" " alt="" coords="1219,498,1425,575"/>
+<area shape="rect" href="a00333.html" title=" " alt="" coords="6,219,337,340"/>
+<area shape="rect" href="a00509.html" title="Collection of settings used to generate a noise map More info about the settings here: https://www...." alt="" coords="213,5,468,156"/>
+</map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4c0c4fc6ac65794f3c16c23ed3f9b5ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a4c0c4fc6ac65794f3c16c23ed3f9b5ca">GenerateCreationStep</a> (<a class="el" href="a00181.html#abb0355236cc4bf3f0e7277c252871abf">CreationStep</a> creationStep)</td></tr>
-<tr class="memdesc:a4c0c4fc6ac65794f3c16c23ed3f9b5ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the contents of a creation step  <a href="a00281.html#a4c0c4fc6ac65794f3c16c23ed3f9b5ca">More...</a><br /></td></tr>
-<tr class="separator:a4c0c4fc6ac65794f3c16c23ed3f9b5ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e182a6c8a343b6ec3af1114d7eb775c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00253.html">ExecutionPlan</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a2e182a6c8a343b6ec3af1114d7eb775c">GetExecutionPlanToCover</a> ([NotNull] <a class="el" href="a00237.html">AttributeOwnership</a> attributeOwnershipToCover, int valueToCover, <a class="el" href="a00265.html">MapElement</a> executer)</td></tr>
-<tr class="memdesc:a2e182a6c8a343b6ec3af1114d7eb775c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look for all MapEvents available in the map that, as consequence of a MapEvent in an Attribute they own, they make a desired AttributeOwnership's value increase for the owner/executer/target (the needed participant).  <a href="a00281.html#a2e182a6c8a343b6ec3af1114d7eb775c">More...</a><br /></td></tr>
-<tr class="separator:a2e182a6c8a343b6ec3af1114d7eb775c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6088870d22391a8a34416b28683ff037"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a6088870d22391a8a34416b28683ff037">Delete</a> ()</td></tr>
-<tr class="memdesc:a6088870d22391a8a34416b28683ff037"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the currently (generated) existent map  <a href="a00281.html#a6088870d22391a8a34416b28683ff037">More...</a><br /></td></tr>
-<tr class="separator:a6088870d22391a8a34416b28683ff037"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab16f2542353fef283ab91e3c8a58ea97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#ab16f2542353fef283ab91e3c8a58ea97">Setup</a> (Vector2 <a class="el" href="a00281.html#a31d0d959397c28bd3ccb6108ae551685">coord</a>, <a class="el" href="a00293.html">LODInfo</a>[] <a class="el" href="a00281.html#a10cdfec03dab50bfb19c61accbbaf053">detailLevels</a>, int <a class="el" href="a00281.html#aab16fdd2e1b0ef97df6b4f206c85daa3">colliderLODIndex</a>, Transform parent, Transform <a class="el" href="a00281.html#a5ff53369d2f244063359c8c908311c0d">viewer</a>, <a class="el" href="a00377.html">MapGenerator</a> <a class="el" href="a00281.html#acc63c9d97a38a4cd6748b109cb89ff24">mapGenerator</a>, Material material)</td></tr>
+<tr class="memdesc:ab16f2542353fef283ab91e3c8a58ea97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores all the needed data and sets up the managing of the LOD meshes  <a href="a00281.html#ab16f2542353fef283ab91e3c8a58ea97">More...</a><br /></td></tr>
+<tr class="separator:ab16f2542353fef283ab91e3c8a58ea97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21c40372bab50552db42be4fb417126d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a21c40372bab50552db42be4fb417126d">Load</a> ()</td></tr>
+<tr class="memdesc:a21c40372bab50552db42be4fb417126d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the process of loading and displaying this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>  <a href="a00281.html#a21c40372bab50552db42be4fb417126d">More...</a><br /></td></tr>
+<tr class="separator:a21c40372bab50552db42be4fb417126d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bc34836e0f4046c7eb7aaa2a8525cd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a3bc34836e0f4046c7eb7aaa2a8525cd4">UpdateChunk</a> ()</td></tr>
+<tr class="memdesc:a3bc34836e0f4046c7eb7aaa2a8525cd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the visual mesh and tries to set the collision mesh if it has not been set before  <a href="a00281.html#a3bc34836e0f4046c7eb7aaa2a8525cd4">More...</a><br /></td></tr>
+<tr class="separator:a3bc34836e0f4046c7eb7aaa2a8525cd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3af2add7de2e7d14c9d6e418c32f895"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#ac3af2add7de2e7d14c9d6e418c32f895">ToString</a> ()</td></tr>
+<tr class="memdesc:ac3af2add7de2e7d14c9d6e418c32f895"><td class="mdescLeft">&#160;</td><td class="mdescRight">String representation of this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>  <a href="a00281.html#ac3af2add7de2e7d14c9d6e418c32f895">More...</a><br /></td></tr>
+<tr class="separator:ac3af2add7de2e7d14c9d6e418c32f895"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cd4a963c2e3278881ea6be46e78115d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a3cd4a963c2e3278881ea6be46e78115d">SetMeshVisible</a> (bool state)</td></tr>
+<tr class="memdesc:a3cd4a963c2e3278881ea6be46e78115d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a new state for the visibility of the Mesh  <a href="a00281.html#a3cd4a963c2e3278881ea6be46e78115d">More...</a><br /></td></tr>
+<tr class="separator:a3cd4a963c2e3278881ea6be46e78115d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ca9264221c485f98a68f966030f80b2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a9ca9264221c485f98a68f966030f80b2">IsMeshVisible</a> ()</td></tr>
+<tr class="memdesc:a9ca9264221c485f98a68f966030f80b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the mesh of the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> is currently visible  <a href="a00281.html#a9ca9264221c485f98a68f966030f80b2">More...</a><br /></td></tr>
+<tr class="separator:a9ca9264221c485f98a68f966030f80b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a7849f390fb8f4899fbe2041eaed3a54e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a7849f390fb8f4899fbe2041eaed3a54e">maxViewDistance</a><code> [get]</code></td></tr>
+<tr class="memdesc:a7849f390fb8f4899fbe2041eaed3a54e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum distance at which the TerrainChunks should be visible  <a href="a00281.html#a7849f390fb8f4899fbe2041eaed3a54e">More...</a><br /></td></tr>
+<tr class="separator:a7849f390fb8f4899fbe2041eaed3a54e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae1bf5a4ac76a344327a8df037be47e3"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#aae1bf5a4ac76a344327a8df037be47e3">viewerPosition</a><code> [get]</code></td></tr>
+<tr class="memdesc:aae1bf5a4ac76a344327a8df037be47e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current position of the viewer  <a href="a00281.html#aae1bf5a4ac76a344327a8df037be47e3">More...</a><br /></td></tr>
+<tr class="separator:aae1bf5a4ac76a344327a8df037be47e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a82177c572c5e9d3a1eb915e1605d35ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00265.html">MapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a82177c572c5e9d3a1eb915e1605d35ea">SpawnMapElement</a> (GameObject spawnableGameObject, Vector3 position, Quaternion rotation)</td></tr>
-<tr class="memdesc:a82177c572c5e9d3a1eb915e1605d35ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a map element spawn.  <a href="a00281.html#a82177c572c5e9d3a1eb915e1605d35ea">More...</a><br /></td></tr>
-<tr class="separator:a82177c572c5e9d3a1eb915e1605d35ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7604ae38e58b7f2083cb16d0ad0e3d13"><td class="memItemLeft" align="right" valign="top">GameObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a7604ae38e58b7f2083cb16d0ad0e3d13">GetSpawnableGameObject</a> (string name)</td></tr>
-<tr class="memdesc:a7604ae38e58b7f2083cb16d0ad0e3d13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtains the GameObject with the given name from the spawnableMapElement list.  <a href="a00281.html#a7604ae38e58b7f2083cb16d0ad0e3d13">More...</a><br /></td></tr>
-<tr class="separator:a7604ae38e58b7f2083cb16d0ad0e3d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a48a12fb8f507b91e5cddc5ceead414"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00265.html">MapElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a1a48a12fb8f507b91e5cddc5ceead414">GenerateMapElements</a> ()</td></tr>
-<tr class="memdesc:a1a48a12fb8f507b91e5cddc5ceead414"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates <a class="el" href="a00182.html">MapElements</a> in the map (not mobs).  <a href="a00281.html#a1a48a12fb8f507b91e5cddc5ceead414">More...</a><br /></td></tr>
-<tr class="separator:a1a48a12fb8f507b91e5cddc5ceead414"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58c26077f3c34c93dcce40fa5be57183"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00265.html">MapElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a58c26077f3c34c93dcce40fa5be57183">SpawnRandom</a> (string prefabName, int quantity, RandomEssentials random)</td></tr>
-<tr class="memdesc:a58c26077f3c34c93dcce40fa5be57183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Randomly generates the MapElement with the given name a determined amount of times.  <a href="a00281.html#a58c26077f3c34c93dcce40fa5be57183">More...</a><br /></td></tr>
-<tr class="separator:a58c26077f3c34c93dcce40fa5be57183"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a182223b438b1ba71394dafa409c531a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a182223b438b1ba71394dafa409c531a7">SetupNewNavMeshes</a> ()</td></tr>
-<tr class="memdesc:a182223b438b1ba71394dafa409c531a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the NavMesh for all the NavMeshAgents in the spawnableMapElement list.  <a href="a00281.html#a182223b438b1ba71394dafa409c531a7">More...</a><br /></td></tr>
-<tr class="separator:a182223b438b1ba71394dafa409c531a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18e802e7f43dbf236dc0b54d2420a56e"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00265.html">MapElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a18e802e7f43dbf236dc0b54d2420a56e">GenerateMobs</a> ()</td></tr>
-<tr class="memdesc:a18e802e7f43dbf236dc0b54d2420a56e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates Mobs in the map.  <a href="a00281.html#a18e802e7f43dbf236dc0b54d2420a56e">More...</a><br /></td></tr>
-<tr class="separator:a18e802e7f43dbf236dc0b54d2420a56e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3963ea6eed2f1f6c64300890c0659d08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a3963ea6eed2f1f6c64300890c0659d08">OnHeightMapReceived</a> (object <a class="el" href="a00281.html#a8745503528c9444559d5549dfd314f95">heightMap</a>)</td></tr>
+<tr class="memdesc:a3963ea6eed2f1f6c64300890c0659d08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> received and updates the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>  <a href="a00281.html#a3963ea6eed2f1f6c64300890c0659d08">More...</a><br /></td></tr>
+<tr class="separator:a3963ea6eed2f1f6c64300890c0659d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25a03a79a26c461ff9492d1d00cb018c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a25a03a79a26c461ff9492d1d00cb018c">UpdateVisualMesh</a> ()</td></tr>
+<tr class="memdesc:a25a03a79a26c461ff9492d1d00cb018c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the LOD and visibility of the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>  <a href="a00281.html#a25a03a79a26c461ff9492d1d00cb018c">More...</a><br /></td></tr>
+<tr class="separator:a25a03a79a26c461ff9492d1d00cb018c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc8b2ec369764d037b7d0015e28b5046"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#afc8b2ec369764d037b7d0015e28b5046">SetCollisionMesh</a> ()</td></tr>
+<tr class="memdesc:afc8b2ec369764d037b7d0015e28b5046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the collision mesh in this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>. Requires at least 2 calls: request + set (after mesh has been returned by the thread). The calls should be done automatically thanks to the callback  <a href="a00281.html#afc8b2ec369764d037b7d0015e28b5046">More...</a><br /></td></tr>
+<tr class="separator:afc8b2ec369764d037b7d0015e28b5046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:aaf8f12a9476b836e040f0f9f2c3dcb23"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="a00265.html">MapElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#aaf8f12a9476b836e040f0f9f2c3dcb23">mapElements</a> = new List&lt;<a class="el" href="a00265.html">MapElement</a>&gt;()</td></tr>
-<tr class="memdesc:aaf8f12a9476b836e040f0f9f2c3dcb23"><td class="mdescLeft">&#160;</td><td class="mdescRight">All the map elements present in the map.  <a href="a00281.html#aaf8f12a9476b836e040f0f9f2c3dcb23">More...</a><br /></td></tr>
-<tr class="separator:aaf8f12a9476b836e040f0f9f2c3dcb23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2920711d4fa30aa333f75d76582ce0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00277.html">MapGenerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#ac2920711d4fa30aa333f75d76582ce0a">mapGenerator</a></td></tr>
-<tr class="memdesc:ac2920711d4fa30aa333f75d76582ce0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the <a class="el" href="a00277.html" title="Component in charge of generating a Map">MapGenerator</a> component  <a href="a00281.html#ac2920711d4fa30aa333f75d76582ce0a">More...</a><br /></td></tr>
-<tr class="separator:ac2920711d4fa30aa333f75d76582ce0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed6e9c6f9cd698c7ed183607b155ba47"><td class="memItemLeft" align="right" valign="top">List&lt; GameObject &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#aed6e9c6f9cd698c7ed183607b155ba47">spawnableMapElements</a></td></tr>
-<tr class="memdesc:aed6e9c6f9cd698c7ed183607b155ba47"><td class="mdescLeft">&#160;</td><td class="mdescRight">All the map elements' prefabs that can be spawned in the map.  <a href="a00281.html#aed6e9c6f9cd698c7ed183607b155ba47">More...</a><br /></td></tr>
-<tr class="separator:aed6e9c6f9cd698c7ed183607b155ba47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31d0d959397c28bd3ccb6108ae551685"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a31d0d959397c28bd3ccb6108ae551685">coord</a></td></tr>
+<tr class="memdesc:a31d0d959397c28bd3ccb6108ae551685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coords of the chunk  <a href="a00281.html#a31d0d959397c28bd3ccb6108ae551685">More...</a><br /></td></tr>
+<tr class="separator:a31d0d959397c28bd3ccb6108ae551685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9a50a16edbceaeb0894020cf3a0a3e2"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#ad9a50a16edbceaeb0894020cf3a0a3e2">sampleCenter</a></td></tr>
+<tr class="separator:ad9a50a16edbceaeb0894020cf3a0a3e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a333fc8a0e5d248ce958b6acf175f8edc"><td class="memItemLeft" align="right" valign="top">GameObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a333fc8a0e5d248ce958b6acf175f8edc">visualMeshObject</a></td></tr>
+<tr class="memdesc:a333fc8a0e5d248ce958b6acf175f8edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the object containing the visual mesh of the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>  <a href="a00281.html#a333fc8a0e5d248ce958b6acf175f8edc">More...</a><br /></td></tr>
+<tr class="separator:a333fc8a0e5d248ce958b6acf175f8edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45802324e24c8b8fa665b702f4cd47e"><td class="memItemLeft" align="right" valign="top">Bounds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#ac45802324e24c8b8fa665b702f4cd47e">bounds</a></td></tr>
+<tr class="memdesc:ac45802324e24c8b8fa665b702f4cd47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bounds of the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> in the map  <a href="a00281.html#ac45802324e24c8b8fa665b702f4cd47e">More...</a><br /></td></tr>
+<tr class="separator:ac45802324e24c8b8fa665b702f4cd47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add03ec9deb7d6367d3c9881af5b190d7"><td class="memItemLeft" align="right" valign="top">MeshRenderer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#add03ec9deb7d6367d3c9881af5b190d7">meshRenderer</a></td></tr>
+<tr class="memdesc:add03ec9deb7d6367d3c9881af5b190d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the meshRenderer used for the visuals  <a href="a00281.html#add03ec9deb7d6367d3c9881af5b190d7">More...</a><br /></td></tr>
+<tr class="separator:add03ec9deb7d6367d3c9881af5b190d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2c43a93566af71e881ee12dcd0cd16d"><td class="memItemLeft" align="right" valign="top">MeshFilter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#ab2c43a93566af71e881ee12dcd0cd16d">meshFilter</a></td></tr>
+<tr class="memdesc:ab2c43a93566af71e881ee12dcd0cd16d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the MeshFilter used for the visuals  <a href="a00281.html#ab2c43a93566af71e881ee12dcd0cd16d">More...</a><br /></td></tr>
+<tr class="separator:ab2c43a93566af71e881ee12dcd0cd16d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc640a4d26cf4bec2bf4659519e1e3f5"><td class="memItemLeft" align="right" valign="top">MeshCollider&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#afc640a4d26cf4bec2bf4659519e1e3f5">meshCollider</a></td></tr>
+<tr class="memdesc:afc640a4d26cf4bec2bf4659519e1e3f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the MeshCollider used for the collisions  <a href="a00281.html#afc640a4d26cf4bec2bf4659519e1e3f5">More...</a><br /></td></tr>
+<tr class="separator:afc640a4d26cf4bec2bf4659519e1e3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc63c9d97a38a4cd6748b109cb89ff24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00377.html">MapGenerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#acc63c9d97a38a4cd6748b109cb89ff24">mapGenerator</a></td></tr>
+<tr class="memdesc:acc63c9d97a38a4cd6748b109cb89ff24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the mapGenerator managing the generation of the map that contains this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>.  <a href="a00281.html#acc63c9d97a38a4cd6748b109cb89ff24">More...</a><br /></td></tr>
+<tr class="separator:acc63c9d97a38a4cd6748b109cb89ff24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10cdfec03dab50bfb19c61accbbaf053"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00293.html">LODInfo</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a10cdfec03dab50bfb19c61accbbaf053">detailLevels</a></td></tr>
+<tr class="memdesc:a10cdfec03dab50bfb19c61accbbaf053"><td class="mdescLeft">&#160;</td><td class="mdescRight">An ordered list containing the LOD with the information about which one should be used until which distance. The LOD "0", has the maximum level of detail. The last threshold/distance in the list will be considered as the maximum view distance from the viewer's perspective.  <a href="a00281.html#a10cdfec03dab50bfb19c61accbbaf053">More...</a><br /></td></tr>
+<tr class="separator:a10cdfec03dab50bfb19c61accbbaf053"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04745c6bf21f76736f8f9cb0a802b72d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00285.html">LODMesh</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a04745c6bf21f76736f8f9cb0a802b72d">lodMeshes</a></td></tr>
+<tr class="memdesc:a04745c6bf21f76736f8f9cb0a802b72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of meshes meant to be used with an specified LOD  <a href="a00281.html#a04745c6bf21f76736f8f9cb0a802b72d">More...</a><br /></td></tr>
+<tr class="separator:a04745c6bf21f76736f8f9cb0a802b72d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab16fdd2e1b0ef97df6b4f206c85daa3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#aab16fdd2e1b0ef97df6b4f206c85daa3">colliderLODIndex</a></td></tr>
+<tr class="memdesc:aab16fdd2e1b0ef97df6b4f206c85daa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The LOD that the collider must use  <a href="a00281.html#aab16fdd2e1b0ef97df6b4f206c85daa3">More...</a><br /></td></tr>
+<tr class="separator:aab16fdd2e1b0ef97df6b4f206c85daa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8745503528c9444559d5549dfd314f95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00277.html">HeightMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a8745503528c9444559d5549dfd314f95">heightMap</a></td></tr>
+<tr class="memdesc:a8745503528c9444559d5549dfd314f95"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> of this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>  <a href="a00281.html#a8745503528c9444559d5549dfd314f95">More...</a><br /></td></tr>
+<tr class="separator:a8745503528c9444559d5549dfd314f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b0f5a98bf8d1b289da243dd182113e2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a9b0f5a98bf8d1b289da243dd182113e2">heightMapReceived</a> = false</td></tr>
+<tr class="memdesc:a9b0f5a98bf8d1b289da243dd182113e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the data of the <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> has been recieved or not.  <a href="a00281.html#a9b0f5a98bf8d1b289da243dd182113e2">More...</a><br /></td></tr>
+<tr class="separator:a9b0f5a98bf8d1b289da243dd182113e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82c5761327e7b11594ee0decfd95c7a4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a82c5761327e7b11594ee0decfd95c7a4">previousLODIndex</a> = -1</td></tr>
+<tr class="memdesc:a82c5761327e7b11594ee0decfd95c7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last LOD used for the latest visuals of the terrain  <a href="a00281.html#a82c5761327e7b11594ee0decfd95c7a4">More...</a><br /></td></tr>
+<tr class="separator:a82c5761327e7b11594ee0decfd95c7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dc0d957fb5b51d888641e1c01f0fa9e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a4dc0d957fb5b51d888641e1c01f0fa9e">hasSetCollider</a></td></tr>
+<tr class="memdesc:a4dc0d957fb5b51d888641e1c01f0fa9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has the collier been set in this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>  <a href="a00281.html#a4dc0d957fb5b51d888641e1c01f0fa9e">More...</a><br /></td></tr>
+<tr class="separator:a4dc0d957fb5b51d888641e1c01f0fa9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ff53369d2f244063359c8c908311c0d"><td class="memItemLeft" align="right" valign="top">Transform&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00281.html#a5ff53369d2f244063359c8c908311c0d">viewer</a></td></tr>
+<tr class="memdesc:a5ff53369d2f244063359c8c908311c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference to the viewer (typically the player) of the map  <a href="a00281.html#a5ff53369d2f244063359c8c908311c0d">More...</a><br /></td></tr>
+<tr class="separator:a5ff53369d2f244063359c8c908311c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The map of the game. </p>
+<div class="textblock"><p>Manager of a chunk of the terrain of the map </p>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00017">17</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00010">10</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6088870d22391a8a34416b28683ff037"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6088870d22391a8a34416b28683ff037">&#9670;&nbsp;</a></span>Delete()</h2>
+<a id="a9ca9264221c485f98a68f966030f80b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ca9264221c485f98a68f966030f80b2">&#9670;&nbsp;</a></span>IsMeshVisible()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.Game.Map.MapManager.Delete </td>
+          <td class="memname">bool Thoughts.Game.Map.Terrain.TerrainChunk.IsMeshVisible </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -148,51 +221,83 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Deletes the currently (generated) existent map </p>
+<p>Checks if the mesh of the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> is currently visible </p>
+<dl class="section return"><dt>Returns</dt><dd>True if visible, false otherwise</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00204">204</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00281_a6088870d22391a8a34416b28683ff037_cgraph.png" border="0" usemap="#aa00281_a6088870d22391a8a34416b28683ff037_cgraph" alt=""/></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00281_a6088870d22391a8a34416b28683ff037_icgraph.png" border="0" usemap="#aa00281_a6088870d22391a8a34416b28683ff037_icgraph" alt=""/></div>
-</div>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00280">280</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
 
 </div>
 </div>
-<a id="a4c0c4fc6ac65794f3c16c23ed3f9b5ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c0c4fc6ac65794f3c16c23ed3f9b5ca">&#9670;&nbsp;</a></span>GenerateCreationStep()</h2>
+<a id="a21c40372bab50552db42be4fb417126d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21c40372bab50552db42be4fb417126d">&#9670;&nbsp;</a></span>Load()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.Game.Map.MapManager.GenerateCreationStep </td>
+          <td class="memname">void Thoughts.Game.Map.Terrain.TerrainChunk.Load </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00181.html#abb0355236cc4bf3f0e7277c252871abf">CreationStep</a>&#160;</td>
-          <td class="paramname"><em>creationStep</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Generates the contents of a creation step </p>
+<p>Starts the process of loading and displaying this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00040">40</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00155">155</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00281_a21c40372bab50552db42be4fb417126d_cgraph.png" border="0" usemap="#aa00281_a21c40372bab50552db42be4fb417126d_cgraph" alt=""/></div>
+<map name="aa00281_a21c40372bab50552db42be4fb417126d_cgraph" id="aa00281_a21c40372bab50552db42be4fb417126d_cgraph">
+<area shape="rect" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="5,195,304,221"/>
+<area shape="rect" href="a00277.html#a6b79153aaca9eac7539b8d5d6b69c4d7" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="367,119,738,145"/>
+<area shape="rect" href="a00281.html#a3963ea6eed2f1f6c64300890c0659d08" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="352,195,753,221"/>
+<area shape="rect" href="a00521.html#a3caa79b5b7e5b5bfaff430c50be58493" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="2033,220,2485,247"/>
+<area shape="rect" href="a00505.html#afb38ca73e5ee55ec0695ce56d16b7941" title="Generates a perlin noise map of a given width and height." alt="" coords="827,43,1124,69"/>
+<area shape="rect" href="a00277.html#adfdb1caef6fbc5c926a654ca4c59852f" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="803,93,1147,120"/>
+<area shape="rect" href="a00277.html#ae2a8faff2ec34ae33cac44aa98582520" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="816,144,1135,171"/>
+<area shape="rect" href="a00281.html#a3bc34836e0f4046c7eb7aaa2a8525cd4" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="801,195,1149,221"/>
+<area shape="rect" href="a00281.html#afc8b2ec369764d037b7d0015e28b5046" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="1201,144,1572,171"/>
+<area shape="rect" href="a00281.html#a25a03a79a26c461ff9492d1d00cb018c" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="1197,195,1576,221"/>
+<area shape="rect" href="a00285.html#a84c6b6666675bc04ac1222bbfb4c0e84" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="1639,144,1971,171"/>
+<area shape="rect" href="a00301.html#ac604c7f058b5e5269886290d0ad18303" title=" " alt="" coords="2036,100,2483,127"/>
+<area shape="rect" href="a00285.html#a72d70bc9ef63f10ea74645a5be118916" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="2069,151,2449,177"/>
+<area shape="rect" href="a00313.html#a1eab1ae0df24584af42b5c1bab8f975a" title=" " alt="" coords="2594,5,2915,32"/>
+<area shape="rect" href="a00313.html#a774b53f5bdddd9e6a22e0c00399e3b00" title=" " alt="" coords="2597,56,2912,83"/>
+<area shape="rect" href="a00313.html#a044240bfb1626526d9ec86bc7550c216" title=" " alt="" coords="2589,107,2920,133"/>
+<area shape="rect" href="a00313.html#a6926ee431d8ad9aab35b8bf7df66b010" title=" " alt="" coords="2539,157,2970,184"/>
+<area shape="rect" href="a00313.html#a936c50147ff356bcbcffbb864287279c" title=" " alt="" coords="3069,81,3423,108"/>
+<area shape="rect" href="a00313.html#add9474110c7aa6e223c4945f88bc2a06" title=" " alt="" coords="3024,132,3468,159"/>
+<area shape="rect" href="a00313.html#ab375d77a4203c96787644c3c00aedb82" title=" " alt="" coords="3516,81,3925,108"/>
+<area shape="rect" href="a00521.html#afd54327ec9a38cb61f8762441966fbd1" title=" " alt="" coords="2533,220,2976,247"/>
+<area shape="rect" href="a00281.html#a3cd4a963c2e3278881ea6be46e78115d" title="Sets a new state for the visibility of the Mesh" alt="" coords="1624,195,1985,221"/>
+</map>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00281_a4c0c4fc6ac65794f3c16c23ed3f9b5ca_icgraph.png" border="0" usemap="#aa00281_a4c0c4fc6ac65794f3c16c23ed3f9b5ca_icgraph" alt=""/></div>
+<div class="center"><img src="a00281_a21c40372bab50552db42be4fb417126d_icgraph.png" border="0" usemap="#aa00281_a21c40372bab50552db42be4fb417126d_icgraph" alt=""/></div>
+<map name="aa00281_a21c40372bab50552db42be4fb417126d_icgraph" id="aa00281_a21c40372bab50552db42be4fb417126d_icgraph">
+<area shape="rect" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1577,157,1876,184"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
 </div>
 
 </div>
 </div>
-<a id="a1a48a12fb8f507b91e5cddc5ceead414"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a48a12fb8f507b91e5cddc5ceead414">&#9670;&nbsp;</a></span>GenerateMapElements()</h2>
+<a id="a3963ea6eed2f1f6c64300890c0659d08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3963ea6eed2f1f6c64300890c0659d08">&#9670;&nbsp;</a></span>OnHeightMapReceived()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,7 +306,86 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;<a class="el" href="a00265.html">MapElement</a>&gt; Thoughts.Game.Map.MapManager.GenerateMapElements </td>
+          <td class="memname">void Thoughts.Game.Map.Terrain.TerrainChunk.OnHeightMapReceived </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>heightMap</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Saves the <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> received and updates the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">heightMap</td><td>The received <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00171">171</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00281_a3963ea6eed2f1f6c64300890c0659d08_cgraph.png" border="0" usemap="#aa00281_a3963ea6eed2f1f6c64300890c0659d08_cgraph" alt=""/></div>
+<map name="aa00281_a3963ea6eed2f1f6c64300890c0659d08_cgraph" id="aa00281_a3963ea6eed2f1f6c64300890c0659d08_cgraph">
+<area shape="rect" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="5,183,407,209"/>
+<area shape="rect" href="a00281.html#a3bc34836e0f4046c7eb7aaa2a8525cd4" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="455,183,803,209"/>
+<area shape="rect" href="a00281.html#afc8b2ec369764d037b7d0015e28b5046" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="855,157,1225,184"/>
+<area shape="rect" href="a00281.html#a25a03a79a26c461ff9492d1d00cb018c" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="851,208,1229,235"/>
+<area shape="rect" href="a00285.html#a84c6b6666675bc04ac1222bbfb4c0e84" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="1292,157,1624,184"/>
+<area shape="rect" href="a00301.html#ac604c7f058b5e5269886290d0ad18303" title=" " alt="" coords="1689,107,2136,133"/>
+<area shape="rect" href="a00285.html#a72d70bc9ef63f10ea74645a5be118916" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="1723,157,2103,184"/>
+<area shape="rect" href="a00521.html#a3caa79b5b7e5b5bfaff430c50be58493" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="1687,208,2139,235"/>
+<area shape="rect" href="a00313.html#a1eab1ae0df24584af42b5c1bab8f975a" title=" " alt="" coords="2247,5,2569,32"/>
+<area shape="rect" href="a00313.html#a774b53f5bdddd9e6a22e0c00399e3b00" title=" " alt="" coords="2251,56,2565,83"/>
+<area shape="rect" href="a00313.html#a044240bfb1626526d9ec86bc7550c216" title=" " alt="" coords="2243,107,2573,133"/>
+<area shape="rect" href="a00313.html#a6926ee431d8ad9aab35b8bf7df66b010" title=" " alt="" coords="2193,157,2623,184"/>
+<area shape="rect" href="a00313.html#a936c50147ff356bcbcffbb864287279c" title=" " alt="" coords="2722,81,3077,108"/>
+<area shape="rect" href="a00313.html#add9474110c7aa6e223c4945f88bc2a06" title=" " alt="" coords="2677,132,3121,159"/>
+<area shape="rect" href="a00313.html#ab375d77a4203c96787644c3c00aedb82" title=" " alt="" coords="3169,81,3579,108"/>
+<area shape="rect" href="a00521.html#afd54327ec9a38cb61f8762441966fbd1" title=" " alt="" coords="2187,208,2629,235"/>
+<area shape="rect" href="a00281.html#a3cd4a963c2e3278881ea6be46e78115d" title="Sets a new state for the visibility of the Mesh" alt="" coords="1277,208,1639,235"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00281_a3963ea6eed2f1f6c64300890c0659d08_icgraph.png" border="0" usemap="#aa00281_a3963ea6eed2f1f6c64300890c0659d08_icgraph" alt=""/></div>
+<map name="aa00281_a3963ea6eed2f1f6c64300890c0659d08_icgraph" id="aa00281_a3963ea6eed2f1f6c64300890c0659d08_icgraph">
+<area shape="rect" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1924,157,2325,184"/>
+<area shape="rect" href="a00281.html#a21c40372bab50552db42be4fb417126d" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1577,157,1876,184"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="afc8b2ec369764d037b7d0015e28b5046"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc8b2ec369764d037b7d0015e28b5046">&#9670;&nbsp;</a></span>SetCollisionMesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Game.Map.Terrain.TerrainChunk.SetCollisionMesh </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -214,76 +398,152 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Generates <a class="el" href="a00182.html">MapElements</a> in the map (not mobs). </p>
-<dl class="section return"><dt>Returns</dt><dd>A list of the generated map elements.</dd></dl>
+<p>Sets the collision mesh in this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>. Requires at least 2 calls: request + set (after mesh has been returned by the thread). The calls should be done automatically thanks to the callback </p>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00080">80</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00249">249</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00281_a1a48a12fb8f507b91e5cddc5ceead414_cgraph.png" border="0" usemap="#aa00281_a1a48a12fb8f507b91e5cddc5ceead414_cgraph" alt=""/></div>
+<div class="center"><img src="a00281_afc8b2ec369764d037b7d0015e28b5046_cgraph.png" border="0" usemap="#aa00281_afc8b2ec369764d037b7d0015e28b5046_cgraph" alt=""/></div>
+<map name="aa00281_afc8b2ec369764d037b7d0015e28b5046_cgraph" id="aa00281_afc8b2ec369764d037b7d0015e28b5046_cgraph">
+<area shape="rect" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="5,157,376,184"/>
+<area shape="rect" href="a00285.html#a84c6b6666675bc04ac1222bbfb4c0e84" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="424,157,756,184"/>
+<area shape="rect" href="a00301.html#ac604c7f058b5e5269886290d0ad18303" title=" " alt="" coords="807,107,1253,133"/>
+<area shape="rect" href="a00285.html#a72d70bc9ef63f10ea74645a5be118916" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="840,157,1220,184"/>
+<area shape="rect" href="a00521.html#a3caa79b5b7e5b5bfaff430c50be58493" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="804,208,1256,235"/>
+<area shape="rect" href="a00313.html#a1eab1ae0df24584af42b5c1bab8f975a" title=" " alt="" coords="1365,5,1686,32"/>
+<area shape="rect" href="a00313.html#a774b53f5bdddd9e6a22e0c00399e3b00" title=" " alt="" coords="1368,56,1683,83"/>
+<area shape="rect" href="a00313.html#a044240bfb1626526d9ec86bc7550c216" title=" " alt="" coords="1360,107,1691,133"/>
+<area shape="rect" href="a00313.html#a6926ee431d8ad9aab35b8bf7df66b010" title=" " alt="" coords="1310,157,1741,184"/>
+<area shape="rect" href="a00313.html#a936c50147ff356bcbcffbb864287279c" title=" " alt="" coords="1839,81,2194,108"/>
+<area shape="rect" href="a00313.html#add9474110c7aa6e223c4945f88bc2a06" title=" " alt="" coords="1795,132,2239,159"/>
+<area shape="rect" href="a00313.html#ab375d77a4203c96787644c3c00aedb82" title=" " alt="" coords="2287,81,2696,108"/>
+<area shape="rect" href="a00521.html#afd54327ec9a38cb61f8762441966fbd1" title=" " alt="" coords="1304,208,1747,235"/>
+</map>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00281_afc8b2ec369764d037b7d0015e28b5046_icgraph.png" border="0" usemap="#aa00281_afc8b2ec369764d037b7d0015e28b5046_icgraph" alt=""/></div>
+<map name="aa00281_afc8b2ec369764d037b7d0015e28b5046_icgraph" id="aa00281_afc8b2ec369764d037b7d0015e28b5046_icgraph">
+<area shape="rect" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="2775,157,3145,184"/>
+<area shape="rect" href="a00281.html#a3bc34836e0f4046c7eb7aaa2a8525cd4" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="2379,157,2727,184"/>
+<area shape="rect" href="a00281.html#a3963ea6eed2f1f6c64300890c0659d08" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1929,132,2331,159"/>
+<area shape="rect" href="a00281.html#ab16f2542353fef283ab91e3c8a58ea97" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1577,183,1881,209"/>
+<area shape="rect" href="a00281.html#a21c40372bab50552db42be4fb417126d" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1580,132,1879,159"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
 </div>
 
 </div>
 </div>
-<a id="a18e802e7f43dbf236dc0b54d2420a56e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18e802e7f43dbf236dc0b54d2420a56e">&#9670;&nbsp;</a></span>GenerateMobs()</h2>
+<a id="a3cd4a963c2e3278881ea6be46e78115d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cd4a963c2e3278881ea6be46e78115d">&#9670;&nbsp;</a></span>SetMeshVisible()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;<a class="el" href="a00265.html">MapElement</a>&gt; Thoughts.Game.Map.MapManager.GenerateMobs </td>
+          <td class="memname">void Thoughts.Game.Map.Terrain.TerrainChunk.SetMeshVisible </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Generates Mobs in the map. </p>
-<dl class="section return"><dt>Returns</dt><dd>A list of the generated map elements (mobs).</dd></dl>
+<p>Sets a new state for the visibility of the Mesh </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>True if the new state is "visible", false if it is "not visible."</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00150">150</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00271">271</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
 <div class="dynheader">
-Here is the call graph for this function:</div>
+Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00281_a18e802e7f43dbf236dc0b54d2420a56e_cgraph.png" border="0" usemap="#aa00281_a18e802e7f43dbf236dc0b54d2420a56e_cgraph" alt=""/></div>
+<div class="center"><img src="a00281_a3cd4a963c2e3278881ea6be46e78115d_icgraph.png" border="0" usemap="#aa00281_a3cd4a963c2e3278881ea6be46e78115d_icgraph" alt=""/></div>
+<map name="aa00281_a3cd4a963c2e3278881ea6be46e78115d_icgraph" id="aa00281_a3cd4a963c2e3278881ea6be46e78115d_icgraph">
+<area shape="rect" title="Sets a new state for the visibility of the Mesh" alt="" coords="3196,157,3557,184"/>
+<area shape="rect" href="a00281.html#ab16f2542353fef283ab91e3c8a58ea97" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1973,132,2277,159"/>
+<area shape="rect" href="a00281.html#a25a03a79a26c461ff9492d1d00cb018c" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="2769,183,3148,209"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+<area shape="rect" href="a00281.html#a3bc34836e0f4046c7eb7aaa2a8525cd4" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="2373,183,2721,209"/>
+<area shape="rect" href="a00281.html#a3963ea6eed2f1f6c64300890c0659d08" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1924,183,2325,209"/>
+<area shape="rect" href="a00281.html#a21c40372bab50552db42be4fb417126d" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1577,183,1876,209"/>
+</map>
 </div>
 
 </div>
 </div>
-<a id="a2e182a6c8a343b6ec3af1114d7eb775c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e182a6c8a343b6ec3af1114d7eb775c">&#9670;&nbsp;</a></span>GetExecutionPlanToCover()</h2>
+<a id="ab16f2542353fef283ab91e3c8a58ea97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab16f2542353fef283ab91e3c8a58ea97">&#9670;&nbsp;</a></span>Setup()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00253.html">ExecutionPlan</a> Thoughts.Game.Map.MapManager.GetExecutionPlanToCover </td>
+          <td class="memname">void Thoughts.Game.Map.Terrain.TerrainChunk.Setup </td>
           <td>(</td>
-          <td class="paramtype">[NotNull] <a class="el" href="a00237.html">AttributeOwnership</a>&#160;</td>
-          <td class="paramname"><em>attributeOwnershipToCover</em>, </td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>coord</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00293.html">LODInfo</a>[]&#160;</td>
+          <td class="paramname"><em>detailLevels</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>valueToCover</em>, </td>
+          <td class="paramname"><em>colliderLODIndex</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00265.html">MapElement</a>&#160;</td>
-          <td class="paramname"><em>executer</em>&#160;</td>
+          <td class="paramtype">Transform&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Transform&#160;</td>
+          <td class="paramname"><em>viewer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00377.html">MapGenerator</a>&#160;</td>
+          <td class="paramname"><em>mapGenerator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Material&#160;</td>
+          <td class="paramname"><em>material</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -293,75 +553,155 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Look for all MapEvents available in the map that, as consequence of a MapEvent in an Attribute they own, they make a desired AttributeOwnership's value increase for the owner/executer/target (the needed participant). </p>
+<p>Stores all the needed data and sets up the managing of the LOD meshes </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">attributeOwnershipToCover</td><td>The AttributeOwnership to increase the value of.</td></tr>
-    <tr><td class="paramname">valueToCover</td><td>The amount of value needed to be covered (increased).</td></tr>
-    <tr><td class="paramname">executer</td><td><a class="el" href="a00181.html">Map</a> element that is going to execute the ExecutionPlan.</td></tr>
+    <tr><td class="paramname">coord</td><td>Coords of the chunk</td></tr>
+    <tr><td class="paramname">detailLevels</td><td>An ordered list containing the LOD with the information about which one should be used until which distance. The LOD "0", has the maximum level of detail. The last threshold/distance in the list will be considered as the maximum view distance from the viewer's perspective.</td></tr>
+    <tr><td class="paramname">colliderLODIndex</td><td>The LOD that the collider must use</td></tr>
+    <tr><td class="paramname">parent</td><td>The parent of this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>'s GameObject.</td></tr>
+    <tr><td class="paramname">viewer</td><td>A reference to the viewer (typically the player) of the map</td></tr>
+    <tr><td class="paramname">mapGenerator</td><td>Reference to the mapGenerator managing the generation of the map that contains this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>.</td></tr>
+    <tr><td class="paramname">material</td><td>The Material used in the meshRenderer to displays the visuals</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The Execution Plan needed to achieve the goal (to increase the value of the attributeToCover by valueToCover)</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00178">178</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00110">110</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00281_a2e182a6c8a343b6ec3af1114d7eb775c_cgraph.png" border="0" usemap="#aa00281_a2e182a6c8a343b6ec3af1114d7eb775c_cgraph" alt=""/></div>
+<div class="center"><img src="a00281_ab16f2542353fef283ab91e3c8a58ea97_cgraph.png" border="0" usemap="#aa00281_ab16f2542353fef283ab91e3c8a58ea97_cgraph" alt=""/></div>
+<map name="aa00281_ab16f2542353fef283ab91e3c8a58ea97_cgraph" id="aa00281_ab16f2542353fef283ab91e3c8a58ea97_cgraph">
+<area shape="rect" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="5,107,309,133"/>
+<area shape="rect" href="a00281.html#a3cd4a963c2e3278881ea6be46e78115d" title="Sets a new state for the visibility of the Mesh" alt="" coords="1180,95,1541,121"/>
+<area shape="rect" href="a00281.html#a3bc34836e0f4046c7eb7aaa2a8525cd4" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="357,132,705,159"/>
+<area shape="rect" href="a00281.html#afc8b2ec369764d037b7d0015e28b5046" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="757,183,1128,209"/>
+<area shape="rect" href="a00281.html#a25a03a79a26c461ff9492d1d00cb018c" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="753,132,1132,159"/>
+<area shape="rect" href="a00285.html#a84c6b6666675bc04ac1222bbfb4c0e84" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="1195,157,1527,184"/>
+<area shape="rect" href="a00301.html#ac604c7f058b5e5269886290d0ad18303" title=" " alt="" coords="1592,107,2039,133"/>
+<area shape="rect" href="a00285.html#a72d70bc9ef63f10ea74645a5be118916" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="1625,157,2005,184"/>
+<area shape="rect" href="a00521.html#a3caa79b5b7e5b5bfaff430c50be58493" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="1589,208,2041,235"/>
+<area shape="rect" href="a00313.html#a1eab1ae0df24584af42b5c1bab8f975a" title=" " alt="" coords="2150,5,2471,32"/>
+<area shape="rect" href="a00313.html#a774b53f5bdddd9e6a22e0c00399e3b00" title=" " alt="" coords="2153,56,2468,83"/>
+<area shape="rect" href="a00313.html#a044240bfb1626526d9ec86bc7550c216" title=" " alt="" coords="2145,107,2476,133"/>
+<area shape="rect" href="a00313.html#a6926ee431d8ad9aab35b8bf7df66b010" title=" " alt="" coords="2095,157,2526,184"/>
+<area shape="rect" href="a00313.html#a936c50147ff356bcbcffbb864287279c" title=" " alt="" coords="2625,81,2979,108"/>
+<area shape="rect" href="a00313.html#add9474110c7aa6e223c4945f88bc2a06" title=" " alt="" coords="2580,132,3024,159"/>
+<area shape="rect" href="a00313.html#ab375d77a4203c96787644c3c00aedb82" title=" " alt="" coords="3072,81,3481,108"/>
+<area shape="rect" href="a00521.html#afd54327ec9a38cb61f8762441966fbd1" title=" " alt="" coords="2089,208,2532,235"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00281_a2e182a6c8a343b6ec3af1114d7eb775c_icgraph.png" border="0" usemap="#aa00281_a2e182a6c8a343b6ec3af1114d7eb775c_icgraph" alt=""/></div>
+<div class="center"><img src="a00281_ab16f2542353fef283ab91e3c8a58ea97_icgraph.png" border="0" usemap="#aa00281_ab16f2542353fef283ab91e3c8a58ea97_icgraph" alt=""/></div>
+<map name="aa00281_ab16f2542353fef283ab91e3c8a58ea97_icgraph" id="aa00281_ab16f2542353fef283ab91e3c8a58ea97_icgraph">
+<area shape="rect" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1577,157,1881,184"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
 </div>
 
 </div>
 </div>
-<a id="a7604ae38e58b7f2083cb16d0ad0e3d13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7604ae38e58b7f2083cb16d0ad0e3d13">&#9670;&nbsp;</a></span>GetSpawnableGameObject()</h2>
+<a id="ac3af2add7de2e7d14c9d6e418c32f895"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3af2add7de2e7d14c9d6e418c32f895">&#9670;&nbsp;</a></span>ToString()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">GameObject Thoughts.Game.Map.MapManager.GetSpawnableGameObject </td>
+          <td class="memname">override string Thoughts.Game.Map.Terrain.TerrainChunk.ToString </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Obtains the GameObject with the given name from the spawnableMapElement list. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>The name of the GameObject.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The GameObject with a matching name from inside the spawnableMapElements list. Null if no object is found with the given name in the list.</dd></dl>
+<p>String representation of this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00063">63</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00240">240</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="a3bc34836e0f4046c7eb7aaa2a8525cd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bc34836e0f4046c7eb7aaa2a8525cd4">&#9670;&nbsp;</a></span>UpdateChunk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.Game.Map.Terrain.TerrainChunk.UpdateChunk </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Updates the visual mesh and tries to set the collision mesh if it has not been set before </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00184">184</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00281_a3bc34836e0f4046c7eb7aaa2a8525cd4_cgraph.png" border="0" usemap="#aa00281_a3bc34836e0f4046c7eb7aaa2a8525cd4_cgraph" alt=""/></div>
+<map name="aa00281_a3bc34836e0f4046c7eb7aaa2a8525cd4_cgraph" id="aa00281_a3bc34836e0f4046c7eb7aaa2a8525cd4_cgraph">
+<area shape="rect" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="5,183,353,209"/>
+<area shape="rect" href="a00281.html#afc8b2ec369764d037b7d0015e28b5046" title="Sets the collision mesh in this TerrainChunk. Requires at least 2 calls: request + set (after mesh ha..." alt="" coords="405,157,776,184"/>
+<area shape="rect" href="a00281.html#a25a03a79a26c461ff9492d1d00cb018c" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="401,208,780,235"/>
+<area shape="rect" href="a00285.html#a84c6b6666675bc04ac1222bbfb4c0e84" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="843,157,1175,184"/>
+<area shape="rect" href="a00301.html#ac604c7f058b5e5269886290d0ad18303" title=" " alt="" coords="1240,107,1687,133"/>
+<area shape="rect" href="a00285.html#a72d70bc9ef63f10ea74645a5be118916" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="1273,157,1653,184"/>
+<area shape="rect" href="a00521.html#a3caa79b5b7e5b5bfaff430c50be58493" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="1237,208,1689,235"/>
+<area shape="rect" href="a00313.html#a1eab1ae0df24584af42b5c1bab8f975a" title=" " alt="" coords="1798,5,2119,32"/>
+<area shape="rect" href="a00313.html#a774b53f5bdddd9e6a22e0c00399e3b00" title=" " alt="" coords="1801,56,2116,83"/>
+<area shape="rect" href="a00313.html#a044240bfb1626526d9ec86bc7550c216" title=" " alt="" coords="1793,107,2124,133"/>
+<area shape="rect" href="a00313.html#a6926ee431d8ad9aab35b8bf7df66b010" title=" " alt="" coords="1743,157,2174,184"/>
+<area shape="rect" href="a00313.html#a936c50147ff356bcbcffbb864287279c" title=" " alt="" coords="2273,81,2627,108"/>
+<area shape="rect" href="a00313.html#add9474110c7aa6e223c4945f88bc2a06" title=" " alt="" coords="2228,132,2672,159"/>
+<area shape="rect" href="a00313.html#ab375d77a4203c96787644c3c00aedb82" title=" " alt="" coords="2720,81,3129,108"/>
+<area shape="rect" href="a00521.html#afd54327ec9a38cb61f8762441966fbd1" title=" " alt="" coords="1737,208,2180,235"/>
+<area shape="rect" href="a00281.html#a3cd4a963c2e3278881ea6be46e78115d" title="Sets a new state for the visibility of the Mesh" alt="" coords="828,208,1189,235"/>
+</map>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00281_a7604ae38e58b7f2083cb16d0ad0e3d13_icgraph.png" border="0" usemap="#aa00281_a7604ae38e58b7f2083cb16d0ad0e3d13_icgraph" alt=""/></div>
+<div class="center"><img src="a00281_a3bc34836e0f4046c7eb7aaa2a8525cd4_icgraph.png" border="0" usemap="#aa00281_a3bc34836e0f4046c7eb7aaa2a8525cd4_icgraph" alt=""/></div>
+<map name="aa00281_a3bc34836e0f4046c7eb7aaa2a8525cd4_icgraph" id="aa00281_a3bc34836e0f4046c7eb7aaa2a8525cd4_icgraph">
+<area shape="rect" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="2379,157,2727,184"/>
+<area shape="rect" href="a00281.html#a3963ea6eed2f1f6c64300890c0659d08" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1929,132,2331,159"/>
+<area shape="rect" href="a00281.html#ab16f2542353fef283ab91e3c8a58ea97" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1577,183,1881,209"/>
+<area shape="rect" href="a00281.html#a21c40372bab50552db42be4fb417126d" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1580,132,1879,159"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
 </div>
 
 </div>
 </div>
-<a id="a182223b438b1ba71394dafa409c531a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a182223b438b1ba71394dafa409c531a7">&#9670;&nbsp;</a></span>SetupNewNavMeshes()</h2>
+<a id="a25a03a79a26c461ff9492d1d00cb018c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25a03a79a26c461ff9492d1d00cb018c">&#9670;&nbsp;</a></span>UpdateVisualMesh()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -370,7 +710,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Thoughts.Game.Map.MapManager.SetupNewNavMeshes </td>
+          <td class="memname">void Thoughts.Game.Map.Terrain.TerrainChunk.UpdateVisualMesh </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -383,141 +723,58 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Sets up the NavMesh for all the NavMeshAgents in the spawnableMapElement list. </p>
+<p>Updates the LOD and visibility of the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00118">118</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
-
-</div>
-</div>
-<a id="a82177c572c5e9d3a1eb915e1605d35ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82177c572c5e9d3a1eb915e1605d35ea">&#9670;&nbsp;</a></span>SpawnMapElement()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00265.html">MapElement</a> Thoughts.Game.Map.MapManager.SpawnMapElement </td>
-          <td>(</td>
-          <td class="paramtype">GameObject&#160;</td>
-          <td class="paramname"><em>spawnableGameObject</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Vector3&#160;</td>
-          <td class="paramname"><em>position</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Quaternion&#160;</td>
-          <td class="paramname"><em>rotation</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Makes a map element spawn. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">spawnableGameObject</td><td>The map element's prefab to spawn</td></tr>
-    <tr><td class="paramname">position</td><td>Position for the new object.</td></tr>
-    <tr><td class="paramname">rotation</td><td>Orientation of the new object.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00052">52</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00281_a82177c572c5e9d3a1eb915e1605d35ea_icgraph.png" border="0" usemap="#aa00281_a82177c572c5e9d3a1eb915e1605d35ea_icgraph" alt=""/></div>
-</div>
-
-</div>
-</div>
-<a id="a58c26077f3c34c93dcce40fa5be57183"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58c26077f3c34c93dcce40fa5be57183">&#9670;&nbsp;</a></span>SpawnRandom()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;<a class="el" href="a00265.html">MapElement</a>&gt; Thoughts.Game.Map.MapManager.SpawnRandom </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>prefabName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>quantity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">RandomEssentials&#160;</td>
-          <td class="paramname"><em>random</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Randomly generates the MapElement with the given name a determined amount of times. </p>
-<p>The MapElement's prefab is obtained from the spawnableMapElement list.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">prefabName</td><td>The name of the GameObject to generate.</td></tr>
-    <tr><td class="paramname">quantity</td><td>The amount of GameObjects to generate.</td></tr>
-    <tr><td class="paramname">random</td><td>Random object to be used in the process.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00102">102</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00204">204</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00281_a58c26077f3c34c93dcce40fa5be57183_cgraph.png" border="0" usemap="#aa00281_a58c26077f3c34c93dcce40fa5be57183_cgraph" alt=""/></div>
+<div class="center"><img src="a00281_a25a03a79a26c461ff9492d1d00cb018c_cgraph.png" border="0" usemap="#aa00281_a25a03a79a26c461ff9492d1d00cb018c_cgraph" alt=""/></div>
+<map name="aa00281_a25a03a79a26c461ff9492d1d00cb018c_cgraph" id="aa00281_a25a03a79a26c461ff9492d1d00cb018c_cgraph">
+<area shape="rect" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="5,183,384,209"/>
+<area shape="rect" href="a00285.html#a84c6b6666675bc04ac1222bbfb4c0e84" title="Requests data to automatically create and store a Mesh in this LODMesh object." alt="" coords="447,157,779,184"/>
+<area shape="rect" href="a00281.html#a3cd4a963c2e3278881ea6be46e78115d" title="Sets a new state for the visibility of the Mesh" alt="" coords="432,208,793,235"/>
+<area shape="rect" href="a00301.html#ac604c7f058b5e5269886290d0ad18303" title=" " alt="" coords="844,107,1291,133"/>
+<area shape="rect" href="a00285.html#a72d70bc9ef63f10ea74645a5be118916" title="Creates and stores a mesh from a MeshData object. This is automatically called once the MeshData is r..." alt="" coords="877,157,1257,184"/>
+<area shape="rect" href="a00521.html#a3caa79b5b7e5b5bfaff430c50be58493" title="Requests to a thread to execute the given method to obtain desired data and, once the logic is comple..." alt="" coords="841,208,1293,235"/>
+<area shape="rect" href="a00313.html#a1eab1ae0df24584af42b5c1bab8f975a" title=" " alt="" coords="1402,5,1723,32"/>
+<area shape="rect" href="a00313.html#a774b53f5bdddd9e6a22e0c00399e3b00" title=" " alt="" coords="1405,56,1720,83"/>
+<area shape="rect" href="a00313.html#a044240bfb1626526d9ec86bc7550c216" title=" " alt="" coords="1397,107,1728,133"/>
+<area shape="rect" href="a00313.html#a6926ee431d8ad9aab35b8bf7df66b010" title=" " alt="" coords="1347,157,1778,184"/>
+<area shape="rect" href="a00313.html#a936c50147ff356bcbcffbb864287279c" title=" " alt="" coords="1877,81,2231,108"/>
+<area shape="rect" href="a00313.html#add9474110c7aa6e223c4945f88bc2a06" title=" " alt="" coords="1832,132,2276,159"/>
+<area shape="rect" href="a00313.html#ab375d77a4203c96787644c3c00aedb82" title=" " alt="" coords="2324,81,2733,108"/>
+<area shape="rect" href="a00521.html#afd54327ec9a38cb61f8762441966fbd1" title=" " alt="" coords="1341,208,1784,235"/>
+</map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00281_a58c26077f3c34c93dcce40fa5be57183_icgraph.png" border="0" usemap="#aa00281_a58c26077f3c34c93dcce40fa5be57183_icgraph" alt=""/></div>
+<div class="center"><img src="a00281_a25a03a79a26c461ff9492d1d00cb018c_icgraph.png" border="0" usemap="#aa00281_a25a03a79a26c461ff9492d1d00cb018c_icgraph" alt=""/></div>
+<map name="aa00281_a25a03a79a26c461ff9492d1d00cb018c_icgraph" id="aa00281_a25a03a79a26c461ff9492d1d00cb018c_icgraph">
+<area shape="rect" title="Updates the LOD and visibility of the TerrainChunk" alt="" coords="2775,157,3153,184"/>
+<area shape="rect" href="a00281.html#a3bc34836e0f4046c7eb7aaa2a8525cd4" title="Updates the visual mesh and tries to set the collision mesh if it has not been set before" alt="" coords="2379,157,2727,184"/>
+<area shape="rect" href="a00281.html#a3963ea6eed2f1f6c64300890c0659d08" title="Saves the HeightMap received and updates the TerrainChunk" alt="" coords="1929,132,2331,159"/>
+<area shape="rect" href="a00281.html#ab16f2542353fef283ab91e3c8a58ea97" title="Stores all the needed data and sets up the managing of the LOD meshes" alt="" coords="1577,183,1881,209"/>
+<area shape="rect" href="a00281.html#a21c40372bab50552db42be4fb417126d" title="Starts the process of loading and displaying this TerrainChunk" alt="" coords="1580,132,1879,159"/>
+<area shape="rect" href="a00289.html#a0aed29dfb5a52c6524a481dff00c11ef" title="Updates the TerrainChunks by creating it (if missing) or updating its visuals." alt="" coords="1155,157,1529,184"/>
+<area shape="rect" href="a00377.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="792,132,1091,159"/>
+<area shape="rect" href="a00289.html#a573677fc0dc69b1a5c2043df5776de2e" title="Sends the order to update the TerrainChunk if the viewer has moved a distance bigger than the configu..." alt="" coords="776,183,1107,209"/>
+<area shape="rect" href="a00377.html#abcaeeda50268cf9bf9f090bfa8454f23" title=" " alt="" coords="351,5,728,32"/>
+<area shape="rect" href="a00377.html#a7c76c1f901403511f44a7c7f5f00fd8f" title=" " alt="" coords="357,56,721,83"/>
+<area shape="rect" href="a00377.html#a152c41b37f29da66abd44a6a0ca7f3ce" title=" " alt="" coords="352,107,727,133"/>
+<area shape="rect" href="a00377.html#aa7afb449beaee01ede5093953a4d5a05" title=" " alt="" coords="376,157,703,184"/>
+<area shape="rect" href="a00377.html#a41186dc489a52293c46974f2176edbdd" title=" " alt="" coords="375,208,704,235"/>
+<area shape="rect" href="a00377.html#a168ba8a779bd52e53d48224795610807" title=" " alt="" coords="359,259,720,285"/>
+<area shape="rect" href="a00377.html#ac780ea885aa746aecaca5341087585ed" title=" " alt="" coords="5,132,303,159"/>
+</map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aaf8f12a9476b836e040f0f9f2c3dcb23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf8f12a9476b836e040f0f9f2c3dcb23">&#9670;&nbsp;</a></span>mapElements</h2>
+<a id="ac45802324e24c8b8fa665b702f4cd47e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac45802324e24c8b8fa665b702f4cd47e">&#9670;&nbsp;</a></span>bounds</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -526,7 +783,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;<a class="el" href="a00265.html">MapElement</a>&gt; Thoughts.Game.Map.MapManager.mapElements = new List&lt;<a class="el" href="a00265.html">MapElement</a>&gt;()</td>
+          <td class="memname">Bounds Thoughts.Game.Map.Terrain.TerrainChunk.bounds</td>
         </tr>
       </table>
   </td>
@@ -536,14 +793,14 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>All the map elements present in the map. </p>
+<p>The bounds of the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> in the map </p>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00022">22</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00030">30</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
 
 </div>
 </div>
-<a id="ac2920711d4fa30aa333f75d76582ce0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2920711d4fa30aa333f75d76582ce0a">&#9670;&nbsp;</a></span>mapGenerator</h2>
+<a id="aab16fdd2e1b0ef97df6b4f206c85daa3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab16fdd2e1b0ef97df6b4f206c85daa3">&#9670;&nbsp;</a></span>colliderLODIndex</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -552,7 +809,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00277.html">MapGenerator</a> Thoughts.Game.Map.MapManager.mapGenerator</td>
+          <td class="memname">int Thoughts.Game.Map.Terrain.TerrainChunk.colliderLODIndex</td>
         </tr>
       </table>
   </td>
@@ -562,14 +819,14 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Reference to the <a class="el" href="a00277.html" title="Component in charge of generating a Map">MapGenerator</a> component </p>
+<p>The LOD that the collider must use </p>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00028">28</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00063">63</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
 
 </div>
 </div>
-<a id="aed6e9c6f9cd698c7ed183607b155ba47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed6e9c6f9cd698c7ed183607b155ba47">&#9670;&nbsp;</a></span>spawnableMapElements</h2>
+<a id="a31d0d959397c28bd3ccb6108ae551685"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31d0d959397c28bd3ccb6108ae551685">&#9670;&nbsp;</a></span>coord</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -578,7 +835,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">List&lt;GameObject&gt; Thoughts.Game.Map.MapManager.spawnableMapElements</td>
+          <td class="memname">Vector2 Thoughts.Game.Map.Terrain.TerrainChunk.coord</td>
         </tr>
       </table>
   </td>
@@ -588,14 +845,403 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>All the map elements' prefabs that can be spawned in the map. </p>
+<p>Coords of the chunk </p>
 
-<p class="definition">Definition at line <a class="el" href="a00050_source.html#l00035">35</a> of file <a class="el" href="a00050_source.html">MapManager.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00017">17</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="a10cdfec03dab50bfb19c61accbbaf053"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10cdfec03dab50bfb19c61accbbaf053">&#9670;&nbsp;</a></span>detailLevels</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00293.html">LODInfo</a> [] Thoughts.Game.Map.Terrain.TerrainChunk.detailLevels</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>An ordered list containing the LOD with the information about which one should be used until which distance. The LOD "0", has the maximum level of detail. The last threshold/distance in the list will be considered as the maximum view distance from the viewer's perspective. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00053">53</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="a4dc0d957fb5b51d888641e1c01f0fa9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dc0d957fb5b51d888641e1c01f0fa9e">&#9670;&nbsp;</a></span>hasSetCollider</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Thoughts.Game.Map.Terrain.TerrainChunk.hasSetCollider</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Has the collier been set in this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00083">83</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="a8745503528c9444559d5549dfd314f95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8745503528c9444559d5549dfd314f95">&#9670;&nbsp;</a></span>heightMap</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00277.html">HeightMap</a> Thoughts.Game.Map.Terrain.TerrainChunk.heightMap</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> of this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00068">68</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="a9b0f5a98bf8d1b289da243dd182113e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b0f5a98bf8d1b289da243dd182113e2">&#9670;&nbsp;</a></span>heightMapReceived</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Thoughts.Game.Map.Terrain.TerrainChunk.heightMapReceived = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If the data of the <a class="el" href="a00277.html" title="Contains values relative to the height of a terrain">HeightMap</a> has been recieved or not. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00073">73</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="a04745c6bf21f76736f8f9cb0a802b72d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04745c6bf21f76736f8f9cb0a802b72d">&#9670;&nbsp;</a></span>lodMeshes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00285.html">LODMesh</a> [] Thoughts.Game.Map.Terrain.TerrainChunk.lodMeshes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A list of meshes meant to be used with an specified LOD </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00058">58</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="acc63c9d97a38a4cd6748b109cb89ff24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc63c9d97a38a4cd6748b109cb89ff24">&#9670;&nbsp;</a></span>mapGenerator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00377.html">MapGenerator</a> Thoughts.Game.Map.Terrain.TerrainChunk.mapGenerator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference to the mapGenerator managing the generation of the map that contains this <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00048">48</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="afc640a4d26cf4bec2bf4659519e1e3f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc640a4d26cf4bec2bf4659519e1e3f5">&#9670;&nbsp;</a></span>meshCollider</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">MeshCollider Thoughts.Game.Map.Terrain.TerrainChunk.meshCollider</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference to the MeshCollider used for the collisions </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00043">43</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="ab2c43a93566af71e881ee12dcd0cd16d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2c43a93566af71e881ee12dcd0cd16d">&#9670;&nbsp;</a></span>meshFilter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">MeshFilter Thoughts.Game.Map.Terrain.TerrainChunk.meshFilter</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference to the MeshFilter used for the visuals </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00039">39</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="add03ec9deb7d6367d3c9881af5b190d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add03ec9deb7d6367d3c9881af5b190d7">&#9670;&nbsp;</a></span>meshRenderer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">MeshRenderer Thoughts.Game.Map.Terrain.TerrainChunk.meshRenderer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference to the meshRenderer used for the visuals </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00035">35</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="a82c5761327e7b11594ee0decfd95c7a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82c5761327e7b11594ee0decfd95c7a4">&#9670;&nbsp;</a></span>previousLODIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Thoughts.Game.Map.Terrain.TerrainChunk.previousLODIndex = -1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The last LOD used for the latest visuals of the terrain </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00078">78</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="ad9a50a16edbceaeb0894020cf3a0a3e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9a50a16edbceaeb0894020cf3a0a3e2">&#9670;&nbsp;</a></span>sampleCenter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector2 Thoughts.Game.Map.Terrain.TerrainChunk.sampleCenter</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00020">20</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="a5ff53369d2f244063359c8c908311c0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ff53369d2f244063359c8c908311c0d">&#9670;&nbsp;</a></span>viewer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Transform Thoughts.Game.Map.Terrain.TerrainChunk.viewer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A reference to the viewer (typically the player) of the map </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00088">88</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="a333fc8a0e5d248ce958b6acf175f8edc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a333fc8a0e5d248ce958b6acf175f8edc">&#9670;&nbsp;</a></span>visualMeshObject</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">GameObject Thoughts.Game.Map.Terrain.TerrainChunk.visualMeshObject</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reference to the object containing the visual mesh of the <a class="el" href="a00281.html" title="Manager of a chunk of the terrain of the map">TerrainChunk</a> </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00025">25</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a7849f390fb8f4899fbe2041eaed3a54e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7849f390fb8f4899fbe2041eaed3a54e">&#9670;&nbsp;</a></span>maxViewDistance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Thoughts.Game.Map.Terrain.TerrainChunk.maxViewDistance</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The maximum distance at which the TerrainChunks should be visible </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00093">93</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
+
+</div>
+</div>
+<a id="aae1bf5a4ac76a344327a8df037be47e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae1bf5a4ac76a344327a8df037be47e3">&#9670;&nbsp;</a></span>viewerPosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector2 Thoughts.Game.Map.Terrain.TerrainChunk.viewerPosition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The current position of the viewer </p>
+
+<p class="definition">Definition at line <a class="el" href="a00029_source.html#l00098">98</a> of file <a class="el" href="a00029_source.html">TerrainChunk.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00050_source.html">MapManager.cs</a></li>
+<li><a class="el" href="a00029_source.html">TerrainChunk.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

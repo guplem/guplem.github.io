@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.Map.MapElements.Attributes.Consequence Class Reference</title>
+<title>TS20-Thoughts: Thoughts.AppManager Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,150 +61,275 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00179.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00180.html">Game</a></li><li class="navelem"><a class="el" href="a00181.html">Map</a></li><li class="navelem"><a class="el" href="a00182.html">MapElements</a></li><li class="navelem"><a class="el" href="a00183.html">Attributes</a></li><li class="navelem"><a class="el" href="a00245.html">Consequence</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00203.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00245.html">AppManager</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00242.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.Map.MapElements.Attributes.Consequence Class Reference</div>  </div>
+<div class="title">Thoughts.AppManager Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="a00245.html" title="Consequence of the execution of a MapEvent">Consequence</a> of the execution of a MapEvent  
+<p>Object that must be kept always alive while running the app. It initializes the game process and keeps track of the current GameManager.  
  <a href="a00245.html#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Thoughts.Game.Map.MapElements.Attributes.Consequence:</div>
+Collaboration diagram for Thoughts.AppManager:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00243.png" border="0" usemap="#aThoughts_8Game_8Map_8MapElements_8Attributes_8Consequence_coll__map" alt="Collaboration graph"/></div>
+<div class="center"><img src="a00243.png" border="0" usemap="#aThoughts_8AppManager_coll__map" alt="Collaboration graph"/></div>
+<map name="aThoughts_8AppManager_coll__map" id="aThoughts_8AppManager_coll__map">
+<area shape="rect" title="Object that must be kept always alive while running the app. It initializes the game process and keep..." alt="" coords="6,331,158,452"/>
+<area shape="rect" title=" " alt="" coords="5,161,116,239"/>
+<area shape="rect" href="a00493.html" title="A wrapper that provides the means to safely serialize Scene Asset References." alt="" coords="141,132,402,268"/>
+<area shape="rect" title=" " alt="" coords="174,5,369,83"/>
+</map>
 </div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:aa6b5d144af55702836a82bf7e1538b77"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#aa6b5d144af55702836a82bf7e1538b77">ToString</a> ()</td></tr>
-<tr class="memdesc:aa6b5d144af55702836a82bf7e1538b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string that represents the current object.  <a href="a00245.html#aa6b5d144af55702836a82bf7e1538b77">More...</a><br /></td></tr>
-<tr class="separator:aa6b5d144af55702836a82bf7e1538b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:abdaa9a67d31da294cb6a85381ca8b72d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00245.html">AppManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#abdaa9a67d31da294cb6a85381ca8b72d">instance</a><code> [get, private set]</code></td></tr>
+<tr class="memdesc:abdaa9a67d31da294cb6a85381ca8b72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The singleton reference to this class  <a href="a00245.html#abdaa9a67d31da294cb6a85381ca8b72d">More...</a><br /></td></tr>
+<tr class="separator:abdaa9a67d31da294cb6a85381ca8b72d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a685f33d1b91089a65895b80c3bb18eb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00233.html">Attribute</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#a685f33d1b91089a65895b80c3bb18eb8">attribute</a></td></tr>
-<tr class="memdesc:a685f33d1b91089a65895b80c3bb18eb8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="a00233.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a> that will be updated as a consequence of the execution of the MapEvent  <a href="a00245.html#a685f33d1b91089a65895b80c3bb18eb8">More...</a><br /></td></tr>
-<tr class="separator:a685f33d1b91089a65895b80c3bb18eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a868d12cb334e02ac4c5e562a3d58d31f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#a868d12cb334e02ac4c5e562a3d58d31f">deltaValue</a> = 1</td></tr>
-<tr class="memdesc:a868d12cb334e02ac4c5e562a3d58d31f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The difference to apply to the attribute's value of this consequence. Can be positive and negative  <a href="a00245.html#a868d12cb334e02ac4c5e562a3d58d31f">More...</a><br /></td></tr>
-<tr class="separator:a868d12cb334e02ac4c5e562a3d58d31f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a308e992b9c181e019efcdea5dc5da725"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00184.html#a97ca97e6048f34b72287a435da258c44">AffectedMapElement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#a308e992b9c181e019efcdea5dc5da725">affectedMapElement</a> = AffectedMapElement.eventOwner</td></tr>
-<tr class="memdesc:a308e992b9c181e019efcdea5dc5da725"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that will get the effects of this consequence  <a href="a00245.html#a308e992b9c181e019efcdea5dc5da725">More...</a><br /></td></tr>
-<tr class="separator:a308e992b9c181e019efcdea5dc5da725"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac503ab11e7b8fb7c61b3c587163e1db6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00249.html">StateUpdate</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#ac503ab11e7b8fb7c61b3c587163e1db6">stateUpdate</a></td></tr>
-<tr class="memdesc:ac503ab11e7b8fb7c61b3c587163e1db6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The new State and duration of it for the affected <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a>  <a href="a00245.html#ac503ab11e7b8fb7c61b3c587163e1db6">More...</a><br /></td></tr>
-<tr class="separator:ac503ab11e7b8fb7c61b3c587163e1db6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a4cdaadd22e5c3f4136991f02afe33298"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#a4cdaadd22e5c3f4136991f02afe33298">Awake</a> ()</td></tr>
+<tr class="memdesc:a4cdaadd22e5c3f4136991f02afe33298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to set up this <a class="el" href="a00245.html" title="Object that must be kept always alive while running the app. It initializes the game process and keep...">AppManager</a> instance as singleton instance. If possible, marks the GameObject containing this MonoBehaviour as DontDestroyOnLoad.  <a href="a00245.html#a4cdaadd22e5c3f4136991f02afe33298">More...</a><br /></td></tr>
+<tr class="separator:a4cdaadd22e5c3f4136991f02afe33298"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bb22cc2b3cc5aa16c793157c0bef3b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#a0bb22cc2b3cc5aa16c793157c0bef3b1">Start</a> ()</td></tr>
+<tr class="memdesc:a0bb22cc2b3cc5aa16c793157c0bef3b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers the start of a new game.  <a href="a00245.html#a0bb22cc2b3cc5aa16c793157c0bef3b1">More...</a><br /></td></tr>
+<tr class="separator:a0bb22cc2b3cc5aa16c793157c0bef3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f1cf13d1debe8f7974e2e39ae621533"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#a0f1cf13d1debe8f7974e2e39ae621533">InitializeSingleton</a> ()</td></tr>
+<tr class="memdesc:a0f1cf13d1debe8f7974e2e39ae621533"><td class="mdescLeft">&#160;</td><td class="mdescRight">If there is no other instance set as singleton of an <a class="el" href="a00245.html" title="Object that must be kept always alive while running the app. It initializes the game process and keep...">AppManager</a>, this is set as it. Being the only one following the Singleton pattern.  <a href="a00245.html#a0f1cf13d1debe8f7974e2e39ae621533">More...</a><br /></td></tr>
+<tr class="separator:a0f1cf13d1debe8f7974e2e39ae621533"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6b4098e23afcb973848216e995e00ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#aa6b4098e23afcb973848216e995e00ae">StartNewGame</a> ()</td></tr>
+<tr class="memdesc:aa6b4098e23afcb973848216e995e00ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a new game by loading the <a class="el" href="a00204.html">Game</a> scene.  <a href="a00245.html#aa6b4098e23afcb973848216e995e00ae">More...</a><br /></td></tr>
+<tr class="separator:aa6b4098e23afcb973848216e995e00ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a1c80a56857359092212ae67363b749a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00493.html">SceneReference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00245.html#a1c80a56857359092212ae67363b749a7">gameScene</a></td></tr>
+<tr class="memdesc:a1c80a56857359092212ae67363b749a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the scene containing the basic elements of the game  <a href="a00245.html#a1c80a56857359092212ae67363b749a7">More...</a><br /></td></tr>
+<tr class="separator:a1c80a56857359092212ae67363b749a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="a00245.html" title="Consequence of the execution of a MapEvent">Consequence</a> of the execution of a MapEvent </p>
+<div class="textblock"><p>Object that must be kept always alive while running the app. It initializes the game process and keeps track of the current GameManager. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00020_source.html#l00012">12</a> of file <a class="el" href="a00020_source.html">Consequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00010">10</a> of file <a class="el" href="a00002_source.html">AppManager.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa6b5d144af55702836a82bf7e1538b77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6b5d144af55702836a82bf7e1538b77">&#9670;&nbsp;</a></span>ToString()</h2>
+<a id="a4cdaadd22e5c3f4136991f02afe33298"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cdaadd22e5c3f4136991f02afe33298">&#9670;&nbsp;</a></span>Awake()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override string Thoughts.Game.Map.MapElements.Attributes.Consequence.ToString </td>
+          <td class="memname">void Thoughts.AppManager.Awake </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Returns a string that represents the current object. </p>
-<dl class="section return"><dt>Returns</dt><dd>A string that represents the current object.</dd></dl>
+<p>Tries to set up this <a class="el" href="a00245.html" title="Object that must be kept always alive while running the app. It initializes the game process and keep...">AppManager</a> instance as singleton instance. If possible, marks the GameObject containing this MonoBehaviour as DontDestroyOnLoad. </p>
 
-<p class="definition">Definition at line <a class="el" href="a00020_source.html#l00043">43</a> of file <a class="el" href="a00020_source.html">Consequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00025">25</a> of file <a class="el" href="a00002_source.html">AppManager.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00245_a4cdaadd22e5c3f4136991f02afe33298_cgraph.png" border="0" usemap="#aa00245_a4cdaadd22e5c3f4136991f02afe33298_cgraph" alt=""/></div>
+<map name="aa00245_a4cdaadd22e5c3f4136991f02afe33298_cgraph" id="aa00245_a4cdaadd22e5c3f4136991f02afe33298_cgraph">
+<area shape="rect" title="Tries to set up this AppManager instance as singleton instance. If possible, marks the GameObject con..." alt="" coords="5,5,200,32"/>
+<area shape="rect" href="a00245.html#a0f1cf13d1debe8f7974e2e39ae621533" title="If there is no other instance set as singleton of an AppManager, this is set as it...." alt="" coords="248,5,505,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a0f1cf13d1debe8f7974e2e39ae621533"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f1cf13d1debe8f7974e2e39ae621533">&#9670;&nbsp;</a></span>InitializeSingleton()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Thoughts.AppManager.InitializeSingleton </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If there is no other instance set as singleton of an <a class="el" href="a00245.html" title="Object that must be kept always alive while running the app. It initializes the game process and keep...">AppManager</a>, this is set as it. Being the only one following the Singleton pattern. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if it became the singleton instance, false if another <a class="el" href="a00245.html" title="Object that must be kept always alive while running the app. It initializes the game process and keep...">AppManager</a> set up as the singleton instance already exists.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00043">43</a> of file <a class="el" href="a00002_source.html">AppManager.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00245_a0f1cf13d1debe8f7974e2e39ae621533_icgraph.png" border="0" usemap="#aa00245_a0f1cf13d1debe8f7974e2e39ae621533_icgraph" alt=""/></div>
+<map name="aa00245_a0f1cf13d1debe8f7974e2e39ae621533_icgraph" id="aa00245_a0f1cf13d1debe8f7974e2e39ae621533_icgraph">
+<area shape="rect" title="If there is no other instance set as singleton of an AppManager, this is set as it...." alt="" coords="248,5,505,32"/>
+<area shape="rect" href="a00245.html#a4cdaadd22e5c3f4136991f02afe33298" title="Tries to set up this AppManager instance as singleton instance. If possible, marks the GameObject con..." alt="" coords="5,5,200,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a0bb22cc2b3cc5aa16c793157c0bef3b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bb22cc2b3cc5aa16c793157c0bef3b1">&#9670;&nbsp;</a></span>Start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.AppManager.Start </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Triggers the start of a new game. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00034">34</a> of file <a class="el" href="a00002_source.html">AppManager.cs</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00245_a0bb22cc2b3cc5aa16c793157c0bef3b1_cgraph.png" border="0" usemap="#aa00245_a0bb22cc2b3cc5aa16c793157c0bef3b1_cgraph" alt=""/></div>
+<map name="aa00245_a0bb22cc2b3cc5aa16c793157c0bef3b1_cgraph" id="aa00245_a0bb22cc2b3cc5aa16c793157c0bef3b1_cgraph">
+<area shape="rect" title="Triggers the start of a new game." alt="" coords="5,5,189,32"/>
+<area shape="rect" href="a00245.html#aa6b4098e23afcb973848216e995e00ae" title="Starts a new game by loading the Game scene." alt="" coords="237,5,481,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aa6b4098e23afcb973848216e995e00ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6b4098e23afcb973848216e995e00ae">&#9670;&nbsp;</a></span>StartNewGame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Thoughts.AppManager.StartNewGame </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Starts a new game by loading the <a class="el" href="a00204.html">Game</a> scene. </p>
+
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00059">59</a> of file <a class="el" href="a00002_source.html">AppManager.cs</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00245_aa6b4098e23afcb973848216e995e00ae_icgraph.png" border="0" usemap="#aa00245_aa6b4098e23afcb973848216e995e00ae_icgraph" alt=""/></div>
+<map name="aa00245_aa6b4098e23afcb973848216e995e00ae_icgraph" id="aa00245_aa6b4098e23afcb973848216e995e00ae_icgraph">
+<area shape="rect" title="Starts a new game by loading the Game scene." alt="" coords="237,5,481,32"/>
+<area shape="rect" href="a00245.html#a0bb22cc2b3cc5aa16c793157c0bef3b1" title="Triggers the start of a new game." alt="" coords="5,5,189,32"/>
+</map>
+</div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a308e992b9c181e019efcdea5dc5da725"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a308e992b9c181e019efcdea5dc5da725">&#9670;&nbsp;</a></span>affectedMapElement</h2>
+<a id="a1c80a56857359092212ae67363b749a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c80a56857359092212ae67363b749a7">&#9670;&nbsp;</a></span>gameScene</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00184.html#a97ca97e6048f34b72287a435da258c44">AffectedMapElement</a> Thoughts.Game.Map.MapElements.Attributes.Consequence.affectedMapElement = AffectedMapElement.eventOwner</td>
+          <td class="memname"><a class="el" href="a00493.html">SceneReference</a> Thoughts.AppManager.gameScene</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>The <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> that will get the effects of this consequence </p>
+<p>Reference to the scene containing the basic elements of the game </p>
 
-<p class="definition">Definition at line <a class="el" href="a00020_source.html#l00031">31</a> of file <a class="el" href="a00020_source.html">Consequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00020">20</a> of file <a class="el" href="a00002_source.html">AppManager.cs</a>.</p>
 
 </div>
 </div>
-<a id="a685f33d1b91089a65895b80c3bb18eb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a685f33d1b91089a65895b80c3bb18eb8">&#9670;&nbsp;</a></span>attribute</h2>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="abdaa9a67d31da294cb6a85381ca8b72d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdaa9a67d31da294cb6a85381ca8b72d">&#9670;&nbsp;</a></span>instance</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00233.html">Attribute</a> Thoughts.Game.Map.MapElements.Attributes.Consequence.attribute</td>
+          <td class="memname"><a class="el" href="a00245.html">AppManager</a> Thoughts.AppManager.instance</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p><a class="el" href="a00233.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a> that will be updated as a consequence of the execution of the MapEvent </p>
+<p>The singleton reference to this class </p>
 
-<p class="definition">Definition at line <a class="el" href="a00020_source.html#l00018">18</a> of file <a class="el" href="a00020_source.html">Consequence.cs</a>.</p>
-
-</div>
-</div>
-<a id="a868d12cb334e02ac4c5e562a3d58d31f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a868d12cb334e02ac4c5e562a3d58d31f">&#9670;&nbsp;</a></span>deltaValue</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Thoughts.Game.Map.MapElements.Attributes.Consequence.deltaValue = 1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The difference to apply to the attribute's value of this consequence. Can be positive and negative </p>
-
-<p class="definition">Definition at line <a class="el" href="a00020_source.html#l00025">25</a> of file <a class="el" href="a00020_source.html">Consequence.cs</a>.</p>
-
-</div>
-</div>
-<a id="ac503ab11e7b8fb7c61b3c587163e1db6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac503ab11e7b8fb7c61b3c587163e1db6">&#9670;&nbsp;</a></span>stateUpdate</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00249.html">StateUpdate</a> Thoughts.Game.Map.MapElements.Attributes.Consequence.stateUpdate</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The new State and duration of it for the affected <a class="el" href="a00265.html" title="A spawned element of the Map.">MapElement</a> </p>
-
-<p class="definition">Definition at line <a class="el" href="a00020_source.html#l00037">37</a> of file <a class="el" href="a00020_source.html">Consequence.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="a00002_source.html#l00015">15</a> of file <a class="el" href="a00002_source.html">AppManager.cs</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00020_source.html">Consequence.cs</a></li>
+<li><a class="el" href="a00002_source.html">AppManager.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
