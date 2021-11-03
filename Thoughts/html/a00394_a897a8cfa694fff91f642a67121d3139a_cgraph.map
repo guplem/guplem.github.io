@@ -1,0 +1,4 @@
+<map id="MapNavigationManager.RemoveAllNavMesh" name="MapNavigationManager.RemoveAllNavMesh">
+<area shape="rect" id="node1" title="Delete all nav mesh data and related components" alt="" coords="5,5,280,32"/>
+<area shape="rect" id="node2" href="$a00394.html#a4705b4087f2ac6f4543ac7261503529d" title="Coroutine that checks that the full deletion of the map has been successful" alt="" coords="328,5,684,32"/>
+</map>

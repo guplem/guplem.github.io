@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Thoughts.Game.Map.MapElements.Attributes.MapEvents Namespace Reference</title>
+<title>TS20-Thoughts: Thoughts.Game.Map.Terrain Namespace Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,71 +61,47 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00203.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00204.html">Game</a></li><li class="navelem"><a class="el" href="a00205.html">Map</a></li><li class="navelem"><a class="el" href="a00207.html">MapElements</a></li><li class="navelem"><a class="el" href="a00208.html">Attributes</a></li><li class="navelem"><a class="el" href="a00209.html">MapEvents</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00206.html">Thoughts</a></li><li class="navelem"><a class="el" href="a00207.html">Game</a></li><li class="navelem"><a class="el" href="a00208.html">Map</a></li><li class="navelem"><a class="el" href="a00209.html">Terrain</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
-<div class="title">Thoughts.Game.Map.MapElements.Attributes.MapEvents Namespace Reference</div>  </div>
+<div class="title">Thoughts.Game.Map.Terrain Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00357.html">ExecutionPlan</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The execution configuration for a <a class="el" href="a00361.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a>. A plan to execute a <a class="el" href="a00361.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> (of an <a class="el" href="a00337.html" title="A quality, characteristic or object ascribed to a MapElement.">Attribute</a>) owned by a <a class="el" href="a00369.html" title="A spawned element of the Map.">MapElement</a>, executed by a <a class="el" href="a00369.html" title="A spawned element of the Map.">MapElement</a> and with a targeted <a class="el" href="a00369.html" title="A spawned element of the Map.">MapElement</a>.  <a href="a00357.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00286.html">HeightMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains values relative to the height of a terrain  <a href="a00286.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00361.html">MapEvent</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An event that must be executed by a <a class="el" href="a00369.html" title="A spawned element of the Map.">MapElement</a>. It is part of an attribute.  <a href="a00361.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00290.html">TerrainChunk</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manager of a chunk of the terrain of the map  <a href="a00290.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a97ca97e6048f34b72287a435da258c44"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00209.html#a97ca97e6048f34b72287a435da258c44">AffectedMapElement</a> { <a class="el" href="a00209.html#a97ca97e6048f34b72287a435da258c44a8dcc47faef65c7c117c2b299130b6d11">eventOwner</a>
-, <a class="el" href="a00209.html#a97ca97e6048f34b72287a435da258c44af60d504024f3239968b3dae00f2d3f71">eventExecuter</a>
-, <a class="el" href="a00209.html#a97ca97e6048f34b72287a435da258c44ad9ae92b1cb86ea4ffa788865d1ee0b9f">eventTarget</a>
- }</td></tr>
-<tr class="memdesc:a97ca97e6048f34b72287a435da258c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists the possible MapElements related to the MapEvent that can be the affected ones to the event execution, requirements, consequences, ...  <a href="a00209.html#a97ca97e6048f34b72287a435da258c44">More...</a><br /></td></tr>
-<tr class="separator:a97ca97e6048f34b72287a435da258c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00294.html">LODMesh</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Mesh holder with related data meant to be used with an specified LOD  <a href="a00294.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00298.html">TerrainGenerator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unity Component in charge of generating a terrain in the scene  <a href="a00298.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00302.html">LODInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data that relates a LOD with the distance to the viewer at which it should stop being used and a worse LOD should be used instead.  <a href="a00302.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00306.html">TerrainHeightSettings</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The configuration of the height of the terrain of the map  <a href="a00306.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00310.html">TerrainMeshGenerator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00318.html">EdgeConnectionVertexData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00322.html">MeshData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00326.html">TerrainTextureSettings</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The configuration of the texture of the terrain of the map  <a href="a00326.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a97ca97e6048f34b72287a435da258c44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97ca97e6048f34b72287a435da258c44">&#9670;&nbsp;</a></span>AffectedMapElement</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00209.html#a97ca97e6048f34b72287a435da258c44">Thoughts.Game.Map.MapElements.Attributes.MapEvents.AffectedMapElement</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Lists the possible <a class="el" href="a00207.html">MapElements</a> related to the <a class="el" href="a00361.html" title="An event that must be executed by a MapElement. It is part of an attribute.">MapEvent</a> that can be the affected ones to the event execution, requirements, consequences, ... </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a97ca97e6048f34b72287a435da258c44a8dcc47faef65c7c117c2b299130b6d11"></a>eventOwner&#160;</td><td class="fielddoc"><p>The owner of the event </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a97ca97e6048f34b72287a435da258c44af60d504024f3239968b3dae00f2d3f71"></a>eventExecuter&#160;</td><td class="fielddoc"><p>The executer of the event </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a97ca97e6048f34b72287a435da258c44ad9ae92b1cb86ea4ffa788865d1ee0b9f"></a>eventTarget&#160;</td><td class="fielddoc"><p>The target of the event </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="a00074_source.html#l00254">254</a> of file <a class="el" href="a00074_source.html">MapEvent.cs</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

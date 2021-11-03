@@ -1,0 +1,5 @@
+<map id="Thoughts.Game.Map.MapGenerator.RegenerateTerrainTextures" name="Thoughts.Game.Map.MapGenerator.RegenerateTerrainTextures">
+<area shape="rect" id="node1" title="Manages the update of the TextureSettings by applying them to the map&#39;s Material" alt="" coords="5,5,393,32"/>
+<area shape="rect" id="node2" href="$a00326.html#add32c87d13afddb40d4969c47c404d73" title="Applies the current texture settings to the terrain&#39;s material" alt="" coords="441,5,859,32"/>
+<area shape="rect" id="node3" href="$a00326.html#a0079444dd3d3415c84d2cc99562e2778" title="Updates the minimum and maximum height of the terrain" alt="" coords="907,5,1348,32"/>
+</map>

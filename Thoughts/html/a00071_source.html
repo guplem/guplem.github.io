@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: ExecutionPlan.cs Source File</title>
+<title>TS20-Thoughts: AttributeInspector.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,187 +61,218 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_a77a7e65f90e712f9dd1e86363f5b68e.html">Game</a></li><li class="navelem"><a class="el" href="dir_7f10c0d399b14832eee38ffd59b44836.html">Map</a></li><li class="navelem"><a class="el" href="dir_bd2f5363bb9b2d3e2aa6d952d20713aa.html">MapElements</a></li><li class="navelem"><a class="el" href="dir_8765cc63cfacf22798d597ca024e5504.html">Attributes</a></li><li class="navelem"><a class="el" href="dir_bb4587562a4296e9e0b5f5e4b58be50d.html">MapEvents</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_a77a7e65f90e712f9dd1e86363f5b68e.html">Game</a></li><li class="navelem"><a class="el" href="dir_7f10c0d399b14832eee38ffd59b44836.html">Map</a></li><li class="navelem"><a class="el" href="dir_bd2f5363bb9b2d3e2aa6d952d20713aa.html">MapElements</a></li><li class="navelem"><a class="el" href="dir_8765cc63cfacf22798d597ca024e5504.html">Attributes</a></li><li class="navelem"><a class="el" href="dir_c42411d9bc9f23424f245f20058c77ad.html">Editor</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">ExecutionPlan.cs</div>  </div>
+<div class="title">AttributeInspector.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00071.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00209.html">    5</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="a00209.html">Thoughts.Game.Map.MapElements.Attributes.MapEvents</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="a00357.html">   10</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00357.html">ExecutionPlan</a></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="a00357.html#a9c57b548e43c76ea151561551a692d60">   15</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00361.html">MapEvent</a> <a class="code" href="a00357.html#a9c57b548e43c76ea151561551a692d60">mapEvent</a> { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        </div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="a00357.html#a897a1d504cd054def092465412112dfc">   20</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00369.html">MapElement</a> <a class="code" href="a00357.html#a897a1d504cd054def092465412112dfc">eventOwner</a> { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">   25</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00369.html">MapElement</a> <a class="code" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">executer</a> { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        </div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">   30</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00369.html">MapElement</a> <a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a> { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">   36</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">executionTimes</a> { <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="a00357.html#aa333e93e0bbb012f0135aa9e372f3d2c">   41</a></span>&#160;        <span class="keyword">public</span> Vector3 <a class="code" href="a00357.html#aa333e93e0bbb012f0135aa9e372f3d2c">executionLocation</a></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keyword">get</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00357.html#a897a1d504cd054def092465412112dfc">eventOwner</a> == <a class="code" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">executer</a>)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a>.transform.position;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a> != <a class="code" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">executer</a>)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a>.transform.position;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="a00357.html#a897a1d504cd054def092465412112dfc">eventOwner</a>.transform.position;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="a00357.html#a7f8c7c3b636789394e728438902a6ffd">   63</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00357.html#a7f8c7c3b636789394e728438902a6ffd">ExecutionPlan</a>(<a class="code" href="a00361.html">MapEvent</a> <a class="code" href="a00357.html#a9c57b548e43c76ea151561551a692d60">mapEvent</a>, <a class="code" href="a00369.html">MapElement</a> <a class="code" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">executer</a>, <a class="code" href="a00369.html">MapElement</a> <a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a>, <a class="code" href="a00369.html">MapElement</a> <a class="code" href="a00357.html#a897a1d504cd054def092465412112dfc">eventOwner</a>, <span class="keywordtype">int</span> <a class="code" href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">executionTimes</a> = 1)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            this.mapEvent = <a class="code" href="a00357.html#a9c57b548e43c76ea151561551a692d60">mapEvent</a>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            this.executer = <a class="code" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">executer</a>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            this.target = <a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            this.eventOwner = <a class="code" href="a00357.html#a897a1d504cd054def092465412112dfc">eventOwner</a>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            this.<a class="code" href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">executionTimes</a> = <a class="code" href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">executionTimes</a>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="a00357.html#a528afac65804fa8adff657a011a0f4c2">   72</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">string</span> <a class="code" href="a00357.html#a528afac65804fa8adff657a011a0f4c2">ToString</a>()</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">return</span> $<span class="stringliteral">&quot;&#39;{mapEvent}&#39; (x{executionTimes} times by &#39;{executer}&#39; to target &#39;{target}&#39; at/owned by &#39;{eventOwner}&#39;)&quot;</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00357.html#a3a9255b72ac66af15b85571be60a20c9">   81</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00357.html#a3a9255b72ac66af15b85571be60a20c9">Execute</a>()</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordtype">string</span> requirementsNotMetMessage;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="a00357.html#a9302126c98ba77244b3a89cbc2cd4cee">CanBeExecuted</a>(out requirementsNotMetMessage))</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <a class="code" href="a00357.html#a9c57b548e43c76ea151561551a692d60">mapEvent</a>.<a class="code" href="a00361.html#a5f83cb9633e5c37cab4ce578a250eae7">Execute</a>(<a class="code" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">executer</a>, <a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a>, <a class="code" href="a00357.html#a897a1d504cd054def092465412112dfc">eventOwner</a>);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <a class="code" href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">executionTimes</a>--;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <span class="keywordflow">if</span> (<a class="code" href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">executionTimes</a> &gt; 0)</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    <span class="keywordflow">return</span> this.<a class="code" href="a00357.html#a3a9255b72ac66af15b85571be60a20c9">Execute</a>();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            Debug.LogWarning($<span class="stringliteral">&quot;Trying to execute an ExecutionPlan that can not be executed (stored data of executionTimes = {executionTimes}).  Reasons:\n{requirementsNotMetMessage}&quot;</span>);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="a00357.html#a9302126c98ba77244b3a89cbc2cd4cee">  104</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">bool</span> <a class="code" href="a00357.html#a9302126c98ba77244b3a89cbc2cd4cee">CanBeExecuted</a>(out <span class="keywordtype">string</span> requirementsNotMetMessage)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            List&lt;AttributeOwnership&gt; requirementsNotMet = <a class="code" href="a00357.html#a23c55e262c40409bb49f4a7c0793fd9a">GetRequirementsNotMet</a>(out List&lt;int&gt; temp);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordtype">bool</span> allRequirementsMet = requirementsNotMet.IsNullOrEmpty();</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <span class="keywordtype">bool</span> isDistanceMet = <a class="code" href="a00357.html#a0a5540534e1ecb80229a675cec79153f">IsDistanceMet</a>();</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            requirementsNotMetMessage = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">if</span> (!allRequirementsMet)</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                requirementsNotMetMessage += $<span class="stringliteral">&quot;  ◍ Requirements not met:\n      - {requirementsNotMet.ToStringAllElements(&quot;</span>\n      - <span class="stringliteral">&quot;)}\n&quot;</span>;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">if</span> (!isDistanceMet)</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                requirementsNotMetMessage += $<span class="stringliteral">&quot;  ◍ Distance is not met not met.\n&quot;</span>;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">return</span> allRequirementsMet &amp;&amp; isDistanceMet;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        }</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="a00357.html#a0a5540534e1ecb80229a675cec79153f">  123</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> <a class="code" href="a00357.html#a0a5540534e1ecb80229a675cec79153f">IsDistanceMet</a>()</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00357.html#a9c57b548e43c76ea151561551a692d60">mapEvent</a>.<a class="code" href="a00361.html#a70e0494bca9e956692cadd2eb32fbb46">IsDistanceMet</a>(<a class="code" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">executer</a>, <a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a>, <a class="code" href="a00357.html#a897a1d504cd054def092465412112dfc">eventOwner</a>);</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        }</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="a00357.html#a23c55e262c40409bb49f4a7c0793fd9a">  133</a></span>&#160;        <span class="keyword">public</span> List&lt;AttributeOwnership&gt; <a class="code" href="a00357.html#a23c55e262c40409bb49f4a7c0793fd9a">GetRequirementsNotMet</a>(out List&lt;int&gt; remainingValueToCoverInRequirementsNotMet)</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="a00357.html#a9c57b548e43c76ea151561551a692d60">mapEvent</a>.<a class="code" href="a00361.html#a4bd684dcc313c0237517b3cc6ac5f556">GetRequirementsNotMet</a>(<a class="code" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">executer</a>, <a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a>, <a class="code" href="a00357.html#a897a1d504cd054def092465412112dfc">eventOwner</a>, <a class="code" href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">executionTimes</a>, out remainingValueToCoverInRequirementsNotMet);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        }</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="a00357.html#ac14d2bb3d78be408e57c85a5c3309b78">  144</a></span>&#160;        <span class="keyword">private</span> <span class="keywordtype">int</span> <a class="code" href="a00357.html#ac14d2bb3d78be408e57c85a5c3309b78">CalculateExecutionsNeededToCover</a>(<a class="code" href="a00341.html">AttributeOwnership</a> attributeOwnershipToCover, <span class="keywordtype">int</span> remainingValueToCover)</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            <span class="keywordtype">int</span> coveredPerExecution = 0;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            <span class="comment">//Debug.LogWarning($&quot;Calculating how many times &#39;{this.mapEvent}&#39; must be executed to cover &#39;{ownedAttributeToCover.attribute}&#39;...&quot;);</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <span class="keywordflow">foreach</span> (<a class="code" href="a00349.html">Consequence</a> consequence <span class="keywordflow">in</span> <a class="code" href="a00357.html#a9c57b548e43c76ea151561551a692d60">mapEvent</a>.<a class="code" href="a00361.html#af02ba3459da73a9cb4c43e62975b864e">consequences</a>)</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                <span class="comment">//Debug.Log($&quot;CHECKING {consequence.attribute} against {ownedAttributeToCover.attribute}&quot;);</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                <span class="keywordflow">if</span> (consequence.<a class="code" href="a00349.html#a685f33d1b91089a65895b80c3bb18eb8">attribute</a> == attributeOwnershipToCover.attribute)</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                    <span class="keywordflow">switch</span> (consequence.<a class="code" href="a00349.html#a308e992b9c181e019efcdea5dc5da725">affectedMapElement</a>)</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                        <span class="keywordflow">case</span> <a class="code" href="a00209.html#a97ca97e6048f34b72287a435da258c44">AffectedMapElement</a>.eventOwner:</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                            <span class="keywordflow">if</span> (this.<a class="code" href="a00357.html#a897a1d504cd054def092465412112dfc">eventOwner</a> == attributeOwnershipToCover.owner)</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                                coveredPerExecution += consequence.<a class="code" href="a00349.html#a868d12cb334e02ac4c5e562a3d58d31f">deltaValue</a>;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                        <span class="keywordflow">case</span> <a class="code" href="a00209.html#a97ca97e6048f34b72287a435da258c44">AffectedMapElement</a>.eventExecuter:</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                            <span class="keywordflow">if</span> (this.<a class="code" href="a00357.html#a4efc79afe745074402906313dfbd4e4c">executer</a> == attributeOwnershipToCover.owner)</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                                coveredPerExecution += consequence.<a class="code" href="a00349.html#a868d12cb334e02ac4c5e562a3d58d31f">deltaValue</a>;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                        <span class="keywordflow">case</span> <a class="code" href="a00209.html#a97ca97e6048f34b72287a435da258c44">AffectedMapElement</a>.eventTarget:</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                            <span class="keywordflow">if</span> (this.<a class="code" href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">target</a> == attributeOwnershipToCover.owner)</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                                coveredPerExecution += consequence.<a class="code" href="a00349.html#a868d12cb334e02ac4c5e562a3d58d31f">deltaValue</a>;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                        <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                            <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentOutOfRangeException();</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                    }</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            }</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordtype">int</span> result = -1;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="keywordflow">if</span> (coveredPerExecution &gt; 0)</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                result = (int) Math.Ceiling(((<span class="keywordtype">double</span>) remainingValueToCover) / ((double) coveredPerExecution));</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <span class="comment">//Debug.LogWarning($&quot;It needs to be executed {result} times to cover {remainingValueToCover} of remaining value. It covers {coveredPerExecution} per execution.&quot;);</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordflow">if</span> (coveredPerExecution &gt;= remainingValueToCover)</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="keywordflow">if</span> (coveredPerExecution &gt; 0)</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                <span class="keywordflow">return</span> result;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;            <span class="comment">// Debug.LogWarning($&quot;&#39;{this}&#39; can not cover &#39;{ownedAttributeToCover}&#39;.&quot;);</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        }</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="a00357.html#aa8ae69aff5f39e58fd7055bbd4845e54">  198</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00357.html#aa8ae69aff5f39e58fd7055bbd4845e54">SetExecutionTimesToCover</a>(<a class="code" href="a00341.html">AttributeOwnership</a> attributeOwnershipToCover, <span class="keywordtype">int</span> remainingValueToCover)</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            this.<a class="code" href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">executionTimes</a> = <a class="code" href="a00357.html#ac14d2bb3d78be408e57c85a5c3309b78">CalculateExecutionsNeededToCover</a>(attributeOwnershipToCover, remainingValueToCover);</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    }</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;}</div>
-<div class="ttc" id="aa00209_html"><div class="ttname"><a href="a00209.html">Thoughts.Game.Map.MapElements.Attributes.MapEvents</a></div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00005">ExecutionPlan.cs:6</a></div></div>
-<div class="ttc" id="aa00209_html_a97ca97e6048f34b72287a435da258c44"><div class="ttname"><a href="a00209.html#a97ca97e6048f34b72287a435da258c44">Thoughts.Game.Map.MapElements.Attributes.MapEvents.AffectedMapElement</a></div><div class="ttdeci">AffectedMapElement</div><div class="ttdoc">Lists the possible MapElements related to the MapEvent that can be the affected ones to the event exe...</div><div class="ttdef"><b>Definition:</b> <a href="a00074_source.html#l00254">MapEvent.cs:255</a></div></div>
-<div class="ttc" id="aa00341_html"><div class="ttname"><a href="a00341.html">Thoughts.Game.Map.MapElements.Attributes.AttributeOwnership</a></div><div class="ttdoc">A relation between an Attribute and a MapElement that owns it.</div><div class="ttdef"><b>Definition:</b> <a href="a00059_source.html#l00010">AttributeOwnership.cs:11</a></div></div>
-<div class="ttc" id="aa00349_html"><div class="ttname"><a href="a00349.html">Thoughts.Game.Map.MapElements.Attributes.Consequence</a></div><div class="ttdoc">Consequence of the execution of a MapEvent</div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00012">Consequence.cs:13</a></div></div>
-<div class="ttc" id="aa00349_html_a308e992b9c181e019efcdea5dc5da725"><div class="ttname"><a href="a00349.html#a308e992b9c181e019efcdea5dc5da725">Thoughts.Game.Map.MapElements.Attributes.Consequence.affectedMapElement</a></div><div class="ttdeci">AffectedMapElement affectedMapElement</div><div class="ttdoc">The MapElement that will get the effects of this consequence</div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00031">Consequence.cs:31</a></div></div>
-<div class="ttc" id="aa00349_html_a685f33d1b91089a65895b80c3bb18eb8"><div class="ttname"><a href="a00349.html#a685f33d1b91089a65895b80c3bb18eb8">Thoughts.Game.Map.MapElements.Attributes.Consequence.attribute</a></div><div class="ttdeci">Attribute attribute</div><div class="ttdoc">Attribute that will be updated as a consequence of the execution of the MapEvent</div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00018">Consequence.cs:18</a></div></div>
-<div class="ttc" id="aa00349_html_a868d12cb334e02ac4c5e562a3d58d31f"><div class="ttname"><a href="a00349.html#a868d12cb334e02ac4c5e562a3d58d31f">Thoughts.Game.Map.MapElements.Attributes.Consequence.deltaValue</a></div><div class="ttdeci">int deltaValue</div><div class="ttdoc">The difference to apply to the attribute's value of this consequence. Can be positive and negative</div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00025">Consequence.cs:25</a></div></div>
-<div class="ttc" id="aa00357_html"><div class="ttname"><a href="a00357.html">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan</a></div><div class="ttdoc">The execution configuration for a MapEvent. A plan to execute a MapEvent (of an Attribute) owned by a...</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00010">ExecutionPlan.cs:11</a></div></div>
-<div class="ttc" id="aa00357_html_a0a5540534e1ecb80229a675cec79153f"><div class="ttname"><a href="a00357.html#a0a5540534e1ecb80229a675cec79153f">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.IsDistanceMet</a></div><div class="ttdeci">bool IsDistanceMet()</div><div class="ttdoc">Determines if the distance to execute this ExecutionPlan's MapElement is met.</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00123">ExecutionPlan.cs:123</a></div></div>
-<div class="ttc" id="aa00357_html_a23c55e262c40409bb49f4a7c0793fd9a"><div class="ttname"><a href="a00357.html#a23c55e262c40409bb49f4a7c0793fd9a">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.GetRequirementsNotMet</a></div><div class="ttdeci">List&lt; AttributeOwnership &gt; GetRequirementsNotMet(out List&lt; int &gt; remainingValueToCoverInRequirementsNotMet)</div><div class="ttdoc">Returns a list of the requirements that are not met at the moment to execute the event,...</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00133">ExecutionPlan.cs:133</a></div></div>
-<div class="ttc" id="aa00357_html_a3a9255b72ac66af15b85571be60a20c9"><div class="ttname"><a href="a00357.html#a3a9255b72ac66af15b85571be60a20c9">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.Execute</a></div><div class="ttdeci">bool Execute()</div><div class="ttdoc">If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s...</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00081">ExecutionPlan.cs:81</a></div></div>
-<div class="ttc" id="aa00357_html_a4efc79afe745074402906313dfbd4e4c"><div class="ttname"><a href="a00357.html#a4efc79afe745074402906313dfbd4e4c">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.executer</a></div><div class="ttdeci">MapElement executer</div><div class="ttdoc">The executor MapElement of the MapEvent</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00025">ExecutionPlan.cs:25</a></div></div>
-<div class="ttc" id="aa00357_html_a528afac65804fa8adff657a011a0f4c2"><div class="ttname"><a href="a00357.html#a528afac65804fa8adff657a011a0f4c2">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.ToString</a></div><div class="ttdeci">override string ToString()</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00072">ExecutionPlan.cs:72</a></div></div>
-<div class="ttc" id="aa00357_html_a7f8c7c3b636789394e728438902a6ffd"><div class="ttname"><a href="a00357.html#a7f8c7c3b636789394e728438902a6ffd">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.ExecutionPlan</a></div><div class="ttdeci">ExecutionPlan(MapEvent mapEvent, MapElement executer, MapElement target, MapElement eventOwner, int executionTimes=1)</div><div class="ttdoc">Initializes a new instance of the ExecutionPlan class.</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00063">ExecutionPlan.cs:63</a></div></div>
-<div class="ttc" id="aa00357_html_a897a1d504cd054def092465412112dfc"><div class="ttname"><a href="a00357.html#a897a1d504cd054def092465412112dfc">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.eventOwner</a></div><div class="ttdeci">MapElement eventOwner</div><div class="ttdoc">The MapElement that owns the MapEvent to execute (in one of its owned Attributes)</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00020">ExecutionPlan.cs:20</a></div></div>
-<div class="ttc" id="aa00357_html_a9302126c98ba77244b3a89cbc2cd4cee"><div class="ttname"><a href="a00357.html#a9302126c98ba77244b3a89cbc2cd4cee">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.CanBeExecuted</a></div><div class="ttdeci">bool CanBeExecuted(out string requirementsNotMetMessage)</div><div class="ttdoc">Determines if all the requirements to execute this ExecutionPlan's MapElement are met.</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00104">ExecutionPlan.cs:104</a></div></div>
-<div class="ttc" id="aa00357_html_a9c57b548e43c76ea151561551a692d60"><div class="ttname"><a href="a00357.html#a9c57b548e43c76ea151561551a692d60">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.mapEvent</a></div><div class="ttdeci">MapEvent mapEvent</div><div class="ttdoc">The MapEvent to execute</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00015">ExecutionPlan.cs:15</a></div></div>
-<div class="ttc" id="aa00357_html_aa333e93e0bbb012f0135aa9e372f3d2c"><div class="ttname"><a href="a00357.html#aa333e93e0bbb012f0135aa9e372f3d2c">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.executionLocation</a></div><div class="ttdeci">Vector3 executionLocation</div><div class="ttdoc">The location where the MapEvent must be executed</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00041">ExecutionPlan.cs:42</a></div></div>
-<div class="ttc" id="aa00357_html_aa5d936133ecfbfcf64c32296cdf1b978"><div class="ttname"><a href="a00357.html#aa5d936133ecfbfcf64c32296cdf1b978">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.target</a></div><div class="ttdeci">MapElement target</div><div class="ttdoc">The targeted MapElement with the execution of the MapEvent</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00030">ExecutionPlan.cs:30</a></div></div>
-<div class="ttc" id="aa00357_html_aa8ae69aff5f39e58fd7055bbd4845e54"><div class="ttname"><a href="a00357.html#aa8ae69aff5f39e58fd7055bbd4845e54">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.SetExecutionTimesToCover</a></div><div class="ttdeci">void SetExecutionTimesToCover(AttributeOwnership attributeOwnershipToCover, int remainingValueToCover)</div><div class="ttdoc">Sets the amount of times remaining to execute this plan's MapEvent to the same amount needed to to co...</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00198">ExecutionPlan.cs:198</a></div></div>
-<div class="ttc" id="aa00357_html_aa9f57bf899cb5003388a1cf86130b092"><div class="ttname"><a href="a00357.html#aa9f57bf899cb5003388a1cf86130b092">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.executionTimes</a></div><div class="ttdeci">int executionTimes</div><div class="ttdoc">The amount of times remaining to execute this plan's MapEvent.</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00036">ExecutionPlan.cs:36</a></div></div>
-<div class="ttc" id="aa00357_html_ac14d2bb3d78be408e57c85a5c3309b78"><div class="ttname"><a href="a00357.html#ac14d2bb3d78be408e57c85a5c3309b78">Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.CalculateExecutionsNeededToCover</a></div><div class="ttdeci">int CalculateExecutionsNeededToCover(AttributeOwnership attributeOwnershipToCover, int remainingValueToCover)</div><div class="ttdoc">Calculates the amount of times that the execution of this ExecutionPlan's MapElement is needed to cov...</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00144">ExecutionPlan.cs:144</a></div></div>
-<div class="ttc" id="aa00361_html"><div class="ttname"><a href="a00361.html">Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent</a></div><div class="ttdoc">An event that must be executed by a MapElement. It is part of an attribute.</div><div class="ttdef"><b>Definition:</b> <a href="a00074_source.html#l00012">MapEvent.cs:13</a></div></div>
-<div class="ttc" id="aa00361_html_a4bd684dcc313c0237517b3cc6ac5f556"><div class="ttname"><a href="a00361.html#a4bd684dcc313c0237517b3cc6ac5f556">Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.GetRequirementsNotMet</a></div><div class="ttdeci">List&lt; AttributeOwnership &gt; GetRequirementsNotMet(MapElement executer, MapElement target, MapElement owner, int executionTimes, out List&lt; int &gt; remainingValueToCoverInRequirementsNotMet)</div><div class="ttdoc">Returns a list of the requirements that are not met at the moment to execute the event,...</div><div class="ttdef"><b>Definition:</b> <a href="a00074_source.html#l00138">MapEvent.cs:138</a></div></div>
-<div class="ttc" id="aa00361_html_a5f83cb9633e5c37cab4ce578a250eae7"><div class="ttname"><a href="a00361.html#a5f83cb9633e5c37cab4ce578a250eae7">Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.Execute</a></div><div class="ttdeci">void Execute(MapElement executer, MapElement target, MapElement owner)</div><div class="ttdoc">Executes the event applying the consequences of it.</div><div class="ttdef"><b>Definition:</b> <a href="a00074_source.html#l00063">MapEvent.cs:63</a></div></div>
-<div class="ttc" id="aa00361_html_a70e0494bca9e956692cadd2eb32fbb46"><div class="ttname"><a href="a00361.html#a70e0494bca9e956692cadd2eb32fbb46">Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.IsDistanceMet</a></div><div class="ttdeci">bool IsDistanceMet(MapElement executer, MapElement target, MapElement owner)</div><div class="ttdoc">Indicates if the maximum distance allowed to execute the event is met or not.</div><div class="ttdef"><b>Definition:</b> <a href="a00074_source.html#l00109">MapEvent.cs:109</a></div></div>
-<div class="ttc" id="aa00361_html_af02ba3459da73a9cb4c43e62975b864e"><div class="ttname"><a href="a00361.html#af02ba3459da73a9cb4c43e62975b864e">Thoughts.Game.Map.MapElements.Attributes.MapEvents.MapEvent.consequences</a></div><div class="ttdeci">List&lt; Consequence &gt; consequences</div><div class="ttdoc">List of update to attributes that will be triggered as a consequence of the execution of the MapEvent...</div><div class="ttdef"><b>Definition:</b> <a href="a00074_source.html#l00042">MapEvent.cs:42</a></div></div>
-<div class="ttc" id="aa00369_html"><div class="ttname"><a href="a00369.html">Thoughts.Game.Map.MapElements.MapElement</a></div><div class="ttdoc">A spawned element of the Map.</div><div class="ttdef"><b>Definition:</b> <a href="a00080_source.html#l00018">MapElement.cs:19</a></div></div>
+<a href="a00071.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if UNITY_EDITOR</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> <a class="code" href="a00206.html">Thoughts</a>.<a class="code" href="a00207.html">Game</a>.<a class="code" href="a00208.html">Map</a>.<a class="code" href="a00210.html">MapElements</a>.<a class="code" href="a00211.html">Attributes</a>;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> <a class="code" href="a00206.html">Thoughts</a>.<a class="code" href="a00207.html">Game</a>.<a class="code" href="a00208.html">Map</a>.<a class="code" href="a00210.html">MapElements</a>.<a class="code" href="a00211.html">Attributes</a>.<a class="code" href="a00212.html">MapEvents</a>;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> UnityEditor;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>Thoughtskk</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    [CanEditMultipleObjects]</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    [CustomEditor(typeof(Attribute))]</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span>AttributeInspector : UnityEditor.Editor</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keyword">private</span> Attribute attribute;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> OnInspectorGUI()</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="comment">// Update the serializedProperty - always do this in the beginning of OnInspectorGUI.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            serializedObject.Update ();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            attribute = target as Attribute;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            base.OnInspectorGUI();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <span class="comment">//ShowMapEventsArray();</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="comment">// Apply changes to the serializedProperty - always do this in the end of OnInspectorGUI.</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            serializedObject.ApplyModifiedProperties ();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        }</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> ShowMapEventsArray()</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            UnityEditor.SerializedProperty mapEventsList = serializedObject.FindProperty(<span class="stringliteral">&quot;mapEvents&quot;</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            UnityEditor.EditorGUI.indentLevel += 1;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mapEventIndex = 0; mapEventIndex &lt; mapEventsList.arraySize; mapEventIndex++)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                EditorGUILayout.Space();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                <span class="keyword">using</span> (<span class="keyword">new</span> GUILayout.VerticalScope(EditorStyles.helpBox))</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                    SerializedProperty mapEventProperty = mapEventsList.GetArrayElementAtIndex(mapEventIndex);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                    MapEvent mapEvent = attribute.mapEvents[mapEventIndex];</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                    </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                    <span class="comment">// MapEvent name</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    <span class="keywordtype">string</span> eventName = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    <span class="keywordflow">if</span> (mapEvent.name.IsNullOrEmpty()) </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                        eventName = $<span class="stringliteral">&quot;MapEvent [{mapEventIndex}]&quot;</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                    <span class="keywordflow">else</span> </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                        eventName = $<span class="stringliteral">&quot;&#39;{@mapEvent.name}&#39; MapEvent [{mapEventIndex}]&quot;</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    EditorGUILayout.PropertyField(mapEventProperty, <span class="keyword">new</span> GUIContent(eventName), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                    EditorGUILayout.Space();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                EditorGUILayout.Space();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            UnityEditor.EditorGUI.indentLevel -= 1;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">        private Attribute attribute;</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">        private Type[] mapEventsImplementations;</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">        private int selectedMapEventImplementationIndex = -1;</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">        public override void OnInspectorGUI()</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">        {</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">            // Update the serializedProperty - always do this in the beginning of OnInspectorGUI.</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">            serializedObject.Update ();</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">            </span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">            //specify target type</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">            attribute = target as Attribute;</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">            if (attribute == null) { return; }</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">            </span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">            EditorGUILayout.PropertyField(serializedObject.FindProperty(&quot;relatedStats&quot;), new GUIContent(&quot;Related Stats&quot;), true);</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">            </span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">            EditorGUILayout.Space();</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">            EditorGUILayout.BeginHorizontal();</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">            </span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">                GUILayout.Label(&quot;Attribute&#39;s events&quot;, EditorStyles.boldLabel);</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">                GUILayout.Label(&quot; &quot;);</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">                //select an implementation from all found using an editor popup</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">                NewMapEventSection();</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">                </span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">            EditorGUILayout.EndHorizontal();</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">            </span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">            CheckMapEventsListConfiguration();</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">            ShowMapEventsArray();</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">            EditorGUILayout.Space();  </span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">            EditorGUILayout.Space(); </span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">            // Draw horizontal line</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">            EditorGUILayout.LabelField(&quot;&quot;, GUI.skin.horizontalSlider); </span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">            </span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">            ImplementationsSearchSection();</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">            // Apply changes to the serializedProperty - always do this in the end of OnInspectorGUI.</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">            serializedObject.ApplyModifiedProperties ();</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">        private void NewMapEventSection()</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">        {</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">            //find all implementations of IMapEvent using System.Reflection.Module</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">            if (mapEventsImplementations == null)</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">                mapEventsImplementations = Essentials.Utils.GetTypeImplementationsNotUnityObject&lt;MapEvent&gt;();</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">            selectedMapEventImplementationIndex = EditorGUILayout.Popup(new GUIContent(&quot;&quot;),</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">                selectedMapEventImplementationIndex, mapEventsImplementations.Select(impl =&gt; impl.Name).ToArray());</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">            </span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">            MapEvent newEvent = null;</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">            if (GUILayout.Button(&quot;Add event&quot;))</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">            {</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">                //Create a new MapEvent of the selected type</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">                newEvent = (MapEvent) Activator.CreateInstance(mapEventsImplementations[selectedMapEventImplementationIndex]);</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">            //If a new MapEvent has been created...</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">            if (newEvent != null)</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">            {</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">                //record the gameObject state to enable undo and prevent from exiting the scene without saving</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">                Undo.RegisterCompleteObjectUndo(target, &quot;Added new event&quot;);</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">                //add the new mapEvent to the mapEvents&#39; list</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">                if (attribute.mapEvents == null)</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">                    attribute.mapEvents = new List&lt;MapEvent&gt;();</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">                attribute.mapEvents.Add(newEvent);</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">                //UpdateAllNeedsImplementationIndexes();</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">        </span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">        private void CheckMapEventsListConfiguration()</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">        {</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">            if (attribute.mapEvents != null)</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">            {</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">                for (int a = 0; a &lt; attribute.mapEvents.Count; a++)</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">                {</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">                    if (attribute.mapEvents[a] == null)</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">                        EditorGUILayout.HelpBox(&quot;The MapEvent with index &quot; + a + &quot; is null.\nRecommended to delete the array element by right clicking on it.&quot;, MessageType.Warning);</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">                    if (attribute.mapEvents.Count() != attribute.mapEvents.Distinct().Count())</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">                    {</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">                        for (int d = a + 1; d &lt; attribute.mapEvents.Count; d++)</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">                        {</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">                            if (attribute.mapEvents[a] != null &amp;&amp; (attribute.mapEvents[a] == attribute.mapEvents[d]))</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">                                EditorGUILayout.HelpBox(&quot;The mapEvents with index &quot; + a + &quot; and &quot; + d + &quot; are the same object.&quot;, MessageType.Warning);</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">                        }</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">                    }</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">                }</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">        </span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">        private void ImplementationsSearchSection()</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">        {</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">            // MapEvents</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">            EditorGUILayout.BeginHorizontal();</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">            if (mapEventsImplementations != null) EditorGUILayout.LabelField($&quot;Found {mapEventsImplementations.Count()} MapEvents implementations&quot;, EditorStyles.helpBox);</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">            if (mapEventsImplementations == null || GUILayout.Button(&quot;Search MapEvent implementations&quot;))</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">                mapEventsImplementations = Essentials.Utils.GetTypeImplementationsNotUnityObject&lt;MapEvent&gt;();</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">            EditorGUILayout.EndHorizontal();</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">            </span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">        </span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">        private void ShowMapEventsArray()</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">        {</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">            UnityEditor.SerializedProperty mapEventsList = serializedObject.FindProperty(&quot;mapEvents&quot;);</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">            </span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">            UnityEditor.EditorGUI.indentLevel += 1;</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">            for (int mapEventIndex = 0; mapEventIndex &lt; mapEventsList.arraySize; mapEventIndex++)</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">            {</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">                EditorGUILayout.Space();</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">                </span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">                using (new GUILayout.VerticalScope(EditorStyles.helpBox))</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">                {</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">                    SerializedProperty mapEventProperty = mapEventsList.GetArrayElementAtIndex(mapEventIndex);</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">                    MapEvent @event = ((MapEvent) attribute.mapEvents[mapEventIndex]);</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">                    </span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">                    // MapEvent name</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">                    string eventName;</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">                    if (@event.name.IsNullOrEmpty()) eventName = $&quot;Event [{mapEventIndex}] ({@event.GetType().Name})&quot;;</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">                    else eventName = $&quot;&#39;{@event.name}&#39; event [{mapEventIndex}] ({@event.GetType().Name})&quot;;</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">                    EditorGUILayout.PropertyField(mapEventProperty, new GUIContent(eventName), true);</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">                    EditorGUILayout.Space();</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">                }</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">                </span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="comment">                EditorGUILayout.Space();</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">                </span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">            UnityEditor.EditorGUI.indentLevel -= 1;</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    }</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;}</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aa00206_html"><div class="ttname"><a href="a00206.html">Thoughts</a></div><div class="ttdef"><b>Definition:</b> <a href="a00002_source.html#l00005">AppManager.cs:6</a></div></div>
+<div class="ttc" id="aa00207_html"><div class="ttname"><a href="a00207.html">Thoughts.Game</a></div><div class="ttdef"><b>Definition:</b> <a href="a00005_source.html#l00011">GameManager.cs:12</a></div></div>
+<div class="ttc" id="aa00208_html"><div class="ttname"><a href="a00208.html">Thoughts.Game.Map</a></div><div class="ttdef"><b>Definition:</b> <a href="a00014_source.html#l00004">HumanoidsGenerator.cs:5</a></div></div>
+<div class="ttc" id="aa00210_html"><div class="ttname"><a href="a00210.html">Thoughts.Game.Map.MapElements</a></div><div class="ttdef"><b>Definition:</b> <a href="a00059_source.html#l00006">Attribute.cs:7</a></div></div>
+<div class="ttc" id="aa00211_html"><div class="ttname"><a href="a00211.html">Thoughts.Game.Map.MapElements.Attributes</a></div><div class="ttdef"><b>Definition:</b> <a href="a00059_source.html#l00006">Attribute.cs:7</a></div></div>
+<div class="ttc" id="aa00212_html"><div class="ttname"><a href="a00212.html">Thoughts.Game.Map.MapElements.Attributes.MapEvents</a></div><div class="ttdef"><b>Definition:</b> <a href="a00074_source.html#l00005">ExecutionPlan.cs:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

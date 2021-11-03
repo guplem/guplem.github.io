@@ -1,0 +1,4 @@
+<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.SetupNeedGroups" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.SetupNeedGroups">
+<area shape="rect" id="node1" title="Populates the NeedGroupUIs with all the needed elements" alt="" coords="596,5,1175,32"/>
+<area shape="rect" id="node2" href="$a00474.html#a5df32d49086564bfe3f38a7fe1c365d4" title="Plays the Show or the Hide animation depending on the current state of the UI Element...." alt="" coords="5,5,548,32"/>
+</map>

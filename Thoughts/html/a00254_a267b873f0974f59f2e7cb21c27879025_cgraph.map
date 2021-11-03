@@ -1,0 +1,10 @@
+<map id="Thoughts.Game.GameManager.GetExecutionPlanToCover" name="Thoughts.Game.GameManager.GetExecutionPlanToCover">
+<area shape="rect" id="node1" title="Recursively look for all MapEvents available in the game&#39;s map that, as consequence of the event,..." alt="" coords="5,81,364,108"/>
+<area shape="rect" id="node2" href="$a00390.html#a2e182a6c8a343b6ec3af1114d7eb775c" title="Look for all MapEvents available in the map that, as consequence of a MapEvent in an Attribute they o..." alt="" coords="412,56,789,83"/>
+<area shape="rect" id="node8" href="$a00366.html#a23c55e262c40409bb49f4a7c0793fd9a" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="837,107,1428,133"/>
+<area shape="rect" id="node3" href="$a00354.html#a0c9983ed571c1bf2404f65c42f6d2385" title="Looks for an ExecutionPlan to cover the Attribute in the given AttributeOwnership relation using the ..." alt="" coords="857,56,1409,83"/>
+<area shape="rect" id="node4" href="$a00370.html#a8aff39c6bf75d53090f914f7313ea733" title="Indicates if the consequences of the execution of this event will increase the value of an attribute ..." alt="" coords="1510,5,2049,32"/>
+<area shape="rect" id="node5" href="$a00370.html#a4bd684dcc313c0237517b3cc6ac5f556" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1498,107,2061,133"/>
+<area shape="rect" id="node6" href="$a00366.html#aa8ae69aff5f39e58fd7055bbd4845e54" title="Sets the amount of times remaining to execute this plan&#39;s MapEvent to the same amount needed to to co..." alt="" coords="1476,56,2083,83"/>
+<area shape="rect" id="node7" href="$a00366.html#ac14d2bb3d78be408e57c85a5c3309b78" title="Calculates the amount of times that the execution of this ExecutionPlan&#39;s MapElement is needed to cov..." alt="" coords="2131,56,2787,83"/>
+</map>

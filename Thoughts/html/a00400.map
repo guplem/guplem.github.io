@@ -1,0 +1,10 @@
+<map id="Thoughts.Participants.ControlSystems.Manual.CameraController" name="Thoughts.Participants.ControlSystems.Manual.CameraController">
+<area shape="rect" id="node1" title="A controller for a Camera" alt="" coords="5,1095,400,1451"/>
+<area shape="rect" id="node2" title=" " alt="" coords="105,477,215,555"/>
+<area shape="rect" id="node3" href="$a00378.html" title="A spawned element of the Map." alt="" coords="259,691,578,1032"/>
+<area shape="rect" id="node4" href="$a00354.html" title="Manages a set of AttributeOwnerships all owned by the same MapElement" alt="" coords="240,404,637,628"/>
+<area shape="rect" id="node5" href="$a00350.html" title="A relation between an Attribute and a MapElement that owns it." alt="" coords="662,419,1063,613"/>
+<area shape="rect" id="node6" href="$a00346.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="693,132,1033,341"/>
+<area shape="rect" id="node7" title=" " alt="" coords="723,5,842,83"/>
+<area shape="rect" id="node8" title=" " alt="" coords="866,5,1022,83"/>
+</map>

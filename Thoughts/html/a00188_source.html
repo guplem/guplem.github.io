@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: Noise.cs Source File</title>
+<title>TS20-Thoughts: UpdatableDataEditor.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,146 +61,42 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_ba68b83da1c23134d6506c4488446a0c.html">Utils</a></li><li class="navelem"><a class="el" href="dir_7c40ac29030c180901b19b76230254d9.html">Maths</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_ba68b83da1c23134d6506c4488446a0c.html">Utils</a></li><li class="navelem"><a class="el" href="dir_e26ca0461ee574cf3dc9570bf3b77d62.html">Inspector</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Noise.cs</div>  </div>
+<div class="title">UpdatableDataEditor.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00188.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<a href="a00188.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if UNITY_EDITOR</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00221.html">Thoughts.Utils.Maths</a></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00505.html">    5</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class </span><a class="code" href="a00505.html">Noise</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    {</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00505.html#abecffff8085940f9dcefa943a76c74f1">    7</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">enum</span> <a class="code" href="a00505.html#abecffff8085940f9dcefa943a76c74f1">NormalizeMode</a></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;        {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;            Local,</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            Global</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="a00505.html#afb38ca73e5ee55ec0695ce56d16b7941">   24</a></span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">float</span>[,] <a class="code" href="a00505.html#afb38ca73e5ee55ec0695ce56d16b7941">GenerateNoiseMap</a>( <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <a class="code" href="a00509.html">NoiseMapSettings</a> noiseSettings, Vector2 sampleCenter, <span class="keywordtype">int</span> seed)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keywordtype">float</span>[,] noiseMap = <span class="keyword">new</span> <span class="keywordtype">float</span>[width, height];</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            RandomEssentials rng = <span class="keyword">new</span> RandomEssentials(seed);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            Vector2[] octaveOffsets = <span class="keyword">new</span> Vector2[noiseSettings.<a class="code" href="a00509.html#a02489dfa086966383e60261365c5ac1f">octaves</a>];</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordtype">float</span> maxPossibleHeight = 0;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordtype">float</span> amplitude = 1f;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordtype">float</span> frequency = 1f;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; noiseSettings.<a class="code" href="a00509.html#a02489dfa086966383e60261365c5ac1f">octaves</a>; i++)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                <span class="keywordtype">float</span> offsetX = rng.Next(-100000, +100000) + noiseSettings.<a class="code" href="a00509.html#a6fc9e554179cbe6be7a24102005d56b9">offset</a>.x + sampleCenter.x;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                <span class="keywordtype">float</span> offsetY = rng.Next(-100000, +100000) - noiseSettings.<a class="code" href="a00509.html#a6fc9e554179cbe6be7a24102005d56b9">offset</a>.y - sampleCenter.y;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                octaveOffsets[i] = <span class="keyword">new</span> Vector2(offsetX, offsetY);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                maxPossibleHeight += amplitude;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                amplitude *= noiseSettings.<a class="code" href="a00509.html#a9fc9adbbf283504499c0ccfc7b97982c">persistance</a>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordtype">float</span> maxLocalNoiseHeight = <span class="keywordtype">float</span>.MinValue;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordtype">float</span> minLocalNoiseHeight = <span class="keywordtype">float</span>.MaxValue;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordtype">float</span> halfWidth = width / 2f;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordtype">float</span> halfHeight = height / 2f;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; height; y++)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; width; x++)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                    amplitude = 1f;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                    frequency = 1f;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                    <span class="keywordtype">float</span> noiseHeight = 0f;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; noiseSettings.<a class="code" href="a00509.html#a02489dfa086966383e60261365c5ac1f">octaves</a>; i++)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                        <span class="keywordtype">float</span> sampleX = ( (x-halfWidth + octaveOffsets[i].x) / noiseSettings.<a class="code" href="a00509.html#a825404598075a6e83bb6c5c5a7d679be">scale</a> * frequency) ;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                        <span class="keywordtype">float</span> sampleY = ( (y-halfHeight + octaveOffsets[i].y) / noiseSettings.<a class="code" href="a00509.html#a825404598075a6e83bb6c5c5a7d679be">scale</a> * frequency) ;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                        <span class="keywordtype">float</span> perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                        noiseHeight += perlinValue * amplitude;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                        amplitude *= noiseSettings.<a class="code" href="a00509.html#a9fc9adbbf283504499c0ccfc7b97982c">persistance</a>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                        frequency *= noiseSettings.<a class="code" href="a00509.html#a09feb81ac9f2731d05fbe45131b210d8">lacunarity</a>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                    <span class="keywordflow">if</span> (noiseHeight &gt; maxLocalNoiseHeight)</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                        maxLocalNoiseHeight = noiseHeight;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    <span class="keywordflow">if</span> (noiseHeight &lt; minLocalNoiseHeight)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                        minLocalNoiseHeight = noiseHeight;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                    noiseMap [x, y] = noiseHeight;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                    <span class="keywordflow">if</span> (noiseSettings.<a class="code" href="a00509.html#a0bb7e845043537d22223ab88245c3951">normalizeMode</a> == <a class="code" href="a00505.html#abecffff8085940f9dcefa943a76c74f1">NormalizeMode</a>.Global) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                        <span class="keywordtype">float</span> normalizedHeight = (noiseMap [x, y] + 1) / (maxPossibleHeight / 0.9f);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                        noiseMap [x, y] = Mathf.Clamp (normalizedHeight, 0, <span class="keywordtype">int</span>.MaxValue);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                    }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">if</span> (noiseSettings.<a class="code" href="a00509.html#a0bb7e845043537d22223ab88245c3951">normalizeMode</a> == <a class="code" href="a00505.html#abecffff8085940f9dcefa943a76c74f1">NormalizeMode</a>.Local) </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; height; y++) </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; width; x++) </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                        noiseMap [x, y] = Mathf.InverseLerp (minLocalNoiseHeight, maxLocalNoiseHeight, noiseMap [x, y]);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">return</span> noiseMap;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    [System.Serializable]</div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="a00509.html">  104</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00509.html">NoiseMapSettings</a></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    {</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00509.html#a0bb7e845043537d22223ab88245c3951">  106</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="a00505.html">Noise</a>.<a class="code" href="a00505.html#abecffff8085940f9dcefa943a76c74f1">NormalizeMode</a> <a class="code" href="a00509.html#a0bb7e845043537d22223ab88245c3951">normalizeMode</a> =&gt; <a class="code" href="a00505.html">Noise</a>.<a class="code" href="a00505.html#abecffff8085940f9dcefa943a76c74f1">NormalizeMode</a>.Global;  <span class="comment">// I believe it should always be Global. It was a public serialized variable before but the value never changed.</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        [Tooltip(<span class="stringliteral">&quot;The scale of the noise&quot;</span>)]</div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="a00509.html#a825404598075a6e83bb6c5c5a7d679be">  112</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">float</span> <a class="code" href="a00509.html#a825404598075a6e83bb6c5c5a7d679be">scale</a> = 50f;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        [Tooltip(<span class="stringliteral">&quot;The amount of curves/noises that will be computed and overlapped for the noise. Usually, more means more realistic but can lead to worse performance.&quot;</span>)]</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        [Range(0,20)]</div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="a00509.html#a02489dfa086966383e60261365c5ac1f">  119</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code" href="a00509.html#a02489dfa086966383e60261365c5ac1f">octaves</a> = 4;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        [Tooltip(<span class="stringliteral">&quot;Determines how many small features exist in the noise map&quot;</span>)]</div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="a00509.html#a09feb81ac9f2731d05fbe45131b210d8">  125</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">float</span> <a class="code" href="a00509.html#a09feb81ac9f2731d05fbe45131b210d8">lacunarity</a> = 2f;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        [Tooltip(<span class="stringliteral">&quot;How much the small features affect the over all noise map&quot;</span>)]</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        [Range(0,1)]</div>
-<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="a00509.html#a9fc9adbbf283504499c0ccfc7b97982c">  132</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">float</span> <a class="code" href="a00509.html#a9fc9adbbf283504499c0ccfc7b97982c">persistance</a> = 0.6f;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        [Space]</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        [Tooltip(<span class="stringliteral">&quot;Offset of the noise of the map&quot;</span>)]</div>
-<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="a00509.html#a6fc9e554179cbe6be7a24102005d56b9">  139</a></span>&#160;        <span class="keyword">public</span> Vector2 <a class="code" href="a00509.html#a6fc9e554179cbe6be7a24102005d56b9">offset</a>;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="a00509.html#ac74c790dc2fb04539b6812cdae5c6dba">  141</a></span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code" href="a00509.html#ac74c790dc2fb04539b6812cdae5c6dba">ValidateValues</a>()</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        {</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            <a class="code" href="a00509.html#a825404598075a6e83bb6c5c5a7d679be">scale</a> = Mathf.Max(<a class="code" href="a00509.html#a825404598075a6e83bb6c5c5a7d679be">scale</a>, 0.01f);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <a class="code" href="a00509.html#a02489dfa086966383e60261365c5ac1f">octaves</a> = Mathf.Max(<a class="code" href="a00509.html#a02489dfa086966383e60261365c5ac1f">octaves</a>, 1);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <a class="code" href="a00509.html#a9fc9adbbf283504499c0ccfc7b97982c">persistance</a> = Mathf.Clamp01(<a class="code" href="a00509.html#a9fc9adbbf283504499c0ccfc7b97982c">persistance</a>);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            <a class="code" href="a00509.html#a09feb81ac9f2731d05fbe45131b210d8">lacunarity</a> = Mathf.Max(<a class="code" href="a00509.html#a09feb81ac9f2731d05fbe45131b210d8">lacunarity</a>, 1);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    }</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
-<div class="ttc" id="aa00221_html"><div class="ttname"><a href="a00221.html">Thoughts.Utils.Maths</a></div><div class="ttdef"><b>Definition:</b> <a href="a00185_source.html#l00001">FalloffGenerator.cs:2</a></div></div>
-<div class="ttc" id="aa00505_html"><div class="ttname"><a href="a00505.html">Thoughts.Utils.Maths.Noise</a></div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00005">Noise.cs:6</a></div></div>
-<div class="ttc" id="aa00505_html_abecffff8085940f9dcefa943a76c74f1"><div class="ttname"><a href="a00505.html#abecffff8085940f9dcefa943a76c74f1">Thoughts.Utils.Maths.Noise.NormalizeMode</a></div><div class="ttdeci">NormalizeMode</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00007">Noise.cs:8</a></div></div>
-<div class="ttc" id="aa00505_html_afb38ca73e5ee55ec0695ce56d16b7941"><div class="ttname"><a href="a00505.html#afb38ca73e5ee55ec0695ce56d16b7941">Thoughts.Utils.Maths.Noise.GenerateNoiseMap</a></div><div class="ttdeci">static float[,] GenerateNoiseMap(int width, int height, NoiseMapSettings noiseSettings, Vector2 sampleCenter, int seed)</div><div class="ttdoc">Generates a perlin noise map of a given width and height.</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00024">Noise.cs:24</a></div></div>
-<div class="ttc" id="aa00509_html"><div class="ttname"><a href="a00509.html">Thoughts.Utils.Maths.NoiseMapSettings</a></div><div class="ttdoc">Collection of settings used to generate a noise map More info about the settings here: https://www....</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00104">Noise.cs:105</a></div></div>
-<div class="ttc" id="aa00509_html_a02489dfa086966383e60261365c5ac1f"><div class="ttname"><a href="a00509.html#a02489dfa086966383e60261365c5ac1f">Thoughts.Utils.Maths.NoiseMapSettings.octaves</a></div><div class="ttdeci">int octaves</div><div class="ttdoc">The amount of curves/noises that will be computed and overlapped for the noise</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00119">Noise.cs:119</a></div></div>
-<div class="ttc" id="aa00509_html_a09feb81ac9f2731d05fbe45131b210d8"><div class="ttname"><a href="a00509.html#a09feb81ac9f2731d05fbe45131b210d8">Thoughts.Utils.Maths.NoiseMapSettings.lacunarity</a></div><div class="ttdeci">float lacunarity</div><div class="ttdoc">The increase in frequency for each of the octaves used in the noise map</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00125">Noise.cs:125</a></div></div>
-<div class="ttc" id="aa00509_html_a0bb7e845043537d22223ab88245c3951"><div class="ttname"><a href="a00509.html#a0bb7e845043537d22223ab88245c3951">Thoughts.Utils.Maths.NoiseMapSettings.normalizeMode</a></div><div class="ttdeci">Noise.NormalizeMode normalizeMode</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00106">Noise.cs:106</a></div></div>
-<div class="ttc" id="aa00509_html_a6fc9e554179cbe6be7a24102005d56b9"><div class="ttname"><a href="a00509.html#a6fc9e554179cbe6be7a24102005d56b9">Thoughts.Utils.Maths.NoiseMapSettings.offset</a></div><div class="ttdeci">Vector2 offset</div><div class="ttdoc">Offset of the noise of the map</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00139">Noise.cs:139</a></div></div>
-<div class="ttc" id="aa00509_html_a825404598075a6e83bb6c5c5a7d679be"><div class="ttname"><a href="a00509.html#a825404598075a6e83bb6c5c5a7d679be">Thoughts.Utils.Maths.NoiseMapSettings.scale</a></div><div class="ttdeci">float scale</div><div class="ttdoc">The scale of the noise</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00112">Noise.cs:112</a></div></div>
-<div class="ttc" id="aa00509_html_a9fc9adbbf283504499c0ccfc7b97982c"><div class="ttname"><a href="a00509.html#a9fc9adbbf283504499c0ccfc7b97982c">Thoughts.Utils.Maths.NoiseMapSettings.persistance</a></div><div class="ttdeci">float persistance</div><div class="ttdoc">Reduces the amplitude for each of the octaves used in the noise map</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00132">Noise.cs:132</a></div></div>
-<div class="ttc" id="aa00509_html_ac74c790dc2fb04539b6812cdae5c6dba"><div class="ttname"><a href="a00509.html#ac74c790dc2fb04539b6812cdae5c6dba">Thoughts.Utils.Maths.NoiseMapSettings.ValidateValues</a></div><div class="ttdeci">void ValidateValues()</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00141">Noise.cs:141</a></div></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> UnityEditor;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00223.html">Thoughts.Utils.Inspector</a></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    [CustomEditor(typeof(UpdatableData), <span class="keyword">true</span>)]</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">public</span> <span class="keyword">class </span>UpdatableDataEditor : Editor</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <span class="keyword">public</span> <span class="keyword">override</span> <span class="keywordtype">void</span> OnInspectorGUI()</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            base.OnInspectorGUI();</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            UpdatableData data = (UpdatableData) target;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            GUILayout.Space(30f);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">if</span> (GUILayout.Button(<span class="stringliteral">&quot;Update&quot;</span>))</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                data.NotifyOfUpdatedValues();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                EditorUtility.SetDirty(target);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    }</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aa00223_html"><div class="ttname"><a href="a00223.html">Thoughts.Utils.Inspector</a></div><div class="ttdef"><b>Definition:</b> <a href="a00182_source.html#l00012">SceneReference.cs:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

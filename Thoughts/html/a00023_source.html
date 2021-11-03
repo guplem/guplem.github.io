@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TS20-Thoughts: NightSettings.cs Source File</title>
+<title>TS20-Thoughts: LightSettings.cs Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,27 +61,29 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_a77a7e65f90e712f9dd1e86363f5b68e.html">Game</a></li><li class="navelem"><a class="el" href="dir_7f10c0d399b14832eee38ffd59b44836.html">Map</a></li><li class="navelem"><a class="el" href="dir_7cfa07bb723daeee29be77711bbc45ef.html">CreationSteps</a></li><li class="navelem"><a class="el" href="dir_b905e2cac995524d3b02161de5d0da22.html">Night</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_26cf15192e1912a5e79775db2050918b.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_da8d6e334b388e05c7af79c57fc10fee.html">TS20-Thoughts</a></li><li class="navelem"><a class="el" href="dir_16e2f2297c792d3d1427902b9bab7749.html">Assets</a></li><li class="navelem"><a class="el" href="dir_690f3ada9b9a430de5b9549e3de9769e.html">Thoughts</a></li><li class="navelem"><a class="el" href="dir_a77a7e65f90e712f9dd1e86363f5b68e.html">Game</a></li><li class="navelem"><a class="el" href="dir_7f10c0d399b14832eee38ffd59b44836.html">Map</a></li><li class="navelem"><a class="el" href="dir_7cfa07bb723daeee29be77711bbc45ef.html">CreationSteps</a></li><li class="navelem"><a class="el" href="dir_9feeccbdaffacd0f479d6d9b7d6a0726.html">Light</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">NightSettings.cs</div>  </div>
+<div class="title">LightSettings.cs</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00023.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> <a class="code" href="a00203.html">Thoughts</a>.<a class="code" href="a00219.html">Utils</a>.<a class="code" href="a00220.html">Inspector</a>;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;[CreateAssetMenu(fileName = <span class="stringliteral">&quot;NightSettings&quot;</span>, menuName = <span class="stringliteral">&quot;Thoughts/Map/Night Settings&quot;</span>, order = 40)]</div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="a00273.html">    5</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00273.html">NightSettings</a> : <a class="code" href="a00497.html">UpdatableData</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;}</div>
-<div class="ttc" id="aa00203_html"><div class="ttname"><a href="a00203.html">Thoughts</a></div><div class="ttdef"><b>Definition:</b> <a href="a00002_source.html#l00005">AppManager.cs:6</a></div></div>
-<div class="ttc" id="aa00219_html"><div class="ttname"><a href="a00219.html">Thoughts.Utils</a></div><div class="ttdef"><b>Definition:</b> <a href="a00170_source.html#l00003">DisableAtStart.cs:4</a></div></div>
-<div class="ttc" id="aa00220_html"><div class="ttname"><a href="a00220.html">Thoughts.Utils.Inspector</a></div><div class="ttdef"><b>Definition:</b> <a href="a00176_source.html#l00012">SceneReference.cs:13</a></div></div>
-<div class="ttc" id="aa00273_html"><div class="ttname"><a href="a00273.html">NightSettings</a></div><div class="ttdef"><b>Definition:</b> <a href="a00023_source.html#l00005">NightSettings.cs:6</a></div></div>
-<div class="ttc" id="aa00497_html"><div class="ttname"><a href="a00497.html">Thoughts.Utils.Inspector.UpdatableData</a></div><div class="ttdef"><b>Definition:</b> <a href="a00179_source.html#l00005">UpdatableData.cs:6</a></div></div>
+<a href="a00023.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">using</span> System.Collections;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">using</span> System.Collections.Generic;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using</span> <a class="code" href="a00206.html">Thoughts</a>.<a class="code" href="a00222.html">Utils</a>.<a class="code" href="a00223.html">Inspector</a>;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> UnityEngine;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;[CreateAssetMenu(fileName = <span class="stringliteral">&quot;LightSettings&quot;</span>, menuName = <span class="stringliteral">&quot;Thoughts/Map/Light Settings&quot;</span>, order = 10)]</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="a00278.html">    7</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="a00278.html">LightSettings</a> : <a class="code" href="a00510.html">UpdatableData</a></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
+<div class="ttc" id="aa00206_html"><div class="ttname"><a href="a00206.html">Thoughts</a></div><div class="ttdef"><b>Definition:</b> <a href="a00002_source.html#l00005">AppManager.cs:6</a></div></div>
+<div class="ttc" id="aa00222_html"><div class="ttname"><a href="a00222.html">Thoughts.Utils</a></div><div class="ttdef"><b>Definition:</b> <a href="a00176_source.html#l00003">DisableAtStart.cs:4</a></div></div>
+<div class="ttc" id="aa00223_html"><div class="ttname"><a href="a00223.html">Thoughts.Utils.Inspector</a></div><div class="ttdef"><b>Definition:</b> <a href="a00182_source.html#l00012">SceneReference.cs:13</a></div></div>
+<div class="ttc" id="aa00278_html"><div class="ttname"><a href="a00278.html">LightSettings</a></div><div class="ttdef"><b>Definition:</b> <a href="a00023_source.html#l00007">LightSettings.cs:8</a></div></div>
+<div class="ttc" id="aa00510_html"><div class="ttname"><a href="a00510.html">Thoughts.Utils.Inspector.UpdatableData</a></div><div class="ttdef"><b>Definition:</b> <a href="a00185_source.html#l00005">UpdatableData.cs:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
