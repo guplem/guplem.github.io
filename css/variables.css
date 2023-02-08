@@ -1,0 +1,20 @@
+:root{
+    /*--default-color-background: #c2dde6;*/
+
+     --background-dark: #bccbde;
+     --background-vivid: #c2dde6; /*particles simulation color as well, file:  \js\PlanetsSim\Simulacio.js   LINE:  26*/;
+     --background-clear: #e6e9f0;
+    
+    --title-color: BLACK;
+    --text-color: black;
+    
+    --primary-accent-color: rgb(220 90 0);
+    --secondary-accent-color: #431c5d;
+    --third-accent-color: #38726C;
+    --forth-accent-color: #f7ded1;
+    
+    /*
+    $mobile-size: 768px;
+    $small-screen-size: 1200px;
+    */
+ }
