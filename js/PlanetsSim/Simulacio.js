@@ -49,7 +49,11 @@ for (var i = 0; i < 100; i++) {
 // Creem la força de gravitacio
 var g = new Gravitacio();
 
-window.onload = init;
+// window.onload = init;
+
+document.addEventListener('DOMContentLoaded', function() {
+    init();
+});
 
 function init() {
     setInterval(onEachStep, 1000 / 60); // 60 fps
