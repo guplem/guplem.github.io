@@ -52,6 +52,7 @@ var g = new Gravitacio();
 // window.onload = init;
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded and parsed. Initializing simulation...");
     init();
 });
 
