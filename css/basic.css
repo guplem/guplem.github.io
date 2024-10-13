@@ -378,6 +378,7 @@ a:hover {
 .ProjectsTabsContents li img {
     max-width: 90%;
     max-height: 400px;
+    border-radius: 15px;
 }
 
 .ProjectsTabsContents {
