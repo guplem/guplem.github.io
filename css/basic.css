@@ -381,6 +381,23 @@ a:hover {
     border-radius: 15px;
 }
 
+.SkillSet {
+    padding-left: 22px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.Skill {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 4px;
+    background-color: var(--background-dark);
+}
+
+
+
+
 .ProjectsTabsContents {
     display: flex;
     /*align-items: center;*/
