@@ -4,35 +4,24 @@ var simCanvas = document.getElementById('simCanvas');
 //Posar el tamany correcte del canvas al html
 
 function setProperCanvasSize() {
-    console.time('setProperCanvasSize');
 
-    console.time('setProperCanvasSize - getElementById');
     var presentation = document.getElementById('PresentationTextZone');
-    console.timeEnd('setProperCanvasSize - getElementById');
 
-    console.time('setProperCanvasSize - setSizes a');
     var topHeight = presentation.offsetHeight;
     var topWidth = presentation.offsetWidth;
-    console.timeEnd('setProperCanvasSize - setSizes a');
-    console.time('setProperCanvasSize - setSizes b');
     simCanvas.height = topHeight;
     simCanvas.width = topWidth;
-    console.timeEnd('setProperCanvasSize - setSizes b');
 
     //alert("topHeight = " + topHeight + ", topWidth = " + topWidth + " canvas: " + simCanvas.height +", "+ simCanvas.width);    
 
-    console.timeEnd('setProperCanvasSize');
 }
 setProperCanvasSize();
 
 //Creem l'espai de treball
-console.time('space creation');
 var espai = new Espai(simCanvas, -5, 5, -5, 5);
 var ctx = simCanvas.getContext("2d");
-console.timeEnd('space creation');
 
 // Creem els planetes que orbitaran
-console.time('planet creation');
 var planetes = new Array();
 for (var i = 0; i < 100; i++) {
     //es determina el radi del planeta
@@ -56,12 +45,9 @@ for (var i = 0; i < 100; i++) {
     planetes[i].pos = initPos;
     planetes[i].vel = new Vector(0, vel);
 }
-console.timeEnd('planet creation');
 
 // Creem la força de gravitacio
-console.time('gravity creation');
 var g = new Gravitacio();
-console.timeEnd('gravity creation');
 
 window.onload = init;
 
@@ -70,19 +56,15 @@ function init() {
 };
 
 function onEachStep() {
-    //console.time('physics');
     // Avancem el temps calculant les noves posicions i velocitats
     for (var i = 0; i < 100; i++) {
         Temps.euler(planetes[i], 1 / 60, g.forca(planetes[i]));
     }
-    //console.timeEnd('physics');
 
-    //console.time('rendering');
     espai.clear();
     for (var i = 0; i < 100; i++) {
         planetes[i].draw(espai);
     }
-    //console.timeEnd('rendering');
 
     //Draw text
     /*ctx.font = "30px Arial";
