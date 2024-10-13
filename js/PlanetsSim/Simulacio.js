@@ -2,73 +2,89 @@
 var simCanvas = document.getElementById('simCanvas');
 
 //Posar el tamany correcte del canvas al html
-function setProperCanvasSize(){
+
+function setProperCanvasSize() {
+    console.time('setProperCanvasSize');
+
+    console.time('setProperCanvasSize - getElementById');
     var presentation = document.getElementById('PresentationTextZone');
+    console.timeEnd('setProperCanvasSize - getElementById');
+
+    console.time('setProperCanvasSize - setSizes a');
     var topHeight = presentation.offsetHeight;
     var topWidth = presentation.offsetWidth;
-    simCanvas.height=topHeight;
-    simCanvas.width=topWidth;
+    console.timeEnd('setProperCanvasSize - setSizes a');
+    console.time('setProperCanvasSize - setSizes b');
+    simCanvas.height = topHeight;
+    simCanvas.width = topWidth;
+    console.timeEnd('setProperCanvasSize - setSizes b');
 
     //alert("topHeight = " + topHeight + ", topWidth = " + topWidth + " canvas: " + simCanvas.height +", "+ simCanvas.width);    
+
+    console.timeEnd('setProperCanvasSize');
 }
 setProperCanvasSize();
 
 //Creem l'espai de treball
-var espai = new Espai(simCanvas,-5,5,-5,5);
+console.time('space creation');
+var espai = new Espai(simCanvas, -5, 5, -5, 5);
 var ctx = simCanvas.getContext("2d");
+console.timeEnd('space creation');
 
 // Creem els planetes que orbitaran
+console.time('planet creation');
 var planetes = new Array();
 for (var i = 0; i < 100; i++) {
-    
-	//es determina el radi del planeta
-	var radiParticula = Math.random() / 5;
-    planetes.push(new Particula(1,0,0, radiParticula, '#c2dde6', true));
+    //es determina el radi del planeta
+    var radiParticula = Math.random() / 5;
+    planetes.push(new Particula(1, 0, 0, radiParticula, '#c2dde6', true));
 
-    //es determina el radi de l'òrbita
-    var radiOrbita = Math.random() * 3.5 + 0.5
-    
+    //es determina el radi de l'Ã²rbita
+    var radiOrbita = Math.random() * 3.5 + 0.5;
+
     //es determina la velocitat del planeta
     var variacio = 0.4;
-	var vel = Math.sqrt(1/radiOrbita) + Math.random() * variacio - (variacio/2);
-    
+    var vel = Math.sqrt(1 / radiOrbita) + Math.random() * variacio - (variacio / 2);
+
     //Es determina la posicio inicial i es corregeix la velocitat del planeta
     var initPos = new Vector(radiOrbita, 0);
-    if (Math.random() >= 0.5){
+    if (Math.random() >= 0.5) {
         initPos = new Vector(-radiOrbita, 0);
         vel = -vel;
     }
-    
+
     planetes[i].pos = initPos;
-	planetes[i].vel = new Vector(0, vel);
+    planetes[i].vel = new Vector(0, vel);
 }
+console.timeEnd('planet creation');
 
-// Creem la força de gravitacio
+// Creem la forÃ§a de gravitacio
+console.time('gravity creation');
 var g = new Gravitacio();
+console.timeEnd('gravity creation');
 
-window.onload = init; 
- 
+window.onload = init;
+
 function init() {
-  setInterval(onEachStep, 1000/60); // 60 fps
+    setInterval(onEachStep, 1000 / 60); // 60 fps
 };
- 
+
 function onEachStep() {
+    //console.time('physics');
+    // Avancem el temps calculant les noves posicions i velocitats
+    for (var i = 0; i < 100; i++) {
+        Temps.euler(planetes[i], 1 / 60, g.forca(planetes[i]));
+    }
+    //console.timeEnd('physics');
 
-	// Avancem el temps calculant les noves posicions i velocitats
-	for (var i = 0; i < 100; i++) {
-		Temps.euler(planetes[i],1/60,g.forca(planetes[i]));
-	}
-	
-	espai.clear();
+    //console.time('rendering');
+    espai.clear();
+    for (var i = 0; i < 100; i++) {
+        planetes[i].draw(espai);
+    }
+    //console.timeEnd('rendering');
 
-	// Dibuixem els objectes en les noves posicions
-	for (var i = 0; i < 100; i++) {
-		planetes[i].draw(espai);
-	}
-    
     //Draw text
-
-
     /*ctx.font = "30px Arial";
     ctx.fillStyle = "red";
     ctx.textAlign = "center";
