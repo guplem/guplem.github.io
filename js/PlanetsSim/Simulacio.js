@@ -49,8 +49,10 @@ for (var i = 0; i < 100; i++) {
 // Creem la força de gravitacio
 var g = new Gravitacio();
 
+// This was the previous way of initilizing the simulation, but it took too long since it waited for all images to load
 // window.onload = init;
 
+// This is the new way of initializing the simulation, it just waits for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log("DOM fully loaded and parsed. Initializing simulation...");
     init();
