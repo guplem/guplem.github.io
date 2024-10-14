@@ -1320,72 +1320,107 @@
     <script src= "js/PlanetsSim/Simulacio.js"></script>
 
     <!--Fullscreen images-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.3/TweenMax.min.js"></script>
+
     <script>
-            // This function handles both opening and closing fullscreen
-        function toggleFullscreen(img) {
+        const images = document.querySelectorAll('.fullscreen-img');
+
+    // Function to toggle fullscreen for an element
+        const toggleFullscreen = (element) => {
             if (!document.fullscreenElement) {
-                    // Open fullscreen mode for the clicked image
-                if (img.requestFullscreen) {
-                    img.requestFullscreen();
-                    } else if (img.mozRequestFullScreen) { // Firefox
-                        img.mozRequestFullScreen();
-                    } else if (img.webkitRequestFullscreen) { // Chrome, Safari and Opera
-                        img.webkitRequestFullscreen();
-                    } else if (img.msRequestFullscreen) { // IE/Edge
-                        img.msRequestFullscreen();
-                    }
+                enterFullscreen(element);
+            } else {
+                exitFullscreen();
+            }
+        };
 
-                    // Add a class for fullscreen styling
-                    img.classList.add('fullscreen-active');
+    // Enter fullscreen mode with animation
+        const enterFullscreen = (element) => {
+        // Animation before entering fullscreen
+            TweenMax.to(element, 0.3, {
+                scale: 1.2,
+                ease: Power1.easeOut,
+                onComplete: () => {
+                // After the animation, enter fullscreen
+                    if (element.requestFullscreen) {
+                        element.requestFullscreen();
+                } else if (element.mozRequestFullScreen) { // Firefox
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) { // IE/Edge
+                    element.msRequestFullscreen();
+                }
 
-                } else {
-                    // Exit fullscreen if already in fullscreen mode
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
+                // Reset scale after entering fullscreen
+                TweenMax.to(element, 0.3, {
+                    scale: 1,
+                    ease: Power1.easeOut
+                });
+            }
+        });
+
+            element.classList.add('fullscreen-active');
+        };
+
+    // Exit fullscreen mode with animation
+        const exitFullscreen = () => {
+            const activeImage = document.querySelector('.fullscreen-active');
+            if (activeImage) {
+            // Animation when exiting fullscreen
+                TweenMax.to(activeImage, 0.3, {
+                    scale: 0.9,
+                    ease: Power1.easeOut,
+                    onComplete: () => {
+                    // Now exit fullscreen after animation completes
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
                     } else if (document.mozCancelFullScreen) { // Firefox
                         document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                    } else if (document.webkitExitFullscreen) { // Chrome, Safari, and Opera
                         document.webkitExitFullscreen();
                     } else if (document.msExitFullscreen) { // IE/Edge
                         document.msExitFullscreen();
                     }
-                }
-            }
 
-            // Add event listeners to all images with the class 'fullscreen-img'
-            document.querySelectorAll('.fullscreen-img').forEach(img => {
-                img.onclick = function() {
-                    toggleFullscreen(this);
-                };
+                    // Remove the active class after exiting fullscreen
+                    activeImage.classList.remove('fullscreen-active');
+                }
             });
+            }
+        };
 
-            // Event listener to close fullscreen with the 'X' key, backspaceor enter
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'X' || event.key === 'x' || event.key === 'Backspace' || event.key === 'Enter') {
-                  if (document.fullscreenElement) {
-                    document.exitFullscreen();
-                }
+    // Add click event listeners to images
+        images.forEach(img => {
+            img.addEventListener('click', () => toggleFullscreen(img));
+        });
+
+    // Event listener for closing fullscreen with specific keys
+        document.addEventListener('keydown', (event) => {
+            if (['X', 'x', 'Backspace', 'Enter'].includes(event.key) && document.fullscreenElement) {
+                exitFullscreen();
             }
         });
 
-            // Event listener for fullscreen changes (e.g., when pressing 'Esc' or the fullscreen exit button)
-            document.addEventListener('fullscreenchange', () => {
-                if (!document.fullscreenElement) {
-                // Remove the fullscreen-active class when fullscreen is exited
-                  document.querySelectorAll('.fullscreen-active').forEach(img => {
+    // Event listener for fullscreen changes
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.querySelectorAll('.fullscreen-active').forEach(img => {
                     img.classList.remove('fullscreen-active');
                 });
-              }
-          });
-      </script>
+            }
+        });
+    </script>
 
 
-      <!-- Animations -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script>
 
-          var titleParallax = document.getElementById("PresentationTextZone"), speed = 0.8, 
-          titleHgt = titleParallax.offsetHeight;
+
+    <!-- Animations -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+
+      var titleParallax = document.getElementById("PresentationTextZone"), speed = 0.8, 
+      titleHgt = titleParallax.offsetHeight;
 
             /* Instant ajustDocument at resize. Less eficcient.
             $(window).resize(function() {
@@ -1394,37 +1429,37 @@
             */
 
 
-          $(window).bind('resize', function(e)
-          {
-            window.resizeEvt;
-            $(window).resize(function()
+      $(window).bind('resize', function(e)
+      {
+        window.resizeEvt;
+        $(window).resize(function()
+        {
+            clearTimeout(window.resizeEvt);
+            window.resizeEvt = setTimeout(function()
             {
-                clearTimeout(window.resizeEvt);
-                window.resizeEvt = setTimeout(function()
-                {
                         //code to do after window is resized
                         //alert("INDEX: gona ajustDocument after resizeEvt");
-                    ajustDocument();
-                    titleHgt = titleParallax.offsetHeight;
-                }, 200);
-            });
-        });
-
-
-          $(window).ready(function() {
-                //alert("INDEX: gona ajustDocument after ready");
-            ajustDocument();
-        });
-
-          var recalcAtScroll = true;
-          $(window).scroll(function() {
-            if (recalcAtScroll){
-                    // alert("INDEX: gona ajustDocument after scroll");
                 ajustDocument();
-                recalcAtScroll = false;
-            }
-
+                titleHgt = titleParallax.offsetHeight;
+            }, 200);
         });
+    });
+
+
+      $(window).ready(function() {
+                //alert("INDEX: gona ajustDocument after ready");
+        ajustDocument();
+    });
+
+      var recalcAtScroll = true;
+      $(window).scroll(function() {
+        if (recalcAtScroll){
+                    // alert("INDEX: gona ajustDocument after scroll");
+            ajustDocument();
+            recalcAtScroll = false;
+        }
+
+    });
 
             /*function ajustDocumentHtml(){
                 alert("Hello");
@@ -1434,7 +1469,7 @@
 
 
             /*Display animation*/
-          (function($) {
+      (function($) {
 
               /**
                * Copyright 2012, Digital Fusion
@@ -1447,53 +1482,53 @@
                *     only accounts for vertical position, not horizontal.
                */
 
-              $.fn.visible = function(partial) {
+          $.fn.visible = function(partial) {
 
-                  var $t            = $(this),
-                  $w            = $(window),
-                  viewTop       = $w.scrollTop(),
-                  viewBottom    = viewTop + $w.height(),
-                  _top          = $t.offset().top,
-                  _bottom       = _top + $t.height(),
-                  compareTop    = partial === true ? _bottom : _top,
-                  compareBottom = partial === true ? _top : _bottom;
+              var $t            = $(this),
+              $w            = $(window),
+              viewTop       = $w.scrollTop(),
+              viewBottom    = viewTop + $w.height(),
+              _top          = $t.offset().top,
+              _bottom       = _top + $t.height(),
+              compareTop    = partial === true ? _bottom : _top,
+              compareBottom = partial === true ? _top : _bottom;
 
-                  return ((compareBottom <= viewBottom) && (compareTop >= viewTop));
+              return ((compareBottom <= viewBottom) && (compareTop >= viewTop));
 
-              };
+          };
 
-          })(jQuery);
+      })(jQuery);
 
-          var win = $(window);
+      var win = $(window);
 
-          var allMods = $(".module");
+      var allMods = $(".module");
+
+      allMods.each(function(i, el) {
+          var el = $(el);
+          if (el.visible(true)) {
+            el.addClass("already-visible"); 
+        } 
+    });
+
+      win.scroll(function(event) {
 
           allMods.each(function(i, el) {
-              var el = $(el);
-              if (el.visible(true)) {
-                el.addClass("already-visible"); 
-            } 
-        });
-
-          win.scroll(function(event) {
-
-              allMods.each(function(i, el) {
-                var el = $(el);
-                if (el.visible(true)) {
-                  el.addClass("come-in");
-                  el.removeClass("module");
-              } 
-          });
+            var el = $(el);
+            if (el.visible(true)) {
+              el.addClass("come-in");
+              el.removeClass("module");
+          } 
+      });
 
 
                 /*Presentation different speed*/
-              titleParallax.style.height = (titleHgt-(window.pageYOffset * speed)) + "px";
+          titleParallax.style.height = (titleHgt-(window.pageYOffset * speed)) + "px";
 
-          });
-
-
-      </script>
+      });
 
 
-  </body>
-  </html>
+  </script>
+
+
+</body>
+</html>

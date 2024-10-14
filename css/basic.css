@@ -387,6 +387,7 @@ a:hover {
 
 .fullscreen-active {
   background-color: var(--background-dark);
+  transition: background-color 0.5s;
 }
 
 .SkillSet {
