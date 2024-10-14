@@ -152,15 +152,15 @@ a:hover {
 @keyframes SlideFromTop {
   0% {
     transform: translateY(-100%);
-      opacity: 0;
-  }
-  30% {
-      opacity: 0;
-  }
-  100% {
+    opacity: 0;
+}
+30% {
+  opacity: 0;
+}
+100% {
     transform: translateY(0);
-      opacity: 1;
-  }
+    opacity: 1;
+}
 }
 
 
@@ -316,25 +316,25 @@ a:hover {
     /*Transition to state*/
     transition-duration: 200ms;
     transition-timing-function: ease-out;
-0} 
+    0} 
     /*Not hover and Not selected state*/
-.ProjectsTabs li a:not(.activeTab){ /*Not active tab*/
-    background-color: transparent;
-    color: var(--text-color);
-    
-    /*Transition to state*/
-    transition-duration: 200ms;
-    transition-timing-function: ease-in;
-}
+    .ProjectsTabs li a:not(.activeTab){ /*Not active tab*/
+        background-color: transparent;
+        color: var(--text-color);
+
+        /*Transition to state*/
+        transition-duration: 200ms;
+        transition-timing-function: ease-in;
+    }
     /*Hover and Not selected  state*/
-.ProjectsTabs li a:hover:not(.activeTab) {
-    background-color: var(--forth-accent-color);
-    color: var(--text-color);    
-    
-    /*Transition to state*/
-    transition-duration: 200ms;
-    transition-timing-function: ease-out;
-}
+    .ProjectsTabs li a:hover:not(.activeTab) {
+        background-color: var(--forth-accent-color);
+        color: var(--text-color);    
+
+        /*Transition to state*/
+        transition-duration: 200ms;
+        transition-timing-function: ease-out;
+    }
 
 
 
@@ -379,6 +379,14 @@ a:hover {
     max-width: 90%;
     max-height: 400px;
     border-radius: 15px;
+}
+
+.fullscreen-img {
+  cursor: pointer;
+}
+
+.fullscreen-active {
+  background-color: var(--background-dark);
 }
 
 .SkillSet {
