@@ -1324,13 +1324,19 @@
     <script>
         const images = document.querySelectorAll('.fullscreen-img');
 
+        // Function to detect if the device is mobile
+        const isMobile = () => {
+            return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        };
+
         const toggleFullscreen = (element) => {
-            if (!document.fullscreenElement) {
+            if (!document.fullscreenElement && !isMobile()) {
                 enterFullscreen(element);
-            } else {
+            } else if (document.fullscreenElement) {
                 exitFullscreen();
             }
         };
+
 
         const enterFullscreen = (element) => {
             // First, add the class to trigger the CSS transition
