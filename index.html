@@ -1391,6 +1391,39 @@
         });
     </script>
 
+    <!-- Duplicate titles to so the image-title order for each project changes between vertical and horizontal screens -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const projects = document.querySelectorAll('.ProjectsSection .Columns');
+            
+            projects.forEach(project => {
+                const desktopTitle = project.querySelector('.Col-2-3 h3#ProjectTitle');
+                if (desktopTitle) {
+                    // Create mobile title
+                    const mobileTitle = desktopTitle.cloneNode(true);
+                    mobileTitle.classList.add('mobile-title');
+                    
+                    // Insert mobile title before the Columns div
+                    project.parentNode.insertBefore(mobileTitle, project);
+                    
+                    // Function to toggle title visibility based on screen width
+                    const toggleTitleVisibility = () => {
+                        const isMobile = window.innerWidth < 768; // Adjust this breakpoint as needed
+                        mobileTitle.style.display = isMobile ? 'block' : 'none';
+                        desktopTitle.style.display = isMobile ? 'none' : 'block';
+                    };
+                    
+                    // Initial call to set correct visibility
+                    toggleTitleVisibility();
+                    
+                    // Add event listener for window resize
+                    window.addEventListener('resize', toggleTitleVisibility);
+                }
+            });
+        });
+    </script>
+
+
     <!-- Animations -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
