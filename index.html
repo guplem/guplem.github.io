@@ -1321,11 +1321,9 @@
     <script src= "js/PlanetsSim/Simulacio.js"></script>
 
     <!--Fullscreen images-->
-
     <script>
         const images = document.querySelectorAll('.fullscreen-img');
 
-    // Function to toggle fullscreen for an element
         const toggleFullscreen = (element) => {
             if (!document.fullscreenElement) {
                 enterFullscreen(element);
@@ -1334,61 +1332,49 @@
             }
         };
 
-    // Enter fullscreen mode with animation
-    const enterFullscreen = (element) => {
-
-        element.classList.add('fullscreen-active');
-
-        setTimeout(() => {
-            // After the animation, enter fullscreen
+        const enterFullscreen = (element) => {
+            // First, add the class to trigger the CSS transition
+            element.classList.add('fullscreen-active');
+            
+            // Wait for the transition to complete before entering fullscreen
+            setTimeout(() => {
                 if (element.requestFullscreen) {
                     element.requestFullscreen();
-            } else if (element.mozRequestFullScreen) { // Firefox
-                element.mozRequestFullScreen();
-            } else if (element.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-                element.webkitRequestFullscreen();
-            } else if (element.msRequestFullscreen) { // IE/Edge
-                element.msRequestFullscreen();
-            }
-
-        }, 
-        250);
-
-    };
-
-    // Exit fullscreen mode with animation
-        const exitFullscreen = () => {
-            const activeImage = document.querySelector('.fullscreen-active');
-            if (activeImage) {
-
-                // Now exit fullscreen after animation completes
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) { // Firefox
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) { // Chrome, Safari, and Opera
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { // IE/Edge
-                    document.msExitFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
                 }
+            }, 250); // This should match the transition duration in CSS
+        };
 
-                activeImage.classList.remove('fullscreen-active');
+        const exitFullscreen = () => {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
             }
         };
 
-    // Add click event listeners to images
+        // Add click event listeners to images
         images.forEach(img => {
             img.addEventListener('click', () => toggleFullscreen(img));
         });
 
-    // Event listener for closing fullscreen with specific keys
+        // Event listener for closing fullscreen with specific keys
         document.addEventListener('keydown', (event) => {
             if (['X', 'x', 'Backspace', 'Enter'].includes(event.key) && document.fullscreenElement) {
                 exitFullscreen();
             }
         });
 
-    // Event listener for fullscreen changes. If we exit by pressing ESC, remove the active class
+        // Event listener for "exit fullscreen" changes. Remove the active class
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 document.querySelectorAll('.fullscreen-active').forEach(img => {
@@ -1397,9 +1383,6 @@
             }
         });
     </script>
-
-
-
 
     <!-- Animations -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

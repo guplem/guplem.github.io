@@ -387,22 +387,20 @@ a:hover {
 }
 
 .fullscreen-img {
-    transition: transform 150ms ease-in, filter 250ms ease-in, -webkit-filter 250ms ease-in, background-color 250ms ease-in;
+    transition: all 250ms ease-in-out;
     transform: scale(1);
+    background-color: transparent;
 }
 
 .fullscreen-img:hover {
     transform: scale(1.07);
-    transition: transform 100ms ease-out, filter 250ms ease-out, -webkit-filter 250ms ease-out;
     cursor: pointer;
-    -webkit-filter: drop-shadow(5px 5px 5px var(--background-dark));
     filter: drop-shadow(5px 5px 5px var(--background-dark));
 }
 
 .fullscreen-active {
-    background-color: green;
-    transition: scale 100ms ease-out, background-color 250ms ease-out;
-    scale: 2;
+    background-color: var(--background-dark);
+    transform: scale(1); /* Reset scale if needed */
 }
 
 
