@@ -375,20 +375,36 @@ a:hover {
     padding-top: 20px;
 }
 
+
+
 .ProjectsTabsContents li img {
     max-width: 90%;
     max-height: 400px;
     border-radius: 15px;
+    /*background-color: transparent;
+    transition-duration: 200ms;
+    scale: 1;*/
 }
 
 .fullscreen-img {
-  cursor: pointer;
+    transition: transform 150ms ease-in, filter 250ms ease-in, -webkit-filter 250ms ease-in, background-color 250ms ease-in;
+    transform: scale(1);
+}
+
+.fullscreen-img:hover {
+    transform: scale(1.07);
+    transition: transform 100ms ease-out, filter 250ms ease-out, -webkit-filter 250ms ease-out;
+    cursor: pointer;
+    -webkit-filter: drop-shadow(5px 5px 5px var(--background-dark));
+    filter: drop-shadow(5px 5px 5px var(--background-dark));
 }
 
 .fullscreen-active {
-  background-color: var(--background-dark);
-  transition: background-color 0.5s;
+    background-color: green;
+    transition: scale 100ms ease-out, background-color 250ms ease-out;
+    scale: 2;
 }
+
 
 .SkillSet {
     padding-left: 22px;

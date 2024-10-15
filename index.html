@@ -122,6 +122,7 @@
                             <div class="Skill">Front-End Architecture Design</div>
                             <div class="Skill">Flutter (Dart)</div>
                             <div class="Skill">Prisma & Node.js (TypeScript)</div>
+                            <div class="Skill">TDD (Jest)</div>
                             <div class="Skill">Data Analysis & Visualization (Firebase & Grafana)</div>
                             <div class="Skill">SQL</div>
                             <div class="Skill">Gorm & Gin (Go)</div>
@@ -1320,7 +1321,6 @@
     <script src= "js/PlanetsSim/Simulacio.js"></script>
 
     <!--Fullscreen images-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.3/TweenMax.min.js"></script>
 
     <script>
         const images = document.querySelectorAll('.fullscreen-img');
@@ -1335,58 +1335,44 @@
         };
 
     // Enter fullscreen mode with animation
-        const enterFullscreen = (element) => {
-        // Animation before entering fullscreen
-            TweenMax.to(element, 0.3, {
-                scale: 1.2,
-                ease: Power1.easeOut,
-                onComplete: () => {
-                // After the animation, enter fullscreen
-                    if (element.requestFullscreen) {
-                        element.requestFullscreen();
-                } else if (element.mozRequestFullScreen) { // Firefox
-                    element.mozRequestFullScreen();
-                } else if (element.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-                    element.webkitRequestFullscreen();
-                } else if (element.msRequestFullscreen) { // IE/Edge
-                    element.msRequestFullscreen();
-                }
+    const enterFullscreen = (element) => {
 
-                // Reset scale after entering fullscreen
-                TweenMax.to(element, 0.3, {
-                    scale: 1,
-                    ease: Power1.easeOut
-                });
+        element.classList.add('fullscreen-active');
+
+        setTimeout(() => {
+            // After the animation, enter fullscreen
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) { // Firefox
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) { // IE/Edge
+                element.msRequestFullscreen();
             }
-        });
 
-            element.classList.add('fullscreen-active');
-        };
+        }, 
+        250);
+
+    };
 
     // Exit fullscreen mode with animation
         const exitFullscreen = () => {
             const activeImage = document.querySelector('.fullscreen-active');
             if (activeImage) {
-            // Animation when exiting fullscreen
-                TweenMax.to(activeImage, 0.3, {
-                    scale: 0.9,
-                    ease: Power1.easeOut,
-                    onComplete: () => {
-                    // Now exit fullscreen after animation completes
-                        if (document.exitFullscreen) {
-                            document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) { // Firefox
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) { // Chrome, Safari, and Opera
-                        document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) { // IE/Edge
-                        document.msExitFullscreen();
-                    }
 
-                    // Remove the active class after exiting fullscreen
-                    activeImage.classList.remove('fullscreen-active');
+                // Now exit fullscreen after animation completes
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { // Firefox
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { // Chrome, Safari, and Opera
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { // IE/Edge
+                    document.msExitFullscreen();
                 }
-            });
+
+                activeImage.classList.remove('fullscreen-active');
             }
         };
 
@@ -1402,7 +1388,7 @@
             }
         });
 
-    // Event listener for fullscreen changes
+    // Event listener for fullscreen changes. If we exit by pressing ESC, remove the active class
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 document.querySelectorAll('.fullscreen-active').forEach(img => {
