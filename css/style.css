@@ -1,0 +1,5 @@
+/* Div should have border of 1px solid black */
+
+div {
+  border: 1px solid black;
+}
