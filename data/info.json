@@ -1,5 +1,9 @@
 {
   "name": "John Doe",
-  "introduction": "Hi there! I'm **Guillem Poy**\nI'm a software engineer and video games' developer.",
-  "description": "Experienced Full Stack Developer with a demonstrated history of working in the tech industry. Skilled in JavaScript, React, Node.js, Python, and more."
+  "introduction": "Hi there! I'm **Guillem Poy**\nI'm a **software engineer** and **video games developer**.",
+  "aboutMe": [
+    "Hi! I'm Guillem, a **passionate software engineer** and **video games developer** from Barcelona, Spain.",
+    "# Get to know me\n\nI enjoy learning, exploring new ideas, and integrating **innovative solutions** into my work. My approach blends **technical expertise** with creativity in **problem-solving**. Over the years, I’ve worked across various industries (fintech, social networks, factory processes, IT, ...), always driven by **curiosity** and a desire to deeply understand and improve the challenges I face.\n\nAdventurous and open-minded, I’ve lived in Spain, Belgium, Tanzania, Ghana, and the UK. These experiences have shaped my perspective and fueled my passion for **tackling new challenges head-on**. I’m always looking for ways to improve user experiences and **learn new methodologies**, whether that’s in everyday tasks or even more complex areas like rocket science.\n\nIn my free time, I focus on **personal projects**—often designing games or apps that address real-world problems or simply bring joy. I’m also passionate about volunteering with NGOs, as I believe in using technology to create a **meaningful impact**.",
+    "# About this web\nOn this site, you'll find [projects I've worked on](#My-work), which reflect my passion for technology and innovative problem-solving.\n\nIf you'd like to learn more about my professional background, visit my [LinkedIn](https://www.linkedin.com/in/guplem) profile. Feel free to get in touch through the [contact section](#Contact) at the end of this page."
+  ]
 }
