@@ -57,21 +57,17 @@ Add the HTML <strong> tags to emphasize relevant tech/work done to the readers. 
 The project you must write the code about is the following one:
 
 ```
-An app that enables unbanked African consumers to save incrementally and purchase products from a curated marketplace using secure savings and payments APIs.
+Application with the goal of facilitating the connection between Ukrainian refugees and employers.
 
-By leveraging gamification and personalized notifications, Tunzaa helps improve users' financial habits while partnering with trusted brands like Tigo, Vodacom M-Pesa, Clouds Media Group, and Samsung.
+By answering just 10 short questions, any refugee can benefit and find a job easily thanks to TheBigFamily.APP (https://www.thebigfamily.app/).
 
-I worked as a developer of the front-end and quickly became the CTO. When I got in the front-end app needed a heavy refactor, so I redesigned the architecture to improve scalability. We also worked in integrating TDD for the backend and we kickstarted the development of the M-Pesa Mini App using a proprietary framework similar to react with XML.
+The app was build woly by me in record-time as a voluntary project.
 
-The original app was built with React Native and a second and refactored version of the app was built with Flutter.
+The issue was that ukranian refugees wouldn't trust a random google forms to ask for a job in Spain, but they would trust an app.
 
-I did also work on managing the servers/databases, integrating CI/CD technologies, and leading a team of 5 developers.
+So I quickly build an app that they would trust that woud have step by step questions that would be relevant to find a match with potential emplyers found by the NGO.
 
-I also had to pick and choose which tech products to use.
-
-I did that while living in Tanzania.
-
-I was also in charge of the recruitment and training of the team members.
+To do it quickly and try to facilitate as much as possible the NGO work I tried to allow them to use the same tools they used: Google Forms, so whenever a new form from a user was sent from the app I would simply fill the Google Forms the users wouldn't trust with an HTTP request, so the NGO would see the responses from the app next to the ones done in the Google Forms App, understanding the busness needs.
 ``` 
 
 From that information, only use the most relevant parts to write the HTML code snippet.
