@@ -6,6 +6,8 @@ import rehypeStringify from "https://esm.sh/rehype-stringify@7";
 
 const markdownToHtmlCache = new Map();
 
+fillData("page-title", "../data/info.json", "web-title", false);
+fillData("page-description", "../data/info.json", "web-description", false, "content");
 fillData("introduction", "../data/info.json", "introduction");
 fillData("aboutMe", "../data/info.json", "aboutMe");
 
@@ -20,7 +22,7 @@ async function markdownToHtml(markdown) {
   return processedHtml;
 }
 
-async function fillData(elementId, dataUrl, dataKey) {
+async function fillData(elementId, dataUrl, dataKey, parseMarkdown = true, atttribute = null) {
   console.log(elementId + " START) Filling data");
 
   const element = document.getElementById(elementId);
@@ -43,8 +45,15 @@ async function fillData(elementId, dataUrl, dataKey) {
     if (Array.isArray(rawData)) {
       rawData = rawData.join("\n\n");
     }
-    const dataFormatted = await markdownToHtml(rawData);
-    element.innerHTML = String(dataFormatted);
+
+    const dataFormatted = parseMarkdown ? await markdownToHtml(rawData) : rawData;
+
+    if (atttribute) {
+      element.setAttribute(atttribute, String(dataFormatted));
+      return;
+    } else {
+      element.innerHTML = String(dataFormatted);
+    }
 
     console.log(elementId + " END) Filling data");
   } catch (error) {
