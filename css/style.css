@@ -10,15 +10,10 @@ div {
   background-color: rgb(245, 252, 255);
 }
 
-#myWorkFilters button {
-  /* your desired styles here */
-  color: #050;
-  font: bold 84% "trebuchet ms", helvetica, sans-serif;
+#myWorkFilters button:not(.selected) {
   background-color: #fed;
-  border: 1px solid;
-  border-color: #696 #363 #363 #696;
 }
 
-.selected {
+#myWorkFilters button.selected {
   background-color: rgb(52, 180, 52);
 }

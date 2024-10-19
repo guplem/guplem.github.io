@@ -194,11 +194,9 @@ function onClickWorkType(workType, clickedElement) {
 
   if (selectedWorkTypes.includes(workType)) {
     selectedWorkTypes.splice(selectedWorkTypes.indexOf(workType), 1);
+    clickedElement.classList.remove("selected");
   } else {
     selectedWorkTypes.push(workType);
-  }
-
-  if (selectedWorkTypes.includes(workType)) {
     clickedElement.classList.add("selected");
   }
 
@@ -214,11 +212,9 @@ function onClickWorkSkill(workSkill, clickedElement) {
 
   if (selectedWorkSkills.includes(workSkill)) {
     selectedWorkSkills.splice(selectedWorkSkills.indexOf(workSkill), 1);
+    clickedElement.classList.remove("selected");
   } else {
     selectedWorkSkills.push(workSkill);
-  }
-
-  if (selectedWorkSkills.includes(workSkill)) {
     clickedElement.classList.add("selected");
   }
 
@@ -226,7 +222,7 @@ function onClickWorkSkill(workSkill, clickedElement) {
 }
 
 async function getFilterWorks() {
-  const dataUrl = "../data/myWork.json";
+  const dataUrl = `../data/myWork.json`;
 
   // Load the data
   const response = await fetch(dataUrl);
