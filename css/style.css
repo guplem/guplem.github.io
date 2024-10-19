@@ -17,3 +17,8 @@ div {
 #myWorkFilters button.selected {
   background-color: rgb(52, 180, 52);
 }
+
+.work img {
+  width: 25%;
+  height: auto;
+}

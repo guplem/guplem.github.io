@@ -5,7 +5,7 @@
       "date": "01-03-2021",
       "title": "Guillem Poy's Web Portfolio",
       "description": ["My personal web portfolio. It showcases my projects and skills."],
-      "image": "https://placehold.co/600x400",
+      "image": "resources/images/projects/ohia.gif",
       "skills": ["React", "JavaScript", "HTML", "CSS", "Markdown"],
       "links": [
         {

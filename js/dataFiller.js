@@ -306,6 +306,13 @@ async function displayFilteredWorks() {
       await markdownToHtmlElement(work.title, titleElement);
     }
 
+    // Image
+    if (work.image) {
+      const imageElement = document.createElement("img");
+      imageElement.src = work.image;
+      workElement.appendChild(imageElement);
+    }
+
     // Description
     if (work.description) {
       const descriptionElement = document.createElement("div");
