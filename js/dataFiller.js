@@ -20,6 +20,8 @@ fillWithText("aboutMe", "../data/info.json", "aboutMe");
 fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType);
 fillWithGroupedButtons("myWorkSkills", "../data/myWork.json", "works", "skills", onClickWorkSkill);
 displayFilteredWorks();
+// displayAdditionalSections();
+displayContactInfo();
 
 // This is a cache to store the processed HTML of the markdown so we don't have to process it again and everything is faster
 const markdownToHtmlCache = new Map();
@@ -342,5 +344,56 @@ async function displayFilteredWorks() {
     }
 
     element.appendChild(workElement);
+  }
+}
+
+async function displayContactInfo() {
+  const elementId = "contactMethods";
+
+  // Find the element
+  const element = document.getElementById(elementId);
+  if (!element) {
+    throw new Error(`Could not find element with id ${elementId}`);
+  }
+
+  // Fetch the data
+  const dataUrl = `../data/info.json`;
+  const response = await fetch(dataUrl);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data from ${dataUrl}`);
+  }
+  const data = await response.json();
+
+  if (!data["contact"]) {
+    console.log("No contact info found in data");
+    return;
+  }
+
+  // Create each contact info
+  for (const contactInfo of data.contact) {
+    // Create div
+    const contactElement = document.createElement("div");
+    contactElement.classList.add("contactMethod");
+    element.appendChild(contactElement);
+
+    // Create link
+    const linkElement = document.createElement("a");
+    linkElement.href = contactInfo.link;
+    linkElement.target = "_blank";
+    linkElement.rel = "noopener noreferrer";
+    const text = contactInfo.text ? contactInfo.text : contactInfo.link;
+    linkElement.title = contactInfo.name + ": " + text;
+    contactElement.appendChild(linkElement);
+
+    // Add image
+    if (contactInfo.icon) {
+      const imageElement = document.createElement("img");
+      imageElement.src = contactInfo.icon;
+      imageElement.alt = text;
+      linkElement.appendChild(imageElement);
+    }
+
+    // Add text
+    linkElement.appendChild(document.createTextNode(text));
   }
 }

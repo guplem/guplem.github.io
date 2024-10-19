@@ -32,3 +32,13 @@ div {
   width: 100%;
   height: auto;
 }
+
+#contactMethods {
+  display: flex;
+  justify-content: space-around;
+}
+
+.contactMethod img {
+  width: 25px;
+  height: auto;
+}
