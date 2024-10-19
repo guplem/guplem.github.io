@@ -23,6 +23,9 @@ displayFilteredWorks();
 
 // This is a cache to store the processed HTML of the markdown so we don't have to process it again and everything is faster
 const markdownToHtmlCache = new Map();
+/**
+ * @param {string} markdown
+ */
 async function markdownToHtml(markdown) {
   if (markdownToHtmlCache.has(markdown)) {
     return markdownToHtmlCache.get(markdown);
@@ -34,6 +37,9 @@ async function markdownToHtml(markdown) {
   return processedHtml;
 }
 
+/**
+ * @param {string | string[]} textArray
+ */
 function turnTextArrayIntoDistinctPragraphs(textArray) {
   if (Array.isArray(textArray)) {
     return textArray.join("\n\n");
@@ -41,13 +47,16 @@ function turnTextArrayIntoDistinctPragraphs(textArray) {
   return textArray;
 }
 
+/**
+ * @param {string} string
+ */
 function capitalizeFirstLetter(string, lowerRest = true, firstLetterOfEveryWord = false) {
   //   return string.charAt(0).toUpperCase() + string.toLowerCase().slice(1);
 
   if (firstLetterOfEveryWord) {
     return string
       .split(" ")
-      .map((word) => capitalizeFirstLetter(word, lowerRest))
+      .map((/** @type {string} */ word) => capitalizeFirstLetter(word, lowerRest))
       .join(" ");
   }
   if (lowerRest) {
@@ -56,10 +65,17 @@ function capitalizeFirstLetter(string, lowerRest = true, firstLetterOfEveryWord 
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+/**
+ * @param {string[]} array
+ */
 function allToLower(array) {
-  return array.map((item) => item.toLowerCase());
+  return array.map((/** @type {string} */ item) => item.toLowerCase());
 }
 
+/**
+ * @param {string | string[]} markdown
+ * @param {HTMLElement} element
+ */
 async function markdownToHtmlElement(markdown, element, parseMarkdown = true, atttribute = "") {
   const data = turnTextArrayIntoDistinctPragraphs(markdown);
   const dataFormatted = parseMarkdown ? await markdownToHtml(data) : data;
@@ -72,6 +88,11 @@ async function markdownToHtmlElement(markdown, element, parseMarkdown = true, at
   }
 }
 
+/**
+ * @param {string} elementId
+ * @param {RequestInfo | URL} dataUrl
+ * @param {string} dataKey
+ */
 async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, atttribute = "") {
   console.log(`${elementId} START) Filling data as text`);
 
@@ -103,6 +124,13 @@ async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, a
   }
 }
 
+/**
+ * @param {string} elementId
+ * @param {RequestInfo | URL} dataUrl
+ * @param {string} dataKeyToGroup
+ * @param {string} dataKeyInGroup
+ * @param {{ (arg0: string, arg1: HTMLButtonElement): void; }} onClick
+ */
 async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick) {
   console.log(elementId + " START) Filling data as buttons");
 
@@ -146,7 +174,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
       const button = document.createElement("button");
       button.innerHTML = capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
       button.onclick = () => {
-        onClick(entry);
+        onClick(entry, button);
       };
       element.appendChild(button);
     }
@@ -157,25 +185,41 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
   }
 }
 
-function onClickWorkType(wotkType) {
-  console.log(`Clicked on work type: ${wotkType}`);
+/**
+ * @param {string} workType
+ * @param {HTMLButtonElement} clickedElement
+ */
+function onClickWorkType(workType, clickedElement) {
+  console.log(`Clicked on work type: ${workType}`);
 
-  if (selectedWorkTypes.includes(wotkType)) {
-    selectedWorkTypes.splice(selectedWorkTypes.indexOf(wotkType), 1);
+  if (selectedWorkTypes.includes(workType)) {
+    selectedWorkTypes.splice(selectedWorkTypes.indexOf(workType), 1);
   } else {
-    selectedWorkTypes.push(wotkType);
+    selectedWorkTypes.push(workType);
+  }
+
+  if (selectedWorkTypes.includes(workType)) {
+    clickedElement.classList.add("selected");
   }
 
   displayFilteredWorks();
 }
 
-function onClickWorkSkill(workSkill) {
+/**
+ * @param {string} workSkill
+ * @param {HTMLButtonElement} clickedElement
+ */
+function onClickWorkSkill(workSkill, clickedElement) {
   console.log(`Clicked on work skill: ${workSkill}`);
 
   if (selectedWorkSkills.includes(workSkill)) {
     selectedWorkSkills.splice(selectedWorkSkills.indexOf(workSkill), 1);
   } else {
     selectedWorkSkills.push(workSkill);
+  }
+
+  if (selectedWorkSkills.includes(workSkill)) {
+    clickedElement.classList.add("selected");
   }
 
   displayFilteredWorks();
