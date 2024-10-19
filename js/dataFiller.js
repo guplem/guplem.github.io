@@ -194,10 +194,10 @@ function onClickWorkType(workType, clickedElement) {
 
   if (selectedWorkTypes.includes(workType)) {
     selectedWorkTypes.splice(selectedWorkTypes.indexOf(workType), 1);
-    clickedElement.classList.remove("selected");
+    clickedElement.removeAttribute("selected");
   } else {
     selectedWorkTypes.push(workType);
-    clickedElement.classList.add("selected");
+    clickedElement.setAttribute("selected", "");
   }
 
   displayFilteredWorks();
@@ -212,10 +212,10 @@ function onClickWorkSkill(workSkill, clickedElement) {
 
   if (selectedWorkSkills.includes(workSkill)) {
     selectedWorkSkills.splice(selectedWorkSkills.indexOf(workSkill), 1);
-    clickedElement.classList.remove("selected");
+    clickedElement.removeAttribute("selected");
   } else {
     selectedWorkSkills.push(workSkill);
-    clickedElement.classList.add("selected");
+    clickedElement.setAttribute("selected", "");
   }
 
   displayFilteredWorks();
