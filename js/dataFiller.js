@@ -16,7 +16,8 @@ fillWithText("page-description", "../data/info.json", "web-description", false, 
 fillWithText("introduction", "../data/info.json", "introduction");
 fillWithText("aboutMe", "../data/info.json", "aboutMe");
 // fillWithButtons("myWorkTypes", "../data/myWork.json", "works.types");
-fillWorkTypes();
+fillWithGroupedButtons("myWorkTypes", "../data/myWork.json", "works", "types", onClickWorkType);
+fillWithGroupedButtons("myWorkSkills", "../data/myWork.json", "works", "skills", onClickWorkSkill);
 
 async function markdownToHtml(markdown) {
   if (markdownToHtmlCache.has(markdown)) {
@@ -91,10 +92,9 @@ async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, a
   }
 }
 
-async function fillWorkTypes() {
-  console.log("WorkTypes" + " START) Filling data as buttons");
+async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick) {
+  console.log(elementId + " START) Filling data as buttons");
 
-  const elementId = "myWorkTypes";
   try {
     // Find the element
     const element = document.getElementById(elementId);
@@ -103,7 +103,6 @@ async function fillWorkTypes() {
     }
 
     // Load the data
-    const dataUrl = "../data/myWork.json";
     const response = await fetch("../data/myWork.json");
     if (!response.ok) {
       throw new Error("Failed to fetch data from " + dataUrl);
@@ -111,36 +110,47 @@ async function fillWorkTypes() {
     const data = await response.json();
 
     // Find the data
-    const allTypes = [];
-    for (const work of data.works) {
-      for (const type of work.types) {
-        allTypes.push(type.toLowerCase());
+    const allEntries = [];
+    for (const group of data[dataKeyToGroup]) {
+      if (!group[dataKeyInGroup]) {
+        continue;
+      }
+      for (const rawData of group[dataKeyInGroup]) {
+        allEntries.push(rawData.toLowerCase());
       }
     }
 
-    // Count the types
-    const typeCounts = {};
-    for (const type of allTypes) {
-      if (typeCounts[type]) {
-        typeCounts[type]++;
+    // Count the entries
+    const entriesCount = {};
+    for (const entry of allEntries) {
+      if (entriesCount[entry]) {
+        entriesCount[entry]++;
       } else {
-        typeCounts[type] = 1;
+        entriesCount[entry] = 1;
       }
     }
-    console.log(typeCounts);
+    console.log(entriesCount);
 
     // Create the buttons
-    for (const type in typeCounts) {
+    for (const entry in entriesCount) {
       const button = document.createElement("button");
-      button.innerHTML = capitalizeFirstLetter(type, true, true) + " (" + typeCounts[type] + ")";
+      button.innerHTML = capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
       button.onclick = () => {
-        console.log("Button clicked: " + type);
+        onClick(entry);
       };
       element.appendChild(button);
     }
 
-    console.log("WorkTypes" + " END) Filling data as buttons");
+    console.log(elementId + " END) Filling data as buttons");
   } catch (error) {
     console.error("Error filling data in element with id " + elementId, error);
   }
+}
+
+function onClickWorkType(wotkType) {
+  console.log("Clicked on work type: " + wotkType);
+}
+
+function onClickWorkSkill(workSkill) {
+  console.log("Clicked on work skill: " + workSkill);
 }
