@@ -1,0 +1,53 @@
+{
+  "works": [
+    {
+      "types": ["WEB", "mobile", "desktop app"],
+      "date": "01-03-2021",
+      "title": "Guillem Poy's Web Portfolio",
+      "description": ["My personal web portfolio. It showcases my projects and skills."],
+      "skills": ["React", "JavaScript", "HTML", "CSS", "Markdown"],
+      "links": [
+        {
+          "url": "https://guplem.github.io/"
+        },
+        {
+          "type": "github",
+          "url": "github.com/guplem/guplem.github.io"
+        },
+        {
+          "type": "folder",
+          "url": "github.com/guplem/guplem.github.io"
+        }
+      ]
+    },
+    {
+      "types": ["web"],
+      "date": "01-02-2021",
+      "title": "WikiPoll",
+      "description": [
+        "A web app that allows users to create and vote on polls. It's a fun way to learn new things and share opinions.",
+        "This project was created as part of the freeCodeCamp curriculum."
+      ],
+      "skills": ["Flutter", "Dart", "Firebase", "Markdown", "SQL"],
+      "links": [
+        {
+          "type": "web",
+          "url": "https://wikipoll.b4a.app/#/"
+        },
+        {
+          "type": "github",
+          "url": "github.com/guplem/WikiPoll"
+        },
+        {
+          "type": "download",
+          "url": "https://drive.google.com/drive/folders/1PLLpkq04OxXn47WklAQhHMQUFqE_Gsk4?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["desktop APP"],
+      "date": "01-01-2020",
+      "title": "Example"
+    }
+  ]
+}
