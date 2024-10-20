@@ -95,27 +95,3 @@ export async function markdownToHtml(markdown) {
   _markdownToHtmlCache.set(markdown, processedHtml);
   return processedHtml;
 }
-
-/**
- * Convert markdown to HTML and set it to an element
- * @param {string | string[]} markdown
- * @param {HTMLElement} element
- * @param {boolean} parseMarkdown
- * @param {string} atttribute
- */
-export async function markdownToHtmlElement(markdown, element, parseMarkdown = true, atttribute = "") {
-  if (!element) {
-    throw new Error("Element is null or undefined");
-  }
-
-  // Process the markdown or text array
-  const data = turnTextArrayIntoDistinctPragraphs(markdown);
-  const dataFormatted = parseMarkdown ? await markdownToHtml(data) : data;
-
-  // Add the formatted data to the element
-  if (atttribute.length > 0) {
-    element.setAttribute(atttribute, String(dataFormatted));
-  } else {
-    element.innerHTML = String(dataFormatted);
-  }
-}

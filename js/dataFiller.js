@@ -1,4 +1,5 @@
-import * as utils from "./utils.js";
+import * as utils from "./textUtils.js";
+import * as uiUtils from "./uiUtils.js";
 
 // Initialize arrays to store selected work types and skills
 const selectedWorkTypes = [];
@@ -41,7 +42,7 @@ async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, a
     }
 
     // Add the data to the element
-    await utils.markdownToHtmlElement(rawData, element, parseMarkdown, atttribute);
+    await uiUtils.setMarkdownInHtmlElement(rawData, element, parseMarkdown, atttribute);
   } catch (error) {
     console.error("Error filling data in element with id " + elementId, error);
   }
@@ -89,11 +90,8 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
 
     // Create and add buttons to the element
     for (const entry in entriesCount) {
-      const button = document.createElement("button");
-      button.innerHTML = utils.capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
-      button.onclick = () => {
-        onClick(entry, button);
-      };
+      const textButton = utils.capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
+      const button = uiUtils.createButton(textButton, () => onClick(entry, button));
       element.appendChild(button);
     }
   } catch (error) {
@@ -158,7 +156,7 @@ async function displayFilteredWorks() {
   }
 
   // Clear existing content
-  element.innerHTML = "";
+  uiUtils.clearElement(element);
 
   // Sort works by date
   filteredWorks.sort((a, b) => {
@@ -178,7 +176,7 @@ async function displayFilteredWorks() {
     if (work.title) {
       const titleElement = document.createElement("h2");
       workElement.appendChild(titleElement);
-      await utils.markdownToHtmlElement(work.title, titleElement);
+      await uiUtils.setMarkdownInHtmlElement(work.title, titleElement);
     }
 
     if (work.image) {
@@ -190,25 +188,25 @@ async function displayFilteredWorks() {
     if (work.description) {
       const descriptionElement = document.createElement("div");
       workElement.appendChild(descriptionElement);
-      await utils.markdownToHtmlElement(work.description, descriptionElement);
+      await uiUtils.setMarkdownInHtmlElement(work.description, descriptionElement);
     }
 
     if (work.skills) {
       const skillsElement = document.createElement("div");
       workElement.appendChild(skillsElement);
-      await utils.markdownToHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
+      await uiUtils.setMarkdownInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
     }
 
     if (work.types) {
       const typesElement = document.createElement("div");
       workElement.appendChild(typesElement);
-      await utils.markdownToHtmlElement("Types: " + work.types.join(", "), typesElement);
+      await uiUtils.setMarkdownInHtmlElement("Types: " + work.types.join(", "), typesElement);
     }
 
     if (work.date) {
       const dateElement = document.createElement("div");
       workElement.appendChild(dateElement);
-      await utils.markdownToHtmlElement("Date: " + work.date, dateElement);
+      await uiUtils.setMarkdownInHtmlElement("Date: " + work.date, dateElement);
     }
 
     element.appendChild(workElement);
