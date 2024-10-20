@@ -55,8 +55,9 @@ async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, a
  * @param {string} dataKeyToGroup
  * @param {string} dataKeyInGroup
  * @param {(arg0: string, arg1: HTMLButtonElement) => void} onClick
+ * @param {boolean} addShowExperiencesAriaLabel
  */
-async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick) {
+async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick, addShowExperiencesAriaLabel = true) {
   try {
     // Find the target element
     const element = document.getElementById(elementId);
@@ -92,6 +93,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
     for (const entry in entriesCount) {
       const textButton = textUtils.capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
       const button = uiUtils.createButton(textButton, () => onClick(entry, button));
+      if (addShowExperiencesAriaLabel) button.setAttribute("aria-label", `Show ${textUtils.capitalizeFirstLetter(entry, true, true)} experiences`);
       element.appendChild(button);
     }
   } catch (error) {
@@ -141,6 +143,22 @@ async function getFilterWorks() {
 }
 
 /**
+ * Debounce a function, making it callable only after a certain delay, and preventing multiple calls in the meantime
+ * @param {(...args: any[]) => void} func
+ * @param {number} delay
+ */
+// function debounce(func, delay) {
+//   let timeoutId;
+//   return function (...args) {
+//     clearTimeout(timeoutId);
+//     timeoutId = setTimeout(() => func.apply(this, args), delay);
+//   };
+// }
+
+// // Debounce the display of filtered works
+// const debouncedDisplayFilteredWorks = debounce(displayFilteredWorks, 150);
+
+/**
  * Display filtered works
  */
 async function displayFilteredWorks() {
@@ -171,6 +189,7 @@ async function displayFilteredWorks() {
     const workElement = document.createElement("div");
     workElement.classList.add("work");
     element.appendChild(workElement);
+    workElement.tabIndex = 0; // Make it focusable with keyboard
 
     // Add work details to the element
     if (work.title?.length) {
@@ -182,6 +201,7 @@ async function displayFilteredWorks() {
     if (work.image?.length) {
       const imageElement = document.createElement("img");
       imageElement.src = work.image;
+      imageElement.alt = work.imageAlt || `Image for ${work.title}`;
       workElement.appendChild(imageElement);
     }
 
@@ -272,7 +292,7 @@ function onClickWorkType(workType, clickedElement) {
     clickedElement.setAttribute("selected", "");
   }
 
-  displayFilteredWorks();
+  debouncedDisplayFilteredWorks();
 }
 
 /**
@@ -289,5 +309,5 @@ function onClickWorkSkill(workSkill, clickedElement) {
     clickedElement.setAttribute("selected", "");
   }
 
-  displayFilteredWorks();
+  debouncedDisplayFilteredWorks();
 }

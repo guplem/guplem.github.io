@@ -10,17 +10,27 @@ import remarkRehype from "https://esm.sh/remark-rehype@8";
 // @ts-ignore
 import rehypeStringify from "https://esm.sh/rehype-stringify@7";
 
+// Cache to store JSON data for faster subsequent access
+const _jsonDataCached = new Map();
+
 /**
  * Fetch JSON data from a URL
  * @param {RequestInfo | URL} url
  * @returns {Promise<any>}
  */
 export async function fetchJsonData(url) {
+  if (_jsonDataCached.has(url)) {
+    return _jsonDataCached.get(url);
+  }
+
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch data from ${url}`);
   }
-  return await response.json();
+  const data = await response.json();
+
+  _jsonDataCached.set(url, data);
+  return data;
 }
 
 /**
@@ -72,7 +82,7 @@ export function turnTextArrayIntoDistinctPragraphs(textArray) {
 }
 
 // Cache to store processed HTML of markdown for faster subsequent access
-const _markdownToHtmlCache = new Map();
+const _markdownFormattedAsHtmlCache = new Map();
 
 /**
  * Convert markdown to HTML
@@ -84,14 +94,14 @@ export async function markdownToHtml(markdown) {
     throw new Error("Markdown input is empty or undefined");
   }
 
-  if (_markdownToHtmlCache.has(markdown)) {
-    return _markdownToHtmlCache.get(markdown);
+  if (_markdownFormattedAsHtmlCache.has(markdown)) {
+    return _markdownFormattedAsHtmlCache.get(markdown);
   }
 
   // Process markdown to HTML
   const processedHtml = await unified().use(remarkParse).use(remarkBreaks).use(remarkRehype).use(rehypeStringify).process(markdown);
 
   // Cache the processed HTML
-  _markdownToHtmlCache.set(markdown, processedHtml);
+  _markdownFormattedAsHtmlCache.set(markdown, processedHtml);
   return processedHtml;
 }
