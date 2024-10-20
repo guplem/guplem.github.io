@@ -184,11 +184,13 @@ async function displayFilteredWorks() {
     return 0;
   });
 
-  // Create and add work elements
+  // Create a document fragment
+  const fragment = document.createDocumentFragment();
+
+  // Create and add work elements to the fragment
   for (const work of filteredWorks) {
     const workElement = document.createElement("div");
     workElement.classList.add("work");
-    element.appendChild(workElement);
     workElement.tabIndex = 0; // Make it focusable with keyboard
 
     // Add work details to the element
@@ -229,8 +231,11 @@ async function displayFilteredWorks() {
       await uiUtils.setMarkdownInHtmlElement("Date: " + work.date, dateElement);
     }
 
-    element.appendChild(workElement);
+    fragment.appendChild(workElement);
   }
+
+  // Append the fragment to the DOM
+  element.appendChild(fragment);
 }
 
 /**
