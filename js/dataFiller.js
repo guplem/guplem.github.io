@@ -1,4 +1,4 @@
-import * as utils from "./textUtils.js";
+import * as textUtils from "./textUtils.js";
 import * as uiUtils from "./uiUtils.js";
 
 // Initialize arrays to store selected work types and skills
@@ -33,7 +33,7 @@ async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, a
     }
 
     // Load the data
-    const data = await utils.fetchJsonData(dataUrl);
+    const data = await textUtils.fetchJsonData(dataUrl);
 
     // Extract the relevant data
     const rawData = data[dataKey];
@@ -65,7 +65,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
     }
 
     // Load the data
-    const data = await utils.fetchJsonData(dataUrl);
+    const data = await textUtils.fetchJsonData(dataUrl);
 
     // Process the data
     const allEntries = [];
@@ -90,7 +90,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
 
     // Create and add buttons to the element
     for (const entry in entriesCount) {
-      const textButton = utils.capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
+      const textButton = textUtils.capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
       const button = uiUtils.createButton(textButton, () => onClick(entry, button));
       element.appendChild(button);
     }
@@ -105,14 +105,14 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
  */
 async function getFilterWorks() {
   // Load the data
-  const allWorks = (await utils.fetchJsonData(`../data/myWork.json`))["works"];
+  const allWorks = (await textUtils.fetchJsonData(`../data/myWork.json`))["works"];
 
   // Filter the works
   const filteredWorks = [];
   for (const work of allWorks) {
     let hasSelectedType = false;
     for (const selectedType of selectedWorkTypes) {
-      if (work.types && utils.allToLower(work.types).includes(selectedType)) {
+      if (work.types && textUtils.allToLower(work.types).includes(selectedType)) {
         hasSelectedType = true;
         break;
       }
@@ -124,7 +124,7 @@ async function getFilterWorks() {
 
     let hasSelectedSkill = false;
     for (const selectedSkill of selectedWorkSkills) {
-      if (work.skills && utils.allToLower(work.skills).includes(selectedSkill)) {
+      if (work.skills && textUtils.allToLower(work.skills).includes(selectedSkill)) {
         hasSelectedSkill = true;
         break;
       }
@@ -226,7 +226,7 @@ async function displayContactInfo() {
   }
 
   // Load the data
-  const data = await utils.fetchJsonData(`../data/info.json`);
+  const data = await textUtils.fetchJsonData(`../data/info.json`);
 
   if (!data["contact"]) {
     console.warn("No contact info found in data");
