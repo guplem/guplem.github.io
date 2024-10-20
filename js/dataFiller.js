@@ -297,7 +297,8 @@ function onClickWorkType(workType, clickedElement) {
     clickedElement.setAttribute("selected", "");
   }
 
-  debouncedDisplayFilteredWorks();
+  // debouncedDisplayFilteredWorks();
+  displayFilteredWorks();
 }
 
 /**
@@ -314,5 +315,6 @@ function onClickWorkSkill(workSkill, clickedElement) {
     clickedElement.setAttribute("selected", "");
   }
 
-  debouncedDisplayFilteredWorks();
+  // debouncedDisplayFilteredWorks();
+  displayFilteredWorks();
 }
