@@ -1,14 +1,4 @@
-// Import necessary modules for markdown processing
-// @ts-ignore
-import { unified } from "https://esm.sh/unified@10";
-// @ts-ignore
-import remarkParse from "https://esm.sh/remark-parse@10";
-// @ts-ignore
-import remarkBreaks from "https://esm.sh/remark-breaks@4";
-// @ts-ignore
-import remarkRehype from "https://esm.sh/remark-rehype@8";
-// @ts-ignore
-import rehypeStringify from "https://esm.sh/rehype-stringify@7";
+import * as utils from "./utils.js";
 
 // Initialize arrays to store selected work types and skills
 const selectedWorkTypes = [];
@@ -24,103 +14,6 @@ fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills",
 displayFilteredWorks();
 // displayAdditionalSections();
 displayContactInfo();
-
-/**
- * Capitalize the first letter of a string
- * @param {string} string
- * @param {boolean} lowerRest
- * @param {boolean} firstLetterOfEveryWord
- * @returns {string}
- */
-function capitalizeFirstLetter(string, lowerRest = true, firstLetterOfEveryWord = false) {
-  if (!string) {
-    throw new Error("Input string is empty or undefined");
-  }
-
-  if (firstLetterOfEveryWord) {
-    return string
-      .split(" ")
-      .map((word) => capitalizeFirstLetter(word, lowerRest))
-      .join(" ");
-  }
-  if (lowerRest) {
-    return string.charAt(0).toUpperCase() + string.toLowerCase().slice(1);
-  }
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-/**
- * Convert all array elements to lowercase
- * @param {string[]} array
- * @returns {string[]}
- */
-function allToLower(array) {
-  if (!Array.isArray(array)) {
-    throw new Error("Input is not an array");
-  }
-  return array.map((item) => item.toLowerCase());
-}
-
-/**
- * Convert text array to distinct paragraphs
- * @param {string | string[]} textArray
- * @returns {string}
- */
-function turnTextArrayIntoDistinctPragraphs(textArray) {
-  if (Array.isArray(textArray)) {
-    return textArray.join("\n\n");
-  }
-  return textArray;
-}
-
-// Cache to store processed HTML of markdown for faster subsequent access
-const markdownToHtmlCache = new Map();
-
-/**
- * Convert markdown to HTML
- * @param {string} markdown
- * @returns {Promise<string>}
- */
-async function markdownToHtml(markdown) {
-  if (!markdown) {
-    throw new Error("Markdown input is empty or undefined");
-  }
-
-  if (markdownToHtmlCache.has(markdown)) {
-    return markdownToHtmlCache.get(markdown);
-  }
-
-  // Process markdown to HTML
-  const processedHtml = await unified().use(remarkParse).use(remarkBreaks).use(remarkRehype).use(rehypeStringify).process(markdown);
-
-  // Cache the processed HTML
-  markdownToHtmlCache.set(markdown, processedHtml);
-  return processedHtml;
-}
-
-/**
- * Convert markdown to HTML and set it to an element
- * @param {string | string[]} markdown
- * @param {HTMLElement} element
- * @param {boolean} parseMarkdown
- * @param {string} atttribute
- */
-async function markdownToHtmlElement(markdown, element, parseMarkdown = true, atttribute = "") {
-  if (!element) {
-    throw new Error("Element is null or undefined");
-  }
-
-  // Process the markdown or text array
-  const data = turnTextArrayIntoDistinctPragraphs(markdown);
-  const dataFormatted = parseMarkdown ? await markdownToHtml(data) : data;
-
-  // Add the formatted data to the element
-  if (atttribute.length > 0) {
-    element.setAttribute(atttribute, String(dataFormatted));
-  } else {
-    element.innerHTML = String(dataFormatted);
-  }
-}
 
 /**
  * Fill an element with text from a JSON file
@@ -139,11 +32,7 @@ async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, a
     }
 
     // Load the data
-    const response = await fetch(dataUrl);
-    if (!response.ok) {
-      throw new Error("Failed to fetch data from " + dataUrl);
-    }
-    const data = await response.json();
+    const data = await utils.fetchJsonData(dataUrl);
 
     // Extract the relevant data
     const rawData = data[dataKey];
@@ -152,7 +41,7 @@ async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, a
     }
 
     // Add the data to the element
-    await markdownToHtmlElement(rawData, element, parseMarkdown, atttribute);
+    await utils.markdownToHtmlElement(rawData, element, parseMarkdown, atttribute);
   } catch (error) {
     console.error("Error filling data in element with id " + elementId, error);
   }
@@ -175,11 +64,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
     }
 
     // Load the data
-    const response = await fetch(dataUrl);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data from ${dataUrl}`);
-    }
-    const data = await response.json();
+    const data = await utils.fetchJsonData(dataUrl);
 
     // Process the data
     const allEntries = [];
@@ -205,7 +90,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
     // Create and add buttons to the element
     for (const entry in entriesCount) {
       const button = document.createElement("button");
-      button.innerHTML = capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
+      button.innerHTML = utils.capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
       button.onclick = () => {
         onClick(entry, button);
       };
@@ -221,21 +106,15 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
  * @returns {Promise<any[]>}
  */
 async function getFilterWorks() {
-  const dataUrl = `../data/myWork.json`;
-
   // Load the data
-  const response = await fetch(dataUrl);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch data from ${dataUrl}`);
-  }
-  const allWorks = (await response.json())["works"];
+  const allWorks = (await utils.fetchJsonData(`../data/myWork.json`))["works"];
 
   // Filter the works
   const filteredWorks = [];
   for (const work of allWorks) {
     let hasSelectedType = false;
     for (const selectedType of selectedWorkTypes) {
-      if (work.types && allToLower(work.types).includes(selectedType)) {
+      if (work.types && utils.allToLower(work.types).includes(selectedType)) {
         hasSelectedType = true;
         break;
       }
@@ -247,7 +126,7 @@ async function getFilterWorks() {
 
     let hasSelectedSkill = false;
     for (const selectedSkill of selectedWorkSkills) {
-      if (work.skills && allToLower(work.skills).includes(selectedSkill)) {
+      if (work.skills && utils.allToLower(work.skills).includes(selectedSkill)) {
         hasSelectedSkill = true;
         break;
       }
@@ -299,7 +178,7 @@ async function displayFilteredWorks() {
     if (work.title) {
       const titleElement = document.createElement("h2");
       workElement.appendChild(titleElement);
-      await markdownToHtmlElement(work.title, titleElement);
+      await utils.markdownToHtmlElement(work.title, titleElement);
     }
 
     if (work.image) {
@@ -311,25 +190,25 @@ async function displayFilteredWorks() {
     if (work.description) {
       const descriptionElement = document.createElement("div");
       workElement.appendChild(descriptionElement);
-      await markdownToHtmlElement(work.description, descriptionElement);
+      await utils.markdownToHtmlElement(work.description, descriptionElement);
     }
 
     if (work.skills) {
       const skillsElement = document.createElement("div");
       workElement.appendChild(skillsElement);
-      await markdownToHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
+      await utils.markdownToHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
     }
 
     if (work.types) {
       const typesElement = document.createElement("div");
       workElement.appendChild(typesElement);
-      await markdownToHtmlElement("Types: " + work.types.join(", "), typesElement);
+      await utils.markdownToHtmlElement("Types: " + work.types.join(", "), typesElement);
     }
 
     if (work.date) {
       const dateElement = document.createElement("div");
       workElement.appendChild(dateElement);
-      await markdownToHtmlElement("Date: " + work.date, dateElement);
+      await utils.markdownToHtmlElement("Date: " + work.date, dateElement);
     }
 
     element.appendChild(workElement);
@@ -349,12 +228,7 @@ async function displayContactInfo() {
   }
 
   // Load the data
-  const dataUrl = `../data/info.json`;
-  const response = await fetch(dataUrl);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch data from ${dataUrl}`);
-  }
-  const data = await response.json();
+  const data = await utils.fetchJsonData(`../data/info.json`);
 
   if (!data["contact"]) {
     console.warn("No contact info found in data");
