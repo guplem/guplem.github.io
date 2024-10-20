@@ -173,37 +173,37 @@ async function displayFilteredWorks() {
     element.appendChild(workElement);
 
     // Add work details to the element
-    if (work.title) {
+    if (work.title?.length) {
       const titleElement = document.createElement("h2");
       workElement.appendChild(titleElement);
       await uiUtils.setMarkdownInHtmlElement(work.title, titleElement);
     }
 
-    if (work.image) {
+    if (work.image?.length) {
       const imageElement = document.createElement("img");
       imageElement.src = work.image;
       workElement.appendChild(imageElement);
     }
 
-    if (work.description) {
+    if (work.description?.length) {
       const descriptionElement = document.createElement("div");
       workElement.appendChild(descriptionElement);
       await uiUtils.setMarkdownInHtmlElement(work.description, descriptionElement);
     }
 
-    if (work.skills) {
+    if (work.skills?.length) {
       const skillsElement = document.createElement("div");
       workElement.appendChild(skillsElement);
       await uiUtils.setMarkdownInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
     }
 
-    if (work.types) {
+    if (work.types?.length) {
       const typesElement = document.createElement("div");
       workElement.appendChild(typesElement);
       await uiUtils.setMarkdownInHtmlElement("Types: " + work.types.join(", "), typesElement);
     }
 
-    if (work.date) {
+    if (work.date?.length) {
       const dateElement = document.createElement("div");
       workElement.appendChild(dateElement);
       await uiUtils.setMarkdownInHtmlElement("Date: " + work.date, dateElement);
@@ -247,7 +247,7 @@ async function displayContactInfo() {
     linkElement.title = contactInfo.name + ": " + text;
     contactElement.appendChild(linkElement);
 
-    if (contactInfo.icon) {
+    if (contactInfo.icon?.length) {
       const imageElement = document.createElement("img");
       imageElement.src = contactInfo.icon;
       imageElement.alt = text;
