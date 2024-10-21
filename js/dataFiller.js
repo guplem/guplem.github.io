@@ -22,27 +22,28 @@ displayContactInfo();
  * @param {RequestInfo | URL} dataUrl
  * @param {string} dataKey
  * @param {boolean} parseMarkdown
- * @param {string} atttribute
+ * @param {string} attribute
  */
-async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, atttribute = "") {
+async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, attribute = "") {
   try {
-    // Find the target element
     const element = document.getElementById(elementId);
     if (!element) {
       throw new Error(`Could not find element with id ${elementId}`);
     }
 
-    // Load the data
     const data = await textUtils.fetchJsonData(dataUrl);
-
-    // Extract the relevant data
     const rawData = data[dataKey];
     if (!rawData) {
       throw new Error("Could not find data with key " + dataKey + " in " + dataUrl);
     }
 
-    // Add the data to the element
-    await uiUtils.setMarkdownInHtmlElement(rawData, element, parseMarkdown, atttribute);
+    if (parseMarkdown) {
+      const fragment = document.createDocumentFragment();
+      await uiUtils.setMarkdownInHtmlElement(rawData, fragment, parseMarkdown, attribute);
+      element.appendChild(fragment);
+    } else {
+      await uiUtils.setMarkdownInHtmlElement(rawData, element, parseMarkdown, attribute);
+    }
   } catch (error) {
     console.error("Error filling data in element with id " + elementId, error);
   }
@@ -89,13 +90,21 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
       }
     }
 
-    // Create and add buttons to the element
+    // Create a document fragment
+    const fragment = document.createDocumentFragment();
+
+    // Create and add buttons to the fragment
     for (const entry in entriesCount) {
       const textButton = textUtils.capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
       const button = uiUtils.createButton(textButton, () => onClick(entry, button));
-      if (addShowExperiencesAriaLabel) button.setAttribute("aria-label", `Show ${textUtils.capitalizeFirstLetter(entry, true, true)} experiences`);
-      element.appendChild(button);
+      if (addShowExperiencesAriaLabel) {
+        button.setAttribute("aria-label", `Show ${textUtils.capitalizeFirstLetter(entry, true, true)} experiences`);
+      }
+      fragment.appendChild(button);
     }
+
+    // Append the fragment to the element
+    element.appendChild(fragment);
   } catch (error) {
     console.error(`Error filling data in element with id ${elementId}`, error);
   }
@@ -258,19 +267,20 @@ async function displayContactInfo() {
     return;
   }
 
-  // Create and add contact elements
+  // Create a document fragment
+  const fragment = document.createDocumentFragment();
+
+  // Create and add contact elements to the fragment
   for (const contactInfo of data.contact) {
     const contactElement = document.createElement("div");
     contactElement.classList.add("contactMethod");
-    element.appendChild(contactElement);
 
     const linkElement = document.createElement("a");
     linkElement.href = contactInfo.link;
     linkElement.target = "_blank";
     linkElement.rel = "noopener noreferrer";
-    const text = contactInfo.text ? contactInfo.text : contactInfo.link;
-    linkElement.title = contactInfo.name + ": " + text;
-    contactElement.appendChild(linkElement);
+    const text = contactInfo.text ?? contactInfo.link;
+    linkElement.title = `${contactInfo.name}: ${text}`;
 
     if (contactInfo.icon?.length) {
       const imageElement = document.createElement("img");
@@ -280,7 +290,12 @@ async function displayContactInfo() {
     }
 
     linkElement.appendChild(document.createTextNode(text));
+    contactElement.appendChild(linkElement);
+    fragment.appendChild(contactElement);
   }
+
+  // Append the fragment to the element
+  element.appendChild(fragment);
 }
 
 /**

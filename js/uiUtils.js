@@ -1,26 +1,39 @@
 import * as textUtils from "./textUtils.js";
 
 /**
- * Convert markdown to HTML and set it to an element
+ * Convert markdown to HTML and set it to an element or fragment
  * @param {string | string[]} markdown
- * @param {HTMLElement} element
+ * @param {HTMLElement | DocumentFragment} container
  * @param {boolean} parseMarkdown
- * @param {string} atttribute
+ * @param {string} attribute
  */
-export async function setMarkdownInHtmlElement(markdown, element, parseMarkdown = true, atttribute = "") {
-  if (!element) {
-    throw new Error("Element is null or undefined");
+export async function setMarkdownInHtmlElement(markdown, container, parseMarkdown = true, attribute = "") {
+  if (!container) {
+    throw new Error("Container is null or undefined");
   }
 
   // Process the markdown or text array
   const data = textUtils.turnTextArrayIntoDistinctPragraphs(markdown);
   const dataFormatted = parseMarkdown ? await textUtils.markdownToHtml(data) : data;
 
-  // Add the formatted data to the element
-  if (atttribute.length > 0) {
-    element.setAttribute(atttribute, String(dataFormatted));
+  if (container instanceof DocumentFragment) {
+    // For DocumentFragment, create a temporary div to parse the HTML
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = String(dataFormatted);
+
+    // Move all child nodes from the temporary div to the fragment
+    while (tempDiv.firstChild) {
+      container.appendChild(tempDiv.firstChild);
+    }
+  } else if (container instanceof HTMLElement) {
+    // For HTMLElement, proceed as before
+    if (attribute.length > 0) {
+      container.setAttribute(attribute, String(dataFormatted));
+    } else {
+      container.innerHTML = String(dataFormatted);
+    }
   } else {
-    element.innerHTML = String(dataFormatted);
+    throw new Error("Container must be either an HTMLElement or a DocumentFragment");
   }
 }
 
