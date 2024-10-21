@@ -13,7 +13,7 @@ fillWithText("aboutMe", "../data/info.json", "aboutMe");
 fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType);
 fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill);
 displayFilteredWorks();
-// displayAdditionalSections();
+displayAdditionalSections();
 displayContactInfo();
 
 /**
@@ -177,10 +177,7 @@ async function displayFilteredWorks() {
   const elementId = "myWorkFiltered";
 
   // Find the target element
-  const element = document.getElementById(elementId);
-  if (!element) {
-    throw new Error(`Could not find element with id ${elementId}`);
-  }
+  const element = uiUtils.getElement(elementId);
 
   // Clear existing content
   uiUtils.clearElement(element);
@@ -248,16 +245,64 @@ async function displayFilteredWorks() {
 }
 
 /**
+ * Display additional sections
+ */
+async function displayAdditionalSections() {
+  const elementId = "additionalSections";
+
+  // Find the target element
+  const element = uiUtils.getElement(elementId);
+
+  // Load the data
+  const data = await textUtils.fetchJsonData(`../data/info.json`);
+
+  if (!data["additionalSections"]) {
+    // No additional sections found in data
+    return;
+  }
+
+  // Create a document fragment
+  const fragment = document.createDocumentFragment();
+
+  // Create and add additional section elements to the fragment
+  for (const section of data.additionalSections) {
+    const sectionElement = document.createElement("div");
+    sectionElement.classList.add("additionalSection");
+
+    if (section.title?.length) {
+      const titleElement = document.createElement("h1");
+      sectionElement.appendChild(titleElement);
+      await uiUtils.setMarkdownInHtmlElement(section.title, titleElement);
+    }
+
+    if (section.content?.length) {
+      const contentElement = document.createElement("div");
+      sectionElement.appendChild(contentElement);
+      await uiUtils.setMarkdownInHtmlElement(section.content, contentElement);
+    }
+
+    if (section.image?.length) {
+      const imageElement = document.createElement("img");
+      imageElement.src = section.image;
+      imageElement.alt = section.imageAlt || `Image of ${section.title}`;
+      sectionElement.appendChild(imageElement);
+    }
+
+    fragment.appendChild(sectionElement);
+  }
+
+  // Append the fragment to the element
+  element.appendChild(fragment);
+}
+
+/**
  * Display contact information
  */
 async function displayContactInfo() {
   const elementId = "contactMethods";
 
   // Find the target element
-  const element = document.getElementById(elementId);
-  if (!element) {
-    throw new Error(`Could not find element with id ${elementId}`);
-  }
+  const element = uiUtils.getElement(elementId);
 
   // Load the data
   const data = await textUtils.fetchJsonData(`../data/info.json`);

@@ -1,5 +1,9 @@
 /* Div should have border of 1px solid black */
 
+img {
+  max-width: 100%;
+}
+
 div {
   border: 1px solid black;
   margin: 10px;

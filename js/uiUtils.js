@@ -57,3 +57,16 @@ export function createButton(text, onClick) {
 export function clearElement(element) {
   element.innerHTML = "";
 }
+
+/**
+ * Get an element by its id
+ * @param {string} elementId
+ * @returns {HTMLElement}
+ */
+export function getElement(elementId) {
+  const element = document.getElementById(elementId);
+  if (!element) {
+    throw new Error(`Could not find element with id "${elementId}"`);
+  }
+  return element;
+}
