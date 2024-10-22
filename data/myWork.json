@@ -28,7 +28,11 @@
       "title": "WikiPoll",
       "description": [
         "A web app that allows users to create and vote on polls. It's a fun way to learn new things and share opinions.",
-        "This project was created as part of the freeCodeCamp curriculum."
+        "This project was created as part of the freeCodeCamp curriculum.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "Aenean pharetra pharetra mauris, placerat pretium dolor ultricies sed. Proin dignissim dui at scelerisque ultricies. Vestibulum cursus libero sagittis purus luctus consequat.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "Aenean pharetra pharetra mauris, placerat pretium dolor ultricies sed. Proin dignissim dui at scelerisque ultricies. Vestibulum cursus libero sagittis purus luctus consequat."
       ],
       "image": "https://placehold.co/600x400",
       "skills": ["Flutter", "Dart", "Firebase", "Markdown", "SQL"],

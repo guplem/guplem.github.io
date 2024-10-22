@@ -1,0 +1,26 @@
+.work {
+  background-color: rgb(245, 252, 255);
+}
+
+#myWorkFilters button:not([selected]) {
+  background-color: #fed;
+}
+
+#myWorkFilters button[selected] {
+  background-color: rgb(52, 180, 52);
+}
+
+#myWorkFiltered {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.work {
+  width: 30%;
+}
+
+.work img {
+  width: 100%;
+  height: auto;
+}

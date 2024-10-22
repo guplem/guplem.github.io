@@ -1,0 +1,27 @@
+/* Div iwth id introduction must have the same size as the screen */
+#introduction {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+
+  height: 100vh;
+  width: 100vw;
+  /* width: var(--w);
+  height: var(--h); */
+}
+
+#introduction p,
+#introduction h1 {
+  animation: 1.5s ease 0s 1 SlideFromTop;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  padding: 5%;
+  font-weight: 100;
+}
+
+#introduction b,
+#introduction strong {
+  color: var(--primary-accent-color);
+}
