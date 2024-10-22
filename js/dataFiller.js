@@ -8,7 +8,7 @@ const selectedWorkSkills = [];
 // Fill page elements with content from JSON files
 fillWithText("page-title", "../data/info.json", "web-title", false);
 fillWithText("page-description", "../data/info.json", "web-description", false, "content");
-fillWithText("introduction", "../data/info.json", "introduction");
+fillWithText("introduction", "../data/info.json", "introduction", true, "", "h1");
 fillWithText("aboutMe", "../data/info.json", "aboutMe");
 fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType);
 fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill);
@@ -23,8 +23,9 @@ displayContactInfo();
  * @param {string} dataKey
  * @param {boolean} parseMarkdown
  * @param {string} attribute
+ * @param {string | undefined} paragraphTag
  */
-async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, attribute = "") {
+async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, attribute = "", paragraphTag = undefined) {
   try {
     const element = document.getElementById(elementId);
     if (!element) {
@@ -39,10 +40,10 @@ async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, a
 
     if (parseMarkdown) {
       const fragment = document.createDocumentFragment();
-      await uiUtils.setMarkdownInHtmlElement(rawData, fragment, parseMarkdown, attribute);
+      await uiUtils.setMarkdownInHtmlElement(rawData, fragment, parseMarkdown, attribute, paragraphTag);
       element.appendChild(fragment);
     } else {
-      await uiUtils.setMarkdownInHtmlElement(rawData, element, parseMarkdown, attribute);
+      await uiUtils.setMarkdownInHtmlElement(rawData, element, parseMarkdown, attribute, paragraphTag);
     }
   } catch (error) {
     console.error("Error filling data in element with id " + elementId, error);

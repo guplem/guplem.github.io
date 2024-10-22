@@ -9,6 +9,8 @@ import remarkBreaks from "https://esm.sh/remark-breaks@4";
 import remarkRehype from "https://esm.sh/remark-rehype@8";
 // @ts-ignore
 import rehypeStringify from "https://esm.sh/rehype-stringify@7";
+// @ts-ignore
+import * as cheerio from "https://esm.sh/cheerio@1.0.0-rc.12";
 
 // Cache to store JSON data for faster subsequent access
 const _jsonDataCached = new Map();
@@ -88,8 +90,9 @@ const _markdownFormattedAsHtmlCache = new Map();
  * Convert markdown to HTML
  * @param {string} markdown
  * @returns {Promise<string>}
+ * @param {string | undefined} paragraphTag
  */
-export async function markdownToHtml(markdown) {
+export async function markdownToHtml(markdown, paragraphTag = undefined) {
   if (!markdown) {
     throw new Error("Markdown input is empty or undefined");
   }
@@ -101,7 +104,35 @@ export async function markdownToHtml(markdown) {
   // Process markdown to HTML
   const processedHtml = await unified().use(remarkParse).use(remarkBreaks).use(remarkRehype).use(rehypeStringify).process(markdown);
 
+  let htmlString = String(processedHtml);
+
+  // If a paragraphTag is provided, replace <p> tags
+  if (paragraphTag) {
+    const html = cheerio.load(htmlString);
+
+    // Replace <p> tags with the specified paragraphTag
+    html("p").each(function () {
+      html(this).replaceWith(`<${paragraphTag}>${html(this).html()}</${paragraphTag}>`);
+    });
+
+    htmlString = html.html();
+  }
+
   // Cache the processed HTML
-  _markdownFormattedAsHtmlCache.set(markdown, processedHtml);
-  return processedHtml;
+  _markdownFormattedAsHtmlCache.set(markdown, htmlString);
+  return htmlString;
+}
+
+function useH1InsteadOfP(transformer) {
+  return transformer({
+    visit: "element",
+    name: "heading",
+    match: (node) => node.type === "heading" && node.depth === 1,
+    replace: (node) => ({
+      type: "element",
+      tagName: "h1",
+      properties: node.properties,
+      children: node.children,
+    }),
+  });
 }

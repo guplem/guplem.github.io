@@ -1,13 +1,33 @@
-/* Div should have border of 1px solid black */
-
-img {
-  max-width: 100%;
-}
-
 div {
   border: 1px solid black;
-  margin: 10px;
+  /* margin: 10px; */
   padding: 10px;
+}
+
+/* ---- Introduction ---- */
+
+/* Div iwth id introduction must have the same size as the screen */
+#introduction {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+}
+
+#introduction p,
+#introduction h1 {
+  animation: 1.5s ease 0s 1 SlideFromTop;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  padding: 5%;
+  font-weight: 100;
+}
+
+#introduction b,
+#introduction strong {
+  color: var(--primary-accent-color);
 }
 
 .work {

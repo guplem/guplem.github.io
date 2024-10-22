@@ -6,15 +6,16 @@ import * as textUtils from "./textUtils.js";
  * @param {HTMLElement | DocumentFragment} container
  * @param {boolean} parseMarkdown
  * @param {string} attribute
+ * @param {string | undefined} paragraphTag
  */
-export async function setMarkdownInHtmlElement(markdown, container, parseMarkdown = true, attribute = "") {
+export async function setMarkdownInHtmlElement(markdown, container, parseMarkdown = true, attribute = "", paragraphTag = undefined) {
   if (!container) {
     throw new Error("Container is null or undefined");
   }
 
   // Process the markdown or text array
   const data = textUtils.turnTextArrayIntoDistinctPragraphs(markdown);
-  const dataFormatted = parseMarkdown ? await textUtils.markdownToHtml(data) : data;
+  const dataFormatted = parseMarkdown ? await textUtils.markdownToHtml(data, paragraphTag) : data;
 
   if (container instanceof DocumentFragment) {
     // For DocumentFragment, create a temporary div to parse the HTML
