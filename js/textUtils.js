@@ -90,15 +90,21 @@ const _markdownFormattedAsHtmlCache = new Map();
  * Convert markdown to HTML
  * @param {string} markdown
  * @returns {Promise<string>}
- * @param {string | undefined} paragraphTag
+ * @param {Map<string,string>} tagsToSubstitute
  */
-export async function markdownToHtml(markdown, paragraphTag = undefined) {
+export async function markdownToHtml(markdown, tagsToSubstitute = new Map()) {
   if (!markdown) {
     throw new Error("Markdown input is empty or undefined");
   }
 
-  if (_markdownFormattedAsHtmlCache.has(markdown)) {
-    return _markdownFormattedAsHtmlCache.get(markdown);
+  const substitutedTahsIdentifier = Array.from(tagsToSubstitute)
+    .map(([key, value]) => "Tag_" + key + "_to_" + value)
+    .join("-");
+
+  const cacheKey = `${markdown}-${substitutedTahsIdentifier}`;
+
+  if (_markdownFormattedAsHtmlCache.has(cacheKey)) {
+    return _markdownFormattedAsHtmlCache.get(cacheKey);
   }
 
   // Process markdown to HTML
@@ -107,19 +113,19 @@ export async function markdownToHtml(markdown, paragraphTag = undefined) {
   let htmlString = String(processedHtml);
 
   // If a paragraphTag is provided, replace <p> tags
-  if (paragraphTag) {
+  for (const [tagToReplace, substituteTag] of tagsToSubstitute) {
     const html = cheerio.load(htmlString);
 
     // Replace <p> tags with the specified paragraphTag
-    html("p").each(function () {
-      html(this).replaceWith(`<${paragraphTag}>${html(this).html()}</${paragraphTag}>`);
+    html(tagToReplace).each(function () {
+      html(this).replaceWith(`<${substituteTag}>${html(this).html()}</${substituteTag}>`);
     });
 
     htmlString = html.html();
   }
 
   // Cache the processed HTML
-  _markdownFormattedAsHtmlCache.set(markdown, htmlString);
+  _markdownFormattedAsHtmlCache.set(cacheKey, htmlString);
   return htmlString;
 }
 
