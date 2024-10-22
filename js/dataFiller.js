@@ -172,6 +172,13 @@ async function getFilterWorks() {
  * Display filtered works
  */
 async function displayFilteredWorks() {
+  // Calculate the maximum number of columns based on the screen width
+  const screenWidth = window.innerWidth;
+  let maxColumns = 1;
+  const minColumnWidth = 300;
+  maxColumns = Math.floor(screenWidth / minColumnWidth);
+  console.log("Max columns:", maxColumns);
+
   // Get filtered works
   const filteredWorks = await getFilterWorks();
 
@@ -183,6 +190,19 @@ async function displayFilteredWorks() {
   // Clear existing content
   uiUtils.clearElement(element);
 
+  const columns = [];
+  const columnFragments = [];
+
+  // Create columns and fragments for batch appending
+  for (let i = 1; i <= maxColumns; i++) {
+    const columnElement = document.createElement("div");
+    columnElement.classList.add("myWorkColumn");
+    columns.push(columnElement);
+    columnFragments.push(document.createDocumentFragment());
+  }
+
+  /** ADAPT FROM HERE **/
+
   // Sort works by date
   filteredWorks.sort((a, b) => {
     if (a.date && b.date) {
@@ -191,10 +211,9 @@ async function displayFilteredWorks() {
     return 0;
   });
 
-  // Create a document fragment
-  const fragment = document.createDocumentFragment();
+  // Add work elements to the corresponding column fragment
+  let columnIndex = 0;
 
-  // Create and add work elements to the fragment
   for (const work of filteredWorks) {
     const workElement = document.createElement("div");
     workElement.classList.add("work");
@@ -238,11 +257,18 @@ async function displayFilteredWorks() {
       await uiUtils.setMarkdownInHtmlElement("Date: " + work.date, dateElement);
     }
 
-    fragment.appendChild(workElement);
+    // Add workElement to the current column's fragment
+    columnFragments[columnIndex].appendChild(workElement);
+
+    // Update columnIndex to distribute works evenly
+    columnIndex = (columnIndex + 1) % maxColumns;
   }
 
-  // Append the fragment to the DOM
-  element.appendChild(fragment);
+  // Append column fragments to their respective columns and then to the DOM
+  for (let i = 0; i < maxColumns; i++) {
+    columns[i].appendChild(columnFragments[i]);
+    element.appendChild(columns[i]);
+  }
 }
 
 /**

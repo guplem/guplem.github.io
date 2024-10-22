@@ -1,0 +1,7 @@
+#myWorkFilters button:not([selected]) {
+  background-color: #fed;
+}
+
+#myWorkFilters button[selected] {
+  background-color: rgb(52, 180, 52);
+}
