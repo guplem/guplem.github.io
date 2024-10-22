@@ -21,9 +21,3 @@
 /*   content: counter(w) "x" counter(h); */ /*Display the values of the w and h counters*/
 /*   counter-reset: h var(--h) w var(--w); */ /* Create/Set the h and w counters to the values of the --h and --w variables  */
 /* } */
-
-/* Used to diplay the size of the screen as a debug tool */
-body::before {
-  content: counter(w) "x" counter(h); /*Display the values of the w and h counters*/
-  counter-reset: h var(--h) w var(--w); /* Create/Set the h and w counters to the values of the --h and --w variables  */
-}
