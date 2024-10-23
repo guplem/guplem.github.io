@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/global/properties.css" />
     <link rel="stylesheet" href="css/global/variables.css" />
     <link rel="stylesheet" href="css/global/base.css" />
+    <link rel="stylesheet" href="css/global/layout.css" />
     <!-- Styles of specific sections -->
     <link rel="stylesheet" href="css/sections/introduction.css" />
     <link rel="stylesheet" href="css/sections/aboutMe.css" />
@@ -23,10 +24,12 @@
   <body>
     <div id="introduction"></div>
 
-    <div>
-      <div id="aboutMeTitle"></div>
-      <img id="aboutMeImage"></img>
-      <div id="aboutMe"></div>
+    <div class="section">
+      <div class="sectionTitle" id="aboutMeTitle"></div>
+      <div class="sectionContainer">
+        <img class="sectionImage" id="aboutMeImage"></img>
+        <div class="sectionContents" id="aboutMe"></div>
+      </div>
     </div>
 
     <div id="myWork">

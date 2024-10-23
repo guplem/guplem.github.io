@@ -1,0 +1,48 @@
+/* General section container styles */
+.sectionContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+/* Section title always at the top */
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 10px;
+  order: 0; /* Ensure title is always the first item */
+}
+
+/* Image and text responsive layout */
+.sectionImage, .sectionContents {
+  width: 100%;
+}
+
+/* Flexbox for larger screens */
+@media (min-width: 768px) {
+  .sectionContainer {
+    flex-direction: column;
+  }
+
+  /* Grouping image and contents side by side below the title */
+  .sectionContainer[data-order="image-first"] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sectionContainer[data-order="contents-first"] {
+    flex-direction: row;
+  }
+
+  /* Side-by-side layout for image and contents under the title */
+  .sectionContainer img,
+  .sectionContainer .sectionContents {
+    width: 50%;
+    flex-basis: 50%;
+  }
+
+  /* Layout for larger screens with side-by-side content */
+  .sectionContainer {
+    flex-direction: row;
+  }
+  
+}

@@ -322,26 +322,36 @@ async function displayAdditionalSections() {
   for (const section of data.additionalSections) {
     const sectionElement = document.createElement("div");
     sectionElement.classList.add("additionalSection");
+    sectionElement.classList.add("section");
 
     if (section.title?.length) {
       const titleElement = document.createElement("div");
-      titleElement.classList.add("additionalSectionTitle");
+      // titleElement.classList.add("additionalSectionTitle");
+      titleElement.classList.add("sectionTitle");
       sectionElement.appendChild(titleElement);
       await uiUtils.setDataInHtmlElement(section.title, titleElement, new Map([["p", "h2"]]));
     }
 
+    const sectionContainer = document.createElement("div");
+    // sectionContainer.classList.add("additionalSectionContainer");
+    sectionContainer.classList.add("sectionContainer");
+    sectionElement.appendChild(sectionContainer);
+
     if (section.content?.length) {
       const contentElement = document.createElement("div");
-      contentElement.classList.add("additionalSectionContent");
-      sectionElement.appendChild(contentElement);
+      // contentElement.classList.add("additionalSectionContent");
+      contentElement.classList.add("sectionContents");
+      sectionContainer.appendChild(contentElement);
       await uiUtils.setDataInHtmlElement(section.content, contentElement);
     }
 
     if (section.image?.length) {
       const imageElement = document.createElement("img");
+      // imageElement.classList.add("additionalSectionImage");
+      imageElement.classList.add("sectionImage");
       imageElement.src = section.image;
       imageElement.alt = section.imageAlt || `Image of ${section.title}`;
-      sectionElement.appendChild(imageElement);
+      sectionContainer.appendChild(imageElement);
     }
 
     fragment.appendChild(sectionElement);
