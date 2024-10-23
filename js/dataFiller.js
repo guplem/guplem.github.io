@@ -172,36 +172,33 @@ async function getFilterWorks() {
  * Display filtered works
  */
 async function displayFilteredWorks() {
-  // Calculate the maximum number of columns based on the screen width
-  const screenWidth = window.innerWidth;
-  let maxColumns = 1;
-  const minColumnWidth = 300;
-  maxColumns = Math.floor(screenWidth / minColumnWidth);
-  console.log("Max columns:", maxColumns);
-
   // Get filtered works
   const filteredWorks = await getFilterWorks();
 
-  const elementId = "myWorkFiltered";
-
   // Find the target element
-  const element = uiUtils.getElement(elementId);
+  const allWorksElement = uiUtils.getElement("myWorkFiltered");
 
   // Clear existing content
-  uiUtils.clearElement(element);
+  uiUtils.clearElement(allWorksElement);
 
+  // Calculate the maximum number of columns based on the screen width
+  const screenWidth = window.innerWidth;
+  const minColumnWidth = 300;
+  const columnsNumber = Math.floor(screenWidth / minColumnWidth);
+  console.log("Number of columns:", columnsNumber);
+
+  // Prepare the variables to store columns, fragments, ...
   const columns = [];
-  const columnFragments = [];
+  const columnHeights = new Array(columnsNumber).fill(0); // Track the height of each column
 
   // Create columns and fragments for batch appending
-  for (let i = 1; i <= maxColumns; i++) {
+  for (let c = 0; c < columnsNumber; c++) {
     const columnElement = document.createElement("div");
     columnElement.classList.add("myWorkColumn");
     columns.push(columnElement);
-    columnFragments.push(document.createDocumentFragment());
+    // add to the DOM
+    allWorksElement.appendChild(columnElement);
   }
-
-  /** ADAPT FROM HERE **/
 
   // Sort works by date
   filteredWorks.sort((a, b) => {
@@ -211,19 +208,24 @@ async function displayFilteredWorks() {
     return 0;
   });
 
-  // Add work elements to the corresponding column fragment
-  let columnIndex = 0;
-
+  // Create work elements (and then add them to the columns)
   for (const work of filteredWorks) {
     const workElement = document.createElement("div");
     workElement.classList.add("work");
     workElement.tabIndex = 0; // Make it focusable with keyboard
+    workElement.setAttribute("aria-label", work.title);
+
+    // Add element number (uncomment for debugging purpuses, used to understand the order of addition)
+    // const elementNumber = document.createElement("div");
+    // elementNumber.textContent = "" + (filteredWorks.indexOf(work) + 1);
+    // workElement.appendChild(elementNumber);
 
     // Add work details to the element
     if (work.title?.length) {
-      const titleElement = document.createElement("h2");
+      const titleElement = document.createElement("div");
       workElement.appendChild(titleElement);
-      await uiUtils.setMarkdownInHtmlElement(work.title, titleElement);
+      titleElement.classList.add("workTitle");
+      await uiUtils.setMarkdownInHtmlElement(work.title, titleElement, true, "", new Map([["p", "h2"]]));
     }
 
     if (work.image?.length) {
@@ -236,38 +238,41 @@ async function displayFilteredWorks() {
     if (work.description?.length) {
       const descriptionElement = document.createElement("div");
       workElement.appendChild(descriptionElement);
+      descriptionElement.classList.add("workDescription");
       await uiUtils.setMarkdownInHtmlElement(work.description, descriptionElement);
     }
 
     if (work.skills?.length) {
       const skillsElement = document.createElement("div");
       workElement.appendChild(skillsElement);
+      skillsElement.classList.add("workSkills");
       await uiUtils.setMarkdownInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
     }
 
     if (work.types?.length) {
       const typesElement = document.createElement("div");
       workElement.appendChild(typesElement);
+      typesElement.classList.add("workTypes");
       await uiUtils.setMarkdownInHtmlElement("Types: " + work.types.join(", "), typesElement);
     }
 
     if (work.date?.length) {
       const dateElement = document.createElement("div");
       workElement.appendChild(dateElement);
+      dateElement.classList.add("workDate");
       await uiUtils.setMarkdownInHtmlElement("Date: " + work.date, dateElement);
     }
 
-    // Add workElement to the current column's fragment
-    columnFragments[columnIndex].appendChild(workElement);
+    // Determine the index of the shortest column
+    const columnWithMinHeight = Math.min(...columnHeights);
+    const shortestColumnIndex = columnHeights.indexOf(columnWithMinHeight);
 
-    // Update columnIndex to distribute works evenly
-    columnIndex = (columnIndex + 1) % maxColumns;
-  }
+    // Add workElement to the shortest column
+    columns[shortestColumnIndex].appendChild(workElement);
 
-  // Append column fragments to their respective columns and then to the DOM
-  for (let i = 0; i < maxColumns; i++) {
-    columns[i].appendChild(columnFragments[i]);
-    element.appendChild(columns[i]);
+    // Update the height of the column after adding the work element
+    const workElementHeight = workElement.offsetHeight;
+    columnHeights[shortestColumnIndex] += workElementHeight;
   }
 }
 
