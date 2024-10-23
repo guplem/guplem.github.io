@@ -6,18 +6,22 @@ const selectedWorkTypes = [];
 const selectedWorkSkills = [];
 
 // Fill page elements with content from JSON files
-fillWithText("page-title", "../data/info.json", "web-title", false);
-fillWithText("page-description", "../data/info.json", "web-description", false, "content");
-fillWithText("introduction", "../data/info.json", "introduction", true, "", new Map([["p", "h1"]]));
+// - Metadata
+fillWithText("page-title", "../data/info.json", "web-title", new Map(), false);
+fillWithText("page-description", "../data/info.json", "web-description", new Map(), false, "content");
+// - Main content
+fillWithText("introduction", "../data/info.json", "introduction", new Map([["p", "h1"]]));
+fillWithText("aboutMeTitle", "../data/info.json", "aboutMeTitle", new Map([["p", "h1"]]));
 fillWithText("aboutMe", "../data/info.json", "aboutMe");
 fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType);
 fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill);
+fillWithText("myWorkTitle", "../data/myWork.json", "title", new Map([["p", "h1"]]));
 displayFilteredWorks();
 displayAdditionalSections();
 displayContactInfo();
 
 function onResizeWidthEnd() {
-  // Needed since the number of columns is calculated based on the screen width
+  // Needs to be called since the number of columns is calculated based on the screen width
   displayFilteredWorks();
 }
 
@@ -44,7 +48,7 @@ window.onresize = function () {
  * @param {string} attribute
  * @param {Map<string, string>} tagsToSubstitute
  */
-async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, attribute = "", tagsToSubstitute = new Map()) {
+async function fillWithText(elementId, dataUrl, dataKey, tagsToSubstitute = new Map(), parseMarkdown = true, attribute = "") {
   try {
     const element = document.getElementById(elementId);
     if (!element) {
@@ -59,10 +63,10 @@ async function fillWithText(elementId, dataUrl, dataKey, parseMarkdown = true, a
 
     if (parseMarkdown) {
       const fragment = document.createDocumentFragment();
-      await uiUtils.setMarkdownInHtmlElement(rawData, fragment, parseMarkdown, attribute, tagsToSubstitute);
+      await uiUtils.setMarkdownInHtmlElement(rawData, fragment, tagsToSubstitute, parseMarkdown, attribute);
       element.appendChild(fragment);
     } else {
-      await uiUtils.setMarkdownInHtmlElement(rawData, element, parseMarkdown, attribute, tagsToSubstitute);
+      await uiUtils.setMarkdownInHtmlElement(rawData, element, tagsToSubstitute, parseMarkdown, attribute);
     }
   } catch (error) {
     console.error("Error filling data in element with id " + elementId, error);
@@ -244,7 +248,7 @@ async function displayFilteredWorks() {
       const titleElement = document.createElement("div");
       titleElement.classList.add("workTitle");
       workElement.appendChild(titleElement);
-      await uiUtils.setMarkdownInHtmlElement(work.title, titleElement, true, "", new Map([["p", "h2"]]));
+      await uiUtils.setMarkdownInHtmlElement(work.title, titleElement, new Map([["p", "h2"]]));
     }
 
     if (work.image?.length) {
@@ -319,9 +323,10 @@ async function displayAdditionalSections() {
     sectionElement.classList.add("additionalSection");
 
     if (section.title?.length) {
-      const titleElement = document.createElement("h1");
+      const titleElement = document.createElement("div");
+      titleElement.classList.add("additionalSectionTitle");
       sectionElement.appendChild(titleElement);
-      await uiUtils.setMarkdownInHtmlElement(section.title, titleElement);
+      await uiUtils.setMarkdownInHtmlElement(section.title, titleElement, new Map([["p", "h2"]]));
     }
 
     if (section.content?.length) {
@@ -348,6 +353,8 @@ async function displayAdditionalSections() {
  * Display contact information
  */
 async function displayContactInfo() {
+  fillWithText("contactTitle", "../data/info.json", "contactTitle", new Map([["p", "h1"]]));
+
   const elementId = "contactMethods";
 
   // Find the target element

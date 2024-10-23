@@ -8,7 +8,7 @@ import * as textUtils from "./textUtils.js";
  * @param {string} attribute
  * @param {Map<string, string>} tagsToSubstitute
  */
-export async function setMarkdownInHtmlElement(markdown, container, parseMarkdown = true, attribute = "", tagsToSubstitute = new Map()) {
+export async function setMarkdownInHtmlElement(markdown, container, tagsToSubstitute = new Map(), parseMarkdown = true, attribute = "") {
   if (!container) {
     throw new Error("Container is null or undefined");
   }
