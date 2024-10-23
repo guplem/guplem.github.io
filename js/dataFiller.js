@@ -169,7 +169,7 @@ async function getFilterWorks() {
 // const debouncedDisplayFilteredWorks = debounce(displayFilteredWorks, 150);
 
 /**
- * Display filtered works
+ * Display filtered works in a masonry layout
  */
 async function displayFilteredWorks() {
   // Get filtered works
@@ -187,18 +187,19 @@ async function displayFilteredWorks() {
   const columnsNumber = Math.floor(screenWidth / minColumnWidth);
   console.log("Number of columns:", columnsNumber);
 
-  // Prepare the variables to store columns, fragments, ...
+  // Prepare the variables to store columns and heights
   const columns = [];
   const columnHeights = new Array(columnsNumber).fill(0); // Track the height of each column
 
-  // Create columns and fragments for batch appending
+  // Create columns and append them to the DOM in one operation
+  const fragment = document.createDocumentFragment();
   for (let c = 0; c < columnsNumber; c++) {
     const columnElement = document.createElement("div");
     columnElement.classList.add("myWorkColumn");
     columns.push(columnElement);
-    // add to the DOM
-    allWorksElement.appendChild(columnElement);
+    fragment.appendChild(columnElement);
   }
+  allWorksElement.appendChild(fragment);
 
   // Sort works by date
   filteredWorks.sort((a, b) => {
@@ -208,7 +209,7 @@ async function displayFilteredWorks() {
     return 0;
   });
 
-  // Create work elements (and then add them to the columns)
+  // Create work elements and append them
   for (const work of filteredWorks) {
     const workElement = document.createElement("div");
     workElement.classList.add("work");
@@ -223,8 +224,8 @@ async function displayFilteredWorks() {
     // Add work details to the element
     if (work.title?.length) {
       const titleElement = document.createElement("div");
-      workElement.appendChild(titleElement);
       titleElement.classList.add("workTitle");
+      workElement.appendChild(titleElement);
       await uiUtils.setMarkdownInHtmlElement(work.title, titleElement, true, "", new Map([["p", "h2"]]));
     }
 
@@ -237,42 +238,40 @@ async function displayFilteredWorks() {
 
     if (work.description?.length) {
       const descriptionElement = document.createElement("div");
-      workElement.appendChild(descriptionElement);
       descriptionElement.classList.add("workDescription");
+      workElement.appendChild(descriptionElement);
       await uiUtils.setMarkdownInHtmlElement(work.description, descriptionElement);
     }
 
     if (work.skills?.length) {
       const skillsElement = document.createElement("div");
-      workElement.appendChild(skillsElement);
       skillsElement.classList.add("workSkills");
+      workElement.appendChild(skillsElement);
       await uiUtils.setMarkdownInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
     }
 
     if (work.types?.length) {
       const typesElement = document.createElement("div");
-      workElement.appendChild(typesElement);
       typesElement.classList.add("workTypes");
+      workElement.appendChild(typesElement);
       await uiUtils.setMarkdownInHtmlElement("Types: " + work.types.join(", "), typesElement);
     }
 
     if (work.date?.length) {
       const dateElement = document.createElement("div");
-      workElement.appendChild(dateElement);
       dateElement.classList.add("workDate");
+      workElement.appendChild(dateElement);
       await uiUtils.setMarkdownInHtmlElement("Date: " + work.date, dateElement);
     }
 
     // Determine the index of the shortest column
-    const columnWithMinHeight = Math.min(...columnHeights);
-    const shortestColumnIndex = columnHeights.indexOf(columnWithMinHeight);
+    const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
 
     // Add workElement to the shortest column
     columns[shortestColumnIndex].appendChild(workElement);
 
     // Update the height of the column after adding the work element
-    const workElementHeight = workElement.offsetHeight;
-    columnHeights[shortestColumnIndex] += workElementHeight;
+    columnHeights[shortestColumnIndex] += workElement.offsetHeight;
   }
 }
 
