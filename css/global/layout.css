@@ -12,10 +12,10 @@
     align-items: center;
   }
 
-  /* Ensure both text and image share space equally */
-  .sectionContents,
-  .sectionImage {
-    flex: 1;
+  /* Ensure all elements inside sectionContainer share space equally */
+  .sectionContainer > * {
+    flex: 1; /* All children share space equally */
+    max-width: 100%; /* Prevent any child from overflowing the container */
   }
 
   /* Limit the maximum width of the images to prevent them from taking too much space */
