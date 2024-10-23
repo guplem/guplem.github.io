@@ -7,15 +7,19 @@
 /* Flexbox for larger screens */
 @media (min-width: 768px) {
   .sectionContainer {
-    flex-direction: row; /* Aligns image and text side by side on larger screens */
+    flex-direction: row;
     justify-content: space-evenly;
+    align-items: center;
   }
 
-  .sectionImage,
-  .sectionContents {
-    width: 50%;
-    flex-basis: 50%;
-    flex: 1 1 1;
+  /* Ensure both text and image share space equally */
+  .sectionContents,
+  .sectionImage {
+    flex: 1;
   }
 
+  /* Limit the maximum width of the images to prevent them from taking too much space */
+  .sectionImage {
+    max-width: 50%;
+  }
 }
