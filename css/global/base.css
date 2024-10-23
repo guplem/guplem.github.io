@@ -12,6 +12,7 @@ html {
   top: 0;
   bottom: 0;
   scroll-behavior: smooth;
+  overflow-x: hidden; /* Disable horizontal scroll bar */
 }
 
 body {
