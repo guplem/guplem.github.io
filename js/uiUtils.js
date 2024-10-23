@@ -3,35 +3,35 @@ import * as textUtils from "./textUtils.js";
 /**
  * Convert markdown to HTML and set it to an element or fragment
  * @param {string | string[]} markdown
- * @param {HTMLElement | DocumentFragment} container
+ * @param {HTMLElement | DocumentFragment} htmlContainer
  * @param {boolean} parseMarkdown
- * @param {string} attribute
+ * @param {string} targetAttribute
  * @param {Map<string, string>} tagsToSubstitute
  */
-export async function setMarkdownInHtmlElement(markdown, container, tagsToSubstitute = new Map(), parseMarkdown = true, attribute = "") {
-  if (!container) {
-    throw new Error("Container is null or undefined");
+export async function setDataInHtmlElement(markdown, htmlContainer, tagsToSubstitute = new Map(), parseMarkdown = true, targetAttribute = "") {
+  if (!htmlContainer) {
+    throw new Error("HTML Container is null or undefined");
   }
 
   // Process the markdown or text array
-  const data = textUtils.turnTextArrayIntoDistinctPragraphs(markdown);
-  const dataFormatted = parseMarkdown ? await textUtils.markdownToHtml(data, tagsToSubstitute) : data;
+  const parsedData = textUtils.turnTextArrayIntoDistinctPragraphs(markdown);
+  const dataFormatted = parseMarkdown ? await textUtils.markdownToHtml(parsedData, tagsToSubstitute) : parsedData;
 
-  if (container instanceof DocumentFragment) {
+  if (htmlContainer instanceof DocumentFragment) {
     // For DocumentFragment, create a temporary div to parse the HTML
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = String(dataFormatted);
 
     // Move all child nodes from the temporary div to the fragment
     while (tempDiv.firstChild) {
-      container.appendChild(tempDiv.firstChild);
+      htmlContainer.appendChild(tempDiv.firstChild);
     }
-  } else if (container instanceof HTMLElement) {
+  } else if (htmlContainer instanceof HTMLElement) {
     // For HTMLElement, proceed as before
-    if (attribute.length > 0) {
-      container.setAttribute(attribute, String(dataFormatted));
+    if (targetAttribute.length > 0) {
+      htmlContainer.setAttribute(targetAttribute, String(dataFormatted));
     } else {
-      container.innerHTML = String(dataFormatted);
+      htmlContainer.innerHTML = String(dataFormatted);
     }
   } else {
     throw new Error("Container must be either an HTMLElement or a DocumentFragment");

@@ -7,15 +7,16 @@ const selectedWorkSkills = [];
 
 // Fill page elements with content from JSON files
 // - Metadata
-fillWithText("page-title", "../data/info.json", "web-title", new Map(), false);
-fillWithText("page-description", "../data/info.json", "web-description", new Map(), false, "content");
+fillWithData("page-title", "../data/info.json", "web-title", new Map(), false);
+fillWithData("page-description", "../data/info.json", "web-description", new Map(), false, "content");
 // - Main content
-fillWithText("introduction", "../data/info.json", "introduction", new Map([["p", "h1"]]));
-fillWithText("aboutMeTitle", "../data/info.json", "aboutMeTitle", new Map([["p", "h1"]]));
-fillWithText("aboutMe", "../data/info.json", "aboutMe");
+fillWithData("introduction", "../data/info.json", "introduction", new Map([["p", "h1"]]));
+fillWithData("aboutMeTitle", "../data/info.json", "aboutMeTitle", new Map([["p", "h1"]]));
+fillWithData("aboutMeImage", "../data/info.json", "aboutMeImage", new Map(), false, "src");
+fillWithData("aboutMe", "../data/info.json", "aboutMe");
 fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType);
 fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill);
-fillWithText("myWorkTitle", "../data/myWork.json", "title", new Map([["p", "h1"]]));
+fillWithData("myWorkTitle", "../data/myWork.json", "title", new Map([["p", "h1"]]));
 displayFilteredWorks();
 displayAdditionalSections();
 displayContactInfo();
@@ -42,31 +43,31 @@ window.onresize = function () {
 /**
  * Fill an element with text from a JSON file
  * @param {string} elementId
- * @param {RequestInfo | URL} dataUrl
+ * @param {RequestInfo | URL} dataRoute
  * @param {string} dataKey
  * @param {boolean} parseMarkdown
- * @param {string} attribute
+ * @param {string} targetAttribute
  * @param {Map<string, string>} tagsToSubstitute
  */
-async function fillWithText(elementId, dataUrl, dataKey, tagsToSubstitute = new Map(), parseMarkdown = true, attribute = "") {
+async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitute = new Map(), parseMarkdown = true, targetAttribute = "") {
   try {
     const element = document.getElementById(elementId);
     if (!element) {
       throw new Error(`Could not find element with id ${elementId}`);
     }
 
-    const data = await textUtils.fetchJsonData(dataUrl);
+    const data = await textUtils.fetchJsonData(dataRoute);
     const rawData = data[dataKey];
     if (!rawData) {
-      throw new Error("Could not find data with key " + dataKey + " in " + dataUrl);
+      throw new Error("Could not find data with key " + dataKey + " in " + dataRoute);
     }
 
     if (parseMarkdown) {
       const fragment = document.createDocumentFragment();
-      await uiUtils.setMarkdownInHtmlElement(rawData, fragment, tagsToSubstitute, parseMarkdown, attribute);
+      await uiUtils.setDataInHtmlElement(rawData, fragment, tagsToSubstitute, parseMarkdown, targetAttribute);
       element.appendChild(fragment);
     } else {
-      await uiUtils.setMarkdownInHtmlElement(rawData, element, tagsToSubstitute, parseMarkdown, attribute);
+      await uiUtils.setDataInHtmlElement(rawData, element, tagsToSubstitute, parseMarkdown, targetAttribute);
     }
   } catch (error) {
     console.error("Error filling data in element with id " + elementId, error);
@@ -248,7 +249,7 @@ async function displayFilteredWorks() {
       const titleElement = document.createElement("div");
       titleElement.classList.add("workTitle");
       workElement.appendChild(titleElement);
-      await uiUtils.setMarkdownInHtmlElement(work.title, titleElement, new Map([["p", "h2"]]));
+      await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h2"]]));
     }
 
     if (work.image?.length) {
@@ -262,28 +263,28 @@ async function displayFilteredWorks() {
       const descriptionElement = document.createElement("div");
       descriptionElement.classList.add("workDescription");
       workElement.appendChild(descriptionElement);
-      await uiUtils.setMarkdownInHtmlElement(work.description, descriptionElement);
+      await uiUtils.setDataInHtmlElement(work.description, descriptionElement);
     }
 
     if (work.skills?.length) {
       const skillsElement = document.createElement("div");
       skillsElement.classList.add("workSkills");
       workElement.appendChild(skillsElement);
-      await uiUtils.setMarkdownInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
+      await uiUtils.setDataInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
     }
 
     if (work.types?.length) {
       const typesElement = document.createElement("div");
       typesElement.classList.add("workTypes");
       workElement.appendChild(typesElement);
-      await uiUtils.setMarkdownInHtmlElement("Types: " + work.types.join(", "), typesElement);
+      await uiUtils.setDataInHtmlElement("Types: " + work.types.join(", "), typesElement);
     }
 
     if (work.date?.length) {
       const dateElement = document.createElement("div");
       dateElement.classList.add("workDate");
       workElement.appendChild(dateElement);
-      await uiUtils.setMarkdownInHtmlElement("Date: " + work.date, dateElement);
+      await uiUtils.setDataInHtmlElement("Date: " + work.date, dateElement);
     }
 
     // Determine the index of the shortest column
@@ -326,13 +327,14 @@ async function displayAdditionalSections() {
       const titleElement = document.createElement("div");
       titleElement.classList.add("additionalSectionTitle");
       sectionElement.appendChild(titleElement);
-      await uiUtils.setMarkdownInHtmlElement(section.title, titleElement, new Map([["p", "h2"]]));
+      await uiUtils.setDataInHtmlElement(section.title, titleElement, new Map([["p", "h2"]]));
     }
 
     if (section.content?.length) {
       const contentElement = document.createElement("div");
+      contentElement.classList.add("additionalSectionContent");
       sectionElement.appendChild(contentElement);
-      await uiUtils.setMarkdownInHtmlElement(section.content, contentElement);
+      await uiUtils.setDataInHtmlElement(section.content, contentElement);
     }
 
     if (section.image?.length) {
@@ -353,7 +355,7 @@ async function displayAdditionalSections() {
  * Display contact information
  */
 async function displayContactInfo() {
-  fillWithText("contactTitle", "../data/info.json", "contactTitle", new Map([["p", "h1"]]));
+  fillWithData("contactTitle", "../data/info.json", "contactTitle", new Map([["p", "h1"]]));
 
   const elementId = "contactMethods";
 

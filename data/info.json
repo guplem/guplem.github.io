@@ -4,6 +4,7 @@
   "name": "Guillem Poy",
   "introduction": "Hi there! I'm **Guillem Poy**\nI'm a **software engineer** and **video games developer**.",
   "aboutMeTitle": "About Me",
+  "aboutMeImage": "resources/images/miscellany/Guillem-Poy.png",
   "aboutMe": [
     "Hi! I'm Guillem, a **passionate software engineer** and **video games developer** from Barcelona, Spain.",
     "##  Get to know me\nI enjoy learning, exploring new ideas, and integrating **innovative solutions** into my work. My approach blends **technical expertise** with creativity in **problem-solving**. Over the years, I’ve worked across various industries (fintech, social networks, factory processes, IT, ...), always driven by **curiosity** and a desire to deeply understand and improve the challenges I face.\n\nAdventurous and open-minded, I’ve lived in Spain, Belgium, Tanzania, Ghana, and the UK. These experiences have shaped my perspective and fueled my passion for **tackling new challenges head-on**. I’m always looking for ways to improve user experiences and **learn new methodologies**, whether that’s in everyday tasks or even more complex areas like rocket science.\n\nIn my free time, I focus on **personal projects**—often designing games or apps that address real-world problems or simply bring joy. I’m also passionate about volunteering with NGOs, as I believe in using technology to create a **meaningful impact**.",
@@ -19,6 +20,20 @@
         "## Why?\nIn some projects, I receive help related to topics that I do not master. That's why I see those projects as collaborative work.\n\nFor this reason, I keep using this name. A name that, for me, represents all the people who helped me on the development of every project.",
         "## From where did it came from?\nSome years before starting my university degree, I went with some friends to visit a university. At that moment, all of us seemed to want to study video game's development there.\n\nTo get into the world and get ready for that degree, we wanted to do a project together but first, we wanted \"a cool name\" for the group. We were three, so we came up with Triunity Studios.\n\nAt the end, I'm the only one who studied video game's development and that project was never finished. However, the name thrived."
       ]
+    },
+    {
+      "title": "Dummy Title",
+      "image": "resources/images/miscellany/Guillem-Poy.png",
+      "imageAlt": "Triunity Studios Logo",
+      "content": [
+        "## What is it?\nTriunity Studios is the name I use to sign most of my projects.",
+        "## Why?\nIn some projects, I receive help related to topics that I do not master. That's why I see those projects as collaborative work.\n\nFor this reason, I keep using this name. A name that, for me, represents all the people who helped me on the development of every project."
+      ]
+    },
+    {
+      "title": "Short One But With A Bit Long Title",
+      "imageAlt": "Mistake of having alt image should be handled okay",
+      "content": ["This just has some text.\nTriunity Studios is the name I use to sign most of my projects."]
     }
   ],
   "contactTitle": "Contact",
