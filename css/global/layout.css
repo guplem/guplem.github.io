@@ -2,47 +2,46 @@
 .sectionContainer {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 /* Section title always at the top */
-.sectionTitle {
+/* .sectionTitle {
   text-align: center;
   margin-bottom: 10px;
-  order: 0; /* Ensure title is always the first item */
-}
+} */
 
-/* Image and text responsive layout */
-.sectionImage, .sectionContents {
+/* Image and text responsive layout for smaller screens */
+/* .sectionImage,
+.sectionContents {
   width: 100%;
-}
+} */
 
 /* Flexbox for larger screens */
 @media (min-width: 768px) {
   .sectionContainer {
-    flex-direction: column;
+    flex-direction: row; /* Aligns image and text side by side on larger screens */
+    justify-content: space-evenly;
   }
 
-  /* Grouping image and contents side by side below the title */
-  .sectionContainer[data-order="image-first"] {
-    display: flex;
-    flex-direction: column;
+  /* .sectionTitle {
+    width: 100%;
+    margin-bottom: 20px;
+  } */
+
+  /* Adjusts image and contents to take 50% width each */
+  .sectionImage,
+  .sectionContents {
+    flex-basis: 50%;
+    flex: 1 1 1;
+  }
+
+  /* Custom ordering based on data-attribute */
+  /* .sectionContainer[data-order="image-first"] {
+    flex-direction: row;
   }
 
   .sectionContainer[data-order="contents-first"] {
-    flex-direction: row;
-  }
-
-  /* Side-by-side layout for image and contents under the title */
-  .sectionContainer img,
-  .sectionContainer .sectionContents {
-    width: 50%;
-    flex-basis: 50%;
-  }
-
-  /* Layout for larger screens with side-by-side content */
-  .sectionContainer {
-    flex-direction: row;
-  }
-  
+    flex-direction: row-reverse;
+  } */
 }
