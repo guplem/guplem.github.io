@@ -2,20 +2,7 @@
 .sectionContainer {
   display: flex;
   flex-direction: column;
-  /* margin-bottom: 20px; */
 }
-
-/* Section title always at the top */
-/* .sectionTitle {
-  text-align: center;
-  margin-bottom: 10px;
-} */
-
-/* Image and text responsive layout for smaller screens */
-/* .sectionImage,
-.sectionContents {
-  width: 100%;
-} */
 
 /* Flexbox for larger screens */
 @media (min-width: 768px) {
@@ -24,24 +11,11 @@
     justify-content: space-evenly;
   }
 
-  /* .sectionTitle {
-    width: 100%;
-    margin-bottom: 20px;
-  } */
-
-  /* Adjusts image and contents to take 50% width each */
   .sectionImage,
   .sectionContents {
+    width: 50%;
     flex-basis: 50%;
     flex: 1 1 1;
   }
 
-  /* Custom ordering based on data-attribute */
-  /* .sectionContainer[data-order="image-first"] {
-    flex-direction: row;
-  }
-
-  .sectionContainer[data-order="contents-first"] {
-    flex-direction: row-reverse;
-  } */
 }

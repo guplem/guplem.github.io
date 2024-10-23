@@ -318,6 +318,7 @@ async function displayAdditionalSections() {
   // Create a document fragment
   const fragment = document.createDocumentFragment();
 
+  let index = 0;
   // Create and add additional section elements to the fragment
   for (const section of data.additionalSections) {
     const sectionElement = document.createElement("div");
@@ -337,22 +338,30 @@ async function displayAdditionalSections() {
     sectionContainer.classList.add("sectionContainer");
     sectionElement.appendChild(sectionContainer);
 
-    if (section.content?.length) {
-      const contentElement = document.createElement("div");
-      // contentElement.classList.add("additionalSectionContent");
-      contentElement.classList.add("sectionContents");
-      sectionContainer.appendChild(contentElement);
-      await uiUtils.setDataInHtmlElement(section.content, contentElement);
-    }
+    for (let i = 0; i < 2; i++) {
+      // boolean pair to alternate between left and right
+      const doContents = index % 2 === i;
 
-    if (section.image?.length) {
-      const imageElement = document.createElement("img");
-      // imageElement.classList.add("additionalSectionImage");
-      imageElement.classList.add("sectionImage");
-      imageElement.src = section.image;
-      imageElement.alt = section.imageAlt || `Image of ${section.title}`;
-      sectionContainer.appendChild(imageElement);
+      if (doContents) {
+        if (section.content?.length) {
+          const contentElement = document.createElement("div");
+          // contentElement.classList.add("additionalSectionContent");
+          contentElement.classList.add("sectionContents");
+          sectionContainer.appendChild(contentElement);
+          await uiUtils.setDataInHtmlElement(section.content, contentElement);
+        }
+      } else {
+        if (section.image?.length) {
+          const imageElement = document.createElement("img");
+          // imageElement.classList.add("additionalSectionImage");
+          imageElement.classList.add("sectionImage");
+          imageElement.src = section.image;
+          imageElement.alt = section.imageAlt || `Image of ${section.title}`;
+          sectionContainer.appendChild(imageElement);
+        }
+      }
     }
+    index++;
 
     fragment.appendChild(sectionElement);
   }
