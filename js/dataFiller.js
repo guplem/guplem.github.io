@@ -16,6 +16,25 @@ displayFilteredWorks();
 displayAdditionalSections();
 displayContactInfo();
 
+function onResizeWidthEnd() {
+  // Needed since the number of columns is calculated based on the screen width
+  displayFilteredWorks();
+}
+
+// Inspired by https://stackoverflow.com/a/5490021/7927429
+let lastWidth = window.innerWidth;
+var debounceTimeout;
+window.onresize = function () {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    const currentWidth = window.innerWidth;
+    if (currentWidth !== lastWidth) {
+      lastWidth = currentWidth;
+      onResizeWidthEnd();
+    }
+  }, 100);
+};
+
 /**
  * Fill an element with text from a JSON file
  * @param {string} elementId
@@ -183,9 +202,8 @@ async function displayFilteredWorks() {
 
   // Calculate the maximum number of columns based on the screen width
   const screenWidth = window.innerWidth;
-  const minColumnWidth = 300;
-  const columnsNumber = Math.floor(screenWidth / minColumnWidth);
-  console.log("Number of columns:", columnsNumber);
+  const minColumnWidth = 400;
+  const columnsNumber = Math.max(1, Math.floor(screenWidth / minColumnWidth));
 
   // Prepare the variables to store columns and heights
   const columns = [];
