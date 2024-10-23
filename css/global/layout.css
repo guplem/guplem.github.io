@@ -14,12 +14,68 @@
 
   /* Ensure all elements inside sectionContainer share space equally */
   .sectionContainer > * {
-    flex: 1; /* All children share space equally */
-    max-width: 100%; /* Prevent any child from overflowing the container */
+    flex: 1;
   }
 
-  /* Limit the maximum width of the images to prevent them from taking too much space */
-  .sectionImage {
+  /* Ensure no elements exceed the appropriate width */
+
+  /* One child */
+  .sectionContainer > *:first-child:nth-last-child(1),
+  .sectionContainer > *:first-child:nth-last-child(1) ~ * {
+    max-width: 100%;
+  }
+
+  /* Two children */
+  .sectionContainer > *:first-child:nth-last-child(2),
+  .sectionContainer > *:first-child:nth-last-child(2) ~ * {
     max-width: 50%;
+  }
+
+  /* Three children */
+  .sectionContainer > *:first-child:nth-last-child(3),
+  .sectionContainer > *:first-child:nth-last-child(3) ~ * {
+    max-width: 33.333%;
+  }
+
+  /* Four children */
+  .sectionContainer > *:first-child:nth-last-child(4),
+  .sectionContainer > *:first-child:nth-last-child(4) ~ * {
+    max-width: 25%;
+  }
+
+  /* Five children */
+  .sectionContainer > *:first-child:nth-last-child(5),
+  .sectionContainer > *:first-child:nth-last-child(5) ~ * {
+    max-width: 20%;
+  }
+
+  /* Six children */
+  .sectionContainer > *:first-child:nth-last-child(6),
+  .sectionContainer > *:first-child:nth-last-child(6) ~ * {
+    max-width: 16.666%;
+  }
+
+  /* Seven children */
+  .sectionContainer > *:first-child:nth-last-child(7),
+  .sectionContainer > *:first-child:nth-last-child(7) ~ * {
+    max-width: 14.285%;
+  }
+
+  /* Eight children */
+  .sectionContainer > *:first-child:nth-last-child(8),
+  .sectionContainer > *:first-child:nth-last-child(8) ~ * {
+    max-width: 12.5%;
+  }
+
+  /* Nine children */
+  .sectionContainer > *:first-child:nth-last-child(9),
+  .sectionContainer > *:first-child:nth-last-child(9) ~ * {
+    max-width: 11.111%;
+  }
+
+  /* Ten children */
+  .sectionContainer > *:first-child:nth-last-child(10),
+  .sectionContainer > *:first-child:nth-last-child(10) ~ * {
+    max-width: 10%;
   }
 }
