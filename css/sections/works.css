@@ -3,11 +3,16 @@
   flex-wrap: nowrap;
 }
 
+.myWorkColumn {
+  flex: 1;
+}
+
 #myWork {
   background-color: var(--background-clear);
-  /*Horizontal padding*/
-  padding-right: 10px;
-  padding-left: 10px;
+  padding-right: 1em;
+  padding-left: 1em;
+  padding-top: 1.66em;
+  padding-bottom: 1.66em;
   margin: auto;
 }
 

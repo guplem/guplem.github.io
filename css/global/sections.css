@@ -1,3 +1,8 @@
+.section {
+  padding: 0.83em;
+  padding-bottom: 1.66em;
+}
+
 .sectionContainer {
   display: flex;
   flex-direction: column;

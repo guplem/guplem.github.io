@@ -1,5 +1,7 @@
 #contact {
   background-color: var(--background-vivid);
+  padding: 0.83em;
+  padding-bottom: 1.66em;
 }
 
 #contactMethods {
