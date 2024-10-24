@@ -1,7 +1,53 @@
-#myWorkFilters button:not([selected]) {
-  background-color: #fed;
+/** GENERAL **/
+
+#myWorkFilters button {
+  margin: 3px;
+  border: none;
+  cursor: pointer;
 }
 
-#myWorkFilters button[selected] {
-  background-color: rgb(52, 180, 52);
+#myWorkTypes #myWorkSkills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+/** TYPES **/
+
+#myWorkTypes button {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+#myWorkTypes button:not([selected]) {
+  background-color: var(--background-clear);
+  border: 1px solid var(--background-dark);
+}
+
+#myWorkTypes button[selected] {
+  background-color: var(--background-dark);
+}
+
+/** SKILLS **/
+
+#myWorkSkills button {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 15px;
+}
+
+#myWorkSkills button:not([selected]) {
+  background-color: var(--background-vivid);
+}
+
+#myWorkSkills button[selected] {
+  background-color: var(--background-dark);
 }
