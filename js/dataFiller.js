@@ -9,16 +9,20 @@ const selectedWorkSkills = [];
 // - Metadata
 fillWithData("page-title", "../data/info.json", "web-title", new Map(), false);
 fillWithData("page-description", "../data/info.json", "web-description", new Map(), false, "content");
-// - Main content
+// - Big title
 fillWithData("introduction", "../data/info.json", "introduction", new Map([["p", "h1"]]));
+// - About me
 fillWithData("aboutMeTitle", "../data/info.json", "aboutMeTitle", new Map([["p", "h1"]]));
 fillWithData("aboutMeImage", "../data/info.json", "aboutMeImage", new Map(), false, "src");
-fillWithData("aboutMe", "../data/info.json", "aboutMe");
+fillWithData("aboutMeContents", "../data/info.json", "aboutMe");
+// - My work
 fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType);
 fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill);
 fillWithData("myWorkTitle", "../data/myWork.json", "title", new Map([["p", "h1"]]));
 displayFilteredWorks();
+// - Additional sections
 displayAdditionalSections();
+// - Contact info
 displayContactInfo();
 
 function onResizeWidthEnd() {
@@ -245,18 +249,19 @@ async function displayFilteredWorks() {
     // workElement.appendChild(elementNumber);
 
     // Add work details to the element
-    if (work.title?.length) {
-      const titleElement = document.createElement("div");
-      titleElement.classList.add("workTitle");
-      workElement.appendChild(titleElement);
-      await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h3"]]));
-    }
 
     if (work.image?.length) {
       const imageElement = document.createElement("img");
       imageElement.src = work.image;
       imageElement.alt = work.imageAlt || `Image for ${work.title}`;
       workElement.appendChild(imageElement);
+    }
+
+    if (work.title?.length) {
+      const titleElement = document.createElement("div");
+      titleElement.classList.add("workTitle");
+      workElement.appendChild(titleElement);
+      await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h3"]]));
     }
 
     if (work.description?.length) {
@@ -273,12 +278,12 @@ async function displayFilteredWorks() {
       await uiUtils.setDataInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
     }
 
-    if (work.types?.length) {
-      const typesElement = document.createElement("div");
-      typesElement.classList.add("workTypes");
-      workElement.appendChild(typesElement);
-      await uiUtils.setDataInHtmlElement("Types: " + work.types.join(", "), typesElement);
-    }
+    // if (work.types?.length) {
+    //   const typesElement = document.createElement("div");
+    //   typesElement.classList.add("workTypes");
+    //   workElement.appendChild(typesElement);
+    //   await uiUtils.setDataInHtmlElement("Types: " + work.types.join(", "), typesElement);
+    // }
 
     if (work.date?.length) {
       const dateElement = document.createElement("div");

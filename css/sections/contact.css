@@ -1,3 +1,7 @@
+#contact {
+  background-color: var(--background-vivid);
+}
+
 #contactMethods {
   display: flex;
   justify-content: space-around;

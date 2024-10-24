@@ -5,9 +5,10 @@ div {
   border: 1px solid black;
 }
 
-img {
+/* Used for debugging */
+/* img {
   border: 1px solid green;
-}
+} */
 
 html {
   height: 100%;

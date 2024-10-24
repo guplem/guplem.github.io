@@ -3,12 +3,22 @@
   flex-wrap: nowrap;
 }
 
+#myWork {
+  background-color: var(--background-clear);
+  /*Horizontal padding*/
+  padding-right: 10px;
+  padding-left: 10px;
+  margin: auto;
+}
+
 .work {
   margin: 10px;
-  padding: 10px;
+  background-color: var(--background-dark);
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .work img {
-  width: 100%;
+  width: 100%; /* Force it to expand */
   height: auto;
 }
