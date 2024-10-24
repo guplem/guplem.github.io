@@ -15,12 +15,15 @@ html {
   bottom: 0;
   scroll-behavior: smooth;
   overflow-x: hidden; /* Disable horizontal scroll bar */
+  margin: 0;
+  padding: 0;
 }
 
 body {
   background-color: var(--background-dark);
   font-family: "Roboto", sans-serif;
   height: 100%;
+  margin: 0;
   margin: 0;
 }
 

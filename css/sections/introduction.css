@@ -5,10 +5,8 @@
   align-items: center;
   background-color: transparent;
 
-  height: 100vh; /*
+  height: 100%;
   width: 100%; /* So the scroll bar is taken into account https://stackoverflow.com/a/23367686/7927429 */
-  /* width: var(--w);
-  height: var(--h); */
 }
 
 #introduction p,
