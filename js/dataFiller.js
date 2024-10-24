@@ -211,7 +211,7 @@ async function displayFilteredWorks() {
 
   // Calculate the maximum number of columns based on the screen width
   const screenWidth = window.innerWidth;
-  const minColumnWidth = 400;
+  const minColumnWidth = 350;
   const columnsNumber = Math.max(1, Math.floor(screenWidth / minColumnWidth));
 
   // Prepare the variables to store columns and heights
