@@ -274,8 +274,15 @@ async function displayFilteredWorks() {
     if (work.skills?.length) {
       const skillsElement = document.createElement("div");
       skillsElement.classList.add("workSkills");
+      // await uiUtils.setDataInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
+      for (const skill of work.skills) {
+        const skillButton = uiUtils.createButton(skill, () => onClickWorkSkill(skill));
+        skillsElement.appendChild(skillButton);
+        if (selectedWorkSkills.includes(skill.toLowerCase())) {
+          skillButton.setAttribute("selected", "");
+        }
+      }
       workElement.appendChild(skillsElement);
-      await uiUtils.setDataInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
     }
 
     // if (work.types?.length) {
@@ -446,9 +453,33 @@ function onClickWorkType(workType, clickedElement) {
 /**
  * Handle click event for work skill buttons
  * @param {string} workSkill
- * @param {HTMLButtonElement} clickedElement
+ * @param {HTMLElement | undefined} clickedElement
  */
-function onClickWorkSkill(workSkill, clickedElement) {
+function onClickWorkSkill(workSkill, clickedElement = undefined) {
+  workSkill = workSkill.toLowerCase();
+
+  if (!clickedElement) {
+    console.log("Element not found for skill", workSkill);
+    // Look for the element, looking for buttons that contain the skill as text
+    const elements = document.querySelectorAll("#myWorkSkills button");
+    for (const element of elements) {
+      const elementText = element.textContent?.toLowerCase().replace(/\s*\(\d+\)$/, "");
+      if (elementText === workSkill) {
+        console.log("Found element for skill", workSkill);
+        // @ts-ignore
+        clickedElement = element;
+        console.log("Element", clickedElement);
+        break;
+      }
+    }
+  }
+
+  if (!clickedElement) {
+    console.warn("Could not find element for skill", workSkill);
+  }
+
+  console.log("Selecting or deselecting skill", workSkill);
+
   if (selectedWorkSkills.includes(workSkill)) {
     selectedWorkSkills.splice(selectedWorkSkills.indexOf(workSkill), 1);
     clickedElement.removeAttribute("selected");
@@ -456,6 +487,8 @@ function onClickWorkSkill(workSkill, clickedElement) {
     selectedWorkSkills.push(workSkill);
     clickedElement.setAttribute("selected", "");
   }
+
+  console.log("Selected skills", selectedWorkSkills);
 
   // debouncedDisplayFilteredWorks();
   displayFilteredWorks();

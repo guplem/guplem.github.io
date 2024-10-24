@@ -27,3 +27,28 @@
   width: 100%; /* Force it to expand */
   height: auto;
 }
+
+.workSkills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+.workSkills button {
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: #fed;
+  border: none;
+  cursor: pointer;
+}
+
+.workSkills button:not([selected]) {
+  background-color: var(--background-clear);
+}
+
+.workSkills button[selected] {
+  background-color: var(--background-vivid);
+}
