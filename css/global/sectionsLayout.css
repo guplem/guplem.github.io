@@ -42,7 +42,7 @@
   }
   .sectionContainer > *:first-child:nth-last-child(2) ~ img,
   .sectionContainer > img:first-child:nth-last-child(2) {
-    max-width: 15%;
+    max-width: 30%;
   }
 
   /* Three children */
@@ -52,7 +52,7 @@
   }
   .sectionContainer > *:first-child:nth-last-child(3) ~ img,
   .sectionContainer > img:first-child:nth-last-child(3) {
-    max-width: 10%;
+    max-width: 20%;
   }
 
   /* Four children */
@@ -62,7 +62,7 @@
   }
   .sectionContainer > *:first-child:nth-last-child(4) ~ img,
   .sectionContainer > img:first-child:nth-last-child(4) {
-    max-width: 7.5%;
+    max-width: 15%;
   }
 
   /* Five children */
@@ -72,27 +72,27 @@
   }
   .sectionContainer > *:first-child:nth-last-child(5) ~ img,
   .sectionContainer > img:first-child:nth-last-child(5) {
-    max-width: 6%;
+    max-width: 12%;
   }
 
   /* Six children */
   .sectionContainer > *:first-child:nth-last-child(6),
   .sectionContainer > *:first-child:nth-last-child(6) ~ * {
-    max-width: 16.666%;
+    max-width: 16.667%;
   }
   .sectionContainer > *:first-child:nth-last-child(6) ~ img,
   .sectionContainer > img:first-child:nth-last-child(6) {
-    max-width: 5%;
+    max-width: 10%;
   }
 
   /* Seven children */
   .sectionContainer > *:first-child:nth-last-child(7),
   .sectionContainer > *:first-child:nth-last-child(7) ~ * {
-    max-width: 14.285%;
+    max-width: 14.286%;
   }
   .sectionContainer > *:first-child:nth-last-child(7) ~ img,
   .sectionContainer > img:first-child:nth-last-child(7) {
-    max-width: 4.285%;
+    max-width: 8.571%;
   }
 
   /* Eight children */
@@ -102,7 +102,7 @@
   }
   .sectionContainer > *:first-child:nth-last-child(8) ~ img,
   .sectionContainer > img:first-child:nth-last-child(8) {
-    max-width: 3.75%;
+    max-width: 7.5%;
   }
 
   /* Nine children */
@@ -112,7 +112,7 @@
   }
   .sectionContainer > *:first-child:nth-last-child(9) ~ img,
   .sectionContainer > img:first-child:nth-last-child(9) {
-    max-width: 3.333%;
+    max-width: 6.667%;
   }
 
   /* Ten children */
@@ -122,6 +122,6 @@
   }
   .sectionContainer > *:first-child:nth-last-child(10) ~ img,
   .sectionContainer > img:first-child:nth-last-child(10) {
-    max-width: 3%;
+    max-width: 6%;
   }
 }
