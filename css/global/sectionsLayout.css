@@ -1,15 +1,25 @@
-/* General section container styles */
 .sectionContainer {
   display: flex;
   flex-direction: column;
+  max-width: 95%;
+  margin: 0 auto;
 }
 
-/* Flexbox for larger screens */
+/* For small screens */
+@media (max-width: 768px) {
+  .sectionContainer img {
+    max-width: 50%;
+    margin: auto;
+  }
+}
+
+/* For larger screens */
 @media (min-width: 768px) {
   .sectionContainer {
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    max-width: 70%;
   }
 
   /* Ensure all elements inside sectionContainer share space equally */
