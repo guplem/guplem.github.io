@@ -249,7 +249,7 @@ async function displayFilteredWorks() {
       const titleElement = document.createElement("div");
       titleElement.classList.add("workTitle");
       workElement.appendChild(titleElement);
-      await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h2"]]));
+      await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h3"]]));
     }
 
     if (work.image?.length) {
