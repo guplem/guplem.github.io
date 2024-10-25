@@ -1,17 +1,18 @@
 /** GENERAL **/
 
+#myWorkTypes,
+#myWorkSkills {
+  padding-left: 3%;
+  padding-right: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 #myWorkFilters button {
   margin: 3px;
   border: none;
   cursor: pointer;
-}
-
-#myWorkTypes #myWorkSkills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding-left: 3%;
-  padding-right: 3%;
 }
 
 /** TYPES **/
