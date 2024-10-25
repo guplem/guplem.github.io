@@ -264,6 +264,13 @@ async function displayFilteredWorks() {
       await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h3"]]));
     }
 
+    if (work.date?.length) {
+      const dateElement = document.createElement("div");
+      dateElement.classList.add("workDate");
+      workElement.appendChild(dateElement);
+      await uiUtils.setDataInHtmlElement(work.date, dateElement);
+    }
+
     if (work.description?.length) {
       const descriptionElement = document.createElement("div");
       descriptionElement.classList.add("workDescription");
@@ -291,13 +298,6 @@ async function displayFilteredWorks() {
     //   workElement.appendChild(typesElement);
     //   await uiUtils.setDataInHtmlElement("Types: " + work.types.join(", "), typesElement);
     // }
-
-    if (work.date?.length) {
-      const dateElement = document.createElement("div");
-      dateElement.classList.add("workDate");
-      workElement.appendChild(dateElement);
-      await uiUtils.setDataInHtmlElement("Date: " + work.date, dateElement);
-    }
 
     if (work.links?.length) {
       const skillsElement = document.createElement("div");

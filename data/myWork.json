@@ -3,7 +3,7 @@
   "works": [
     {
       "types": ["WEB", "mobile", "desktop app"],
-      "date": "01-03-2021",
+      "date": "2021",
       "title": "Guillem Poy's Web Portfolio",
       "description": ["My personal web portfolio. It showcases my projects and skills."],
       "image": "resources/images/projects/ohia.gif",
@@ -73,7 +73,7 @@
     },
     {
       "types": ["web"],
-      "date": "01-02-2021",
+      "date": "2021",
       "title": "WikiPoll",
       "description": [
         "A web app that allows users to create and vote on polls. It's a fun way to learn new things and share opinions.",
@@ -102,12 +102,12 @@
     },
     {
       "types": ["desktop APP"],
-      "date": "01-01-2020",
+      "date": "2020",
       "title": "Example"
     },
     {
       "types": ["mobile"],
-      "date": "01-01-2020",
+      "date": "2020",
       "title": "Lorem Ipsum 1",
       "description": [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -116,7 +116,7 @@
     },
     {
       "types": ["mobile"],
-      "date": "02-01-2019",
+      "date": "2019",
       "title": "Lorem Ipsum 2",
       "description": [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",

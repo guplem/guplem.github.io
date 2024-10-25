@@ -1,12 +1,4 @@
-#myWorkFiltered {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-.myWorkColumn {
-  flex: 1;
-}
-
+/** The full container for all works */
 #myWork {
   background-color: var(--background-clear);
   padding-right: 1em;
@@ -16,6 +8,18 @@
   margin: auto;
 }
 
+/** The container for all FILTERED works */
+#myWorkFiltered {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+/** Each column of works */
+.myWorkColumn {
+  flex: 1;
+}
+
+/** A single work "card" */
 .work {
   margin: 10px;
   background-color: var(--background-dark);
@@ -23,19 +27,37 @@
   overflow: hidden;
 }
 
+/** All contents of a single work but the image */
+.work > :not(img) {
+  margin-left: 6%;
+  margin-right: 6%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/** All contents (inside the different divs) of a single work */
+.work div > * {
+  padding-left: 0px;
+  padding-right: 0px;
+
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+/** The image of a single work */
 .work img {
   width: 100%; /* Force it to expand */
   height: auto;
 }
 
+/** The sills of a single work */
 .workSkills {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding-left: 3%;
-  padding-right: 3%;
 }
 
+/** Each skill of a single work */
 .workSkills button {
   margin: 1%;
   padding-top: 1.5%;
@@ -55,14 +77,13 @@
   background-color: var(--background-vivid);
 }
 
-.workLinks {
-  padding-top: 0.5%;
-  padding-bottom: 1%;
-  padding-left: 4%;
-  padding-right: 4%;
-}
-
+/** Each links of a single work */
 .workLinks img {
   width: 10%;
-  padding: 1%;
+  margin: 1%;
+}
+
+/** The date (all childs of it) of a single work */
+.workDate > * {
+  color: var(--secondary-accent-color);
 }
