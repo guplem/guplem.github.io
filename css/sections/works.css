@@ -50,16 +50,22 @@
   height: auto;
 }
 
+/** The paragraphs inside the description of a single work */
+.workDescription p:not(:last-child) {
+  margin-bottom: 10px;
+}
+
 /** The sills of a single work */
 .workSkills {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: left;
+  align-items: center;
+  gap: 5px 5px;
 }
 
 /** Each skill of a single work */
 .workSkills button {
-  margin: 1%;
   padding-top: 1.5%;
   padding-bottom: 1.5%;
   padding-left: 2.3%;
