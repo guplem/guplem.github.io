@@ -299,6 +299,28 @@ async function displayFilteredWorks() {
       await uiUtils.setDataInHtmlElement("Date: " + work.date, dateElement);
     }
 
+    if (work.links?.length) {
+      const skillsElement = document.createElement("div");
+      skillsElement.classList.add("workLinks");
+      for (const link of work.links) {
+        const linkElement = document.createElement("a");
+        linkElement.href = link.url;
+        linkElement.target = "_blank";
+        linkElement.rel = "external help";
+        const linkImage = document.createElement("img");
+        if (link.type) {
+          linkImage.src = "resources/images/icons/" + link.type + ".png";
+          linkElement.title = textUtils.capitalizeFirstLetter(link.type, true, true);
+        } else {
+          linkImage.src = "resources/images/icons/link.png";
+          linkElement.title = "Web";
+        }
+        linkElement.appendChild(linkImage);
+        skillsElement.appendChild(linkElement);
+      }
+      workElement.appendChild(skillsElement);
+    }
+
     // Determine the index of the shortest column
     const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
 
@@ -412,7 +434,7 @@ async function displayContactInfo() {
     const linkElement = document.createElement("a");
     linkElement.href = contactInfo.link;
     linkElement.target = "_blank";
-    linkElement.rel = "noopener noreferrer";
+    linkElement.rel = "author external";
     const text = contactInfo.text ?? contactInfo.link;
     linkElement.title = `${contactInfo.name}: ${text}`;
 

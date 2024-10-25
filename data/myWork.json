@@ -15,11 +15,11 @@
         },
         {
           "type": "github",
-          "url": "github.com/guplem/guplem.github.io"
+          "url": "https://guplem.github.io/"
         },
         {
           "type": "folder",
-          "url": "github.com/guplem/guplem.github.io"
+          "url": "https://guplem.github.io/"
         }
       ]
     },
@@ -39,12 +39,12 @@
       "skills": ["Flutter", "Dart", "Firebase", "Markdown", "SQL"],
       "links": [
         {
-          "type": "web",
+          "type": "link",
           "url": "https://wikipoll.b4a.app/#/"
         },
         {
           "type": "github",
-          "url": "github.com/guplem/WikiPoll"
+          "url": "https://github.com/guplem/WikiPoll"
         },
         {
           "type": "download",
