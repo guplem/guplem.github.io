@@ -482,10 +482,10 @@ function onClickWorkSkill(workSkill, clickedElement = undefined) {
 
   if (selectedWorkSkills.includes(workSkill)) {
     selectedWorkSkills.splice(selectedWorkSkills.indexOf(workSkill), 1);
-    clickedElement.removeAttribute("selected");
+    clickedElement?.removeAttribute("selected");
   } else {
     selectedWorkSkills.push(workSkill);
-    clickedElement.setAttribute("selected", "");
+    clickedElement?.setAttribute("selected", "");
   }
 
   console.log("Selected skills", selectedWorkSkills);
