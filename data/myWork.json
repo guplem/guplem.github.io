@@ -121,7 +121,8 @@
       "description": [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "Aenean pharetra pharetra mauris, placerat pretium dolor ultricies sed. Proin dignissim dui at scelerisque ultricies. Vestibulum cursus libero sagittis purus luctus consequat."
-      ]
+      ],
+      "skills": ["Flutter"]
     }
   ]
 }
