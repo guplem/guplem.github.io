@@ -142,3 +142,12 @@ function useH1InsteadOfP(transformer) {
     }),
   });
 }
+
+export function idFromText(title) {
+  let sanitazed = capitalizeFirstLetter(title, true, true).replace(/ /g, "");
+  // Remove special characters
+  sanitazed = sanitazed.replace(/[^\w\s]/gi, "");
+  // remove "'", "’", ":", "(", ")", "!", "?", ".", ","
+  sanitazed = sanitazed.replace(/['’:\(\)!?,.]/gi, "");
+  return sanitazed;
+}

@@ -256,6 +256,8 @@ async function displayFilteredWorks() {
       titleElement.classList.add("workTitle");
       workElement.appendChild(titleElement);
       await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h3"]]));
+
+      workElement.id = `work_${textUtils.idFromText(work.title)}`;
     }
 
     if (work.date?.length) {
@@ -359,6 +361,7 @@ async function displayAdditionalSections() {
       titleElement.classList.add("sectionTitle");
       sectionElement.appendChild(titleElement);
       await uiUtils.setDataInHtmlElement(section.title, titleElement, new Map([["p", "h2"]]));
+      sectionElement.id = `additionalSection_${textUtils.idFromText(section.title)}`;
     }
 
     const sectionContainer = document.createElement("div");

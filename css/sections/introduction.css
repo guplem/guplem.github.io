@@ -23,3 +23,40 @@
 #introduction strong {
   color: var(--primary-accent-color);
 }
+
+#arrowPointingDown {
+  position: absolute;
+  left: 50%;
+  animation: upDown 4s infinite;
+  z-index: 1; /* Ensure arrow is on top */
+}
+
+#arrowPointingDown::before {
+  content: "";
+  position: absolute;
+  width: 40px; /* Size of the circle */
+  height: 40px; /* Size of the circle */
+  background-color: var(--forth-accent-color); /* Circle background color */
+  border-radius: 50%; /* Make it a circle */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%) scale(0); /* Scale down to hide */
+  transition: transform 0.3s ease; /* Smooth transition */
+  z-index: -1; /* Behind the arrow */
+}
+
+#arrowPointingDown:hover::before {
+  transform: translate(-50%, -50%) scale(1); /* Scale to show on hover */
+}
+
+@keyframes upDown {
+  0% {
+    bottom: 5%;
+  }
+  50% {
+    bottom: 8%;
+  }
+  100% {
+    bottom: 5%;
+  }
+}
