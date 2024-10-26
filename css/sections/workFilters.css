@@ -24,6 +24,7 @@
   padding-right: 20px;
   border-radius: 20px;
   font-weight: bold;
+  border: 1px solid transparent;
 }
 
 #myWorkTypes button:not([selected]) {
@@ -43,6 +44,7 @@
   padding-left: 15px;
   padding-right: 15px;
   border-radius: 15px;
+  border: 1px solid transparent;
 }
 
 #myWorkSkills button:not([selected]) {
@@ -51,4 +53,17 @@
 
 #myWorkSkills button[selected] {
   background-color: var(--background-dark);
+}
+
+/** (both) HOVER STYLE **/
+
+#myWorkSkills button:hover:not([selected]),
+#myWorkTypes button:hover:not([selected]) {
+  background-color: var(--forth-accent-color);
+  color: var(--text-color);
+  border: 1px solid transparent;
+
+  /*Transition to state*/
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
 }

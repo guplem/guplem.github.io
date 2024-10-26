@@ -99,23 +99,16 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
     const data = await textUtils.fetchJsonData(dataUrl);
 
     // Process the data
-    const allEntries = [];
+    const allEntries = new Map();
     for (const group of data[dataKeyToGroup]) {
       if (!group[dataKeyInGroup]) {
         continue;
       }
       for (const rawData of group[dataKeyInGroup]) {
-        allEntries.push(rawData.toLowerCase());
-      }
-    }
-
-    // Count entries
-    const entriesCount = {};
-    for (const entry of allEntries) {
-      if (entriesCount[entry]) {
-        entriesCount[entry]++;
-      } else {
-        entriesCount[entry] = 1;
+        const entry = rawData.toLowerCase();
+        if (!allEntries.has(entry)) {
+          allEntries.set(entry, rawData);
+        }
       }
     }
 
@@ -123,11 +116,11 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
     const fragment = document.createDocumentFragment();
 
     // Create and add buttons to the fragment
-    for (const entry in entriesCount) {
-      const textButton = textUtils.capitalizeFirstLetter(entry, false, true); /* + " (" + entriesCount[entry] + ")"*/
-      const button = uiUtils.createButton(textButton, () => onClick(entry, button));
+    for (const [entryId, entryValue] of allEntries) {
+      const buttonText = textUtils.capitalizeFirstLetter(entryValue, false, true);
+      const button = uiUtils.createButton(buttonText, () => onClick(entryId, button));
       if (addShowExperiencesAriaLabel) {
-        button.setAttribute("aria-label", `Show ${textUtils.capitalizeFirstLetter(entry, true, true)} experiences`);
+        button.setAttribute("aria-label", `Show ${textUtils.capitalizeFirstLetter(entryValue, false, true)} experiences`);
       }
       fragment.appendChild(button);
     }
