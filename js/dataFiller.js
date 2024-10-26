@@ -124,7 +124,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
 
     // Create and add buttons to the fragment
     for (const entry in entriesCount) {
-      const textButton = textUtils.capitalizeFirstLetter(entry, true, true) + " (" + entriesCount[entry] + ")";
+      const textButton = textUtils.capitalizeFirstLetter(entry, false, true); /* + " (" + entriesCount[entry] + ")"*/
       const button = uiUtils.createButton(textButton, () => onClick(entry, button));
       if (addShowExperiencesAriaLabel) {
         button.setAttribute("aria-label", `Show ${textUtils.capitalizeFirstLetter(entry, true, true)} experiences`);
