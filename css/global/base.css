@@ -103,3 +103,12 @@ a:hover {
   transition-duration: 200ms; /*Duration of fading*/
   transition-timing-function: ease-out;
 }
+/* If the link has an image, all the children of the link will have a "floating" animation */
+/* -- Default state */
+a:has(img) > * {
+  transition: transform 0.3s ease;
+}
+/* -- Hover state */
+a:hover:has(img) > * {
+  transform: translateY(-5px);
+}
