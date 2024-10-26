@@ -44,10 +44,12 @@
   margin-bottom: 0px;
 }
 
-/** The image of a single work */
-.work img {
-  width: 100%; /* Force it to expand */
+/** The first image of a single work */
+.workImage {
   height: auto;
+  width: 100%;
+  max-height: 300px; /* This might cause issue, with gifs or large images, ubt prevents the card from having a too-tall image */
+  object-fit: cover;
 }
 
 /** The paragraphs inside the description of a single work */

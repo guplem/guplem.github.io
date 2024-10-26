@@ -245,6 +245,7 @@ async function displayFilteredWorks() {
 
     if (work.image?.length) {
       const imageElement = document.createElement("img");
+      imageElement.classList.add("workImage");
       imageElement.src = work.image;
       imageElement.alt = work.imageAlt || `Image for ${work.title}`;
       workElement.appendChild(imageElement);
