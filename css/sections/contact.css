@@ -6,10 +6,27 @@
 
 #contactMethods {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px 20px;
+}
+
+.contactMethod {
+  display: flex;
+  align-items: center; /* Ensures the image and text are centered vertically */
+  color: var(--lt-color-black); /* Set text color */
+  gap: 20px 10px;
 }
 
 .contactMethod img {
-  width: 25px;
-  height: auto;
+  width: 40px;
+  height: auto; /* Ensures the image keeps its aspect ratio */
+}
+
+/* For small screens */
+@media (max-width: 768px) {
+  .contactMethod {
+    flex-direction: column;
+  }
 }

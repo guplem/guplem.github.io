@@ -428,25 +428,28 @@ async function displayContactInfo() {
 
   // Create and add contact elements to the fragment
   for (const contactInfo of data.contact) {
-    const contactElement = document.createElement("div");
-    contactElement.classList.add("contactMethod");
+    // const contactElement = document.createElement("div");
+    // contactElement.classList.add("contactMethod");
 
-    const linkElement = document.createElement("a");
-    linkElement.href = contactInfo.link;
-    linkElement.target = "_blank";
-    linkElement.rel = "author external";
+    const contactElement = document.createElement("a");
+    contactElement.classList.add("contactMethod");
+    contactElement.href = contactInfo.link;
+    contactElement.target = "_blank";
+    contactElement.rel = "author external";
     const text = contactInfo.text ?? contactInfo.link;
-    linkElement.title = `${contactInfo.name}: ${text}`;
+    contactElement.title = `${contactInfo.name}: ${text}`;
 
     if (contactInfo.icon?.length) {
       const imageElement = document.createElement("img");
       imageElement.src = contactInfo.icon;
       imageElement.alt = text;
-      linkElement.appendChild(imageElement);
+      contactElement.appendChild(imageElement);
     }
 
-    linkElement.appendChild(document.createTextNode(text));
-    contactElement.appendChild(linkElement);
+    const textElement = document.createElement("div");
+    textElement.textContent = text;
+    contactElement.appendChild(textElement);
+
     fragment.appendChild(contactElement);
   }
 
