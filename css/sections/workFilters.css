@@ -13,6 +13,10 @@
   margin: 3px;
   border: none;
   cursor: pointer;
+
+  /*Transition to states*/
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
 }
 
 /** TYPES **/
@@ -62,8 +66,4 @@
   background-color: var(--forth-accent-color);
   color: var(--text-color);
   border: 1px solid transparent;
-
-  /*Transition to state*/
-  transition-duration: 200ms;
-  transition-timing-function: ease-out;
 }
