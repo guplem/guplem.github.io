@@ -37,7 +37,7 @@
     max-width: 100%;
   }
   .sectionContainer > img:nth-child(n):first-child:nth-last-child(1) {
-    max-width: 30%;
+    max-width: 60%;
   }
 
   /* Two children */
@@ -47,7 +47,7 @@
   }
   .sectionContainer > *:first-child:nth-last-child(2) ~ img,
   .sectionContainer > img:first-child:nth-last-child(2) {
-    max-width: 30%;
+    max-width: 30%; /* 25% --> half of the total*/
   }
 
   /* Three children */
@@ -129,4 +129,44 @@
   .sectionContainer > img:first-child:nth-last-child(10) {
     max-width: 6%;
   }
+}
+
+.sectionContents h1 {
+  font-size: 2em;
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: center;
+  color: var(--title-color);
+}
+
+.sectionContents h2 {
+  font-size: 1.7em;
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: center;
+  color: var(--title-color);
+}
+
+.sectionContents h3 {
+  font-size: 1.5em;
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: left;
+  color: var(--primary-accent-color);
+}
+
+.sectionContents h4 {
+  font-size: 1.25em;
+
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: left;
+  color: var(--primary-accent-color);
+}
+
+.sectionContents p {
+  padding-left: 10px;
+  padding-right: 0px;
+  text-align: justify;
+  color: var(--text-color);
 }
