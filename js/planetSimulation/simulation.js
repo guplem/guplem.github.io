@@ -4,30 +4,27 @@ import { Vector } from "./elements/vector.js";
 import { Gravity } from "./elements/gravity.js";
 import { Time } from "./elements/time.js";
 
-// Retrieve the canvas
-var simCanvas = document.getElementById("simCanvas");
-
-if (simCanvas === null || simCanvas === undefined) {
-  throw new Error(`Canvas element (canvas with id "simCanvas") not found`);
-}
+const area = document.getElementById("introduction");
+const simCanvas = /** @type {HTMLCanvasElement} */ (document.getElementById("simCanvas"));
 
 // Set the correct canvas size in the HTML
 function setProperCanvasSize() {
-  var area = document.getElementById("introduction");
   if (area === null || area === undefined) {
     throw new Error(`Area to draw the simulation (div with id "introduction") not found`);
   }
-  var topHeight = area.offsetHeight;
-  var topWidth = area.offsetWidth;
-  simCanvas.height = topHeight;
-  simCanvas.width = topWidth;
+
+  if (simCanvas === null || simCanvas === undefined) {
+    throw new Error(`Canvas element (canvas with id "simCanvas") not found`);
+  }
+
+  simCanvas.height = area.offsetHeight;
+  simCanvas.width = area.offsetWidth;
   // alert("topHeight = " + topHeight + ", topWidth = " + topWidth + " canvas: " + simCanvas.height + ", " + simCanvas.width);
 }
 setProperCanvasSize();
 
 // Create the workspace
 var space = new Space(simCanvas, -5, 5, -5, 5);
-var ctx = simCanvas.getContext("2d");
 
 // Create the planets that will orbit
 var planets = new Array();
@@ -80,10 +77,4 @@ function onEachStep() {
   for (var i = 0; i < 100; i++) {
     planets[i].draw(space);
   }
-
-  // Draw text
-  /* ctx.font = "30px Arial";
-     ctx.fillStyle = "red";
-     ctx.textAlign = "center";
-     ctx.fillText("Hello World", simCanvas.width / 2, simCanvas.height / 2); */
 }
