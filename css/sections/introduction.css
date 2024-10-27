@@ -40,8 +40,15 @@
 #arrowPointingDown {
   position: absolute;
   left: 50%;
-  animation: upDown 4s infinite;
   z-index: 1; /* Ensure arrow is on top */
+  opacity: 0; /* The animation will then make it appear */
+  bottom: 5%; /* The animation will move it around */
+  /* 
+    Applies two animations to the element:
+    1. SlideFromTop: animates for 1s with ease-out, starting after a 1.5s delay, and retains the final state (forwards).
+    2. upDown: animates infinitely, lasts 4s, starting 2.5s after the element is rendered (1st delay of 1s + duration of 1st: 1.5s => delay of second animation: 2.5s).
+  */
+  animation: SlideFromTop 1s ease-out 1.5s forwards, upDown 4s infinite 2.5s;
 }
 
 #arrowPointingDown::before {
