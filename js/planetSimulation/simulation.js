@@ -57,7 +57,8 @@ function setProperCanvasSize() {
 
   simCanvas.height = area.offsetHeight;
   simCanvas.width = area.offsetWidth;
-  console.log("Canvas size set to match the dimensions of the area element: ", simCanvas.width, " x ", simCanvas.height);
+
+  // console.log("Canvas size set to match the dimensions of the area element: ", simCanvas.width, " x ", simCanvas.height);
 }
 
 /**
