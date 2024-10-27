@@ -4,11 +4,24 @@ import { Vector } from "./elements/vector.js";
 import { Gravity } from "./elements/gravity.js";
 import { Time } from "./elements/time.js";
 
+// Get the area to get the correct canvas size
 const area = document.getElementById("introduction");
+// Get the canvas element
 const simCanvas = /** @type {HTMLCanvasElement} */ (document.getElementById("simCanvas"));
 
-// Set the correct canvas size in the HTML
-function setProperCanvasSize() {
+setProperCanvasSize();
+
+/**
+ * Sets the canvas size to match the dimensions of the area element.
+ *
+ * This function adjusts the height and width of the canvas element to match
+ * the offsetHeight and offsetWidth of the area element. It throws an error
+ * if either the area or the canvas element is not found.
+ *
+ * @throws {Error} If the area element (div with id "introduction") is not found.
+ * @throws {Error} If the canvas element (canvas with id "simCanvas") is not found.
+ */
+export function setProperCanvasSize() {
   if (area === null || area === undefined) {
     throw new Error(`Area to draw the simulation (div with id "introduction") not found`);
   }
@@ -19,9 +32,8 @@ function setProperCanvasSize() {
 
   simCanvas.height = area.offsetHeight;
   simCanvas.width = area.offsetWidth;
-  // alert("topHeight = " + topHeight + ", topWidth = " + topWidth + " canvas: " + simCanvas.height + ", " + simCanvas.width);
+  // console.log("Canvas size set to match the dimensions of the area element: ", simCanvas.width, " x ", simCanvas.height);
 }
-setProperCanvasSize();
 
 // Create the workspace
 var space = new Space(simCanvas, -5, 5, -5, 5);
@@ -51,9 +63,6 @@ for (var i = 0; i < 100; i++) {
   planets[i].vel = new Vector(0, vel);
 }
 
-// Create the force of gravity
-var g = new Gravity();
-
 // This was the previous way of initializing the simulation, but it took too long since it waited for all images to load
 // window.onload = init;
 
@@ -66,6 +75,9 @@ document.addEventListener("DOMContentLoaded", function () {
 function init() {
   setInterval(onEachStep, 1000 / 60); // 60 fps
 }
+
+// Create the force of gravity
+var g = new Gravity();
 
 function onEachStep() {
   // Advance time by calculating new positions and velocities

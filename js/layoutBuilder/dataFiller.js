@@ -1,5 +1,5 @@
-import * as textUtils from "./textUtils.js";
-import * as uiUtils from "./uiUtils.js";
+import * as textUtils from "../utils/textUtils.js";
+import * as uiUtils from "../utils/uiUtils.js";
 
 // Initialize arrays to store selected work types and skills
 const selectedWorkTypes = [];
@@ -24,25 +24,6 @@ displayFilteredWorks();
 displayAdditionalSections();
 // - Contact info
 displayContactInfo();
-
-function onResizeWidthEnd() {
-  // Needs to be called since the number of columns is calculated based on the screen width
-  displayFilteredWorks();
-}
-
-// Inspired by https://stackoverflow.com/a/5490021/7927429
-let lastWidth = window.innerWidth;
-var debounceTimeout;
-window.onresize = function () {
-  clearTimeout(debounceTimeout);
-  debounceTimeout = setTimeout(() => {
-    const currentWidth = window.innerWidth;
-    if (currentWidth !== lastWidth) {
-      lastWidth = currentWidth;
-      onResizeWidthEnd();
-    }
-  }, 100);
-};
 
 /**
  * Fill an element with text from a JSON file
@@ -174,25 +155,9 @@ async function getFilterWorks() {
 }
 
 /**
- * Debounce a function, making it callable only after a certain delay, and preventing multiple calls in the meantime
- * @param {(...args: any[]) => void} func
- * @param {number} delay
- */
-// function debounce(func, delay) {
-//   let timeoutId;
-//   return function (...args) {
-//     clearTimeout(timeoutId);
-//     timeoutId = setTimeout(() => func.apply(this, args), delay);
-//   };
-// }
-
-// // Debounce the display of filtered works
-// const debouncedDisplayFilteredWorks = debounce(displayFilteredWorks, 150);
-
-/**
  * Display filtered works in a masonry layout
  */
-async function displayFilteredWorks() {
+export async function displayFilteredWorks() {
   // Get filtered works
   const filteredWorks = await getFilterWorks();
 
@@ -468,7 +433,6 @@ function onClickWorkType(workType, clickedElement) {
     clickedElement.setAttribute("selected", "");
   }
 
-  // debouncedDisplayFilteredWorks();
   displayFilteredWorks();
 }
 
@@ -512,6 +476,5 @@ function onClickWorkSkill(workSkill, clickedElement = undefined) {
 
   console.log("Selected skills", selectedWorkSkills);
 
-  // debouncedDisplayFilteredWorks();
   displayFilteredWorks();
 }
