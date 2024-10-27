@@ -2,36 +2,36 @@
   this.x = x;
   this.y = y;
 
-  // Metodes de l'objecte
+  // Object methods
 
-  (this.norma = function () {
+  (this.norm = function () {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }),
-    (this.oposat = function () {
+    (this.opposite = function () {
       return new Vector(-this.x, -this.y);
     }),
-    (this.normalitza = function () {
-      var norm = this.norma();
+    (this.normalize = function () {
+      var norm = this.norm();
       return new Vector(this.x / norm, this.y / norm);
     }),
-    // Metodes estatics
+    // Static methods
 
-    (Vector.suma = function (vec1, vec2) {
+    (Vector.add = function (vec1, vec2) {
       return new Vector(vec1.x + vec2.x, vec1.y + vec2.y);
     });
-  Vector.escala = function (vec, k) {
+  Vector.scale = function (vec, k) {
     return new Vector(k * vec.x, k * vec.y);
   };
-  Vector.resta = function (vec1, vec2) {
+  Vector.subtract = function (vec1, vec2) {
     return new Vector(vec1.x - vec2.x, vec1.y - vec2.y);
   };
-  Vector.distancia = function (vec1, vec2) {
-    return Vector.resta(vec1, vec2).norma();
+  Vector.distance = function (vec1, vec2) {
+    return Vector.subtract(vec1, vec2).norm();
   };
-  Vector.escalar = function (vec1, vec2) {
+  Vector.scalar = function (vec1, vec2) {
     return vec1.x * vec2.x + vec1.y * vec2.y;
   };
   Vector.angle = function (vec1, vec2) {
-    return Math.acos(Vector.escalar(vec1, vec2) / (vec1.norma() * vec2.norma()));
+    return Math.acos(Vector.scalar(vec1, vec2) / (vec1.norm() * vec2.norm()));
   };
 }

@@ -1,35 +1,36 @@
-//DEPENDENCIES: Vector, Espai
+// DEPENDENCIES: Vector, Space
 
-function Particula(massa, carrega, restitucio, radi, color, gradient) {
-  if (typeof massa === "undefined") massa = 1;
-  if (typeof carrega === "undefined") carrega = 0;
-  if (typeof restitucio === "undefined") restitucio = 1;
-  if (typeof radi === "undefined") radi = 1;
+function Particle(mass, charge, restitution, radius, color, gradient) {
+  if (typeof mass === "undefined") mass = 1;
+  if (typeof charge === "undefined") charge = 0;
+  if (typeof restitution === "undefined") restitution = 1;
+  if (typeof radius === "undefined") radius = 1;
   if (typeof color === "undefined") color = "#0000ff";
   if (typeof gradient === "undefined") gradient = false;
-  this.massa = massa;
-  this.carrega = carrega;
-  this.restitucio = restitucio;
-  this.radi = radi;
+
+  this.mass = mass;
+  this.charge = charge;
+  this.restitution = restitution;
+  this.radius = radius;
   this.color = color;
   this.gradient = gradient;
   this.pos = new Vector(0, 0);
   this.vel = new Vector(0, 0);
 
-  //METODES
+  // METHODS
 
-  this.draw = function (espai) {
+  this.draw = function (space) {
     if (this.gradient) {
-      grad = espai.createRadialGradient(this.pos.x, this.pos.y, 0, this.pos.x, this.pos.y, this.radi);
+      grad = space.createRadialGradient(this.pos.x, this.pos.y, 0, this.pos.x, this.pos.y, this.radius);
       grad.addColorStop(0, "#ffffff");
       grad.addColorStop(1, this.color);
-      espai.fillStyle(grad);
+      space.fillStyle(grad);
     } else {
-      espai.fillStyle(this.color);
+      space.fillStyle(this.color);
     }
-    espai.beginPath();
-    espai.arc(this.pos.x, this.pos.y, this.radi, 0, 2 * Math.PI, true);
-    espai.closePath();
-    espai.fill();
+    space.beginPath();
+    space.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI, true);
+    space.closePath();
+    space.fill();
   };
 }

@@ -1,13 +1,12 @@
 ﻿/* ARGUMENTS
-simCanvas = espai on es dibuixara la simulacio. 
-xmin, xmax, ymin, ymax = els valors minims i maxims en les direccions 
-	horitzontal i vertical en unitats fisiques. 
-xlabel, ylabel = etiquetes pels eixos coordenats.
+simCanvas = space where the simulation will be drawn.
+xmin, xmax, ymin, ymax = the minimum and maximum values in the horizontal and vertical directions in physical units.
+xlabel, ylabel = labels for the coordinate axes.
 */
 function Espai(simCanvas, xmin, xmax, ymin, ymax, xlabel, ylabel) {
   if (typeof xlabel === "undefined") xlabel = "x";
   if (typeof ylabel === "undefined") ylabel = "y";
-  // DECLARACIO DE VARIABLES
+  // VARIABLE DECLARATION
   // simCanvas context on which to draw graph instance
   var context = simCanvas.getContext("2d");
   // overall width and height of graph in pixels
@@ -28,8 +27,8 @@ function Espai(simCanvas, xmin, xmax, ymin, ymax, xlabel, ylabel) {
   var x_label = xlabel;
   var y_label = ylabel;
 
-  // METODES
-  //Aquests basicament deleguen la seva funcionalitat a context
+  // METHODS
+  // These basically delegate their functionality to context
   this.strokeStyle = function (st) {
     context.strokeStyle = st;
   };
@@ -67,7 +66,7 @@ function Espai(simCanvas, xmin, xmax, ymin, ymax, xlabel, ylabel) {
     context.clearRect(0, 0, x_width, y_width);
   };
 
-  // Aquests dibuixen els eixos i grafiques si cal
+  // These draw the axes and graphs if necessary
   // DRAW AXES: draw axes and labels
   this.drawaxes = function () {
     context.strokeStyle = "#000000";
@@ -78,7 +77,7 @@ function Espai(simCanvas, xmin, xmax, ymin, ymax, xlabel, ylabel) {
     context.moveTo(x_orig, y_width);
     context.lineTo(x_orig, 0);
     context.stroke();
-    //axis labels
+    // axis labels
     context.font = "12pt Arial";
     context.fillStyle = "#000000";
     context.textAlign = "left";
@@ -127,7 +126,7 @@ function Espai(simCanvas, xmin, xmax, ymin, ymax, xlabel, ylabel) {
       xx += x_tick_minor;
     } while (xx <= x_width);
     context.stroke();
-    //display values
+    // display values
     var y_displ;
     var x_displ;
     context.font = "10pt Arial";
