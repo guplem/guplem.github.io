@@ -13,10 +13,23 @@
 #introduction h1 {
   animation: 1.5s ease 0s 1 SlideFromTop;
   text-align: center;
-  display: table-cell;
   vertical-align: middle;
   padding: 5%;
   font-weight: 100;
+}
+
+@keyframes SlideFromTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 #introduction b,
