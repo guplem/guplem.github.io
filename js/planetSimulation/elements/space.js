@@ -27,8 +27,6 @@ export class Space {
     if (typeof ylabel === "undefined") ylabel = "y";
 
     // VARIABLE DECLARATION
-    // Get the context of the simulation canvas for drawing
-    var context = simCanvas.getContext("2d");
     // Store the overall width and height of the canvas in pixels
     var x_width = simCanvas.width;
     var y_width = simCanvas.height;
@@ -49,51 +47,71 @@ export class Space {
     var x_label = xlabel; // X-axis label
     var y_label = ylabel; // Y-axis label
 
+    // Get the context of the simulation canvas for drawing
+    var context = simCanvas.getContext("2d");
+
     // METHODS
     // Methods to delegate drawing functionality to the canvas context
     this.strokeStyle = function (st) {
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.strokeStyle = st; // Set stroke style
     };
     this.lineWidth = function (lw) {
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.lineWidth = lw; // Set line width
     };
     this.stroke = function () {
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.stroke(); // Execute stroke operation
     };
     this.fillStyle = function (color) {
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.fillStyle = color; // Set fill style
     };
     this.beginPath = function () {
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.beginPath(); // Begin a new path
     };
     this.moveTo = function (posx, posy) {
       // Move to specified position, adjusted for origin and scaling
+
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.moveTo(x_orig + posx / x_scal, y_orig - posy / y_scal);
     };
     this.lineTo = function (posx, posy) {
       // Draw a line to the specified position, adjusted for origin and scaling
+
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.lineTo(x_orig + posx / x_scal, y_orig - posy / y_scal);
     };
     this.arc = function (posx, posy, rad, angi, angf, bool) {
       // Draw an arc with specified parameters, adjusted for origin and scaling
+
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.arc(x_orig + posx / x_scal, y_orig - posy / y_scal, rad / y_scal, angi, angf, bool);
     };
     this.closePath = function () {
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.closePath(); // Close the current path
     };
     this.fill = function () {
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.fill(); // Fill the current path
     };
     this.createRadialGradient = function (xi, yi, radi1, xf, yf, radi2) {
       // Create a radial gradient
+
+      if (!context) throw new Error("Canvas context is null or undefined");
       return context.createRadialGradient(xi, yi, radi1, xf, yf, radi2);
     };
     this.clear = function () {
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.clearRect(0, 0, x_width, y_width); // Clear the canvas
     };
 
     // DRAW AXES: Draw axes and labels on the canvas
     this.drawaxes = function () {
+      if (!context) throw new Error("Canvas context is null or undefined");
       context.strokeStyle = "#000000"; // Set axis color
       context.lineWidth = 2; // Set axis line width
       context.beginPath();
@@ -119,6 +137,7 @@ export class Space {
       var y_tick_major = ymajor / y_scal; // Major tick spacing for y
       var y_tick_minor = yminor / y_scal; // Minor tick spacing for y
 
+      if (!context) throw new Error("Canvas context is null or undefined");
       // Draw major grid lines
       context.strokeStyle = "#999999"; // Major grid color
       context.lineWidth = 1;
@@ -164,7 +183,7 @@ export class Space {
       yy = y_width;
       do {
         y_displ = (y_orig - yy) * y_scal; // Calculate y value
-        context.fillText(y_displ, txpos + 5, yy - th / 2); // Display y value
+        context.fillText(y_displ.toString(), txpos + 5, yy - th / 2); // Display y value
         yy -= y_tick_major;
       } while (yy <= 0);
       context.textAlign = "left";
@@ -172,7 +191,7 @@ export class Space {
       xx = 0;
       do {
         x_displ = (xx - x_orig) * x_scal; // Calculate x value
-        context.fillText(x_displ, xx - tw + 10, typos + 5); // Display x value
+        context.fillText(x_displ.toString(), xx - tw + 10, typos + 5); // Display x value
         xx += x_tick_major;
       } while (xx <= x_width);
     };
@@ -184,6 +203,7 @@ export class Space {
       if (typeof pDots === "undefined") pDots = true; // Default to showing dots
       if (typeof pLine === "undefined") pLine = true; // Default to connecting dots with a line
 
+      if (!context) throw new Error("Canvas context is null or undefined");
       // Calculate the starting position for the plot
       var xpos = x_orig + xArr[0] / x_scal;
       var ypos = y_orig - yArr[0] / y_scal;
@@ -208,5 +228,11 @@ export class Space {
       }
       context.stroke(); // Execute the stroke to render lines and dots
     };
+  }
+}
+
+function throwIfNull(obj) {
+  if (obj === null || obj === undefined) {
+    throw new Error("Object is null or undefined");
   }
 }
