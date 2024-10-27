@@ -1,4 +1,5 @@
 import { Vector } from "./vector.js";
+import { Space } from "./space.js";
 
 /**
  * Represents a particle in a 2D space.
@@ -28,7 +29,7 @@ export class Particle {
   /**
    * Draws the particle on the provided canvas context.
    *
-   * @param {CanvasRenderingContext2D} space - The canvas rendering context where the particle will be drawn.
+   * @param {Space} space - The canvas rendering context where the particle will be drawn.
    */
   draw(space) {
     // If gradient is enabled, create a radial gradient
