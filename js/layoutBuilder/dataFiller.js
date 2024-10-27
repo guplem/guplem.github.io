@@ -19,7 +19,7 @@ fillWithData("aboutMeContents", "../data/info.json", "aboutMe");
 fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType);
 fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill);
 fillWithData("myWorkTitle", "../data/myWork.json", "title", new Map([["p", "h1"]]));
-displayFilteredWorks();
+// displayFilteredWorks(); // Probably not needed here since it is called when DOM is fully loaded
 // - Additional sections
 displayAdditionalSections();
 // - Contact info
