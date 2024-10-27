@@ -1,11 +1,24 @@
+import { Space } from "./elements/space.js";
+import { Particle } from "./elements/particle.js";
+import { Vector } from "./elements/vector.js";
+import { Gravity } from "./elements/gravity.js";
+import { Time } from "./elements/time.js";
+
 // Retrieve the canvas
 var simCanvas = document.getElementById("simCanvas");
 
+if (simCanvas === null || simCanvas === undefined) {
+  throw new Error(`Canvas element (canvas with id "simCanvas") not found`);
+}
+
 // Set the correct canvas size in the HTML
 function setProperCanvasSize() {
-  var presentation = document.getElementById("PresentationTextZone");
-  var topHeight = presentation.offsetHeight;
-  var topWidth = presentation.offsetWidth;
+  var area = document.getElementById("introduction");
+  if (area === null || area === undefined) {
+    throw new Error(`Area to draw the simulation (div with id "introduction") not found`);
+  }
+  var topHeight = area.offsetHeight;
+  var topWidth = area.offsetWidth;
   simCanvas.height = topHeight;
   simCanvas.width = topWidth;
   // alert("topHeight = " + topHeight + ", topWidth = " + topWidth + " canvas: " + simCanvas.height + ", " + simCanvas.width);
@@ -13,7 +26,7 @@ function setProperCanvasSize() {
 setProperCanvasSize();
 
 // Create the workspace
-var space = new Espai(simCanvas, -5, 5, -5, 5);
+var space = new Space(simCanvas, -5, 5, -5, 5);
 var ctx = simCanvas.getContext("2d");
 
 // Create the planets that will orbit
@@ -21,7 +34,7 @@ var planets = new Array();
 for (var i = 0; i < 100; i++) {
   // Determine the radius of the planet
   var particleRadius = Math.random() / 5;
-  planets.push(new Particula(1, 0, 0, particleRadius, "#c2dde6", true));
+  planets.push(new Particle(1, 0, 0, particleRadius, "#c2dde6", true));
 
   // Determine the radius of the orbit
   var orbitRadius = Math.random() * 3.5 + 0.5;
@@ -42,7 +55,7 @@ for (var i = 0; i < 100; i++) {
 }
 
 // Create the force of gravity
-var g = new Gravitacio();
+var g = new Gravity();
 
 // This was the previous way of initializing the simulation, but it took too long since it waited for all images to load
 // window.onload = init;
@@ -60,7 +73,7 @@ function init() {
 function onEachStep() {
   // Advance time by calculating new positions and velocities
   for (var i = 0; i < 100; i++) {
-    Temps.euler(planets[i], 1 / 60, g.force(planets[i]));
+    Time.euler(planets[i], 1 / 60, g.force(planets[i]));
   }
 
   space.clear();

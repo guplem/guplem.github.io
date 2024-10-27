@@ -3,7 +3,7 @@ simCanvas = space where the simulation will be drawn.
 xmin, xmax, ymin, ymax = the minimum and maximum values in the horizontal and vertical directions in physical units.
 xlabel, ylabel = labels for the coordinate axes.
 */
-function Espai(simCanvas, xmin, xmax, ymin, ymax, xlabel, ylabel) {
+export function Space(simCanvas, xmin, xmax, ymin, ymax, xlabel, ylabel) {
   if (typeof xlabel === "undefined") xlabel = "x";
   if (typeof ylabel === "undefined") ylabel = "y";
   // VARIABLE DECLARATION

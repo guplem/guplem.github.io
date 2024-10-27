@@ -1,6 +1,7 @@
-// DEPENDENCIES: Vector, Space
+import { Vector } from "./vector.js";
+import { Space } from "./space.js";
 
-function Particle(mass, charge, restitution, radius, color, gradient) {
+export function Particle(mass, charge, restitution, radius, color, gradient) {
   if (typeof mass === "undefined") mass = 1;
   if (typeof charge === "undefined") charge = 0;
   if (typeof restitution === "undefined") restitution = 1;
@@ -21,7 +22,7 @@ function Particle(mass, charge, restitution, radius, color, gradient) {
 
   this.draw = function (space) {
     if (this.gradient) {
-      grad = space.createRadialGradient(this.pos.x, this.pos.y, 0, this.pos.x, this.pos.y, this.radius);
+      let grad = space.createRadialGradient(this.pos.x, this.pos.y, 0, this.pos.x, this.pos.y, this.radius);
       grad.addColorStop(0, "#ffffff");
       grad.addColorStop(1, this.color);
       space.fillStyle(grad);
