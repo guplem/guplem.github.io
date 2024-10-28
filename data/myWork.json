@@ -61,17 +61,21 @@
       ]
     },
     {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
+      "types": ["Mobile App"],
+      "date": "2022",
+      "title": "Things - What is next?",
+      "description": [
+        "A fully customizable **task and project management app** that suggests the most relevant task based on the user’s available time, helping them prioritize effectively without manual organization. Users simply indicate how much free time they have, and the app provides tailored suggestions.",
+        "I developed the app with **Flutter** to ensure a seamless **cross-platform** and responsive experience with a single codebase. Originally conceived as a web app to enhance accessibility, it is designed to be fully functional across all devices that support modern web browsing.",
+        "The app utilizes **Firestore** for real-time data updates, ensuring that task lists remain synchronized in real time across devices. Additionally, I integrated **Firebase Authentication** for secure user logins. The core features include a robust prioritization algorithm and a dynamic schedule generator, both developed through **Test-Driven Development (TDD)** process.",
+        "This solution provides a highly customizable interface, empowering users to tailor the app to their personal workflow, while ensuring that they are focusing on the right tasks at the right time."
+      ],
+      "image": "resources/images/projects/things.png",
+      "imageAlt": "Things app mockup",
+      "skills": ["Flutter", "Dart", "Firebase Authentication", "Firestore", "Real-Time Data Updates", "TDD", "Cross-Platform Development", "Project Management", "Customizable User Experience"],
       "links": [
         {
-          "type": "folder",
-          "url": "url"
+          "url": "https://whatisnext.web.app/"
         }
       ]
     },
