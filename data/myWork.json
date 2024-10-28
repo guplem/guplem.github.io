@@ -249,6 +249,20 @@
           "url": "https://drive.google.com/file/d/1-5F8UoV49HiJcbYUp4Ih55Dl42SNEUkd/view?usp=sharing"
         }
       ]
+    },
+
+    {
+      "types": ["Mobile App", "Videogame"],
+      "date": "2018",
+      "title": "Escape City",
+      "description": [
+        "An engaging **interactive app** designed as the main tool for a city-wide gymkhana for kids, facilitating a fun and educational experience.",
+        "In this project, I was tasked with developing the app from a set of requirements provided by the organizers. The app allowed users to answer questions to progress through various game stages.",
+        "Upon completion, the app automatically generated and sent an email to the organizers containing detailed information about the players and their performance throughout the event.",
+        "Using **Unity** and **C#**, I created an intuitive interface that enhanced user engagement and ensured smooth navigation through the game.",
+        "The project aimed to streamline the game management process and enhance the overall experience for both participants and organizers."
+      ],
+      "skills": ["Unity", "C#", "UI/UX", "Project Management"]
     }
   ]
 }
