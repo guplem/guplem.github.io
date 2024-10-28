@@ -44,6 +44,7 @@
         }
       ]
     },
+
     {
       "types": ["Mobile App"],
       "date": "2023",
@@ -63,6 +64,7 @@
         }
       ]
     },
+
     {
       "types": ["Mobile App", "Backend", "Web App"],
       "date": "2023",
@@ -82,6 +84,7 @@
         }
       ]
     },
+
     {
       "types": ["Mobile App", "Fintech", "Backend"],
       "date": "2022",
@@ -116,6 +119,7 @@
         }
       ]
     },
+
     {
       "types": ["Mobile App"],
       "date": "2022",
@@ -135,6 +139,7 @@
         }
       ]
     },
+
     {
       "types": ["Mobile App", "Backend"],
       "date": "2022",
@@ -183,6 +188,7 @@
         }
       ]
     },
+
     {
       "types": ["Mobile App"],
       "date": "2020",
@@ -221,6 +227,26 @@
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.DrinkAndPlay"
+        }
+      ]
+    },
+
+    {
+      "types": ["Mobile App", "Videogame"],
+      "date": "2019",
+      "title": "Drink Extreme",
+      "description": [
+        "I fully refactored a *drinking games* app after conducting a thorough code review and identifying essential architecture redesigns that would be required to scale and upgrade the app.",
+        "The project involved creating an update for [an already popular app](https://play.google.com/store/apps/details?id=com.burtons.ProductName), which included implementing functionalities such as personalized drink recommendations, social sharing options, multiple games, ...",
+        "Despite the update not being accepted, I successfully integrated many features aimed at paving the way for future enhancements."
+      ],
+      "image": "resources/images/projects/drinkExtreme.png",
+      "imageAlt": "Drink Extreme app mockup",
+      "skills": ["Unity", "C#", "Refactoring", "Feature Research and Analysis"],
+      "links": [
+        {
+          "type": "download",
+          "url": "https://drive.google.com/file/d/1-5F8UoV49HiJcbYUp4Ih55Dl42SNEUkd/view?usp=sharing"
         }
       ]
     }
