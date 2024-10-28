@@ -34,7 +34,8 @@
         "CI/CD",
         "Team Leadership",
         "Real-Time Communication",
-        "Performance Optimization"
+        "Performance Optimization",
+        "Data Automation"
       ],
       "links": [
         {
@@ -61,8 +62,8 @@
       ]
     },
     {
-      "types": ["Mobile App"],
-      "date": "2022",
+      "types": ["Mobile App", "Backend", "Web App"],
+      "date": "2023",
       "title": "Things - What is next?",
       "description": [
         "A fully customizable **task and project management app** that suggests the most relevant task based on the user’s available time, helping them prioritize effectively without manual organization. Users simply indicate how much free time they have, and the app provides tailored suggestions.",
@@ -80,32 +81,55 @@
       ]
     },
     {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
+      "types": ["Mobile App", "Fintech", "Backend"],
+      "date": "2022",
+      "title": "Tunzaa",
+      "description": [
+        "An **incremental savings app** designed to empower unbanked African consumers by enabling secure savings and purchases through a **curated marketplace**, in partnership with major brands like Tigo, Vodacom M-Pesa, and Samsung.",
+        "As a **front-end developer** turned **CTO**, I led a complete refactor of the app architecture, initially built in **React Native** and later reimagined with **Flutter** for enhanced code safety and talent acquisition. I also oversaw the development of an **M-Pesa Mini App** developed with a proprietary XML-based framework.",
+        "Beyond development, I managed the integration of **CI/CD technologies**, handled **server and database management**, and led a team of five developers, ensuring smooth operations and alignment across the project. Additionally, I took charge of **recruitment and training** for the development team."
+      ],
+      "image": "resources/images/projects/tunzaa.png",
+      "imageAlt": "Tunzaa app mockup",
+      "skills": [
+        "Flutter",
+        "Dart",
+        "React Native",
+        "JavaScript",
+        "CI/CD",
+        "Payment Processors Integrations",
+        "TDD",
+        "PHP",
+        "API Integration",
+        "Gamification",
+        "Team Leadership",
+        "Scalable Architecture",
+        "Server/Database Management",
+        "Recruitment & Training",
+        "Proprietary Frameworks"
+      ],
       "links": [
         {
-          "type": "folder",
-          "url": "url"
+          "url": "https://tunzaa.co.tz/"
         }
       ]
     },
     {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
+      "types": ["Mobile App"],
+      "date": "2022",
+      "title": "TheBigFamily Jobs App",
+      "description": [
+        "An application designed to **connect Ukrainian refugees** with employers, simplifying the job search process through an intuitive interface.",
+        "In just **10 short questions**, users could easily complete the process of matching with potential employers. The project was developed **voluntarily** in record time to meet urgent needs.",
+        "I developed and built the app from the ground up using **Flutter**. To align with the [NGO](https://www.thebigfamily.app/)'s existing workflow, I integrated an **automated form submission system**, ensuring the app responses were directly synchronized with **Google Forms** via **HTTP requests**. This approach streamlined their data management without requiring any additional tooling.",
+        "The solution increased user trust by moving away from impersonal forms, providing a **user-friendly and secure interface** for the refugee community."
+      ],
+      "image": "resources/images/projects/theBigFamilyJobsApp.png",
+      "imageAlt": "TheBigFamily Jobs App mockup",
+      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX Design", "Rapid Prototyping", "NGO Collaboration", "Data Automation"],
       "links": [
         {
-          "type": "folder",
-          "url": "url"
+          "url": "https://play.google.com/store/apps/details?id=com.the_big_family.app_jobs"
         }
       ]
     },
