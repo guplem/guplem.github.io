@@ -184,11 +184,11 @@
       ]
     },
     {
-      "types": ["Mobile App", "Health Tech", "Machine Learning"],
+      "types": ["Mobile App"],
       "date": "2020",
       "title": "Atenea",
       "description": [
-        "Atenea is a conceptualization of an application aimed at **treating mental disorders** at early stages of development, with a focus on reducing diagnostic costs and improving patient outcomes.",
+        "A conceptualization of an application aimed at **treating mental disorders** at early stages of development, with a focus on reducing diagnostic costs and improving patient outcomes.",
         "This idea was developed during a **hackathon**, where our team proposed utilizing **Machine Learning algorithms** to conduct tests that provide immediate results, facilitating quicker interventions.",
         "I worked on the **prototyping** of the application using **Adobe XD**, creating a user-friendly interface that allows for easy navigation and evaluation processes.",
         "Our collaboration involved brainstorming and interviewing with health professionals to ensure that the concept was feasible."
@@ -205,212 +205,22 @@
     },
 
     {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
+      "types": ["Mobile App", "Videogame"],
+      "date": "2020",
+      "title": "Drink & Play",
+      "description": [
+        "A **collection of festive games** designed to invigorate parties and enhance social gatherings.",
+        "Developing this app, my goal was to **improve upon existing drinking apps** by incorporating unique design elements and features, focusing on scalability, personalization, and user experience.",
+        "I conducted thorough competitor analysis to identify shortcomings in other apps, which informed my approach to **feature development** and **UI/UX design**.",
+        "Key improvements included enhanced scalability to accommodate larger user groups, a more intuitive interface, and a diverse range of customizable game options that set it apart from competitors.",
+        "The app has been well-received, showcasing its ability to engage users through interactive gameplay and social connectivity."
+      ],
+      "image": "resources/images/projects/drinkAndPlay.png",
+      "imageAlt": "Drink & Play app mockup",
+      "skills": ["UI/UX", "Unity", "C#", "Cross-Platform Development", "User Engagement Strategies", "Competitor Analysis", "Scalability Solutions"],
       "links": [
         {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
+          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.DrinkAndPlay"
         }
       ]
     }
