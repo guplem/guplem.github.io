@@ -158,11 +158,6 @@
         "Real-Time Communication",
         "Cross-Platform Development",
         "User Engagement"
-      ],
-      "links": [
-        {
-          "url": "https://kedoapp.com/"
-        }
       ]
     },
 
@@ -178,7 +173,7 @@
       ],
       "image": "resources/images/projects/cheering.png",
       "imageAlt": "Cheering app mockup",
-      "skills": ["Unity", "C#", "Audio Processing", "UI/UX Design", "Rapid Prototyping", "User Engagement", "Cross-Platform Development", "Team Collaboration"],
+      "skills": ["Unity", "C#", "Audio Processing", "UI/UX", "Rapid Prototyping", "User Engagement", "Cross-Platform Development", "Team Collaboration"],
       "links": [
         {
           "type": "folder",

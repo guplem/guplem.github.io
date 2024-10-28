@@ -134,10 +134,25 @@ Examples:
       ],
       "image": "resources/images/projects/theBigFamilyJobsApp.png",
       "imageAlt": "TheBigFamily Jobs App mockup",
-      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX Design", "Rapid Prototyping", "NGO Collaboration", "Data Automation"],
+      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX", "Rapid Prototyping", "NGO Collaboration", "Data Automation"],
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.the_big_family.app_jobs"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
         }
       ]
     },
