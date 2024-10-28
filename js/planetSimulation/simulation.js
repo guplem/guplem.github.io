@@ -13,6 +13,8 @@ const simCanvas = /** @type {HTMLCanvasElement} */ (document.getElementById("sim
 let space;
 let simulationInterval;
 
+const spaceSize = new Vector(10, 10);
+
 // define the central point of attraction.
 let centralPoint = new Vector(0, 0);
 
@@ -35,7 +37,7 @@ createPlanets();
 export function init() {
   clearInterval(simulationInterval);
   setProperCanvasSize();
-  space = new Space(simCanvas, -5, 5, -5, 5);
+  space = new Space(simCanvas, -spaceSize.x / 2, spaceSize.x / 2, -spaceSize.y / 2, spaceSize.y / 2);
   simulationInterval = setInterval(onEachStep, 1000 / 60); // 60 fps
 }
 
@@ -125,4 +127,21 @@ function onEachStep() {
   }
 
   space.drawPoint(centralPoint, "#f7ded1");
+}
+
+/**
+ * Updates the central point of attraction.
+ * Given a value between -1 and 1 for both x and y, this function updates the central point of attraction.
+ * The new value will be within the boundaries of the space.
+ *
+ * @param {number} newX - The new position of the central point along the x-axis.
+ * @param {number} newY - The new position of the central point along the y-axis.
+ */
+export function updateCentralPoint(newX, newY) {
+  // Ensure they are clamped to -1 and 1
+  newX = Math.min(1, Math.max(-1, newX));
+  newY = Math.min(1, Math.max(-1, newY));
+
+  // Update the central point
+  centralPoint = new Vector((newX * spaceSize.x) / 2, (newY * spaceSize.y) / 2);
 }

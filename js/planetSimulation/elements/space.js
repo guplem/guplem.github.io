@@ -1,4 +1,6 @@
-﻿/**
+﻿import { Vector } from "./vector.js";
+
+/**
  * A framework for creating and managing a 2D simulation canvas.
  * It allows users to draw axes, grids, and plot data points on a canvas, translating
  * physical coordinates into pixel values for visual representation.
@@ -228,11 +230,24 @@ export class Space {
       }
       context.stroke(); // Execute the stroke to render lines and dots
     };
-  }
-}
 
-function throwIfNull(obj) {
-  if (obj === null || obj === undefined) {
-    throw new Error("Object is null or undefined");
+    /**
+     * Draws a point on the canvas.
+     *
+     * @param {Vector} point - The position of the point.
+     * @param {string} color - The color of the point.
+     * @param {number} radius - The radius of the point.
+     */
+    this.drawPoint = function (point, color = "#ff0000", radius = 0.1) {
+      console.log("Drawing point at: ", point.x, point.y);
+      // Set the fill style to the provided color
+      this.fillStyle(color);
+
+      // Draw the point as a circle
+      this.beginPath();
+      this.arc(point.x, point.y, radius, 0, 2 * Math.PI, true);
+      this.closePath();
+      this.fill(); // Fill the circle
+    };
   }
 }
