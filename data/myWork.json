@@ -2,128 +2,363 @@
   "title": "My Work",
   "works": [
     {
-      "types": ["WEB", "mobile", "desktop app"],
-      "date": "2021",
-      "title": "Guillem Poy's Web Portfolio",
-      "description": ["My personal web portfolio. It showcases my projects and skills."],
-      "image": "resources/images/projects/ohia.gif",
-      "imageAlt": "Logo of the portfolio",
-      "skills": ["React", "JavaScript", "HTML", "CSS", "Markdown"],
+      "types": ["Mobile App", "Backend"],
+      "date": "2024",
+      "title": "Bondy",
+      "description": [
+        "A **social networking platform** designed to facilitate event organization and foster real-life connections.",
+        "In my role, I led initiatives focused on enhancing user engagement through **A/B testing** of **recommendation algorithms** that optimized the feed and user flows.",
+        "I **designed the architecture of the front-end** to ensure scalability, performance, and an intuitive user experience. Additionally, I contributed to the **back-end development**, enabling smooth integration and functionality across the platform.",
+        "Key features I developed included a real-time chat system, an endlessly scrollable feed, location tracking, and push notifications. I also implemented caching and persistence strategies. Furthermore, I established efficient workflows for our team by integrating **CI/CD technologies**, which significantly enhanced our development processes."
+      ],
+      "image": "resources/images/projects/bondy.png",
+      "imageAlt": "Bondy app mockup",
+      "skills": [
+        "Frontend Architecture",
+        "Flutter",
+        "Dart",
+        "Prisma",
+        "Node.js",
+        "TypeScript",
+        "TDD",
+        "Jest",
+        "Data Analysis",
+        "Data Visualization",
+        "Firebase",
+        "Grafana",
+        "SQL",
+        "Gorm",
+        "Gin",
+        "Go",
+        "A/B Testing",
+        "CI/CD",
+        "Team Leadership",
+        "Real-Time Communication",
+        "Performance Optimization"
+      ],
       "links": [
         {
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "github",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
-        },
-        {
-          "type": "folder",
-          "url": "https://guplem.github.io/"
+          "url": "https://thebondyapp.com/"
         }
       ]
     },
     {
-      "types": ["web"],
-      "date": "2021",
-      "title": "WikiPoll",
+      "types": ["Mobile App"],
+      "date": "2023",
+      "title": "DishForge - Your Personal Chef",
       "description": [
-        "A web app that allows users to create and vote on polls. It's a fun way to learn new things and share opinions.",
-        "This project was created as part of the freeCodeCamp curriculum.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "Aenean pharetra pharetra mauris, placerat pretium dolor ultricies sed. Proin dignissim dui at scelerisque ultricies. Vestibulum cursus libero sagittis purus luctus consequat.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "Aenean pharetra pharetra mauris, placerat pretium dolor ultricies sed. Proin dignissim dui at scelerisque ultricies. Vestibulum cursus libero sagittis purus luctus consequat."
+        "An innovative **AI-powered application** that enhances cooking experiences by seamlessly merging AI capabilities with culinary artistry, created during a [Lablab Hackathon](https://lablab.ai/event/llama-2-hackathon-with-clarifai/rostisseries-delgado/dishforge).",
+        "The app allows users to interact through a **user-friendly interface**, where they can specify meal types, preferences, dietary restrictions, and available ingredients (leveraging **image recognition with YOLOv5**). **GPT-4** processes these inputs to generate coherent and personalized recipes, while **Stable Diffusion** visually presents the results.",
+        "As the lead on the **front-end development**, I integrated AI outputs in a visually appealing manner, managed **API calls**, and designed an **intuitive user interface**. Our team accomplished this project in **less than 48 hours**, collaborating closely to brainstorm, design, test, and iterate on ideas effectively."
       ],
+      "image": "resources/images/projects/dishForge.gif",
+      "skills": ["Flutter", "Dart", "AI Integration", "LLM Prompting", "Image Recognition AI", "Text to Image AI", "API Integration", "UI/UX", "Rapid Prototyping", "Team Collaboration"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1-pRFZp8oeQQIgviqg0l_86-un1iSLWyC?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
       "image": "https://placehold.co/600x400",
-      "skills": ["Flutter", "Dart", "Firebase", "Markdown", "SQL"],
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
       "links": [
         {
-          "type": "link",
-          "url": "https://wikipoll.b4a.app/#/"
-        },
-        {
-          "type": "github",
-          "url": "https://github.com/guplem/WikiPoll"
-        },
-        {
-          "type": "download",
-          "url": "https://drive.google.com/drive/folders/1PLLpkq04OxXn47WklAQhHMQUFqE_Gsk4?usp=sharing"
+          "type": "folder",
+          "url": "url"
         }
       ]
     },
     {
-      "types": ["desktop APP"],
-      "date": "2020",
-      "image": "https://placehold.co/200x900",
-      "title": "Example"
-    },
-    {
-      "types": ["mobile"],
-      "date": "2020",
-      "title": "Lorem Ipsum 1",
-      "description": [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "Aenean pharetra pharetra mauris, placerat pretium dolor ultricies sed. Proin dignissim dui at scelerisque ultricies. Vestibulum cursus libero sagittis purus luctus consequat."
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
       ]
     },
     {
-      "types": ["mobile"],
-      "date": "2019",
-      "title": "Lorem Ipsum 2",
-      "description": [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "Aenean pharetra pharetra mauris, placerat pretium dolor ultricies sed. Proin dignissim dui at scelerisque ultricies. Vestibulum cursus libero sagittis purus luctus consequat."
-      ],
-      "skills": ["Flutter"]
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
+    },
+    {
+      "types": ["Placeholder"],
+      "date": "2050",
+      "title": "Title",
+      "description": ["Line 1", "Line 2"],
+      "image": "https://placehold.co/600x400",
+      "imageAlt": "App mockup",
+      "skills": ["Skill A", "Skill B"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "url"
+        }
+      ]
     }
   ]
 }
