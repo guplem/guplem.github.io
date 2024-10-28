@@ -1,38 +1,33 @@
-var delay = (function(){
+var delay = (function () {
   var timer = 0;
-  return function(callback, ms){
-    clearTimeout (timer);
+  return function (callback, ms) {
+    clearTimeout(timer);
     timer = setTimeout(callback, ms);
   };
 })();
 
+function ajustPresentationHeight() {
+  var presentation = document.getElementById("PresentationTextZone");
 
-function ajustPresentationHeight(){
-    
-    var presentation = document.getElementById('PresentationTextZone');
+  var topHeight = presentation.offsetHeight;
 
-    var topHeight = presentation.offsetHeight;
+  simCanvas.height = topHeight;
 
-    simCanvas.height=topHeight;
-
-    document.getElementById('PresentationPlaceHolder').style.height=topHeight+"px";
-    
+  document.getElementById("PresentationPlaceHolder").style.height = topHeight + "px";
 }
 
-function ajustDocument(){
-    //alert("ajusting Document...");
+function ajustDocument() {
+  //alert("ajusting Document...");
 
+  //alert("gona setProperCanvasSize");
+  setProperCanvasSize();
 
-    //alert("gona setProperCanvasSize");
-    setProperCanvasSize();
+  //alert("gona ajustPresentationHeight");
+  ajustPresentationHeight();
 
-    //alert("gona ajustPresentationHeight");
-    ajustPresentationHeight();
-    
-    //alert("gona ajustTabHeight");
-    //setTimeout(ajustTabHeight, 250);
-    ajustTabHeight(); 
-    
+  //alert("gona ajustTabHeight");
+  //setTimeout(ajustTabHeight, 250);
+  ajustTabHeight();
 }
 
 //window.onload = ajustDocument;
