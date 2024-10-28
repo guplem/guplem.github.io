@@ -34,9 +34,12 @@
         "CI/CD",
         "Team Leadership",
         "Real-Time Communication",
-        "Performance Optimization",
+        "Scalability Optimization",
         "Data Automation",
-        "Cross-Platform Development"
+        "Cross-Platform Development",
+        "User Engagement",
+        "Database",
+        "Recruitment & Training"
       ],
       "links": [
         {
@@ -77,7 +80,7 @@
       ],
       "image": "resources/images/projects/things.png",
       "imageAlt": "Things app mockup",
-      "skills": ["Flutter", "Dart", "Firebase Authentication", "Firestore", "Real-Time Data Updates", "TDD", "Cross-Platform Development", "Project Management", "Customizable User Experience"],
+      "skills": ["Flutter", "Dart", "Firebase", "Firestore", "Real-Time Communication", "TDD", "Cross-Platform Development", "Project Management"],
       "links": [
         {
           "url": "https://whatisnext.web.app/"
@@ -106,12 +109,14 @@
         "TDD",
         "PHP",
         "API Integration",
-        "Gamification",
+        "User Engagement",
         "Team Leadership",
         "Scalable Architecture",
         "Server/Database Management",
         "Recruitment & Training",
-        "Proprietary Frameworks"
+        "Proprietary Frameworks",
+        "Cross-Platform Development",
+        "Database"
       ],
       "links": [
         {
@@ -132,7 +137,7 @@
       ],
       "image": "resources/images/projects/theBigFamilyJobsApp.png",
       "imageAlt": "TheBigFamily Jobs App mockup",
-      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX", "Rapid Prototyping", "NGO Collaboration", "Data Automation"],
+      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX", "Rapid Prototyping", "NGO Collaboration", "Data Automation", "Cross-Platform Development"],
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.the_big_family.app_jobs"
@@ -152,19 +157,7 @@
       ],
       "image": "resources/images/projects/kedo.png",
       "imageAlt": "Kedo app mockup",
-      "skills": [
-        "Flutter",
-        "Dart",
-        "UI/UX",
-        "Back4App",
-        "Prototype Development",
-        "Social Networking",
-        "Mobile App Development",
-        "Rapid Development",
-        "Real-Time Communication",
-        "Cross-Platform Development",
-        "User Engagement"
-      ]
+      "skills": ["Flutter", "Dart", "UI/UX", "Database", "Rapid Prototyping", "Social Networking", "Rapid Development", "Real-Time Communication", "Cross-Platform Development", "User Engagement"]
     },
 
     {
@@ -223,7 +216,7 @@
       ],
       "image": "resources/images/projects/drinkAndPlay.png",
       "imageAlt": "Drink & Play app mockup",
-      "skills": ["UI/UX", "Unity", "C#", "Cross-Platform Development", "User Engagement Strategies", "Competitor Analysis", "Scalability Solutions"],
+      "skills": ["UI/UX", "Unity", "C#", "Cross-Platform Development", "User Engagement", "Competitor Analysis", "Scalability Optimization"],
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.DrinkAndPlay"
