@@ -13,8 +13,11 @@ const simCanvas = /** @type {HTMLCanvasElement} */ (document.getElementById("sim
 let space;
 let simulationInterval;
 
+// define the central point of attraction.
+let centralPoint = new Vector(0, 0);
+
 // Create the force of gravity
-const g = new Gravity();
+const gravity = new Gravity();
 
 // Create the array of planets
 const planets = new Array();
@@ -95,8 +98,8 @@ function createPlanets() {
     }
 
     // Set the planet's position and speed
-    planets[i].pos = initPos;
-    planets[i].vel = new Vector(0, vel);
+    planets[i].position = initPos;
+    planets[i].velocity = new Vector(0, vel);
   }
 }
 
@@ -113,11 +116,13 @@ function createPlanets() {
 function onEachStep() {
   // Advance time by calculating new positions and velocities
   for (let i = 0; i < 100; i++) {
-    Time.euler(planets[i], 1 / 60, g.force(planets[i]));
+    Time.euler(planets[i], 1 / 60, gravity.forceToAttractionPoint(planets[i], centralPoint));
   }
 
   space.clear();
   for (let i = 0; i < 100; i++) {
     planets[i].draw(space);
   }
+
+  space.drawPoint(centralPoint, "#f7ded1");
 }

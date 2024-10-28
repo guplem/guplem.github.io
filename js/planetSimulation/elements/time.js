@@ -19,10 +19,10 @@ export class Time {
    */
   static euler(particle, dt, force) {
     // Update the particle's velocity based on the force and mass
-    particle.vel.y += (force.y * dt) / particle.mass;
-    particle.pos.y += particle.vel.y * dt; // Update the y position
+    particle.velocity.y += (force.y * dt) / particle.mass;
+    particle.position.y += particle.velocity.y * dt; // Update the y position
 
-    particle.vel.x += (force.x * dt) / particle.mass;
-    particle.pos.x += particle.vel.x * dt; // Update the x position
+    particle.velocity.x += (force.x * dt) / particle.mass;
+    particle.position.x += particle.velocity.x * dt; // Update the x position
   }
 }

@@ -22,8 +22,8 @@ export class Particle {
     this.radius = radius;
     this.color = color;
     this.gradient = gradient;
-    this.pos = new Vector(0, 0); // Initial position of the particle
-    this.vel = new Vector(0, 0); // Initial velocity of the particle
+    this.position = new Vector(0, 0); // Initial position of the particle
+    this.velocity = new Vector(0, 0); // Initial velocity of the particle
   }
 
   /**
@@ -34,7 +34,7 @@ export class Particle {
   draw(space) {
     // If gradient is enabled, create a radial gradient
     if (this.gradient) {
-      let grad = space.createRadialGradient(this.pos.x, this.pos.y, 0, this.pos.x, this.pos.y, this.radius);
+      let grad = space.createRadialGradient(this.position.x, this.position.y, 0, this.position.x, this.position.y, this.radius);
       grad.addColorStop(0, "#ffffff"); // Center color
       grad.addColorStop(1, this.color); // Outer color
       space.fillStyle(grad); // Set the fill style to the gradient
@@ -44,7 +44,7 @@ export class Particle {
 
     // Draw the particle as a circle
     space.beginPath();
-    space.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI, true);
+    space.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI, true);
     space.closePath();
     space.fill(); // Fill the circle
   }
