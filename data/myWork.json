@@ -167,17 +167,25 @@
     },
 
     {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
+      "types": ["Mobile App"],
+      "date": "2021",
+      "title": "Cheering",
+      "description": [
+        "A **simple yet effective app designed to uplift team spirits** by enabling users to create a lively atmosphere, even without traditional cheering materials.",
+        "Developed in just a few hours using **Unity**, I focused on building a user-friendly interface that allows users to easily set up their speakers and play audio tracks designed to generate enthusiasm and excitement.",
+        "The app features customizable sound effects and audio cues that can be triggered at various times during events, helping teams to maintain high energy levels.",
+        "I implemented a straightforward audio management system to ensure smooth playback and responsiveness, allowing users to make more noise than anyone else with just a few taps."
+      ],
+      "image": "resources/images/projects/cheering.png",
+      "imageAlt": "Cheering app mockup",
+      "skills": ["Unity", "C#", "Audio Processing", "UI/UX Design", "Rapid Prototyping", "User Engagement", "Cross-Platform Development", "Team Collaboration"],
       "links": [
         {
           "type": "folder",
-          "url": "url"
+          "url": "https://drive.google.com/drive/folders/1PLLpkq04OxXn47WklAQhHMQUFqE_Gsk4?usp=sharing"
+        },
+        {
+          "url": "https://github.com/guplem/TS21-Cheering"
         }
       ]
     },
