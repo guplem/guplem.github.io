@@ -54,6 +54,7 @@
         "As the lead on the **front-end development**, I integrated AI outputs in a visually appealing manner, managed **API calls**, and designed an **intuitive user interface**. Our team accomplished this project in **less than 48 hours**, collaborating closely to brainstorm, design, test, and iterate on ideas effectively."
       ],
       "image": "resources/images/projects/dishForge.gif",
+      "imageAlt": "DishForge demo",
       "skills": ["Flutter", "Dart", "AI Integration", "LLM Prompting", "Image Recognition AI", "Text to Image AI", "API Integration", "UI/UX", "Rapid Prototyping", "Team Collaboration"],
       "links": [
         {
@@ -171,8 +172,6 @@
         "The app features customizable sound effects and audio cues that can be triggered at various times during events, helping teams to maintain high energy levels.",
         "I implemented a straightforward audio management system to ensure smooth playback and responsiveness, allowing users to make more noise than anyone else with just a few taps."
       ],
-      "image": "resources/images/projects/cheering.png",
-      "imageAlt": "Cheering app mockup",
       "skills": ["Unity", "C#", "Audio Processing", "UI/UX", "Rapid Prototyping", "User Engagement", "Cross-Platform Development", "Team Collaboration"],
       "links": [
         {
@@ -185,20 +184,26 @@
       ]
     },
     {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
+      "types": ["Mobile App", "Health Tech", "Machine Learning"],
+      "date": "2020",
+      "title": "Atenea",
+      "description": [
+        "Atenea is a conceptualization of an application aimed at **treating mental disorders** at early stages of development, with a focus on reducing diagnostic costs and improving patient outcomes.",
+        "This idea was developed during a **hackathon**, where our team proposed utilizing **Machine Learning algorithms** to conduct tests that provide immediate results, facilitating quicker interventions.",
+        "I worked on the **prototyping** of the application using **Adobe XD**, creating a user-friendly interface that allows for easy navigation and evaluation processes.",
+        "Our collaboration involved brainstorming and interviewing with health professionals to ensure that the concept was feasible."
+      ],
+      "image": "resources/images/projects/atenea.png",
+      "imageAlt": "Atenea app mockup",
+      "skills": ["UI/UX", "Adobe XD", "Team Collaboration", "Rapid Prototyping", "Problem Solving"],
       "links": [
         {
           "type": "folder",
-          "url": "url"
+          "url": "https://drive.google.com/drive/folders/1rWWWjWIIdcWYvJOy5X2ESEL3sSEEAcLf?usp=sharing"
         }
       ]
     },
+
     {
       "types": ["Placeholder"],
       "date": "2050",
