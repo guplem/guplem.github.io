@@ -1,7 +1,15 @@
+I am creating a JSON document with all of my portfolio.
+I will share with you a description of a project I've worked on.
+You must create a JSON object following the examples based on the info I provide you.
+Extend the description, explaining what I did, objectives, ... following the examples.
+If you are lacking any information, you must ask for it before returning the JSON object.
+All images are within the "resources/images/projects" folder.
+In the skills section, you must include the framework, platform, language, ... Example: "Flutter" should always be accompanied by "Dart".
+
+
+Examples:
+
 {
-  "title": "My Work",
-  "works": [
-    {
       "types": ["Mobile App", "Backend"],
       "date": "2024",
       "title": "Bondy",
@@ -35,8 +43,7 @@
         "Team Leadership",
         "Real-Time Communication",
         "Performance Optimization",
-        "Data Automation",
-        "Cross-Platform Development"
+        "Data Automation"
       ],
       "links": [
         {
@@ -127,284 +134,10 @@
       ],
       "image": "resources/images/projects/theBigFamilyJobsApp.png",
       "imageAlt": "TheBigFamily Jobs App mockup",
-      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX", "Rapid Prototyping", "NGO Collaboration", "Data Automation"],
+      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX Design", "Rapid Prototyping", "NGO Collaboration", "Data Automation"],
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.the_big_family.app_jobs"
         }
       ]
     },
-    {
-      "types": ["Mobile App", "Backend"],
-      "date": "2022",
-      "title": "Kedo",
-      "description": [
-        "Kedo is a **social networking platform** designed to facilitate the creation, search, and sharing of plans, enabling users to connect and discover activities together.",
-        "Hired to build the app from scratch, I transformed a basic idea and a list of functionalities into a fully functional prototype, ensuring adherence to a tight budget and timeline constraints.",
-        "I was responsible for the entire development process, including **UI/UX design**, **frontend development** using **Flutter**, and **backend integration** with **Back4App**. This allowed for rapid deployment and easy scalability.",
-        "Key features I implemented include user search and invite capabilities, chat functionalities, and personalized plan recommendations, creating a seamless experience for users looking to engage with friends and find activities."
-      ],
-      "image": "resources/images/projects/kedo.png",
-      "imageAlt": "Kedo app mockup",
-      "skills": [
-        "Flutter",
-        "Dart",
-        "UI/UX",
-        "Back4App",
-        "Prototype Development",
-        "Social Networking",
-        "Mobile App Development",
-        "Rapid Development",
-        "Real-Time Communication",
-        "Cross-Platform Development",
-        "User Engagement"
-      ],
-      "links": [
-        {
-          "url": "https://kedoapp.com/"
-        }
-      ]
-    },
-
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    },
-    {
-      "types": ["Placeholder"],
-      "date": "2050",
-      "title": "Title",
-      "description": ["Line 1", "Line 2"],
-      "image": "https://placehold.co/600x400",
-      "imageAlt": "App mockup",
-      "skills": ["Skill A", "Skill B"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "url"
-        }
-      ]
-    }
-  ]
-}
