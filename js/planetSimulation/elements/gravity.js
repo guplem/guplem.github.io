@@ -15,7 +15,7 @@ export class Gravity {
      * @returns {Vector} The gravitational force vector.
      */
     this.forceToCenter = function (planet) {
-      return Vector.scale(planet.position, -planet.mass / Math.pow(planet.position.norm(), 3));
+      return Vector.scale(planet.position, -planet.mass / Math.pow(planet.position.magnitude(), 3));
     };
 
     /**
@@ -28,7 +28,7 @@ export class Gravity {
       // Calculate the vector from the attraction point to the planet
       const direction = Vector.subtract(planet.position, attractionPoint);
       // const direction = Vector.subtract(attractionPoint, planet.position);
-      const distance = direction.norm();
+      const distance = direction.magnitude();
 
       // Avoid division by zero
       if (distance === 0) {

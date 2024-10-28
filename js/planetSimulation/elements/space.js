@@ -239,7 +239,6 @@ export class Space {
      * @param {number} radius - The radius of the point.
      */
     this.drawPoint = function (point, color = "#ff0000", radius = 0.1) {
-      console.log("Drawing point at: ", point.x, point.y);
       // Set the fill style to the provided color
       this.fillStyle(color);
 

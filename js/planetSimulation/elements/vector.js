@@ -21,8 +21,13 @@ export class Vector {
    *
    * @returns {number} The magnitude of the vector.
    */
-  norm() {
+  magnitude() {
     return Math.sqrt(this.x * this.x + this.y * this.y);
+  }
+
+  normalized() {
+    const norm = this.magnitude();
+    return new Vector(this.x / norm, this.y / norm);
   }
 
   /**
@@ -40,8 +45,32 @@ export class Vector {
    * @returns {Vector} A new normalized vector.
    */
   normalize() {
-    const norm = this.norm();
+    const norm = this.magnitude();
     return new Vector(this.x / norm, this.y / norm);
+  }
+
+  add(vec) {
+    return new Vector(this.x + vec.x, this.y + vec.y);
+  }
+
+  scale(k) {
+    return new Vector(k * this.x, k * this.y);
+  }
+
+  subtract(vec) {
+    return new Vector(this.x - vec.x, this.y - vec.y);
+  }
+
+  distance(vec) {
+    return Vector.subtract(this, vec).magnitude();
+  }
+
+  scalar(vec) {
+    return this.x * vec.x + this.y * vec.y;
+  }
+
+  angle(vec) {
+    return Math.acos(this.scalar(vec) / (this.magnitude() * vec.magnitude()));
   }
 
   // Static methods
@@ -87,7 +116,7 @@ export class Vector {
    * @returns {number} The distance between the two vectors.
    */
   static distance(vec1, vec2) {
-    return Vector.subtract(vec1, vec2).norm();
+    return Vector.subtract(vec1, vec2).magnitude();
   }
 
   /**
@@ -110,6 +139,6 @@ export class Vector {
    * @returns {number} The angle between the two vectors in radians.
    */
   static angle(vec1, vec2) {
-    return Math.acos(Vector.scalar(vec1, vec2) / (vec1.norm() * vec2.norm()));
+    return Math.acos(Vector.scalar(vec1, vec2) / (vec1.magnitude() * vec2.magnitude()));
   }
 }
