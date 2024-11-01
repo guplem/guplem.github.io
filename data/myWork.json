@@ -425,7 +425,7 @@
     {
       "types": ["Videogame"],
       "date": "2018",
-      "title": "MathVille - Innovamat",
+      "title": "MathVille — Innovamat",
       "description": [
         "*MathVille* is an **educational game platform** designed to transform math education through engaging gameplay that aligns with learning objectives.",
         "In this project, I was responsible for programming interactive activities that enable players to practice mathematical skills in a fun environment, utilizing **gamification techniques** to enhance learning."
@@ -465,7 +465,7 @@
       "date": "2017",
       "title": "Ball Evolution",
       "description": [
-        "*Ball Evolution* is a **attention-rettention game** that explores psychological effects related to addiction, developed in under 48 hours.",
+        "*Ball Evolution* is an **attention-retention game** that explores psychological effects related to addiction, developed in under 48 hours.",
         "The focus was on **intuitive gameplay mechanics**, minimizing the need for tutorials, and surprisingly, it garnered a dedicated player base who engaged for many long sessions."
       ],
       "skills": ["Game Design", "Rapid Prototyping", "UI/UX", "Unity", "Psychological Design", "Unity", "C#", "Team Collaboration"],
