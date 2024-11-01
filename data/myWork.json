@@ -6,10 +6,9 @@
       "date": "2024",
       "title": "Bondy",
       "description": [
-        "A **social networking platform** designed to facilitate event organization and foster real-life connections.",
-        "In my role, I led initiatives focused on enhancing user engagement through **A/B testing** of **recommendation algorithms** that optimized the feed and user flows.",
-        "I **designed the architecture of the front-end** to ensure scalability, performance, and an intuitive user experience. Additionally, I contributed to the **back-end development**, enabling smooth integration and functionality across the platform.",
-        "Key features I developed included a real-time chat system, an endlessly scrollable feed, location tracking, and push notifications. I also implemented caching and persistence strategies. Furthermore, I established efficient workflows for our team by integrating **CI/CD technologies**, which significantly enhanced our development processes."
+        "*Bondy* is a **social networking platform** that simplifies event organization and encourages real-life connections among users.",
+        "As the lead developer, I **architected the front-end** to ensure scalability and performance, implemented **A/B testing** to refine **recommendation algorithms**, increase retention and improve usability while working in back-end projects.",
+        "Key features included **real-time** chat, an endlessly scrollable feed, location tracking, and push notifications, all designed to create a rich user experience. Moreover, by implementing **CI/CD technologies**, I optimized our development workflows, boosting team efficiency significantly."
       ],
       "image": "resources/images/projects/bondy.png",
       "imageAlt": "Bondy app mockup",
@@ -39,6 +38,7 @@
         "Cross-Platform Development",
         "User Engagement",
         "Database",
+        "Temporal",
         "Recruitment & Training"
       ],
       "links": [
@@ -47,15 +47,13 @@
         }
       ]
     },
-
     {
       "types": ["Mobile App"],
       "date": "2023",
-      "title": "DishForge - Your Personal Chef",
+      "title": "DishForge: Your Personal Chef",
       "description": [
-        "An innovative **AI-powered application** that enhances cooking experiences by seamlessly merging AI capabilities with culinary artistry, created during a [Lablab Hackathon](https://lablab.ai/event/llama-2-hackathon-with-clarifai/rostisseries-delgado/dishforge).",
-        "The app allows users to interact through a **user-friendly interface**, where they can specify meal types, preferences, dietary restrictions, and available ingredients (leveraging **image recognition with YOLOv5**). **GPT-4** processes these inputs to generate coherent and personalized recipes, while **Stable Diffusion** visually presents the results.",
-        "As the lead on the **front-end development**, I integrated AI outputs in a visually appealing manner, managed **API calls**, and designed an **intuitive user interface**. Our team accomplished this project in **less than 48 hours**, collaborating closely to brainstorm, design, test, and iterate on ideas effectively."
+        "*DishForge* is an **AI-powered application** that enhances cooking experiences by blending AI with culinary creativity. Created during a [Lablab Hackathon](https://lablab.ai/event/llama-2-hackathon-with-clarifai/rostisseries-delgado/dishforge), it allows users to interact effortlessly with AI to generate personalized recipes based on meal types, preferences, and available ingredients, utilizing image recognition, LLMs and image generation.",
+        "As the front-end developer, I focused on crafting the user interface, managing API integrations, and seamlessly presenting AI outputs. Our team **delivered this project in under 48 hours**, showcasing our ability to collaborate effectively and innovate rapidly."
       ],
       "image": "resources/images/projects/dishForge.gif",
       "imageAlt": "DishForge demo",
@@ -67,16 +65,13 @@
         }
       ]
     },
-
     {
       "types": ["Mobile App", "Backend", "Web App"],
       "date": "2023",
-      "title": "Things - What is next?",
+      "title": "Things — What is next?",
       "description": [
-        "A fully customizable **task and project management app** that suggests the most relevant task based on the user’s available time, helping them prioritize effectively without manual organization. Users simply indicate how much free time they have, and the app provides tailored suggestions.",
-        "I developed the app with **Flutter** to ensure a seamless **cross-platform** and responsive experience with a single codebase. Originally conceived as a web app to enhance accessibility, it is designed to be fully functional across all devices that support modern web browsing.",
-        "The app utilizes **Firestore** for real-time data updates, ensuring that task lists remain synchronized in real time across devices. Additionally, I integrated **Firebase Authentication** for secure user logins. The core features include a robust prioritization algorithm and a dynamic schedule generator, both developed through **Test-Driven Development (TDD)** process.",
-        "This solution provides a highly customizable interface, empowering users to tailor the app to their personal workflow, while ensuring that they are focusing on the right tasks at the right time."
+        "*Things* is a **task and project management app** fully developed by myself, that intelligently suggests tasks based on user availability, allowing for effortless prioritization. Built to offer an accessible solution across all modern devices.",
+        "The app features **real-time synchronization** and **prioritization algorithms** developed following TDD, boasting robust and  dynamic scheduling capabilities, empowering users to focus on what matters most."
       ],
       "image": "resources/images/projects/things.png",
       "imageAlt": "Things app mockup",
@@ -87,15 +82,13 @@
         }
       ]
     },
-
     {
       "types": ["Mobile App", "Fintech", "Backend"],
       "date": "2022",
       "title": "Tunzaa",
       "description": [
-        "An **incremental savings app** designed to empower unbanked African consumers by enabling secure savings and purchases through a **curated marketplace**, in partnership with major brands like Tigo, Vodacom M-Pesa, and Samsung.",
-        "As a **front-end developer** turned **CTO**, I led a complete refactor of the app architecture, initially built in **React Native** and later reimagined with **Flutter** for enhanced code safety and talent acquisition. I also oversaw the development of an **M-Pesa Mini App** developed with a proprietary XML-based framework.",
-        "Beyond development, I managed the integration of **CI/CD technologies**, handled **server and database management**, and led a team of five developers, ensuring smooth operations and alignment across the project. Additionally, I took charge of **recruitment and training** for the development team."
+        "*Tunzaa* is an **incremental savings app** aimed at empowering unbanked consumers in Africa by providing secure savings and purchase options within a curated marketplace. Developed in collaboration with major brands, it supports user financial health and accessibility.",
+        "Transitioning from a prototype to a full-fledged app, I oversaw a comprehensive app architecture refactor and led the development of an **M-Pesa Mini App** using a proprietary XML-based framework. Additionally, I implemented CI/CD technologies, managed server and database operations, and guided a team of developers."
       ],
       "image": "resources/images/projects/tunzaa.png",
       "imageAlt": "Tunzaa app mockup",
@@ -124,16 +117,13 @@
         }
       ]
     },
-
     {
       "types": ["Mobile App"],
       "date": "2022",
       "title": "TheBigFamily Jobs App",
       "description": [
-        "An application designed to **connect Ukrainian refugees** with employers, simplifying the job search process through an intuitive interface.",
-        "In just **10 short questions**, users could easily complete the process of matching with potential employers. The project was developed **voluntarily** in record time to meet urgent needs.",
-        "I developed and built the app from the ground up using **Flutter**. To align with the [NGO](https://www.thebigfamily.app/)'s existing workflow, I integrated an **automated form submission system**, ensuring the app responses were directly synchronized with **Google Forms** via **HTTP requests**. This approach streamlined their data management without requiring any additional tooling.",
-        "The solution increased user trust by moving away from impersonal forms, providing a **user-friendly and secure interface** for the refugee community."
+        "*TheBigFamily Jobs App* is designed to **connect Ukrainian refugees** with potential employers through a streamlined and intuitive interface. It allows users to match with job opportunities by answering just ten questions.",
+        "I built this app integrating an automated form submission system that syncs responses directly with Google Forms. This approach significantly **simplified data management** for the [NGO](https://www.thebigfamily.app/), while enhancing user trust by providing a secure and user-friendly platform for the refugee community."
       ],
       "image": "resources/images/projects/theBigFamilyJobsApp.png",
       "imageAlt": "TheBigFamily Jobs App mockup",
@@ -144,31 +134,25 @@
         }
       ]
     },
-
     {
       "types": ["Mobile App", "Backend"],
       "date": "2022",
       "title": "Kedo",
       "description": [
-        "Kedo is a **social networking platform** designed to facilitate the creation, search, and sharing of plans, enabling users to connect and discover activities together.",
-        "Hired to build the app from scratch, I transformed a basic idea and a list of functionalities into a fully functional prototype, ensuring adherence to a tight budget and timeline constraints.",
-        "I was responsible for the entire development process, including **UI/UX design**, **frontend development** using **Flutter**, and **backend integration** with **Back4App**. This allowed for rapid deployment and easy scalability.",
-        "Key features I implemented include user search and invite capabilities, chat functionalities, and personalized plan recommendations, creating a seamless experience for users looking to engage with friends and find activities."
+        "*Kedo* is a **social networking platform** that enables users to create, search, and share plans, fostering connections and collaborative activities. I was tasked with transforming a basic idea into a **fully functional prototype**, managing tight budget and timeline constraints.",
+        "I handled the complete development lifecycle, focusing on UI/UX, frontend development, and backend integration through Back4App for **rapid deployment and scalability**. Key features included user search, real-time chat, and personalized plan recommendations, all designed to enhance user engagement while meeting all the requirements."
       ],
       "image": "resources/images/projects/kedo.png",
       "imageAlt": "Kedo app mockup",
       "skills": ["Flutter", "Dart", "UI/UX", "Database", "Rapid Prototyping", "Social Networking", "Rapid Development", "Real-Time Communication", "Cross-Platform Development", "User Engagement"]
     },
-
     {
       "types": ["Mobile App"],
       "date": "2021",
       "title": "Cheering",
       "description": [
-        "A **simple yet effective app designed to uplift team spirits** by enabling users to create a lively atmosphere, even without traditional cheering materials.",
-        "Developed in just a few hours using **Unity**, I focused on building a user-friendly interface that allows users to easily set up their speakers and play audio tracks designed to generate enthusiasm and excitement.",
-        "The app features customizable sound effects and audio cues that can be triggered at various times during events, helping teams to maintain high energy levels.",
-        "I implemented a straightforward audio management system to ensure smooth playback and responsiveness, allowing users to make more noise than anyone else with just a few taps."
+        "*Cheering* is a simple app designed to uplift team spirits by allowing users to **create various noises without traditional cheering tools**. Developed in just a few hours, it provides a user-friendly interface for setting up speakers and playing many audio tracks.",
+        "The app features customizable sound effects that can be manually triggered. My focus was on implementing a very **responsive audio management system**, able to quickly play many audio channels at the same time."
       ],
       "skills": ["Unity", "C#", "Audio Processing", "UI/UX", "Rapid Prototyping", "User Engagement", "Cross-Platform Development", "Team Collaboration"],
       "links": [
@@ -181,16 +165,14 @@
         }
       ]
     },
-
     {
       "types": ["Mobile App"],
       "date": "2020",
       "title": "Atenea",
       "description": [
-        "A conceptualization of an application aimed at **treating mental disorders** at early stages of development, with a focus on reducing diagnostic costs and improving patient outcomes.",
-        "This idea was developed during a **hackathon**, where our team proposed utilizing **Machine Learning algorithms** to conduct tests that provide immediate results, facilitating quicker interventions.",
-        "I worked on the **prototyping** of the application using **Adobe XD**, creating a user-friendly interface that allows for easy navigation and evaluation processes.",
-        "Our collaboration involved brainstorming and interviewing with health professionals to ensure that the concept was feasible."
+        "*Atenea* is a conceptual application aimed at **early treatment of mental disorders**, focusing on reducing diagnostic costs and improving outcomes. Developed during a hackathon, our team proposed using **Machine Learning algorithms** to be able to perform in-app tests, facilitating quicker interventions.",
+        "We collaborated with **health professionals** to ensure the feasibility and relevance of our concept.",
+        "I was responsible for creating the mock-up of the application, crafting a user-friendly demo. "
       ],
       "image": "resources/images/projects/atenea.png",
       "imageAlt": "Atenea app mockup",
@@ -202,17 +184,13 @@
         }
       ]
     },
-
     {
       "types": ["Mobile App", "Videogame"],
       "date": "2020",
       "title": "Drink & Play",
       "description": [
-        "A **collection of festive games** designed to invigorate parties and enhance social gatherings.",
-        "Developing this app, my goal was to **improve upon existing drinking apps** by incorporating unique design elements and features, focusing on scalability, personalization, and user experience.",
-        "I conducted thorough competitor analysis to identify shortcomings in other apps, which informed my approach to **feature development** and **UI/UX design**.",
-        "Key improvements included enhanced scalability to accommodate larger user groups, a more intuitive interface, and a diverse range of customizable game options that set it apart from competitors.",
-        "The app has been well-received, showcasing its ability to engage users through interactive gameplay and social connectivity."
+        "*Drink & Play* is a **collection of festive games** designed to enhance social gatherings and dynamize parties. My goal was to improve upon existing drinking apps by introducing unique design elements and features that prioritize scalability and user experience.",
+        "I conducted extensive competitor analysis to identify and address shortcomings in other apps, which informed my approach to feature development and UI/UX design. The app was a success, evidential by the number of requests I received to publish it in various app stores."
       ],
       "image": "resources/images/projects/drinkAndPlay.png",
       "imageAlt": "Drink & Play app mockup",
@@ -223,15 +201,13 @@
         }
       ]
     },
-
     {
       "types": ["Mobile App", "Videogame"],
       "date": "2019",
-      "title": "Drink Extreme",
+      "title": "Drink Extreme Refactoring",
       "description": [
-        "I fully refactored a *drinking games* app after conducting a thorough code review and identifying essential architecture redesigns that would be required to scale and upgrade the app.",
-        "The project involved creating an update for [an already popular app](https://play.google.com/store/apps/details?id=com.burtons.ProductName), which included implementing functionalities such as personalized drink recommendations, social sharing options, multiple games, ...",
-        "Despite the update not being accepted, I successfully integrated many features aimed at paving the way for future enhancements."
+        "In this project, I undertook a **complete refactor** of an [existing drinking games app](https://play.google.com/store/apps/details?id=com.burtons.ProductName), which involved a comprehensive code review and essential architectural redesigns to enhance scalability and upgrade functionalities.",
+        "Even tough my upgrades brought a modularity required to **scale and upgrade** the app, the update was not accepted, but my work laid the groundwork for future enhancements and improvements."
       ],
       "image": "resources/images/projects/drinkExtreme.png",
       "imageAlt": "Drink Extreme app mockup",
@@ -243,17 +219,13 @@
         }
       ]
     },
-
     {
       "types": ["Mobile App", "Videogame"],
       "date": "2018",
       "title": "Escape City",
       "description": [
-        "An engaging **interactive app** designed as the main tool for a city-wide gymkhana for kids, facilitating a fun and educational experience.",
-        "In this project, I was tasked with developing the app from a set of requirements provided by the organizers. The app allowed users to answer questions to progress through various game stages.",
-        "Upon completion, the app automatically generated and sent an email to the organizers containing detailed information about the players and their performance throughout the event.",
-        "Using **Unity** and **C#**, I created an intuitive interface that enhanced user engagement and ensured smooth navigation through the game.",
-        "The project aimed to streamline the game management process and enhance the overall experience for both participants and organizers."
+        "*Escape City* is an **interactive quiz app** designed as a central tool for a citywide gymkhana for kids, promoting fun and educational experiences. I developed the app based on specific requirements from event organizers, allowing participants to answer questions and progress through various stages of the game.",
+        "Upon completion, the app automatically compiled and sent an email with **performance data** to the organizers, facilitating event management at the same time as player engagement."
       ],
       "skills": ["Unity", "C#", "UI/UX", "Project Management"]
     }
