@@ -57,7 +57,19 @@
       ],
       "image": "resources/images/projects/dishForge.gif",
       "imageAlt": "DishForge demo",
-      "skills": ["Flutter", "Dart", "AI Integration", "LLM Prompting", "Image Recognition AI", "Text to Image AI", "API Integration", "UI/UX", "Rapid Prototyping", "Team Collaboration"],
+      "skills": [
+        "Flutter",
+        "Dart",
+        "AI Integration",
+        "LLM Prompting",
+        "Image Recognition AI",
+        "Text to Image AI",
+        "Image generation",
+        "API Integration",
+        "UI/UX",
+        "Rapid Prototyping",
+        "Team Collaboration"
+      ],
       "links": [
         {
           "type": "folder",
