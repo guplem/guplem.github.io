@@ -206,7 +206,7 @@
       ],
       "image": "resources/images/projects/drinkAndPlay.png",
       "imageAlt": "Drink & Play app mockup",
-      "skills": ["UI/UX", "Unity", "C#", "User Engagement", "Competitor Analysis", "Scalability"],
+      "skills": ["UI/UX", "Unity", "C#", "User Engagement", "Competitor Analysis", "Scalability", "Marketing"],
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.DrinkAndPlay"
@@ -250,7 +250,7 @@
         "*Mindflow* is a **simulation game** where players take on the role of a God, manipulating the needs and properties of objects to shape relationships, life goals, and entire ecosystems based on Maslow's pyramid of needs.",
         "I worked solo on this project that was originally conceived as *Thoughts*, but was completely overhauled to adopt a **data architecture inspired by Wikidata**, enhancing its complexity and depth."
       ],
-      "skills": ["Game Design", "Unity", "C#", "Data Architecture", "Prototyping", "Project Management"],
+      "skills": ["Game Design", "Unity", "C#", "Data Architecture", "Prototyping", "Project Management", "UI/UX"],
       "links": [
         {
           "url": "https://github.com/guplem/Mindflow",
@@ -268,7 +268,7 @@
       ],
       "image": "resources/images/projects/paperBrawl.png",
       "imageAlt": "Paper Brawl game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Rapid Development", "Team Collaboration", "Project Management"],
+      "skills": ["Game Design", "Unity", "C#", "Rapid Development", "Team Collaboration", "Project Management", "UI/UX"],
       "links": [
         {
           "url": "https://guplem.itch.io/paper-brawl",
@@ -298,7 +298,7 @@
       ],
       "image": "resources/images/projects/ohia.gif",
       "imageAlt": "Ohia game characters showcase",
-      "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "Rapid Development", "Project Management"],
+      "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "Rapid Development", "Project Management", "UI/UX"],
       "links": [
         {
           "url": "https://ryuggha.itch.io/ohia",
@@ -418,6 +418,132 @@
         },
         {
           "url": "https://github.com/guplem/BunkerBound-Projecte2",
+          "type": "github"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2018",
+      "title": "MathVille - Innovamat",
+      "description": [
+        "*MathVille* is an **educational game platform** designed to transform math education through engaging gameplay that aligns with learning objectives.",
+        "In this project, I was responsible for programming interactive activities that enable players to practice mathematical skills in a fun environment, utilizing **gamification techniques** to enhance learning."
+      ],
+      "skills": ["Game Design", "Unity", "C#", "Gamification", "Team Collaboration"],
+      "image": "resources/images/projects/mathVille.png",
+      "imageAlt": "MathVille game screenshot",
+      "links": [
+        {
+          "url": "https://www.innovamat.com/",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2018",
+      "title": "Rasta Run 2 (GDD)",
+      "description": [
+        "*Rasta Run 2* is a **Game Design Document**, aimed at refining gameplay mechanics based on feedback from industry professionals.",
+        "I documented various gameplay elements and design ideas, focusing on creating a **robust GDD** that ultimately improved my understanding of game development."
+      ],
+      "skills": ["Game Design", "Documentation", "Feedback Analysis", "Project Management", "UI/UX"],
+      "links": [
+        {
+          "url": "https://docs.google.com/document/d/0B4PKPCjlCHb5NGF1QlQ4NkxyeGc/edit?usp=sharing&ouid=111731709650848839539&resourcekey=0-GW_HBWgkBs9NztsLCkyOZw&rtpof=true&sd=true",
+          "type": "link"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/0B4PKPCjlCHb5b1RJVmVMSklLMTA?resourcekey=0-eF0ofQRECnagKVWldUAZxQ&usp=sharing",
+          "type": "folder"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2017",
+      "title": "Ball Evolution",
+      "description": [
+        "*Ball Evolution* is a **attention-rettention game** that explores psychological effects related to addiction, developed in under 48 hours.",
+        "The focus was on **intuitive gameplay mechanics**, minimizing the need for tutorials, and surprisingly, it garnered a dedicated player base who engaged for many long sessions."
+      ],
+      "skills": ["Game Design", "Rapid Prototyping", "UI/UX", "Unity", "Psychological Design", "Unity", "C#", "Team Collaboration"],
+      "image": "resources/images/projects/ballEvolution.png",
+      "imageAlt": "Ball Evolution game screenshot",
+      "links": [
+        {
+          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.TS09",
+          "type": "link"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/0B4PKPCjlCHb5dXhfMmwyTkZHc28?resourcekey=0-W5qJyhAf3SlS1cBah6DnTA&usp=sharing",
+          "type": "folder"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2016",
+      "title": "WoloBall",
+      "description": [
+        "*WoloBall* is my first finished Unity game, where **players must survive against waves of obstacles** while collecting power-ups that alter gameplay dynamics.",
+        "This project allowed me to apply the skills I gained from previous projects and solidified my **understanding of the game engine** and integration of external tools such as Google Ads."
+      ],
+      "skills": ["Unity", "Game Design", "Ads integration", "UI/UX", "C#"],
+      "image": "resources/images/projects/woloBall.png",
+      "imageAlt": "WoloBall game screenshot",
+      "links": [
+        {
+          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.WoloBallFULL",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2016",
+      "title": "Rasta Run",
+      "description": [
+        "*Rasta Run* is my first finished game project, an **endless runner** featuring semi-procedural world generation and a marketing strategy that attracted many.",
+        "This project was instrumental in applying my programming knowledge and testing game mechanics, ultimately serving as part of my **final research project**."
+      ],
+      "skills": ["GameMaker Studio", "Procedural", "Marketing", "Game Design", "Project Management", "UI/UX"],
+      "image": "resources/images/projects/rastaRun.gif",
+      "imageAlt": "Rasta Run gameplay",
+      "links": [
+        {
+          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.Rasta_Run",
+          "type": "link"
+        },
+        {
+          "url": "https://youtu.be/vkN92-qRcqg",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/16QTr8QLBQwAnxtyQy3NLS8A_hYNkhmdq?usp=sharing",
+          "type": "folder"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2015",
+      "title": "Nix",
+      "description": [
+        "*Nix* is my first significant programming project, featuring a **metroidvania style game** where players must overcome various challenges playing as a knight in a platformer world.",
+        "This project helped me learn and internalize core programming principles and set the stage for my later works."
+      ],
+      "skills": ["GameMaker Studio", "Game Design", "Project Management", "UI/UX"],
+      "image": "resources/images/projects/nix.gif",
+      "imageAlt": "Nix game screenshot",
+      "links": [
+        {
+          "url": "https://drive.google.com/drive/folders/1_PfnPxTW3r5Z4lSumvIwDVuxIqcm4eAf?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/Nix",
           "type": "github"
         }
       ]

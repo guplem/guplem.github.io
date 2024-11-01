@@ -22,6 +22,7 @@
 /** A single work "card" */
 .work {
   margin: 10px;
+  margin-top: 20px;
   background-color: var(--background-dark);
   border-radius: 20px;
   overflow: hidden;
@@ -33,6 +34,11 @@
   margin-right: 6%;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+/** The title of a single work */
+.work .workTitle {
+  margin-top: 18px;
 }
 
 /** All contents (inside the different divs) of a single work */
