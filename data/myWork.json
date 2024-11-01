@@ -35,7 +35,6 @@
         "Real-Time Communication",
         "Scalability Optimization",
         "Data Automation",
-        "Cross-Platform Development",
         "User Engagement",
         "Database",
         "Temporal",
@@ -67,7 +66,7 @@
         "Image generation",
         "API Integration",
         "UI/UX",
-        "Rapid Prototyping",
+        "Rapid Development",
         "Team Collaboration"
       ],
       "links": [
@@ -78,7 +77,7 @@
       ]
     },
     {
-      "types": ["Mobile App", "Backend", "Web App"],
+      "types": ["Mobile App", "Backend", "Web"],
       "date": "2023",
       "title": "Things — What is next?",
       "description": [
@@ -87,7 +86,7 @@
       ],
       "image": "resources/images/projects/things.png",
       "imageAlt": "Things app mockup",
-      "skills": ["Flutter", "Dart", "Firebase", "Firestore", "Real-Time Communication", "TDD", "Cross-Platform Development", "Project Management"],
+      "skills": ["Flutter", "Dart", "Firebase", "Firestore", "Real-Time Communication", "TDD", "Project Management"],
       "links": [
         {
           "url": "https://whatisnext.web.app/"
@@ -95,7 +94,7 @@
       ]
     },
     {
-      "types": ["Mobile App", "Fintech", "Backend"],
+      "types": ["Mobile App", "Backend"],
       "date": "2022",
       "title": "Tunzaa",
       "description": [
@@ -120,8 +119,8 @@
         "Server/Database Management",
         "Recruitment & Training",
         "Proprietary Frameworks",
-        "Cross-Platform Development",
-        "Database"
+        "Database",
+        "Fintech"
       ],
       "links": [
         {
@@ -139,7 +138,7 @@
       ],
       "image": "resources/images/projects/theBigFamilyJobsApp.png",
       "imageAlt": "TheBigFamily Jobs App mockup",
-      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX", "Rapid Prototyping", "NGO Collaboration", "Data Automation", "Cross-Platform Development"],
+      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX", "Rapid Development", "NGO Collaboration", "Data Automation"],
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.the_big_family.app_jobs"
@@ -156,7 +155,7 @@
       ],
       "image": "resources/images/projects/kedo.png",
       "imageAlt": "Kedo app mockup",
-      "skills": ["Flutter", "Dart", "UI/UX", "Database", "Rapid Prototyping", "Social Networking", "Rapid Development", "Real-Time Communication", "Cross-Platform Development", "User Engagement"]
+      "skills": ["Flutter", "Dart", "UI/UX", "Database", "Rapid Development", "Real-Time Communication", "User Engagement"]
     },
     {
       "types": ["Mobile App"],
@@ -166,13 +165,14 @@
         "*Cheering* is a simple app designed to uplift team spirits by allowing users to **create various noises without traditional cheering tools**. Developed in just a few hours, it provides a user-friendly interface for setting up speakers and playing many audio tracks.",
         "The app features customizable sound effects that can be manually triggered. My focus was on implementing a very **responsive audio management system**, able to quickly play many audio channels at the same time."
       ],
-      "skills": ["Unity", "C#", "Audio Processing", "UI/UX", "Rapid Prototyping", "User Engagement", "Cross-Platform Development", "Team Collaboration"],
+      "skills": ["Unity", "C#", "Audio Processing", "UI/UX", "Rapid Development"],
       "links": [
         {
           "type": "folder",
           "url": "https://drive.google.com/drive/folders/1PLLpkq04OxXn47WklAQhHMQUFqE_Gsk4?usp=sharing"
         },
         {
+          "type": "github",
           "url": "https://github.com/guplem/TS21-Cheering"
         }
       ]
@@ -188,7 +188,7 @@
       ],
       "image": "resources/images/projects/atenea.png",
       "imageAlt": "Atenea app mockup",
-      "skills": ["UI/UX", "Adobe XD", "Team Collaboration", "Rapid Prototyping", "Problem Solving"],
+      "skills": ["UI/UX", "Adobe XD", "Team Collaboration", "Rapid Development", "Problem Solving"],
       "links": [
         {
           "type": "folder",
@@ -206,7 +206,7 @@
       ],
       "image": "resources/images/projects/drinkAndPlay.png",
       "imageAlt": "Drink & Play app mockup",
-      "skills": ["UI/UX", "Unity", "C#", "Cross-Platform Development", "User Engagement", "Competitor Analysis", "Scalability Optimization"],
+      "skills": ["UI/UX", "Unity", "C#", "User Engagement", "Competitor Analysis", "Scalability"],
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.DrinkAndPlay"
@@ -247,24 +247,46 @@
       "date": "2024",
       "title": "Mindflow",
       "description": [
-        "*Mindflow* is an **immersive simulation game** where players take on the role of a God, manipulating the needs and properties of objects to shape relationships, life goals, and entire ecosystems based on Maslow's pyramid of needs.",
-        "Originally conceived as *Thoughts*, the project underwent a complete overhaul to adopt a data architecture inspired by Wikidata, enhancing its complexity and depth."
+        "*Mindflow* is a **simulation game** where players take on the role of a God, manipulating the needs and properties of objects to shape relationships, life goals, and entire ecosystems based on Maslow's pyramid of needs.",
+        "I worked solo on this project that was originally conceived as *Thoughts*, but was completely overhauled to adopt a **data architecture inspired by Wikidata**, enhancing its complexity and depth."
       ],
-      "image": "resources/images/projects/mindflow.png",
-      "imageAlt": "Mindflow game concept art",
-      "skills": ["Game Design", "Unity", "C#", "Data Architecture", "Prototyping"]
+      "skills": ["Game Design", "Unity", "C#", "Data Architecture", "Prototyping", "Project Management"],
+      "links": [
+        {
+          "url": "https://github.com/guplem/Mindflow",
+          "type": "github"
+        }
+      ]
     },
     {
       "types": ["Videogame"],
       "date": "2022",
-      "title": "Paper Brawl - Tower Defense",
+      "title": "Paper Brawl — Tower Defense",
       "description": [
         "*Paper Brawl* is an experimental **tower defense game** that aimed to explore monetization strategies through rapid development. Created in just a week, it faced challenges typical of the genre, which usually demands extensive feature sets.",
-        "Despite the limitations, we integrated a variety of mechanics, ultimately releasing the game for free to showcase our creativity and resilience under time constraints."
+        "Despite the time limitations, I managed to program **random world generation**, AI pathfinding, various mechanics, distinct enemies and buildings, ... ultimately releasing the game for free."
       ],
       "image": "resources/images/projects/paperBrawl.png",
       "imageAlt": "Paper Brawl game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Rapid Prototyping", "Monetization Strategies"]
+      "skills": ["Game Design", "Unity", "C#", "Rapid Development", "Team Collaboration", "Project Management"],
+      "links": [
+        {
+          "url": "https://guplem.itch.io/paper-brawl",
+          "type": "link"
+        },
+        {
+          "url": "https://youtu.be/jkAbDXtORdw",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/1KfrNrIKYIeNlmH4Ac0eRdmC4Bg3qqUtB?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/TS23-TowerDefense",
+          "type": "github"
+        }
+      ]
     },
     {
       "types": ["Videogame"],
@@ -272,136 +294,133 @@
       "title": "Ohia",
       "description": [
         "*Ohia* is a strategic **puzzle game** that won us the top prize at a 48-hour Game Jam. Players must guide characters with unique abilities toward objectives, using their skills wisely to navigate through levels.",
-        "This project highlighted my ability to design engaging gameplay mechanics while fostering collaboration within a tight timeframe."
+        "In this project, we identified straightforward yet effective mechanics that I was able to refine extensively, resulting in a highly polished final product."
       ],
-      "image": "resources/images/projects/ohia.png",
-      "imageAlt": "Ohia game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Puzzle Design", "Team Collaboration"]
+      "image": "resources/images/projects/ohia.gif",
+      "imageAlt": "Ohia game characters showcase",
+      "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "Rapid Development", "Project Management"],
+      "links": [
+        {
+          "url": "https://ryuggha.itch.io/ohia",
+          "type": "link"
+        }
+      ]
     },
     {
-      "types": ["Videogame"],
+      "types": ["Videogame", "Backend"],
       "date": "2020",
       "title": "Thicc Wet Paper Layers",
       "description": [
-        "*Thicc Wet Paper Layers* is a **multiplayer game** developed during university, which evolved from a local coop concept to an online format due to the COVID-19 pandemic. Although it faced various challenges, it shares mechanics reminiscent of *Fall Guys*.",
-        "Despite not achieving the desired results, the project was a learning experience that allowed me to reflect on our innovative ideas and their potential in successful formats."
+        "*Thicc Wet Paper Layers* is a **multiplayer game** developed as a university project, which evolved from a local coop concept to an online format due to the COVID-19 pandemic. It has mechanics that later on would be part of the hit *Fall Guys* in a paper world.",
+        "The project was a huge learning experience, specially with those aspects related to programming a real-time multiplayer with **physics simulations**."
       ],
       "image": "resources/images/projects/thiccWetPaperLayers.png",
       "imageAlt": "Thicc Wet Paper Layers game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Multiplayer Development", "Team Collaboration"]
+      "skills": ["Game Design", "Unity", "C#", "Real-Time Communication", "Team Collaboration", "Project Management"],
+      "links": [
+        {
+          "url": "https://guplem.itch.io/thicc-wet-paper-layers",
+          "type": "link"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=lAs0TmwhgQI",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/10K7L3CIGjRFWpKh-dsr2O3iRbN3LmISl?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/ALLiOLI",
+          "type": "github"
+        }
+      ]
     },
     {
       "types": ["Videogame"],
       "date": "2020",
       "title": "Slavery Narrative",
       "description": [
-        "*Slavery Narrative* is a thought-provoking **prototype** aimed at fostering empathy by immersing players in the life of an African slave in 19th century America. The game utilizes procedural narratives that evolve based on player decisions and environmental status.",
-        "Inspired by games like *Regins* and *Spent*, this project focused on creating meaningful storytelling that resonates deeply with players."
+        "*Slavery Narrative* is a thought-provoking **prototype** aimed at fostering empathy by immersing players in the life of an African slave in 19th century America. The game utilizes **procedural narratives** that evolve based on player decisions and environmental status.",
+        "Inspired by games like *Regins* and *Spent*, I focused on programming an algorithm capable of dynamically generating meaningful **storytelling** that resonates deeply with players."
       ],
       "image": "resources/images/projects/slaveryNarrative.png",
-      "imageAlt": "Slavery Narrative game concept art",
-      "skills": ["Game Design", "Unity", "C#", "Narrative Development", "Empathy Building"]
+      "imageAlt": "Slavery Narrative game title",
+      "skills": ["Game Design", "Unity", "C#", "Procedural", "Team Collaboration", "Project Management"],
+      "links": [
+        {
+          "url": "https://drive.google.com/file/d/1TYYzk7LCb6NH6egMW8BQ5lIJFOsF6-X9/view?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/1vS3OgFzkZW5EMHi92gqWeMbL9uv3SUCs?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/Destokado/Negro",
+          "type": "github"
+        }
+      ]
     },
     {
       "types": ["Videogame"],
       "date": "2019",
       "title": "Musikote",
       "description": [
-        "*Musikote* is a unique **audio-centric game** developed as part of a sound design course. Players complete tasks in a dark environment, relying solely on sound to navigate.",
-        "This innovative approach demonstrates the importance of audio in gaming and showcases my ability to create engaging experiences that challenge traditional gameplay mechanics."
+        "*Musikote* is an **audio-centric game** developed as part of a sound design course. The players move around in a dark environment, relying solely on sound to complete various tasks.",
+        "This approach showcases the importance of audio and how many little elements are needed to create gameplay mechanics."
       ],
       "image": "resources/images/projects/musikote.png",
       "imageAlt": "Musikote game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Sound Design", "User Experience"]
+      "skills": ["Game Design", "Unity", "C#", "Sound Design", "UI/UX", "Rapid Development"],
+      "links": [
+        {
+          "url": "https://drive.google.com/drive/folders/1CQs1KlaVyY4JwgAKeotshU89nOmxXNP9?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://youtu.be/wD7JrdHFuSg",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/1Hem6b6BXF7HEXUcIz4lMdBOATSNFO-dA?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/Musikote",
+          "type": "github"
+        }
+      ]
     },
     {
       "types": ["Videogame"],
       "date": "2019",
       "title": "Bunker Bound",
       "description": [
-        "*Bunker Bound* is a **collaborative video game project** that gained significant attention, particularly in the Asian community. My role as a programmer involved close collaboration with artists, resulting in a visually stunning final product.",
-        "This project taught me valuable lessons in teamwork and communication between programmers and artists, which enhanced the overall development process."
+        "*Bunker Bound* is a **stealth-focused platformer game** that gained significant attention, particularly in the Asian community. My role as a programmer involved close collaboration with artists, resulting in a visually stunning final product.",
+        "This project taught me valuable lessons in teamwork and communication between programmers and artists, which enhanced the overall development process and final quality of the game."
       ],
-      "image": "resources/images/projects/bunkerBound.png",
-      "imageAlt": "Bunker Bound game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "Visual Aesthetics"],
+      "image": "resources/images/projects/bunkerBound.gif",
+      "imageAlt": "Bunker Bound gameplay",
+      "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "UI/UX", "Project Management"],
       "links": [
         {
-          "url": "https://itch.io/"
+          "url": "https://guplem.itch.io/bunker-bound",
+          "type": "link"
+        },
+        {
+          "url": "https://youtu.be/hfJHpJCV1OY",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/1L7d01zTdVVtxA4LBoft6KMghq_JzBz0M?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/BunkerBound-Projecte2",
+          "type": "github"
         }
       ]
-    },
-    {
-      "types": ["Videogame"],
-      "date": "2018",
-      "title": "MathVille - Innovamat",
-      "description": [
-        "*MathVille* is an innovative **gaming platform** aimed at transforming math education by gamifying the learning experience. I contributed by programming various interactive activities that engage students while they practice their math skills.",
-        "This project exemplifies how gaming can enhance educational outcomes and foster a love for learning among students."
-      ],
-      "image": "resources/images/projects/mathVille.png",
-      "imageAlt": "MathVille game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Educational Games", "Gamification"]
-    },
-    {
-      "types": ["Videogame"],
-      "date": "2018",
-      "title": "Rasta Run 2 (GDD)",
-      "description": [
-        "*Rasta Run 2* began as an ambitious project to improve upon my first game, *Rasta Run*. I developed a comprehensive Game Design Document, receiving valuable feedback from industry professionals.",
-        "Unfortunately, due to time constraints, I shifted my focus to other projects before bringing this vision to completion."
-      ],
-      "image": "resources/images/projects/rastaRun2.png",
-      "imageAlt": "Rasta Run 2 game concept art",
-      "skills": ["Game Design", "Game Design Document", "Feedback Integration", "Project Management"]
-    },
-    {
-      "types": ["Videogame"],
-      "date": "2017",
-      "title": "Ball Evolution",
-      "description": [
-        "*Ball Evolution* is an experimental **game exploring psychological effects** related to addiction. Developed in approximately 48 hours, it marked my first foray into fast-paced game development.",
-        "The design emphasized intuitive gameplay without tutorials, allowing players to discover mechanics organically. The game's unexpected popularity demonstrated the effectiveness of this approach."
-      ],
-      "image": "resources/images/projects/ballEvolution.png",
-      "imageAlt": "Ball Evolution game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Psychological Effects", "Rapid Prototyping"]
-    },
-    {
-      "types": ["Videogame"],
-      "date": "2016",
-      "title": "WoloBall",
-      "description": [
-        "*WoloBall* is my first completed **Unity project**, where players must survive by dodging waves of obstacles while collecting items that alter gameplay. This project allowed me to apply my growing skill set in a tangible way.",
-        "It served as an important milestone in my development journey, solidifying my understanding of game mechanics and player engagement."
-      ],
-      "image": "resources/images/projects/woloBall.png",
-      "imageAlt": "WoloBall game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Survival Mechanics", "Gameplay Design"]
-    },
-    {
-      "types": ["Videogame"],
-      "date": "2016",
-      "title": "Rasta Run",
-      "description": [
-        "*Rasta Run* is my first finished **video game**, which allowed me to demonstrate my programming skills and implement semi-procedural world generation for the first time. This project was part of my final research in computer science education.",
-        "I also tested a marketing strategy centered around a controversial theme, showcasing my ability to blend technical skills with creative thinking."
-      ],
-      "image": "resources/images/projects/rastaRun.png",
-      "imageAlt": "Rasta Run game screenshot",
-      "skills": ["Game Design", "GameMaker Studio", "GML", "Procedural Generation", "Marketing Strategies"]
-    },
-    {
-      "types": ["Videogame"],
-      "date": "2015",
-      "title": "Nix",
-      "description": [
-        "*Nix* is my inaugural **programming project**, designed as a metroidvania-style game where players assume the role of a knight battling enemies.",
-        "This foundational project provided essential programming knowledge, ultimately leading to the development of my first completed game, *Rasta Run*. Collaborating with artists and sound designers laid the groundwork for my future projects."
-      ],
-      "image": "resources/images/projects/nix.png",
-      "imageAlt": "Nix game concept art",
-      "skills": ["Game Design", "GameMaker Studio", "GML", "Metroidvania Design", "Collaboration"]
     }
   ]
 }
