@@ -240,6 +240,168 @@
         "Upon completion, the app automatically compiled and sent an email with **performance data** to the organizers, facilitating event management at the same time as player engagement."
       ],
       "skills": ["Unity", "C#", "UI/UX", "Project Management"]
+    },
+
+    {
+      "types": ["Videogame"],
+      "date": "2024",
+      "title": "Mindflow",
+      "description": [
+        "*Mindflow* is an **immersive simulation game** where players take on the role of a God, manipulating the needs and properties of objects to shape relationships, life goals, and entire ecosystems based on Maslow's pyramid of needs.",
+        "Originally conceived as *Thoughts*, the project underwent a complete overhaul to adopt a data architecture inspired by Wikidata, enhancing its complexity and depth."
+      ],
+      "image": "resources/images/projects/mindflow.png",
+      "imageAlt": "Mindflow game concept art",
+      "skills": ["Game Design", "Unity", "C#", "Data Architecture", "Prototyping"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2022",
+      "title": "Paper Brawl - Tower Defense",
+      "description": [
+        "*Paper Brawl* is an experimental **tower defense game** that aimed to explore monetization strategies through rapid development. Created in just a week, it faced challenges typical of the genre, which usually demands extensive feature sets.",
+        "Despite the limitations, we integrated a variety of mechanics, ultimately releasing the game for free to showcase our creativity and resilience under time constraints."
+      ],
+      "image": "resources/images/projects/paperBrawl.png",
+      "imageAlt": "Paper Brawl game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Rapid Prototyping", "Monetization Strategies"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2022",
+      "title": "Ohia",
+      "description": [
+        "*Ohia* is a strategic **puzzle game** that won us the top prize at a 48-hour Game Jam. Players must guide characters with unique abilities toward objectives, using their skills wisely to navigate through levels.",
+        "This project highlighted my ability to design engaging gameplay mechanics while fostering collaboration within a tight timeframe."
+      ],
+      "image": "resources/images/projects/ohia.png",
+      "imageAlt": "Ohia game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Puzzle Design", "Team Collaboration"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2020",
+      "title": "Thicc Wet Paper Layers",
+      "description": [
+        "*Thicc Wet Paper Layers* is a **multiplayer game** developed during university, which evolved from a local coop concept to an online format due to the COVID-19 pandemic. Although it faced various challenges, it shares mechanics reminiscent of *Fall Guys*.",
+        "Despite not achieving the desired results, the project was a learning experience that allowed me to reflect on our innovative ideas and their potential in successful formats."
+      ],
+      "image": "resources/images/projects/thiccWetPaperLayers.png",
+      "imageAlt": "Thicc Wet Paper Layers game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Multiplayer Development", "Team Collaboration"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2020",
+      "title": "Slavery Narrative",
+      "description": [
+        "*Slavery Narrative* is a thought-provoking **prototype** aimed at fostering empathy by immersing players in the life of an African slave in 19th century America. The game utilizes procedural narratives that evolve based on player decisions and environmental status.",
+        "Inspired by games like *Regins* and *Spent*, this project focused on creating meaningful storytelling that resonates deeply with players."
+      ],
+      "image": "resources/images/projects/slaveryNarrative.png",
+      "imageAlt": "Slavery Narrative game concept art",
+      "skills": ["Game Design", "Unity", "C#", "Narrative Development", "Empathy Building"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2019",
+      "title": "Musikote",
+      "description": [
+        "*Musikote* is a unique **audio-centric game** developed as part of a sound design course. Players complete tasks in a dark environment, relying solely on sound to navigate.",
+        "This innovative approach demonstrates the importance of audio in gaming and showcases my ability to create engaging experiences that challenge traditional gameplay mechanics."
+      ],
+      "image": "resources/images/projects/musikote.png",
+      "imageAlt": "Musikote game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Sound Design", "User Experience"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2019",
+      "title": "Bunker Bound",
+      "description": [
+        "*Bunker Bound* is a **collaborative video game project** that gained significant attention, particularly in the Asian community. My role as a programmer involved close collaboration with artists, resulting in a visually stunning final product.",
+        "This project taught me valuable lessons in teamwork and communication between programmers and artists, which enhanced the overall development process."
+      ],
+      "image": "resources/images/projects/bunkerBound.png",
+      "imageAlt": "Bunker Bound game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "Visual Aesthetics"],
+      "links": [
+        {
+          "url": "https://itch.io/"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2018",
+      "title": "MathVille - Innovamat",
+      "description": [
+        "*MathVille* is an innovative **gaming platform** aimed at transforming math education by gamifying the learning experience. I contributed by programming various interactive activities that engage students while they practice their math skills.",
+        "This project exemplifies how gaming can enhance educational outcomes and foster a love for learning among students."
+      ],
+      "image": "resources/images/projects/mathVille.png",
+      "imageAlt": "MathVille game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Educational Games", "Gamification"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2018",
+      "title": "Rasta Run 2 (GDD)",
+      "description": [
+        "*Rasta Run 2* began as an ambitious project to improve upon my first game, *Rasta Run*. I developed a comprehensive Game Design Document, receiving valuable feedback from industry professionals.",
+        "Unfortunately, due to time constraints, I shifted my focus to other projects before bringing this vision to completion."
+      ],
+      "image": "resources/images/projects/rastaRun2.png",
+      "imageAlt": "Rasta Run 2 game concept art",
+      "skills": ["Game Design", "Game Design Document", "Feedback Integration", "Project Management"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2017",
+      "title": "Ball Evolution",
+      "description": [
+        "*Ball Evolution* is an experimental **game exploring psychological effects** related to addiction. Developed in approximately 48 hours, it marked my first foray into fast-paced game development.",
+        "The design emphasized intuitive gameplay without tutorials, allowing players to discover mechanics organically. The game's unexpected popularity demonstrated the effectiveness of this approach."
+      ],
+      "image": "resources/images/projects/ballEvolution.png",
+      "imageAlt": "Ball Evolution game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Psychological Effects", "Rapid Prototyping"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2016",
+      "title": "WoloBall",
+      "description": [
+        "*WoloBall* is my first completed **Unity project**, where players must survive by dodging waves of obstacles while collecting items that alter gameplay. This project allowed me to apply my growing skill set in a tangible way.",
+        "It served as an important milestone in my development journey, solidifying my understanding of game mechanics and player engagement."
+      ],
+      "image": "resources/images/projects/woloBall.png",
+      "imageAlt": "WoloBall game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Survival Mechanics", "Gameplay Design"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2016",
+      "title": "Rasta Run",
+      "description": [
+        "*Rasta Run* is my first finished **video game**, which allowed me to demonstrate my programming skills and implement semi-procedural world generation for the first time. This project was part of my final research in computer science education.",
+        "I also tested a marketing strategy centered around a controversial theme, showcasing my ability to blend technical skills with creative thinking."
+      ],
+      "image": "resources/images/projects/rastaRun.png",
+      "imageAlt": "Rasta Run game screenshot",
+      "skills": ["Game Design", "GameMaker Studio", "GML", "Procedural Generation", "Marketing Strategies"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2015",
+      "title": "Nix",
+      "description": [
+        "*Nix* is my inaugural **programming project**, designed as a metroidvania-style game where players assume the role of a knight battling enemies.",
+        "This foundational project provided essential programming knowledge, ultimately leading to the development of my first completed game, *Rasta Run*. Collaborating with artists and sound designers laid the groundwork for my future projects."
+      ],
+      "image": "resources/images/projects/nix.png",
+      "imageAlt": "Nix game concept art",
+      "skills": ["Game Design", "GameMaker Studio", "GML", "Metroidvania Design", "Collaboration"]
     }
   ]
 }
