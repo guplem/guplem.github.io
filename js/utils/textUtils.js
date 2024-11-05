@@ -47,6 +47,10 @@ export function capitalizeFirstLetter(string, lowerRest = true, firstLetterOfEve
     throw new Error("Input string is empty or undefined");
   }
 
+  if (typeof string !== "string") {
+    throw new Error("Input string is not a string");
+  }
+
   if (firstLetterOfEveryWord) {
     return string
       .split(" ")
@@ -143,11 +147,37 @@ function useH1InsteadOfP(transformer) {
   });
 }
 
-export function idFromText(title) {
-  let sanitazed = capitalizeFirstLetter(title, true, true).replace(/ /g, "");
+/**
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+
+export function idFromText(text) {
+  if (!text) {
+    throw new Error("Text input is empty or undefined");
+  }
+
+  if (typeof text !== "string") {
+    throw new Error("Text input is not a string");
+  }
+
+  let sanitazed = capitalizeFirstLetter(text, true, true).replace(/ /g, "");
   // Remove special characters
   sanitazed = sanitazed.replace(/[^\w\s]/gi, "");
   // remove "'", "’", ":", "(", ")", "!", "?", ".", ","
   sanitazed = sanitazed.replace(/['’:\(\)!?,.]/gi, "");
-  return sanitazed;
+  return sanitazed.trim();
+}
+
+/**
+ *
+ * @param {string[]} array
+ * @returns {string[]}
+ */
+export function allToId(array) {
+  if (!Array.isArray(array)) {
+    throw new Error("Input is not an array");
+  }
+  return array.map((item) => idFromText(item));
 }

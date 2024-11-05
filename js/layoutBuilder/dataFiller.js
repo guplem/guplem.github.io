@@ -86,7 +86,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
         continue;
       }
       for (const rawData of group[dataKeyInGroup]) {
-        const entry = rawData.toLowerCase();
+        const entry = textUtils.idFromText(rawData);
         if (!allEntries.has(entry)) {
           allEntries.set(entry, rawData);
         }
@@ -116,40 +116,29 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
  * @returns {Promise<any[]>}
  */
 async function getFilterWorks() {
-  // Load the data
-  const allWorks = (await textUtils.fetchJsonData(`../data/myWork.json`))["works"];
+  try {
+    // Load the data
+    const allWorks = (await textUtils.fetchJsonData(`../data/myWork.json`))["works"];
 
-  // Filter the works
-  const filteredWorks = [];
-  for (const work of allWorks) {
-    let hasSelectedType = false;
-    for (const selectedType of selectedWorkTypes) {
-      if (work.types && textUtils.allToLower(work.types).includes(selectedType)) {
-        hasSelectedType = true;
-        break;
-      }
+    // Ensure the data is an array
+    if (!Array.isArray(allWorks)) {
+      throw new Error("Invalid data format: 'works' should be an array");
     }
 
-    if (selectedWorkTypes.length > 0 && !hasSelectedType) {
-      continue;
-    }
+    // Filter the works
+    return allWorks.filter((work) => {
+      // Check for selected type match if types are specified
+      const hasSelectedType = selectedWorkTypes.length === 0 || (work.types && textUtils.allToId(work.types).some((type) => selectedWorkTypes.includes(type)));
 
-    let hasSelectedSkill = false;
-    for (const selectedSkill of selectedWorkSkills) {
-      if (work.skills && textUtils.allToLower(work.skills).includes(selectedSkill)) {
-        hasSelectedSkill = true;
-        break;
-      }
-    }
+      // Check for selected skill match if skills are specified
+      const hasSelectedSkill = selectedWorkSkills.length === 0 || (work.skills && textUtils.allToId(work.skills).some((skill) => selectedWorkSkills.includes(skill)));
 
-    if (selectedWorkSkills.length > 0 && !hasSelectedSkill) {
-      continue;
-    }
-
-    filteredWorks.push(work);
+      return hasSelectedType && hasSelectedSkill;
+    });
+  } catch (error) {
+    console.error("Error fetching or filtering works:", error);
+    return [];
   }
-
-  return filteredWorks;
 }
 
 /**
@@ -158,6 +147,8 @@ async function getFilterWorks() {
 export async function displayFilteredWorks() {
   // Get filtered works
   const filteredWorks = await getFilterWorks();
+
+  console.log("Displaying", filteredWorks.length, "filtered works: ", filteredWorks);
 
   // Find the target element
   const allWorksElement = uiUtils.getElement("myWorkFiltered");
@@ -242,9 +233,10 @@ export async function displayFilteredWorks() {
       skillsElement.classList.add("workSkills");
       // await uiUtils.setDataInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
       for (const skill of work.skills) {
-        const skillButton = uiUtils.createButton(skill, () => onClickWorkSkill(skill, "myWorkFiltered"));
+        const skillId = textUtils.idFromText(skill);
+        const skillButton = uiUtils.createButton(skill, () => onClickWorkSkill(skillId, "myWorkFiltered"));
         skillsElement.appendChild(skillButton);
-        if (selectedWorkSkills.includes(skill.toLowerCase())) {
+        if (selectedWorkSkills.includes(skillId)) {
           skillButton.setAttribute("selected", "");
         }
       }
@@ -439,21 +431,18 @@ function onClickWorkType(workType, navigateTo, clickedElement) {
 
 /**
  * Handle click event for work skill buttons
- * @param {string} workSkill
+ * @param {string} workSkillId
  * @param {string} navigateTo
  * @param {HTMLElement | undefined} clickedElement - If undefined, all the matching element will be searched for. Used as undefined for the moment the skill is selected from the "work/project card" so the buttons in the filter row are marked as selected
  */
-function onClickWorkSkill(workSkill, navigateTo, clickedElement = undefined) {
-  workSkill = workSkill.toLowerCase();
-
+function onClickWorkSkill(workSkillId, navigateTo, clickedElement = undefined) {
   if (!clickedElement) {
-    console.log("Element not found for skill", workSkill);
     // Look for the element, looking for buttons that contain the skill as text
     const elements = document.querySelectorAll("#myWorkSkills button");
     for (const element of elements) {
-      const elementText = element.textContent?.toLowerCase().replace(/\s*\(\d+\)$/, "");
-      if (elementText === workSkill) {
-        console.log("Found element for skill", workSkill);
+      const elementText = element.textContent ? textUtils.idFromText(element.textContent) : "";
+      if (elementText === workSkillId) {
+        // console.log("Found element for skill", workSkill);
         // @ts-ignore
         clickedElement = element;
         console.log("Element", clickedElement);
@@ -463,16 +452,16 @@ function onClickWorkSkill(workSkill, navigateTo, clickedElement = undefined) {
   }
 
   if (!clickedElement) {
-    console.warn("Could not find element for skill", workSkill);
+    console.warn("Could not find element for skill", workSkillId);
   }
 
-  console.log("Selecting or deselecting skill", workSkill);
+  console.log("Selecting or deselecting skill", workSkillId);
 
-  if (selectedWorkSkills.includes(workSkill)) {
-    selectedWorkSkills.splice(selectedWorkSkills.indexOf(workSkill), 1);
+  if (selectedWorkSkills.includes(workSkillId)) {
+    selectedWorkSkills.splice(selectedWorkSkills.indexOf(workSkillId), 1);
     clickedElement?.removeAttribute("selected");
   } else {
-    selectedWorkSkills.push(workSkill);
+    selectedWorkSkills.push(workSkillId);
     clickedElement?.setAttribute("selected", "");
   }
 
