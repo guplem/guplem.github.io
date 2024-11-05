@@ -97,11 +97,11 @@ export async function markdownToHtml(markdown, tagsToSubstitute = new Map()) {
     throw new Error("Markdown input is empty or undefined");
   }
 
-  const substitutedTahsIdentifier = Array.from(tagsToSubstitute)
+  const substitutedTagsIdentifier = Array.from(tagsToSubstitute)
     .map(([key, value]) => "Tag_" + key + "_to_" + value)
     .join("-");
 
-  const cacheKey = `${markdown}-${substitutedTahsIdentifier}`;
+  const cacheKey = `${markdown}-${substitutedTagsIdentifier}`;
 
   if (_markdownFormattedAsHtmlCache.has(cacheKey)) {
     return _markdownFormattedAsHtmlCache.get(cacheKey);

@@ -16,8 +16,8 @@ fillWithData("aboutMeTitle", "../data/info.json", "aboutMeTitle", new Map([["p",
 fillWithData("aboutMeImage", "../data/info.json", "aboutMeImage", new Map(), false, "src");
 fillWithData("aboutMeContents", "../data/info.json", "aboutMe");
 // - My work
-fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType);
-fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill);
+fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType, "myWork");
+fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill, "myWork");
 fillWithData("myWorkTitle", "../data/myWork.json", "title", new Map([["p", "h1"]]));
 // displayFilteredWorks(); // Probably not needed here since it is called when DOM is fully loaded
 // - Additional sections
@@ -65,10 +65,10 @@ async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitute = ne
  * @param {RequestInfo | URL} dataUrl
  * @param {string} dataKeyToGroup
  * @param {string} dataKeyInGroup
- * @param {(arg0: string, arg1: HTMLButtonElement) => void} onClick
- * @param {boolean} addShowExperiencesAriaLabel
+ * @param {(arg0: string, arg1: string, arg2: HTMLButtonElement) => void} onClick
+ * @param {string} onClickNavigateTo
  */
-async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick, addShowExperiencesAriaLabel = true) {
+async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick, onClickNavigateTo) {
   try {
     // Find the target element
     const element = document.getElementById(elementId);
@@ -99,10 +99,8 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
     // Create and add buttons to the fragment
     for (const [entryId, entryValue] of allEntries) {
       const buttonText = textUtils.capitalizeFirstLetter(entryValue, false, true);
-      const button = uiUtils.createButton(buttonText, () => onClick(entryId, button));
-      if (addShowExperiencesAriaLabel) {
-        button.setAttribute("aria-label", `Show ${textUtils.capitalizeFirstLetter(entryValue, false, true)} experiences`);
-      }
+      const button = uiUtils.createButton(buttonText, () => onClick(entryId, onClickNavigateTo, button));
+      button.setAttribute("aria-label", `Show ${textUtils.capitalizeFirstLetter(entryValue, false, true)} experiences`);
       fragment.appendChild(button);
     }
 
@@ -244,7 +242,7 @@ export async function displayFilteredWorks() {
       skillsElement.classList.add("workSkills");
       // await uiUtils.setDataInHtmlElement("Skills: " + work.skills.join(", "), skillsElement);
       for (const skill of work.skills) {
-        const skillButton = uiUtils.createButton(skill, () => onClickWorkSkill(skill));
+        const skillButton = uiUtils.createButton(skill, () => onClickWorkSkill(skill, "myWorkFiltered"));
         skillsElement.appendChild(skillButton);
         if (selectedWorkSkills.includes(skill.toLowerCase())) {
           skillButton.setAttribute("selected", "");
@@ -422,9 +420,10 @@ async function displayContactInfo() {
 /**
  * Handle click event for work type buttons
  * @param {string} workType
+ * @param {string} navigateTo
  * @param {HTMLButtonElement} clickedElement
  */
-function onClickWorkType(workType, clickedElement) {
+function onClickWorkType(workType, navigateTo, clickedElement) {
   if (selectedWorkTypes.includes(workType)) {
     selectedWorkTypes.splice(selectedWorkTypes.indexOf(workType), 1);
     clickedElement.removeAttribute("selected");
@@ -434,14 +433,17 @@ function onClickWorkType(workType, clickedElement) {
   }
 
   displayFilteredWorks();
+
+  document?.getElementById(navigateTo)?.scrollIntoView({ behavior: "smooth" });
 }
 
 /**
  * Handle click event for work skill buttons
  * @param {string} workSkill
- * @param {HTMLElement | undefined} clickedElement
+ * @param {string} navigateTo
+ * @param {HTMLElement | undefined} clickedElement - If undefined, all the matching element will be searched for. Used as undefined for the moment the skill is selected from the "work/project card" so the buttons in the filter row are marked as selected
  */
-function onClickWorkSkill(workSkill, clickedElement = undefined) {
+function onClickWorkSkill(workSkill, navigateTo, clickedElement = undefined) {
   workSkill = workSkill.toLowerCase();
 
   if (!clickedElement) {
@@ -477,4 +479,6 @@ function onClickWorkSkill(workSkill, clickedElement = undefined) {
   console.log("Selected skills", selectedWorkSkills);
 
   displayFilteredWorks();
+
+  document?.getElementById(navigateTo)?.scrollIntoView({ behavior: "smooth" });
 }
