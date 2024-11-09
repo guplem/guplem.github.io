@@ -8,7 +8,7 @@
       "description": [
         "*Portfolio v2* is my **personal website**, designed to showcase my work and achievements. It provides an overview of my skills and projects.",
         "I re-created my portfolio with a focus on improving navigation, making it easier to find projects related to specific skills and technologies, and enhancing the overall user experience.",
-        "I also prioritized site maintenance, making it simple to update with new projects and sections. The site’s content is stored in JSON files, which are used to dynamically generate the contents, allowing for easy updates."
+        "I also prioritized site maintenance, making it simple to update with new projects and sections. The site’s content is stored in [JSON files](/data/myWork.json), which are used to dynamically generate the contents, allowing for easy updates."
       ],
       "skills": ["HTML", "CSS", "JavaScript", "JSON", "UI/UX", "Responsive Design", "SEO"],
       "links": [
@@ -490,7 +490,7 @@
         "*Ball Evolution* is an **attention-retention game** that explores psychological effects related to addiction, developed in under 48 hours.",
         "The focus was on **intuitive gameplay mechanics**, minimizing the need for tutorials, and surprisingly, it garnered a dedicated player base who engaged for many long sessions."
       ],
-      "skills": ["Game Design", "Rapid Prototyping", "UI/UX", "Unity", "Psychological Design", "Unity", "C#", "Team Collaboration"],
+      "skills": ["Game Design", "Rapid Prototyping", "UI/UX", "Psychological Design", "Unity", "C#", "Team Collaboration"],
       "image": "resources/images/projects/ballEvolution.png",
       "imageAlt": "Ball Evolution game screenshot",
       "links": [
@@ -603,7 +603,7 @@
         "As the sole developer, I integrated **Wikidata's API**, designed the front-end interface, and created dynamic ranking algorithms. This project served as my **final thesis** for my computer engineering degree.",
         "The app empowers users to create rankings based on personal preferences, offering a unique data-driven interaction with Wikidata's vast repository."
       ],
-      "skills": ["Flutter", "API Integration", "Database", "Server/Database Management", "Data Visualization", "Wikidata API", "Data Visualization", "Data Analysis"],
+      "skills": ["Flutter", "API Integration", "Database", "Server/Database Management", "Data Visualization", "Wikidata API", "Data Analysis"],
       "links": [
         {
           "url": "https://wikipoll.b4a.app/#/"

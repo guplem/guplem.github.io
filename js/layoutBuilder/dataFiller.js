@@ -86,6 +86,14 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
       if (!group[dataKeyInGroup]) {
         continue;
       }
+
+      // console.warning if the group[dataKeyInGroup] has repeated entries
+      const allAsIds = group[dataKeyInGroup].map((entry) => textUtils.idFromText(entry));
+      const uniqueAsIds = new Set(allAsIds);
+      if (allAsIds.length !== uniqueAsIds.size) {
+        console.warn(`Repeated entries in ${dataKeyInGroup} for group`, group);
+      }
+
       for (const rawData of group[dataKeyInGroup]) {
         const entry = textUtils.idFromText(rawData);
         if (!allEntries.has(entry)) {
