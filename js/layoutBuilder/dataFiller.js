@@ -16,8 +16,8 @@ fillWithData("aboutMeTitle", "../data/info.json", "aboutMeTitle", new Map([["p",
 fillWithData("aboutMeImage", "../data/info.json", "aboutMeImage", new Map(), false, "src");
 fillWithData("aboutMeContents", "../data/info.json", "aboutMe");
 // - My work
-fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType, "myWork");
-fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill, "myWork");
+fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType, "myWork", true);
+fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill, "myWork", true);
 fillWithData("myWorkTitle", "../data/myWork.json", "title", new Map([["p", "h1"]]));
 // displayFilteredWorks(); // Probably not needed here since it is called when DOM is fully loaded
 // - Additional sections
@@ -68,7 +68,7 @@ async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitute = ne
  * @param {(arg0: string, arg1: string, arg2: HTMLButtonElement) => void} onClick
  * @param {string} onClickNavigateTo
  */
-async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick, onClickNavigateTo) {
+async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick, onClickNavigateTo, showCount = false) {
   try {
     // Find the target element
     const element = document.getElementById(elementId);
@@ -80,6 +80,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
     const data = await textUtils.fetchJsonData(dataUrl);
 
     // Process the data
+    const allEntriesCount = new Map();
     const allEntries = new Map();
     for (const group of data[dataKeyToGroup]) {
       if (!group[dataKeyInGroup]) {
@@ -90,14 +91,21 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
         if (!allEntries.has(entry)) {
           allEntries.set(entry, rawData);
         }
+        allEntriesCount.set(entry, (allEntriesCount.get(entry) || 0) + 1);
       }
+    }
+
+    // Sort the entries by count in allEntriesCount
+    const sortedEntries = new Map();
+    for (const [entryId, entryCount] of [...allEntriesCount].sort((a, b) => b[1] - a[1])) {
+      sortedEntries.set(entryId, allEntries.get(entryId) + (showCount ? ` (${entryCount})` : ""));
     }
 
     // Create a document fragment
     const fragment = document.createDocumentFragment();
 
     // Create and add buttons to the fragment
-    for (const [entryId, entryValue] of allEntries) {
+    for (const [entryId, entryValue] of sortedEntries) {
       const buttonText = textUtils.capitalizeFirstLetter(entryValue, false, true);
       const button = uiUtils.createButton(buttonText, () => onClick(entryId, onClickNavigateTo, button));
       button.setAttribute("aria-label", `Show ${textUtils.capitalizeFirstLetter(entryValue, false, true)} experiences`);
