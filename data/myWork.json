@@ -2,6 +2,23 @@
   "title": "My Work",
   "works": [
     {
+      "types": ["Web"],
+      "date": "2024",
+      "title": "Portfolio v2",
+      "description": [
+        "*Portfolio v2* is my **personal website**, designed to showcase my work and achievements. It provides an overview of my skills and projects.",
+        "I re-created my portfolio with a focus on improving navigation, making it easier to find projects related to specific skills and technologies, and enhancing the overall user experience.",
+        "I also prioritized site maintenance, making it simple to update with new projects and sections. The site’s content is stored in JSON files, which are used to dynamically generate the contents, allowing for easy updates."
+      ],
+      "skills": ["HTML", "CSS", "JavaScript", "JSON", "UI/UX", "Responsive Design", "SEO"],
+      "links": [
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/guplem.github.io"
+        }
+      ]
+    },
+    {
       "types": ["Mobile App", "Backend"],
       "date": "2024",
       "title": "Bondy",
@@ -1030,6 +1047,27 @@
         {
           "type": "github",
           "url": "https://github.com/guplem/DungeonAssault"
+        }
+      ]
+    },
+    {
+      "types": ["Photography", "Editing"],
+      "date": "2016",
+      "title": "Photoshoots",
+      "description": [
+        "I participated in many **hotel photoshoots** for renowned clients such as [*ABaC*](https://abacbarcelona.com/es/) and [*Axel Hotels*](https://www.axelhotels.com/en/axel-beach-ibiza/hotel) under the guidance of [*Markopa*](https://www.markopa.com/).",
+        "As a **photography assistant and editor**, I played a key role in setting up environments, assisting Marco Pastori, the photographer, and editing photos to enhance the final results.",
+        "The outcome was a **professional portfolio** that helped promote the aesthetic **appeal of luxury hotels through high-quality visual content**."
+      ],
+      "image": "resources/images/projects/markopa.jpg",
+      "imageAlt": "Photoshoots for Markopa",
+      "skills": ["Photography", "Photo Editing", "Lighting Setup", "Team Collaboration", "Image Retouching"],
+      "links": [
+        {
+          "url": "https://www.markopa.com/abac"
+        },
+        {
+          "url": "https://www.markopa.com/axel-madrid-hotel"
         }
       ]
     }
