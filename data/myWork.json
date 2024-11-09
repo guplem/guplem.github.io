@@ -10,7 +10,7 @@
         "I re-created my portfolio with a focus on improving navigation, making it easier to find projects related to specific skills and technologies, and enhancing the overall user experience.",
         "I also prioritized site maintenance, making it simple to update with new projects and sections. The site’s content is stored in [JSON files](/data/myWork.json), which are used to dynamically generate the contents, allowing for easy updates."
       ],
-      "skills": ["HTML/CSS", "JavaScript", "Data Management", "UI/UX", "Architecture", "Frontend"],
+      "skills": ["HTML/CSS", "JavaScript", "Data Management", "UI/UX", "Architecture", "Frontend", "CI/CD"],
       "links": [
         {
           "type": "github",
@@ -55,7 +55,9 @@
         "Team Collaboration",
         "API Integration",
         "Backend",
-        "Frontend"
+        "Frontend",
+        "Server Management",
+        "Localization"
       ],
       "links": [
         {
@@ -92,7 +94,22 @@
       ],
       "image": "resources/images/projects/things.png",
       "imageAlt": "Things app mockup",
-      "skills": ["Flutter/Dart", "Firebase", "Data Management", "Backend", "Frontend", "Real-Time Communication", "TDD", "Project Management", "Architecture", "API Integration"],
+      "skills": [
+        "Flutter/Dart",
+        "Firebase",
+        "Data Management",
+        "Backend",
+        "Frontend",
+        "Real-Time Communication",
+        "TDD",
+        "Data Analysis",
+        "Project Management",
+        "CI/CD",
+        "Architecture",
+        "API Integration",
+        "Localization",
+        "NoSQL"
+      ],
       "links": [
         {
           "type": "link",
@@ -127,7 +144,8 @@
         "Fintech",
         "Project Management",
         "Backend",
-        "Frontend"
+        "Frontend",
+        "SQL"
       ],
       "links": [
         {
@@ -146,7 +164,19 @@
       ],
       "image": "resources/images/projects/theBigFamilyJobsApp.png",
       "imageAlt": "TheBigFamily Jobs App mockup",
-      "skills": ["Flutter/Dart", "API Integration", "Frontend", "UI/UX", "Rapid Development", "NGO Collaboration", "Project Management", "Architecture", "User Engagement", "API Integration"],
+      "skills": [
+        "Flutter/Dart",
+        "API Integration",
+        "Frontend",
+        "UI/UX",
+        "Rapid Development",
+        "NGO Collaboration",
+        "Project Management",
+        "Architecture",
+        "User Engagement",
+        "API Integration",
+        "Localization"
+      ],
       "links": [
         {
           "type": "link",
@@ -175,7 +205,9 @@
         "User Engagement",
         "Project Management",
         "Architecture",
-        "API Integration"
+        "API Integration",
+        "Server Management",
+        "Localization"
       ]
     },
     {
@@ -209,7 +241,7 @@
       ],
       "image": "resources/images/projects/atenea.png",
       "imageAlt": "Atenea app mockup",
-      "skills": ["UI/UX", "Team Collaboration", "Rapid Development", "AI Integration"],
+      "skills": ["UI/UX", "Team Collaboration", "Rapid Development", "Data Analysis", "AI Integration", "Team Leadership"],
       "links": [
         {
           "type": "folder",
@@ -240,7 +272,8 @@
         "A/B Testing",
         "User Engagement",
         "API Integration",
-        "Procedural"
+        "Procedural",
+        "Localization"
       ],
       "links": [
         {
@@ -259,7 +292,7 @@
       ],
       "image": "resources/images/projects/drinkExtreme.png",
       "imageAlt": "Drink Extreme app mockup",
-      "skills": ["Unity", "C#", "Architecture", "Frontend", "Research And Analysis", "Modding", "User Engagement"],
+      "skills": ["Unity", "C#", "Architecture", "Frontend", "Research And Analysis", "Modding", "User Engagement", "Localization"],
       "links": [
         {
           "type": "download",
@@ -304,7 +337,7 @@
       ],
       "image": "resources/images/projects/paperBrawl.png",
       "imageAlt": "Paper Brawl game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Rapid Development", "Team Collaboration", "Frontend", "Project Management", "UI/UX", "Architecture"],
+      "skills": ["Game Design", "Unity", "C#", "Rapid Development", "Team Collaboration", "Frontend", "Project Management", "UI/UX", "Architecture", "Team Leadership"],
       "links": [
         {
           "url": "https://guplem.itch.io/paper-brawl",
@@ -596,7 +629,7 @@
       ],
       "image": "resources/images/projects/gptRole.jpeg",
       "imageAlt": "GPT-Role game concept imagined by an AI",
-      "skills": ["Game Design", "Python", "AI Integration", "Frontend", "Streamlit", "Rapid Development", "Project Management", "Team Collaboration", "Architecture"],
+      "skills": ["Game Design", "Python", "AI Integration", "Frontend", "Streamlit", "Rapid Development", "Project Management", "Team Collaboration", "Architecture", "CI/CD"],
       "links": [
         {
           "type": "link",
@@ -617,7 +650,19 @@
         "As the sole developer, I integrated **Wikidata's API**, designed the front-end interface, and created dynamic ranking algorithms. This project served as my **final thesis** for my computer engineering degree.",
         "The app empowers users to create rankings based on personal preferences, offering a unique data-driven interaction with Wikidata's vast repository."
       ],
-      "skills": ["Flutter/Dart", "API Integration", "Frontend", "Backend", "Data Management", "Server Management", "Data Visualization", "Data Analysis", "Architecture", "Research And Analysis"],
+      "skills": [
+        "Flutter/Dart",
+        "API Integration",
+        "Frontend",
+        "Backend",
+        "Data Management",
+        "Server Management",
+        "Data Visualization",
+        "Data Analysis",
+        "Architecture",
+        "Research And Analysis",
+        "CI/CD"
+      ],
       "links": [
         {
           "url": "https://wikipoll.b4a.app/#/"
@@ -648,7 +693,7 @@
         "*4utumn* is a **social network** I developed as part of a university project. The app allows users to communicate, post texts, follow others, and search for content.",
         "I worked on the **front-end development**, including visual design, mobile responsiveness, ... The project utilized **Spring**, **Thymeleaf**, and **JavaScript** for dynamic content rendering, providing users with a fluid experience."
       ],
-      "skills": ["JavaScript", "HTML/CSS", "SQL", "Spring", "Thymeleaf", "UI/UX", "Project Management", "Architecture", "API Integration", "Frontend"],
+      "skills": ["JavaScript", "HTML/CSS", "SQL", "Spring", "Thymeleaf", "UI/UX", "Project Management", "Architecture", "API Integration", "Frontend", "Server Management"],
       "links": [
         {
           "type": "github",
@@ -928,7 +973,7 @@
         "While working for **P&G Belgium**, I was tasked with updating and digitizing their data collection processes. This included building an intuitive web app using **ThingWorx**, focusing on usability and responsiveness to ensure the factory's daily and shift reports could be easily accessed in real-time.",
         "The app played a key role in improving workflow efficiency and ensuring accurate reporting."
       ],
-      "skills": ["ThingWorx", "Data Visualization", "Data Management", "Team Collaboration", "Architecture", "Frontend", "Backend"]
+      "skills": ["ThingWorx", "Data Visualization", "Data Management", "Team Collaboration", "Architecture", "Frontend", "Backend", "SQL", "NoSQL"]
     },
     {
       "types": ["Videogame", "Misceallaneous"],
@@ -941,7 +986,7 @@
       ],
       "image": "resources/images/projects/essentials.png",
       "imageAlt": "Essentials Asset screenshot",
-      "skills": ["Unity", "C#", "Tool Creation", "Architecture", "Research And Analysis"],
+      "skills": ["Unity", "C#", "Architecture", "Research And Analysis"],
       "links": [
         {
           "type": "link",
@@ -1010,7 +1055,7 @@
         "In this project, I created a simulation where species evolve over time within a confined space. The organisms undergo random mutations and compete for limited resources, resulting in a dynamic ecosystem where only the fittest species survive.",
         "*The ecosystem would typically collapse due to overconsumption of resources once a species becomes too prolific.*"
       ],
-      "skills": ["Unity", "C#", "Genetic Algorithms", "Simulation", "AI Integration", "Rapid Development", "Frontend"],
+      "skills": ["Unity", "C#", "Genetic Algorithms", "AI Integration", "Rapid Development", "Frontend"],
       "links": [
         {
           "type": "folder",
@@ -1044,7 +1089,7 @@
       ],
       "image": "resources/images/projects/ghanaComputers.jpg",
       "imageAlt": "Promotional image for the project to bring Computers to Ghana's schools",
-      "skills": ["NGO Collaboration", "Computer Refurbishing", "Logistics", "Team Collaboration", "Project Management"]
+      "skills": ["NGO Collaboration", "Computer Refurbishing", "Logistics", "Team Collaboration", "Project Management", "Team Leadership"]
     },
     {
       "types": ["Videogame"],
