@@ -10,7 +10,7 @@
         "I re-created my portfolio with a focus on improving navigation, making it easier to find projects related to specific skills and technologies, and enhancing the overall user experience.",
         "I also prioritized site maintenance, making it simple to update with new projects and sections. The site’s content is stored in [JSON files](/data/myWork.json), which are used to dynamically generate the contents, allowing for easy updates."
       ],
-      "skills": ["HTML", "CSS", "JavaScript", "JSON", "UI/UX", "Responsive Design", "SEO"],
+      "skills": ["HTML", "CSS", "JavaScript", "Data Management", "UI/UX"],
       "links": [
         {
           "type": "github",
@@ -30,7 +30,7 @@
       "image": "resources/images/projects/bondy.png",
       "imageAlt": "Bondy app mockup",
       "skills": [
-        "Frontend Architecture",
+        "Architecture",
         "Flutter",
         "Dart",
         "Prisma",
@@ -50,12 +50,9 @@
         "CI/CD",
         "Team Leadership",
         "Real-Time Communication",
-        "Scalability Optimization",
-        "Data Automation",
         "User Engagement",
-        "Database",
-        "Temporal",
-        "Recruitment & Training"
+        "Data Management",
+        "Temporal"
       ],
       "links": [
         {
@@ -74,19 +71,7 @@
       ],
       "image": "resources/images/projects/dishForge.gif",
       "imageAlt": "DishForge demo",
-      "skills": [
-        "Flutter",
-        "Dart",
-        "AI Integration",
-        "LLM Prompting",
-        "Image Recognition AI",
-        "Text to Image AI",
-        "Image generation",
-        "API Integration",
-        "UI/UX",
-        "Rapid Development",
-        "Team Collaboration"
-      ],
+      "skills": ["Flutter", "Dart", "AI Integration", "API Integration", "UI/UX", "Rapid Development", "Team Collaboration"],
       "links": [
         {
           "type": "folder",
@@ -104,7 +89,7 @@
       ],
       "image": "resources/images/projects/things.png",
       "imageAlt": "Things app mockup",
-      "skills": ["Flutter", "Dart", "Firebase", "Firestore", "Real-Time Communication", "TDD", "Project Management"],
+      "skills": ["Flutter", "Dart", "Firebase", "Data Management", "Real-Time Communication", "TDD", "Project Management"],
       "links": [
         {
           "type": "link",
@@ -128,17 +113,15 @@
         "React Native",
         "JavaScript",
         "CI/CD",
-        "Payment Processors Integrations",
         "TDD",
         "PHP",
         "API Integration",
         "User Engagement",
         "Team Leadership",
-        "Scalable Architecture",
-        "Server/Database Management",
-        "Recruitment & Training",
+        "Architecture",
+        "Server Management",
         "Proprietary Frameworks",
-        "Database",
+        "Data Management",
         "Fintech"
       ],
       "links": [
@@ -158,7 +141,7 @@
       ],
       "image": "resources/images/projects/theBigFamilyJobsApp.png",
       "imageAlt": "TheBigFamily Jobs App mockup",
-      "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX", "Rapid Development", "NGO Collaboration", "Data Automation"],
+      "skills": ["Flutter", "Dart", "API Integration", "UI/UX", "Rapid Development", "NGO Collaboration"],
       "links": [
         {
           "type": "link",
@@ -176,7 +159,7 @@
       ],
       "image": "resources/images/projects/kedo.png",
       "imageAlt": "Kedo app mockup",
-      "skills": ["Flutter", "Dart", "UI/UX", "Database", "Rapid Development", "Real-Time Communication", "User Engagement"]
+      "skills": ["Flutter", "Dart", "UI/UX", "Data Management", "Rapid Development", "Real-Time Communication", "User Engagement"]
     },
     {
       "types": ["Mobile App"],
@@ -186,7 +169,7 @@
         "*Cheering* is a simple app designed to uplift team spirits by allowing users to **create various noises without traditional cheering tools**. Developed in just a few hours, it provides a user-friendly interface for setting up speakers and playing many audio tracks.",
         "The app features customizable sound effects that can be manually triggered. My focus was on implementing a very **responsive audio management system**, able to quickly play many audio channels at the same time."
       ],
-      "skills": ["Unity", "C#", "Audio Processing", "UI/UX", "Rapid Development"],
+      "skills": ["Unity", "C#", "UI/UX", "Rapid Development"],
       "links": [
         {
           "type": "folder",
@@ -209,7 +192,7 @@
       ],
       "image": "resources/images/projects/atenea.png",
       "imageAlt": "Atenea app mockup",
-      "skills": ["UI/UX", "Adobe XD", "Team Collaboration", "Rapid Development", "Problem Solving"],
+      "skills": ["UI/UX", "Team Collaboration", "Rapid Development"],
       "links": [
         {
           "type": "folder",
@@ -227,7 +210,7 @@
       ],
       "image": "resources/images/projects/drinkAndPlay.png",
       "imageAlt": "Drink & Play app mockup",
-      "skills": ["UI/UX", "Unity", "C#", "User Engagement", "Competitor Analysis", "Scalability", "Marketing"],
+      "skills": ["UI/UX", "Unity", "C#", "User Engagement", "Research And Analysis", "Architecture", "Marketing"],
       "links": [
         {
           "type": "link",
@@ -245,7 +228,7 @@
       ],
       "image": "resources/images/projects/drinkExtreme.png",
       "imageAlt": "Drink Extreme app mockup",
-      "skills": ["Unity", "C#", "Refactoring", "Feature Research and Analysis"],
+      "skills": ["Unity", "C#", "Architecture", "Research And Analysis"],
       "links": [
         {
           "type": "download",
@@ -272,7 +255,7 @@
         "*Mindflow* is a **simulation game** where players take on the role of a God, manipulating the needs and properties of objects to shape relationships, life goals, and entire ecosystems based on Maslow's pyramid of needs.",
         "I worked solo on this project that was originally conceived as *Thoughts*, but was completely overhauled to adopt a **data architecture inspired by Wikidata**, enhancing its complexity and depth."
       ],
-      "skills": ["Game Design", "Unity", "C#", "Data Architecture", "Prototyping", "Project Management", "UI/UX"],
+      "skills": ["Game Design", "Unity", "C#", "Architecture", "Rapid Development", "Project Management", "UI/UX", "Data Management"],
       "links": [
         {
           "url": "https://github.com/guplem/Mindflow",
@@ -394,7 +377,7 @@
       ],
       "image": "resources/images/projects/musikote.png",
       "imageAlt": "Musikote game screenshot",
-      "skills": ["Game Design", "Unity", "C#", "Sound Design", "UI/UX", "Rapid Development"],
+      "skills": ["Game Design", "Unity", "C#", "UI/UX", "Rapid Development"],
       "links": [
         {
           "url": "https://drive.google.com/drive/folders/1CQs1KlaVyY4JwgAKeotshU89nOmxXNP9?usp=sharing",
@@ -452,7 +435,7 @@
         "*MathVille* is an **educational game platform** designed to transform math education through engaging gameplay that aligns with learning objectives.",
         "In this project, I was responsible for programming interactive activities that enable players to practice mathematical skills in a fun environment, utilizing **gamification techniques** to enhance learning."
       ],
-      "skills": ["Game Design", "Unity", "C#", "Gamification", "Team Collaboration"],
+      "skills": ["Game Design", "Unity", "C#", "Team Collaboration"],
       "image": "resources/images/projects/mathVille.png",
       "imageAlt": "MathVille game screenshot",
       "links": [
@@ -470,7 +453,7 @@
         "*Rasta Run 2* is a **Game Design Document**, aimed at refining gameplay mechanics based on feedback from industry professionals.",
         "I documented various gameplay elements and design ideas, focusing on creating a **robust GDD** that ultimately improved my understanding of game development."
       ],
-      "skills": ["Game Design", "Documentation", "Feedback Analysis", "Project Management", "UI/UX"],
+      "skills": ["Game Design", "Documentation", "Research And Analysis", "Project Management", "UI/UX"],
       "links": [
         {
           "url": "https://docs.google.com/document/d/0B4PKPCjlCHb5NGF1QlQ4NkxyeGc/edit?usp=sharing&ouid=111731709650848839539&resourcekey=0-GW_HBWgkBs9NztsLCkyOZw&rtpof=true&sd=true",
@@ -490,7 +473,7 @@
         "*Ball Evolution* is an **attention-retention game** that explores psychological effects related to addiction, developed in under 48 hours.",
         "The focus was on **intuitive gameplay mechanics**, minimizing the need for tutorials, and surprisingly, it garnered a dedicated player base who engaged for many long sessions."
       ],
-      "skills": ["Game Design", "Rapid Prototyping", "UI/UX", "Psychological Design", "Unity", "C#", "Team Collaboration"],
+      "skills": ["Game Design", "Rapid Development", "UI/UX", "User Engagement", "Unity", "C#", "Team Collaboration"],
       "image": "resources/images/projects/ballEvolution.png",
       "imageAlt": "Ball Evolution game screenshot",
       "links": [
@@ -512,7 +495,7 @@
         "*WoloBall* is my first finished Unity game, where **players must survive against waves of obstacles** while collecting power-ups that alter gameplay dynamics.",
         "This project allowed me to apply the skills I gained from previous projects and solidified my **understanding of the game engine** and integration of external tools such as Google Ads."
       ],
-      "skills": ["Unity", "Game Design", "Ads integration", "UI/UX", "C#"],
+      "skills": ["Unity", "Game Design", "API Integration", "UI/UX", "C#"],
       "image": "resources/images/projects/woloBall.png",
       "imageAlt": "WoloBall game screenshot",
       "links": [
@@ -582,7 +565,7 @@
       ],
       "image": "resources/images/projects/gptRole.jpeg",
       "imageAlt": "GPT-Role game concept imagined by an AI",
-      "skills": ["Game Design", "Python", "AI Integration", "Frontend Development", "Backend Development", "Streamlit"],
+      "skills": ["Game Design", "Python", "AI Integration", "Frontend", "Backend", "Streamlit"],
       "links": [
         {
           "type": "link",
@@ -603,7 +586,7 @@
         "As the sole developer, I integrated **Wikidata's API**, designed the front-end interface, and created dynamic ranking algorithms. This project served as my **final thesis** for my computer engineering degree.",
         "The app empowers users to create rankings based on personal preferences, offering a unique data-driven interaction with Wikidata's vast repository."
       ],
-      "skills": ["Flutter", "API Integration", "Database", "Server/Database Management", "Data Visualization", "Wikidata API", "Data Analysis"],
+      "skills": ["Flutter", "API Integration", "Data Management", "Server Management", "Data Visualization", "Data Analysis"],
       "links": [
         {
           "url": "https://wikipoll.b4a.app/#/"
@@ -619,7 +602,7 @@
         "The site was designed for easy navigation and is optimized for mobile responsiveness, ensuring a seamless user experience.",
         "This project also allowed me to refine my **web development** skills."
       ],
-      "skills": ["UI/UX", "HTML", "CSS", "JavaScript", "Responsive Design"],
+      "skills": ["UI/UX", "HTML", "CSS", "JavaScript"],
       "links": [
         {
           "url": "https://triunitystudios.com/"
@@ -634,7 +617,7 @@
         "*4utumn* is a **social network** I developed as part of a university project. The app allows users to communicate, post texts, follow others, and search for content.",
         "I worked on the **front-end development**, including visual design, mobile responsiveness, ... The project utilized **Spring**, **Thymeleaf**, and **JavaScript** for dynamic content rendering, providing users with a fluid experience."
       ],
-      "skills": ["JavaScript", "HTML", "CSS", "SQL", "Spring", "Thymeleaf", "UI/UX", "Responsive Design"],
+      "skills": ["JavaScript", "HTML", "CSS", "SQL", "Spring", "Thymeleaf", "UI/UX"],
       "links": [
         {
           "type": "github",
@@ -654,7 +637,7 @@
         "*Astronomy* is one of the first websites I developed to share my **passion for space** with fellow enthusiasts. The site features a collection of astronomy-related content, including links to relevant websites and small interactive elements.",
         "While the website was primarily built using templates, it served as my introduction to web development. Additionally, I created a Catalan version, which provided valuable experience in **localization**."
       ],
-      "skills": ["HTML", "CSS", "Content Management", "Localization"],
+      "skills": ["HTML", "CSS", "Data Management", "Localization"],
       "links": [
         {
           "type": "link",
@@ -713,7 +696,7 @@
       ],
       "image": "resources/images/projects/HundirLaFlota.jpg",
       "imageAlt": "Battleship game screenshot",
-      "skills": ["Modding", "Game Design", "Rapid Prototyping"],
+      "skills": ["Modding", "Game Design", "Rapid Development"],
       "links": [
         {
           "type": "play",
@@ -897,7 +880,7 @@
       ],
       "image": "resources/images/projects/ksp.png",
       "imageAlt": "KSP Marketing Image",
-      "skills": ["Usability Improvement", "User Research", "Document Writing", "Game UX", "Product Feedback"],
+      "skills": ["UI/UX", "Research And Analysis", "Documentation"],
       "links": [
         {
           "type": "link",
@@ -914,7 +897,7 @@
         "While working for **P&G Belgium**, I was tasked with updating and digitizing their data collection processes. This included building an intuitive web app using **ThingWorx**, focusing on usability and responsiveness to ensure the factory's daily and shift reports could be easily accessed in real-time.",
         "The app played a key role in improving workflow efficiency and ensuring accurate reporting."
       ],
-      "skills": ["Web Development", "ThingWorx", "Data Visualization"]
+      "skills": ["ThingWorx", "Data Visualization", "Data Management"]
     },
     {
       "types": ["Videogame", "Misceallaneous"],
@@ -927,7 +910,7 @@
       ],
       "image": "resources/images/projects/essentials.png",
       "imageAlt": "Essentials Asset screenshot",
-      "skills": ["Unity", "C#", "Asset Development", "Tool Creation"],
+      "skills": ["Unity", "C#", "Tool Creation"],
       "links": [
         {
           "type": "link",
@@ -954,7 +937,7 @@
       ],
       "image": "resources/images/projects/worldPlayground.gif",
       "imageAlt": "World Playground procedural generation demo",
-      "skills": ["Unity", "C#", "Procedural Generation", "Optimization", "Multithreading"],
+      "skills": ["Unity", "C#", "Procedural", "Architecture", "Multithreading"],
       "links": [
         {
           "type": "folder",
@@ -975,7 +958,7 @@
         "Throughout my development career, I often found myself searching for Unity’s best practices. So, I decided to compile a comprehensive guide that blends my own insights with external resources. This guide is designed to help both new and experienced developers maintain efficient workflows and avoid common pitfalls.",
         "The document is available online for free, and it is regularly consulted by developers in their game development journeys."
       ],
-      "skills": ["Documentation", "Unity", "Game Development"],
+      "skills": ["Documentation", "Unity"],
       "links": [
         {
           "type": "link",
@@ -996,7 +979,7 @@
         "In this project, I created a simulation where species evolve over time within a confined space. The organisms undergo random mutations and compete for limited resources, resulting in a dynamic ecosystem where only the fittest species survive.",
         "*The ecosystem would typically collapse due to overconsumption of resources once a species becomes too prolific.*"
       ],
-      "skills": ["Unity", "C#", "Genetic Algorithms", "Simulation", "AI", "Rapid Prototyping"],
+      "skills": ["Unity", "C#", "Genetic Algorithms", "Simulation", "AI Integration", "Rapid Development"],
       "links": [
         {
           "type": "folder",
@@ -1030,7 +1013,7 @@
       ],
       "image": "resources/images/projects/ghanaComputers.jpg",
       "imageAlt": "Promotional image for the project to bring Computers to Ghana's schools",
-      "skills": ["NGO Collaboration", "Computer Refurbishing", "Logistics", "Volunteering"]
+      "skills": ["NGO Collaboration", "Computer Refurbishing", "Logistics"]
     },
     {
       "types": ["Videogame"],
@@ -1042,7 +1025,7 @@
       ],
       "image": "resources/images/projects/dungeonAssault.gif",
       "imageAlt": "Dungeon Assault procedural generation demo",
-      "skills": ["Unity", "C#", "Procedural Generation", "Game Design"],
+      "skills": ["Unity", "C#", "Procedural", "Game Design"],
       "links": [
         {
           "type": "github",
@@ -1061,7 +1044,7 @@
       ],
       "image": "resources/images/projects/markopa.jpg",
       "imageAlt": "Photoshoots for Markopa",
-      "skills": ["Photography", "Photo Editing", "Lighting Setup", "Team Collaboration", "Image Retouching"],
+      "skills": ["Photography", "Photo Editing", "Team Collaboration"],
       "links": [
         {
           "url": "https://www.markopa.com/abac"
