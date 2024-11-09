@@ -131,7 +131,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
  * Get filtered works based on selected types and skills
  * @returns {Promise<any[]>}
  */
-async function getFilterWorks() {
+async function getFilterWorks(includeSelected = false) {
   try {
     // Load the data
     const allWorks = (await textUtils.fetchJsonData(`../data/myWork.json`))["works"];
@@ -141,8 +141,7 @@ async function getFilterWorks() {
       throw new Error("Invalid data format: 'works' should be an array");
     }
 
-    // Filter the works
-    return allWorks.filter((work) => {
+    const filteredWorks = allWorks.filter((work) => {
       // Check for selected type match if types are specified
       const hasSelectedType = selectedWorkTypes.length === 0 || (work.types && textUtils.allToId(work.types).some((type) => selectedWorkTypes.includes(type)));
 
@@ -151,6 +150,14 @@ async function getFilterWorks() {
 
       return hasSelectedType && hasSelectedSkill;
     });
+
+    if (includeSelected) {
+      // Filter the works
+      return filteredWorks;
+    } else {
+      // Return the non-selected works
+      return allWorks.filter((work) => !filteredWorks.includes(work));
+    }
   } catch (error) {
     console.error("Error fetching or filtering works:", error);
     return [];
