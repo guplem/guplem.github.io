@@ -547,6 +547,98 @@
           "type": "github"
         }
       ]
+    },
+
+    {
+      "types": ["Videogame", "Web"],
+      "date": "2024",
+      "title": "GPT-Role",
+      "description": [
+        "*GPT-Role* is an **AI-based narrative generation game** where players experience stories driven by an AI, with only truly impossible actions being restricted.",
+        "In this project, I was involved in **every aspect of development**, from prompt engineering to designing and implementing the system architecture. This included creating a dynamic system that determines the flow of the story by selecting distinct prompts based on the player's actions, as well as implementing core game loops to provide the player with a meaningful, immersive experience.",
+        "Players begin by defining their character and objective, and the AI adapts to their choices, narrating the unfolding story. Each session is unique, driven by the player's decisions and the system's dynamic responses."
+      ],
+      "image": "resources/images/projects/gptRole.jpeg",
+      "imageAlt": "GPT-Role game concept imagined by an AI",
+      "skills": ["Game Design", "Python", "AI Integration", "Frontend Development", "Backend Development", "Streamlit"],
+      "links": [
+        {
+          "url": "https://gpt-role.streamlit.app/"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/GPT-Role"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2022",
+      "title": "WikiPoll",
+      "description": [
+        "*WikiPoll* is a **web app** that allows users to rank articles from **Wikidata** based on their opinions. The app generates comparative polls from tens of thousands of entries, letting users rank topics such as people, cities, literary genres, and more.",
+        "As the sole developer, I integrated **Wikidata's API**, designed the front-end interface, and created dynamic ranking algorithms. This project served as my **final thesis** for my computer engineering degree.",
+        "The app empowers users to create rankings based on personal preferences, offering a unique data-driven interaction with Wikidata's vast repository."
+      ],
+      "skills": ["Flutter", "API Integration", "Database", "Server/Database Management", "Data Visualization", "Wikidata API", "Data Visualization", "Data Analysis"],
+      "links": [
+        {
+          "url": "https://wikipoll.b4a.app/#/"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2019",
+      "title": "Portfolio v1",
+      "description": [
+        "*Portfolio v1* was a simple **personal website** that served as my digital portfolio. I developed this website to showcase my work and provide a way for people to connect with me online.",
+        "The site was designed for easy navigation and is optimized for mobile responsiveness, ensuring a seamless user experience.",
+        "This project also allowed me to refine my **web development** skills."
+      ],
+      "skills": ["UI/UX", "HTML", "CSS", "JavaScript", "Responsive Design"],
+      "links": [
+        {
+          "url": "https://triunitystudios.com/"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2018",
+      "title": "4utumn",
+      "description": [
+        "*4utumn* is a **social network** I developed as part of a university project. The app allows users to communicate, post texts, follow others, and search for content.",
+        "I worked on the **front-end development**, including visual design, mobile responsiveness, ... The project utilized **Spring**, **Thymeleaf**, and **JavaScript** for dynamic content rendering, providing users with a fluid experience."
+      ],
+      "skills": ["JavaScript", "HTML", "CSS", "SQL", "Spring", "Thymeleaf", "UI/UX", "Responsive Design"],
+      "links": [
+        {
+          "url": "https://github.com/guplem/4utumn"
+        },
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1nMqy5DgiauENFJeDq-RHd1bl46rWXzIO?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2011",
+      "title": "Astronomy",
+      "description": [
+        "*Astronomy* is one of the first websites I developed to share my **passion for space** with fellow enthusiasts. The site features a collection of astronomy-related content, including links to relevant websites and small interactive elements.",
+        "While the website was primarily built using templates, it served as my introduction to web development. Additionally, I created a Catalan version, which provided valuable experience in **localization**."
+      ],
+      "skills": ["HTML", "CSS", "Content Management", "Localization"],
+      "links": [
+        {
+          "url": "https://astronoms.es.tl/"
+        },
+        {
+          "url": "https://astronomscat.es.tl/"
+        }
+      ]
     }
   ]
 }

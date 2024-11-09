@@ -1,7 +1,8 @@
 I am creating a JSON document with all of my portfolio.
 I will share with you a description of projects I've worked on.
-You must create a JSON object following the examples based on the info I provide you.
-In the description explain what the project is about, what I did, objectives, ... imitating the tone and information of the examples.
+
+Your goal is to create a JSON object following the examples based on the info I provide you.
+In the description must be concise, and impactful descriptions of my projects, following a specific structure. Each description should reflect my role, the technologies I used, the key features I worked on, and the results or impact of the project. The descriptions should highlight my individual contributions and demonstrate the success of the project. And it must imitate the tone and information of the examples.
 If you are lacking any information, you must ask for it before answering.
 All images are within the "resources/images/projects" folder.
 In the skills section, you must include the framework, platform, language, ... Example: "Flutter" should always be accompanied by "Dart". Try to avoid adding many new skills but reuse as much as possible the ones that are already present.
@@ -175,26 +176,6 @@ These are the contents I need you to take as an example:
     },
     {
       "types": ["Mobile App"],
-      "date": "2021",
-      "title": "Cheering",
-      "description": [
-        "*Cheering* is a simple app designed to uplift team spirits by allowing users to **create various noises without traditional cheering tools**. Developed in just a few hours, it provides a user-friendly interface for setting up speakers and playing many audio tracks.",
-        "The app features customizable sound effects that can be manually triggered. My focus was on implementing a very **responsive audio management system**, able to quickly play many audio channels at the same time."
-      ],
-      "skills": ["Unity", "C#", "Audio Processing", "UI/UX", "Rapid Development"],
-      "links": [
-        {
-          "type": "folder",
-          "url": "https://drive.google.com/drive/folders/1PLLpkq04OxXn47WklAQhHMQUFqE_Gsk4?usp=sharing"
-        },
-        {
-          "type": "github",
-          "url": "https://github.com/guplem/TS21-Cheering"
-        }
-      ]
-    },
-    {
-      "types": ["Mobile App"],
       "date": "2020",
       "title": "Atenea",
       "description": [
@@ -354,32 +335,6 @@ These are the contents I need you to take as an example:
     },
     {
       "types": ["Videogame"],
-      "date": "2020",
-      "title": "Slavery Narrative",
-      "description": [
-        "*Slavery Narrative* is a thought-provoking **prototype** aimed at fostering empathy by immersing players in the life of an African slave in 19th century America. The game utilizes **procedural narratives** that evolve based on player decisions and environmental status.",
-        "Inspired by games like *Regins* and *Spent*, I focused on programming an algorithm capable of dynamically generating meaningful **storytelling** that resonates deeply with players."
-      ],
-      "image": "resources/images/projects/slaveryNarrative.png",
-      "imageAlt": "Slavery Narrative game title",
-      "skills": ["Game Design", "Unity", "C#", "Procedural", "Team Collaboration", "Project Management"],
-      "links": [
-        {
-          "url": "https://drive.google.com/file/d/1TYYzk7LCb6NH6egMW8BQ5lIJFOsF6-X9/view?usp=sharing",
-          "type": "folder"
-        },
-        {
-          "url": "https://drive.google.com/drive/folders/1vS3OgFzkZW5EMHi92gqWeMbL9uv3SUCs?usp=sharing",
-          "type": "folder"
-        },
-        {
-          "url": "https://github.com/Destokado/Negro",
-          "type": "github"
-        }
-      ]
-    },
-    {
-      "types": ["Videogame"],
       "date": "2019",
       "title": "Musikote",
       "description": [
@@ -442,3 +397,41 @@ These are the contents I need you to take as an example:
 }
 
 ```
+
+--- 
+
+## Description Structure
+
+### Structure:
+
+1. **Project Name & Concept**  
+   - Briefly describe the project’s main idea or purpose.  
+   - Mention the product type (e.g., mobile app, web app, game, etc.).
+
+   **Example:**  
+   *DishForge* is an **AI-powered cooking app** that generates personalized recipes based on user preferences.
+
+2. **Role & Responsibilities**  
+   - State your role (e.g., front-end developer, team lead).  
+   - Summarize the key tasks you worked on.
+
+   **Example:**  
+   As the **front-end developer**, I designed the **UI**, integrated **APIs**, and ensured smooth user interaction with AI features.
+
+3. **Outcome or Impact**  
+   - Briefly mention the result of the project (e.g., improvements, performance, user feedback).
+
+   **Example:**  
+   Delivered in **48 hours**, the app demonstrated fast development and effective AI integration.
+
+---
+
+### Key Points:
+- Keep descriptions **short and direct**.
+- Focus on **your role** and **your work**.
+- Highlight **outcomes** or **impacts** (e.g., efficiency, innovation).
+
+
+---
+
+After this I will share the projects I need you to create the JSON for.
