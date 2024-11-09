@@ -131,7 +131,7 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
  * Get filtered works based on selected types and skills
  * @returns {Promise<any[]>}
  */
-async function getFilterWorks(includeSelected = false) {
+async function getFilterWorks(includeSelected = true) {
   try {
     // Load the data
     const allWorks = (await textUtils.fetchJsonData(`../data/myWork.json`))["works"];
