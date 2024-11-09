@@ -42,6 +42,7 @@
       ],
       "links": [
         {
+          "type": "link",
           "url": "https://thebondyapp.com/"
         }
       ]
@@ -89,6 +90,7 @@
       "skills": ["Flutter", "Dart", "Firebase", "Firestore", "Real-Time Communication", "TDD", "Project Management"],
       "links": [
         {
+          "type": "link",
           "url": "https://whatisnext.web.app/"
         }
       ]
@@ -124,6 +126,7 @@
       ],
       "links": [
         {
+          "type": "link",
           "url": "https://tunzaa.co.tz/"
         }
       ]
@@ -141,6 +144,7 @@
       "skills": ["Flutter", "Dart", "HTTP Requests", "API Integration", "UI/UX", "Rapid Development", "NGO Collaboration", "Data Automation"],
       "links": [
         {
+          "type": "link",
           "url": "https://play.google.com/store/apps/details?id=com.the_big_family.app_jobs"
         }
       ]
@@ -209,6 +213,7 @@
       "skills": ["UI/UX", "Unity", "C#", "User Engagement", "Competitor Analysis", "Scalability", "Marketing"],
       "links": [
         {
+          "type": "link",
           "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.DrinkAndPlay"
         }
       ]
@@ -342,7 +347,7 @@
       "title": "Slavery Narrative",
       "description": [
         "*Slavery Narrative* is a thought-provoking **prototype** aimed at fostering empathy by immersing players in the life of an African slave in 19th century America. The game utilizes **procedural narratives** that evolve based on player decisions and environmental status.",
-        "Inspired by games like *Regins* and *Spent*, I focused on programming an algorithm capable of dynamically generating meaningful **storytelling** that resonates deeply with players."
+        "Inspired by games like *Reigns* and *Spent*, I focused on programming an algorithm capable of dynamically generating meaningful **storytelling** that resonates deeply with players."
       ],
       "image": "resources/images/projects/slaveryNarrative.png",
       "imageAlt": "Slavery Narrative game title",
@@ -563,6 +568,7 @@
       "skills": ["Game Design", "Python", "AI Integration", "Frontend Development", "Backend Development", "Streamlit"],
       "links": [
         {
+          "type": "link",
           "url": "https://gpt-role.streamlit.app/"
         },
         {
@@ -614,6 +620,7 @@
       "skills": ["JavaScript", "HTML", "CSS", "SQL", "Spring", "Thymeleaf", "UI/UX", "Responsive Design"],
       "links": [
         {
+          "type": "github",
           "url": "https://github.com/guplem/4utumn"
         },
         {
@@ -633,9 +640,11 @@
       "skills": ["HTML", "CSS", "Content Management", "Localization"],
       "links": [
         {
+          "type": "link",
           "url": "https://astronoms.es.tl/"
         },
         {
+          "type": "link",
           "url": "https://astronomscat.es.tl/"
         }
       ]
@@ -644,7 +653,7 @@
     {
       "types": ["Minecraft", "Videogame"],
       "date": "2014",
-      "title": "Game Mode: Super Ultra Hardcore",
+      "title": "Game Mode: Super UltraHardcore",
       "description": [
         "*Super Ultra Hardcore* is a **Minecraft gameplay mod** that introduces an ultra-challenging survival mode. Players have only one life and face tougher enemies, with their scores tracked in a unique scoring system.",
         "I designed the gameplay mechanics to increase difficulty and enhance player engagement, offering a more intense survival experience."
@@ -680,7 +689,7 @@
     {
       "types": ["Minecraft", "Videogame"],
       "date": "2013",
-      "title": "Battleship (Hundir La Flota)",
+      "title": "Battleship",
       "description": [
         "*Battleship* is a **recreation of the classic board game** within Minecraft. I developed it as a special project to celebrate my 100th YouTube video, leveraging Minecraft's features for a quick and fun implementation.",
         "I translated the traditional gameplay into Minecraft’s mechanics and user interface, showcasing my ability to quickly create prototypes while adding a unique Minecraft twist to a familiar game."
@@ -700,7 +709,7 @@
       "date": "2013",
       "title": "The Building Game (Contribution)",
       "description": [
-        "*The Building Game* is a **Minecraft multiplayer game** where players build structures based on prompts. I created a Spanish localization of the game and adapted it to be playable by 4 players or less.",
+        "*The Building Game* is a **Minecraft multiplayer game** where players build structures based on prompts. I created a Spanish localization of the game and adapted it to be playable by 4 players or fewer.",
         "I had to understand how the game was created to localize and modify it, showcasing my ability to reverse engineer and adapt existing projects."
       ],
       "image": "resources/images/projects/theBuildingGame.jpg",
@@ -790,7 +799,7 @@
       "date": "2013",
       "title": "Run to Win",
       "description": [
-        "*Run to Win* is a **Minecraft racing game** where players face various obstacles along a race track.",
+        "*Run to Win* is a **Minecraft racing game** where players face various obstacles along a racetrack.",
         "I implemented the racing mechanics, game flow and track challenges, creating a fun, competitive experience for players."
       ],
       "image": "resources/images/projects/runToWin.gif",
@@ -857,6 +866,170 @@
         {
           "type": "play",
           "url": "https://youtu.be/YjzGHh6gt3o"
+        }
+      ]
+    },
+
+    {
+      "types": ["Videogame", "Misceallaneous"],
+      "date": "2024",
+      "title": "KSP Usability Improvements",
+      "description": [
+        "*KSP Usability Improvements* is a **document** outlining suggested improvements to the user experience of the popular game *Kerbal Space Program*.",
+        "After spending significant time playing the game, I identified key areas where usability could be enhanced. I compiled these insights into a structured document, which aimed to help both the developers and users enjoy a more intuitive experience. My suggestions focused on improving user interface navigation, controls, and accessibility, addressing issues that many players found cumbersome in the original version."
+      ],
+      "image": "resources/images/projects/ksp.png",
+      "imageAlt": "KSP Marketing Image",
+      "skills": ["Usability Improvement", "User Research", "Document Writing", "Game UX", "Product Feedback"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://docs.google.com/document/d/1jo3glkTPwuGQgFaQ5MfYX3jUL1xiy7jXKOSVIAvvUqk/edit?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2023",
+      "title": "P&G Process Digitization",
+      "description": [
+        "The product I worked on is an **internal web application** created to streamline factory data collection processes previously handled manually.",
+        "While working for **P&G Belgium**, I was tasked with updating and digitizing their data collection processes. This included building an intuitive web app using **ThingWorx**, focusing on usability and responsiveness to ensure the factory's daily and shift reports could be easily accessed in real-time.",
+        "The app played a key role in improving workflow efficiency and ensuring accurate reporting."
+      ],
+      "skills": ["Web Development", "ThingWorx", "Data Visualization"]
+    },
+    {
+      "types": ["Videogame", "Misceallaneous"],
+      "date": "2023",
+      "title": "Essentials Asset",
+      "description": [
+        "*Essentials* is a **Unity asset** designed to reduce the workload for developers by providing commonly used tools and features.",
+        "As part of my **university thesis**, I created this asset to streamline repetitive tasks across Unity projects.",
+        "I consider it an essential resource for Unity developers, offering solutions such as object pooling, in-game terminal, save/load data, manager for simple animations, dozens of extensions, and more."
+      ],
+      "image": "resources/images/projects/essentials.png",
+      "imageAlt": "Essentials Asset screenshot",
+      "skills": ["Unity", "C#", "Asset Development", "Tool Creation"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://assetstore.unity.com/packages/tools/utilities/essentials-161141"
+        },
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1RzANOEKzxatXH5MQdElUI36-XoXyBzzy?usp=sharing"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/UnityEssentials"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame", "Misceallaneous"],
+      "date": "2022",
+      "title": "World Playground",
+      "description": [
+        "*World Playground* is a **procedural world generation** project focused on creating infinite voxel-based landscapes.",
+        "In this project, I set out to recreate a procedurally generated world with dynamic chunk loading, optimized mesh creation, and multiple biomes.",
+        "It helped me learn about the complexities of world generation, mesh generation, terrain optimization, and **multithreading** in game engines..."
+      ],
+      "image": "resources/images/projects/worldPlayground.gif",
+      "imageAlt": "World Playground procedural generation demo",
+      "skills": ["Unity", "C#", "Procedural Generation", "Optimization", "Multithreading"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1kh2MIU0SX1MpzWivFw9QgSUyBdfFwSmB?usp=sharing"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/ProjectTS16-WorldPlayground"
+        }
+      ]
+    },
+    {
+      "types": ["Misceallaneous"],
+      "date": "2022",
+      "title": "Unity Documentation",
+      "description": [
+        "Unity Documentation is a structured guide I created to help developers follow best practices when using Unity.",
+        "Throughout my development career, I often found myself searching for Unity’s best practices. So, I decided to compile a comprehensive guide that blends my own insights with external resources. This guide is designed to help both new and experienced developers maintain efficient workflows and avoid common pitfalls.",
+        "The document is available online for free, and it is regularly consulted by developers in their game development journeys."
+      ],
+      "skills": ["Documentation", "Unity", "Game Development"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://docs.google.com/document/d/1lQQctdAHYYky9-7DKE6PGhcB72Dc91xfO6J7vdHxMmU/edit?usp=sharing"
+        },
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/18qJXKlyGcxKAjCU1jZdQRBfCS5IMeUe9?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Misceallaneous"],
+      "date": "2022",
+      "title": "Genetic Evolution Simulation",
+      "description": [
+        "*Genetic Evolution Simulation* is a Unity-based **simulation that models the evolution** of virtual species through random mutations.",
+        "In this project, I created a simulation where species evolve over time within a confined space. The organisms undergo random mutations and compete for limited resources, resulting in a dynamic ecosystem where only the fittest species survive.",
+        "*The ecosystem would typically collapse due to overconsumption of resources once a species becomes too prolific.*"
+      ],
+      "skills": ["Unity", "C#", "Genetic Algorithms", "Simulation", "AI", "Rapid Prototyping"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "https://github.com/guplem/ProjectTS17-GeneticEvolution"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame", "Misceallaneous"],
+      "date": "2021",
+      "title": "Tips and Tricks for Game Design",
+      "description": [
+        "*Tips and Tricks for Game Design* is a *guidebook* of advice compiled from my personal experience and academic background.",
+        "This project, although abandoned, was intended to provide a structured collection of tips for anyone looking to design engaging video games. Drawing from university coursework and personal practice, it covered everything from mechanics to user engagement strategies."
+      ],
+      "skills": ["Game Design", "Documentation", "User Engagement"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://docs.google.com/document/d/1fUtvopLrGSoHb14Pt6UKFmeysY-_v-YkvUovPJOs5GI/edit?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Misceallaneous"],
+      "date": "2021",
+      "title": "Computer Classrooms in Ghana",
+      "description": [
+        "A **voluntary project** where I helped bring computers and set up classrooms in Ghanaian schools.",
+        "I refurbished and collected second-hand laptops, aiming to provide students in Ghana with direct access to computers."
+      ],
+      "image": "resources/images/projects/ghanaComputers.jpg",
+      "imageAlt": "Promotional image for the project to bring Computers to Ghana's schools",
+      "skills": ["NGO Collaboration", "Computer Refurbishing", "Logistics", "Volunteering"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2020",
+      "title": "Dungeon Assault",
+      "description": [
+        "*Dungeon Assault* is a **procedural dungeon** map generator for improvisational board games.",
+        "The tool was created to facilitate the generation of unique dungeon maps, allowing players to create their own game rules and map layouts. Designed for ease of use, it supports flexible token-based gameplay, discovery mechanics, and the ability to randomize dungeon features."
+      ],
+      "image": "resources/images/projects/dungeonAssault.gif",
+      "imageAlt": "Dungeon Assault procedural generation demo",
+      "skills": ["Unity", "C#", "Procedural Generation", "Game Design"],
+      "links": [
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/DungeonAssault"
         }
       ]
     }
