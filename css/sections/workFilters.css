@@ -67,13 +67,16 @@
 
 /** -- Skills Collapsed -- **/
 #myWorkSkills[collapsed="true"] {
+  /* The skills section */
   max-height: 120px; /* This is the collapsed height */
   overflow: hidden;
   position: relative;
+  padding-bottom: 5px;
   transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
 }
 
 #myWorkSkills[collapsed="true"]::before {
+  /* The overlay */
   content: "";
   position: absolute;
   bottom: 0;
@@ -81,18 +84,20 @@
   height: 50%;
   background: linear-gradient(to top, var(--background-clear) 20%, transparent);
   pointer-events: none; /* Ensures the overlay doesn't interfere with any interactions */
-  transition: background 0.5s ease-in-out;
+  transition: height 0.5s ease-in-out, background 0.5s ease-in-out;
 }
 
 /* -- Skills Expanded -- */
 #myWorkSkills[collapsed="false"] {
-  max-height: 10000px; /* Arbitrary large value, just need a very big value */
+  /* The skills section */
+  max-height: 1000px; /* Arbitrary large value, just need a very big value */
   overflow: hidden;
   position: relative;
   transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
 }
 
 #myWorkSkills[collapsed="false"]::before {
+  /* The overlay */
   content: "";
   position: absolute;
   bottom: 0;
@@ -100,7 +105,7 @@
   height: 0;
   background: transparent;
   pointer-events: none;
-  transition: background 0.5s ease-in-out;
+  transition: height 0.5s ease-in-out, background 0.5s ease-in-out;
 }
 
 /* -- Collapse Button -- */

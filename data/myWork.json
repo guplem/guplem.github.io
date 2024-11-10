@@ -164,19 +164,7 @@
       ],
       "image": "resources/images/projects/theBigFamilyJobsApp.png",
       "imageAlt": "TheBigFamily Jobs App mockup",
-      "skills": [
-        "Flutter/Dart",
-        "API Integration",
-        "Frontend",
-        "UI/UX",
-        "Rapid Development",
-        "NGO Collaboration",
-        "Project Management",
-        "Architecture",
-        "User Engagement",
-        "API Integration",
-        "Localization"
-      ],
+      "skills": ["Flutter/Dart", "API Integration", "Frontend", "UI/UX", "Rapid Development", "NGO Collaboration", "Project Management", "Architecture", "User Engagement", "Localization"],
       "links": [
         {
           "type": "link",
