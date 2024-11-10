@@ -1,0 +1,1161 @@
+{
+  "title": "My Work",
+  "works": [
+    {
+      "types": ["Web"],
+      "date": "2024",
+      "title": "Portfolio v2",
+      "description": [
+        "*Portfolio v2* is my **personal website**, designed to showcase my work and achievements. It provides an overview of my skills and projects.",
+        "I re-created my portfolio with a focus on improving navigation, making it easier to find projects related to specific skills and technologies, and enhancing the overall user experience.",
+        "I also prioritized site maintenance, making it simple to update with new projects and sections. The site’s content is stored in [JSON files](/data/myWork.json), which are used to dynamically generate the contents, allowing for easy updates."
+      ],
+      "skills": ["HTML/CSS", "JavaScript", "Data Management", "UI/UX", "Architecture", "Frontend", "CI/CD"],
+      "links": [
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/guplem.github.io"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App"],
+      "date": "2024",
+      "title": "Bondy",
+      "description": [
+        "*Bondy* is a **social networking platform** that simplifies event organization and encourages real-life connections among users.",
+        "As the lead developer, I **architected the front-end** to ensure scalability and performance, implemented **A/B testing** to refine **recommendation algorithms**, increase retention and improve usability while working in back-end projects.",
+        "Key features included **real-time** chat, an endlessly scrollable feed, location tracking, and push notifications, all designed to create a rich user experience. Moreover, by implementing **CI/CD technologies**, I optimized our development workflows, boosting team efficiency significantly."
+      ],
+      "image": "resources/images/projects/bondy.png",
+      "imageStretched": true,
+      "imageAlt": "Bondy app mockup",
+      "skills": [
+        "Architecture",
+        "Flutter/Dart",
+        "Prisma",
+        "Node.js",
+        "TypeScript",
+        "TDD",
+        "Jest",
+        "Data Analysis",
+        "Data Visualization",
+        "Firebase",
+        "Grafana",
+        "SQL",
+        "Gorm",
+        "Gin",
+        "Go",
+        "A/B Testing",
+        "CI/CD",
+        "Team Leadership",
+        "Real-Time Communication",
+        "User Engagement",
+        "Data Management",
+        "Temporal",
+        "Team Collaboration",
+        "API Integration",
+        "Backend",
+        "Frontend",
+        "Server Management",
+        "Localization"
+      ],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://thebondyapp.com/"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App"],
+      "date": "2023",
+      "title": "DishForge: Your Personal Chef",
+      "description": [
+        "*DishForge* is an **AI-powered application** that enhances cooking experiences by blending AI with culinary creativity. Created during a [Lablab Hackathon](https://lablab.ai/event/llama-2-hackathon-with-clarifai/rostisseries-delgado/dishforge), it allows users to interact effortlessly with AI to generate personalized recipes based on meal types, preferences, and available ingredients, utilizing image recognition, LLMs and image generation.",
+        "As the front-end developer, I focused on crafting the user interface, managing API integrations, and seamlessly presenting AI outputs. Our team **delivered this project in under 48 hours**, showcasing our ability to collaborate effectively and innovate rapidly."
+      ],
+      "image": "resources/images/projects/dishForge.gif",
+      "imageStretched": false,
+      "imageAlt": "DishForge demo",
+      "skills": ["Flutter/Dart", "AI Integration", "API Integration", "UI/UX", "Frontend", "Rapid Development", "Team Collaboration", "Project Management", "Architecture"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1-pRFZp8oeQQIgviqg0l_86-un1iSLWyC?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App", "Web"],
+      "date": "2023",
+      "title": "Things — What is next?",
+      "description": [
+        "*Things* is a **task and project management app** fully developed by myself, that intelligently suggests tasks based on user availability, allowing for effortless prioritization. Built to offer an accessible solution across all modern devices.",
+        "The app features **real-time synchronization** and **prioritization algorithms** developed following TDD, boasting robust and  dynamic scheduling capabilities, empowering users to focus on what matters most."
+      ],
+      "image": "resources/images/projects/things.png",
+      "imageStretched": true,
+      "imageAlt": "Things app mockup",
+      "skills": [
+        "Flutter/Dart",
+        "Firebase",
+        "Data Management",
+        "Backend",
+        "Frontend",
+        "Real-Time Communication",
+        "TDD",
+        "Data Analysis",
+        "Project Management",
+        "CI/CD",
+        "Architecture",
+        "API Integration",
+        "Localization",
+        "NoSQL"
+      ],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://whatisnext.web.app/"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App"],
+      "date": "2022",
+      "title": "Tunzaa",
+      "description": [
+        "*Tunzaa* is an **incremental savings app** aimed at empowering unbanked consumers in Africa by providing secure savings and purchase options within a curated marketplace. Developed in collaboration with major brands, it supports user financial health and accessibility.",
+        "Transitioning from a prototype to a full-fledged app, I oversaw a comprehensive app architecture refactor and led the development of an **M-Pesa Mini App** using a proprietary XML-based framework. Additionally, I implemented CI/CD technologies, managed server and database operations, and guided a team of developers."
+      ],
+      "image": "resources/images/projects/tunzaa.png",
+      "imageStretched": true,
+      "imageAlt": "Tunzaa app mockup",
+      "skills": [
+        "Flutter/Dart",
+        "React Native",
+        "JavaScript",
+        "CI/CD",
+        "TDD",
+        "PHP",
+        "API Integration",
+        "User Engagement",
+        "Team Leadership",
+        "Architecture",
+        "Server Management",
+        "Proprietary Frameworks",
+        "Data Management",
+        "Fintech",
+        "Project Management",
+        "Backend",
+        "Frontend",
+        "SQL"
+      ],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://tunzaa.co.tz/"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App"],
+      "date": "2022",
+      "title": "TheBigFamily Jobs App",
+      "description": [
+        "*TheBigFamily Jobs App* is designed to **connect Ukrainian refugees** with potential employers through a streamlined and intuitive interface. It allows users to match with job opportunities by answering just ten questions.",
+        "I built this app integrating an automated form submission system that syncs responses directly with Google Forms. This approach significantly **simplified data management** for the [NGO](https://www.thebigfamily.app/), while enhancing user trust by providing a secure and user-friendly platform for the refugee community."
+      ],
+      "image": "resources/images/projects/theBigFamilyJobsApp.png",
+      "imageStretched": true,
+      "imageAlt": "TheBigFamily Jobs App mockup",
+      "skills": ["Flutter/Dart", "API Integration", "Frontend", "UI/UX", "Rapid Development", "NGO Collaboration", "Project Management", "Architecture", "User Engagement", "Localization"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://play.google.com/store/apps/details?id=com.the_big_family.app_jobs"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App"],
+      "date": "2022",
+      "title": "Kedo",
+      "description": [
+        "*Kedo* is a **social networking platform** that enables users to create, search, and share plans, fostering connections and collaborative activities. I was tasked with transforming a basic idea into a **fully functional prototype**, managing tight budget and timeline constraints.",
+        "I handled the complete development lifecycle, focusing on UI/UX, frontend development, and backend integration through Back4App for **rapid deployment and scalability**. Key features included user search, real-time chat, and personalized plan recommendations, all designed to enhance user engagement while meeting all the requirements."
+      ],
+      "image": "resources/images/projects/kedo.png",
+      "imageStretched": true,
+      "imageAlt": "Kedo app mockup",
+      "skills": [
+        "Flutter/Dart",
+        "UI/UX",
+        "Backend",
+        "Frontend",
+        "Data Management",
+        "Rapid Development",
+        "Real-Time Communication",
+        "User Engagement",
+        "Project Management",
+        "Architecture",
+        "API Integration",
+        "Server Management",
+        "Localization"
+      ]
+    },
+    {
+      "types": ["Mobile App"],
+      "date": "2021",
+      "title": "Cheering",
+      "description": [
+        "*Cheering* is a simple app designed to uplift team spirits by allowing users to **create various noises without traditional cheering tools**. Developed in just a few hours, it provides a user-friendly interface for setting up speakers and playing many audio tracks.",
+        "The app features customizable sound effects that can be manually triggered. My focus was on implementing a very **responsive audio management system**, able to quickly play many audio channels at the same time."
+      ],
+      "skills": ["Unity", "C#", "UI/UX", "Frontend", "Rapid Development", "Architecture"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1PLLpkq04OxXn47WklAQhHMQUFqE_Gsk4?usp=sharing"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/TS21-Cheering"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App"],
+      "date": "2020",
+      "title": "Atenea",
+      "description": [
+        "*Atenea* is a conceptual application aimed at **early treatment of mental disorders**, focusing on reducing diagnostic costs and improving outcomes. Developed during a hackathon, our team proposed using **Machine Learning algorithms** to be able to perform in-app tests, facilitating quicker interventions.",
+        "We collaborated with **health professionals** to ensure the feasibility and relevance of our concept.",
+        "I was responsible for creating the mock-up of the application, crafting a user-friendly demo. "
+      ],
+      "image": "resources/images/projects/atenea.png",
+      "imageStretched": true,
+      "imageAlt": "Atenea app mockup",
+      "skills": ["UI/UX", "Team Collaboration", "Rapid Development", "Data Analysis", "AI Integration", "Team Leadership"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1rWWWjWIIdcWYvJOy5X2ESEL3sSEEAcLf?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App", "Videogame"],
+      "date": "2020",
+      "title": "Drink & Play",
+      "description": [
+        "*Drink & Play* is a **collection of festive games** designed to enhance social gatherings and dynamize parties. My goal was to improve upon existing drinking apps by introducing unique design elements and features that prioritize scalability and user experience.",
+        "I conducted extensive competitor analysis to identify and address shortcomings in other apps, which informed my approach to feature development and UI/UX design. The app was a success, evidential by the number of requests I received to publish it in various app stores."
+      ],
+      "image": "resources/images/projects/drinkAndPlay.png",
+      "imageStretched": true,
+      "imageAlt": "Drink & Play app mockup",
+      "skills": [
+        "UI/UX",
+        "Unity",
+        "C#",
+        "Frontend",
+        "Game Design",
+        "Research And Analysis",
+        "Architecture",
+        "Marketing",
+        "Project Management",
+        "A/B Testing",
+        "User Engagement",
+        "API Integration",
+        "Procedural",
+        "Localization"
+      ],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.DrinkAndPlay"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App", "Videogame"],
+      "date": "2019",
+      "title": "Drink Extreme Refactoring",
+      "description": [
+        "In this project, I undertook a **complete refactor** of an [existing drinking games app](https://play.google.com/store/apps/details?id=com.burtons.ProductName), which involved a comprehensive code review and essential architectural redesigns to enhance scalability and upgrade functionalities.",
+        "Even tough my upgrades brought a modularity required to **scale and upgrade** the app, the update was not accepted, but my work laid the groundwork for future enhancements and improvements."
+      ],
+      "image": "resources/images/projects/drinkExtreme.png",
+      "imageStretched": false,
+      "imageAlt": "Drink Extreme app mockup",
+      "skills": ["Unity", "C#", "Architecture", "Frontend", "Research And Analysis", "Modding", "User Engagement", "Localization"],
+      "links": [
+        {
+          "type": "download",
+          "url": "https://drive.google.com/file/d/1-5F8UoV49HiJcbYUp4Ih55Dl42SNEUkd/view?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Mobile App", "Videogame"],
+      "date": "2018",
+      "title": "Escape City",
+      "description": [
+        "*Escape City* is an **interactive quiz app** designed as a central tool for a citywide gymkhana for kids, promoting fun and educational experiences. I developed the app based on specific requirements from event organizers, allowing participants to answer questions and progress through various stages of the game.",
+        "Upon completion, the app automatically compiled and sent an email with **performance data** to the organizers, facilitating event management at the same time as player engagement."
+      ],
+      "skills": ["Unity", "C#", "UI/UX", "Frontend", "Project Management", "Data Management", "Architecture", "API Integration"]
+    },
+
+    {
+      "types": ["Videogame"],
+      "date": "2024",
+      "title": "Mindflow",
+      "description": [
+        "*Mindflow* is a **simulation game** where players take on the role of a God, manipulating the needs and properties of objects to shape relationships, life goals, and entire ecosystems based on Maslow's pyramid of needs.",
+        "I worked solo on this project that was originally conceived as *Thoughts*, but was completely overhauled to adopt a **data architecture inspired by Wikidata**, enhancing its complexity and depth."
+      ],
+      "skills": ["Game Design", "Frontend", "Unity", "C#", "Architecture", "Project Management", "UI/UX", "Data Management"],
+      "links": [
+        {
+          "url": "https://github.com/guplem/Mindflow",
+          "type": "github"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2022",
+      "title": "Paper Brawl — Tower Defense",
+      "description": [
+        "*Paper Brawl* is an experimental **tower defense game** that aimed to explore monetization strategies through rapid development. Created in just a week, it faced challenges typical of the genre, which usually demands extensive feature sets.",
+        "Despite the time limitations, I managed to program **random world generation**, AI pathfinding, various mechanics, distinct enemies and buildings, ... ultimately releasing the game for free."
+      ],
+      "image": "resources/images/projects/paperBrawl.png",
+      "imageStretched": true,
+      "imageAlt": "Paper Brawl game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Rapid Development", "Team Collaboration", "Frontend", "Project Management", "UI/UX", "Architecture", "Team Leadership"],
+      "links": [
+        {
+          "url": "https://guplem.itch.io/paper-brawl",
+          "type": "link"
+        },
+        {
+          "url": "https://youtu.be/jkAbDXtORdw",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/1KfrNrIKYIeNlmH4Ac0eRdmC4Bg3qqUtB?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/TS23-TowerDefense",
+          "type": "github"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2022",
+      "title": "Ohia",
+      "description": [
+        "*Ohia* is a strategic **puzzle game** that won us the top prize at a 48-hour Game Jam. Players must guide characters with unique abilities toward objectives, using their skills wisely to navigate through levels.",
+        "In this project, we identified straightforward yet effective mechanics that I was able to refine extensively, resulting in a highly polished final product."
+      ],
+      "image": "resources/images/projects/ohia.gif",
+      "imageStretched": true,
+      "imageAlt": "Ohia game characters showcase",
+      "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "Frontend", "Rapid Development", "Project Management", "UI/UX", "Architecture"],
+      "links": [
+        {
+          "url": "https://ryuggha.itch.io/ohia",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2020",
+      "title": "Thicc Wet Paper Layers",
+      "description": [
+        "*Thicc Wet Paper Layers* is a **multiplayer game** developed as a university project, which evolved from a local coop concept to an online format due to the COVID-19 pandemic. It has mechanics that later on would be part of the hit *Fall Guys* in a paper world.",
+        "The project was a huge learning experience, specially with those aspects related to programming a real-time multiplayer with **physics simulations**."
+      ],
+      "image": "resources/images/projects/thiccWetPaperLayers.png",
+      "imageStretched": true,
+      "imageAlt": "Thicc Wet Paper Layers game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "Real-Time Communication", "Team Collaboration", "Frontend", "Backend", "Project Management", "Architecture"],
+      "links": [
+        {
+          "url": "https://guplem.itch.io/thicc-wet-paper-layers",
+          "type": "link"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=lAs0TmwhgQI",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/10K7L3CIGjRFWpKh-dsr2O3iRbN3LmISl?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/ALLiOLI",
+          "type": "github"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2020",
+      "title": "Slavery Narrative",
+      "description": [
+        "*Slavery Narrative* is a thought-provoking **prototype** aimed at fostering empathy by immersing players in the life of an African slave in 19th century America. The game utilizes **procedural narratives** that evolve based on player decisions and environmental status.",
+        "Inspired by games like *Reigns* and *Spent*, I focused on programming an algorithm capable of dynamically generating meaningful **storytelling** that resonates deeply with players."
+      ],
+      "image": "resources/images/projects/slaveryNarrative.png",
+      "imageStretched": true,
+      "imageAlt": "Slavery Narrative game title",
+      "skills": ["Game Design", "Unity", "C#", "Procedural", "Frontend", "Team Collaboration", "Project Management", "Architecture"],
+      "links": [
+        {
+          "url": "https://drive.google.com/file/d/1TYYzk7LCb6NH6egMW8BQ5lIJFOsF6-X9/view?usp=sharing",
+          "type": "link"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/1vS3OgFzkZW5EMHi92gqWeMbL9uv3SUCs?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/Destokado/Negro",
+          "type": "github"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2019",
+      "title": "Musikote",
+      "description": [
+        "*Musikote* is an **audio-centric game** developed as part of a sound design course. The players move around in a dark environment, relying solely on sound to complete various tasks.",
+        "This approach showcases the importance of audio and how many little elements are needed to create gameplay mechanics."
+      ],
+      "image": "resources/images/projects/musikote.png",
+      "imageStretched": true,
+      "imageAlt": "Musikote game screenshot",
+      "skills": ["Game Design", "Unity", "C#", "UI/UX", "Rapid Development", "Frontend", "Team Collaboration", "Architecture"],
+      "links": [
+        {
+          "url": "https://drive.google.com/drive/folders/1CQs1KlaVyY4JwgAKeotshU89nOmxXNP9?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://youtu.be/wD7JrdHFuSg",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/1Hem6b6BXF7HEXUcIz4lMdBOATSNFO-dA?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/Musikote",
+          "type": "github"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2019",
+      "title": "Bunker Bound",
+      "description": [
+        "*Bunker Bound* is a **stealth-focused platformer game** that gained significant attention, particularly in the Asian community. My role as a programmer involved close collaboration with artists, resulting in a visually stunning final product.",
+        "This project taught me valuable lessons in teamwork and communication between programmers and artists, which enhanced the overall development process and final quality of the game."
+      ],
+      "image": "resources/images/projects/bunkerBound.gif",
+      "imageStretched": true,
+      "imageAlt": "Bunker Bound gameplay",
+      "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "UI/UX", "Project Management", "Frontend", "Architecture"],
+      "links": [
+        {
+          "url": "https://guplem.itch.io/bunker-bound",
+          "type": "link"
+        },
+        {
+          "url": "https://youtu.be/hfJHpJCV1OY",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/1L7d01zTdVVtxA4LBoft6KMghq_JzBz0M?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/BunkerBound-Projecte2",
+          "type": "github"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2018",
+      "title": "MathVille — Innovamat",
+      "description": [
+        "*MathVille* is an **educational game platform** designed to transform math education through engaging gameplay that aligns with learning objectives.",
+        "In this project, I was responsible for programming interactive activities that enable players to practice mathematical skills in a fun environment, utilizing **gamification techniques** to enhance learning."
+      ],
+      "skills": ["Game Design", "Unity", "C#", "Frontend", "Team Collaboration", "Architecture", "API Integration"],
+      "image": "resources/images/projects/mathVille.png",
+      "imageStretched": true,
+      "imageAlt": "MathVille game screenshot",
+      "links": [
+        {
+          "url": "https://www.innovamat.com/",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2018",
+      "title": "Rasta Run 2 (GDD)",
+      "description": [
+        "*Rasta Run 2* is a **Game Design Document**, aimed at refining gameplay mechanics based on feedback from industry professionals.",
+        "I documented various gameplay elements and design ideas, focusing on creating a **robust GDD** that ultimately improved my understanding of game development."
+      ],
+      "skills": ["Game Design", "Documentation", "Research And Analysis", "Project Management", "UI/UX", "Procedural"],
+      "links": [
+        {
+          "url": "https://docs.google.com/document/d/0B4PKPCjlCHb5NGF1QlQ4NkxyeGc/edit?usp=sharing&ouid=111731709650848839539&resourcekey=0-GW_HBWgkBs9NztsLCkyOZw&rtpof=true&sd=true",
+          "type": "link"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/0B4PKPCjlCHb5b1RJVmVMSklLMTA?resourcekey=0-eF0ofQRECnagKVWldUAZxQ&usp=sharing",
+          "type": "folder"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2017",
+      "title": "Ball Evolution",
+      "description": [
+        "*Ball Evolution* is an **attention-retention game** that explores psychological effects related to addiction, developed in under 48 hours.",
+        "The focus was on **intuitive gameplay mechanics**, minimizing the need for tutorials, and surprisingly, it garnered a dedicated player base who engaged for many long sessions."
+      ],
+      "skills": ["Game Design", "Rapid Development", "UI/UX", "Unity", "C#", "Frontend", "Team Collaboration", "Project Management", "Architecture", "User Engagement"],
+      "image": "resources/images/projects/ballEvolution.png",
+      "imageStretched": true,
+      "imageAlt": "Ball Evolution game screenshot",
+      "links": [
+        {
+          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.TS09",
+          "type": "link"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/0B4PKPCjlCHb5dXhfMmwyTkZHc28?resourcekey=0-W5qJyhAf3SlS1cBah6DnTA&usp=sharing",
+          "type": "folder"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2016",
+      "title": "WoloBall",
+      "description": [
+        "*WoloBall* is my first finished Unity game, where **players must survive against waves of obstacles** while collecting power-ups that alter gameplay dynamics.",
+        "This project allowed me to apply the skills I gained from previous projects and solidified my **understanding of the game engine** and integration of external tools such as Google Ads."
+      ],
+      "skills": ["Unity", "Game Design", "API Integration", "UI/UX", "C#", "Project Management", "Frontend", "Architecture", "Procedural"],
+      "image": "resources/images/projects/woloBall.png",
+      "imageStretched": true,
+      "imageAlt": "WoloBall game screenshot",
+      "links": [
+        {
+          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.WoloBallFULL",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2016",
+      "title": "Rasta Run",
+      "description": [
+        "*Rasta Run* is my first finished game project, an **endless runner** featuring semi-procedural world generation and a marketing strategy that attracted many.",
+        "This project was instrumental in applying my programming knowledge and testing game mechanics, ultimately serving as part of my **final research project**."
+      ],
+      "skills": ["GameMaker Studio", "Procedural", "Marketing", "Frontend", "Game Design", "Project Management", "UI/UX"],
+      "image": "resources/images/projects/rastaRun.gif",
+      "imageStretched": false,
+      "imageAlt": "Rasta Run main character",
+      "links": [
+        {
+          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.Rasta_Run",
+          "type": "link"
+        },
+        {
+          "url": "https://youtu.be/vkN92-qRcqg",
+          "type": "play"
+        },
+        {
+          "url": "https://drive.google.com/drive/folders/16QTr8QLBQwAnxtyQy3NLS8A_hYNkhmdq?usp=sharing",
+          "type": "folder"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2015",
+      "title": "Nix",
+      "description": [
+        "*Nix* is my first significant programming project, featuring a **metroidvania style game** where players must overcome various challenges playing as a knight in a platformer world.",
+        "This project helped me learn and internalize core programming principles and set the stage for my later works."
+      ],
+      "skills": ["GameMaker Studio", "Game Design", "Frontend", "Project Management", "UI/UX", "Architecture"],
+      "image": "resources/images/projects/nix.gif",
+      "imageStretched": false,
+      "imageAlt": "Nix game screenshot",
+      "links": [
+        {
+          "url": "https://drive.google.com/drive/folders/1_PfnPxTW3r5Z4lSumvIwDVuxIqcm4eAf?usp=sharing",
+          "type": "folder"
+        },
+        {
+          "url": "https://github.com/guplem/Nix",
+          "type": "github"
+        }
+      ]
+    },
+
+    {
+      "types": ["Videogame", "Web"],
+      "date": "2024",
+      "title": "GPT-Role",
+      "description": [
+        "*GPT-Role* is an **AI-based narrative generation game** where players experience stories driven by an AI, with only truly impossible actions being restricted.",
+        "In this project, I was involved in **every aspect of development**, from prompt engineering to designing and implementing the system architecture. This included creating a dynamic system that determines the flow of the story by selecting distinct prompts based on the player's actions, as well as implementing core game loops to provide the player with a meaningful, immersive experience.",
+        "Players begin by defining their character and objective, and the AI adapts to their choices, narrating the unfolding story. Each session is unique, driven by the player's decisions and the system's dynamic responses."
+      ],
+      "image": "resources/images/projects/gptRole.jpeg",
+      "imageStretched": true,
+      "imageAlt": "GPT-Role game concept imagined by an AI",
+      "skills": ["Game Design", "Python", "AI Integration", "Frontend", "Streamlit", "Rapid Development", "Project Management", "Team Collaboration", "Architecture", "CI/CD"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://gpt-role.streamlit.app/"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/GPT-Role"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2022",
+      "title": "WikiPoll",
+      "description": [
+        "*WikiPoll* is a **web app** that allows users to rank articles from **Wikidata** based on their opinions. The app generates comparative polls from tens of thousands of entries, letting users rank topics such as people, cities, literary genres, and more.",
+        "As the sole developer, I integrated **Wikidata's API**, designed the front-end interface, and created dynamic ranking algorithms. This project served as my **final thesis** for my computer engineering degree.",
+        "The app empowers users to create rankings based on personal preferences, offering a unique data-driven interaction with Wikidata's vast repository."
+      ],
+      "skills": [
+        "Flutter/Dart",
+        "API Integration",
+        "Frontend",
+        "Backend",
+        "Data Management",
+        "Server Management",
+        "Data Visualization",
+        "Data Analysis",
+        "Architecture",
+        "Research And Analysis",
+        "CI/CD"
+      ],
+      "links": [
+        {
+          "url": "https://wikipoll.b4a.app/#/"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2019",
+      "title": "Portfolio v1",
+      "description": [
+        "*Portfolio v1* was a simple **personal website** that served as my digital portfolio. I developed this website to showcase my work and provide a way for people to connect with me online.",
+        "The site was designed for easy navigation and is optimized for mobile responsiveness, ensuring a seamless user experience.",
+        "This project also allowed me to refine my **web development** skills."
+      ],
+      "skills": ["UI/UX", "HTML/CSS", "JavaScript", "Architecture", "Frontend"],
+      "links": [
+        {
+          "url": "https://triunitystudios.com/"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2018",
+      "title": "4utumn",
+      "description": [
+        "*4utumn* is a **social network** I developed as part of a university project. The app allows users to communicate, post texts, follow others, and search for content.",
+        "I worked on the **front-end development**, including visual design, mobile responsiveness, ... The project utilized **Spring**, **Thymeleaf**, and **JavaScript** for dynamic content rendering, providing users with a fluid experience."
+      ],
+      "skills": ["JavaScript", "HTML/CSS", "SQL", "Spring", "Thymeleaf", "UI/UX", "Project Management", "Architecture", "API Integration", "Frontend", "Server Management"],
+      "links": [
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/4utumn"
+        },
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1nMqy5DgiauENFJeDq-RHd1bl46rWXzIO?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2011",
+      "title": "Astronomy",
+      "description": [
+        "*Astronomy* is one of the first websites I developed to share my **passion for space** with fellow enthusiasts. The site features a collection of astronomy-related content, including links to relevant websites and small interactive elements.",
+        "While the website was primarily built using templates, it served as my introduction to web development. Additionally, I created a Catalan version, which provided valuable experience in **localization**."
+      ],
+      "skills": ["HTML/CSS", "Data Management", "Localization", "Frontend"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://astronoms.es.tl/"
+        },
+        {
+          "type": "link",
+          "url": "https://astronomscat.es.tl/"
+        }
+      ]
+    },
+
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2014",
+      "title": "Game Mode: Super UltraHardcore",
+      "description": [
+        "*Super Ultra Hardcore* is a **Minecraft gameplay mod** that introduces an ultra-challenging survival mode. Players have only one life and face tougher enemies, with their scores tracked in a unique scoring system.",
+        "I designed the gameplay mechanics to increase difficulty and enhance player engagement, offering a more intense survival experience."
+      ],
+      "image": "resources/images/projects/suhm.gif",
+      "imageStretched": true,
+      "imageAlt": "Super Ultra Hardcore gameplay",
+      "skills": ["Modding", "Game Design", "Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/g_yjptZEbyA"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2013",
+      "title": "Fortress Warfare",
+      "description": [
+        "*Fortress Warfare* is a custom **Minecraft game** where players build fortresses to protect a special item while attempting to steal the enemy’s item.",
+        "I designed the multiplayer gameplay flow, time control, team management, and even in-game background music to create a more immersive and competitive experience, with team-based strategies being a key aspect."
+      ],
+      "image": "resources/images/projects/guerraDeFortines.gif",
+      "imageStretched": true,
+      "imageAlt": "Fortress Warfare gameplay",
+      "skills": ["Modding", "Game Design", "Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/wZCMXTiXtJc"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2013",
+      "title": "Battleship",
+      "description": [
+        "*Battleship* is a **recreation of the classic board game** within Minecraft. I developed it as a special project to celebrate my 100th YouTube video, leveraging Minecraft's features for a quick and fun implementation.",
+        "I translated the traditional gameplay into Minecraft’s mechanics and user interface, showcasing my ability to quickly create prototypes while adding a unique Minecraft twist to a familiar game."
+      ],
+      "image": "resources/images/projects/HundirLaFlota.jpg",
+      "imageStretched": true,
+      "imageAlt": "Battleship game screenshot",
+      "skills": ["Modding", "Game Design", "Rapid Development", "Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/j-Iw6I-329Q"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2013",
+      "title": "The Building Game (Contribution)",
+      "description": [
+        "*The Building Game* is a **Minecraft multiplayer game** where players build structures based on prompts. I created a Spanish localization of the game and adapted it to be playable by 4 players or fewer.",
+        "I had to understand how the game was created to localize and modify it, showcasing my ability to reverse engineer and adapt existing projects."
+      ],
+      "image": "resources/images/projects/theBuildingGame.jpg",
+      "imageStretched": true,
+      "imageAlt": "The Building Game modification",
+      "skills": ["Modding", "Game Design", "Localization", "Reverse Engineering"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/rgdT4w7Q5jA"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2013",
+      "title": "Zombie Survival 2",
+      "description": [
+        "*Zombie Survival 2* is an **updated version of my original zombie defense game** in Minecraft, featuring improved balancing, aesthetics, and gameplay refinements.",
+        "I worked on fine-tuning game mechanics and enhancing the visual elements to create a more immersive zombie survival experience, ending with pleasing, polished, and balanced gameplay."
+      ],
+      "image": "resources/images/projects/zombieSurvival2.jpg",
+      "imageStretched": true,
+      "imageAlt": "Zombie Survival 2 gameplay",
+      "skills": ["Modding", "Game Design", "Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/PdrY4Uvafeo"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2013",
+      "title": "The Rooms",
+      "description": [
+        "*The Rooms* is a **collaborative Minecraft map** where players face challenges in different rooms. It was one of my first joint projects with other content creators.",
+        "We developed the map, focusing on creating challenging, engaging, and cooperative gameplay mechanics, while trying to avoid discrepancies between the different sections developed by each member."
+      ],
+      "image": "resources/images/projects/theRooms.gif",
+      "imageStretched": true,
+      "imageAlt": "The Rooms Minecraft map",
+      "skills": ["Modding", "Team Collaboration", "Game Design"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/xN4IEYy9JII"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2013",
+      "title": "Zombie Survival",
+      "description": [
+        "*Zombie Survival* is a **Minecraft defense game** inspired by *Call of Duty's Zombies* mode, where players defend against waves of zombies.",
+        "I focused on the core mechanics around wave-based combat and defense strategies while ensuring a challenging yet enjoyable experience for players, while also creating a visually appealing environment."
+      ],
+      "image": "resources/images/projects/zombieSurvival.gif",
+      "imageStretched": true,
+      "imageAlt": "Zombie Survival gameplay",
+      "skills": ["Modding", "Game Design", "Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/chfp5sMP97o"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2013",
+      "title": "Defend Your Base 2",
+      "description": [
+        "*Defend Your Base 2* is the sequel to **Defend Your Base**, introducing a new space-themed map and gameplay refinements based on user feedback.",
+        "I developed new mechanics, map design, and organized a small in-game tournament to test the new features with the community."
+      ],
+      "image": "resources/images/projects/defendYourBase2.gif",
+      "imageStretched": true,
+      "imageAlt": "Defend Your Base 2 gameplay",
+      "skills": ["Modding", "Game Design", "Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/tx8Pq1m49Vk"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2013",
+      "title": "Run to Win",
+      "description": [
+        "*Run to Win* is a **Minecraft racing game** where players face various obstacles along a racetrack.",
+        "I implemented the racing mechanics, game flow and track challenges, creating a fun, competitive experience for players."
+      ],
+      "image": "resources/images/projects/runToWin.gif",
+      "imageStretched": true,
+      "imageAlt": "Run to Win gameplay",
+      "skills": ["Modding", "Game Design", "Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/SgNT9Fj8BC8"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft", "Videogame"],
+      "date": "2013",
+      "title": "Defend Your Base",
+      "description": [
+        "*Defend Your Base* is **the first game I created**, where two teams defend their base while attempting to destroy the enemy’s base.",
+        "I developed the core gameplay mechanics, game flow, map design, and balance, focusing on creating a fun and engaging experience for players.",
+        "The game was well-received and marked my entry into Minecraft game development."
+      ],
+      "image": "resources/images/projects/defendYourBase.png",
+      "imageStretched": true,
+      "imageAlt": "Defend Your Base gameplay",
+      "skills": ["Modding", "Game Design", "Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/tu5j3JDH0xg"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft"],
+      "date": "2013",
+      "title": "Redstone Clock",
+      "description": [
+        "*Redstone Clock* is a **digital clock built with Minecraft redstone mechanics**. The project was initially created in survival mode before being reconstructed in creative mode.",
+        "I built this clock as a fun challenge to showcase Minecraft’s logic gates and redstone mechanics.",
+        "This project demonstrated my ability to create functional contraptions and also laid the groundwork for my future Minecraft projects."
+      ],
+      "image": "resources/images/projects/redstoneClock.gif",
+      "imageStretched": true,
+      "imageAlt": "Redstone Clock in Minecraft",
+      "skills": ["Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/IStbIAZnC3Q"
+        }
+      ]
+    },
+    {
+      "types": ["Minecraft"],
+      "date": "2013",
+      "title": "Redstone Calculator",
+      "description": [
+        "*Redstone Calculator* is a **simple calculator built using Minecraft’s redstone mechanics**. It performs basic arithmetic using redstone logic gates.",
+        "I built this as my first big redstone project, exploring Minecraft’s potential as a tool for logic-based creations, and managed to win a tournament with it.",
+        "This project marked the beginning of my redstone creations and helped me understand the complex mechanics of Minecraft's circuitry."
+      ],
+      "image": "resources/images/projects/redstoneCalculator.gif",
+      "imageStretched": true,
+      "imageAlt": "Redstone Calculator in Minecraft",
+      "skills": ["Project Management"],
+      "links": [
+        {
+          "type": "play",
+          "url": "https://youtu.be/YjzGHh6gt3o"
+        }
+      ]
+    },
+
+    {
+      "types": ["Videogame", "Misceallaneous"],
+      "date": "2021",
+      "title": "KSP Usability Improvements",
+      "description": [
+        "*KSP Usability Improvements* is a **document** outlining suggested improvements to the user experience of the popular game *Kerbal Space Program*.",
+        "After spending significant time playing the game, I identified key areas where usability could be enhanced. I compiled these insights into a structured document, which aimed to help both the developers and users enjoy a more intuitive experience. My suggestions focused on improving user interface navigation, controls, and accessibility, addressing issues that many players found cumbersome in the original version."
+      ],
+      "image": "resources/images/projects/ksp.jpg",
+      "imageStretched": true,
+      "imageAlt": "KSP Marketing Image",
+      "skills": ["UI/UX", "Research And Analysis", "Documentation"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://docs.google.com/document/d/1jo3glkTPwuGQgFaQ5MfYX3jUL1xiy7jXKOSVIAvvUqk/edit?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2021",
+      "title": "P&G Process Digitization",
+      "description": [
+        "The product I worked on is an **internal web application** created to streamline factory data collection processes previously handled manually.",
+        "While working for **P&G Belgium**, I was tasked with updating and digitizing their data collection processes. This included building an intuitive web app using **ThingWorx**, focusing on usability and responsiveness to ensure the factory's daily and shift reports could be easily accessed in real-time.",
+        "The app played a key role in improving workflow efficiency and ensuring accurate reporting."
+      ],
+      "skills": ["ThingWorx", "Data Visualization", "Data Management", "Team Collaboration", "Architecture", "Frontend", "Backend", "SQL", "NoSQL"]
+    },
+    {
+      "types": ["Videogame", "Misceallaneous"],
+      "date": "2020",
+      "title": "Essentials Asset",
+      "description": [
+        "*Essentials* is a **Unity asset** designed to reduce the workload for developers by providing commonly used tools and features.",
+        "As part of my **university thesis**, I created this asset to streamline repetitive tasks across Unity projects.",
+        "I consider it an essential resource for Unity developers, offering solutions such as object pooling, in-game terminal, save/load data, manager for simple animations, dozens of extensions, and more."
+      ],
+      "image": "resources/images/projects/essentials.webp",
+      "imageStretched": true,
+      "imageAlt": "Essentials Asset screenshot",
+      "skills": ["Unity", "C#", "Architecture", "Research And Analysis"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://assetstore.unity.com/packages/tools/utilities/essentials-161141"
+        },
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1RzANOEKzxatXH5MQdElUI36-XoXyBzzy?usp=sharing"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/UnityEssentials"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame", "Misceallaneous"],
+      "date": "2020",
+      "title": "World Playground",
+      "description": [
+        "*World Playground* is a **procedural world generation** project focused on creating infinite voxel-based landscapes.",
+        "In this project, I set out to recreate a procedurally generated world with dynamic chunk loading, optimized mesh creation, and multiple biomes.",
+        "It helped me learn about the complexities of world generation, mesh generation, terrain optimization, and **multithreading** in game engines..."
+      ],
+      "image": "resources/images/projects/worldPlayground.gif",
+      "imageStretched": true,
+      "imageAlt": "World Playground procedural generation demo",
+      "skills": ["Unity", "C#", "Procedural", "Architecture", "Multithreading", "Frontend"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/1kh2MIU0SX1MpzWivFw9QgSUyBdfFwSmB?usp=sharing"
+        },
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/ProjectTS16-WorldPlayground"
+        }
+      ]
+    },
+    {
+      "types": ["Misceallaneous"],
+      "date": "2019",
+      "title": "Unity Documentation",
+      "description": [
+        "Unity Documentation is a structured guide I created to help developers follow best practices when using Unity.",
+        "Throughout my development career, I often found myself searching for Unity’s best practices. So, I decided to compile a comprehensive guide that blends my own insights with external resources. This guide is designed to help both new and experienced developers maintain efficient workflows and avoid common pitfalls.",
+        "The document is available online for free, and it is regularly consulted by developers in their game development journeys."
+      ],
+      "skills": ["Documentation", "Unity", "C#", "Research And Analysis"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://docs.google.com/document/d/1lQQctdAHYYky9-7DKE6PGhcB72Dc91xfO6J7vdHxMmU/edit?usp=sharing"
+        },
+        {
+          "type": "folder",
+          "url": "https://drive.google.com/drive/folders/18qJXKlyGcxKAjCU1jZdQRBfCS5IMeUe9?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Misceallaneous"],
+      "date": "2019",
+      "title": "Genetic Evolution Simulation",
+      "description": [
+        "*Genetic Evolution Simulation* is a Unity-based **simulation that models the evolution** of virtual species through random mutations.",
+        "In this project, I created a simulation where species evolve over time within a confined space. The organisms undergo random mutations and compete for limited resources, resulting in a dynamic ecosystem where only the fittest species survive.",
+        "*The ecosystem would typically collapse due to overconsumption of resources once a species becomes too prolific.*"
+      ],
+      "skills": ["Unity", "C#", "Genetic Algorithms", "AI Integration", "Rapid Development", "Frontend"],
+      "links": [
+        {
+          "type": "folder",
+          "url": "https://github.com/guplem/ProjectTS17-GeneticEvolution"
+        }
+      ]
+    },
+    {
+      "types": ["Videogame", "Misceallaneous"],
+      "date": "2018",
+      "title": "Tips and Tricks for Game Design",
+      "description": [
+        "*Tips and Tricks for Game Design* is a *guidebook* of advice compiled from my personal experience and academic background.",
+        "This project, although abandoned, was intended to provide a structured collection of tips for anyone looking to design engaging video games. Drawing from university coursework and personal practice, it covered everything from mechanics to user engagement strategies."
+      ],
+      "skills": ["Game Design", "Documentation", "Research And Analysis"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://docs.google.com/document/d/1fUtvopLrGSoHb14Pt6UKFmeysY-_v-YkvUovPJOs5GI/edit?usp=sharing"
+        }
+      ]
+    },
+    {
+      "types": ["Misceallaneous"],
+      "date": "2018",
+      "title": "Computer Classrooms in Ghana",
+      "description": [
+        "A **voluntary project** where I helped bring computers and set up classrooms in Ghanaian schools.",
+        "I refurbished and collected second-hand laptops, aiming to provide students in Ghana with direct access to computers."
+      ],
+      "image": "resources/images/projects/ghanaComputers.jpg",
+      "imageStretched": true,
+      "imageAlt": "Promotional image for the project to bring Computers to Ghana's schools",
+      "skills": ["NGO Collaboration", "Computer Refurbishing", "Logistics", "Team Collaboration", "Project Management", "Team Leadership"]
+    },
+    {
+      "types": ["Videogame"],
+      "date": "2016",
+      "title": "Dungeon Assault",
+      "description": [
+        "*Dungeon Assault* is a **procedural dungeon** map generator for improvisational board games.",
+        "The tool was created to facilitate the generation of unique dungeon maps, allowing players to create their own game rules and map layouts. Designed for ease of use, it supports flexible token-based gameplay, discovery mechanics, and the ability to randomize dungeon features."
+      ],
+      "image": "resources/images/projects/dungeonAssault.gif",
+      "imageStretched": true,
+      "imageAlt": "Dungeon Assault procedural generation demo",
+      "skills": ["Unity", "C#", "Procedural", "Rapid Development", "Game Design", "Architecture", "Frontend"],
+      "links": [
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/DungeonAssault"
+        }
+      ]
+    },
+    {
+      "types": ["Misceallaneous"],
+      "date": "2016",
+      "title": "Photoshoots",
+      "description": [
+        "I participated in many **hotel photoshoots** for renowned clients such as [*ABaC*](https://abacbarcelona.com/es/) and [*Axel Hotels*](https://www.axelhotels.com/en/axel-beach-ibiza/hotel) under the guidance of [*Markopa*](https://www.markopa.com/).",
+        "As a **photography assistant and editor**, I played a key role in setting up environments, assisting Marco Pastori, the photographer, and editing photos to enhance the final results.",
+        "The outcome was a **professional portfolio** that helped promote the aesthetic **appeal of luxury hotels through high-quality visual content**."
+      ],
+      "image": "resources/images/projects/markopa.jpg",
+      "imageStretched": true,
+      "imageAlt": "Photoshoots for Markopa",
+      "skills": ["Photography", "Photo Editing", "Team Collaboration"],
+      "links": [
+        {
+          "url": "https://www.markopa.com/abac"
+        },
+        {
+          "url": "https://www.markopa.com/axel-madrid-hotel"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+/* Used for debugging */
+/* div {
+  border: 1px solid black;
+} */
+
+/* Used for debugging */
+/* img {
+  border: 1px solid green;
+} */
+
+html {
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  scroll-behavior: smooth;
+  overflow-x: hidden; /* Disable horizontal scroll bar */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--background-dark);
+  font-family: "Roboto", sans-serif;
+  height: 100%;
+  margin: 0;
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1 {
+  font-size: 2em;
+  text-align: center;
+  color: var(--title-color);
+}
+
+h2 {
+  font-size: 1.7em;
+  text-align: center;
+  color: var(--title-color);
+}
+
+h3 {
+  font-size: 1.5em;
+
+  padding-left: 25px;
+  padding-right: 25px;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  text-align: left;
+  color: var(--primary-accent-color);
+}
+
+h4 {
+  font-size: 1.25em;
+
+  padding-left: 25px;
+  padding-right: 25px;
+
+  margin-top: 20px;
+  margin-bottom: 0px;
+
+  text-align: left;
+  color: var(--primary-accent-color);
+}
+
+p {
+  padding-left: 25px;
+  padding-right: 25px;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  text-align: justify;
+  color: var(--text-color);
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+
+  color: var(--secondary-accent-color);
+
+  transition-duration: 200ms; /*Duration of fading*/
+  transition-timing-function: ease-in;
+}
+a:hover {
+  color: var(--primary-accent-color);
+
+  transition-duration: 200ms; /*Duration of fading*/
+  transition-timing-function: ease-out;
+}
+/* If the link has an image, all the children of the link will have a "floating" animation */
+/* -- Default state */
+a:has(img) > * {
+  transition: transform 0.3s ease;
+}
+/* -- Hover state */
+a:hover:has(img) > * {
+  transform: translateY(-5px);
+}

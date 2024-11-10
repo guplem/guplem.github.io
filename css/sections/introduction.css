@@ -1,0 +1,95 @@
+/* Div iwth id introduction must have the same size as the screen */
+#introduction {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+
+  height: 100%;
+  width: 100%; /* So the scroll bar is taken into account https://stackoverflow.com/a/23367686/7927429 */
+}
+
+#introduction canvas {
+  width: 100%;
+  height: 100%;
+  display: block; /* removes the inline element's whitespace */
+  position: absolute; /* position canvas absolutely within the container */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -10; /* places the canvas behind siblings */
+  /* background-image: "https://placehold.co/1000x1000"; */
+  /* background-color: sandybrown; */
+}
+
+#introduction p,
+#introduction h1 {
+  animation: 1.5s ease 0s 1 SlideFromTop;
+  text-align: center;
+  vertical-align: middle;
+  padding: 5%;
+  font-weight: 100;
+}
+
+@keyframes SlideFromTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+#introduction b,
+#introduction strong {
+  color: var(--primary-accent-color);
+}
+
+#arrowPointingDown {
+  position: absolute;
+  left: 50%;
+  z-index: 1; /* Ensure arrow is on top */
+  opacity: 0; /* The animation will then make it appear */
+  bottom: 5%; /* The animation will move it around */
+  /* 
+    Applies two animations to the element:
+    1. SlideFromTop: animates for 1s with ease-out, starting after a 1.5s delay, and retains the final state (forwards).
+    2. upDown: animates infinitely, lasts 4s, starting 2.5s after the element is rendered (1st delay of 1s + duration of 1st: 1.5s => delay of second animation: 2.5s).
+  */
+  animation: SlideFromTop 1s ease-out 1.5s forwards, upDown 4s infinite 2.5s;
+}
+
+#arrowPointingDown::before {
+  content: "";
+  position: absolute;
+  width: 40px; /* Size of the circle */
+  height: 40px; /* Size of the circle */
+  background-color: var(--forth-accent-color); /* Circle background color */
+  border-radius: 50%; /* Make it a circle */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%) scale(0); /* Scale down to hide */
+  transition: transform 0.3s ease; /* Smooth transition */
+  z-index: -1; /* Behind the arrow */
+}
+
+#arrowPointingDown:hover::before {
+  transform: translate(-50%, -50%) scale(1); /* Scale to show on hover */
+}
+
+@keyframes upDown {
+  0% {
+    bottom: 5%;
+  }
+  50% {
+    bottom: 8%;
+  }
+  100% {
+    bottom: 5%;
+  }
+}

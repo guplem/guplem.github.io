@@ -1,0 +1,117 @@
+/** GENERAL **/
+
+#myWorkTypes,
+#myWorkSkills {
+  padding-left: 3%;
+  padding-right: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#myWorkFilters button {
+  margin: 3px;
+  border: none;
+  cursor: pointer;
+  /*Transition to states*/
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+
+#myWorkSkills button:hover:not([selected]),
+#myWorkTypes button:hover:not([selected]) {
+  background-color: var(--forth-accent-color);
+  color: var(--text-color);
+  border: 1px solid transparent;
+}
+
+/** WORK TYPES **/
+
+#myWorkTypes button {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  border: 1px solid transparent;
+}
+
+#myWorkTypes button:not([selected]) {
+  background-color: var(--background-clear);
+  border: 1px solid var(--background-dark);
+}
+
+#myWorkTypes button[selected] {
+  background-color: var(--background-dark);
+}
+
+/** WORK SKILLS **/
+
+#myWorkSkills button {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 15px;
+  border: 1px solid transparent;
+}
+
+#myWorkSkills button:not([selected]):not(#collapseButton) {
+  background-color: var(--background-vivid);
+}
+
+#myWorkSkills button[selected] {
+  background-color: var(--background-dark);
+}
+
+/** -- Skills Collapsed -- **/
+#myWorkSkills[collapsed="true"] {
+  /* The skills section */
+  max-height: 120px; /* This is the collapsed height */
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 5px;
+  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+#myWorkSkills[collapsed="true"]::before {
+  /* The overlay */
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to top, var(--background-clear) 20%, transparent);
+  pointer-events: none; /* Ensures the overlay doesn't interfere with any interactions */
+  transition: height 0.5s ease-in-out, background 0.5s ease-in-out;
+}
+
+/* -- Skills Expanded -- */
+#myWorkSkills[collapsed="false"] {
+  /* The skills section */
+  max-height: 1000px; /* Arbitrary large value, just need a very big value */
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+#myWorkSkills[collapsed="false"]::before {
+  /* The overlay */
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  background: transparent;
+  pointer-events: none;
+  transition: height 0.5s ease-in-out, background 0.5s ease-in-out;
+}
+
+/* -- Collapse Button -- */
+#myWorkSkills #collapseButton {
+  position: absolute; /* This will change to relative when expanded */
+  bottom: 0;
+  background-color: var(--background-clear);
+  border: 1px solid var(--background-dark);
+}
