@@ -16,7 +16,7 @@ fillWithData("aboutMeTitle", "../data/info.json", "aboutMeTitle", new Map([["p",
 fillWithData("aboutMeImage", "../data/info.json", "aboutMeImage", new Map(), false, "src");
 fillWithData("aboutMeContents", "../data/info.json", "aboutMe");
 // - My work
-fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType, "myWork", true);
+fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType, "myWork", false);
 fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill, "myWork", true);
 enableCollapsibleSections("myWorkSkills");
 fillWithData("myWorkTitle", "../data/myWork.json", "title", new Map([["p", "h1"]]));
@@ -68,8 +68,10 @@ async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitute = ne
  * @param {string} dataKeyInGroup
  * @param {(arg0: string, arg1: string, arg2: HTMLButtonElement) => void} onClick
  * @param {string} onClickNavigateTo
+ * @param {boolean} sort
+ * @param {boolean} showCount
  */
-async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick, onClickNavigateTo, showCount = false) {
+async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKeyInGroup, onClick, onClickNavigateTo, sort, showCount = false) {
   try {
     // Find the target element
     const element = document.getElementById(elementId);
@@ -106,8 +108,14 @@ async function fillWithGroupedButtons(elementId, dataUrl, dataKeyToGroup, dataKe
 
     // Sort the entries by count in allEntriesCount
     const sortedEntries = new Map();
-    for (const [entryId, entryCount] of [...allEntriesCount].sort((a, b) => b[1] - a[1])) {
-      sortedEntries.set(entryId, allEntries.get(entryId) + (showCount ? ` (${entryCount})` : ""));
+    if (!sort) {
+      for (const [entryId, entryValue] of allEntries) {
+        sortedEntries.set(entryId, allEntries.get(entryId) + (showCount ? ` (${allEntriesCount.get(entryId)})` : ""));
+      }
+    } else {
+      for (const [entryId, entryCount] of [...allEntriesCount].sort((a, b) => b[1] - a[1])) {
+        sortedEntries.set(entryId, allEntries.get(entryId) + (showCount ? ` (${entryCount})` : ""));
+      }
     }
 
     // Create a document fragment
