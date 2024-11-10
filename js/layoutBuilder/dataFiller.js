@@ -246,6 +246,18 @@ export async function displayFilteredWorks() {
       workElement.appendChild(titleElement);
       await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h3"]]));
 
+      // Make the title a link to the first link
+      if (work.links?.length) {
+        titleElement.onclick = () => {
+          const firstLink = work.links[0];
+          if (firstLink.url) {
+            window.open(firstLink.url, "_blank");
+          }
+        };
+        // Cursor style
+        titleElement.classList.add("workTitleLink");
+      }
+
       workElement.id = `work_${textUtils.idFromText(work.title)}`;
     }
 

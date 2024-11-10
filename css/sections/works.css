@@ -41,6 +41,16 @@
   margin-top: 18px;
 }
 
+.work .workTitle.workTitleLink {
+  transition: scale 0.3s ease /*, filter 0.3s ease*/;
+}
+
+.work .workTitle.workTitleLink:hover {
+  scale: 1.02;
+  /* filter: drop-shadow(3px 3px 3px var(--secondary-accent-color)); */
+  cursor: pointer;
+}
+
 /** All contents (inside the different divs) of a single work */
 .work div > * {
   padding-left: 0px;
