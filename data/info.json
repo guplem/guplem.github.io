@@ -20,20 +20,6 @@
         "#### Why?\nIn some projects, I receive help related to topics that I do not master. That's why I see those projects as collaborative work.\n\nFor this reason, I keep using this name. A name that, for me, represents all the people who helped me on the development of every project.",
         "#### From where did it came from?\nSome years before starting my university degree, I went with some friends to visit a university. At that moment, all of us seemed to want to study video game's development there.\n\nTo get into the world and get ready for that degree, we wanted to do a project together but first, we wanted \"a cool name\" for the group. We were three, so we came up with Triunity Studios.\n\nAt the end, I'm the only one who studied video game's development and that project was never finished. However, the name thrived."
       ]
-    },
-    {
-      "title": "Dummy Title",
-      "image": "resources/images/miscellany/Guillem-Poy.png",
-      "imageAlt": "Triunity Studios Logo",
-      "content": [
-        "#### What is it?\nTriunity Studios is the name I use to sign most of my projects.",
-        "#### Why?\nIn some projects, I receive help related to topics that I do not master. That's why I see those projects as collaborative work.\n\nFor this reason, I keep using this name. A name that, for me, represents all the people who helped me on the development of every project."
-      ]
-    },
-    {
-      "title": "Short One But With A Bit Long Title",
-      "imageAlt": "Mistake of having alt image should be handled okay",
-      "content": ["This just has some text.\nTriunity Studios is the name I use to sign most of my projects."]
     }
   ],
   "contactTitle": "Contact",
@@ -47,7 +33,8 @@
     {
       "name": "LinkedIn",
       "link": "https://www.linkedin.com/in/guplem",
-      "text": "Guillem Poy"
+      "text": "Guillem Poy",
+      "icon": "resources/images/icons/linkedin.png"
     },
     {
       "name": "GitHub",
@@ -56,40 +43,10 @@
       "icon": "resources/images/icons/github.png"
     },
     {
-      "name": "Twitter",
+      "name": "X",
       "link": "https://twitter.com/guplem",
       "text": "@guplem",
-      "icon": "resources/images/icons/twitter.png"
-    },
-    {
-      "name": "GitHub",
-      "link": "https://github.com/guplem",
-      "text": "guplem",
-      "icon": "resources/images/icons/github.png"
-    },
-    {
-      "name": "GitHub",
-      "link": "https://github.com/guplem",
-      "text": "guplem",
-      "icon": "resources/images/icons/github.png"
-    },
-    {
-      "name": "GitHub",
-      "link": "https://github.com/guplem",
-      "text": "guplem",
-      "icon": "resources/images/icons/github.png"
-    },
-    {
-      "name": "GitHub",
-      "link": "https://github.com/guplem",
-      "text": "guplem",
-      "icon": "resources/images/icons/github.png"
-    },
-    {
-      "name": "GitHub",
-      "link": "https://github.com/guplem",
-      "text": "guplem",
-      "icon": "resources/images/icons/github.png"
+      "icon": "resources/images/icons/x.png"
     }
   ]
 }
