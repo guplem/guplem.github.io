@@ -942,7 +942,7 @@
         "*KSP Usability Improvements* is a **document** outlining suggested improvements to the user experience of the popular game *Kerbal Space Program*.",
         "After spending significant time playing the game, I identified key areas where usability could be enhanced. I compiled these insights into a structured document, which aimed to help both the developers and users enjoy a more intuitive experience. My suggestions focused on improving user interface navigation, controls, and accessibility, addressing issues that many players found cumbersome in the original version."
       ],
-      "image": "resources/images/projects/ksp.png",
+      "image": "resources/images/projects/ksp.jpg",
       "imageAlt": "KSP Marketing Image",
       "skills": ["UI/UX", "Research And Analysis", "Documentation"],
       "links": [
@@ -972,7 +972,7 @@
         "As part of my **university thesis**, I created this asset to streamline repetitive tasks across Unity projects.",
         "I consider it an essential resource for Unity developers, offering solutions such as object pooling, in-game terminal, save/load data, manager for simple animations, dozens of extensions, and more."
       ],
-      "image": "resources/images/projects/essentials.png",
+      "image": "resources/images/projects/essentials.webp",
       "imageAlt": "Essentials Asset screenshot",
       "skills": ["Unity", "C#", "Architecture", "Research And Analysis"],
       "links": [
