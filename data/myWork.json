@@ -28,6 +28,7 @@
         "Key features included **real-time** chat, an endlessly scrollable feed, location tracking, and push notifications, all designed to create a rich user experience. Moreover, by implementing **CI/CD technologies**, I optimized our development workflows, boosting team efficiency significantly."
       ],
       "image": "resources/images/projects/bondy.png",
+      "imageStretched": true,
       "imageAlt": "Bondy app mockup",
       "skills": [
         "Architecture",
@@ -75,8 +76,8 @@
         "As the front-end developer, I focused on crafting the user interface, managing API integrations, and seamlessly presenting AI outputs. Our team **delivered this project in under 48 hours**, showcasing our ability to collaborate effectively and innovate rapidly."
       ],
       "image": "resources/images/projects/dishForge.gif",
-      "imageAlt": "DishForge demo",
       "imageStretched": false,
+      "imageAlt": "DishForge demo",
       "skills": ["Flutter/Dart", "AI Integration", "API Integration", "UI/UX", "Frontend", "Rapid Development", "Team Collaboration", "Project Management", "Architecture"],
       "links": [
         {
@@ -94,6 +95,7 @@
         "The app features **real-time synchronization** and **prioritization algorithms** developed following TDD, boasting robust and  dynamic scheduling capabilities, empowering users to focus on what matters most."
       ],
       "image": "resources/images/projects/things.png",
+      "imageStretched": true,
       "imageAlt": "Things app mockup",
       "skills": [
         "Flutter/Dart",
@@ -127,6 +129,7 @@
         "Transitioning from a prototype to a full-fledged app, I oversaw a comprehensive app architecture refactor and led the development of an **M-Pesa Mini App** using a proprietary XML-based framework. Additionally, I implemented CI/CD technologies, managed server and database operations, and guided a team of developers."
       ],
       "image": "resources/images/projects/tunzaa.png",
+      "imageStretched": true,
       "imageAlt": "Tunzaa app mockup",
       "skills": [
         "Flutter/Dart",
@@ -164,6 +167,7 @@
         "I built this app integrating an automated form submission system that syncs responses directly with Google Forms. This approach significantly **simplified data management** for the [NGO](https://www.thebigfamily.app/), while enhancing user trust by providing a secure and user-friendly platform for the refugee community."
       ],
       "image": "resources/images/projects/theBigFamilyJobsApp.png",
+      "imageStretched": true,
       "imageAlt": "TheBigFamily Jobs App mockup",
       "skills": ["Flutter/Dart", "API Integration", "Frontend", "UI/UX", "Rapid Development", "NGO Collaboration", "Project Management", "Architecture", "User Engagement", "Localization"],
       "links": [
@@ -182,6 +186,7 @@
         "I handled the complete development lifecycle, focusing on UI/UX, frontend development, and backend integration through Back4App for **rapid deployment and scalability**. Key features included user search, real-time chat, and personalized plan recommendations, all designed to enhance user engagement while meeting all the requirements."
       ],
       "image": "resources/images/projects/kedo.png",
+      "imageStretched": true,
       "imageAlt": "Kedo app mockup",
       "skills": [
         "Flutter/Dart",
@@ -229,6 +234,7 @@
         "I was responsible for creating the mock-up of the application, crafting a user-friendly demo. "
       ],
       "image": "resources/images/projects/atenea.png",
+      "imageStretched": true,
       "imageAlt": "Atenea app mockup",
       "skills": ["UI/UX", "Team Collaboration", "Rapid Development", "Data Analysis", "AI Integration", "Team Leadership"],
       "links": [
@@ -247,6 +253,7 @@
         "I conducted extensive competitor analysis to identify and address shortcomings in other apps, which informed my approach to feature development and UI/UX design. The app was a success, evidential by the number of requests I received to publish it in various app stores."
       ],
       "image": "resources/images/projects/drinkAndPlay.png",
+      "imageStretched": true,
       "imageAlt": "Drink & Play app mockup",
       "skills": [
         "UI/UX",
@@ -280,8 +287,8 @@
         "Even tough my upgrades brought a modularity required to **scale and upgrade** the app, the update was not accepted, but my work laid the groundwork for future enhancements and improvements."
       ],
       "image": "resources/images/projects/drinkExtreme.png",
-      "imageAlt": "Drink Extreme app mockup",
       "imageStretched": false,
+      "imageAlt": "Drink Extreme app mockup",
       "skills": ["Unity", "C#", "Architecture", "Frontend", "Research And Analysis", "Modding", "User Engagement", "Localization"],
       "links": [
         {
@@ -326,6 +333,7 @@
         "Despite the time limitations, I managed to program **random world generation**, AI pathfinding, various mechanics, distinct enemies and buildings, ... ultimately releasing the game for free."
       ],
       "image": "resources/images/projects/paperBrawl.png",
+      "imageStretched": true,
       "imageAlt": "Paper Brawl game screenshot",
       "skills": ["Game Design", "Unity", "C#", "Rapid Development", "Team Collaboration", "Frontend", "Project Management", "UI/UX", "Architecture", "Team Leadership"],
       "links": [
@@ -356,6 +364,7 @@
         "In this project, we identified straightforward yet effective mechanics that I was able to refine extensively, resulting in a highly polished final product."
       ],
       "image": "resources/images/projects/ohia.gif",
+      "imageStretched": true,
       "imageAlt": "Ohia game characters showcase",
       "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "Frontend", "Rapid Development", "Project Management", "UI/UX", "Architecture"],
       "links": [
@@ -374,6 +383,7 @@
         "The project was a huge learning experience, specially with those aspects related to programming a real-time multiplayer with **physics simulations**."
       ],
       "image": "resources/images/projects/thiccWetPaperLayers.png",
+      "imageStretched": true,
       "imageAlt": "Thicc Wet Paper Layers game screenshot",
       "skills": ["Game Design", "Unity", "C#", "Real-Time Communication", "Team Collaboration", "Frontend", "Backend", "Project Management", "Architecture"],
       "links": [
@@ -404,6 +414,7 @@
         "Inspired by games like *Reigns* and *Spent*, I focused on programming an algorithm capable of dynamically generating meaningful **storytelling** that resonates deeply with players."
       ],
       "image": "resources/images/projects/slaveryNarrative.png",
+      "imageStretched": true,
       "imageAlt": "Slavery Narrative game title",
       "skills": ["Game Design", "Unity", "C#", "Procedural", "Frontend", "Team Collaboration", "Project Management", "Architecture"],
       "links": [
@@ -430,6 +441,7 @@
         "This approach showcases the importance of audio and how many little elements are needed to create gameplay mechanics."
       ],
       "image": "resources/images/projects/musikote.png",
+      "imageStretched": true,
       "imageAlt": "Musikote game screenshot",
       "skills": ["Game Design", "Unity", "C#", "UI/UX", "Rapid Development", "Frontend", "Team Collaboration", "Architecture"],
       "links": [
@@ -460,6 +472,7 @@
         "This project taught me valuable lessons in teamwork and communication between programmers and artists, which enhanced the overall development process and final quality of the game."
       ],
       "image": "resources/images/projects/bunkerBound.gif",
+      "imageStretched": true,
       "imageAlt": "Bunker Bound gameplay",
       "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "UI/UX", "Project Management", "Frontend", "Architecture"],
       "links": [
@@ -491,6 +504,7 @@
       ],
       "skills": ["Game Design", "Unity", "C#", "Frontend", "Team Collaboration", "Architecture", "API Integration"],
       "image": "resources/images/projects/mathVille.png",
+      "imageStretched": true,
       "imageAlt": "MathVille game screenshot",
       "links": [
         {
@@ -529,6 +543,7 @@
       ],
       "skills": ["Game Design", "Rapid Development", "UI/UX", "Unity", "C#", "Frontend", "Team Collaboration", "Project Management", "Architecture", "User Engagement"],
       "image": "resources/images/projects/ballEvolution.png",
+      "imageStretched": true,
       "imageAlt": "Ball Evolution game screenshot",
       "links": [
         {
@@ -551,6 +566,7 @@
       ],
       "skills": ["Unity", "Game Design", "API Integration", "UI/UX", "C#", "Project Management", "Frontend", "Architecture", "Procedural"],
       "image": "resources/images/projects/woloBall.png",
+      "imageStretched": true,
       "imageAlt": "WoloBall game screenshot",
       "links": [
         {
@@ -569,8 +585,8 @@
       ],
       "skills": ["GameMaker Studio", "Procedural", "Marketing", "Frontend", "Game Design", "Project Management", "UI/UX"],
       "image": "resources/images/projects/rastaRun.gif",
-      "imageAlt": "Rasta Run main character",
       "imageStretched": false,
+      "imageAlt": "Rasta Run main character",
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.Rasta_Run",
@@ -596,8 +612,8 @@
       ],
       "skills": ["GameMaker Studio", "Game Design", "Frontend", "Project Management", "UI/UX", "Architecture"],
       "image": "resources/images/projects/nix.gif",
-      "imageAlt": "Nix game screenshot",
       "imageStretched": false,
+      "imageAlt": "Nix game screenshot",
       "links": [
         {
           "url": "https://drive.google.com/drive/folders/1_PfnPxTW3r5Z4lSumvIwDVuxIqcm4eAf?usp=sharing",
@@ -620,6 +636,7 @@
         "Players begin by defining their character and objective, and the AI adapts to their choices, narrating the unfolding story. Each session is unique, driven by the player's decisions and the system's dynamic responses."
       ],
       "image": "resources/images/projects/gptRole.jpeg",
+      "imageStretched": true,
       "imageAlt": "GPT-Role game concept imagined by an AI",
       "skills": ["Game Design", "Python", "AI Integration", "Frontend", "Streamlit", "Rapid Development", "Project Management", "Team Collaboration", "Architecture", "CI/CD"],
       "links": [
@@ -727,6 +744,7 @@
         "I designed the gameplay mechanics to increase difficulty and enhance player engagement, offering a more intense survival experience."
       ],
       "image": "resources/images/projects/suhm.gif",
+      "imageStretched": true,
       "imageAlt": "Super Ultra Hardcore gameplay",
       "skills": ["Modding", "Game Design", "Project Management"],
       "links": [
@@ -745,6 +763,7 @@
         "I designed the multiplayer gameplay flow, time control, team management, and even in-game background music to create a more immersive and competitive experience, with team-based strategies being a key aspect."
       ],
       "image": "resources/images/projects/guerraDeFortines.gif",
+      "imageStretched": true,
       "imageAlt": "Fortress Warfare gameplay",
       "skills": ["Modding", "Game Design", "Project Management"],
       "links": [
@@ -763,6 +782,7 @@
         "I translated the traditional gameplay into Minecraft’s mechanics and user interface, showcasing my ability to quickly create prototypes while adding a unique Minecraft twist to a familiar game."
       ],
       "image": "resources/images/projects/HundirLaFlota.jpg",
+      "imageStretched": true,
       "imageAlt": "Battleship game screenshot",
       "skills": ["Modding", "Game Design", "Rapid Development", "Project Management"],
       "links": [
@@ -781,6 +801,7 @@
         "I had to understand how the game was created to localize and modify it, showcasing my ability to reverse engineer and adapt existing projects."
       ],
       "image": "resources/images/projects/theBuildingGame.jpg",
+      "imageStretched": true,
       "imageAlt": "The Building Game modification",
       "skills": ["Modding", "Game Design", "Localization", "Reverse Engineering"],
       "links": [
@@ -799,6 +820,7 @@
         "I worked on fine-tuning game mechanics and enhancing the visual elements to create a more immersive zombie survival experience, ending with pleasing, polished, and balanced gameplay."
       ],
       "image": "resources/images/projects/zombieSurvival2.jpg",
+      "imageStretched": true,
       "imageAlt": "Zombie Survival 2 gameplay",
       "skills": ["Modding", "Game Design", "Project Management"],
       "links": [
@@ -817,6 +839,7 @@
         "We developed the map, focusing on creating challenging, engaging, and cooperative gameplay mechanics, while trying to avoid discrepancies between the different sections developed by each member."
       ],
       "image": "resources/images/projects/theRooms.gif",
+      "imageStretched": true,
       "imageAlt": "The Rooms Minecraft map",
       "skills": ["Modding", "Team Collaboration", "Game Design"],
       "links": [
@@ -835,6 +858,7 @@
         "I focused on the core mechanics around wave-based combat and defense strategies while ensuring a challenging yet enjoyable experience for players, while also creating a visually appealing environment."
       ],
       "image": "resources/images/projects/zombieSurvival.gif",
+      "imageStretched": true,
       "imageAlt": "Zombie Survival gameplay",
       "skills": ["Modding", "Game Design", "Project Management"],
       "links": [
@@ -853,6 +877,7 @@
         "I developed new mechanics, map design, and organized a small in-game tournament to test the new features with the community."
       ],
       "image": "resources/images/projects/defendYourBase2.gif",
+      "imageStretched": true,
       "imageAlt": "Defend Your Base 2 gameplay",
       "skills": ["Modding", "Game Design", "Project Management"],
       "links": [
@@ -871,6 +896,7 @@
         "I implemented the racing mechanics, game flow and track challenges, creating a fun, competitive experience for players."
       ],
       "image": "resources/images/projects/runToWin.gif",
+      "imageStretched": true,
       "imageAlt": "Run to Win gameplay",
       "skills": ["Modding", "Game Design", "Project Management"],
       "links": [
@@ -890,6 +916,7 @@
         "The game was well-received and marked my entry into Minecraft game development."
       ],
       "image": "resources/images/projects/defendYourBase.png",
+      "imageStretched": true,
       "imageAlt": "Defend Your Base gameplay",
       "skills": ["Modding", "Game Design", "Project Management"],
       "links": [
@@ -909,6 +936,7 @@
         "This project demonstrated my ability to create functional contraptions and also laid the groundwork for my future Minecraft projects."
       ],
       "image": "resources/images/projects/redstoneClock.gif",
+      "imageStretched": true,
       "imageAlt": "Redstone Clock in Minecraft",
       "skills": ["Project Management"],
       "links": [
@@ -928,6 +956,7 @@
         "This project marked the beginning of my redstone creations and helped me understand the complex mechanics of Minecraft's circuitry."
       ],
       "image": "resources/images/projects/redstoneCalculator.gif",
+      "imageStretched": true,
       "imageAlt": "Redstone Calculator in Minecraft",
       "skills": ["Project Management"],
       "links": [
@@ -947,6 +976,7 @@
         "After spending significant time playing the game, I identified key areas where usability could be enhanced. I compiled these insights into a structured document, which aimed to help both the developers and users enjoy a more intuitive experience. My suggestions focused on improving user interface navigation, controls, and accessibility, addressing issues that many players found cumbersome in the original version."
       ],
       "image": "resources/images/projects/ksp.jpg",
+      "imageStretched": true,
       "imageAlt": "KSP Marketing Image",
       "skills": ["UI/UX", "Research And Analysis", "Documentation"],
       "links": [
@@ -977,6 +1007,7 @@
         "I consider it an essential resource for Unity developers, offering solutions such as object pooling, in-game terminal, save/load data, manager for simple animations, dozens of extensions, and more."
       ],
       "image": "resources/images/projects/essentials.webp",
+      "imageStretched": true,
       "imageAlt": "Essentials Asset screenshot",
       "skills": ["Unity", "C#", "Architecture", "Research And Analysis"],
       "links": [
@@ -1004,6 +1035,7 @@
         "It helped me learn about the complexities of world generation, mesh generation, terrain optimization, and **multithreading** in game engines..."
       ],
       "image": "resources/images/projects/worldPlayground.gif",
+      "imageStretched": true,
       "imageAlt": "World Playground procedural generation demo",
       "skills": ["Unity", "C#", "Procedural", "Architecture", "Multithreading", "Frontend"],
       "links": [
@@ -1080,6 +1112,7 @@
         "I refurbished and collected second-hand laptops, aiming to provide students in Ghana with direct access to computers."
       ],
       "image": "resources/images/projects/ghanaComputers.jpg",
+      "imageStretched": true,
       "imageAlt": "Promotional image for the project to bring Computers to Ghana's schools",
       "skills": ["NGO Collaboration", "Computer Refurbishing", "Logistics", "Team Collaboration", "Project Management", "Team Leadership"]
     },
@@ -1092,6 +1125,7 @@
         "The tool was created to facilitate the generation of unique dungeon maps, allowing players to create their own game rules and map layouts. Designed for ease of use, it supports flexible token-based gameplay, discovery mechanics, and the ability to randomize dungeon features."
       ],
       "image": "resources/images/projects/dungeonAssault.gif",
+      "imageStretched": true,
       "imageAlt": "Dungeon Assault procedural generation demo",
       "skills": ["Unity", "C#", "Procedural", "Rapid Development", "Game Design", "Architecture", "Frontend"],
       "links": [
@@ -1111,6 +1145,7 @@
         "The outcome was a **professional portfolio** that helped promote the aesthetic **appeal of luxury hotels through high-quality visual content**."
       ],
       "image": "resources/images/projects/markopa.jpg",
+      "imageStretched": true,
       "imageAlt": "Photoshoots for Markopa",
       "skills": ["Photography", "Photo Editing", "Team Collaboration"],
       "links": [
