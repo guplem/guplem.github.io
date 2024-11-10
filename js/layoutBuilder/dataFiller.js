@@ -18,6 +18,7 @@ fillWithData("aboutMeContents", "../data/info.json", "aboutMe");
 // - My work
 fillWithGroupedButtons("myWorkTypes", `../data/myWork.json`, "works", "types", onClickWorkType, "myWork", true);
 fillWithGroupedButtons("myWorkSkills", `../data/myWork.json`, "works", "skills", onClickWorkSkill, "myWork", true);
+enableCollapsibleSections("myWorkSkills");
 fillWithData("myWorkTitle", "../data/myWork.json", "title", new Map([["p", "h1"]]));
 // displayFilteredWorks(); // Probably not needed here since it is called when DOM is fully loaded
 // - Additional sections
@@ -493,4 +494,66 @@ function onClickWorkSkill(workSkillId, navigateTo, clickedElement = undefined) {
   displayFilteredWorks();
 
   document?.getElementById(navigateTo)?.scrollIntoView({ behavior: "smooth" });
+}
+
+/**
+ * Adds the ability to collapse/expand a section, still requires some styling
+ * @param {string} collapsableSectionId
+ * @param {boolean} startCollapsed
+ */
+function enableCollapsibleSections(collapsableSectionId, startCollapsed = true) {
+  const collapsableSection = document.getElementById(collapsableSectionId);
+
+  if (!collapsableSection) {
+    console.error("Could not find element with id", collapsableSectionId);
+    return;
+  }
+
+  // Add a 'collapsed' attribute to the collapsable section
+  collapsableSection.setAttribute("collapsed", startCollapsed.toString());
+
+  // Create a button to toggle the section
+  const collapseButton = document.createElement("button");
+  collapseButton.id = "collapseButton";
+  collapseButton.textContent = startCollapsed ? "Show More" : "Show Less";
+  collapseButton.onclick = toogleCollapse;
+  collapseButton.style.position = startCollapsed ? "absolute" : "relative";
+  collapsableSection.appendChild(collapseButton);
+
+  function toogleCollapse() {
+    // Get the div
+    const mainDiv = document.getElementById(collapsableSectionId);
+
+    if (!mainDiv) {
+      console.error("Could not find element with id", collapsableSectionId);
+      return;
+    }
+
+    // Check the current value of the 'collapsed' attribute
+    const isCollapsed = mainDiv.getAttribute("collapsed") === "true";
+
+    // Toggle the 'collapsed' attribute
+    if (isCollapsed) {
+      mainDiv.setAttribute("collapsed", "false");
+      // Optionally, change button text or perform other actions
+      const collapseButton = document.getElementById("collapseButton");
+      if (!collapseButton) {
+        console.error("Could not find element with id 'collapseButton'");
+        return;
+      }
+      collapseButton.textContent = "Show Less";
+      collapseButton.style.position = "relative";
+      // Move the button to the end
+      mainDiv.appendChild(collapseButton);
+    } else {
+      mainDiv.setAttribute("collapsed", "true");
+      const collapseButton = document.getElementById("collapseButton");
+      if (!collapseButton) {
+        console.error("Could not find element with id 'collapseButton'");
+        return;
+      }
+      collapseButton.textContent = "Show More";
+      collapseButton.style.position = "absolute";
+    }
+  }
 }
