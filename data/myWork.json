@@ -76,6 +76,7 @@
       ],
       "image": "resources/images/projects/dishForge.gif",
       "imageAlt": "DishForge demo",
+      "imageStretched": false,
       "skills": ["Flutter/Dart", "AI Integration", "API Integration", "UI/UX", "Frontend", "Rapid Development", "Team Collaboration", "Project Management", "Architecture"],
       "links": [
         {
@@ -280,6 +281,7 @@
       ],
       "image": "resources/images/projects/drinkExtreme.png",
       "imageAlt": "Drink Extreme app mockup",
+      "imageStretched": false,
       "skills": ["Unity", "C#", "Architecture", "Frontend", "Research And Analysis", "Modding", "User Engagement", "Localization"],
       "links": [
         {
@@ -567,7 +569,8 @@
       ],
       "skills": ["GameMaker Studio", "Procedural", "Marketing", "Frontend", "Game Design", "Project Management", "UI/UX"],
       "image": "resources/images/projects/rastaRun.gif",
-      "imageAlt": "Rasta Run gameplay",
+      "imageAlt": "Rasta Run main character",
+      "imageStretched": false,
       "links": [
         {
           "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.Rasta_Run",
@@ -594,6 +597,7 @@
       "skills": ["GameMaker Studio", "Game Design", "Frontend", "Project Management", "UI/UX", "Architecture"],
       "image": "resources/images/projects/nix.gif",
       "imageAlt": "Nix game screenshot",
+      "imageStretched": false,
       "links": [
         {
           "url": "https://drive.google.com/drive/folders/1_PfnPxTW3r5Z4lSumvIwDVuxIqcm4eAf?usp=sharing",

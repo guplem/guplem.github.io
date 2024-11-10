@@ -227,6 +227,9 @@ export async function displayFilteredWorks() {
       imageElement.src = work.image;
       imageElement.alt = work.imageAlt || `Image for ${work.title}`;
       workElement.appendChild(imageElement);
+      if (work.imageStretched == undefined || work.imageStretched === true) {
+        imageElement.classList.add("stretched");
+      }
     }
 
     if (work.title?.length) {
