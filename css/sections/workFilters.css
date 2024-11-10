@@ -67,10 +67,10 @@
 
 /** -- Skills Collapsed -- **/
 #myWorkSkills[collapsed="true"] {
-  height: 120px;
+  max-height: 120px;
   overflow: hidden;
   position: relative;
-  transition: height 0.3s ease;
+  transition: max-height 0.3s ease;
 }
 
 #myWorkSkills[collapsed="true"]::before {
@@ -86,9 +86,9 @@
 
 /* -- Skills Expanded -- */
 #myWorkSkills[collapsed="false"] {
-  height: auto;
+  max-height: 2000px; /* or some other large value */
   overflow: hidden;
-  transition: height 0.3s ease;
+  transition: max-height 0.3s ease;
 }
 
 #myWorkSkills[collapsed="false"]::before {

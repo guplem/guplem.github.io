@@ -516,11 +516,11 @@ function enableCollapsibleSections(collapsableSectionId, startCollapsed = true) 
   const collapseButton = document.createElement("button");
   collapseButton.id = "collapseButton";
   collapseButton.textContent = startCollapsed ? "Show More" : "Show Less";
-  collapseButton.onclick = toogleCollapse;
+  collapseButton.onclick = toggleCollapse;
   collapseButton.style.position = startCollapsed ? "absolute" : "relative";
   collapsableSection.appendChild(collapseButton);
 
-  function toogleCollapse() {
+  function toggleCollapse() {
     // Get the div
     const mainDiv = document.getElementById(collapsableSectionId);
 
