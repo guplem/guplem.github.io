@@ -273,8 +273,8 @@
       ],
       "links": [
         {
-          "type": "link",
-          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.DrinkAndPlay"
+          "url": "resources/deliverables/Drink & Play.apk",
+          "type": "download"
         }
       ]
     },
@@ -547,8 +547,8 @@
       "imageAlt": "Ball Evolution game screenshot",
       "links": [
         {
-          "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.TS09",
-          "type": "link"
+          "url": "resources/deliverables/Ball Evolution.apk",
+          "type": "download"
         },
         {
           "url": "https://drive.google.com/drive/folders/0B4PKPCjlCHb5dXhfMmwyTkZHc28?resourcekey=0-W5qJyhAf3SlS1cBah6DnTA&usp=sharing",
@@ -572,6 +572,10 @@
         {
           "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.WoloBallFULL",
           "type": "link"
+        },
+        {
+          "url": "resources/deliverables/WoloBall.apk",
+          "type": "download"
         }
       ]
     },
@@ -591,6 +595,10 @@
         {
           "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.Rasta_Run",
           "type": "link"
+        },
+        {
+          "url": "resources/deliverables/RastaRun.apk",
+          "type": "download"
         },
         {
           "url": "https://youtu.be/vkN92-qRcqg",
