@@ -338,6 +338,10 @@
       "skills": ["Game Design", "Unity", "C#", "Rapid Development", "Team Collaboration", "Frontend", "Project Management", "UI/UX", "Architecture", "Team Leadership"],
       "links": [
         {
+          "url": "resources/deliverables/Paper Brawl.zip",
+          "type": "download"
+        },
+        {
           "url": "https://guplem.itch.io/paper-brawl",
           "type": "link"
         },
@@ -369,6 +373,10 @@
       "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "Frontend", "Rapid Development", "Project Management", "UI/UX", "Architecture"],
       "links": [
         {
+          "url": "resources/deliverables/Ohia.zip",
+          "type": "download"
+        },
+        {
           "url": "https://ryuggha.itch.io/ohia",
           "type": "link"
         }
@@ -387,6 +395,10 @@
       "imageAlt": "Thicc Wet Paper Layers game screenshot",
       "skills": ["Game Design", "Unity", "C#", "Real-Time Communication", "Team Collaboration", "Frontend", "Backend", "Project Management", "Architecture"],
       "links": [
+        {
+          "url": "https://drive.google.com/file/d/1Ry0aQyTDvFvUnm51x6U9rjLhOm1hJfAg/view?usp=sharing",
+          "type": "download"
+        },
         {
           "url": "https://guplem.itch.io/thicc-wet-paper-layers",
           "type": "link"
@@ -420,7 +432,7 @@
       "links": [
         {
           "url": "https://drive.google.com/file/d/1TYYzk7LCb6NH6egMW8BQ5lIJFOsF6-X9/view?usp=sharing",
-          "type": "link"
+          "type": "download"
         },
         {
           "url": "https://drive.google.com/drive/folders/1vS3OgFzkZW5EMHi92gqWeMbL9uv3SUCs?usp=sharing",
@@ -446,8 +458,8 @@
       "skills": ["Game Design", "Unity", "C#", "UI/UX", "Rapid Development", "Frontend", "Team Collaboration", "Architecture"],
       "links": [
         {
-          "url": "https://drive.google.com/drive/folders/1CQs1KlaVyY4JwgAKeotshU89nOmxXNP9?usp=sharing",
-          "type": "folder"
+          "url": "resources/deliverables/Musikote.zip",
+          "type": "download"
         },
         {
           "url": "https://youtu.be/wD7JrdHFuSg",
@@ -476,6 +488,10 @@
       "imageAlt": "Bunker Bound gameplay",
       "skills": ["Game Design", "Unity", "C#", "Team Collaboration", "UI/UX", "Project Management", "Frontend", "Architecture"],
       "links": [
+        {
+          "url": "resources/deliverables/Bunker Bound.zip",
+          "type": "download"
+        },
         {
           "url": "https://guplem.itch.io/bunker-bound",
           "type": "link"
@@ -695,12 +711,7 @@
         "The site was designed for easy navigation and is optimized for mobile responsiveness, ensuring a seamless user experience.",
         "This project also allowed me to refine my **web development** skills."
       ],
-      "skills": ["UI/UX", "HTML/CSS", "JavaScript", "Architecture", "Frontend"],
-      "links": [
-        {
-          "url": "https://triunitystudios.com/"
-        }
-      ]
+      "skills": ["UI/UX", "HTML/CSS", "JavaScript", "Architecture", "Frontend"]
     },
     {
       "types": ["Web"],
@@ -1138,8 +1149,8 @@
       "skills": ["Unity", "C#", "Procedural", "Rapid Development", "Game Design", "Architecture", "Frontend"],
       "links": [
         {
-          "type": "github",
-          "url": "https://github.com/guplem/DungeonAssault"
+          "type": "download",
+          "url": "resources/deliverables/Dungeon Assault.zip"
         }
       ]
     },
