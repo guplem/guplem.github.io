@@ -8,13 +8,32 @@
       "description": [
         "A **template web application** that provides a simple and efficient starting point for building web applications supporting common features. It can be hosted in the cloud or locally and is accessible from any device via a web browser.",
         "I selected, tested and documented the setup and examples to streamline the process to configure **RoboJS** with **Vite** and **React**, so database support, real‑time state synchronization, API building, task scheduling, ... and other features are available out of the box.",
-        "The template reduced setup time, streamlined development workflows, and simplified deployment on Docker and Google Cloud, serving as a robust foundation for new projects."
+        "The template reduces setup time, streamlined development workflows, and simplified deployment with Docker and Google Cloud, serving as a robust foundation for new projects."
       ],
       "skills": ["TypeScript", "React", "API Integration", "Real-Time Communication", "Docker", "Frontend", "Backend", "Server Management", "Documentation"],
       "links": [
         {
           "type": "github",
           "url": "https://github.com/guplem/robo-base"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
+      "date": "2025",
+      "title": "Galtea",
+      "description": [
+        "*Galtea* is a **SaaS platform for AI evaluation and governance** that ensures generative AI models behave correctly, safely, and comply with regulations before deployment.",
+        "As a **founding engineer**, I lead front‑end development (dashboard, landing page, blog, documentation, ...) and contributed to the Python SDK and backend while driving key architecture and design decisions.",
+        "Built from scratch by a *lean team* and powered by [Barcelona Supercomputing Center’s MareNostrum 5](https://www.bsc.es/marenostrum/marenostrum-5) infrastructure, the platform enables **fast, customizable AI testing** and accelerates safe AI deployment for enterprise clients."
+      ],
+      "image": "resources/images/projects/galtea.png",
+      "imageAlt": "Galtea Slogan",
+      "skills": ["React", "Express", "Prisma", "Node.js", "TypeScript", "Python", "API Integration", "AI Integration", "AI Governance", "UX Design", "SaaS", "Architecture", "Jekyll", "Mintlify", "Frontend", "Backend"],
+      "links": [
+        {
+          "type": "link",
+          "url": "https://galtea.ai/"
         }
       ]
     },
@@ -50,6 +69,7 @@
       "skills": [
         "Architecture",
         "Flutter/Dart",
+        "Express",
         "Prisma",
         "Node.js",
         "TypeScript",
