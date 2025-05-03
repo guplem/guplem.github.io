@@ -3,6 +3,23 @@
   "works": [
     {
       "types": ["Web"],
+      "date": "2025",
+      "title": "Web App Template",
+      "description": [
+        "A **template web application** that provides a simple and efficient starting point for building web applications supporting common features. It can be hosted in the cloud or locally and is accessible from any device via a web browser.",
+        "I selected, tested and documented the setup and examples to streamline the process to configure **RoboJS** with **Vite** and **React**, so database support, real‑time state synchronization, API building, task scheduling, ... and other features are available out of the box.",
+        "The template reduced setup time, streamlined development workflows, and simplified deployment on Docker and Google Cloud, serving as a robust foundation for new projects."
+      ],
+      "skills": ["TypeScript", "React", "API Integration", "Real-Time Communication", "Docker", "Frontend", "Backend", "Server Management", "Documentation"],
+      "links": [
+        {
+          "type": "github",
+          "url": "https://github.com/guplem/robo-base"
+        }
+      ]
+    },
+    {
+      "types": ["Web"],
       "date": "2024",
       "title": "Portfolio v2",
       "description": [
@@ -97,22 +114,7 @@
       "image": "resources/images/projects/things.png",
       "imageStretched": true,
       "imageAlt": "Things app mockup",
-      "skills": [
-        "Flutter/Dart",
-        "Firebase",
-        "Data Management",
-        "Backend",
-        "Frontend",
-        "Real-Time Communication",
-        "TDD",
-        "Data Analysis",
-        "Project Management",
-        "CI/CD",
-        "Architecture",
-        "API Integration",
-        "Localization",
-        "NoSQL"
-      ],
+      "skills": ["Flutter/Dart", "Firebase", "Data Management", "Backend", "Frontend", "Real-Time Communication", "TDD", "Data Analysis", "Project Management", "CI/CD", "Architecture", "API Integration", "Localization", "NoSQL"],
       "links": [
         {
           "type": "link",
@@ -131,26 +133,7 @@
       "image": "resources/images/projects/tunzaa.png",
       "imageStretched": true,
       "imageAlt": "Tunzaa app mockup",
-      "skills": [
-        "Flutter/Dart",
-        "React Native",
-        "JavaScript",
-        "CI/CD",
-        "TDD",
-        "PHP",
-        "API Integration",
-        "User Engagement",
-        "Team Leadership",
-        "Architecture",
-        "Server Management",
-        "Proprietary Frameworks",
-        "Data Management",
-        "Fintech",
-        "Project Management",
-        "Backend",
-        "Frontend",
-        "SQL"
-      ],
+      "skills": ["Flutter/Dart", "React", "JavaScript", "CI/CD", "TDD", "PHP", "API Integration", "User Engagement", "Team Leadership", "Architecture", "Server Management", "Proprietary Frameworks", "Data Management", "Fintech", "Project Management", "Backend", "Frontend", "SQL"],
       "links": [
         {
           "type": "link",
@@ -188,21 +171,7 @@
       "image": "resources/images/projects/kedo.png",
       "imageStretched": true,
       "imageAlt": "Kedo app mockup",
-      "skills": [
-        "Flutter/Dart",
-        "UI/UX",
-        "Backend",
-        "Frontend",
-        "Data Management",
-        "Rapid Development",
-        "Real-Time Communication",
-        "User Engagement",
-        "Project Management",
-        "Architecture",
-        "API Integration",
-        "Server Management",
-        "Localization"
-      ]
+      "skills": ["Flutter/Dart", "UI/UX", "Backend", "Frontend", "Data Management", "Rapid Development", "Real-Time Communication", "User Engagement", "Project Management", "Architecture", "API Integration", "Server Management", "Localization"]
     },
     {
       "types": ["Mobile App"],
@@ -255,22 +224,7 @@
       "image": "resources/images/projects/drinkAndPlay.png",
       "imageStretched": true,
       "imageAlt": "Drink & Play app mockup",
-      "skills": [
-        "UI/UX",
-        "Unity",
-        "C#",
-        "Frontend",
-        "Game Design",
-        "Research And Analysis",
-        "Architecture",
-        "Marketing",
-        "Project Management",
-        "A/B Testing",
-        "User Engagement",
-        "API Integration",
-        "Procedural",
-        "Localization"
-      ],
+      "skills": ["UI/UX", "Unity", "C#", "Frontend", "Game Design", "Research And Analysis", "Architecture", "Marketing", "Project Management", "A/B Testing", "User Engagement", "API Integration", "Procedural", "Localization"],
       "links": [
         {
           "url": "resources/deliverables/Drink & Play.apk",
@@ -683,19 +637,7 @@
         "As the sole developer, I integrated **Wikidata's API**, designed the front-end interface, and created dynamic ranking algorithms. This project served as my **final thesis** for my computer engineering degree.",
         "The app empowers users to create rankings based on personal preferences, offering a unique data-driven interaction with Wikidata's vast repository."
       ],
-      "skills": [
-        "Flutter/Dart",
-        "API Integration",
-        "Frontend",
-        "Backend",
-        "Data Management",
-        "Server Management",
-        "Data Visualization",
-        "Data Analysis",
-        "Architecture",
-        "Research And Analysis",
-        "CI/CD"
-      ],
+      "skills": ["Flutter/Dart", "API Integration", "Frontend", "Backend", "Data Management", "Server Management", "Data Visualization", "Data Analysis", "Architecture", "Research And Analysis", "CI/CD"],
       "links": [
         {
           "url": "https://wikipoll.b4a.app/#/"
@@ -891,10 +833,7 @@
       "types": ["Minecraft", "Videogame"],
       "date": "2013",
       "title": "Defend Your Base 2",
-      "description": [
-        "*Defend Your Base 2* is the sequel to **Defend Your Base**, introducing a new space-themed map and gameplay refinements based on user feedback.",
-        "I developed new mechanics, map design, and organized a small in-game tournament to test the new features with the community."
-      ],
+      "description": ["*Defend Your Base 2* is the sequel to **Defend Your Base**, introducing a new space-themed map and gameplay refinements based on user feedback.", "I developed new mechanics, map design, and organized a small in-game tournament to test the new features with the community."],
       "image": "resources/images/projects/defendYourBase2.gif",
       "imageStretched": true,
       "imageAlt": "Defend Your Base 2 gameplay",
@@ -910,10 +849,7 @@
       "types": ["Minecraft", "Videogame"],
       "date": "2013",
       "title": "Run to Win",
-      "description": [
-        "*Run to Win* is a **Minecraft racing game** where players face various obstacles along a racetrack.",
-        "I implemented the racing mechanics, game flow and track challenges, creating a fun, competitive experience for players."
-      ],
+      "description": ["*Run to Win* is a **Minecraft racing game** where players face various obstacles along a racetrack.", "I implemented the racing mechanics, game flow and track challenges, creating a fun, competitive experience for players."],
       "image": "resources/images/projects/runToWin.gif",
       "imageStretched": true,
       "imageAlt": "Run to Win gameplay",
@@ -1126,10 +1062,7 @@
       "types": ["Misceallaneous"],
       "date": "2018",
       "title": "Computer Classrooms in Ghana",
-      "description": [
-        "A **voluntary project** where I helped bring computers and set up classrooms in Ghanaian schools.",
-        "I refurbished and collected second-hand laptops, aiming to provide students in Ghana with direct access to computers."
-      ],
+      "description": ["A **voluntary project** where I helped bring computers and set up classrooms in Ghanaian schools.", "I refurbished and collected second-hand laptops, aiming to provide students in Ghana with direct access to computers."],
       "image": "resources/images/projects/ghanaComputers.jpg",
       "imageStretched": true,
       "imageAlt": "Promotional image for the project to bring Computers to Ghana's schools",
