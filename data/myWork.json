@@ -10,7 +10,7 @@
         "I selected, tested and documented the setup and examples to streamline the process to configure **RoboJS** with **Vite** and **React**, so database support, real‑time state synchronization, API building, task scheduling, ... and other features are available out of the box.",
         "The template reduces setup time, streamlined development workflows, and simplified deployment with Docker and Google Cloud, serving as a robust foundation for new projects."
       ],
-      "skills": ["TypeScript", "React", "API Integration", "Real-Time Communication", "Docker", "Frontend", "Backend", "Server Management", "Documentation"],
+      "skills": ["JS/TS", "React", "API Integration", "Real-Time Communication", "Docker", "Frontend", "Backend", "Server Management", "Documentation"],
       "links": [
         {
           "type": "github",
@@ -29,7 +29,7 @@
       ],
       "image": "resources/images/projects/galtea.png",
       "imageAlt": "Galtea Slogan",
-      "skills": ["React", "Express", "Prisma", "Node.js", "TypeScript", "Python", "API Integration", "AI Integration", "AI Governance", "UX Design", "SaaS", "Architecture", "Jekyll", "Mintlify", "Frontend", "Backend"],
+      "skills": ["React", "Express", "Prisma", "Node.js", "JS/TS", "Python", "API Integration", "AI Integration", "AI Governance", "UI/UX", "SaaS", "Architecture", "Jekyll", "Mintlify", "Frontend", "Docker", "Backend", "Grafana", "Data Visualization", "Data Analysis", "Documentation"],
       "links": [
         {
           "type": "link",
@@ -46,7 +46,7 @@
         "I re-created my portfolio with a focus on improving navigation, making it easier to find projects related to specific skills and technologies, and enhancing the overall user experience.",
         "I also prioritized site maintenance, making it simple to update with new projects and sections. The site’s content is stored in [JSON files](/data/myWork.json), which are used to dynamically generate the contents, allowing for easy updates."
       ],
-      "skills": ["HTML/CSS", "JavaScript", "Data Management", "UI/UX", "Architecture", "Frontend", "CI/CD"],
+      "skills": ["HTML/CSS", "JS/TS", "Data Management", "UI/UX", "Architecture", "Frontend", "CI/CD"],
       "links": [
         {
           "type": "github",
@@ -72,7 +72,7 @@
         "Express",
         "Prisma",
         "Node.js",
-        "TypeScript",
+        "JS/TS",
         "TDD",
         "Jest",
         "Data Analysis",
@@ -153,7 +153,7 @@
       "image": "resources/images/projects/tunzaa.png",
       "imageStretched": true,
       "imageAlt": "Tunzaa app mockup",
-      "skills": ["Flutter/Dart", "React", "JavaScript", "CI/CD", "TDD", "PHP", "API Integration", "User Engagement", "Team Leadership", "Architecture", "Server Management", "Proprietary Frameworks", "Data Management", "Fintech", "Project Management", "Backend", "Frontend", "SQL"],
+      "skills": ["Flutter/Dart", "React", "JS/TS", "CI/CD", "TDD", "PHP", "API Integration", "User Engagement", "Team Leadership", "Architecture", "Server Management", "Proprietary Frameworks", "Data Management", "Fintech", "Project Management", "Backend", "Frontend", "SQL"],
       "links": [
         {
           "type": "link",
@@ -636,7 +636,7 @@
       "image": "resources/images/projects/gptRole.jpeg",
       "imageStretched": true,
       "imageAlt": "GPT-Role game concept imagined by an AI",
-      "skills": ["Game Design", "Python", "AI Integration", "Frontend", "Streamlit", "Rapid Development", "Project Management", "Team Collaboration", "Architecture", "CI/CD"],
+      "skills": ["Game Design", "Python", "AI Integration", "Frontend", "Streamlit", "Rapid Development", "Project Management", "Team Collaboration", "Architecture", "Docker", "CI/CD"],
       "links": [
         {
           "type": "link",
@@ -673,7 +673,7 @@
         "The site was designed for easy navigation and is optimized for mobile responsiveness, ensuring a seamless user experience.",
         "This project also allowed me to refine my **web development** skills."
       ],
-      "skills": ["UI/UX", "HTML/CSS", "JavaScript", "Architecture", "Frontend"]
+      "skills": ["UI/UX", "HTML/CSS", "JS/TS", "Architecture", "Frontend"]
     },
     {
       "types": ["Web"],
@@ -683,7 +683,7 @@
         "*4utumn* is a **social network** I developed as part of a university project. The app allows users to communicate, post texts, follow others, and search for content.",
         "I worked on the **front-end development**, including visual design, mobile responsiveness, ... The project utilized **Spring**, **Thymeleaf**, and **JavaScript** for dynamic content rendering, providing users with a fluid experience."
       ],
-      "skills": ["JavaScript", "HTML/CSS", "SQL", "Spring", "Thymeleaf", "UI/UX", "Project Management", "Architecture", "API Integration", "Frontend", "Server Management"],
+      "skills": ["JS/TS", "HTML/CSS", "SQL", "Spring", "Thymeleaf", "UI/UX", "Project Management", "Architecture", "API Integration", "Frontend", "Server Management"],
       "links": [
         {
           "type": "github",
@@ -1057,7 +1057,7 @@
       "skills": ["Unity", "C#", "Genetic Algorithms", "AI Integration", "Rapid Development", "Frontend"],
       "links": [
         {
-          "type": "folder",
+          "type": "github",
           "url": "https://github.com/guplem/ProjectTS17-GeneticEvolution"
         }
       ]
