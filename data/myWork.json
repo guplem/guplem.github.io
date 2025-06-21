@@ -11,7 +11,7 @@
         "The game supports both human and AI players, with a modular strategy interface that allows anyone to contribute new AI behaviors.",
         "Key features include persistent room management, synchronized lobbies, and a clear separation between game logic and presentation. The project emphasizes code quality, maintainability, and ease of contribution, making it accessible to both players and developers."
       ],
-      "image": "resources/images/projects/boom.png",
+      "image": "resources/images/projects/boom.webp",
       "imageAlt": "Boom Logo",
       "skills": ["JS/TS", "React", "RoboJS", "API Integration", "Real-Time Communication", "Docker", "Frontend", "Documentation"],
       "links": [
@@ -47,7 +47,7 @@
         "As a **founding engineer**, I lead front‑end development (dashboard, landing page, blog, documentation, ...) and contributed to the Python SDK and backend while driving key architecture and design decisions.",
         "Built from scratch by a *lean team* and powered by [Barcelona Supercomputing Center’s MareNostrum 5](https://www.bsc.es/marenostrum/marenostrum-5) infrastructure, the platform enables **fast, customizable AI testing** and accelerates safe AI deployment for enterprise clients."
       ],
-      "image": "resources/images/projects/galtea.png",
+      "image": "resources/images/projects/galtea.webp",
       "imageAlt": "Galtea Slogan",
       "skills": ["React", "Express", "Prisma", "Node.js", "JS/TS", "Python", "API Integration", "AI Integration", "AI Governance", "UI/UX", "SaaS", "Architecture", "Jekyll", "Mintlify", "Frontend", "Docker", "Backend", "Grafana", "Data Visualization", "Data Analysis", "Documentation"],
       "links": [
@@ -83,7 +83,7 @@
         "As the lead developer, I **architected the front-end** to ensure scalability and performance, implemented **A/B testing** to refine **recommendation algorithms**, increase retention and improve usability while working in back-end projects.",
         "Key features included **real-time** chat, an endlessly scrollable feed, location tracking, and push notifications, all designed to create a rich user experience. Moreover, by implementing **CI/CD technologies**, I optimized our development workflows, boosting team efficiency significantly."
       ],
-      "image": "resources/images/projects/bondy.png",
+      "image": "resources/images/projects/bondy.webp",
       "imageStretched": true,
       "imageAlt": "Bondy app mockup",
       "skills": [
@@ -151,7 +151,7 @@
         "*Things* is a **task and project management app** fully developed by myself, that intelligently suggests tasks based on user availability, allowing for effortless prioritization. Built to offer an accessible solution across all modern devices.",
         "The app features **real-time synchronization** and **prioritization algorithms** developed following TDD, boasting robust and  dynamic scheduling capabilities, empowering users to focus on what matters most."
       ],
-      "image": "resources/images/projects/things.png",
+      "image": "resources/images/projects/things.webp",
       "imageStretched": true,
       "imageAlt": "Things app mockup",
       "skills": ["Flutter/Dart", "Firebase", "Data Management", "Backend", "Frontend", "Real-Time Communication", "TDD", "Data Analysis", "Project Management", "CI/CD", "Architecture", "API Integration", "Localization", "NoSQL"],
@@ -170,7 +170,7 @@
         "*Tunzaa* is an **incremental savings app** aimed at empowering unbanked consumers in Africa by providing secure savings and purchase options within a curated marketplace. Developed in collaboration with major brands, it supports user financial health and accessibility.",
         "Transitioning from a prototype to a full-fledged app, I oversaw a comprehensive app architecture refactor and led the development of an **M-Pesa Mini App** using a proprietary XML-based framework. Additionally, I implemented CI/CD technologies, managed server and database operations, and guided a team of developers."
       ],
-      "image": "resources/images/projects/tunzaa.png",
+      "image": "resources/images/projects/tunzaa.webp",
       "imageStretched": true,
       "imageAlt": "Tunzaa app mockup",
       "skills": ["Flutter/Dart", "React", "JS/TS", "CI/CD", "TDD", "PHP", "API Integration", "User Engagement", "Team Leadership", "Architecture", "Server Management", "Proprietary Frameworks", "Data Management", "Fintech", "Project Management", "Backend", "Frontend", "SQL"],
@@ -189,7 +189,7 @@
         "*TheBigFamily Jobs App* is designed to **connect Ukrainian refugees** with potential employers through a streamlined and intuitive interface. It allows users to match with job opportunities by answering just ten questions.",
         "I built this app integrating an automated form submission system that syncs responses directly with Google Forms. This approach significantly **simplified data management** for the [NGO](https://www.thebigfamily.app/), while enhancing user trust by providing a secure and user-friendly platform for the refugee community."
       ],
-      "image": "resources/images/projects/theBigFamilyJobsApp.png",
+      "image": "resources/images/projects/theBigFamilyJobsApp.webp",
       "imageStretched": true,
       "imageAlt": "TheBigFamily Jobs App mockup",
       "skills": ["Flutter/Dart", "API Integration", "Frontend", "UI/UX", "Rapid Development", "NGO Collaboration", "Project Management", "Architecture", "User Engagement", "Localization"],
@@ -208,7 +208,7 @@
         "*Kedo* is a **social networking platform** that enables users to create, search, and share plans, fostering connections and collaborative activities. I was tasked with transforming a basic idea into a **fully functional prototype**, managing tight budget and timeline constraints.",
         "I handled the complete development lifecycle, focusing on UI/UX, frontend development, and backend integration through Back4App for **rapid deployment and scalability**. Key features included user search, real-time chat, and personalized plan recommendations, all designed to enhance user engagement while meeting all the requirements."
       ],
-      "image": "resources/images/projects/kedo.png",
+      "image": "resources/images/projects/kedo.webp",
       "imageStretched": true,
       "imageAlt": "Kedo app mockup",
       "skills": ["Flutter/Dart", "UI/UX", "Backend", "Frontend", "Data Management", "Rapid Development", "Real-Time Communication", "User Engagement", "Project Management", "Architecture", "API Integration", "Server Management", "Localization"]
@@ -242,7 +242,7 @@
         "We collaborated with **health professionals** to ensure the feasibility and relevance of our concept.",
         "I was responsible for creating the mock-up of the application, crafting a user-friendly demo. "
       ],
-      "image": "resources/images/projects/atenea.png",
+      "image": "resources/images/projects/atenea.webp",
       "imageStretched": true,
       "imageAlt": "Atenea app mockup",
       "skills": ["UI/UX", "Team Collaboration", "Rapid Development", "Data Analysis", "AI Integration", "Team Leadership"],
@@ -261,7 +261,7 @@
         "*Drink & Play* is a **collection of festive games** designed to enhance social gatherings and dynamize parties. My goal was to improve upon existing drinking apps by introducing unique design elements and features that prioritize scalability and user experience.",
         "I conducted extensive competitor analysis to identify and address shortcomings in other apps, which informed my approach to feature development and UI/UX design. The app was a success, evidential by the number of requests I received to publish it in various app stores."
       ],
-      "image": "resources/images/projects/drinkAndPlay.png",
+      "image": "resources/images/projects/drinkAndPlay.webp",
       "imageStretched": true,
       "imageAlt": "Drink & Play app mockup",
       "skills": ["UI/UX", "Unity", "C#", "Frontend", "Game Design", "Research And Analysis", "Architecture", "Marketing", "Project Management", "A/B Testing", "User Engagement", "API Integration", "Procedural", "Localization"],
@@ -280,7 +280,7 @@
         "In this project, I undertook a **complete refactor** of an [existing drinking games app](https://play.google.com/store/apps/details?id=com.burtons.ProductName), which involved a comprehensive code review and essential architectural redesigns to enhance scalability and upgrade functionalities.",
         "Even tough my upgrades brought a modularity required to **scale and upgrade** the app, the update was not accepted, but my work laid the groundwork for future enhancements and improvements."
       ],
-      "image": "resources/images/projects/drinkExtreme.png",
+      "image": "resources/images/projects/drinkExtreme.webp",
       "imageStretched": false,
       "imageAlt": "Drink Extreme app mockup",
       "skills": ["Unity", "C#", "Architecture", "Frontend", "Research And Analysis", "Modding", "User Engagement", "Localization"],
@@ -326,7 +326,7 @@
         "*Paper Brawl* is an experimental **tower defense game** that aimed to explore monetization strategies through rapid development. Created in just a week, it faced challenges typical of the genre, which usually demands extensive feature sets.",
         "Despite the time limitations, I managed to program **random world generation**, AI pathfinding, various mechanics, distinct enemies and buildings, ... ultimately releasing the game for free."
       ],
-      "image": "resources/images/projects/paperBrawl.png",
+      "image": "resources/images/projects/paperBrawl.webp",
       "imageStretched": true,
       "imageAlt": "Paper Brawl game screenshot",
       "skills": ["Game Design", "Unity", "C#", "Rapid Development", "Team Collaboration", "Frontend", "Project Management", "UI/UX", "Architecture", "Team Leadership"],
@@ -384,7 +384,7 @@
         "*Thicc Wet Paper Layers* is a **multiplayer game** developed as a university project, which evolved from a local coop concept to an online format due to the COVID-19 pandemic. It has mechanics that later on would be part of the hit *Fall Guys* in a paper world.",
         "The project was a huge learning experience, specially with those aspects related to programming a real-time multiplayer with **physics simulations**."
       ],
-      "image": "resources/images/projects/thiccWetPaperLayers.png",
+      "image": "resources/images/projects/thiccWetPaperLayers.webp",
       "imageStretched": true,
       "imageAlt": "Thicc Wet Paper Layers game screenshot",
       "skills": ["Game Design", "Unity", "C#", "Real-Time Communication", "Team Collaboration", "Frontend", "Backend", "Project Management", "Architecture"],
@@ -419,7 +419,7 @@
         "*Slavery Narrative* is a thought-provoking **prototype** aimed at fostering empathy by immersing players in the life of an African slave in 19th century America. The game utilizes **procedural narratives** that evolve based on player decisions and environmental status.",
         "Inspired by games like *Reigns* and *Spent*, I focused on programming an algorithm capable of dynamically generating meaningful **storytelling** that resonates deeply with players."
       ],
-      "image": "resources/images/projects/slaveryNarrative.png",
+      "image": "resources/images/projects/slaveryNarrative.webp",
       "imageStretched": true,
       "imageAlt": "Slavery Narrative game title",
       "skills": ["Game Design", "Unity", "C#", "Procedural", "Frontend", "Team Collaboration", "Project Management", "Architecture"],
@@ -446,7 +446,7 @@
         "*Musikote* is an **audio-centric game** developed as part of a sound design course. The players move around in a dark environment, relying solely on sound to complete various tasks.",
         "This approach showcases the importance of audio and how many little elements are needed to create gameplay mechanics."
       ],
-      "image": "resources/images/projects/musikote.png",
+      "image": "resources/images/projects/musikote.webp",
       "imageStretched": true,
       "imageAlt": "Musikote game screenshot",
       "skills": ["Game Design", "Unity", "C#", "UI/UX", "Rapid Development", "Frontend", "Team Collaboration", "Architecture"],
@@ -513,7 +513,7 @@
         "In this project, I was responsible for programming interactive activities that enable players to practice mathematical skills in a fun environment, utilizing **gamification techniques** to enhance learning."
       ],
       "skills": ["Game Design", "Unity", "C#", "Frontend", "Team Collaboration", "Architecture", "API Integration"],
-      "image": "resources/images/projects/mathVille.png",
+      "image": "resources/images/projects/mathVille.webp",
       "imageStretched": true,
       "imageAlt": "MathVille game screenshot",
       "links": [
@@ -552,7 +552,7 @@
         "The focus was on **intuitive gameplay mechanics**, minimizing the need for tutorials, and surprisingly, it garnered a dedicated player base who engaged for many long sessions."
       ],
       "skills": ["Game Design", "Rapid Development", "UI/UX", "Unity", "C#", "Frontend", "Team Collaboration", "Project Management", "Architecture", "User Engagement"],
-      "image": "resources/images/projects/ballEvolution.png",
+      "image": "resources/images/projects/ballEvolution.webp",
       "imageStretched": true,
       "imageAlt": "Ball Evolution game screenshot",
       "links": [
@@ -575,7 +575,7 @@
         "This project allowed me to apply the skills I gained from previous projects and solidified my **understanding of the game engine** and integration of external tools such as Google Ads."
       ],
       "skills": ["Unity", "Game Design", "API Integration", "UI/UX", "C#", "Project Management", "Frontend", "Architecture", "Procedural"],
-      "image": "resources/images/projects/woloBall.png",
+      "image": "resources/images/projects/woloBall.webp",
       "imageStretched": true,
       "imageAlt": "WoloBall game screenshot",
       "links": [
@@ -782,7 +782,7 @@
         "*Battleship* is a **recreation of the classic board game** within Minecraft. I developed it as a special project to celebrate my 100th YouTube video, leveraging Minecraft's features for a quick and fun implementation.",
         "I translated the traditional gameplay into Minecraft’s mechanics and user interface, showcasing my ability to quickly create prototypes while adding a unique Minecraft twist to a familiar game."
       ],
-      "image": "resources/images/projects/hundirLaFlota.jpg",
+      "image": "resources/images/projects/hundirLaFlota.webp",
       "imageStretched": true,
       "imageAlt": "Battleship game screenshot",
       "skills": ["Modding", "Game Design", "Rapid Development", "Project Management"],
@@ -801,7 +801,7 @@
         "*The Building Game* is a **Minecraft multiplayer game** where players build structures based on prompts. I created a Spanish localization of the game and adapted it to be playable by 4 players or fewer.",
         "I had to understand how the game was created to localize and modify it, showcasing my ability to reverse engineer and adapt existing projects."
       ],
-      "image": "resources/images/projects/theBuildingGame.jpg",
+      "image": "resources/images/projects/theBuildingGame.webp",
       "imageStretched": true,
       "imageAlt": "The Building Game modification",
       "skills": ["Modding", "Game Design", "Localization", "Reverse Engineering"],
@@ -820,7 +820,7 @@
         "*Zombie Survival 2* is an **updated version of my original zombie defense game** in Minecraft, featuring improved balancing, aesthetics, and gameplay refinements.",
         "I worked on fine-tuning game mechanics and enhancing the visual elements to create a more immersive zombie survival experience, ending with pleasing, polished, and balanced gameplay."
       ],
-      "image": "resources/images/projects/zombieSurvival2.jpg",
+      "image": "resources/images/projects/zombieSurvival2.webp",
       "imageStretched": true,
       "imageAlt": "Zombie Survival 2 gameplay",
       "skills": ["Modding", "Game Design", "Project Management"],
@@ -910,7 +910,7 @@
         "I developed the core gameplay mechanics, game flow, map design, and balance, focusing on creating a fun and engaging experience for players.",
         "The game was well-received and marked my entry into Minecraft game development."
       ],
-      "image": "resources/images/projects/defendYourBase.png",
+      "image": "resources/images/projects/defendYourBase.webp",
       "imageStretched": true,
       "imageAlt": "Defend Your Base gameplay",
       "skills": ["Modding", "Game Design", "Project Management"],
@@ -970,7 +970,7 @@
         "*KSP Usability Improvements* is a **document** outlining suggested improvements to the user experience of the popular game *Kerbal Space Program*.",
         "After spending significant time playing the game, I identified key areas where usability could be enhanced. I compiled these insights into a structured document, which aimed to help both the developers and users enjoy a more intuitive experience. My suggestions focused on improving user interface navigation, controls, and accessibility, addressing issues that many players found cumbersome in the original version."
       ],
-      "image": "resources/images/projects/ksp.jpg",
+      "image": "resources/images/projects/ksp.webp",
       "imageStretched": true,
       "imageAlt": "KSP Marketing Image",
       "skills": ["UI/UX", "Research And Analysis", "Documentation"],
@@ -1103,7 +1103,7 @@
       "date": "2018",
       "title": "Computer Classrooms in Ghana",
       "description": ["A **voluntary project** where I helped bring computers and set up classrooms in Ghanaian schools.", "I refurbished and collected second-hand laptops, aiming to provide students in Ghana with direct access to computers."],
-      "image": "resources/images/projects/ghanaComputers.jpg",
+      "image": "resources/images/projects/ghanaComputers.webp",
       "imageStretched": true,
       "imageAlt": "Promotional image for the project to bring Computers to Ghana's schools",
       "skills": ["NGO Collaboration", "Computer Refurbishing", "Logistics", "Team Collaboration", "Project Management", "Team Leadership"]
@@ -1136,7 +1136,7 @@
         "As a **photography assistant and editor**, I played a key role in setting up environments, assisting Marco Pastori, the photographer, and editing photos to enhance the final results.",
         "The outcome was a **professional portfolio** that helped promote the aesthetic **appeal of luxury hotels through high-quality visual content**."
       ],
-      "image": "resources/images/projects/markopa.jpg",
+      "image": "resources/images/projects/markopa.webp",
       "imageStretched": true,
       "imageAlt": "Photoshoots for Markopa",
       "skills": ["Photography", "Photo Editing", "Team Collaboration"],
