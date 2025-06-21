@@ -307,10 +307,10 @@ export async function displayFilteredWorks() {
         linkElement.rel = "external help";
         const linkImage = document.createElement("img");
         if (link.type) {
-          linkImage.src = "resources/images/icons/" + link.type + ".png";
+          linkImage.src = "resources/images/icons/" + link.type + ".webp";
           linkElement.title = textUtils.capitalizeFirstLetter(link.type, true, true);
         } else {
-          linkImage.src = "resources/images/icons/link.png";
+          linkImage.src = "resources/images/icons/link.webp";
           linkElement.title = "Web";
         }
         linkElement.appendChild(linkImage);

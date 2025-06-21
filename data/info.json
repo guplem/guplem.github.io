@@ -4,7 +4,7 @@
   "name": "Guillem Poy",
   "introduction": "Hi there! I'm **Guillem Poy**\nI'm a **software engineer** and **video games' developer**.",
   "aboutMeTitle": "About Me",
-  "aboutMeImage": "resources/images/miscellany/Guillem-Poy.png",
+  "aboutMeImage": "resources/images/miscellany/Guillem-Poy.webp",
   "aboutMe": [
     "Hi! I'm Guillem, a **passionate software engineer** and **video games' developer** from Barcelona, Spain.",
     "####  Get to know me\nI enjoy learning, exploring new ideas, and integrating **innovative solutions** into my work. My approach blends **technical expertise** with creativity in **problem-solving**. Over the years, I’ve worked across various industries (fintech, social networks, factory processes, IT, ...), always driven by **curiosity** and a desire to deeply understand and improve the challenges I face.\n\nAdventurous and open-minded, I’ve lived in Spain, Belgium, Tanzania, Ghana, and the UK. These experiences have shaped my perspective and fueled my passion for **tackling new challenges head-on**. I’m constantly looking for ways to improve user experiences and **learn new methodologies**, whether that’s in everyday tasks or even more complex areas like rocket science.\n\nIn my spare time, I focus on **personal projects**—often designing games or apps that address real-world problems or simply bring joy. I’m also passionate about volunteering with NGOs, as I believe in using technology to create a **meaningful impact**.",
@@ -13,7 +13,7 @@
   "additionalSections": [
     {
       "title": "About Triunity Studios",
-      "image": "resources/images/miscellany/Triunity-Studios.png",
+      "image": "resources/images/miscellany/Triunity-Studios.webp",
       "imageAlt": "Triunity Studios Logo",
       "content": [
         "#### What is it?\nTriunity Studios is the name I use to sign most of my projects.",
@@ -28,25 +28,25 @@
       "name": "Email",
       "link": "mailto:guplem@gmail.com",
       "text": "guplem@gmail.com",
-      "icon": "resources/images/icons/email.png"
+      "icon": "resources/images/icons/email.webp"
     },
     {
       "name": "LinkedIn",
       "link": "https://www.linkedin.com/in/guplem",
       "text": "Guillem Poy",
-      "icon": "resources/images/icons/linkedin.png"
+      "icon": "resources/images/icons/linkedin.webp"
     },
     {
       "name": "GitHub",
       "link": "https://github.com/guplem",
       "text": "guplem",
-      "icon": "resources/images/icons/github.png"
+      "icon": "resources/images/icons/github.webp"
     },
     {
       "name": "X",
       "link": "https://twitter.com/guplem",
       "text": "@guplem",
-      "icon": "resources/images/icons/x.png"
+      "icon": "resources/images/icons/x.webp"
     }
   ]
 }
