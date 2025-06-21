@@ -7,7 +7,7 @@
       "title": "Boom - Card Game",
       "description": [
         "*Boom* is a **real-time multiplayer card game** for the web, faithfully recreating the tactical gameplay of [the original Boom card game](https://github.com/guplem/boom/blob/main/rules/Physical%20Version/EN.md).",
-        "Built with **RoboJS** and **React**, the project features a robust event-driven architecture that synchronizes the game state across all players, enabling seamless online matches with friends or AI opponents.",
+        "Built with **[RoboJS](https://robojs.dev/)** and **React**, the project features a robust event-driven architecture that synchronizes the game state across all players, enabling seamless online matches with friends or AI opponents.",
         "The game supports both human and AI players, with a modular strategy interface that allows anyone to contribute new AI behaviors.",
         "Key features include persistent room management, synchronized lobbies, and a clear separation between game logic and presentation. The project emphasizes code quality, maintainability, and ease of contribution, making it accessible to both players and developers."
       ],
@@ -27,7 +27,7 @@
       "title": "Web App Template",
       "description": [
         "A **template web application** that provides a simple and efficient starting point for building web applications supporting common features. It can be hosted in the cloud or locally and is accessible from any device via a web browser.",
-        "I selected, tested and documented the setup and examples to streamline the process to configure **RoboJS** with **Vite** and **React**, so database support, real‑time state synchronization, API building, task scheduling, ... and other features are available out of the box.",
+        "I selected, tested and documented the setup and examples to streamline the process to configure **[RoboJS](https://robojs.dev/)** with **Vite** and **React**, so database support, real‑time state synchronization, API building, task scheduling, ... and other features are available out of the box.",
         "The template reduces setup time, streamlined development workflows, and simplified deployment with Docker and Google Cloud, serving as a robust foundation for new projects."
       ],
       "skills": ["JS/TS", "React", "RoboJS", "API Integration", "Real-Time Communication", "Docker", "Frontend", "Backend", "Server Management", "Documentation"],
