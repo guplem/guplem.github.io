@@ -206,8 +206,8 @@ function classifyColor(hex) {
 
 // --- Canvas-Based Season Territory Maps ---
 
-const MAP_HUE_STEPS = 180;
-const MAP_L_STEPS = 80;
+const MAP_HUE_STEPS = 270;
+const MAP_L_STEPS = 120;
 const MAP_L_MAX = 0.95;
 const MAP_L_MIN = 0.15;
 const CHROMA_LEVELS = [0.32, 0.26, 0.21, 0.17, 0.13, 0.09, 0.06, 0.03, 0.01];
@@ -233,6 +233,33 @@ function getPrimarySeason(L, C, H) {
     if (v > bestVal) { best = s; bestVal = v; }
   }
   return best;
+}
+
+/** Combined scoring: returns normalized 0–1 score for a target season and the primary season.
+ *  Computes warmth/lightness/brightness once, avoiding redundant sigmoid calls.
+ *  @param {string} season - target season to score
+ *  @param {number} L
+ *  @param {number} C
+ *  @param {number} H
+ *  @returns {{ score: number, primary: string }} */
+function getSeasonScoreAndPrimary(season, L, C, H) {
+  const w = computeWarmth(H, C);
+  const l = computeLightness(L);
+  const b = computeBrightness(C);
+  const raw = {
+    spring: w * l * b,
+    summer: (1 - w) * l * (1 - b),
+    autumn: w * (1 - l) * (1 - b),
+    winter: (1 - w) * (1 - l) * b,
+  };
+  const total = raw.spring + raw.summer + raw.autumn + raw.winter;
+  const score = total > 0 ? raw[season] / total : 0.25;
+  let best = "spring";
+  let bestVal = 0;
+  for (const [s, v] of Object.entries(raw)) {
+    if (v > bestVal) { best = s; bestVal = v; }
+  }
+  return { score, primary: best };
 }
 
 /** Inline OKLCH → sRGB [r,g,b] 0–255, or null if out of gamut.
@@ -275,34 +302,82 @@ function oklchToRgb255(L, C, H) {
 /** @type {Record<string, ImageData>} */
 const CANVAS_IMAGE_DATA = {};
 
-/** Paint a season's full color territory onto a canvas.
+/** Paint a season's color territory with solid primary zone and faded non-primary aura.
  *  X = Hue (0–360°), Y = Lightness (light at top, dark at bottom).
- *  For each pixel, tries chroma levels high→low and picks the first
- *  that is both in-gamut and classified as this season.
+ *  Primary territory: full opacity (like original). Non-primary: opacity from score.
+ *  A contour line marks the boundary between primary and non-primary zones.
  *  @param {string} season
  *  @param {HTMLCanvasElement} canvas */
-function paintSeasonCanvas(season, canvas) {
+function paintSeasonCanvasMap(season, canvas) {
   canvas.width = MAP_HUE_STEPS;
   canvas.height = MAP_L_STEPS;
   const ctx = canvas.getContext("2d");
   const imageData = ctx.createImageData(MAP_HUE_STEPS, MAP_L_STEPS);
   const data = imageData.data;
 
+  // Track which pixels have this season as primary (for contour pass)
+  const isPrimary = new Uint8Array(MAP_HUE_STEPS * MAP_L_STEPS);
+
   for (let y = 0; y < MAP_L_STEPS; y++) {
     const L = MAP_L_MAX - (y / (MAP_L_STEPS - 1)) * (MAP_L_MAX - MAP_L_MIN);
     for (let x = 0; x < MAP_HUE_STEPS; x++) {
       const H = (x / (MAP_HUE_STEPS - 1)) * 360;
       const idx = (y * MAP_HUE_STEPS + x) * 4;
+      const flatIdx = y * MAP_HUE_STEPS + x;
+
+      // Cascade chroma high→low, looking for a level where this season is primary
+      let painted = false;
+      /** @type {number[] | null} */
+      let fallbackRgb = null;
+      let fallbackC = 0;
 
       for (const C of CHROMA_LEVELS) {
-        if (getPrimarySeason(L, C, H) !== season) continue;
         const rgb = oklchToRgb255(L, C, H);
         if (!rgb) continue;
-        data[idx] = rgb[0];
-        data[idx + 1] = rgb[1];
-        data[idx + 2] = rgb[2];
-        data[idx + 3] = 255;
-        break;
+
+        // Save highest in-gamut color as fallback for non-primary rendering
+        if (!fallbackRgb) { fallbackRgb = rgb; fallbackC = C; }
+
+        if (getPrimarySeason(L, C, H) === season) {
+          isPrimary[flatIdx] = 1;
+          data[idx] = rgb[0];
+          data[idx + 1] = rgb[1];
+          data[idx + 2] = rgb[2];
+          data[idx + 3] = 255;
+          painted = true;
+          break;
+        }
+      }
+
+      // No chroma level matched — render as non-primary with score-based opacity
+      if (!painted && fallbackRgb) {
+        isPrimary[flatIdx] = 0;
+        const { score } = getSeasonScoreAndPrimary(season, L, fallbackC, H);
+        data[idx] = fallbackRgb[0];
+        data[idx + 1] = fallbackRgb[1];
+        data[idx + 2] = fallbackRgb[2];
+        data[idx + 3] = Math.round(Math.pow(score, 0.7) * 255);
+      }
+    }
+  }
+
+  // Second pass: contour line at primary/non-primary boundary
+  for (let y = 0; y < MAP_L_STEPS; y++) {
+    for (let x = 0; x < MAP_HUE_STEPS; x++) {
+      const flatIdx = y * MAP_HUE_STEPS + x;
+      const val = isPrimary[flatIdx];
+      const hasContour =
+        (x > 0 && isPrimary[flatIdx - 1] !== val) ||
+        (x < MAP_HUE_STEPS - 1 && isPrimary[flatIdx + 1] !== val) ||
+        (y > 0 && isPrimary[flatIdx - MAP_HUE_STEPS] !== val) ||
+        (y < MAP_L_STEPS - 1 && isPrimary[flatIdx + MAP_HUE_STEPS] !== val);
+
+      if (hasContour) {
+        const idx = flatIdx * 4;
+        data[idx] = Math.round(data[idx] * 0.35);
+        data[idx + 1] = Math.round(data[idx + 1] * 0.35);
+        data[idx + 2] = Math.round(data[idx + 2] * 0.35);
+        if (data[idx + 3] < 200) data[idx + 3] = 200;
       }
     }
   }
@@ -335,6 +410,11 @@ function readCanvasPixelHex(season, canvas, event) {
   return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase();
 }
 
+// --- Chip Grid Constants ---
+
+const CHIP_HUES = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
+const CHIP_LIGHTNESSES = [0.92, 0.82, 0.72, 0.62, 0.52, 0.42, 0.32, 0.22];
+
 // --- DOM Helpers ---
 
 const hexInput = document.getElementById("hex-input");
@@ -345,54 +425,166 @@ const oklchBreakdown = document.getElementById("oklch-breakdown");
 const affinityBarsContainer = document.getElementById("affinity-bars");
 const seasonGrids = document.querySelectorAll(".season-grid");
 
-/** Create a shared tooltip element for canvas hover. */
+/** Create a shared tooltip element for canvas/chip hover. */
 const canvasTooltip = document.createElement("div");
 canvasTooltip.className = "canvas-tooltip";
 canvasTooltip.hidden = true;
 document.body.appendChild(canvasTooltip);
 
-/** Populate all four palette grids with canvas territory maps. */
+/** @type {"map" | "chips"} */
+let paletteMode = "map";
+
+/** Classify a click/hover hex and scroll to the input section.
+ *  @param {string} hex - with # prefix */
+function classifyFromPalette(hex) {
+  const clean = hex.replace("#", "");
+  hexInput.value = clean;
+  colorPicker.value = hex;
+  updateClassification(clean);
+  document.querySelector(".input-section").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/** Render a season chip grid into the given container.
+ *  @param {string} season
+ *  @param {HTMLElement} container */
+function renderSeasonChips(season, container) {
+  const grid = document.createElement("div");
+  grid.className = "chip-grid";
+
+  for (const L of CHIP_LIGHTNESSES) {
+    for (const H of CHIP_HUES) {
+      let chipHex = null;
+      for (const C of CHROMA_LEVELS) {
+        if (getPrimarySeason(L, C, H) !== season) continue;
+        const hex = oklchToHex(L, C, H);
+        if (hex) { chipHex = hex; break; }
+      }
+
+      const chip = document.createElement("div");
+      if (chipHex) {
+        chip.className = "color-chip";
+        chip.style.backgroundColor = chipHex;
+        chip.dataset.hex = chipHex;
+      } else {
+        chip.className = "color-chip color-chip-empty";
+      }
+      grid.appendChild(chip);
+    }
+  }
+
+  // Event delegation for tooltip + click
+  grid.addEventListener("mousemove", (event) => {
+    const chip = /** @type {HTMLElement} */ (event.target);
+    if (!chip.classList.contains("color-chip") || chip.classList.contains("color-chip-empty")) {
+      canvasTooltip.hidden = true;
+      return;
+    }
+    const hex = chip.dataset.hex;
+    if (hex) {
+      canvasTooltip.hidden = false;
+      canvasTooltip.style.left = `${event.pageX + 12}px`;
+      canvasTooltip.style.top = `${event.pageY - 28}px`;
+      canvasTooltip.textContent = hex;
+      canvasTooltip.style.setProperty("--tooltip-color", hex);
+    }
+  });
+
+  grid.addEventListener("mouseleave", () => {
+    canvasTooltip.hidden = true;
+  });
+
+  grid.addEventListener("click", (event) => {
+    const chip = /** @type {HTMLElement} */ (event.target);
+    if (!chip.classList.contains("color-chip") || chip.classList.contains("color-chip-empty")) return;
+    const hex = chip.dataset.hex;
+    if (hex) classifyFromPalette(hex);
+  });
+
+  container.appendChild(grid);
+}
+
+/** Populate all four palette grids based on current paletteMode. */
 function renderPalettes() {
   const seasons = ["spring", "summer", "autumn", "winter"];
   for (const season of seasons) {
     const container = document.getElementById(`${season}-chips`);
     container.innerHTML = "";
 
-    const canvas = document.createElement("canvas");
-    canvas.className = "color-canvas";
-    paintSeasonCanvas(season, canvas);
+    if (paletteMode === "chips") {
+      renderSeasonChips(season, container);
+    } else {
+      const canvas = document.createElement("canvas");
+      canvas.className = "color-canvas";
+      paintSeasonCanvasMap(season, canvas);
 
-    canvas.addEventListener("mousemove", (event) => {
-      const hex = readCanvasPixelHex(season, canvas, event);
-      if (hex) {
-        canvasTooltip.hidden = false;
-        canvasTooltip.style.left = `${event.pageX + 12}px`;
-        canvasTooltip.style.top = `${event.pageY - 28}px`;
-        canvasTooltip.textContent = hex;
-        canvasTooltip.style.setProperty("--tooltip-color", hex);
-      } else {
+      canvas.addEventListener("mousemove", (event) => {
+        const hex = readCanvasPixelHex(season, canvas, event);
+        if (hex) {
+          canvasTooltip.hidden = false;
+          canvasTooltip.style.left = `${event.pageX + 12}px`;
+          canvasTooltip.style.top = `${event.pageY - 28}px`;
+          canvasTooltip.textContent = hex;
+          canvasTooltip.style.setProperty("--tooltip-color", hex);
+        } else {
+          canvasTooltip.hidden = true;
+        }
+      });
+
+      canvas.addEventListener("mouseleave", () => {
         canvasTooltip.hidden = true;
-      }
-    });
+      });
 
-    canvas.addEventListener("mouseleave", () => {
-      canvasTooltip.hidden = true;
-    });
+      canvas.addEventListener("click", (event) => {
+        const hex = readCanvasPixelHex(season, canvas, event);
+        if (hex) classifyFromPalette(hex);
+      });
 
-    canvas.addEventListener("click", (event) => {
-      const hex = readCanvasPixelHex(season, canvas, event);
-      if (hex) {
-        const clean = hex.replace("#", "");
-        hexInput.value = clean;
-        colorPicker.value = hex;
-        updateClassification(clean);
-        // Scroll back to input area so user sees the result
-        document.querySelector(".input-section").scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
-
-    container.appendChild(canvas);
+      container.appendChild(canvas);
+    }
   }
+}
+
+/** Create the Map / Chips toggle bar and insert it before the palettes section. */
+function renderPaletteModeToggle() {
+  const bar = document.createElement("div");
+  bar.className = "palette-mode-bar";
+
+  const label = document.createElement("span");
+  label.className = "palette-mode-label";
+  label.textContent = "View:";
+
+  const group = document.createElement("div");
+  group.className = "palette-mode-group";
+
+  /** @type {Array<{ id: "map" | "chips", label: string }>} */
+  const modes = [
+    { id: "map", label: "Map" },
+    { id: "chips", label: "Chips" },
+  ];
+
+  for (const mode of modes) {
+    const btn = document.createElement("button");
+    btn.className = "palette-mode-btn";
+    btn.textContent = mode.label;
+    btn.dataset.mode = mode.id;
+    if (mode.id === paletteMode) btn.classList.add("active");
+
+    btn.addEventListener("click", () => {
+      if (paletteMode === mode.id) return;
+      paletteMode = /** @type {"map" | "chips"} */ (mode.id);
+      group.querySelectorAll(".palette-mode-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderPalettes();
+    });
+
+    group.appendChild(btn);
+  }
+
+  bar.appendChild(label);
+  bar.appendChild(group);
+
+  const palettesSection = document.querySelector(".palettes-section");
+  palettesSection.parentNode.insertBefore(bar, palettesSection);
 }
 
 /** Render the four horizontal affinity bars.
@@ -833,6 +1025,7 @@ colorPicker.addEventListener("input", () => {
 
 // --- Init ---
 
+renderPaletteModeToggle();
 renderPalettes();
 renderWizard();
 updateClassification("FF6B35");

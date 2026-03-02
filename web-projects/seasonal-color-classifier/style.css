@@ -221,7 +221,7 @@ main {
 .color-canvas {
   width: 100%;
   height: auto;
-  aspect-ratio: 180 / 80;
+  aspect-ratio: 270 / 120;
   border-radius: 8px;
   cursor: crosshair;
   background: var(--color-bg);
@@ -530,6 +530,90 @@ main {
   gap: 0.75rem;
 }
 
+/* --- Palette Mode Toggle --- */
+
+.palette-mode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.palette-mode-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.palette-mode-group {
+  display: flex;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.palette-mode-btn {
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.palette-mode-btn:not(:last-child) {
+  border-right: 2px solid var(--color-border);
+}
+
+.palette-mode-btn:hover {
+  background: var(--color-border);
+  color: var(--color-text);
+}
+
+.palette-mode-btn.active {
+  background: var(--color-text);
+  color: var(--color-surface);
+}
+
+/* --- Chip Grid --- */
+
+.chip-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3px;
+}
+
+.color-chip {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  cursor: crosshair;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.color-chip:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  position: relative;
+}
+
+.color-chip-empty {
+  border: 2px dashed var(--color-border);
+  background: var(--color-bg);
+  cursor: default;
+}
+
+.color-chip-empty:hover {
+  transform: none;
+  box-shadow: none;
+}
+
 /* --- Responsive --- */
 
 @media (max-width: 640px) {
@@ -564,5 +648,9 @@ main {
 
   .wizard-actions {
     flex-direction: column;
+  }
+
+  .chip-grid {
+    grid-template-columns: repeat(8, 1fr);
   }
 }
