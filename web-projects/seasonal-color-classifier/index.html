@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seasonal Color Classifier</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Seasonal Color Classifier</h1>
+    <p class="subtitle">Enter any color to discover which seasonal palette it belongs to</p>
+  </header>
+
+  <main>
+    <section class="input-section">
+      <div class="input-group">
+        <label for="hex-input">HEX Color</label>
+        <div class="hex-row">
+          <span class="hex-prefix">#</span>
+          <input
+            type="text"
+            id="hex-input"
+            maxlength="6"
+            placeholder="FF6B35"
+            spellcheck="false"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="color-picker">Pick a Color</label>
+        <input type="color" id="color-picker" value="#FF6B35" />
+      </div>
+      <div class="preview-area">
+        <div class="color-swatch" id="color-swatch"></div>
+        <div class="result-text" id="result-text"></div>
+        <div class="oklch-breakdown" id="oklch-breakdown"></div>
+        <div class="affinity-bars" id="affinity-bars"></div>
+      </div>
+    </section>
+
+    <section class="wizard-section" id="wizard-section"></section>
+
+    <section class="palettes-section">
+      <div class="season-grid" id="spring-grid" data-season="spring">
+        <h2>Spring</h2>
+        <p class="season-description">Warm &middot; Light &middot; Bright</p>
+        <div class="color-chips" id="spring-chips"></div>
+      </div>
+      <div class="season-grid" id="summer-grid" data-season="summer">
+        <h2>Summer</h2>
+        <p class="season-description">Cool &middot; Light &middot; Muted</p>
+        <div class="color-chips" id="summer-chips"></div>
+      </div>
+      <div class="season-grid" id="autumn-grid" data-season="autumn">
+        <h2>Autumn</h2>
+        <p class="season-description">Warm &middot; Dark &middot; Muted</p>
+        <div class="color-chips" id="autumn-chips"></div>
+      </div>
+      <div class="season-grid" id="winter-grid" data-season="winter">
+        <h2>Winter</h2>
+        <p class="season-description">Cool &middot; Dark &middot; Bright</p>
+        <div class="color-chips" id="winter-chips"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="classifier.js"></script>
+</body>
+</html>
