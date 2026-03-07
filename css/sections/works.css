@@ -234,6 +234,7 @@
   flex-wrap: wrap;
   gap: 4px;
   padding: 0 var(--sp-md);
+  padding-bottom: var(--sp-sm);
 }
 
 .work .workSkills button {
@@ -290,7 +291,7 @@
 
 /* Card spacing for non-image children */
 .work > :not(img):not(:last-child) {
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 /* Entrance animation for cards */

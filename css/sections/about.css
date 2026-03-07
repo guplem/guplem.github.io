@@ -12,9 +12,8 @@
 
 @media (min-width: 768px) {
   .about-grid {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 200px 1fr;
     gap: var(--sp-2xl);
-    align-items: center;
   }
 }
 
@@ -23,9 +22,16 @@
   justify-self: center;
 }
 
+@media (min-width: 768px) {
+  .about-photo {
+    position: sticky;
+    top: calc(var(--sp-2xl) + 60px);
+  }
+}
+
 .about-photo img {
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);

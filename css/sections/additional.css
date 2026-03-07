@@ -12,13 +12,18 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--sp-xl);
-  align-items: center;
+  align-items: start;
 }
 
 @media (min-width: 768px) {
   .additional-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto 1fr;
     gap: var(--sp-2xl);
+  }
+
+  /* When image comes second (odd sections reverse order) */
+  .additional-grid img:last-child {
+    justify-self: center;
   }
 }
 
@@ -28,12 +33,20 @@
   transition: transform var(--duration-slow) var(--ease-out),
               box-shadow var(--duration-slow) var(--ease-out);
   justify-self: center;
-  max-width: 280px;
+  width: 220px;
+  height: auto;
 }
 
 .additional-grid img:hover {
   transform: scale(1.03);
   box-shadow: var(--shadow-lg);
+}
+
+@media (min-width: 768px) {
+  .additional-grid img {
+    position: sticky;
+    top: calc(var(--sp-2xl) + 60px);
+  }
 }
 
 .additional-text h4 {
