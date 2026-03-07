@@ -77,9 +77,10 @@
 
 /* Collapse behavior */
 #myWorkSkills[collapsed="true"] {
-  max-height: 90px;
+  max-height: 110px;
   overflow: hidden;
   position: relative;
+  padding-bottom: 10px;
   transition: max-height var(--duration-slow) var(--ease-out);
 }
 
