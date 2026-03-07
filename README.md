@@ -11,7 +11,11 @@ Personal portfolio website hosted on GitHub Pages.
 
 ## Local Development
 
-No build step. Serve files with any HTTP server:
+No build step. Serve files with any HTTP server.
+
+**Recommended: [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) for VS Code** — install the extension, right-click `index.html`, and select "Open with Live Server". It auto-reloads the browser on file changes.
+
+Alternatively, from the terminal:
 
 ```bash
 python -m http.server 8000
