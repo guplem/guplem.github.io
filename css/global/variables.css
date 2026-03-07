@@ -6,33 +6,45 @@
 
   --title-color: #1a1a2e;
   --text-color: #2d2d3a;
+  --text-muted: #5a5a6e;
 
   --primary-accent-color: rgb(220 90 0);
+  --primary-accent-rgb: 220, 90, 0;
   --secondary-accent-color: #431c5d;
+  --secondary-accent-rgb: 67, 28, 93;
   --third-accent-color: #38726c;
+  --third-accent-rgb: 56, 114, 108;
   --forth-accent-color: #f7ded1;
 
   /* === Glassmorphism === */
-  --glass-bg: rgba(255, 255, 255, 0.15);
-  --glass-bg-strong: rgba(255, 255, 255, 0.25);
-  --glass-border: rgba(255, 255, 255, 0.35);
-  --glass-blur: 12px;
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.12);
+  --glass-bg-strong: rgba(255, 255, 255, 0.22);
+  --glass-bg-intense: rgba(255, 255, 255, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-border-strong: rgba(255, 255, 255, 0.5);
+  --glass-blur: 16px;
+  --glass-blur-strong: 24px;
 
   /* === Elevation Shadows === */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.04);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 20px rgba(220, 90, 0, 0.15);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 16px 60px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 30px rgba(var(--primary-accent-rgb), 0.15);
+  --shadow-glow-strong: 0 0 50px rgba(var(--primary-accent-rgb), 0.2);
 
   /* === Transitions === */
   --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 400ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-slow: 800ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* === Border Radius === */
+  --radius-xs: 8px;
   --radius-sm: 12px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-xl: 32px;
+  --radius-2xl: 40px;
 }

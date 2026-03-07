@@ -1,16 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-
-/* === Scroll-driven reveal animation === */
-@keyframes fadeSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
 html {
   height: 100%;
@@ -23,12 +11,13 @@ html {
 }
 
 body {
-  background-color: var(--background-dark);
+  background: var(--background-dark);
   font-family: "Inter", "Roboto", sans-serif;
   height: 100%;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 
 img {
@@ -37,23 +26,25 @@ img {
 }
 
 h1 {
-  font-size: 2em;
+  font-size: 2.2em;
+  font-weight: 800;
+  text-align: center;
+  color: var(--title-color);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: 1.8em;
   font-weight: 700;
   text-align: center;
   color: var(--title-color);
   letter-spacing: -0.02em;
-}
-
-h2 {
-  font-size: 1.7em;
-  font-weight: 600;
-  text-align: center;
-  color: var(--title-color);
-  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
 h3 {
-  font-size: 1.5em;
+  font-size: 1.4em;
   font-weight: 600;
   padding-left: 25px;
   padding-right: 25px;
@@ -61,11 +52,12 @@ h3 {
   margin-bottom: 15px;
   text-align: left;
   color: var(--primary-accent-color);
+  letter-spacing: -0.01em;
 }
 
 h4 {
-  font-size: 1.25em;
-  font-weight: 500;
+  font-size: 1.15em;
+  font-weight: 600;
   padding-left: 25px;
   padding-right: 25px;
   margin-top: 20px;
@@ -81,33 +73,51 @@ p {
   margin-bottom: 10px;
   text-align: justify;
   color: var(--text-color);
-  line-height: 1.65;
+  line-height: 1.7;
+  font-size: 0.95em;
 }
 
 a {
   text-decoration: none;
   cursor: pointer;
   color: var(--secondary-accent-color);
-  transition: color var(--transition-fast), filter var(--transition-fast);
+  transition: color var(--transition-fast);
+  position: relative;
 }
 
 a:hover {
   color: var(--primary-accent-color);
-  filter: brightness(1.1);
 }
 
-/* If the link has an image, all the children of the link will have a "floating" animation */
+/* Animated underline on text links (not image links or contact links) */
+p a::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--primary-accent-color), var(--secondary-accent-color));
+  transition: width var(--transition-smooth);
+  border-radius: 1px;
+}
+
+p a:hover::after {
+  width: 100%;
+}
+
+/* Image link hover */
 a:has(img) > * {
   transition: transform var(--transition-smooth), filter var(--transition-smooth);
 }
 
 a:hover:has(img) > * {
   transform: translateY(-5px);
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
 }
 
 /* === Selection highlight === */
 ::selection {
-  background: rgba(220, 90, 0, 0.2);
+  background: rgba(var(--primary-accent-rgb), 0.2);
   color: var(--title-color);
 }

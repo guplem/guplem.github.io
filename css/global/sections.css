@@ -1,7 +1,5 @@
 .section {
-  padding: 0.83em;
-  padding-bottom: 1.66em;
-  animation: fadeSlideUp var(--transition-smooth) both;
+  padding: 1.5em 0.83em 2em;
 }
 
 .sectionContainer {
@@ -28,7 +26,6 @@
     max-width: 70%;
   }
 
-  /* Ensure all elements inside sectionContainer share space equally */
   .sectionContainer > * {
     flex: 1;
   }
@@ -130,6 +127,17 @@
   .sectionContainer > img:first-child:nth-last-child(10) {
     max-width: 6%;
   }
+}
+
+.sectionTitle h1,
+.sectionTitle h2 {
+  position: relative;
+  display: inline-block;
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 0.5em;
 }
 
 .sectionContents h1 {

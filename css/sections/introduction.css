@@ -1,4 +1,4 @@
-/* Introduction must have the same size as the screen */
+/* Introduction — Full viewport hero */
 #introduction {
   display: flex;
   justify-content: center;
@@ -21,27 +21,30 @@
   z-index: -10;
 }
 
+/* Hero text */
 #introduction p,
 #introduction h1 {
-  animation: 1.5s ease 0s 1 SlideFromTop;
+  animation: heroReveal 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   text-align: center;
   vertical-align: middle;
   padding: 5%;
   font-weight: 300;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  font-size: 2.6em;
+  opacity: 0;
 }
 
-@keyframes SlideFromTop {
+@keyframes heroReveal {
   0% {
-    transform: translateY(-60px);
+    transform: translateY(-40px) scale(0.97);
     opacity: 0;
-    filter: blur(8px);
+    filter: blur(12px);
   }
-  30% {
-    opacity: 0;
+  40% {
+    opacity: 0.3;
   }
   100% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
     filter: blur(0);
   }
@@ -50,7 +53,10 @@
 #introduction b,
 #introduction strong {
   color: var(--primary-accent-color);
-  text-shadow: 0 0 40px rgba(220, 90, 0, 0.2);
+  text-shadow:
+    0 0 60px rgba(var(--primary-accent-rgb), 0.25),
+    0 0 120px rgba(var(--primary-accent-rgb), 0.1);
+  font-weight: 700;
 }
 
 /* === Arrow Pointing Down === */
@@ -60,7 +66,7 @@
   z-index: 1;
   opacity: 0;
   bottom: 5%;
-  animation: SlideFromTop 1s ease-out 1.5s forwards, float 4s ease-in-out infinite 2.5s;
+  animation: heroReveal 1s ease-out 1.5s forwards, float 4s ease-in-out infinite 2.5s;
   color: var(--title-color);
   transition: color var(--transition-fast);
 }
@@ -72,8 +78,8 @@
 #arrowPointingDown::before {
   content: "";
   position: absolute;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   background: var(--glass-bg-strong);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
@@ -82,12 +88,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
-  transition: transform var(--transition-spring);
+  transition: transform var(--transition-spring), box-shadow var(--transition-smooth);
   z-index: -1;
 }
 
 #arrowPointingDown:hover::before {
   transform: translate(-50%, -50%) scale(1);
+  box-shadow: 0 0 20px rgba(var(--primary-accent-rgb), 0.15);
 }
 
 @keyframes float {
@@ -97,4 +104,17 @@
   50% {
     bottom: 8%;
   }
+}
+
+/* Gradient fade at bottom of intro to next section */
+#introduction::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to top, var(--background-vivid), transparent);
+  pointer-events: none;
+  z-index: 0;
 }

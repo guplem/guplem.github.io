@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/global/variables.css" />
     <link rel="stylesheet" href="css/global/base.css" />
     <link rel="stylesheet" href="css/global/sections.css" />
+    <link rel="stylesheet" href="css/global/effects.css" />
     <!-- Styles of specific sections -->
     <link rel="stylesheet" href="css/sections/introduction.css" />
     <link rel="stylesheet" href="css/sections/aboutMe.css" />
@@ -22,6 +23,16 @@
   </head>
 
   <body>
+    <!-- Cursor glow follower -->
+    <div id="cursorGlow" aria-hidden="true"></div>
+
+    <!-- Floating ambient orbs -->
+    <div class="ambient-orbs" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
     <div id="introduction">
       <canvas id="simCanvas"></canvas>
       <a id="arrowPointingDown" href="#aboutMe">
@@ -36,7 +47,7 @@
       </a>
     </div>
 
-    <div class="section" id="aboutMe">
+    <div class="section" id="aboutMe" data-reveal>
       <div class="sectionTitle" id="aboutMeTitle"></div>
       <div class="sectionContainer">
         <img class="sectionImage" id="aboutMeImage" />
@@ -50,18 +61,19 @@
         <div id="myWorkTypes"></div>
         <div id="myWorkSkills"></div>
       </div>
-      <div id="myWorkFiltered"></div>
+      <div id="myWorkFiltered" data-reveal-stagger></div>
     </div>
 
-    <div id="additionalSections"></div>
+    <div id="additionalSections" data-reveal-stagger></div>
 
-    <div id="contact">
+    <div id="contact" data-reveal>
       <div id="contactTitle"></div>
-      <div id="contactMethods"></div>
+      <div id="contactMethods" data-reveal-stagger></div>
     </div>
 
     <script type="module" src="js/planetSimulation/simulation.js" defer></script>
     <script type="module" src="js/layoutBuilder/dataFiller.js" defer></script>
     <script type="module" src="js/layoutBuilder/structure.js" defer></script>
+    <script type="module" src="js/effects/init.js" defer></script>
   </body>
 </html>
