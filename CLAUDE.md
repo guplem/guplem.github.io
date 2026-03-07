@@ -41,9 +41,9 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 - `css/global/base.css` — Base typography
 - `css/sections/` — Per-section styles (introduction, works, contact, etc.)
 
-### Embedded Web Projects
+### Web Projects
 
-`web-projects/` contains standalone mini-apps (not integrated into main site): `ChatGPTPong/`, `seasonal-color-classifier/`.
+`web-projects/` contains standalone mini-apps — small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site. See `web-projects/CLAUDE.md` for detailed guidance when working there.
 
 ## Key Patterns and Gotchas
 
