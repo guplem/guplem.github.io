@@ -1,4 +1,0 @@
-Working directory for Doxygen:
-C:/Users/guple/Documents/GitHub/guplem.github.io/Doxygen/Configuration Files
-
-Relative paths are used, so the repositories for "Thoughts", "Essentials", ... must be placed in the same location as the one for "guplem.github.io"
