@@ -30,7 +30,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 | Directory | Purpose |
 |---|---|
-| `js/layoutBuilder/` | Content generation: `dataFiller.js` (JSON→DOM), `structure.js` (layout/resize), `scrollUpdates.js` (scroll events) |
+| `js/layoutBuilder/` | Content generation: `dataFiller.js` (JSON→DOM), `structure.js` (layout/resize) |
 | `js/planetSimulation/` | Canvas-based interactive particle physics background (120 particles, gravity, collisions) |
 | `js/utils/` | `textUtils.js` (markdown→HTML via unified/remark), `uiUtils.js` (DOM helpers) |
 
