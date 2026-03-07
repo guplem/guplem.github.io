@@ -1,5 +1,0 @@
-<map id="Thoughts.Game.Map.MapGenerator.SpawnMapElementsRandomly" name="Thoughts.Game.Map.MapGenerator.SpawnMapElementsRandomly">
-<area shape="rect" id="node1" title="Randomly spawns in the map a given number of MapElements." alt="" coords="5,31,416,57"/>
-<area shape="rect" id="node2" href="$a00386.html#a36915798b012dd0865f61e501d09f00b" title="Checks if a MapElement can be spawned or not in a given position." alt="" coords="464,5,817,32"/>
-<area shape="rect" id="node3" href="$a00386.html#aecb5bde57b11e70570dc6b7d1785197d" title="Makes a map element spawn." alt="" coords="468,56,813,83"/>
-</map>

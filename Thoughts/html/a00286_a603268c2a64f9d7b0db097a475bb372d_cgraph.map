@@ -1,6 +1,0 @@
-<map id="Thoughts.Game.Map.Terrain.HeightMap.GenerateHeightMap" name="Thoughts.Game.Map.Terrain.HeightMap.GenerateHeightMap">
-<area shape="rect" id="node1" title="Generates HeightMap that contains values relative to the height of a terrain" alt="" coords="5,56,376,83"/>
-<area shape="rect" id="node2" href="$a00514.html#afb38ca73e5ee55ec0695ce56d16b7941" title="Generates a perlin noise map of a given width and height." alt="" coords="447,5,745,32"/>
-<area shape="rect" id="node3" href="$a00286.html#a46a783cdcf2282a269a8316420b675c2" title="Returns a [0,1] value containing the intensity of the falloff at a given coords of the terrain" alt="" coords="424,56,768,83"/>
-<area shape="rect" id="node4" href="$a00286.html#ae2a8faff2ec34ae33cac44aa98582520" title="Constructor of a HeightMap that contains values relative to the height of a terrain" alt="" coords="437,107,755,133"/>
-</map>

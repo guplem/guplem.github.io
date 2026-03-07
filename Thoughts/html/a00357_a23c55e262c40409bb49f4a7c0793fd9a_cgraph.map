@@ -1,4 +1,0 @@
-<map id="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.GetRequirementsNotMet" name="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.GetRequirementsNotMet">
-<area shape="rect" id="node1" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="5,5,596,32"/>
-<area shape="rect" id="node2" href="$a00361.html#a4bd684dcc313c0237517b3cc6ac5f556" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="644,5,1207,32"/>
-</map>

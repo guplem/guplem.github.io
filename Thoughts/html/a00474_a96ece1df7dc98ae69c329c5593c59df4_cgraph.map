@@ -1,5 +1,0 @@
-<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.SetupNeedGroups" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.SelectionUI.NeedsUI.SetupNeedGroups">
-<area shape="rect" id="node1" title="Populates the NeedGroupUIs with all the needed elements" alt="" coords="5,5,584,32"/>
-<area shape="rect" id="node2" href="$a00470.html#a23d821b41c5e3fb8488687ae6f83ef3c" title="Displays the attributes of the given MapElement, with the given priority, using as header the given n..." alt="" coords="632,5,1167,32"/>
-<area shape="rect" id="node3" href="$a00354.html#aff62d8e10bcc03b5eab91d57b5b875b5" title="Looks for all the Attributes that have the same level of priority as the given one" alt="" coords="1215,5,1761,32"/>
-</map>

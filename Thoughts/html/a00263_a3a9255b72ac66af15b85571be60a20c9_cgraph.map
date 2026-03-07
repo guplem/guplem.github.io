@@ -1,9 +1,0 @@
-<map id="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.Execute" name="Thoughts.Game.Map.MapElements.Attributes.MapEvents.ExecutionPlan.Execute">
-<area shape="rect" id="node1" title="If possible, executes the MapEvent of this ExecutionPlan with its configuration the amount of times s..." alt="" coords="5,56,500,83"/>
-<area shape="rect" id="node2" href="$a00263.html#a9302126c98ba77244b3a89cbc2cd4cee" title="Determines if all the requirements to execute this ExecutionPlan&#39;s MapElement are met." alt="" coords="548,31,1089,57"/>
-<area shape="rect" id="node7" href="$a00267.html#a5f83cb9633e5c37cab4ce578a250eae7" title="Executes the event applying the consequences of it." alt="" coords="585,81,1053,108"/>
-<area shape="rect" id="node3" href="$a00263.html#a23c55e262c40409bb49f4a7c0793fd9a" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1137,5,1728,32"/>
-<area shape="rect" id="node5" href="$a00263.html#a0a5540534e1ecb80229a675cec79153f" title="Determines if the distance to execute this ExecutionPlan&#39;s MapElement is met." alt="" coords="1167,56,1698,83"/>
-<area shape="rect" id="node4" href="$a00267.html#a4bd684dcc313c0237517b3cc6ac5f556" title="Returns a list of the requirements that are not met at the moment to execute the event,..." alt="" coords="1776,5,2339,32"/>
-<area shape="rect" id="node6" href="$a00267.html#a70e0494bca9e956692cadd2eb32fbb46" title="Indicates if the maximum distance allowed to execute the event is met or not." alt="" coords="1806,56,2309,83"/>
-</map>

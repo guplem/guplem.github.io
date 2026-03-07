@@ -1,5 +1,0 @@
-<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlansUI.Setup" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.ExecutionPlansUI.Setup">
-<area shape="rect" id="node1" title="Displays the given ExecutionPlans in the UI" alt="" coords="1231,5,1787,32"/>
-<area shape="rect" id="node2" href="$a00414.html#a43deae5c2634457c478933f1fe72d4ae" title="Displays the given execution plan in the UI" alt="" coords="568,5,1183,32"/>
-<area shape="rect" id="node3" href="$a00414.html#af71d283ee4ef5daf2e51fec9debd3c53" title="Displays the behavior information regarding the given selected MapElement" alt="" coords="5,5,520,32"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="Thoughts.Game.Map.MapElements.MapElement.UpdateCoroutine" name="Thoughts.Game.Map.MapElements.MapElement.UpdateCoroutine">
-<area shape="rect" id="node1" title="Controls the internal clock of the MapElement." alt="" coords="389,5,793,32"/>
-<area shape="rect" id="node2" href="$a00275.html#a38fe6cacc3395a39b0c56393bffe2fcc" title="Starts running the MapElement&#39;s clock." alt="" coords="5,5,341,32"/>
-</map>

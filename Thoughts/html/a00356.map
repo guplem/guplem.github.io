@@ -1,7 +1,0 @@
-<map id="Thoughts.Game.Map.MapElements.Attributes.Consequence" name="Thoughts.Game.Map.MapElements.Attributes.Consequence">
-<area shape="rect" id="node1" title="Consequence of the execution of a MapEvent" alt="" coords="178,404,549,496"/>
-<area shape="rect" id="node2" href="$a00346.html" title="A quality, characteristic or object ascribed to a MapElement." alt="" coords="5,132,345,341"/>
-<area shape="rect" id="node3" title=" " alt="" coords="36,5,155,83"/>
-<area shape="rect" id="node4" title=" " alt="" coords="179,5,335,83"/>
-<area shape="rect" id="node5" href="$a00362.html" title="An update of the State of a MapElement" alt="" coords="370,191,733,283"/>
-</map>

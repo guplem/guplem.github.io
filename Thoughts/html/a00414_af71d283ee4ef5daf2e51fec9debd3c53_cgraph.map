@@ -1,7 +1,0 @@
-<map id="Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.BehaviorUI.Setup" name="Thoughts.Participants.ControlSystems.Manual.UI.Game.BehaviorUI.BehaviorUI.Setup">
-<area shape="rect" id="node1" title="Displays the behavior information regarding the given selected MapElement" alt="" coords="5,31,520,57"/>
-<area shape="rect" id="node2" href="$a00414.html#a43deae5c2634457c478933f1fe72d4ae" title="Displays the given execution plan in the UI" alt="" coords="573,5,1188,32"/>
-<area shape="rect" id="node4" href="$a00414.html#a686c329b883a6649d7946b1762d59fe8" title="Displays the given Attribute as the objective in the UI" alt="" coords="568,56,1193,83"/>
-<area shape="rect" id="node3" href="$a00418.html#adf55290bd9a26d9d2dfa424cbef056ad" title="Displays the given ExecutionPlans in the UI" alt="" coords="1241,5,1797,32"/>
-<area shape="rect" id="node5" href="$a00490.html#aca03c6ea26b3a9621f9e9073e20ba096" title="Displays the given Attribute in the UI. Disables the GameObject if the Attribute is null." alt="" coords="1272,56,1767,83"/>
-</map>

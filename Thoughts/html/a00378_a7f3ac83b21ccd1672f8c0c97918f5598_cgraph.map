@@ -1,7 +1,0 @@
-<map id="Thoughts.Game.Map.MapElements.MapElement.UpdateObjectiveAttributeToCover" name="Thoughts.Game.Map.MapElements.MapElement.UpdateObjectiveAttributeToCover">
-<area shape="rect" id="node1" title="Sets the objectiveAttributeToCover to the most needy attribute owned by this MapElement." alt="" coords="5,56,503,83"/>
-<area shape="rect" id="node2" href="$a00354.html#aa277c3866b567ac4dd461778768abc38" title="Returns a list of all the AttributeOwnership in this AttributeManager that need care...." alt="" coords="551,5,1111,32"/>
-<area shape="rect" id="node3" href="$a00350.html#af2b05c18286a2d1ac796de15d28bfc0f" title="Indicates whether the attribute has a value of 0 or less and it has been indicated that it is intende..." alt="" coords="1159,31,1628,57"/>
-<area shape="rect" id="node4" href="$a00346.html#ad8856d33d3a33ae8b2dc9923abe4c800" title="Indicates if this Attribute is more prioritary than another given Attribute." alt="" coords="599,107,1062,133"/>
-<area shape="rect" id="node5" href="$a00346.html#ae487be39fb9482723d434d92d292edbb" title="Indicates if this Attribute is considered a Need." alt="" coords="1201,107,1585,133"/>
-</map>

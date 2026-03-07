@@ -1,6 +1,0 @@
-<map id="Thoughts.Game.Map.MapGenerator.SpawnMapElementsWithPerlinNoiseDistribution" name="Thoughts.Game.Map.MapGenerator.SpawnMapElementsWithPerlinNoiseDistribution">
-<area shape="rect" id="node1" title="Spawns a group of MapElements in the map using a pseudo random perlin noise distribution." alt="" coords="5,56,516,83"/>
-<area shape="rect" id="node2" href="$a00463.html#afb38ca73e5ee55ec0695ce56d16b7941" title="Generates a perlin noise map of a given width and height." alt="" coords="592,5,889,32"/>
-<area shape="rect" id="node3" href="$a00287.html#ac0dd6f6a2bbcdb739686cd26eb475fc5" title="Checks if a MapElement can be spawned or not in a given position." alt="" coords="564,56,917,83"/>
-<area shape="rect" id="node4" href="$a00287.html#aecb5bde57b11e70570dc6b7d1785197d" title="Makes a map element spawn." alt="" coords="568,107,913,133"/>
-</map>

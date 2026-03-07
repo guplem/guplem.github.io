@@ -1,5 +1,0 @@
-<map id="Thoughts.Game.Map.MapGenerator.SetupNewNavMeshFor" name="Thoughts.Game.Map.MapGenerator.SetupNewNavMeshFor">
-<area shape="rect" id="node1" title="Sets up the NavMesh the given NavMeshAgent" alt="" coords="791,5,1155,32"/>
-<area shape="rect" id="node2" href="$a00235.html#ad93ae661ab46ae5f8866dca50d92bb92" title=" " alt="" coords="352,5,743,32"/>
-<area shape="rect" id="node3" href="$a00287.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="5,5,304,32"/>
-</map>

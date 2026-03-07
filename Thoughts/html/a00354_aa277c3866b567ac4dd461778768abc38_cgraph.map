@@ -1,4 +1,0 @@
-<map id="Thoughts.Game.Map.MapElements.Attributes.AttributesManager.GetAttributesThatNeedCare" name="Thoughts.Game.Map.MapElements.Attributes.AttributesManager.GetAttributesThatNeedCare">
-<area shape="rect" id="node1" title="Returns a list of all the AttributeOwnership in this AttributeManager that need care...." alt="" coords="5,5,565,32"/>
-<area shape="rect" id="node2" href="$a00350.html#af2b05c18286a2d1ac796de15d28bfc0f" title="Indicates whether the attribute has a value of 0 or less and it has been indicated that it is intende..." alt="" coords="613,5,1083,32"/>
-</map>

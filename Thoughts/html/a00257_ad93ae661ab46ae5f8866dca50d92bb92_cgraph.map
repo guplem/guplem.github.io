@@ -1,8 +1,0 @@
-<map id="Thoughts.Game.Map.HumanoidsGenerator.GenerateHumanoids" name="Thoughts.Game.Map.HumanoidsGenerator.GenerateHumanoids">
-<area shape="rect" id="node1" title=" " alt="" coords="5,56,396,83"/>
-<area shape="rect" id="node2" href="$a00257.html#a9ea006f290f9884e566a9e4ca6b60299" title=" " alt="" coords="462,5,837,32"/>
-<area shape="rect" id="node3" href="$a00377.html#a1e43b6a3bae1defc0bc2d0f24c45407f" title="Sets up the NavMesh the given NavMeshAgent" alt="" coords="467,56,831,83"/>
-<area shape="rect" id="node4" href="$a00377.html#a266f4d9a9825ea1b7e9e7117bfb8255c" title="Randomly spawns in the map a given number of MapElements." alt="" coords="444,107,855,133"/>
-<area shape="rect" id="node5" href="$a00377.html#ac0dd6f6a2bbcdb739686cd26eb475fc5" title="Checks if a MapElement can be spawned or not in a given position." alt="" coords="903,81,1256,108"/>
-<area shape="rect" id="node6" href="$a00377.html#aecb5bde57b11e70570dc6b7d1785197d" title="Makes a map element spawn." alt="" coords="907,132,1252,159"/>
-</map>

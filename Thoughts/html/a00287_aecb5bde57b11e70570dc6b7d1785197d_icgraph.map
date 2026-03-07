@@ -1,8 +1,0 @@
-<map id="Thoughts.Game.Map.MapGenerator.SpawnMapElement" name="Thoughts.Game.Map.MapGenerator.SpawnMapElement">
-<area shape="rect" id="node1" title="Makes a map element spawn." alt="" coords="1349,31,1695,57"/>
-<area shape="rect" id="node2" href="$a00287.html#a266f4d9a9825ea1b7e9e7117bfb8255c" title="Randomly spawns in the map a given number of MapElements." alt="" coords="841,5,1251,32"/>
-<area shape="rect" id="node5" href="$a00287.html#a572e42f9e52c518cb5a78681d19321db" title="Spawns a group of MapElements in the map using a pseudo random perlin noise distribution." alt="" coords="791,56,1301,83"/>
-<area shape="rect" id="node3" href="$a00235.html#ad93ae661ab46ae5f8866dca50d92bb92" title=" " alt="" coords="352,5,743,32"/>
-<area shape="rect" id="node4" href="$a00287.html#a9e7ecd14bfaa4fafa083265f445e0fdd" title="Regenerates the things related to the given creation step" alt="" coords="5,31,304,57"/>
-<area shape="rect" id="node6" href="$a00339.html#a14a33ab84cbf80ee6526d6c25a6073a3" title=" " alt="" coords="355,56,740,83"/>
-</map>
