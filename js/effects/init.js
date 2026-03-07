@@ -12,7 +12,7 @@ const observer = new IntersectionObserver(
       }
     }
   },
-  { threshold: 0.1, rootMargin: "0px 0px -60px 0px" }
+  { threshold: 0, rootMargin: "0px 0px -40px 0px" }
 );
 
 function observe() {
@@ -21,9 +21,9 @@ function observe() {
   });
 }
 
-// Mark key sections for reveal
+// Mark sections for reveal — only ones that start off-screen
 document.addEventListener("DOMContentLoaded", () => {
-  const selectors = ["#aboutMe", "#myWork", "#contact", "#additionalSections .section"];
+  const selectors = ["#aboutMe", "#contact", "#additionalSections .section"];
   for (const sel of selectors) {
     document.querySelectorAll(sel).forEach((el) => el.classList.add("reveal"));
   }

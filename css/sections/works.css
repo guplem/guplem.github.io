@@ -293,16 +293,18 @@
   margin-bottom: 2px;
 }
 
-/* Reveal animation for cards */
-.work {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: cardIn 0.5s var(--ease-out) both;
-}
-
+/* Entrance animation for cards */
 @keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.work {
+  animation: cardIn 0.4s var(--ease-out) both;
 }
