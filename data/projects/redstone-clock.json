@@ -1,0 +1,25 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft"
+  ],
+  "date": "2013",
+  "title": "Redstone Clock",
+  "description": [
+    "*Redstone Clock* is a **digital clock built with Minecraft redstone mechanics**. The project was initially created in survival mode before being reconstructed in creative mode.",
+    "I built this clock as a fun challenge to showcase Minecraft’s logic gates and redstone mechanics.",
+    "This project demonstrated my ability to create functional contraptions and also laid the groundwork for my future Minecraft projects."
+  ],
+  "image": "resources/images/projects/redstoneClock.gif",
+  "imageStretched": true,
+  "imageAlt": "Redstone Clock in Minecraft",
+  "skills": [
+    "Project Management"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/IStbIAZnC3Q"
+    }
+  ]
+}

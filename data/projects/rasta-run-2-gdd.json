@@ -1,0 +1,30 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2018",
+  "title": "Rasta Run 2 (GDD)",
+  "description": [
+    "*Rasta Run 2* is a **Game Design Document**, aimed at refining gameplay mechanics based on feedback from industry professionals.",
+    "I documented various gameplay elements and design ideas, focusing on creating a **robust GDD** that ultimately improved my understanding of game development."
+  ],
+  "skills": [
+    "Game Design",
+    "Documentation",
+    "Research And Analysis",
+    "Project Management",
+    "UI/UX",
+    "Procedural"
+  ],
+  "links": [
+    {
+      "url": "https://docs.google.com/document/d/0B4PKPCjlCHb5NGF1QlQ4NkxyeGc/edit?usp=sharing&ouid=111731709650848839539&resourcekey=0-GW_HBWgkBs9NztsLCkyOZw&rtpof=true&sd=true",
+      "type": "link"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/0B4PKPCjlCHb5b1RJVmVMSklLMTA?resourcekey=0-eF0ofQRECnagKVWldUAZxQ&usp=sharing",
+      "type": "folder"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft"
+  ],
+  "date": "2013",
+  "title": "Redstone Calculator",
+  "description": [
+    "*Redstone Calculator* is a **simple calculator built using Minecraft’s redstone mechanics**. It performs basic arithmetic using redstone logic gates.",
+    "I built this as my first big redstone project, exploring Minecraft’s potential as a tool for logic-based creations, and managed to win a tournament with it.",
+    "This project marked the beginning of my redstone creations and helped me understand the complex mechanics of Minecraft's circuitry."
+  ],
+  "image": "resources/images/projects/redstoneCalculator.gif",
+  "imageStretched": true,
+  "imageAlt": "Redstone Calculator in Minecraft",
+  "skills": [
+    "Project Management"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/YjzGHh6gt3o"
+    }
+  ]
+}

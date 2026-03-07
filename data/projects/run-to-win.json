@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft",
+    "Videogame"
+  ],
+  "date": "2013",
+  "title": "Run to Win",
+  "description": [
+    "*Run to Win* is a **Minecraft racing game** where players face various obstacles along a racetrack.",
+    "I implemented the racing mechanics, game flow and track challenges, creating a fun, competitive experience for players."
+  ],
+  "image": "resources/images/projects/runToWin.gif",
+  "imageStretched": true,
+  "imageAlt": "Run to Win gameplay",
+  "skills": [
+    "Modding",
+    "Game Design",
+    "Project Management"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/SgNT9Fj8BC8"
+    }
+  ]
+}

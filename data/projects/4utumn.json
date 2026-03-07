@@ -1,0 +1,35 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2018",
+  "title": "4utumn",
+  "description": [
+    "*4utumn* is a **social network** I developed as part of a university project. The app allows users to communicate, post texts, follow others, and search for content.",
+    "I worked on the **front-end development**, including visual design, mobile responsiveness, ... The project utilized **Spring**, **Thymeleaf**, and **JavaScript** for dynamic content rendering, providing users with a fluid experience."
+  ],
+  "skills": [
+    "JS/TS",
+    "HTML/CSS",
+    "SQL",
+    "Spring",
+    "Thymeleaf",
+    "UI/UX",
+    "Project Management",
+    "Architecture",
+    "API Integration",
+    "Frontend",
+    "Server Management"
+  ],
+  "links": [
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/4utumn"
+    },
+    {
+      "type": "folder",
+      "url": "https://drive.google.com/drive/folders/1nMqy5DgiauENFJeDq-RHd1bl46rWXzIO?usp=sharing"
+    }
+  ]
+}

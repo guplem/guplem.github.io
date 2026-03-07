@@ -1,0 +1,33 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2015",
+  "title": "Nix",
+  "description": [
+    "*Nix* is my first significant programming project, featuring a **metroidvania style game** where players must overcome various challenges playing as a knight in a platformer world.",
+    "This project helped me learn and internalize core programming principles and set the stage for my later works."
+  ],
+  "skills": [
+    "GameMaker Studio",
+    "Game Design",
+    "Frontend",
+    "Project Management",
+    "UI/UX",
+    "Architecture"
+  ],
+  "image": "resources/images/projects/nix.gif",
+  "imageStretched": false,
+  "imageAlt": "Nix game screenshot",
+  "links": [
+    {
+      "url": "https://drive.google.com/drive/folders/1_PfnPxTW3r5Z4lSumvIwDVuxIqcm4eAf?usp=sharing",
+      "type": "folder"
+    },
+    {
+      "url": "https://github.com/guplem/Nix",
+      "type": "github"
+    }
+  ]
+}

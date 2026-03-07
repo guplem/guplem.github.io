@@ -1,0 +1,28 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft",
+    "Videogame"
+  ],
+  "date": "2013",
+  "title": "Defend Your Base",
+  "description": [
+    "*Defend Your Base* is **the first game I created**, where two teams defend their base while attempting to destroy the enemy’s base.",
+    "I developed the core gameplay mechanics, game flow, map design, and balance, focusing on creating a fun and engaging experience for players.",
+    "The game was well-received and marked my entry into Minecraft game development."
+  ],
+  "image": "resources/images/projects/defendYourBase.webp",
+  "imageStretched": true,
+  "imageAlt": "Defend Your Base gameplay",
+  "skills": [
+    "Modding",
+    "Game Design",
+    "Project Management"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/tu5j3JDH0xg"
+    }
+  ]
+}

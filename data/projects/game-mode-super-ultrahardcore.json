@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft",
+    "Videogame"
+  ],
+  "date": "2014",
+  "title": "Game Mode: Super UltraHardcore",
+  "description": [
+    "*Super Ultra Hardcore* is a **Minecraft gameplay mod** that introduces an ultra-challenging survival mode. Players have only one life and face tougher enemies, with their scores tracked in a unique scoring system.",
+    "I designed the gameplay mechanics to increase difficulty and enhance player engagement, offering a more intense survival experience."
+  ],
+  "image": "resources/images/projects/suhm.gif",
+  "imageStretched": true,
+  "imageAlt": "Super Ultra Hardcore gameplay",
+  "skills": [
+    "Modding",
+    "Game Design",
+    "Project Management"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/g_yjptZEbyA"
+    }
+  ]
+}

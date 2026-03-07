@@ -1,0 +1,30 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App"
+  ],
+  "date": "2021",
+  "title": "Cheering",
+  "description": [
+    "*Cheering* is a simple app designed to uplift team spirits by allowing users to **create various noises without traditional cheering tools**. Developed in just a few hours, it provides a user-friendly interface for setting up speakers and playing many audio tracks.",
+    "The app features customizable sound effects that can be manually triggered. My focus was on implementing a very **responsive audio management system**, able to quickly play many audio channels at the same time."
+  ],
+  "skills": [
+    "Unity",
+    "C#",
+    "UI/UX",
+    "Frontend",
+    "Rapid Development",
+    "Architecture"
+  ],
+  "links": [
+    {
+      "type": "folder",
+      "url": "https://drive.google.com/drive/folders/1PLLpkq04OxXn47WklAQhHMQUFqE_Gsk4?usp=sharing"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/TS21-Cheering"
+    }
+  ]
+}

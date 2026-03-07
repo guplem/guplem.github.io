@@ -1,0 +1,30 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App"
+  ],
+  "date": "2022",
+  "title": "Kedo",
+  "description": [
+    "*Kedo* is a **social networking platform** that enables users to create, search, and share plans, fostering connections and collaborative activities. I was tasked with transforming a basic idea into a **fully functional prototype**, managing tight budget and timeline constraints.",
+    "I handled the complete development lifecycle, focusing on UI/UX, frontend development, and backend integration through Back4App for **rapid deployment and scalability**. Key features included user search, real-time chat, and personalized plan recommendations, all designed to enhance user engagement while meeting all the requirements."
+  ],
+  "image": "resources/images/projects/kedo.webp",
+  "imageStretched": true,
+  "imageAlt": "Kedo app mockup",
+  "skills": [
+    "Flutter/Dart",
+    "UI/UX",
+    "Backend",
+    "Frontend",
+    "Data Management",
+    "Rapid Development",
+    "Real-Time Communication",
+    "User Engagement",
+    "Project Management",
+    "Architecture",
+    "API Integration",
+    "Server Management",
+    "Localization"
+  ]
+}

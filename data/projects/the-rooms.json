@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft",
+    "Videogame"
+  ],
+  "date": "2013",
+  "title": "The Rooms",
+  "description": [
+    "*The Rooms* is a **collaborative Minecraft map** where players face challenges in different rooms. It was one of my first joint projects with other content creators.",
+    "We developed the map, focusing on creating challenging, engaging, and cooperative gameplay mechanics, while trying to avoid discrepancies between the different sections developed by each member."
+  ],
+  "image": "resources/images/projects/theRooms.gif",
+  "imageStretched": true,
+  "imageAlt": "The Rooms Minecraft map",
+  "skills": [
+    "Modding",
+    "Team Collaboration",
+    "Game Design"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/xN4IEYy9JII"
+    }
+  ]
+}

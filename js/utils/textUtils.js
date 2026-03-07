@@ -35,6 +35,30 @@ export async function fetchJsonData(url) {
   return data;
 }
 
+// Cache for the assembled works data
+/** @type {{ title: string, works: any[] } | null} */
+let _worksDataCached = null;
+
+/**
+ * Load all works by reading the project manifest and fetching each project file.
+ * Returns an object compatible with the old myWork.json format: { title, works }
+ * @returns {Promise<{ title: string, works: any[] }>}
+ */
+export async function fetchAllWorks() {
+  if (_worksDataCached) {
+    return _worksDataCached;
+  }
+
+  const manifest = await fetchJsonData("../data/projects/index.json");
+  const projectPromises = manifest.projects.map(
+    /** @param {string} filename */ (filename) => fetchJsonData(`../data/projects/${filename}`)
+  );
+  const works = await Promise.all(projectPromises);
+
+  _worksDataCached = { title: manifest.title, works };
+  return _worksDataCached;
+}
+
 /**
  * Capitalize the first letter of a string
  * @param {string} string

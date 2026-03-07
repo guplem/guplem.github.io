@@ -1,0 +1,28 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2024",
+  "title": "Mindflow",
+  "description": [
+    "*Mindflow* is a **simulation game** where players take on the role of a God, manipulating the needs and properties of objects to shape relationships, life goals, and entire ecosystems based on Maslow's pyramid of needs.",
+    "I worked solo on this project that was originally conceived as *Thoughts*, but was completely overhauled to adopt a **data architecture inspired by Wikidata**, enhancing its complexity and depth."
+  ],
+  "skills": [
+    "Game Design",
+    "Frontend",
+    "Unity",
+    "C#",
+    "Architecture",
+    "Project Management",
+    "UI/UX",
+    "Data Management"
+  ],
+  "links": [
+    {
+      "url": "https://github.com/guplem/Mindflow",
+      "type": "github"
+    }
+  ]
+}

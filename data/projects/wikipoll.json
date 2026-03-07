@@ -1,0 +1,34 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2022",
+  "title": "WikiPoll",
+  "description": [
+    "*WikiPoll* is a **web app** that allows users to rank articles from **Wikidata** based on their opinions. The app generates comparative polls from tens of thousands of entries, letting users rank topics such as people, cities, literary genres, and more.",
+    "As the sole developer, I integrated **Wikidata's API**, designed the front-end interface, and created dynamic ranking algorithms. This project served as my **final thesis** for my computer engineering degree.",
+    "The app empowers users to create rankings based on personal preferences, offering a unique data-driven interaction with Wikidata's vast repository."
+  ],
+  "image": "resources/images/projects/wikiPoll.webp",
+  "imageStretched": true,
+  "imageAlt": "Two choices presented in WikiPoll",
+  "skills": [
+    "Flutter/Dart",
+    "API Integration",
+    "Frontend",
+    "Backend",
+    "Data Management",
+    "Server Management",
+    "Data Visualization",
+    "Data Analysis",
+    "Architecture",
+    "Research And Analysis",
+    "CI/CD"
+  ],
+  "links": [
+    {
+      "url": "https://wikipoll.b4a.app/#/"
+    }
+  ]
+}

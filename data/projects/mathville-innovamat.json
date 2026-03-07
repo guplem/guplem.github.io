@@ -1,0 +1,30 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2018",
+  "title": "MathVille — Innovamat",
+  "description": [
+    "*MathVille* is an **educational game platform** designed to transform math education through engaging gameplay that aligns with learning objectives.",
+    "In this project, I was responsible for programming interactive activities that enable players to practice mathematical skills in a fun environment, utilizing **gamification techniques** to enhance learning."
+  ],
+  "skills": [
+    "Game Design",
+    "Unity",
+    "C#",
+    "Frontend",
+    "Team Collaboration",
+    "Architecture",
+    "API Integration"
+  ],
+  "image": "resources/images/projects/mathVille.webp",
+  "imageStretched": true,
+  "imageAlt": "MathVille game screenshot",
+  "links": [
+    {
+      "url": "https://www.innovamat.com/",
+      "type": "link"
+    }
+  ]
+}

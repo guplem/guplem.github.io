@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Portfolio Project",
+  "description": "A single project entry for the portfolio site",
+  "type": "object",
+  "required": ["types", "date", "title", "description", "skills"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional JSON Schema reference for editor support"
+    },
+    "types": {
+      "type": "array",
+      "description": "Project categories used for type filtering",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "examples": [["Web"], ["Mobile App"], ["Games"], ["Misceallaneous"]]
+    },
+    "date": {
+      "type": "string",
+      "description": "Year or date range displayed on the card (e.g. \"2025\", \"2023-2024\")"
+    },
+    "title": {
+      "type": "string",
+      "description": "Project title. Used for display, element IDs (via idFromText), and the card heading"
+    },
+    "description": {
+      "type": "array",
+      "description": "Array of markdown paragraphs. Each element becomes a separate paragraph. Structure: concept, role/tech, outcome. Keep short and direct.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "image": {
+      "type": "string",
+      "description": "Path to the project image (relative to site root, e.g. \"resources/images/projects/name.webp\")"
+    },
+    "imageStretched": {
+      "type": "boolean",
+      "description": "Whether the image should be stretched to fill the card width. Defaults to true if omitted."
+    },
+    "imageAlt": {
+      "type": "string",
+      "description": "Alt text for the project image. Falls back to \"Image for {title}\" if omitted."
+    },
+    "skills": {
+      "type": "array",
+      "description": "Technologies and skills used. Appear as filter buttons on the card. Must match existing skill names for consistent filtering (check other projects for spelling).",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "links": {
+      "type": "array",
+      "description": "External links shown as icons on the card. First link is also used as the title click target.",
+      "items": {
+        "type": "object",
+        "required": ["url"],
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Link icon type. Must match a filename in resources/images/icons/{type}.webp. Common values: \"github\", \"google-play\". Omit for a generic link icon.",
+            "examples": ["github", "google-play"]
+          },
+          "url": {
+            "type": "string",
+            "description": "Full URL to the external resource",
+            "format": "uri"
+          }
+        }
+      }
+    }
+  }
+}

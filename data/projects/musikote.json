@@ -1,0 +1,43 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2019",
+  "title": "Musikote",
+  "description": [
+    "*Musikote* is an **audio-centric game** developed as part of a sound design course. The players move around in a dark environment, relying solely on sound to complete various tasks.",
+    "This approach showcases the importance of audio and how many little elements are needed to create gameplay mechanics."
+  ],
+  "image": "resources/images/projects/musikote.webp",
+  "imageStretched": true,
+  "imageAlt": "Musikote game screenshot",
+  "skills": [
+    "Game Design",
+    "Unity",
+    "C#",
+    "UI/UX",
+    "Rapid Development",
+    "Frontend",
+    "Team Collaboration",
+    "Architecture"
+  ],
+  "links": [
+    {
+      "url": "resources/deliverables/Musikote.zip",
+      "type": "download"
+    },
+    {
+      "url": "https://youtu.be/wD7JrdHFuSg",
+      "type": "play"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/1Hem6b6BXF7HEXUcIz4lMdBOATSNFO-dA?usp=sharing",
+      "type": "folder"
+    },
+    {
+      "url": "https://github.com/guplem/Musikote",
+      "type": "github"
+    }
+  ]
+}

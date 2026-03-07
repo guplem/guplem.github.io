@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft",
+    "Videogame"
+  ],
+  "date": "2013",
+  "title": "Zombie Survival",
+  "description": [
+    "*Zombie Survival* is a **Minecraft defense game** inspired by *Call of Duty's Zombies* mode, where players defend against waves of zombies.",
+    "I focused on the core mechanics around wave-based combat and defense strategies while ensuring a challenging yet enjoyable experience for players, while also creating a visually appealing environment."
+  ],
+  "image": "resources/images/projects/zombieSurvival.gif",
+  "imageStretched": true,
+  "imageAlt": "Zombie Survival gameplay",
+  "skills": [
+    "Modding",
+    "Game Design",
+    "Project Management"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/chfp5sMP97o"
+    }
+  ]
+}

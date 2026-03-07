@@ -1,0 +1,24 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2021",
+  "title": "P&G Process Digitization",
+  "description": [
+    "The product I worked on is an **internal web application** created to streamline factory data collection processes previously handled manually.",
+    "While working for **P&G Belgium**, I was tasked with updating and digitizing their data collection processes. This included building an intuitive web app using **ThingWorx**, focusing on usability and responsiveness to ensure the factory's daily and shift reports could be easily accessed in real-time.",
+    "The app played a key role in improving workflow efficiency and ensuring accurate reporting."
+  ],
+  "skills": [
+    "ThingWorx",
+    "Data Visualization",
+    "Data Management",
+    "Team Collaboration",
+    "Architecture",
+    "Frontend",
+    "Backend",
+    "SQL",
+    "NoSQL"
+  ]
+}

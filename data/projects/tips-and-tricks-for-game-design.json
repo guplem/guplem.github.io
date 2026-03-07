@@ -1,0 +1,24 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame",
+    "Misceallaneous"
+  ],
+  "date": "2018",
+  "title": "Tips and Tricks for Game Design",
+  "description": [
+    "*Tips and Tricks for Game Design* is a *guidebook* of advice compiled from my personal experience and academic background.",
+    "This project, although abandoned, was intended to provide a structured collection of tips for anyone looking to design engaging video games. Drawing from university coursework and personal practice, it covered everything from mechanics to user engagement strategies."
+  ],
+  "skills": [
+    "Game Design",
+    "Documentation",
+    "Research And Analysis"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://docs.google.com/document/d/1fUtvopLrGSoHb14Pt6UKFmeysY-_v-YkvUovPJOs5GI/edit?usp=sharing"
+    }
+  ]
+}

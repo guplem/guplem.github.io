@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft",
+    "Videogame"
+  ],
+  "date": "2013",
+  "title": "Fortress Warfare",
+  "description": [
+    "*Fortress Warfare* is a custom **Minecraft game** where players build fortresses to protect a special item while attempting to steal the enemy’s item.",
+    "I designed the multiplayer gameplay flow, time control, team management, and even in-game background music to create a more immersive and competitive experience, with team-based strategies being a key aspect."
+  ],
+  "image": "resources/images/projects/guerraDeFortines.gif",
+  "imageStretched": true,
+  "imageAlt": "Fortress Warfare gameplay",
+  "skills": [
+    "Modding",
+    "Game Design",
+    "Project Management"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/wZCMXTiXtJc"
+    }
+  ]
+}

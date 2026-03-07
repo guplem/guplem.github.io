@@ -1,0 +1,28 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft",
+    "Videogame"
+  ],
+  "date": "2013",
+  "title": "The Building Game (Contribution)",
+  "description": [
+    "*The Building Game* is a **Minecraft multiplayer game** where players build structures based on prompts. I created a Spanish localization of the game and adapted it to be playable by 4 players or fewer.",
+    "I had to understand how the game was created to localize and modify it, showcasing my ability to reverse engineer and adapt existing projects."
+  ],
+  "image": "resources/images/projects/theBuildingGame.webp",
+  "imageStretched": true,
+  "imageAlt": "The Building Game modification",
+  "skills": [
+    "Modding",
+    "Game Design",
+    "Localization",
+    "Reverse Engineering"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/rgdT4w7Q5jA"
+    }
+  ]
+}

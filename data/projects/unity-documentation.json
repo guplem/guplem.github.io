@@ -1,0 +1,29 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Misceallaneous"
+  ],
+  "date": "2019",
+  "title": "Unity Documentation",
+  "description": [
+    "Unity Documentation is a structured guide I created to help developers follow best practices when using Unity.",
+    "Throughout my development career, I often found myself searching for Unity’s best practices. So, I decided to compile a comprehensive guide that blends my own insights with external resources. This guide is designed to help both new and experienced developers maintain efficient workflows and avoid common pitfalls.",
+    "The document is available online for free, and it is regularly consulted by developers in their game development journeys."
+  ],
+  "skills": [
+    "Documentation",
+    "Unity",
+    "C#",
+    "Research And Analysis"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://docs.google.com/document/d/1lQQctdAHYYky9-7DKE6PGhcB72Dc91xfO6J7vdHxMmU/edit?usp=sharing"
+    },
+    {
+      "type": "folder",
+      "url": "https://drive.google.com/drive/folders/18qJXKlyGcxKAjCU1jZdQRBfCS5IMeUe9?usp=sharing"
+    }
+  ]
+}

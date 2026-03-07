@@ -1,0 +1,37 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2017",
+  "title": "Ball Evolution",
+  "description": [
+    "*Ball Evolution* is an **attention-retention game** that explores psychological effects related to addiction, developed in under 48 hours.",
+    "The focus was on **intuitive gameplay mechanics**, minimizing the need for tutorials, and surprisingly, it garnered a dedicated player base who engaged for many long sessions."
+  ],
+  "skills": [
+    "Game Design",
+    "Rapid Development",
+    "UI/UX",
+    "Unity",
+    "C#",
+    "Frontend",
+    "Team Collaboration",
+    "Project Management",
+    "Architecture",
+    "User Engagement"
+  ],
+  "image": "resources/images/projects/ballEvolution.webp",
+  "imageStretched": true,
+  "imageAlt": "Ball Evolution game screenshot",
+  "links": [
+    {
+      "url": "resources/deliverables/Ball Evolution.apk",
+      "type": "download"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/0B4PKPCjlCHb5dXhfMmwyTkZHc28?resourcekey=0-W5qJyhAf3SlS1cBah6DnTA&usp=sharing",
+      "type": "folder"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App"
+  ],
+  "date": "2022",
+  "title": "TheBigFamily Jobs App",
+  "description": [
+    "*TheBigFamily Jobs App* is designed to **connect Ukrainian refugees** with potential employers through a streamlined and intuitive interface. It allows users to match with job opportunities by answering just ten questions.",
+    "I built this app integrating an automated form submission system that syncs responses directly with Google Forms. This approach significantly **simplified data management** for the [NGO](https://www.thebigfamily.app/), while enhancing user trust by providing a secure and user-friendly platform for the refugee community."
+  ],
+  "image": "resources/images/projects/theBigFamilyJobsApp.webp",
+  "imageStretched": true,
+  "imageAlt": "TheBigFamily Jobs App mockup",
+  "skills": [
+    "Flutter/Dart",
+    "API Integration",
+    "Frontend",
+    "UI/UX",
+    "Rapid Development",
+    "NGO Collaboration",
+    "Project Management",
+    "Architecture",
+    "User Engagement",
+    "Localization"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://play.google.com/store/apps/details?id=com.the_big_family.app_jobs"
+    }
+  ]
+}

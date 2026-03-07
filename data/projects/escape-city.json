@@ -1,0 +1,23 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App",
+    "Videogame"
+  ],
+  "date": "2018",
+  "title": "Escape City",
+  "description": [
+    "*Escape City* is an **interactive quiz app** designed as a central tool for a citywide gymkhana for kids, promoting fun and educational experiences. I developed the app based on specific requirements from event organizers, allowing participants to answer questions and progress through various stages of the game.",
+    "Upon completion, the app automatically compiled and sent an email with **performance data** to the organizers, facilitating event management at the same time as player engagement."
+  ],
+  "skills": [
+    "Unity",
+    "C#",
+    "UI/UX",
+    "Frontend",
+    "Project Management",
+    "Data Management",
+    "Architecture",
+    "API Integration"
+  ]
+}

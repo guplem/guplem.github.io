@@ -1,0 +1,38 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App",
+    "Videogame"
+  ],
+  "date": "2020",
+  "title": "Drink & Play",
+  "description": [
+    "*Drink & Play* is a **collection of festive games** designed to enhance social gatherings and dynamize parties. My goal was to improve upon existing drinking apps by introducing unique design elements and features that prioritize scalability and user experience.",
+    "I conducted extensive competitor analysis to identify and address shortcomings in other apps, which informed my approach to feature development and UI/UX design. The app was a success, evidential by the number of requests I received to publish it in various app stores."
+  ],
+  "image": "resources/images/projects/drinkAndPlay.webp",
+  "imageStretched": true,
+  "imageAlt": "Drink & Play app mockup",
+  "skills": [
+    "UI/UX",
+    "Unity",
+    "C#",
+    "Frontend",
+    "Game Design",
+    "Research And Analysis",
+    "Architecture",
+    "Marketing",
+    "Project Management",
+    "A/B Testing",
+    "User Engagement",
+    "API Integration",
+    "Procedural",
+    "Localization"
+  ],
+  "links": [
+    {
+      "url": "resources/deliverables/Drink & Play.apk",
+      "type": "download"
+    }
+  ]
+}

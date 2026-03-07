@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Misceallaneous"
+  ],
+  "date": "2019",
+  "title": "Genetic Evolution Simulation",
+  "description": [
+    "*Genetic Evolution Simulation* is a Unity-based **simulation that models the evolution** of virtual species through random mutations.",
+    "In this project, I created a simulation where species evolve over time within a confined space. The organisms undergo random mutations and compete for limited resources, resulting in a dynamic ecosystem where only the fittest species survive.",
+    "*The ecosystem would typically collapse due to overconsumption of resources once a species becomes too prolific.*"
+  ],
+  "skills": [
+    "Unity",
+    "C#",
+    "Genetic Algorithms",
+    "AI Integration",
+    "Rapid Development",
+    "Frontend"
+  ],
+  "links": [
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/ProjectTS17-GeneticEvolution"
+    }
+  ]
+}

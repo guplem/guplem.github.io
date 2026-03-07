@@ -1,0 +1,32 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2025",
+  "title": "Boom - Card Game",
+  "description": [
+    "*Boom* is a **real-time multiplayer card game** for the web, faithfully recreating the tactical gameplay of [the original Boom card game](https://github.com/guplem/boom/blob/main/rules/Physical%20Version/EN.md).",
+    "Built with **[RoboJS](https://robojs.dev/)** and **React**, the project features a robust event-driven architecture that synchronizes the game state across all players, enabling seamless online matches with friends or AI opponents.",
+    "The game supports both human and AI players, with a modular strategy interface that allows anyone to contribute new AI behaviors.",
+    "Key features include persistent room management, synchronized lobbies, and a clear separation between game logic and presentation. The project emphasizes code quality, maintainability, and ease of contribution, making it accessible to both players and developers."
+  ],
+  "image": "resources/images/projects/boom.webp",
+  "imageAlt": "Boom Logo",
+  "skills": [
+    "JS/TS",
+    "React",
+    "RoboJS",
+    "API Integration",
+    "Real-Time Communication",
+    "Docker",
+    "Frontend",
+    "Documentation"
+  ],
+  "links": [
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/boom"
+    }
+  ]
+}

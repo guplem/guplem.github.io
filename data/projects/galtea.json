@@ -1,0 +1,44 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2025",
+  "title": "Galtea",
+  "description": [
+    "*Galtea* is a **SaaS platform for AI evaluation and governance** that ensures generative AI models behave correctly, safely, and comply with regulations before deployment.",
+    "As a **founding engineer**, I lead front‑end development (dashboard, landing page, blog, documentation, ...) and contributed to the Python SDK and backend while driving key architecture and design decisions.",
+    "Built from scratch by a *lean team* and powered by [Barcelona Supercomputing Center’s MareNostrum 5](https://www.bsc.es/marenostrum/marenostrum-5) infrastructure, the platform enables **fast, customizable AI testing** and accelerates safe AI deployment for enterprise clients."
+  ],
+  "image": "resources/images/projects/galtea.webp",
+  "imageAlt": "Galtea Slogan",
+  "skills": [
+    "React",
+    "Express",
+    "Prisma",
+    "Node.js",
+    "JS/TS",
+    "Python",
+    "API Integration",
+    "AI Integration",
+    "AI Governance",
+    "UI/UX",
+    "SaaS",
+    "Architecture",
+    "Jekyll",
+    "Mintlify",
+    "Frontend",
+    "Docker",
+    "Backend",
+    "Grafana",
+    "Data Visualization",
+    "Data Analysis",
+    "Documentation"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://galtea.ai/"
+    }
+  ]
+}

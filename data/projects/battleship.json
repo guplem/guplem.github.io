@@ -1,0 +1,28 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft",
+    "Videogame"
+  ],
+  "date": "2013",
+  "title": "Battleship",
+  "description": [
+    "*Battleship* is a **recreation of the classic board game** within Minecraft. I developed it as a special project to celebrate my 100th YouTube video, leveraging Minecraft's features for a quick and fun implementation.",
+    "I translated the traditional gameplay into Minecraft’s mechanics and user interface, showcasing my ability to quickly create prototypes while adding a unique Minecraft twist to a familiar game."
+  ],
+  "image": "resources/images/projects/hundirLaFlota.webp",
+  "imageStretched": true,
+  "imageAlt": "Battleship game screenshot",
+  "skills": [
+    "Modding",
+    "Game Design",
+    "Rapid Development",
+    "Project Management"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/j-Iw6I-329Q"
+    }
+  ]
+}

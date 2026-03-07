@@ -20,9 +20,12 @@ No tests, no linter, no package manager configured.
 
 All portfolio content lives in JSON files — never edit HTML to change content:
 - `data/info.json` — Site metadata, personal info, contact details
-- `data/myWork.json` — Portfolio projects (title, date, description, skills, types, links, images)
+- `data/projects/index.json` — Manifest of all project filenames
+- `data/projects/*.json` — One file per portfolio project (conforms to `data/schemas/project.schema.json`)
 
-`js/layoutBuilder/dataFiller.js` fetches JSON at page load, converts markdown fields to HTML, and populates the DOM dynamically.
+See `data/CLAUDE.md` for field reference and detailed guidance.
+
+`js/layoutBuilder/dataFiller.js` orchestrates page rendering at load time, delegating to focused modules. `textUtils.fetchAllWorks()` loads all projects from the manifest.
 
 ### JavaScript Module System
 
@@ -30,7 +33,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 | Directory | Purpose |
 |---|---|
-| `js/layoutBuilder/` | Content generation: `dataFiller.js` (JSON→DOM), `structure.js` (layout/resize) |
+| `js/layoutBuilder/` | Content generation — see `js/layoutBuilder/CLAUDE.md` for module breakdown |
 | `js/planetSimulation/` | Canvas-based interactive particle physics background (120 particles, gravity, collisions) |
 | `js/utils/` | `textUtils.js` (markdown→HTML via unified/remark), `uiUtils.js` (DOM helpers) |
 
@@ -55,7 +58,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Masonry layout:** Work cards use JS-based column balancing (not CSS Grid). `displayFilteredWorks()` recalculates on resize (debounced 100ms).
 
-**Adding a new project:** Add an entry to `data/myWork.json`. The `Prompts/` directory contains example prompts showing the expected description structure (concept → role → outcome, short and direct). Optional fields (`image`, `imageStretched`, `imageAlt`, `links`) are gracefully skipped if absent.
+**Adding a new project:** Create a JSON file in `data/projects/`, add it to `data/projects/index.json`, and follow the schema in `data/schemas/project.schema.json`. See `data/CLAUDE.md` for the full process and description writing guidelines.
 
 ## Deployment
 

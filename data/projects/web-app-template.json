@@ -1,0 +1,31 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2025",
+  "title": "Web App Template",
+  "description": [
+    "A **template web application** that provides a simple and efficient starting point for building web applications supporting common features. It can be hosted in the cloud or locally and is accessible from any device via a web browser.",
+    "I selected, tested and documented the setup and examples to streamline the process to configure **[RoboJS](https://robojs.dev/)** with **Vite** and **React**, so database support, real‑time state synchronization, API building, task scheduling, ... and other features are available out of the box.",
+    "The template reduces setup time, streamlined development workflows, and simplified deployment with Docker and Google Cloud, serving as a robust foundation for new projects."
+  ],
+  "skills": [
+    "JS/TS",
+    "React",
+    "RoboJS",
+    "API Integration",
+    "Real-Time Communication",
+    "Docker",
+    "Frontend",
+    "Backend",
+    "Server Management",
+    "Documentation"
+  ],
+  "links": [
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/robo-base"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame",
+    "Misceallaneous"
+  ],
+  "date": "2020",
+  "title": "World Playground",
+  "description": [
+    "*World Playground* is a **procedural world generation** project focused on creating infinite voxel-based landscapes.",
+    "In this project, I set out to recreate a procedurally generated world with dynamic chunk loading, optimized mesh creation, and multiple biomes.",
+    "It helped me learn about the complexities of world generation, mesh generation, terrain optimization, and **multithreading** in game engines..."
+  ],
+  "image": "resources/images/projects/worldPlayground.gif",
+  "imageStretched": true,
+  "imageAlt": "World Playground procedural generation demo",
+  "skills": [
+    "Unity",
+    "C#",
+    "Procedural",
+    "Architecture",
+    "Multithreading",
+    "Frontend"
+  ],
+  "links": [
+    {
+      "type": "folder",
+      "url": "https://drive.google.com/drive/folders/1kh2MIU0SX1MpzWivFw9QgSUyBdfFwSmB?usp=sharing"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/ProjectTS16-WorldPlayground"
+    }
+  ]
+}

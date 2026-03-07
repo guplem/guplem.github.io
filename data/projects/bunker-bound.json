@@ -1,0 +1,47 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2019",
+  "title": "Bunker Bound",
+  "description": [
+    "*Bunker Bound* is a **stealth-focused platformer game** that gained significant attention, particularly in the Asian community. My role as a programmer involved close collaboration with artists, resulting in a visually stunning final product.",
+    "This project taught me valuable lessons in teamwork and communication between programmers and artists, which enhanced the overall development process and final quality of the game."
+  ],
+  "image": "resources/images/projects/bunkerBound.gif",
+  "imageStretched": true,
+  "imageAlt": "Bunker Bound gameplay",
+  "skills": [
+    "Game Design",
+    "Unity",
+    "C#",
+    "Team Collaboration",
+    "UI/UX",
+    "Project Management",
+    "Frontend",
+    "Architecture"
+  ],
+  "links": [
+    {
+      "url": "resources/deliverables/Bunker Bound.zip",
+      "type": "download"
+    },
+    {
+      "url": "https://guplem.itch.io/bunker-bound",
+      "type": "link"
+    },
+    {
+      "url": "https://youtu.be/hfJHpJCV1OY",
+      "type": "play"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/1L7d01zTdVVtxA4LBoft6KMghq_JzBz0M?usp=sharing",
+      "type": "folder"
+    },
+    {
+      "url": "https://github.com/guplem/BunkerBound-Projecte2",
+      "type": "github"
+    }
+  ]
+}

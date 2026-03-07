@@ -1,0 +1,42 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2016",
+  "title": "Rasta Run",
+  "description": [
+    "*Rasta Run* is my first finished game project, an **endless runner** featuring semi-procedural world generation and a marketing strategy that attracted many.",
+    "This project was instrumental in applying my programming knowledge and testing game mechanics, ultimately serving as part of my **final research project**."
+  ],
+  "skills": [
+    "GameMaker Studio",
+    "Procedural",
+    "Marketing",
+    "Frontend",
+    "Game Design",
+    "Project Management",
+    "UI/UX"
+  ],
+  "image": "resources/images/projects/rastaRun.gif",
+  "imageStretched": false,
+  "imageAlt": "Rasta Run main character",
+  "links": [
+    {
+      "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.Rasta_Run",
+      "type": "link"
+    },
+    {
+      "url": "resources/deliverables/RastaRun.apk",
+      "type": "download"
+    },
+    {
+      "url": "https://youtu.be/vkN92-qRcqg",
+      "type": "play"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/16QTr8QLBQwAnxtyQy3NLS8A_hYNkhmdq?usp=sharing",
+      "type": "folder"
+    }
+  ]
+}

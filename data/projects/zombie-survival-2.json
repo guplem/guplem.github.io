@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Minecraft",
+    "Videogame"
+  ],
+  "date": "2013",
+  "title": "Zombie Survival 2",
+  "description": [
+    "*Zombie Survival 2* is an **updated version of my original zombie defense game** in Minecraft, featuring improved balancing, aesthetics, and gameplay refinements.",
+    "I worked on fine-tuning game mechanics and enhancing the visual elements to create a more immersive zombie survival experience, ending with pleasing, polished, and balanced gameplay."
+  ],
+  "image": "resources/images/projects/zombieSurvival2.webp",
+  "imageStretched": true,
+  "imageAlt": "Zombie Survival 2 gameplay",
+  "skills": [
+    "Modding",
+    "Game Design",
+    "Project Management"
+  ],
+  "links": [
+    {
+      "type": "play",
+      "url": "https://youtu.be/PdrY4Uvafeo"
+    }
+  ]
+}

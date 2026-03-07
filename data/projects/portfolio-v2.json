@@ -1,0 +1,28 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2024",
+  "title": "Portfolio v2",
+  "description": [
+    "*Portfolio v2* is my **personal website**, designed to showcase my work and achievements. It provides an overview of my skills and projects.",
+    "I re-created my portfolio with a focus on improving navigation, making it easier to find projects related to specific skills and technologies, and enhancing the overall user experience.",
+    "I also prioritized site maintenance, making it simple to update with new projects and sections. The site’s content is stored in [JSON files](/data/myWork.json), which are used to dynamically generate the contents, allowing for easy updates."
+  ],
+  "skills": [
+    "HTML/CSS",
+    "JS/TS",
+    "Data Management",
+    "UI/UX",
+    "Architecture",
+    "Frontend",
+    "CI/CD"
+  ],
+  "links": [
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/guplem.github.io"
+    }
+  ]
+}

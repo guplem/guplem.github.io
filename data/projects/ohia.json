@@ -1,0 +1,36 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2022",
+  "title": "Ohia",
+  "description": [
+    "*Ohia* is a strategic **puzzle game** that won us the top prize at a 48-hour Game Jam. Players must guide characters with unique abilities toward objectives, using their skills wisely to navigate through levels.",
+    "In this project, we identified straightforward yet effective mechanics that I was able to refine extensively, resulting in a highly polished final product."
+  ],
+  "image": "resources/images/projects/ohia.gif",
+  "imageStretched": true,
+  "imageAlt": "Ohia game characters showcase",
+  "skills": [
+    "Game Design",
+    "Unity",
+    "C#",
+    "Team Collaboration",
+    "Frontend",
+    "Rapid Development",
+    "Project Management",
+    "UI/UX",
+    "Architecture"
+  ],
+  "links": [
+    {
+      "url": "resources/deliverables/Ohia.zip",
+      "type": "download"
+    },
+    {
+      "url": "https://ryuggha.itch.io/ohia",
+      "type": "link"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2020",
+  "title": "Slavery Narrative",
+  "description": [
+    "*Slavery Narrative* is a thought-provoking **prototype** aimed at fostering empathy by immersing players in the life of an African slave in 19th century America. The game utilizes **procedural narratives** that evolve based on player decisions and environmental status.",
+    "Inspired by games like *Reigns* and *Spent*, I focused on programming an algorithm capable of dynamically generating meaningful **storytelling** that resonates deeply with players."
+  ],
+  "image": "resources/images/projects/slaveryNarrative.webp",
+  "imageStretched": true,
+  "imageAlt": "Slavery Narrative game title",
+  "skills": [
+    "Game Design",
+    "Unity",
+    "C#",
+    "Procedural",
+    "Frontend",
+    "Team Collaboration",
+    "Project Management",
+    "Architecture"
+  ],
+  "links": [
+    {
+      "url": "https://drive.google.com/file/d/1TYYzk7LCb6NH6egMW8BQ5lIJFOsF6-X9/view?usp=sharing",
+      "type": "download"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/1vS3OgFzkZW5EMHi92gqWeMbL9uv3SUCs?usp=sharing",
+      "type": "folder"
+    },
+    {
+      "url": "https://github.com/Destokado/Negro/tree/develop",
+      "type": "github"
+    }
+  ]
+}

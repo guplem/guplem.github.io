@@ -1,0 +1,40 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame",
+    "Web"
+  ],
+  "date": "2024",
+  "title": "GPT-Role",
+  "description": [
+    "*GPT-Role* is an **AI-based narrative generation game** where players experience stories driven by an AI, with only truly impossible actions being restricted.",
+    "In this project, I was involved in **every aspect of development**, from prompt engineering to designing and implementing the system architecture. This included creating a dynamic system that determines the flow of the story by selecting distinct prompts based on the player's actions, as well as implementing core game loops to provide the player with a meaningful, immersive experience.",
+    "Players begin by defining their character and objective, and the AI adapts to their choices, narrating the unfolding story. Each session is unique, driven by the player's decisions and the system's dynamic responses."
+  ],
+  "image": "resources/images/projects/gptRole.webp",
+  "imageStretched": true,
+  "imageAlt": "GPT-Role game concept imagined by an AI",
+  "skills": [
+    "Game Design",
+    "Python",
+    "AI Integration",
+    "Frontend",
+    "Streamlit",
+    "Rapid Development",
+    "Project Management",
+    "Team Collaboration",
+    "Architecture",
+    "Docker",
+    "CI/CD"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://gpt-role.streamlit.app/"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/GPT-Role"
+    }
+  ]
+}

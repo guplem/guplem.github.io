@@ -1,0 +1,30 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2016",
+  "title": "Dungeon Assault",
+  "description": [
+    "*Dungeon Assault* is a **procedural dungeon** map generator for improvisational board games.",
+    "The tool was created to facilitate the generation of unique dungeon maps, allowing players to create their own game rules and map layouts. Designed for ease of use, it supports flexible token-based gameplay, discovery mechanics, and the ability to randomize dungeon features."
+  ],
+  "image": "resources/images/projects/dungeonAssault.gif",
+  "imageStretched": true,
+  "imageAlt": "Dungeon Assault procedural generation demo",
+  "skills": [
+    "Unity",
+    "C#",
+    "Procedural",
+    "Rapid Development",
+    "Game Design",
+    "Architecture",
+    "Frontend"
+  ],
+  "links": [
+    {
+      "type": "download",
+      "url": "resources/deliverables/Dungeon Assault.zip"
+    }
+  ]
+}

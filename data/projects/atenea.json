@@ -1,0 +1,30 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App"
+  ],
+  "date": "2020",
+  "title": "Atenea",
+  "description": [
+    "*Atenea* is a conceptual application aimed at **early treatment of mental disorders**, focusing on reducing diagnostic costs and improving outcomes. Developed during a hackathon, our team proposed using **Machine Learning algorithms** to be able to perform in-app tests, facilitating quicker interventions.",
+    "We collaborated with **health professionals** to ensure the feasibility and relevance of our concept.",
+    "I was responsible for creating the mock-up of the application, crafting a user-friendly demo. "
+  ],
+  "image": "resources/images/projects/atenea.webp",
+  "imageStretched": true,
+  "imageAlt": "Atenea app mockup",
+  "skills": [
+    "UI/UX",
+    "Team Collaboration",
+    "Rapid Development",
+    "Data Analysis",
+    "AI Integration",
+    "Team Leadership"
+  ],
+  "links": [
+    {
+      "type": "folder",
+      "url": "https://drive.google.com/drive/folders/1rWWWjWIIdcWYvJOy5X2ESEL3sSEEAcLf?usp=sharing"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2020",
+  "title": "Thicc Wet Paper Layers",
+  "description": [
+    "*Thicc Wet Paper Layers* is a **multiplayer game** developed as a university project, which evolved from a local coop concept to an online format due to the COVID-19 pandemic. It has mechanics that later on would be part of the hit *Fall Guys* in a paper world.",
+    "The project was a huge learning experience, specially with those aspects related to programming a real-time multiplayer with **physics simulations**."
+  ],
+  "image": "resources/images/projects/thiccWetPaperLayers.webp",
+  "imageStretched": true,
+  "imageAlt": "Thicc Wet Paper Layers game screenshot",
+  "skills": [
+    "Game Design",
+    "Unity",
+    "C#",
+    "Real-Time Communication",
+    "Team Collaboration",
+    "Frontend",
+    "Backend",
+    "Project Management",
+    "Architecture"
+  ],
+  "links": [
+    {
+      "url": "https://drive.google.com/file/d/1Ry0aQyTDvFvUnm51x6U9rjLhOm1hJfAg/view?usp=sharing",
+      "type": "download"
+    },
+    {
+      "url": "https://guplem.itch.io/thicc-wet-paper-layers",
+      "type": "link"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=lAs0TmwhgQI",
+      "type": "play"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/10K7L3CIGjRFWpKh-dsr2O3iRbN3LmISl?usp=sharing",
+      "type": "folder"
+    },
+    {
+      "url": "https://github.com/guplem/ALLiOLI",
+      "type": "github"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App",
+    "Videogame"
+  ],
+  "date": "2019",
+  "title": "Drink Extreme Refactoring",
+  "description": [
+    "In this project, I undertook a **complete refactor** of an [existing drinking games app](https://play.google.com/store/apps/details?id=com.burtons.ProductName), which involved a comprehensive code review and essential architectural redesigns to enhance scalability and upgrade functionalities.",
+    "Even tough my upgrades brought a modularity required to **scale and upgrade** the app, the update was not accepted, but my work laid the groundwork for future enhancements and improvements."
+  ],
+  "image": "resources/images/projects/drinkExtreme.webp",
+  "imageStretched": false,
+  "imageAlt": "Drink Extreme app mockup",
+  "skills": [
+    "Unity",
+    "C#",
+    "Architecture",
+    "Frontend",
+    "Research And Analysis",
+    "Modding",
+    "User Engagement",
+    "Localization"
+  ],
+  "links": [
+    {
+      "type": "download",
+      "url": "https://drive.google.com/file/d/1-5F8UoV49HiJcbYUp4Ih55Dl42SNEUkd/view?usp=sharing"
+    }
+  ]
+}

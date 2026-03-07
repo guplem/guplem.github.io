@@ -1,0 +1,38 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App",
+    "Web"
+  ],
+  "date": "2023",
+  "title": "Things — What is next?",
+  "description": [
+    "*Things* is a **task and project management app** fully developed by myself, that intelligently suggests tasks based on user availability, allowing for effortless prioritization. Built to offer an accessible solution across all modern devices.",
+    "The app features **real-time synchronization** and **prioritization algorithms** developed following TDD, boasting robust and  dynamic scheduling capabilities, empowering users to focus on what matters most."
+  ],
+  "image": "resources/images/projects/things.webp",
+  "imageStretched": true,
+  "imageAlt": "Things app mockup",
+  "skills": [
+    "Flutter/Dart",
+    "Firebase",
+    "Data Management",
+    "Backend",
+    "Frontend",
+    "Real-Time Communication",
+    "TDD",
+    "Data Analysis",
+    "Project Management",
+    "CI/CD",
+    "Architecture",
+    "API Integration",
+    "Localization",
+    "NoSQL"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://whatisnext.web.app/"
+    }
+  ]
+}

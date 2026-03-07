@@ -1,0 +1,29 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Misceallaneous"
+  ],
+  "date": "2016",
+  "title": "Photoshoots",
+  "description": [
+    "I participated in many **hotel photoshoots** for renowned clients such as [*ABaC*](https://abacbarcelona.com/es/) and [*Axel Hotels*](https://www.axelhotels.com/en/axel-beach-ibiza/hotel) under the guidance of [*Markopa*](https://www.markopa.com/).",
+    "As a **photography assistant and editor**, I played a key role in setting up environments, assisting Marco Pastori, the photographer, and editing photos to enhance the final results.",
+    "The outcome was a **professional portfolio** that helped promote the aesthetic **appeal of luxury hotels through high-quality visual content**."
+  ],
+  "image": "resources/images/projects/markopa.webp",
+  "imageStretched": true,
+  "imageAlt": "Photoshoots for Markopa",
+  "skills": [
+    "Photography",
+    "Photo Editing",
+    "Team Collaboration"
+  ],
+  "links": [
+    {
+      "url": "https://www.markopa.com/abac"
+    },
+    {
+      "url": "https://www.markopa.com/axel-madrid-hotel"
+    }
+  ]
+}

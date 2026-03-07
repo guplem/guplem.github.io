@@ -1,0 +1,49 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2022",
+  "title": "Paper Brawl — Tower Defense",
+  "description": [
+    "*Paper Brawl* is an experimental **tower defense game** that aimed to explore monetization strategies through rapid development. Created in just a week, it faced challenges typical of the genre, which usually demands extensive feature sets.",
+    "Despite the time limitations, I managed to program **random world generation**, AI pathfinding, various mechanics, distinct enemies and buildings, ... ultimately releasing the game for free."
+  ],
+  "image": "resources/images/projects/paperBrawl.webp",
+  "imageStretched": true,
+  "imageAlt": "Paper Brawl game screenshot",
+  "skills": [
+    "Game Design",
+    "Unity",
+    "C#",
+    "Rapid Development",
+    "Team Collaboration",
+    "Frontend",
+    "Project Management",
+    "UI/UX",
+    "Architecture",
+    "Team Leadership"
+  ],
+  "links": [
+    {
+      "url": "resources/deliverables/Paper Brawl.zip",
+      "type": "download"
+    },
+    {
+      "url": "https://guplem.itch.io/paper-brawl",
+      "type": "link"
+    },
+    {
+      "url": "https://youtu.be/jkAbDXtORdw",
+      "type": "play"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/1KfrNrIKYIeNlmH4Ac0eRdmC4Bg3qqUtB?usp=sharing",
+      "type": "folder"
+    },
+    {
+      "url": "https://github.com/guplem/TS23-TowerDefense",
+      "type": "github"
+    }
+  ]
+}

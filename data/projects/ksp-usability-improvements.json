@@ -1,0 +1,27 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame",
+    "Misceallaneous"
+  ],
+  "date": "2021",
+  "title": "KSP Usability Improvements",
+  "description": [
+    "*KSP Usability Improvements* is a **document** outlining suggested improvements to the user experience of the popular game *Kerbal Space Program*.",
+    "After spending significant time playing the game, I identified key areas where usability could be enhanced. I compiled these insights into a structured document, which aimed to help both the developers and users enjoy a more intuitive experience. My suggestions focused on improving user interface navigation, controls, and accessibility, addressing issues that many players found cumbersome in the original version."
+  ],
+  "image": "resources/images/projects/ksp.webp",
+  "imageStretched": true,
+  "imageAlt": "KSP Marketing Image",
+  "skills": [
+    "UI/UX",
+    "Research And Analysis",
+    "Documentation"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://docs.google.com/document/d/1jo3glkTPwuGQgFaQ5MfYX3jUL1xiy7jXKOSVIAvvUqk/edit?usp=sharing"
+    }
+  ]
+}

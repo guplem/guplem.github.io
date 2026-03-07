@@ -1,0 +1,36 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame"
+  ],
+  "date": "2016",
+  "title": "WoloBall",
+  "description": [
+    "*WoloBall* is my first finished Unity game, where **players must survive against waves of obstacles** while collecting power-ups that alter gameplay dynamics.",
+    "This project allowed me to apply the skills I gained from previous projects and solidified my **understanding of the game engine** and integration of external tools such as Google Ads."
+  ],
+  "skills": [
+    "Unity",
+    "Game Design",
+    "API Integration",
+    "UI/UX",
+    "C#",
+    "Project Management",
+    "Frontend",
+    "Architecture",
+    "Procedural"
+  ],
+  "image": "resources/images/projects/woloBall.webp",
+  "imageStretched": true,
+  "imageAlt": "WoloBall game screenshot",
+  "links": [
+    {
+      "url": "https://play.google.com/store/apps/details?id=com.TriunityStudios.WoloBallFULL",
+      "type": "link"
+    },
+    {
+      "url": "resources/deliverables/WoloBall.apk",
+      "type": "download"
+    }
+  ]
+}

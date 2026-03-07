@@ -1,0 +1,20 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2019",
+  "title": "Portfolio v1",
+  "description": [
+    "*Portfolio v1* was a simple **personal website** that served as my digital portfolio. I developed this website to showcase my work and provide a way for people to connect with me online.",
+    "The site was designed for easy navigation and is optimized for mobile responsiveness, ensuring a seamless user experience.",
+    "This project also allowed me to refine my **web development** skills."
+  ],
+  "skills": [
+    "UI/UX",
+    "HTML/CSS",
+    "JS/TS",
+    "Architecture",
+    "Frontend"
+  ]
+}

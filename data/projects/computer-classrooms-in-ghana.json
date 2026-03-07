@@ -1,0 +1,23 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Misceallaneous"
+  ],
+  "date": "2018",
+  "title": "Computer Classrooms in Ghana",
+  "description": [
+    "A **voluntary project** where I helped bring computers and set up classrooms in Ghanaian schools.",
+    "I refurbished and collected second-hand laptops, aiming to provide students in Ghana with direct access to computers."
+  ],
+  "image": "resources/images/projects/ghanaComputers.webp",
+  "imageStretched": true,
+  "imageAlt": "Promotional image for the project to bring Computers to Ghana's schools",
+  "skills": [
+    "NGO Collaboration",
+    "Computer Refurbishing",
+    "Logistics",
+    "Team Collaboration",
+    "Project Management",
+    "Team Leadership"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Videogame",
+    "Misceallaneous"
+  ],
+  "date": "2020",
+  "title": "Essentials Asset",
+  "description": [
+    "*Essentials* is a **Unity asset** designed to reduce the workload for developers by providing commonly used tools and features.",
+    "As part of my **university thesis**, I created this asset to streamline repetitive tasks across Unity projects.",
+    "I consider it an essential resource for Unity developers, offering solutions such as object pooling, in-game terminal, save/load data, manager for simple animations, dozens of extensions, and more."
+  ],
+  "image": "resources/images/projects/essentials.webp",
+  "imageStretched": true,
+  "imageAlt": "Essentials Asset screenshot",
+  "skills": [
+    "Unity",
+    "C#",
+    "Architecture",
+    "Research And Analysis"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://assetstore.unity.com/packages/tools/utilities/essentials-161141"
+    },
+    {
+      "type": "folder",
+      "url": "https://drive.google.com/drive/folders/1RzANOEKzxatXH5MQdElUI36-XoXyBzzy?usp=sharing"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/UnityEssentials"
+    }
+  ]
+}

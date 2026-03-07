@@ -1,0 +1,53 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App"
+  ],
+  "date": "2024",
+  "title": "Bondy",
+  "description": [
+    "*Bondy* is a **social networking platform** that simplifies event organization and encourages real-life connections among users.",
+    "As the lead developer, I **architected the front-end** to ensure scalability and performance, implemented **A/B testing** to refine **recommendation algorithms**, increase retention and improve usability while working in back-end projects.",
+    "Key features included **real-time** chat, an endlessly scrollable feed, location tracking, and push notifications, all designed to create a rich user experience. Moreover, by implementing **CI/CD technologies**, I optimized our development workflows, boosting team efficiency significantly."
+  ],
+  "image": "resources/images/projects/bondy.webp",
+  "imageStretched": true,
+  "imageAlt": "Bondy app mockup",
+  "skills": [
+    "Architecture",
+    "Flutter/Dart",
+    "Express",
+    "Prisma",
+    "Node.js",
+    "JS/TS",
+    "TDD",
+    "Jest",
+    "Data Analysis",
+    "Data Visualization",
+    "Firebase",
+    "Grafana",
+    "SQL",
+    "Gorm",
+    "Gin",
+    "Go",
+    "A/B Testing",
+    "CI/CD",
+    "Team Leadership",
+    "Real-Time Communication",
+    "User Engagement",
+    "Data Management",
+    "Temporal",
+    "Team Collaboration",
+    "API Integration",
+    "Backend",
+    "Frontend",
+    "Server Management",
+    "Localization"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://thebondyapp.com/"
+    }
+  ]
+}

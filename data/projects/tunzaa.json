@@ -1,0 +1,41 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App"
+  ],
+  "date": "2022",
+  "title": "Tunzaa",
+  "description": [
+    "*Tunzaa* is an **incremental savings app** aimed at empowering unbanked consumers in Africa by providing secure savings and purchase options within a curated marketplace. Developed in collaboration with major brands, it supports user financial health and accessibility.",
+    "Transitioning from a prototype to a full-fledged app, I oversaw a comprehensive app architecture refactor and led the development of an **M-Pesa Mini App** using a proprietary XML-based framework. Additionally, I implemented CI/CD technologies, managed server and database operations, and guided a team of developers."
+  ],
+  "image": "resources/images/projects/tunzaa.webp",
+  "imageStretched": true,
+  "imageAlt": "Tunzaa app mockup",
+  "skills": [
+    "Flutter/Dart",
+    "React",
+    "JS/TS",
+    "CI/CD",
+    "TDD",
+    "PHP",
+    "API Integration",
+    "User Engagement",
+    "Team Leadership",
+    "Architecture",
+    "Server Management",
+    "Proprietary Frameworks",
+    "Data Management",
+    "Fintech",
+    "Project Management",
+    "Backend",
+    "Frontend",
+    "SQL"
+  ],
+  "links": [
+    {
+      "type": "link",
+      "url": "https://tunzaa.co.tz/"
+    }
+  ]
+}

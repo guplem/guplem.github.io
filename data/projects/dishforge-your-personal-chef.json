@@ -1,0 +1,32 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Mobile App"
+  ],
+  "date": "2023",
+  "title": "DishForge: Your Personal Chef",
+  "description": [
+    "*DishForge* is an **AI-powered application** that enhances cooking experiences by blending AI with culinary creativity. Created during a [Lablab Hackathon](https://lablab.ai/event/llama-2-hackathon-with-clarifai/rostisseries-delgado/dishforge), it allows users to interact effortlessly with AI to generate personalized recipes based on meal types, preferences, and available ingredients, utilizing image recognition, LLMs and image generation.",
+    "As the front-end developer, I focused on crafting the user interface, managing API integrations, and seamlessly presenting AI outputs. Our team **delivered this project in under 48 hours**, showcasing our ability to collaborate effectively and innovate rapidly."
+  ],
+  "image": "resources/images/projects/dishForge.gif",
+  "imageStretched": false,
+  "imageAlt": "DishForge demo",
+  "skills": [
+    "Flutter/Dart",
+    "AI Integration",
+    "API Integration",
+    "UI/UX",
+    "Frontend",
+    "Rapid Development",
+    "Team Collaboration",
+    "Project Management",
+    "Architecture"
+  ],
+  "links": [
+    {
+      "type": "folder",
+      "url": "https://drive.google.com/drive/folders/1-pRFZp8oeQQIgviqg0l_86-un1iSLWyC?usp=sharing"
+    }
+  ]
+}
