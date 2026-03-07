@@ -77,10 +77,9 @@
 
 /* Collapse behavior */
 #myWorkSkills[collapsed="true"] {
-  max-height: 110px;
+  max-height: 90px;
   overflow: hidden;
   position: relative;
-  padding-bottom: 10px;
   transition: max-height var(--duration-slow) var(--ease-out);
 }
 
@@ -89,8 +88,8 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 60%;
-  background: linear-gradient(to top, var(--bg-white) 15%, transparent);
+  height: 75%;
+  background: linear-gradient(to top, var(--bg-white) 30%, transparent);
   pointer-events: none;
   z-index: 1;
   transition: opacity var(--duration-slow) var(--ease-out);
@@ -118,7 +117,7 @@
   position: absolute;
   bottom: 0;
   z-index: 2;
-  margin-top: var(--sp-sm);
+  margin-top: var(--sp-md);
   background: var(--bg-white);
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: var(--shadow-sm);
