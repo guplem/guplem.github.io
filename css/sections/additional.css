@@ -1,0 +1,62 @@
+/* === Additional Sections === */
+#additionalSections .section:nth-child(odd) {
+  background: var(--bg-dark);
+}
+
+#additionalSections .section:nth-child(even) {
+  background: var(--bg-light);
+}
+
+/* Grid layout for additional sections */
+.additional-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-xl);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .additional-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-2xl);
+  }
+}
+
+.additional-grid img {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--duration-slow) var(--ease-out),
+              box-shadow var(--duration-slow) var(--ease-out);
+  justify-self: center;
+  max-width: 280px;
+}
+
+.additional-grid img:hover {
+  transform: scale(1.03);
+  box-shadow: var(--shadow-lg);
+}
+
+.additional-text h4 {
+  margin-top: var(--sp-md);
+  margin-bottom: var(--sp-xs);
+  position: relative;
+  padding-left: 14px;
+}
+
+.additional-text h4::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.additional-text h4:first-child { margin-top: 0; }
+
+.additional-text p {
+  text-align: left;
+  font-size: 0.92rem;
+}

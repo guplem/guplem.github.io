@@ -1,0 +1,65 @@
+/* === About Section === */
+#aboutMe {
+  background: var(--bg-vivid);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-xl);
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .about-grid {
+    grid-template-columns: auto 1fr;
+    gap: var(--sp-2xl);
+    align-items: center;
+  }
+}
+
+/* Photo */
+.about-photo {
+  justify-self: center;
+}
+
+.about-photo img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--duration-slow) var(--ease-out),
+              box-shadow var(--duration-slow) var(--ease-out);
+}
+
+.about-photo img:hover {
+  transform: scale(1.03) rotate(1deg);
+  box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+
+/* Text */
+.about-text h4 {
+  margin-top: var(--sp-md);
+  margin-bottom: var(--sp-xs);
+  position: relative;
+  padding-left: 14px;
+}
+
+.about-text h4::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.about-text h4:first-child { margin-top: 0; }
+
+.about-text p {
+  text-align: left;
+  font-size: 0.92rem;
+}

@@ -1,123 +1,104 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+/* === Reset === */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 html {
   height: 100%;
-  top: 0;
-  bottom: 0;
   scroll-behavior: smooth;
   overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background-dark);
-  font-family: "Inter", "Roboto", sans-serif;
-  height: 100%;
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  position: relative;
+  font-family: var(--font);
+  color: var(--text-body);
+  background: var(--bg-light);
+  line-height: var(--leading-normal);
+  min-height: 100%;
 }
 
 img {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 
-h1 {
-  font-size: 2.2em;
-  font-weight: 800;
-  text-align: center;
-  color: var(--title-color);
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+/* === Scrollbar === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-light); }
+::-webkit-scrollbar-thumb {
+  background: var(--bg-dark);
+  border-radius: 3px;
 }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+html { scrollbar-width: thin; scrollbar-color: var(--bg-dark) var(--bg-light); }
 
-h2 {
-  font-size: 1.8em;
+/* === Typography === */
+h1, h2, h3, h4 {
+  color: var(--text-primary);
   font-weight: 700;
-  text-align: center;
-  color: var(--title-color);
+  line-height: var(--leading-tight);
   letter-spacing: -0.02em;
-  line-height: 1.2;
 }
 
-h3 {
-  font-size: 1.4em;
-  font-weight: 600;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  text-align: left;
-  color: var(--primary-accent-color);
-  letter-spacing: -0.01em;
-}
-
-h4 {
-  font-size: 1.15em;
-  font-weight: 600;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin-top: 20px;
-  margin-bottom: 0px;
-  text-align: left;
-  color: var(--primary-accent-color);
-}
+h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+h3 { font-size: 1.25rem; color: var(--accent); font-weight: 600; }
+h4 { font-size: 1.05rem; color: var(--accent); font-weight: 600; }
 
 p {
-  padding-left: 25px;
-  padding-right: 25px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  text-align: justify;
-  color: var(--text-color);
-  line-height: 1.7;
-  font-size: 0.95em;
+  color: var(--text-body);
+  line-height: var(--leading-relaxed);
+  font-size: 0.95rem;
 }
 
+p + p { margin-top: 0.75em; }
+
+/* === Links === */
 a {
+  color: var(--accent-secondary);
   text-decoration: none;
-  cursor: pointer;
-  color: var(--secondary-accent-color);
-  transition: color var(--transition-fast);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover { color: var(--accent); }
+
+/* Animated underline on inline text links */
+p a {
   position: relative;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--duration-normal) var(--ease-out), color var(--duration-fast) var(--ease-out);
+  padding-bottom: 1px;
 }
 
-a:hover {
-  color: var(--primary-accent-color);
+p a:hover {
+  background-size: 100% 1.5px;
 }
 
-/* Animated underline on text links (not image links or contact links) */
-p a::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 0;
-  height: 1.5px;
-  background: linear-gradient(90deg, var(--primary-accent-color), var(--secondary-accent-color));
-  transition: width var(--transition-smooth);
-  border-radius: 1px;
-}
-
-p a:hover::after {
-  width: 100%;
-}
-
-/* Image link hover */
-a:has(img) > * {
-  transition: transform var(--transition-smooth), filter var(--transition-smooth);
-}
-
-a:hover:has(img) > * {
-  transform: translateY(-5px);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
-}
-
-/* === Selection highlight === */
+/* === Selection === */
 ::selection {
-  background: rgba(var(--primary-accent-rgb), 0.2);
-  color: var(--title-color);
+  background: rgba(var(--accent-rgb), 0.15);
+  color: var(--text-primary);
+}
+
+/* === Focus === */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
 }

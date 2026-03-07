@@ -3,73 +3,76 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link rel="icon" href="resources/images/webicon.webp" />
-    <title id="page-title">Portfolio Website</title>
-    <meta id="page-description" name="description" content="A very good Portfolio Website" />
-    <!-- Styles of the whole page -->
-    <link rel="stylesheet" href="css/global/properties.css" />
+    <title id="page-title">Portfolio</title>
+    <meta id="page-description" name="description" content="" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
     <link rel="stylesheet" href="css/global/variables.css" />
     <link rel="stylesheet" href="css/global/base.css" />
-    <link rel="stylesheet" href="css/global/sections.css" />
-    <link rel="stylesheet" href="css/global/effects.css" />
-    <!-- Styles of specific sections -->
-    <link rel="stylesheet" href="css/sections/introduction.css" />
-    <link rel="stylesheet" href="css/sections/aboutMe.css" />
-    <link rel="stylesheet" href="css/sections/workFilters.css" />
+    <link rel="stylesheet" href="css/global/layout.css" />
+    <link rel="stylesheet" href="css/sections/hero.css" />
+    <link rel="stylesheet" href="css/sections/about.css" />
     <link rel="stylesheet" href="css/sections/works.css" />
-    <link rel="stylesheet" href="css/sections/additionalSections.css" />
+    <link rel="stylesheet" href="css/sections/additional.css" />
     <link rel="stylesheet" href="css/sections/contact.css" />
   </head>
 
   <body>
-    <!-- Cursor glow follower -->
-    <div id="cursorGlow" aria-hidden="true"></div>
+    <nav id="siteNav">
+      <div class="nav-inner">
+        <a class="nav-logo" href="#introduction">GP</a>
+        <div class="nav-links">
+          <a href="#aboutMe">About</a>
+          <a href="#myWork">Work</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </nav>
 
-    <!-- Floating ambient orbs -->
-    <div class="ambient-orbs" aria-hidden="true">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-    </div>
-
-    <div id="introduction">
+    <header id="introduction">
       <canvas id="simCanvas"></canvas>
-      <a id="arrowPointingDown" href="#aboutMe">
-        <svg width="24" height="24" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M12 21C11.7348 21 11.4804 20.8946 11.2929 20.7071L4.29289 13.7071C3.90237 13.3166 3.90237 12.6834 4.29289 12.2929C4.68342 11.9024 5.31658 11.9024 5.70711 12.2929L11 17.5858V4C11 3.44772 11.4477 3 12 3C12.5523 3 13 3.44772 13 4V17.5858L18.2929 12.2929C18.6834 11.9024 19.3166 11.9024 19.7071 12.2929C20.0976 12.6834 20.0976 13.3166 19.7071 13.7071L12.7071 20.7071C12.5196 20.8946 12.2652 21 12 21Z"
-            fill="currentColor"
-          ></path>
-        </svg>
+      <div class="hero-content" id="heroContent"></div>
+      <a id="scrollCue" href="#aboutMe">
+        <span class="scroll-label">Scroll</span>
+        <span class="scroll-line"></span>
       </a>
-    </div>
+    </header>
 
-    <div class="section" id="aboutMe" data-reveal>
-      <div class="sectionTitle" id="aboutMeTitle"></div>
-      <div class="sectionContainer">
-        <img class="sectionImage" id="aboutMeImage" />
-        <div class="sectionContents" id="aboutMeContents"></div>
+    <section id="aboutMe" class="section">
+      <div class="container">
+        <div class="section-label" id="aboutMeTitle"></div>
+        <div class="about-grid">
+          <div class="about-photo">
+            <img id="aboutMeImage" alt="" />
+          </div>
+          <div class="about-text" id="aboutMeContents"></div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div id="myWork">
-      <div id="myWorkTitle"></div>
-      <div id="myWorkFilters">
-        <div id="myWorkTypes"></div>
-        <div id="myWorkSkills"></div>
+    <section id="myWork" class="section section--alt">
+      <div class="container container--wide">
+        <div class="section-label" id="myWorkTitle"></div>
+        <div id="myWorkFilters" class="filters">
+          <div id="myWorkTypes" class="filter-row"></div>
+          <div id="myWorkSkills" class="filter-row filter-row--secondary"></div>
+        </div>
+        <div id="myWorkFiltered" class="work-grid"></div>
       </div>
-      <div id="myWorkFiltered" data-reveal-stagger></div>
-    </div>
+    </section>
 
-    <div id="additionalSections" data-reveal-stagger></div>
+    <div id="additionalSections"></div>
 
-    <div id="contact" data-reveal>
-      <div id="contactTitle"></div>
-      <div id="contactMethods" data-reveal-stagger></div>
-    </div>
+    <footer id="contact" class="section">
+      <div class="container">
+        <div class="section-label" id="contactTitle"></div>
+        <div id="contactMethods" class="contact-row"></div>
+      </div>
+    </footer>
 
     <script type="module" src="js/planetSimulation/simulation.js" defer></script>
     <script type="module" src="js/layoutBuilder/dataFiller.js" defer></script>

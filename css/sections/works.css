@@ -1,209 +1,308 @@
-/** The full container for all works */
-#myWork {
-  background-color: var(--background-clear);
-  padding-right: 1em;
-  padding-left: 1em;
-  padding-top: 2em;
-  padding-bottom: 2em;
-  margin: auto;
+/* === Works Section === */
+
+/* Filters */
+.filters {
+  margin-bottom: var(--sp-lg);
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 var(--sp-sm);
+}
+
+.filter-row--secondary {
+  margin-top: var(--sp-xs);
+}
+
+.filters button {
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-muted);
+  transition: all var(--duration-fast) var(--ease-out);
   position: relative;
 }
 
-#myWorkTitle {
-  text-align: center;
-  margin-bottom: 0.5em;
+/* Type buttons (primary) */
+.filter-row:not(.filter-row--secondary) button {
+  padding: 8px 20px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-body);
+  background: var(--bg-light);
+  border-color: rgba(0, 0, 0, 0.06);
 }
 
-/* Animated accent line at top */
-#myWork::before {
+.filter-row:not(.filter-row--secondary) button[selected] {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(var(--accent-rgb), 0.3);
+}
+
+.filter-row:not(.filter-row--secondary) button:hover:not([selected]) {
+  background: var(--bg-dark);
+  border-color: var(--bg-dark);
+}
+
+/* Skill buttons (secondary) */
+.filter-row--secondary button {
+  padding: 4px 12px;
+  font-size: 0.78rem;
+}
+
+.filter-row--secondary button:not([selected]):not(#collapseButton) {
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.filter-row--secondary button[selected] {
+  background: var(--accent-secondary);
+  color: white;
+  border-color: var(--accent-secondary);
+}
+
+.filter-row--secondary button:hover:not([selected]):not(#collapseButton) {
+  color: var(--text-body);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* Collapse behavior */
+#myWorkSkills[collapsed="true"] {
+  max-height: 90px;
+  overflow: hidden;
+  position: relative;
+  transition: max-height var(--duration-slow) var(--ease-out);
+}
+
+#myWorkSkills[collapsed="true"]::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--third-accent-color),
-    var(--primary-accent-color),
-    var(--secondary-accent-color),
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: gradientShift 8s ease-in-out infinite;
-  opacity: 0.5;
+  bottom: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(to top, var(--bg-white) 15%, transparent);
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity var(--duration-slow) var(--ease-out);
 }
 
-/** The container for all FILTERED works */
-#myWorkFiltered {
+#myWorkSkills[collapsed="false"] {
+  max-height: 600px;
+  overflow: hidden;
+  position: relative;
+  transition: max-height var(--duration-slow) var(--ease-out);
+}
+
+#myWorkSkills[collapsed="false"]::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  background: transparent;
+  pointer-events: none;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+#collapseButton {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  background: var(--bg-white);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+#collapseButton:hover {
+  color: var(--accent);
+  border-color: rgba(var(--accent-rgb), 0.2);
+}
+
+/* Work grid (masonry columns) */
+.work-grid {
   display: flex;
   flex-wrap: nowrap;
+  gap: var(--sp-sm);
 }
 
-/** Each column of works */
 .myWorkColumn {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
 }
 
-/** A single work "card" — glassmorphism with 3D tilt */
+/* === Work Card === */
 .work {
-  margin: 10px;
-  margin-top: 20px;
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.25),
-    rgba(255, 255, 255, 0.08)
-  );
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
+  background: white;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
-  position: relative;
-  will-change: transform;
-  transition: box-shadow var(--transition-smooth);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
 }
 
 .work:hover {
-  box-shadow: var(--shadow-xl), 0 0 40px rgba(var(--primary-accent-rgb), 0.06);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 
-/** All contents of a single work but the image */
-.work > :not(img) {
-  margin-left: 6%;
-  margin-right: 6%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  position: relative;
-  z-index: 2;
-}
-
-/** The title of a single work */
-.work .workTitle {
-  margin-top: 18px;
-}
-
-.work .workTitle.workTitleLink {
-  transition: scale var(--transition-fast), color var(--transition-fast);
-}
-
-.work .workTitle.workTitleLink:hover {
-  scale: 1.02;
-  cursor: pointer;
-}
-
-.work .workTitle h3 {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-/** All contents (inside the different divs) of a single work */
-.work div > * {
-  padding-left: 0px;
-  padding-right: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
-/** The first image of a single work */
+/* Card image */
 .workImage {
-  height: auto;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-height: 300px;
+  width: 100%;
+  max-height: 260px;
   object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-    filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  z-index: 0;
+  display: block;
+  transition: transform 0.5s var(--ease-out);
 }
 
 .work:hover .workImage {
-  transform: scale(1.05);
-  filter: brightness(1.05) saturate(1.1);
+  transform: scale(1.03);
 }
 
-.workImage.stretched {
-  width: 100%;
+/* Image container clips the zoom */
+.work > img {
+  overflow: hidden;
 }
 
-/** The paragraphs inside the description of a single work */
-.workDescription p:not(:last-child) {
-  margin-bottom: 10px;
+/* Card body */
+.work-body {
+  padding: var(--sp-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-xs);
 }
 
-/** The skills of a single work */
-.workSkills {
+.work .workTitle {
+  padding: 0 var(--sp-md);
+  padding-top: var(--sp-md);
+}
+
+.work .workTitle h3 {
+  font-size: 1.15rem;
+  margin: 0;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.work .workTitle.workTitleLink { cursor: pointer; }
+
+.work .workTitle.workTitleLink:hover h3 {
+  color: var(--accent);
+}
+
+.work .workDate {
+  padding: 0 var(--sp-md);
+}
+
+.work .workDate > * {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.work .workDescription {
+  padding: 0 var(--sp-md);
+}
+
+.work .workDescription p {
+  font-size: 0.88rem;
+  line-height: var(--leading-relaxed);
+  text-align: left;
+}
+
+.work .workDescription p:not(:last-child) {
+  margin-bottom: 0.5em;
+}
+
+/* Card skills */
+.work .workSkills {
   display: flex;
   flex-wrap: wrap;
-  justify-content: left;
-  align-items: center;
-  gap: 5px 5px;
-  position: relative;
-  z-index: 2;
+  gap: 4px;
+  padding: 0 var(--sp-md);
 }
 
-/** Each skill of a single work */
-.workSkills button {
-  padding: 4px 10px;
-  border-radius: var(--radius-xs);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.82em;
-  transition: all var(--transition-fast);
-  background: var(--glass-bg);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.workSkills button:not([selected]) {
-  background: var(--glass-bg);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.workSkills button[selected] {
-  background: linear-gradient(
-    135deg,
-    rgba(var(--primary-accent-rgb), 0.12),
-    rgba(var(--secondary-accent-rgb), 0.08)
-  );
-  border: 1px solid rgba(var(--primary-accent-rgb), 0.25);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.workSkills button:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
-  background: var(--glass-bg-strong);
-  border-color: var(--glass-border-strong);
-}
-
-/** Each links of a single work */
-.workLinks {
-  position: relative;
-  z-index: 2;
-}
-
-.workLinks img {
-  width: 10%;
-  margin: 1%;
-  transition: transform var(--transition-spring), filter var(--transition-fast);
-}
-
-.workLinks img:hover {
-  transform: scale(1.2) translateY(-2px);
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-}
-
-/** The date (all children of it) of a single work */
-.workDate > * {
-  color: var(--text-muted);
+.work .workSkills button {
+  font-family: var(--font);
+  font-size: 0.72rem;
   font-weight: 500;
-  font-size: 0.85em;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--bg-light);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.work .workSkills button[selected] {
+  background: var(--accent-secondary);
+  color: white;
+  border-color: var(--accent-secondary);
+}
+
+.work .workSkills button:hover:not([selected]) {
+  background: var(--bg-dark);
+  color: var(--text-body);
+}
+
+/* Card links */
+.work .workLinks {
+  display: flex;
+  gap: 6px;
+  padding: 0 var(--sp-md);
+  padding-bottom: var(--sp-md);
+}
+
+.work .workLinks a {
+  display: flex;
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.work .workLinks a:hover {
+  transform: translateY(-2px);
+}
+
+.work .workLinks img {
+  width: 24px;
+  height: 24px;
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.work .workLinks a:hover img {
+  opacity: 0.8;
+}
+
+/* Card spacing for non-image children */
+.work > :not(img):not(:last-child) {
+  margin-bottom: 2px;
+}
+
+/* Reveal animation for cards */
+.work {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cardIn 0.5s var(--ease-out) both;
+}
+
+@keyframes cardIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

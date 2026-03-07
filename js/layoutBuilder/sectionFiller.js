@@ -51,44 +51,50 @@ export async function displayAdditionalSections() {
 
   let index = 0;
   for (const section of data.additionalSections) {
-    const sectionElement = document.createElement("div");
-    sectionElement.classList.add("additionalSection");
+    const sectionElement = document.createElement("section");
     sectionElement.classList.add("section");
 
+    const container = document.createElement("div");
+    container.classList.add("container");
+    sectionElement.appendChild(container);
+
     if (section.title?.length) {
-      const titleElement = document.createElement("div");
-      titleElement.classList.add("sectionTitle");
-      sectionElement.appendChild(titleElement);
-      await uiUtils.setDataInHtmlElement(section.title, titleElement, new Map([["p", "h2"]]));
+      const titleWrap = document.createElement("div");
+      titleWrap.classList.add("section-label");
+      container.appendChild(titleWrap);
+      await uiUtils.setDataInHtmlElement(section.title, titleWrap, new Map([["p", "h2"]]));
       sectionElement.id = `additionalSection_${textUtils.idFromText(section.title)}`;
     }
 
-    const sectionContainer = document.createElement("div");
-    sectionContainer.classList.add("sectionContainer");
-    sectionElement.appendChild(sectionContainer);
+    const grid = document.createElement("div");
+    grid.classList.add("additional-grid");
+    container.appendChild(grid);
 
-    for (let i = 0; i < 2; i++) {
-      const doContents = index % 2 === i;
+    // Alternate image/text order
+    const imageFirst = index % 2 === 0;
 
-      if (doContents) {
-        if (section.content?.length) {
-          const contentElement = document.createElement("div");
-          contentElement.classList.add("sectionContents");
-          sectionContainer.appendChild(contentElement);
-          await uiUtils.setDataInHtmlElement(section.content, contentElement);
-        }
-      } else {
-        if (section.image?.length) {
-          const imageElement = document.createElement("img");
-          imageElement.classList.add("sectionImage");
-          imageElement.src = section.image;
-          imageElement.alt = section.imageAlt || `Image of ${section.title}`;
-          sectionContainer.appendChild(imageElement);
-        }
-      }
+    if (imageFirst && section.image?.length) {
+      const imageElement = document.createElement("img");
+      imageElement.src = section.image;
+      imageElement.alt = section.imageAlt || `Image of ${section.title}`;
+      grid.appendChild(imageElement);
     }
-    index++;
 
+    if (section.content?.length) {
+      const contentElement = document.createElement("div");
+      contentElement.classList.add("additional-text");
+      grid.appendChild(contentElement);
+      await uiUtils.setDataInHtmlElement(section.content, contentElement);
+    }
+
+    if (!imageFirst && section.image?.length) {
+      const imageElement = document.createElement("img");
+      imageElement.src = section.image;
+      imageElement.alt = section.imageAlt || `Image of ${section.title}`;
+      grid.appendChild(imageElement);
+    }
+
+    index++;
     fragment.appendChild(sectionElement);
   }
 
@@ -113,26 +119,26 @@ export async function displayContactInfo() {
   const fragment = document.createDocumentFragment();
 
   for (const contactInfo of data.contact) {
-    const contactElement = document.createElement("a");
-    contactElement.classList.add("contactMethod");
-    contactElement.href = contactInfo.link;
-    contactElement.target = "_blank";
-    contactElement.rel = "author external";
+    const card = document.createElement("a");
+    card.classList.add("contact-card");
+    card.href = contactInfo.link;
+    card.target = "_blank";
+    card.rel = "author external";
     const text = contactInfo.text ?? contactInfo.link;
-    contactElement.title = `${contactInfo.name}: ${text}`;
+    card.title = `${contactInfo.name}: ${text}`;
 
     if (contactInfo.icon?.length) {
       const imageElement = document.createElement("img");
       imageElement.src = contactInfo.icon;
-      imageElement.alt = text;
-      contactElement.appendChild(imageElement);
+      imageElement.alt = contactInfo.name;
+      card.appendChild(imageElement);
     }
 
-    const textElement = document.createElement("div");
+    const textElement = document.createElement("span");
     textElement.textContent = text;
-    contactElement.appendChild(textElement);
+    card.appendChild(textElement);
 
-    fragment.appendChild(contactElement);
+    fragment.appendChild(card);
   }
 
   element.appendChild(fragment);

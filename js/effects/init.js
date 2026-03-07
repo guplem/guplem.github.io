@@ -1,47 +1,40 @@
 /**
- * Master orchestrator for all visual effects.
- * Initializes effects after DOM is ready and content is loaded.
+ * Minimal scroll-reveal effect.
+ * Sections fade in as they enter the viewport.
  */
 
-import { initScrollReveal, refreshScrollReveal } from "./scrollReveal.js";
-import { initTiltCards } from "./tiltCards.js";
-import { initCursorGlow } from "./cursorGlow.js";
-import { initMagneticButtons } from "./magneticButtons.js";
+const observer = new IntersectionObserver(
+  (entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    }
+  },
+  { threshold: 0.1, rootMargin: "0px 0px -60px 0px" }
+);
 
+function observe() {
+  document.querySelectorAll(".reveal:not(.visible)").forEach((el) => {
+    observer.observe(el);
+  });
+}
+
+// Mark key sections for reveal
 document.addEventListener("DOMContentLoaded", () => {
-  initCursorGlow();
-
-  // Delay to let dynamic content render first
-  setTimeout(() => {
-    initScrollReveal();
-    initTiltCards();
-    initMagneticButtons();
-  }, 400);
+  const selectors = ["#aboutMe", "#myWork", "#contact", "#additionalSections .section"];
+  for (const sel of selectors) {
+    document.querySelectorAll(sel).forEach((el) => el.classList.add("reveal"));
+  }
+  observe();
 });
 
-// Watch for dynamically added work cards and refresh reveals
-const worksContainer = document.getElementById("myWorkFiltered");
-if (worksContainer) {
-  const mutationObserver = new MutationObserver(() => {
-    refreshScrollReveal();
-  });
-  mutationObserver.observe(worksContainer, { childList: true, subtree: true });
+// Re-observe when additional sections are dynamically added
+const additional = document.getElementById("additionalSections");
+if (additional) {
+  new MutationObserver(() => {
+    additional.querySelectorAll(".section:not(.reveal)").forEach((el) => el.classList.add("reveal"));
+    observe();
+  }).observe(additional, { childList: true });
 }
-
-// Also watch additionalSections for dynamic content
-const additionalContainer = document.getElementById("additionalSections");
-if (additionalContainer) {
-  const mutationObserver = new MutationObserver(() => {
-    refreshScrollReveal();
-  });
-  mutationObserver.observe(additionalContainer, { childList: true, subtree: true });
-}
-
-// Refresh on resize (works get re-rendered)
-let resizeTimeout = 0;
-window.addEventListener("resize", () => {
-  clearTimeout(resizeTimeout);
-  resizeTimeout = window.setTimeout(() => {
-    refreshScrollReveal();
-  }, 300);
-});

@@ -8,14 +8,11 @@ import { selectedWorkTypes, selectedWorkSkills, onClickWorkSkill } from "./workF
 export async function displayFilteredWorks() {
   const { filteredWorks } = await getFilteredWorks();
 
-  console.log("Displaying", filteredWorks.length, "filtered works: ", filteredWorks);
-
   const allWorksElement = uiUtils.getElement("myWorkFiltered");
   uiUtils.clearElement(allWorksElement);
 
-  // Calculate the maximum number of columns based on the screen width
   const screenWidth = window.innerWidth;
-  const minColumnWidth = 350;
+  const minColumnWidth = 360;
   const columnsNumber = Math.max(1, Math.floor(screenWidth / minColumnWidth));
 
   const columns = [];
@@ -38,10 +35,8 @@ export async function displayFilteredWorks() {
     return 0;
   });
 
-  for (const work of filteredWorks) {
-    const workElement = await createWorkCard(work);
-
-    // Determine the index of the shortest column
+  for (let i = 0; i < filteredWorks.length; i++) {
+    const workElement = await createWorkCard(filteredWorks[i], i);
     const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
     columns[shortestColumnIndex].appendChild(workElement);
     columnHeights[shortestColumnIndex] += workElement.offsetHeight;
@@ -76,19 +71,23 @@ export async function getFilteredWorks(includeSelected = true) {
 /**
  * Create a single work card element
  * @param {any} work
+ * @param {number} index - for staggered animation
  * @returns {Promise<HTMLDivElement>}
  */
-async function createWorkCard(work) {
+async function createWorkCard(work, index) {
   const workElement = document.createElement("div");
   workElement.classList.add("work");
   workElement.tabIndex = 0;
   workElement.setAttribute("aria-label", work.title);
+  // Stagger entrance animation
+  workElement.style.animationDelay = `${index * 50}ms`;
 
   if (work.image?.length) {
     const imageElement = document.createElement("img");
     imageElement.classList.add("workImage");
     imageElement.src = work.image;
     imageElement.alt = work.imageAlt || `Image for ${work.title}`;
+    imageElement.loading = "lazy";
     workElement.appendChild(imageElement);
     if (work.imageStretched == undefined || work.imageStretched === true) {
       imageElement.classList.add("stretched");
