@@ -1,3 +1,29 @@
 #aboutMe {
   background-color: var(--background-vivid);
+  position: relative;
+}
+
+/* Subtle gradient overlay for depth */
+#aboutMe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 50%,
+    rgba(220, 90, 0, 0.03) 100%
+  );
+  pointer-events: none;
+}
+
+#aboutMe .sectionImage {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+#aboutMe .sectionImage:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
 }

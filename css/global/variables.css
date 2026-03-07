@@ -1,20 +1,38 @@
 :root {
-  /*--default-color-background: #c2dde6;*/
-
+  /* === Color Palette (Golden Hour / Sunset) === */
   --background-dark: #bccbde;
-  --background-vivid: #c2dde6; /*particles simulation color as well, file:  \js\PlanetsSim\Simulacio.js   LINE:  26*/
+  --background-vivid: #c2dde6;
   --background-clear: #e6e9f0;
 
-  --title-color: BLACK;
-  --text-color: black;
+  --title-color: #1a1a2e;
+  --text-color: #2d2d3a;
 
   --primary-accent-color: rgb(220 90 0);
   --secondary-accent-color: #431c5d;
   --third-accent-color: #38726c;
   --forth-accent-color: #f7ded1;
 
-  /*
-    $mobile-size: 768px;
-    $small-screen-size: 1200px;
-    */
+  /* === Glassmorphism === */
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-bg-strong: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-blur: 12px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+
+  /* === Elevation Shadows === */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px rgba(220, 90, 0, 0.15);
+
+  /* === Transitions === */
+  --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* === Border Radius === */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
 }

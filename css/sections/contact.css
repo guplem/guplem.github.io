@@ -1,7 +1,21 @@
 #contact {
   background-color: var(--background-vivid);
   padding: 0.83em;
-  padding-bottom: 1.66em;
+  padding-bottom: 2.5em;
+  position: relative;
+}
+
+/* Subtle gradient overlay */
+#contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(220, 90, 0, 0.03) 100%
+  );
+  pointer-events: none;
 }
 
 #contactMethods {
@@ -9,24 +23,46 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 30px 70px;
+  gap: 30px 50px;
 }
 
 .contactMethod {
   display: flex;
-  align-items: center; /* Ensures the image and text are centered vertically */
-  color: var(--lt-color-black); /* Set text color */
-  gap: 20px 10px;
+  align-items: center;
+  color: var(--text-color);
+  gap: 12px;
+  padding: 14px 24px;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-smooth),
+    box-shadow var(--transition-smooth),
+    border-color var(--transition-fast);
+}
+
+.contactMethod:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+  border-color: rgba(220, 90, 0, 0.2);
 }
 
 .contactMethod img {
-  width: 40px;
-  height: auto; /* Ensures the image keeps its aspect ratio */
+  width: 36px;
+  height: auto;
+  transition: transform var(--transition-fast);
+}
+
+.contactMethod:hover img {
+  transform: scale(1.1);
 }
 
 /* For small screens */
 @media (max-width: 768px) {
   .contactMethod {
     flex-direction: column;
+    padding: 16px 20px;
   }
 }

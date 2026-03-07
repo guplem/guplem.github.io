@@ -1,7 +1,14 @@
 #additionalSections > *:nth-child(odd) {
   background-color: var(--background-dark);
+  position: relative;
 }
 
 #additionalSections > *:nth-child(even) {
   background-color: var(--background-clear);
+  position: relative;
+}
+
+/* Subtle divider glow between sections */
+#additionalSections > * + * {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }

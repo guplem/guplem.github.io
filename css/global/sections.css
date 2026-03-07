@@ -1,6 +1,7 @@
 .section {
   padding: 0.83em;
   padding-bottom: 1.66em;
+  animation: fadeSlideUp var(--transition-smooth) both;
 }
 
 .sectionContainer {
@@ -47,7 +48,7 @@
   }
   .sectionContainer > *:first-child:nth-last-child(2) ~ img,
   .sectionContainer > img:first-child:nth-last-child(2) {
-    max-width: 30%; /* 25% --> half of the total*/
+    max-width: 30%;
   }
 
   /* Three children */
@@ -157,7 +158,6 @@
 
 .sectionContents h4 {
   font-size: 1.25em;
-
   padding-left: 0px;
   padding-right: 0px;
   text-align: left;
