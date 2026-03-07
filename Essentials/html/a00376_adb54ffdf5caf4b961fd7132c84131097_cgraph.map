@@ -1,4 +1,0 @@
-<map id="UnityEngine.RandomEssentials.GetRandomBoolTrueEnsured" name="UnityEngine.RandomEssentials.GetRandomBoolTrueEnsured">
-<area shape="rect" id="node1" title="Returns a random bool that will be true before the maximum number of tries is exceeded." alt="" coords="5,5,383,32"/>
-<area shape="rect" id="node2" href="$a00376.html#ae9af3c863846577b9d7f66b37e6c21d2" title="Returns a random bool." alt="" coords="431,5,735,32"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="UnityEngine.SaveDataManager.Load&lt; T &gt;" name="UnityEngine.SaveDataManager.Load&lt; T &gt;">
-<area shape="rect" id="node1" title="Loads data using identifier." alt="" coords="5,81,269,108"/>
-<area shape="rect" id="node2" href="$a00375.html#a0a9b24b8c195fae929c88a27cf4ea539" title="Decode the specified input with password." alt="" coords="317,5,584,32"/>
-<area shape="rect" id="node3" href="$a00371.html#a33bacc3991904042b3389b125e6fe911" title="Checks whether the specified identifier exists or not." alt="" coords="329,107,572,133"/>
-<area shape="rect" id="node4" href="$a00371.html#a17296ae6565f150dad52918f6ec64576" title=" " alt="" coords="632,81,907,108"/>
-<area shape="rect" id="node5" href="$a00387.html#aaaf95229bffab29518f7e82c3168d7f8" title="Checks if the IO is supported on current platform or not." alt="" coords="665,144,873,171"/>
-</map>

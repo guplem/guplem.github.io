@@ -1,5 +1,0 @@
-<map id="UnityEngine.SimpleAnimation.Reset" name="UnityEngine.SimpleAnimation.Reset">
-<area shape="rect" id="node1" title="Sets the time stamps of the animation to the beginning (the behaviour changes depending on if the ani..." alt="" coords="664,5,896,32"/>
-<area shape="rect" id="node2" href="$a00235.html#a20d2ae86e732c52efd768b58526d4e35" title="Starts playing the animation." alt="" coords="335,5,616,32"/>
-<area shape="rect" id="node3" href="$a00235.html#a7253a77e863eaa118a86b9910b8132cf" title="Starts playing the animation." alt="" coords="5,5,287,32"/>
-</map>

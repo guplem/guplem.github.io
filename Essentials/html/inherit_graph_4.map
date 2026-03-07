@@ -1,9 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,56,116,83"/>
-<area shape="rect" id="node2" href="$a00244.html" title="Component to manage multiple AudioSources (or AudioClips) at the same time (or in the same component)" alt="" coords="179,5,399,32"/>
-<area shape="rect" id="node3" href="$a00248.html" title="Base class to handle the console display in&#45;game" alt="" coords="218,56,361,83"/>
-<area shape="rect" id="node7" href="$a00240.html" title="Component used to control the behaviour of any SimpleAnimation" alt="" coords="164,107,415,133"/>
-<area shape="rect" id="node4" href="$a00252.html" title="Component to display the console (debug logs) in&#45;game using Unity&#39;s GUI class" alt="" coords="470,5,635,32"/>
-<area shape="rect" id="node5" href="$a00260.html" title="Component to display the console (debug logs) in&#45;game using a TMP_Text component" alt="" coords="467,56,638,83"/>
-<area shape="rect" id="node6" href="$a00256.html" title="Component to display the console (debug logs) in&#45;game using a Text component" alt="" coords="463,107,643,133"/>
-</map>

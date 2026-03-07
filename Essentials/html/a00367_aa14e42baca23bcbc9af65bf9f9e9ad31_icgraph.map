@@ -1,5 +1,0 @@
-<map id="UnityEngine.RandomEssentials.GetPointInsideCircle" name="UnityEngine.RandomEssentials.GetPointInsideCircle">
-<area shape="rect" id="node1" title="Returns a random point inside a circle." alt="" coords="380,31,707,57"/>
-<area shape="rect" id="node2" href="$a00367.html#a0c555151a400d4bdd4eb445b4965b8f2" title="Returns a random point inside a circle with center (0, 0)." alt="" coords="5,5,332,32"/>
-<area shape="rect" id="node3" href="$a00367.html#a6f6183bdd168d69a35a05892a890bf5a" title="Returns a random point inside a circle with center (0, 0)." alt="" coords="13,56,324,83"/>
-</map>

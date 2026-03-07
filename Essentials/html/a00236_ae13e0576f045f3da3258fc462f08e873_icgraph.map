@@ -1,7 +1,0 @@
-<map id="UnityEngine.SimpleAnimation.Step" name="UnityEngine.SimpleAnimation.Step">
-<area shape="rect" id="node1" title="Go forward or backwards in the animation." alt="" coords="1099,5,1324,32"/>
-<area shape="rect" id="node2" href="$a00236.html#ac7f44fe2fa5238878ec2d87fc3c777e2" title="Sets the animation at the given progress." alt="" coords="767,5,1038,32"/>
-<area shape="rect" id="node5" href="$a00240.html#a203b6a3bcac753912241f1f9c3e96df3" title=" " alt="" coords="755,56,1051,83"/>
-<area shape="rect" id="node3" href="$a00240.html#a6fb27d9a04315c44a4becc43ff996319" title="Sets the animation at the given progress." alt="" coords="380,5,707,32"/>
-<area shape="rect" id="node4" href="$a00240.html#aa5c0b1b7bbfa2fbbb721ebc9f4ff829b" title="Sets the animation at the given progress." alt="" coords="5,5,332,32"/>
-</map>

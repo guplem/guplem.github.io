@@ -1,9 +1,0 @@
-<map id="UnityEngine.RandomEssentials.GetRandomInt" name="UnityEngine.RandomEssentials.GetRandomInt">
-<area shape="rect" id="node1" title=" " alt="" coords="1087,81,1379,108"/>
-<area shape="rect" id="node2" href="$a00364.html#a32ef2217900a940652a737421cdaed20" title="Returns the next BaseObject to be spawned" alt="" coords="661,56,1039,83"/>
-<area shape="rect" id="node7" href="$a00360.html#a8d5e2879768e9b1746ee0141eab2cdf8" title=" " alt="" coords="753,107,947,133"/>
-<area shape="rect" id="node3" href="$a00364.html#a06ded56f8fd41e3b66a201973d581cb6" title="Instantiates an object for the pool." alt="" coords="328,56,613,83"/>
-<area shape="rect" id="node4" href="$a00364.html#af37fd6fd58ae827e8b192b3ddf9da844" title="Loads an objet to be later activated/used." alt="" coords="35,5,250,32"/>
-<area shape="rect" id="node5" href="$a00364.html#a55be8dd50b4256943c8e62315139f0b7" title="Creates a Pool instance." alt="" coords="5,56,280,83"/>
-<area shape="rect" id="node6" href="$a00364.html#a0dd5fef5f0f3de1ae113e336883782be" title="Activates an object from the pool." alt="" coords="29,107,256,133"/>
-</map>

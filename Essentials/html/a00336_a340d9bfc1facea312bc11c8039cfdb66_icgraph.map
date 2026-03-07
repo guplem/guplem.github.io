@@ -1,5 +1,0 @@
-<map id="UnityEngine.TransformExtensions.GetLookAwayRotation" name="UnityEngine.TransformExtensions.GetLookAwayRotation">
-<area shape="rect" id="node1" title="Find the rotation to look in the opposite direction of the target." alt="" coords="404,31,755,57"/>
-<area shape="rect" id="node2" href="$a00336.html#a683605d6c9f59c0bc49de6429930e753" title="Find the rotation to look away from a target transform." alt="" coords="5,5,356,32"/>
-<area shape="rect" id="node3" href="$a00336.html#a51097fc97df432bc0b6fe9cfd6a4726b" title="Instantly look in the opposite direction of the target." alt="" coords="39,56,322,83"/>
-</map>
