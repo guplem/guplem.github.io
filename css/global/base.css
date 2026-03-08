@@ -27,15 +27,9 @@ img {
   display: block;
 }
 
-/* === Scrollbar === */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-light); }
-::-webkit-scrollbar-thumb {
-  background: var(--bg-dark);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-html { scrollbar-width: thin; scrollbar-color: var(--bg-dark) var(--bg-light); }
+/* === Hide native scrollbar === */
+html { scrollbar-width: none; }
+::-webkit-scrollbar { width: 0; display: none; }
 
 /* === Typography === */
 h1, h2, h3, h4 {
