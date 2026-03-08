@@ -77,7 +77,7 @@
 
 /* Collapse behavior */
 #myWorkSkills[collapsed="true"] {
-  max-height: 90px;
+  max-height: 99px;
   overflow: hidden;
   position: relative;
   transition: max-height var(--duration-slow) var(--ease-out);
@@ -96,7 +96,7 @@
 }
 
 #myWorkSkills[collapsed="false"] {
-  max-height: 600px;
+  /* max-height: 600px; */
   overflow: hidden;
   position: relative;
   transition: max-height var(--duration-slow) var(--ease-out);
@@ -116,13 +116,30 @@
 #collapseButton {
   position: absolute;
   bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
-  margin-top: var(--sp-md);
+  margin-top: var(--sp-xs);
   background: var(--bg-white);
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: var(--shadow-sm);
   font-weight: 500;
   color: var(--text-muted);
+}
+
+/* When expanded, force onto its own centered line */
+#myWorkSkills[collapsed="false"]::after {
+  content: "";
+  flex-basis: 100%;
+  height: 0;
+  order: 998;
+}
+
+#myWorkSkills[collapsed="false"] #collapseButton {
+  position: relative;
+  left: auto;
+  transform: none;
+  order: 999;
 }
 
 #collapseButton:hover {
@@ -151,8 +168,9 @@
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--duration-normal) var(--ease-out),
-              box-shadow var(--duration-normal) var(--ease-out);
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
 }
 
 .work:hover {
@@ -197,7 +215,9 @@
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-.work .workTitle.workTitleLink { cursor: pointer; }
+.work .workTitle.workTitleLink {
+  cursor: pointer;
+}
 
 .work .workTitle.workTitleLink:hover h3 {
   color: var(--accent);
