@@ -47,6 +47,7 @@
 .additional-grid img {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
+  background-color: #c2dde6;
   transition: transform var(--duration-slow) var(--ease-out),
               box-shadow var(--duration-slow) var(--ease-out);
   justify-self: center;

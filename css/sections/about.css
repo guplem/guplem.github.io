@@ -35,8 +35,10 @@
   object-fit: cover;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
-  transition: transform var(--duration-slow) var(--ease-out),
-              box-shadow var(--duration-slow) var(--ease-out);
+  /* background-color: #bccbde;  */ /* f4f5f7 */
+  transition:
+    transform var(--duration-slow) var(--ease-out),
+    box-shadow var(--duration-slow) var(--ease-out);
 }
 
 .about-photo img:hover {
@@ -63,7 +65,9 @@
   border-radius: 2px;
 }
 
-.about-text h4:first-child { margin-top: 0; }
+.about-text h4:first-child {
+  margin-top: 0;
+}
 
 .about-text p {
   text-align: left;
