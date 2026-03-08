@@ -11,9 +11,9 @@ export async function displayFilteredWorks() {
   const allWorksElement = uiUtils.getElement("myWorkFiltered");
   uiUtils.clearElement(allWorksElement);
 
-  const screenWidth = window.innerWidth;
+  const containerWidth = allWorksElement.clientWidth;
   const minColumnWidth = 360;
-  const columnsNumber = Math.max(1, Math.floor(screenWidth / minColumnWidth));
+  const columnsNumber = Math.max(1, Math.floor(containerWidth / minColumnWidth));
 
   const columns = [];
   const columnHeights = new Array(columnsNumber).fill(0);
