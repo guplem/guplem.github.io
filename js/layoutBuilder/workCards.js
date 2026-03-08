@@ -2,6 +2,8 @@ import * as textUtils from "../utils/textUtils.js";
 import * as uiUtils from "../utils/uiUtils.js";
 import { selectedWorkTypes, selectedWorkSkills, onClickWorkSkill } from "./workFilters.js";
 
+const WORK_GRID_MAX_HEIGHT = 1400;
+
 /**
  * Display filtered works in a masonry layout
  */
@@ -41,6 +43,8 @@ export async function displayFilteredWorks() {
     columns[shortestColumnIndex].appendChild(workElement);
     columnHeights[shortestColumnIndex] += workElement.offsetHeight;
   }
+
+  updateWorksExpandButton();
 }
 
 /**
@@ -164,4 +168,64 @@ async function createWorkCard(work, index) {
   }
 
   return workElement;
+}
+
+/**
+ * Update the works expand/collapse button visibility and state
+ */
+function updateWorksExpandButton() {
+  const wrapper = document.getElementById("myWorkGridWrapper");
+  const button = document.getElementById("worksExpandButton");
+  const grid = document.getElementById("myWorkFiltered");
+  if (!wrapper || !button || !grid) return;
+
+  const contentHeight = grid.scrollHeight;
+  const needsCollapse = contentHeight > WORK_GRID_MAX_HEIGHT;
+
+  if (!needsCollapse) {
+    wrapper.setAttribute("data-collapsed", "false");
+    wrapper.style.maxHeight = "";
+    button.hidden = true;
+    return;
+  }
+
+  button.hidden = false;
+  const isCollapsed = wrapper.getAttribute("data-collapsed") === "true";
+  if (isCollapsed) {
+    wrapper.style.maxHeight = WORK_GRID_MAX_HEIGHT + "px";
+  }
+
+  // Only attach listener once
+  if (!button.dataset.initialized) {
+    button.dataset.initialized = "true";
+    button.addEventListener("click", toggleWorksExpand);
+  }
+
+  button.textContent = isCollapsed ? "Show More Projects" : "Show Less Projects";
+}
+
+/**
+ * Toggle the works grid expand/collapse state
+ */
+function toggleWorksExpand() {
+  const wrapper = document.getElementById("myWorkGridWrapper");
+  const button = document.getElementById("worksExpandButton");
+  if (!wrapper || !button) return;
+
+  const isCollapsed = wrapper.getAttribute("data-collapsed") === "true";
+
+  if (isCollapsed) {
+    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+    wrapper.setAttribute("data-collapsed", "false");
+    button.textContent = "Show Less Projects";
+  } else {
+    // First set explicit max-height to current height so transition has a starting point
+    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+    // Force reflow
+    wrapper.offsetHeight;
+    wrapper.style.maxHeight = WORK_GRID_MAX_HEIGHT + "px";
+    wrapper.setAttribute("data-collapsed", "true");
+    button.textContent = "Show More Projects";
+    document.getElementById("myWork")?.scrollIntoView({ behavior: "smooth" });
+  }
 }
