@@ -215,9 +215,19 @@ function toggleWorksExpand() {
   const isCollapsed = wrapper.getAttribute("data-collapsed") === "true";
 
   if (isCollapsed) {
-    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+    const grid = document.getElementById("myWorkFiltered");
+    const fullHeight = grid ? grid.scrollHeight : wrapper.scrollHeight;
+    wrapper.style.maxHeight = fullHeight + "px";
     wrapper.setAttribute("data-collapsed", "false");
     button.textContent = "Show Less Projects";
+    // After transition, remove max-height so content isn't clipped on reflow
+    const onEnd = () => {
+      if (wrapper.getAttribute("data-collapsed") === "false") {
+        wrapper.style.maxHeight = "none";
+      }
+      wrapper.removeEventListener("transitionend", onEnd);
+    };
+    wrapper.addEventListener("transitionend", onEnd);
   } else {
     // First set explicit max-height to current height so transition has a starting point
     wrapper.style.maxHeight = wrapper.scrollHeight + "px";
