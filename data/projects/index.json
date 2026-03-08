@@ -1,7 +1,11 @@
 {
   "title": "My Work",
   "projects": [
+    "seasonal-color-classifier.json",
     "boom-card-game.json",
+    "pelusillas.json",
+    "dashboard-react-node-mongodb.json",
+    "windows-automatic-tool.json",
     "web-app-template.json",
     "galtea.json",
     "portfolio-v2.json",
@@ -30,6 +34,7 @@
     "rasta-run.json",
     "nix.json",
     "gpt-role.json",
+    "chatgpt-pong.json",
     "wikipoll.json",
     "portfolio-v1.json",
     "4utumn.json",

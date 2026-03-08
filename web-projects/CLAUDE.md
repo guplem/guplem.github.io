@@ -14,4 +14,11 @@ Collection of small, standalone web projects — games, tools, experiments, demo
 
 ## Adding a New Project
 
-Create a new folder in `web-projects/`. Keep it self-contained — no imports from outside the folder. Update this file's "Existing Projects" list.
+1. Create a new folder in `web-projects/`. Keep it self-contained — no imports from outside the folder.
+2. **Include a `README.md`** in the project folder explaining what the tool is, its features, and how to run it locally. This is mandatory for every web-project.
+3. Update this file's "Existing Projects" list.
+
+## Existing Projects
+
+- **ChatGPTPong** — Classic Pong game generated entirely by ChatGPT (GPT-3.5) in Dec 2022
+- **seasonal-color-classifier** — Color analysis tool that classifies colors into seasonal palettes

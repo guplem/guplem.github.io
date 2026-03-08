@@ -1,0 +1,31 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2022",
+  "title": "ChatGPT Pong",
+  "description": [
+    "*ChatGPT Pong* is a **classic Pong game** generated entirely by **ChatGPT (GPT-3.5)** in December 2022, right after the initial release of ChatGPT. It was my first ever software project created by an AI — and it blew my mind.",
+    "The game features a player-controlled paddle against an AI opponent with mouse input, score tracking, and increasing ball speed. The entire codebase was produced through conversation with the model, with no manual code edits.",
+    "This small experiment marked the beginning of my exploration into **AI-assisted development**, demonstrating the surprising capability of early large language models to produce functional software from natural language alone."
+  ],
+  "image": "resources/images/projects/chatGPTPong.webp",
+  "imageAlt": "ChatGPT Pong game screenshot",
+  "skills": [
+    "AI Integration",
+    "HTML/CSS",
+    "JS/TS",
+    "Frontend",
+    "Game Design"
+  ],
+  "links": [
+    {
+      "url": "https://triunitystudios.com/web-projects/ChatGPTPong/pong.html"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/ChatGPTPong"
+    }
+  ]
+}

@@ -34,6 +34,13 @@ Each `description` array should follow this structure (one paragraph per element
 - Focus on **what Guillem did**, not generic project descriptions
 - Mention concrete constraints when relevant: "delivered in 48 hours", "developed in a week", "won top prize at a Game Jam"
 
+## Choosing Skills (Tags)
+
+- **Reuse existing skills** — always check what skills are already used across other projects before adding a new one. Only introduce a new skill tag when no existing tag covers the concept and it is highly relevant to the project.
+- **Keep it relevant** — only assign skills that are central to the project, not tangentially related.
+- **Consistent naming** — skill names must exactly match those used in other projects (e.g. "JS/TS" not "JavaScript", "AI Integration" not "AI"). Grep existing project files to confirm spelling.
+- **Types** — valid values are `Web`, `Mobile App`, `Videogame`, `Misceallaneous` (note: intentional legacy spelling). Assign one or more as appropriate.
+
 ## Field Reference
 
 See `schemas/project.schema.json` for the full typed schema. Key points:

@@ -1,0 +1,18 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2025",
+  "title": "Dashboard Template",
+  "description": [
+    "*Dashboard React-Node-MongoDB* is a **full-stack template** for building dashboard applications with **React**, **Node.js**, and **MongoDB**. It provides a ready-to-use starting point with data visualization, CRUD operations, and a clean architecture to build upon.",
+    "I set up the stack using **React** with **TypeScript** and **React Admin** on the frontend, and **Node.js/Express** with **Prisma ORM** on the backend. The template includes multiple dashboard views with charts powered by **Recharts**, along with forms for managing data — all easily adaptable to any domain.",
+    "The application is containerized with **Docker** and configured for deployment on **Google Cloud Run**, with a clear separation between frontend and backend services, making it a solid foundation for new projects."
+  ],
+  "skills": ["JS/TS", "React", "API Integration", "Docker", "Frontend", "Backend", "Data Management", "Data Visualization", "Architecture", "Server Management"],
+  "links": [
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/Dashboard-ReactNodeMongoDB"
+    }
+  ]
+}

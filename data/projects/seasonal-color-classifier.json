@@ -1,0 +1,31 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2025",
+  "title": "Seasonal Color Classifier",
+  "description": [
+    "*Seasonal Color Classifier* is a **web tool** that analyzes colors and classifies them into seasonal palettes (Spring, Summer, Autumn, Winter), helping users identify which color season best suits them.",
+    "This was one of the first tools I created **100% by an AI coding agent** under my direction, serving as a test to kickstart the creation of useful and simple tools that can be built in a dedicated way for users simply by leveraging an **AI coding agent**.",
+    "The project demonstrated that focused, single-purpose web tools can be rapidly produced with AI assistance while maintaining quality and usability."
+  ],
+  "image": "resources/images/projects/seasonalColorClassifier.webp",
+  "imageAlt": "Color grid showing seasonal palette classification",
+  "skills": [
+    "AI Integration",
+    "HTML/CSS",
+    "JS/TS",
+    "Frontend",
+    "Rapid Development"
+  ],
+  "links": [
+    {
+      "url": "https://triunitystudios.com/web-projects/seasonal-color-classifier/"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/seasonal-color-classifier"
+    }
+  ]
+}
