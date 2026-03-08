@@ -147,6 +147,13 @@
   border-color: rgba(var(--accent-rgb), 0.2);
 }
 
+/* Soft transition to next section */
+#myWork {
+  position: relative;
+  box-shadow: 0 40px 60px -20px rgba(0, 0, 0, 0.08);
+  z-index: 1;
+}
+
 /* Work grid (masonry columns) */
 .work-grid {
   display: flex;

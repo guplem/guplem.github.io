@@ -7,6 +7,23 @@
   background: var(--bg-light);
 }
 
+/* Gradient fade to contact section */
+#additionalSections .section:last-child {
+  position: relative;
+}
+
+#additionalSections .section:last-child::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(to top, var(--bg-vivid), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
 /* Grid layout for additional sections */
 .additional-grid {
   display: grid;
