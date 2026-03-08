@@ -23,7 +23,7 @@ function observe() {
 
 // Mark sections for reveal — only ones that start off-screen
 document.addEventListener("DOMContentLoaded", () => {
-  const selectors = ["#aboutMe", "#contact", "#additionalSections .section"];
+  const selectors = ["#aboutMe > .container", "#contact > .container", "#additionalSections .section > .container"];
   for (const sel of selectors) {
     document.querySelectorAll(sel).forEach((el) => el.classList.add("reveal"));
   }
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const additional = document.getElementById("additionalSections");
 if (additional) {
   new MutationObserver(() => {
-    additional.querySelectorAll(".section:not(.reveal)").forEach((el) => el.classList.add("reveal"));
+    additional.querySelectorAll(".section > .container:not(.reveal)").forEach((el) => el.classList.add("reveal"));
     observe();
   }).observe(additional, { childList: true });
 }
