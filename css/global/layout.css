@@ -19,6 +19,7 @@
 .nav-inner {
   max-width: 1100px;
   margin: 0 auto;
+  margin-inline: max(var(--sp-sm), calc((100% - 1100px) / 2));
   display: flex;
   align-items: center;
   justify-content: space-between;
