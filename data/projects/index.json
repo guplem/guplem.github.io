@@ -1,8 +1,8 @@
 {
   "title": "My Work",
   "projects": [
-    "menu-management.json",
     "seasonal-color-classifier.json",
+    "menu-management.json",
     "boom-card-game.json",
     "pelusillas.json",
     "dashboard-react-node-mongodb.json",
