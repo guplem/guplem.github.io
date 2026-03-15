@@ -1,0 +1,35 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2024-2025",
+  "title": "Menu Management",
+  "description": [
+    "*Menu Management* is a **weekly menu planner** with recipe management, automatic menu generation with nutritional balancing, shopping list aggregation, and a step-by-step cooking guide with timers.",
+    "Originally built as a **Flutter desktop application** for personal use, I later had it **automatically ported to a vanilla web app by Claude Code** (Anthropic's AI coding agent). The web version is a full-featured port with responsive layout, dynamic theming, and localStorage persistence, built entirely with **HTML/CSS/JS** with no frameworks or dependencies.",
+    "The port demonstrated that a complex desktop application (with seeded menu generation algorithms, drag-and-drop reordering, real-time timer notifications, and file import/export) can be faithfully translated to a lightweight web format through AI-assisted development."
+  ],
+  "skills": [
+    "AI Integration",
+    "HTML/CSS",
+    "JS/TS",
+    "Flutter/Dart",
+    "Frontend",
+    "UI/UX",
+    "Architecture"
+  ],
+  "links": [
+    {
+      "url": "https://triunitystudios.com/web-projects/menu-management/"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/menu-management"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/Menu-Management"
+    }
+  ]
+}
