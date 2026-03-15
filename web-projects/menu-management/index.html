@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <nav class="sidebar" id="sidebar">
+      <div class="nav-items">
+        <button class="nav-item active" data-tab="ingredients">
+          <span class="nav-icon">&#127819;</span>
+          <span class="nav-label">Ingredients</span>
+        </button>
+        <button class="nav-item" data-tab="recipes">
+          <span class="nav-icon">&#128214;</span>
+          <span class="nav-label">Recipes</span>
+        </button>
+        <button class="nav-item" data-tab="menu">
+          <span class="nav-icon">&#128197;</span>
+          <span class="nav-label">Menu</span>
+        </button>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-icon" id="btn-theme" title="Change theme">&#127912;</button>
+        <button class="btn btn-icon" id="btn-import" title="Import data from file">&#128194;</button>
+        <button class="btn btn-icon" id="btn-export" title="Export data to file">&#128190;</button>
+      </div>
+    </nav>
+    <main class="main-area" id="main-content"></main>
+  </div>
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="models.js"></script>
+  <script src="menu-generator.js"></script>
+  <script src="persistence.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
