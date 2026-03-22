@@ -93,6 +93,13 @@
     </div>
 
     <div id="emoji-picker" class="sub-toolbar hidden">
+      <div id="emoji-categories">
+        <button class="emoji-cat-btn active" data-cat="recent">Recent</button>
+        <button class="emoji-cat-btn" data-cat="smileys">Smileys</button>
+        <button class="emoji-cat-btn" data-cat="gestures">Gestures</button>
+        <button class="emoji-cat-btn" data-cat="symbols">Symbols</button>
+        <button class="emoji-cat-btn" data-cat="nature">Nature</button>
+      </div>
       <div id="emoji-grid"></div>
     </div>
 
@@ -112,15 +119,37 @@
     </div>
 
     <div id="text-options" class="sub-toolbar hidden">
-      <input type="text" id="text-input" placeholder="Type something..." maxlength="100">
-      <div id="text-colors">
-        <button class="color-btn active" data-color="#FFFFFF" style="background:#FFFFFF"></button>
-        <button class="color-btn" data-color="#000000" style="background:#000000"></button>
-        <button class="color-btn" data-color="#FF453A" style="background:#FF453A"></button>
-        <button class="color-btn" data-color="#0A84FF" style="background:#0A84FF"></button>
-        <button class="color-btn" data-color="#FFD60A" style="background:#FFD60A"></button>
+      <div id="text-row-input">
+        <input type="text" id="text-input" placeholder="Type something..." maxlength="100">
+        <button id="btn-add-text" class="action-btn primary">Add</button>
       </div>
-      <button id="btn-add-text" class="action-btn primary">Add</button>
+      <div id="text-controls">
+        <div id="text-sizes">
+          <button class="text-size-btn" data-size="20">S</button>
+          <button class="text-size-btn active" data-size="28">M</button>
+          <button class="text-size-btn" data-size="40">L</button>
+        </div>
+        <div id="text-styles">
+          <button class="text-style-btn active" data-style="blur" title="Blur background">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="4" opacity="0.4"/><line x1="7" y1="12" x2="17" y2="12"/></svg>
+          </button>
+          <button class="text-style-btn" data-style="plain" title="Plain text">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="7" y1="12" x2="17" y2="12"/></svg>
+          </button>
+          <button class="text-style-btn" data-style="solid" title="Solid background">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="4" fill="currentColor" opacity="0.8"/><line x1="7" y1="12" x2="17" y2="12" stroke="white"/></svg>
+          </button>
+        </div>
+        <div id="text-colors">
+          <button class="color-btn active" data-color="#FFFFFF" style="background:#FFFFFF"></button>
+          <button class="color-btn" data-color="#000000" style="background:#000000"></button>
+          <button class="color-btn" data-color="#FF453A" style="background:#FF453A"></button>
+          <button class="color-btn" data-color="#0A84FF" style="background:#0A84FF"></button>
+          <button class="color-btn" data-color="#30D158" style="background:#30D158"></button>
+          <button class="color-btn" data-color="#FFD60A" style="background:#FFD60A"></button>
+          <button class="color-btn" data-color="#BF5AF2" style="background:#BF5AF2"></button>
+        </div>
+      </div>
     </div>
   </div>
 

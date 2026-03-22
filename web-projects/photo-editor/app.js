@@ -64,15 +64,14 @@ const FILTERS = [
   { name: 'Tonal', value: 'tonal', css: 'sepia(20%) saturate(60%) brightness(105%) contrast(95%)' },
 ];
 
-// ===== Emojis =====
-const EMOJIS = [
-  '😀','😂','😍','🥺','😎','🤩','😭','🥳',
-  '🔥','❤️','💀','👻','🎉','✨','💯','🌈',
-  '🦋','🌸','🍕','🎵','👑','💎','🚀','⭐',
-  '🐱','🐶','🦊','🐸','🌻','🍦','🎮','📸',
-  '👍','👎','✌️','🤟','💪','🙏','👀','💅',
-  '❄️','☀️','🌙','⚡','💜','💙','💚','🧡',
-];
+// ===== Emojis (categorized) =====
+const EMOJI_CATS = {
+  recent: ['🔥','❤️','😂','✨','💯','🥺','😍','👀','💀','🎉','😎','🥳','😭','🤩','💅','🚀'],
+  smileys: ['😀','😂','🤣','😍','🥰','😘','😎','🤩','🥳','😭','🥺','😤','🤯','😱','🫠','😈','💀','👻','🤖','👽'],
+  gestures: ['👍','👎','✌️','🤟','🤙','💪','🙏','👏','🫶','👀','💅','🤝','✋','👋','🫡','☝️','👆','🖐️','🤌','🫰'],
+  symbols: ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','💔','❤️‍🔥','✨','💫','⭐','🌟','💯','🔥','💎','👑','🎵','🎶'],
+  nature: ['🌸','🌺','🌻','🌈','☀️','🌙','❄️','⚡','🦋','🐱','🐶','🦊','🐸','🌴','🍕','🍦','🎮','📸','🚀','🎉'],
+};
 
 // ===== Camera =====
 async function startCamera() {
@@ -358,16 +357,28 @@ document.getElementById('btn-undo-draw').addEventListener('click', () => {
 });
 
 // ===== Emoji Picker =====
-function buildEmojiGrid() {
+let currentEmojiCat = 'recent';
+
+function buildEmojiGrid(cat = currentEmojiCat) {
+  currentEmojiCat = cat;
   const grid = document.getElementById('emoji-grid');
   grid.innerHTML = '';
-  EMOJIS.forEach(emoji => {
+  const emojis = EMOJI_CATS[cat] || EMOJI_CATS.recent;
+  emojis.forEach(emoji => {
     const btn = document.createElement('button');
     btn.textContent = emoji;
     btn.addEventListener('click', () => addSticker(emoji, 'emoji'));
     grid.appendChild(btn);
   });
+  // Update category buttons
+  document.querySelectorAll('.emoji-cat-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
 }
+
+document.querySelectorAll('.emoji-cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => buildEmojiGrid(btn.dataset.cat));
+});
 
 function addSticker(content, type) {
   const el = document.createElement('div');
@@ -495,6 +506,9 @@ document.getElementById('editor-canvas-container').addEventListener('pointerdown
 });
 
 // ===== Text Tool =====
+let textSize = 28;
+let textStyle = 'blur'; // 'blur' | 'plain' | 'solid'
+
 document.getElementById('btn-add-text').addEventListener('click', () => {
   const input = document.getElementById('text-input');
   const text = input.value.trim();
@@ -504,8 +518,20 @@ document.getElementById('btn-add-text').addEventListener('click', () => {
   const color = activeColor ? activeColor.dataset.color : '#FFFFFF';
 
   const el = document.createElement('div');
-  el.className = 'sticker text-sticker';
-  el.style.color = color;
+  el.className = `sticker text-sticker style-${textStyle}`;
+  el.style.fontSize = textSize + 'px';
+
+  if (textStyle === 'solid') {
+    el.style.background = color;
+    el.style.color = isLightColor(color) ? '#000' : '#fff';
+  } else {
+    el.style.color = color;
+  }
+
+  // Store metadata for export
+  el._textStyle = textStyle;
+  el._textColor = color;
+  el._fontSize = textSize;
 
   const textNode = document.createTextNode(text);
   el.appendChild(textNode);
@@ -531,6 +557,31 @@ document.getElementById('btn-add-text').addEventListener('click', () => {
   selectSticker(el);
 
   input.value = '';
+});
+
+function isLightColor(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 160;
+}
+
+// Text size buttons
+document.querySelectorAll('.text-size-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.text-size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    textSize = parseInt(btn.dataset.size);
+  });
+});
+
+// Text style buttons
+document.querySelectorAll('.text-style-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.text-style-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    textStyle = btn.dataset.style;
+  });
 });
 
 document.querySelectorAll('#text-colors .color-btn').forEach(btn => {
@@ -787,7 +838,7 @@ function saveImage() {
   // Draw the current canvas content (image + filter + drawings)
   expCtx.drawImage(editorCanvas, 0, 0);
 
-  // Draw stickers
+  // Draw stickers using html2canvas-like approach for accurate rendering
   const stickers = stickerLayer.querySelectorAll('.sticker');
   if (stickers.length > 0) {
     const layerRect = stickerLayer.getBoundingClientRect();
@@ -799,33 +850,74 @@ function saveImage() {
       const cx = (rect.left + rect.width / 2 - layerRect.left) * scaleX;
       const cy = (rect.top + rect.height / 2 - layerRect.top) * scaleY;
       const scale = sticker._scale || 1;
+      const text = sticker.childNodes[0].textContent;
 
       expCtx.save();
       expCtx.translate(cx, cy);
 
       if (sticker.classList.contains('emoji')) {
-        const fontSize = 48 * scale * scaleX * 0.8;
-        expCtx.font = `${fontSize}px sans-serif`;
+        // Use actual rendered size for accurate export
+        const renderedW = rect.width / scale;
+        const fontSize = 52 * scaleX * scale;
+        expCtx.font = `${fontSize}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
         expCtx.textAlign = 'center';
         expCtx.textBaseline = 'middle';
-        // Get only text content (exclude delete button text)
-        const text = sticker.childNodes[0].textContent;
-        expCtx.fillText(text, 0, 0);
+        expCtx.fillText(text, 0, fontSize * 0.04); // slight offset for vertical centering
       } else if (sticker.classList.contains('text-sticker')) {
-        const fontSize = 28 * scale * scaleX * 0.8;
-        expCtx.font = `700 ${fontSize}px -apple-system, BlinkMacSystemFont, sans-serif`;
+        const baseFontSize = sticker._fontSize || 28;
+        const fontSize = baseFontSize * scaleX * scale;
+        const style = sticker._textStyle || 'blur';
+        const color = sticker._textColor || '#FFFFFF';
+        const padding = 18 * scaleX * scale;
+        const radius = 12 * scaleX * scale;
+
+        expCtx.font = `800 ${fontSize}px -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif`;
         expCtx.textAlign = 'center';
         expCtx.textBaseline = 'middle';
-        expCtx.fillStyle = sticker.style.color || '#FFFFFF';
-        expCtx.shadowColor = 'rgba(0,0,0,0.5)';
-        expCtx.shadowBlur = 8 * scale;
-        expCtx.shadowOffsetY = 2 * scale;
-        const text = sticker.childNodes[0].textContent;
-        expCtx.fillText(text, 0, 0);
+
+        const metrics = expCtx.measureText(text);
+        const textW = metrics.width;
+        const textH = fontSize * 1.15;
+
+        if (style === 'solid') {
+          // Solid colored background
+          expCtx.fillStyle = color;
+          roundRect(expCtx, -textW / 2 - padding, -textH / 2 - padding * 0.5, textW + padding * 2, textH + padding, radius);
+          expCtx.fill();
+          expCtx.fillStyle = isLightColor(color) ? '#000' : '#fff';
+        } else if (style === 'blur') {
+          // Semi-transparent dark background (blur can't be done in canvas)
+          expCtx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+          roundRect(expCtx, -textW / 2 - padding, -textH / 2 - padding * 0.5, textW + padding * 2, textH + padding, radius);
+          expCtx.fill();
+          expCtx.fillStyle = color;
+        } else {
+          // Plain — just text with shadow
+          expCtx.fillStyle = color;
+          expCtx.shadowColor = 'rgba(0,0,0,0.6)';
+          expCtx.shadowBlur = 8 * scale * scaleX;
+          expCtx.shadowOffsetY = 2 * scale * scaleX;
+        }
+
+        expCtx.fillText(text, 0, fontSize * 0.04);
       }
 
       expCtx.restore();
     });
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
   }
 
   // Save flash effect (like iOS screenshot)
