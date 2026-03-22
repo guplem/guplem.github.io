@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Gravity Sandbox</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div id="ui-overlay">
+    <div id="top-bar">
+      <h1>Gravity Sandbox</h1>
+      <div id="controls">
+        <button id="btn-clear" title="Clear all bodies">Clear</button>
+        <button id="btn-pause" title="Pause / Resume">Pause</button>
+        <button id="btn-trails" title="Toggle trails">Trails: On</button>
+        <button id="btn-preset" title="Load a preset">Preset</button>
+      </div>
+    </div>
+
+    <div id="mass-slider-container">
+      <label for="mass-slider">Mass</label>
+      <input type="range" id="mass-slider" min="1" max="100" value="20">
+      <span id="mass-value">20</span>
+    </div>
+
+    <div id="hint">Tap to spawn &middot; Drag to launch</div>
+    <div id="body-count"></div>
+  </div>
+
+  <script src="simulation.js" type="module"></script>
+</body>
+</html>

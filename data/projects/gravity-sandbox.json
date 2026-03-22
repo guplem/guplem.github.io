@@ -1,0 +1,29 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": [
+    "Web"
+  ],
+  "date": "2026",
+  "title": "Gravity Sandbox",
+  "description": [
+    "*Gravity Sandbox* is an **interactive N-body gravitational simulation** built entirely in the browser with vanilla **HTML Canvas** and **JavaScript**. Users spawn celestial bodies by clicking or tapping, drag to slingshot them with initial velocity, and watch emergent orbital systems form in real time.",
+    "The project was generated end-to-end by **Claude** (Anthropic's AI) as a capability demonstration — from physics engine and renderer to responsive UI and preset configurations. No manual code edits were made.",
+    "Features include **body merging** with conservation of momentum, toggleable **motion trails**, adjustable mass, and four built-in presets (orbital system, binary stars, asteroid field, and a three-body figure-eight). Fully mobile-friendly with touch controls."
+  ],
+  "skills": [
+    "AI Integration",
+    "HTML/CSS",
+    "JS/TS",
+    "Frontend",
+    "Game Design"
+  ],
+  "links": [
+    {
+      "url": "https://triunitystudios.com/web-projects/gravity-sandbox/"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/gravity-sandbox"
+    }
+  ]
+}
