@@ -52,16 +52,16 @@ let pinchStartScale = 1;
 
 // ===== Filters =====
 const FILTERS = [
-  { name: 'None', value: 'none', css: 'none' },
-  { name: 'B&W', value: 'grayscale', css: 'grayscale(100%)' },
+  { name: 'Original', value: 'none', css: 'none' },
+  { name: 'Mono', value: 'grayscale', css: 'grayscale(100%)' },
   { name: 'Sepia', value: 'sepia', css: 'sepia(100%)' },
   { name: 'Warm', value: 'warm', css: 'sepia(30%) saturate(140%) brightness(105%)' },
   { name: 'Cool', value: 'cool', css: 'saturate(80%) hue-rotate(20deg) brightness(105%)' },
   { name: 'Vivid', value: 'vivid', css: 'saturate(180%) contrast(110%)' },
   { name: 'Fade', value: 'fade', css: 'contrast(90%) brightness(110%) saturate(80%)' },
-  { name: 'Drama', value: 'drama', css: 'contrast(140%) brightness(90%)' },
-  { name: 'Invert', value: 'invert', css: 'invert(100%)' },
-  { name: 'Blur', value: 'blur', css: 'blur(2px)' },
+  { name: 'Dramatic', value: 'drama', css: 'contrast(140%) brightness(90%)' },
+  { name: 'Noir', value: 'noir', css: 'grayscale(100%) contrast(130%) brightness(90%)' },
+  { name: 'Tonal', value: 'tonal', css: 'sepia(20%) saturate(60%) brightness(105%) contrast(95%)' },
 ];
 
 // ===== Emojis =====
@@ -771,7 +771,7 @@ function applyCrop() {
   tmpImg.src = editorCanvas.toDataURL();
 
   positionStickerLayer();
-  showToast('Cropped!');
+  showToast('Cropped', true);
 }
 
 // ===== Save =====
@@ -828,6 +828,12 @@ function saveImage() {
     });
   }
 
+  // Save flash effect (like iOS screenshot)
+  const flash = document.createElement('div');
+  flash.className = 'save-flash';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 400);
+
   // Download
   exportCanvas.toBlob((blob) => {
     const url = URL.createObjectURL(blob);
@@ -836,13 +842,17 @@ function saveImage() {
     a.download = `snap-edit-${Date.now()}.jpg`;
     a.click();
     URL.revokeObjectURL(url);
-    showToast('Saved!');
+    showToast('Saved to Downloads', true);
   }, 'image/jpeg', 0.92);
 }
 
 // ===== Toast =====
-function showToast(msg) {
-  toast.textContent = msg;
+function showToast(msg, withCheck = false) {
+  if (withCheck) {
+    toast.innerHTML = `<span class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#30D158" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>${msg}</span>`;
+  } else {
+    toast.textContent = msg;
+  }
   toast.classList.remove('hidden');
   toast.classList.add('show');
   setTimeout(() => {
