@@ -1,0 +1,519 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg: #000;
+  --surface: #1a1a1a;
+  --surface-light: #2a2a2a;
+  --text: #fff;
+  --text-dim: #999;
+  --accent: #FFFC00;
+  --danger: #FF3B30;
+  --radius: 12px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Screens */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+}
+.screen.active {
+  display: flex;
+}
+
+/* ===== Camera Screen ===== */
+#camera-screen {
+  background: var(--bg);
+}
+
+#camera-feed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#camera-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 24px 32px;
+  padding-bottom: calc(24px + var(--safe-bottom));
+  background: linear-gradient(transparent, rgba(0,0,0,0.6));
+}
+
+.cam-btn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.cam-btn svg {
+  width: 24px;
+  height: 24px;
+}
+.cam-btn:active {
+  transform: scale(0.9);
+}
+
+.capture-btn {
+  width: 72px;
+  height: 72px;
+  border: 4px solid white;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+.capture-btn::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.1s;
+}
+.capture-btn:active::after {
+  transform: scale(0.85);
+}
+
+/* ===== Editor Screen ===== */
+#editor-screen {
+  background: var(--bg);
+}
+
+#editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  padding-top: calc(8px + var(--safe-top));
+  background: var(--surface);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+#tool-buttons {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+  justify-content: center;
+}
+
+.tool-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.tool-btn svg {
+  width: 22px;
+  height: 22px;
+}
+.tool-btn:active, .tool-btn.active {
+  background: var(--surface-light);
+}
+.tool-btn.active {
+  color: var(--accent);
+}
+
+.save-btn {
+  color: var(--accent);
+}
+
+/* Canvas container */
+#editor-canvas-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+
+#editor-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+#sticker-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sticker {
+  position: absolute;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+}
+.sticker.emoji {
+  font-size: 48px;
+  line-height: 1;
+}
+.sticker.text-sticker {
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  white-space: nowrap;
+  padding: 4px 8px;
+}
+.sticker .delete-btn {
+  display: none;
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--danger);
+  color: white;
+  border: 2px solid white;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+.sticker.selected .delete-btn {
+  display: flex;
+}
+.sticker.selected {
+  outline: 2px dashed var(--accent);
+  outline-offset: 4px;
+}
+
+/* Crop overlay */
+#crop-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+}
+#crop-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+#crop-box {
+  position: absolute;
+  border: 2px solid white;
+  box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+  z-index: 1;
+  touch-action: none;
+}
+.crop-handle {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  z-index: 2;
+}
+.crop-handle::before {
+  content: '';
+  position: absolute;
+  background: white;
+  border-radius: 2px;
+}
+.crop-handle.tl { top: -4px; left: -4px; cursor: nw-resize; }
+.crop-handle.tr { top: -4px; right: -4px; cursor: ne-resize; }
+.crop-handle.bl { bottom: -4px; left: -4px; cursor: sw-resize; }
+.crop-handle.br { bottom: -4px; right: -4px; cursor: se-resize; }
+
+.crop-handle.tl::before, .crop-handle.br::before { width: 24px; height: 3px; top: 0; left: 0; }
+.crop-handle.tl::after, .crop-handle.br::after { content:''; position:absolute; background:white; border-radius:2px; width: 3px; height: 24px; top: 0; left: 0; }
+.crop-handle.tr::before, .crop-handle.bl::before { width: 24px; height: 3px; top: 0; right: 0; }
+.crop-handle.tr::after, .crop-handle.bl::after { content:''; position:absolute; background:white; border-radius:2px; width: 3px; height: 24px; top: 0; right: 0; }
+.crop-handle.bl::before { top: auto; bottom: 0; }
+.crop-handle.bl::after { top: auto; bottom: 0; }
+.crop-handle.br::before { top: auto; bottom: 0; left: auto; right: 0; }
+.crop-handle.br::after { top: auto; bottom: 0; left: auto; right: 0; }
+
+/* Sub-toolbars */
+.sub-toolbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  padding: 16px;
+  padding-bottom: calc(16px + var(--safe-bottom));
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+.sub-toolbar.hidden {
+  display: none;
+}
+
+/* Draw options */
+#draw-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+#draw-options.hidden {
+  display: none;
+}
+
+#brush-sizes {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.size-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.size-btn span {
+  display: block;
+  border-radius: 50%;
+  background: white;
+}
+.size-btn.active {
+  background: var(--surface-light);
+  outline: 2px solid var(--accent);
+}
+
+#color-palette, #text-colors {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.color-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.color-btn.active {
+  border-color: var(--accent);
+  transform: scale(1.2);
+}
+
+#btn-undo-draw {
+  align-self: flex-end;
+}
+
+/* Emoji picker */
+#emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#emoji-grid button {
+  font-size: 28px;
+  line-height: 1;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+#emoji-grid button:active {
+  background: var(--surface-light);
+}
+
+/* Filter options */
+#filter-list {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
+.filter-preview {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text);
+}
+.filter-preview canvas {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+}
+.filter-preview.active canvas {
+  border-color: var(--accent);
+}
+.filter-preview span {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* Crop actions */
+#crop-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#crop-actions.hidden {
+  display: none;
+}
+#crop-ratios {
+  display: flex;
+  gap: 8px;
+}
+.ratio-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--text-dim);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+}
+.ratio-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.action-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 20px;
+  background: var(--surface-light);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.action-btn.primary {
+  background: var(--accent);
+  color: #000;
+}
+
+/* Text options */
+#text-options {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#text-options.hidden {
+  display: none;
+}
+#text-input {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 20px;
+  background: var(--surface-light);
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+}
+
+/* Toast */
+#toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  background: rgba(255,255,255,0.95);
+  color: #000;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 600;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+#toast.show {
+  opacity: 1;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Landscape orientation tweaks */
+@media (orientation: landscape) and (max-height: 500px) {
+  #camera-controls {
+    padding: 12px 32px;
+  }
+  .capture-btn {
+    width: 56px;
+    height: 56px;
+  }
+  #editor-toolbar {
+    padding: 4px 12px;
+  }
+  .tool-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .sub-toolbar {
+    padding: 8px;
+  }
+}
