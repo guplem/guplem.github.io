@@ -90,6 +90,7 @@ async function startCamera() {
     };
     currentStream = await navigator.mediaDevices.getUserMedia(constraints);
     cameraFeed.srcObject = currentStream;
+    await cameraFeed.play();
   } catch (err) {
     showToast('Camera access denied');
     console.error('Camera error:', err);
@@ -154,14 +155,6 @@ function openEditor(img) {
     currentStream = null;
   }
 
-  // Size canvas to fit image
-  const container = document.getElementById('editor-canvas-container');
-  const maxW = container.clientWidth;
-  const maxH = container.clientHeight;
-  const scale = Math.min(maxW / img.width, maxH / img.height, 1);
-  editorCanvas.width = Math.round(img.width * scale);
-  editorCanvas.height = Math.round(img.height * scale);
-
   // Reset state
   drawPaths = [];
   currentFilter = 'none';
@@ -170,19 +163,27 @@ function openEditor(img) {
   hideAllSubToolbars();
   clearToolActive();
 
-  // Position sticker layer to match canvas
-  positionStickerLayer();
+  // Show editor FIRST so container has layout dimensions
+  cameraScreen.classList.remove('active');
+  editorScreen.classList.add('active');
+
+  // Size canvas to fit image (container must be visible for clientWidth/Height)
+  const container = document.getElementById('editor-canvas-container');
+  const maxW = container.clientWidth;
+  const maxH = container.clientHeight;
+  const scale = Math.min(maxW / img.width, maxH / img.height, 1);
+  editorCanvas.width = Math.round(img.width * scale);
+  editorCanvas.height = Math.round(img.height * scale);
 
   // Draw image
   ctx.drawImage(img, 0, 0, editorCanvas.width, editorCanvas.height);
   baseImage = ctx.getImageData(0, 0, editorCanvas.width, editorCanvas.height);
 
+  // Position sticker layer to match canvas
+  positionStickerLayer();
+
   // Build filter previews
   buildFilterPreviews(img);
-
-  // Show editor
-  cameraScreen.classList.remove('active');
-  editorScreen.classList.add('active');
 }
 
 function positionStickerLayer() {
