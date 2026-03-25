@@ -8,7 +8,7 @@
     "I designed and built a modular system with **13 modules** covering debloating, telemetry removal, power plan tuning, privacy settings, app installation, file associations, and more. The tool uses a **profile system** with base configurations and overlay profiles (Dev, Gaming) that merge only the deltas, keeping customization clean and maintainable.",
     "The project includes a **sandbox testing pipeline** with three phases (Setup, Validation, Idempotency) running in Windows Sandbox, producing structured JSON results. Every run is idempotent, making it safe to re-execute at any time."
   ],
-  "skills": ["PowerShell", "Architecture", "Automation", "Documentation"],
+  "skills": ["Vibe Coded", "PowerShell", "Architecture", "Automation", "Documentation"],
   "links": [
     {
       "type": "github",
