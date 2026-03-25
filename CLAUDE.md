@@ -58,7 +58,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Masonry layout:** Work cards use JS-based column balancing (not CSS Grid). `displayFilteredWorks()` recalculates on resize (debounced 100ms).
 
-**Adding a new project:** Create a JSON file in `data/projects/`, add it to `data/projects/index.json`, and follow the schema in `data/schemas/project.schema.json`. See `data/CLAUDE.md` for the full process and description writing guidelines.
+**Adding a new project:** For web-projects, follow the full checklist in `web-projects/CLAUDE.md` (covers project folder, README, portfolio JSON, index manifest, and documentation updates). For other projects, see `data/CLAUDE.md` for the data-only steps.
 
 ## Deployment
 

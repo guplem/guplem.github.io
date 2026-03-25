@@ -17,6 +17,8 @@ All portfolio content is data-driven. The site never hardcodes content in HTML â
 2. Add `"$schema": "../schemas/project.schema.json"` as the first field for editor support
 3. Add the filename to the `projects` array in `data/projects/index.json`
 
+If the project is a **web-project** hosted in `web-projects/`, follow the full checklist in `web-projects/CLAUDE.md` instead â€” it includes these data steps plus the additional steps for the project folder, README, and documentation updates.
+
 ## Writing Project Descriptions
 
 Each `description` array should follow this structure (one paragraph per element):

@@ -26,6 +26,9 @@ python -m http.server 8000
 Self-contained mini-apps in `web-projects/`:
 
 - **`ChatGPTPong/`** — Canvas-based Pong game
+- **`gravity-sandbox/`** — Interactive N-body gravitational simulation
+- **`menu-management/`** — Weekly menu planner with recipe management and shopping lists
+- **`photo-editor/`** — Snapchat-inspired mobile photo editor
 - **`seasonal-color-classifier/`** — Classify hex colors into seasonal palettes
 
 ## Deployment
