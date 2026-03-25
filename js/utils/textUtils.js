@@ -1,5 +1,5 @@
 // @ts-ignore
-import { marked } from "https://esm.sh/marked@14.1.4/es2022/marked.bundle.mjs";
+import { marked } from "https://esm.sh/marked@17.0.5/es2022/marked.bundle.mjs";
 
 marked.setOptions({ breaks: true });
 
