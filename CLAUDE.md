@@ -2,6 +2,34 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Documentation Structure
+
+**README.md** files are human-facing. **CLAUDE.md** files are agent-facing. They are complementary, not overlapping.
+
+| Content | README.md | CLAUDE.md |
+|---|---|---|
+| What the project is, key features | Yes | No |
+| How to install, run, deploy | Yes | Only as quick reference |
+| Architecture, data flow, layers | No | Yes |
+| Coding patterns, conventions, rules | No | Yes |
+| Gotchas an agent would hit | No | Yes |
+| Adding a new project (full procedure) | No | Yes |
+| List of projects/tools (for discoverability) | Yes | Yes (with agent context) |
+
+When adding new content, ask: "Would a human need this to get started?" (README) or "Would an agent need this to avoid breaking patterns?" (CLAUDE.md).
+
+### File map
+
+| File | Scope |
+|---|---|
+| `CLAUDE.md` (this file) | Global: architecture, patterns, gotchas, pointers to child docs |
+| `data/CLAUDE.md` | Portfolio data: schema, description style, skills/tags guidance, adding projects |
+| `js/layoutBuilder/CLAUDE.md` | Layout modules: responsibilities, data flow, key patterns |
+| `js/planetSimulation/CLAUDE.md` | Particle simulation: architecture, config, performance |
+| `web-projects/CLAUDE.md` | Web projects: conventions, full checklist for adding a new web-project |
+| `README.md` (root) | Human-facing: what the site is, how to run locally, project list |
+| `web-projects/*/README.md` | Human-facing: per-project features, how to run |
+
 ## Project Overview
 
 Personal portfolio website for Guillem Poy, hosted on GitHub Pages at `triunitystudios.com`. Vanilla HTML/CSS/JavaScript — no build system, no bundler, no framework.
