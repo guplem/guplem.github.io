@@ -1,5 +1,7 @@
 # web-projects/CLAUDE.md
 
+> **SCOPE:** These rules apply when working on files under `web-projects/`. Each project inside is self-contained and independent from the main portfolio site.
+
 ## Overview
 
 Collection of small, standalone web projects — games, tools, experiments, demos. Often AI-generated. Each is fully self-contained and independent from the main portfolio site.

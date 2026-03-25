@@ -27,7 +27,7 @@ Each `description` array should follow this structure (one paragraph per element
 2. **Role & Responsibilities** — Guillem's role (e.g. lead developer, front-end developer). Key tasks and technologies used.
 3. **Outcome or Impact** — Results, metrics, lessons learned, or notable achievements.
 
-### Style rules (extracted from 55 existing projects):
+### Style rules (extracted from existing projects):
 - **Short and direct** — typically 2–4 paragraphs, rarely more
 - **First person** when describing role ("I built…", "I focused on…"), **third person** for the project itself ("The app features…")
 - **Bold** key terms and technologies: `**React**`, `**CI/CD**`, `**real-time synchronization**`
