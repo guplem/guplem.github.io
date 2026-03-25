@@ -38,6 +38,8 @@ Each `description` array should follow this structure (one paragraph per element
 
 - **Reuse existing skills** — always check what skills are already used across other projects before adding a new one. Only introduce a new skill tag when no existing tag covers the concept and it is highly relevant to the project.
 - **Keep it relevant** — only assign skills that are central to the project, not tangentially related.
+- **Tags reflect Guillem's work** — skills represent technologies Guillem personally worked with, not technologies present in the final product. The purpose of tags is to let people find projects where Guillem used a specific technology.
+- **Vibe Coded projects** — projects built 100% by AI (vibe coded) should use the "Vibe Coded" tag and should NOT include technology tags like "HTML/CSS", "JS/TS", "Frontend", etc., since Guillem did not personally write that code. Use "AI Integration" only when AI is a feature of the final product (e.g. AI opponents), not when AI was just used as the development tool.
 - **Consistent naming** — skill names must exactly match those used in other projects (e.g. "JS/TS" not "JavaScript", "AI Integration" not "AI"). Grep existing project files to confirm spelling.
 - **Types** — valid values are `Web`, `Mobile App`, `Videogame`, `Misceallaneous` (note: intentional legacy spelling). Assign one or more as appropriate.
 

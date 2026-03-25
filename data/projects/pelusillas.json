@@ -11,14 +11,13 @@
     "The game is containerized with **Docker** and pre-configured for **Google Cloud Run** deployment, making it easy to host and share with friends."
   ],
   "skills": [
-    "JS/TS",
     "React",
     "RoboJS",
     "Real-Time Communication",
     "Docker",
-    "Frontend",
     "Backend",
     "AI Integration",
+    "Vibe Coded",
     "Game Design",
     "Server Management"
   ],
