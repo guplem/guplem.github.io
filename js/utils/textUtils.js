@@ -1,16 +1,7 @@
-// Import necessary modules for markdown processing
 // @ts-ignore
-import { unified } from "https://esm.sh/unified@10";
-// @ts-ignore
-import remarkParse from "https://esm.sh/remark-parse@10";
-// @ts-ignore
-import remarkBreaks from "https://esm.sh/remark-breaks@4";
-// @ts-ignore
-import remarkRehype from "https://esm.sh/remark-rehype@8";
-// @ts-ignore
-import rehypeStringify from "https://esm.sh/rehype-stringify@7";
-// @ts-ignore
-import * as cheerio from "https://esm.sh/cheerio@1.0.0-rc.12";
+import { marked } from "https://esm.sh/marked@14?standalone";
+
+marked.setOptions({ breaks: true });
 
 // Cache to store JSON data for faster subsequent access
 const _jsonDataCached = new Map();
@@ -135,40 +126,22 @@ export async function markdownToHtml(markdown, tagsToSubstitute = new Map()) {
     return _markdownFormattedAsHtmlCache.get(cacheKey);
   }
 
-  // Process markdown to HTML
-  const processedHtml = await unified().use(remarkParse).use(remarkBreaks).use(remarkRehype).use(rehypeStringify).process(markdown);
+  let htmlString = await marked.parse(markdown);
 
-  let htmlString = String(processedHtml);
-
-  // If a paragraphTag is provided, replace <p> tags
+  // Replace tags using native DOMParser (e.g. <p> -> <h1>)
   for (const [tagToReplace, substituteTag] of tagsToSubstitute) {
-    const html = cheerio.load(htmlString);
-
-    // Replace <p> tags with the specified paragraphTag
-    html(tagToReplace).each(function () {
-      html(this).replaceWith(`<${substituteTag}>${html(this).html()}</${substituteTag}>`);
+    const doc = new DOMParser().parseFromString(htmlString, "text/html");
+    doc.querySelectorAll(tagToReplace).forEach((el) => {
+      const replacement = document.createElement(substituteTag);
+      replacement.innerHTML = el.innerHTML;
+      el.replaceWith(replacement);
     });
-
-    htmlString = html.html();
+    htmlString = doc.body.innerHTML;
   }
 
   // Cache the processed HTML
   _markdownFormattedAsHtmlCache.set(cacheKey, htmlString);
   return htmlString;
-}
-
-function useH1InsteadOfP(transformer) {
-  return transformer({
-    visit: "element",
-    name: "heading",
-    match: (node) => node.type === "heading" && node.depth === 1,
-    replace: (node) => ({
-      type: "element",
-      tagName: "h1",
-      properties: node.properties,
-      children: node.children,
-    }),
-  });
 }
 
 /**
