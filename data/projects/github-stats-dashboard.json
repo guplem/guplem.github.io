@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "GitHub Stats Dashboard",
+  "description": [
+    "*GitHub Stats Dashboard* is a **web-based analytics tool** for browsing GitHub repository statistics. Users can connect with a personal access token or browse public repos by username, then view detailed metrics for any selected repository.",
+    "Generated end-to-end by **Claude** as a practical utility tool. Features include **issue close rates**, **PR merge rates**, **commit frequency**, **contributor breakdowns**, **language composition charts**, and a **real-time activity feed** — all fetched directly from the GitHub REST API with no backend required.",
+    "Designed as a foundation for future project management features including **PICK chart visualizations** and advanced repository analytics. Fully responsive and self-contained with no external dependencies."
+  ],
+  "skills": ["Vibe Coded"],
+  "links": [
+    { "url": "web-projects/github-stats-dashboard/" },
+    { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/github-stats-dashboard" }
+  ]
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Stats Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>GitHub Stats Dashboard</h1>
+            <p class="subtitle">Repository analytics at a glance</p>
+        </header>
+
+        <section id="auth-section">
+            <div class="card">
+                <h2>Browse Public Repos</h2>
+                <p>Enter any GitHub username to explore their public repositories.</p>
+                <div class="input-group">
+                    <input type="text" id="username-input" placeholder="e.g. octocat">
+                    <button id="username-btn" class="btn btn-primary">Browse Repos</button>
+                </div>
+            </div>
+
+            <div class="auth-divider"><span>or</span></div>
+
+            <div class="card">
+                <h2>Sign In with a Token</h2>
+                <p>Use a Personal Access Token to see <strong>all</strong> your repositories, including private ones.</p>
+                <div class="input-group">
+                    <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxx">
+                    <button id="token-btn" class="btn btn-primary">Sign In</button>
+                </div>
+                <details class="hint-details">
+                    <summary>How do I create a token?</summary>
+                    <ol>
+                        <li>Go to <strong>GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Tokens (classic)</strong></li>
+                        <li>Click <strong>Generate new token (classic)</strong></li>
+                        <li>Give it a name, select the <code>repo</code> scope, and click <strong>Generate token</strong></li>
+                        <li>Copy the token and paste it above</li>
+                    </ol>
+                    <p>Your token is never stored — it stays in memory only for this session.</p>
+                </details>
+            </div>
+        </section>
+
+        <section id="repo-section" class="hidden">
+            <div class="card">
+                <h2>Select a Repository</h2>
+                <div class="input-group">
+                    <input type="text" id="repo-search" placeholder="Search repositories...">
+                </div>
+                <div id="repo-list" class="repo-list"></div>
+            </div>
+        </section>
+
+        <section id="stats-section" class="hidden">
+            <div class="stats-header">
+                <button id="back-btn" class="btn btn-secondary">&larr; Back</button>
+                <div>
+                    <h2 id="repo-name"></h2>
+                    <p id="repo-description" class="subtitle"></p>
+                </div>
+            </div>
+
+            <div id="overview-cards" class="stats-grid"></div>
+
+            <div class="card">
+                <h2>Issues</h2>
+                <div id="issues-stats" class="detail-grid"></div>
+                <div id="issues-chart" class="chart-container"></div>
+            </div>
+
+            <div class="card">
+                <h2>Pull Requests</h2>
+                <div id="pr-stats" class="detail-grid"></div>
+                <div id="pr-chart" class="chart-container"></div>
+            </div>
+
+            <div class="card">
+                <h2>Code Activity</h2>
+                <div id="code-stats" class="detail-grid"></div>
+                <div id="commit-chart" class="chart-container"></div>
+            </div>
+
+            <div class="card">
+                <h2>Contributors</h2>
+                <div id="contributors-list" class="contributors-grid"></div>
+            </div>
+
+            <div class="card">
+                <h2>Languages</h2>
+                <div id="languages-chart" class="languages-container"></div>
+            </div>
+
+            <div class="card">
+                <h2>Recent Activity</h2>
+                <div id="recent-activity" class="activity-list"></div>
+            </div>
+        </section>
+
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>Loading data...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

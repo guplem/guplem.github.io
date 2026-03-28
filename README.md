@@ -30,6 +30,7 @@ Self-contained mini-apps in `web-projects/`:
 - **`menu-management/`** — Weekly menu planner with recipe management and shopping lists
 - **`photo-editor/`** — Mobile photo editor with drawing, stickers, filters, and cropping
 - **`seasonal-color-classifier/`** — Classify hex colors into seasonal palettes
+- **`github-stats-dashboard/`** — GitHub repository analytics dashboard
 
 ## Deployment
 

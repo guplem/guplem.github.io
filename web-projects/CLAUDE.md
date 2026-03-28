@@ -29,3 +29,4 @@ Collection of small, standalone web projects — games, tools, experiments, demo
 - **menu-management** — Weekly menu planner with recipe management, auto-generation, shopping lists, and step-by-step cooking guide. Ported from Flutter desktop app.
 - **photo-editor** — Mobile photo editor with drawing, stickers, filters, and cropping
 - **seasonal-color-classifier** — Color analysis tool that classifies colors into seasonal palettes
+- **github-stats-dashboard** — GitHub repository analytics dashboard with issues, PRs, commits, contributors, and language breakdowns
