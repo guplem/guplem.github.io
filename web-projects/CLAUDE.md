@@ -27,5 +27,5 @@ Collection of small, standalone web projects — games, tools, experiments, demo
 - **ChatGPTPong** — Classic Pong game generated entirely by ChatGPT (GPT-3.5) in Dec 2022
 - **gravity-sandbox** — Interactive N-body gravitational simulation with slingshot spawning, merging, trails, and presets
 - **menu-management** — Weekly menu planner with recipe management, auto-generation, shopping lists, and step-by-step cooking guide. Ported from Flutter desktop app.
-- **photo-editor** — Snapchat-inspired mobile photo editor with drawing, stickers, filters, and cropping
+- **photo-editor** — Mobile photo editor with drawing, stickers, filters, and cropping
 - **seasonal-color-classifier** — Color analysis tool that classifies colors into seasonal palettes

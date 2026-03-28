@@ -2,9 +2,9 @@
   "$schema": "../schemas/project.schema.json",
   "types": ["Web"],
   "date": "2026",
-  "title": "Snap Editor",
+  "title": "PhotoBooth",
   "description": [
-    "*Snap Editor* is a **Snapchat-inspired mobile photo editor** that runs entirely in the browser. It opens the device camera by default and lets users capture photos or import from their gallery, then edit with a full suite of creative tools.",
+    "*PhotoBooth* is a **mobile photo editor** that runs entirely in the browser. It opens the device camera by default and lets users capture photos or import from their gallery, then edit with a full suite of creative tools.",
     "The project was generated end-to-end by **Claude** as a self-contained vanilla **HTML/CSS/JavaScript** web app with no frameworks or build tools. Features include **freehand drawing** with multiple colors and brush sizes, **emoji stickers** with drag-and-drop placement and pinch-to-resize, **text overlays**, **10 image filters**, and **cropping** with free or constrained aspect ratios.",
     "The editor is designed to be **100% mobile-friendly** with touch-optimized controls, safe area support, and a dark UI. Edited photos are saved locally as JPEG downloads — no server or database required."
   ],

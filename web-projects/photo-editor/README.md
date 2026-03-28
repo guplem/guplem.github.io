@@ -1,6 +1,6 @@
-# Snap Editor
+# PhotoBooth
 
-A Snapchat-inspired mobile photo editor that runs entirely in the browser. Take photos with your camera or pick from gallery, then edit with drawing tools, emoji stickers, text overlays, filters, and cropping.
+A mobile photo editor that runs entirely in the browser. Take photos with your camera or pick from gallery, then edit with drawing tools, emoji stickers, text overlays, filters, and cropping.
 
 ## Features
 
