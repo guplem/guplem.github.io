@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Stats Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>GitHub Stats Dashboard</h1>
+            <p class="subtitle">Repository analytics at a glance</p>
+        </header>
+
+        <section id="auth-section">
+            <div class="card">
+                <h2>Connect to GitHub</h2>
+                <p>Enter a GitHub Personal Access Token to access your repositories (including private ones). Without a token, only public repos are available.</p>
+                <div class="input-group">
+                    <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxx (optional)">
+                    <button id="token-btn" class="btn btn-primary">Load Repos</button>
+                </div>
+                <div class="input-group" style="margin-top: 0.75rem;">
+                    <input type="text" id="username-input" placeholder="GitHub username (required without token)">
+                </div>
+                <p class="hint">Token needs <code>repo</code> scope for private repos. Without a token, enter a username to browse public repos.</p>
+            </div>
+        </section>
+
+        <section id="repo-section" class="hidden">
+            <div class="card">
+                <h2>Select a Repository</h2>
+                <div class="input-group">
+                    <input type="text" id="repo-search" placeholder="Search repositories...">
+                </div>
+                <div id="repo-list" class="repo-list"></div>
+            </div>
+        </section>
+
+        <section id="stats-section" class="hidden">
+            <div class="stats-header">
+                <button id="back-btn" class="btn btn-secondary">&larr; Back</button>
+                <div>
+                    <h2 id="repo-name"></h2>
+                    <p id="repo-description" class="subtitle"></p>
+                </div>
+            </div>
+
+            <div id="overview-cards" class="stats-grid"></div>
+
+            <div class="card">
+                <h2>Issues</h2>
+                <div id="issues-stats" class="detail-grid"></div>
+                <div id="issues-chart" class="chart-container"></div>
+            </div>
+
+            <div class="card">
+                <h2>Pull Requests</h2>
+                <div id="pr-stats" class="detail-grid"></div>
+                <div id="pr-chart" class="chart-container"></div>
+            </div>
+
+            <div class="card">
+                <h2>Code Activity</h2>
+                <div id="code-stats" class="detail-grid"></div>
+                <div id="commit-chart" class="chart-container"></div>
+            </div>
+
+            <div class="card">
+                <h2>Contributors</h2>
+                <div id="contributors-list" class="contributors-grid"></div>
+            </div>
+
+            <div class="card">
+                <h2>Languages</h2>
+                <div id="languages-chart" class="languages-container"></div>
+            </div>
+
+            <div class="card">
+                <h2>Recent Activity</h2>
+                <div id="recent-activity" class="activity-list"></div>
+            </div>
+        </section>
+
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>Loading data...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
