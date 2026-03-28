@@ -15,16 +15,33 @@
 
         <section id="auth-section">
             <div class="card">
-                <h2>Connect to GitHub</h2>
-                <p>Enter a GitHub Personal Access Token to access your repositories (including private ones). Without a token, only public repos are available.</p>
+                <h2>Browse Public Repos</h2>
+                <p>Enter any GitHub username to explore their public repositories.</p>
                 <div class="input-group">
-                    <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxx (optional)">
-                    <button id="token-btn" class="btn btn-primary">Load Repos</button>
+                    <input type="text" id="username-input" placeholder="e.g. octocat">
+                    <button id="username-btn" class="btn btn-primary">Browse Repos</button>
                 </div>
-                <div class="input-group" style="margin-top: 0.75rem;">
-                    <input type="text" id="username-input" placeholder="GitHub username (required without token)">
+            </div>
+
+            <div class="auth-divider"><span>or</span></div>
+
+            <div class="card">
+                <h2>Sign In with a Token</h2>
+                <p>Use a Personal Access Token to see <strong>all</strong> your repositories, including private ones.</p>
+                <div class="input-group">
+                    <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxx">
+                    <button id="token-btn" class="btn btn-primary">Sign In</button>
                 </div>
-                <p class="hint">Token needs <code>repo</code> scope for private repos. Without a token, enter a username to browse public repos.</p>
+                <details class="hint-details">
+                    <summary>How do I create a token?</summary>
+                    <ol>
+                        <li>Go to <strong>GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Tokens (classic)</strong></li>
+                        <li>Click <strong>Generate new token (classic)</strong></li>
+                        <li>Give it a name, select the <code>repo</code> scope, and click <strong>Generate token</strong></li>
+                        <li>Copy the token and paste it above</li>
+                    </ol>
+                    <p>Your token is never stored — it stays in memory only for this session.</p>
+                </details>
             </div>
         </section>
 

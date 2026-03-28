@@ -6,6 +6,7 @@ let currentRepo = null;
 const tokenInput = document.getElementById('token-input');
 const usernameInput = document.getElementById('username-input');
 const tokenBtn = document.getElementById('token-btn');
+const usernameBtn = document.getElementById('username-btn');
 const authSection = document.getElementById('auth-section');
 const repoSection = document.getElementById('repo-section');
 const statsSection = document.getElementById('stats-section');
@@ -56,29 +57,37 @@ function showSection(section) {
 function showLoading() { loading.classList.remove('hidden'); }
 function hideLoading() { loading.classList.add('hidden'); }
 
-// Load repos
-tokenBtn.addEventListener('click', loadRepos);
-tokenInput.addEventListener('keydown', e => { if (e.key === 'Enter') loadRepos(); });
-usernameInput.addEventListener('keydown', e => { if (e.key === 'Enter') loadRepos(); });
+// Load repos — two entry points
+usernameBtn.addEventListener('click', loadPublicRepos);
+usernameInput.addEventListener('keydown', e => { if (e.key === 'Enter') loadPublicRepos(); });
+tokenBtn.addEventListener('click', loadTokenRepos);
+tokenInput.addEventListener('keydown', e => { if (e.key === 'Enter') loadTokenRepos(); });
 
-async function loadRepos() {
-    token = tokenInput.value.trim();
+async function loadPublicRepos() {
     const username = usernameInput.value.trim();
-
-    if (!token && !username) {
-        alert('Please enter a token or a username.');
+    if (!username) {
+        alert('Please enter a GitHub username.');
         return;
     }
+    token = '';
+    await fetchRepos(`/users/${encodeURIComponent(username)}/repos?sort=updated`);
+}
 
+async function loadTokenRepos() {
+    const t = tokenInput.value.trim();
+    if (!t) {
+        alert('Please enter a Personal Access Token.');
+        return;
+    }
+    token = t;
+    tokenInput.value = ''; // Clear token from DOM immediately
+    await fetchRepos('/user/repos?sort=updated&type=all');
+}
+
+async function fetchRepos(endpoint) {
     showLoading();
     try {
-        if (token) {
-            allRepos = await ghFetch('/user/repos?sort=updated&type=all', true);
-        } else {
-            allRepos = await ghFetch(`/users/${encodeURIComponent(username)}/repos?sort=updated`, true);
-        }
-        // Clear token from DOM input after reading it (keep in memory only)
-        tokenInput.value = '';
+        allRepos = await ghFetch(endpoint, true);
         renderRepoList(allRepos);
         showSection(repoSection);
     } catch (err) {
