@@ -77,6 +77,8 @@ async function loadRepos() {
         } else {
             allRepos = await ghFetch(`/users/${encodeURIComponent(username)}/repos?sort=updated`, true);
         }
+        // Clear token from DOM input after reading it (keep in memory only)
+        tokenInput.value = '';
         renderRepoList(allRepos);
         showSection(repoSection);
     } catch (err) {
