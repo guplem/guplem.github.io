@@ -10,6 +10,7 @@
   ],
   "skills": ["Vibe Coded"],
   "links": [
-    { "url": "https://triunitystudios.com/web-projects/photo-editor/" }
+    { "url": "https://triunitystudios.com/web-projects/photo-editor/" },
+    { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/photo-editor" }
   ]
 }
