@@ -138,13 +138,16 @@ For **each sub-issue/step**, one at a time:
 
 3. **Wait for the agent to complete.**
 
-4. **Create a PR**:
+4. **Create a PR** (always include `waiting-for-human-check` label and self-assign):
 
 ```bash
+gh label create "waiting-for-human-check" --description "No human has verified this yet -- direct AI output" --color "D93F0B" 2>/dev/null || true
 gh pr create \
   --base $PR_TARGET_BRANCH \
   --head <issue-number>-<short-slug> \
   --title "<conventional-prefix>: <short issue title>" \
+  --assignee @me \
+  --label "waiting-for-human-check" \
   --body "$(cat <<'PREOF'
 ## Summary
 
