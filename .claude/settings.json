@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)",
+      "Bash(gh issue:*)",
+      "Bash(gh pr:*)",
+      "Bash(bun test:*)",
+      "Bash(python -m http.server:*)"
+    ]
+  },
+  "plugins": [
+    "code-review@claude-plugins-official"
+  ]
+}

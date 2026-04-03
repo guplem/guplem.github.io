@@ -1,0 +1,11 @@
+# Bun (used for tests in web-projects)
+bun.lock
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp

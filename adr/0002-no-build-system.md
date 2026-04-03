@@ -1,0 +1,32 @@
+# ADR 0002: No Build System
+
+## Context
+
+GitHub Pages serves static files directly -- it renders `index.html` and serves assets as-is, with no server-side build step. There is no built-in support for bundlers, transpilers, or package managers at deploy time (unless you add a CI pipeline like GitHub Actions).
+
+This project also hosts multiple standalone sub-projects under `web-projects/`. A build system would complicate this multi-project structure, requiring either a monorepo build tool or per-project build configs.
+
+Options considered:
+- Add a bundler (Webpack, Vite) with a GitHub Actions CI step
+- Use a static site generator (Jekyll, which GitHub Pages supports natively)
+- Stay with raw HTML/CSS/JS and no build step
+
+## Decision
+
+No build system, no bundler, no package manager. ES6 modules are used natively (`type="module"`). Third-party dependencies are loaded from CDN (`esm.sh`) instead of installed locally. Each sub-project in `web-projects/` is self-contained raw HTML/JS/CSS.
+
+This is the simplest approach that supports hosting multiple independent sub-projects on a single GitHub Pages site without any CI configuration.
+
+## Consequences
+
+**Positive:**
+- Zero configuration. Clone and serve. GitHub Pages deploys the repo as-is.
+- Adding a new sub-project is just a folder with HTML files -- no build config needed.
+- No dependency updates, no security advisories for dev tooling.
+- Any HTTP server works for local development.
+
+**Negative:**
+- No tree-shaking, minification, or bundle optimization.
+- CDN dependencies (`esm.sh`) are a runtime single point of failure. If the CDN is down, markdown rendering breaks.
+- No TypeScript, no JSX, no CSS preprocessing.
+- Cannot use npm packages that require a bundler or Node.js APIs.
