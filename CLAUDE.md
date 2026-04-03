@@ -2,6 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Personal portfolio website for Guillem Poy, hosted on GitHub Pages at `triunitystudios.com`. Vanilla HTML/CSS/JavaScript -- no build system, no bundler, no framework.
+
+Before implementing any non-trivial feature, delegate to the **pattern-scout** agent.
+
+Before implementing features that touch architectural areas covered by an ADR, delegate to the **adr-checker** agent in **consult mode**. After such changes, delegate in **maintain mode**.
+
+After writing or modifying code in `web-projects/`, delegate to the **test-runner** agent.
+
+After completing changes that affect documented content, delegate to the **docs-checker** agent.
+
+When the user's request is broad or exploratory, ask whether they'd like to run multi-agent research (`/research-agents`) before proceeding.
+
 ## Living Document
 
 This file and all child `CLAUDE.md` files are self-improving. Update them when you discover something worth recording:
@@ -45,10 +57,6 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `README.md` (root) | Human-facing: what the site is, how to run locally, project list |
 | `web-projects/*/README.md` | Human-facing: per-project features, how to run |
 
-## Project Overview
-
-Personal portfolio website for Guillem Poy, hosted on GitHub Pages at `triunitystudios.com`. Vanilla HTML/CSS/JavaScript -- no build system, no bundler, no framework.
-
 ## Development
 
 **No build step.** Serve files locally with any HTTP server:
@@ -91,10 +99,6 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 `web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site. See `web-projects/CLAUDE.md` for detailed guidance when working there.
 
-## Pattern Scout (mandatory)
-
-**Before implementing any new feature or component**, run the `pattern-scout` agent (`.claude/agents/pattern-scout.md`). Do not skip this step. It analyzes the codebase for similar implementations and reports the established patterns, naming conventions, file locations, and DOM/CSS conventions. Treat its output as a strong baseline -- follow it unless you have a concrete reason to deviate, and explain that reasoning when you do.
-
 ## Key Patterns and Gotchas
 
 **External CDN dependency:** `marked` is imported via `esm.sh` CDN -- no local node_modules. Network failure breaks markdown rendering.
@@ -105,7 +109,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Masonry layout:** Work cards use JS-based column balancing (not CSS Grid). `displayFilteredWorks()` recalculates on resize (debounced 100ms).
 
-**Adding a new project:** For web-projects, follow the full checklist in `web-projects/CLAUDE.md` (covers project folder, README, portfolio JSON, index manifest, and documentation updates). For other projects, see `data/CLAUDE.md` for the data-only steps.
+**Adding a new project:** For web-projects, use the `/add-web-project` command -- it automates the full scaffolding checklist. For other projects, see `data/CLAUDE.md` for the data-only steps.
 
 ## Architecture Decision Records (ADRs)
 
@@ -119,11 +123,35 @@ ADRs live in `adr/` and capture the **why** behind architectural choices. Format
 | [0004](adr/0004-js-masonry-layout.md) | JS-based masonry layout instead of CSS Grid |
 | [0005](adr/0005-cdn-for-dependencies.md) | esm.sh CDN for third-party dependencies |
 
-**Consult ADRs** before making changes that touch their areas. Run the `adr-checker` agent (`.claude/agents/adr-checker.md`) to identify relevant ADRs.
-
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. Use the next sequential number. This includes decisions made within web-projects (e.g., choosing a physics engine, a rendering approach, or a data structure).
 
 **Keep ADRs current.** When a change affects an existing decision, update the relevant ADR. If a decision is superseded, mark the old ADR as superseded and reference the new one. The ADR index table above must always reflect the contents of `adr/`.
+
+## GitHub Issues, PRs, and Other Artifacts
+
+- **Always self-assign PRs** when creating them.
+- **Always link PRs to issues** using `Closes #N` in the PR body so issues auto-close on merge.
+- **Always add the `waiting-for-human-check` label** when creating GitHub issues, pull requests, or any other reviewable artifact. This signals that no human has verified the content yet -- it is direct AI output. Once a human reviews it, the label is removed. The label communicates state (unreviewed), not origin.
+
+If the repository does not have a `waiting-for-human-check` label, create it first:
+```bash
+gh label create "waiting-for-human-check" --description "No human has verified this yet -- direct AI output" --color "D93F0B"
+```
+
+## Self-Updating Rules
+
+When you discover something during a task that was **non-obvious and would save time in future sessions**, add it to the relevant `CLAUDE.md`. Examples: an undocumented implicit dependency, a silent failure mode, a config quirk that causes hard-to-diagnose bugs.
+
+This also applies when the user tells you to do something **"every time"**, **"always"**, or **"never"**: immediately persist it rather than applying it only for the current session. Always prefer the most specific scope: project-level over global when the rule only applies to this repo.
+
+**Also add** a rule whenever the codebase does something in a way that diverges from what a software developer or an AI would naturally write. If the correct approach here is not the standard/obvious one, a future agent will implement it the wrong way without an explicit rule.
+
+**Do NOT add:**
+- Standard patterns discoverable via normal code reading or search
+- Things already covered by existing rules
+- One-off context unlikely to recur
+
+The bar: if a future agent could reasonably figure it out within a few seconds of exploration, don't add it. Only record knowledge that took a painful detour to uncover, or that diverges from what any competent developer would write by default.
 
 ## Deployment
 

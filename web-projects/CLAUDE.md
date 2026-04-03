@@ -29,15 +29,9 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 **Scope:** Test logic, calculations, data transformations, state management, and any non-visual behavior. Visual/DOM rendering does not need test coverage.
 
 
-## Adding a New Web Project (full checklist)
+## Adding a New Web Project
 
-1. **Create the project folder** in `web-projects/<slug>/`. Keep it self-contained -- no imports from outside the folder.
-2. **Include a `README.md`** in the project folder explaining what the tool is, its features, and how to run it locally. Mandatory for every web-project.
-3. **Write tests first** -- follow the TDD workflow above. Set up `script.test.js` (or equivalent) before implementing features.
-4. **Add to the portfolio data** -- create `data/projects/<slug>.json` and add its filename to `data/projects/index.json`. See `data/CLAUDE.md` for schema, description style, and skills guidance.
-5. **Create ADRs** for any architectural decisions made during development (e.g., choice of algorithm, data structure, rendering approach). Add them to `adr/` and update the ADR index in the root `CLAUDE.md`.
-6. **Update this file** -- add the project to the "Existing Projects" list below.
-7. **Update `README.md`** (root) -- add the project to the "Web Projects" list.
+**Use the `/add-web-project` command.** It automates the full scaffolding checklist. This command must be used whenever creating a new web-project.
 
 ## Existing Projects
 
