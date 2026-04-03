@@ -21,13 +21,6 @@
   ],
   "links": [
     {
-      "url": "web-projects/menu-management/"
-    },
-    {
-      "type": "github",
-      "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/menu-management"
-    },
-    {
       "type": "github",
       "url": "https://github.com/guplem/Menu-Management"
     }
