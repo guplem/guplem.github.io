@@ -10,6 +10,9 @@
     "The project was generated end-to-end by **Claude** (Anthropic's AI) as a capability demonstration — from physics engine and renderer to responsive UI and preset configurations. No manual code edits were made.",
     "Features include **body merging** with conservation of momentum, toggleable **motion trails**, adjustable mass, and four built-in presets (orbital system, binary stars, asteroid field, and a three-body figure-eight). Fully mobile-friendly with touch controls."
   ],
+  "image": "resources/images/projects/gravitySandbox.webp",
+  "imageStretched": true,
+  "imageAlt": "Gravity Sandbox project demo",
   "skills": [
     "Vibe Coded"
   ],
