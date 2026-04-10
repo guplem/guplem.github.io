@@ -32,7 +32,7 @@ let _worksDataCached = null;
 
 /**
  * Load all works by reading the project manifest and fetching each project file.
- * Returns an object compatible with the old myWork.json format: { title, works }
+ * Returns works data in the shape { title, works }.
  * @returns {Promise<{ title: string, works: any[] }>}
  */
 export async function fetchAllWorks() {

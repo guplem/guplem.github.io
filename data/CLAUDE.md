@@ -57,6 +57,5 @@ See `schemas/project.schema.json` for the full typed schema. Key points:
 
 ## Gotchas
 
-- The old monolithic `myWork.json` still exists but is no longer used at runtime. `fetchAllWorks()` in `textUtils.js` loads from `projects/index.json` + individual files.
 - JSON fetches are cached in memory. Clear browser cache after editing data files during development.
 - `idFromText()` normalizes strings for element IDs and filter matching — capitalized, no spaces/punctuation. Skill/type names must be consistent across all project files.
