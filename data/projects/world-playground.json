@@ -11,7 +11,7 @@
     "In this project, I set out to recreate a procedurally generated world with dynamic chunk loading, optimized mesh creation, and multiple biomes.",
     "It helped me learn about the complexities of world generation, mesh generation, terrain optimization, and **multithreading** in game engines..."
   ],
-  "image": "resources/images/projects/worldPlayground.gif",
+  "image": "resources/images/projects/worldPlayground.webp",
   "imageStretched": true,
   "imageAlt": "World Playground procedural generation demo",
   "skills": [

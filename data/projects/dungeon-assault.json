@@ -9,7 +9,7 @@
     "*Dungeon Assault* is a **procedural dungeon** map generator for improvisational board games.",
     "The tool was created to facilitate the generation of unique dungeon maps, allowing players to create their own game rules and map layouts. Designed for ease of use, it supports flexible token-based gameplay, discovery mechanics, and the ability to randomize dungeon features."
   ],
-  "image": "resources/images/projects/dungeonAssault.gif",
+  "image": "resources/images/projects/dungeonAssault.webp",
   "imageStretched": true,
   "imageAlt": "Dungeon Assault procedural generation demo",
   "skills": [
