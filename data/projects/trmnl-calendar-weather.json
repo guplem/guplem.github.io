@@ -1,0 +1,20 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Misceallaneous"],
+  "date": "2026",
+  "title": "TRMNL Calendar + Weather",
+  "description": [
+    "*TRMNL Calendar + Weather* is a custom plugin for the **TRMNL e-ink display** that combines a **weekly time-grid calendar** (powered by Google Calendar) with a **7-day weather forecast** and **air quality data**. Designed for the TRMNL OG's 2-bit grayscale screen (800x480px).",
+    "I built the entire plugin as a single **Liquid template** with embedded CSS and JavaScript. Events are positioned at their actual time slots (like Google Calendar), with overlapping events displayed side by side. Each calendar gets a distinct grayscale bar pattern for visual differentiation. Weather data comes from the **Open-Meteo API** and is rendered as mini-charts with precipitation bars, temperature lines, and sunrise/sunset indicators.",
+    "The plugin uses only the 4 native e-ink shades (#000, #555, #AAA, #fff) to avoid dithering artifacts, and gracefully degrades when any data source is unavailable. Published as a public **TRMNL recipe** with configurable location and timezone."
+  ],
+  "image": "resources/images/projects/trmnlCalendarWeather.webp",
+  "imageAlt": "TRMNL e-ink display showing weekly calendar with weather forecast overlay",
+  "skills": ["Frontend", "API Integration", "UI/UX", "Architecture"],
+  "links": [
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/trmnl-cal-weather"
+    }
+  ]
+}
