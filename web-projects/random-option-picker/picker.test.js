@@ -78,14 +78,37 @@ describe("pickOptions", () => {
     expect(opts).toContain(picks[0]);
   });
 
-  test("returns count picks when count is greater than 1", () => {
-    const { picks } = pickOptions({ options: ["a", "b", "c"], count: 5, seed: "test" });
+  test("returns count picks when count is greater than 1 (with repeats allowed)", () => {
+    const { picks } = pickOptions({ options: ["a", "b", "c"], count: 5, seed: "test", distinct: false });
     expect(picks).toHaveLength(5);
   });
 
-  test("allows repeats", () => {
-    const { picks } = pickOptions({ options: ["only"], count: 3, seed: "test" });
+  test("allows repeats when distinct is false", () => {
+    const { picks } = pickOptions({ options: ["only"], count: 3, seed: "test", distinct: false });
     expect(picks).toEqual(["only", "only", "only"]);
+  });
+
+  test("returns distinct picks by default when count > 1", () => {
+    const opts = ["a", "b", "c", "d"];
+    const { picks } = pickOptions({ options: opts, count: 4, seed: "test" });
+    expect(picks).toHaveLength(4);
+    expect(new Set(picks).size).toBe(4);
+    for (const p of picks) expect(opts).toContain(p);
+  });
+
+  test("returns count distinct picks when count <= options.length", () => {
+    const { picks } = pickOptions({ options: ["a", "b", "c", "d"], count: 2, seed: "test", distinct: true });
+    expect(picks).toHaveLength(2);
+    expect(picks[0]).not.toBe(picks[1]);
+  });
+
+  test("throws when distinct is required and count exceeds options length", () => {
+    expect(() => pickOptions({ options: ["a", "b"], count: 3, seed: "test" })).toThrow();
+    expect(() => pickOptions({ options: ["a", "b"], count: 3, seed: "test", distinct: true })).toThrow();
+  });
+
+  test("does not throw when count exceeds options length but distinct is false", () => {
+    expect(() => pickOptions({ options: ["a", "b"], count: 5, seed: "test", distinct: false })).not.toThrow();
   });
 
   test("produces the same picks for the same seed and options", () => {
@@ -163,6 +186,19 @@ describe("parseUrlState", () => {
     expect(state.seed).toBe("xyz");
   });
 
+  test("defaults distinct to true when missing", () => {
+    expect(parseUrlState("?o=a").distinct).toBe(true);
+    expect(parseUrlState("").distinct).toBe(true);
+  });
+
+  test("reads d=0 as distinct false", () => {
+    expect(parseUrlState("?d=0").distinct).toBe(false);
+  });
+
+  test("reads d=1 (or any non-zero value) as distinct true", () => {
+    expect(parseUrlState("?d=1").distinct).toBe(true);
+  });
+
   test("decodes percent-encoded options", () => {
     const state = parseUrlState("?o=" + encodeURIComponent("Hello world"));
     expect(state.options).toEqual(["Hello world"]);
@@ -209,6 +245,15 @@ describe("serializeUrlState", () => {
     expect(serializeUrlState({ options: ["a"], seed: "abc" })).toContain("s=abc");
   });
 
+  test("omits d when distinct is true (default)", () => {
+    expect(serializeUrlState({ options: ["a"], distinct: true })).not.toContain("d=");
+    expect(serializeUrlState({ options: ["a"] })).not.toContain("d=");
+  });
+
+  test("includes d=0 when distinct is false", () => {
+    expect(serializeUrlState({ options: ["a"], distinct: false })).toContain("d=0");
+  });
+
   test("omits s when seed is null or empty", () => {
     expect(serializeUrlState({ options: ["a"], seed: null })).not.toContain("s=");
     expect(serializeUrlState({ options: ["a"], seed: "" })).not.toContain("s=");
@@ -220,12 +265,21 @@ describe("serializeUrlState", () => {
   });
 
   test("round-trips with parseUrlState", () => {
-    const original = { options: ["Alice", "Bob"], count: 2, seed: "xyz" };
+    const original = { options: ["Alice", "Bob"], count: 2, seed: "xyz", distinct: true };
     const s = serializeUrlState(original);
     const parsed = parseUrlState("?" + s);
     expect(parsed.options).toEqual(original.options);
     expect(parsed.count).toBe(original.count);
     expect(parsed.seed).toBe(original.seed);
+    expect(parsed.distinct).toBe(true);
+  });
+
+  test("round-trips with distinct false", () => {
+    const original = { options: ["a", "b"], count: 5, seed: null, distinct: false };
+    const s = serializeUrlState(original);
+    const parsed = parseUrlState("?" + s);
+    expect(parsed.distinct).toBe(false);
+    expect(parsed.count).toBe(5);
   });
 
   test("ignores empty options", () => {

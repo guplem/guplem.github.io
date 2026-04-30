@@ -23,6 +23,8 @@ const dom = {
   seedClear: document.getElementById("seed-clear"),
   copyLink: document.getElementById("copy-link"),
   shareStatus: document.getElementById("share-status"),
+  distinctRow: document.getElementById("distinct-row"),
+  distinctInput: document.getElementById("distinct-input"),
 };
 
 let isSpinning = false;
@@ -33,7 +35,8 @@ function readState() {
   const count = Number.isInteger(parsedCount) && parsedCount > 0 ? parsedCount : 1;
   const rawSeed = dom.seedInput.value.trim();
   const seed = rawSeed.length > 0 ? rawSeed : null;
-  return { options, count, seed };
+  const distinct = dom.distinctInput.checked;
+  return { options, count, seed, distinct };
 }
 
 function syncUrl() {
@@ -52,6 +55,7 @@ function loadFromUrl() {
   if (state.seed) {
     dom.seedInput.value = state.seed;
   }
+  dom.distinctInput.checked = state.distinct;
 }
 
 function buildPlaceholderReels(count, options) {
@@ -119,13 +123,17 @@ function animateReelToTarget(reelElement, options, target, durationMs) {
 
 async function spin() {
   if (isSpinning) return;
-  const { options, count, seed } = readState();
+  const { options, count, seed, distinct } = readState();
   if (options.length === 0) {
     dom.shareStatus.textContent = "Add at least one option.";
     return;
   }
+  if (distinct && count > 1 && count > options.length) {
+    dom.shareStatus.textContent = `Cannot pick ${count} distinct options from ${options.length}.`;
+    return;
+  }
 
-  const result = pickOptions({ options, count, seed });
+  const result = pickOptions({ options, count, seed, distinct });
 
   isSpinning = true;
   dom.pickButton.disabled = true;
@@ -141,13 +149,35 @@ async function spin() {
   await Promise.all(tasks);
 
   isSpinning = false;
-  dom.pickButton.disabled = false;
+  refreshPickAvailability();
 }
 
 function refreshPlaceholderReels() {
   if (isSpinning) return;
   const { options, count } = readState();
   buildPlaceholderReels(count, options);
+}
+
+function refreshDistinctVisibility() {
+  const { count } = readState();
+  dom.distinctRow.hidden = count <= 1;
+}
+
+function refreshPickAvailability() {
+  if (isSpinning) return;
+  const { options, count, distinct } = readState();
+  if (options.length === 0) {
+    dom.pickButton.disabled = true;
+    dom.shareStatus.textContent = "Add at least one option.";
+    return;
+  }
+  if (distinct && count > 1 && count > options.length) {
+    dom.pickButton.disabled = true;
+    dom.shareStatus.textContent = `Cannot pick ${count} distinct options from ${options.length}. Add more options, lower the count, or turn off "Ensure distinct".`;
+    return;
+  }
+  dom.pickButton.disabled = false;
+  dom.shareStatus.textContent = "";
 }
 
 function flashShareStatus(message) {
@@ -160,16 +190,25 @@ function flashShareStatus(message) {
 function init() {
   loadFromUrl();
   refreshPlaceholderReels();
+  refreshDistinctVisibility();
+  refreshPickAvailability();
 
   dom.optionsInput.addEventListener("input", () => {
     refreshPlaceholderReels();
+    refreshPickAvailability();
     syncUrl();
   });
   dom.countInput.addEventListener("input", () => {
     refreshPlaceholderReels();
+    refreshDistinctVisibility();
+    refreshPickAvailability();
     syncUrl();
   });
   dom.seedInput.addEventListener("input", syncUrl);
+  dom.distinctInput.addEventListener("change", () => {
+    refreshPickAvailability();
+    syncUrl();
+  });
 
   dom.seedRandom.addEventListener("click", () => {
     dom.seedInput.value = generateRandomSeed();

@@ -23,18 +23,30 @@ export function generateRandomSeed(random = Math.random) {
   return random().toString(36).slice(2, 8).padEnd(6, "0");
 }
 
-export function pickOptions({ options, count = 1, seed } = {}) {
+export function pickOptions({ options, count = 1, seed, distinct = true } = {}) {
   if (!Array.isArray(options) || options.length === 0) {
     throw new Error("options must be a non-empty array");
   }
   if (!Number.isInteger(count) || count < 1) {
     throw new Error("count must be a positive integer");
   }
+  if (distinct && count > options.length) {
+    throw new Error("count cannot exceed options length when distinct is required");
+  }
   const usedSeed = seed != null && seed !== "" ? String(seed) : generateRandomSeed();
   const rng = mulberry32(hashStringToSeed(usedSeed));
   const picks = [];
-  for (let i = 0; i < count; i++) {
-    picks.push(options[Math.floor(rng() * options.length)]);
+  if (distinct) {
+    const pool = options.slice();
+    for (let i = 0; i < count; i++) {
+      const idx = Math.floor(rng() * pool.length);
+      picks.push(pool[idx]);
+      pool.splice(idx, 1);
+    }
+  } else {
+    for (let i = 0; i < count; i++) {
+      picks.push(options[Math.floor(rng() * options.length)]);
+    }
   }
   return { picks, seed: usedSeed };
 }
@@ -58,15 +70,17 @@ export function parseUrlState(searchString) {
   const countParsed = countRaw !== null ? parseInt(countRaw, 10) : NaN;
   const count = Number.isInteger(countParsed) && countParsed > 0 ? countParsed : 1;
   const seed = params.get("s") || null;
-  return { options, count, seed };
+  const distinct = params.get("d") !== "0";
+  return { options, count, seed, distinct };
 }
 
-export function serializeUrlState({ options = [], count = 1, seed = null } = {}) {
+export function serializeUrlState({ options = [], count = 1, seed = null, distinct = true } = {}) {
   const params = new URLSearchParams();
   for (const opt of options) {
     if (typeof opt === "string" && opt.length > 0) params.append("o", opt);
   }
   if (Number.isInteger(count) && count > 1) params.set("n", String(count));
   if (seed) params.set("s", String(seed));
+  if (!distinct) params.set("d", "0");
   return params.toString();
 }
