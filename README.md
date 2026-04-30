@@ -30,6 +30,7 @@ Self-contained mini-apps in `web-projects/`:
 - **`photo-editor/`** — Mobile photo editor with drawing, stickers, filters, and cropping
 - **`seasonal-color-classifier/`** — Classify hex colors into seasonal palettes
 - **`github-stats-dashboard/`** — GitHub repository analytics dashboard
+- **`random-option-picker/`** — Slot-machine style picker with shareable URLs and reproducible seeds
 
 ## Deployment
 

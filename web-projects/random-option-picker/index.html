@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Option Picker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Random Option Picker</h1>
+    <p class="subtitle">Pick one or more options at random. Same seed, same result &mdash; shareable as a link.</p>
+  </header>
+
+  <main>
+    <section class="picker-stage">
+      <div class="reels" id="reels"></div>
+      <button class="pick-button" id="pick-button" type="button">Pick</button>
+      <div class="seed-display" id="seed-display"></div>
+    </section>
+
+    <section class="controls">
+      <div class="control-group">
+        <label for="options-input">Options (one per line)</label>
+        <textarea id="options-input" rows="6" placeholder="Alice&#10;Bob&#10;Carol" autocomplete="off" spellcheck="false"></textarea>
+      </div>
+
+      <div class="control-row">
+        <div class="control-group">
+          <label for="count-input">Pick count</label>
+          <input type="number" id="count-input" min="1" max="20" value="1" />
+        </div>
+        <div class="control-group seed-control">
+          <label for="seed-input">Seed (optional)</label>
+          <div class="seed-row">
+            <input type="text" id="seed-input" placeholder="Leave blank for random" autocomplete="off" spellcheck="false" />
+            <button class="ghost-button" id="seed-random" type="button" title="Generate a new seed">↻</button>
+            <button class="ghost-button" id="seed-clear" type="button" title="Clear seed (use random each pick)">×</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="share-row">
+        <button class="ghost-button copy-button" id="copy-link" type="button">Copy share link</button>
+        <span class="share-status" id="share-status" aria-live="polite"></span>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

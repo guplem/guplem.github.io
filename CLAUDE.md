@@ -122,6 +122,7 @@ ADRs live in `adr/` and capture the **why** behind architectural choices. Format
 | [0003](adr/0003-web-worker-for-particle-simulation.md) | Web Worker for particle simulation physics |
 | [0004](adr/0004-js-masonry-layout.md) | JS-based masonry layout instead of CSS Grid |
 | [0005](adr/0005-cdn-for-dependencies.md) | esm.sh CDN for third-party dependencies |
+| [0006](adr/0006-url-as-state-for-web-projects.md) | URL query params as source of truth for shareable web-projects |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. Use the next sequential number. This includes decisions made within web-projects (e.g., choosing a physics engine, a rendering approach, or a data structure).
 

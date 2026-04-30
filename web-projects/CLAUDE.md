@@ -40,3 +40,4 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 - **photo-editor** -- Mobile photo editor with drawing, stickers, filters, and cropping
 - **seasonal-color-classifier** -- Color analysis tool that classifies colors into seasonal palettes
 - **github-stats-dashboard** -- GitHub repository analytics dashboard with issues, PRs, commits, contributors, and language breakdowns
+- **random-option-picker** -- Slot-machine style random picker with shareable URLs and reproducible seeds (TDD-covered, mulberry32 PRNG)
