@@ -127,11 +127,6 @@ async function spin() {
 
   const result = pickOptions({ options, count, seed });
 
-  if (!seed) {
-    dom.seedInput.value = result.seed;
-    syncUrl();
-  }
-
   isSpinning = true;
   dom.pickButton.disabled = true;
   dom.seedDisplay.textContent = `Seed: ${result.seed}`;
