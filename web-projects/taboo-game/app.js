@@ -75,6 +75,7 @@ const timer = {
   forTurn: null,   // the turn number this timer was started for
 };
 let tickInterval = null;
+let audioContext = null;
 
 // ---- Personal state persistence ----
 
@@ -213,6 +214,7 @@ function resetTimer() {
 }
 
 function startTimer() {
+  ensureAudio(); // unlock the audio context while we're still in a user gesture
   timer.startedAt = Date.now();
   timer.forTurn = session.turn;
   startTicker();
@@ -221,8 +223,12 @@ function startTimer() {
 function startTicker() {
   stopTicker();
   tickInterval = setInterval(() => {
+    const wasRunning = !timerExpired();
     renderTurn();
-    if (timerExpired()) stopTicker();
+    if (timerExpired()) {
+      stopTicker();
+      if (wasRunning) playTimerEndSound();
+    }
   }, 200);
 }
 
@@ -231,6 +237,47 @@ function stopTicker() {
     clearInterval(tickInterval);
     tickInterval = null;
   }
+}
+
+// ---- Audio ----
+
+function ensureAudio() {
+  if (!audioContext) {
+    try {
+      const Ctor = window.AudioContext || window.webkitAudioContext;
+      if (!Ctor) return null;
+      audioContext = new Ctor();
+    } catch {
+      return null;
+    }
+  }
+  if (audioContext.state === "suspended") {
+    audioContext.resume().catch(() => {});
+  }
+  return audioContext;
+}
+
+function playTimerEndSound() {
+  const ctx = ensureAudio();
+  if (!ctx) return;
+  // Descending three-tone beep: bright enough to be heard on a phone speaker.
+  const notes = [880, 660, 440];
+  const now = ctx.currentTime;
+  notes.forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "square";
+    osc.frequency.value = freq;
+    osc.connect(gain).connect(ctx.destination);
+    const start = now + i * 0.18;
+    const stop = start + 0.16;
+    gain.gain.setValueAtTime(0, start);
+    gain.gain.linearRampToValueAtTime(0.15, start + 0.01);
+    gain.gain.setValueAtTime(0.15, stop - 0.04);
+    gain.gain.linearRampToValueAtTime(0, stop);
+    osc.start(start);
+    osc.stop(stop);
+  });
 }
 
 // ---- Game rendering ----
