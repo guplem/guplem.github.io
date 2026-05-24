@@ -76,14 +76,15 @@ function shuffledPlayerOrder(seed, team, round, teamSize) {
   return order;
 }
 
-// Round size = full pass through the deck. Each round uses a fresh shuffle derived
-// from the seed + round number, so when the deck cycles the order changes -- but
-// every client still computes the same order.
-function shuffledIndicesForRound(seed, round, deckSize) {
-  const rng = rngFor(seed, "deck", round);
+// Each turn has its own Fisher-Yates shuffle of the deck, seeded with
+// (seed, turn). Within a turn, words follow that shuffle so the same card
+// never repeats during a single turn. Across turns, two independent turns
+// can occasionally surface the same card -- acceptable for a party game
+// and avoids tracking how many words were consumed per previous turn.
+function shuffledDeckForTurn(seed, turn, deckSize) {
+  const rng = rngFor(seed, "deck-turn", turn);
   const indices = new Array(deckSize);
   for (let i = 0; i < deckSize; i++) indices[i] = i;
-  // Fisher-Yates.
   for (let i = deckSize - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
     const tmp = indices[i];
@@ -93,26 +94,19 @@ function shuffledIndicesForRound(seed, round, deckSize) {
   return indices;
 }
 
-export function cardIndexForTurn({ seed, turn, deckSize }) {
-  if (!Number.isInteger(turn) || turn < 1) {
-    throw new Error("turn must be a positive integer");
-  }
-  if (!Number.isInteger(deckSize) || deckSize < 1) {
-    throw new Error("deckSize must be a positive integer");
-  }
-  const zeroBased = turn - 1;
-  const round = Math.floor(zeroBased / deckSize);
-  const positionInRound = zeroBased % deckSize;
-  const order = shuffledIndicesForRound(seed, round, deckSize);
-  return order[positionInRound];
-}
-
-export function pickCard({ seed, turn, deck }) {
+export function cardForTurnAndWord({ seed, turn, wordIndex, deck }) {
   if (!Array.isArray(deck) || deck.length === 0) {
     throw new Error("deck must be a non-empty array");
   }
-  const idx = cardIndexForTurn({ seed, turn, deckSize: deck.length });
-  return { card: deck[idx], index: idx };
+  if (!Number.isInteger(turn) || turn < 1) {
+    throw new Error("turn must be a positive integer");
+  }
+  if (!Number.isInteger(wordIndex) || wordIndex < 1) {
+    throw new Error("wordIndex must be a positive integer");
+  }
+  const order = shuffledDeckForTurn(seed, turn, deck.length);
+  const cardPos = order[(wordIndex - 1) % deck.length];
+  return { card: deck[cardPos], index: cardPos };
 }
 
 export const ROLES = Object.freeze({
@@ -155,14 +149,15 @@ export function visibilityForRole(role) {
   }
 }
 
-export function deriveTurnState({ seed, turn, teamSizes, myTeam, myPlayerIndex, deck }) {
+export function deriveTurnState({ seed, turn, wordIndex = 1, teamSizes, myTeam, myPlayerIndex, deck }) {
   const guessing = activeTeam(turn);
   const judge = judgeTeam(turn);
   const activeIdx = activePlayerIndex({ seed, turn, teamSize: teamSizes[guessing] });
   const role = roleForPlayer({ seed, turn, teamSizes, myTeam, myPlayerIndex });
-  const { card, index: cardIndex } = pickCard({ seed, turn, deck });
+  const { card, index: cardIndex } = cardForTurnAndWord({ seed, turn, wordIndex, deck });
   return {
     turn,
+    wordIndex,
     guessingTeam: guessing,
     judgeTeam: judge,
     activePlayerIndex: activeIdx,
@@ -183,22 +178,28 @@ export function parseUrlState(searchString) {
   const a = parseInt(params.get("a") || "", 10);
   const b = parseInt(params.get("b") || "", 10);
   const t = parseInt(params.get("t") || "", 10);
+  const w = parseInt(params.get("w") || "", 10);
+  const d = parseInt(params.get("d") || "", 10);
   const v = params.get("v") || "";
   return {
     seed,
     teamA: Number.isInteger(a) && a > 0 ? a : null,
     teamB: Number.isInteger(b) && b > 0 ? b : null,
     turn: Number.isInteger(t) && t > 0 ? t : null,
+    wordIndex: Number.isInteger(w) && w > 0 ? w : null,
+    timerDuration: Number.isInteger(d) && d > 0 ? d : null,
     version: v || null,
   };
 }
 
-export function serializeUrlState({ seed, teamA, teamB, turn, version } = {}) {
+export function serializeUrlState({ seed, teamA, teamB, turn, wordIndex, timerDuration, version } = {}) {
   const params = new URLSearchParams();
   if (seed) params.set("s", String(seed));
   if (Number.isInteger(teamA) && teamA > 0) params.set("a", String(teamA));
   if (Number.isInteger(teamB) && teamB > 0) params.set("b", String(teamB));
   if (Number.isInteger(turn) && turn > 0) params.set("t", String(turn));
+  if (Number.isInteger(wordIndex) && wordIndex > 1) params.set("w", String(wordIndex));
+  if (Number.isInteger(timerDuration) && timerDuration > 0) params.set("d", String(timerDuration));
   if (version) params.set("v", String(version));
   return params.toString();
 }

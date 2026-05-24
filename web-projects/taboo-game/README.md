@@ -1,21 +1,21 @@
 # Taboo · Juego Determinista
 
-Juego de adivinanzas tipo Taboo para jugar en persona con varios móviles, **sin servidor**. Cada dispositivo reconstruye el estado completo del juego (turno, jugador activo, carta) a partir de unas pocas entradas compartidas verbalmente.
+Juego de adivinanzas tipo Taboo para jugar en persona con varios móviles, **sin servidor**. Cada dispositivo reconstruye el estado completo del juego (turno, jugador activo, palabra actual, carta) a partir de unas pocas entradas compartidas verbalmente.
 
 ## ¿Cómo funciona?
 
 No hay backend, ni sincronización en tiempo real, ni código de partida. La coherencia entre dispositivos se garantiza porque todos calculan lo mismo:
 
 - Todos introducen el **mismo seed** (cualquier texto, p.ej. `cumple-marta-2026`).
-- Todos introducen los **mismos tamaños de equipo**.
+- Todos introducen los **mismos tamaños de equipo** y la **misma duración de timer**.
 - Cada uno introduce su propio **equipo** (A o B) y **número de jugador** (1..N).
-- Todos avanzan **manualmente** el turno al unísono cuando termina cada ronda.
+- Cada turno tiene dos contadores: el **turno** (qué jugador describe) y el **número de palabra** dentro del turno. Ambos se avanzan manualmente.
 
 A partir de eso, cada cliente deriva:
 
 - A qué equipo le toca adivinar (los turnos impares son del equipo A).
-- Quién es el jugador activo del equipo adivinador (mediante un PRNG sembrado).
-- Qué carta concreta toca jugar (mediante un Fisher-Yates sembrado sobre la baraja entera).
+- Quién es el jugador activo del equipo adivinador (rotación determinista: cada miembro describe una vez antes de repetirse).
+- Qué carta toca para (turno, número de palabra) — cada turno tiene su propia permutación determinista de la baraja.
 
 ## Roles y visibilidad
 
@@ -23,19 +23,22 @@ En cada turno tu pantalla muestra una vista distinta según tu rol:
 
 | Rol | Lo que ve | Lo que hace |
 |---|---|---|
-| **Jugador activo** (equipo adivinador) | Palabra objetivo + palabras prohibidas | Describe sin usar las prohibidas |
-| **Compañero del activo** (equipo adivinador) | **Nada** (cara tapada) | NO mira la pantalla, escucha y grita la palabra |
-| **Equipo juez** (el otro equipo) | Palabra objetivo + palabras prohibidas | Vigila las prohibidas, valida el acierto |
+| **Jugador activo** (equipo adivinador) | "Es tu turno" + botón Empezar → carta + cronómetro | Pulsa Empezar y describe palabras sin usar las prohibidas |
+| **Compañero del activo** (equipo adivinador) | **Nada** (cara tapada con 🙈) | NO mira la pantalla, escucha y grita la palabra |
+| **Equipo juez** (el otro equipo) | Carta entera (palabra + prohibidas) | Vigila las prohibidas, valida los aciertos |
 
 ## Cómo jugar
 
 1. Abre el juego en cada móvil del grupo.
-2. Decidid un seed común y los tamaños de equipo. El "anfitrión" puede usar **Copiar enlace de partida** para mandar un enlace que pre-rellene los campos compartidos en todos los dispositivos.
+2. Decidid un seed, tamaños de equipo y duración del timer (p.ej. 30 s). El "anfitrión" puede usar **Copiar enlace de partida** para mandar un enlace que pre-rellene esos campos en todos los dispositivos.
 3. Cada jugador escoge su equipo y número.
-4. Pulsad **Empezar a jugar**. Todos veréis el mismo turno y la misma carta (con la visibilidad que corresponda).
-5. Al acabar cada turno, todos pulsan **Siguiente** a la vez.
+4. Pulsad **Empezar a jugar**.
+5. En cada turno, el jugador activo ve "Es tu turno". Cuando todos están listos, pulsa **Empezar** y arranca su cronómetro. Mientras dura, ve una palabra y la describe; al acertar (o pasar) pulsa **Siguiente palabra**. Repite hasta que se acabe el tiempo.
+6. **Los jueces** también pulsan **Siguiente palabra** cada vez que el activo cambia de carta para mantener su contador sincronizado y poder ver la siguiente.
+7. **Los compañeros del activo** también pueden pulsar **Siguiente palabra** aunque no vean nada — el contador es local en cada dispositivo.
+8. Cuando se acaba el tiempo, el botón de siguiente palabra del jugador activo se congela y aparece **¡TIEMPO!** Solo queda **Siguiente turno**, que todos pulsan a la vez.
 
-Si alguien llega tarde, basta con que ponga el número de turno actual: la baraja es totalmente reconstruible.
+Si alguien llega tarde, basta con que ponga el número de turno y palabra actuales: el estado es totalmente reconstruible.
 
 ## Dataset de cartas
 
@@ -81,9 +84,11 @@ bun test
 - `a` — tamaño del equipo A
 - `b` — tamaño del equipo B
 - `t` — turno
+- `w` — número de palabra dentro del turno (opcional, por defecto 1)
+- `d` — duración del timer en segundos
 - `v` — versión del dataset (avisa si no coincide con la cargada)
 
-Ejemplo: `?s=fiesta-julio&a=4&b=3&t=1&v=1.0.0`
+Ejemplo: `?s=fiesta-julio&a=4&b=3&t=1&d=30&v=1.0.0`
 
 Los datos personales (equipo, número de jugador) quedan en `localStorage` de cada dispositivo, no en la URL.
 

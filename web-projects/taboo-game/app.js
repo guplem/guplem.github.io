@@ -10,6 +10,7 @@ import {
 
 const STORAGE_KEY = "taboo-game:personal:v1";
 const DATASET_URL = "./cards.json";
+const DEFAULT_TIMER_DURATION = 30;
 
 const dom = {
   setupScreen: document.getElementById("setup-screen"),
@@ -17,6 +18,7 @@ const dom = {
   errorScreen: document.getElementById("error-screen"),
   errorDetail: document.getElementById("error-detail"),
 
+  // Setup form
   seedInput: document.getElementById("seed-input"),
   seedRandom: document.getElementById("seed-random"),
   teamASize: document.getElementById("team-a-size"),
@@ -24,29 +26,55 @@ const dom = {
   myTeamRadios: document.querySelectorAll("input[name='my-team']"),
   myPlayerIndex: document.getElementById("my-player-index"),
   initialTurn: document.getElementById("initial-turn"),
+  timerDurationInput: document.getElementById("timer-duration"),
   setupError: document.getElementById("setup-error"),
   startBtn: document.getElementById("start-btn"),
   copySetupLink: document.getElementById("copy-setup-link"),
   copyStatus: document.getElementById("copy-status"),
 
-  turnNumber: document.getElementById("turn-number"),
-  prevTurnBtn: document.getElementById("prev-turn-btn"),
-  nextTurnBtn: document.getElementById("next-turn-btn"),
-  jumpTurn: document.getElementById("jump-turn"),
-  jumpBtn: document.getElementById("jump-btn"),
-  editSetupBtn: document.getElementById("edit-setup-btn"),
-
+  // Game screen
   meTag: document.getElementById("me-tag"),
   guessingTeamPill: document.getElementById("guessing-team-pill"),
   judgeTeamPill: document.getElementById("judge-team-pill"),
   activePlayerPill: document.getElementById("active-player-pill"),
   roleBanner: document.getElementById("role-banner"),
+
+  turnNumber: document.getElementById("turn-number"),
+  prevTurnBtn: document.getElementById("prev-turn-btn"),
+  nextTurnBtn: document.getElementById("next-turn-btn"),
+  jumpTurn: document.getElementById("jump-turn"),
+  jumpTurnBtn: document.getElementById("jump-turn-btn"),
+
+  startPanel: document.getElementById("start-panel"),
+  timerStartBtn: document.getElementById("timer-start-btn"),
+  timerDurationDisplay: document.getElementById("timer-duration-display"),
+
+  cardArea: document.getElementById("card-area"),
+  wordNumber: document.getElementById("word-number"),
+  prevWordBtn: document.getElementById("prev-word-btn"),
+  nextWordBtn: document.getElementById("next-word-btn"),
+  jumpWord: document.getElementById("jump-word"),
+  jumpWordBtn: document.getElementById("jump-word-btn"),
+
+  timerBar: document.getElementById("timer-bar"),
+  timerFill: document.getElementById("timer-fill"),
+  timerText: document.getElementById("timer-text"),
+
   card: document.getElementById("card"),
+  editSetupBtn: document.getElementById("edit-setup-btn"),
   datasetInfo: document.getElementById("dataset-info"),
 };
 
 let dataset = null;
 let session = null;
+
+// Timer state lives only in memory. It is NOT deterministic and not shared --
+// it just tracks when the local active player pressed Start for the current turn.
+const timer = {
+  startedAt: null, // ms timestamp, or null
+  forTurn: null,   // the turn number this timer was started for
+};
+let tickInterval = null;
 
 // ---- Personal state persistence ----
 
@@ -80,10 +108,11 @@ function readSetupForm() {
   const myTeam = [...dom.myTeamRadios].find((r) => r.checked)?.value || null;
   const myPlayerIndex = parseInt(dom.myPlayerIndex.value, 10);
   const turn = parseInt(dom.initialTurn.value, 10);
-  return { seed, teamA, teamB, myTeam, myPlayerIndex, turn };
+  const timerDuration = parseInt(dom.timerDurationInput.value, 10);
+  return { seed, teamA, teamB, myTeam, myPlayerIndex, turn, timerDuration };
 }
 
-function setSetupForm({ seed, teamA, teamB, myTeam, myPlayerIndex, turn }) {
+function setSetupForm({ seed, teamA, teamB, myTeam, myPlayerIndex, turn, timerDuration }) {
   if (seed != null) dom.seedInput.value = seed;
   if (teamA != null) dom.teamASize.value = String(teamA);
   if (teamB != null) dom.teamBSize.value = String(teamB);
@@ -94,6 +123,7 @@ function setSetupForm({ seed, teamA, teamB, myTeam, myPlayerIndex, turn }) {
   }
   if (myPlayerIndex != null) dom.myPlayerIndex.value = String(myPlayerIndex);
   if (turn != null) dom.initialTurn.value = String(turn);
+  if (timerDuration != null) dom.timerDurationInput.value = String(timerDuration);
 }
 
 function validateSetup(form) {
@@ -106,6 +136,9 @@ function validateSetup(form) {
     return `Tu número de jugador debe estar entre 1 y ${maxIdx} (tamaño del equipo ${form.myTeam}).`;
   }
   if (!Number.isInteger(form.turn) || form.turn < 1) return "El turno inicial debe ser un entero positivo.";
+  if (!Number.isInteger(form.timerDuration) || form.timerDuration < 5 || form.timerDuration > 600) {
+    return "La duración del timer debe estar entre 5 y 600 segundos.";
+  }
   return null;
 }
 
@@ -118,6 +151,8 @@ function syncUrl() {
     teamA: session.teamSizes.A,
     teamB: session.teamSizes.B,
     turn: session.turn,
+    wordIndex: session.wordIndex,
+    timerDuration: session.timerDuration,
     version: dataset?.version,
   });
   const newUrl = qs ? `${location.pathname}?${qs}` : location.pathname;
@@ -134,10 +169,10 @@ function setupFromUrlAndStorage() {
   const myTeam = personal.myTeam || "";
   const myPlayerIndex = personal.myPlayerIndex || 1;
   const turn = url.turn || 1;
+  const timerDuration = url.timerDuration || personal.timerDuration || DEFAULT_TIMER_DURATION;
 
-  setSetupForm({ seed, teamA, teamB, myTeam, myPlayerIndex, turn });
+  setSetupForm({ seed, teamA, teamB, myTeam, myPlayerIndex, turn, timerDuration });
 
-  // Warn if dataset version embedded in URL doesn't match
   if (url.version && dataset && url.version !== dataset.version) {
     dom.setupError.textContent = `Atención: el enlace usa la versión de cartas ${url.version} pero tienes la ${dataset.version}. Los resultados pueden diferir.`;
   }
@@ -155,6 +190,49 @@ async function loadDataset() {
   return json;
 }
 
+// ---- Timer helpers ----
+
+function timerStartedForCurrentTurn() {
+  return session != null && timer.startedAt != null && timer.forTurn === session.turn;
+}
+
+function timerRemainingMs() {
+  if (!timerStartedForCurrentTurn()) return null;
+  const elapsed = Date.now() - timer.startedAt;
+  return Math.max(0, session.timerDuration * 1000 - elapsed);
+}
+
+function timerExpired() {
+  return timerStartedForCurrentTurn() && timerRemainingMs() === 0;
+}
+
+function resetTimer() {
+  timer.startedAt = null;
+  timer.forTurn = null;
+  stopTicker();
+}
+
+function startTimer() {
+  timer.startedAt = Date.now();
+  timer.forTurn = session.turn;
+  startTicker();
+}
+
+function startTicker() {
+  stopTicker();
+  tickInterval = setInterval(() => {
+    renderTurn();
+    if (timerExpired()) stopTicker();
+  }, 200);
+}
+
+function stopTicker() {
+  if (tickInterval) {
+    clearInterval(tickInterval);
+    tickInterval = null;
+  }
+}
+
 // ---- Game rendering ----
 
 function renderTurn() {
@@ -163,6 +241,7 @@ function renderTurn() {
   const state = deriveTurnState({
     seed: session.seed,
     turn: session.turn,
+    wordIndex: session.wordIndex,
     teamSizes: session.teamSizes,
     myTeam: session.myTeam,
     myPlayerIndex: session.myPlayerIndex,
@@ -171,6 +250,8 @@ function renderTurn() {
 
   dom.turnNumber.textContent = String(session.turn);
   dom.jumpTurn.value = String(session.turn);
+  dom.wordNumber.textContent = String(session.wordIndex);
+  dom.jumpWord.value = String(session.wordIndex);
 
   dom.meTag.textContent = `${session.myTeam}-${session.myPlayerIndex}`;
   dom.meTag.className = `me-tag team-${session.myTeam}`;
@@ -182,16 +263,29 @@ function renderTurn() {
   dom.roleBanner.className = "role-banner";
   if (state.role === ROLES.ACTIVE_PLAYER) {
     dom.roleBanner.classList.add("role-active");
-    dom.roleBanner.textContent = "TU TURNO · Describe la palabra sin usar las prohibidas";
+    dom.roleBanner.textContent = "TU TURNO · Describe sin usar las prohibidas";
   } else if (state.role === ROLES.JUDGE) {
     dom.roleBanner.classList.add("role-judge");
-    dom.roleBanner.textContent = "ERES JUEZ · Vigila las palabras prohibidas y valida el acierto";
+    dom.roleBanner.textContent = "ERES JUEZ · Vigila las prohibidas y los aciertos";
   } else {
     dom.roleBanner.classList.add("role-teammate");
-    dom.roleBanner.textContent = "Tu equipo adivina · NO MIRES la pantalla, escucha y di la palabra en voz alta";
+    dom.roleBanner.textContent = "Tu equipo adivina · NO MIRES la pantalla";
   }
 
-  // Card
+  const isActive = state.role === ROLES.ACTIVE_PLAYER;
+  const showStartPanel = isActive && !timerStartedForCurrentTurn();
+
+  if (showStartPanel) {
+    dom.startPanel.hidden = false;
+    dom.cardArea.hidden = true;
+    dom.timerDurationDisplay.textContent = String(session.timerDuration);
+    return;
+  }
+
+  dom.startPanel.hidden = true;
+  dom.cardArea.hidden = false;
+
+  // Card content depends on role + visibility
   dom.card.className = "card";
   if (state.visibility.word || state.visibility.forbidden) {
     const wordHtml = state.visibility.word
@@ -211,11 +305,43 @@ function renderTurn() {
     dom.card.innerHTML = `
       <div class="blind-icon" aria-hidden="true">🙈</div>
       <p class="blind-msg">No mires</p>
-      <p class="blind-sub">Escucha a tu compañero y grita la palabra que crees que es.</p>
+      <p class="blind-sub">Escucha a tu compañero y di la palabra en voz alta.</p>
     `;
   }
 
+  // Timer + freeze behaviour: only for active player after Start
+  if (isActive) {
+    dom.timerBar.hidden = false;
+    const remaining = timerRemainingMs() ?? 0;
+    const totalMs = session.timerDuration * 1000;
+    const pct = Math.max(0, Math.min(100, (remaining / totalMs) * 100));
+    dom.timerFill.style.width = `${pct}%`;
+    const expired = timerExpired();
+    if (expired) {
+      dom.timerBar.classList.add("expired");
+      dom.timerText.textContent = "¡TIEMPO!";
+      dom.card.classList.add("expired");
+      setWordNavDisabled(true);
+    } else {
+      dom.timerBar.classList.remove("expired");
+      const secs = Math.ceil(remaining / 1000);
+      dom.timerText.textContent = `${secs}s`;
+      setWordNavDisabled(false);
+    }
+  } else {
+    dom.timerBar.hidden = true;
+    setWordNavDisabled(false);
+  }
+
   dom.datasetInfo.textContent = `Carta ${state.cardIndex + 1} de ${dataset.cards.length} · dataset v${dataset.version}`;
+}
+
+function setWordNavDisabled(disabled) {
+  dom.nextWordBtn.disabled = disabled;
+  dom.prevWordBtn.disabled = disabled;
+  dom.jumpWordBtn.disabled = disabled;
+  dom.jumpWord.disabled = disabled;
+  dom.nextWordBtn.classList.toggle("disabled-frozen", disabled);
 }
 
 function escapeHtml(s) {
@@ -233,6 +359,7 @@ function showSetup() {
   dom.setupScreen.hidden = false;
   dom.gameScreen.hidden = true;
   dom.errorScreen.hidden = true;
+  stopTicker();
 }
 
 function showGame() {
@@ -248,13 +375,15 @@ function showError(msg) {
   dom.errorDetail.textContent = msg;
 }
 
-// ---- Turn navigation ----
+// ---- Turn / word navigation ----
 
 function changeTurn(delta) {
   if (!session) return;
   const next = session.turn + delta;
   if (next < 1) return;
   session.turn = next;
+  session.wordIndex = 1;
+  resetTimer();
   syncUrl();
   renderTurn();
 }
@@ -264,6 +393,33 @@ function jumpToTurn(value) {
   const parsed = parseInt(value, 10);
   if (!Number.isInteger(parsed) || parsed < 1) return;
   session.turn = parsed;
+  session.wordIndex = 1;
+  resetTimer();
+  syncUrl();
+  renderTurn();
+}
+
+function isWordNavLocked() {
+  // Only the active player gets locked, and only after their timer expired.
+  return timerExpired();
+}
+
+function changeWord(delta) {
+  if (!session) return;
+  if (isWordNavLocked()) return;
+  const next = session.wordIndex + delta;
+  if (next < 1) return;
+  session.wordIndex = next;
+  syncUrl();
+  renderTurn();
+}
+
+function jumpToWord(value) {
+  if (!session) return;
+  if (isWordNavLocked()) return;
+  const parsed = parseInt(value, 10);
+  if (!Number.isInteger(parsed) || parsed < 1) return;
+  session.wordIndex = parsed;
   syncUrl();
   renderTurn();
 }
@@ -290,7 +446,10 @@ function wireSetup() {
       myTeam: form.myTeam,
       myPlayerIndex: form.myPlayerIndex,
       turn: form.turn,
+      wordIndex: 1,
+      timerDuration: form.timerDuration,
     };
+    resetTimer();
 
     savePersonal({
       seed: form.seed,
@@ -298,6 +457,7 @@ function wireSetup() {
       teamB: form.teamB,
       myTeam: form.myTeam,
       myPlayerIndex: form.myPlayerIndex,
+      timerDuration: form.timerDuration,
     });
 
     syncUrl();
@@ -312,6 +472,7 @@ function wireSetup() {
       teamA: form.teamA,
       teamB: form.teamB,
       turn: form.turn,
+      timerDuration: form.timerDuration,
       version: dataset?.version,
     });
     const url = `${location.origin}${location.pathname}${qs ? "?" + qs : ""}`;
@@ -323,7 +484,6 @@ function wireSetup() {
     }
   });
 
-  // Re-validate player index range when team or sizes change
   const reValidate = () => {
     const form = readSetupForm();
     const maxIdx = form.myTeam === "A" ? form.teamA : form.myTeam === "B" ? form.teamB : null;
@@ -338,14 +498,26 @@ function wireSetup() {
 }
 
 function wireGame() {
+  dom.timerStartBtn.addEventListener("click", () => {
+    startTimer();
+    renderTurn();
+  });
+
   dom.nextTurnBtn.addEventListener("click", () => changeTurn(1));
   dom.prevTurnBtn.addEventListener("click", () => changeTurn(-1));
-  dom.jumpBtn.addEventListener("click", () => jumpToTurn(dom.jumpTurn.value));
+  dom.jumpTurnBtn.addEventListener("click", () => jumpToTurn(dom.jumpTurn.value));
   dom.jumpTurn.addEventListener("keydown", (e) => {
     if (e.key === "Enter") jumpToTurn(dom.jumpTurn.value);
   });
+
+  dom.nextWordBtn.addEventListener("click", () => changeWord(1));
+  dom.prevWordBtn.addEventListener("click", () => changeWord(-1));
+  dom.jumpWordBtn.addEventListener("click", () => jumpToWord(dom.jumpWord.value));
+  dom.jumpWord.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") jumpToWord(dom.jumpWord.value);
+  });
+
   dom.editSetupBtn.addEventListener("click", () => {
-    // Preserve current session values back into the form
     if (session) {
       setSetupForm({
         seed: session.seed,
@@ -354,8 +526,10 @@ function wireGame() {
         myTeam: session.myTeam,
         myPlayerIndex: session.myPlayerIndex,
         turn: session.turn,
+        timerDuration: session.timerDuration,
       });
     }
+    resetTimer();
     showSetup();
   });
 }
@@ -383,7 +557,6 @@ async function init() {
 
   setupFromUrlAndStorage();
 
-  // Auto-start game if URL has all the shared fields and personal info is set.
   const url = parseUrlState(location.search);
   const personal = loadPersonal();
   if (
@@ -402,7 +575,10 @@ async function init() {
       myTeam: personal.myTeam,
       myPlayerIndex: personal.myPlayerIndex,
       turn: url.turn,
+      wordIndex: url.wordIndex || 1,
+      timerDuration: url.timerDuration || personal.timerDuration || DEFAULT_TIMER_DURATION,
     };
+    resetTimer();
     showGame();
     renderTurn();
   } else {
