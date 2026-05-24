@@ -263,6 +263,42 @@ button.ghost:hover {
 }
 
 /* ============ GAME SCREEN ============ */
+.me-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: -4px 0 12px;
+  font-size: 12px;
+  color: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.me-tag {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border-radius: 999px;
+  text-transform: none;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.me-tag.team-A {
+  background: linear-gradient(135deg, rgba(244, 63, 138, 0.25), rgba(244, 63, 138, 0.1));
+  border-color: rgba(244, 63, 138, 0.5);
+  color: #ffb3d2;
+}
+
+.me-tag.team-B {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.25), rgba(124, 92, 255, 0.1));
+  border-color: rgba(124, 92, 255, 0.5);
+  color: #c9beff;
+}
+
 .turn-bar {
   display: grid;
   grid-template-columns: auto 1fr auto;

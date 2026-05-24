@@ -36,6 +36,7 @@ const dom = {
   jumpBtn: document.getElementById("jump-btn"),
   editSetupBtn: document.getElementById("edit-setup-btn"),
 
+  meTag: document.getElementById("me-tag"),
   guessingTeamPill: document.getElementById("guessing-team-pill"),
   judgeTeamPill: document.getElementById("judge-team-pill"),
   activePlayerPill: document.getElementById("active-player-pill"),
@@ -171,6 +172,8 @@ function renderTurn() {
   dom.turnNumber.textContent = String(session.turn);
   dom.jumpTurn.value = String(session.turn);
 
+  dom.meTag.textContent = `${session.myTeam}-${session.myPlayerIndex}`;
+  dom.meTag.className = `me-tag team-${session.myTeam}`;
   dom.guessingTeamPill.textContent = `Equipo ${state.guessingTeam} adivina`;
   dom.judgeTeamPill.textContent = `Equipo ${state.judgeTeam} juzga`;
   dom.activePlayerPill.textContent = `Jugador activo: ${state.guessingTeam} · #${state.activePlayerIndex}`;
