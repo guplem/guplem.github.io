@@ -41,3 +41,4 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 - **seasonal-color-classifier** -- Color analysis tool that classifies colors into seasonal palettes
 - **github-stats-dashboard** -- GitHub repository analytics dashboard with issues, PRs, commits, contributors, and language breakdowns
 - **random-option-picker** -- Slot-machine style random picker with shareable URLs and reproducible seeds (TDD-covered, mulberry32 PRNG)
+- **taboo-game** -- Deterministic multiplayer Taboo game with no server; every client derives the same state from shared seed + turn (TDD-covered, see ADR 0007)
