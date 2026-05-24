@@ -22,14 +22,18 @@ For `taboo-game/`, **the game has no shared state and no networking**. Each devi
 - `seed` (free-form string, shared verbally or via a copy-link button)
 - `teamA_size` and `teamB_size` (integers, shared)
 - `turn` (integer, advanced manually at the same time by every player)
+- `wordIndex` (integer, the current word within the turn; advanced manually by each device as the active player calls out the next card)
+- `timerDuration` (integer seconds; shared)
 - `myTeam` and `myPlayerIndex` (personal — different on each device)
+
+Each turn now allows the active player to describe multiple cards within a fixed time window (default 30 s). Only the active player has a running timer; judges and teammates rely on the active player calling "tiempo!" verbally. The timer is intentionally NOT part of the deterministic state — it is a local UI affordance for the active player. All cards are still derivable purely from `(seed, turn, wordIndex)`.
 
 The pure logic lives in `game.js` and provides:
 
 - `activeTeam(turn)` — strictly alternating; turn 1 → A, turn 2 → B, etc.
 - `activePlayerIndex({seed, turn, teamSize})` — rotates within the team: each player describes exactly once per "team round" (a full pass through the team) before any repeats. Uses a Fisher-Yates shuffle of `[1..teamSize]` seeded with `seed | "player" | team | round`, then indexes by the team-local position in the round. Independent permutations per team A and team B.
-- `cardIndexForTurn({seed, turn, deckSize})` — Fisher-Yates shuffle of the deck for the current "round" (a full pass through the deck) seeded with `seed | round | "deck"`. When the deck cycles, a new round seed produces a fresh permutation while staying deterministic.
-- `deriveTurnState({...})` — composes the above and returns the rendered state including a role (`active_player` / `guessing_teammate` / `judge`) and a visibility object derived from it.
+- `cardForTurnAndWord({seed, turn, wordIndex, deck})` — per-turn Fisher-Yates shuffle of the deck seeded with `seed | "deck-turn" | turn`. Within a single turn, words `1..deckSize` traverse the shuffle without repeats. Across turns, two independent turns can occasionally surface the same card; acceptable for a party game and avoids tracking how many words each previous turn consumed.
+- `deriveTurnState({...})` — composes the above and returns the rendered state including a role (`active_player` / `guessing_teammate` / `judge`), a visibility object derived from it, and the current card for `(turn, wordIndex)`.
 
 `seed`, `teamA`, `teamB`, and `turn` are mirrored in the URL (`?s=...&a=...&b=...&t=...`) so a single link can pre-populate the shared inputs in every device — but the URL is convenience, not source of truth: each player can also type the values manually if they joined late, and the same game is reconstructable from those inputs alone.
 
@@ -58,7 +62,7 @@ The cards dataset (`cards.json`) is treated as part of the inputs: its `version`
 
 **Player selection (deterministic rotation).** Team A plays odd turns (1, 3, 5, ...) and team B plays even turns (2, 4, 6, ...), so each team has its own local turn index. For the active team we compute `round = floor(localIndex / teamSize)` and `position = localIndex % teamSize`, then Fisher-Yates shuffle `[1..teamSize]` with an RNG seeded by `seed | "player" | team | round` and return `order[position]`. This guarantees every player describes exactly once before any repeats within the team, which matches the expectation of a tabletop game (each player gets a turn). The per-round reshuffle means consecutive rounds don't share the same order. Verified by tests.
 
-**Card selection (deterministic Fisher-Yates per round).** For round `R = floor((turn - 1) / deckSize)` we shuffle `[0..deckSize-1]` with a fresh RNG seeded by `seed | "deck" | R`, then return entry `(turn - 1) % deckSize`. This guarantees every card appears exactly once before any repeats, and the repeat order itself is determined (not random) but different from round 1 — so a long party does not show identical cycles. Verified by tests.
+**Card selection (deterministic Fisher-Yates per turn).** Each turn `T` gets its own permutation of `[0..deckSize-1]`, computed by Fisher-Yates with an RNG seeded by `seed | "deck-turn" | T`. Within turn `T`, the `wordIndex`-th card (1-based) is at position `(wordIndex - 1) % deckSize` of that permutation. This guarantees the active player never sees the same card twice within their 30-second window, and the same `(seed, turn, wordIndex)` reproduces the exact same card on every device. Two different turns may occasionally surface the same card (the per-turn shuffles are independent), which is acceptable for a party game with 559+ cards. The alternative — one global shuffle with a fixed stride per turn — would avoid cross-turn repeats but requires committing to a max-words-per-turn constant up front. Verified by tests.
 
 ## Scope
 

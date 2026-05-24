@@ -491,6 +491,155 @@ button.ghost:hover {
   margin: 0;
 }
 
+/* ---- Word bar (within card area) ---- */
+.word-bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.word-bar button {
+  padding: 12px 14px;
+  font-size: 15px;
+}
+
+#prev-word-btn {
+  padding: 12px 16px;
+  font-size: 18px;
+}
+
+.word-info {
+  text-align: center;
+}
+
+.word-label {
+  font-size: 10px;
+  color: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.word-number {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+#next-word-btn.disabled-frozen {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--bg-elev-2);
+  color: var(--text-micro);
+}
+
+/* ---- Timer ---- */
+.timer-bar {
+  position: relative;
+  height: 28px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.timer-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, var(--good) 0%, var(--warn) 70%, var(--bad) 100%);
+  border-radius: 10px;
+  transition: width 0.2s linear;
+  width: 100%;
+}
+
+.timer-bar.expired .timer-fill {
+  background: var(--bad);
+  opacity: 0.5;
+}
+
+.timer-text {
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 28px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.05em;
+}
+
+/* ---- Start panel (active player, pre-timer) ---- */
+.start-panel {
+  text-align: center;
+  padding: 28px 20px;
+  background: linear-gradient(180deg, var(--bg-elev-2) 0%, var(--bg-elev) 100%);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  margin-bottom: 18px;
+}
+
+.start-icon {
+  font-size: 56px;
+  margin-bottom: 8px;
+}
+
+.start-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
+.start-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+
+button.big {
+  font-size: 18px;
+  padding: 16px 28px;
+}
+
+/* ---- Card area wrapper ---- */
+.card-area {
+  margin-bottom: 18px;
+}
+
+.card-area .card {
+  margin-bottom: 0;
+}
+
+.card.expired {
+  border-color: rgba(255, 93, 93, 0.5);
+  position: relative;
+}
+
+.card.expired::after {
+  content: "¡TIEMPO!";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  font-size: clamp(48px, 14vw, 80px);
+  font-weight: 900;
+  color: var(--bad);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  letter-spacing: 0.05em;
+  opacity: 0.92;
+}
+
+.card.expired > * {
+  opacity: 0.35;
+}
+
 /* ---- Bottom actions ---- */
 .game-actions {
   display: flex;
@@ -507,9 +656,37 @@ button.ghost:hover {
   color: var(--text-dim);
 }
 
-.jump-row input {
+.jump-row.two {
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.jump-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.jump-group label {
+  font-size: 12px;
+  color: var(--text-micro);
+}
+
+.jump-inline {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+}
+
+.jump-row input,
+.jump-inline input {
   padding: 8px 10px;
   font-size: 14px;
+}
+
+.jump-inline button {
+  padding: 8px 12px;
+  font-size: 13px;
 }
 
 /* ---- Footer ---- */

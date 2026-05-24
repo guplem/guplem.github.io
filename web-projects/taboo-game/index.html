@@ -59,11 +59,17 @@
         <p class="micro">Numéralos del 1 al N. Cada miembro del equipo introduce un número distinto.</p>
       </div>
 
-      <div class="control-group">
-        <label for="initial-turn">Turno inicial</label>
-        <input type="number" id="initial-turn" min="1" value="1" />
-        <p class="micro">Normalmente 1. Si te incorporas tarde, pon el número de turno actual.</p>
+      <div class="row two-cols">
+        <div class="control-group">
+          <label for="initial-turn">Turno inicial</label>
+          <input type="number" id="initial-turn" min="1" value="1" />
+        </div>
+        <div class="control-group">
+          <label for="timer-duration">Tiempo por turno (s)</label>
+          <input type="number" id="timer-duration" min="5" max="600" value="30" />
+        </div>
       </div>
+      <p class="micro">Tiempo del que dispone cada jugador activo para hacer adivinar palabras a su equipo. Compartido por toda la partida.</p>
 
       <div id="setup-error" class="error" aria-live="polite"></div>
 
@@ -76,11 +82,11 @@
       <details class="info-panel">
         <summary>¿Cómo funciona?</summary>
         <ul>
-          <li>El <strong>seed</strong> y el <strong>número de turno</strong> determinan completamente qué carta toca y quién es el jugador activo.</li>
-          <li>El <strong>jugador activo</strong> del equipo adivinador ve la palabra y las prohibidas. Lo describe sin usar ninguna palabra prohibida.</li>
-          <li>El resto del <strong>equipo adivinador</strong> NO mira la pantalla: solo escucha y adivina.</li>
-          <li>El <strong>equipo juez</strong> ve la carta entera y vigila que no se digan palabras prohibidas ni se acepte una respuesta equivocada.</li>
-          <li>Cuando acabe el turno, todos pulsáis <strong>siguiente turno</strong> a la vez. No hay sincronización automática.</li>
+          <li>El <strong>seed</strong> + el <strong>turno</strong> + el <strong>número de palabra</strong> determinan totalmente la carta y quién describe.</li>
+          <li>El <strong>jugador activo</strong> pulsa <strong>Empezar</strong> cuando esté listo: a partir de ahí tiene N segundos para que su equipo adivine tantas palabras como pueda. Pulsa <strong>Siguiente palabra</strong> al acertar o pasar.</li>
+          <li>Cuando el tiempo se acaba, el botón de siguiente palabra se congela. Sólo queda pasar de turno.</li>
+          <li>El <strong>equipo juez</strong> ve la carta entera y debe avanzar manualmente la palabra para mantenerse sincronizado.</li>
+          <li>Los <strong>compañeros del activo</strong> tapan la pantalla (🙈) y también pueden avanzar palabra manualmente para conservar el contador.</li>
         </ul>
       </details>
     </section>
@@ -98,7 +104,7 @@
           <div class="turn-label">Turno</div>
           <div class="turn-number" id="turn-number">1</div>
         </div>
-        <button class="primary" id="next-turn-btn" type="button" title="Siguiente turno">Siguiente ›</button>
+        <button class="primary" id="next-turn-btn" type="button" title="Siguiente turno">Siguiente turno ›</button>
       </div>
 
       <div class="status-line">
@@ -109,13 +115,49 @@
 
       <div id="role-banner" class="role-banner"></div>
 
-      <div id="card" class="card"></div>
+      <!-- Active player only: pre-turn start screen -->
+      <div id="start-panel" class="start-panel" hidden>
+        <div class="start-icon" aria-hidden="true">🎤</div>
+        <p class="start-title">Es tu turno</p>
+        <p class="start-sub">Cuando todos estén listos, pulsa <strong>Empezar</strong> para arrancar el cronómetro.</p>
+        <button class="primary big" id="timer-start-btn" type="button">Empezar (<span id="timer-duration-display">30</span>s)</button>
+      </div>
+
+      <!-- Card area (visible to active during/after timer, judge, teammate) -->
+      <div id="card-area" class="card-area" hidden>
+        <div class="word-bar">
+          <button class="ghost" id="prev-word-btn" type="button" title="Palabra anterior" aria-label="Palabra anterior">‹</button>
+          <div class="word-info">
+            <div class="word-label">Palabra</div>
+            <div class="word-number" id="word-number">1</div>
+          </div>
+          <button class="primary" id="next-word-btn" type="button" title="Siguiente palabra">Siguiente ›</button>
+        </div>
+
+        <div id="timer-bar" class="timer-bar" hidden>
+          <div class="timer-fill" id="timer-fill"></div>
+          <div class="timer-text" id="timer-text">30s</div>
+        </div>
+
+        <div id="card" class="card"></div>
+      </div>
 
       <div class="game-actions">
-        <div class="jump-row">
-          <label for="jump-turn">Ir al turno</label>
-          <input type="number" id="jump-turn" min="1" value="1" />
-          <button class="ghost" id="jump-btn" type="button">Ir</button>
+        <div class="jump-row two">
+          <div class="jump-group">
+            <label for="jump-turn">Ir al turno</label>
+            <div class="jump-inline">
+              <input type="number" id="jump-turn" min="1" value="1" />
+              <button class="ghost" id="jump-turn-btn" type="button">Ir</button>
+            </div>
+          </div>
+          <div class="jump-group">
+            <label for="jump-word">Ir a palabra</label>
+            <div class="jump-inline">
+              <input type="number" id="jump-word" min="1" value="1" />
+              <button class="ghost" id="jump-word-btn" type="button">Ir</button>
+            </div>
+          </div>
         </div>
         <button class="ghost" id="edit-setup-btn" type="button">Editar configuración</button>
       </div>
@@ -132,7 +174,7 @@
   </main>
 
   <footer>
-    <p>Estado 100% derivable del seed + turno. <a href="../">← Más experimentos</a></p>
+    <p>Estado 100% derivable del seed + turno + palabra. <a href="../">← Más experimentos</a></p>
   </footer>
 
   <script type="module" src="app.js"></script>

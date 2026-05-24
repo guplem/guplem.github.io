@@ -5,8 +5,7 @@ import {
   activeTeam,
   judgeTeam,
   activePlayerIndex,
-  cardIndexForTurn,
-  pickCard,
+  cardForTurnAndWord,
   roleForPlayer,
   visibilityForRole,
   deriveTurnState,
@@ -192,84 +191,63 @@ describe("activePlayerIndex", () => {
   });
 });
 
-describe("cardIndexForTurn", () => {
-  test("is deterministic", () => {
-    const a = cardIndexForTurn({ seed: "x", turn: 7, deckSize: 50 });
-    const b = cardIndexForTurn({ seed: "x", turn: 7, deckSize: 50 });
-    expect(a).toBe(b);
+describe("cardForTurnAndWord", () => {
+  const deck = Array.from({ length: 10 }, (_, i) => ({
+    word: `w${i}`,
+    forbidden: ["a", "b", "c", "d", "e"],
+  }));
+
+  test("is deterministic for the same inputs", () => {
+    const a = cardForTurnAndWord({ seed: "x", turn: 3, wordIndex: 2, deck });
+    const b = cardForTurnAndWord({ seed: "x", turn: 3, wordIndex: 2, deck });
+    expect(a.card).toBe(b.card);
+    expect(a.index).toBe(b.index);
   });
 
-  test("returns an index within range", () => {
-    for (let t = 1; t <= 100; t++) {
-      const idx = cardIndexForTurn({ seed: "x", turn: t, deckSize: 50 });
-      expect(idx).toBeGreaterThanOrEqual(0);
-      expect(idx).toBeLessThan(50);
-    }
-  });
-
-  test("visits every card exactly once within a full round", () => {
-    const deckSize = 30;
-    const seen = new Set();
-    for (let t = 1; t <= deckSize; t++) {
-      seen.add(cardIndexForTurn({ seed: "round", turn: t, deckSize }));
-    }
-    expect(seen.size).toBe(deckSize);
-  });
-
-  test("re-shuffles on the next round", () => {
-    const deckSize = 10;
-    const round1 = [];
-    const round2 = [];
-    for (let t = 1; t <= deckSize; t++) {
-      round1.push(cardIndexForTurn({ seed: "r", turn: t, deckSize }));
-    }
-    for (let t = deckSize + 1; t <= deckSize * 2; t++) {
-      round2.push(cardIndexForTurn({ seed: "r", turn: t, deckSize }));
-    }
-    expect(round1).not.toEqual(round2);
-    // Both should still be permutations of 0..deckSize-1
-    expect(new Set(round1).size).toBe(deckSize);
-    expect(new Set(round2).size).toBe(deckSize);
-  });
-
-  test("different seeds produce different shuffles", () => {
-    const deckSize = 30;
-    const a = [];
-    const b = [];
-    for (let t = 1; t <= deckSize; t++) {
-      a.push(cardIndexForTurn({ seed: "seedA", turn: t, deckSize }));
-      b.push(cardIndexForTurn({ seed: "seedB", turn: t, deckSize }));
-    }
-    expect(a).not.toEqual(b);
-  });
-
-  test("throws on invalid inputs", () => {
-    expect(() => cardIndexForTurn({ seed: "x", turn: 0, deckSize: 10 })).toThrow();
-    expect(() => cardIndexForTurn({ seed: "x", turn: 1, deckSize: 0 })).toThrow();
-  });
-});
-
-describe("pickCard", () => {
-  const deck = [
-    { word: "uno", forbidden: ["a", "b", "c"] },
-    { word: "dos", forbidden: ["d", "e", "f"] },
-    { word: "tres", forbidden: ["g", "h", "i"] },
-  ];
-
-  test("returns one of the deck cards", () => {
-    const { card, index } = pickCard({ seed: "x", turn: 1, deck });
+  test("returns one of the deck cards with a valid index", () => {
+    const { card, index } = cardForTurnAndWord({ seed: "x", turn: 1, wordIndex: 1, deck });
     expect(deck).toContain(card);
     expect(card).toBe(deck[index]);
   });
 
-  test("is deterministic", () => {
-    const a = pickCard({ seed: "x", turn: 1, deck });
-    const b = pickCard({ seed: "x", turn: 1, deck });
+  test("visits every card exactly once within a single turn before repeats", () => {
+    const seen = new Set();
+    for (let w = 1; w <= deck.length; w++) {
+      const { index } = cardForTurnAndWord({ seed: "turnshuffle", turn: 1, wordIndex: w, deck });
+      seen.add(index);
+    }
+    expect(seen.size).toBe(deck.length);
+  });
+
+  test("two turns produce different shuffles (with the same seed)", () => {
+    const turn1 = [];
+    const turn2 = [];
+    for (let w = 1; w <= deck.length; w++) {
+      turn1.push(cardForTurnAndWord({ seed: "diffturn", turn: 1, wordIndex: w, deck }).index);
+      turn2.push(cardForTurnAndWord({ seed: "diffturn", turn: 2, wordIndex: w, deck }).index);
+    }
+    expect(turn1).not.toEqual(turn2);
+    // Both are still permutations of 0..deck.length-1
+    expect(new Set(turn1).size).toBe(deck.length);
+    expect(new Set(turn2).size).toBe(deck.length);
+  });
+
+  test("wordIndex beyond deck length wraps around (same card as wordIndex 1)", () => {
+    const a = cardForTurnAndWord({ seed: "wrap", turn: 1, wordIndex: 1, deck });
+    const b = cardForTurnAndWord({ seed: "wrap", turn: 1, wordIndex: deck.length + 1, deck });
+    expect(a.index).toBe(b.index);
+  });
+
+  test("two clients with same (seed, turn, wordIndex) compute the same card", () => {
+    const a = cardForTurnAndWord({ seed: "shared", turn: 7, wordIndex: 4, deck });
+    const b = cardForTurnAndWord({ seed: "shared", turn: 7, wordIndex: 4, deck });
     expect(a.card).toBe(b.card);
   });
 
-  test("throws on empty deck", () => {
-    expect(() => pickCard({ seed: "x", turn: 1, deck: [] })).toThrow();
+  test("throws on invalid inputs", () => {
+    expect(() => cardForTurnAndWord({ seed: "x", turn: 0, wordIndex: 1, deck })).toThrow();
+    expect(() => cardForTurnAndWord({ seed: "x", turn: 1, wordIndex: 0, deck })).toThrow();
+    expect(() => cardForTurnAndWord({ seed: "x", turn: 1, wordIndex: 1, deck: [] })).toThrow();
   });
 });
 
@@ -366,19 +344,21 @@ describe("deriveTurnState", () => {
   const teamSizes = { A: 3, B: 4 };
 
   test("two clients with the same inputs derive the same turn state (modulo personal role)", () => {
-    const baseInputs = { seed: "global", turn: 9, teamSizes, deck };
+    const baseInputs = { seed: "global", turn: 9, wordIndex: 2, teamSizes, deck };
     const clientA = deriveTurnState({ ...baseInputs, myTeam: "A", myPlayerIndex: 1 });
     const clientB = deriveTurnState({ ...baseInputs, myTeam: "B", myPlayerIndex: 1 });
     expect(clientA.card).toBe(clientB.card);
     expect(clientA.cardIndex).toBe(clientB.cardIndex);
     expect(clientA.guessingTeam).toBe(clientB.guessingTeam);
     expect(clientA.activePlayerIndex).toBe(clientB.activePlayerIndex);
+    expect(clientA.wordIndex).toBe(clientB.wordIndex);
   });
 
   test("includes role-driven visibility", () => {
     const state = deriveTurnState({
       seed: "global",
       turn: 1,
+      wordIndex: 1,
       teamSizes,
       myTeam: "B",
       myPlayerIndex: 1,
@@ -392,6 +372,7 @@ describe("deriveTurnState", () => {
     const state = deriveTurnState({
       seed: "any",
       turn: 1,
+      wordIndex: 1,
       teamSizes,
       myTeam: "A",
       myPlayerIndex: 1,
@@ -400,15 +381,60 @@ describe("deriveTurnState", () => {
     expect(state.guessingTeam).toBe("A");
     expect(state.judgeTeam).toBe("B");
   });
+
+  test("defaults wordIndex to 1 when omitted", () => {
+    const w1 = deriveTurnState({
+      seed: "default",
+      turn: 1,
+      teamSizes,
+      myTeam: "A",
+      myPlayerIndex: 1,
+      deck,
+    });
+    const wExplicit = deriveTurnState({
+      seed: "default",
+      turn: 1,
+      wordIndex: 1,
+      teamSizes,
+      myTeam: "A",
+      myPlayerIndex: 1,
+      deck,
+    });
+    expect(w1.card).toBe(wExplicit.card);
+  });
+
+  test("advancing wordIndex yields a different card (within the same turn)", () => {
+    const w1 = deriveTurnState({
+      seed: "advance",
+      turn: 1,
+      wordIndex: 1,
+      teamSizes,
+      myTeam: "A",
+      myPlayerIndex: 1,
+      deck,
+    });
+    const w2 = deriveTurnState({
+      seed: "advance",
+      turn: 1,
+      wordIndex: 2,
+      teamSizes,
+      myTeam: "A",
+      myPlayerIndex: 1,
+      deck,
+    });
+    expect(w1.cardIndex).not.toBe(w2.cardIndex);
+  });
 });
 
 describe("parseUrlState", () => {
-  test("reads seed, team sizes, turn and version", () => {
-    const s = parseUrlState("?s=abc&a=3&b=4&t=7&v=1.0.0");
+  test("reads seed, team sizes, turn, word, duration and version", () => {
+    const s = parseUrlState("?s=abc&a=3&b=4&t=7&w=5&d=45&v=1.0.0");
     expect(s.seed).toBe("abc");
     expect(s.teamA).toBe(3);
     expect(s.teamB).toBe(4);
     expect(s.turn).toBe(7);
+    expect(s.wordIndex).toBe(5);
+    expect(s.timerDuration).toBe(45);
     expect(s.version).toBe("1.0.0");
   });
 
@@ -418,14 +444,18 @@ describe("parseUrlState", () => {
     expect(s.teamA).toBe(null);
     expect(s.teamB).toBe(null);
     expect(s.turn).toBe(null);
+    expect(s.wordIndex).toBe(null);
+    expect(s.timerDuration).toBe(null);
     expect(s.version).toBe(null);
   });
 
   test("rejects non-positive integers", () => {
-    const s = parseUrlState("?a=0&b=-1&t=foo");
+    const s = parseUrlState("?a=0&b=-1&t=foo&w=0&d=-5");
     expect(s.teamA).toBe(null);
     expect(s.teamB).toBe(null);
     expect(s.turn).toBe(null);
+    expect(s.wordIndex).toBe(null);
+    expect(s.timerDuration).toBe(null);
   });
 });
 
@@ -438,8 +468,31 @@ describe("serializeUrlState", () => {
     expect(out).toContain("t=2");
   });
 
+  test("omits wordIndex when equal to 1 (default)", () => {
+    const out = serializeUrlState({ seed: "abc", wordIndex: 1 });
+    expect(out).not.toContain("w=");
+  });
+
+  test("includes wordIndex when greater than 1", () => {
+    const out = serializeUrlState({ seed: "abc", wordIndex: 5 });
+    expect(out).toContain("w=5");
+  });
+
+  test("includes timer duration when set", () => {
+    const out = serializeUrlState({ seed: "abc", timerDuration: 45 });
+    expect(out).toContain("d=45");
+  });
+
   test("round-trips with parseUrlState", () => {
-    const original = { seed: "xyz", teamA: 2, teamB: 5, turn: 12, version: "1.0.0" };
+    const original = {
+      seed: "xyz",
+      teamA: 2,
+      teamB: 5,
+      turn: 12,
+      wordIndex: 3,
+      timerDuration: 60,
+      version: "1.0.0",
+    };
     const parsed = parseUrlState("?" + serializeUrlState(original));
     expect(parsed).toEqual(original);
   });
