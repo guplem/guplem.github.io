@@ -52,10 +52,28 @@ export function activePlayerIndex({ seed, turn, teamSize }) {
   if (!Number.isInteger(teamSize) || teamSize < 1) {
     throw new Error("teamSize must be a positive integer");
   }
-  // Rejection sampling to keep distribution uniform across team sizes.
-  const rng = rngFor(seed, "player", activeTeam(turn), turn);
-  // 1-based index to match user inputs.
-  return Math.floor(rng() * teamSize) + 1;
+  // Rotate within the team: each player describes exactly once before any repeats.
+  // The active team's turns are interleaved (A plays 1,3,5,..., B plays 2,4,6,...),
+  // so we compute the team-local index first, then permute [1..teamSize] per round.
+  const team = activeTeam(turn);
+  const localIndex = team === "A" ? (turn - 1) / 2 : (turn - 2) / 2;
+  const round = Math.floor(localIndex / teamSize);
+  const positionInRound = localIndex % teamSize;
+  const order = shuffledPlayerOrder(seed, team, round, teamSize);
+  return order[positionInRound];
+}
+
+function shuffledPlayerOrder(seed, team, round, teamSize) {
+  const rng = rngFor(seed, "player", team, round);
+  const order = new Array(teamSize);
+  for (let i = 0; i < teamSize; i++) order[i] = i + 1; // 1-based
+  for (let i = teamSize - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const tmp = order[i];
+    order[i] = order[j];
+    order[j] = tmp;
+  }
+  return order;
 }
 
 // Round size = full pass through the deck. Each round uses a fresh shuffle derived

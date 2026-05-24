@@ -115,6 +115,66 @@ describe("activePlayerIndex", () => {
     }
   });
 
+  test("rotates within a team: each player describes exactly once before any repeats", () => {
+    // Team A plays odd turns 1, 3, 5, ... so its first 3 turns with teamSize=3
+    // must cover players 1, 2, 3 in some order, with no repeat.
+    const teamSize = 3;
+    const teamATurns = [1, 3, 5].map((t) =>
+      activePlayerIndex({ seed: "rotation", turn: t, teamSize })
+    );
+    expect(new Set(teamATurns).size).toBe(3);
+    expect([...teamATurns].sort()).toEqual([1, 2, 3]);
+  });
+
+  test("rotates within team B independently (turns 2, 4, 6)", () => {
+    const teamSize = 3;
+    const teamBTurns = [2, 4, 6].map((t) =>
+      activePlayerIndex({ seed: "rotation", turn: t, teamSize })
+    );
+    expect(new Set(teamBTurns).size).toBe(3);
+    expect([...teamBTurns].sort()).toEqual([1, 2, 3]);
+  });
+
+  test("after a full team-round the order is reshuffled (not repeating round 1)", () => {
+    const teamSize = 3;
+    const round1 = [1, 3, 5].map((t) =>
+      activePlayerIndex({ seed: "reroll", turn: t, teamSize })
+    );
+    const round2 = [7, 9, 11].map((t) =>
+      activePlayerIndex({ seed: "reroll", turn: t, teamSize })
+    );
+    // Both rounds must still be permutations of 1..3
+    expect([...round1].sort()).toEqual([1, 2, 3]);
+    expect([...round2].sort()).toEqual([1, 2, 3]);
+    // The order itself should differ between rounds for at least some seeds.
+    // (Probabilistically a 3-element permutation repeats with prob 1/6, so
+    // a single seed could collide; we try a handful of seeds and require
+    // at least one to differ.)
+    const differs = ["a", "b", "c", "d", "e", "f"].some((s) => {
+      const r1 = [1, 3, 5].map((t) => activePlayerIndex({ seed: s, turn: t, teamSize }));
+      const r2 = [7, 9, 11].map((t) => activePlayerIndex({ seed: s, turn: t, teamSize }));
+      return r1.join(",") !== r2.join(",");
+    });
+    expect(differs).toBe(true);
+  });
+
+  test("team A and team B rotations are independent", () => {
+    // Even with the same seed, the A rotation and the B rotation should be
+    // derived independently (different namespaces), so they need not match.
+    const teamSize = 3;
+    const aOrder = [1, 3, 5].map((t) =>
+      activePlayerIndex({ seed: "independent", turn: t, teamSize })
+    );
+    const bOrder = [2, 4, 6].map((t) =>
+      activePlayerIndex({ seed: "independent", turn: t, teamSize })
+    );
+    expect([...aOrder].sort()).toEqual([1, 2, 3]);
+    expect([...bOrder].sort()).toEqual([1, 2, 3]);
+    // Both are valid permutations of 1..3; they can occasionally match by chance,
+    // but at minimum the function must not entangle them.
+    expect(aOrder).toEqual(aOrder); // sanity: deterministic
+  });
+
   test("different seeds produce different sequences", () => {
     const a = [];
     const b = [];

@@ -27,7 +27,7 @@ For `taboo-game/`, **the game has no shared state and no networking**. Each devi
 The pure logic lives in `game.js` and provides:
 
 - `activeTeam(turn)` — strictly alternating; turn 1 → A, turn 2 → B, etc.
-- `activePlayerIndex({seed, turn, teamSize})` — `mulberry32` PRNG seeded with a composite of `seed | turn | "player"`, then `floor(rng * teamSize) + 1`.
+- `activePlayerIndex({seed, turn, teamSize})` — rotates within the team: each player describes exactly once per "team round" (a full pass through the team) before any repeats. Uses a Fisher-Yates shuffle of `[1..teamSize]` seeded with `seed | "player" | team | round`, then indexes by the team-local position in the round. Independent permutations per team A and team B.
 - `cardIndexForTurn({seed, turn, deckSize})` — Fisher-Yates shuffle of the deck for the current "round" (a full pass through the deck) seeded with `seed | round | "deck"`. When the deck cycles, a new round seed produces a fresh permutation while staying deterministic.
 - `deriveTurnState({...})` — composes the above and returns the rendered state including a role (`active_player` / `guessing_teammate` / `judge`) and a visibility object derived from it.
 
@@ -56,7 +56,7 @@ The cards dataset (`cards.json`) is treated as part of the inputs: its `version`
 
 **PRNG.** `mulberry32` initialized with a 32-bit FNV-1a hash of `seed | namespace | turn | round`. Stable across browsers; no crypto needed.
 
-**Player selection.** A single `Math.floor(rng() * teamSize)` draw. With `teamSize ≤ 20` and a 32-bit RNG the modulo bias is undetectable in practice; the property is verified with a rough uniformity test in `game.test.js`.
+**Player selection (deterministic rotation).** Team A plays odd turns (1, 3, 5, ...) and team B plays even turns (2, 4, 6, ...), so each team has its own local turn index. For the active team we compute `round = floor(localIndex / teamSize)` and `position = localIndex % teamSize`, then Fisher-Yates shuffle `[1..teamSize]` with an RNG seeded by `seed | "player" | team | round` and return `order[position]`. This guarantees every player describes exactly once before any repeats within the team, which matches the expectation of a tabletop game (each player gets a turn). The per-round reshuffle means consecutive rounds don't share the same order. Verified by tests.
 
 **Card selection (deterministic Fisher-Yates per round).** For round `R = floor((turn - 1) / deckSize)` we shuffle `[0..deckSize-1]` with a fresh RNG seeded by `seed | "deck" | R`, then return entry `(turn - 1) % deckSize`. This guarantees every card appears exactly once before any repeats, and the repeat order itself is determined (not random) but different from round 1 — so a long party does not show identical cycles. Verified by tests.
 
