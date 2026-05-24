@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0e0a1f" />
+  <title>Taboo · Juego Determinista</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Taboo</h1>
+    <p class="subtitle">Mismo seed, mismo turno, misma carta en todos los dispositivos. Sin servidor.</p>
+  </header>
+
+  <main>
+    <!-- ============ SETUP ============ -->
+    <section id="setup-screen" class="screen">
+      <h2>Configura la partida</h2>
+      <p class="hint">Todos los jugadores deben introducir <strong>el mismo seed</strong> y <strong>los mismos tamaños de equipo</strong>. Cada uno introduce su equipo y su número de jugador.</p>
+
+      <div class="control-group">
+        <label for="seed-input">Seed (compartido)</label>
+        <div class="row">
+          <input type="text" id="seed-input" placeholder="ej: fiesta-sara-2026" autocomplete="off" spellcheck="false" />
+          <button class="ghost" id="seed-random" type="button" title="Generar nuevo seed">↻</button>
+        </div>
+        <p class="micro">El mismo seed garantiza que todos los dispositivos vean exactamente la misma partida.</p>
+      </div>
+
+      <div class="row two-cols">
+        <div class="control-group">
+          <label for="team-a-size">Equipo A · jugadores</label>
+          <input type="number" id="team-a-size" min="1" max="20" value="3" />
+        </div>
+        <div class="control-group">
+          <label for="team-b-size">Equipo B · jugadores</label>
+          <input type="number" id="team-b-size" min="1" max="20" value="3" />
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Tu equipo</label>
+        <div class="team-toggle">
+          <label class="team-option">
+            <input type="radio" name="my-team" value="A" />
+            <span>Equipo A</span>
+          </label>
+          <label class="team-option">
+            <input type="radio" name="my-team" value="B" />
+            <span>Equipo B</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="my-player-index">Tu número de jugador</label>
+        <input type="number" id="my-player-index" min="1" value="1" />
+        <p class="micro">Numéralos del 1 al N. Cada miembro del equipo introduce un número distinto.</p>
+      </div>
+
+      <div class="control-group">
+        <label for="initial-turn">Turno inicial</label>
+        <input type="number" id="initial-turn" min="1" value="1" />
+        <p class="micro">Normalmente 1. Si te incorporas tarde, pon el número de turno actual.</p>
+      </div>
+
+      <div id="setup-error" class="error" aria-live="polite"></div>
+
+      <div class="row actions">
+        <button class="primary" id="start-btn" type="button">Empezar a jugar</button>
+        <button class="ghost" id="copy-setup-link" type="button" title="Copiar enlace con seed + tamaños de equipo">Copiar enlace de partida</button>
+      </div>
+      <p class="micro" id="copy-status" aria-live="polite"></p>
+
+      <details class="info-panel">
+        <summary>¿Cómo funciona?</summary>
+        <ul>
+          <li>El <strong>seed</strong> y el <strong>número de turno</strong> determinan completamente qué carta toca y quién es el jugador activo.</li>
+          <li>El <strong>jugador activo</strong> del equipo adivinador ve la palabra y las prohibidas. Lo describe sin usar ninguna palabra prohibida.</li>
+          <li>El resto del <strong>equipo adivinador</strong> NO mira la pantalla: solo escucha y adivina.</li>
+          <li>El <strong>equipo juez</strong> ve la carta entera y vigila que no se digan palabras prohibidas ni se acepte una respuesta equivocada.</li>
+          <li>Cuando acabe el turno, todos pulsáis <strong>siguiente turno</strong> a la vez. No hay sincronización automática.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- ============ GAME ============ -->
+    <section id="game-screen" class="screen" hidden>
+      <div class="turn-bar">
+        <button class="ghost" id="prev-turn-btn" type="button" title="Turno anterior" aria-label="Turno anterior">‹</button>
+        <div class="turn-info">
+          <div class="turn-label">Turno</div>
+          <div class="turn-number" id="turn-number">1</div>
+        </div>
+        <button class="primary" id="next-turn-btn" type="button" title="Siguiente turno">Siguiente ›</button>
+      </div>
+
+      <div class="status-line">
+        <div class="status-pill" id="guessing-team-pill">A adivina</div>
+        <div class="status-pill judge" id="judge-team-pill">B juzga</div>
+        <div class="status-pill active-player" id="active-player-pill">Jugador activo: A · 1</div>
+      </div>
+
+      <div id="role-banner" class="role-banner"></div>
+
+      <div id="card" class="card"></div>
+
+      <div class="game-actions">
+        <div class="jump-row">
+          <label for="jump-turn">Ir al turno</label>
+          <input type="number" id="jump-turn" min="1" value="1" />
+          <button class="ghost" id="jump-btn" type="button">Ir</button>
+        </div>
+        <button class="ghost" id="edit-setup-btn" type="button">Editar configuración</button>
+      </div>
+
+      <p class="micro center" id="dataset-info"></p>
+    </section>
+
+    <!-- ============ ERROR ============ -->
+    <section id="error-screen" class="screen" hidden>
+      <h2>No se pudo cargar el juego</h2>
+      <p id="error-detail" class="error"></p>
+      <p class="micro">Revisa la consola del navegador para más detalles.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Estado 100% derivable del seed + turno. <a href="../">← Más experimentos</a></p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
