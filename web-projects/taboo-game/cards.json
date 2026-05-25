@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.0.1",
   "language": "es",
   "cards": [
     {
@@ -220,16 +220,6 @@
         "Construir",
         "Cemento",
         "Andamio"
-      ]
-    },
-    {
-      "word": "Albert Einstein",
-      "forbidden": [
-        "Relatividad",
-        "Físico",
-        "Pelo",
-        "E=mc2",
-        "Alemán"
       ]
     },
     {
@@ -610,16 +600,6 @@
         "Carne",
         "Brasa",
         "Domingo"
-      ]
-    },
-    {
-      "word": "Asado argentino",
-      "forbidden": [
-        "Carne",
-        "Parrilla",
-        "Domingo",
-        "Chimichurri",
-        "Pampa"
       ]
     },
     {
@@ -1203,16 +1183,6 @@
       ]
     },
     {
-      "word": "Boda cuñada",
-      "forbidden": [
-        "Familia",
-        "Iglesia",
-        "Vestido",
-        "Banquete",
-        "Hermano"
-      ]
-    },
-    {
       "word": "Bolero",
       "forbidden": [
         "Romántico",
@@ -1750,16 +1720,6 @@
         "especialista",
         "infarto",
         "latido"
-      ]
-    },
-    {
-      "word": "Cargar borracho",
-      "forbidden": [
-        "Amigo",
-        "Casa",
-        "Hombro",
-        "Pedo",
-        "Llevar"
       ]
     },
     {
@@ -3183,16 +3143,6 @@
       ]
     },
     {
-      "word": "Egipto antiguo",
-      "forbidden": [
-        "faraón",
-        "pirámides",
-        "Nilo",
-        "momias",
-        "Cleopatra"
-      ]
-    },
-    {
       "word": "Egoísmo",
       "forbidden": [
         "mío",
@@ -3230,16 +3180,6 @@
         "Real",
         "Bernabéu",
         "Camp Nou"
-      ]
-    },
-    {
-      "word": "El Joker",
-      "forbidden": [
-        "Phoenix",
-        "escaleras",
-        "Batman",
-        "risa",
-        "maquillaje"
       ]
     },
     {
@@ -5610,16 +5550,6 @@
         "hermano",
         "Marvel",
         "tramposo"
-      ]
-    },
-    {
-      "word": "Los Beatles",
-      "forbidden": [
-        "Liverpool",
-        "Lennon",
-        "McCartney",
-        "paso",
-        "cuarteto"
       ]
     },
     {
