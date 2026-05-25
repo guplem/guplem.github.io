@@ -44,7 +44,7 @@ Si alguien llega tarde, basta con que ponga el número de turno y palabra actual
 
 ## Dataset de cartas
 
-`cards.json` contiene 1024 cartas en español, generadas por agentes IA, deduplicadas y filtradas para eliminar palabras con dos significados muy populares (p.ej. "Banco", "Medusa", "Gato"). El formato es:
+`cards.json` contiene 1165 cartas en español, generadas por agentes IA y deduplicadas (también filtrando subcadenas). Incluye una capa explícita de **contenido adulto polémico** (sexo, vicios, religión, política, vergüenzas) que es precisamente lo que da las risas a la mesa. El formato es:
 
 ```json
 {

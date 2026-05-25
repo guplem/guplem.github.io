@@ -1,5 +1,5 @@
 {
-  "version": "2.0.1",
+  "version": "2.1.0",
   "language": "es",
   "cards": [
     {
@@ -20,6 +20,16 @@
         "imágenes",
         "tóxico",
         "memes"
+      ]
+    },
+    {
+      "word": "Abascal",
+      "forbidden": [
+        "Vox",
+        "ultraderecha",
+        "barba",
+        "moto",
+        "Santiago"
       ]
     },
     {
@@ -153,6 +163,16 @@
       ]
     },
     {
+      "word": "Agnóstico",
+      "forbidden": [
+        "Dudar",
+        "Dios",
+        "Ateo",
+        "Creer",
+        "Existencia"
+      ]
+    },
+    {
       "word": "Agua",
       "forbidden": [
         "H2O",
@@ -160,6 +180,16 @@
         "líquido",
         "río",
         "mar"
+      ]
+    },
+    {
+      "word": "Agua bendita",
+      "forbidden": [
+        "Pila",
+        "Iglesia",
+        "Bautizo",
+        "Bendecir",
+        "Líquido"
       ]
     },
     {
@@ -283,6 +313,16 @@
       ]
     },
     {
+      "word": "Alopecia",
+      "forbidden": [
+        "Pelo",
+        "Caer",
+        "Calvo",
+        "Cabeza",
+        "Hormonas"
+      ]
+    },
+    {
       "word": "Alzheimer",
       "forbidden": [
         "Memoria",
@@ -290,6 +330,16 @@
         "Viejo",
         "Cerebro",
         "Demencia"
+      ]
+    },
+    {
+      "word": "Amante",
+      "forbidden": [
+        "Pareja",
+        "Esconder",
+        "Hotel",
+        "Engaño",
+        "Secreto"
       ]
     },
     {
@@ -433,6 +483,16 @@
       ]
     },
     {
+      "word": "Antivacunas",
+      "forbidden": [
+        "pinchazo",
+        "covid",
+        "negacionista",
+        "movimiento",
+        "salud"
+      ]
+    },
+    {
       "word": "Anubis",
       "forbidden": [
         "egipcio",
@@ -450,6 +510,16 @@
         "Rojo",
         "Animal",
         "Linterna"
+      ]
+    },
+    {
+      "word": "Apagón mental",
+      "forbidden": [
+        "Beber",
+        "No recordar",
+        "Memoria",
+        "Borrachera",
+        "Laguna"
       ]
     },
     {
@@ -663,6 +733,26 @@
       ]
     },
     {
+      "word": "Atasco del váter",
+      "forbidden": [
+        "taza",
+        "fontanero",
+        "desatascador",
+        "cagar",
+        "agua"
+      ]
+    },
+    {
+      "word": "Ataúd",
+      "forbidden": [
+        "Caja",
+        "Muerto",
+        "Madera",
+        "Enterrar",
+        "Cadáver"
+      ]
+    },
+    {
       "word": "Atenea",
       "forbidden": [
         "sabiduría",
@@ -670,6 +760,16 @@
         "Atenas",
         "guerra",
         "lechuza"
+      ]
+    },
+    {
+      "word": "Ateo",
+      "forbidden": [
+        "Dios",
+        "Creer",
+        "Religión",
+        "Negar",
+        "Existencia"
       ]
     },
     {
@@ -690,6 +790,16 @@
         "electrón",
         "materia",
         "pequeño"
+      ]
+    },
+    {
+      "word": "Audífono",
+      "forbidden": [
+        "Oír",
+        "Oreja",
+        "Sordo",
+        "Pila",
+        "Pitido"
       ]
     },
     {
@@ -740,6 +850,26 @@
         "regenerar",
         "rosa",
         "anfibio"
+      ]
+    },
+    {
+      "word": "Ayuso",
+      "forbidden": [
+        "Madrid",
+        "presidenta",
+        "novio",
+        "cañas",
+        "libertad"
+      ]
+    },
+    {
+      "word": "Baba",
+      "forbidden": [
+        "boca",
+        "saliva",
+        "bebé",
+        "almohada",
+        "caer"
       ]
     },
     {
@@ -1023,6 +1153,16 @@
       ]
     },
     {
+      "word": "Berlusconi",
+      "forbidden": [
+        "Italia",
+        "bunga",
+        "Milan",
+        "primer ministro",
+        "fiestas"
+      ]
+    },
+    {
       "word": "Bermudas",
       "forbidden": [
         "triangulo",
@@ -1030,6 +1170,16 @@
         "desaparicion",
         "mar",
         "avion"
+      ]
+    },
+    {
+      "word": "Beso negro",
+      "forbidden": [
+        "Culo",
+        "Lengua",
+        "Ano",
+        "Color",
+        "Boca"
       ]
     },
     {
@@ -1093,6 +1243,26 @@
       ]
     },
     {
+      "word": "Bin Laden",
+      "forbidden": [
+        "Osama",
+        "Al Qaeda",
+        "11-S",
+        "terrorista",
+        "cueva"
+      ]
+    },
+    {
+      "word": "Bingo",
+      "forbidden": [
+        "Número",
+        "Cartón",
+        "Línea",
+        "Abuelas",
+        "Cantar"
+      ]
+    },
+    {
       "word": "Biquini",
       "forbidden": [
         "Playa",
@@ -1130,6 +1300,16 @@
         "distopía",
         "tecnología",
         "capítulos"
+      ]
+    },
+    {
+      "word": "Blasfemia",
+      "forbidden": [
+        "Insulto",
+        "Dios",
+        "Sagrado",
+        "Ofensa",
+        "Maldecir"
       ]
     },
     {
@@ -1200,6 +1380,16 @@
         "Cuero",
         "Llevar",
         "Mano"
+      ]
+    },
+    {
+      "word": "Bolsonaro",
+      "forbidden": [
+        "Brasil",
+        "presidente",
+        "ultraderecha",
+        "Lula",
+        "Amazonas"
       ]
     },
     {
@@ -1343,6 +1533,16 @@
       ]
     },
     {
+      "word": "Brujería",
+      "forbidden": [
+        "Bruja",
+        "Hechizo",
+        "Magia",
+        "Conjuro",
+        "Caldero"
+      ]
+    },
+    {
       "word": "Buddha",
       "forbidden": [
         "budismo",
@@ -1433,6 +1633,16 @@
       ]
     },
     {
+      "word": "Cachimba",
+      "forbidden": [
+        "Shisha",
+        "Manguera",
+        "Carbón",
+        "Humo",
+        "Tabaco"
+      ]
+    },
+    {
       "word": "Café",
       "forbidden": [
         "Cafeína",
@@ -1503,6 +1713,16 @@
       ]
     },
     {
+      "word": "Calentar y no dar",
+      "forbidden": [
+        "Excitar",
+        "Provocar",
+        "Negar",
+        "Sexo",
+        "Cabrear"
+      ]
+    },
+    {
       "word": "Calentón",
       "forbidden": [
         "Cachondo",
@@ -1520,6 +1740,26 @@
         "Mezcla",
         "Joven",
         "Botellón"
+      ]
+    },
+    {
+      "word": "Callos",
+      "forbidden": [
+        "pie",
+        "piedra pómez",
+        "dura",
+        "andar",
+        "tripa"
+      ]
+    },
+    {
+      "word": "Calvicie",
+      "forbidden": [
+        "Pelo",
+        "Cabeza",
+        "Cuero cabelludo",
+        "Caer",
+        "Minoxidil"
       ]
     },
     {
@@ -1580,6 +1820,16 @@
         "Asia",
         "país",
         "selva"
+      ]
+    },
+    {
+      "word": "Camello",
+      "forbidden": [
+        "Vender",
+        "Trapichear",
+        "Cliente",
+        "Bolsa",
+        "Esquina"
       ]
     },
     {
@@ -1670,6 +1920,16 @@
         "Bigotito",
         "Hablar mucho",
         "Cine"
+      ]
+    },
+    {
+      "word": "Canuto",
+      "forbidden": [
+        "Porro",
+        "Marihuana",
+        "Fumar",
+        "Liar",
+        "Hierba"
       ]
     },
     {
@@ -1803,6 +2063,36 @@
       ]
     },
     {
+      "word": "Casino online",
+      "forbidden": [
+        "Apostar",
+        "Ruleta",
+        "Internet",
+        "Dinero",
+        "Anuncio"
+      ]
+    },
+    {
+      "word": "Caso Bárcenas",
+      "forbidden": [
+        "PP",
+        "sobres",
+        "contabilidad",
+        "tesorero",
+        "corrupción"
+      ]
+    },
+    {
+      "word": "Caspa",
+      "forbidden": [
+        "pelo",
+        "hombros",
+        "champú",
+        "blanco",
+        "cuero cabelludo"
+      ]
+    },
+    {
       "word": "Castañuelas",
       "forbidden": [
         "Flamenco",
@@ -1853,6 +2143,16 @@
       ]
     },
     {
+      "word": "Celulitis",
+      "forbidden": [
+        "Piel",
+        "Muslo",
+        "Naranja",
+        "Hoyos",
+        "Grasa"
+      ]
+    },
+    {
       "word": "Centauro",
       "forbidden": [
         "mitad",
@@ -1870,6 +2170,16 @@
         "Cerdas",
         "Lavar",
         "Caries"
+      ]
+    },
+    {
+      "word": "Cera de oídos",
+      "forbidden": [
+        "oreja",
+        "bastoncillo",
+        "amarillo",
+        "limpiar",
+        "cerumen"
       ]
     },
     {
@@ -2023,6 +2333,16 @@
       ]
     },
     {
+      "word": "Chupitazo",
+      "forbidden": [
+        "Trago",
+        "Vaso pequeño",
+        "Tequila",
+        "De golpe",
+        "Brindar"
+      ]
+    },
+    {
       "word": "Chupito",
       "forbidden": [
         "Vaso",
@@ -2100,6 +2420,16 @@
         "Áspid",
         "Marco Antonio",
         "Nilo"
+      ]
+    },
+    {
+      "word": "Clítoris",
+      "forbidden": [
+        "Vagina",
+        "Botón",
+        "Placer",
+        "Mujer",
+        "Orgasmo"
       ]
     },
     {
@@ -2243,6 +2573,16 @@
       ]
     },
     {
+      "word": "Colonoscopia",
+      "forbidden": [
+        "Culo",
+        "Cámara",
+        "Intestino",
+        "Tubo",
+        "Médico"
+      ]
+    },
+    {
       "word": "Coma etílico",
       "forbidden": [
         "Borracho",
@@ -2333,6 +2673,16 @@
       ]
     },
     {
+      "word": "Confesión",
+      "forbidden": [
+        "Cura",
+        "Pecados",
+        "Contar",
+        "Iglesia",
+        "Perdón"
+      ]
+    },
+    {
       "word": "Coño",
       "forbidden": [
         "Vagina",
@@ -2403,6 +2753,16 @@
       ]
     },
     {
+      "word": "Cornudo",
+      "forbidden": [
+        "Cuernos",
+        "Engañado",
+        "Pareja",
+        "Infiel",
+        "Cabeza"
+      ]
+    },
+    {
       "word": "Cortauñas",
       "forbidden": [
         "Uña",
@@ -2440,6 +2800,26 @@
         "Espiar",
         "Secreto",
         "Chisme"
+      ]
+    },
+    {
+      "word": "Crack",
+      "forbidden": [
+        "Piedra",
+        "Fumar",
+        "Cocaína",
+        "Adicto",
+        "Pipa"
+      ]
+    },
+    {
+      "word": "Cremación",
+      "forbidden": [
+        "Quemar",
+        "Cenizas",
+        "Cuerpo",
+        "Horno",
+        "Difunto"
       ]
     },
     {
@@ -2573,6 +2953,16 @@
       ]
     },
     {
+      "word": "Crush",
+      "forbidden": [
+        "Enamorado",
+        "Gustar",
+        "Flechazo",
+        "Secreto",
+        "Persona"
+      ]
+    },
+    {
       "word": "Cruzadas",
       "forbidden": [
         "Jerusalén",
@@ -2580,6 +2970,16 @@
         "musulmanes",
         "Tierra Santa",
         "templarios"
+      ]
+    },
+    {
+      "word": "Cubalibre",
+      "forbidden": [
+        "Ron",
+        "Coca-Cola",
+        "Hielo",
+        "Lima",
+        "Vaso"
       ]
     },
     {
@@ -2683,6 +3083,16 @@
       ]
     },
     {
+      "word": "Cura",
+      "forbidden": [
+        "Iglesia",
+        "Sotana",
+        "Misa",
+        "Párroco",
+        "Sacerdote"
+      ]
+    },
+    {
       "word": "Curiosidad",
       "forbidden": [
         "gato",
@@ -2700,6 +3110,16 @@
         "Piedra",
         "Barrer",
         "Olímpico"
+      ]
+    },
+    {
+      "word": "Custodia compartida",
+      "forbidden": [
+        "Hijos",
+        "Padres",
+        "Divorcio",
+        "Semanas",
+        "Juez"
       ]
     },
     {
@@ -2773,6 +3193,36 @@
       ]
     },
     {
+      "word": "Demencia senil",
+      "forbidden": [
+        "Viejo",
+        "Olvidar",
+        "Memoria",
+        "Cabeza",
+        "Abuelo"
+      ]
+    },
+    {
+      "word": "Demonio",
+      "forbidden": [
+        "Diablo",
+        "Infierno",
+        "Maligno",
+        "Cuernos",
+        "Satán"
+      ]
+    },
+    {
+      "word": "Dentadura postiza",
+      "forbidden": [
+        "Dientes",
+        "Boca",
+        "Vaso",
+        "Abuelo",
+        "Quitar"
+      ]
+    },
+    {
       "word": "Dentista",
       "forbidden": [
         "Dientes",
@@ -2813,6 +3263,16 @@
       ]
     },
     {
+      "word": "Despecho",
+      "forbidden": [
+        "Ex",
+        "Rabia",
+        "Ruptura",
+        "Canción",
+        "Olvidar"
+      ]
+    },
+    {
       "word": "Despedida Soltero",
       "forbidden": [
         "Boda",
@@ -2820,6 +3280,16 @@
         "Stripper",
         "Borrachera",
         "Fiesta"
+      ]
+    },
+    {
+      "word": "Despelote",
+      "forbidden": [
+        "Fiesta",
+        "Caos",
+        "Descontrol",
+        "Locura",
+        "Alocado"
       ]
     },
     {
@@ -2880,6 +3350,16 @@
         "sangre",
         "enfermedad",
         "páncreas"
+      ]
+    },
+    {
+      "word": "Diarrea",
+      "forbidden": [
+        "cagar",
+        "líquido",
+        "váter",
+        "tripa",
+        "carrera"
       ]
     },
     {
@@ -3060,6 +3540,16 @@
         "cámara",
         "mando",
         "aéreo"
+      ]
+    },
+    {
+      "word": "Drunk text",
+      "forbidden": [
+        "Borracho",
+        "Mensaje",
+        "Ex",
+        "Madrugada",
+        "Arrepentir"
       ]
     },
     {
@@ -3273,6 +3763,16 @@
       ]
     },
     {
+      "word": "Embargo",
+      "forbidden": [
+        "Deuda",
+        "Banco",
+        "Casa",
+        "Pegatina",
+        "Quitar"
+      ]
+    },
+    {
       "word": "Emoji",
       "forbidden": [
         "icono",
@@ -3310,6 +3810,16 @@
         "Ponerse",
         "Zapatos",
         "Comprender"
+      ]
+    },
+    {
+      "word": "Empotrar",
+      "forbidden": [
+        "Pared",
+        "Sexo",
+        "Fuerte",
+        "Acostarse",
+        "Cama"
       ]
     },
     {
@@ -3413,6 +3923,16 @@
       ]
     },
     {
+      "word": "Escupir",
+      "forbidden": [
+        "saliva",
+        "boca",
+        "suelo",
+        "futbolista",
+        "lanzar"
+      ]
+    },
+    {
       "word": "Esfinge",
       "forbidden": [
         "acertijo",
@@ -3443,6 +3963,16 @@
       ]
     },
     {
+      "word": "Esnifar",
+      "forbidden": [
+        "Nariz",
+        "Raya",
+        "Polvo",
+        "Aspirar",
+        "Coca"
+      ]
+    },
+    {
       "word": "Espejo",
       "forbidden": [
         "Reflejo",
@@ -3470,6 +4000,16 @@
         "Bond",
         "Agente",
         "Encubierto"
+      ]
+    },
+    {
+      "word": "Esquela",
+      "forbidden": [
+        "Muerto",
+        "Periódico",
+        "Aviso",
+        "Difunto",
+        "Familia"
       ]
     },
     {
@@ -3553,6 +4093,16 @@
       ]
     },
     {
+      "word": "Estreñimiento",
+      "forbidden": [
+        "cagar",
+        "atasco",
+        "fibra",
+        "días",
+        "barriga"
+      ]
+    },
+    {
       "word": "Euforia",
       "forbidden": [
         "alegría",
@@ -3633,6 +4183,16 @@
       ]
     },
     {
+      "word": "Éxtasis",
+      "forbidden": [
+        "Pastilla",
+        "MDMA",
+        "Discoteca",
+        "Tragar",
+        "Subidón"
+      ]
+    },
+    {
       "word": "Facebook",
       "forbidden": [
         "Zuckerberg",
@@ -3640,6 +4200,26 @@
         "amigos",
         "red social",
         "azul"
+      ]
+    },
+    {
+      "word": "Facha",
+      "forbidden": [
+        "derecha",
+        "fascista",
+        "insulto",
+        "ultra",
+        "Vox"
+      ]
+    },
+    {
+      "word": "Falange",
+      "forbidden": [
+        "José Antonio",
+        "azul",
+        "yugo",
+        "flechas",
+        "fascista"
       ]
     },
     {
@@ -3723,6 +4303,16 @@
       ]
     },
     {
+      "word": "Filtro",
+      "forbidden": [
+        "Porro",
+        "Boquilla",
+        "Cartón",
+        "Liar",
+        "Punta"
+      ]
+    },
+    {
       "word": "Fiordos noruegos",
       "forbidden": [
         "Noruega",
@@ -3760,6 +4350,16 @@
         "Francia",
         "Untar",
         "Caro"
+      ]
+    },
+    {
+      "word": "Folladera",
+      "forbidden": [
+        "Sexo",
+        "Mucha",
+        "Fiesta",
+        "Orgía",
+        "Acostarse"
       ]
     },
     {
@@ -3853,6 +4453,16 @@
       ]
     },
     {
+      "word": "Franquismo",
+      "forbidden": [
+        "Franco",
+        "dictadura",
+        "España",
+        "régimen",
+        "Caudillo"
+      ]
+    },
+    {
       "word": "Freddie Mercury",
       "forbidden": [
         "Queen",
@@ -3903,6 +4513,16 @@
       ]
     },
     {
+      "word": "Friendzone",
+      "forbidden": [
+        "Amigo",
+        "Zona",
+        "Rechazo",
+        "Inglés",
+        "Pareja"
+      ]
+    },
+    {
       "word": "Frodo",
       "forbidden": [
         "Hobbit",
@@ -3910,6 +4530,16 @@
         "Pies",
         "Mordor",
         "Sam"
+      ]
+    },
+    {
+      "word": "Fumeta",
+      "forbidden": [
+        "Porro",
+        "Marihuana",
+        "Colocado",
+        "Ojos rojos",
+        "Habitual"
       ]
     },
     {
@@ -4053,6 +4683,16 @@
       ]
     },
     {
+      "word": "Gatillazo",
+      "forbidden": [
+        "Erección",
+        "Fallar",
+        "Cama",
+        "Vergüenza",
+        "Pene"
+      ]
+    },
+    {
       "word": "Gato negro",
       "forbidden": [
         "suerte",
@@ -4110,6 +4750,16 @@
         "Contestar",
         "Cita",
         "Fantasma"
+      ]
+    },
+    {
+      "word": "Gibraltar",
+      "forbidden": [
+        "peñón",
+        "monos",
+        "británico",
+        "España",
+        "estrecho"
       ]
     },
     {
@@ -4303,6 +4953,16 @@
       ]
     },
     {
+      "word": "Granos",
+      "forbidden": [
+        "cara",
+        "espinilla",
+        "acné",
+        "reventar",
+        "adolescente"
+      ]
+    },
+    {
       "word": "Gratitud",
       "forbidden": [
         "gracias",
@@ -4410,6 +5070,16 @@
         "comida",
         "exceso",
         "atracón"
+      ]
+    },
+    {
+      "word": "Gurú",
+      "forbidden": [
+        "Maestro",
+        "Espiritual",
+        "Seguidores",
+        "India",
+        "Sabio"
       ]
     },
     {
@@ -4563,6 +5233,16 @@
       ]
     },
     {
+      "word": "Herencia",
+      "forbidden": [
+        "Muerto",
+        "Dinero",
+        "Familia",
+        "Heredar",
+        "Testamento"
+      ]
+    },
+    {
       "word": "Hernán Cortés",
       "forbidden": [
         "México",
@@ -4570,6 +5250,16 @@
         "Moctezuma",
         "Aztecas",
         "Tenochtitlán"
+      ]
+    },
+    {
+      "word": "Herpes",
+      "forbidden": [
+        "Labio",
+        "Ampolla",
+        "Contagio",
+        "Picor",
+        "Genital"
       ]
     },
     {
@@ -4633,6 +5323,16 @@
       ]
     },
     {
+      "word": "Hipo",
+      "forbidden": [
+        "susto",
+        "agua",
+        "diafragma",
+        "ruido",
+        "borracho"
+      ]
+    },
+    {
       "word": "Hipocresía",
       "forbidden": [
         "Falso",
@@ -4650,6 +5350,16 @@
         "gordo",
         "boca",
         "agua"
+      ]
+    },
+    {
+      "word": "Hipoteca",
+      "forbidden": [
+        "Casa",
+        "Banco",
+        "Préstamo",
+        "Años",
+        "Pagar"
       ]
     },
     {
@@ -4713,6 +5423,26 @@
       ]
     },
     {
+      "word": "Hongos",
+      "forbidden": [
+        "Setas",
+        "Alucinar",
+        "Psicodélico",
+        "Viaje",
+        "Comer"
+      ]
+    },
+    {
+      "word": "Hongos en los pies",
+      "forbidden": [
+        "uña",
+        "vestuario",
+        "picor",
+        "piscina",
+        "olor"
+      ]
+    },
+    {
       "word": "Hooliganismo",
       "forbidden": [
         "Ultras",
@@ -4763,6 +5493,16 @@
       ]
     },
     {
+      "word": "Hostia consagrada",
+      "forbidden": [
+        "Comunión",
+        "Pan",
+        "Cuerpo",
+        "Misa",
+        "Cristo"
+      ]
+    },
+    {
       "word": "Hot dog",
       "forbidden": [
         "Salchicha",
@@ -4770,6 +5510,16 @@
         "Mostaza",
         "Perro",
         "EEUU"
+      ]
+    },
+    {
+      "word": "Hugo Chávez",
+      "forbidden": [
+        "Venezuela",
+        "bolivariano",
+        "petróleo",
+        "Maduro",
+        "boina"
       ]
     },
     {
@@ -4883,6 +5633,16 @@
       ]
     },
     {
+      "word": "Independentismo",
+      "forbidden": [
+        "Cataluña",
+        "separar",
+        "bandera",
+        "República",
+        "estelada"
+      ]
+    },
+    {
       "word": "Indiana Jones",
       "forbidden": [
         "Sombrero",
@@ -4980,6 +5740,16 @@
         "smartphone",
         "manzana",
         "Steve Jobs"
+      ]
+    },
+    {
+      "word": "Ir pedo",
+      "forbidden": [
+        "Borracho",
+        "Alcohol",
+        "Tambaleando",
+        "Beber",
+        "Mareado"
       ]
     },
     {
@@ -5143,6 +5913,16 @@
       ]
     },
     {
+      "word": "Juanetes",
+      "forbidden": [
+        "pie",
+        "dedo gordo",
+        "abuela",
+        "zapato",
+        "bulto"
+      ]
+    },
+    {
       "word": "Juego de Tronos",
       "forbidden": [
         "dragon",
@@ -5200,6 +5980,16 @@
         "País Vasco",
         "Tinto",
         "Botellón"
+      ]
+    },
+    {
+      "word": "Kamasutra",
+      "forbidden": [
+        "Posturas",
+        "Libro",
+        "India",
+        "Sexo",
+        "Cama"
       ]
     },
     {
@@ -5313,6 +6103,16 @@
       ]
     },
     {
+      "word": "Krishna",
+      "forbidden": [
+        "Hindú",
+        "Azul",
+        "Dios",
+        "India",
+        "Hare"
+      ]
+    },
+    {
       "word": "La Casa de Papel",
       "forbidden": [
         "atraco",
@@ -5343,6 +6143,16 @@
       ]
     },
     {
+      "word": "Ladillas",
+      "forbidden": [
+        "Pubis",
+        "Bicho",
+        "Picor",
+        "Sexo",
+        "Vello"
+      ]
+    },
+    {
       "word": "Lady Di",
       "forbidden": [
         "princesa",
@@ -5363,6 +6173,16 @@
       ]
     },
     {
+      "word": "Lagañas",
+      "forbidden": [
+        "ojos",
+        "dormir",
+        "mañana",
+        "amarillo",
+        "limpiar"
+      ]
+    },
+    {
       "word": "Lance Armstrong",
       "forbidden": [
         "Tour",
@@ -5370,6 +6190,16 @@
         "EPO",
         "Cáncer",
         "Bicicleta"
+      ]
+    },
+    {
+      "word": "Lápida",
+      "forbidden": [
+        "Tumba",
+        "Piedra",
+        "Nombre",
+        "Cementerio",
+        "Muerto"
       ]
     },
     {
@@ -5423,6 +6253,16 @@
       ]
     },
     {
+      "word": "Laxante",
+      "forbidden": [
+        "cagar",
+        "estreñido",
+        "pastilla",
+        "fibra",
+        "ciruela"
+      ]
+    },
+    {
       "word": "Lealtad",
       "forbidden": [
         "fiel",
@@ -5443,6 +6283,16 @@
       ]
     },
     {
+      "word": "Lefa",
+      "forbidden": [
+        "Semen",
+        "Hombre",
+        "Eyaculación",
+        "Blanco",
+        "Pene"
+      ]
+    },
+    {
       "word": "Leonardo da Vinci",
       "forbidden": [
         "Pintor",
@@ -5450,6 +6300,16 @@
         "Italiano",
         "Inventor",
         "Renacimiento"
+      ]
+    },
+    {
+      "word": "Liarse",
+      "forbidden": [
+        "Besar",
+        "Discoteca",
+        "Morrear",
+        "Rollo",
+        "Boca"
       ]
     },
     {
@@ -5490,6 +6350,16 @@
         "Casa",
         "Cerradura",
         "Bolsillo"
+      ]
+    },
+    {
+      "word": "Llegar a fin de mes",
+      "forbidden": [
+        "Dinero",
+        "Sueldo",
+        "Pagar",
+        "Cuenta",
+        "Mes"
       ]
     },
     {
@@ -5553,6 +6423,16 @@
       ]
     },
     {
+      "word": "Lombrices",
+      "forbidden": [
+        "culo",
+        "niños",
+        "intestino",
+        "picor",
+        "gusanos"
+      ]
+    },
+    {
       "word": "Los Simpson",
       "forbidden": [
         "amarillos",
@@ -5590,6 +6470,16 @@
         "Gel",
         "Húmedo",
         "Penetración"
+      ]
+    },
+    {
+      "word": "Ludopatía",
+      "forbidden": [
+        "Apostar",
+        "Casino",
+        "Adicción",
+        "Dinero",
+        "Tragaperras"
       ]
     },
     {
@@ -5713,6 +6603,16 @@
       ]
     },
     {
+      "word": "Mal aliento",
+      "forbidden": [
+        "boca",
+        "halitosis",
+        "ajo",
+        "cepillarse",
+        "olor"
+      ]
+    },
+    {
       "word": "Maldivas",
       "forbidden": [
         "islas",
@@ -5733,6 +6633,16 @@
       ]
     },
     {
+      "word": "Malvinas",
+      "forbidden": [
+        "Argentina",
+        "islas",
+        "guerra",
+        "Reino Unido",
+        "Falkland"
+      ]
+    },
+    {
       "word": "Mamada",
       "forbidden": [
         "Boca",
@@ -5750,6 +6660,16 @@
         "Payaso",
         "Ropa",
         "Pintas"
+      ]
+    },
+    {
+      "word": "Mamografía",
+      "forbidden": [
+        "Pecho",
+        "Aplastar",
+        "Cáncer",
+        "Mujer",
+        "Placa"
       ]
     },
     {
@@ -6013,6 +6933,16 @@
       ]
     },
     {
+      "word": "Match",
+      "forbidden": [
+        "Tinder",
+        "App",
+        "Coincidencia",
+        "Like",
+        "Pareja"
+      ]
+    },
+    {
       "word": "Matrix",
       "forbidden": [
         "pastilla",
@@ -6253,6 +7183,16 @@
       ]
     },
     {
+      "word": "Milei",
+      "forbidden": [
+        "Argentina",
+        "motosierra",
+        "libertario",
+        "pelo",
+        "casta"
+      ]
+    },
+    {
       "word": "MILF",
       "forbidden": [
         "Madre",
@@ -6283,6 +7223,16 @@
       ]
     },
     {
+      "word": "Misa de gallo",
+      "forbidden": [
+        "Navidad",
+        "Noche",
+        "Iglesia",
+        "Diciembre",
+        "Veinticuatro"
+      ]
+    },
+    {
       "word": "Mitocondria",
       "forbidden": [
         "Célula",
@@ -6310,6 +7260,26 @@
         "Sin cordones",
         "Plano",
         "Pijo"
+      ]
+    },
+    {
+      "word": "Mocos",
+      "forbidden": [
+        "nariz",
+        "verde",
+        "sonarse",
+        "pañuelo",
+        "resfriado"
+      ]
+    },
+    {
+      "word": "Mojarse",
+      "forbidden": [
+        "Excitarse",
+        "Mujer",
+        "Líquido",
+        "Calentón",
+        "Sexo"
       ]
     },
     {
@@ -6350,6 +7320,26 @@
         "ricos",
         "principado",
         "Grimaldi"
+      ]
+    },
+    {
+      "word": "Monja",
+      "forbidden": [
+        "Convento",
+        "Hábito",
+        "Religiosa",
+        "Iglesia",
+        "Virgen"
+      ]
+    },
+    {
+      "word": "Mono",
+      "forbidden": [
+        "Abstinencia",
+        "Dejar",
+        "Ansias",
+        "Sudores",
+        "Adicto"
       ]
     },
     {
@@ -6583,6 +7573,16 @@
       ]
     },
     {
+      "word": "Nudes",
+      "forbidden": [
+        "Fotos",
+        "Desnudo",
+        "Whatsapp",
+        "Enviar",
+        "Móvil"
+      ]
+    },
+    {
       "word": "Nutella",
       "forbidden": [
         "Chocolate",
@@ -6680,6 +7680,16 @@
         "Escriva",
         "secta",
         "Espana"
+      ]
+    },
+    {
+      "word": "Orgasmo",
+      "forbidden": [
+        "Placer",
+        "Correrse",
+        "Cima",
+        "Sexo",
+        "Gemido"
       ]
     },
     {
@@ -6853,6 +7863,16 @@
       ]
     },
     {
+      "word": "Pajearse",
+      "forbidden": [
+        "Masturbar",
+        "Solo",
+        "Mano",
+        "Pene",
+        "Placer"
+      ]
+    },
+    {
       "word": "Pan",
       "forbidden": [
         "Harina",
@@ -6900,6 +7920,56 @@
         "hormigas",
         "covid",
         "Asia"
+      ]
+    },
+    {
+      "word": "Panza cervecera",
+      "forbidden": [
+        "Barriga",
+        "Cerveza",
+        "Hombre",
+        "Tripa",
+        "Gordo"
+      ]
+    },
+    {
+      "word": "Papada",
+      "forbidden": [
+        "Barbilla",
+        "Cuello",
+        "Grasa",
+        "Doble",
+        "Cara"
+      ]
+    },
+    {
+      "word": "Papel de fumar",
+      "forbidden": [
+        "Liar",
+        "Porro",
+        "Tabaco",
+        "Hoja",
+        "Pegamento"
+      ]
+    },
+    {
+      "word": "Papel higiénico",
+      "forbidden": [
+        "váter",
+        "culo",
+        "rollo",
+        "limpiar",
+        "baño"
+      ]
+    },
+    {
+      "word": "Papeles de Panamá",
+      "forbidden": [
+        "paraíso",
+        "fiscal",
+        "ricos",
+        "filtración",
+        "evasión"
       ]
     },
     {
@@ -7083,6 +8153,16 @@
       ]
     },
     {
+      "word": "Pedro Sánchez",
+      "forbidden": [
+        "PSOE",
+        "presidente",
+        "Moncloa",
+        "guapo",
+        "Begoña"
+      ]
+    },
+    {
       "word": "Pegaso",
       "forbidden": [
         "caballo",
@@ -7110,6 +8190,16 @@
         "Asco",
         "Plato",
         "Cabello"
+      ]
+    },
+    {
+      "word": "Peluca",
+      "forbidden": [
+        "Pelo",
+        "Cabeza",
+        "Cubrir",
+        "Falso",
+        "Postizo"
       ]
     },
     {
@@ -7143,6 +8233,16 @@
       ]
     },
     {
+      "word": "Pene",
+      "forbidden": [
+        "Polla",
+        "Hombre",
+        "Miembro",
+        "Erección",
+        "Genital"
+      ]
+    },
+    {
       "word": "Penélope Cruz",
       "forbidden": [
         "Actriz",
@@ -7150,6 +8250,16 @@
         "Oscar",
         "Bardem",
         "Madrid"
+      ]
+    },
+    {
+      "word": "Pensión alimenticia",
+      "forbidden": [
+        "Pagar",
+        "Hijos",
+        "Divorcio",
+        "Mes",
+        "Juez"
       ]
     },
     {
@@ -7223,6 +8333,16 @@
       ]
     },
     {
+      "word": "Perroflauta",
+      "forbidden": [
+        "hippie",
+        "rastas",
+        "okupa",
+        "plaza",
+        "izquierda"
+      ]
+    },
+    {
       "word": "Pescador",
       "forbidden": [
         "Mar",
@@ -7270,6 +8390,16 @@
         "Blancas",
         "Cola",
         "Tocar"
+      ]
+    },
+    {
+      "word": "Picar",
+      "forbidden": [
+        "Polvo",
+        "Cortar",
+        "Tarjeta",
+        "Mesa",
+        "Raya"
       ]
     },
     {
@@ -7323,6 +8453,16 @@
       ]
     },
     {
+      "word": "Pillarse",
+      "forbidden": [
+        "Enamorarse",
+        "Crush",
+        "Sentimientos",
+        "Persona",
+        "Colado"
+      ]
+    },
+    {
       "word": "Pingüino",
       "forbidden": [
         "Antártida",
@@ -7370,6 +8510,16 @@
         "Cumpleaños",
         "Romper",
         "Ojos vendados"
+      ]
+    },
+    {
+      "word": "Piojos",
+      "forbidden": [
+        "pelo",
+        "colegio",
+        "liendre",
+        "cabeza",
+        "rascarse"
       ]
     },
     {
@@ -7443,6 +8593,16 @@
       ]
     },
     {
+      "word": "Podemos",
+      "forbidden": [
+        "Iglesias",
+        "morado",
+        "coleta",
+        "izquierda",
+        "Galapagar"
+      ]
+    },
+    {
       "word": "Pokemon",
       "forbidden": [
         "Pikachu",
@@ -7470,6 +8630,16 @@
         "Corrupto",
         "Partido",
         "Mentir"
+      ]
+    },
+    {
+      "word": "Polvo",
+      "forbidden": [
+        "Sexo",
+        "Acostarse",
+        "Echar",
+        "Cama",
+        "Rápido"
       ]
     },
     {
@@ -7510,6 +8680,16 @@
         "océano",
         "dios",
         "Neptuno"
+      ]
+    },
+    {
+      "word": "Posicion 69",
+      "forbidden": [
+        "Postura",
+        "Número",
+        "Sexo oral",
+        "Mutuo",
+        "Boca"
       ]
     },
     {
@@ -7580,6 +8760,16 @@
         "Raza",
         "Sociedad",
         "Piel"
+      ]
+    },
+    {
+      "word": "Procés",
+      "forbidden": [
+        "Cataluña",
+        "independencia",
+        "Puigdemont",
+        "referéndum",
+        "1-O"
       ]
     },
     {
@@ -7663,6 +8853,16 @@
       ]
     },
     {
+      "word": "Puigdemont",
+      "forbidden": [
+        "Cataluña",
+        "Bélgica",
+        "fugado",
+        "Junts",
+        "expresident"
+      ]
+    },
+    {
       "word": "Pulmón",
       "forbidden": [
         "respirar",
@@ -7713,6 +8913,26 @@
       ]
     },
     {
+      "word": "Punto G",
+      "forbidden": [
+        "Vagina",
+        "Placer",
+        "Letra",
+        "Orgasmo",
+        "Mujer"
+      ]
+    },
+    {
+      "word": "Purgatorio",
+      "forbidden": [
+        "Cielo",
+        "Infierno",
+        "Alma",
+        "Esperar",
+        "Pecado"
+      ]
+    },
+    {
       "word": "Putin",
       "forbidden": [
         "Rusia",
@@ -7730,6 +8950,16 @@
         "internet",
         "teoria",
         "EEUU"
+      ]
+    },
+    {
+      "word": "QAnon",
+      "forbidden": [
+        "conspiración",
+        "Trump",
+        "Estados Unidos",
+        "secta",
+        "internet"
       ]
     },
     {
@@ -7853,6 +9083,16 @@
       ]
     },
     {
+      "word": "Raya",
+      "forbidden": [
+        "Cocaína",
+        "Polvo",
+        "Esnifar",
+        "Billete",
+        "Espejo"
+      ]
+    },
+    {
       "word": "Real Madrid",
       "forbidden": [
         "Bernabéu",
@@ -7953,6 +9193,26 @@
       ]
     },
     {
+      "word": "Resaca",
+      "forbidden": [
+        "beber",
+        "alcohol",
+        "fiesta",
+        "dolor cabeza",
+        "vomitar"
+      ]
+    },
+    {
+      "word": "Resaca emocional",
+      "forbidden": [
+        "Ex",
+        "Tristeza",
+        "Borrachera",
+        "Sentimientos",
+        "Día después"
+      ]
+    },
+    {
       "word": "Reservado",
       "forbidden": [
         "VIP",
@@ -7960,6 +9220,16 @@
         "Mesa",
         "Discoteca",
         "Pagar"
+      ]
+    },
+    {
+      "word": "Residencia de ancianos",
+      "forbidden": [
+        "Viejo",
+        "Geriátrico",
+        "Abuelo",
+        "Cuidar",
+        "Encerrar"
       ]
     },
     {
@@ -8093,6 +9363,16 @@
       ]
     },
     {
+      "word": "Ronquido",
+      "forbidden": [
+        "dormir",
+        "ruido",
+        "nariz",
+        "pareja",
+        "garganta"
+      ]
+    },
+    {
       "word": "Roomba",
       "forbidden": [
         "aspirar",
@@ -8110,6 +9390,16 @@
         "española",
         "uñas",
         "Catalana"
+      ]
+    },
+    {
+      "word": "Rosario",
+      "forbidden": [
+        "Rezar",
+        "Cuentas",
+        "Virgen",
+        "Avemaría",
+        "Collar"
       ]
     },
     {
@@ -8170,6 +9460,16 @@
         "corcho",
         "abrir",
         "tirabuzón"
+      ]
+    },
+    {
+      "word": "Saddam Hussein",
+      "forbidden": [
+        "Iraq",
+        "dictador",
+        "armas",
+        "ejecutado",
+        "Bush"
       ]
     },
     {
@@ -8323,6 +9623,16 @@
       ]
     },
     {
+      "word": "Sarna",
+      "forbidden": [
+        "picor",
+        "piel",
+        "rascar",
+        "ácaro",
+        "perro"
+      ]
+    },
+    {
       "word": "Sartén",
       "forbidden": [
         "freír",
@@ -8353,6 +9663,16 @@
       ]
     },
     {
+      "word": "Satanismo",
+      "forbidden": [
+        "Diablo",
+        "Ritual",
+        "Culto",
+        "Maligno",
+        "Pentagrama"
+      ]
+    },
+    {
       "word": "Saudade",
       "forbidden": [
         "Portugués",
@@ -8380,6 +9700,16 @@
         "peluquería",
         "ruido",
         "enchufar"
+      ]
+    },
+    {
+      "word": "Secta",
+      "forbidden": [
+        "Líder",
+        "Grupo",
+        "Manipular",
+        "Adeptos",
+        "Religión"
       ]
     },
     {
@@ -8450,6 +9780,16 @@
         "Melocotón",
         "Playa",
         "Naranja"
+      ]
+    },
+    {
+      "word": "Sex shop",
+      "forbidden": [
+        "Tienda",
+        "Juguetes",
+        "Erótico",
+        "Vibrador",
+        "Adultos"
       ]
     },
     {
@@ -8600,6 +9940,16 @@
         "stories",
         "amarillo",
         "desaparecer"
+      ]
+    },
+    {
+      "word": "Sobaco",
+      "forbidden": [
+        "axila",
+        "sudor",
+        "desodorante",
+        "pelo",
+        "olor"
       ]
     },
     {
@@ -8833,6 +10183,16 @@
       ]
     },
     {
+      "word": "Subsidio del paro",
+      "forbidden": [
+        "Trabajo",
+        "Cobrar",
+        "Estado",
+        "Sin empleo",
+        "Despido"
+      ]
+    },
+    {
       "word": "Sudadera",
       "forbidden": [
         "Capucha",
@@ -8840,6 +10200,16 @@
         "Cómoda",
         "Deporte",
         "Felpa"
+      ]
+    },
+    {
+      "word": "Sudor",
+      "forbidden": [
+        "sudar",
+        "calor",
+        "gimnasio",
+        "axila",
+        "ducha"
       ]
     },
     {
@@ -8910,6 +10280,16 @@
         "Volar",
         "Kent",
         "Calzoncillos"
+      ]
+    },
+    {
+      "word": "Supositorio",
+      "forbidden": [
+        "culo",
+        "medicina",
+        "fiebre",
+        "meter",
+        "ano"
       ]
     },
     {
@@ -8993,6 +10373,16 @@
       ]
     },
     {
+      "word": "Tanatorio",
+      "forbidden": [
+        "Muerto",
+        "Velatorio",
+        "Familia",
+        "Edificio",
+        "Despedida"
+      ]
+    },
+    {
       "word": "Tango",
       "forbidden": [
         "Argentina",
@@ -9040,6 +10430,16 @@
         "Swifties",
         "Kanye",
         "gira"
+      ]
+    },
+    {
+      "word": "Tejero",
+      "forbidden": [
+        "23-F",
+        "tricornio",
+        "Congreso",
+        "golpe",
+        "pistola"
       ]
     },
     {
@@ -9150,6 +10550,16 @@
         "Mear",
         "Bebé",
         "Positivo"
+      ]
+    },
+    {
+      "word": "Testamento",
+      "forbidden": [
+        "Notario",
+        "Herencia",
+        "Muerto",
+        "Voluntad",
+        "Documento"
       ]
     },
     {
@@ -9453,6 +10863,16 @@
       ]
     },
     {
+      "word": "Tragaperras",
+      "forbidden": [
+        "Bar",
+        "Monedas",
+        "Suerte",
+        "Frutas",
+        "Pitidos"
+      ]
+    },
+    {
       "word": "Traición",
       "forbidden": [
         "puñalada",
@@ -9470,6 +10890,16 @@
         "Lisboa",
         "eléctrico",
         "calle"
+      ]
+    },
+    {
+      "word": "Trapichear",
+      "forbidden": [
+        "Vender",
+        "Camello",
+        "Calle",
+        "Droga",
+        "Negocio"
       ]
     },
     {
@@ -9603,6 +11033,16 @@
       ]
     },
     {
+      "word": "Urólogo",
+      "forbidden": [
+        "Pene",
+        "Pis",
+        "Próstata",
+        "Dedo",
+        "Doctor"
+      ]
+    },
+    {
       "word": "Usain Bolt",
       "forbidden": [
         "Velocidad",
@@ -9670,6 +11110,16 @@
         "Holandés",
         "Estrellada",
         "Pintor"
+      ]
+    },
+    {
+      "word": "Vapeador",
+      "forbidden": [
+        "Cigarrillo electrónico",
+        "Nicotina",
+        "Humo",
+        "Sabor",
+        "Recargable"
       ]
     },
     {
@@ -9760,6 +11210,16 @@
         "Ridículo",
         "Avergonzar",
         "Sonrojar"
+      ]
+    },
+    {
+      "word": "Vergüenza ajena",
+      "forbidden": [
+        "Otro",
+        "Mirar",
+        "Pena",
+        "Sufrir",
+        "Cringe"
       ]
     },
     {
@@ -9873,6 +11333,16 @@
       ]
     },
     {
+      "word": "Viuda",
+      "forbidden": [
+        "Marido",
+        "Muerto",
+        "Mujer",
+        "Luto",
+        "Esposo"
+      ]
+    },
+    {
       "word": "Vodka",
       "forbidden": [
         "Rusia",
@@ -9930,6 +11400,16 @@
         "Estómago",
         "Boca",
         "Asco"
+      ]
+    },
+    {
+      "word": "Vox",
+      "forbidden": [
+        "Abascal",
+        "ultraderecha",
+        "verde",
+        "partido",
+        "España"
       ]
     },
     {
