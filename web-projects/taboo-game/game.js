@@ -76,13 +76,17 @@ function shuffledPlayerOrder(seed, team, round, teamSize) {
   return order;
 }
 
-// Each turn has its own Fisher-Yates shuffle of the deck, seeded with
-// (seed, turn). Within a turn, words follow that shuffle so the same card
-// never repeats during a single turn. Across turns, two independent turns
-// can occasionally surface the same card -- acceptable for a party game
-// and avoids tracking how many words were consumed per previous turn.
-function shuffledDeckForTurn(seed, turn, deckSize) {
-  const rng = rngFor(seed, "deck-turn", turn);
+// Words-per-turn budget for the global shuffle. Each turn is given this many
+// reserved slots in the single deck-wide shuffle, so two different turns never
+// share a card -- as long as the active player does not exceed BUDGET words in
+// one turn. With a 30s timer this is comfortably impossible (typical pace is
+// ~10 words). With a deck of >= BUDGET * N cards, the first N turns are
+// guaranteed repeat-free; beyond that the offset wraps via modulo.
+export const WORDS_PER_TURN_BUDGET = 50;
+
+// Single Fisher-Yates shuffle of the whole deck, seeded once per game.
+function shuffledDeck(seed, deckSize) {
+  const rng = rngFor(seed, "deck-global");
   const indices = new Array(deckSize);
   for (let i = 0; i < deckSize; i++) indices[i] = i;
   for (let i = deckSize - 1; i > 0; i--) {
@@ -104,8 +108,9 @@ export function cardForTurnAndWord({ seed, turn, wordIndex, deck }) {
   if (!Number.isInteger(wordIndex) || wordIndex < 1) {
     throw new Error("wordIndex must be a positive integer");
   }
-  const order = shuffledDeckForTurn(seed, turn, deck.length);
-  const cardPos = order[(wordIndex - 1) % deck.length];
+  const order = shuffledDeck(seed, deck.length);
+  const linear = ((turn - 1) * WORDS_PER_TURN_BUDGET + (wordIndex - 1)) % deck.length;
+  const cardPos = order[linear];
   return { card: deck[cardPos], index: cardPos };
 }
 

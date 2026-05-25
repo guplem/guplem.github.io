@@ -140,6 +140,16 @@
         </div>
 
         <div id="card" class="card"></div>
+
+        <!-- Local hit counter (judge + guessing teammate; resets on turn change) -->
+        <div id="hit-counter" class="hit-counter" hidden>
+          <button class="ghost hit-minus" id="hit-minus-btn" type="button" title="Quitar acierto" aria-label="Quitar acierto">−</button>
+          <button class="primary hit-plus" id="hit-plus-btn" type="button" title="Sumar acierto">
+            <span class="hit-check" aria-hidden="true">✓</span>
+            <span class="hit-text">Acierto</span>
+            <span class="hit-count" id="hit-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-actions">
