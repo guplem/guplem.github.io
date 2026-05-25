@@ -232,11 +232,10 @@ function startTimer() {
 function startTicker() {
   stopTicker();
   tickInterval = setInterval(() => {
-    const wasRunning = !timerExpired();
     renderTurn();
     if (timerExpired()) {
       stopTicker();
-      if (wasRunning) playTimerEndSound();
+      playTimerEndSound();
     }
   }, 200);
 }
