@@ -613,7 +613,52 @@ button.big {
 }
 
 .card-area .card {
-  margin-bottom: 0;
+  margin-bottom: 12px;
+}
+
+/* ---- Local hit counter (judge + guessing teammate) ---- */
+.hit-counter {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.hit-counter .hit-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, var(--good), #3aaf6e);
+  border: none;
+}
+
+.hit-counter .hit-plus:active {
+  transform: scale(0.97);
+}
+
+.hit-counter .hit-check {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.hit-counter .hit-count {
+  background: rgba(0, 0, 0, 0.25);
+  padding: 2px 12px;
+  border-radius: 999px;
+  min-width: 36px;
+  text-align: center;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hit-counter .hit-minus {
+  padding: 14px 16px;
+  font-size: 22px;
+  color: var(--text-dim);
 }
 
 .card.expired {

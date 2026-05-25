@@ -15,7 +15,7 @@ A partir de eso, cada cliente deriva:
 
 - A qué equipo le toca adivinar (los turnos impares son del equipo A).
 - Quién es el jugador activo del equipo adivinador (rotación determinista: cada miembro describe una vez antes de repetirse).
-- Qué carta toca para (turno, número de palabra) — cada turno tiene su propia permutación determinista de la baraja.
+- Qué carta toca para (turno, número de palabra) — sobre un único barajado determinista del mazo entero, cada turno reserva 50 huecos consecutivos. **Una palabra que ya salió en un turno anterior no puede volver a salir** durante toda la partida (hasta agotar el mazo).
 
 ## Roles y visibilidad
 
@@ -25,7 +25,9 @@ En cada turno tu pantalla muestra una vista distinta según tu rol:
 |---|---|---|
 | **Jugador activo** (equipo adivinador) | "Es tu turno" + botón Empezar → carta + cronómetro | Pulsa Empezar y describe palabras sin usar las prohibidas |
 | **Compañero del activo** (equipo adivinador) | **Nada** (cara tapada con 🙈) | NO mira la pantalla, escucha y grita la palabra |
-| **Equipo juez** (el otro equipo) | Carta entera (palabra + prohibidas) | Vigila las prohibidas, valida los aciertos |
+| **Equipo juez** (el otro equipo) | Carta entera (palabra + prohibidas) + contador local de aciertos | Vigila las prohibidas, valida los aciertos |
+
+Jueces y compañeros del activo disponen de un **contador local de aciertos** (botón ✓ Acierto) que se reinicia automáticamente al cambiar de turno. Es puramente local: no se sincroniza ni se guarda — sólo ayuda a llevar la cuenta sin esfuerzo mental durante el turno.
 
 ## Cómo jugar
 
@@ -42,7 +44,7 @@ Si alguien llega tarde, basta con que ponga el número de turno y palabra actual
 
 ## Dataset de cartas
 
-`cards.json` contiene 559+ cartas en español, generadas por agentes IA y deduplicadas. El formato es:
+`cards.json` contiene 1024 cartas en español, generadas por agentes IA, deduplicadas y filtradas para eliminar palabras con dos significados muy populares (p.ej. "Banco", "Medusa", "Gato"). El formato es:
 
 ```json
 {

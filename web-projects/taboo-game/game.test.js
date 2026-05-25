@@ -12,6 +12,7 @@ import {
   parseUrlState,
   serializeUrlState,
   generateRandomSeed,
+  WORDS_PER_TURN_BUDGET,
   ROLES,
   TEAMS,
 } from "./game.js";
@@ -192,61 +193,83 @@ describe("activePlayerIndex", () => {
 });
 
 describe("cardForTurnAndWord", () => {
-  const deck = Array.from({ length: 10 }, (_, i) => ({
+  // A deck large enough to fit a few full turns at the BUDGET.
+  const bigDeck = Array.from({ length: WORDS_PER_TURN_BUDGET * 4 }, (_, i) => ({
     word: `w${i}`,
     forbidden: ["a", "b", "c", "d", "e"],
   }));
 
   test("is deterministic for the same inputs", () => {
-    const a = cardForTurnAndWord({ seed: "x", turn: 3, wordIndex: 2, deck });
-    const b = cardForTurnAndWord({ seed: "x", turn: 3, wordIndex: 2, deck });
+    const a = cardForTurnAndWord({ seed: "x", turn: 3, wordIndex: 2, deck: bigDeck });
+    const b = cardForTurnAndWord({ seed: "x", turn: 3, wordIndex: 2, deck: bigDeck });
     expect(a.card).toBe(b.card);
     expect(a.index).toBe(b.index);
   });
 
   test("returns one of the deck cards with a valid index", () => {
-    const { card, index } = cardForTurnAndWord({ seed: "x", turn: 1, wordIndex: 1, deck });
-    expect(deck).toContain(card);
-    expect(card).toBe(deck[index]);
-  });
-
-  test("visits every card exactly once within a single turn before repeats", () => {
-    const seen = new Set();
-    for (let w = 1; w <= deck.length; w++) {
-      const { index } = cardForTurnAndWord({ seed: "turnshuffle", turn: 1, wordIndex: w, deck });
-      seen.add(index);
-    }
-    expect(seen.size).toBe(deck.length);
-  });
-
-  test("two turns produce different shuffles (with the same seed)", () => {
-    const turn1 = [];
-    const turn2 = [];
-    for (let w = 1; w <= deck.length; w++) {
-      turn1.push(cardForTurnAndWord({ seed: "diffturn", turn: 1, wordIndex: w, deck }).index);
-      turn2.push(cardForTurnAndWord({ seed: "diffturn", turn: 2, wordIndex: w, deck }).index);
-    }
-    expect(turn1).not.toEqual(turn2);
-    // Both are still permutations of 0..deck.length-1
-    expect(new Set(turn1).size).toBe(deck.length);
-    expect(new Set(turn2).size).toBe(deck.length);
-  });
-
-  test("wordIndex beyond deck length wraps around (same card as wordIndex 1)", () => {
-    const a = cardForTurnAndWord({ seed: "wrap", turn: 1, wordIndex: 1, deck });
-    const b = cardForTurnAndWord({ seed: "wrap", turn: 1, wordIndex: deck.length + 1, deck });
-    expect(a.index).toBe(b.index);
+    const { card, index } = cardForTurnAndWord({ seed: "x", turn: 1, wordIndex: 1, deck: bigDeck });
+    expect(bigDeck).toContain(card);
+    expect(card).toBe(bigDeck[index]);
   });
 
   test("two clients with same (seed, turn, wordIndex) compute the same card", () => {
-    const a = cardForTurnAndWord({ seed: "shared", turn: 7, wordIndex: 4, deck });
-    const b = cardForTurnAndWord({ seed: "shared", turn: 7, wordIndex: 4, deck });
+    const a = cardForTurnAndWord({ seed: "shared", turn: 7, wordIndex: 4, deck: bigDeck });
+    const b = cardForTurnAndWord({ seed: "shared", turn: 7, wordIndex: 4, deck: bigDeck });
     expect(a.card).toBe(b.card);
   });
 
+  test("never repeats a card across different turns within deck capacity", () => {
+    // With deck = 4 * BUDGET, the first 4 turns should be fully disjoint.
+    const turnsToCheck = Math.floor(bigDeck.length / WORDS_PER_TURN_BUDGET);
+    const seen = new Set();
+    for (let t = 1; t <= turnsToCheck; t++) {
+      for (let w = 1; w <= WORDS_PER_TURN_BUDGET; w++) {
+        const { index } = cardForTurnAndWord({ seed: "norepeat", turn: t, wordIndex: w, deck: bigDeck });
+        expect(seen.has(index)).toBe(false);
+        seen.add(index);
+      }
+    }
+    expect(seen.size).toBe(turnsToCheck * WORDS_PER_TURN_BUDGET);
+  });
+
+  test("never repeats within a single turn for wordIndex up to BUDGET", () => {
+    const seen = new Set();
+    for (let w = 1; w <= WORDS_PER_TURN_BUDGET; w++) {
+      const { index } = cardForTurnAndWord({ seed: "withinturn", turn: 1, wordIndex: w, deck: bigDeck });
+      expect(seen.has(index)).toBe(false);
+      seen.add(index);
+    }
+    expect(seen.size).toBe(WORDS_PER_TURN_BUDGET);
+  });
+
+  test("advancing wordIndex yields different cards (within the same turn)", () => {
+    const w1 = cardForTurnAndWord({ seed: "advance", turn: 1, wordIndex: 1, deck: bigDeck });
+    const w2 = cardForTurnAndWord({ seed: "advance", turn: 1, wordIndex: 2, deck: bigDeck });
+    expect(w1.index).not.toBe(w2.index);
+  });
+
+  test("offset wraps with modulo when deck capacity is exceeded", () => {
+    // After (deck / BUDGET) full turns, the offset wraps back to 0 -> same card as turn 1 word 1.
+    const wraps = bigDeck.length / WORDS_PER_TURN_BUDGET;
+    const t1w1 = cardForTurnAndWord({ seed: "wrap", turn: 1, wordIndex: 1, deck: bigDeck });
+    const tNw1 = cardForTurnAndWord({
+      seed: "wrap",
+      turn: wraps + 1,
+      wordIndex: 1,
+      deck: bigDeck,
+    });
+    expect(tNw1.index).toBe(t1w1.index);
+  });
+
+  test("different seeds produce different shuffles", () => {
+    const a = cardForTurnAndWord({ seed: "seedA", turn: 1, wordIndex: 1, deck: bigDeck });
+    const b = cardForTurnAndWord({ seed: "seedB", turn: 1, wordIndex: 1, deck: bigDeck });
+    expect(a.index).not.toBe(b.index);
+  });
+
   test("throws on invalid inputs", () => {
-    expect(() => cardForTurnAndWord({ seed: "x", turn: 0, wordIndex: 1, deck })).toThrow();
-    expect(() => cardForTurnAndWord({ seed: "x", turn: 1, wordIndex: 0, deck })).toThrow();
+    expect(() => cardForTurnAndWord({ seed: "x", turn: 0, wordIndex: 1, deck: bigDeck })).toThrow();
+    expect(() => cardForTurnAndWord({ seed: "x", turn: 1, wordIndex: 0, deck: bigDeck })).toThrow();
     expect(() => cardForTurnAndWord({ seed: "x", turn: 1, wordIndex: 1, deck: [] })).toThrow();
   });
 });

@@ -60,6 +60,11 @@ const dom = {
   timerFill: document.getElementById("timer-fill"),
   timerText: document.getElementById("timer-text"),
 
+  hitCounter: document.getElementById("hit-counter"),
+  hitPlusBtn: document.getElementById("hit-plus-btn"),
+  hitMinusBtn: document.getElementById("hit-minus-btn"),
+  hitCount: document.getElementById("hit-count"),
+
   card: document.getElementById("card"),
   editSetupBtn: document.getElementById("edit-setup-btn"),
   datasetInfo: document.getElementById("dataset-info"),
@@ -76,6 +81,10 @@ const timer = {
 };
 let tickInterval = null;
 let audioContext = null;
+
+// Local hit-tally for the judge / guessing teammate. Helps them count correct
+// guesses without mental arithmetic. Resets on turn change. Never synced.
+let hitCount = 0;
 
 // ---- Personal state persistence ----
 
@@ -356,6 +365,11 @@ function renderTurn() {
     `;
   }
 
+  // Local hit counter: visible to judge and guessing teammate only.
+  const showHitCounter = state.role === ROLES.JUDGE || state.role === ROLES.GUESSING_TEAMMATE;
+  dom.hitCounter.hidden = !showHitCounter;
+  dom.hitCount.textContent = String(hitCount);
+
   // Timer + freeze behaviour: only for active player after Start
   if (isActive) {
     dom.timerBar.hidden = false;
@@ -430,6 +444,7 @@ function changeTurn(delta) {
   if (next < 1) return;
   session.turn = next;
   session.wordIndex = 1;
+  hitCount = 0;
   resetTimer();
   syncUrl();
   renderTurn();
@@ -441,6 +456,7 @@ function jumpToTurn(value) {
   if (!Number.isInteger(parsed) || parsed < 1) return;
   session.turn = parsed;
   session.wordIndex = 1;
+  hitCount = 0;
   resetTimer();
   syncUrl();
   renderTurn();
@@ -559,6 +575,15 @@ function wireGame() {
 
   dom.nextWordBtn.addEventListener("click", () => changeWord(1));
   dom.prevWordBtn.addEventListener("click", () => changeWord(-1));
+
+  dom.hitPlusBtn.addEventListener("click", () => {
+    hitCount += 1;
+    renderTurn();
+  });
+  dom.hitMinusBtn.addEventListener("click", () => {
+    if (hitCount > 0) hitCount -= 1;
+    renderTurn();
+  });
   dom.jumpWordBtn.addEventListener("click", () => jumpToWord(dom.jumpWord.value));
   dom.jumpWord.addEventListener("keydown", (e) => {
     if (e.key === "Enter") jumpToWord(dom.jumpWord.value);
