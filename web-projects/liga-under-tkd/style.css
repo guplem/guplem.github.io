@@ -689,11 +689,22 @@ a:hover {
   margin-bottom: 1.2rem;
   overflow-x: auto;
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 16px), transparent);
-  mask-image: linear-gradient(to right, #000 calc(100% - 16px), transparent);
 }
 .tatami-bar::-webkit-scrollbar {
   display: none;
+}
+/* Edge fades, applied only on the side(s) that can still be scrolled (toggled in JS). */
+.tatami-bar.is-fade-right {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 18px), transparent);
+}
+.tatami-bar.is-fade-left {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 18px);
+  mask-image: linear-gradient(to right, transparent, #000 18px);
+}
+.tatami-bar.is-fade-left.is-fade-right {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 18px, #000 calc(100% - 18px), transparent);
 }
 .tatami-pill {
   display: inline-flex;
@@ -1096,7 +1107,5 @@ table {
   .tatami-bar {
     flex-wrap: wrap;
     overflow-x: visible;
-    -webkit-mask-image: none;
-    mask-image: none;
   }
 }

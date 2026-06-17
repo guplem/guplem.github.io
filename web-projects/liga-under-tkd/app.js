@@ -324,7 +324,17 @@ function renderFields(view) {
     }
     fillFields();
   });
+  bar.addEventListener("scroll", updateTatamiFade);
   fillFields();
+}
+
+// Fade only the edge(s) of the tatami bar that still have hidden, scrollable pills.
+function updateTatamiFade() {
+  const bar = document.getElementById("tatami-bar");
+  if (!bar) return;
+  const max = bar.scrollWidth - bar.clientWidth;
+  bar.classList.toggle("is-fade-left", bar.scrollLeft > 1);
+  bar.classList.toggle("is-fade-right", bar.scrollLeft < max - 1);
 }
 
 function fillFields() {
@@ -377,6 +387,8 @@ function fillFields() {
         </div>`;
     })
     .join("");
+
+  updateTatamiFade();
 }
 
 // ---------------- view: Combats by group ----------------
@@ -782,6 +794,7 @@ function wireShell() {
     btn.addEventListener("click", () => setLanguage(btn.getAttribute("data-lang")));
   });
   window.addEventListener("hashchange", renderRoute);
+  window.addEventListener("resize", updateTatamiFade);
   document.addEventListener("visibilitychange", handleVisibilityChange);
 
   // 1-second tick: keeps the countdown and the "updated Xs ago" label fresh.
