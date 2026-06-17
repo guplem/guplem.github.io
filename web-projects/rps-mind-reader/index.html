@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Play rock-paper-scissors against an AI that learns your habits and tries to beat you. The more you play, the harder it gets." />
+  <title>RPS Mind Reader</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>RPS Mind Reader</h1>
+    <p class="subtitle">Rock, paper, scissors against an AI that learns your habits. Can you stay unpredictable?</p>
+    <nav class="topnav">
+      <a class="nav-link" href="stats.html">📊 View statistics →</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="arena" aria-live="polite">
+      <div class="hands">
+        <div class="hand">
+          <span class="hand-emoji" id="you-emoji">🙂</span>
+          <span class="hand-label">You</span>
+        </div>
+        <div class="vs">vs</div>
+        <div class="hand">
+          <span class="hand-emoji" id="ai-emoji">🤖</span>
+          <span class="hand-label">AI</span>
+        </div>
+      </div>
+      <p class="result" id="result">Make your move.</p>
+      <p class="prediction" id="prediction"></p>
+    </section>
+
+    <section class="moves" role="group" aria-label="Choose your move">
+      <button class="move-btn" data-move="rock" type="button" aria-label="Rock (R)">
+        <span class="move-emoji" aria-hidden="true">✊</span><span class="move-name">Rock</span>
+      </button>
+      <button class="move-btn" data-move="paper" type="button" aria-label="Paper (P)">
+        <span class="move-emoji" aria-hidden="true">✋</span><span class="move-name">Paper</span>
+      </button>
+      <button class="move-btn" data-move="scissors" type="button" aria-label="Scissors (S)">
+        <span class="move-emoji" aria-hidden="true">✌️</span><span class="move-name">Scissors</span>
+      </button>
+    </section>
+
+    <section class="stats">
+      <div class="scoreboard">
+        <div class="score score--win">
+          <span class="score-num" id="win-count">0</span>
+          <span class="score-label">Wins</span>
+          <span class="score-pct" id="win-pct">0%</span>
+        </div>
+        <div class="score score--tie">
+          <span class="score-num" id="tie-count">0</span>
+          <span class="score-label">Ties</span>
+          <span class="score-pct" id="tie-pct">0%</span>
+        </div>
+        <div class="score score--loss">
+          <span class="score-num" id="loss-count">0</span>
+          <span class="score-label">Losses</span>
+          <span class="score-pct" id="loss-pct">0%</span>
+        </div>
+      </div>
+
+      <div class="bar" id="bar" role="img" aria-label="Win, tie and loss share of all rounds">
+        <div class="bar-seg bar-seg--win" id="bar-win"></div>
+        <div class="bar-seg bar-seg--tie" id="bar-tie"></div>
+        <div class="bar-seg bar-seg--loss" id="bar-loss"></div>
+      </div>
+
+      <div class="meta">
+        <span id="winrate">Win rate —</span>
+        <span id="streak">Streak 0 · Best 0</span>
+        <span id="total">0 rounds</span>
+      </div>
+    </section>
+
+    <section class="history-section">
+      <div class="history-head">
+        <h2>Recent rounds</h2>
+        <button class="ghost-button" id="reset" type="button">Reset</button>
+      </div>
+      <ol class="history" id="history"></ol>
+      <p class="empty-hint" id="empty-hint">
+        No rounds yet — play a few. Your history and the AI's memory live on this device
+        only and persist across visits until you reset.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>The AI commits its move from your past rounds <em>before</em> you reveal — it predicts, it doesn't peek. Everything is stored locally with no server.</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
