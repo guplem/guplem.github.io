@@ -253,7 +253,7 @@ a:hover {
   animation: pulse 1.8s infinite;
 }
 .status-dot--refresh {
-  background: var(--warn);
+  background: #fff; /* neutral "working" colour; red is reserved for an out-of-sync error */
 }
 .status-dot--error {
   background: var(--red);

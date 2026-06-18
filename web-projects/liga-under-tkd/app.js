@@ -792,7 +792,7 @@ function combatsSignature(combats) {
 
 async function refreshCombats() {
   state.refreshing = true;
-  updateStatus(); // dot turns amber while the fetch is in flight
+  updateStatus(); // dot turns white while the fetch is in flight
   try {
     const combats = await loadCombats();
     state.loadError = false;
