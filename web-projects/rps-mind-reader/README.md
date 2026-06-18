@@ -14,17 +14,23 @@ Rock-paper-scissors against an AI that learns your habits and tries to beat you.
 
 ## How the AI works
 
-Instead of a heavy neural network, the bot uses an ensemble of simple pattern
-predictors — overall move frequency, variable-order **Markov chains** (what you
-tend to play after a given recent sequence), and reactive models (how you respond
-to the AI's last move and to the last result). Each prediction spawns three
-"rotation experts" so the meta-layer can learn the right counter even against a
-player who is trying to out-think the bot. A recency-weighted score tracks which
-expert has been winning lately, and the AI follows it; when nothing has a positive
-track record it plays uniformly at random — an unexploitable baseline.
+Instead of a heavy neural network, the bot is a small **Bayesian mixture of
+variable-order context models**. Several cheap models each predict your *next-move
+distribution* from a different slice of history — your own recent moves (a
+variable-order **Markov / PPM** family), recent `(you, AI)` exchanges, recent
+outcomes (win-stay/lose-shift), and the AI's last move (for when you chase or
+counter it). Each model is weighted by how well it has *predicted you lately* (a
+recency-decayed log-likelihood, softmaxed), and every model votes for the move with
+the best **expected value** against its own forecast. Reasoning over the whole
+distribution — not just the single most likely move — is what lets it punish even
+50/50 habits like "never repeat the same throw." When there's no signal yet (or
+against truly random play) it sits at the unexploitable ~even baseline.
 
-This approach is tiny, trains instantly, runs fully offline, and is a better fit
-for rock-paper-scissors than a neural network would be. See
+This algorithm was chosen by an **objective benchmark** (`benchmark.js`, a battery
+of opponent strategies) after pitting several from-scratch designs against each
+other; it beats the earlier ensemble both on that battery and on held-out
+opponents. It's tiny, trains instantly, runs fully offline, and is a better fit for
+rock-paper-scissors than a neural network would be. See
 [ADR 0010](../../adr/0010-custom-statistical-predictor-no-ml-library.md) for the
 reasoning, and [ADR 0009](../../adr/0009-localstorage-for-private-session-persistence.md)
 for why state is kept in `localStorage`.
@@ -59,6 +65,21 @@ built-in test runner.
 # From the project folder
 bun test
 ```
+
+## Benchmark
+
+`benchmark.js` is a dev-only harness (not loaded by the game) that pits any
+predictor against a battery of opponent strategies and reports net win rate. Use it
+to measure and improve the AI over time:
+
+```bash
+# From the project folder
+bun benchmark.js
+```
+
+It also benchmarks a `candidate.js` alongside the current `predictor.js` if one is
+present, so a new algorithm can be compared head-to-head before replacing the
+incumbent.
 
 ## Tech Stack
 
