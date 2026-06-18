@@ -13,7 +13,7 @@ import {
 import { createModel, decide, learn, rebuildModel } from "./predictor.js";
 import { loadState, saveState, clearState } from "./storage.js";
 
-const REVEAL_MS = 600;
+const REVEAL_MS = 450;
 const HISTORY_SHOWN = 24;
 
 const EMOJI = { rock: "✊", paper: "✋", scissors: "✌️" };
@@ -206,7 +206,10 @@ function init() {
   renderHistory();
 
   for (const btn of dom.moveBtns) {
-    btn.addEventListener("click", () => playerPicks(btn.dataset.move));
+    btn.addEventListener("click", () => {
+      playerPicks(btn.dataset.move);
+      btn.blur(); // drop focus so no ring lingers after the round (esp. on touch)
+    });
   }
   dom.reset.addEventListener("click", resetAll);
 
