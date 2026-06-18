@@ -182,15 +182,22 @@ main {
   letter-spacing: 0.02em;
 }
 
-.move-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  border-color: rgba(45, 212, 191, 0.5);
-  background: rgba(45, 212, 191, 0.08);
-  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.35), 0 10px 30px rgba(45, 212, 191, 0.18);
+/* Hover effects only on devices with a real pointer. On touchscreens :hover
+   "sticks" after a tap, leaving the button looking selected. */
+@media (hover: hover) {
+  .move-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    border-color: rgba(45, 212, 191, 0.5);
+    background: rgba(45, 212, 191, 0.08);
+    box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.35), 0 10px 30px rgba(45, 212, 191, 0.18);
+  }
 }
 
+/* Press feedback that works on touch and never sticks (clears on release). */
 .move-btn:active:not(:disabled) {
   transform: translateY(0);
+  border-color: rgba(45, 212, 191, 0.5);
+  background: rgba(45, 212, 191, 0.08);
 }
 
 .move-btn:focus-visible {
@@ -325,10 +332,12 @@ main {
   transition: background var(--transition), border-color var(--transition), color var(--transition);
 }
 
-.ghost-button:hover {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.4);
-  color: #fca5a5;
+@media (hover: hover) {
+  .ghost-button:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+  }
 }
 
 .history {
@@ -435,9 +444,11 @@ footer p {
   transition: background var(--transition), border-color var(--transition);
 }
 
-.nav-link:hover {
-  background: rgba(45, 212, 191, 0.12);
-  border-color: rgba(45, 212, 191, 0.4);
+@media (hover: hover) {
+  .nav-link:hover {
+    background: rgba(45, 212, 191, 0.12);
+    border-color: rgba(45, 212, 191, 0.4);
+  }
 }
 
 /* --- Statistics page --- */
