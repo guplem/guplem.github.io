@@ -31,16 +31,24 @@ for why state is kept in `localStorage`.
 
 ## How to Run
 
-No build step required. Serve the repository with any HTTP server:
+This is a **fully static** site — HTML, CSS, and JavaScript that run entirely in
+the browser, with no backend, no build step, and no external requests. It deploys
+to **GitHub Pages as-is** (GitHub Pages just serves the files; everything else
+happens client-side, and game state lives in `localStorage`).
+
+For local preview, serve the files over HTTP with any static server — for example:
 
 ```bash
 # From the repository root
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000/web-projects/rps-mind-reader/` in a browser.
+Then open `http://localhost:8000/web-projects/rps-mind-reader/`.
 
-Alternatively, open `index.html` directly — all assets are self-contained.
+> Note: the project uses native ES modules, so opening `index.html` straight from
+> the filesystem (`file://`) is blocked by browsers. Use any HTTP server locally
+> (the command above, `npx serve`, a VS Code Live Server, etc.) — or just the live
+> GitHub Pages URL, which serves over HTTPS and works out of the box.
 
 ## Tests
 
