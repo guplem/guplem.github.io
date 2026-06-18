@@ -573,7 +573,10 @@ function standingsTable(rows) {
 function crossTableHtml(groupId) {
   const ct = crossTable(state.players, state.combats, groupId);
   const labels = matrixLabels(ct.players);
-  const corner = `<th class="matrix__corner" scope="col"></th>`;
+  // Corner doubles as a colour-blind key: the score reads "column-fighter – row-fighter",
+  // so "Col" (red) and "Row" (blue) mirror the two numbers and their colours in each cell.
+  const cornerKey = `<span class="matrix__axis--red">${tr("groups.matrixCol")}</span> - <span class="matrix__axis--blue">${tr("groups.matrixRow")}</span>`;
+  const corner = `<th class="matrix__corner" scope="col" title="${esc(t(state.lang, "groups.matrixKeyHint"))}">${cornerKey}</th>`;
   const headCols = ct.players
     .map((p) => `<th class="matrix__col" scope="col"><a href="#/athletes/${esc(p.playerId)}">${esc(labels.get(p.playerId))}</a></th>`)
     .join("");
@@ -603,11 +606,7 @@ function crossTableHtml(groupId) {
     })
     .join("");
 
-  const blueToken = esc(translateToken(state.lang, "side", "Blue"));
-  const redToken = esc(translateToken(state.lang, "side", "Red"));
-  const legend = `${tr("groups.rows")} = <span class="matrix__axis--blue">${blueToken}</span> · ${tr("groups.columns")} = <span class="matrix__axis--red">${redToken}</span>`;
-  return `<div class="table-scroll"><table class="matrix"><thead>${head}</thead><tbody>${body}</tbody></table></div>
-    <p class="matrix__legend">${legend}</p>`;
+  return `<div class="table-scroll"><table class="matrix"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 }
 
 // ---------------- view: Athletes (search + profile) ----------------
