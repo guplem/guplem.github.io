@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Your rock-paper-scissors statistics: win/loss/tie trends over time, streaks, and how predictable your moves have been." />
+  <title>RPS Mind Reader · Statistics</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <nav class="topnav">
+      <a class="nav-link" href="index.html">← Back to game</a>
+    </nav>
+    <h1>Your Statistics</h1>
+    <p class="subtitle">How you're faring against the mind reader — and how predictable you've been.</p>
+  </header>
+
+  <main>
+    <p class="empty-state" id="empty-state" hidden>
+      No rounds played yet. <a href="index.html">Play a few</a> and your stats will appear here.
+    </p>
+
+    <div id="stats-content">
+      <section class="cards" id="cards" aria-label="Summary statistics"></section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Win / loss / tie over time</h2>
+          <div class="legend">
+            <span class="legend-item legend--win">Wins</span>
+            <span class="legend-item legend--tie">Ties</span>
+            <span class="legend-item legend--loss">Losses</span>
+          </div>
+        </div>
+        <div class="chart-wrap" id="chart-wrap"></div>
+        <p class="panel-note" id="chart-note"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Outcome split</h2>
+        <div class="bar" id="split-bar" role="img" aria-label="Share of wins, ties and losses">
+          <div class="bar-seg bar-seg--win" id="split-win"></div>
+          <div class="bar-seg bar-seg--tie" id="split-tie"></div>
+          <div class="bar-seg bar-seg--loss" id="split-loss"></div>
+        </div>
+        <div class="split-legend" id="split-legend"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Your move tendencies</h2>
+        <div class="move-dist" id="move-dist"></div>
+        <p class="panel-note" id="dist-note"></p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>Stats are computed from the match history stored on this device. Reset them from the game page.</p>
+  </footer>
+
+  <script type="module" src="stats.js"></script>
+</body>
+</html>
