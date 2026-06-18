@@ -41,6 +41,7 @@ let lastRouteKey = null;
 let pollTimer = null;
 let tickTimer = null;
 let statusDetailTimer = null;
+let statusDetailInterval = null;
 
 // ---------------- small helpers ----------------
 
@@ -160,21 +161,40 @@ function formatUpdatedAgo() {
   return `${t(state.lang, "status.updated")} ${ago}`;
 }
 
-// Tapping the indicator briefly reveals how long since the last successful refresh.
+// Tapping the indicator reveals how long since the last successful refresh, with the counter
+// ticking live. Tapping again closes it; it also auto-closes after a few seconds. The expand /
+// collapse is animated in CSS.
 function showStatusDetail() {
   const pill = document.getElementById("status-pill");
   if (!pill || state.usingMock) return;
   const label = pill.querySelector(".status-pill__label");
   if (!label) return;
+  if (pill.dataset.detail === "1") {
+    hideStatusDetail();
+    return;
+  }
   pill.dataset.detail = "1";
   pill.classList.add("status-pill--detail");
-  label.textContent = formatUpdatedAgo();
+  const tick = () => {
+    label.textContent = formatUpdatedAgo();
+  };
+  tick();
+  clearInterval(statusDetailInterval);
+  statusDetailInterval = setInterval(tick, 1000); // keep the counter live while it is shown
   clearTimeout(statusDetailTimer);
-  statusDetailTimer = setTimeout(() => {
-    delete pill.dataset.detail;
-    pill.classList.remove("status-pill--detail");
-    updateStatus();
-  }, 3500);
+  statusDetailTimer = setTimeout(hideStatusDetail, 6000);
+}
+
+function hideStatusDetail() {
+  const pill = document.getElementById("status-pill");
+  if (!pill) return;
+  clearInterval(statusDetailInterval);
+  statusDetailInterval = null;
+  clearTimeout(statusDetailTimer);
+  statusDetailTimer = null;
+  delete pill.dataset.detail;
+  pill.classList.remove("status-pill--detail");
+  updateStatus(); // restore the normal label, which then animates closed
 }
 
 function setLanguage(lang) {
