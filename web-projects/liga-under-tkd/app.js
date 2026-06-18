@@ -355,6 +355,8 @@ function fillFields() {
 
   // Pills: an "All" filter plus one per tatami (only shown when there is more than one tatami).
   if (bar) {
+    // Preserve the horizontal scroll position so a live refresh does not jump the bar back.
+    const prevScroll = bar.scrollLeft;
     if (fields.length <= 1) {
       bar.innerHTML = "";
     } else {
@@ -368,6 +370,7 @@ function fillFields() {
         .join("");
       bar.innerHTML = allPill + fieldPills;
     }
+    bar.scrollLeft = prevScroll;
   }
 
   // Content: the selected tatami only, or every tatami stacked when no filter is active.
