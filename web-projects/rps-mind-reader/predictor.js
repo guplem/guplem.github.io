@@ -98,7 +98,6 @@ export function decide(model, random = Math.random) {
   let bestId = null;
   let bestScore = 0; // an expert must have a positive track record to be trusted
   let bestMove = null;
-  let bestPredicted = null;
   for (const bp of BASE_PREDICTORS) {
     const p = preds[bp.id];
     if (p == null) continue;
@@ -108,14 +107,18 @@ export function decide(model, random = Math.random) {
         bestScore = score;
         bestId = expertId(bp.id, r);
         bestMove = shift(p, r);
-        bestPredicted = p;
       }
     }
   }
   if (bestId == null) {
     return { aiMove: randomMove(random), predictedPlayerMove: null, expertId: null, confident: false };
   }
-  return { aiMove: bestMove, predictedPlayerMove: bestPredicted, expertId: bestId, confident: true };
+  // The move the AI commits is always the counter to what it actually expects, so
+  // report the move `bestMove` beats. With rotation experts (the second-guessing
+  // layer) this can differ from a base predictor's raw guess `p`; reporting the
+  // countered move keeps the player-facing invariant "predicted X -> played
+  // counter(X)" true for every rotation.
+  return { aiMove: bestMove, predictedPlayerMove: shift(bestMove, 2), expertId: bestId, confident: true };
 }
 
 // Feed a revealed round back into the model. Mutates and returns the model.

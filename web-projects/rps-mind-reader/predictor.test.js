@@ -1,6 +1,6 @@
 import { describe, test, expect } from "bun:test";
 import { createModel, decide, learn, rebuildModel, randomMove } from "./predictor.js";
-import { MOVES, judge, counter } from "./game.js";
+import { MOVES, judge, counter, beats, shift } from "./game.js";
 
 // Deterministic RNG (mulberry32) so randomised fallbacks stay stable in tests.
 function rng(seed) {
@@ -139,5 +139,43 @@ describe("score decay", () => {
     expect(m.scores["freq:1"]).toBeGreaterThan(0); // recommending paper beats rock
     expect(m.scores["freq:2"]).toBeLessThan(0); // recommending scissors loses to rock
     expect(m.scores["freq:3"]).toBe(0); // recommending rock only ties
+  });
+});
+
+describe("prediction display invariant", () => {
+  // The UI shows "I predicted you'd throw X" and the AI plays its move. That
+  // only makes sense if the AI move always beats the announced prediction --
+  // including when a rotation 2/3 (second-guessing) expert is chosen.
+  test("the announced prediction is always the move the AI move beats, for every rotation", () => {
+    for (const r of [1, 2, 3]) {
+      const m = createModel();
+      m.freq = { rock: 5, paper: 0, scissors: 0 }; // freq predicts rock
+      m.scores = { ["freq:" + r]: 3 }; // make rotation r the trusted expert
+      const d = decide(m, () => 0);
+      expect(d.confident).toBe(true);
+      expect(d.expertId).toBe("freq:" + r);
+      expect(d.aiMove).toBe(shift("rock", r));
+      expect(beats(d.aiMove, d.predictedPlayerMove)).toBe(true);
+      expect(counter(d.predictedPlayerMove)).toBe(d.aiMove);
+    }
+  });
+
+  test("rotation 1 reports the base guess (predicts rock, plays paper)", () => {
+    const m = createModel();
+    m.freq = { rock: 5, paper: 0, scissors: 0 };
+    m.scores = { "freq:1": 2 };
+    const d = decide(m, () => 0);
+    expect(d.predictedPlayerMove).toBe("rock");
+    expect(d.aiMove).toBe("paper");
+  });
+
+  test("rotation 2 reports the deeper read, not the base guess", () => {
+    const m = createModel();
+    m.freq = { rock: 5, paper: 0, scissors: 0 }; // base guess would be rock
+    m.scores = { "freq:2": 2 };
+    const d = decide(m, () => 0);
+    expect(d.aiMove).toBe("scissors"); // shift(rock, 2)
+    expect(d.predictedPlayerMove).toBe("paper"); // the move scissors beats
+    expect(d.predictedPlayerMove).not.toBe("rock");
   });
 });
