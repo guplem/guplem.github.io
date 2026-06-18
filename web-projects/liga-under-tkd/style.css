@@ -636,8 +636,13 @@ a:hover {
   font-variant-numeric: tabular-nums;
 }
 .round__tb {
-  color: var(--coral);
   font-size: 0.7rem;
+}
+.round__tb--red {
+  color: var(--red);
+}
+.round__tb--blue {
+  color: var(--fighter-blue);
 }
 .result {
   font-family: var(--display);

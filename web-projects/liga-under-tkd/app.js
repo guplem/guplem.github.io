@@ -181,7 +181,7 @@ function scoreColumn(combat) {
     .map((r, i) => {
       const red = r.red === null ? "·" : r.red;
       const blue = r.blue === null ? "·" : r.blue;
-      const tb = r.tiebreak ? ` <span class="round__tb">(${esc(translateToken(state.lang, "side", r.tiebreak))})</span>` : "";
+      const tb = r.tiebreak ? ` <span class="round__tb round__tb--${r.tiebreak.toLowerCase()}">(${esc(translateToken(state.lang, "side", r.tiebreak))})</span>` : "";
       return `<div class="round"><span class="round__label">${tr("combat.round", { n: i + 1 })}</span><span class="round__pts">${esc(red)} - ${esc(blue)}</span>${tb}</div>`;
     })
     .join("");
