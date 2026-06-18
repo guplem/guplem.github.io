@@ -80,17 +80,6 @@ function groupLabel(group) {
   return label;
 }
 
-function relativeTime(ms) {
-  const diff = Math.max(0, Date.now() - ms);
-  const secs = Math.floor(diff / 1000);
-  if (secs < 5) return state.lang === "en" ? "just now" : state.lang === "ca" ? "ara mateix" : "ahora mismo";
-  if (secs < 60) return `${secs}s`;
-  const mins = Math.floor(secs / 60);
-  if (mins < 60) return `${mins} min`;
-  const hours = Math.floor(mins / 60);
-  return `${hours} h`;
-}
-
 // ---------------- shell: i18n, nav, language, status ----------------
 
 function applyStaticI18n() {
@@ -123,19 +112,29 @@ function updateLangButtons() {
 function updateStatus() {
   const pill = document.getElementById("status-pill");
   if (!pill) return;
-  if (state.usingMock) {
+  const mode = state.usingMock ? "demo" : state.loadError ? "error" : "live";
+  // Only rebuild when the mode or language changes, so the live dot keeps pulsing across polls.
+  if (pill.dataset.mode === mode && pill.dataset.lang === state.lang) return;
+  pill.dataset.mode = mode;
+  pill.dataset.lang = state.lang;
+
+  if (mode === "demo") {
     pill.className = "status-pill status-pill--demo";
-    pill.textContent = t(state.lang, "status.demo");
-    return;
-  }
-  if (state.loadError) {
+    pill.textContent = "Demo";
+    pill.title = t(state.lang, "status.demo");
+    pill.removeAttribute("aria-label");
+  } else if (mode === "error") {
+    // A red dot is enough in the bar; the full message lives in the title/aria-label.
     pill.className = "status-pill status-pill--error";
-    pill.textContent = t(state.lang, "status.error");
-    return;
+    pill.innerHTML = `<span class="status-dot" aria-hidden="true"></span>`;
+    pill.title = t(state.lang, "status.error");
+    pill.setAttribute("aria-label", t(state.lang, "status.error"));
+  } else {
+    pill.className = "status-pill status-pill--live";
+    pill.removeAttribute("title");
+    pill.removeAttribute("aria-label");
+    pill.innerHTML = `<span class="live-dot" aria-hidden="true"></span>${esc(t(state.lang, "status.live"))}`;
   }
-  pill.className = "status-pill status-pill--live";
-  const updated = state.lastUpdated ? ` · ${t(state.lang, "status.updated")} ${relativeTime(state.lastUpdated)}` : "";
-  pill.innerHTML = `<span class="live-dot" aria-hidden="true"></span>${esc(t(state.lang, "status.live"))}${esc(updated)}`;
 }
 
 function setLanguage(lang) {
@@ -803,7 +802,6 @@ function wireShell() {
   // 1-second tick: keeps the countdown and the "updated Xs ago" label fresh.
   tickTimer = setInterval(() => {
     if (currentRoute.name === "home") fillCountdown();
-    if (!state.usingMock && !state.loadError) updateStatus();
   }, 1000);
 }
 

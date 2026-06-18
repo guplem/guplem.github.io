@@ -146,12 +146,19 @@ a:hover {
   color: var(--navy);
 }
 
+.app-header__nav-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0.4rem 1rem 0.5rem;
+}
 .app-nav {
   display: flex;
   gap: 0.25rem;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0.5rem 0.75rem 0;
+  flex: 1 1 auto;
+  min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
   /* Fade the right edge so a tab cut off on a very narrow phone is visibly scrollable. */
@@ -188,22 +195,24 @@ a:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.app-header__status {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0.35rem 1rem 0.55rem;
-}
 .status-pill {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 0.4rem;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  padding: 0.2rem 0.6rem;
+  padding: 0.25rem 0.6rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.15);
   color: #fff;
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
 }
 .status-pill--demo {
   background: var(--coral);
