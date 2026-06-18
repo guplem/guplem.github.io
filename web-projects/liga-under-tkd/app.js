@@ -302,41 +302,53 @@ function renderHome(view) {
           <img class="home__logo" src="logo.png" alt="Liga UNDER" width="150" height="150" />
           <h1 class="home__title">${titleHtml}</h1>
           <p class="home__tagline">${tr("brand.tagline")}</p>
-          <div class="home__when">
+          <div class="home__meta">
             <span class="home__date">${tr("home.date")}</span>
             <span class="home__place">📍 ${tr("home.place")}</span>
           </div>
           <a class="btn btn--hero" href="#/fields">${tr("home.cta")}</a>
         </div>
+        <button type="button" class="home__scroll" aria-label="${esc(t(state.lang, "home.cta"))}">
+          <span class="home__scroll-chevron" aria-hidden="true"></span>
+        </button>
       </div>
 
-      <div class="home__highlights">
-        <div class="highlight"><span class="highlight__icon" aria-hidden="true">🥋</span><span class="highlight__text">${tr("home.guaranteed")}</span></div>
-        <div class="highlight"><span class="highlight__icon" aria-hidden="true">🎟️</span><span class="highlight__text">${tr("home.freeEntry")}</span></div>
-        <div class="highlight"><span class="highlight__icon" aria-hidden="true">⚡</span><span class="highlight__text">${tr("home.limited")}</span></div>
-      </div>
+      <div class="home__sections">
+        <div class="home__strip">
+          <span class="home__point"><span class="home__point-icon" aria-hidden="true">🥋</span>${tr("home.guaranteed")}</span>
+          <span class="home__point"><span class="home__point-icon" aria-hidden="true">🎟️</span>${tr("home.freeEntry")}</span>
+          <span class="home__point"><span class="home__point-icon" aria-hidden="true">⚡</span>${tr("home.limited")}</span>
+        </div>
 
-      <div class="home__countdown card">
-        <h2 class="card__title">${tr("home.countdownTitle")}</h2>
-        <div class="countdown" id="countdown"></div>
-      </div>
+        <section class="home__block">
+          <h2 class="home__block-title">${tr("home.countdownTitle")}</h2>
+          <div class="countdown" id="countdown"></div>
+        </section>
 
-      <div class="home__social card">
-        <h2 class="card__title">${tr("home.followUs")}</h2>
-        <a class="ig-link" href="${esc(CONFIG.instagramUrl)}" target="_blank" rel="noopener">
-          <span class="ig-link__icon" aria-hidden="true">📷</span>${esc(CONFIG.instagramHandle)}
-        </a>
-      </div>
+        <section class="home__block">
+          <h2 class="home__block-title">${tr("home.followUs")}</h2>
+          <a class="home__ig" href="${esc(CONFIG.instagramUrl)}" target="_blank" rel="noopener"><span class="home__ig-icon" aria-hidden="true">📷</span>${esc(CONFIG.instagramHandle)}</a>
+        </section>
 
-      <div class="home__sponsors card">
-        <h2 class="card__title">${tr("home.sponsorsTitle")}</h2>
-        <ul class="sponsors">
-          <li>Tae Kwon Do Avellaneda</li>
-          <li>Daedo</li>
-          <li>Ajuntament de Premià de Mar</li>
-        </ul>
+        <section class="home__block">
+          <h2 class="home__block-title">${tr("home.sponsorsTitle")}</h2>
+          <ul class="home__sponsors">
+            <li>Tae Kwon Do Avellaneda</li>
+            <li>Daedo</li>
+            <li>Ajuntament de Premià de Mar</li>
+          </ul>
+        </section>
       </div>
     </section>`;
+
+  const scrollBtn = view.querySelector(".home__scroll");
+  if (scrollBtn) {
+    scrollBtn.addEventListener("click", () => {
+      const target = view.querySelector(".home__sections");
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   fillCountdown();
 }
 
@@ -763,6 +775,7 @@ function renderRoute() {
   else if (currentRoute.name === "athletes") renderAthletes(view, currentRoute.param);
   else renderHome(view);
   updateNavActive();
+  document.body.classList.toggle("is-home", currentRoute.name === "home");
   // Scroll to top only when the route actually changes (new view or opened profile), not on an
   // in-place update like switching the group dropdown.
   const key = currentRoute.name + "/" + (currentRoute.param || "");
@@ -854,13 +867,23 @@ function initialLanguage() {
   return detectLanguage(navigator.languages || [navigator.language], CONFIG.supportedLanguages, CONFIG.defaultLanguage);
 }
 
+// Measure the sticky header and expose its height so the Home hero can fill the screen below it.
+function setHeaderHeight() {
+  const header = document.querySelector(".app-header");
+  if (header) document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px");
+}
+
 function wireShell() {
   document.querySelectorAll(".lang-btn").forEach((btn) => {
     btn.addEventListener("click", () => setLanguage(btn.getAttribute("data-lang")));
   });
   window.addEventListener("hashchange", renderRoute);
   window.addEventListener("resize", updateTatamiFade);
+  window.addEventListener("resize", setHeaderHeight);
   document.addEventListener("visibilitychange", handleVisibilityChange);
+
+  setHeaderHeight();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setHeaderHeight);
 
   const statusPill = document.getElementById("status-pill");
   if (statusPill) statusPill.addEventListener("click", showStatusDetail);
