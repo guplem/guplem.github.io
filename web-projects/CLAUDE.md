@@ -42,4 +42,5 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 - **github-stats-dashboard** -- GitHub repository analytics dashboard with issues, PRs, commits, contributors, and language breakdowns
 - **random-option-picker** -- Slot-machine style random picker with shareable URLs and reproducible seeds (TDD-covered, mulberry32 PRNG)
 - **taboo-game** -- Deterministic multiplayer Taboo game with no server; every client derives the same state from shared seed + turn (TDD-covered, see ADR 0007)
-- **rps-mind-reader** -- Rock-paper-scissors against an adaptive AI that learns your patterns (frequency + variable-order Markov + reactive predictors, fused by a recency-weighted meta-selector); state persists in localStorage, with a statistics page charting win/loss/tie trends over time (TDD-covered, see ADRs 0008 and 0009)
+- **liga-under-tkd** -- Live taekwondo tournament site; reads a shared Google Sheet via the gviz endpoint and computes standings/combats/profiles in CA/ES/EN (TDD-covered pure modules, see ADR 0008)
+- **rps-mind-reader** -- Rock-paper-scissors against an adaptive AI that learns your patterns (frequency + variable-order Markov + reactive predictors, fused by a recency-weighted meta-selector); state persists in localStorage, with a statistics page charting win/loss/tie trends over time (TDD-covered, see ADRs 0009 and 0010)

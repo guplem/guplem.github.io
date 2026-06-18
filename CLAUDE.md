@@ -124,8 +124,9 @@ ADRs live in `adr/` and capture the **why** behind architectural choices. Format
 | [0005](adr/0005-cdn-for-dependencies.md) | esm.sh CDN for third-party dependencies |
 | [0006](adr/0006-url-as-state-for-web-projects.md) | URL query params as source of truth for shareable web-projects |
 | [0007](adr/0007-deterministic-multiplayer-without-server.md) | Deterministic multiplayer without a server (taboo-game) |
-| [0008](adr/0008-localstorage-for-private-session-persistence.md) | localStorage for private-session persistence in web-projects |
-| [0009](adr/0009-custom-statistical-predictor-no-ml-library.md) | Custom statistical predictor instead of an ML library (rps-mind-reader) |
+| [0008](adr/0008-google-sheet-as-database.md) | Google Sheet as the live database via gviz (liga-under-tkd) |
+| [0009](adr/0009-localstorage-for-private-session-persistence.md) | localStorage for private-session persistence in web-projects |
+| [0010](adr/0010-custom-statistical-predictor-no-ml-library.md) | Custom statistical predictor instead of an ML library (rps-mind-reader) |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. Use the next sequential number. This includes decisions made within web-projects (e.g., choosing a physics engine, a rendering approach, or a data structure).
 

@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Liga UNDER — Tournament Web App",
+  "description": [
+    "*Liga UNDER* is a **live tournament website** for a taekwondo competition (Cadet and Junior, Premià de Mar, June 2026). Spectators and athletes follow the running order of combats by tatami, the standings of each round-robin group, and every athlete's profile — updating in near real time during the event.",
+    "Generated end-to-end by **Claude**. A shared **Google Sheet is the database**: assistants edit results live, and the browser reads the sheet directly through the public **gviz endpoint** (no server, no API key), polling for changes. The site computes all standings, league points, and cross-tables itself, and ships in **Catalan, Spanish, and English**.",
+    "Built as static files for free **GitHub Pages** hosting, with a pure, unit-tested scoring engine and a graceful live-data pipeline (keeps the last good data, pauses when the tab is hidden). See ADR 0008 for the sheet-as-database decision."
+  ],
+  "skills": ["Vibe Coded"],
+  "links": [
+    { "url": "web-projects/liga-under-tkd/" },
+    { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/liga-under-tkd" }
+  ]
+}

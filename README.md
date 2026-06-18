@@ -32,6 +32,7 @@ Self-contained mini-apps in `web-projects/`:
 - **`github-stats-dashboard/`** — GitHub repository analytics dashboard
 - **`random-option-picker/`** — Slot-machine style picker with shareable URLs and reproducible seeds
 - **`taboo-game/`** — Deterministic multiplayer Taboo game across phones, no server required
+- **`liga-under-tkd/`** — Live taekwondo tournament site (standings, combats, athlete profiles) read from a shared Google Sheet, in CA/ES/EN
 - **`rps-mind-reader/`** — Rock-paper-scissors against an AI that learns your habits and adapts
 
 ## Deployment

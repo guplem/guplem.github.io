@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1b2a8a" />
+  <meta name="description" content="Liga UNDER — taekwondo Cadete y Junior. Combates en directo, clasificaciones y perfiles de deportistas." />
+  <title>Liga UNDER · Taekwondo</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header__bar">
+      <a class="brand" href="#/home">
+        <img class="brand__logo" src="logo.png" alt="" width="40" height="40" />
+        <span class="brand__name" data-i18n="brand.title">Liga UNDER</span>
+      </a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="ca">CA</button>
+        <button type="button" class="lang-btn" data-lang="es">ES</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+    <nav class="app-nav" aria-label="Main">
+      <a class="nav-link" href="#/home" data-route="home" data-i18n="nav.home">Inicio</a>
+      <a class="nav-link" href="#/fields" data-route="fields" data-i18n="nav.fields">Por tatami</a>
+      <a class="nav-link" href="#/groups" data-route="groups" data-i18n="nav.groups">Por grupo</a>
+      <a class="nav-link" href="#/athletes" data-route="athletes" data-i18n="nav.athletes">Deportistas</a>
+    </nav>
+    <div class="app-header__status">
+      <span class="status-pill" id="status-pill"></span>
+    </div>
+  </header>
+
+  <main id="view" class="view"></main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -25,8 +25,8 @@ track record it plays uniformly at random — an unexploitable baseline.
 
 This approach is tiny, trains instantly, runs fully offline, and is a better fit
 for rock-paper-scissors than a neural network would be. See
-[ADR 0009](../../adr/0009-custom-statistical-predictor-no-ml-library.md) for the
-reasoning, and [ADR 0008](../../adr/0008-localstorage-for-private-session-persistence.md)
+[ADR 0010](../../adr/0010-custom-statistical-predictor-no-ml-library.md) for the
+reasoning, and [ADR 0009](../../adr/0009-localstorage-for-private-session-persistence.md)
 for why state is kept in `localStorage`.
 
 ## How to Run

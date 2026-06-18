@@ -39,4 +39,4 @@ Conventions:
 
 ## Scope
 
-This decision applies to small, shareable web-projects (`random-option-picker` is the first). It is **not** a global rule for the main portfolio site, which has no user-editable state. New web-projects with similar shareability requirements should follow the same convention; if a project does not need shareability, in-memory state is fine. For private, per-device state that must persist across sessions instead of being shared, see [ADR 0008](0008-localstorage-for-private-session-persistence.md).
+This decision applies to small, shareable web-projects (`random-option-picker` is the first). It is **not** a global rule for the main portfolio site, which has no user-editable state. New web-projects with similar shareability requirements should follow the same convention; if a project does not need shareability, in-memory state is fine. For private, per-device state that must persist across sessions instead of being shared, see [ADR 0009](0009-localstorage-for-private-session-persistence.md).
