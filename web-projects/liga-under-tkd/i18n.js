@@ -19,6 +19,8 @@ export const TRANSLATIONS = Object.freeze({
     "nav.athletes": "Esportistes",
 
     "status.live": "En directe",
+    "status.updated": "Actualitzat",
+    "status.justNow": "ara mateix",
     "status.demo": "Mode demostració (dades de prova)",
     "status.loading": "Carregant…",
     "status.error": "No s'han pogut carregar les dades. Reintentant…",
@@ -118,6 +120,8 @@ export const TRANSLATIONS = Object.freeze({
     "nav.athletes": "Deportistas",
 
     "status.live": "En directo",
+    "status.updated": "Actualizado",
+    "status.justNow": "ahora mismo",
     "status.demo": "Modo demostración (datos de prueba)",
     "status.loading": "Cargando…",
     "status.error": "No se pudieron cargar los datos. Reintentando…",
@@ -217,6 +221,8 @@ export const TRANSLATIONS = Object.freeze({
     "nav.athletes": "Athletes",
 
     "status.live": "Live",
+    "status.updated": "Updated",
+    "status.justNow": "just now",
     "status.demo": "Demo mode (sample data)",
     "status.loading": "Loading…",
     "status.error": "Could not load data. Retrying…",

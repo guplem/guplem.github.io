@@ -200,34 +200,51 @@ a:hover {
   flex: 0 0 auto;
   align-items: center;
   gap: 0.4rem;
+  font-family: var(--body);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  padding: 0.25rem 0.6rem;
+  padding: 0.3rem; /* phone: compact — just the dot (label hidden) */
+  border: none;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.15);
+  background: transparent;
   color: #fff;
+  cursor: pointer;
+}
+.status-pill__label {
+  display: none;
+}
+/* A failed refresh tints the chip red; the dot already turns red. */
+.status-pill--error {
+  background: rgba(216, 37, 59, 0.32);
+}
+/* On tap (any screen) the chip expands to reveal the "Updated Xs" label. */
+.status-pill--detail {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.25rem 0.6rem;
+}
+.status-pill--detail .status-pill__label {
+  display: inline;
 }
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: currentColor;
+  flex-shrink: 0;
 }
-.status-pill--demo {
-  background: var(--coral);
-}
-.status-pill--error {
-  background: var(--warn);
-  color: #2a1a00;
-}
-.live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.status-dot--live {
   background: #54e08a;
   box-shadow: 0 0 0 0 rgba(84, 224, 138, 0.7);
   animation: pulse 1.8s infinite;
+}
+.status-dot--refresh {
+  background: var(--warn);
+}
+.status-dot--error {
+  background: var(--red);
+}
+.status-dot--demo {
+  background: var(--coral);
 }
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(84, 224, 138, 0.6); }
@@ -1092,6 +1109,14 @@ table {
 @media (min-width: 600px) {
   .page__title {
     font-size: 2.1rem;
+  }
+  /* Roomier screens show the chip background and the "Live" label. */
+  .status-pill {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.25rem 0.6rem;
+  }
+  .status-pill__label {
+    display: inline;
   }
   .home__hero {
     padding: 2.6rem 1.5rem 2.8rem;

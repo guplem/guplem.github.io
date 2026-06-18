@@ -27,6 +27,7 @@ const state = {
   players: [],
   groups: [],
   combats: [],
+  refreshing: false,
   playersById: new Map(),
   groupsById: new Map(),
   combatsSignature: "",
@@ -39,6 +40,7 @@ let currentRoute = { name: "home", param: null };
 let lastRouteKey = null;
 let pollTimer = null;
 let tickTimer = null;
+let statusDetailTimer = null;
 
 // ---------------- small helpers ----------------
 
@@ -109,32 +111,70 @@ function updateLangButtons() {
   });
 }
 
+// Build the pill's inner structure once: a coloured state dot + a label span.
+function ensureStatusStructure(pill) {
+  if (!pill.querySelector(".status-dot")) {
+    pill.innerHTML = `<span class="status-dot" aria-hidden="true"></span><span class="status-pill__label"></span>`;
+  }
+}
+
 function updateStatus() {
   const pill = document.getElementById("status-pill");
   if (!pill) return;
-  const mode = state.usingMock ? "demo" : state.loadError ? "error" : "live";
-  // Only rebuild when the mode or language changes, so the live dot keeps pulsing across polls.
-  if (pill.dataset.mode === mode && pill.dataset.lang === state.lang) return;
-  pill.dataset.mode = mode;
-  pill.dataset.lang = state.lang;
+  ensureStatusStructure(pill);
+  const dot = pill.querySelector(".status-dot");
+  const label = pill.querySelector(".status-pill__label");
 
-  if (mode === "demo") {
-    pill.className = "status-pill status-pill--demo";
-    pill.textContent = "Demo";
-    pill.title = t(state.lang, "status.demo");
-    pill.removeAttribute("aria-label");
-  } else if (mode === "error") {
-    // A red dot is enough in the bar; the full message lives in the title/aria-label.
-    pill.className = "status-pill status-pill--error";
-    pill.innerHTML = `<span class="status-dot" aria-hidden="true"></span>`;
-    pill.title = t(state.lang, "status.error");
-    pill.setAttribute("aria-label", t(state.lang, "status.error"));
-  } else {
-    pill.className = "status-pill status-pill--live";
-    pill.removeAttribute("title");
-    pill.removeAttribute("aria-label");
-    pill.innerHTML = `<span class="live-dot" aria-hidden="true"></span>${esc(t(state.lang, "status.live"))}`;
+  // demo = no sheet; refresh = a fetch is in flight; error = last fetch failed; live = last ok.
+  const mode = state.usingMock
+    ? "demo"
+    : state.refreshing
+    ? "refresh"
+    : state.loadError
+    ? "error"
+    : "live";
+
+  dot.className = "status-dot status-dot--" + mode;
+  pill.classList.toggle("status-pill--error", mode === "error");
+
+  // Leave the label alone while the tapped "Updated Xs" detail is showing.
+  if (pill.dataset.detail !== "1") {
+    label.textContent = mode === "demo" ? "Demo" : t(state.lang, "status.live");
   }
+  pill.setAttribute(
+    "aria-label",
+    mode === "demo"
+      ? t(state.lang, "status.demo")
+      : mode === "error"
+      ? t(state.lang, "status.error")
+      : t(state.lang, "status.live")
+  );
+}
+
+// "Updated 12s ago" from the last successful refresh (used by the tap-to-reveal detail).
+function formatUpdatedAgo() {
+  if (!state.lastUpdated) return t(state.lang, "status.justNow");
+  const secs = Math.floor((Date.now() - state.lastUpdated) / 1000);
+  if (secs < 5) return t(state.lang, "status.justNow");
+  const ago = secs < 60 ? `${secs}s` : `${Math.floor(secs / 60)} min`;
+  return `${t(state.lang, "status.updated")} ${ago}`;
+}
+
+// Tapping the indicator briefly reveals how long since the last successful refresh.
+function showStatusDetail() {
+  const pill = document.getElementById("status-pill");
+  if (!pill || state.usingMock) return;
+  const label = pill.querySelector(".status-pill__label");
+  if (!label) return;
+  pill.dataset.detail = "1";
+  pill.classList.add("status-pill--detail");
+  label.textContent = formatUpdatedAgo();
+  clearTimeout(statusDetailTimer);
+  statusDetailTimer = setTimeout(() => {
+    delete pill.dataset.detail;
+    pill.classList.remove("status-pill--detail");
+    updateStatus();
+  }, 3500);
 }
 
 function setLanguage(lang) {
@@ -731,6 +771,8 @@ function combatsSignature(combats) {
 }
 
 async function refreshCombats() {
+  state.refreshing = true;
+  updateStatus(); // dot turns amber while the fetch is in flight
   try {
     const combats = await loadCombats();
     state.loadError = false;
@@ -746,6 +788,7 @@ async function refreshCombats() {
     console.warn("Liga UNDER: combats refresh failed, keeping last data.", err);
     state.loadError = true;
   }
+  state.refreshing = false;
   updateStatus();
 }
 
@@ -799,7 +842,10 @@ function wireShell() {
   window.addEventListener("resize", updateTatamiFade);
   document.addEventListener("visibilitychange", handleVisibilityChange);
 
-  // 1-second tick: keeps the countdown and the "updated Xs ago" label fresh.
+  const statusPill = document.getElementById("status-pill");
+  if (statusPill) statusPill.addEventListener("click", showStatusDetail);
+
+  // 1-second tick: keeps the Home countdown fresh.
   tickTimer = setInterval(() => {
     if (currentRoute.name === "home") fillCountdown();
   }, 1000);
