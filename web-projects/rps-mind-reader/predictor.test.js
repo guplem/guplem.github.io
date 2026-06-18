@@ -20,14 +20,14 @@ function playSeries(model, playerFn, n, random) {
   const rounds = [];
   const tally = { aiWin: 0, aiLoss: 0, tie: 0 };
   for (let i = 0; i < n; i++) {
-    const decision = decide(model, random);
+    const d = decide(model, random);
     const playerMove = playerFn(i, rounds);
-    const outcome = judge(playerMove, decision.aiMove); // player perspective
-    rounds.push({ p: playerMove, a: decision.aiMove, o: outcome, g: decision.predictedPlayerMove });
+    const outcome = judge(playerMove, d.aiMove); // player perspective
+    rounds.push({ p: playerMove, a: d.aiMove, o: outcome, g: d.predictedPlayerMove });
     if (outcome === "loss") tally.aiWin++;
     else if (outcome === "win") tally.aiLoss++;
     else tally.tie++;
-    learn(model, playerMove, decision.aiMove);
+    learn(model, playerMove, d.aiMove);
   }
   return { rounds, tally };
 }
@@ -36,9 +36,11 @@ describe("createModel", () => {
   test("starts empty", () => {
     const m = createModel();
     expect(m.n).toBe(0);
-    expect(m.freq).toEqual({ rock: 0, paper: 0, scissors: 0 });
-    expect(m.scores).toEqual({});
-    expect(m.recentPlayers).toEqual([]);
+    expect(m.llScores).toEqual({});
+    expect(m.tables).toEqual({});
+    expect(m.pHist).toEqual([]);
+    expect(m.aHist).toEqual([]);
+    expect(m.oHist).toEqual([]);
   });
 });
 
@@ -66,6 +68,27 @@ describe("decide (cold start)", () => {
   });
 });
 
+describe("prediction display invariant", () => {
+  // The UI shows "I predicted you'd throw X" and the AI plays its move. That only
+  // makes sense if the AI move always beats the announced prediction.
+  test("once confident, the AI move always beats the announced prediction", () => {
+    const m = createModel();
+    for (let i = 0; i < 5; i++) learn(m, "rock", "rock"); // a clear pattern
+    const d = decide(m, () => 0);
+    expect(d.confident).toBe(true);
+    expect(d.predictedPlayerMove).not.toBe(null);
+    expect(beats(d.aiMove, d.predictedPlayerMove)).toBe(true);
+    expect(counter(d.predictedPlayerMove)).toBe(d.aiMove);
+  });
+  test("does not mutate the model even when confident", () => {
+    const m = createModel();
+    for (let i = 0; i < 5; i++) learn(m, "rock", "rock");
+    const snapshot = JSON.stringify(m);
+    decide(m, () => 0.5);
+    expect(JSON.stringify(m)).toBe(snapshot);
+  });
+});
+
 describe("learning a constant player", () => {
   test("converges to the counter move, predicts correctly, and wins", () => {
     const m = createModel();
@@ -74,7 +97,7 @@ describe("learning a constant player", () => {
     for (const r of tail) {
       expect(r.a).toBe("paper"); // counter of rock
       expect(r.o).toBe("loss"); // player keeps losing
-      expect(r.g).toBe("rock"); // AI announced it predicted rock
+      expect(r.g).toBe("rock"); // announced prediction
     }
     expect(tally.aiWin).toBeGreaterThan(tally.aiLoss);
   });
@@ -90,6 +113,24 @@ describe("learning a cyclic player", () => {
   });
 });
 
+describe("exploiting a 50/50 opponent (expected-value play)", () => {
+  // "never repeat": after move X the player is 50/50 over the other two. No single
+  // move is "most likely", yet one AI reply is uniquely EV-optimal. A distribution-
+  // aware predictor must still net positive here.
+  test("nets positive against a never-repeat player", () => {
+    const m = createModel();
+    const pr = rng(123);
+    const antiRepeat = (i, rounds) => {
+      if (!rounds.length) return "rock";
+      const last = rounds[rounds.length - 1].p;
+      const others = MOVES.filter((x) => x !== last);
+      return others[Math.floor(pr() * 2)];
+    };
+    const { tally } = playSeries(m, antiRepeat, 150, rng(2));
+    expect(tally.aiWin).toBeGreaterThan(tally.aiLoss);
+  });
+});
+
 describe("resisting an anti-bot player", () => {
   test("is not exploited by a player that counters the AI's last move", () => {
     const m = createModel();
@@ -101,7 +142,7 @@ describe("resisting an anti-bot player", () => {
 });
 
 describe("a predictable player is beaten badly", () => {
-  test("a two-move pattern loses the large majority of decisive rounds", () => {
+  test("a short repeating pattern loses the large majority of decisive rounds", () => {
     const m = createModel();
     const pattern = ["rock", "rock", "paper"];
     const { tally } = playSeries(m, (i) => pattern[i % pattern.length], 120, rng(5));
@@ -113,69 +154,21 @@ describe("a predictable player is beaten badly", () => {
 describe("persistence via replay", () => {
   test("rebuildModel reproduces the incrementally trained model exactly", () => {
     const live = createModel();
-    const cycle = ["rock", "rock", "paper", "scissors", "paper"];
-    const { rounds } = playSeries(live, (i) => cycle[i % cycle.length], 60, rng(3));
+    const seq = ["rock", "rock", "paper", "scissors", "paper", "rock"];
+    const { rounds } = playSeries(live, (i) => seq[i % seq.length], 60, rng(3));
     const rebuilt = rebuildModel(rounds);
-    expect(rebuilt.scores).toEqual(live.scores);
-    expect(rebuilt.freq).toEqual(live.freq);
-    expect(rebuilt.markov).toEqual(live.markov);
-    expect(rebuilt.reactAI).toEqual(live.reactAI);
-    expect(rebuilt.reactOutcome).toEqual(live.reactOutcome);
-    expect(rebuilt.recentPlayers).toEqual(live.recentPlayers);
+    expect(rebuilt.llScores).toEqual(live.llScores);
+    expect(rebuilt.tables).toEqual(live.tables);
+    expect(rebuilt.pHist).toEqual(live.pHist);
+    expect(rebuilt.aHist).toEqual(live.aHist);
+    expect(rebuilt.oHist).toEqual(live.oHist);
+    expect(rebuilt.lastAI).toEqual(live.lastAI);
+    expect(rebuilt.lastOutcome).toEqual(live.lastOutcome);
     // The next decision matches too (its deterministic part).
     expect(decide(rebuilt, () => 0)).toEqual(decide(live, () => 0));
   });
-  test("rebuildModel tolerates a missing or malformed history", () => {
+  test("tolerates a missing or malformed history", () => {
     expect(rebuildModel(undefined).n).toBe(0);
     expect(rebuildModel([{ p: "rock" }, null, { p: "rock", a: "paper" }]).n).toBe(1);
-  });
-});
-
-describe("score decay", () => {
-  test("rewards the expert that would have countered, not the mirror", () => {
-    const m = createModel();
-    learn(m, "rock", "rock"); // builds freq, no scoring yet (no prior data)
-    learn(m, "rock", "rock"); // now freq predicts rock; experts get scored
-    expect(m.scores["freq:1"]).toBeGreaterThan(0); // recommending paper beats rock
-    expect(m.scores["freq:2"]).toBeLessThan(0); // recommending scissors loses to rock
-    expect(m.scores["freq:3"]).toBe(0); // recommending rock only ties
-  });
-});
-
-describe("prediction display invariant", () => {
-  // The UI shows "I predicted you'd throw X" and the AI plays its move. That
-  // only makes sense if the AI move always beats the announced prediction --
-  // including when a rotation 2/3 (second-guessing) expert is chosen.
-  test("the announced prediction is always the move the AI move beats, for every rotation", () => {
-    for (const r of [1, 2, 3]) {
-      const m = createModel();
-      m.freq = { rock: 5, paper: 0, scissors: 0 }; // freq predicts rock
-      m.scores = { ["freq:" + r]: 3 }; // make rotation r the trusted expert
-      const d = decide(m, () => 0);
-      expect(d.confident).toBe(true);
-      expect(d.expertId).toBe("freq:" + r);
-      expect(d.aiMove).toBe(shift("rock", r));
-      expect(beats(d.aiMove, d.predictedPlayerMove)).toBe(true);
-      expect(counter(d.predictedPlayerMove)).toBe(d.aiMove);
-    }
-  });
-
-  test("rotation 1 reports the base guess (predicts rock, plays paper)", () => {
-    const m = createModel();
-    m.freq = { rock: 5, paper: 0, scissors: 0 };
-    m.scores = { "freq:1": 2 };
-    const d = decide(m, () => 0);
-    expect(d.predictedPlayerMove).toBe("rock");
-    expect(d.aiMove).toBe("paper");
-  });
-
-  test("rotation 2 reports the deeper read, not the base guess", () => {
-    const m = createModel();
-    m.freq = { rock: 5, paper: 0, scissors: 0 }; // base guess would be rock
-    m.scores = { "freq:2": 2 };
-    const d = decide(m, () => 0);
-    expect(d.aiMove).toBe("scissors"); // shift(rock, 2)
-    expect(d.predictedPlayerMove).toBe("paper"); // the move scissors beats
-    expect(d.predictedPlayerMove).not.toBe("rock");
   });
 });
