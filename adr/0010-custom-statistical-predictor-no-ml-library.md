@@ -35,8 +35,10 @@ held-out set of unseen opponents. Its structure:
   player's own last 0–5 moves (a variable-order Markov / PPM family), the last
   one–two `(player, AI)` interaction pairs, the last one–two outcomes, the
   `(last move, last outcome)` win-stay/lose-shift signature, and the AI's last move
-  (for players who chase or counter the bot). Counts use Krichevsky–Trofimov add-K
-  smoothing.
+  (for players who chase or counter the bot), plus joint situational contexts —
+  `(AI move, outcome)` and `(player move, AI move, outcome)` — that capture how a
+  reacting human conditions on the whole situation. Counts use Krichevsky–Trofimov
+  add-K smoothing.
 - **Bayesian weighting by predictive log-likelihood.** Each model carries a
   recency-decayed sum of the log-likelihood it assigned to the moves that actually
   occurred; its weight is a softmax over that score. Log-likelihood is a denser,
@@ -78,6 +80,16 @@ mixture + expected-value-voting design, which scored mean net **+72%** and was m
 robust on held-out opponents. The selection was driven by `benchmark.js` plus a
 parallel, from-scratch exploration of multiple algorithm families. The high-level
 decision (custom statistical predictor, no ML library) is unchanged.
+
+A later refinement, driven by **real exported human play** (`realplay-bench.js`
+replays an exported session and also pits the predictor against a reactive model
+built from it, alongside an oracle ceiling), added the two joint situational
+contexts above. The analysis found the bot already captures most of the available
+edge against a faithful model of a real player (e.g. ~+29% net of a ~+41% oracle
+ceiling), so the joint contexts are a small, safe addition (no change to the
+general benchmark) rather than a dramatic gain — a well-mixed human inherently caps
+the achievable edge, and the bigger lever is more play data, not more model
+complexity.
 
 ## Consequences
 

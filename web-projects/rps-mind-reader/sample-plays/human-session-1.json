@@ -1,0 +1,571 @@
+{
+  "version": 1,
+  "totals": {
+    "win": 35,
+    "loss": 25,
+    "tie": 20
+  },
+  "bestStreak": 8,
+  "rounds": [
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": null,
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "scissors",
+      "o": "tie",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "rock",
+      "o": "tie",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "rock",
+      "o": "tie",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "scissors",
+      "o": "tie",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "rock",
+      "o": "tie",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "rock",
+      "o": "tie",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "scissors",
+      "o": "tie",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "scissors",
+      "o": "tie",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "rock",
+      "o": "tie",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "rock",
+      "o": "tie",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": null
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": null
+    }
+  ]
+}
