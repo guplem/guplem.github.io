@@ -601,7 +601,13 @@ body.is-home .view {
 .home__sponsors li {
   font-size: 0.95rem;
   font-weight: 600;
+}
+.home__sponsor {
   color: rgba(255, 255, 255, 0.8);
+}
+.home__sponsor:hover {
+  color: var(--blue-bright);
+  text-decoration: none;
 }
 
 /* ---------------- combat cards ---------------- */

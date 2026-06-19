@@ -298,6 +298,19 @@ function renderHome(view) {
       ? `<span class="home__title-top">${esc(titleParts[0])}</span><span class="home__title-main">${esc(titleParts.slice(1).join(" "))}</span>`
       : `<span class="home__title-main">${esc(titleParts[0])}</span>`;
 
+  // Event sponsors, each linking to its most relevant page. Opened in a new tab.
+  const sponsors = [
+    { name: "Ajuntament de Premià de Mar", url: "https://premiademar.cat/" },
+    { name: "Tkd Avellaneda", url: "https://tkdavellaneda.com/" },
+    { name: "Tkd Venzalá", url: "https://ajllavaneres.cat/fitxa.php?id=769" },
+    { name: "Daedo International", url: "https://www.daedo.com/" },
+    { name: "Institut Esteve Terradas i Illa", url: "https://www.ieti.cat/" },
+    { name: "TriunityStudios.com", url: "https://triunitystudios.com/" },
+  ];
+  const sponsorsHtml = sponsors
+    .map((s) => `<li><a class="home__sponsor" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a></li>`)
+    .join("");
+
   view.innerHTML = `
     <section class="home">
       <div class="home__hero">
@@ -336,11 +349,7 @@ function renderHome(view) {
 
         <section class="home__block">
           <h2 class="home__block-title">${tr("home.sponsorsTitle")}</h2>
-          <ul class="home__sponsors">
-            <li>Tae Kwon Do Avellaneda</li>
-            <li>Daedo</li>
-            <li>Ajuntament de Premià de Mar</li>
-          </ul>
+          <ul class="home__sponsors">${sponsorsHtml}</ul>
         </section>
       </div>
     </section>`;
