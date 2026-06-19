@@ -44,7 +44,7 @@
 //   decide(model, rng)  -- PURE: reads only the model, never the live player move.
 //   learn(model, p, a)  -- DETERMINISTIC (no Math.random / Date), so replaying the
 //                          stored rounds rebuilds the exact model (see ADR 0009).
-// Only depends on ../../game.js. Lightweight: integer count bumps + decayed-score
+// Only depends on ./game.js. Lightweight: integer count bumps + decayed-score
 // updates per round -- runs in microseconds on a phone.
 
 import { MOVES, shift, gameValue, judge } from "../../game.js";
@@ -52,10 +52,12 @@ import { MOVES, shift, gameValue, judge } from "../../game.js";
 // ---- Tunables (chosen via the benchmark battery + held-out opponents) -----
 
 const CTX_DECAY = 0.96; // exponential forgetting for the log-likelihood scores
+const CTX_DECAY_REACTIVE = 0.88; // faster forgetting for reactive-context experts (pa1/pa2/ao1/pao1/ai1)
 const LL_ETA = 1.1; // softmax sharpness over predictive accuracy
 const MAX_ORDER = 5; // deepest player-move context (variable-order Markov / PPM)
 const KT = 0.15; // Krichevsky-Trofimov-style add-K smoothing pseudo-count
 const UNIFORM_LL = Math.log(1 / 3); // log-likelihood credited to an abstaining model
+const LL_SCORE_FLOOR = UNIFORM_LL / (1 - CTX_DECAY); // minimum possible decayed LL sum (clips p0 dominance)
 
 function zeroCounts() {
   return { rock: 0, paper: 0, scissors: 0 };
@@ -96,6 +98,7 @@ for (let order = 1; order <= 2; order++) {
   CONTEXTS.push({
     id: "pa" + order,
     tableName: "pa" + order,
+    reactive: true,
     key: (m) => {
       if (m.pHist.length < order) return null;
       const parts = [];
@@ -124,12 +127,13 @@ CONTEXTS.push({
 });
 
 // AI's last move alone: players who chase or counter the bot's last throw.
-CONTEXTS.push({ id: "ai1", tableName: "ai1", key: (m) => (m.lastAI == null ? null : m.lastAI) });
+CONTEXTS.push({ id: "ai1", tableName: "ai1", reactive: true, key: (m) => (m.lastAI == null ? null : m.lastAI) });
 
 // (AI last move, last outcome): a joint reaction context.
 CONTEXTS.push({
   id: "ao1",
   tableName: "ao1",
+  reactive: true,
   key: (m) => (m.lastAI != null && m.lastOutcome != null ? m.lastAI + "|" + m.lastOutcome : null),
 });
 
@@ -139,6 +143,7 @@ CONTEXTS.push({
 CONTEXTS.push({
   id: "pao1",
   tableName: "pao1",
+  reactive: true,
   key: (m) =>
     m.pHist.length && m.lastAI != null && m.lastOutcome != null
       ? m.pHist[m.pHist.length - 1] + "|" + m.lastAI + "|" + m.lastOutcome
@@ -206,7 +211,11 @@ function aggregate(model) {
   for (const c of CONTEXTS) {
     const dist = distFromCounts(getCounts(model, c.tableName, c.key(model)));
     if (!dist) continue;
-    const w = Math.exp(LL_ETA * (model.llScores[c.id] || 0));
+    const floor = (c.reactive ? CTX_DECAY_REACTIVE : CTX_DECAY) === CTX_DECAY_REACTIVE 
+      ? UNIFORM_LL / (1 - CTX_DECAY_REACTIVE) 
+      : LL_SCORE_FLOOR;
+    const s = Math.max(floor, model.llScores[c.id] || 0);
+    const w = Math.exp(LL_ETA * s);
     votes[bestResponse(dist)] += w;
     mix.rock += w * dist.rock;
     mix.paper += w * dist.paper;
@@ -255,7 +264,8 @@ export function learn(model, playerMove, aiMove) {
   for (const c of CONTEXTS) {
     const dist = distFromCounts(getCounts(model, c.tableName, c.key(model)));
     const ll = dist == null ? UNIFORM_LL : Math.log(dist[playerMove]);
-    model.llScores[c.id] = CTX_DECAY * (model.llScores[c.id] || 0) + ll;
+    const decay = c.reactive ? CTX_DECAY_REACTIVE : CTX_DECAY;
+    model.llScores[c.id] = decay * (model.llScores[c.id] || 0) + ll;
   }
 
   for (const c of CONTEXTS) {

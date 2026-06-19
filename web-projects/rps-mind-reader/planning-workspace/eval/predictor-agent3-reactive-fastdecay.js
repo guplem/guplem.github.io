@@ -44,18 +44,19 @@
 //   decide(model, rng)  -- PURE: reads only the model, never the live player move.
 //   learn(model, p, a)  -- DETERMINISTIC (no Math.random / Date), so replaying the
 //                          stored rounds rebuilds the exact model (see ADR 0009).
-// Only depends on ../../game.js. Lightweight: integer count bumps + decayed-score
+// Only depends on ./game.js. Lightweight: integer count bumps + decayed-score
 // updates per round -- runs in microseconds on a phone.
 
 import { MOVES, shift, gameValue, judge } from "../../game.js";
 
 // ---- Tunables (chosen via the benchmark battery + held-out opponents) -----
 
-const CTX_DECAY = 0.96; // exponential forgetting for the log-likelihood scores
+const CTX_DECAY = 0.90; // FASTER decay for reactive adaptation // exponential forgetting for the log-likelihood scores
 const LL_ETA = 1.1; // softmax sharpness over predictive accuracy
 const MAX_ORDER = 5; // deepest player-move context (variable-order Markov / PPM)
 const KT = 0.15; // Krichevsky-Trofimov-style add-K smoothing pseudo-count
 const UNIFORM_LL = Math.log(1 / 3); // log-likelihood credited to an abstaining model
+const LL_SCORE_FLOOR = UNIFORM_LL / (1 - CTX_DECAY); // minimum possible decayed LL sum (clips p0 dominance)
 
 function zeroCounts() {
   return { rock: 0, paper: 0, scissors: 0 };
@@ -206,7 +207,8 @@ function aggregate(model) {
   for (const c of CONTEXTS) {
     const dist = distFromCounts(getCounts(model, c.tableName, c.key(model)));
     if (!dist) continue;
-    const w = Math.exp(LL_ETA * (model.llScores[c.id] || 0));
+    const s = Math.max(LL_SCORE_FLOOR, model.llScores[c.id] || 0);
+    const w = Math.exp(LL_ETA * s);
     votes[bestResponse(dist)] += w;
     mix.rock += w * dist.rock;
     mix.paper += w * dist.paper;
