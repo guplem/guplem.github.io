@@ -1,0 +1,651 @@
+{
+  "version": 1,
+  "totals": {
+    "win": 16,
+    "loss": 65,
+    "tie": 10
+  },
+  "bestStreak": 2,
+  "rounds": [
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": null,
+      "c": null
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.793103448275862
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.8159409988788747
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.8776832726162836
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.9130428331186065
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.9325060039397349
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": 0.9448952180446999
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.8168865427570882
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.822266308412049
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": 0.8406378780429898
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.7831374515663713
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": 0.762636218388513
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": 0.8183129378139993
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.669878663622087
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.6595605809544244
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.6894197221003029
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.7155033705750983
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.7378030966605293
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.756295344137178
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.7736219879161595
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.7884361283631817
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.8014934135541436
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": 0.8131520955625017
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.6574423116264021
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.7426631971316636
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.7589119680830908
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.7912091730826596
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.8006057578230183
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.8091955954162303
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.8171082289579172
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": 0.8244104001113977
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": 0.7264844232008351
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": 0.6952898030117887
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": 0.7862595978066615
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.427245936549483
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": 0.5477592986193381
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.3270586189812219
+    },
+    {
+      "p": "scissors",
+      "a": "scissors",
+      "o": "tie",
+      "g": "paper",
+      "c": 0.6963731045939914
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.6673983254076364
+    },
+    {
+      "p": "scissors",
+      "a": "scissors",
+      "o": "tie",
+      "g": "paper",
+      "c": 0.5443363743380948
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.7352215195734932
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.6737525386979728
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.7325695907523765
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.7781115404520611
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.8119748752256434
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": 0.8366252178489048
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": 0.6402063286875763
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.7000540567113815
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": 0.4361654444188863
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.8572218989904534
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.7880452724278018
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.8734513559533726
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.9099115011446662
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.9304130764564795
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.9433129052273859
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": 0.9521647682784568
+    },
+    {
+      "p": "paper",
+      "a": "paper",
+      "o": "tie",
+      "g": "rock",
+      "c": 0.7483093908654302
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": 0.428194964690404
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.8769902512423113
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.8169742178605802
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": 0.8381643677217966
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": 0.7594462520816858
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.5865011451790886
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": 0.786072577975025
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.6742018918058627
+    },
+    {
+      "p": "paper",
+      "a": "rock",
+      "o": "win",
+      "g": "scissors",
+      "c": 0.596697794054449
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.7993625381242805
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": 0.8281234305494148
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.6210457023880902
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": 0.6863398616750966
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.7686778245834552
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.7416249949726159
+    },
+    {
+      "p": "rock",
+      "a": "scissors",
+      "o": "win",
+      "g": "paper",
+      "c": 0.6884887414192841
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.6307743746496002
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.7768283400095012
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.38126026236621074
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.7854491443321426
+    },
+    {
+      "p": "scissors",
+      "a": "paper",
+      "o": "win",
+      "g": "rock",
+      "c": 0.6872615151135082
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.8763844379193301
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.9111658504070891
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.876388048949168
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.7920363164950137
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.7930008945354754
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.9128906956916707
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.8773900783756468
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.8775255694927555
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.9325522915791696
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.9130044798085104
+    },
+    {
+      "p": "paper",
+      "a": "scissors",
+      "o": "loss",
+      "g": "paper",
+      "c": 0.9130360584849277
+    },
+    {
+      "p": "rock",
+      "a": "paper",
+      "o": "loss",
+      "g": "rock",
+      "c": 0.944944084859703
+    },
+    {
+      "p": "scissors",
+      "a": "rock",
+      "o": "loss",
+      "g": "scissors",
+      "c": 0.9325705864205078
+    }
+  ],
+  "_synthetic": true,
+  "_seed": 42,
+  "_description": "Synthetic 3-phase switcher: rock-bias(30) -> scissors/paper-bias(30) -> beat-last-AI(31)"
+}
