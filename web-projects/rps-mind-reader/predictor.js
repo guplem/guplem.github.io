@@ -177,28 +177,38 @@ export function randomMove(rng = Math.random) {
 }
 
 // Weighted vote over candidate AI moves: every context that has data votes (with
-// its softmax weight) for the EV-best response to its own forecast. Returns the
-// vote tallies, or null when no context has data yet (cold start).
+// its softmax weight) for the EV-best response to its own forecast. Also returns
+// the weight-blended player-move distribution (used only for a display confidence).
+// Returns null when no context has data yet (cold start).
 function aggregate(model) {
   const votes = zeroCounts();
-  let any = false;
+  const mix = zeroCounts();
+  let totalW = 0;
   for (const c of CONTEXTS) {
     const dist = distFromCounts(getCounts(model, c.tableName, c.key(model)));
     if (!dist) continue;
     const w = Math.exp(LL_ETA * (model.llScores[c.id] || 0));
     votes[bestResponse(dist)] += w;
-    any = true;
+    mix.rock += w * dist.rock;
+    mix.paper += w * dist.paper;
+    mix.scissors += w * dist.scissors;
+    totalW += w;
   }
-  return any ? votes : null;
+  if (totalW <= 0) return null;
+  mix.rock /= totalW;
+  mix.paper /= totalW;
+  mix.scissors /= totalW;
+  return { votes, mix };
 }
 
 // Decide the AI move. PURE: never mutates the model, never sees the live move.
 export function decide(model, rng = Math.random) {
-  const votes = aggregate(model);
-  if (!votes) {
+  const agg = aggregate(model);
+  if (!agg) {
     // Cold start: no context has data yet -> play uniformly at random.
-    return { aiMove: randomMove(rng), predictedPlayerMove: null, confident: false };
+    return { aiMove: randomMove(rng), predictedPlayerMove: null, confident: false, confidence: null };
   }
+  const { votes, mix } = agg;
   let best = MOVES[0];
   let bestV = -Infinity;
   for (const m of MOVES) {
@@ -208,8 +218,11 @@ export function decide(model, rng = Math.random) {
     }
   }
   // Report the move the AI actually counters, so the UI's "I predicted X" always
-  // matches the move played: aiMove === counter(predictedPlayerMove).
-  return { aiMove: best, predictedPlayerMove: shift(best, 2), confident: true };
+  // matches the move played: aiMove === counter(predictedPlayerMove). The
+  // confidence is the blended probability we assign to that predicted move
+  // (display only -- the move played is the vote winner regardless).
+  const predictedPlayerMove = shift(best, 2);
+  return { aiMove: best, predictedPlayerMove, confident: true, confidence: mix[predictedPlayerMove] };
 }
 
 // Feed a revealed round back in. Mutates + returns the model. DETERMINISTIC so that

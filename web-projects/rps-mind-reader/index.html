@@ -10,10 +10,7 @@
 <body>
   <header>
     <h1>RPS Mind Reader</h1>
-    <p class="subtitle">Rock, paper, scissors against an AI that learns your habits. Can you stay unpredictable?</p>
-    <nav class="topnav">
-      <a class="nav-link" href="stats.html">📊 View statistics →</a>
-    </nav>
+    <p class="subtitle" id="intro-sub">Rock, paper, scissors against an AI that learns your habits. Can you stay unpredictable?</p>
   </header>
 
   <main>
@@ -43,6 +40,10 @@
       <button class="move-btn" data-move="scissors" type="button" aria-label="Scissors (S)">
         <span class="move-emoji" aria-hidden="true">✌️</span><span class="move-name">Scissors</span>
       </button>
+    </section>
+
+    <section class="pills-section" id="pills-section" aria-label="Your recent throws (newest first)" hidden>
+      <ol class="pills" id="pills"></ol>
     </section>
 
     <section class="stats">
@@ -75,12 +76,17 @@
         <span id="streak">Streak 0 · Best 0</span>
         <span id="total">0 rounds</span>
       </div>
+
+      <a class="nav-link stats-link" href="stats.html">📊 View statistics →</a>
     </section>
 
     <section class="history-section">
       <div class="history-head">
         <h2>Recent rounds</h2>
-        <button class="ghost-button" id="reset" type="button">Reset</button>
+        <div class="history-actions">
+          <button class="ghost-button" id="export" type="button" title="Download your match history as a JSON file">Export</button>
+          <button class="ghost-button" id="reset" type="button">Reset</button>
+        </div>
       </div>
       <ol class="history" id="history"></ol>
       <p class="empty-hint" id="empty-hint">
@@ -90,7 +96,7 @@
     </section>
   </main>
 
-  <footer>
+  <footer id="intro-footer">
     <p>The AI commits its move from your past rounds <em>before</em> you reveal — it predicts, it doesn't peek. Everything is stored locally with no server.</p>
   </footer>
 
