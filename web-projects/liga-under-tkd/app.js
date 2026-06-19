@@ -457,23 +457,43 @@ function fillFields() {
     bar.scrollLeft = prevScroll;
   }
 
-  // Content: the selected tatami only, or every tatami stacked when no filter is active.
-  const toShow = selected ? [selected] : fields;
-  content.innerHTML = toShow
-    .map((f) => {
-      const cards = f.combats
-        .map((c) => {
-          const ribbon = c.isCurrent ? "current" : c.isNext ? "next" : null;
-          return combatCard(c, { showField: false, ribbon });
-        })
-        .join("");
-      return `
+  // Content: group by temporal status (not by tatami). The selected tatami filters the source
+  // combats first; otherwise all tatamis are pooled. We keep fieldRunningOrder's per-tatami
+  // isNext marker so "Up next" holds the next combat of each tatami. Each card shows its tatami
+  // (showField: true) since cards are no longer under a per-tatami heading.
+  const sourceFields = selected ? [selected] : fields;
+  const all = sourceFields.flatMap((f) => f.combats);
+
+  const buckets = { ongoing: [], next: [], upcoming: [], past: [], cancelled: [] };
+  for (const c of all) {
+    if (c.status === STATUS.ONGOING) buckets.ongoing.push(c);
+    else if (c.status === STATUS.FINISHED) buckets.past.push(c);
+    else if (c.status === STATUS.CANCELLED) buckets.cancelled.push(c);
+    else if (c.isNext) buckets.next.push(c); // a Scheduled combat that is next up on its tatami
+    else buckets.upcoming.push(c); // the remaining Scheduled combats
+  }
+
+  const groups = [
+    { title: tr("fields.current"), combats: buckets.ongoing },
+    { title: tr("fields.next"), combats: buckets.next },
+    { title: tr("fields.statusUpcoming"), combats: buckets.upcoming },
+    { title: tr("fields.statusPast"), combats: buckets.past },
+    { title: tr("fields.statusCancelled"), combats: buckets.cancelled },
+  ].filter((g) => g.combats.length);
+
+  content.innerHTML = groups.length
+    ? groups
+        .map(
+          (g) => `
         <div class="field-block">
-          <h2 class="field-block__title">${esc(fieldName(f))}</h2>
-          <div class="combat-list">${cards || emptyState(tr("fields.empty"))}</div>
-        </div>`;
-    })
-    .join("");
+          <h2 class="field-block__title">${g.title}</h2>
+          <div class="combat-list">${g.combats
+            .map((c) => combatCard(c, { showField: true, ribbon: c.isCurrent ? "current" : c.isNext ? "next" : null }))
+            .join("")}</div>
+        </div>`
+        )
+        .join("")
+    : emptyState(tr(selected ? "fields.empty" : "fields.emptyAll"));
 
   updateTatamiFade();
 }
