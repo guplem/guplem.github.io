@@ -76,7 +76,7 @@ describe("applyRound", () => {
     const s1 = applyRound(s0, "rock", "scissors", "rock"); // player win
     expect(s1.totals).toEqual({ win: 1, loss: 0, tie: 0 });
     expect(s1.rounds).toHaveLength(1);
-    expect(s1.rounds[0]).toEqual({ p: "rock", a: "scissors", o: "win", g: "rock" });
+    expect(s1.rounds[0]).toEqual({ p: "rock", a: "scissors", o: "win", g: "rock", c: null });
     expect(s0.totals).toEqual({ win: 0, loss: 0, tie: 0 }); // original untouched
   });
   test("tracks losses and ties", () => {
@@ -91,6 +91,13 @@ describe("applyRound", () => {
     expect(s.rounds[0].g).toBe(null);
     s = applyRound(s, "rock", "rock", "banana"); // invalid prediction
     expect(s.rounds[1].g).toBe(null);
+  });
+  test("stores the prediction confidence when a number is provided, else null", () => {
+    let s = emptyState();
+    s = applyRound(s, "rock", "scissors", "rock", 0.62);
+    expect(s.rounds[0].c).toBe(0.62);
+    s = applyRound(s, "rock", "rock", "rock"); // no confidence passed
+    expect(s.rounds[1].c).toBe(null);
   });
   test("updates best streak and current streak", () => {
     let s = emptyState();
@@ -141,7 +148,7 @@ describe("serialize / deserialize", () => {
       totals: { win: "5", loss: -3, tie: 2 }, // "5" not a number -> 0; -3 -> 0
       bestStreak: -1,
       rounds: [
-        { p: "rock", a: "paper", o: "loss", g: "rock" },
+        { p: "rock", a: "paper", o: "loss", g: "rock", c: 5 }, // c out of range -> null
         { p: "banana", a: "paper", o: "loss" }, // invalid move -> dropped
         null,
       ],
@@ -150,7 +157,7 @@ describe("serialize / deserialize", () => {
     expect(clean.totals).toEqual({ win: 0, loss: 0, tie: 2 });
     expect(clean.bestStreak).toBe(0);
     expect(clean.rounds).toHaveLength(1);
-    expect(clean.rounds[0]).toEqual({ p: "rock", a: "paper", o: "loss", g: "rock" });
+    expect(clean.rounds[0]).toEqual({ p: "rock", a: "paper", o: "loss", g: "rock", c: null });
   });
 });
 

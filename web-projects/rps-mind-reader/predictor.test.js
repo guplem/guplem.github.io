@@ -59,6 +59,7 @@ describe("decide (cold start)", () => {
     expect(MOVES).toContain(d.aiMove);
     expect(d.predictedPlayerMove).toBe(null);
     expect(d.confident).toBe(false);
+    expect(d.confidence).toBe(null);
   });
   test("does not mutate the model", () => {
     const m = createModel();
@@ -79,6 +80,9 @@ describe("prediction display invariant", () => {
     expect(d.predictedPlayerMove).not.toBe(null);
     expect(beats(d.aiMove, d.predictedPlayerMove)).toBe(true);
     expect(counter(d.predictedPlayerMove)).toBe(d.aiMove);
+    expect(typeof d.confidence).toBe("number");
+    expect(d.confidence).toBeGreaterThan(0);
+    expect(d.confidence).toBeLessThanOrEqual(1);
   });
   test("does not mutate the model even when confident", () => {
     const m = createModel();

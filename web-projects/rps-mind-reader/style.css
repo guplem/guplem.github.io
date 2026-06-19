@@ -311,6 +311,11 @@ main {
   gap: 1rem;
 }
 
+.history-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .history-head h2 {
   font-size: 1rem;
   font-weight: 600;
@@ -334,6 +339,12 @@ main {
 
 @media (hover: hover) {
   .ghost-button:hover {
+    background: var(--color-surface-strong);
+    border-color: rgba(45, 212, 191, 0.4);
+    color: var(--color-accent-strong);
+  }
+  /* Reset is destructive -- keep its red hover. */
+  #reset:hover {
     background: rgba(239, 68, 68, 0.15);
     border-color: rgba(239, 68, 68, 0.4);
     color: #fca5a5;
@@ -349,14 +360,25 @@ main {
 
 .round {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.3rem;
   padding: 0.5rem 0.9rem;
   border-radius: var(--radius);
   border: 1px solid var(--color-border);
   border-left-width: 4px;
   background: var(--color-surface);
   animation: slideIn 0.25s var(--transition);
+}
+
+.round-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.round-pred {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
 }
 
 @keyframes slideIn {
@@ -392,6 +414,48 @@ main {
 .round--win .round-outcome { color: var(--win); }
 .round--loss .round-outcome { color: var(--loss); }
 .round--tie .round-outcome { color: var(--tie); }
+
+/* --- Recent-throw pills (horizontally scrollable quick reference) --- */
+
+.pills-section[hidden] { display: none; }
+
+.pills {
+  list-style: none;
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.15rem 0.1rem 0.4rem;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pill {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 3px;
+  background: var(--color-surface);
+  line-height: 1;
+}
+
+.pill--win { border-bottom-color: var(--win); background: var(--win-soft); }
+.pill--loss { border-bottom-color: var(--loss); background: var(--loss-soft); }
+.pill--tie { border-bottom-color: var(--tie); background: var(--tie-soft); }
+
+.pill-you { font-size: 1.2rem; }
+.pill-ai { font-size: 0.85rem; opacity: 0.55; }
+
+/* --- "View statistics" link relocated to the bottom of the stats card --- */
+
+.stats-link {
+  align-self: center;
+  margin-top: 0.25rem;
+}
 
 .empty-hint {
   color: var(--color-text-muted);

@@ -5,10 +5,12 @@ Rock-paper-scissors against an AI that learns your habits and tries to beat you.
 ## Features
 
 - **An opponent that learns** — a lightweight prediction engine studies your past moves and plays the counter to whatever it thinks you'll throw next. It starts near random and sharpens as it gathers data.
-- **It predicts, it doesn't cheat** — the AI commits its move from your history *before* you reveal yours. Each round it even tells you what it guessed (e.g. "I predicted you'd throw Rock").
+- **It predicts, and shows its hand** — the AI commits its move from your history *before* you reveal yours, and each round tells you what it predicted and how confident it was (e.g. "I predicted you'd throw Rock (62%)").
 - **Full stats** — separate Wins / Losses / Ties counters with percentages, a three-segment progress bar, your win rate, and current/best win streaks.
-- **Statistics page** — a dedicated page (linked from the game) that charts your wins, losses and ties over time with a hand-drawn **SVG line chart** (no charting library), plus win rate, recent form, best/worst streaks, and a breakdown of how predictable your move choices have been.
-- **Colour-coded history** — recent rounds listed newest-first, green for wins, red for losses, grey for ties, showing both hands.
+- **Quick-reference pills** — a horizontally-scrollable strip of your recent throws (you vs AI, colour-coded by outcome) sits right under the buttons, so you can watch your own patterns while you pick.
+- **Statistics page** — a dedicated page (linked from the stats card) that charts your wins, losses and ties over time with a hand-drawn **SVG line chart** (no charting library), plus win rate, recent form, best/worst streaks, and a breakdown of how predictable your move choices have been.
+- **Colour-coded history** — recent rounds listed newest-first (green win / red loss / grey tie), each showing both hands plus what the AI predicted and its confidence that round.
+- **Export your plays** — download your full match history as a JSON file, handy for sharing or offline analysis.
 - **Remembers you** — your history and the AI's memory are saved on your device, so the bot keeps learning across visits. A **Reset** button wipes everything.
 - **Plays everywhere** — responsive layout for phones and desktops, with `R` / `P` / `S` (or `1` / `2` / `3`) keyboard shortcuts.
 

@@ -63,13 +63,14 @@ export function currentStreak(state) {
 }
 
 // Apply a revealed round. Returns a NEW state (does not mutate the input).
-export function applyRound(state, playerMove, aiMove, predicted = null) {
+export function applyRound(state, playerMove, aiMove, predicted = null, confidence = null) {
   const outcome = judge(playerMove, aiMove);
   const round = {
     p: playerMove,
     a: aiMove,
     o: outcome,
     g: MOVES.includes(predicted) ? predicted : null,
+    c: typeof confidence === "number" && isFinite(confidence) ? confidence : null,
   };
   const rounds = state.rounds.concat([round]);
   while (rounds.length > MAX_ROUNDS) rounds.shift();
@@ -122,7 +123,13 @@ export function normalizeState(obj) {
   const rounds = Array.isArray(obj.rounds)
     ? obj.rounds
         .filter(isValidRound)
-        .map((r) => ({ p: r.p, a: r.a, o: r.o, g: MOVES.includes(r.g) ? r.g : null }))
+        .map((r) => ({
+          p: r.p,
+          a: r.a,
+          o: r.o,
+          g: MOVES.includes(r.g) ? r.g : null,
+          c: typeof r.c === "number" && isFinite(r.c) && r.c >= 0 && r.c <= 1 ? r.c : null,
+        }))
         .slice(-MAX_ROUNDS)
     : [];
   return {
