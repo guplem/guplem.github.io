@@ -20,8 +20,9 @@ Instead of a heavy neural network, the bot is a small **Bayesian mixture of
 variable-order context models**. Several cheap models each predict your *next-move
 distribution* from a different slice of history — your own recent moves (a
 variable-order **Markov / PPM** family), recent `(you, AI)` exchanges, recent
-outcomes (win-stay/lose-shift), and the AI's last move (for when you chase or
-counter it). Each model is weighted by how well it has *predicted you lately* (a
+outcomes (win-stay/lose-shift), the AI's last move (for when you chase or counter
+it), and joint situational patterns (your move × the AI's move × the outcome). Each
+model is weighted by how well it has *predicted you lately* (a
 recency-decayed log-likelihood, softmaxed), and every model votes for the move with
 the best **expected value** against its own forecast. Reasoning over the whole
 distribution — not just the single most likely move — is what lets it punish even
@@ -82,6 +83,12 @@ bun benchmark.js
 It also benchmarks a `candidate.js` alongside the current `predictor.js` if one is
 present, so a new algorithm can be compared head-to-head before replacing the
 incumbent.
+
+`realplay-bench.js` measures the predictor against **real exported human play**:
+drop a session exported via the game's *Export* button into `sample-plays/` (or
+pass a path) and run `bun realplay-bench.js`. It reports how the bot fares against
+your fixed sequence, against a reactive model built from your play, and the oracle
+ceiling — the most edge any predictor could extract from that style.
 
 ## Tech Stack
 

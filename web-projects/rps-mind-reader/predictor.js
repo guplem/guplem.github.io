@@ -126,6 +126,25 @@ CONTEXTS.push({
 // AI's last move alone: players who chase or counter the bot's last throw.
 CONTEXTS.push({ id: "ai1", tableName: "ai1", key: (m) => (m.lastAI == null ? null : m.lastAI) });
 
+// (AI last move, last outcome): a joint reaction context.
+CONTEXTS.push({
+  id: "ao1",
+  tableName: "ao1",
+  key: (m) => (m.lastAI != null && m.lastOutcome != null ? m.lastAI + "|" + m.lastOutcome : null),
+});
+
+// (last player move, AI last move, last outcome): the full situational context a
+// reacting human conditions on. Sparse (27 keys); the log-likelihood weighting
+// down-weights it until it has earned its keep, so it never hurts general play.
+CONTEXTS.push({
+  id: "pao1",
+  tableName: "pao1",
+  key: (m) =>
+    m.pHist.length && m.lastAI != null && m.lastOutcome != null
+      ? m.pHist[m.pHist.length - 1] + "|" + m.lastAI + "|" + m.lastOutcome
+      : null,
+});
+
 // ---- Estimation helpers ---------------------------------------------------
 
 function getCounts(model, tableName, key) {
