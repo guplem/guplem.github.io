@@ -1,6 +1,7 @@
 import { describe, test, expect } from "bun:test";
 import {
   cumulativeSeries,
+  confidenceSeries,
   moveDistribution,
   streaks,
   rollingWinRate,
@@ -36,6 +37,24 @@ describe("cumulativeSeries", () => {
   test("handles an empty history", () => {
     const s = cumulativeSeries([]);
     expect(s).toEqual({ wins: [], losses: [], ties: [], length: 0 });
+  });
+});
+
+describe("confidenceSeries", () => {
+  const round = (c) => ({ p: "rock", a: "rock", o: "tie", g: null, c });
+
+  test("extracts numeric confidence values in chronological order", () => {
+    expect(confidenceSeries([round(0.4), round(0.55), round(0.7)])).toEqual([0.4, 0.55, 0.7]);
+  });
+  test("skips rounds with no recorded confidence", () => {
+    const r = [round(null), round(0.6), { p: "rock", a: "rock", o: "tie", g: null }, round(0.8)];
+    expect(confidenceSeries(r)).toEqual([0.6, 0.8]);
+  });
+  test("is empty when no round has confidence", () => {
+    expect(confidenceSeries([round(null), round(null)])).toEqual([]);
+  });
+  test("handles an empty history", () => {
+    expect(confidenceSeries([])).toEqual([]);
   });
 });
 

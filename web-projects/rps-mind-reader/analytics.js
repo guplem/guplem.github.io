@@ -1,6 +1,7 @@
 // Pure analytics over a list of played rounds. No DOM access -- safe to import
 // from tests. Feeds the statistics page (stats.js). A "round" is the stored shape
-// { p: playerMove, a: aiMove, o: "win"|"loss"|"tie", g: predicted|null }.
+// { p: playerMove, a: aiMove, o: "win"|"loss"|"tie", g: predicted|null,
+//   c: confidence|null } (c is the AI's predicted-move probability, in [0,1]).
 
 import { MOVES } from "./game.js";
 
@@ -22,6 +23,19 @@ export function cumulativeSeries(rounds) {
     ties.push(t);
   }
   return { wins, losses, ties, length: rounds.length };
+}
+
+// Per-round AI prediction confidence, in chronological order. Rounds with no
+// recorded confidence -- cold-start rounds, or rounds played before confidence was
+// tracked -- are skipped, so this is the sequence of confidences the AI actually
+// committed to. Values in [0, 1]. The natural input for a "confidence over time"
+// line chart.
+export function confidenceSeries(rounds) {
+  const values = [];
+  for (const r of rounds) {
+    if (typeof r.c === "number" && isFinite(r.c)) values.push(r.c);
+  }
+  return values;
 }
 
 // How often the player throws each move, with the most frequent one. Reveals how

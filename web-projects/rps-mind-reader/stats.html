@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Your rock-paper-scissors statistics: win/loss/tie trends over time, streaks, and how predictable your moves have been." />
+  <meta name="description" content="Your rock-paper-scissors statistics: win/loss/tie trends over time, the AI's prediction confidence over time, streaks, and how predictable your moves have been." />
   <title>RPS Mind Reader · Statistics</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -35,6 +35,17 @@
         </div>
         <div class="chart-wrap" id="chart-wrap"></div>
         <p class="panel-note" id="chart-note"></p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Prediction confidence over time</h2>
+          <div class="legend">
+            <span class="legend-item legend--confidence">AI confidence</span>
+          </div>
+        </div>
+        <div class="chart-wrap" id="conf-chart-wrap"></div>
+        <p class="panel-note" id="conf-chart-note"></p>
       </section>
 
       <section class="panel">
