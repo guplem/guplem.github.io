@@ -7,6 +7,7 @@ import { MOVES, percentages, totalsCount } from "./game.js";
 import { loadState } from "./storage.js";
 import {
   cumulativeSeries,
+  confidenceSeries,
   moveDistribution,
   streaks,
   rollingWinRate,
@@ -135,6 +136,56 @@ function linePath(points, kind) {
   return svg("polyline", { points: d, class: "chart-line chart-line--" + kind });
 }
 
+// ---- Confidence chart ----------------------------------------------------
+// How sure the AI was, round by round. The y axis is a fixed 0–100% scale (unlike
+// the win/loss/tie chart, whose y axis grows with the counts), so the height is
+// directly readable as a probability.
+
+function renderConfidenceChart() {
+  const conf = confidenceSeries(state.rounds);
+  const wrap = document.getElementById("conf-chart-wrap");
+  const note = document.getElementById("conf-chart-note");
+  wrap.textContent = "";
+
+  if (conf.length === 0) {
+    note.textContent =
+      "No confidence recorded yet — play a few rounds and the AI's per-round confidence will chart here.";
+    return;
+  }
+
+  const chart = svg("svg", {
+    viewBox: `0 0 ${CHART_W} ${CHART_H}`,
+    class: "chart",
+    role: "img",
+    "aria-label": `AI prediction confidence over ${conf.length} rounds, latest ${pct(conf[conf.length - 1])}`,
+  });
+
+  // Horizontal gridlines + y labels at 0%, 50%, 100% (confidence is in [0, 1]).
+  for (const frac of [0, 0.5, 1]) {
+    const y = PAD + (CHART_H - PAD * 2) * (1 - frac);
+    chart.append(svg("line", { x1: PAD, y1: y, x2: CHART_W - PAD, y2: y, class: "chart-grid" }));
+    const yLabel = svg("text", { x: PAD - 8, y: y + 4, class: "chart-axis", "text-anchor": "end" });
+    yLabel.textContent = pct(frac);
+    chart.append(yLabel);
+  }
+
+  const xText = (x, anchor, t) => {
+    const node = svg("text", { x, y: CHART_H - PAD + 20, class: "chart-axis", "text-anchor": anchor });
+    node.textContent = t;
+    chart.append(node);
+  };
+  xText(PAD, "start", "oldest");
+  xText(CHART_W - PAD, "end", "latest");
+
+  const opts = { width: CHART_W, height: CHART_H, padding: PAD, maxY: 1, minY: 0 };
+  chart.append(linePath(seriesToPoints(conf, opts), "confidence"));
+
+  wrap.append(chart);
+
+  const avg = conf.reduce((s, v) => s + v, 0) / conf.length;
+  note.textContent = `Across ${conf.length} predicted round${conf.length === 1 ? "" : "s"} · average confidence ${pct(avg)}.`;
+}
+
 // ---- Outcome split -------------------------------------------------------
 
 function renderSplit() {
@@ -200,6 +251,7 @@ function init() {
   if (!hasData) return;
   renderCards();
   renderChart();
+  renderConfidenceChart();
   renderSplit();
   renderMoveDistribution();
 }

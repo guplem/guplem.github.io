@@ -631,6 +631,7 @@ footer p {
 .legend--win { color: var(--win); }
 .legend--tie { color: var(--tie); }
 .legend--loss { color: var(--loss); }
+.legend--confidence { color: var(--color-accent); }
 
 .chart-wrap { width: 100%; }
 
@@ -662,6 +663,7 @@ footer p {
 .chart-line--win { stroke: var(--win); }
 .chart-line--tie { stroke: var(--tie); }
 .chart-line--loss { stroke: var(--loss); }
+.chart-line--confidence { stroke: var(--color-accent); }
 
 .split-legend {
   display: flex;
