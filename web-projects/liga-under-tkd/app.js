@@ -12,9 +12,11 @@ import {
   sideOf,
   opponentId,
   standingsForGroup,
+  combatsInGroup,
   crossTable,
   matrixLabels,
   fieldRunningOrder,
+  byCombatOrder,
   athleteFixtures,
   athleteSummary,
   searchPlayers,
@@ -520,12 +522,27 @@ function fillGroup(groupId) {
   const standings = standingsForGroup(state.players, state.combats, groupId);
   const anyFinished = standings.some((r) => r.played > 0);
 
+  // Every combat in the group, in running order (field, then combat number), past and future.
+  const groupCombats = combatsInGroup(state.combats, state.players, groupId).slice().sort((a, b) => {
+    const af = a.field === null ? Infinity : a.field;
+    const bf = b.field === null ? Infinity : b.field;
+    if (af !== bf) return af - bf;
+    return byCombatOrder(a, b);
+  });
+  const combatsListHtml = groupCombats.length
+    ? `<div class="combat-list">${groupCombats.map((c) => combatCard(c, { showField: true })).join("")}</div>`
+    : `<p class="note">${tr("groups.noCombats")}</p>`;
+
   container.innerHTML = `
     <p class="group-classification">${esc(groupLabel(group))}</p>
     <div class="card">
       <h2 class="card__title">${tr("groups.standings")}</h2>
       ${anyFinished ? "" : `<p class="note">${tr("groups.noFinished")}</p>`}
       ${standingsTable(standings)}
+    </div>
+    <div class="card">
+      <h2 class="card__title">${tr("groups.allCombats")}</h2>
+      ${combatsListHtml}
     </div>
     <div class="card">
       <h2 class="card__title">${tr("groups.matrix")}</h2>
