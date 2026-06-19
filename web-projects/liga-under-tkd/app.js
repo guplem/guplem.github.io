@@ -321,7 +321,7 @@ function renderHome(view) {
           <p class="home__tagline">${tr("brand.tagline")}</p>
           <div class="home__meta">
             <span class="home__date">${tr("home.date")}</span>
-            <span class="home__place">📍 ${tr("home.place")}</span>
+            <a class="home__place" href="https://maps.app.goo.gl/uXGAjDgoDqbbKrjf7" target="_blank" rel="noopener">📍 ${tr("home.place")}</a>
           </div>
           <a class="btn btn--hero" href="#/fields">${tr("home.cta")}</a>
         </div>
