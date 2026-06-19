@@ -709,9 +709,26 @@ function fillAthleteProfile(playerId) {
     ? combatCard(fixtures.nextCombat, { showField: true })
     : `<p class="note">${tr("athlete.noNext")}</p>`;
 
+  // The remaining upcoming combats, after the one already shown as "Next combat".
+  const upcomingExtra = fixtures.upcoming.filter((c) => c !== fixtures.nextCombat);
+  const upcomingHtml = upcomingExtra.length
+    ? `<div class="card">
+      <h2 class="card__title">${tr("athlete.upcomingCombats")}</h2>
+      <div class="combat-list">${upcomingExtra.map((c) => combatCard(c, { showField: true })).join("")}</div>
+    </div>`
+    : "";
+
   const pastHtml = fixtures.past.length
     ? fixtures.past.map((c) => athletePastRow(c, playerId)).join("")
     : `<p class="note">${tr("athlete.noPast")}</p>`;
+
+  // Cancelled combats: only shown when this athlete actually has any.
+  const cancelledHtml = fixtures.cancelled.length
+    ? `<div class="card">
+      <h2 class="card__title">${tr("athlete.cancelledCombats")}</h2>
+      <div class="combat-list">${fixtures.cancelled.map((c) => combatCard(c, { showField: true })).join("")}</div>
+    </div>`
+    : "";
 
   container.innerHTML = `
     <header class="profile__head">
@@ -725,10 +742,14 @@ function fillAthleteProfile(playerId) {
       ${nextHtml}
     </div>
 
+    ${upcomingHtml}
+
     <div class="card">
       <h2 class="card__title">${tr("athlete.pastCombats")}</h2>
       <div class="combat-list">${pastHtml}</div>
-    </div>`;
+    </div>
+
+    ${cancelledHtml}`;
 }
 
 // A compact past-combat row from this athlete's perspective (won/lost/drawn + opponent link).
