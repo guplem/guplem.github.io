@@ -302,9 +302,9 @@ function renderHome(view) {
   const sponsors = [
     { name: "Ajuntament de Premià de Mar", url: "https://premiademar.cat/" },
     { name: "Tkd Avellaneda", url: "https://tkdavellaneda.com/" },
-    { name: "Tkd Venzalá", url: "https://ajllavaneres.cat/fitxa.php?id=769" },
+    { name: "Tkd Venzalá", url: "https://www.instagram.com/tkd_venzala/" },
     { name: "Daedo International", url: "https://www.daedo.com/" },
-    { name: "Institut Esteve Terradas i Illa", url: "https://www.ieti.cat/" },
+    { name: "Institut Esteve Terradas i Illa", url: "https://agora.xtec.cat/iesesteveterradas/" },
     { name: "TriunityStudios.com", url: "https://triunitystudios.com/" },
   ];
   const sponsorsHtml = sponsors
@@ -332,9 +332,9 @@ function renderHome(view) {
 
       <div class="home__sections">
         <div class="home__strip">
-          <span class="home__point"><span class="home__point-icon" aria-hidden="true">🥋</span>${tr("home.guaranteed")}</span>
-          <span class="home__point"><span class="home__point-icon" aria-hidden="true">🎟️</span>${tr("home.freeEntry")}</span>
-          <span class="home__point"><span class="home__point-icon" aria-hidden="true">⚡</span>${tr("home.limited")}</span>
+          <div class="home__stat"><span class="home__stat-value">${tr("home.editionValue")}</span><span class="home__stat-label">${tr("home.editionLabel")}</span></div>
+          <div class="home__stat"><span class="home__stat-value">${tr("home.clubsValue")}</span><span class="home__stat-label">${tr("home.clubsLabel")}</span></div>
+          <div class="home__stat"><span class="home__stat-value">${tr("home.leaguesValue")}</span><span class="home__stat-label">${tr("home.leaguesLabel")}</span></div>
         </div>
 
         <section class="home__block">

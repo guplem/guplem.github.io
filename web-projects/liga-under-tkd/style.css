@@ -512,17 +512,25 @@ body.is-home .view {
   padding: 2.4rem 0;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
-.home__point {
-  display: inline-flex;
+.home__stat {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
-  font-weight: 600;
-  font-size: 0.96rem;
-  color: rgba(255, 255, 255, 0.92);
+  gap: 0.2rem;
 }
-.home__point-icon {
-  font-size: 1.3rem;
+.home__stat-value {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 2.1rem;
   line-height: 1;
+  color: #fff;
+}
+.home__stat-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.65);
 }
 .home__block {
   padding: 2.6rem 0;
