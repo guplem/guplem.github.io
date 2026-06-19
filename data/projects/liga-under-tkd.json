@@ -8,6 +8,8 @@
     "Generated end-to-end by **Claude**. A shared **Google Sheet is the database**: assistants edit results live, and the browser reads the sheet directly through the public **gviz endpoint** (no server, no API key), polling for changes. The site computes all standings, league points, and cross-tables itself, and ships in **Catalan, Spanish, and English**.",
     "Built as static files for free **GitHub Pages** hosting, with a pure, unit-tested scoring engine and a graceful live-data pipeline (keeps the last good data, pauses when the tab is hidden). See ADR 0008 for the sheet-as-database decision."
   ],
+  "image": "resources/images/projects/ligaUnder.webp",
+  "imageAlt": "Liga UNDER taekwondo event banner: Cadet and Junior, 27 June 2026, Premià de Mar",
   "skills": ["Vibe Coded"],
   "links": [
     { "url": "web-projects/liga-under-tkd/" },
