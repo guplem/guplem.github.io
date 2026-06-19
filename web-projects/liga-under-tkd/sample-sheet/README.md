@@ -27,6 +27,7 @@ The app then shows the same data you already saw in Demo mode, now read live fro
 ## Notes
 
 - Empty score cells are intentional: only `Finished`/`Ongoing` combats have points; `Scheduled`
-  rows are blank. A tie-break (`Red`/`Blue`) is filled only when a round's points are level
-  (see `G01` combat 2, which has `Blue` in `R1 Tiebreak`).
+  rows are blank. The `R1 Winner`/`R2 Winner` cells force a round's winner (overriding the points)
+  and are usually empty. See `G01` combat 2: R1 is a 6-6 tie won by `Blue`, and in R2 the `Red`
+  fighter leads 8-4 but is disqualified, so `Blue` is set as the round winner and wins the combat.
 - This is invented sample data, not the real roster.

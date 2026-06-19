@@ -240,8 +240,10 @@ function scoreColumn(combat) {
     .map((r, i) => {
       const red = r.red === null ? "·" : r.red;
       const blue = r.blue === null ? "·" : r.blue;
-      const tb = r.tiebreak ? ` <span class="round__tb round__tb--${r.tiebreak.toLowerCase()}">(${esc(translateToken(state.lang, "side", r.tiebreak))})</span>` : "";
-      return `<div class="round"><span class="round__label">${tr("combat.round", { n: i + 1 })}</span><span class="round__pts">${esc(red)} - ${esc(blue)}</span>${tb}</div>`;
+      // When the round Winner is set, show who took the round. It may disagree with the points
+      // (a disqualification or withdrawal), so the colored side name is the source of truth.
+      const win = r.winner ? ` <span class="round__win round__win--${r.winner.toLowerCase()}">(${esc(translateToken(state.lang, "side", r.winner))})</span>` : "";
+      return `<div class="round"><span class="round__label">${tr("combat.round", { n: i + 1 })}</span><span class="round__pts">${esc(red)} - ${esc(blue)}</span>${win}</div>`;
     })
     .join("");
   const result = combatResultString(combat);
@@ -798,7 +800,7 @@ function refreshLiveRegions() {
 function combatsSignature(combats) {
   // Cheap change-detection key: only re-render when combat data actually changes.
   return combats
-    .map((c) => `${c.redId}|${c.blueId}|${c.field}|${c.combat}|${c.status}|${c.rounds.map((r) => `${r.red},${r.blue},${r.tiebreak}`).join(";")}`)
+    .map((c) => `${c.redId}|${c.blueId}|${c.field}|${c.combat}|${c.status}|${c.rounds.map((r) => `${r.red},${r.blue},${r.winner}`).join(";")}`)
     .join("||");
 }
 

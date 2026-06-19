@@ -736,13 +736,14 @@ body.is-home .view {
   color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
-.round__tb {
+.round__win {
   font-size: 0.7rem;
+  font-weight: 600;
 }
-.round__tb--red {
+.round__win--red {
   color: var(--red);
 }
-.round__tb--blue {
+.round__win--blue {
   color: var(--fighter-blue);
 }
 .result {

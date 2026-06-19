@@ -26,35 +26,43 @@ function combat(over) {
     field: 1,
     combat: 1,
     rounds: [
-      { red: null, blue: null, tiebreak: null },
-      { red: null, blue: null, tiebreak: null },
+      { red: null, blue: null, winner: null },
+      { red: null, blue: null, winner: null },
     ],
     status: STATUS.FINISHED,
     ...over,
   };
 }
-function rounds(r1r, r1b, r2r, r2b, tb1 = null, tb2 = null) {
+function rounds(r1r, r1b, r2r, r2b, w1 = null, w2 = null) {
   return [
-    { red: r1r, blue: r1b, tiebreak: tb1 },
-    { red: r2r, blue: r2b, tiebreak: tb2 },
+    { red: r1r, blue: r1b, winner: w1 },
+    { red: r2r, blue: r2b, winner: w2 },
   ];
 }
 
 describe("roundWinner", () => {
-  test("higher points wins", () => {
-    expect(roundWinner({ red: 10, blue: 4, tiebreak: null })).toBe("Red");
-    expect(roundWinner({ red: 2, blue: 9, tiebreak: null })).toBe("Blue");
+  test("higher points wins when no Winner is set", () => {
+    expect(roundWinner({ red: 10, blue: 4, winner: null })).toBe("Red");
+    expect(roundWinner({ red: 2, blue: 9, winner: null })).toBe("Blue");
   });
-  test("tie is decided by the referee tie-break", () => {
-    expect(roundWinner({ red: 5, blue: 5, tiebreak: "Blue" })).toBe("Blue");
-    expect(roundWinner({ red: 5, blue: 5, tiebreak: "Red" })).toBe("Red");
+  test("an explicit Winner decides a tie", () => {
+    expect(roundWinner({ red: 5, blue: 5, winner: "Blue" })).toBe("Blue");
+    expect(roundWinner({ red: 5, blue: 5, winner: "Red" })).toBe("Red");
   });
-  test("tie without a tie-break is undecided", () => {
-    expect(roundWinner({ red: 5, blue: 5, tiebreak: null })).toBe(null);
+  test("an explicit Winner OVERRIDES the points (disqualification / withdrawal)", () => {
+    // Red scored far more, but Blue is set as the round Winner (e.g. Red disqualified).
+    expect(roundWinner({ red: 10, blue: 2, winner: "Blue" })).toBe("Blue");
+    // Blue scored more, but Red is the set Winner.
+    expect(roundWinner({ red: 3, blue: 9, winner: "Red" })).toBe("Red");
   });
-  test("missing scores are undecided", () => {
-    expect(roundWinner({ red: null, blue: 3, tiebreak: null })).toBe(null);
-    expect(roundWinner({ red: null, blue: null, tiebreak: "Red" })).toBe(null);
+  test("an explicit Winner stands even with no scores entered (walkover)", () => {
+    expect(roundWinner({ red: null, blue: null, winner: "Red" })).toBe("Red");
+  });
+  test("tied points with no Winner set is undecided", () => {
+    expect(roundWinner({ red: 5, blue: 5, winner: null })).toBe(null);
+  });
+  test("missing scores with no Winner are undecided", () => {
+    expect(roundWinner({ red: null, blue: 3, winner: null })).toBe(null);
   });
 });
 
@@ -79,14 +87,26 @@ describe("combatScore — league points 3 / 1 / 0", () => {
     expect(s.redLeaguePoints).toBe(0);
     expect(s.blueLeaguePoints).toBe(3);
   });
-  test("a tied round resolved by tie-break counts as a round win", () => {
+  test("a tied round resolved by the Winner column counts as a round win", () => {
     const s = combatScore(combat({ rounds: rounds(5, 5, 3, 8, "Red") }));
-    // R1 tie -> Red by tie-break; R2 -> Blue. That is 1-1.
+    // R1 tie -> Red by Winner; R2 -> Blue. That is 1-1.
     expect(s.redRoundsWon).toBe(1);
     expect(s.blueRoundsWon).toBe(1);
     expect(s.redLeaguePoints).toBe(1);
   });
-  test("points for/against = sum of round points, independent of tie-break", () => {
+  test("a disqualification (Winner overrides points) flips the league points", () => {
+    // Red leads on points both rounds (10-2, 8-4) but Blue is the set Winner both rounds.
+    const s = combatScore(combat({ rounds: rounds(10, 2, 8, 4, "Blue", "Blue") }));
+    expect(s.redRoundsWon).toBe(0);
+    expect(s.blueRoundsWon).toBe(2);
+    expect(s.redLeaguePoints).toBe(0);
+    expect(s.blueLeaguePoints).toBe(3);
+    expect(s.decided).toBe(true);
+    // Points for/against keep the real mat scores even though Blue won by override.
+    expect(s.redPointsFor).toBe(18); // 10 + 8
+    expect(s.bluePointsFor).toBe(6); // 2 + 4
+  });
+  test("points for/against = sum of round points, independent of the Winner column", () => {
     const s = combatScore(combat({ rounds: rounds(10, 5, 4, 9) }));
     expect(s.redPointsFor).toBe(14); // 10 + 4
     expect(s.redPointsAgainst).toBe(14); // 5 + 9

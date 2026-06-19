@@ -4,7 +4,8 @@
 //
 // This is invented test data built from the §6 categories/weights. It is NOT the real roster.
 // Three groups across different classifications, with finished, ongoing and scheduled combats,
-// a tied round decided by tie-break, and a 3-player pool with repeat combats.
+// a round decided by the Winner column (including a disqualification that overrides the points),
+// and a 3-player pool with repeat combats.
 
 export const MOCK_PLAYERS = [
   // G01 — Cadete · Femenino · -44kg · Level A (4 athletes, full round-robin)
@@ -31,8 +32,9 @@ export const MOCK_GROUPS = [
   { "Group ID": "G03", Age: "Cadete", Sex: "Masculino", Weight: "-45kg", Level: "B", Pool: "1" },
 ];
 
-// Compact builder for a combat row (header-keyed). tb1/tb2 are round tie-breaks ("Red"/"Blue"/"").
-function c(red, blue, field, combat, r1r, r1b, r2r, r2b, status, tb1 = "", tb2 = "") {
+// Compact builder for a combat row (header-keyed). w1/w2 are the round Winner cells
+// ("Red"/"Blue"/""): when set they decide the round, overriding the points.
+function c(red, blue, field, combat, r1r, r1b, r2r, r2b, status, w1 = "", w2 = "") {
   return {
     "Red ID": red,
     "Blue ID": blue,
@@ -40,10 +42,10 @@ function c(red, blue, field, combat, r1r, r1b, r2r, r2b, status, tb1 = "", tb2 =
     Combat: String(combat),
     "R1 Red": r1r === null ? "" : String(r1r),
     "R1 Blue": r1b === null ? "" : String(r1b),
-    "R1 Tiebreak": tb1,
+    "R1 Winner": w1,
     "R2 Red": r2r === null ? "" : String(r2r),
     "R2 Blue": r2b === null ? "" : String(r2b),
-    "R2 Tiebreak": tb2,
+    "R2 Winner": w2,
     Status: status,
   };
 }
@@ -51,7 +53,9 @@ function c(red, blue, field, combat, r1r, r1b, r2r, r2b, status, tb1 = "", tb2 =
 export const MOCK_COMBATS = [
   // ---- Field 1: group G01 running order 1..6 ----
   c("P001", "P002", 1, 1, 12, 5, 9, 7, "Finished"), // Aina 2-0 Berta
-  c("P003", "P004", 1, 2, 6, 6, 4, 8, "Finished", "Blue"), // Carla 1-1 Diana (R1 tie -> Blue)
+  // Carla(R) vs Diana(B): R1 6-6 tie -> Blue; R2 Carla leads 8-4 but is disqualified -> Blue.
+  // Diana wins 0-2 even though Carla scored more in R2 (demonstrates the Winner override).
+  c("P003", "P004", 1, 2, 6, 6, 8, 4, "Finished", "Blue", "Blue"),
   c("P001", "P003", 1, 3, 8, 6, 3, 3, "Ongoing", "", ""), // Aina vs Carla — on now
   c("P002", "P004", 1, 4, null, null, null, null, "Scheduled"),
   c("P001", "P004", 1, 5, null, null, null, null, "Scheduled"),

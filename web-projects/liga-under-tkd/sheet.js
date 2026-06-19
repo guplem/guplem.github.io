@@ -93,7 +93,7 @@ export function parseNumber(value) {
   return Number.isFinite(n) ? n : null;
 }
 
-// Normalize a tie-break cell -> "Red" | "Blue" | null.
+// Normalize a side cell (the round Winner column) -> "Red" | "Blue" | null.
 export function parseSide(value) {
   if (value === null || value === undefined) return null;
   const s = String(value).trim().toLowerCase();
@@ -158,7 +158,7 @@ export function normalizeGroups(rows) {
     .filter((g) => g.groupId !== "");
 }
 
-// Combats: { redId, blueId, field, combat, rounds: [{red,blue,tiebreak} x2], status }
+// Combats: { redId, blueId, field, combat, rounds: [{red,blue,winner} x2], status }
 export function normalizeCombats(rows) {
   return rows
     .map((r) => ({
@@ -167,8 +167,8 @@ export function normalizeCombats(rows) {
       field: parseNumber(r["Field"]),
       combat: parseNumber(r["Combat"]),
       rounds: [
-        { red: parseScore(r["R1 Red"]), blue: parseScore(r["R1 Blue"]), tiebreak: parseSide(r["R1 Tiebreak"]) },
-        { red: parseScore(r["R2 Red"]), blue: parseScore(r["R2 Blue"]), tiebreak: parseSide(r["R2 Tiebreak"]) },
+        { red: parseScore(r["R1 Red"]), blue: parseScore(r["R1 Blue"]), winner: parseSide(r["R1 Winner"]) },
+        { red: parseScore(r["R2 Red"]), blue: parseScore(r["R2 Blue"]), winner: parseSide(r["R2 Winner"]) },
       ],
       status: parseStatus(r["Status"]),
     }))

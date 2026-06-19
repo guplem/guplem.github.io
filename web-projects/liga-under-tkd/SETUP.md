@@ -44,8 +44,8 @@ letters and spaces.
 
 ### Tab `Combats` (one row per combat — this is the live one)
 
-| Red ID | Blue ID | Field | Combat | R1 Red | R1 Blue | R1 Tiebreak | R2 Red | R2 Blue | R2 Tiebreak | Status |
-|--------|---------|-------|--------|--------|---------|-------------|--------|---------|-------------|--------|
+| Red ID | Blue ID | Field | Combat | R1 Red | R1 Blue | R1 Winner | R2 Red | R2 Blue | R2 Winner | Status |
+|--------|---------|-------|--------|--------|---------|-----------|--------|---------|-----------|--------|
 | P001 | P002 | 1 | 1 | 12 | 5 | | 9 | 7 | | Finished |
 
 - **Red ID / Blue ID**: the two fighters (must exist in the `Players` tab).
@@ -53,12 +53,16 @@ letters and spaces.
 - **Combat**: the running order on that tatami (`1`, `2`, `3`, …). There is **no clock**; combats
   simply run in this order on each tatami.
 - **R1 Red / R1 Blue / R2 Red / R2 Blue**: the points each fighter scored in each round (numbers).
-- **R1 Tiebreak / R2 Tiebreak**: fill with `Red` or `Blue` **only** when that round's points are
-  tied and the referee picks a winner. Leave empty otherwise.
+- **R1 Winner / R2 Winner**: usually leave **empty** — the higher score wins the round on its own.
+  Fill with `Red` or `Blue` to **force the winner of that round**, overriding the points. Use it in
+  two cases: (1) the round's points are **tied** and the referee picks a winner; (2) a fighter who
+  was **ahead on points is disqualified** (e.g. 5 faults) **or withdraws** (injury) and so loses the
+  round. The points columns are not changed — they keep the real scores; only the round's winner and
+  the league points (3 / 1 / 0) follow this column.
 - **Status**: `Scheduled`, `Ongoing`, `Finished`, or `Cancelled`.
   - `Ongoing` shows partial scores live. `Finished` counts in the standings. `Cancelled` is ignored.
 
-> Tip: in Google Sheets use **Data → Data validation** to turn `R1 Tiebreak`, `R2 Tiebreak`, and
+> Tip: in Google Sheets use **Data → Data validation** to turn `R1 Winner`, `R2 Winner`, and
 > `Status` into dropdowns. This prevents typos. The website is forgiving (unknown status becomes
 > `Scheduled`), but dropdowns keep the data clean.
 

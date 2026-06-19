@@ -41,8 +41,11 @@ Data flow: `data-source` → (gviz `sheet.js` parse + normalize | mock) → `app
   parser slices between the first `{` and last `}`. Do not `JSON.parse` the raw text.
 - **Standings count only `Finished` combats.** `Ongoing`/`Scheduled` are excluded; `Cancelled` is
   ignored entirely. Changing this silently corrupts the table.
-- **Points-for/against come from raw round scores; league points come from rounds won.** A
-  tie-break decides a round's winner (league points) but does not change points-for.
+- **Points-for/against come from raw round scores; league points come from rounds won.** The round
+  `R1/R2 Winner` column (`round.winner`), when set to `Red`/`Blue`, decides that round's winner and
+  **overrides the points** (disqualification or withdrawal). It never changes points-for/against —
+  those always keep the real scores. Do not confuse this round Winner with the standings tiebreaker
+  chain below.
 - **The tiebreaker chain is data** (`DEFAULT_TIEBREAKERS` in `engine.js`): reorder the array to
   change the official ranking rule; do not hardcode comparisons elsewhere.
 - **Demo vs live is decided by `config.js` `sheetId`** being empty or not (`isLiveMode`). Polling is
