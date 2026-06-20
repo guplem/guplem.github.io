@@ -1,0 +1,33 @@
+name: Tests
+
+# Runs the whole test suite on every pull request and on pushes to main.
+# A failing test fails this job; with branch protection on main marking it a
+# required check, a pull request with failing tests cannot be merged.
+# See adr/0013-github-actions-ci-for-bun-tests.md.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A new push to the same branch/PR cancels the previous in-progress run.
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+
+      # Discovers and runs every *.test.js under web-projects (the only tests in
+      # the repo). New web-projects are picked up automatically.
+      - name: Run all tests
+        run: bun test ./web-projects
