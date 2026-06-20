@@ -178,3 +178,23 @@ export function allToId(array) {
   }
   return array.map((item) => idFromText(item));
 }
+
+/**
+ * Whether a work matches a free-text search query. The query is split into
+ * whitespace-separated tokens; every token must appear (case-insensitive) in
+ * the work's title, description, or skills. An empty query matches everything.
+ * Description markdown is matched raw (the rendered HTML is never stored).
+ * @param {{ title?: string, description?: string[], skills?: string[] }} work
+ * @param {string} query
+ * @returns {boolean}
+ */
+export function workMatchesText(work, query) {
+  const normalized = (query || "").trim().toLowerCase();
+  if (!normalized) return true;
+
+  const description = Array.isArray(work.description) ? work.description : [];
+  const skills = Array.isArray(work.skills) ? work.skills : [];
+  const haystack = [work.title, ...description, ...skills].filter(Boolean).join(" ").toLowerCase();
+
+  return normalized.split(/\s+/).every((token) => haystack.includes(token));
+}

@@ -1,6 +1,6 @@
 import * as textUtils from "../utils/textUtils.js";
 import { fillWithData, displayAdditionalSections, displayContactInfo } from "./sectionFiller.js";
-import { fillWithGroupedButtons, onClickWorkType, onClickWorkSkill, enableCollapsibleSections } from "./workFilters.js";
+import { fillWithGroupedButtons, onClickWorkType, onClickWorkSkill, enableCollapsibleSections, setWorkSearchQuery } from "./workFilters.js";
 export { displayFilteredWorks } from "./workCards.js";
 
 // - Metadata
@@ -16,6 +16,10 @@ fillWithData("aboutMeContents", "../data/info.json", "aboutMe");
 fillWithGroupedButtons("myWorkTypes", "types", onClickWorkType, "myWork", false);
 fillWithGroupedButtons("myWorkSkills", "skills", onClickWorkSkill, "myWork", true);
 enableCollapsibleSections("myWorkSkills");
+// - Work search (free-text filter, combined with the type/skill buttons)
+document.getElementById("myWorkSearch")?.addEventListener("input", (event) => {
+  setWorkSearchQuery(/** @type {HTMLInputElement} */ (event.target).value);
+});
 
 // Load the works title from the manifest
 (async () => {
