@@ -10,7 +10,7 @@
   ],
   "image": "resources/images/projects/ligaUnder.webp",
   "imageAlt": "Liga UNDER taekwondo event banner: Cadet and Junior, 27 June 2026, Premià de Mar",
-  "skills": ["Vibe Coded"],
+  "skills": ["Vibe Coded", "Frontend", "UI/UX", "Architecture"],
   "links": [
     { "url": "web-projects/liga-under-tkd/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/liga-under-tkd" }

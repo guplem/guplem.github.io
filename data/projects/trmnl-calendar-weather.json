@@ -5,11 +5,11 @@
   "title": "TRMNL Calendar + Weather",
   "description": [
     "*TRMNL Calendar + Weather* is a custom plugin for the **TRMNL e-ink display** that combines a **weekly time-grid calendar** (powered by Google Calendar) with a **7-day weather forecast** and **air quality data**.",
-    "I built the entire plugin as a single **Liquid template** with embedded CSS and JavaScript. Events are positioned at their actual time slots (like Google Calendar), with overlapping events displayed side by side. Each calendar gets a distinct grayscale bar pattern for visual differentiation. Weather data comes from the **Open-Meteo API** and is rendered as mini-charts with precipitation bars, temperature lines, and sunrise/sunset indicators."
+    "I designed and directed the plugin: a single **Liquid template** with embedded CSS and JavaScript. Events are positioned at their actual time slots (like Google Calendar), with overlapping events displayed side by side. Each calendar gets a distinct grayscale bar pattern for visual differentiation. Weather data comes from the **Open-Meteo API** and is rendered as mini-charts with precipitation bars, temperature lines, and sunrise/sunset indicators."
   ],
   "image": "resources/images/projects/trmnlCalendarWeather.webp",
   "imageAlt": "TRMNL e-ink display showing weekly calendar with weather forecast overlay",
-  "skills": ["Frontend", "API Integration", "UI/UX", "Architecture"],
+  "skills": ["Vibe Coded", "Frontend", "API Integration", "UI/UX", "Architecture"],
   "links": [
     {
       "type": "github",

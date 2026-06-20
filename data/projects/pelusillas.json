@@ -7,19 +7,12 @@
   "title": "Pelusillas",
   "description": [
     "*Pelusillas* is a **real-time multiplayer web card game** inspired by *Zirkus Flohcati*, a push-your-luck game for 2–6 players where collecting sets of flea circus performers risks busting your hand.",
-    "I built the game with **RoboJS** and **React**, using **@robojs/sync** for real-time multiplayer state synchronization and **Zustand** for client-side state management. The project features AI opponents with an extensible strategy system that allows anyone to contribute new AI behaviors.",
+    "The game is built with **RoboJS** and **React**, using **@robojs/sync** for real-time multiplayer state synchronization and **Zustand** for client-side state management. It features AI opponents with an extensible strategy system that anyone can extend with new behaviors.",
     "The game is containerized with **Docker** and pre-configured for **Google Cloud Run** deployment, making it easy to host and share with friends."
   ],
   "skills": [
-    "React",
-    "RoboJS",
-    "Real-Time Communication",
-    "Docker",
-    "Backend",
-    "AI Integration",
     "Vibe Coded",
-    "Game Design",
-    "Server Management"
+    "AI Integration"
   ],
   "image": "resources/images/projects/pelusillas.webp",
   "imageStretched": false,

@@ -5,7 +5,7 @@
   "title": "Random Option Picker",
   "description": [
     "*Random Option Picker* is a **web tool** that picks one or more options at random from a list, with **shareable URLs** and an optional **seed** so the same link always reproduces the same draw. Useful for picking a daily standup moderator, dice rolls, choosing activities, or any small decision worth keeping reproducible.",
-    "Built **100% by an AI coding agent** under my direction. The picking logic uses a **seeded mulberry32 PRNG** with **FNV-1a string hashing** and is fully **TDD-covered** with Bun's test runner. The UI features a **slot-machine reveal animation** with one reel per pick.",
+    "The picking logic uses a **seeded mulberry32 PRNG** with **FNV-1a string hashing** and is fully **TDD-covered** with Bun's test runner. The UI features a **slot-machine reveal animation** with one reel per pick.",
     "All state lives in URL query params, so any draw is reproducible and shareable as a plain link."
   ],
   "skills": ["Vibe Coded"],
