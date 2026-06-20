@@ -176,3 +176,52 @@ describe("persistence via replay", () => {
     expect(rebuildModel([{ p: "rock" }, null, { p: "rock", a: "paper" }]).n).toBe(1);
   });
 });
+
+describe("count aging (COUNT_DECAY) and score floor (LL_SCORE_FLOOR)", () => {
+  // Derived exactly as in predictor.js. If CTX_DECAY is ever retuned, update here too.
+  const UNIFORM_LL = Math.log(1 / 3);
+  const CTX_DECAY = 0.96;
+  const LL_SCORE_FLOOR = UNIFORM_LL / (1 - CTX_DECAY);
+
+  test("within-context counts age as an EMA, not an unbounded integer sum", () => {
+    const m = createModel();
+    const n = 40;
+    for (let i = 0; i < n; i++) learn(m, "rock", "paper"); // constant player
+    const p0 = m.tables.p0[""]; // unconditional context: always active
+    expect(Number.isInteger(p0.rock)).toBe(false); // decayed float, not a raw count
+    expect(p0.rock).toBeGreaterThan(0);
+    expect(p0.rock).toBeLessThan(n); // EMA stays below the naive sum of n
+    expect(p0.rock).toBeLessThan(200); // and below the steady-state cap 1/(1-COUNT_DECAY)
+    expect(p0.paper).toBe(0); // unobserved moves never go negative under decay
+    expect(p0.scissors).toBe(0);
+  });
+
+  test("rebuildModel reproduces the float model exactly across a strategy switch", () => {
+    // The case COUNT_DECAY exists for: rock-bias, switch to scissors-bias, then beat-last-AI.
+    // Replay of the decayed float counts must stay byte-exact or persistence (ADR 0009) breaks.
+    const live = createModel();
+    const switching = (i, rounds) => {
+      if (i < 45) return i % 5 === 0 ? "paper" : "rock"; // ~rock bias
+      if (i < 90) return i % 4 === 0 ? "rock" : "scissors"; // switch to ~scissors bias
+      return rounds.length ? counter(rounds[rounds.length - 1].a) : "rock"; // beat last AI
+    };
+    const { rounds } = playSeries(live, switching, 140, rng(11));
+    const rebuilt = rebuildModel(rounds);
+    expect(rebuilt.tables).toEqual(live.tables); // float-exact
+    expect(rebuilt.llScores).toEqual(live.llScores);
+    expect(rebuilt.pHist).toEqual(live.pHist);
+    expect(decide(rebuilt, () => 0)).toEqual(decide(live, () => 0));
+  });
+
+  test("the score floor lives only in the vote weight, never in stored llScores", () => {
+    // Pre-seed a context's score far below the floor, then learn one round. learn() must
+    // propagate the RAW (un-floored) score -- flooring storage would diverge on replay.
+    const m = createModel();
+    const seeded = LL_SCORE_FLOOR - 10; // clearly below the floor
+    m.llScores.p0 = seeded;
+    learn(m, "rock", "paper"); // empty model: p0 abstains -> ll == UNIFORM_LL
+    expect(m.llScores.p0).toBeCloseTo(CTX_DECAY * seeded + UNIFORM_LL, 10);
+    // Had storage been floored, it would sit ~9.6 higher -- guard against that regression.
+    expect(m.llScores.p0).toBeLessThan(CTX_DECAY * LL_SCORE_FLOOR + UNIFORM_LL - 1);
+  });
+});

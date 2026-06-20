@@ -91,12 +91,43 @@ general benchmark) rather than a dramatic gain — a well-mixed human inherently
 the achievable edge, and the bigger lever is more play data, not more model
 complexity.
 
+A later refinement targeted **strategy-switching players** specifically. A real
+exported session from a player who changed tactics mid-game exposed a failure: the
+within-context counts accumulate over the whole session, so after a switch the bot kept
+voting from stale all-time frequencies for many rounds (a multi-round "stuck
+prediction"). A four-track benchmark bake-off — recency-decay, an expert portfolio,
+meta-selection, and an adversary/evaluation track, cross-pollinated then synthesized
+(see `web-projects/rps-mind-reader/planning-workspace/`) — converged on two small,
+composable changes:
+
+- **`COUNT_DECAY = 0.995`** — within-context counts are exponentially aged each round
+  (half-life ~138 rounds) *before* the new move is bumped, so recent evidence dominates
+  after a switch. Counts become floats; replay stays exact because the aging is a
+  fixed-order multiply (the `rebuildModel` contract is verified by a switching-sequence
+  test).
+- **`LL_SCORE_FLOOR`** — when computing a context's softmax vote weight, its score is
+  floored at the steady-state score of a permanently-abstaining context
+  (`UNIFORM_LL / (1 - CTX_DECAY) ≈ -27.47`), so the always-firing low-order `p0` cannot
+  monopolize the vote via unbounded accumulated divergence. The floor is applied only to
+  the weight, never stored back into `llScores`.
+
+Both lift net against a faithful model of *both* recorded real sessions (the switcher and a
+well-mixed one) and the post-switch recovery window, with no loss on the general battery and
+worst-case-vs-random still ~0 (variance-dominated near zero; verified +0.13% at 4000 seeds).
+A fast-expert **portfolio** and **more aggressive decay** were measured and **rejected**:
+they helped the synthetic switching battery but regressed the held-out real sessions — the
+overfit pattern the protocol guards against. Two switching opponents from the bake-off
+(`bias-then-beatlastai-40`, `noisy-rock-scissors-p60`) were promoted into `benchmark.js` so
+the committed gate exercises the post-switch transient. Accepted residuals: that transient
+stays briefly negative on a cold bias→beat-last-AI switch and on long noisy phases, though
+both opponents are net-positive overall.
+
 ## Consequences
 
 **Positive:**
 
 - Zero runtime dependencies; aligns with ADR 0002 (no build) and ADR 0005 (no unnecessary CDN deps). Works fully offline.
-- Trains in microseconds per round (integer counter bumps + a decayed score update); trivial on mobile.
+- Trains in microseconds per round (decayed float count bumps + a decayed score update); trivial on mobile.
 - Stronger at RPS than a neural net would be, and resistant to a player trying to game it; the design was chosen — and future changes can be guarded — by a reproducible benchmark (`benchmark.js`).
 - Deterministic replay makes persistence simple and testable, and keeps the stored payload minimal.
 - The behaviour is documented by tests, so future agents can change it safely.

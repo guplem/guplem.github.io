@@ -26,8 +26,11 @@ model is weighted by how well it has *predicted you lately* (a
 recency-decayed log-likelihood, softmaxed), and every model votes for the move with
 the best **expected value** against its own forecast. Reasoning over the whole
 distribution — not just the single most likely move — is what lets it punish even
-50/50 habits like "never repeat the same throw." When there's no signal yet (or
-against truly random play) it sits at the unexploitable ~even baseline.
+50/50 habits like "never repeat the same throw." It also **forgets stale habits**:
+both the model weights and the per-pattern counts decay over time, so if you switch
+tactics mid-game it re-reads you within a handful of rounds instead of clinging to
+your old pattern. When there's no signal yet (or against truly random play) it sits
+at the unexploitable ~even baseline.
 
 This algorithm was chosen by an **objective benchmark** (`benchmark.js`, a battery
 of opponent strategies) after pitting several from-scratch designs against each
