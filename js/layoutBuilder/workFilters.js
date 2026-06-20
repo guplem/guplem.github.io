@@ -7,6 +7,34 @@ export const selectedWorkTypes = [];
 /** @type {string[]} */
 export const selectedWorkSkills = [];
 
+// Free-text search query for the works list.
+let workSearchQuery = "";
+let searchRerenderTimeout = 0;
+
+/**
+ * @returns {string} the current free-text search query
+ */
+export function getWorkSearchQuery() {
+  return workSearchQuery;
+}
+
+/**
+ * Update the free-text search query and re-render the filtered works. The
+ * re-render is debounced because typing fires many events and the masonry
+ * layout must be rebuilt from scratch on each change (ADR 0004).
+ * @param {string} query
+ */
+export function setWorkSearchQuery(query) {
+  workSearchQuery = query;
+  clearTimeout(searchRerenderTimeout);
+  searchRerenderTimeout = setTimeout(() => {
+    // Lazy import to avoid a circular dependency with workCards.js
+    import("./workCards.js").then((module) => {
+      module.displayFilteredWorks();
+    });
+  }, 120);
+}
+
 /**
  * Fill an element with grouped buttons from works data
  * @param {string} elementId

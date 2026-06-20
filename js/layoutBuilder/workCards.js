@@ -1,6 +1,6 @@
 import * as textUtils from "../utils/textUtils.js";
 import * as uiUtils from "../utils/uiUtils.js";
-import { selectedWorkTypes, selectedWorkSkills, onClickWorkSkill } from "./workFilters.js";
+import { selectedWorkTypes, selectedWorkSkills, onClickWorkSkill, getWorkSearchQuery } from "./workFilters.js";
 
 const WORK_GRID_MAX_HEIGHT = 1400;
 
@@ -62,7 +62,8 @@ export async function getFilteredWorks(includeSelected = true) {
   const filteredWorks = allWorks.filter((work) => {
     const hasSelectedType = selectedWorkTypes.length === 0 || (work.types && textUtils.allToId(work.types).some((type) => selectedWorkTypes.includes(type)));
     const hasSelectedSkill = selectedWorkSkills.length === 0 || (work.skills && textUtils.allToId(work.skills).some((skill) => selectedWorkSkills.includes(skill)));
-    return hasSelectedType && hasSelectedSkill;
+    const matchesSearch = textUtils.workMatchesText(work, getWorkSearchQuery());
+    return hasSelectedType && hasSelectedSkill && matchesSearch;
   });
 
   if (includeSelected) {
