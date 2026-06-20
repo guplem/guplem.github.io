@@ -93,6 +93,13 @@ pass a path) and run `bun realplay-bench.js`. It reports how the bot fares again
 your fixed sequence, against a reactive model built from your play, and the oracle
 ceiling — the most edge any predictor could extract from that style.
 
+For deeper work on the AI — measuring how fast it recovers when you change tactics
+mid-game — `bench/` holds a richer evaluation suite (a switching-opponent battery
+with post-switch recovery metrics and acceptance gates). See
+[`bench/README.md`](bench/README.md) for the iteration workflow and
+[`CLAUDE.md`](CLAUDE.md) for the design notes and the log of strategies already
+tried and rejected.
+
 ## Tech Stack
 
 Vanilla HTML, CSS, and JavaScript (ES modules). No frameworks, no dependencies.
