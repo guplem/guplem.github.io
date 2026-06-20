@@ -38,3 +38,5 @@ Self-contained mini-apps in `web-projects/`. Browse them all at [triunitystudios
 ## Deployment
 
 GitHub Pages with custom domain. Push to `main` deploys automatically.
+
+Pull requests are tested automatically: a GitHub Actions workflow runs the web-project tests (`bun test ./web-projects`) on every pull request, and a pull request cannot be merged while a test fails.

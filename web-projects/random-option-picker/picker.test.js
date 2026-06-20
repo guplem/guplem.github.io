@@ -221,8 +221,8 @@ describe("parseUrlState", () => {
   });
 
   test("accepts empty input", () => {
-    expect(parseUrlState("")).toEqual({ options: [], count: 1, seed: null });
-    expect(parseUrlState(null)).toEqual({ options: [], count: 1, seed: null });
+    expect(parseUrlState("")).toEqual({ options: [], count: 1, seed: null, distinct: true });
+    expect(parseUrlState(null)).toEqual({ options: [], count: 1, seed: null, distinct: true });
   });
 });
 
