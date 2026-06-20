@@ -23,7 +23,7 @@ python -m http.server 8000
 
 ## Web Projects
 
-Self-contained mini-apps in `web-projects/`:
+Self-contained mini-apps in `web-projects/`. Browse them all at [triunitystudios.com/web-projects/](https://triunitystudios.com/web-projects/), an index page that lists every project automatically from the portfolio data.
 
 - **`ChatGPTPong/`** — Canvas-based Pong game
 - **`gravity-sandbox/`** — Interactive N-body gravitational simulation

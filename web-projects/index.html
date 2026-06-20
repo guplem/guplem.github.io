@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../resources/images/webicon.webp" />
+    <title>Web Projects · Guillem Poy</title>
+    <meta name="description" content="Standalone web experiments, games, and tools hosted on triunitystudios.com." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Reuse the site's design tokens and base typography so this index always
+         matches the main portfolio. Page-specific layout lives in style.css. -->
+    <link rel="stylesheet" href="../css/global/variables.css" />
+    <link rel="stylesheet" href="../css/global/base.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="topbar">
+      <a class="back-link" href="../">← Guillem Poy</a>
+    </div>
+
+    <header class="page-header">
+      <h1>Web Projects</h1>
+      <p class="subtitle">Standalone experiments, games, and tools hosted on this site.</p>
+    </header>
+
+    <main>
+      <div class="search">
+        <input
+          type="search"
+          id="search"
+          class="search-input"
+          placeholder="Search projects…"
+          aria-label="Search projects"
+          autocomplete="off"
+        />
+      </div>
+      <p id="status" class="status">Loading projects…</p>
+      <div id="projectsGrid" class="projects-grid"></div>
+      <p id="noResults" class="status" hidden>No projects match your search.</p>
+    </main>
+
+    <footer class="page-footer">
+      <p>Part of <a href="../#myWork">Guillem Poy's portfolio</a>.</p>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

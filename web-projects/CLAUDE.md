@@ -1,10 +1,10 @@
 # web-projects/CLAUDE.md
 
-> **SCOPE:** These rules apply when working on files under `web-projects/`. Each project inside is self-contained and independent from the main portfolio site.
+> **SCOPE:** These rules apply when working on files under `web-projects/`. Each project inside is self-contained and independent from the main portfolio site -- except the `index.html` directory index (see "The Index Page" below).
 
 ## Overview
 
-Collection of small, standalone web projects -- games, tools, experiments, demos. Often AI-generated. Each is fully self-contained and independent from the main portfolio site.
+Collection of small, standalone web projects -- games, tools, experiments, demos. Often AI-generated. Each is fully self-contained and independent from the main portfolio site, except the directory index (`index.html`) described below.
 
 ## Conventions
 
@@ -12,6 +12,14 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
 - **Self-contained** -- own HTML, CSS, JS. No shared dependencies with the main site or other projects
 - **No build tools, no frameworks** -- vanilla HTML/CSS/JS preferred
 - **Works standalone** -- each project should work by opening its HTML file directly or via any HTTP server
+
+## The Index Page (`index.html`)
+
+`web-projects/index.html` is the landing page for `https://triunitystudios.com/web-projects/`. It is the **one deliberate exception** to the self-contained rule above: it is a portfolio-level directory index, so it reads the portfolio data (`../data/projects/*.json`) and reuses the site's global tokens (`../css/global/variables.css`, `../css/global/base.css`). See ADR 0011.
+
+- **Never hardcode the project list.** It is derived live: a project is listed when it has a link that is **not** `type: "github"` whose URL (after stripping the `triunitystudios.com` origin) starts with `web-projects/`. Adding such a project to the portfolio data makes it appear here automatically.
+- The fragile matching/selection logic is pure and Bun-tested in `discovery.js` / `discovery.test.js`; `app.js` only fetches and renders. Keep new logic in `discovery.js` with tests.
+- Do **not** make individual projects depend on the index, and do not import the index's files into a project.
 
 ## Test-Driven Development (mandatory)
 

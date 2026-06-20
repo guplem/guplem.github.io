@@ -1,0 +1,86 @@
+# ADR 0011: Web-Projects Index Derived From Portfolio Data
+
+## Context
+
+Visiting `https://triunitystudios.com/web-projects/` should show a list of every
+web-project hosted on the site, so the folder has a real landing page instead of
+a directory listing or 404. (The standalone projects already link back to `../`,
+i.e. this page.)
+
+The question is **where the list comes from**. The portfolio already records every
+project in `data/projects/*.json`, and a project that is hosted locally is exactly
+one whose live link points into `web-projects/`. So the data needed already exists.
+
+Options considered:
+
+1. **Hardcode the list in HTML.** Simplest to write, but it is a second source of
+   truth: every new web-project would need editing here *and* in the project data,
+   and the two drift. It also contradicts the site's data-driven principle (ADR 0001).
+2. **Server-side directory listing.** Not possible — GitHub Pages serves static
+   files only, so there is no runtime way to enumerate the folder.
+3. **Derive the list from the portfolio data at runtime.** Read the same
+   `data/projects/*.json` the main site reads, keep the projects whose link points
+   into `web-projects/`, and render them. One source of truth, auto-syncing.
+
+A second question is **style**: the per-project rule (`web-projects/CLAUDE.md`) is
+that each experiment is self-contained with no shared dependencies. But this index
+is not one of the experiments — it is a portfolio-level page whose whole job is to
+mirror the portfolio.
+
+## Decision
+
+`web-projects/index.html` is a **data-driven directory index**, not a self-contained
+project.
+
+- **Source of truth = the portfolio data.** The page reads `../data/projects/index.json`
+  and each listed project file (the `../` resolves to the site root from
+  `web-projects/`, the same relative form `fetchAllWorks()` uses), then keeps the
+  projects that are hosted locally.
+- **Detection convention.** A project is a local web-project when it has a link that
+  is **not** `type: "github"` whose URL — after stripping an optional
+  `https://triunitystudios.com` origin — starts with `web-projects/`. The part after
+  that prefix is the link target relative to the index (e.g. `rps-mind-reader/`,
+  `ChatGPTPong/pong.html`). The `github` links are skipped on purpose: they also
+  contain `web-projects/` but point at source code, not the live demo. Projects with
+  only an external link (e.g. a github-only repo) are correctly excluded.
+- **Selection logic is pure and tested.** `discovery.js` (`localWebProjectPath`,
+  `selectWebProjects`, …) has no DOM or network and is unit-tested with Bun
+  (`discovery.test.js`), per the web-projects TDD rule. `app.js` does the fetching and
+  rendering; the description teaser is rendered with `marked` from the pinned esm.sh
+  CDN (ADR 0005).
+- **Deliberately not self-contained.** Unlike the projects it lists, the index reuses
+  the site's global design tokens (`../css/global/variables.css`, `base.css`) and the
+  Inter font so it always matches the main portfolio, and it reads `../data/`. This is
+  an intentional exception to the per-project self-contained rule, documented in
+  `web-projects/CLAUDE.md`.
+
+## Consequences
+
+**Positive:**
+
+- One source of truth. Adding a project whose link points into `web-projects/` makes
+  it appear here automatically — no separate list to maintain (extends ADR 0001 to
+  the folder index).
+- Looks exactly like the main site because it uses the same tokens and base styles;
+  no duplicated palette to drift.
+- The fragile part (URL matching across relative/absolute forms, excluding github
+  links) is isolated in a pure, unit-tested module.
+- No build step (ADR 0002); the only third-party dependency is `marked` via the
+  pinned CDN already used site-wide (ADR 0005).
+
+**Negative:**
+
+- The index is coupled to the portfolio data's location and shape (`../data/`) and to
+  the global CSS — it is **not** self-contained like the experiments it lists. The
+  coupling is the point (it must mirror the portfolio) and is documented.
+- It fetches every project file (~68) to surface the ~9 web-projects, the same as the
+  main site already does. Acceptable: the files are tiny and cached.
+- The github-exclusion relies on the data convention that a live-demo link never has
+  `type: "github"`. If a future project mislabels its links, it could be mis-listed.
+
+## Scope
+
+Specific to `web-projects/index.html`. The reusable principle — **a folder index
+should derive its list from existing data rather than duplicating it, and may reuse
+the site's shared presentation tokens even where individual items are self-contained**
+— applies if similar index pages are added later.
