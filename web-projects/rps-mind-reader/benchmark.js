@@ -107,7 +107,7 @@ export const opponents = [
   // switching battery (bench/opponents.js) so the committed gate
   // sees the two hardest cases. Both stay net-positive overall; their value is
   // exercising the multi-round transient right after the player changes tactics --
-  // the failure COUNT_DECAY was added to fix (see ADR 0010).
+  // the failure COUNT_DECAY was added to fix (see ADR 0001).
 
   // Phase 1 (40 rounds): 70% rock bias. Phase 2: beat the AI's last move (reactive).
   // The match91-style case: p0..p5 are blind to a reactive player after a bias phase.

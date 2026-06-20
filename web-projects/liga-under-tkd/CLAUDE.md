@@ -3,7 +3,7 @@
 Live tournament site for the Liga UNDER taekwondo event. Reads a public Google Sheet via the gviz
 endpoint and renders standings, combats, and athlete profiles. Vanilla ES modules, no build step.
 Human docs: [README.md](README.md) (features/run) and [SETUP.md](SETUP.md) (connect the Sheet).
-Decision record: [ADR 0008](../../adr/0008-google-sheet-as-database.md).
+Decision record: [ADR 0001](adr/0001-google-sheet-as-database.md).
 
 ## Module map (pure logic is separated from the DOM so it can be unit-tested)
 

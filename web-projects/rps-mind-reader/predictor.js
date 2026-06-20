@@ -4,7 +4,7 @@
 // This algorithm was selected by an objective benchmark (see benchmark.js) after a
 // from-scratch exploration: it beat the previous Markov/rotation-expert ensemble on
 // a 12-opponent battery (mean net +72% vs +64%) and on a held-out battery of unseen
-// opponents, with the best worst-case robustness. See ADR 0010 for the decision.
+// opponents, with the best worst-case robustness. See ADR 0001 for the decision.
 //
 // ALGORITHM -- a Bayesian-style mixture of variable-order CONTEXT MODELS, each
 // weighted by how well it has PREDICTED the player lately (recency-decayed
@@ -46,7 +46,7 @@
 // FAIRNESS + PERSISTENCE CONTRACT (matches the rest of the project):
 //   decide(model, rng)  -- PURE: reads only the model, never the live player move.
 //   learn(model, p, a)  -- DETERMINISTIC (no Math.random / Date), so replaying the
-//                          stored rounds rebuilds the exact model (see ADR 0009).
+//                          stored rounds rebuilds the exact model (see root ADR 0009).
 // Only depends on ./game.js. Lightweight: decayed float count bumps + decayed-score
 // updates per round -- runs in microseconds on a phone.
 
@@ -271,7 +271,7 @@ export function learn(model, playerMove, aiMove) {
   // COUNT_DECAY: exponentially age within-context counts so recent observations dominate
   // stale history after the player switches tactics. Applied BEFORE the count bump so the
   // new observation keeps full weight 1.0. Deterministic (fixed-order float multiply), so
-  // rebuildModel() reproduces the exact float state (see ADR 0009).
+  // rebuildModel() reproduces the exact float state (see root ADR 0009).
   if (COUNT_DECAY < 1.0) {
     for (const tableName in model.tables) {
       const tbl = model.tables[tableName];
@@ -309,7 +309,7 @@ export function learn(model, playerMove, aiMove) {
 
 // Rebuild a model by replaying stored rounds. Because learn() is deterministic this
 // reproduces the exact live model -- which is how persistence works: we store
-// rounds, not the model (see ADR 0009).
+// rounds, not the model (see root ADR 0009).
 export function rebuildModel(rounds) {
   const model = createModel();
   if (!Array.isArray(rounds)) return model;

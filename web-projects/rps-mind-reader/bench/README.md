@@ -3,7 +3,7 @@
 Deep evaluation for `predictor.js`: adaptation speed + post-switch recovery + real-session
 fidelity — the things the lean `benchmark.js` gate doesn't measure. Built during the 2026-06
 switching bake-off (archived in `history/`); kept as the standing tool for iterating on
-prediction strategies. Methodology rationale: ADR 0012.
+prediction strategies. Methodology rationale: ADR 0002.
 
 ## Files
 
@@ -31,7 +31,7 @@ bun bench/suite.js --mode switching-only --seeds 40  # fast iteration loop
 2. Run the suite at `--seeds 80`.
 3. Clear **all** acceptance gates (below) **and** beat current production on the metric you targeted.
 4. Tune on the **synthetic** battery; check the `sample-plays/` real sessions **once** at the end (overfitting guard).
-5. Win → apply to `predictor.js`, extend `predictor.test.js`, update ADR 0010 history, delete the candidate.
+5. Win → apply to `predictor.js`, extend `predictor.test.js`, update ADR 0001 history, delete the candidate.
 
 For a larger exploration, run `/research-agents` (it scaffolds a fresh `planning-workspace/`);
 archive the result into `history/` when done.

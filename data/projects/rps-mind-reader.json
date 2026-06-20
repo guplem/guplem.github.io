@@ -5,7 +5,7 @@
   "title": "RPS Mind Reader · Adaptive AI Opponent",
   "description": [
     "*RPS Mind Reader* is a **rock-paper-scissors web game** where an AI learns your habits and tries to beat you — the more you play, the better it reads you, so the only way to win consistently is to stay genuinely unpredictable.",
-    "Built **100% by an AI coding agent** under my direction. Rather than a heavy neural network, the opponent is a custom **Bayesian mixture of variable-order context models**: each forecasts your next-move *distribution* and votes for the **expected-value-optimal** counter, weighted by how well it has predicted you lately. See [ADR 0010](https://github.com/guplem/guplem.github.io/blob/main/adr/0010-custom-statistical-predictor-no-ml-library.md) for the algorithm choice."
+    "Built **100% by an AI coding agent** under my direction. Rather than a heavy neural network, the opponent is a custom **Bayesian mixture of variable-order context models**: each forecasts your next-move *distribution* and votes for the **expected-value-optimal** counter, weighted by how well it has predicted you lately. See [ADR 0001](https://github.com/guplem/guplem.github.io/blob/main/web-projects/rps-mind-reader/adr/0001-custom-statistical-predictor-no-ml-library.md) for the algorithm choice."
   ],
   "image": "resources/images/projects/rpsMindReader.webp",
   "imageAlt": "Rock-paper-scissors round: the player threw Rock and the AI threw Paper, with the AI's note 'I predicted you'd throw Rock (63%)'",

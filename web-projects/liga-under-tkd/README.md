@@ -46,4 +46,4 @@ bun test
 
 Vanilla HTML, CSS, and JavaScript (ES modules). No framework, no build step. Data is read from a
 Google Sheet through the public **gviz** endpoint (no API key). See
-[ADR 0008](../../adr/0008-google-sheet-as-database.md) for why the Sheet is the database.
+[ADR 0001](adr/0001-google-sheet-as-database.md) for why the Sheet is the database.

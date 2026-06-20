@@ -21,6 +21,12 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
 - The fragile matching/selection logic is pure and Bun-tested in `discovery.js` / `discovery.test.js`; `app.js` only fetches and renders. Keep new logic in `discovery.js` with tests.
 - Do **not** make individual projects depend on the index, and do not import the index's files into a project.
 
+## Architecture Decision Records (ADRs)
+
+A decision specific to one web-project lives in that project's own `adr/` folder (`web-projects/<project>/adr/`), **numbered per project from `0001`** -- not in the root `adr/`. Cross-cutting web-project patterns (e.g. URL-as-state, localStorage) and main-site decisions stay in root `adr/`.
+
+Reference convention so per-project numbers stay unambiguous: inside a project, `ADR 000N` means that project's own ADR; a root ADR is written `root ADR 00NN`; links always use the full path (which includes the project). The root `CLAUDE.md` keeps a master index of every ADR (root and per-project).
+
 ## Test-Driven Development (mandatory)
 
 All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/docs/cli/test) (`bun test`). No config or `package.json` required.
@@ -49,6 +55,6 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 - **seasonal-color-classifier** -- Color analysis tool that classifies colors into seasonal palettes
 - **github-stats-dashboard** -- GitHub repository analytics dashboard with issues, PRs, commits, contributors, and language breakdowns
 - **random-option-picker** -- Slot-machine style random picker with shareable URLs and reproducible seeds (TDD-covered, mulberry32 PRNG)
-- **taboo-game** -- Deterministic multiplayer Taboo game with no server; every client derives the same state from shared seed + turn (TDD-covered, see ADR 0007)
-- **liga-under-tkd** -- Live taekwondo tournament site; reads a shared Google Sheet via the gviz endpoint and computes standings/combats/profiles in CA/ES/EN (TDD-covered pure modules, see ADR 0008)
-- **rps-mind-reader** -- Rock-paper-scissors against an adaptive AI that learns your patterns (a Bayesian mixture of variable-order context models weighted by predictive log-likelihood, each voting for the expected-value-optimal counter; algorithm chosen and guarded by `benchmark.js`, a dev-only opponent-battery harness); state persists in localStorage, with a statistics page charting win/loss/tie trends and AI prediction confidence over time (TDD-covered, see ADRs 0009 and 0010)
+- **taboo-game** -- Deterministic multiplayer Taboo game with no server; every client derives the same state from shared seed + turn (TDD-covered, see taboo-game ADR 0001)
+- **liga-under-tkd** -- Live taekwondo tournament site; reads a shared Google Sheet via the gviz endpoint and computes standings/combats/profiles in CA/ES/EN (TDD-covered pure modules, see liga-under-tkd ADR 0001)
+- **rps-mind-reader** -- Rock-paper-scissors against an adaptive AI that learns your patterns (a Bayesian mixture of variable-order context models weighted by predictive log-likelihood, each voting for the expected-value-optimal counter; algorithm chosen and guarded by `benchmark.js`, a dev-only opponent-battery harness); state persists in localStorage, with a statistics page charting win/loss/tie trends and AI prediction confidence over time (TDD-covered, see root ADR 0009 and rps-mind-reader ADR 0001)

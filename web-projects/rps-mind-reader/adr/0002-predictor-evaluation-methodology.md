@@ -1,10 +1,10 @@
-# ADR 0012: Predictor Evaluation Methodology — Switching Battery + Held-Out Real Sessions
+# ADR 0002: Predictor Evaluation Methodology — Switching Battery + Held-Out Real Sessions
 
 **Status:** Accepted (2026-06)
 
 ## Context
 
-`benchmark.js` (ADR 0010) guards the predictor with an opponent battery scored by mean/worst
+`benchmark.js` (ADR 0001) guards the predictor with an opponent battery scored by mean/worst
 net over 300-round matches. That rewards *steady-state* accuracy but is blind to **adaptation
 speed** — a player who plays one way, then switches tactics mid-game. A real switcher session
 (`sample-plays/match91.json`) exposed a multi-round "stuck prediction" failure that
@@ -40,7 +40,7 @@ Add a second-tier evaluation suite under `bench/`, kept separate from the lean `
 ## Consequences
 
 - Predictor changes are judged on adaptation speed + robustness + real-session fidelity, not
-  just steady-state net. The `COUNT_DECAY` + `LL_SCORE_FLOOR` change (ADR 0010 history) was
+  just steady-state net. The `COUNT_DECAY` + `LL_SCORE_FLOOR` change (ADR 0001 history) was
   selected on this scoreboard, and a fast-expert portfolio / aggressive decay were **rejected**
   on it — they won synthetic metrics but regressed held-out real sessions.
 - The real-games corpus (`sample-plays/`) is meant to **grow**; each added session strengthens
@@ -52,5 +52,5 @@ Add a second-tier evaluation suite under `bench/`, kept separate from the lean `
 - Cost: a second harness to maintain. Mitigated by keeping it dependency-free, deterministic,
   and runnable with one `bun` command — the same constraints as `benchmark.js`.
 
-Complements ADR 0010 (the algorithm) and ADR 0009 (rounds-not-model persistence, which lets the
+Complements ADR 0001 (the algorithm) and root ADR 0009 (rounds-not-model persistence, which lets the
 suite replay any session deterministically).

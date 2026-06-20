@@ -35,7 +35,7 @@ Conventions (as implemented in `rps-mind-reader`):
 - All reads and writes are wrapped in `try/catch` so private-mode / quota / disabled-storage failures degrade gracefully to an in-memory session rather than crashing.
 - The **pure logic module owns (de)serialization and normalization** (`serialize`, `deserialize`, `normalizeState` in `game.js`), and these are covered by tests. The DOM layer (`app.js`) only does the actual `localStorage.getItem`/`setItem`. This keeps the storage contract verifiable without a browser, mirroring how ADR 0006 keeps URL parsing in the pure module.
 - `deserialize` is **defensive**: any malformed or out-of-range stored value is coerced or dropped, so old or corrupt data can never break the app.
-- A **user-facing reset** (button) clears the key, and the stored format is minimal — `rps-mind-reader` persists only the round list and cumulative totals, then *replays* them to rebuild the AI model (see ADR 0010), rather than serializing the model object itself.
+- A **user-facing reset** (button) clears the key, and the stored format is minimal — `rps-mind-reader` persists only the round list and cumulative totals, then *replays* them to rebuild the AI model (see rps-mind-reader ADR 0001), rather than serializing the model object itself.
 
 ## Consequences
 

@@ -16,4 +16,4 @@
 - Preserves the fairness + determinism contract (pure `decide`, deterministic replayable `learn`).
 - Stays dependency-free and microsecond-cheap.
 
-**Relevant files:** `predictor.js`, `benchmark.js`, `realplay-bench.js`, `predictor.test.js`, `game.js`, `adr/0010-custom-statistical-predictor-no-ml-library.md`, `sample-plays/human-session-1.json`, scratch `match91.json`.
+**Relevant files:** `predictor.js`, `benchmark.js`, `realplay-bench.js`, `predictor.test.js`, `game.js`, `adr/0001-custom-statistical-predictor-no-ml-library.md`, `sample-plays/human-session-1.json`, scratch `match91.json`.

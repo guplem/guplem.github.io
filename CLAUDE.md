@@ -22,7 +22,7 @@ This file and all child `CLAUDE.md` files are self-improving. Update them when y
 |---|---|
 | Cross-project preference or pattern | `~/.claude/CLAUDE.md` |
 | Project-specific constraint, gotcha, or pattern | This file or the relevant child `CLAUDE.md` |
-| Architectural decision with trade-offs | `adr/NNNN-descriptive-title.md` + update the ADR index below |
+| Architectural decision with trade-offs | `adr/NNNN-*.md` (main-site/cross-cutting) or `web-projects/<project>/adr/NNNN-*.md` (project-specific) + update the ADR index below |
 | Human-facing change (new feature, project, setup step) | `README.md` (root or per-project) |
 | Wrong or outdated instruction | Correct it in place, whichever file it's in |
 
@@ -54,7 +54,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `js/planetSimulation/CLAUDE.md` | Particle simulation: architecture, config, performance |
 | `web-projects/CLAUDE.md` | Web projects: conventions, TDD with Bun, full checklist for adding a new web-project |
 | `web-projects/rps-mind-reader/CLAUDE.md` | rps-mind-reader: predictor architecture + contracts, R&D workflow, strategies tried/rejected |
-| `adr/*.md` | Architecture Decision Records: why behind key choices |
+| `adr/*.md`, `web-projects/*/adr/*.md` | Architecture Decision Records: why behind key choices (root = main-site/cross-cutting; per-project = project-specific) |
 | `README.md` (root) | Human-facing: what the site is, how to run locally, project list |
 | `web-projects/*/README.md` | Human-facing: per-project features, how to run |
 
@@ -116,7 +116,14 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 ## Architecture Decision Records (ADRs)
 
-ADRs live in `adr/` and capture the **why** behind architectural choices. Format: Context, Decision, Consequences.
+ADRs capture the **why** behind architectural choices (format: Context, Decision, Consequences). They live in two places:
+
+- **Root `adr/`** -- main-site and cross-cutting decisions. Numbered globally; gaps are fine (numbers are stable identifiers and are never reused).
+- **`web-projects/<project>/adr/`** -- decisions specific to one web-project. Numbered **per project** from `0001`.
+
+Reference a project ADR with its project so the number is unambiguous (path, or "rps-mind-reader ADR 0001"). Inside a project, `ADR 000N` means that project's own; a root ADR is written `root ADR 00NN`.
+
+### Root ADRs
 
 | ADR | Topic |
 |---|---|
@@ -126,17 +133,22 @@ ADRs live in `adr/` and capture the **why** behind architectural choices. Format
 | [0004](adr/0004-js-masonry-layout.md) | JS-based masonry layout instead of CSS Grid |
 | [0005](adr/0005-cdn-for-dependencies.md) | esm.sh CDN for third-party dependencies |
 | [0006](adr/0006-url-as-state-for-web-projects.md) | URL query params as source of truth for shareable web-projects |
-| [0007](adr/0007-deterministic-multiplayer-without-server.md) | Deterministic multiplayer without a server (taboo-game) |
-| [0008](adr/0008-google-sheet-as-database.md) | Google Sheet as the live database via gviz (liga-under-tkd) |
 | [0009](adr/0009-localstorage-for-private-session-persistence.md) | localStorage for private-session persistence in web-projects |
-| [0010](adr/0010-custom-statistical-predictor-no-ml-library.md) | Custom statistical predictor instead of an ML library (rps-mind-reader) |
 | [0011](adr/0011-web-projects-index-from-portfolio-data.md) | Web-projects index page derived from portfolio data (not self-contained) |
-| [0012](adr/0012-predictor-evaluation-methodology.md) | Predictor evaluation methodology: switching battery + held-out real sessions (rps-mind-reader) |
 | [0013](adr/0013-github-actions-ci-for-bun-tests.md) | GitHub Actions CI runs the full Bun test suite on pull requests |
 
-**Create a new ADR** when making an architectural decision with trade-offs worth preserving. Use the next sequential number. This includes decisions made within web-projects (e.g., choosing a physics engine, a rendering approach, or a data structure).
+### Per-project ADRs
 
-**Keep ADRs current.** When a change affects an existing decision, update the relevant ADR. If a decision is superseded, mark the old ADR as superseded and reference the new one. The ADR index table above must always reflect the contents of `adr/`.
+| ADR | Topic |
+|---|---|
+| [taboo-game 0001](web-projects/taboo-game/adr/0001-deterministic-multiplayer-without-server.md) | Deterministic multiplayer without a server |
+| [liga-under-tkd 0001](web-projects/liga-under-tkd/adr/0001-google-sheet-as-database.md) | Google Sheet as the live database via gviz |
+| [rps-mind-reader 0001](web-projects/rps-mind-reader/adr/0001-custom-statistical-predictor-no-ml-library.md) | Custom statistical predictor instead of an ML library |
+| [rps-mind-reader 0002](web-projects/rps-mind-reader/adr/0002-predictor-evaluation-methodology.md) | Predictor evaluation methodology: switching battery + held-out real sessions |
+
+**Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
+
+**Keep ADRs current.** When a change affects an existing decision, update the relevant ADR. If a decision is superseded, mark the old ADR as superseded and reference the new one. Both index tables above must reflect the contents of `adr/` and every `web-projects/*/adr/`.
 
 ## GitHub Issues, PRs, and Other Artifacts
 

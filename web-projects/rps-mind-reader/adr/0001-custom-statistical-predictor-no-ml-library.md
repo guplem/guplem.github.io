@@ -1,4 +1,4 @@
-# ADR 0010: Custom Statistical Predictor Instead of an ML Library (RPS Mind Reader)
+# ADR 0001: Custom Statistical Predictor Instead of an ML Library (RPS Mind Reader)
 
 ## Context
 
@@ -11,9 +11,9 @@ prediction.
 Constraints and considerations specific to this problem:
 
 - **The domain is tiny and adversarial.** Three possible moves, and the signal is short-range temporal pattern in a *non-stationary* opponent (a human who changes tactics, and who may actively try to out-think the bot).
-- **No build system / no bundler** (ADR 0002), and CDN deps are governed by ADR 0005. A heavy ML library would add bundle weight, a network dependency, and (for some) Node/bundler assumptions.
+- **No build system / no bundler** (root ADR 0002), and CDN deps are governed by root ADR 0005. A heavy ML library would add bundle weight, a network dependency, and (for some) Node/bundler assumptions.
 - **It must train instantly and run fully offline**, updating every single round on a phone.
-- **It must be reconstructable from stored history** to satisfy `localStorage` persistence (ADR 0009).
+- **It must be reconstructable from stored history** to satisfy `localStorage` persistence (root ADR 0009).
 
 Options considered:
 
@@ -63,7 +63,7 @@ held-out set of unseen opponents. Its structure:
 - **Determinism for persistence.** Count/score updates are deterministic (ties
   broken by a fixed move order), so the entire model is rebuilt by *replaying* the
   stored round history (`rebuildModel`) instead of serializing model internals. This
-  is what makes ADR 0009's "store rounds, not the model" approach work, verified by a
+  is what makes root ADR 0009's "store rounds, not the model" approach work, verified by a
   test asserting the replayed model equals the live one.
 
 All of this logic is pure and **TDD-covered** (`predictor.test.js`, `game.test.js`),
@@ -128,7 +128,7 @@ both opponents are net-positive overall.
 
 **Positive:**
 
-- Zero runtime dependencies; aligns with ADR 0002 (no build) and ADR 0005 (no unnecessary CDN deps). Works fully offline.
+- Zero runtime dependencies; aligns with root ADR 0002 (no build) and root ADR 0005 (no unnecessary CDN deps). Works fully offline.
 - Trains in microseconds per round (decayed float count bumps + a decayed score update); trivial on mobile.
 - Stronger at RPS than a neural net would be, and resistant to a player trying to game it; the design was chosen — and future changes can be guarded — by a reproducible benchmark (`benchmark.js`).
 - Deterministic replay makes persistence simple and testable, and keeps the stored payload minimal.

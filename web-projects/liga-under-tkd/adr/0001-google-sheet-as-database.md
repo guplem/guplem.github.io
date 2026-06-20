@@ -1,4 +1,4 @@
-# ADR 0008: Google Sheet as the Live Database for Liga UNDER
+# ADR 0001: Google Sheet as the Live Database for Liga UNDER
 
 ## Context
 

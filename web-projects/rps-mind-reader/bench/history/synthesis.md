@@ -284,7 +284,7 @@ opponents; overall net on those same opponents is solidly positive (+43% noisy, 
    `meanNet`/`worstNet` baseline (the new opponents are post-switch-hard but net-positive
    overall, so worstNet stays bound by uniform-random). Do NOT move the whole 15-opponent
    battery in — keep `benchmark.js` lean.
-4. **ADR `adr/0010-custom-statistical-predictor-no-ml-library.md`** — add a "Consequences"/
+4. **ADR `adr/0001-custom-statistical-predictor-no-ml-library.md`** — add a "Consequences"/
    amendment recording: (a) `COUNT_DECAY=0.995` within-context count aging and *why* (stale
    cumulative counts caused a multi-round stuck prediction after a real player's strategy
    switch — the match91 failure); (b) `LL_SCORE_FLOOR` clamp and *why* (prevents the

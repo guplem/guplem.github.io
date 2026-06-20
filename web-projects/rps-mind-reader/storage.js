@@ -1,7 +1,7 @@
 // localStorage persistence for RPS Mind Reader, shared by the game page (app.js)
 // and the statistics page (stats.js). The pure (de)serialization lives in game.js;
 // this module only touches localStorage, wrapped so private-mode / quota / disabled
-// storage degrades gracefully to an in-memory session. See ADR 0009.
+// storage degrades gracefully to an in-memory session. See root ADR 0009.
 
 import { serialize, deserialize, emptyState } from "./game.js";
 

@@ -17,13 +17,13 @@ two evaluation harnesses (`benchmark.js`, `bench/`).
   log-likelihood score (*which* model to trust); `COUNT_DECAY` ages the within-context counts (so
   distributions reflect recent play). `LL_SCORE_FLOOR` clamps a model's vote weight so the
   always-on `p0` can't monopolize.
-- Why: ADR 0010 (algorithm + history). How we evaluate it: ADR 0012.
+- Why: ADR 0001 (algorithm + history). How we evaluate it: ADR 0002.
 
 ## Contracts — do NOT break (they are load-bearing)
 
 - `decide(model, rng)` is **PURE** — reads the model, never mutates, never sees the live move.
 - `learn(model, p, a)` is **DETERMINISTIC** (no `Math.random` / `Date`) so `rebuildModel(rounds)`
-  reproduces the exact model. Persistence stores **rounds, not the model** (ADR 0009); the float
+  reproduces the exact model. Persistence stores **rounds, not the model** (root ADR 0009); the float
   counts from `COUNT_DECAY` are rebuilt on load. Any new state in `learn()` must be replayable
   from history alone.
 - Dependency-free, microsecond-cheap (runs per-round on a phone).
@@ -47,7 +47,7 @@ Reach for `bench/suite.js` whenever you touch predictor logic. Full workflow + a
 4. Tune on the **synthetic** battery; look at the **real** sessions in `sample-plays/` only once
    per final candidate (overfitting guard).
 5. Win → apply to `predictor.js`, extend `predictor.test.js` (esp. replay determinism), update
-   ADR 0010 history, delete the candidate.
+   ADR 0001 history, delete the candidate.
 6. Big exploration → `/research-agents` (scaffolds a fresh `planning-workspace/`); archive into
    `bench/history/` when done.
 

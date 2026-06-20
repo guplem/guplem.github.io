@@ -1,17 +1,17 @@
-# ADR 0007: Deterministic Multiplayer Without a Server (Taboo Game)
+# ADR 0001: Deterministic Multiplayer Without a Server (Taboo Game)
 
 ## Context
 
 The `taboo-game/` web-project is a multiplayer party game intended to be played in person on several phones at the same time. All players must see a consistent view of the game (which team is guessing, which player is the active describer, which card is on the table) without any of the usual tools for keeping clients in sync:
 
-- No backend (the portfolio is hosted on static GitHub Pages — see ADR 0002).
+- No backend (the portfolio is hosted on static GitHub Pages — see root ADR 0002).
 - No persistent shared state, no rooms, no codes.
 - No WebSockets, push, or polling.
 - No host device whose state others must trust.
 
 We considered:
 
-1. **Add a tiny realtime backend** (Firebase, Supabase, PartyKit). Solves coherence but breaks ADR 0002 (no build/no server) and adds an external dependency, free-tier risk, and a moving point of failure during a party.
+1. **Add a tiny realtime backend** (Firebase, Supabase, PartyKit). Solves coherence but breaks root ADR 0002 (no build/no server) and adds an external dependency, free-tier risk, and a moving point of failure during a party.
 2. **Host-based BroadcastChannel / WebRTC**. Removes the server but introduces a host election problem and tricky failure modes (host disconnects mid-game) that are heavy for a party game.
 3. **Deterministic local computation from shared inputs.** Each client independently derives the entire game state from a small set of values that the group agrees on verbally / via a shared link: a `seed`, the team sizes, and the current `turn` number.
 
@@ -47,7 +47,7 @@ The cards dataset (`cards.json`) is treated as part of the inputs: its `version`
 - Works fully offline once the page is loaded.
 - Late joiners are first-class: typing `turn=50` reconstructs turn 50 exactly. There is no "must-be-present-from-the-start" requirement.
 - Pure logic is testable without a browser (45 tests under `bun test`).
-- Aligns with ADRs 0001 (data-driven JSON) and 0002 (no build system).
+- Aligns with root ADRs 0001 (data-driven JSON) and 0002 (no build system).
 
 **Negative:**
 
