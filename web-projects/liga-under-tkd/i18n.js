@@ -14,8 +14,8 @@ export const TRANSLATIONS = Object.freeze({
     "brand.tagline": "Més experiència. Més combat. Més taekwondo.",
 
     "nav.home": "Inici",
-    "nav.fields": "Per tatami",
-    "nav.groups": "Per grup",
+    "nav.fields": "Combats",
+    "nav.groups": "Grups",
     "nav.athletes": "Esportistes",
 
     "status.live": "En directe",
@@ -44,7 +44,7 @@ export const TRANSLATIONS = Object.freeze({
     "countdown.minutes": "min",
     "countdown.seconds": "s",
 
-    "fields.title": "Combats per tatami",
+    "fields.title": "Combats",
     "fields.tatami": "Tatami {n}",
     "fields.all": "Tots",
     "fields.current": "En joc ara",
@@ -59,7 +59,7 @@ export const TRANSLATIONS = Object.freeze({
     "combat.round": "Assalt {n}",
     "combat.winner": "Guanyador",
 
-    "groups.title": "Combats per grup",
+    "groups.title": "Grups",
     "groups.select": "Tria un grup",
     "groups.standings": "Classificació",
     "groups.allCombats": "Tots els combats",
@@ -126,8 +126,8 @@ export const TRANSLATIONS = Object.freeze({
     "brand.tagline": "Más experiencia. Más combate. Más taekwondo.",
 
     "nav.home": "Inicio",
-    "nav.fields": "Por tatami",
-    "nav.groups": "Por grupo",
+    "nav.fields": "Combates",
+    "nav.groups": "Grupos",
     "nav.athletes": "Deportistas",
 
     "status.live": "En directo",
@@ -156,7 +156,7 @@ export const TRANSLATIONS = Object.freeze({
     "countdown.minutes": "min",
     "countdown.seconds": "s",
 
-    "fields.title": "Combates por tatami",
+    "fields.title": "Combates",
     "fields.tatami": "Tatami {n}",
     "fields.all": "Todos",
     "fields.current": "En juego ahora",
@@ -171,7 +171,7 @@ export const TRANSLATIONS = Object.freeze({
     "combat.round": "Asalto {n}",
     "combat.winner": "Ganador",
 
-    "groups.title": "Combates por grupo",
+    "groups.title": "Grupos",
     "groups.select": "Elige un grupo",
     "groups.standings": "Clasificación",
     "groups.allCombats": "Todos los combates",
@@ -238,8 +238,8 @@ export const TRANSLATIONS = Object.freeze({
     "brand.tagline": "More experience. More fighting. More taekwondo.",
 
     "nav.home": "Home",
-    "nav.fields": "By tatami",
-    "nav.groups": "By group",
+    "nav.fields": "Combats",
+    "nav.groups": "Groups",
     "nav.athletes": "Athletes",
 
     "status.live": "Live",
@@ -268,7 +268,7 @@ export const TRANSLATIONS = Object.freeze({
     "countdown.minutes": "min",
     "countdown.seconds": "s",
 
-    "fields.title": "Combats by tatami",
+    "fields.title": "Combats",
     "fields.tatami": "Tatami {n}",
     "fields.all": "All",
     "fields.current": "On now",
@@ -283,7 +283,7 @@ export const TRANSLATIONS = Object.freeze({
     "combat.round": "Round {n}",
     "combat.winner": "Winner",
 
-    "groups.title": "Combats by group",
+    "groups.title": "Groups",
     "groups.select": "Choose a group",
     "groups.standings": "Standings",
     "groups.allCombats": "All combats",
