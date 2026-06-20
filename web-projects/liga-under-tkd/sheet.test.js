@@ -143,7 +143,7 @@ describe("normalizeGroups", () => {
 });
 
 describe("normalizeCombats", () => {
-  test("packs the two rounds and parses scores/tiebreaks/status", () => {
+  test("packs the two rounds and parses scores/winners/status", () => {
     const rows = [
       {
         "Red ID": "P001",
@@ -152,10 +152,10 @@ describe("normalizeCombats", () => {
         Combat: "3",
         "R1 Red": "10",
         "R1 Blue": "5",
-        "R1 Tiebreak": "",
+        "R1 Winner": "",
         "R2 Red": "5",
         "R2 Blue": "5",
-        "R2 Tiebreak": "Red",
+        "R2 Winner": "Red",
         Status: "Finished",
       },
     ];
@@ -163,8 +163,8 @@ describe("normalizeCombats", () => {
     expect(c.redId).toBe("P001");
     expect(c.field).toBe(1);
     expect(c.combat).toBe(3);
-    expect(c.rounds[0]).toEqual({ red: 10, blue: 5, tiebreak: null });
-    expect(c.rounds[1]).toEqual({ red: 5, blue: 5, tiebreak: "Red" });
+    expect(c.rounds[0]).toEqual({ red: 10, blue: 5, winner: null });
+    expect(c.rounds[1]).toEqual({ red: 5, blue: 5, winner: "Red" });
     expect(c.status).toBe("Finished");
   });
 

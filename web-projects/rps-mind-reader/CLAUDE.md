@@ -17,7 +17,7 @@ two evaluation harnesses (`benchmark.js`, `bench/`).
   log-likelihood score (*which* model to trust); `COUNT_DECAY` ages the within-context counts (so
   distributions reflect recent play). `LL_SCORE_FLOOR` clamps a model's vote weight so the
   always-on `p0` can't monopolize.
-- Why: ADR 0010 (algorithm + history). How we evaluate it: ADR 0011.
+- Why: ADR 0010 (algorithm + history). How we evaluate it: ADR 0012.
 
 ## Contracts — do NOT break (they are load-bearing)
 

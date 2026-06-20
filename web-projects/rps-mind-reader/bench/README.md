@@ -3,7 +3,7 @@
 Deep evaluation for `predictor.js`: adaptation speed + post-switch recovery + real-session
 fidelity — the things the lean `benchmark.js` gate doesn't measure. Built during the 2026-06
 switching bake-off (archived in `history/`); kept as the standing tool for iterating on
-prediction strategies. Methodology rationale: ADR 0011.
+prediction strategies. Methodology rationale: ADR 0012.
 
 ## Files
 

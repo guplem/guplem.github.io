@@ -10,10 +10,11 @@ Until you connect a sheet, the app runs on **sample data** and shows a "Demo mod
 
 ## 1. Create the Google Sheet
 
-> **Quick start:** the `sample-sheet/` folder has three ready-made CSVs (`Players.csv`,
-> `Groups.csv`, `Combats.csv`) that recreate the demo data. Import them (File → Import → Upload →
-> Insert new sheet) to get all three tabs with correct headers in minutes, then edit the rows. See
-> `sample-sheet/README.md`. The steps below describe the same tabs if you prefer to build by hand.
+> **Quick start:** the `sample-sheet/` folder has two ready-made sets of CSVs — `demo/` (invented
+> sample data) and `real/` (the actual roster and schedule), each with `Players.csv`, `Groups.csv`,
+> `Combats.csv`. Import a set (File → Import → Upload → Insert new sheet) to get all three tabs with
+> correct headers in minutes, then edit the rows. See `sample-sheet/README.md`. The steps below
+> describe the same tabs if you prefer to build by hand.
 
 Create one Google Sheet document with **three tabs** (the small tabs at the bottom). The tab names
 and the column headers (the first row of each tab) must match **exactly**, including capital
@@ -44,8 +45,8 @@ letters and spaces.
 
 ### Tab `Combats` (one row per combat — this is the live one)
 
-| Red ID | Blue ID | Field | Combat | R1 Red | R1 Blue | R1 Tiebreak | R2 Red | R2 Blue | R2 Tiebreak | Status |
-|--------|---------|-------|--------|--------|---------|-------------|--------|---------|-------------|--------|
+| Red ID | Blue ID | Field | Combat | R1 Red | R1 Blue | R1 Winner | R2 Red | R2 Blue | R2 Winner | Status |
+|--------|---------|-------|--------|--------|---------|-----------|--------|---------|-----------|--------|
 | P001 | P002 | 1 | 1 | 12 | 5 | | 9 | 7 | | Finished |
 
 - **Red ID / Blue ID**: the two fighters (must exist in the `Players` tab).
@@ -53,12 +54,16 @@ letters and spaces.
 - **Combat**: the running order on that tatami (`1`, `2`, `3`, …). There is **no clock**; combats
   simply run in this order on each tatami.
 - **R1 Red / R1 Blue / R2 Red / R2 Blue**: the points each fighter scored in each round (numbers).
-- **R1 Tiebreak / R2 Tiebreak**: fill with `Red` or `Blue` **only** when that round's points are
-  tied and the referee picks a winner. Leave empty otherwise.
+- **R1 Winner / R2 Winner**: usually leave **empty** — the higher score wins the round on its own.
+  Fill with `Red` or `Blue` to **force the winner of that round**, overriding the points. Use it in
+  two cases: (1) the round's points are **tied** and the referee picks a winner; (2) a fighter who
+  was **ahead on points is disqualified** (e.g. 5 faults) **or withdraws** (injury) and so loses the
+  round. The points columns are not changed — they keep the real scores; only the round's winner and
+  the league points (3 / 1 / 0) follow this column.
 - **Status**: `Scheduled`, `Ongoing`, `Finished`, or `Cancelled`.
   - `Ongoing` shows partial scores live. `Finished` counts in the standings. `Cancelled` is ignored.
 
-> Tip: in Google Sheets use **Data → Data validation** to turn `R1 Tiebreak`, `R2 Tiebreak`, and
+> Tip: in Google Sheets use **Data → Data validation** to turn `R1 Winner`, `R2 Winner`, and
 > `Status` into dropdowns. This prevents typos. The website is forgiving (unknown status becomes
 > `Scheduled`), but dropdowns keep the data clean.
 

@@ -1,8 +1,10 @@
 // Standings / result engine: pure functions, no DOM, no network. Safe to import from tests.
 //
 // Tournament rules (spec §4):
-//   - A combat = 2 rounds. Each round is won by higher points; a tied round is decided by
-//     the referee's tie-break ("Red"/"Blue").
+//   - A combat = 2 rounds. Each round is won by higher points, UNLESS the round Winner column
+//     ("Red"/"Blue") is set: an explicit Winner always decides the round, even overriding the
+//     points. This covers a disqualification (e.g. 5 faults) or a withdrawal, where a fighter
+//     ahead on points can still lose the round. A tied round with no Winner set stays undecided.
 //   - League points per combat: win both rounds = 3, split 1-1 = 1 each, lose both = 0.
 //   - Points for / against = sum of round points scored / conceded across all combats.
 //   - Standings count ONLY Finished combats. Cancelled is ignored. Ongoing/Scheduled do not count.
@@ -19,11 +21,15 @@ export const STATUS = Object.freeze({
 // Winner of a single round -> "Red" | "Blue" | null (null = not decided / not played).
 export function roundWinner(round) {
   if (!round) return null;
-  const { red, blue, tiebreak } = round;
+  const { red, blue, winner } = round;
+  // An explicit Winner ("Red"/"Blue") always decides the round, overriding the points. This
+  // covers a disqualification (e.g. 5 faults) or a withdrawal: a fighter ahead on points can
+  // still lose the round. It also resolves a tie when both fighters scored the same.
+  if (winner === "Red" || winner === "Blue") return winner;
   if (red === null || red === undefined || blue === null || blue === undefined) return null;
   if (red > blue) return "Red";
   if (blue > red) return "Blue";
-  return tiebreak === "Red" || tiebreak === "Blue" ? tiebreak : null;
+  return null; // tied points and no Winner set = undecided
 }
 
 // Aggregate one combat from each fighter's point of view.

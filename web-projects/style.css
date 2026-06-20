@@ -1,0 +1,231 @@
+/* Page-specific styles for the web-projects index.
+   Design tokens (--accent, --bg-*, spacing, radii, shadows) come from the
+   site's css/global/variables.css; base typography from css/global/base.css.
+   This file only adds the page layout and the project cards, mirroring the
+   look of the work cards on the main portfolio. */
+
+/* === Top bar === */
+.topbar {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: var(--sp-md) var(--sp-md) 0;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+/* === Header === */
+.page-header {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--sp-xl) var(--sp-md) var(--sp-lg);
+  text-align: center;
+}
+
+.page-header h1 {
+  position: relative;
+  display: inline-block;
+  padding-bottom: var(--sp-sm);
+}
+
+.page-header h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+}
+
+.page-header .subtitle {
+  margin-top: var(--sp-sm);
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* === Project grid === */
+main {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 var(--sp-md) var(--sp-2xl);
+}
+
+.status {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--sp-lg) 0;
+}
+
+.status[hidden] {
+  display: none;
+}
+
+/* === Search === */
+.search {
+  max-width: 480px;
+  margin: 0 auto var(--sp-lg);
+}
+
+.search-input {
+  width: 100%;
+  font-family: var(--font);
+  font-size: 0.95rem;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-full);
+  background: white;
+  color: var(--text-body);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--sp-md);
+}
+
+/* === Project card (mirrors .work on the main site) === */
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+  animation: cardIn 0.4s var(--ease-out) both;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* .project-card sets display:flex, which overrides the browser's default
+   [hidden] { display: none }, so the search filter needs this explicitly. */
+.project-card[hidden] {
+  display: none;
+}
+
+.project-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.03);
+}
+
+.project-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-xs);
+  padding: var(--sp-md);
+}
+
+.project-title {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+/* Make the whole card clickable through the title link, without nesting
+   anchors inside the teaser markup. */
+.project-title-link {
+  color: var(--accent);
+}
+
+.project-title-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.project-card:hover .project-title-link {
+  color: var(--accent);
+}
+
+.project-date {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.project-teaser {
+  flex: 1;
+}
+
+.project-teaser p {
+  font-size: 0.88rem;
+  line-height: var(--leading-relaxed);
+}
+
+.project-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: var(--sp-xs);
+}
+
+.project-skill {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--bg-light);
+  color: var(--text-muted);
+}
+
+/* === Footer === */
+.page-footer {
+  text-align: center;
+  padding: var(--sp-lg) var(--sp-md) var(--sp-xl);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* === Card entrance animation (matches the main site) === */
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

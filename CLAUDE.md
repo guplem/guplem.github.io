@@ -98,7 +98,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 ### Web Projects
 
-`web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site. See `web-projects/CLAUDE.md` for detailed guidance when working there.
+`web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site -- except the `web-projects/index.html` directory index, which is data-driven and reuses the site's global CSS (see ADR 0011). See `web-projects/CLAUDE.md` for detailed guidance when working there.
 
 ## Key Patterns and Gotchas
 
@@ -128,7 +128,8 @@ ADRs live in `adr/` and capture the **why** behind architectural choices. Format
 | [0008](adr/0008-google-sheet-as-database.md) | Google Sheet as the live database via gviz (liga-under-tkd) |
 | [0009](adr/0009-localstorage-for-private-session-persistence.md) | localStorage for private-session persistence in web-projects |
 | [0010](adr/0010-custom-statistical-predictor-no-ml-library.md) | Custom statistical predictor instead of an ML library (rps-mind-reader) |
-| [0011](adr/0011-predictor-evaluation-methodology.md) | Predictor evaluation methodology: switching battery + held-out real sessions (rps-mind-reader) |
+| [0011](adr/0011-web-projects-index-from-portfolio-data.md) | Web-projects index page derived from portfolio data (not self-contained) |
+| [0012](adr/0012-predictor-evaluation-methodology.md) | Predictor evaluation methodology: switching battery + held-out real sessions (rps-mind-reader) |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. Use the next sequential number. This includes decisions made within web-projects (e.g., choosing a physics engine, a rendering approach, or a data structure).
 

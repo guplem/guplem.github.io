@@ -12,9 +12,11 @@ import {
   sideOf,
   opponentId,
   standingsForGroup,
+  combatsInGroup,
   crossTable,
   matrixLabels,
   fieldRunningOrder,
+  byCombatOrder,
   athleteFixtures,
   athleteSummary,
   searchPlayers,
@@ -240,8 +242,10 @@ function scoreColumn(combat) {
     .map((r, i) => {
       const red = r.red === null ? "·" : r.red;
       const blue = r.blue === null ? "·" : r.blue;
-      const tb = r.tiebreak ? ` <span class="round__tb round__tb--${r.tiebreak.toLowerCase()}">(${esc(translateToken(state.lang, "side", r.tiebreak))})</span>` : "";
-      return `<div class="round"><span class="round__label">${tr("combat.round", { n: i + 1 })}</span><span class="round__pts">${esc(red)} - ${esc(blue)}</span>${tb}</div>`;
+      // When the round Winner is set, show who took the round. It may disagree with the points
+      // (a disqualification or withdrawal), so the colored side name is the source of truth.
+      const win = r.winner ? ` <span class="round__win round__win--${r.winner.toLowerCase()}">(${esc(translateToken(state.lang, "side", r.winner))})</span>` : "";
+      return `<div class="round"><span class="round__label">${tr("combat.round", { n: i + 1 })}</span><span class="round__pts">${esc(red)} - ${esc(blue)}</span>${win}</div>`;
     })
     .join("");
   const result = combatResultString(combat);
@@ -294,6 +298,19 @@ function renderHome(view) {
       ? `<span class="home__title-top">${esc(titleParts[0])}</span><span class="home__title-main">${esc(titleParts.slice(1).join(" "))}</span>`
       : `<span class="home__title-main">${esc(titleParts[0])}</span>`;
 
+  // Event sponsors, each linking to its most relevant page. Opened in a new tab.
+  const sponsors = [
+    { name: "Ajuntament de Premià de Mar", url: "https://premiademar.cat/" },
+    { name: "Tkd Avellaneda", url: "https://tkdavellaneda.com/" },
+    { name: "Tkd Venzalá", url: "https://www.instagram.com/tkd_venzala/" },
+    { name: "Daedo International", url: "https://www.daedo.com/" },
+    { name: "Institut Esteve Terradas i Illa", url: "https://agora.xtec.cat/iesesteveterradas/" },
+    { name: "TriunityStudios.com", url: "https://triunitystudios.com/" },
+  ];
+  const sponsorsHtml = sponsors
+    .map((s) => `<li><a class="home__sponsor" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a></li>`)
+    .join("");
+
   view.innerHTML = `
     <section class="home">
       <div class="home__hero">
@@ -304,7 +321,7 @@ function renderHome(view) {
           <p class="home__tagline">${tr("brand.tagline")}</p>
           <div class="home__meta">
             <span class="home__date">${tr("home.date")}</span>
-            <span class="home__place">📍 ${tr("home.place")}</span>
+            <a class="home__place" href="https://maps.app.goo.gl/uXGAjDgoDqbbKrjf7" target="_blank" rel="noopener">📍 ${tr("home.place")}</a>
           </div>
           <a class="btn btn--hero" href="#/fields">${tr("home.cta")}</a>
         </div>
@@ -315,9 +332,9 @@ function renderHome(view) {
 
       <div class="home__sections">
         <div class="home__strip">
-          <span class="home__point"><span class="home__point-icon" aria-hidden="true">🥋</span>${tr("home.guaranteed")}</span>
-          <span class="home__point"><span class="home__point-icon" aria-hidden="true">🎟️</span>${tr("home.freeEntry")}</span>
-          <span class="home__point"><span class="home__point-icon" aria-hidden="true">⚡</span>${tr("home.limited")}</span>
+          <div class="home__stat"><span class="home__stat-value">${tr("home.editionValue")}</span><span class="home__stat-label">${tr("home.editionLabel")}</span></div>
+          <div class="home__stat"><span class="home__stat-value">${tr("home.clubsValue")}</span><span class="home__stat-label">${tr("home.clubsLabel")}</span></div>
+          <div class="home__stat"><span class="home__stat-value">${tr("home.leaguesValue")}</span><span class="home__stat-label">${tr("home.leaguesLabel")}</span></div>
         </div>
 
         <section class="home__block">
@@ -332,11 +349,7 @@ function renderHome(view) {
 
         <section class="home__block">
           <h2 class="home__block-title">${tr("home.sponsorsTitle")}</h2>
-          <ul class="home__sponsors">
-            <li>Tae Kwon Do Avellaneda</li>
-            <li>Daedo</li>
-            <li>Ajuntament de Premià de Mar</li>
-          </ul>
+          <ul class="home__sponsors">${sponsorsHtml}</ul>
         </section>
       </div>
     </section>`;
@@ -444,23 +457,43 @@ function fillFields() {
     bar.scrollLeft = prevScroll;
   }
 
-  // Content: the selected tatami only, or every tatami stacked when no filter is active.
-  const toShow = selected ? [selected] : fields;
-  content.innerHTML = toShow
-    .map((f) => {
-      const cards = f.combats
-        .map((c) => {
-          const ribbon = c.isCurrent ? "current" : c.isNext ? "next" : null;
-          return combatCard(c, { showField: false, ribbon });
-        })
-        .join("");
-      return `
+  // Content: group by temporal status (not by tatami). The selected tatami filters the source
+  // combats first; otherwise all tatamis are pooled. We keep fieldRunningOrder's per-tatami
+  // isNext marker so "Up next" holds the next combat of each tatami. Each card shows its tatami
+  // (showField: true) since cards are no longer under a per-tatami heading.
+  const sourceFields = selected ? [selected] : fields;
+  const all = sourceFields.flatMap((f) => f.combats);
+
+  const buckets = { ongoing: [], next: [], upcoming: [], past: [], cancelled: [] };
+  for (const c of all) {
+    if (c.status === STATUS.ONGOING) buckets.ongoing.push(c);
+    else if (c.status === STATUS.FINISHED) buckets.past.push(c);
+    else if (c.status === STATUS.CANCELLED) buckets.cancelled.push(c);
+    else if (c.isNext) buckets.next.push(c); // a Scheduled combat that is next up on its tatami
+    else buckets.upcoming.push(c); // the remaining Scheduled combats
+  }
+
+  const groups = [
+    { title: tr("fields.current"), combats: buckets.ongoing },
+    { title: tr("fields.next"), combats: buckets.next },
+    { title: tr("fields.statusUpcoming"), combats: buckets.upcoming },
+    { title: tr("fields.statusPast"), combats: buckets.past },
+    { title: tr("fields.statusCancelled"), combats: buckets.cancelled },
+  ].filter((g) => g.combats.length);
+
+  content.innerHTML = groups.length
+    ? groups
+        .map(
+          (g) => `
         <div class="field-block">
-          <h2 class="field-block__title">${esc(fieldName(f))}</h2>
-          <div class="combat-list">${cards || emptyState(tr("fields.empty"))}</div>
-        </div>`;
-    })
-    .join("");
+          <h2 class="field-block__title">${g.title}</h2>
+          <div class="combat-list">${g.combats
+            .map((c) => combatCard(c, { showField: true, ribbon: c.isCurrent ? "current" : c.isNext ? "next" : null }))
+            .join("")}</div>
+        </div>`
+        )
+        .join("")
+    : emptyState(tr(selected ? "fields.empty" : "fields.emptyAll"));
 
   updateTatamiFade();
 }
@@ -518,12 +551,27 @@ function fillGroup(groupId) {
   const standings = standingsForGroup(state.players, state.combats, groupId);
   const anyFinished = standings.some((r) => r.played > 0);
 
+  // Every combat in the group, in running order (field, then combat number), past and future.
+  const groupCombats = combatsInGroup(state.combats, state.players, groupId).slice().sort((a, b) => {
+    const af = a.field === null ? Infinity : a.field;
+    const bf = b.field === null ? Infinity : b.field;
+    if (af !== bf) return af - bf;
+    return byCombatOrder(a, b);
+  });
+  const combatsListHtml = groupCombats.length
+    ? `<div class="combat-list">${groupCombats.map((c) => combatCard(c, { showField: true })).join("")}</div>`
+    : `<p class="note">${tr("groups.noCombats")}</p>`;
+
   container.innerHTML = `
     <p class="group-classification">${esc(groupLabel(group))}</p>
     <div class="card">
       <h2 class="card__title">${tr("groups.standings")}</h2>
       ${anyFinished ? "" : `<p class="note">${tr("groups.noFinished")}</p>`}
       ${standingsTable(standings)}
+    </div>
+    <div class="card">
+      <h2 class="card__title">${tr("groups.allCombats")}</h2>
+      ${combatsListHtml}
     </div>
     <div class="card">
       <h2 class="card__title">${tr("groups.matrix")}</h2>
@@ -707,9 +755,26 @@ function fillAthleteProfile(playerId) {
     ? combatCard(fixtures.nextCombat, { showField: true })
     : `<p class="note">${tr("athlete.noNext")}</p>`;
 
+  // The remaining upcoming combats, after the one already shown as "Next combat".
+  const upcomingExtra = fixtures.upcoming.filter((c) => c !== fixtures.nextCombat);
+  const upcomingHtml = upcomingExtra.length
+    ? `<div class="card">
+      <h2 class="card__title">${tr("athlete.upcomingCombats")}</h2>
+      <div class="combat-list">${upcomingExtra.map((c) => combatCard(c, { showField: true })).join("")}</div>
+    </div>`
+    : "";
+
   const pastHtml = fixtures.past.length
     ? fixtures.past.map((c) => athletePastRow(c, playerId)).join("")
     : `<p class="note">${tr("athlete.noPast")}</p>`;
+
+  // Cancelled combats: only shown when this athlete actually has any.
+  const cancelledHtml = fixtures.cancelled.length
+    ? `<div class="card">
+      <h2 class="card__title">${tr("athlete.cancelledCombats")}</h2>
+      <div class="combat-list">${fixtures.cancelled.map((c) => combatCard(c, { showField: true })).join("")}</div>
+    </div>`
+    : "";
 
   container.innerHTML = `
     <header class="profile__head">
@@ -723,10 +788,14 @@ function fillAthleteProfile(playerId) {
       ${nextHtml}
     </div>
 
+    ${upcomingHtml}
+
     <div class="card">
       <h2 class="card__title">${tr("athlete.pastCombats")}</h2>
       <div class="combat-list">${pastHtml}</div>
-    </div>`;
+    </div>
+
+    ${cancelledHtml}`;
 }
 
 // A compact past-combat row from this athlete's perspective (won/lost/drawn + opponent link).
@@ -798,7 +867,7 @@ function refreshLiveRegions() {
 function combatsSignature(combats) {
   // Cheap change-detection key: only re-render when combat data actually changes.
   return combats
-    .map((c) => `${c.redId}|${c.blueId}|${c.field}|${c.combat}|${c.status}|${c.rounds.map((r) => `${r.red},${r.blue},${r.tiebreak}`).join(";")}`)
+    .map((c) => `${c.redId}|${c.blueId}|${c.field}|${c.combat}|${c.status}|${c.rounds.map((r) => `${r.red},${r.blue},${r.winner}`).join(";")}`)
     .join("||");
 }
 

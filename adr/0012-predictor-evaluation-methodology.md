@@ -1,4 +1,4 @@
-# 11. Predictor evaluation methodology: switching battery + held-out real sessions
+# ADR 0012: Predictor Evaluation Methodology — Switching Battery + Held-Out Real Sessions
 
 **Status:** Accepted (2026-06)
 

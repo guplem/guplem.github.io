@@ -56,4 +56,4 @@ Reported by `realplay-bench.js` and `bench/suite.js`:
 
 **Rule:** look at these *once per final candidate*. Tune against the synthetic battery in
 `../bench/`, then validate here. A change that improves the synthetic battery but regresses
-these is overfit (see ADR 0011).
+these is overfit (see ADR 0012).
