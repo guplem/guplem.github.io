@@ -23,9 +23,12 @@
 //
 //   2. BAYESIAN MODEL WEIGHTING. Each model carries a recency-decayed sum of the
 //      LOG-LIKELIHOOD it assigned to the moves that actually occurred; its weight is
-//      exp(LL_ETA * score) -- a softmax over predictive accuracy. This promotes
-//      models that forecast well and down-weights high-order models that overfit
-//      when the true pattern is low-order. Exponential forgetting tracks a player
+//      exp(LL_ETA * score) -- a softmax over predictive accuracy, with `score` floored
+//      so a persistently-wrong model counts no weaker than one that always abstained
+//      (this stops the always-firing low-order model from monopolizing the vote after a
+//      tactics switch). This promotes models that forecast well and down-weights
+//      high-order models that overfit when the true pattern is low-order. Exponential
+//      forgetting -- of both the scores and the within-context counts -- tracks a player
 //      who changes tactics.
 //
 //   3. EXPECTED-VALUE VOTING. Each model votes (with its weight) for the AI move
@@ -44,7 +47,7 @@
 //   decide(model, rng)  -- PURE: reads only the model, never the live player move.
 //   learn(model, p, a)  -- DETERMINISTIC (no Math.random / Date), so replaying the
 //                          stored rounds rebuilds the exact model (see ADR 0009).
-// Only depends on ./game.js. Lightweight: integer count bumps + decayed-score
+// Only depends on ./game.js. Lightweight: decayed float count bumps + decayed-score
 // updates per round -- runs in microseconds on a phone.
 
 import { MOVES, shift, gameValue, judge } from "./game.js";
@@ -52,10 +55,16 @@ import { MOVES, shift, gameValue, judge } from "./game.js";
 // ---- Tunables (chosen via the benchmark battery + held-out opponents) -----
 
 const CTX_DECAY = 0.96; // exponential forgetting for the log-likelihood scores
+const COUNT_DECAY = 0.995; // within-context count aging; half-life ~138 rounds (1.0 disables)
 const LL_ETA = 1.1; // softmax sharpness over predictive accuracy
 const MAX_ORDER = 5; // deepest player-move context (variable-order Markov / PPM)
 const KT = 0.15; // Krichevsky-Trofimov-style add-K smoothing pseudo-count
 const UNIFORM_LL = Math.log(1 / 3); // log-likelihood credited to an abstaining model
+// Floor on a context's score when computing its vote weight: a persistently-wrong context
+// counts no weaker than one that has always abstained, so the always-firing p0 cannot
+// monopolize the vote after the player switches tactics. Applied only in aggregate(), never
+// stored back into llScores (storage stays raw, so replay reproduces the exact model).
+const LL_SCORE_FLOOR = UNIFORM_LL / (1 - CTX_DECAY); // ~-27.47
 
 function zeroCounts() {
   return { rock: 0, paper: 0, scissors: 0 };
@@ -206,7 +215,8 @@ function aggregate(model) {
   for (const c of CONTEXTS) {
     const dist = distFromCounts(getCounts(model, c.tableName, c.key(model)));
     if (!dist) continue;
-    const w = Math.exp(LL_ETA * (model.llScores[c.id] || 0));
+    const s = Math.max(LL_SCORE_FLOOR, model.llScores[c.id] || 0);
+    const w = Math.exp(LL_ETA * s);
     votes[bestResponse(dist)] += w;
     mix.rock += w * dist.rock;
     mix.paper += w * dist.paper;
@@ -247,8 +257,8 @@ export function decide(model, rng = Math.random) {
 // Feed a revealed round back in. Mutates + returns the model. DETERMINISTIC so that
 // replaying stored rounds reproduces the model exactly (persistence). Each context
 // is scored by the LOG-LIKELIHOOD it assigned to the realized move (using its
-// distribution as it stood BEFORE this round); then the tables + rolling features
-// are advanced.
+// distribution as it stood BEFORE this round); then the within-context counts are
+// aged by COUNT_DECAY, the realized move is bumped, and the rolling features advance.
 export function learn(model, playerMove, aiMove) {
   if (!MOVES.includes(playerMove) || !MOVES.includes(aiMove)) return model;
 
@@ -256,6 +266,22 @@ export function learn(model, playerMove, aiMove) {
     const dist = distFromCounts(getCounts(model, c.tableName, c.key(model)));
     const ll = dist == null ? UNIFORM_LL : Math.log(dist[playerMove]);
     model.llScores[c.id] = CTX_DECAY * (model.llScores[c.id] || 0) + ll;
+  }
+
+  // COUNT_DECAY: exponentially age within-context counts so recent observations dominate
+  // stale history after the player switches tactics. Applied BEFORE the count bump so the
+  // new observation keeps full weight 1.0. Deterministic (fixed-order float multiply), so
+  // rebuildModel() reproduces the exact float state (see ADR 0009).
+  if (COUNT_DECAY < 1.0) {
+    for (const tableName in model.tables) {
+      const tbl = model.tables[tableName];
+      for (const key in tbl) {
+        const cnt = tbl[key];
+        cnt.rock *= COUNT_DECAY;
+        cnt.paper *= COUNT_DECAY;
+        cnt.scissors *= COUNT_DECAY;
+      }
+    }
   }
 
   for (const c of CONTEXTS) {

@@ -102,6 +102,35 @@ export const opponents = [
         return top ? counter(top) : randMove(rng);
       };
   } },
+
+  // Strategy-switching opponents (post-switch adaptation). Promoted from the dev
+  // switching battery (bench/opponents.js) so the committed gate
+  // sees the two hardest cases. Both stay net-positive overall; their value is
+  // exercising the multi-round transient right after the player changes tactics --
+  // the failure COUNT_DECAY was added to fix (see ADR 0010).
+
+  // Phase 1 (40 rounds): 70% rock bias. Phase 2: beat the AI's last move (reactive).
+  // The match91-style case: p0..p5 are blind to a reactive player after a bias phase.
+  { name: "bias-then-beatlastai-40", make: () => {
+      let c = 0;
+      return (h, rng) => {
+        const phase = Math.floor(c++ / 40) % 2;
+        if (phase === 0) return rng() < 0.7 ? "rock" : randMove(rng);
+        return h.length ? counter(h[h.length - 1].a) : randMove(rng);
+      };
+  } },
+
+  // 60-round phases alternating rock/scissors bias at 20% per-round noise -- the worst
+  // post-switch case in the dev battery (noise horizon longer than a safe decay window).
+  { name: "noisy-rock-scissors-p60", make: () => {
+      let c = 0;
+      return (_h, rng) => {
+        const phase = Math.floor(c++ / 60) % 2;
+        const bias = phase === 0 ? "rock" : "scissors";
+        if (rng() < 0.2) return randMove(rng);
+        return rng() < 0.8 ? bias : randMove(rng);
+      };
+  } },
 ];
 
 // ---- Runner ---------------------------------------------------------------
