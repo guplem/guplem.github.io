@@ -15,7 +15,7 @@ Options considered:
 
 No build system, no bundler, no package manager. ES6 modules are used natively (`type="module"`). Third-party dependencies are loaded from CDN (`esm.sh`) instead of installed locally. Each sub-project in `web-projects/` is self-contained raw HTML/JS/CSS.
 
-This is the simplest approach that supports hosting multiple independent sub-projects on a single GitHub Pages site without any CI configuration.
+This is the simplest approach that supports hosting multiple independent sub-projects on a single GitHub Pages site with no build step in the deploy pipeline. (A separate, test-only CI workflow runs `bun test` on pull requests and pushes to `main` -- see ADR 0013 -- but it never builds or deploys, so the deploy pipeline stays build-free.)
 
 ## Consequences
 
