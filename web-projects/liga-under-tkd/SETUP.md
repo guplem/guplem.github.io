@@ -10,10 +10,11 @@ Until you connect a sheet, the app runs on **sample data** and shows a "Demo mod
 
 ## 1. Create the Google Sheet
 
-> **Quick start:** the `sample-sheet/` folder has three ready-made CSVs (`Players.csv`,
-> `Groups.csv`, `Combats.csv`) that recreate the demo data. Import them (File → Import → Upload →
-> Insert new sheet) to get all three tabs with correct headers in minutes, then edit the rows. See
-> `sample-sheet/README.md`. The steps below describe the same tabs if you prefer to build by hand.
+> **Quick start:** the `sample-sheet/` folder has two ready-made sets of CSVs — `demo/` (invented
+> sample data) and `real/` (the actual roster and schedule), each with `Players.csv`, `Groups.csv`,
+> `Combats.csv`. Import a set (File → Import → Upload → Insert new sheet) to get all three tabs with
+> correct headers in minutes, then edit the rows. See `sample-sheet/README.md`. The steps below
+> describe the same tabs if you prefer to build by hand.
 
 Create one Google Sheet document with **three tabs** (the small tabs at the bottom). The tab names
 and the column headers (the first row of each tab) must match **exactly**, including capital
