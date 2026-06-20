@@ -276,6 +276,10 @@
   transform: scale(1.03);
 }
 
+.workImage.workImageLink {
+  cursor: pointer;
+}
+
 /* Image container clips the zoom */
 .work > img {
   overflow: hidden;

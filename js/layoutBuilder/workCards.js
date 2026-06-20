@@ -87,6 +87,16 @@ async function createWorkCard(work, index) {
   // Stagger entrance animation
   workElement.style.animationDelay = `${index * 50}ms`;
 
+  // Clicking the image or the title opens the project's primary link (if any).
+  const openPrimaryLink = work.links?.length
+    ? () => {
+        const primaryLink = work.links[0];
+        if (primaryLink.url) {
+          window.open(primaryLink.url, "_blank");
+        }
+      }
+    : null;
+
   if (work.image?.length) {
     const imageElement = document.createElement("img");
     imageElement.classList.add("workImage");
@@ -97,6 +107,10 @@ async function createWorkCard(work, index) {
     if (work.imageStretched == undefined || work.imageStretched === true) {
       imageElement.classList.add("stretched");
     }
+    if (openPrimaryLink) {
+      imageElement.onclick = openPrimaryLink;
+      imageElement.classList.add("workImageLink");
+    }
   }
 
   if (work.title?.length) {
@@ -105,13 +119,8 @@ async function createWorkCard(work, index) {
     workElement.appendChild(titleElement);
     await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h3"]]));
 
-    if (work.links?.length) {
-      titleElement.onclick = () => {
-        const firstLink = work.links[0];
-        if (firstLink.url) {
-          window.open(firstLink.url, "_blank");
-        }
-      };
+    if (openPrimaryLink) {
+      titleElement.onclick = openPrimaryLink;
       titleElement.classList.add("workTitleLink");
     }
 
