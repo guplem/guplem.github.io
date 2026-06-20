@@ -44,7 +44,9 @@ held-out set of unseen opponents. Its structure:
   occurred; its weight is a softmax over that score. Log-likelihood is a denser,
   less noisy selection signal than realized game value, and it automatically
   down-weights high-order models that overfit when the true pattern is low-order.
-  The exponential forgetting tracks a player who changes tactics.
+  Exponential forgetting -- of both the scores and the within-context counts (the
+  `CTX_DECAY` and `COUNT_DECAY` layers; see History) -- tracks a player who changes
+  tactics.
 - **Expected-value voting.** Each model votes (with its weight) for the AI move that
   maximizes expected game value against *its own* predicted distribution; the AI
   plays the top-voted move. Reasoning over the full distribution — not just the
