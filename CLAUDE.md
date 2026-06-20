@@ -53,6 +53,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `js/layoutBuilder/CLAUDE.md` | Layout modules: responsibilities, data flow, key patterns |
 | `js/planetSimulation/CLAUDE.md` | Particle simulation: architecture, config, performance |
 | `web-projects/CLAUDE.md` | Web projects: conventions, TDD with Bun, full checklist for adding a new web-project |
+| `web-projects/rps-mind-reader/CLAUDE.md` | rps-mind-reader: predictor architecture + contracts, R&D workflow, strategies tried/rejected |
 | `adr/*.md` | Architecture Decision Records: why behind key choices |
 | `README.md` (root) | Human-facing: what the site is, how to run locally, project list |
 | `web-projects/*/README.md` | Human-facing: per-project features, how to run |
@@ -127,6 +128,7 @@ ADRs live in `adr/` and capture the **why** behind architectural choices. Format
 | [0008](adr/0008-google-sheet-as-database.md) | Google Sheet as the live database via gviz (liga-under-tkd) |
 | [0009](adr/0009-localstorage-for-private-session-persistence.md) | localStorage for private-session persistence in web-projects |
 | [0010](adr/0010-custom-statistical-predictor-no-ml-library.md) | Custom statistical predictor instead of an ML library (rps-mind-reader) |
+| [0011](adr/0011-predictor-evaluation-methodology.md) | Predictor evaluation methodology: switching battery + held-out real sessions (rps-mind-reader) |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. Use the next sequential number. This includes decisions made within web-projects (e.g., choosing a physics engine, a rendering approach, or a data structure).
 

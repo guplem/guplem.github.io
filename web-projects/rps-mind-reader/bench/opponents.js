@@ -16,8 +16,8 @@
 //                   recency-decay helps more than clean-cut phase switches.
 //   STRUCTURAL   -- player changes their entire strategy type (e.g. markov -> anti-repeat).
 
-import { MOVES, shift, counter } from "../../game.js";
-import { mulberry32 } from "../../benchmark.js";
+import { MOVES, shift, counter } from "../game.js";
+import { mulberry32 } from "../benchmark.js";
 
 export function randMove(rng) {
   return MOVES[Math.floor(rng() * MOVES.length)] || MOVES[0];

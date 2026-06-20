@@ -104,7 +104,7 @@ export const opponents = [
   } },
 
   // Strategy-switching opponents (post-switch adaptation). Promoted from the dev
-  // switching battery (planning-workspace/eval/opponents-ext.js) so the committed gate
+  // switching battery (bench/opponents.js) so the committed gate
   // sees the two hardest cases. Both stay net-positive overall; their value is
   // exercising the multi-round transient right after the player changes tactics --
   // the failure COUNT_DECAY was added to fix (see ADR 0010).

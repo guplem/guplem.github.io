@@ -1,14 +1,14 @@
 // Extended benchmark harness for rps-mind-reader predictor evaluation.
 // Tests adaptation speed and post-switch recovery -- metrics NOT captured by benchmark.js.
 //
-// Usage:
-//   bun bench-ext.js                              # baseline predictor.js
-//   bun bench-ext.js --predictor ./candidate.js   # any alternate predictor
-//   bun bench-ext.js --seeds 80                   # more seeds for tighter CI
-//   bun bench-ext.js --rounds 80                  # session-length (default: 80)
-//   bun bench-ext.js --postWindow 10              # post-switch window width (default: 10)
-//   bun bench-ext.js --mode summary               # summary only (default: full)
-//   bun bench-ext.js --mode switching-only        # skip standard battery
+// Usage (run from web-projects/rps-mind-reader/):
+//   bun bench/suite.js                              # baseline predictor.js
+//   bun bench/suite.js --predictor ./candidate.js   # any alternate predictor
+//   bun bench/suite.js --seeds 80                   # more seeds for tighter CI
+//   bun bench/suite.js --rounds 80                  # session-length (default: 80)
+//   bun bench/suite.js --postWindow 10              # post-switch window width (default: 10)
+//   bun bench/suite.js --mode summary               # summary only (default: full)
+//   bun bench/suite.js --mode switching-only        # skip standard battery
 //
 // Output metrics (all AI-perspective net = (wins-losses)/rounds):
 //   meanNet300       -- standard 300-round battery (same as benchmark.js meanNet)
@@ -32,12 +32,11 @@ import { createRequire } from "module";
 import { fileURLToPath } from "url";
 import { dirname, resolve, join } from "path";
 import { existsSync, readFileSync } from "fs";
-import { MOVES, judge, counter, shift } from "../../game.js";
-import { mulberry32, playMatch, opponents as stdOpponents } from "../../benchmark.js";
-import { switchingOpponents, randMove } from "./opponents-ext.js";
+import { MOVES, judge, counter, shift } from "../game.js";
+import { mulberry32, playMatch, opponents as stdOpponents } from "../benchmark.js";
+import { switchingOpponents, randMove } from "./opponents.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, "../../../..");
 
 // ---- CLI argument parsing -------------------------------------------------
 
@@ -226,7 +225,7 @@ async function main() {
   if (args.predictorPath) {
     predictorPath = resolve(process.cwd(), args.predictorPath);
   } else {
-    predictorPath = resolve(__dirname, "../../predictor.js");
+    predictorPath = resolve(__dirname, "../predictor.js");
   }
 
   if (!existsSync(predictorPath)) {
@@ -236,7 +235,7 @@ async function main() {
 
   const predictor = await import(predictorPath);
   const predictorName = args.predictorPath ? args.predictorPath : "predictor.js (production)";
-  console.log("\n=== bench-ext.js : " + predictorName + " ===");
+  console.log("\n=== rps bench suite : " + predictorName + " ===");
   console.log("seeds=" + args.seeds + "  rounds=" + args.rounds + "  postWindow=" + args.postWindow);
 
   // 1. Standard battery (300 rounds, matching benchmark.js)
@@ -305,14 +304,12 @@ async function main() {
   }
 
   // 4. Real-session metrics
-  const match91Path = join(__dirname, "../../../sample-plays/match91.json");
-  const session1Path = join(__dirname, "../../../sample-plays/human-session-1.json");
+  const match91Path = join(__dirname, "../sample-plays/match91.json");
+  const session1Path = join(__dirname, "../sample-plays/human-session-1.json");
 
-  if (existsSync(match91Path) || existsSync("/tmp/claude-0/-home-user-guplem-github-io/322a05da-68ea-528b-80f9-efea070f4cb3/scratchpad/match91.json")) {
-    const actualPath = existsSync(match91Path) ? match91Path :
-      "/tmp/claude-0/-home-user-guplem-github-io/322a05da-68ea-528b-80f9-efea070f4cb3/scratchpad/match91.json";
+  if (existsSync(match91Path)) {
     console.log("\n--- Real Session: match91 (91 rounds, REAL HUMAN CAPTURE) ---");
-    const m91rounds = loadSession(actualPath);
+    const m91rounds = loadSession(match91Path);
     const m91model = buildReactiveModel(m91rounds);
     const m91replay = replayNet(predictor, m91rounds.map(r => r.p));
     const m91live = liveNet(predictor, m91model.make);

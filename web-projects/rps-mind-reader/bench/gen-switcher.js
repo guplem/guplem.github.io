@@ -8,19 +8,19 @@
 //   - Ends with a reactive phase: beat-last-AI pattern (rounds 61-91)
 //   - Total: 91 rounds
 //
-// Usage: bun gen-synthetic-switcher.js [seed]
-// Writes: planning-workspace/eval/synthetic-switcher-91.json
+// Usage: bun bench/gen-switcher.js [seed]
+// Writes: bench/fixtures/synthetic-switcher-91.json
 //
 // IMPORTANT: This is a SYNTHETIC session. Do NOT use it as held-out validation.
 // It should be used as an additional training target in the synthetic battery.
 // Real validation uses only match91.json and human-session-1.json.
 
-import { MOVES, judge, shift, counter } from "../../game.js";
-import { mulberry32 } from "../../benchmark.js";
+import { MOVES, judge, shift, counter } from "../game.js";
+import { mulberry32 } from "../benchmark.js";
 import { writeFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import * as predictor from "../../predictor.js";
+import * as predictor from "../predictor.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SEED = parseInt(process.argv[2]) || 42;
@@ -95,7 +95,7 @@ function generateSession(seed) {
 }
 
 const session = generateSession(SEED);
-const outPath = join(__dirname, "synthetic-switcher-91.json");
+const outPath = join(__dirname, "fixtures", "synthetic-switcher-91.json");
 writeFileSync(outPath, JSON.stringify(session, null, 2));
 console.log("Written:", outPath);
 console.log("Rounds:", session.rounds.length);

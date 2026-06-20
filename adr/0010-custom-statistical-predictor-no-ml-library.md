@@ -99,7 +99,7 @@ within-context counts accumulate over the whole session, so after a switch the b
 voting from stale all-time frequencies for many rounds (a multi-round "stuck
 prediction"). A four-track benchmark bake-off — recency-decay, an expert portfolio,
 meta-selection, and an adversary/evaluation track, cross-pollinated then synthesized
-(see `web-projects/rps-mind-reader/planning-workspace/`) — converged on two small,
+(see `web-projects/rps-mind-reader/bench/history/`) — converged on two small,
 composable changes:
 
 - **`COUNT_DECAY = 0.995`** — within-context counts are exponentially aged each round
