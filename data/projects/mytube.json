@@ -5,8 +5,8 @@
   "title": "MyTube · Personal YouTube Without the Rabbit Hole",
   "description": [
     "*MyTube* is a **personal YouTube web app** that removes the home feed and recommendations. It shows only your subscriptions' latest uploads, your playlists, a self-managed **Watch Later**, and your own watch history, so your time goes to videos you actually chose.",
-    "It runs on **Google Apps Script** with no server, inside each visitor's own Google account. I directed its **architecture** and **interaction design** across many iterations: a feed that pages on the server to stay fast over 1000+ videos, length-based **Shorts** hiding, dismiss and watched filters, video state kept in the URL for back/forward and sharing, and a responsive card layout.",
-    "Subscription uploads come from free **RSS feeds** with no API quota, watch history stays private in per-user storage, and the app deploys continuously through **GitHub Actions** to a fixed URL on every push."
+    "It runs on **Google Apps Script** with no server, inside each visitor's own Google account. I directed its **architecture** and **interaction design**: a feed that pages on the server, Shorts hiding, dismiss and watched filters, ...",
+    "Subscription uploads come from free **RSS feeds** with no API quota, watch history stays private in per-user storage, and the app deploys continuously through **GitHub Actions** on every push."
   ],
   "image": "resources/images/projects/myTube.webp",
   "imageAlt": "MyTube subscriptions feed: video cards with toggles to hide Shorts, watched, and older videos, plus per-video Watch Later and seen buttons",
