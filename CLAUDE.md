@@ -66,7 +66,7 @@ python -m http.server 8000
 ```
 No linter or package manager for the main site. Web-projects use Bun's test runner (`bun test`) for their pure logic -- see `web-projects/CLAUDE.md`.
 
-**CI:** `.github/workflows/test.yml` runs `bun test ./web-projects` (the whole suite) on every pull request and push to `main`, and it is a required status check on `main` -- a PR with a failing test cannot be merged. Keep tests green; a new web-project's tests are picked up automatically. See ADR 0013.
+**CI:** `.github/workflows/test.yml` runs `bun test .` (the whole suite: web-projects tests plus the data validation test) on every pull request and push to `main`, and it is a required status check on `main` -- a PR with a failing test cannot be merged. Keep tests green; a new web-project's tests are picked up automatically. See ADR 0013.
 
 ## Architecture
 
