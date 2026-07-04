@@ -27,7 +27,8 @@ jobs:
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
 
-      # Discovers and runs every *.test.js under web-projects (the only tests in
-      # the repo). New web-projects are picked up automatically.
+      # Discovers and runs every *.test.js in the repo: the web-projects
+      # suites and the data validation test. New tests are picked up
+      # automatically.
       - name: Run all tests
-        run: bun test ./web-projects
+        run: bun test .

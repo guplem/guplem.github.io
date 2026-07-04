@@ -43,7 +43,7 @@ Each `description` array should follow this structure (one paragraph per element
 - **Tags reflect Guillem's work** — skills represent technologies Guillem personally worked with, not technologies present in the final product. The purpose of tags is to let people find projects where Guillem used a specific technology.
 - **Vibe Coded projects** — always include the "Vibe Coded" tag. Add an area tag (e.g. "Frontend", "UI/UX", "Architecture") ONLY for areas where Guillem gave substantial creative or architectural direction (shaped the design, behavior, or structure through iteration), NOT for technology that merely appears in the AI's output. A single-prompt experiment gets "Vibe Coded" alone. Never tag raw output tech the agent wrote (e.g. "React", "PowerShell", "HTML/CSS", "JS/TS"). Use "AI Integration" only when AI is a feature of the final product (e.g. AI opponents), not because AI was the build tool. Keep prose consistent with tags: do not write "I built X with React" if React is not tagged as Guillem's work — describe vibe-coded output in the third person ("The game is built with…").
 - **Consistent naming** — skill names must exactly match those used in other projects (e.g. "JS/TS" not "JavaScript", "AI Integration" not "AI"). Grep existing project files to confirm spelling.
-- **Types** — valid values are `Web`, `Mobile App`, `Videogame`, `Misceallaneous` (note: intentional legacy spelling). Assign one or more as appropriate.
+- **Types** — valid values are `Web`, `Mobile App`, `Videogame`, `Misceallaneous` (note: intentional legacy spelling), `Minecraft`. Assign one or more as appropriate.
 
 ## Field Reference
 
@@ -59,3 +59,4 @@ See `schemas/project.schema.json` for the full typed schema. Key points:
 
 - JSON fetches are cached in memory. Clear browser cache after editing data files during development.
 - `idFromText()` normalizes strings for element IDs and filter matching — capitalized, no spaces/punctuation. Skill/type names must be consistent across all project files.
+- CI validates every project file against the schema via `data/projects.test.js` — run `bun test ./data` locally after editing data.

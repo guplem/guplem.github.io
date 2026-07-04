@@ -22,15 +22,15 @@ Options considered:
    `web-projects/<project>/` folders changed and run only those suites (mirrors
    the reference repo and the local `test-runner` agent).
 2. **Run the whole suite on every pull request.** One job runs
-   `bun test ./web-projects`, which discovers and runs every `*.test.js`.
+   `bun test .`, which discovers and runs every `*.test.js`.
 
 ## Decision
 
 A single GitHub Actions workflow (`.github/workflows/test.yml`) runs the **entire**
 test suite on every pull request and on pushes to `main`. It installs Bun and runs
-`bun test ./web-projects`. If any test fails, the job fails.
+`bun test .`. If any test fails, the job fails.
 
-- **Run-all, not change-detection.** The full suite is ~261 tests across 9 files
+- **Run-all, not change-detection.** The full suite is ~266 tests across 10 files
   and finishes in well under a second with no install step (no `package.json`;
   Bun's built-in runner). Change-detection would add path-matching logic and a
   job matrix to save a fraction of a second, and it would miss failures when a
@@ -51,10 +51,13 @@ test suite on every pull request and on pushes to `main`. It installs Bun and ru
 
 - A pull request that breaks any test is blocked from merging -- the stated goal.
 - One short workflow file, nothing to maintain per project. A new web-project's
-  tests are picked up automatically, the same way `bun test ./web-projects`
+  tests are picked up automatically, the same way `bun test .`
   discovers them locally.
 - Catches cross-cutting breakage (a main-portfolio change breaking a web-project
   test), which change-detection would miss.
+- The suite now also validates every `data/projects/*.json` file against
+  `data/schemas/project.schema.json` (via `data/projects.test.js`), so a
+  malformed data file is blocked from merging instead of reaching production.
 
 **Negative:**
 
