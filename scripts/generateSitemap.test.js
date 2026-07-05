@@ -12,6 +12,16 @@ import { loadWorks } from "./portfolioData.js";
 // passes no matter where `bun test` is invoked from.
 const repoRoot = join(import.meta.dir, "..");
 
+/**
+ * Normalize Windows line endings so drift checks compare content, not EOL
+ * (a checkout with core.autocrlf=true may smudge committed files to CRLF).
+ * @param {string} text
+ * @returns {string}
+ */
+function normalizeEol(text) {
+  return text.replace(/\r\n/g, "\n");
+}
+
 describe("buildSitemapXml", () => {
   const localProject = {
     title: "Local Game",
@@ -65,7 +75,7 @@ describe("buildSitemapXml", () => {
 
 describe("sitemap.xml drift", () => {
   it("matches the committed sitemap.xml (fix: bun scripts/generateSitemap.js)", () => {
-    const committed = readFileSync(join(repoRoot, "sitemap.xml"), "utf8");
+    const committed = normalizeEol(readFileSync(join(repoRoot, "sitemap.xml"), "utf8"));
     expect(buildSitemapXml(loadWorks(repoRoot))).toBe(committed);
   });
 });

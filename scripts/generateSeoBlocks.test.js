@@ -12,6 +12,16 @@ import { loadInfo, loadWorks } from "./portfolioData.js";
 // passes no matter where `bun test` is invoked from.
 const repoRoot = join(import.meta.dir, "..");
 
+/**
+ * Normalize Windows line endings so drift checks compare content, not EOL
+ * (a checkout with core.autocrlf=true may smudge committed files to CRLF).
+ * @param {string} text
+ * @returns {string}
+ */
+function normalizeEol(text) {
+  return text.replace(/\r\n/g, "\n");
+}
+
 describe("escapeHtml", () => {
   it("escapes the HTML-significant characters", () => {
     expect(escapeHtml(`Drink & Play <b> "quoted"`)).toBe("Drink &amp; Play &lt;b&gt; &quot;quoted&quot;");
@@ -112,7 +122,7 @@ describe("static SEO blocks drift", () => {
   // Re-injecting freshly built blocks into the committed files must be a
   // no-op; any difference means data/ changed without regenerating.
   it("index.html blocks match the data (fix: bun scripts/generateSeoBlocks.js)", () => {
-    const committed = readFileSync(join(repoRoot, "index.html"), "utf8");
+    const committed = normalizeEol(readFileSync(join(repoRoot, "index.html"), "utf8"));
     const info = loadInfo(repoRoot);
     const works = loadWorks(repoRoot);
     let regenerated = injectBlock(committed, "HERO", buildHeroHtml(info));
@@ -122,8 +132,21 @@ describe("static SEO blocks drift", () => {
   });
 
   it("web-projects/index.html block matches the data (fix: bun scripts/generateSeoBlocks.js)", () => {
-    const committed = readFileSync(join(repoRoot, "web-projects", "index.html"), "utf8");
+    const committed = normalizeEol(readFileSync(join(repoRoot, "web-projects", "index.html"), "utf8"));
     const regenerated = injectBlock(committed, "WEB-PROJECTS", buildWebProjectsIndexHtml(loadWorks(repoRoot)));
     expect(regenerated).toBe(committed);
+  });
+});
+
+describe("static head metadata mirror", () => {
+  // The static title/description in index.html must stay identical to
+  // info.json's web-title/web-description: JS rewrites them from the JSON at
+  // load time, and a mismatch would show crawlers different metadata than
+  // users. Enforced here instead of by the generator (the head is hand-written).
+  it("index.html title and meta description match info.json", () => {
+    const committed = normalizeEol(readFileSync(join(repoRoot, "index.html"), "utf8"));
+    const info = loadInfo(repoRoot);
+    expect(committed).toContain(`<title id="page-title">${escapeHtml(info["web-title"])}</title>`);
+    expect(committed).toContain(`<meta id="page-description" name="description" content="${escapeHtml(info["web-description"])}" />`);
   });
 });
