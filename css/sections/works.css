@@ -276,8 +276,11 @@
   transform: scale(1.03);
 }
 
-.workImage.workImageLink {
-  cursor: pointer;
+/* Anchor wrapping the image (real link since issue #37): behave like the
+   block-level image it contains, and clip the hover zoom */
+.work .workImageLink {
+  display: block;
+  overflow: hidden;
 }
 
 /* Image container clips the zoom */
@@ -304,11 +307,13 @@
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-.work .workTitle.workTitleLink {
-  cursor: pointer;
+/* Anchor wrapping the title (real link since issue #37) */
+.work .workTitleLink {
+  display: block;
+  color: inherit;
 }
 
-.work .workTitle.workTitleLink:hover h3 {
+.work .workTitleLink:hover h3 {
   color: var(--accent);
 }
 
@@ -399,8 +404,8 @@
   opacity: 0.8;
 }
 
-/* Card spacing for non-image children */
-.work > :not(img):not(:last-child) {
+/* Card spacing for non-image children (the anchor-wrapped image included) */
+.work > :not(img):not(.workImageLink):not(:last-child) {
   margin-bottom: 4px;
 }
 
