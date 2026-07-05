@@ -6,6 +6,7 @@ import {
   idFromText,
   allToId,
   workMatchesText,
+  markdownToPlainText,
 } from "./textCore.js";
 
 // Characterization tests: they pin the CURRENT behavior of these pure helpers,
@@ -138,6 +139,40 @@ describe("allToLower", () => {
 
   it("throws on non-array input", () => {
     expect(() => allToLower("not an array")).toThrow();
+  });
+});
+
+describe("markdownToPlainText", () => {
+  it("removes bold markers", () => {
+    expect(markdownToPlainText("I'm a **software engineer**")).toBe("I'm a software engineer");
+  });
+
+  it("removes italic markers", () => {
+    expect(markdownToPlainText("*Bondy* is an app")).toBe("Bondy is an app");
+  });
+
+  it("reduces links to their text", () => {
+    expect(markdownToPlainText("visit my [LinkedIn](https://linkedin.com/in/guplem) profile")).toBe("visit my LinkedIn profile");
+  });
+
+  it("removes heading markers at line starts", () => {
+    expect(markdownToPlainText("####  Get to know me\nI enjoy learning")).toBe("Get to know me\nI enjoy learning");
+  });
+
+  it("cleans emphasis inside link text", () => {
+    expect(markdownToPlainText("[**ADR 0001**](https://example.com)")).toBe("ADR 0001");
+  });
+
+  it("trims surrounding whitespace", () => {
+    expect(markdownToPlainText("  plain  ")).toBe("plain");
+  });
+
+  it("passes plain text through unchanged", () => {
+    expect(markdownToPlainText("no markdown here")).toBe("no markdown here");
+  });
+
+  it("throws on non-string input", () => {
+    expect(() => markdownToPlainText(null)).toThrow();
   });
 });
 

@@ -89,6 +89,30 @@ export function allToId(array) {
 }
 
 /**
+ * Strip inline markdown down to plain text: removes `**`/`*` emphasis markers
+ * and leading `#` heading markers, and reduces `[text](url)` links to their
+ * text. Used to build the crawler-facing static HTML fallback blocks (see
+ * scripts/generateSeoBlocks.js), where the words matter but formatting does not.
+ * @param {string} markdown
+ * @returns {string}
+ */
+export function markdownToPlainText(markdown) {
+  if (typeof markdown !== "string") {
+    throw new Error("Input markdown is not a string");
+  }
+  return (
+    markdown
+      // Heading markers at the start of any line ("#### Title" -> "Title")
+      .replace(/^#+\s*/gm, "")
+      // Links first, so emphasis inside link text is still cleaned afterwards
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+      .replace(/\*\*/g, "")
+      .replace(/\*/g, "")
+      .trim()
+  );
+}
+
+/**
  * Whether a work matches a free-text search query. The query is split into
  * whitespace-separated tokens; every token must appear (case-insensitive) in
  * the work's title, description, or skills. An empty query matches everything.

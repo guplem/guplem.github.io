@@ -1,0 +1,21 @@
+# Local pre-commit automation (optional convenience). Install once:
+#   winget install evilmartians.lefthook   (or: brew install lefthook)
+#   lefthook install
+#
+# The real enforcement is CI: the drift tests in scripts/*.test.js fail
+# whenever the committed generated artifacts do not match the data, so a
+# commit made without this hook (or with --no-verify) cannot merge stale
+# output. See root ADR 0014.
+
+pre-commit:
+  parallel: true
+  commands:
+    # Regenerate the crawler-facing derived files (sitemap.xml and the static
+    # SEO fallback blocks in index.html / web-projects/index.html) whenever
+    # the source data or the generators change, and stage the results.
+    seo-content-sync:
+      glob:
+        - "data/info.json"
+        - "data/projects/*.json"
+        - "scripts/*.js"
+      run: bun scripts/generateSitemap.js && bun scripts/generateSeoBlocks.js && git add sitemap.xml index.html web-projects/index.html

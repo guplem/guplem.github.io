@@ -26,6 +26,10 @@ export async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitu
     if (parseMarkdown) {
       const fragment = document.createDocumentFragment();
       await uiUtils.setDataInHtmlElement(rawData, fragment, tagsToSubstitute, parseMarkdown, targetAttribute);
+      // Replace the static SEO fallback block (see scripts/generateSeoBlocks.js)
+      // instead of appending after it. Cleared only once the dynamic content is
+      // ready, so a failed fetch leaves the fallback visible.
+      uiUtils.clearElement(element);
       element.appendChild(fragment);
     } else {
       await uiUtils.setDataInHtmlElement(rawData, element, tagsToSubstitute, parseMarkdown, targetAttribute);
