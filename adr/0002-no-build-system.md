@@ -30,3 +30,5 @@ This is the simplest approach that supports hosting multiple independent sub-pro
 - CDN dependencies (`esm.sh`) are a runtime single point of failure. If the CDN is down, markdown rendering breaks.
 - No TypeScript, no JSX, no CSS preprocessing.
 - Cannot use npm packages that require a bundler or Node.js APIs.
+
+> **Note (2026-07):** a commit-time generation step now exists: Bun scripts under `scripts/` regenerate committed SEO artifacts (`sitemap.xml` and static HTML fallback blocks), kept in sync by CI drift tests and, locally, an optional lefthook pre-commit hook. The deploy pipeline itself stays build-free, but "clone and serve" gains an optional tooling step for content edits. See ADR 0014.
