@@ -178,4 +178,4 @@ The bar: if a future agent could reasonably figure it out within a few seconds o
 
 ## Deployment
 
-GitHub Pages with custom domain (`CNAME` -> `triunitystudios.com`). `.htaccess` enforces HTTPS and handles clean URL routing. Push to `main` deploys automatically.
+GitHub Pages with custom domain (`CNAME` -> `triunitystudios.com`). HTTPS is enforced by GitHub Pages itself (repository Pages settings), not by any file in the repo. Push to `main` deploys automatically. There is no server-side routing; every URL maps directly to a file.
