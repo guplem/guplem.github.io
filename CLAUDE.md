@@ -89,7 +89,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 |---|---|
 | `js/layoutBuilder/` | Content generation -- see `js/layoutBuilder/CLAUDE.md` for module breakdown |
 | `js/planetSimulation/` | Canvas-based interactive particle physics background (120 particles, gravity, collisions) |
-| `js/utils/` | `textUtils.js` (markdown->HTML via marked), `uiUtils.js` (DOM helpers) |
+| `js/utils/` | `textCore.js` (pure text/filter helpers, Bun-tested), `textUtils.js` (fetch + markdown->HTML via marked, re-exports `textCore`), `uiUtils.js` (DOM helpers) |
 
 ### CSS Structure
 
