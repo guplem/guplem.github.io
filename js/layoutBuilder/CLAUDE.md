@@ -10,7 +10,7 @@ This directory handles all dynamic content rendering — fetching JSON data, bui
 |---|---|
 | `dataFiller.js` | Orchestrator. Wires up all data sources to DOM elements. Imports and delegates to the other modules. |
 | `sectionFiller.js` | Generic section rendering: `fillWithData()` (JSON field to DOM element), `displayAdditionalSections()`, `displayContactInfo()` |
-| `workCards.js` | Work card creation and masonry layout. `displayFilteredWorks()` builds the card grid. `getFilteredWorks()` applies current filter state. |
+| `workCards.js` | Work card creation and masonry layout. `displayFilteredWorks()` builds the card grid. `getFilteredWorks()` applies current filter state. Card images/titles are real `<a href>` anchors to the primary link (crawler-followable, issue #37), not click handlers. |
 | `workFilters.js` | Filter state (`selectedWorkTypes`, `selectedWorkSkills` arrays; `workSearchQuery` string via `getWorkSearchQuery`/`setWorkSearchQuery`), filter button creation (`fillWithGroupedButtons`), click handlers, collapsible sections |
 | `structure.js` | Window resize handler (debounced 100ms). Triggers `displayFilteredWorks()` and canvas `init()` on width change. Also manages sticky nav visibility via IntersectionObserver. |
 
@@ -28,3 +28,4 @@ This directory handles all dynamic content rendering — fetching JSON data, bui
 - **Filter normalization:** Type/skill button matching uses `idFromText()` from `textUtils.js` to normalize strings (capitalized, no spaces/punctuation).
 - **Free-text search:** the `#myWorkSearch` box filters by raw, case-insensitive substring match over title/description/skills (`textUtils.workMatchesText`), combined (AND) with the type/skill buttons. It deliberately does NOT use `idFromText()` — that normalization is only for button matching, not human-readable search. The re-render is debounced ~120ms (`setWorkSearchQuery` in `workFilters.js`).
 - **Card stagger animation:** Each card gets an `animationDelay` based on its index for a staggered entrance effect.
+- **SEO fallback replacement:** target containers start with static `GENERATED:*` fallback blocks (root ADR 0014). `fillWithData()` and `displayFilteredWorks()` clear the container right before injecting the dynamic content — never before the data is ready (a failed fetch must leave the fallback visible) and never by appending after it (that duplicates content).
