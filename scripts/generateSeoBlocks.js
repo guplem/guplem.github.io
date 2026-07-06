@@ -36,6 +36,23 @@ function plainLine(markdown) {
 }
 
 /**
+ * Escape a markdown string and convert its inline markup to HTML: links
+ * become real anchors, `**` becomes <strong>, `*` becomes <em>, newlines
+ * become <br />. Used for the blocks that must look identical to the
+ * marked-rendered dynamic version (hero, web-projects cards), so the runtime
+ * can keep the static markup instead of swapping it (no animation replay).
+ * @param {string} markdown
+ * @returns {string}
+ */
+export function markdownToInlineHtml(markdown) {
+  return escapeHtml(markdown)
+    .replace(/\[([^\]]*)\]\(([^)]*)\)/g, '<a href="$2">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    .replace(/\n/g, "<br />");
+}
+
+/**
  * Replace the content between the GENERATED marker pair for a block. Throws
  * when the pair is missing so a renamed/deleted marker fails loudly instead of
  * silently dropping the block.
@@ -56,16 +73,16 @@ export function injectBlock(documentHtml, blockName, blockHtml) {
 }
 
 /**
- * The hero block: one <h1> per line of the introduction, markdown stripped.
- * Mirrors the dynamic render (dataFiller.js maps paragraphs to h1).
+ * The hero block: a single <h1> that mirrors the dynamic render exactly
+ * (dataFiller.js maps the introduction paragraph to h1; marked keeps the
+ * bold as <strong> and the newline as <br>). Visual identity matters here:
+ * the hero is above the fold, and fillWithData keeps this static markup when
+ * its text matches, so the entrance animation never replays.
  * @param {{ introduction: string }} info the parsed data/info.json
  * @returns {string}
  */
 export function buildHeroHtml(info) {
-  return info.introduction
-    .split("\n")
-    .map((line) => `<h1>${plainLine(line)}</h1>`)
-    .join("\n");
+  return `<h1>${markdownToInlineHtml(info.introduction)}</h1>`;
 }
 
 /**
@@ -107,19 +124,32 @@ export function buildWorksHtml(works) {
 }
 
 /**
- * One crawlable <article> per locally hosted web-project, mirroring the cards
- * app.js renders (linked title relative to web-projects/, date, teaser, skills).
+ * One <article> per locally hosted web-project, mirroring the cards app.js
+ * renders exactly (same classes, structure, stagger delay), so the page looks
+ * identical before and after JS runs and app.js can adopt these cards instead
+ * of swapping them (no entrance-animation replay).
  * @param {any[]} works the parsed portfolio projects
  * @returns {string}
  */
 export function buildWebProjectsIndexHtml(works) {
   return selectWebProjects(works)
-    .map((project) => {
-      const parts = [`<h3><a href="${escapeHtml(project.path)}">${escapeHtml(project.title)}</a></h3>`];
-      if (project.date) parts.push(`<p>${escapeHtml(project.date)}</p>`);
-      if (project.teaser) parts.push(`<p>${plainLine(project.teaser)}</p>`);
-      if (project.skills.length) parts.push(`<p>Skills: ${escapeHtml(project.skills.join(", "))}</p>`);
-      return `<article>\n${parts.join("\n")}\n</article>`;
+    .map((project, index) => {
+      const parts = [`<article class="project-card" style="animation-delay: ${index * 50}ms">`];
+      if (project.image) {
+        const src = project.image.startsWith("http") ? project.image : `../${project.image}`;
+        const alt = project.imageAlt || `Screenshot of ${project.title}`;
+        parts.push(`<img class="project-image" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" />`);
+      }
+      parts.push(`<div class="project-body">`);
+      parts.push(`<h3 class="project-title"><a class="project-title-link" href="${escapeHtml(project.path)}">${escapeHtml(project.title)}</a></h3>`);
+      if (project.date) parts.push(`<div class="project-date">${escapeHtml(project.date)}</div>`);
+      if (project.teaser) parts.push(`<div class="project-teaser"><p>${markdownToInlineHtml(project.teaser)}</p></div>`);
+      if (project.skills.length) {
+        parts.push(`<div class="project-skills">${project.skills.map((skill) => `<span class="project-skill">${escapeHtml(skill)}</span>`).join("")}</div>`);
+      }
+      parts.push(`</div>`);
+      parts.push(`</article>`);
+      return parts.join("\n");
     })
     .join("\n");
 }

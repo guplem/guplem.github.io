@@ -117,14 +117,25 @@ async function render() {
     const cards = await Promise.all(projects.map((project, index) => createProjectCard(project, index)));
     for (const card of cards) fragment.appendChild(card);
 
-    // Replace the static SEO fallback cards (see scripts/generateSeoBlocks.js)
-    // instead of appending after them. Cleared only once the dynamic cards are
-    // ready, so a failed fetch leaves the fallback visible.
-    grid.innerHTML = "";
-    grid.appendChild(fragment);
+    // The static SEO fallback cards (see scripts/generateSeoBlocks.js) mirror
+    // the cards built above. When they show the same content, adopt them
+    // instead of swapping, so the entrance animation does not replay
+    // (flicker). Otherwise replace them -- only once the dynamic cards are
+    // ready, so a failed fetch leaves the fallback visible. The comparison
+    // strips all whitespace: the generated markup has newlines between
+    // elements, DOM-built fragments do not.
+    const withoutWhitespace = (text) => (text || "").replace(/\s+/g, "");
+    const staticCards = Array.from(grid.children);
+    let entries;
+    if (staticCards.length === projects.length && withoutWhitespace(grid.textContent) === withoutWhitespace(fragment.textContent)) {
+      entries = projects.map((project, index) => ({ project, element: staticCards[index] }));
+    } else {
+      grid.innerHTML = "";
+      grid.appendChild(fragment);
+      entries = projects.map((project, index) => ({ project, element: cards[index] }));
+    }
     status.hidden = true;
 
-    const entries = projects.map((project, index) => ({ project, element: cards[index] }));
     setupSearch(entries);
   } catch (error) {
     console.error(error);

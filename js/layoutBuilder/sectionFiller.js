@@ -2,6 +2,17 @@ import * as textUtils from "../utils/textUtils.js";
 import * as uiUtils from "../utils/uiUtils.js";
 
 /**
+ * Strip all whitespace so text comparisons ignore formatting differences
+ * (the generated static markup has newlines between elements; DOM-built
+ * fragments do not).
+ * @param {string} text
+ * @returns {string}
+ */
+function withoutWhitespace(text) {
+  return (text || "").replace(/\s+/g, "");
+}
+
+/**
  * Fill an element with text from a JSON file
  * @param {string} elementId
  * @param {RequestInfo | URL} dataRoute
@@ -9,8 +20,12 @@ import * as uiUtils from "../utils/uiUtils.js";
  * @param {Map<string, string>} tagsToSubstitute
  * @param {boolean} parseMarkdown
  * @param {string} targetAttribute
+ * @param {boolean} keepMatchingStaticFallback when true and the element's
+ *   static SEO fallback already shows the same text, keep it instead of
+ *   swapping (avoids replaying entrance animations -- root ADR 0014). Only
+ *   for targets whose generated markup mirrors the dynamic render (the hero).
  */
-export async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitute = new Map(), parseMarkdown = true, targetAttribute = "") {
+export async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitute = new Map(), parseMarkdown = true, targetAttribute = "", keepMatchingStaticFallback = false) {
   try {
     const element = document.getElementById(elementId);
     if (!element) {
@@ -26,6 +41,9 @@ export async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitu
     if (parseMarkdown) {
       const fragment = document.createDocumentFragment();
       await uiUtils.setDataInHtmlElement(rawData, fragment, tagsToSubstitute, parseMarkdown, targetAttribute);
+      if (keepMatchingStaticFallback && withoutWhitespace(element.textContent) === withoutWhitespace(fragment.textContent)) {
+        return;
+      }
       // Replace the static SEO fallback block (see scripts/generateSeoBlocks.js)
       // instead of appending after it. Cleared only once the dynamic content is
       // ready, so a failed fetch leaves the fallback visible.
