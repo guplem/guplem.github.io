@@ -9,6 +9,10 @@ fillWithData("page-description", "../data/info.json", "web-description", new Map
 // - Hero
 // keepMatchingStaticFallback: the generated static hero mirrors this render;
 // keeping it when the text matches avoids replaying the heroIn animation.
+// KEEP IN SYNC: changing this render (the p->h1 mapping, or how the
+// introduction markdown is treated) requires the same change in
+// buildHeroHtml() in scripts/generateSeoBlocks.js, or the mirror breaks
+// (see the "SEO fallback replacement" bullet in ./CLAUDE.md).
 fillWithData("heroContent", "../data/info.json", "introduction", new Map([["p", "h1"]]), true, "", true);
 // - About me
 fillWithData("aboutMeTitle", "../data/info.json", "aboutMeTitle", new Map([["p", "h1"]]));

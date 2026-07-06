@@ -41,8 +41,13 @@ export async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitu
     if (parseMarkdown) {
       const fragment = document.createDocumentFragment();
       await uiUtils.setDataInHtmlElement(rawData, fragment, tagsToSubstitute, parseMarkdown, targetAttribute);
-      if (keepMatchingStaticFallback && withoutWhitespace(element.textContent) === withoutWhitespace(fragment.textContent)) {
-        return;
+      if (keepMatchingStaticFallback) {
+        if (withoutWhitespace(element.textContent) === withoutWhitespace(fragment.textContent)) {
+          return;
+        }
+        if (element.childElementCount > 0) {
+          console.warn(`Static SEO fallback in #${elementId} does not match the dynamic render; swapping (entrance animation replays). Run \`bun scripts/generateSeoBlocks.js\`, or sync the corresponding builder in that script with this render.`);
+        }
       }
       // Replace the static SEO fallback block (see scripts/generateSeoBlocks.js)
       // instead of appending after it. Cleared only once the dynamic content is

@@ -19,6 +19,7 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
 
 - **Never hardcode the project list.** It is derived live: a project is listed when it has a link that is **not** `type: "github"` whose URL (after stripping the `triunitystudios.com` origin) starts with `web-projects/`. Adding such a project to the portfolio data makes it appear here automatically.
 - The grid also carries a **generated static fallback block** between `GENERATED:WEB-PROJECTS` markers so crawlers see the list without JS (root ADR 0014). Never hand-edit it; regenerate with `bun scripts/generateSeoBlocks.js`. The static cards mirror the `app.js` card markup exactly; at load `app.js` **adopts** them when their text matches the live-derived cards (wiring search to them, no entrance-animation replay) and only swaps them when they drift.
+- **Mirror sync rule (nothing enforces this automatically):** `createProjectCard()` in `app.js` and `buildWebProjectsIndexHtml()` in `scripts/generateSeoBlocks.js` must produce the same cards. A TEXT mismatch triggers the swap (flicker returns, a `console.warn` fires). A MARKUP-only mismatch is silent and worse: the old static markup gets adopted and the `app.js` change never appears on load. Change both together and regenerate.
 - The fragile matching/selection logic is pure and Bun-tested in `discovery.js` / `discovery.test.js`; `app.js` only fetches and renders. Keep new logic in `discovery.js` with tests.
 - Do **not** make individual projects depend on the index, and do not import the index's files into a project.
 

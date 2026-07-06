@@ -34,5 +34,6 @@ This ADR qualifies (does not supersede) ADR 0001, ADR 0002, and ADR 0011; each c
 **Negative:**
 
 - `index.html`, `web-projects/index.html`, and `sitemap.xml` now contain generated regions that must never be hand-edited; content edits in `data/` require running the generators (automatic with lefthook, otherwise CI fails with the fix command in the test name).
+- The mirror contract between the two renderers (hero: `dataFiller.js` render vs `buildHeroHtml`; cards: `createProjectCard()` vs `buildWebProjectsIndexHtml()`) is enforced only by convention, code comments, and CLAUDE.md rules -- no test compares them (the JS side needs a DOM and the CDN `marked`, unavailable under `bun test` without new dependencies). The runtime signals: a text mismatch falls back to the swap (correct content, flicker returns, `console.warn` fires); a markup-only mismatch is silent -- the adopted static copy masks the JS change on load.
 - ADR 0002's "clone and serve" gains an optional tooling step for contributors who edit content.
 - A commit-time generation step is a build step in disguise, just moved off the deploy pipeline; the derived HTML is duplicated data that exists only because crawlers need it.

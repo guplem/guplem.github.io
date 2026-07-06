@@ -36,6 +36,14 @@ async function loadAllWorks() {
 
 /**
  * Build one project card element.
+ *
+ * KEEP IN SYNC with buildWebProjectsIndexHtml() in ../scripts/generateSeoBlocks.js:
+ * the static SEO fallback mirrors this markup so render() can adopt it (root
+ * ADR 0014). If a change here alters the card TEXT, the fallback is swapped in
+ * and the load flicker returns until regenerated. If it alters only the
+ * markup/classes (same text), the adopted fallback keeps showing the OLD
+ * markup on load and the change silently never appears -- update the generator
+ * and run `bun scripts/generateSeoBlocks.js` in the same change.
  * @param {import("./discovery.js").WebProjectCard} project
  * @param {number} index - for the staggered entrance animation
  * @returns {Promise<HTMLElement>}
@@ -130,6 +138,9 @@ async function render() {
     if (staticCards.length === projects.length && withoutWhitespace(grid.textContent) === withoutWhitespace(fragment.textContent)) {
       entries = projects.map((project, index) => ({ project, element: staticCards[index] }));
     } else {
+      if (staticCards.length > 0) {
+        console.warn("Static SEO fallback cards do not match the dynamic render; swapping (entrance animation replays). Run `bun scripts/generateSeoBlocks.js`, or sync buildWebProjectsIndexHtml() with createProjectCard().");
+      }
       grid.innerHTML = "";
       grid.appendChild(fragment);
       entries = projects.map((project, index) => ({ project, element: cards[index] }));
