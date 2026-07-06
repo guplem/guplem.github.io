@@ -4,8 +4,29 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="resources/images/webicon.webp" />
-    <title id="page-title">Portfolio</title>
-    <meta id="page-description" name="description" content="" />
+    <!-- Static SEO metadata: crawlers read these before any JS runs. The JS in
+         js/layoutBuilder/dataFiller.js rewrites title/description from
+         data/info.json at load time, so the values here must stay identical to
+         info.json's web-title / web-description. -->
+    <title id="page-title">Guillem Poy · Software Engineer &amp; Game Developer</title>
+    <meta id="page-description" name="description" content="Portfolio of Guillem Poy (Triunity Studios), software engineer and video game developer from Barcelona. Projects across web, mobile, games, and AI, including playable web experiments." />
+    <link rel="canonical" href="https://triunitystudios.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Guillem Poy · Software Engineer &amp; Game Developer" />
+    <meta property="og:description" content="Portfolio of Guillem Poy (Triunity Studios), software engineer and video game developer from Barcelona." />
+    <meta property="og:url" content="https://triunitystudios.com/" />
+    <meta property="og:image" content="https://triunitystudios.com/resources/images/miscellany/Guillem-Poy.webp" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Guillem Poy",
+        "url": "https://triunitystudios.com/",
+        "image": "https://triunitystudios.com/resources/images/miscellany/Guillem-Poy.webp",
+        "jobTitle": "Software Engineer & Video Game Developer",
+        "sameAs": ["https://www.linkedin.com/in/guplem", "https://github.com/guplem", "https://twitter.com/guplem"]
+      }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -35,7 +56,16 @@
 
     <header id="introduction">
       <canvas id="simCanvas"></canvas>
-      <div class="hero-content" id="heroContent"></div>
+      <!-- The GENERATED blocks below are the crawler-facing static fallback,
+           written by `bun scripts/generateSeoBlocks.js` from the data/ JSON
+           (root ADR 0014). Never hand-edit between the markers; the JS app
+           replaces them with the dynamic version at load time. -->
+      <div class="hero-content" id="heroContent">
+        <!-- BEGIN GENERATED:HERO -->
+<h1>Hi there! I'm Guillem Poy</h1>
+<h1>I'm a software engineer and video games' developer.</h1>
+<!-- END GENERATED:HERO -->
+      </div>
       <a id="scrollCue" href="#aboutMe">
         <span class="scroll-label">Scroll</span>
         <span class="scroll-line"></span>
@@ -49,7 +79,13 @@
           <div class="about-photo">
             <img id="aboutMeImage" alt="" />
           </div>
-          <div class="about-text" id="aboutMeContents"></div>
+          <div class="about-text" id="aboutMeContents">
+            <!-- BEGIN GENERATED:ABOUT -->
+<p>Hi! I'm Guillem, a passionate software engineer and video games' developer from Barcelona, Spain.</p>
+<p>Get to know me I enjoy learning, exploring new ideas, and integrating innovative solutions into my work. My approach blends technical expertise with creativity in problem-solving. Over the years, I’ve worked across various industries (fintech, social networks, factory processes, IT, ...), always driven by curiosity and a desire to deeply understand and improve the challenges I face. Adventurous and open-minded, I’ve lived in Spain, Belgium, Tanzania, Ghana, and the UK. These experiences have shaped my perspective and fueled my passion for tackling new challenges head-on. I’m constantly looking for ways to improve user experiences and learn new methodologies, whether that’s in everyday tasks or even more complex areas like rocket science. In my spare time, I focus on personal projects—often designing games or apps that address real-world problems or simply bring joy. I’m also passionate about volunteering with NGOs, as I believe in using technology to create a meaningful impact.</p>
+<p>About this web On this site, you'll find projects I've worked on, which reflect my passion for technology and innovative problem-solving. If you'd like to learn more about my professional background, visit my LinkedIn profile. You are welcome to get in touch through the contact section at the end of this page.</p>
+<!-- END GENERATED:ABOUT -->
+          </div>
         </div>
       </div>
     </section>
@@ -65,7 +101,576 @@
           <div id="myWorkSkills" class="filter-row filter-row--secondary"></div>
         </div>
         <div id="myWorkGridWrapper" class="work-grid-wrapper" data-collapsed="true">
-          <div id="myWorkFiltered" class="work-grid"></div>
+          <div id="myWorkFiltered" class="work-grid">
+            <!-- BEGIN GENERATED:WORKS -->
+<article>
+<h3><a href="https://script.google.com/macros/s/AKfycbxKXGIgGhnj4jFBsx9KvMLQW9tRbVToQN2jfyZXrGRcWUynjrX6oWBnUDleJZlvT9E1/exec">MyTube · Personal YouTube Without the Rabbit Hole</a></h3>
+<p>2026</p>
+<p>MyTube is a personal YouTube web app that removes the home feed and recommendations. It shows only your subscriptions' latest uploads, your playlists, a self-managed Watch Later, and your own watch history, so your time goes to videos you actually chose.</p>
+<p>It runs on Google Apps Script with no server, inside each visitor's own Google account. I directed its architecture and interaction design: a feed that pages on the server, Shorts hiding, dismiss and watched filters, ...</p>
+<p>Subscription uploads come from free RSS feeds with no API quota, watch history stays private in per-user storage, and the app deploys continuously through GitHub Actions on every push.</p>
+<p>Skills: Vibe Coded, Frontend, UI/UX, Architecture</p>
+<p><a href="https://github.com/guplem/MyTube">MyTube · Personal YouTube Without the Rabbit Hole on Github</a></p>
+</article>
+<article>
+<h3><a href="web-projects/rps-mind-reader/">RPS Mind Reader · Adaptive AI Opponent</a></h3>
+<p>2026</p>
+<p>RPS Mind Reader is a rock-paper-scissors web game where an AI learns your habits and tries to beat you — the more you play, the better it reads you, so the only way to win consistently is to stay genuinely unpredictable.</p>
+<p>Rather than a heavy neural network, the opponent is a custom Bayesian mixture of variable-order context models: each forecasts your next-move distribution and votes for the expected-value-optimal counter, weighted by how well it has predicted you lately. See ADR 0001 for the algorithm choice.</p>
+<p>Skills: Vibe Coded, AI Integration, Architecture</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/rps-mind-reader">RPS Mind Reader · Adaptive AI Opponent on Github</a></p>
+</article>
+<article>
+<h3><a href="web-projects/liga-under-tkd/">Liga UNDER — Tournament Web App</a></h3>
+<p>2026</p>
+<p>Liga UNDER is a live tournament website for a taekwondo competition. Spectators and athletes follow the running order of combats by tatami, the standings of each round-robin group, and every athlete's profile — updating in near real time during the event.</p>
+<p>A shared Google Sheet is the database: assistants edit results live, and the browser reads the sheet directly through the public gviz endpoint (no server, no API key), polling for changes. The site computes all standings, league points, and cross-tables itself.</p>
+<p>Built as static files for free GitHub Pages hosting, with a pure, unit-tested scoring engine and a graceful live-data pipeline (keeps the last good data, pauses when the tab is hidden).</p>
+<p>Skills: Vibe Coded, Frontend, UI/UX, Architecture</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/liga-under-tkd">Liga UNDER — Tournament Web App on Github</a></p>
+</article>
+<article>
+<h3><a href="web-projects/taboo-game/">Taboo Game · Deterministic Multiplayer</a></h3>
+<p>2026</p>
+<p>Taboo is a party game web app for playing the classic word-guessing game across several phones in the same room — no server, no rooms, no realtime sync. Every device reconstructs the full game state from a shared seed and turn number agreed verbally.</p>
+<p>A seeded mulberry32 PRNG with FNV-1a hashing drives a deterministic Fisher-Yates shuffle with a per-turn slot budget, so a card from a previous turn can never come back. The 1100+ card Spanish deck was generated by dozens of parallel AI agents across many themes.</p>
+<p>Shared state lives in URL query params for one-click invites; personal info stays in localStorage. The deterministic logic is fully TDD-covered with Bun's test runner.</p>
+<p>Skills: Vibe Coded, Architecture</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/taboo-game">Taboo Game · Deterministic Multiplayer on Github</a></p>
+</article>
+<article>
+<h3><a href="web-projects/random-option-picker/">Random Option Picker</a></h3>
+<p>2026</p>
+<p>Random Option Picker is a web tool that picks one or more options at random from a list, with shareable URLs and an optional seed so the same link always reproduces the same draw. Useful for picking a daily standup moderator, dice rolls, choosing activities, or any small decision worth keeping reproducible.</p>
+<p>The picking logic uses a seeded mulberry32 PRNG with FNV-1a string hashing and is fully TDD-covered with Bun's test runner. The UI features a slot-machine reveal animation with one reel per pick.</p>
+<p>All state lives in URL query params, so any draw is reproducible and shareable as a plain link.</p>
+<p>Skills: Vibe Coded</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/random-option-picker">Random Option Picker on Github</a></p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/trmnl-cal-weather">TRMNL Calendar + Weather</a></h3>
+<p>2026</p>
+<p>TRMNL Calendar + Weather is a custom plugin for the TRMNL e-ink display that combines a weekly time-grid calendar (powered by Google Calendar) with a 7-day weather forecast and air quality data.</p>
+<p>I designed and directed the plugin: a single Liquid template with embedded CSS and JavaScript. Events are positioned at their actual time slots (like Google Calendar), with overlapping events displayed side by side. Each calendar gets a distinct grayscale bar pattern for visual differentiation. Weather data comes from the Open-Meteo API and is rendered as mini-charts with precipitation bars, temperature lines, and sunrise/sunset indicators.</p>
+<p>Skills: Vibe Coded, Frontend, API Integration, UI/UX, Architecture</p>
+</article>
+<article>
+<h3><a href="web-projects/github-stats-dashboard/">GitHub Stats Dashboard</a></h3>
+<p>2026</p>
+<p>GitHub Stats Dashboard is a web-based analytics tool for browsing GitHub repository statistics. Users can connect with a personal access token or browse public repos by username, then view detailed metrics for any selected repository.</p>
+<p>Generated end-to-end by Claude as a practical utility tool. Features include issue close rates, PR merge rates, commit frequency, contributor breakdowns, language composition charts, and a real-time activity feed — all fetched directly from the GitHub REST API with no backend required.</p>
+<p>Designed as a foundation for future project management features including PICK chart visualizations and advanced repository analytics. Fully responsive and self-contained with no external dependencies.</p>
+<p>Skills: Vibe Coded</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/github-stats-dashboard">GitHub Stats Dashboard on Github</a></p>
+</article>
+<article>
+<h3><a href="https://triunitystudios.com/web-projects/photo-editor/">PhotoBooth</a></h3>
+<p>2026</p>
+<p>PhotoBooth is a mobile photo editor that runs entirely in the browser. It opens the device camera by default and lets users capture photos or import from their gallery, then edit with a full suite of creative tools.</p>
+<p>The project was generated end-to-end by Claude as a self-contained vanilla HTML/CSS/JavaScript web app with no frameworks or build tools. Features include freehand drawing with multiple colors and brush sizes, emoji stickers with drag-and-drop placement and pinch-to-resize, text overlays, 10 image filters, and cropping with free or constrained aspect ratios.</p>
+<p>The editor is designed to be 100% mobile-friendly with touch-optimized controls, safe area support, and a dark UI. Edited photos are saved locally as JPEG downloads — no server or database required.</p>
+<p>Skills: Vibe Coded</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/photo-editor">PhotoBooth on Github</a></p>
+</article>
+<article>
+<h3><a href="https://triunitystudios.com/web-projects/gravity-sandbox/">Gravity Sandbox</a></h3>
+<p>2026</p>
+<p>Gravity Sandbox is an interactive N-body gravitational simulation built entirely in the browser with vanilla HTML Canvas and JavaScript. Users spawn celestial bodies by clicking or tapping, drag to slingshot them with initial velocity, and watch emergent orbital systems form in real time.</p>
+<p>The project was generated end-to-end by Claude (Anthropic's AI) as a capability demonstration — from physics engine and renderer to responsive UI and preset configurations. No manual code edits were made.</p>
+<p>Features include body merging with conservation of momentum, toggleable motion trails, adjustable mass, and four built-in presets (orbital system, binary stars, asteroid field, and a three-body figure-eight). Fully mobile-friendly with touch controls.</p>
+<p>Skills: Vibe Coded</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/gravity-sandbox">Gravity Sandbox on Github</a></p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/WindowsSetup">Windows Automatic Setup Tool</a></h3>
+<p>2026</p>
+<p>Windows Automatic Tool is a config-driven PowerShell automation tool that debloats Windows, tunes performance, and installs applications from a single command.</p>
+<p>I designed and built a modular system with 13 modules covering debloating, telemetry removal, power plan tuning, privacy settings, app installation, file associations, and more. The tool uses a profile system with base configurations and overlay profiles (Dev, Gaming) that merge only the deltas, keeping customization clean and maintainable.</p>
+<p>The project includes a sandbox testing pipeline with three phases (Setup, Validation, Idempotency) running in Windows Sandbox, producing structured JSON results. Every run is idempotent, making it safe to re-execute at any time.</p>
+<p>Skills: Vibe Coded, Architecture, Automation, Documentation</p>
+</article>
+<article>
+<h3><a href="web-projects/seasonal-color-classifier/">Seasonal Color Classifier</a></h3>
+<p>2025</p>
+<p>Seasonal Color Classifier is a web tool that analyzes colors and classifies them into seasonal palettes (Spring, Summer, Autumn, Winter), helping users identify which color season best suits them.</p>
+<p>This was one of my first experiments directing an AI agent to build a complete, useful tool end-to-end, a test to see how quickly a focused tool could be produced this way.</p>
+<p>The project demonstrated that focused, single-purpose web tools can be rapidly produced with AI assistance while maintaining quality and usability.</p>
+<p>Skills: Vibe Coded</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/seasonal-color-classifier">Seasonal Color Classifier on Github</a></p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/boom">Boom - Card Game</a></h3>
+<p>2025</p>
+<p>Boom is a real-time multiplayer card game for the web, faithfully recreating the tactical gameplay of the original Boom card game.</p>
+<p>Built with RoboJS and React, the project features a robust event-driven architecture that synchronizes the game state across all players, enabling seamless online matches with friends or AI opponents.</p>
+<p>The game supports both human and AI players, with a modular strategy interface that allows anyone to contribute new AI behaviors.</p>
+<p>Key features include persistent room management, synchronized lobbies, and a clear separation between game logic and presentation. The project emphasizes code quality, maintainability, and ease of contribution, making it accessible to both players and developers.</p>
+<p>Skills: JS/TS, React, RoboJS, API Integration, Real-Time Communication, Docker, Frontend, Documentation</p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/pelusillas">Pelusillas</a></h3>
+<p>2025</p>
+<p>Pelusillas is a real-time multiplayer web card game inspired by Zirkus Flohcati, a push-your-luck game for 2–6 players where collecting sets of flea circus performers risks busting your hand.</p>
+<p>The game is built with RoboJS and React, using @robojs/sync for real-time multiplayer state synchronization and Zustand for client-side state management. It features AI opponents with an extensible strategy system that anyone can extend with new behaviors.</p>
+<p>The game is containerized with Docker and pre-configured for Google Cloud Run deployment, making it easy to host and share with friends.</p>
+<p>Skills: Vibe Coded, AI Integration</p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/Dashboard-ReactNodeMongoDB">Dashboard Template</a></h3>
+<p>2025</p>
+<p>Dashboard React-Node-MongoDB is a full-stack template for building dashboard applications with React, Node.js, and MongoDB. It provides a ready-to-use starting point with data visualization, CRUD operations, and a clean architecture to build upon.</p>
+<p>I set up the stack using React with TypeScript and React Admin on the frontend, and Node.js/Express with Prisma ORM on the backend. The template includes multiple dashboard views with charts powered by Recharts, along with forms for managing data — all easily adaptable to any domain.</p>
+<p>The application is containerized with Docker and configured for deployment on Google Cloud Run, with a clear separation between frontend and backend services, making it a solid foundation for new projects.</p>
+<p>Skills: JS/TS, React, API Integration, Docker, Frontend, Backend, Data Management, Data Visualization, Architecture, Server Management</p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/Menu-Management">Menu Management</a></h3>
+<p>2025</p>
+<p>Menu Management is a weekly menu planner with recipe management, automatic menu generation with nutritional balancing, shopping list aggregation, and a step-by-step cooking guide with timers.</p>
+<p>Originally built as a Flutter desktop application for personal use, I later had it automatically ported to a vanilla web app by Claude Code (Anthropic's AI coding agent). The web version is a full-featured port with responsive layout, dynamic theming, and localStorage persistence, built entirely with HTML/CSS/JS with no frameworks or dependencies.</p>
+<p>The port demonstrated that a complex desktop application (with seeded menu generation algorithms, drag-and-drop reordering, real-time timer notifications, and file import/export) can be faithfully translated to a lightweight web format through AI-assisted development.</p>
+<p>Skills: AI Integration, HTML/CSS, JS/TS, Flutter/Dart, Frontend, UI/UX, Architecture</p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/robo-base">Web App Template</a></h3>
+<p>2025</p>
+<p>A template web application that provides a simple and efficient starting point for building web applications supporting common features. It can be hosted in the cloud or locally and is accessible from any device via a web browser.</p>
+<p>I selected, tested and documented the setup and examples to streamline the process to configure RoboJS with Vite and React, so database support, real‑time state synchronization, API building, task scheduling, ... and other features are available out of the box.</p>
+<p>The template reduces setup time, streamlined development workflows, and simplified deployment with Docker and Google Cloud, serving as a robust foundation for new projects.</p>
+<p>Skills: JS/TS, React, RoboJS, API Integration, Real-Time Communication, Docker, Frontend, Backend, Server Management, Documentation</p>
+</article>
+<article>
+<h3><a href="https://galtea.ai/">Galtea</a></h3>
+<p>2025</p>
+<p>Galtea is a SaaS platform for AI evaluation and governance that ensures generative AI models behave correctly, safely, and comply with regulations before deployment.</p>
+<p>As a founding engineer, I lead front‑end development (dashboard, landing page, blog, documentation, ...) and contributed to the Python SDK and backend while driving key architecture and design decisions.</p>
+<p>Built from scratch by a lean team and powered by Barcelona Supercomputing Center’s MareNostrum 5 infrastructure, the platform enables fast, customizable AI testing and accelerates safe AI deployment for enterprise clients.</p>
+<p>Skills: React, Express, Prisma, Node.js, JS/TS, Python, API Integration, AI Integration, AI Governance, UI/UX, SaaS, Architecture, Jekyll, Mintlify, Frontend, Docker, Backend, Grafana, Data Visualization, Data Analysis, Documentation</p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/guplem.github.io">Portfolio v2</a></h3>
+<p>2024</p>
+<p>Portfolio v2 is my personal website, designed to showcase my work and achievements. It provides an overview of my skills and projects.</p>
+<p>I re-created my portfolio with a focus on improving navigation, making it easier to find projects related to specific skills and technologies, and enhancing the overall user experience.</p>
+<p>I also prioritized site maintenance, making it simple to update with new projects and sections. The site’s content is stored in JSON files, which are used to dynamically generate the contents, allowing for easy updates.</p>
+<p>Skills: HTML/CSS, JS/TS, Data Management, UI/UX, Architecture, Frontend, CI/CD</p>
+</article>
+<article>
+<h3><a href="https://thebondyapp.com/">Bondy</a></h3>
+<p>2024</p>
+<p>Bondy is a social networking platform that simplifies event organization and encourages real-life connections among users.</p>
+<p>As the lead developer, I architected the front-end to ensure scalability and performance, implemented A/B testing to refine recommendation algorithms, increase retention and improve usability while working in back-end projects.</p>
+<p>Key features included real-time chat, an endlessly scrollable feed, location tracking, and push notifications, all designed to create a rich user experience. Moreover, by implementing CI/CD technologies, I optimized our development workflows, boosting team efficiency significantly.</p>
+<p>Skills: Architecture, Flutter/Dart, Express, Prisma, Node.js, JS/TS, TDD, Jest, Data Analysis, Data Visualization, Firebase, Grafana, SQL, Gorm, Gin, Go, A/B Testing, CI/CD, Team Leadership, Real-Time Communication, User Engagement, Data Management, Temporal, Team Collaboration, API Integration, Backend, Frontend, Server Management, Localization</p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/Mindflow">Mindflow</a></h3>
+<p>2024</p>
+<p>Mindflow is a simulation game where players take on the role of a God, manipulating the needs and properties of objects to shape relationships, life goals, and entire ecosystems based on Maslow's pyramid of needs.</p>
+<p>I worked solo on this project that was originally conceived as Thoughts, but was completely overhauled to adopt a data architecture inspired by Wikidata, enhancing its complexity and depth.</p>
+<p>Skills: Game Design, Frontend, Unity, C#, Architecture, Project Management, UI/UX, Data Management</p>
+</article>
+<article>
+<h3><a href="https://gpt-role.streamlit.app/">GPT-Role</a></h3>
+<p>2024</p>
+<p>GPT-Role is an AI-based narrative generation game where players experience stories driven by an AI, with only truly impossible actions being restricted.</p>
+<p>In this project, I was involved in every aspect of development, from prompt engineering to designing and implementing the system architecture. This included creating a dynamic system that determines the flow of the story by selecting distinct prompts based on the player's actions, as well as implementing core game loops to provide the player with a meaningful, immersive experience.</p>
+<p>Players begin by defining their character and objective, and the AI adapts to their choices, narrating the unfolding story. Each session is unique, driven by the player's decisions and the system's dynamic responses.</p>
+<p>Skills: Game Design, Python, AI Integration, Frontend, Streamlit, Rapid Development, Project Management, Team Collaboration, Architecture, Docker, CI/CD</p>
+<p><a href="https://github.com/guplem/GPT-Role">GPT-Role on Github</a></p>
+</article>
+<article>
+<h3><a href="https://drive.google.com/drive/folders/1-pRFZp8oeQQIgviqg0l_86-un1iSLWyC?usp=sharing">DishForge: Your Personal Chef</a></h3>
+<p>2023</p>
+<p>DishForge is an AI-powered application that enhances cooking experiences by blending AI with culinary creativity. Created during a Lablab Hackathon, it allows users to interact effortlessly with AI to generate personalized recipes based on meal types, preferences, and available ingredients, utilizing image recognition, LLMs and image generation.</p>
+<p>As the front-end developer, I focused on crafting the user interface, managing API integrations, and seamlessly presenting AI outputs. Our team delivered this project in under 48 hours, showcasing our ability to collaborate effectively and innovate rapidly.</p>
+<p>Skills: Flutter/Dart, AI Integration, API Integration, UI/UX, Frontend, Rapid Development, Team Collaboration, Project Management, Architecture</p>
+</article>
+<article>
+<h3><a href="https://whatisnext.web.app/">Things — What is next?</a></h3>
+<p>2023</p>
+<p>Things is a task and project management app fully developed by myself, that intelligently suggests tasks based on user availability, allowing for effortless prioritization. Built to offer an accessible solution across all modern devices.</p>
+<p>The app features real-time synchronization and prioritization algorithms developed following TDD, boasting robust and dynamic scheduling capabilities, empowering users to focus on what matters most.</p>
+<p>Skills: Flutter/Dart, Firebase, Data Management, Backend, Frontend, Real-Time Communication, TDD, Data Analysis, Project Management, CI/CD, Architecture, API Integration, Localization, NoSQL</p>
+</article>
+<article>
+<h3><a href="https://tunzaa.co.tz/">Tunzaa</a></h3>
+<p>2022</p>
+<p>Tunzaa is an incremental savings app aimed at empowering unbanked consumers in Africa by providing secure savings and purchase options within a curated marketplace. Developed in collaboration with major brands, it supports user financial health and accessibility.</p>
+<p>Transitioning from a prototype to a full-fledged app, I oversaw a comprehensive app architecture refactor and led the development of an M-Pesa Mini App using a proprietary XML-based framework. Additionally, I implemented CI/CD technologies, managed server and database operations, and guided a team of developers.</p>
+<p>Skills: Flutter/Dart, React, JS/TS, CI/CD, TDD, PHP, API Integration, User Engagement, Team Leadership, Architecture, Server Management, Proprietary Frameworks, Data Management, Fintech, Project Management, Backend, Frontend, SQL</p>
+</article>
+<article>
+<h3><a href="https://play.google.com/store/apps/details?id=com.the_big_family.app_jobs">TheBigFamily Jobs App</a></h3>
+<p>2022</p>
+<p>TheBigFamily Jobs App is designed to connect Ukrainian refugees with potential employers through a streamlined and intuitive interface. It allows users to match with job opportunities by answering just ten questions.</p>
+<p>I built this app integrating an automated form submission system that syncs responses directly with Google Forms. This approach significantly simplified data management for the NGO, while enhancing user trust by providing a secure and user-friendly platform for the refugee community.</p>
+<p>Skills: Flutter/Dart, API Integration, Frontend, UI/UX, Rapid Development, NGO Collaboration, Project Management, Architecture, User Engagement, Localization</p>
+</article>
+<article>
+<h3>Kedo</h3>
+<p>2022</p>
+<p>Kedo is a social networking platform that enables users to create, search, and share plans, fostering connections and collaborative activities. I was tasked with transforming a basic idea into a fully functional prototype, managing tight budget and timeline constraints.</p>
+<p>I handled the complete development lifecycle, focusing on UI/UX, frontend development, and backend integration through Back4App for rapid deployment and scalability. Key features included user search, real-time chat, and personalized plan recommendations, all designed to enhance user engagement while meeting all the requirements.</p>
+<p>Skills: Flutter/Dart, UI/UX, Backend, Frontend, Data Management, Rapid Development, Real-Time Communication, User Engagement, Project Management, Architecture, API Integration, Server Management, Localization</p>
+</article>
+<article>
+<h3><a href="resources/deliverables/Paper Brawl.zip">Paper Brawl — Tower Defense</a></h3>
+<p>2022</p>
+<p>Paper Brawl is an experimental tower defense game that aimed to explore monetization strategies through rapid development. Created in just a week, it faced challenges typical of the genre, which usually demands extensive feature sets.</p>
+<p>Despite the time limitations, I managed to program random world generation, AI pathfinding, various mechanics, distinct enemies and buildings, ... ultimately releasing the game for free.</p>
+<p>Skills: Game Design, Unity, C#, Rapid Development, Team Collaboration, Frontend, Project Management, UI/UX, Architecture, Team Leadership</p>
+<p><a href="https://guplem.itch.io/paper-brawl">Paper Brawl — Tower Defense on Link</a></p>
+<p><a href="https://youtu.be/jkAbDXtORdw">Paper Brawl — Tower Defense on Play</a></p>
+<p><a href="https://drive.google.com/drive/folders/1KfrNrIKYIeNlmH4Ac0eRdmC4Bg3qqUtB?usp=sharing">Paper Brawl — Tower Defense on Folder</a></p>
+<p><a href="https://github.com/guplem/TS23-TowerDefense">Paper Brawl — Tower Defense on Github</a></p>
+</article>
+<article>
+<h3><a href="resources/deliverables/Ohia.zip">Ohia</a></h3>
+<p>2022</p>
+<p>Ohia is a strategic puzzle game that won us the top prize at a 48-hour Game Jam. Players must guide characters with unique abilities toward objectives, using their skills wisely to navigate through levels.</p>
+<p>In this project, we identified straightforward yet effective mechanics that I was able to refine extensively, resulting in a highly polished final product.</p>
+<p>Skills: Game Design, Unity, C#, Team Collaboration, Frontend, Rapid Development, Project Management, UI/UX, Architecture</p>
+<p><a href="https://ryuggha.itch.io/ohia">Ohia on Link</a></p>
+</article>
+<article>
+<h3><a href="https://triunitystudios.com/web-projects/ChatGPTPong/pong.html">ChatGPT Pong</a></h3>
+<p>2022</p>
+<p>ChatGPT Pong is a classic Pong game generated entirely by ChatGPT (GPT-3.5) in December 2022, right after the initial release of ChatGPT. It was my first ever software project created by an AI — and it blew my mind.</p>
+<p>The game features a player-controlled paddle against an AI opponent with mouse input, score tracking, and increasing ball speed. The entire codebase was produced through conversation with the model, with no manual code edits.</p>
+<p>This small experiment marked the beginning of my exploration into AI-assisted development, demonstrating the surprising capability of early large language models to produce functional software from natural language alone.</p>
+<p>Skills: Vibe Coded</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/ChatGPTPong">ChatGPT Pong on Github</a></p>
+</article>
+<article>
+<h3><a href="https://wikipoll.b4a.app/#/">WikiPoll</a></h3>
+<p>2022</p>
+<p>WikiPoll is a web app that allows users to rank articles from Wikidata based on their opinions. The app generates comparative polls from tens of thousands of entries, letting users rank topics such as people, cities, literary genres, and more.</p>
+<p>As the sole developer, I integrated Wikidata's API, designed the front-end interface, and created dynamic ranking algorithms. This project served as my final thesis for my computer engineering degree.</p>
+<p>The app empowers users to create rankings based on personal preferences, offering a unique data-driven interaction with Wikidata's vast repository.</p>
+<p>Skills: Flutter/Dart, API Integration, Frontend, Backend, Data Management, Server Management, Data Visualization, Data Analysis, Architecture, Research And Analysis, CI/CD</p>
+</article>
+<article>
+<h3><a href="https://drive.google.com/drive/folders/1PLLpkq04OxXn47WklAQhHMQUFqE_Gsk4?usp=sharing">Cheering</a></h3>
+<p>2021</p>
+<p>Cheering is a simple app designed to uplift team spirits by allowing users to create various noises without traditional cheering tools. Developed in just a few hours, it provides a user-friendly interface for setting up speakers and playing many audio tracks.</p>
+<p>The app features customizable sound effects that can be manually triggered. My focus was on implementing a very responsive audio management system, able to quickly play many audio channels at the same time.</p>
+<p>Skills: Unity, C#, UI/UX, Frontend, Rapid Development, Architecture</p>
+<p><a href="https://github.com/guplem/TS21-Cheering">Cheering on Github</a></p>
+</article>
+<article>
+<h3><a href="https://docs.google.com/document/d/1jo3glkTPwuGQgFaQ5MfYX3jUL1xiy7jXKOSVIAvvUqk/edit?usp=sharing">KSP Usability Improvements</a></h3>
+<p>2021</p>
+<p>KSP Usability Improvements is a document outlining suggested improvements to the user experience of the popular game Kerbal Space Program.</p>
+<p>After spending significant time playing the game, I identified key areas where usability could be enhanced. I compiled these insights into a structured document, which aimed to help both the developers and users enjoy a more intuitive experience. My suggestions focused on improving user interface navigation, controls, and accessibility, addressing issues that many players found cumbersome in the original version.</p>
+<p>Skills: UI/UX, Research And Analysis, Documentation</p>
+</article>
+<article>
+<h3>P&amp;G Process Digitization</h3>
+<p>2021</p>
+<p>The product I worked on is an internal web application created to streamline factory data collection processes previously handled manually.</p>
+<p>While working for P&amp;G Belgium, I was tasked with updating and digitizing their data collection processes. This included building an intuitive web app using ThingWorx, focusing on usability and responsiveness to ensure the factory's daily and shift reports could be easily accessed in real-time.</p>
+<p>The app played a key role in improving workflow efficiency and ensuring accurate reporting.</p>
+<p>Skills: ThingWorx, Data Visualization, Data Management, Team Collaboration, Architecture, Frontend, Backend, SQL, NoSQL</p>
+</article>
+<article>
+<h3><a href="https://drive.google.com/drive/folders/1rWWWjWIIdcWYvJOy5X2ESEL3sSEEAcLf?usp=sharing">Atenea</a></h3>
+<p>2020</p>
+<p>Atenea is a conceptual application aimed at early treatment of mental disorders, focusing on reducing diagnostic costs and improving outcomes. Developed during a hackathon, our team proposed using Machine Learning algorithms to be able to perform in-app tests, facilitating quicker interventions.</p>
+<p>We collaborated with health professionals to ensure the feasibility and relevance of our concept.</p>
+<p>I was responsible for creating the mock-up of the application, crafting a user-friendly demo.</p>
+<p>Skills: UI/UX, Team Collaboration, Rapid Development, Data Analysis, AI Integration, Team Leadership</p>
+</article>
+<article>
+<h3><a href="resources/deliverables/Drink &amp; Play.apk">Drink &amp; Play</a></h3>
+<p>2020</p>
+<p>Drink &amp; Play is a collection of festive games designed to enhance social gatherings and dynamize parties. My goal was to improve upon existing drinking apps by introducing unique design elements and features that prioritize scalability and user experience.</p>
+<p>I conducted extensive competitor analysis to identify and address shortcomings in other apps, which informed my approach to feature development and UI/UX design. The app was a success, evidential by the number of requests I received to publish it in various app stores.</p>
+<p>Skills: UI/UX, Unity, C#, Frontend, Game Design, Research And Analysis, Architecture, Marketing, Project Management, A/B Testing, User Engagement, API Integration, Procedural, Localization</p>
+</article>
+<article>
+<h3><a href="https://drive.google.com/file/d/1Ry0aQyTDvFvUnm51x6U9rjLhOm1hJfAg/view?usp=sharing">Thicc Wet Paper Layers</a></h3>
+<p>2020</p>
+<p>Thicc Wet Paper Layers is a multiplayer game developed as a university project, which evolved from a local coop concept to an online format due to the COVID-19 pandemic. It has mechanics that later on would be part of the hit Fall Guys in a paper world.</p>
+<p>The project was a huge learning experience, specially with those aspects related to programming a real-time multiplayer with physics simulations.</p>
+<p>Skills: Game Design, Unity, C#, Real-Time Communication, Team Collaboration, Frontend, Backend, Project Management, Architecture</p>
+<p><a href="https://guplem.itch.io/thicc-wet-paper-layers">Thicc Wet Paper Layers on Link</a></p>
+<p><a href="https://www.youtube.com/watch?v=lAs0TmwhgQI">Thicc Wet Paper Layers on Play</a></p>
+<p><a href="https://drive.google.com/drive/folders/10K7L3CIGjRFWpKh-dsr2O3iRbN3LmISl?usp=sharing">Thicc Wet Paper Layers on Folder</a></p>
+<p><a href="https://github.com/guplem/ALLiOLI">Thicc Wet Paper Layers on Github</a></p>
+</article>
+<article>
+<h3><a href="https://drive.google.com/file/d/1TYYzk7LCb6NH6egMW8BQ5lIJFOsF6-X9/view?usp=sharing">Slavery Narrative</a></h3>
+<p>2020</p>
+<p>Slavery Narrative is a thought-provoking prototype aimed at fostering empathy by immersing players in the life of an African slave in 19th century America. The game utilizes procedural narratives that evolve based on player decisions and environmental status.</p>
+<p>Inspired by games like Reigns and Spent, I focused on programming an algorithm capable of dynamically generating meaningful storytelling that resonates deeply with players.</p>
+<p>Skills: Game Design, Unity, C#, Procedural, Frontend, Team Collaboration, Project Management, Architecture</p>
+<p><a href="https://drive.google.com/drive/folders/1vS3OgFzkZW5EMHi92gqWeMbL9uv3SUCs?usp=sharing">Slavery Narrative on Folder</a></p>
+<p><a href="https://github.com/Destokado/Negro/tree/develop">Slavery Narrative on Github</a></p>
+</article>
+<article>
+<h3><a href="https://assetstore.unity.com/packages/tools/utilities/essentials-161141">Essentials Asset</a></h3>
+<p>2020</p>
+<p>Essentials is a Unity asset designed to reduce the workload for developers by providing commonly used tools and features.</p>
+<p>As part of my university thesis, I created this asset to streamline repetitive tasks across Unity projects.</p>
+<p>I consider it an essential resource for Unity developers, offering solutions such as object pooling, in-game terminal, save/load data, manager for simple animations, dozens of extensions, and more.</p>
+<p>Skills: Unity, C#, Architecture, Research And Analysis</p>
+<p><a href="https://drive.google.com/drive/folders/1RzANOEKzxatXH5MQdElUI36-XoXyBzzy?usp=sharing">Essentials Asset on Folder</a></p>
+<p><a href="https://github.com/guplem/UnityEssentials">Essentials Asset on Github</a></p>
+</article>
+<article>
+<h3><a href="https://drive.google.com/drive/folders/1kh2MIU0SX1MpzWivFw9QgSUyBdfFwSmB?usp=sharing">World Playground</a></h3>
+<p>2020</p>
+<p>World Playground is a procedural world generation project focused on creating infinite voxel-based landscapes.</p>
+<p>In this project, I set out to recreate a procedurally generated world with dynamic chunk loading, optimized mesh creation, and multiple biomes.</p>
+<p>It helped me learn about the complexities of world generation, mesh generation, terrain optimization, and multithreading in game engines...</p>
+<p>Skills: Unity, C#, Procedural, Architecture, Multithreading, Frontend</p>
+<p><a href="https://github.com/guplem/ProjectTS16-WorldPlayground">World Playground on Github</a></p>
+</article>
+<article>
+<h3><a href="https://drive.google.com/file/d/1-5F8UoV49HiJcbYUp4Ih55Dl42SNEUkd/view?usp=sharing">Drink Extreme Refactoring</a></h3>
+<p>2019</p>
+<p>In this project, I undertook a complete refactor of an existing drinking games app, which involved a comprehensive code review and essential architectural redesigns to enhance scalability and upgrade functionalities.</p>
+<p>Even tough my upgrades brought a modularity required to scale and upgrade the app, the update was not accepted, but my work laid the groundwork for future enhancements and improvements.</p>
+<p>Skills: Unity, C#, Architecture, Frontend, Research And Analysis, Modding, User Engagement, Localization</p>
+</article>
+<article>
+<h3><a href="resources/deliverables/Musikote.zip">Musikote</a></h3>
+<p>2019</p>
+<p>Musikote is an audio-centric game developed as part of a sound design course. The players move around in a dark environment, relying solely on sound to complete various tasks.</p>
+<p>This approach showcases the importance of audio and how many little elements are needed to create gameplay mechanics.</p>
+<p>Skills: Game Design, Unity, C#, UI/UX, Rapid Development, Frontend, Team Collaboration, Architecture</p>
+<p><a href="https://youtu.be/wD7JrdHFuSg">Musikote on Play</a></p>
+<p><a href="https://drive.google.com/drive/folders/1Hem6b6BXF7HEXUcIz4lMdBOATSNFO-dA?usp=sharing">Musikote on Folder</a></p>
+<p><a href="https://github.com/guplem/Musikote">Musikote on Github</a></p>
+</article>
+<article>
+<h3><a href="resources/deliverables/Bunker Bound.zip">Bunker Bound</a></h3>
+<p>2019</p>
+<p>Bunker Bound is a stealth-focused platformer game that gained significant attention, particularly in the Asian community. My role as a programmer involved close collaboration with artists, resulting in a visually stunning final product.</p>
+<p>This project taught me valuable lessons in teamwork and communication between programmers and artists, which enhanced the overall development process and final quality of the game.</p>
+<p>Skills: Game Design, Unity, C#, Team Collaboration, UI/UX, Project Management, Frontend, Architecture</p>
+<p><a href="https://guplem.itch.io/bunker-bound">Bunker Bound on Link</a></p>
+<p><a href="https://youtu.be/hfJHpJCV1OY">Bunker Bound on Play</a></p>
+<p><a href="https://drive.google.com/drive/folders/1L7d01zTdVVtxA4LBoft6KMghq_JzBz0M?usp=sharing">Bunker Bound on Folder</a></p>
+<p><a href="https://github.com/guplem/BunkerBound-Projecte2">Bunker Bound on Github</a></p>
+</article>
+<article>
+<h3>Portfolio v1</h3>
+<p>2019</p>
+<p>Portfolio v1 was a simple personal website that served as my digital portfolio. I developed this website to showcase my work and provide a way for people to connect with me online.</p>
+<p>The site was designed for easy navigation and is optimized for mobile responsiveness, ensuring a seamless user experience.</p>
+<p>This project also allowed me to refine my web development skills.</p>
+<p>Skills: UI/UX, HTML/CSS, JS/TS, Architecture, Frontend</p>
+</article>
+<article>
+<h3><a href="https://docs.google.com/document/d/1lQQctdAHYYky9-7DKE6PGhcB72Dc91xfO6J7vdHxMmU/edit?usp=sharing">Unity Documentation</a></h3>
+<p>2019</p>
+<p>Unity Documentation is a structured guide I created to help developers follow best practices when using Unity.</p>
+<p>Throughout my development career, I often found myself searching for Unity’s best practices. So, I decided to compile a comprehensive guide that blends my own insights with external resources. This guide is designed to help both new and experienced developers maintain efficient workflows and avoid common pitfalls.</p>
+<p>The document is available online for free, and it is regularly consulted by developers in their game development journeys.</p>
+<p>Skills: Documentation, Unity, C#, Research And Analysis</p>
+<p><a href="https://drive.google.com/drive/folders/18qJXKlyGcxKAjCU1jZdQRBfCS5IMeUe9?usp=sharing">Unity Documentation on Folder</a></p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/ProjectTS17-GeneticEvolution">Genetic Evolution Simulation</a></h3>
+<p>2019</p>
+<p>Genetic Evolution Simulation is a Unity-based simulation that models the evolution of virtual species through random mutations.</p>
+<p>In this project, I created a simulation where species evolve over time within a confined space. The organisms undergo random mutations and compete for limited resources, resulting in a dynamic ecosystem where only the fittest species survive.</p>
+<p>The ecosystem would typically collapse due to overconsumption of resources once a species becomes too prolific.</p>
+<p>Skills: Unity, C#, Genetic Algorithms, AI Integration, Rapid Development, Frontend</p>
+</article>
+<article>
+<h3>Escape City</h3>
+<p>2018</p>
+<p>Escape City is an interactive quiz app designed as a central tool for a citywide gymkhana for kids, promoting fun and educational experiences. I developed the app based on specific requirements from event organizers, allowing participants to answer questions and progress through various stages of the game.</p>
+<p>Upon completion, the app automatically compiled and sent an email with performance data to the organizers, facilitating event management at the same time as player engagement.</p>
+<p>Skills: Unity, C#, UI/UX, Frontend, Project Management, Data Management, Architecture, API Integration</p>
+</article>
+<article>
+<h3><a href="https://www.innovamat.com/">MathVille — Innovamat</a></h3>
+<p>2018</p>
+<p>MathVille is an educational game platform designed to transform math education through engaging gameplay that aligns with learning objectives.</p>
+<p>In this project, I was responsible for programming interactive activities that enable players to practice mathematical skills in a fun environment, utilizing gamification techniques to enhance learning.</p>
+<p>Skills: Game Design, Unity, C#, Frontend, Team Collaboration, Architecture, API Integration</p>
+</article>
+<article>
+<h3><a href="https://docs.google.com/document/d/0B4PKPCjlCHb5NGF1QlQ4NkxyeGc/edit?usp=sharing&amp;ouid=111731709650848839539&amp;resourcekey=0-GW_HBWgkBs9NztsLCkyOZw&amp;rtpof=true&amp;sd=true">Rasta Run 2 (GDD)</a></h3>
+<p>2018</p>
+<p>Rasta Run 2 is a Game Design Document, aimed at refining gameplay mechanics based on feedback from industry professionals.</p>
+<p>I documented various gameplay elements and design ideas, focusing on creating a robust GDD that ultimately improved my understanding of game development.</p>
+<p>Skills: Game Design, Documentation, Research And Analysis, Project Management, UI/UX, Procedural</p>
+<p><a href="https://drive.google.com/drive/folders/0B4PKPCjlCHb5b1RJVmVMSklLMTA?resourcekey=0-eF0ofQRECnagKVWldUAZxQ&amp;usp=sharing">Rasta Run 2 (GDD) on Folder</a></p>
+</article>
+<article>
+<h3><a href="https://github.com/guplem/4utumn">4utumn</a></h3>
+<p>2018</p>
+<p>4utumn is a social network I developed as part of a university project. The app allows users to communicate, post texts, follow others, and search for content.</p>
+<p>I worked on the front-end development, including visual design, mobile responsiveness, ... The project utilized Spring, Thymeleaf, and JavaScript for dynamic content rendering, providing users with a fluid experience.</p>
+<p>Skills: JS/TS, HTML/CSS, SQL, Spring, Thymeleaf, UI/UX, Project Management, Architecture, API Integration, Frontend, Server Management</p>
+<p><a href="https://drive.google.com/drive/folders/1nMqy5DgiauENFJeDq-RHd1bl46rWXzIO?usp=sharing">4utumn on Folder</a></p>
+</article>
+<article>
+<h3><a href="https://docs.google.com/document/d/1fUtvopLrGSoHb14Pt6UKFmeysY-_v-YkvUovPJOs5GI/edit?usp=sharing">Tips and Tricks for Game Design</a></h3>
+<p>2018</p>
+<p>Tips and Tricks for Game Design is a guidebook of advice compiled from my personal experience and academic background.</p>
+<p>This project, although abandoned, was intended to provide a structured collection of tips for anyone looking to design engaging video games. Drawing from university coursework and personal practice, it covered everything from mechanics to user engagement strategies.</p>
+<p>Skills: Game Design, Documentation, Research And Analysis</p>
+</article>
+<article>
+<h3>Computer Classrooms in Ghana</h3>
+<p>2018</p>
+<p>A voluntary project where I helped bring computers and set up classrooms in Ghanaian schools.</p>
+<p>I refurbished and collected second-hand laptops, aiming to provide students in Ghana with direct access to computers.</p>
+<p>Skills: NGO Collaboration, Computer Refurbishing, Logistics, Team Collaboration, Project Management, Team Leadership</p>
+</article>
+<article>
+<h3><a href="resources/deliverables/Ball Evolution.apk">Ball Evolution</a></h3>
+<p>2017</p>
+<p>Ball Evolution is an attention-retention game that explores psychological effects related to addiction, developed in under 48 hours.</p>
+<p>The focus was on intuitive gameplay mechanics, minimizing the need for tutorials, and surprisingly, it garnered a dedicated player base who engaged for many long sessions.</p>
+<p>Skills: Game Design, Rapid Development, UI/UX, Unity, C#, Frontend, Team Collaboration, Project Management, Architecture, User Engagement</p>
+<p><a href="https://drive.google.com/drive/folders/0B4PKPCjlCHb5dXhfMmwyTkZHc28?resourcekey=0-W5qJyhAf3SlS1cBah6DnTA&amp;usp=sharing">Ball Evolution on Folder</a></p>
+</article>
+<article>
+<h3><a href="https://play.google.com/store/apps/details?id=com.TriunityStudios.WoloBallFULL">WoloBall</a></h3>
+<p>2016</p>
+<p>WoloBall is my first finished Unity game, where players must survive against waves of obstacles while collecting power-ups that alter gameplay dynamics.</p>
+<p>This project allowed me to apply the skills I gained from previous projects and solidified my understanding of the game engine and integration of external tools such as Google Ads.</p>
+<p>Skills: Unity, Game Design, API Integration, UI/UX, C#, Project Management, Frontend, Architecture, Procedural</p>
+<p><a href="resources/deliverables/WoloBall.apk">WoloBall on Download</a></p>
+</article>
+<article>
+<h3><a href="https://play.google.com/store/apps/details?id=com.TriunityStudios.Rasta_Run">Rasta Run</a></h3>
+<p>2016</p>
+<p>Rasta Run is my first finished game project, an endless runner featuring semi-procedural world generation and a marketing strategy that attracted many.</p>
+<p>This project was instrumental in applying my programming knowledge and testing game mechanics, ultimately serving as part of my final research project.</p>
+<p>Skills: GameMaker Studio, Procedural, Marketing, Frontend, Game Design, Project Management, UI/UX</p>
+<p><a href="resources/deliverables/RastaRun.apk">Rasta Run on Download</a></p>
+<p><a href="https://youtu.be/vkN92-qRcqg">Rasta Run on Play</a></p>
+<p><a href="https://drive.google.com/drive/folders/16QTr8QLBQwAnxtyQy3NLS8A_hYNkhmdq?usp=sharing">Rasta Run on Folder</a></p>
+</article>
+<article>
+<h3><a href="resources/deliverables/Dungeon Assault.zip">Dungeon Assault</a></h3>
+<p>2016</p>
+<p>Dungeon Assault is a procedural dungeon map generator for improvisational board games.</p>
+<p>The tool was created to facilitate the generation of unique dungeon maps, allowing players to create their own game rules and map layouts. Designed for ease of use, it supports flexible token-based gameplay, discovery mechanics, and the ability to randomize dungeon features.</p>
+<p>Skills: Unity, C#, Procedural, Rapid Development, Game Design, Architecture, Frontend</p>
+</article>
+<article>
+<h3><a href="https://www.markopa.com/abac">Photoshoots</a></h3>
+<p>2016</p>
+<p>I participated in many hotel photoshoots for renowned clients such as ABaC and Axel Hotels under the guidance of Markopa.</p>
+<p>As a photography assistant and editor, I played a key role in setting up environments, assisting Marco Pastori, the photographer, and editing photos to enhance the final results.</p>
+<p>The outcome was a professional portfolio that helped promote the aesthetic appeal of luxury hotels through high-quality visual content.</p>
+<p>Skills: Photography, Photo Editing, Team Collaboration</p>
+<p><a href="https://www.markopa.com/axel-madrid-hotel">Photoshoots on Website</a></p>
+</article>
+<article>
+<h3><a href="https://drive.google.com/drive/folders/1_PfnPxTW3r5Z4lSumvIwDVuxIqcm4eAf?usp=sharing">Nix</a></h3>
+<p>2015</p>
+<p>Nix is my first significant programming project, featuring a metroidvania style game where players must overcome various challenges playing as a knight in a platformer world.</p>
+<p>This project helped me learn and internalize core programming principles and set the stage for my later works.</p>
+<p>Skills: GameMaker Studio, Game Design, Frontend, Project Management, UI/UX, Architecture</p>
+<p><a href="https://github.com/guplem/Nix">Nix on Github</a></p>
+</article>
+<article>
+<h3><a href="https://youtu.be/g_yjptZEbyA">Game Mode: Super UltraHardcore</a></h3>
+<p>2014</p>
+<p>Super Ultra Hardcore is a Minecraft gameplay mod that introduces an ultra-challenging survival mode. Players have only one life and face tougher enemies, with their scores tracked in a unique scoring system.</p>
+<p>I designed the gameplay mechanics to increase difficulty and enhance player engagement, offering a more intense survival experience.</p>
+<p>Skills: Modding, Game Design, Project Management</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/wZCMXTiXtJc">Fortress Warfare</a></h3>
+<p>2013</p>
+<p>Fortress Warfare is a custom Minecraft game where players build fortresses to protect a special item while attempting to steal the enemy’s item.</p>
+<p>I designed the multiplayer gameplay flow, time control, team management, and even in-game background music to create a more immersive and competitive experience, with team-based strategies being a key aspect.</p>
+<p>Skills: Modding, Game Design, Project Management</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/j-Iw6I-329Q">Battleship</a></h3>
+<p>2013</p>
+<p>Battleship is a recreation of the classic board game within Minecraft. I developed it as a special project to celebrate my 100th YouTube video, leveraging Minecraft's features for a quick and fun implementation.</p>
+<p>I translated the traditional gameplay into Minecraft’s mechanics and user interface, showcasing my ability to quickly create prototypes while adding a unique Minecraft twist to a familiar game.</p>
+<p>Skills: Modding, Game Design, Rapid Development, Project Management</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/rgdT4w7Q5jA">The Building Game (Contribution)</a></h3>
+<p>2013</p>
+<p>The Building Game is a Minecraft multiplayer game where players build structures based on prompts. I created a Spanish localization of the game and adapted it to be playable by 4 players or fewer.</p>
+<p>I had to understand how the game was created to localize and modify it, showcasing my ability to reverse engineer and adapt existing projects.</p>
+<p>Skills: Modding, Game Design, Localization, Reverse Engineering</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/PdrY4Uvafeo">Zombie Survival 2</a></h3>
+<p>2013</p>
+<p>Zombie Survival 2 is an updated version of my original zombie defense game in Minecraft, featuring improved balancing, aesthetics, and gameplay refinements.</p>
+<p>I worked on fine-tuning game mechanics and enhancing the visual elements to create a more immersive zombie survival experience, ending with pleasing, polished, and balanced gameplay.</p>
+<p>Skills: Modding, Game Design, Project Management</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/xN4IEYy9JII">The Rooms</a></h3>
+<p>2013</p>
+<p>The Rooms is a collaborative Minecraft map where players face challenges in different rooms. It was one of my first joint projects with other content creators.</p>
+<p>We developed the map, focusing on creating challenging, engaging, and cooperative gameplay mechanics, while trying to avoid discrepancies between the different sections developed by each member.</p>
+<p>Skills: Modding, Team Collaboration, Game Design</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/chfp5sMP97o">Zombie Survival</a></h3>
+<p>2013</p>
+<p>Zombie Survival is a Minecraft defense game inspired by Call of Duty's Zombies mode, where players defend against waves of zombies.</p>
+<p>I focused on the core mechanics around wave-based combat and defense strategies while ensuring a challenging yet enjoyable experience for players, while also creating a visually appealing environment.</p>
+<p>Skills: Modding, Game Design, Project Management</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/tx8Pq1m49Vk">Defend Your Base 2</a></h3>
+<p>2013</p>
+<p>Defend Your Base 2 is the sequel to Defend Your Base, introducing a new space-themed map and gameplay refinements based on user feedback.</p>
+<p>I developed new mechanics, map design, and organized a small in-game tournament to test the new features with the community.</p>
+<p>Skills: Modding, Game Design, Project Management</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/SgNT9Fj8BC8">Run to Win</a></h3>
+<p>2013</p>
+<p>Run to Win is a Minecraft racing game where players face various obstacles along a racetrack.</p>
+<p>I implemented the racing mechanics, game flow and track challenges, creating a fun, competitive experience for players.</p>
+<p>Skills: Modding, Game Design, Project Management</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/tu5j3JDH0xg">Defend Your Base</a></h3>
+<p>2013</p>
+<p>Defend Your Base is the first game I created, where two teams defend their base while attempting to destroy the enemy’s base.</p>
+<p>I developed the core gameplay mechanics, game flow, map design, and balance, focusing on creating a fun and engaging experience for players.</p>
+<p>The game was well-received and marked my entry into Minecraft game development.</p>
+<p>Skills: Modding, Game Design, Project Management</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/IStbIAZnC3Q">Redstone Clock</a></h3>
+<p>2013</p>
+<p>Redstone Clock is a digital clock built with Minecraft redstone mechanics. The project was initially created in survival mode before being reconstructed in creative mode.</p>
+<p>I built this clock as a fun challenge to showcase Minecraft’s logic gates and redstone mechanics.</p>
+<p>This project demonstrated my ability to create functional contraptions and also laid the groundwork for my future Minecraft projects.</p>
+<p>Skills: Project Management</p>
+</article>
+<article>
+<h3><a href="https://youtu.be/YjzGHh6gt3o">Redstone Calculator</a></h3>
+<p>2013</p>
+<p>Redstone Calculator is a simple calculator built using Minecraft’s redstone mechanics. It performs basic arithmetic using redstone logic gates.</p>
+<p>I built this as my first big redstone project, exploring Minecraft’s potential as a tool for logic-based creations, and managed to win a tournament with it.</p>
+<p>This project marked the beginning of my redstone creations and helped me understand the complex mechanics of Minecraft's circuitry.</p>
+<p>Skills: Project Management</p>
+</article>
+<article>
+<h3><a href="https://astronoms.es.tl/">Astronomy</a></h3>
+<p>2011</p>
+<p>Astronomy is one of the first websites I developed to share my passion for space with fellow enthusiasts. The site features a collection of astronomy-related content, including links to relevant websites and small interactive elements.</p>
+<p>While the website was primarily built using templates, it served as my introduction to web development. Additionally, I created a Catalan version, which provided valuable experience in localization.</p>
+<p>Skills: HTML/CSS, Data Management, Localization, Frontend</p>
+<p><a href="https://astronomscat.es.tl/">Astronomy on Link</a></p>
+</article>
+<!-- END GENERATED:WORKS -->
+          </div>
         </div>
         <button id="worksExpandButton" class="works-expand-btn">Show More Projects</button>
       </div>

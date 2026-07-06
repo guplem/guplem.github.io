@@ -6,6 +6,7 @@
     <link rel="icon" href="../resources/images/webicon.webp" />
     <title>Web Projects · Guillem Poy</title>
     <meta name="description" content="Standalone web experiments, games, and tools hosted on triunitystudios.com." />
+    <link rel="canonical" href="https://triunitystudios.com/web-projects/" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -39,8 +40,72 @@
           autocomplete="off"
         />
       </div>
-      <p id="status" class="status">Loading projects…</p>
-      <div id="projectsGrid" class="projects-grid"></div>
+      <!-- Hidden by default: the grid below already carries the static
+           fallback cards, so crawlers and no-JS visitors never see a stuck
+           "Loading" line. app.js unhides it only to report an error. -->
+      <p id="status" class="status" hidden>Loading projects…</p>
+      <!-- The GENERATED block is the crawler-facing static fallback, written
+           by `bun scripts/generateSeoBlocks.js` from the data/ JSON (root
+           ADR 0014). Never hand-edit between the markers; app.js replaces it
+           with the dynamic cards at load time. -->
+      <div id="projectsGrid" class="projects-grid">
+        <!-- BEGIN GENERATED:WEB-PROJECTS -->
+<article>
+<h3><a href="rps-mind-reader/">RPS Mind Reader · Adaptive AI Opponent</a></h3>
+<p>2026</p>
+<p>RPS Mind Reader is a rock-paper-scissors web game where an AI learns your habits and tries to beat you — the more you play, the better it reads you, so the only way to win consistently is to stay genuinely unpredictable.</p>
+<p>Skills: Vibe Coded, AI Integration, Architecture</p>
+</article>
+<article>
+<h3><a href="liga-under-tkd/">Liga UNDER — Tournament Web App</a></h3>
+<p>2026</p>
+<p>Liga UNDER is a live tournament website for a taekwondo competition. Spectators and athletes follow the running order of combats by tatami, the standings of each round-robin group, and every athlete's profile — updating in near real time during the event.</p>
+<p>Skills: Vibe Coded, Frontend, UI/UX, Architecture</p>
+</article>
+<article>
+<h3><a href="taboo-game/">Taboo Game · Deterministic Multiplayer</a></h3>
+<p>2026</p>
+<p>Taboo is a party game web app for playing the classic word-guessing game across several phones in the same room — no server, no rooms, no realtime sync. Every device reconstructs the full game state from a shared seed and turn number agreed verbally.</p>
+<p>Skills: Vibe Coded, Architecture</p>
+</article>
+<article>
+<h3><a href="random-option-picker/">Random Option Picker</a></h3>
+<p>2026</p>
+<p>Random Option Picker is a web tool that picks one or more options at random from a list, with shareable URLs and an optional seed so the same link always reproduces the same draw. Useful for picking a daily standup moderator, dice rolls, choosing activities, or any small decision worth keeping reproducible.</p>
+<p>Skills: Vibe Coded</p>
+</article>
+<article>
+<h3><a href="github-stats-dashboard/">GitHub Stats Dashboard</a></h3>
+<p>2026</p>
+<p>GitHub Stats Dashboard is a web-based analytics tool for browsing GitHub repository statistics. Users can connect with a personal access token or browse public repos by username, then view detailed metrics for any selected repository.</p>
+<p>Skills: Vibe Coded</p>
+</article>
+<article>
+<h3><a href="photo-editor/">PhotoBooth</a></h3>
+<p>2026</p>
+<p>PhotoBooth is a mobile photo editor that runs entirely in the browser. It opens the device camera by default and lets users capture photos or import from their gallery, then edit with a full suite of creative tools.</p>
+<p>Skills: Vibe Coded</p>
+</article>
+<article>
+<h3><a href="gravity-sandbox/">Gravity Sandbox</a></h3>
+<p>2026</p>
+<p>Gravity Sandbox is an interactive N-body gravitational simulation built entirely in the browser with vanilla HTML Canvas and JavaScript. Users spawn celestial bodies by clicking or tapping, drag to slingshot them with initial velocity, and watch emergent orbital systems form in real time.</p>
+<p>Skills: Vibe Coded</p>
+</article>
+<article>
+<h3><a href="seasonal-color-classifier/">Seasonal Color Classifier</a></h3>
+<p>2025</p>
+<p>Seasonal Color Classifier is a web tool that analyzes colors and classifies them into seasonal palettes (Spring, Summer, Autumn, Winter), helping users identify which color season best suits them.</p>
+<p>Skills: Vibe Coded</p>
+</article>
+<article>
+<h3><a href="ChatGPTPong/pong.html">ChatGPT Pong</a></h3>
+<p>2022</p>
+<p>ChatGPT Pong is a classic Pong game generated entirely by ChatGPT (GPT-3.5) in December 2022, right after the initial release of ChatGPT. It was my first ever software project created by an AI — and it blew my mind.</p>
+<p>Skills: Vibe Coded</p>
+</article>
+<!-- END GENERATED:WEB-PROJECTS -->
+      </div>
       <p id="noResults" class="status" hidden>No projects match your search.</p>
     </main>
 

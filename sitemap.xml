@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
-<url>
-  <loc>https://triunitystudios.com/</loc>
-  <lastmod>2021-06-19T16:10:13+00:00</lastmod>
-</url>
-
-
+<!-- GENERATED FILE - do not edit by hand. Regenerate with: bun scripts/generateSitemap.js (root ADR 0014) -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://triunitystudios.com/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/rps-mind-reader/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/liga-under-tkd/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/taboo-game/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/random-option-picker/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/github-stats-dashboard/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/photo-editor/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/gravity-sandbox/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/seasonal-color-classifier/</loc>
+  </url>
+  <url>
+    <loc>https://triunitystudios.com/web-projects/ChatGPTPong/pong.html</loc>
+  </url>
 </urlset>

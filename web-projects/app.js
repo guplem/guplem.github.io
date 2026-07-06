@@ -108,6 +108,7 @@ async function render() {
     const projects = selectWebProjects(works);
 
     if (projects.length === 0) {
+      status.hidden = false;
       status.textContent = "No web projects found yet.";
       return;
     }
@@ -116,6 +117,10 @@ async function render() {
     const cards = await Promise.all(projects.map((project, index) => createProjectCard(project, index)));
     for (const card of cards) fragment.appendChild(card);
 
+    // Replace the static SEO fallback cards (see scripts/generateSeoBlocks.js)
+    // instead of appending after them. Cleared only once the dynamic cards are
+    // ready, so a failed fetch leaves the fallback visible.
+    grid.innerHTML = "";
     grid.appendChild(fragment);
     status.hidden = true;
 
@@ -123,6 +128,7 @@ async function render() {
     setupSearch(entries);
   } catch (error) {
     console.error(error);
+    status.hidden = false;
     status.textContent = "Could not load the project list. Please try again later.";
   }
 }

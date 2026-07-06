@@ -87,15 +87,25 @@ async function createWorkCard(work, index) {
   // Stagger entrance animation
   workElement.style.animationDelay = `${index * 50}ms`;
 
-  // Clicking the image or the title opens the project's primary link (if any).
-  const openPrimaryLink = work.links?.length
-    ? () => {
-        const primaryLink = work.links[0];
-        if (primaryLink.url) {
-          window.open(primaryLink.url, "_blank");
-        }
-      }
-    : null;
+  // The image and the title link to the project's primary link (if any) as
+  // real anchors, so crawlers can discover the target pages (issue #37).
+  const primaryUrl = work.links?.length ? work.links[0].url : null;
+
+  /**
+   * Wrap an element in an anchor to the primary link.
+   * @param {HTMLElement} element
+   * @param {string} linkClass
+   * @returns {HTMLAnchorElement}
+   */
+  const wrapInPrimaryLink = (element, linkClass) => {
+    const anchorElement = document.createElement("a");
+    anchorElement.href = primaryUrl;
+    anchorElement.target = "_blank";
+    anchorElement.rel = "external noopener";
+    anchorElement.classList.add(linkClass);
+    anchorElement.appendChild(element);
+    return anchorElement;
+  };
 
   if (work.image?.length) {
     const imageElement = document.createElement("img");
@@ -103,26 +113,17 @@ async function createWorkCard(work, index) {
     imageElement.src = work.image;
     imageElement.alt = work.imageAlt || `Image for ${work.title}`;
     imageElement.loading = "lazy";
-    workElement.appendChild(imageElement);
     if (work.imageStretched == undefined || work.imageStretched === true) {
       imageElement.classList.add("stretched");
     }
-    if (openPrimaryLink) {
-      imageElement.onclick = openPrimaryLink;
-      imageElement.classList.add("workImageLink");
-    }
+    workElement.appendChild(primaryUrl ? wrapInPrimaryLink(imageElement, "workImageLink") : imageElement);
   }
 
   if (work.title?.length) {
     const titleElement = document.createElement("div");
     titleElement.classList.add("workTitle");
-    workElement.appendChild(titleElement);
     await uiUtils.setDataInHtmlElement(work.title, titleElement, new Map([["p", "h3"]]));
-
-    if (openPrimaryLink) {
-      titleElement.onclick = openPrimaryLink;
-      titleElement.classList.add("workTitleLink");
-    }
+    workElement.appendChild(primaryUrl ? wrapInPrimaryLink(titleElement, "workTitleLink") : titleElement);
 
     workElement.id = `work_${textUtils.idFromText(work.title)}`;
   }

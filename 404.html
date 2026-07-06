@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/resources/images/webicon.webp" />
+    <title>Page Not Found · Guillem Poy</title>
+    <!-- Served automatically by GitHub Pages for any missing path. Many old
+         URLs from a previous version of the site are still in search indexes;
+         noindex keeps this error page itself out of them. -->
+    <meta name="robots" content="noindex" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Absolute paths: this page is served for ANY missing URL, so relative
+         paths would break on nested paths like /Essentials/html/foo.html -->
+    <link rel="stylesheet" href="/css/global/variables.css" />
+    <link rel="stylesheet" href="/css/global/base.css" />
+    <style>
+      .not-found {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: var(--sp-lg);
+      }
+      .not-found h1 {
+        font-size: clamp(2.2rem, 6vw, 3.5rem);
+        margin-bottom: var(--sp-sm);
+      }
+      .not-found p {
+        color: var(--text-muted);
+        max-width: 34rem;
+        margin-bottom: var(--sp-lg);
+      }
+      .not-found-links {
+        display: flex;
+        gap: var(--sp-sm);
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .not-found-links a {
+        display: inline-block;
+        padding: 0.6rem 1.4rem;
+        border-radius: var(--radius-full);
+        background: var(--accent);
+        color: var(--bg-white);
+        font-weight: 600;
+        transition: background var(--duration-fast) var(--ease-out);
+      }
+      .not-found-links a:hover {
+        background: var(--accent-secondary);
+        color: var(--bg-white);
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="not-found">
+      <h1>404 · Page not found</h1>
+      <p>This page does not exist anymore. The site was rebuilt, so old links (like the UnityEssentials documentation) are gone.</p>
+      <div class="not-found-links">
+        <a href="https://triunitystudios.com/">Portfolio home</a>
+        <a href="https://triunitystudios.com/web-projects/">Web projects</a>
+      </div>
+    </main>
+  </body>
+</html>

@@ -26,3 +26,5 @@ All portfolio content lives in JSON files under `data/`. One file per project (`
 - All data is public in the repo (acceptable for a portfolio).
 - No rich editor experience; content is edited as raw JSON.
 - Initial page load fetches many small JSON files (mitigated by browser caching).
+
+> **Note (2026-07):** the committed HTML now also carries crawler-facing static fallback blocks *generated from* this JSON (never hand-edited, drift-tested in CI). The JSON stays the single hand-edited source of truth. See ADR 0014.

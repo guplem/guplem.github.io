@@ -21,6 +21,17 @@ Alternatively, from the terminal:
 python -m http.server 8000
 ```
 
+### Generated files (SEO)
+
+`sitemap.xml` and the `GENERATED` comment-marked blocks inside `index.html` and `web-projects/index.html` are derived from the `data/` JSON so search engines can read the content without running JavaScript. Never edit them by hand. After changing `data/`, regenerate them with [Bun](https://bun.sh):
+
+```bash
+bun scripts/generateSitemap.js
+bun scripts/generateSeoBlocks.js
+```
+
+To make this automatic on every commit, install [lefthook](https://github.com/evilmartians/lefthook) once (`winget install evilmartians.lefthook` on Windows, `brew install lefthook` on macOS) and run `lefthook install` in the repo. If you skip this, CI fails with a message telling you which script to run.
+
 ## Web Projects
 
 Self-contained mini-apps in `web-projects/`. Browse them all at [triunitystudios.com/web-projects/](https://triunitystudios.com/web-projects/), an index page that lists every project automatically from the portfolio data.
