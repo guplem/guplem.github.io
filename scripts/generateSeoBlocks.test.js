@@ -5,7 +5,7 @@
 import { describe, it, expect } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { escapeHtml, injectBlock, buildHeroHtml, buildAboutHtml, buildWorksHtml, buildWebProjectsIndexHtml } from "./generateSeoBlocks.js";
+import { escapeHtml, markdownToInlineHtml, injectBlock, buildHeroHtml, buildAboutHtml, buildWorksHtml, buildWebProjectsIndexHtml } from "./generateSeoBlocks.js";
 import { loadInfo, loadWorks } from "./portfolioData.js";
 
 // Resolve relative to this test file, not the working directory, so the test
@@ -53,10 +53,24 @@ describe("injectBlock", () => {
   });
 });
 
+describe("markdownToInlineHtml", () => {
+  it("converts bold, italic, and newlines to their HTML equivalents", () => {
+    expect(markdownToInlineHtml("a **bold** and *italic* word\nnext line")).toBe("a <strong>bold</strong> and <em>italic</em> word<br />next line");
+  });
+
+  it("converts links to real anchors", () => {
+    expect(markdownToInlineHtml("see [my profile](https://example.com)")).toBe('see <a href="https://example.com">my profile</a>');
+  });
+
+  it("escapes HTML before converting", () => {
+    expect(markdownToInlineHtml("**Drink & Play** <b>")).toBe("<strong>Drink &amp; Play</strong> &lt;b&gt;");
+  });
+});
+
 describe("buildHeroHtml", () => {
-  it("renders one h1 per introduction line, markdown stripped", () => {
+  it("renders a single h1 mirroring the dynamic markdown render", () => {
     const info = { introduction: "Hi! I'm **Guillem**\nI build *things*." };
-    expect(buildHeroHtml(info)).toBe("<h1>Hi! I'm Guillem</h1>\n<h1>I build things.</h1>");
+    expect(buildHeroHtml(info)).toBe("<h1>Hi! I'm <strong>Guillem</strong><br />I build <em>things</em>.</h1>");
   });
 });
 
@@ -106,15 +120,29 @@ describe("buildWorksHtml", () => {
 });
 
 describe("buildWebProjectsIndexHtml", () => {
-  it("renders only local web-projects, with paths relative to web-projects/", () => {
-    const works = [
-      { title: "Local", date: "2025", description: ["A **local** demo."], skills: ["JS/TS"], links: [{ url: "web-projects/local/" }] },
-      { title: "External", date: "2024", description: ["Elsewhere."], skills: [], links: [{ url: "https://example.com/" }] },
-    ];
+  const works = [
+    {
+      title: "Local",
+      date: "2025",
+      description: ["A **local** demo."],
+      skills: ["JS/TS"],
+      image: "resources/images/projects/local.webp",
+      links: [{ url: "web-projects/local/" }],
+    },
+    { title: "External", date: "2024", description: ["Elsewhere."], skills: [], links: [{ url: "https://example.com/" }] },
+  ];
+
+  it("renders only local web-projects, mirroring the app.js card markup", () => {
     const html = buildWebProjectsIndexHtml(works);
-    expect(html).toContain(`<h3><a href="local/">Local</a></h3>`);
-    expect(html).toContain("<p>A local demo.</p>");
+    expect(html).toContain(`<article class="project-card" style="animation-delay: 0ms">`);
+    expect(html).toContain(`<h3 class="project-title"><a class="project-title-link" href="local/">Local</a></h3>`);
+    expect(html).toContain(`<div class="project-teaser"><p>A <strong>local</strong> demo.</p></div>`);
+    expect(html).toContain(`<span class="project-skill">JS/TS</span>`);
     expect(html).not.toContain("External");
+  });
+
+  it("prefixes site-root image paths with ../ like app.js does", () => {
+    expect(buildWebProjectsIndexHtml(works)).toContain(`<img class="project-image" src="../resources/images/projects/local.webp"`);
   });
 });
 

@@ -36,6 +36,14 @@ async function loadAllWorks() {
 
 /**
  * Build one project card element.
+ *
+ * KEEP IN SYNC with buildWebProjectsIndexHtml() in ../scripts/generateSeoBlocks.js:
+ * the static SEO fallback mirrors this markup so render() can adopt it (root
+ * ADR 0014). If a change here alters the card TEXT, the fallback is swapped in
+ * and the load flicker returns until regenerated. If it alters only the
+ * markup/classes (same text), the adopted fallback keeps showing the OLD
+ * markup on load and the change silently never appears -- update the generator
+ * and run `bun scripts/generateSeoBlocks.js` in the same change.
  * @param {import("./discovery.js").WebProjectCard} project
  * @param {number} index - for the staggered entrance animation
  * @returns {Promise<HTMLElement>}
@@ -117,14 +125,28 @@ async function render() {
     const cards = await Promise.all(projects.map((project, index) => createProjectCard(project, index)));
     for (const card of cards) fragment.appendChild(card);
 
-    // Replace the static SEO fallback cards (see scripts/generateSeoBlocks.js)
-    // instead of appending after them. Cleared only once the dynamic cards are
-    // ready, so a failed fetch leaves the fallback visible.
-    grid.innerHTML = "";
-    grid.appendChild(fragment);
+    // The static SEO fallback cards (see scripts/generateSeoBlocks.js) mirror
+    // the cards built above. When they show the same content, adopt them
+    // instead of swapping, so the entrance animation does not replay
+    // (flicker). Otherwise replace them -- only once the dynamic cards are
+    // ready, so a failed fetch leaves the fallback visible. The comparison
+    // strips all whitespace: the generated markup has newlines between
+    // elements, DOM-built fragments do not.
+    const withoutWhitespace = (text) => (text || "").replace(/\s+/g, "");
+    const staticCards = Array.from(grid.children);
+    let entries;
+    if (staticCards.length === projects.length && withoutWhitespace(grid.textContent) === withoutWhitespace(fragment.textContent)) {
+      entries = projects.map((project, index) => ({ project, element: staticCards[index] }));
+    } else {
+      if (staticCards.length > 0) {
+        console.warn("Static SEO fallback cards do not match the dynamic render; swapping (entrance animation replays). Run `bun scripts/generateSeoBlocks.js`, or sync buildWebProjectsIndexHtml() with createProjectCard().");
+      }
+      grid.innerHTML = "";
+      grid.appendChild(fragment);
+      entries = projects.map((project, index) => ({ project, element: cards[index] }));
+    }
     status.hidden = true;
 
-    const entries = projects.map((project, index) => ({ project, element: cards[index] }));
     setupSearch(entries);
   } catch (error) {
     console.error(error);
