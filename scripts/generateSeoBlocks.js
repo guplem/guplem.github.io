@@ -86,12 +86,81 @@ export function buildHeroHtml(info) {
 }
 
 /**
- * The about block: one <p> per aboutMe entry, markdown stripped.
+ * Markdown to structured block HTML: `#`-prefixed lines become headings
+ * (level = number of `#`, clamped to 6), blank lines separate paragraphs,
+ * and single newlines inside a paragraph become <br /> (matching marked's
+ * breaks:true behavior). Inline markup goes through markdownToInlineHtml.
+ * Used for printed blocks that need real structure (about, additional
+ * sections) but are swapped, not adopted, at load.
+ * @param {string} markdown
+ * @returns {string}
+ */
+export function markdownToBlockHtml(markdown) {
+  const blocks = [];
+  let paragraphLines = [];
+  const flushParagraph = () => {
+    if (paragraphLines.length) {
+      blocks.push(`<p>${markdownToInlineHtml(paragraphLines.join("\n"))}</p>`);
+      paragraphLines = [];
+    }
+  };
+
+  for (const line of markdown.split("\n")) {
+    const headingMatch = line.match(/^(#+)\s*(.*)$/);
+    if (headingMatch) {
+      flushParagraph();
+      const level = Math.min(headingMatch[1].length, 6);
+      blocks.push(`<h${level}>${markdownToInlineHtml(headingMatch[2])}</h${level}>`);
+    } else if (line.trim() === "") {
+      flushParagraph();
+    } else {
+      paragraphLines.push(line);
+    }
+  }
+  flushParagraph();
+
+  return blocks.join("\n");
+}
+
+/**
+ * The about block: each aboutMe entry as structured blocks (headings,
+ * paragraphs, links, bold), so crawlers and no-JS visitors get the real
+ * structure. Swapped (not adopted) at load: the section sits behind the
+ * scroll-reveal, so the swap is invisible and needs no exact mirror.
  * @param {{ aboutMe: string[] }} info the parsed data/info.json
  * @returns {string}
  */
 export function buildAboutHtml(info) {
-  return info.aboutMe.map((entry) => `<p>${plainLine(entry)}</p>`).join("\n");
+  return info.aboutMe.map(markdownToBlockHtml).join("\n");
+}
+
+/**
+ * One <section> per additionalSections entry: section-label h2 title, image,
+ * and the content entries as structured blocks. Reuses the existing
+ * section-label / additional-grid / additional-text classes so the fallback
+ * looks styled before JS runs, but the image always comes before the text --
+ * the dynamic render's alternating order is a runtime visual concern the
+ * printed block does not replicate. No element ids (the dynamic render
+ * creates its own; duplicates must never exist).
+ * @param {{ additionalSections?: Array<{ title?: string, image?: string, imageAlt?: string, content?: string[] }> }} info the parsed data/info.json
+ * @returns {string}
+ */
+export function buildAdditionalSectionsHtml(info) {
+  const sections = Array.isArray(info.additionalSections) ? info.additionalSections : [];
+  return sections
+    .map((section) => {
+      const parts = [`<section class="section">`, `<div class="container">`];
+      if (section.title) parts.push(`<div class="section-label"><h2>${escapeHtml(section.title)}</h2></div>`);
+      parts.push(`<div class="additional-grid">`);
+      if (section.image) {
+        parts.push(`<img src="${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt || `Image of ${section.title}`)}" />`);
+      }
+      parts.push(`<div class="additional-text">`);
+      for (const entry of section.content ?? []) parts.push(markdownToBlockHtml(entry));
+      parts.push(`</div>`, `</div>`, `</div>`, `</section>`);
+      return parts.join("\n");
+    })
+    .join("\n");
 }
 
 /**
@@ -164,6 +233,7 @@ if (import.meta.main) {
   indexHtml = injectBlock(indexHtml, "HERO", buildHeroHtml(info));
   indexHtml = injectBlock(indexHtml, "ABOUT", buildAboutHtml(info));
   indexHtml = injectBlock(indexHtml, "WORKS", buildWorksHtml(works));
+  indexHtml = injectBlock(indexHtml, "ADDITIONAL", buildAdditionalSectionsHtml(info));
   writeFileSync(indexPath, indexHtml);
 
   const webProjectsIndexPath = join(repoRoot, "web-projects", "index.html");

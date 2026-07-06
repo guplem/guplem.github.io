@@ -5,7 +5,17 @@
 import { describe, it, expect } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { escapeHtml, markdownToInlineHtml, injectBlock, buildHeroHtml, buildAboutHtml, buildWorksHtml, buildWebProjectsIndexHtml } from "./generateSeoBlocks.js";
+import {
+  escapeHtml,
+  markdownToInlineHtml,
+  markdownToBlockHtml,
+  injectBlock,
+  buildHeroHtml,
+  buildAboutHtml,
+  buildWorksHtml,
+  buildWebProjectsIndexHtml,
+  buildAdditionalSectionsHtml,
+} from "./generateSeoBlocks.js";
 import { loadInfo, loadWorks } from "./portfolioData.js";
 
 // Resolve relative to this test file, not the working directory, so the test
@@ -67,6 +77,31 @@ describe("markdownToInlineHtml", () => {
   });
 });
 
+describe("markdownToBlockHtml", () => {
+  it("splits heading lines and paragraph lines into h-tags and p-tags", () => {
+    expect(markdownToBlockHtml("####  Get to know me\nI enjoy learning.")).toBe("<h4>Get to know me</h4>\n<p>I enjoy learning.</p>");
+  });
+
+  it("separates paragraphs on blank lines and keeps single newlines as br", () => {
+    expect(markdownToBlockHtml("first line\nsecond line\n\nnew paragraph")).toBe("<p>first line<br />second line</p>\n<p>new paragraph</p>");
+  });
+
+  it("maps the number of # to the heading level, clamped to 6", () => {
+    expect(markdownToBlockHtml("## Two")).toBe("<h2>Two</h2>");
+    expect(markdownToBlockHtml("####### Seven")).toBe("<h6>Seven</h6>");
+  });
+
+  it("converts inline markdown inside headings and paragraphs", () => {
+    expect(markdownToBlockHtml("#### The **plan**\nsee [docs](https://example.com)")).toBe(
+      '<h4>The <strong>plan</strong></h4>\n<p>see <a href="https://example.com">docs</a></p>'
+    );
+  });
+
+  it("escapes HTML", () => {
+    expect(markdownToBlockHtml("a <b> & c")).toBe("<p>a &lt;b&gt; &amp; c</p>");
+  });
+});
+
 describe("buildHeroHtml", () => {
   it("renders a single h1 mirroring the dynamic markdown render", () => {
     const info = { introduction: "Hi! I'm **Guillem**\nI build *things*." };
@@ -75,9 +110,51 @@ describe("buildHeroHtml", () => {
 });
 
 describe("buildAboutHtml", () => {
-  it("renders one paragraph per entry, markdown stripped and newlines collapsed", () => {
+  it("renders each entry as structured blocks: headings, paragraphs, links, bold", () => {
     const info = { aboutMe: ["#### Title\nFirst **bold** line", "See [my profile](https://example.com)"] };
-    expect(buildAboutHtml(info)).toBe("<p>Title First bold line</p>\n<p>See my profile</p>");
+    expect(buildAboutHtml(info)).toBe(
+      '<h4>Title</h4>\n<p>First <strong>bold</strong> line</p>\n<p>See <a href="https://example.com">my profile</a></p>'
+    );
+  });
+});
+
+describe("buildAdditionalSectionsHtml", () => {
+  const info = {
+    additionalSections: [
+      {
+        title: "About Triunity & Co",
+        image: "resources/images/miscellany/Triunity-Studios.webp",
+        imageAlt: "Triunity Studios Logo",
+        content: ["#### What is it?\nThe name I use to sign most of my **projects**."],
+      },
+    ],
+  };
+
+  it("renders a section with container, escaped h2 title, image, and structured content", () => {
+    const html = buildAdditionalSectionsHtml(info);
+    expect(html).toContain('<section class="section">');
+    expect(html).toContain('<div class="container">');
+    expect(html).toContain('<div class="section-label"><h2>About Triunity &amp; Co</h2></div>');
+    expect(html).toContain('<img src="resources/images/miscellany/Triunity-Studios.webp" alt="Triunity Studios Logo" />');
+    expect(html).toContain("<h4>What is it?</h4>");
+    expect(html).toContain("<p>The name I use to sign most of my <strong>projects</strong>.</p>");
+  });
+
+  it("reuses the existing layout classes so the fallback is styled before JS runs", () => {
+    const html = buildAdditionalSectionsHtml(info);
+    expect(html).toContain('<div class="additional-grid">');
+    expect(html).toContain('<div class="additional-text">');
+  });
+
+  it("falls back to a generated alt text and sets no element ids", () => {
+    const noAlt = { additionalSections: [{ title: "Story", image: "img.webp", content: ["text"] }] };
+    const html = buildAdditionalSectionsHtml(noAlt);
+    expect(html).toContain('alt="Image of Story"');
+    expect(html).not.toContain(" id=");
+  });
+
+  it("returns an empty string when there are no additional sections", () => {
+    expect(buildAdditionalSectionsHtml({})).toBe("");
   });
 });
 
@@ -156,6 +233,7 @@ describe("static SEO blocks drift", () => {
     let regenerated = injectBlock(committed, "HERO", buildHeroHtml(info));
     regenerated = injectBlock(regenerated, "ABOUT", buildAboutHtml(info));
     regenerated = injectBlock(regenerated, "WORKS", buildWorksHtml(works));
+    regenerated = injectBlock(regenerated, "ADDITIONAL", buildAdditionalSectionsHtml(info));
     expect(regenerated).toBe(committed);
   });
 

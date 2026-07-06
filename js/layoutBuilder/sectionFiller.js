@@ -125,6 +125,10 @@ export async function displayAdditionalSections() {
     fragment.appendChild(sectionElement);
   }
 
+  // Replace the static SEO fallback sections (see scripts/generateSeoBlocks.js)
+  // instead of appending after them. Cleared only once the fragment is fully
+  // built, so a failed fetch leaves the fallback visible.
+  uiUtils.clearElement(element);
   element.appendChild(fragment);
 }
 
