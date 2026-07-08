@@ -24,7 +24,9 @@ slot as it resolves.
 - **Nominatim is the sole OSM tag source — Overpass is deliberately NOT used.** `namedetails=1` +
   `extratags=1` on the Nominatim search already return every `name:*`, `old_name*`, `name:etymology*`,
   and `wikidata` tag on the matched element, merged into one `tags` bag by `parseNominatimResults`.
-  Adding Overpass would only add a second, heavily rate-limited endpoint for data we already have.
+  Adding OSM's Overpass would only be a second, heavily rate-limited endpoint for data we already have.
+  (This is scoped to *OpenStreetMap* tags: `fetchOhmTimeline` does POST to OpenHistoricalMap's *own*
+  separate Overpass endpoint — a different dataset with the time versioning OSM proper lacks.)
 - **Nominatim usage policy: ~1 req/sec, no per-keystroke autocomplete.** Search fires on **submit only**,
   and `app.js` throttles with `MIN_SEARCH_INTERVAL_MS`. Do not wire search to `input` events. Attribution
   is mandatory and lives in the page footer — keep it. See ADR 0001.

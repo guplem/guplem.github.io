@@ -1,4 +1,4 @@
-# ADR 0001: Federate Nominatim + Wikidata + OpenHistoricalMap, client-side, no Overpass
+# ADR 0001: Federate Nominatim + Wikidata + OpenHistoricalMap, client-side; no Overpass for OSM tags
 
 ## Context
 
