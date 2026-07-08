@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f1523" />
+  <meta name="description" content="Search any street and see all its names across languages, its former names through history, and who or what it is named after — built on OpenStreetMap, Wikidata, and OpenHistoricalMap." />
+  <title>Street Name History · Multilingual & Historical Street Names · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/street-name-history/" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="page-header">
+    <h1>Street Name History</h1>
+    <p class="subtitle">
+      Search any street to see every name it carries across languages, the names it has shed
+      through history, and who or what it was named after.
+    </p>
+  </header>
+
+  <main>
+    <form id="search-form" class="search" role="search" autocomplete="off">
+      <label class="visually-hidden" for="search-input">Street to search</label>
+      <input
+        id="search-input"
+        type="search"
+        name="q"
+        placeholder="e.g. Passeig de Gràcia, Barcelona"
+        enterkeyhint="search"
+        spellcheck="false"
+      />
+      <button id="search-button" type="submit">Search</button>
+    </form>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <!-- Result candidates (shown only when a search returns more than one place) -->
+    <section id="candidates" class="candidates" hidden aria-label="Matching places"></section>
+
+    <!-- The selected street's detail -->
+    <article id="detail" class="detail" hidden></article>
+  </main>
+
+  <footer class="page-footer">
+    <p class="share-row">
+      <button id="copy-link" class="ghost-button" type="button">Copy share link</button>
+      <span id="share-status" class="share-status" aria-live="polite"></span>
+    </p>
+    <p class="attribution">
+      Data ©
+      <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>,
+      <a href="https://www.wikidata.org/" target="_blank" rel="noopener">Wikidata</a> (CC0), and
+      <a href="https://www.openhistoricalmap.org/" target="_blank" rel="noopener">OpenHistoricalMap</a>.
+      Geocoding by <a href="https://nominatim.org/" target="_blank" rel="noopener">Nominatim</a>.
+      Historical coverage depends on what contributors have mapped, so it varies from street to street.
+    </p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
