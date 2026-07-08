@@ -51,6 +51,7 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 
 ## Existing Projects
 
+- **street-name-history** -- Search any street to see all its names across languages, its former names, and its etymology; federates OpenStreetMap (Nominatim), Wikidata, and OpenHistoricalMap client-side (TDD-covered pure modules, see street-name-history ADR 0001)
 - **ChatGPTPong** -- Classic Pong game generated entirely by ChatGPT (GPT-3.5) in Dec 2022
 - **gravity-sandbox** -- Interactive N-body gravitational simulation with slingshot spawning, merging, trails, and presets
 - **photo-editor** -- Mobile photo editor with drawing, stickers, filters, and cropping

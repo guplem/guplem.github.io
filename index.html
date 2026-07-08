@@ -108,6 +108,15 @@
           <div id="myWorkFiltered" class="work-grid">
             <!-- BEGIN GENERATED:WORKS -->
 <article>
+<h3><a href="web-projects/street-name-history/">Street Name History</a></h3>
+<p>2026</p>
+<p>Street Name History is a web tool that takes any street you search for and shows every name it carries across languages, the former names it has shed through history, and who or what it was named after. It answers a surprisingly hard question — &quot;what has this street been called, and why?&quot; — by pulling the answer together live in the browser.</p>
+<p>I directed the concept and the multi-source data architecture: geocoding and all multilingual/historical name tags come from OpenStreetMap (via Nominatim), etymology and entity detail from Wikidata, and dated name timelines from OpenHistoricalMap, with the enrichment sources layered on non-blocking so the core result always renders. The pure logic — URL-as-state, OSM tag classification, and each API's request/response contract — is TDD-covered with Bun.</p>
+<p>The result is a keyless, serverless tool that runs entirely on static hosting and degrades gracefully: coverage depends on what mappers have contributed, so it surfaces whatever exists and says plainly when a street's history simply isn't recorded yet.</p>
+<p>Skills: Vibe Coded, Architecture</p>
+<p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/street-name-history">Street Name History on Github</a></p>
+</article>
+<article>
 <h3><a href="https://script.google.com/macros/s/AKfycbxKXGIgGhnj4jFBsx9KvMLQW9tRbVToQN2jfyZXrGRcWUynjrX6oWBnUDleJZlvT9E1/exec">MyTube · Personal YouTube Without the Rabbit Hole</a></h3>
 <p>2026</p>
 <p>MyTube is a personal YouTube web app that removes the home feed and recommendations. It shows only your subscriptions' latest uploads, your playlists, a self-managed Watch Later, and your own watch history, so your time goes to videos you actually chose.</p>

@@ -148,6 +148,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [liga-under-tkd 0001](web-projects/liga-under-tkd/adr/0001-google-sheet-as-database.md) | Google Sheet as the live database via gviz |
 | [rps-mind-reader 0001](web-projects/rps-mind-reader/adr/0001-custom-statistical-predictor-no-ml-library.md) | Custom statistical predictor instead of an ML library |
 | [rps-mind-reader 0002](web-projects/rps-mind-reader/adr/0002-predictor-evaluation-methodology.md) | Predictor evaluation methodology: switching battery + held-out real sessions |
+| [street-name-history 0001](web-projects/street-name-history/adr/0001-federated-geodata-sources.md) | Federate Nominatim + Wikidata + OpenHistoricalMap client-side; no Overpass |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
