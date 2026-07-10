@@ -145,6 +145,8 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0011](adr/0011-web-projects-index-from-portfolio-data.md) | Web-projects index page derived from portfolio data (not self-contained) |
 | [0013](adr/0013-github-actions-ci-for-bun-tests.md) | GitHub Actions CI runs the full Bun test suite on pull requests |
 | [0014](adr/0014-pre-commit-generated-static-seo-content.md) | Pre-commit generated static SEO content (sitemap + HTML fallback blocks) |
+| [0015](adr/0015-agent-docs-structure.md) | AGENTS.md root map + shim, skills, area docs are AGENTS.md + CLAUDE.md shim pairs |
+| [0016](adr/0016-red-green-tdd-for-testable-logic.md) | Red-green TDD mandatory for pure logic; DOM rendering exempt |
 
 ### Per-project ADRs
 
