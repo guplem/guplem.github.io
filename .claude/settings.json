@@ -17,11 +17,25 @@
       "Bash(git show:*)",
       "Bash(gh issue:*)",
       "Bash(gh pr:*)",
+      "Bash(gh label:*)",
       "Bash(bun test:*)",
       "Bash(python -m http.server:*)"
     ]
   },
   "plugins": [
     "code-review@claude-plugins-official"
-  ]
+  ],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "case \"$CLAUDE_FILE\" in *web-projects/*.js|*js/utils/*.js) echo '[hook] Logic changed. Run: bun test . (verify-project skill) before opening a PR.' ;; *data/projects/*.json|*data/schemas/*.json) echo '[hook] Portfolio data changed. bun test . validates it against the schema in CI; run it now to catch drift early.' ;; esac"
+          }
+        ]
+      }
+    ]
+  }
 }
