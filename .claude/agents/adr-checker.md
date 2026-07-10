@@ -39,7 +39,7 @@ Run this mode after completing implementation that involved architectural decisi
 2. Determine if any new architectural decisions were made that are not yet recorded.
 3. For each new decision, draft an ADR following the format: Context, Decision, Consequences. Put a web-project-specific decision in that project's `web-projects/<project>/adr/` (numbered per project from 0001); put a main-site or cross-cutting decision in root `adr/`.
 4. Update the ADR index tables in `AGENTS.md` (root + per-project).
-5. If an existing ADR is now superseded, note it in that ADR's file with a reference to the new one.
+5. If a change affects an existing decision, update that ADR in place so it always describes the current design. Do not create successor ADRs or mark ADRs as superseded; create a new ADR only for a genuinely new pattern. History lives in git.
 
 ## ADR Format
 
@@ -61,5 +61,5 @@ Trade-offs accepted, both positive and negative.
 ## Rules
 
 - ADRs capture **why**, not just **what**.
-- Never delete an ADR. Superseded ADRs are marked as such with a pointer to the replacement.
+- ADRs are living: one ADR per pattern, edited in place. Do not mark ADRs as superseded or chain replacements; create a new ADR only for a genuinely new pattern. History lives in git.
 - Keep the index in `AGENTS.md` in sync with the root `adr/` directory and every `web-projects/*/adr/` directory.

@@ -118,11 +118,11 @@ For **each sub-issue/step**, one at a time:
    > <Full issue title and body>
    >
    > ## Instructions
-   > 1. Read the project's `CLAUDE.md` for conventions and verification commands.
+   > 1. Read the project's `AGENTS.md` for conventions and verification commands.
    > 2. Run the **pattern-scout** agent before writing any code.
    > 3. **Diagnose first**: Search the codebase for relevant files. Identify the root cause or exact locations that need changing.
    > 4. **Plan if complex**: If the fix involves more than 2 files, create a checklist before starting.
-   > 5. **Test first** (if in web-projects): Write a failing test before implementing the solution.
+   > 5. **Test first (red-green TDD for testable logic)**: Per the AGENTS.md "Test-Driven Development" section, write a failing Bun test that pins the new behaviour (red) BEFORE writing the code that makes it pass (green). Applies to all pure logic (web-project logic, pure JS utility modules, data validation); visual/DOM rendering is exempt.
    > 6. Implement following the patterns found.
    > 7. Run verification: `cd web-projects/<project> && bun test` (if applicable).
    > 8. Fix any errors before finishing.
@@ -190,7 +190,7 @@ Spawn a **new agent without prior context**:
 > ## Instructions
 > 1. Fetch PR details: `gh pr view <PR_NUMBER> --json title,body,url,headRefName,baseRefName`
 > 2. Fetch the full diff: `gh pr diff <PR_NUMBER>`
-> 3. Read the project's `CLAUDE.md` for conventions.
+> 3. Read the project's `AGENTS.md` for conventions.
 > 4. Review for: correctness, pattern adherence, type safety, security, scope, tests, style.
 > 5. Write review to `.reviews/<PR_NUMBER>-review.md`:
 >    ```markdown

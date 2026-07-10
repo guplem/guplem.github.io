@@ -121,12 +121,16 @@ Store proposed labels as `PROPOSED_LABELS` for combined review in Step 8.
 
 ## 7. Draft the Issue
 
+Every issue body starts with a `**TL;DR:**` line before any section header: one sentence naming the outcome (the "after") and the current behavior it replaces (the "before").
+
 ### Bug template
 
 ```markdown
+**TL;DR:** <One sentence: the fixed behavior (the "after") and the broken behavior it replaces (the "before").>
+
 ## Context
 
-<What is broken, who is affected, and why it matters. Do NOT state root causes as fact -- express confidence levels ("most likely caused by", "might be related to").>
+<What is broken, who is affected, and why it matters. Never state a root cause as fact and never add a "Root cause" header -- hedge instead ("most likely caused by", "might be related to").>
 
 ## Steps to Reproduce
 
@@ -140,11 +144,11 @@ Store proposed labels as `PROPOSED_LABELS` for combined review in Step 8.
 
 ## Proposed Solution
 
-<High-level approach based on code investigation. Reference specific files/functions.>
+<Include this section ONLY if the user proposed a solution during creation; put their proposal here. Never turn your own code investigation into a Proposed Solution. Omit the section entirely otherwise.>
 
 ## Acceptance Criteria
 
-- [ ] <Issue-specific criterion that defines "done">
+- [ ] <An observable behavior that defines "done" -- what a user or a test can see, never an implementation detail>
 
 ## Related Issues
 
@@ -154,17 +158,23 @@ Store proposed labels as `PROPOSED_LABELS` for combined review in Step 8.
 ### Feature template
 
 ```markdown
+**TL;DR:** <One sentence: the capability this adds (the "after") and what users must do without it today (the "before").>
+
 ## Context
 
 <Why this feature is needed -- what user need or goal does it serve.>
 
+## Desired Behavior
+
+<What the feature should do, from the user's perspective. Observable behavior, not implementation.>
+
 ## Proposed Solution
 
-<What the feature should do AND how to implement it. Reference existing patterns or code paths.>
+<Include this section ONLY if the user proposed an approach during creation; put their proposal here. Never turn your own code investigation into a Proposed Solution. Omit the section entirely otherwise.>
 
 ## Acceptance Criteria
 
-- [ ] <Issue-specific criterion that defines "done">
+- [ ] <An observable behavior that defines "done", never an implementation detail>
 
 ## Related Issues
 
@@ -174,17 +184,23 @@ Store proposed labels as `PROPOSED_LABELS` for combined review in Step 8.
 ### Improvement template
 
 ```markdown
+**TL;DR:** <One sentence: how it works after the improvement (the "after") and the current limitation it replaces (the "before").>
+
 ## Context
 
 <What exists today, its limitations, and why improvement is needed.>
 
+## Desired Behavior
+
+<How it should work after the improvement, from the user's perspective. Observable behavior, not implementation.>
+
 ## Proposed Solution
 
-<How it should work after the improvement AND the technical approach. Reference specific files/functions.>
+<Include this section ONLY if the user proposed an approach during creation; put their proposal here. Never turn your own code investigation into a Proposed Solution. Omit the section entirely otherwise.>
 
 ## Acceptance Criteria
 
-- [ ] <Issue-specific criterion that defines "done">
+- [ ] <An observable behavior that defines "done", never an implementation detail>
 
 ## Related Issues
 
@@ -198,10 +214,10 @@ Before finalizing the draft, re-read it and apply these rules:
 1. **No section should restate another section.** Merge overlapping content.
 2. **Context must not restate the title.**
 3. **Acceptance Criteria must not restate Expected Behavior.** Each checkbox must tell the implementer something new.
-4. **No generic AC items.** Do not include "tests pass", "lint passes", "no regressions". Every AC item must be specific to THIS issue.
+4. **AC are observable behaviors, never implementation details.** No generic items either ("tests pass", "lint passes", "no regressions"). Every AC item must be specific to THIS issue and describe something a user or a test can observe.
 5. **Omit empty or boilerplate sections.** If Related Issues would say "None", omit the section.
 6. **Steps to Reproduce must add value.** If reproduction is trivially "go to the page and look", describe the condition in Context instead.
-7. **Proposed Solution must add implementation detail.** If it just restates Expected Behavior, merge or remove it.
+7. **Proposed Solution appears only when the user proposed one.** Never manufacture it from your own code investigation. If the user gave no approach, omit the section.
 
 ### Generate Title Options
 
@@ -212,7 +228,7 @@ Generate **2-3 title candidates**. Each title must:
 
 Vary by focus:
 1. **User-facing**: Impact from a user's perspective
-2. **Technical**: Root cause or component
+2. **Technical**: Affected component or area
 3. **Action-oriented** (optional 3rd): What needs to happen
 
 Present options using `AskUserQuestion`. The user picks one or provides a custom title.
@@ -241,11 +257,17 @@ Always include the `waiting-for-human-check` label. If it doesn't exist in the r
 gh label create "waiting-for-human-check" --description "No human has verified this yet -- direct AI output" --color "D93F0B" 2>/dev/null || true
 ```
 
+Build the `--label` value so `waiting-for-human-check` is always present and any area labels are appended comma-separated **only when they exist**. Never emit a leading comma from an empty area-label list: with no area labels the value is `waiting-for-human-check` alone.
+
 ```bash
-gh issue create \
-  --title "<SELECTED_TITLE>" \
-  --label "<label1>,<label2>,waiting-for-human-check" \
-  --body "$(cat <<'EOF'
+# With no area labels:
+gh issue create --title "<SELECTED_TITLE>" --label "waiting-for-human-check" --body "$(cat <<'EOF'
+<FULL ISSUE BODY>
+EOF
+)"
+
+# With area labels (comma-separated, no leading/trailing comma):
+gh issue create --title "<SELECTED_TITLE>" --label "web-project,waiting-for-human-check" --body "$(cat <<'EOF'
 <FULL ISSUE BODY>
 EOF
 )"
