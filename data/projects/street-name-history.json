@@ -4,9 +4,9 @@
   "date": "2026",
   "title": "Street Name History",
   "description": [
-    "*Street Name History* is a **web tool** that takes any street you search for and shows **every name it carries across languages**, the **former names** it has shed through history, and **who or what it was named after**. It answers a surprisingly hard question — \"what has this street been called, and why?\" — by pulling the answer together live in the browser.",
-    "I directed the concept and the **multi-source data architecture**: geocoding and all multilingual/historical name tags come from **OpenStreetMap** (via Nominatim), etymology and entity detail from **Wikidata**, and dated name timelines from **OpenHistoricalMap**, with the enrichment sources layered on non-blocking so the core result always renders. The pure logic — URL-as-state, OSM tag classification, and each API's request/response contract — is **TDD-covered** with Bun.",
-    "The result is a keyless, serverless tool that runs entirely on static hosting and degrades gracefully: coverage depends on what mappers have contributed, so it surfaces whatever exists and says plainly when a street's history simply isn't recorded yet."
+    "*Street Name History* is a **web tool** that takes any street you search and shows **every name it carries across languages**, the **former names** it has shed over time, and **who or what it was named after** — pulling the answer together live in the browser.",
+    "I directed the concept and the **multi-source data architecture**: geocoding and multilingual/historical name tags from **OpenStreetMap** (Nominatim), etymology from **Wikidata**, and dated name timelines from **OpenHistoricalMap**, with enrichment layered on non-blocking so the core result always renders. The pure logic is **TDD-covered** with Bun.",
+    "The result is a keyless, serverless tool that runs on static hosting and degrades gracefully: it surfaces whatever mappers have contributed and says plainly when a street's history simply isn't recorded yet."
   ],
   "skills": ["Vibe Coded", "Architecture"],
   "links": [
