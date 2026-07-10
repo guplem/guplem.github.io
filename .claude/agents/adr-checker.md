@@ -16,7 +16,7 @@ Run this mode before starting implementation of a feature or change.
 ### Procedure
 
 1. Read all ADRs in `adr/` (root) and in every `web-projects/*/adr/` (project-specific).
-2. Read the ADR index in the root `CLAUDE.md` (Architecture Decision Records section -- both the root and per-project tables).
+2. Read the ADR index in the root `AGENTS.md` (Architecture Decision Records section -- both the root and per-project tables).
 3. Identify which ADRs are relevant to the planned work.
 4. Report relevant ADRs with a summary of constraints and trade-offs the implementer must respect.
 5. If the planned work contradicts an existing ADR, flag it clearly.
@@ -38,7 +38,7 @@ Run this mode after completing implementation that involved architectural decisi
 1. Read all existing ADRs in `adr/` (root) and in every `web-projects/*/adr/`.
 2. Determine if any new architectural decisions were made that are not yet recorded.
 3. For each new decision, draft an ADR following the format: Context, Decision, Consequences. Put a web-project-specific decision in that project's `web-projects/<project>/adr/` (numbered per project from 0001); put a main-site or cross-cutting decision in root `adr/`.
-4. Update the ADR index tables in `CLAUDE.md` (root + per-project).
+4. Update the ADR index tables in `AGENTS.md` (root + per-project).
 5. If an existing ADR is now superseded, note it in that ADR's file with a reference to the new one.
 
 ## ADR Format
@@ -62,4 +62,4 @@ Trade-offs accepted, both positive and negative.
 
 - ADRs capture **why**, not just **what**.
 - Never delete an ADR. Superseded ADRs are marked as such with a pointer to the replacement.
-- Keep the index in `CLAUDE.md` in sync with the root `adr/` directory and every `web-projects/*/adr/` directory.
+- Keep the index in `AGENTS.md` in sync with the root `adr/` directory and every `web-projects/*/adr/` directory.

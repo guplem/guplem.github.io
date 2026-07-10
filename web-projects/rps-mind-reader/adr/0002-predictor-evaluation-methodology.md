@@ -46,7 +46,7 @@ Add a second-tier evaluation suite under `bench/`, kept separate from the lean `
 - The real-games corpus (`sample-plays/`) is meant to **grow**; each added session strengthens
   the overfitting guard. See `sample-plays/README.md`.
 - Iterating on a new strategy follows a fixed workflow (copy predictor → edit → run suite →
-  clear gates → apply + tests). See `bench/README.md` and `web-projects/rps-mind-reader/CLAUDE.md`.
+  clear gates → apply + tests). See `bench/README.md` and `web-projects/rps-mind-reader/AGENTS.md`.
 - The 2026-06 bake-off that established this methodology and the current tuning is archived in
   `bench/history/` (4 research agents × 2 rounds + synthesis).
 - Cost: a second harness to maintain. Mitigated by keeping it dependency-free, deterministic,

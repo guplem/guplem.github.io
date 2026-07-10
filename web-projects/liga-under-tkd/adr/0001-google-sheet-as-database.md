@@ -58,4 +58,4 @@ mock data ("Demo mode").
 - All sheet data is public — acceptable here (names and results only; consent given), but private
   fields must never be added to the sheet.
 - Column headers are a hard contract: renaming a header in the Sheet breaks the matching normalizer
-  until updated. Documented in SETUP.md and the project CLAUDE.md.
+  until updated. Documented in SETUP.md and the project AGENTS.md.

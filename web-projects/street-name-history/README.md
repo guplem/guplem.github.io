@@ -29,7 +29,7 @@ A network connection is required — the app calls the OpenStreetMap Nominatim, 
 bun test
 ```
 
-Covers the pure logic: URL state, OSM tag classification and name extraction, and the API query-builders and response-parsers. DOM rendering is not unit-tested (see `web-projects/CLAUDE.md`).
+Covers the pure logic: URL state, OSM tag classification and name extraction, and the API query-builders and response-parsers. DOM rendering is not unit-tested (see `web-projects/AGENTS.md`).
 
 ## Data & attribution
 
