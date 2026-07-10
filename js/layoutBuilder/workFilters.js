@@ -29,9 +29,13 @@ export function setWorkSearchQuery(query) {
   clearTimeout(searchRerenderTimeout);
   searchRerenderTimeout = setTimeout(() => {
     // Lazy import to avoid a circular dependency with workCards.js
-    import("./workCards.js").then((module) => {
-      module.displayFilteredWorks();
-    });
+    import("./workCards.js")
+      .then((module) => {
+        module.displayFilteredWorks();
+      })
+      .catch((error) => {
+        console.error("Failed to re-render the works grid after a filter change", error);
+      });
   }, 120);
 }
 
@@ -117,9 +121,13 @@ export function onClickWorkType(workType, navigateTo, clickedElement) {
   }
 
   // Lazy import to avoid circular dependency
-  import("./workCards.js").then((module) => {
-    module.displayFilteredWorks();
-  });
+  import("./workCards.js")
+    .then((module) => {
+      module.displayFilteredWorks();
+    })
+    .catch((error) => {
+      console.error("Failed to re-render the works grid after a filter change", error);
+    });
 
   document?.getElementById(navigateTo)?.scrollIntoView({ behavior: "smooth" });
 }
@@ -138,7 +146,6 @@ export function onClickWorkSkill(workSkillId, navigateTo, clickedElement = undef
       if (elementText === workSkillId) {
         /** @type {HTMLElement} */
         clickedElement = /** @type {HTMLElement} */ (element);
-        console.log("Element", clickedElement);
         break;
       }
     }
@@ -148,8 +155,6 @@ export function onClickWorkSkill(workSkillId, navigateTo, clickedElement = undef
     console.warn("Could not find element for skill", workSkillId);
   }
 
-  console.log("Selecting or deselecting skill", workSkillId);
-
   if (selectedWorkSkills.includes(workSkillId)) {
     selectedWorkSkills.splice(selectedWorkSkills.indexOf(workSkillId), 1);
     clickedElement?.removeAttribute("selected");
@@ -158,12 +163,14 @@ export function onClickWorkSkill(workSkillId, navigateTo, clickedElement = undef
     clickedElement?.setAttribute("selected", "");
   }
 
-  console.log("Selected skills", selectedWorkSkills);
-
   // Lazy import to avoid circular dependency
-  import("./workCards.js").then((module) => {
-    module.displayFilteredWorks();
-  });
+  import("./workCards.js")
+    .then((module) => {
+      module.displayFilteredWorks();
+    })
+    .catch((error) => {
+      console.error("Failed to re-render the works grid after a filter change", error);
+    });
 
   document?.getElementById(navigateTo)?.scrollIntoView({ behavior: "smooth" });
 }
