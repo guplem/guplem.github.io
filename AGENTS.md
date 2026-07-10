@@ -120,7 +120,7 @@ New behaviour in pure logic is developed **test-first, red-green**: write a fail
 
 - Applies to all pure logic: web-project game/tool logic, `js/utils/textCore.js`-style modules, data validation, predictor logic. `web-projects/AGENTS.md` holds the per-project test checklist.
 - The existing exemption stands: visual/DOM rendering code does not need test coverage. Keep DOM glue thin and push anything worth testing into a pure module so it is testable.
-- The gate: CI runs `bun test .` on every PR and the `test` check is required on `main` (root ADR 0013), so red tests cannot merge. Rationale: `adr/0015-red-green-tdd-for-testable-logic.md`.
+- The gate: CI runs `bun test .` on every PR and the `test` check is required on `main` (root ADR 0013), so red tests cannot merge. Rationale: `adr/0016-red-green-tdd-for-testable-logic.md`.
 
 ## Architecture Decision Records (ADRs)
 
