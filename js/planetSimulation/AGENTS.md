@@ -1,4 +1,4 @@
-# js/planetSimulation/CLAUDE.md
+# js/planetSimulation/AGENTS.md
 
 ## Overview
 

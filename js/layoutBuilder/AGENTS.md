@@ -1,4 +1,4 @@
-# js/layoutBuilder/CLAUDE.md
+# js/layoutBuilder/AGENTS.md
 
 ## Overview
 

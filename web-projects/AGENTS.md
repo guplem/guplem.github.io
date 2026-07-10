@@ -1,4 +1,4 @@
-# web-projects/CLAUDE.md
+# web-projects/AGENTS.md
 
 > **SCOPE:** These rules apply when working on files under `web-projects/`. Each project inside is self-contained and independent from the main portfolio site -- except the `index.html` directory index (see "The Index Page" below).
 
@@ -27,7 +27,7 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
 
 A decision specific to one web-project lives in that project's own `adr/` folder (`web-projects/<project>/adr/`), **numbered per project from `0001`** -- not in the root `adr/`. Cross-cutting web-project patterns (e.g. URL-as-state, localStorage) and main-site decisions stay in root `adr/`.
 
-Reference convention so per-project numbers stay unambiguous: inside a project, `ADR 000N` means that project's own ADR; a root ADR is written `root ADR 00NN`; links always use the full path (which includes the project). The root `CLAUDE.md` keeps a master index of every ADR (root and per-project).
+Reference convention so per-project numbers stay unambiguous: inside a project, `ADR 000N` means that project's own ADR; a root ADR is written `root ADR 00NN`; links always use the full path (which includes the project). The root `AGENTS.md` keeps a master index of every ADR (root and per-project).
 
 ## Test-Driven Development (mandatory)
 

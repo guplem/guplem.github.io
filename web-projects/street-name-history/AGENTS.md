@@ -1,4 +1,4 @@
-# web-projects/street-name-history/CLAUDE.md
+# web-projects/street-name-history/AGENTS.md
 
 Searches a street and shows all its names across languages, its former names, and its etymology,
 by federating three external geodata APIs live in the browser. Vanilla ES modules, no build step.

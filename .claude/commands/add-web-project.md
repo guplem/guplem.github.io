@@ -6,7 +6,7 @@ argument-hint: "<project name or description>"
 
 # Add Web Project
 
-Scaffold a new self-contained web-project end-to-end, following the full checklist from `web-projects/CLAUDE.md`.
+Scaffold a new self-contained web-project end-to-end, following the full checklist from `web-projects/AGENTS.md`.
 
 This command must be used automatically whenever the user asks to create a new web-project.
 
@@ -106,10 +106,10 @@ Confirm the test file loads without errors (the todo test should be pending, not
 Create `data/projects/<PROJECT_SLUG>.json` conforming to `data/schemas/project.schema.json`.
 
 - Set `"$schema": "../schemas/project.schema.json"` as the first field
-- Write a brief initial description following the style rules in `data/CLAUDE.md`
+- Write a brief initial description following the style rules in `data/AGENTS.md`
 - **Reuse existing skills** from `EXISTING_SKILLS` -- only introduce new tags when no existing tag fits
 - **Reuse existing types** from `EXISTING_TYPES`
-- Follow the `data/CLAUDE.md` guidance for Vibe Coded projects if applicable
+- Follow the `data/AGENTS.md` guidance for Vibe Coded projects if applicable
 
 ### 6b. Add to the manifest
 
@@ -117,7 +117,7 @@ Add the filename to the `projects` array in `data/projects/index.json`.
 
 ## 7. Update Documentation
 
-### 7a. Update `web-projects/CLAUDE.md`
+### 7a. Update `web-projects/AGENTS.md`
 
 Add the project to the "Existing Projects" list with a one-line description.
 
@@ -156,7 +156,7 @@ Present to the user:
 
 ### Files updated
 - data/projects/index.json (manifest)
-- web-projects/CLAUDE.md (existing projects list)
+- web-projects/AGENTS.md (existing projects list)
 - README.md (web projects list)
 
 ### Next steps
@@ -170,4 +170,4 @@ The project is scaffolded with TDD ready. Start by writing tests in
 - **Self-contained.** No imports from outside the project folder.
 - **Reuse skills.** Always check existing tags before inventing new ones.
 - **Follow patterns.** The pattern-scout output is the baseline for structure and style.
-- **Documentation is part of the scaffold.** README, portfolio data, and CLAUDE.md updates are not optional follow-ups.
+- **Documentation is part of the scaffold.** README, portfolio data, and AGENTS.md updates are not optional follow-ups.

@@ -30,18 +30,18 @@ Find documentation that has drifted from the implementation and fix it. The sour
 
 | What changed | Documentation areas to check |
 |---|---|
-| `web-projects/*/` (new/removed/renamed) | Root `README.md` project list, `data/projects/index.json`, `web-projects/CLAUDE.md` |
-| `data/projects/*.json` | Root `README.md` if project list changed, `data/CLAUDE.md` if schema usage patterns changed |
-| `data/schemas/*.json` | `data/CLAUDE.md` field reference |
-| `js/layoutBuilder/*.js` | `js/layoutBuilder/CLAUDE.md` module breakdown, root `CLAUDE.md` architecture section |
-| `js/planetSimulation/*.js` | `js/planetSimulation/CLAUDE.md`, root `CLAUDE.md` if threading model changed |
-| `js/utils/*.js` | Root `CLAUDE.md` gotchas if caching or filter normalization changed |
-| `css/global/variables.css` | Root `CLAUDE.md` CSS structure section, `js/planetSimulation/CLAUDE.md` if tokens referenced |
-| `css/sections/*.css` or `css/global/*.css` | Root `CLAUDE.md` CSS structure section |
-| `adr/*.md` (new/updated/removed) | Root `CLAUDE.md` ADR index table |
-| `.claude/agents/*.md` (new/updated/removed) | Root `CLAUDE.md` agent references |
-| `index.html` structure changes | Root `CLAUDE.md` architecture section |
-| Any `CLAUDE.md` file map entry | Root `CLAUDE.md` file map table |
+| `web-projects/*/` (new/removed/renamed) | Root `README.md` project list, `data/projects/index.json`, `web-projects/AGENTS.md` |
+| `data/projects/*.json` | Root `README.md` if project list changed, `data/AGENTS.md` if schema usage patterns changed |
+| `data/schemas/*.json` | `data/AGENTS.md` field reference |
+| `js/layoutBuilder/*.js` | `js/layoutBuilder/AGENTS.md` module breakdown, root `AGENTS.md` architecture section |
+| `js/planetSimulation/*.js` | `js/planetSimulation/AGENTS.md`, root `AGENTS.md` if threading model changed |
+| `js/utils/*.js` | Root `AGENTS.md` gotchas if caching or filter normalization changed |
+| `css/global/variables.css` | Root `AGENTS.md` CSS structure section, `js/planetSimulation/AGENTS.md` if tokens referenced |
+| `css/sections/*.css` or `css/global/*.css` | Root `AGENTS.md` CSS structure section |
+| `adr/*.md` (new/updated/removed) | Root `AGENTS.md` ADR index table |
+| `.claude/agents/*.md` (new/updated/removed) | Root `AGENTS.md` agent references |
+| `index.html` structure changes | Root `AGENTS.md` architecture section |
+| Any `AGENTS.md` file map entry | Root `AGENTS.md` file map table |
 
 ## Cross-Reference Checklist
 
@@ -49,11 +49,11 @@ When verifying docs against implementation, check:
 
 - **File paths**: Every path mentioned in any `.md` file points to an existing file or directory
 - **Function/variable names**: References to code symbols match actual names in the source
-- **ADR index**: The table in root `CLAUDE.md` matches the actual contents of `adr/`
-- **File map**: The table in root `CLAUDE.md` lists all `CLAUDE.md` files that exist
+- **ADR index**: The table in root `AGENTS.md` matches the actual contents of `adr/`
+- **File map**: The table in root `AGENTS.md` lists all `AGENTS.md` files that exist
 - **Project lists**: `README.md` project lists match actual `web-projects/*/` directories and `data/projects/index.json`
-- **Schema references**: Field names and types in `data/CLAUDE.md` match `data/schemas/project.schema.json`
-- **Module descriptions**: Module purposes in `js/layoutBuilder/CLAUDE.md` match actual file exports
+- **Schema references**: Field names and types in `data/AGENTS.md` match `data/schemas/project.schema.json`
+- **Module descriptions**: Module purposes in `js/layoutBuilder/AGENTS.md` match actual file exports
 - **CSS tokens**: Token names in docs match `css/global/variables.css`
 - **README accuracy**: Per-project `README.md` files describe current features, not stale ones
 - **Internal links**: Any `[text](path)` links in markdown resolve to existing files

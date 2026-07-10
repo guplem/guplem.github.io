@@ -22,7 +22,7 @@ Options considered:
    `data/projects/*.json` the main site reads, keep the projects whose link points
    into `web-projects/`, and render them. One source of truth, auto-syncing.
 
-A second question is **style**: the per-project rule (`web-projects/CLAUDE.md`) is
+A second question is **style**: the per-project rule (`web-projects/AGENTS.md`) is
 that each experiment is self-contained with no shared dependencies. But this index
 is not one of the experiments — it is a portfolio-level page whose whole job is to
 mirror the portfolio.
@@ -52,7 +52,7 @@ project.
   the site's global design tokens (`../css/global/variables.css`, `base.css`) and the
   Inter font so it always matches the main portfolio, and it reads `../data/`. This is
   an intentional exception to the per-project self-contained rule, documented in
-  `web-projects/CLAUDE.md`.
+  `web-projects/AGENTS.md`.
 
 ## Consequences
 

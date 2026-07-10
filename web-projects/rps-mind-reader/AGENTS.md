@@ -1,6 +1,6 @@
-# rps-mind-reader/CLAUDE.md
+# rps-mind-reader/AGENTS.md
 
-> **SCOPE:** rps-mind-reader. Read alongside `web-projects/CLAUDE.md` (TDD rules) and the root `CLAUDE.md`.
+> **SCOPE:** rps-mind-reader. Read alongside `web-projects/AGENTS.md` (TDD rules) and the root `AGENTS.md`.
 
 ## What this is
 

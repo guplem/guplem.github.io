@@ -1,4 +1,4 @@
-# data/CLAUDE.md
+# data/AGENTS.md
 
 ## Overview
 
@@ -18,7 +18,7 @@ All portfolio content is data-driven. The site never hardcodes content in HTML �
 3. Add the filename to the `projects` array in `data/projects/index.json`
 4. Regenerate the derived SEO artifacts: `bun scripts/generateSitemap.js && bun scripts/generateSeoBlocks.js` (automatic with the lefthook pre-commit hook; CI drift tests fail if skipped -- root ADR 0014)
 
-If the project is a **web-project** hosted in `web-projects/`, follow the full checklist in `web-projects/CLAUDE.md` instead — it includes these data steps plus the additional steps for the project folder, README, and documentation updates.
+If the project is a **web-project** hosted in `web-projects/`, follow the full checklist in `web-projects/AGENTS.md` instead — it includes these data steps plus the additional steps for the project folder, README, and documentation updates.
 
 ## Writing Project Descriptions
 

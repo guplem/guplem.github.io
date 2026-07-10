@@ -1,4 +1,4 @@
-# web-projects/liga-under-tkd/CLAUDE.md
+# web-projects/liga-under-tkd/AGENTS.md
 
 Live tournament site for the Liga UNDER taekwondo event. Reads a public Google Sheet via the gviz
 endpoint and renders standings, combats, and athlete profiles. Vanilla ES modules, no build step.
