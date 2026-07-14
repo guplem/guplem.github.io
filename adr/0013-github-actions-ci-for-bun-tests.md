@@ -20,7 +20,7 @@ Options considered:
 
 1. **Per-project change detection.** Use `git diff` to find which
    `web-projects/<project>/` folders changed and run only those suites (mirrors
-   the reference repo and the local `test-runner` agent).
+   the reference repo and the local `validate` agent).
 2. **Run the whole suite on every pull request.** One job runs
    `bun test .`, which discovers and runs every `*.test.js`.
 

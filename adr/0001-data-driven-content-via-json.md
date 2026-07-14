@@ -14,6 +14,8 @@ The site is hosted on GitHub Pages (static files only). The owner wants full con
 
 All portfolio content lives in JSON files under `data/`. One file per project (`data/projects/*.json`), a manifest (`data/projects/index.json`), and site metadata (`data/info.json`). A JSON Schema (`data/schemas/project.schema.json`) provides autocompletion and validation in VS Code. JavaScript modules fetch and render this data at page load.
 
+**Rejected alternative:** a CMS or a static site generator (Hugo, Jekyll, Eleventy). Rejected because both add a build step or an external service to a static GitHub Pages site, and a CMS would move content out of version control and behind an API. Hand-coded HTML per project was also rejected: it forces HTML edits for every new project.
+
 ## Consequences
 
 **Positive:**

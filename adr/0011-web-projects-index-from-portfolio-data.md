@@ -16,7 +16,7 @@ Options considered:
 1. **Hardcode the list in HTML.** Simplest to write, but it is a second source of
    truth: every new web-project would need editing here *and* in the project data,
    and the two drift. It also contradicts the site's data-driven principle (ADR 0001).
-2. **Server-side directory listing.** Not possible — GitHub Pages serves static
+2. **Server-side directory listing.** Not possible: GitHub Pages serves static
    files only, so there is no runtime way to enumerate the folder.
 3. **Derive the list from the portfolio data at runtime.** Read the same
    `data/projects/*.json` the main site reads, keep the projects whose link points
@@ -24,7 +24,7 @@ Options considered:
 
 A second question is **style**: the per-project rule (`web-projects/AGENTS.md`) is
 that each experiment is self-contained with no shared dependencies. But this index
-is not one of the experiments — it is a portfolio-level page whose whole job is to
+is not one of the experiments; it is a portfolio-level page whose whole job is to
 mirror the portfolio.
 
 ## Decision
@@ -37,8 +37,8 @@ project.
   `web-projects/`, the same relative form `fetchAllWorks()` uses), then keeps the
   projects that are hosted locally.
 - **Detection convention.** A project is a local web-project when it has a link that
-  is **not** `type: "github"` whose URL — after stripping an optional
-  `https://triunitystudios.com` origin — starts with `web-projects/`. The part after
+  is **not** `type: "github"` whose URL, after stripping an optional
+  `https://triunitystudios.com` origin, starts with `web-projects/`. The part after
   that prefix is the link target relative to the index (e.g. `rps-mind-reader/`,
   `ChatGPTPong/pong.html`). The `github` links are skipped on purpose: they also
   contain `web-projects/` but point at source code, not the live demo. Projects with
@@ -54,12 +54,14 @@ project.
   an intentional exception to the per-project self-contained rule, documented in
   `web-projects/AGENTS.md`.
 
+**Rejected alternative:** hardcoding the project list in HTML. Rejected because it is a second source of truth that drifts from the project data and contradicts the data-driven principle (ADR 0001). A server-side directory listing was also rejected: GitHub Pages serves static files only.
+
 ## Consequences
 
 **Positive:**
 
 - One source of truth. Adding a project whose link points into `web-projects/` makes
-  it appear here automatically — no separate list to maintain (extends ADR 0001 to
+  it appear here automatically; no separate list to maintain (extends ADR 0001 to
   the folder index).
 - Looks exactly like the main site because it uses the same tokens and base styles;
   no duplicated palette to drift.
@@ -71,7 +73,7 @@ project.
 **Negative:**
 
 - The index is coupled to the portfolio data's location and shape (`../data/`) and to
-  the global CSS — it is **not** self-contained like the experiments it lists. The
+  the global CSS; it is **not** self-contained like the experiments it lists. The
   coupling is the point (it must mirror the portfolio) and is documented.
 - It fetches every project file (~68) to surface the ~9 web-projects, the same as the
   main site already does. Acceptable: the files are tiny and cached.
@@ -82,7 +84,7 @@ project.
 
 ## Scope
 
-Specific to `web-projects/index.html`. The reusable principle — **a folder index
-should derive its list from existing data rather than duplicating it, and may reuse
-the site's shared presentation tokens even where individual items are self-contained**
-— applies if similar index pages are added later.
+Specific to `web-projects/index.html`. The reusable principle applies if similar
+index pages are added later: **a folder index should derive its list from existing
+data rather than duplicating it, and may reuse the site's shared presentation tokens
+even where individual items are self-contained.**

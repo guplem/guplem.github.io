@@ -10,7 +10,7 @@ and non-technical assistants entering data.
 Options considered for the data layer:
 
 - **A real backend + database** (Node/Postgres, Firebase, etc.). Real-time and robust, but needs
-  hosting, accounts, and maintenance — overkill for a single day, and not free/zero-ops.
+  hosting, accounts, and maintenance. That is overkill for a single day, and not free/zero-ops.
 - **An all-in Google Apps Script web app.** One platform, but its free quotas and
   simultaneous-execution caps become a risk at ~100 concurrent viewers polling.
 - **A Google Sheet read directly by the browser.** Free, zero-ops, and assistants already know how
@@ -18,8 +18,8 @@ Options considered for the data layer:
 
 Two ways to read a Sheet from the browser:
 
-- **"Publish to web" CSV** — simple, but Google caches it for minutes, which is bad for live scores.
-- **The gviz endpoint** (`/gviz/tq?tqx=out:json`) — reflects edits within seconds, needs no API key,
+- **"Publish to web" CSV**: simple, but Google caches it for minutes, which is bad for live scores.
+- **The gviz endpoint** (`/gviz/tq?tqx=out:json`): reflects edits within seconds, needs no API key,
   and is served from Google's CDN so reads do not consume any Apps Script quota.
 
 The official Sheets API was rejected: its per-minute quota could be exhausted by ~100 polling
@@ -55,7 +55,7 @@ mock data ("Demo mode").
 - gviz is an **unofficial** endpoint. It has been stable for years; if it ever breaks, the fallback
   is the published CSV (accepting its cache lag). This risk is the reason parsing is isolated in one
   module.
-- All sheet data is public — acceptable here (names and results only; consent given), but private
+- All sheet data is public. This is acceptable here (names and results only; consent given), but private
   fields must never be added to the sheet.
 - Column headers are a hard contract: renaming a header in the Sheet breaks the matching normalizer
   until updated. Documented in SETUP.md and the project AGENTS.md.

@@ -15,6 +15,8 @@ Import third-party ES modules from `esm.sh` CDN using standard `import` statemen
 
 The markdown library was specifically chosen for performance. `marked` was selected over heavier alternatives (unified/remark/rehype) because it is a single lightweight package. The import uses the pre-built ES2022 bundle (`marked@17.0.5/es2022/marked.bundle.mjs`) to minimize parse time and avoid additional network requests for sub-dependencies.
 
+**Rejected alternative:** adding a package manager just for this dependency, or vendoring the library files into the repo. A package manager reintroduces the build tooling ADR 0002 avoids; vendored copies must be updated by hand and lose the caching benefit of a pinned CDN URL.
+
 ## Consequences
 
 **Positive:**

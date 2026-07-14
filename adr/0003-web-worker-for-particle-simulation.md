@@ -8,6 +8,8 @@ The portfolio background features an interactive particle simulation with ~120 p
 
 The physics simulation runs in a Web Worker (`simulation.worker.js`). The main thread owns the canvas and handles rendering. The worker computes particle positions each frame and posts results back. Communication uses `postMessage` with transferable data.
 
+**Rejected alternative:** running the physics loop on the main thread. Rejected because it would block DOM updates and cause jank during scrolling and filtering.
+
 ## Consequences
 
 **Positive:**
