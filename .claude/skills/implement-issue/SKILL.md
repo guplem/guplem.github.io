@@ -1,151 +1,91 @@
 ---
 name: implement-issue
-description: Implement a GitHub issue interactively -- asks about branch, PR target, and steps before starting work
+description: Implement a GitHub issue step by step - ask about the branch, the PR target, and the phases first, then run the work and the review cycle with the review-pr skill. Use whenever the user asks to implement, work on, or execute a GitHub issue.
 argument-hint: [issue-number]
 ---
 
-# Interactive Issue Implementation
+# Implement a GitHub issue
 
-Implement a GitHub issue by interactively gathering configuration, then processing steps sequentially with automated PR creation.
+Implement a GitHub issue by gathering a little configuration through questions, then doing the work step by step, with a PR and a review cycle for each step. ("Issue" here means a GitHub issue, the tracked unit of work.)
 
-## 1. Determine the Issue
+## 1. Determine the issue
 
-- If `$ARGUMENTS` contains an issue number, use it as `ISSUE`.
-- If `$ARGUMENTS` is empty, ask using `AskUserQuestion`:
-  > "Which GitHub issue do you want to implement?"
+- If `$ARGUMENTS` has an issue number, use it as `ISSUE`.
+- If `$ARGUMENTS` is empty, ask via `AskUserQuestion`: "Which GitHub issue do you want to implement?"
 
-## 2. Fetch and Parse the Issue
+## 2. Fetch and read the issue
 
 ```bash
 gh issue view $ISSUE --json title,body,number,labels
 ```
 
-Display the issue title to the user so they can confirm context.
+Show the title so the user can confirm you have the right issue. Read the body for sub-issue references (`#<number>`) and any numbered phase or step structure. If the issue carries a `waiting-for-*` label (a label that marks it as not yet reviewed by a human), tell the user and ask whether to go ahead anyway.
 
-Parse the issue body to extract:
-- **Sub-issues**: collect all `#<number>` references grouped by phase.
-- **Phase structure**: issues grouped into phases if applicable.
-- **Acceptance criteria**: what defines "done".
+## 3. Ask: working branch
 
-## 3. Ask: Working Branch
+Ask via `AskUserQuestion`: a new branch or the current one? If new, ask for the name, then create it **with the upstream set at once** (the `create-branch` skill): `git checkout -b <branch> && git push -u origin <branch>`. If it already exists: `git checkout <branch> && git pull origin <branch>`. Store it as `WORK_BRANCH`.
 
-Use `AskUserQuestion`:
+## 4. Ask: PR target branch
 
-> "Do you want to implement the changes in a new branch or use the current one?"
+Ask via `AskUserQuestion`: `main` / the current branch / a custom one. Store it as `PR_TARGET_BRANCH`.
 
-Options:
-1. **Create or switch to a different branch** - Specify a branch name.
-2. **Current branch (`<current-branch-name>`)** - Work on the branch you're already on.
+## 5. Analyze the steps
 
-If option 1:
-- Ask for the branch name.
-- Check if it exists locally or remotely:
-  - Exists: `git checkout <branch> && git pull origin <branch>`
-  - New: `git checkout -b <branch> && git push -u origin <branch>`
+- **If the issue has explicit phases or sub-issues:** show them and ask which to implement (or all, in order). If a sub-issue depends on another that has not merged yet, stack the PRs: branch from the dependency's branch and target it, so GitHub retargets the PR automatically when the dependency merges.
+- **If it has no explicit steps:** judge whether splitting into steps makes sense (separate changes, different areas, natural dependency boundaries). If yes, propose the split via `AskUserQuestion`; if no, implement it as a single unit.
 
-Store as `WORK_BRANCH`.
+## 6. Check the starting state
 
-## 4. Ask: PR Target Branch
+1. `git checkout $WORK_BRANCH && git pull origin $WORK_BRANCH`
+2. Spawn the **validate** agent to confirm the repo's checks pass before you start. Do not build on a broken baseline; report it to the user instead.
 
-Use `AskUserQuestion`:
+## 7. Do the work
 
-> "Which branch should the PR target?"
+For each step (or the single unit):
 
-Options:
-1. **main** - PR will target the main branch directly.
-2. **Current branch (`<WORK_BRANCH>`)** - PR will target the working branch.
-3. **Custom branch** - Specify a different target.
+1. **Create the step branch** (multi-step mode only; in single-issue mode you work directly on `$WORK_BRANCH`). Use the `create-branch` skill: `git checkout -b <issue-number>-<short-slug> $WORK_BRANCH && git push -u origin <issue-number>-<short-slug>`.
 
-Store as `PR_TARGET_BRANCH`.
+2. **Explore first (preparation).** As the orchestrator, launch the explore agents now and keep their reports for the next sub-step (the implementation agent below cannot spawn its own subagents, so this must happen here):
+   - **pattern-scout** (always): how are similar things built in this codebase?
+   - **adr-checker** in consult mode (only when the work touches an ADR-relevant area): which recorded decisions must the work follow?
 
-## 5. Analyze Steps
+3. **Spawn the implementation agent** (Agent tool, `isolation: "worktree"`), pasting the explore reports into its prompt:
 
-### 5a. If the issue has explicit phases or sub-issues
-
-Present the detected structure and ask using `AskUserQuestion`:
-
-> "This issue has <N> phases/steps. Which one do you want to implement?"
-
-Options (up to 4):
-1. **Phase 1: <summary>**
-2. **Phase 2: <summary>**
-3. **All phases sequentially**
-
-### 5b. If the issue has NO explicit phases
-
-Analyze the issue body to determine if it makes sense to split. Consider:
-- Number of distinct features or changes
-- Whether changes touch different areas
-- Natural dependency boundaries
-
-**If splitting makes sense**, propose steps and ask:
-
-> "I'd suggest splitting this into <N> steps:"
-
-Options:
-1. **Yes, implement step by step** - Proceed with steps.
-2. **No, implement it all at once** - Single pass.
-
-**If splitting does NOT make sense**, proceed directly as a single unit.
-
-## 6. Validate Pre-conditions
-
-Before starting:
-
-1. Confirm the working branch is up to date:
-   ```bash
-   git checkout $WORK_BRANCH && git pull origin $WORK_BRANCH
-   ```
-2. If implementing phases with sub-issues, verify sub-issues are in OPEN state.
-
-## 7. Execute Implementation
-
-### 7a. Multi-step mode (has sub-issues or proposed steps)
-
-For **each sub-issue/step**, one at a time:
-
-1. **Create a branch** from `$WORK_BRANCH`:
-   ```bash
-   git checkout -b <issue-number>-<short-slug> $WORK_BRANCH
-   git push -u origin <issue-number>-<short-slug>
-   ```
-
-2. **Spawn an implementation agent** (using `Agent` tool with `isolation: "worktree"`) with this prompt:
-
-   > You are implementing GitHub issue #<NUMBER> for a portfolio site monorepo.
+   > You are implementing GitHub issue #<NUMBER> for guplem.github.io.
    >
-   > ## Issue Details
-   > <Full issue title and body>
+   > ## Issue
+   > <full title and body>
+   >
+   > ## Step to implement
+   > <the specific step, or "the full issue" in single-issue mode>
+   >
+   > ## Findings from the explore agents (follow these)
+   > <paste the pattern-scout report, and the adr-checker report when there is one>
    >
    > ## Instructions
-   > 1. Read the project's `AGENTS.md` for conventions and verification commands.
-   > 2. Run the **pattern-scout** agent before writing any code.
-   > 3. **Diagnose first**: Search the codebase for relevant files. Identify the root cause or exact locations that need changing.
-   > 4. **Plan if complex**: If the fix involves more than 2 files, create a checklist before starting.
-   > 5. **Test first (red-green TDD for testable logic)**: Per the AGENTS.md "Test-Driven Development" section, write a failing Bun test that pins the new behaviour (red) BEFORE writing the code that makes it pass (green). Applies to all pure logic (web-project logic, pure JS utility modules, data validation); visual/DOM rendering is exempt.
-   > 6. Implement following the patterns found.
-   > 7. Run verification: `cd web-projects/<project> && bun test` (if applicable).
-   > 8. Fix any errors before finishing.
-   > 9. Create conventional commits (e.g., `feat: add color picker to photo-editor`).
-   > 10. Push: `git push origin HEAD`
+   > 1. Read `AGENTS.md` for conventions, gotchas, and the check commands.
+   > 2. **Diagnose first:** find the exact files and locations to change. Explain the reasoning before writing any code.
+   > 3. **Plan if complex:** if the change touches more than 2 files, write a checklist of every required change first.
+   > 4. **Red-green TDD, as `AGENTS.md` mandates:** write the failing test that pins each behavior before the code that makes it pass. A bug fix starts with a test that reproduces the bug.
+   > 5. Implement, following the explore findings and the issue.
+   > 6. Run the repo's checks yourself (the commands in `AGENTS.md`, in order; you cannot spawn the validate agent from inside here) and fix every failure you introduced before finishing.
+   > 7. Make atomic conventional commits (the `write-commit` skill shape).
+   > 8. Push your branch: `git push origin HEAD`.
    >
    > ## Branch
-   > Work on branch: `<issue-number>-<short-slug>`
-   > Base branch: `$WORK_BRANCH`
+   > Work on `<branch>`; the base branch is `$WORK_BRANCH`.
    >
    > ## Scope
-   > Only implement what is described in the issue. Do not modify code outside the scope.
+   > Implement only what the step describes. Do not touch code outside that scope.
 
-3. **Wait for the agent to complete.**
-
-4. **Create a PR** (always include `waiting-for-human-check` label and self-assign):
+4. **Create the PR** (always label and self-assign):
 
 ```bash
 gh label create "waiting-for-human-check" --description "No human has verified this yet -- direct AI output" --color "D93F0B" 2>/dev/null || true
 gh pr create \
   --base $PR_TARGET_BRANCH \
-  --head <issue-number>-<short-slug> \
-  --title "<conventional-prefix>: <short issue title>" \
+  --head <branch> \
+  --title "<conventional-prefix>: <short title>" \
   --assignee @me \
   --label "waiting-for-human-check" \
   --body "$(cat <<'PREOF'
@@ -153,105 +93,40 @@ gh pr create \
 
 Closes #<ISSUE_NUMBER>
 
-<1-3 bullet points summarizing what was done>
+<1-3 bullet points on what was done>
 
 ## Test plan
 
-- [ ] Tests pass (if applicable)
+- [ ] `bun test .` passes (web-project suites, data validation, `textCore`, and the SEO-artifact drift tests)
 - [ ] Manual verification of the feature
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
 PREOF
 )"
 ```
 
-5. **Run the review cycle** (step 8) before moving to the next sub-issue.
+5. **Run the review cycle** (Section 8) before moving to the next step.
 
-### 7b. Single-issue mode
+## 8. Review cycle (uses the review-pr skill)
 
-1. Work directly on `$WORK_BRANCH`.
-2. Spawn an implementation agent with the same prompt template as 7a, referencing the issue directly.
-3. Create a PR targeting `$PR_TARGET_BRANCH`.
-4. Run the review cycle (step 8).
+Use the **review-pr** skill in `--no-verdict` mode. That mode runs unattended (it never asks the user anything), posts a COMMENT-only review to the PR, and writes a local findings file `.reviews/<PR_NUMBER>-review.md` with a clear verdict: `APPROVED` or `CHANGES_REQUESTED`. Invoke it with the Skill tool: `skill: "invoke", args: "review-pr <PR_NUMBER> --no-verdict"`.
 
-## 8. Review Cycle
+1. Run `review-pr <PR_NUMBER> --no-verdict`, then read the verdict from `.reviews/<PR_NUMBER>-review.md`.
+2. **If `CHANGES_REQUESTED`:** spawn an implementation agent on the same branch to fix every Required item, then run `review-pr <PR_NUMBER> --no-verdict` again (it re-reviews the whole current state and does not re-raise findings it already made). Repeat until `APPROVED`, **at most 3 rounds**; then stop and report to the user.
+3. **On approval:** delete the review file (and `.reviews/` if it is now empty) and tell the user.
 
-For each PR, run a review cycle after creation using a local file `.reviews/<issue-number>-review.md`.
-
-### 8a. Spawn a review agent
-
-Spawn a **new agent without prior context**:
-
-> You are reviewing a pull request for a portfolio site monorepo.
->
-> ## PR Details
-> - PR number: <PR_NUMBER>
-> - Branch: <BRANCH_NAME>
->
-> ## Instructions
-> 1. Fetch PR details: `gh pr view <PR_NUMBER> --json title,body,url,headRefName,baseRefName`
-> 2. Fetch the full diff: `gh pr diff <PR_NUMBER>`
-> 3. Read the project's `AGENTS.md` for conventions.
-> 4. Review for: correctness, pattern adherence, type safety, security, scope, tests, style.
-> 5. Write review to `.reviews/<PR_NUMBER>-review.md`:
->    ```markdown
->    # Review: PR #<PR_NUMBER> -- <PR title>
->
->    ## Verdict: APPROVED | CHANGES_REQUESTED
->
->    ## Summary
->    <1-3 sentence assessment>
->
->    ## Issues
->    ### Issue 1: <short title>
->    - **File:** `<file-path>`
->    - **Line(s):** <line number or range>
->    - **Severity:** critical | high | medium | low
->    - **Description:** <what's wrong and why>
->    - **Suggestion:** <how to fix it>
->    ```
->    Create `.reviews/` if it doesn't exist: `mkdir -p .reviews`
-
-### 8b. If changes requested, iterate
-
-Read the review file. If verdict is `CHANGES_REQUESTED`:
-
-1. Spawn an implementation agent to address every issue.
-2. Delete old review file, spawn a new review agent.
-3. Repeat until `APPROVED` (max 3 iterations).
-
-### 8c. Clean up
-
-Once approved:
-```bash
-rm -f .reviews/<PR_NUMBER>-review.md
-rmdir .reviews 2>/dev/null || true
-```
-
-Notify the user that the PR is ready for human review.
-
-**Do not merge the PR.** Wait for the user to review, approve, and merge manually.
+**Do not merge the PR.** Wait for the user to review, approve, and merge.
 
 ## 9. Completion
 
-After all PRs for the current phase are done, report:
+Report which steps are done and which remain. If steps remain: "Run `/implement-issue <ISSUE>` to continue."
 
-> Phase <N> complete. All sub-issues implemented.
-
-If there are more phases:
-> Run `/implement-issue <ISSUE>` to continue with the next phase.
-
-If all phases done:
-> All phases complete. All changes have been submitted as PRs.
-
-## Important Rules
+## Important rules
 
 - **Never push to `main` directly.** All work goes through branches and PRs.
-- **Never merge PRs automatically.** Always wait for human approval.
-- **One branch per sub-issue.** Do not mix work from multiple issues.
-- **Conventional commits.** Use `feat:`, `fix:`, `refactor:`, `chore:`, etc.
-- **Scope discipline.** Each agent works only on its assigned issue.
-- **Verification is mandatory.** Run tests before pushing (when tests exist).
-- **Fresh reviewers.** Review agents must have no context from implementation.
-- **Max 3 review iterations.** If still failing after 3 rounds, move on.
-- **Phase ordering matters.** Never start Phase N+1 before Phase N is done.
-- **Interactive first.** Always use `AskUserQuestion` to gather configuration.
+- **Scope discipline.** Each agent works only on its assigned step; no cross-step changes.
+- **Verification is mandatory.** The implementation agent runs the repo's checks before pushing, and the orchestrator confirms a clean state with the **validate** agent.
+- **Fresh reviewers.** The review agent has no context from the implementation (the `review-pr` skill already spawns fresh agents).
+- **Bounded iteration.** At most 3 review rounds; then report to the user instead of looping.
+- **Interactive first.** Gather configuration via `AskUserQuestion`; never assume defaults silently.

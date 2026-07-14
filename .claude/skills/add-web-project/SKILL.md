@@ -6,7 +6,7 @@ argument-hint: "<project name or description>"
 
 # Add Web Project
 
-Scaffold a new self-contained web-project end-to-end, following the full checklist from `web-projects/AGENTS.md`.
+Scaffold (create all the starting files and folders for) a new self-contained web-project from start to finish. Follow the full checklist in `web-projects/AGENTS.md`.
 
 This command must be used automatically whenever the user asks to create a new web-project.
 
@@ -18,10 +18,10 @@ If `$ARGUMENTS` contains a project name or description, use it. Otherwise, ask u
 
 Then ask using `AskUserQuestion`:
 
-> "What should I call it? This becomes the folder name and URL slug."
+> "What should I call it? This becomes the folder name and the URL slug (the short name used in the web address)."
 
 Options:
-1. **<suggested-slug>** - Based on the description (kebab-case, short).
+1. **<suggested-slug>** - Based on the description (kebab-case: lowercase words joined by hyphens, kept short).
 2. **<alternative-slug>** - A different derivation.
 3. **Other** - The user will type a custom slug.
 
@@ -37,7 +37,7 @@ Follow the patterns found.
 
 ## 3. Check Existing Skills and Types
 
-Before creating the portfolio data file, grep existing project files to find all skills and types currently in use:
+Before creating the portfolio data file, search the existing project files with `grep` to find all skills and types currently in use:
 
 ```bash
 grep -h '"skills"' data/projects/*.json
@@ -50,7 +50,7 @@ Store as `EXISTING_SKILLS` and `EXISTING_TYPES` for Step 6.
 
 Create `web-projects/<PROJECT_SLUG>/` with:
 
-1. **`index.html`** - HTML boilerplate following patterns from existing web-projects. Include:
+1. **`index.html`** - HTML boilerplate (the standard starting HTML) following patterns from existing web-projects. Include:
    - Proper `<title>` and meta tags
    - Link to local CSS
    - Script tag with `type="module"` and `defer`
@@ -89,7 +89,7 @@ Create `web-projects/<PROJECT_SLUG>/` with:
    ```
    ```
 
-**Do not implement features yet.** The scaffold is a starting point for TDD. Features come after tests.
+**Do not implement features yet.** The scaffold is a starting point for TDD (test-driven development: write the tests first, then the code). Features come after tests.
 
 ## 5. Verify Tests Run
 
@@ -107,11 +107,11 @@ Create `data/projects/<PROJECT_SLUG>.json` conforming to `data/schemas/project.s
 
 - Set `"$schema": "../schemas/project.schema.json"` as the first field
 - Write a brief initial description following the style rules in `data/AGENTS.md`
-- **Reuse existing skills** from `EXISTING_SKILLS` -- only introduce new tags when no existing tag fits
+- **Reuse existing skills** from `EXISTING_SKILLS`. Only introduce new tags when no existing tag fits
 - **Reuse existing types** from `EXISTING_TYPES`
 - Follow the `data/AGENTS.md` guidance for Vibe Coded projects if applicable
 
-### 6b. Add to the manifest
+### 6b. Add to the manifest (the list file of all projects)
 
 Add the filename to the `projects` array in `data/projects/index.json`.
 
