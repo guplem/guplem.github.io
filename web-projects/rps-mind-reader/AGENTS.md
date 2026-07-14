@@ -19,9 +19,9 @@ two evaluation harnesses (`benchmark.js`, `bench/`).
   always-on `p0` can't monopolize.
 - Why: ADR 0001 (algorithm + history). How we evaluate it: ADR 0002.
 
-## Contracts — do NOT break (they are load-bearing)
+## Contracts: do NOT break (they are load-bearing)
 
-- `decide(model, rng)` is **PURE** — reads the model, never mutates, never sees the live move.
+- `decide(model, rng)` is **PURE**: reads the model, never mutates, never sees the live move.
 - `learn(model, p, a)` is **DETERMINISTIC** (no `Math.random` / `Date`) so `rebuildModel(rounds)`
   reproduces the exact model. Persistence stores **rounds, not the model** (root ADR 0009); the float
   counts from `COUNT_DECAY` are rebuilt on load. Any new state in `learn()` must be replayable
@@ -33,8 +33,8 @@ two evaluation harnesses (`benchmark.js`, `bench/`).
 
 | Tool | Use | Speed |
 |---|---|---|
-| `bun benchmark.js` | quick general gate — 14 opponents, mean/worst net @300 rounds | fast |
-| `bun bench/suite.js` | deep eval — switching battery + post-switch recovery + real-session scoreboard | slower |
+| `bun benchmark.js` | quick general gate: 14 opponents, mean/worst net @300 rounds | fast |
+| `bun bench/suite.js` | deep eval: switching battery + post-switch recovery + real-session scoreboard | slower |
 
 Reach for `bench/suite.js` whenever you touch predictor logic. Full workflow + acceptance gates:
 `bench/README.md`.
@@ -51,7 +51,7 @@ Reach for `bench/suite.js` whenever you touch predictor logic. Full workflow + a
 6. Big exploration → `/research-agents` (scaffolds a fresh `planning-workspace/`); archive into
    `bench/history/` when done.
 
-## Strategies tried & rejected — don't re-tread (full data in `bench/history/`)
+## Strategies tried & rejected: don't re-tread (full data in `bench/history/`)
 
 | Idea | Verdict | Why |
 |---|---|---|
@@ -72,8 +72,8 @@ Reach for `bench/suite.js` whenever you touch predictor logic. Full workflow + a
 ## Gotchas
 
 - `bench/` files import `../game.js` etc. (one level up). The old bake-off scratch copies lived
-  two levels deep (`../../`) — don't copy their import paths into `bench/`.
+  two levels deep (`../../`). Don't copy their import paths into `bench/`.
 - `COUNT_DECAY` makes counts **floats**; the `predictor.test.js` replay-equality test still holds
   (fixed-order IEEE-754 is deterministic). If you add count-touching logic, keep the op order fixed.
-- `sample-plays/match91.json` is the real switcher that motivated the current design — keep it; it
+- `sample-plays/match91.json` is the real switcher that motivated the current design. Keep it; it
   anchors `liveNetMatch91`.
