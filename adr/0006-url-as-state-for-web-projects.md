@@ -21,6 +21,8 @@ Conventions:
 - Parsing and serializing live in the project's pure logic module (`picker.js`) and are covered by tests, so the URL contract is verifiable without a browser.
 - `history.replaceState` (not `pushState`) is used so editing options does not pollute the back-button history.
 
+**Rejected alternative:** in-memory state (lost on refresh, cannot be shared) or `localStorage` (per-browser, not shareable, and stale state can confuse first-time visitors). Both fail the shareability requirement that motivates this class of project. For private, per-device state that must persist instead of being shared, see [ADR 0009](0009-localstorage-for-private-session-persistence.md).
+
 ## Consequences
 
 **Positive:**

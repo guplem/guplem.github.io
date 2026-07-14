@@ -6,7 +6,7 @@ argument-hint: "<target feature or area to improve>" [--agents=<N>] [--rounds=<N
 
 # Multi-Agent Research Orchestrator
 
-Launch parallel research agents that each explore a different angle of improvement for a feature or area, then iterate through rounds of cross-pollination until they converge on a unified recommendation.
+Launch several research agents in parallel. Each one explores a different angle of improvement for a feature or area. Then they run rounds of cross-pollination (each agent reads what the others found and builds on it) until they converge on one shared recommendation.
 
 ## 1. Parse Arguments
 
@@ -14,12 +14,12 @@ Launch parallel research agents that each explore a different angle of improveme
 
 - `TARGET`: The feature, area, or system to improve (e.g., "particle simulation performance", "work cards layout", "photo-editor UX")
 - `AGENTS`: Number of agents to run (default: 4, range: 2-6)
-- `ROUNDS`: Number of rounds (default: 2 -- one independent, one cross-pollination)
-- `ANGLES`: Comma-separated research angles (optional -- if provided, skip the proposal step in Step 3)
+- `ROUNDS`: Number of rounds. Default is 2: one independent round, then one cross-pollination round.
+- `ANGLES`: Comma-separated research angles (optional. If provided, skip the proposal step in Step 3)
 
 ## 2. Explore the Target
 
-Before doing anything else, YOU (the orchestrator) must understand what's being improved. Use parallel exploration agents to read the target codebase:
+Before doing anything else, YOU (the orchestrator: the main agent that runs and coordinates the others) must understand what is being improved. Use parallel exploration agents to read the target codebase:
 
 - Identify ALL relevant source files (HTML, CSS, JS, JSON, tests, configs)
 - Understand the current flow end-to-end
@@ -63,7 +63,7 @@ These are starting points, not templates. The best angles are specific to the ac
 Present the user with:
 
 1. A 2-3 sentence summary of what you found during exploration
-2. The proposed agent roster -- for each agent:
+2. The proposed agent roster (the list of agents). For each agent:
    - **Name**: Short descriptive name
    - **Angle**: One sentence describing the research focus
    - **Why this angle**: One sentence grounded in what you saw in the code
@@ -101,23 +101,23 @@ Create this structure inside the target directory:
 
 **brief.md** per agent: Tailored research mission, 4-6 concrete tasks, relevant files, web search instructions, awareness of other agents.
 
-## 5. Round 1 -- Diverge (Independent Research)
+## 5. Round 1: Diverge (Independent Research)
 
 Launch ALL agents in parallel in a SINGLE message. Each agent uses the `research-agent` agent definition with this prompt structure:
 
 ```
-You are Agent {N}: "{Agent Name}" -- one of {TOTAL} parallel research agents
+You are Agent {N}: "{Agent Name}", one of {TOTAL} parallel research agents
 exploring improvements to {TARGET}.
 
 YOUR ANGLE: {specific research focus from brief.md}
 
 THE OTHER AGENTS (for awareness):
-- Agent 1: {name} -- {angle}
-- Agent 2: {name} -- {angle}
+- Agent 1: {name}, {angle}
+- Agent 2: {name}, {angle}
 - ...
 
 ROUND: 1 of {ROUNDS} (independent research)
-Do NOT read other agents' folders -- they're empty.
+Do NOT read other agents' folders. They are empty.
 
 SHARED CONTEXT:
 {path}/planning-workspace/target-summary.md
@@ -145,7 +145,7 @@ For each:
 ## Interactions With Other Agents' Domains
 ```
 
-## 6. Round 2+ -- Cross-Pollinate
+## 6. Round 2+: Cross-Pollinate
 
 Launch ALL agents again in parallel:
 
@@ -153,7 +153,7 @@ Launch ALL agents again in parallel:
 You are Agent {N}: "{Agent Name}".
 ROUND: {R} of {ROUNDS} (cross-pollination)
 
-MANDATORY READING -- read ALL before writing:
+MANDATORY READING (read ALL before writing):
 - Your own Round {R-1}: {path}/agents/agent-{N}-{name}/round-{R-1}.md
 - All other agents' Round {R-1} outputs
 
@@ -185,7 +185,7 @@ Also read target-summary.md.
 
 SYNTHESIS RULES:
 - Consensus points go to the top (high confidence)
-- Where agents disagree, make a judgment call -- cite which evidence won
+- Where agents disagree, make a judgment call, and cite which evidence won
 - Preserve the BEST specific details (file paths, code snippets, citations)
 - Identify synergies between agents' recommendations
 - Flag genuine tradeoffs the user must decide

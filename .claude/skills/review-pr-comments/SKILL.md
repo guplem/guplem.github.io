@@ -6,7 +6,7 @@ argument-hint: [pr-number-or-url]
 
 # PR Comments Review
 
-Review PR comments from reviewers, make deliberate decisions about each, apply code changes where appropriate, and reply directly on GitHub.
+Review PR (pull request) comments from reviewers. Make a careful decision on each one. Apply code changes where appropriate. Reply directly on GitHub.
 
 ## 1. Determine Which PR
 
@@ -54,7 +54,7 @@ For each PR comment, follow this structured decision framework:
 Before deciding on a comment:
 1. What is the current behavior in the code?
 2. What does the comment suggest changing?
-3. Read the full file (not just the diff) to understand surrounding context.
+3. Read the full file, not just the diff (the lines this PR changed), to understand the surrounding context.
 
 ### 3b. Validate Against the Codebase
 
@@ -95,7 +95,7 @@ For each "Apply" or "Ambiguous -> Applied" decision:
 3. If the change is complex (touches >2 files), create a checklist before starting.
 4. Run verification where applicable:
    - Web-projects with tests: `cd web-projects/<project> && bun test`
-5. Create conventional commits: `fix: address PR review - <short description>`
+5. Create conventional commits (commit messages in a fixed format, like `type: description`): `fix: address PR review - <short description>`
 6. Push: `git push origin HEAD`
 
 ## 5. Post Replies to GitHub
@@ -122,7 +122,7 @@ Keep replies short and factual.
 
 - **Do NOT resolve/unresolve any review threads.** Leave thread resolution to human reviewers.
 - Escape backticks and special characters properly when passing the body via `-f body=`.
-- If a comment thread has multiple replies, read the full thread before deciding -- the author may have clarified or withdrawn their comment.
+- If a comment thread has multiple replies, read the full thread before deciding. The author may have clarified or withdrawn their comment.
 
 ## 6. Critical Standards
 

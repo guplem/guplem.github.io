@@ -2,13 +2,20 @@
 
 Personal portfolio website for Guillem Poy, hosted on GitHub Pages at `triunitystudios.com`. Vanilla HTML/CSS/JavaScript -- no build system, no bundler, no framework.
 
-Before implementing any non-trivial feature, delegate to the **pattern-scout** agent.
+Delegate to these agents at the right moment (each agent's own description says what it does). They fall into two groups, by when they run.
 
-Before implementing features that touch architectural areas covered by an ADR, delegate to the **adr-checker** agent in **consult mode**. After such changes, delegate in **maintain mode**.
+**Before you implement (explore agents, launched as preparation):**
 
-After writing or modifying code in `web-projects/`, delegate to the **test-runner** agent.
+- **pattern-scout**: before implementing any non-trivial feature, and any time you ask "how do we do X here?". Returns real code examples with the rules distilled from them.
+- **adr-checker** (consult mode): before implementing in an area an ADR (Architecture Decision Record, a short note on why a design choice was made) covers. The "Architecture Decision Records (ADRs)" section lists them. Returns the decisions the work must follow.
 
-After completing changes that affect documented content, delegate to the **docs-checker** agent.
+**After you implement, before you ship:**
+
+- **docs-checker**: after a change that could affect documented content. Checks every documentation location (code comments, `README.md` files, `AGENTS.md` files, ADRs) against the code and fixes drift.
+- **validate**: just before creating a PR or pushing. Runs the repo's checks the way CI does (`bun test .`) and reports pass or fail.
+- **adr-checker** (maintain mode): after you introduce a new architectural pattern or change one an ADR records. Creates or updates the ADR.
+
+Beyond these, spawn subagents freely: hand off research, code exploration, and parallel analysis so the files they read stay out of your own context. Give each subagent one task.
 
 When the user's request is broad or exploratory, ask whether they'd like to run multi-agent research (`/research-agents`) before proceeding.
 
@@ -54,6 +61,8 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `CLAUDE.md` (root + each area) | One-line `@AGENTS.md` shim so Claude Code loads the sibling map on demand; never edit it |
 | `.claude/skills/*/SKILL.md` | On-demand procedures (how to do X); load only when the task matches |
 
+**All of these files are living: keep them true.** When you learn something that helps future agents, update the right file in the same session. When a file holds wrong or outdated information, fix it or remove it. This covers code comments too. After implementation, the **docs-checker** agent catches drift you missed.
+
 ## Development
 
 **No build step.** Serve files locally with any HTTP server:
@@ -64,7 +73,7 @@ No linter or package manager for the main site. Web-projects use Bun's test runn
 
 **CI:** `.github/workflows/test.yml` runs `bun test .` (the whole suite: web-projects tests, the data validation test, the `textCore` tests, and the SEO-artifact drift tests in `scripts/`) on every pull request and push to `main`, and it is a required status check on `main` -- a PR with a failing test cannot be merged. Keep tests green; a new web-project's tests are picked up automatically. See ADR 0013.
 
-Whenever you verify a change, use the `verify-project` skill.
+Whenever you need to confirm the code still passes, delegate to the `validate` agent (it runs the checks the way CI does).
 
 ## Architecture
 
@@ -173,26 +182,13 @@ If the repository does not have a `waiting-for-human-check` label, create it fir
 gh label create "waiting-for-human-check" --description "No human has verified this yet -- direct AI output" --color "D93F0B"
 ```
 
-Whenever you create a GitHub issue, use the `create-issue` skill. Whenever you implement one, use the `implement-issue` skill.
+Whenever you create a GitHub issue, use the `create-issue` skill. Whenever you implement one, use the `implement-issue` skill. Whenever you review a PR, use the `review-pr` skill.
 
 ## Git Workflow
 
 - Branch from `main`, PR back to `main` (merging deploys the live site via GitHub Pages). **Never push to `main`.** Whenever you create a branch, use the `create-branch` skill.
-- Conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`.
+- Conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`. Whenever you commit, use the `write-commit` skill.
 - CI runs `bun test .` on every PR; the `test` check is required on `main`, so a PR with failing tests cannot merge.
-
-### Staging, Committing & Pushing
-
-> **HARD RULE - NO EXCEPTIONS**
-
-You are **NEVER** allowed to stage, commit, or push changes unless the user **explicitly and directly instructs you to do so** in their message.
-
-- Do **not** commit after completing a task "for convenience".
-- Do **not** push after committing unless separately instructed.
-- Do **not** interpret phrases like "make it work", "fix it", or "apply the changes" as permission to commit or push.
-- A prior instruction to commit does **not** grant permission to commit again later; each commit/push requires its own explicit instruction.
-
-If in doubt: make the code changes, stop, and wait. Whenever the user authorizes a commit, use the `write-commit` skill.
 
 ## Refactoring Safety
 
@@ -200,7 +196,7 @@ Whenever you rename or refactor a symbol, use the `rename-symbol` skill.
 
 ## Debugging
 
-Whenever a fix attempt fails or a bug needs root-causing, use the `debug-issue` skill.
+Whenever a fix attempt fails or a bug needs root-causing, use the `debug` skill.
 
 ## Writing Prompts for Agents and Rules
 

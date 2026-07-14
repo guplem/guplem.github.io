@@ -5,8 +5,8 @@
 Street Name History needs three things for an arbitrary user-typed street:
 
 1. **Geocode** the free text to a specific place.
-2. **All names** on that place — every language variant and naming role OpenStreetMap records.
-3. **History** — former names, etymology, and (where it exists) a dated timeline.
+2. **All names** on that place: every language variant and naming role OpenStreetMap records.
+3. **History**: former names, etymology, and (where it exists) a dated timeline.
 
 The project is a static, self-contained web-project on GitHub Pages (root ADR 0002: no build system,
 no server). So every data source must be reachable directly from the browser (CORS-enabled) with no
@@ -22,7 +22,7 @@ Candidate OSM access paths for the names:
 History enrichment has no OSM-native home: OSM has `old_name`/etymology tags but no time model.
 **Wikidata** (via `wbgetentities`, CORS with `origin=*`) supplies multilingual labels, a description,
 an `inception` date, and the "named after" entity. **OpenHistoricalMap** has its own Overpass endpoint
-with genuine `start_date`/`end_date` time versioning — the one source with real dated name timelines.
+with genuine `start_date`/`end_date` time versioning. It is the one source with real dated name timelines.
 
 ## Decision
 
@@ -46,7 +46,7 @@ in the page footer.
 
 **Positive**
 
-- Zero backend, zero keys, zero build — consistent with root ADRs 0001/0002 and GitHub Pages hosting.
+- Zero backend, zero keys, zero build. This is consistent with root ADRs 0001/0002 and GitHub Pages hosting.
 - One fewer failure point and no Overpass rate-limit exposure for the primary path (names), since
   Nominatim already carries every tag we need.
 - The two enrichment sources are strictly additive: with both down, the app still shows all OSM names.
@@ -62,14 +62,14 @@ in the page footer.
 - **Two round-trips for a P138-only honoree** (resolve the "named after" QID after the street item),
   accepted as a rare, best-effort path.
 - If a future need arises for tags on a *set* of ways (e.g. a whole street split across many segments)
-  rather than the single element Nominatim returns, Overpass may have to be revisited — this ADR would
+  rather than the single element Nominatim returns, Overpass may have to be revisited. This ADR would
   then be updated.
 
 ## Alternatives considered
 
-- **Overpass as the OSM tag source** — rejected: a second rate-limited endpoint for data Nominatim
+- **Overpass as the OSM tag source** was rejected: a second rate-limited endpoint for data Nominatim
   already returns for the single matched element.
-- **A backend proxy / cache** — rejected: violates the no-server, static-hosting constraint and adds
+- **A backend proxy / cache** was rejected: violates the no-server, static-hosting constraint and adds
   operational surface for a portfolio demo.
-- **A SPARQL query to the Wikidata Query Service** — heavier and more fragile than `wbgetentities` for
+- **A SPARQL query to the Wikidata Query Service**: heavier and more fragile than `wbgetentities` for
   the handful of entities involved; the REST entity endpoint is enough.

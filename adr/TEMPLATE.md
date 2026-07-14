@@ -1,15 +1,15 @@
-# ADR NNNN: Short title of the decision
+# [Title]
 
 ## Context
 
-The problem, the forces at play, and the constraints. What situation makes a decision necessary? What options were on the table? State facts, not the choice yet.
+What is the issue or situation that motivates this decision? Include relevant background, constraints, and any alternatives that were considered.
 
 ## Decision
 
-What was chosen. State it directly. Name the main rejected alternative and why it lost. If the decision has parts, use a short bullet per part.
+What is the change that is being proposed or has been agreed upon? Be specific about what will be done and how.
+
+**Rejected alternative:** name each seriously considered alternative and why it was rejected. Include this line only when the alternative is easy to fall back into and doing so would be harmful; otherwise omit it.
 
 ## Consequences
 
-**Positive:** what this makes better.
-
-**Trade-offs:** what this accepts as a cost, and any follow-up it implies. Be honest about the downsides; the next reader needs them to decide whether the decision still holds.
+What are the results of this decision? List both positive outcomes and trade-offs or risks. Include any follow-up actions needed.

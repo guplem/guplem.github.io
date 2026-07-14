@@ -16,6 +16,8 @@ Custom JS implementation in `workCards.js`. Column count is calculated as `floor
 
 This gives full control over how cards are ordered and distributed across columns, which the CSS alternatives could not achieve.
 
+**Rejected alternative:** CSS Grid `masonry`, CSS columns, or a library such as Masonry.js. The CSS approaches were tested but did not match the intended card distribution, ordering, and spacing; a library would add an external dependency the custom code avoids.
+
 ## Consequences
 
 **Positive:**

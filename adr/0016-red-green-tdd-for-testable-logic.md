@@ -14,4 +14,4 @@ New behaviour in pure logic (web-project game/tool logic, pure JS utility module
 
 **Positive:** logic regressions are pinned before fixes; the "extract logic into a testable module" pressure keeps DOM glue thin (the `textCore.js` extraction is the worked example).
 
-**Trade-offs:** test-first is enforceable only by review discipline, since CI sees only the final state; rendering bugs still rely on manual browser checks (`verify-project` skill).
+**Trade-offs:** test-first is enforceable only by review discipline, since CI sees only the final state; rendering bugs still rely on manual browser checks (the `validate` agent).

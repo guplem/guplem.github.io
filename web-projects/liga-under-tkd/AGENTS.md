@@ -1,7 +1,8 @@
 # web-projects/liga-under-tkd/AGENTS.md
 
 Live tournament site for the Liga UNDER taekwondo event. Reads a public Google Sheet via the gviz
-endpoint and renders standings, combats, and athlete profiles. Vanilla ES modules, no build step.
+endpoint (Google's Visualization API query endpoint that returns a Sheet as data) and renders
+standings, combats, and athlete profiles. Vanilla ES modules, no build step.
 Human docs: [README.md](README.md) (features/run) and [SETUP.md](SETUP.md) (connect the Sheet).
 Decision record: [ADR 0001](adr/0001-google-sheet-as-database.md).
 
@@ -9,14 +10,14 @@ Decision record: [ADR 0001](adr/0001-google-sheet-as-database.md).
 
 | File | Pure? | Responsibility |
 |---|---|---|
-| `config.js` | — | The one place to edit: `sheetId` (empty = mock/demo mode), poll interval, event date. |
+| `config.js` | no | The one place to edit: `sheetId` (empty = mock/demo mode), poll interval, event date. |
 | `i18n.js` | yes | Translations table (ca/es/en) + `detectLanguage`, `t`, `translateToken`. |
 | `sheet.js` | yes | gviz URL builder, response parser, value coercers, record normalizers. |
 | `engine.js` | yes | Scoring: round/combat results, league points, standings, cross-table, fixtures. |
-| `mock-data.js` | — | Sample rows (header-keyed, same shape as gviz) for demo mode. |
-| `data-source.js` | — | The ONLY file that does `fetch`. Switches gviz ↔ mock; runs normalizers. |
-| `app.js` | — | DOM controller: hash router, polling loop, the four views. |
-| `*.test.js` | — | Bun tests for the three pure modules. Run `bun test` here. |
+| `mock-data.js` | no | Sample rows (header-keyed, same shape as gviz) for demo mode. |
+| `data-source.js` | no | The ONLY file that does `fetch`. Switches gviz ↔ mock; runs normalizers. |
+| `app.js` | no | DOM controller: hash router, polling loop, the four views. |
+| `*.test.js` | no | Bun tests for the three pure modules. Run `bun test` here. |
 
 Data flow: `data-source` → (gviz `sheet.js` parse + normalize | mock) → `app.js` holds state →
 `engine.js` computes → views render. Players/Groups load once; Combats is polled.
@@ -43,7 +44,7 @@ Data flow: `data-source` → (gviz `sheet.js` parse + normalize | mock) → `app
   ignored entirely. Changing this silently corrupts the table.
 - **Points-for/against come from raw round scores; league points come from rounds won.** The round
   `R1/R2 Winner` column (`round.winner`), when set to `Red`/`Blue`, decides that round's winner and
-  **overrides the points** (disqualification or withdrawal). It never changes points-for/against —
+  **overrides the points** (disqualification or withdrawal). It never changes points-for/against:
   those always keep the real scores. Do not confuse this round Winner with the standings tiebreaker
   chain below.
 - **The tiebreaker chain is data** (`DEFAULT_TIEBREAKERS` in `engine.js`): reorder the array to
