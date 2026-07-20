@@ -1,0 +1,12 @@
+/* Self-hosted Inter variable font. Replaces the Google Fonts CDN load, so it
+   removes the render-blocking cross-origin request. Paired with a
+   <link rel="preload"> in each HTML page so the font arrives before the static
+   text paints on most loads, greatly reducing the cold-cache flash of unstyled
+   text. See root ADR 0005. License: resources/fonts/Inter-LICENSE.txt */
+@font-face {
+  font-family: "Inter";
+  src: url("../../resources/fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
