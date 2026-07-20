@@ -113,6 +113,8 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **External CDN dependency:** `marked` is imported via `esm.sh` CDN -- no local node_modules. Network failure breaks markdown rendering.
 
+**Self-hosted font:** the Inter font is self-hosted at `resources/fonts/InterVariable.woff2` (not Google Fonts). Every HTML page that uses the site font must include both a `<link rel="preload" ... as="font" ... crossorigin>` for it and a link to `css/global/fonts.css`. `scripts/fontSelfHosted.test.js` enforces this.
+
 **Caching:** Both JSON fetches and markdown->HTML conversions are cached in `Map` objects. Clear browser cache after updating data files during development.
 
 **Filter normalization:** `idFromText()` in `textUtils.js` strips punctuation/spaces/special chars and capitalizes -- used for element IDs and type/skill button filter matching. Must be consistent across button-based filter code. The free-text work search (`workMatchesText` in `textUtils.js`) intentionally does NOT use `idFromText()` -- it matches raw lowercase substrings so users can type naturally.
@@ -148,7 +150,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0002](adr/0002-no-build-system.md) | No build system -- vanilla JS with CDN imports |
 | [0003](adr/0003-web-worker-for-particle-simulation.md) | Web Worker for particle simulation physics |
 | [0004](adr/0004-js-masonry-layout.md) | JS-based masonry layout instead of CSS Grid |
-| [0005](adr/0005-cdn-for-dependencies.md) | esm.sh CDN for third-party dependencies |
+| [0005](adr/0005-cdn-for-dependencies.md) | esm.sh CDN for the marked JS dependency; fonts are self-hosted, not CDN-loaded |
 | [0006](adr/0006-url-as-state-for-web-projects.md) | URL query params as source of truth for shareable web-projects |
 | [0009](adr/0009-localstorage-for-private-session-persistence.md) | localStorage for private-session persistence in web-projects |
 | [0011](adr/0011-web-projects-index-from-portfolio-data.md) | Web-projects index page derived from portfolio data (not self-contained) |

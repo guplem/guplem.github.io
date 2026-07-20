@@ -11,7 +11,7 @@ Options:
 
 ## Decision
 
-Import third-party ES modules from `esm.sh` CDN using standard `import` statements with pinned versions. Fonts are self-hosted (see `css/global/fonts.css`) instead of loaded from Google Fonts, to avoid a render-blocking cross-origin request and the FOUT (flash of unstyled text) the hero showed on a cold cache.
+Import third-party ES modules from `esm.sh` CDN using standard `import` statements with pinned versions. Fonts are self-hosted (see `css/global/fonts.css`) instead of loaded from Google Fonts, to avoid a render-blocking cross-origin request and to greatly reduce the cold-cache flash of unstyled text (FOUT) the hero showed, by making the font arrive before paint on most loads.
 
 The markdown library was specifically chosen for performance. `marked` was selected over heavier alternatives (unified/remark/rehype) because it is a single lightweight package. The import uses the pre-built ES2022 bundle (`marked@17.0.5/es2022/marked.bundle.mjs`) to minimize parse time and avoid additional network requests for sub-dependencies.
 
