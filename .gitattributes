@@ -5,3 +5,6 @@
 /sitemap.xml text eol=lf
 /index.html text eol=lf
 /web-projects/index.html text eol=lf
+
+# Font binaries: never treat as text (no EOL conversion, no diff/merge).
+*.woff2 binary
