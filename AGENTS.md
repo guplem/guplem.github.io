@@ -191,7 +191,7 @@ Whenever you create a GitHub issue, use the `create-issue` skill. Whenever you i
 - Branch from `main`, PR back to `main` (merging deploys the live site via GitHub Pages). **Never push to `main`.** Whenever you create a branch, use the `create-branch` skill.
 - Conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`. Whenever you commit, use the `write-commit` skill.
 - CI runs `bun test .` on every PR; the `test` check is required on `main`, so a PR with failing tests cannot merge.
-- **This is a fully vibe-coded repo: PRs merge automatically.** `auto-merge.yml` flags every non-draft PR for GitHub auto-merge, so it merges the moment the required `test` check passes. There is no human review gate; the tests are the review, which is what makes the TDD protocol above non-negotiable. The `waiting-for-human-check` label still marks a PR as unverified but does not block the merge. Open a PR as a draft if you do not want it to merge yet.
+- **PRs merge automatically, with no human review gate.** `auto-merge.yml` flags every non-draft PR for GitHub auto-merge, repo-wide, so a PR merges the moment the required `test` check passes. The tests are the review, which is what makes the TDD protocol above non-negotiable. This flow fits how most work here is produced: fast, AI-generated ("vibe-coded") changes, concentrated in `web-projects/` but not limited to it. The rule does not depend on who wrote the code: a hand-coded project can live in `web-projects/`, and a vibe-coded change can land elsewhere; either way a green `test` check is the only gate. The `waiting-for-human-check` label still marks a PR as unverified but does not block the merge. Open a PR as a draft if you do not want it to merge yet.
 
 ## Refactoring Safety
 

@@ -122,7 +122,7 @@ Use the **review-pr** skill in `--no-verdict` mode. That mode runs unattended (i
    - **Left unapplied on purpose** (optional suggestion, out of scope): `**Not applied** - <one-sentence reason>.`
 4. **Then finish:** delete the review file (and `.reviews/` if it is now empty) and tell the user.
 
-**Do not merge the PR by hand.** This repo is fully vibe-coded: `auto-merge.yml` queues the PR for GitHub auto-merge, so it merges itself once the required `test` check passes. Just leave it green.
+**Do not merge the PR by hand.** PRs in this repo auto-merge, repo-wide: `auto-merge.yml` queues the PR for GitHub auto-merge, so it merges itself once the required `test` check passes. Just leave it green.
 
 ## 9. Completion
 
