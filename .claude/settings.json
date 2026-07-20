@@ -20,6 +20,13 @@
       "Bash(gh label:*)",
       "Bash(bun test:*)",
       "Bash(python -m http.server:*)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/.env.private)",
+      "Read(**/.env.secrets)",
+      "Read(**/secrets/**)"
     ]
   },
   "plugins": [
