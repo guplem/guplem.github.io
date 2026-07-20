@@ -114,7 +114,13 @@ Use the **review-pr** skill in `--no-verdict` mode. That mode runs unattended (i
 
 1. Run `review-pr <PR_NUMBER> --no-verdict`, then read the verdict from `.reviews/<PR_NUMBER>-review.md`.
 2. **If `CHANGES_REQUESTED`:** spawn an implementation agent on the same branch to fix every Required item, then run `review-pr <PR_NUMBER> --no-verdict` again (it re-reviews the whole current state and does not re-raise findings it already made). Repeat until `APPROVED`, **at most 3 rounds**; then stop and report to the user.
-3. **On approval:** delete the review file (and `.reviews/` if it is now empty) and tell the user.
+3. **On approval, reply on every inline comment thread the cycle posted**, so a human scanning the "Files changed" tab sees each comment's status without reading commits. Do **not** resolve threads (that is the human's call). List the comment `id`s with `gh api repos/<owner>/<repo>/pulls/<PR_NUMBER>/comments --jq '.[] | {id, path, line}'`, then reply to each via the replies endpoint:
+   ```bash
+   gh api repos/$(gh repo view --json nameWithOwner -q .nameWithOwner)/pulls/<PR_NUMBER>/comments/<COMMENT_ID>/replies -f body="<reply>"
+   ```
+   - **Addressed by a fix round:** `**Applied** in <short-sha> - <one sentence on the change>.`
+   - **Left unapplied on purpose** (optional suggestion, out of scope): `**Not applied** - <one-sentence reason>.`
+4. **Then finish:** delete the review file (and `.reviews/` if it is now empty) and tell the user.
 
 **Do not merge the PR.** Wait for the user to review, approve, and merge.
 
