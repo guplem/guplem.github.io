@@ -128,7 +128,7 @@ No changes needed to `decide()`, `createModel()`, `rebuildModel()` (the latter s
 **Risk:**
 - worstNet regression from +0.4% to +0.1% — acceptable, still positive
 - Per-round work doubles (28 contexts → 2x loop iterations), absolute cost ~24us/round — safe on phone
-- Fast expert's separate tables increase localStorage size roughly 2x — need to check ADR 0009 implications (tables are NOT stored, only rounds; rebuildModel replays, so no storage growth)
+- Fast expert's separate tables increase localStorage size roughly 2x — need to check ADR 0007 implications (tables are NOT stored, only rounds; rebuildModel replays, so no storage growth)
 - `predictor.test.js` uses `rebuildModel` invariant: verified this holds with the v4 prototype (identical llScores/tables/pHist after replay)
 
 **Effort:** S (less than 1 day — the architecture change is mechanical, adding two new constants and making the CONTEXTS loop config-aware)

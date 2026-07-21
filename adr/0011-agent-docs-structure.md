@@ -1,4 +1,4 @@
-# ADR 0015: AGENTS.md + CLAUDE.md-shim agent docs, with skills, subagents, and living ADRs
+# ADR 0011: AGENTS.md + CLAUDE.md-shim agent docs, with skills, subagents, and living ADRs
 
 ## Context
 

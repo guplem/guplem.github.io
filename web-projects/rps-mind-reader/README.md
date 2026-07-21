@@ -38,7 +38,7 @@ other; it beats the earlier ensemble both on that battery and on held-out
 opponents. It's tiny, trains instantly, runs fully offline, and is a better fit for
 rock-paper-scissors than a neural network would be. See
 [ADR 0001](adr/0001-custom-statistical-predictor-no-ml-library.md) for the
-reasoning, and [root ADR 0009](../../adr/0009-localstorage-for-private-session-persistence.md)
+reasoning, and [root ADR 0007](../../adr/0007-localstorage-for-private-session-persistence.md)
 for why state is kept in `localStorage`.
 
 ## How to Run

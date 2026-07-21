@@ -1,8 +1,8 @@
-# ADR 0016: Red-green TDD for testable logic, DOM rendering exempt
+# ADR 0012: Red-green TDD for testable logic, DOM rendering exempt
 
 ## Context
 
-The repo had roughly 400 Bun tests (399 across 16 files when this ADR was written) and a required CI check (root ADR 0013), plus a documented convention that visual/DOM rendering code is not tested. Nothing, however, required tests to be written first, so logic could still land test-last or untested until review caught it. Merging to `main` deploys the live site immediately.
+The repo had roughly 400 Bun tests (399 across 16 files when this ADR was written) and a required CI check (root ADR 0009), plus a documented convention that visual/DOM rendering code is not tested. Nothing, however, required tests to be written first, so logic could still land test-last or untested until review caught it. Merging to `main` deploys the live site immediately.
 
 ## Decision
 

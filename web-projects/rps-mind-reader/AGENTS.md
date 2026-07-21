@@ -23,7 +23,7 @@ two evaluation harnesses (`benchmark.js`, `bench/`).
 
 - `decide(model, rng)` is **PURE**: reads the model, never mutates, never sees the live move.
 - `learn(model, p, a)` is **DETERMINISTIC** (no `Math.random` / `Date`) so `rebuildModel(rounds)`
-  reproduces the exact model. Persistence stores **rounds, not the model** (root ADR 0009); the float
+  reproduces the exact model. Persistence stores **rounds, not the model** (root ADR 0007); the float
   counts from `COUNT_DECAY` are rebuilt on load. Any new state in `learn()` must be replayable
   from history alone.
 - Dependency-free, microsecond-cheap (runs per-round on a phone).

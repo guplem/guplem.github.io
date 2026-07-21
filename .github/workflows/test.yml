@@ -3,7 +3,7 @@ name: Tests
 # Runs the whole test suite on every pull request and on pushes to main.
 # A failing test fails this job; with branch protection on main marking it a
 # required check, a pull request with failing tests cannot be merged.
-# See adr/0013-github-actions-ci-for-bun-tests.md.
+# See adr/0009-github-actions-ci-for-bun-tests.md.
 on:
   pull_request:
   push:

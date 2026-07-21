@@ -71,7 +71,7 @@ python -m http.server 8000
 ```
 No linter or package manager for the main site. Web-projects use Bun's test runner (`bun test`) for their pure logic -- see `web-projects/AGENTS.md`.
 
-**CI:** `.github/workflows/test.yml` runs `bun test .` (the whole suite: web-projects tests, the data validation test, the `textCore` tests, and the SEO-artifact drift tests in `scripts/`) on every pull request and push to `main`, and it is a required status check on `main` -- a PR with a failing test cannot be merged. Keep tests green; a new web-project's tests are picked up automatically. See ADR 0013.
+**CI:** `.github/workflows/test.yml` runs `bun test .` (the whole suite: web-projects tests, the data validation test, the `textCore` tests, and the SEO-artifact drift tests in `scripts/`) on every pull request and push to `main`, and it is a required status check on `main` -- a PR with a failing test cannot be merged. Keep tests green; a new web-project's tests are picked up automatically. See ADR 0009.
 
 Whenever you need to confirm the code still passes, delegate to the `validate` agent (it runs the checks the way CI does).
 
@@ -107,7 +107,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 ### Web Projects
 
-`web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site -- except the `web-projects/index.html` directory index, which is data-driven and reuses the site's global CSS (see ADR 0011). See `web-projects/AGENTS.md` for detailed guidance when working there.
+`web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site -- except the `web-projects/index.html` directory index, which is data-driven and reuses the site's global CSS (see ADR 0008). See `web-projects/AGENTS.md` for detailed guidance when working there.
 
 ## Key Patterns and Gotchas
 
@@ -121,7 +121,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Masonry layout:** Work cards use JS-based column balancing (not CSS Grid). `displayFilteredWorks()` recalculates on resize (debounced 100ms).
 
-**Generated SEO artifacts (never hand-edit):** `sitemap.xml` and the `<!-- BEGIN GENERATED:<NAME> -->` ... `<!-- END GENERATED:<NAME> -->` blocks in `index.html` and `web-projects/index.html` are derived from `data/` by `bun scripts/generateSitemap.js` and `bun scripts/generateSeoBlocks.js` (see ADR 0014). After any edit to `data/info.json` or `data/projects/*.json`, run both scripts (automatic with the lefthook pre-commit hook); CI drift tests fail otherwise. The static head metadata in `index.html` (title/description) must stay identical to `web-title`/`web-description` in `data/info.json` (enforced by a drift test in `scripts/generateSeoBlocks.test.js`).
+**Generated SEO artifacts (never hand-edit):** `sitemap.xml` and the `<!-- BEGIN GENERATED:<NAME> -->` ... `<!-- END GENERATED:<NAME> -->` blocks in `index.html` and `web-projects/index.html` are derived from `data/` by `bun scripts/generateSitemap.js` and `bun scripts/generateSeoBlocks.js` (see ADR 0010). After any edit to `data/info.json` or `data/projects/*.json`, run both scripts (automatic with the lefthook pre-commit hook); CI drift tests fail otherwise. The static head metadata in `index.html` (title/description) must stay identical to `web-title`/`web-description` in `data/info.json` (enforced by a drift test in `scripts/generateSeoBlocks.test.js`).
 
 **Adding a new project:** For web-projects, use the `/add-web-project` command -- it automates the full scaffolding checklist. For other projects, see `data/AGENTS.md` for the data-only steps.
 
@@ -131,7 +131,7 @@ New behaviour in pure logic is developed **test-first, red-green**: write a fail
 
 - Applies to all pure logic: web-project game/tool logic, `js/utils/textCore.js`-style modules, data validation, predictor logic. `web-projects/AGENTS.md` holds the per-project test checklist.
 - The existing exemption stands: visual/DOM rendering code does not need test coverage. Keep DOM glue thin and push anything worth testing into a pure module so it is testable.
-- The gate: CI runs `bun test .` on every PR and the `test` check is required on `main` (root ADR 0013), so red tests cannot merge. Rationale: `adr/0016-red-green-tdd-for-testable-logic.md`.
+- The gate: CI runs `bun test .` on every PR and the `test` check is required on `main` (root ADR 0009), so red tests cannot merge. Rationale: `adr/0012-red-green-tdd-for-testable-logic.md`.
 
 ## Architecture Decision Records (ADRs)
 
@@ -152,12 +152,12 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0004](adr/0004-js-masonry-layout.md) | JS-based masonry layout instead of CSS Grid |
 | [0005](adr/0005-cdn-for-dependencies.md) | esm.sh CDN for the marked JS dependency; fonts are self-hosted, not CDN-loaded |
 | [0006](adr/0006-url-as-state-for-web-projects.md) | URL query params as source of truth for shareable web-projects |
-| [0009](adr/0009-localstorage-for-private-session-persistence.md) | localStorage for private-session persistence in web-projects |
-| [0011](adr/0011-web-projects-index-from-portfolio-data.md) | Web-projects index page derived from portfolio data (not self-contained) |
-| [0013](adr/0013-github-actions-ci-for-bun-tests.md) | GitHub Actions CI runs the full Bun test suite on pull requests |
-| [0014](adr/0014-pre-commit-generated-static-seo-content.md) | Pre-commit generated static SEO content (sitemap + HTML fallback blocks) |
-| [0015](adr/0015-agent-docs-structure.md) | AGENTS.md root map + shim, skills, area docs are AGENTS.md + CLAUDE.md shim pairs |
-| [0016](adr/0016-red-green-tdd-for-testable-logic.md) | Red-green TDD mandatory for pure logic; DOM rendering exempt |
+| [0007](adr/0007-localstorage-for-private-session-persistence.md) | localStorage for private-session persistence in web-projects |
+| [0008](adr/0008-web-projects-index-from-portfolio-data.md) | Web-projects index page derived from portfolio data (not self-contained) |
+| [0009](adr/0009-github-actions-ci-for-bun-tests.md) | GitHub Actions CI runs the full Bun test suite on pull requests |
+| [0010](adr/0010-pre-commit-generated-static-seo-content.md) | Pre-commit generated static SEO content (sitemap + HTML fallback blocks) |
+| [0011](adr/0011-agent-docs-structure.md) | AGENTS.md root map + shim, skills, area docs are AGENTS.md + CLAUDE.md shim pairs |
+| [0012](adr/0012-red-green-tdd-for-testable-logic.md) | Red-green TDD mandatory for pure logic; DOM rendering exempt |
 
 ### Per-project ADRs
 

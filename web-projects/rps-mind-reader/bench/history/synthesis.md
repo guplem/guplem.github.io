@@ -107,7 +107,7 @@ predictor.js:259 and the count-bump loop starting at :261):
 - Microsecond-cheap: Edit D is one O(active-keys) loop/round (~50-90 keys at steady state).
   Agent 2 timed COUNT_DECAY at ~12-13 us/round (no measurable increase over baseline's ~13.5us).
 - No effect on `game.js` `normalizeState()`/`toCount` `Math.floor` (Agent 1's check): the
-  predictor model is never serialized through that path — ADR 0009 stores rounds, not the model.
+  predictor model is never serialized through that path — ADR 0007 stores rounds, not the model.
 
 ---
 
@@ -306,7 +306,7 @@ opponents; overall net on those same opponents is solidly positive (+43% noisy, 
    README ~30 min; optional benchmark.js opponent promotion ~1 h.
 - **Rollout:** Single-file production change behind two constants. `COUNT_DECAY=1.0` and
    removing the `Math.max` reverts to exact current behavior — trivial kill switch. No data
-   migration: ADR 0009 stores rounds (not the model), and `rebuildModel` regenerates float
+   migration: ADR 0007 stores rounds (not the model), and `rebuildModel` regenerates float
    tables on load, so existing localStorage sessions upgrade transparently on next load.
 - **Risk: low.**
   - Determinism/replay risk: retired — verified float-exact replay on a switching sequence.
