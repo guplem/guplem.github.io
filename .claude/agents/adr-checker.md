@@ -36,12 +36,12 @@ This list is for **consult** mode: areas where a decision may already exist that
 - **JS masonry layout (root ADR 0004)** - changing the work-cards layout approach (`displayFilteredWorks()` column balancing) instead of CSS Grid.
 - **CDN dependencies (root ADR 0005)** - adding, removing, or changing a third-party dependency; `marked` is imported via the esm.sh CDN, with no local `node_modules`.
 - **URL-as-state (root ADR 0006)** - making a web-project's state shareable via URL query params as the source of truth.
-- **localStorage persistence (root ADR 0009)** - private per-session persistence in a web-project via localStorage.
-- **Web-projects index from portfolio data (root ADR 0011)** - the `web-projects/index.html` directory index deriving its list from `data/` instead of being self-contained.
-- **CI test gate (root ADR 0013)** - changing how tests run in CI; `bun test .` runs on every pull request and is a required check on `main`.
-- **Generated static SEO content (root ADR 0014)** - the committed `sitemap.xml` and `GENERATED:*` blocks derived from `data/` by `scripts/generateSitemap.js` and `scripts/generateSeoBlocks.js`, and the renderer-mirror contract between the JS render and the generator.
-- **Agent-docs structure (root ADR 0015)** - the root `AGENTS.md` map plus one-line `CLAUDE.md` shim, the skills, and the per-area `AGENTS.md` + `CLAUDE.md` shim pairs.
-- **Red-green TDD (root ADR 0016)** - the test-first rule for pure logic; DOM rendering is exempt.
+- **localStorage persistence (root ADR 0007)** - private per-session persistence in a web-project via localStorage.
+- **Web-projects index from portfolio data (root ADR 0008)** - the `web-projects/index.html` directory index deriving its list from `data/` instead of being self-contained.
+- **CI test gate (root ADR 0009)** - changing how tests run in CI; `bun test .` runs on every pull request and is a required check on `main`.
+- **Generated static SEO content (root ADR 0010)** - the committed `sitemap.xml` and `GENERATED:*` blocks derived from `data/` by `scripts/generateSitemap.js` and `scripts/generateSeoBlocks.js`, and the renderer-mirror contract between the JS render and the generator.
+- **Agent-docs structure (root ADR 0011)** - the root `AGENTS.md` map plus one-line `CLAUDE.md` shim, the skills, and the per-area `AGENTS.md` + `CLAUDE.md` shim pairs.
+- **Red-green TDD (root ADR 0012)** - the test-first rule for pure logic; DOM rendering is exempt.
 - **Per-project decisions** - taboo-game ADR 0001 (deterministic multiplayer without a server), liga-under-tkd ADR 0001 (Google Sheet as the live database via gviz), rps-mind-reader ADR 0001 and 0002 (custom statistical predictor, evaluation methodology), street-name-history ADR 0001 (federated geodata sources).
 
 **Not an ADR:** standard library usage, one-off bug fixes, anything a reader can derive from the code or from README.md, minor refactors.

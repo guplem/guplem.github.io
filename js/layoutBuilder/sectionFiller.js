@@ -22,7 +22,7 @@ function withoutWhitespace(text) {
  * @param {string} targetAttribute
  * @param {boolean} keepMatchingStaticFallback when true and the element's
  *   static SEO fallback already shows the same text, keep it instead of
- *   swapping (avoids replaying entrance animations -- root ADR 0014). Only
+ *   swapping (avoids replaying entrance animations -- root ADR 0010). Only
  *   for targets whose generated markup mirrors the dynamic render (the hero).
  */
 export async function fillWithData(elementId, dataRoute, dataKey, tagsToSubstitute = new Map(), parseMarkdown = true, targetAttribute = "", keepMatchingStaticFallback = false) {

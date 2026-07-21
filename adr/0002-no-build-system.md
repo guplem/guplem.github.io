@@ -15,7 +15,7 @@ Options considered:
 
 No build system, no bundler, no package manager. ES6 modules are used natively (`type="module"`). Third-party dependencies are loaded from CDN (`esm.sh`) instead of installed locally. Each sub-project in `web-projects/` is self-contained raw HTML/JS/CSS.
 
-This is the simplest approach that supports hosting multiple independent sub-projects on a single GitHub Pages site with no build step in the deploy pipeline. (A separate, test-only CI workflow runs `bun test` on pull requests and pushes to `main` -- see ADR 0013 -- but it never builds or deploys, so the deploy pipeline stays build-free.)
+This is the simplest approach that supports hosting multiple independent sub-projects on a single GitHub Pages site with no build step in the deploy pipeline. (A separate, test-only CI workflow runs `bun test` on pull requests and pushes to `main` -- see ADR 0009 -- but it never builds or deploys, so the deploy pipeline stays build-free.)
 
 **Rejected alternative:** a bundler (Webpack, Vite) with a CI build step, or a static site generator such as Jekyll. Rejected because a build step complicates hosting many independent sub-projects and adds dev-tooling dependencies and security advisories that a raw static site never carries.
 
@@ -33,4 +33,4 @@ This is the simplest approach that supports hosting multiple independent sub-pro
 - No TypeScript, no JSX, no CSS preprocessing.
 - Cannot use npm packages that require a bundler or Node.js APIs.
 
-> **Note (2026-07):** a commit-time generation step now exists: Bun scripts under `scripts/` regenerate committed SEO artifacts (`sitemap.xml` and static HTML fallback blocks), kept in sync by CI drift tests and, locally, an optional lefthook pre-commit hook. The deploy pipeline itself stays build-free, but "clone and serve" gains an optional tooling step for content edits. See ADR 0014.
+> **Note (2026-07):** a commit-time generation step now exists: Bun scripts under `scripts/` regenerate committed SEO artifacts (`sitemap.xml` and static HTML fallback blocks), kept in sync by CI drift tests and, locally, an optional lefthook pre-commit hook. The deploy pipeline itself stays build-free, but "clone and serve" gains an optional tooling step for content edits. See ADR 0010.

@@ -39,7 +39,7 @@ async function loadAllWorks() {
  *
  * KEEP IN SYNC with buildWebProjectsIndexHtml() in ../scripts/generateSeoBlocks.js:
  * the static SEO fallback mirrors this markup so render() can adopt it (root
- * ADR 0014). If a change here alters the card TEXT, the fallback is swapped in
+ * ADR 0010). If a change here alters the card TEXT, the fallback is swapped in
  * and the load flicker returns until regenerated. If it alters only the
  * markup/classes (same text), the adopted fallback keeps showing the OLD
  * markup on load and the change silently never appears -- update the generator

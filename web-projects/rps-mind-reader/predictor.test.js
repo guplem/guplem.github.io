@@ -198,7 +198,7 @@ describe("count aging (COUNT_DECAY) and score floor (LL_SCORE_FLOOR)", () => {
 
   test("rebuildModel reproduces the float model exactly across a strategy switch", () => {
     // The case COUNT_DECAY exists for: rock-bias, switch to scissors-bias, then beat-last-AI.
-    // Replay of the decayed float counts must stay byte-exact or persistence (root ADR 0009) breaks.
+    // Replay of the decayed float counts must stay byte-exact or persistence (root ADR 0007) breaks.
     const live = createModel();
     const switching = (i, rounds) => {
       if (i < 45) return i % 5 === 0 ? "paper" : "rock"; // ~rock bias

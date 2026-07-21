@@ -51,7 +51,7 @@ The two real sessions to improve on:
 - `sample-plays/human-session-1.json` — well-mixed 80-round. Current ≈ **+29% vs model of a +41% oracle**.
 - `/tmp/claude-0/-home-user-guplem-github-io/322a05da-68ea-528b-80f9-efea070f4cb3/scratchpad/match91.json` — the strategy-switcher. Current: replay **−8.8%**, vs model **+18.0%**, oracle **+26.6%**.
 
-## INVIOLABLE CONTRACT (ADR 0001 / root ADR 0009)
+## INVIOLABLE CONTRACT (ADR 0001 / root ADR 0007)
 
 - `decide()` stays **PURE** (reads only model/history; never the live move).
 - `learn()` stays **DETERMINISTIC** — no `Math.random`, no `Date`. Replaying stored rounds via `rebuildModel` must reproduce the exact live model (this is how localStorage persistence works). **Any recency/decay must be a deterministic function of round index/history**, not wall-clock.

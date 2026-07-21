@@ -12,7 +12,7 @@ You are the documentation consistency checker for guplem.github.io. You run afte
 - **README files**: the root `README.md` and each `web-projects/<project>/README.md`.
 - **`AGENTS.md`** at the root and every area `AGENTS.md` (`data/`, `js/layoutBuilder/`, `js/planetSimulation/`, `web-projects/`, and each `web-projects/<project>/`); each area's content loads through a one-line `CLAUDE.md` shim.
 - **ADRs** in root `adr/` and every `web-projects/<project>/adr/`, plus the two ADR index tables (root and per-project) in the root `AGENTS.md`.
-- **Generated static SEO artifacts** (`sitemap.xml` and the `GENERATED:*` blocks in `index.html` and `web-projects/index.html`) are derived from `data/` (root ADR 0014). Do NOT hand-check or hand-edit them; their drift tests (`scripts/generateSitemap.test.js`, `scripts/generateSeoBlocks.test.js`) verify them against `data/`. If a change should change them, note that the generators must be re-run (`bun scripts/generateSitemap.js`, `bun scripts/generateSeoBlocks.js`), not edited by hand.
+- **Generated static SEO artifacts** (`sitemap.xml` and the `GENERATED:*` blocks in `index.html` and `web-projects/index.html`) are derived from `data/` (root ADR 0010). Do NOT hand-check or hand-edit them; their drift tests (`scripts/generateSitemap.test.js`, `scripts/generateSeoBlocks.test.js`) verify them against `data/`. If a change should change them, note that the generators must be re-run (`bun scripts/generateSitemap.js`, `bun scripts/generateSeoBlocks.js`), not edited by hand.
 
 You verify and fix drift. You do not author new ADRs or decide new decisions: that is the **adr-checker** agent in maintain mode. If a change introduced a new pattern that has no ADR, note it for adr-checker rather than writing the ADR yourself.
 

@@ -1,4 +1,4 @@
-# ADR 0009: localStorage for Private-Session Persistence in Web-Projects
+# ADR 0007: localStorage for Private-Session Persistence in Web-Projects
 
 ## Context
 

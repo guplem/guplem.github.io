@@ -48,7 +48,7 @@ A gotcha may move into a skill only if a one-line warning stays inline in `AGENT
 
 ### Mechanics (this repo)
 
-- Skills live committed at `.claude/skills/<name>/SKILL.md`; subagents at `.claude/agents/<name>.md`. There are no sync scripts or mirrors; `adr/0015-agent-docs-structure.md` records why. Area docs follow the root pattern: content in `<area>/AGENTS.md`, loaded through its one-line `<area>/CLAUDE.md` shim. Edit the AGENTS.md, never the shim.
+- Skills live committed at `.claude/skills/<name>/SKILL.md`; subagents at `.claude/agents/<name>.md`. There are no sync scripts or mirrors; `adr/0011-agent-docs-structure.md` records why. Area docs follow the root pattern: content in `<area>/AGENTS.md`, loaded through its one-line `<area>/CLAUDE.md` shim. Edit the AGENTS.md, never the shim.
 - Keep every skill model-invocable (no `disable-model-invocation` frontmatter) while the skill set stays small, and write each description to name exactly when the skill applies.
 - Every `CLAUDE.md` (root or area) is a one-line `@AGENTS.md` shim; never put content in it.
 

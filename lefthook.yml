@@ -5,7 +5,7 @@
 # The real enforcement is CI: the drift tests in scripts/*.test.js fail
 # whenever the committed generated artifacts do not match the data, so a
 # commit made without this hook (or with --no-verify) cannot merge stale
-# output. See root ADR 0014.
+# output. See root ADR 0010.
 
 pre-commit:
   parallel: true

@@ -11,7 +11,7 @@ You are the validator for guplem.github.io. You run the repo's checks and report
 - After code changed, just before creating a pull request (PR) or pushing a branch.
 - Any time the caller needs to know the code still passes.
 
-You run the same check that CI runs (CI is the set of automatic checks GitHub runs on every PR): `bun test .` (root ADR 0013). It is the only required status check on `main`, so when you report PASS the merge gate on the PR passes too. There is no formatter, linter, or build step: this is a no-build vanilla HTML/CSS/JS site (root ADR 0002).
+You run the same check that CI runs (CI is the set of automatic checks GitHub runs on every PR): `bun test .` (root ADR 0009). It is the only required status check on `main`, so when you report PASS the merge gate on the PR passes too. There is no formatter, linter, or build step: this is a no-build vanilla HTML/CSS/JS site (root ADR 0002).
 
 ## Procedure
 
@@ -20,7 +20,7 @@ You run the same check that CI runs (CI is the set of automatic checks GitHub ru
 
    | Step | Command | Run when |
    |---|---|---|
-   | Tests | `bun test .` (from the repo root) | Always. Discovers and runs every `*.test.js`: the web-project suites, the data validation test (`data/projects.test.js`), the `js/utils/textCore.js` tests, and the SEO drift tests (`scripts/generateSitemap.test.js`, `scripts/generateSeoBlocks.test.js`, root ADR 0014). No install step: no `package.json`, Bun's built-in runner. Success is exit code 0 with a "N pass, 0 fail" summary. |
+   | Tests | `bun test .` (from the repo root) | Always. Discovers and runs every `*.test.js`: the web-project suites, the data validation test (`data/projects.test.js`), the `js/utils/textCore.js` tests, and the SEO drift tests (`scripts/generateSitemap.test.js`, `scripts/generateSeoBlocks.test.js`, root ADR 0010). No install step: no `package.json`, Bun's built-in runner. Success is exit code 0 with a "N pass, 0 fail" summary. |
 
 3. **Read failures carefully.** A failing SEO drift test means the committed `sitemap.xml` or `GENERATED:*` blocks are stale; the fix (named in the test) is to re-run the generators (`bun scripts/generateSitemap.js`, `bun scripts/generateSeoBlocks.js`), which is the caller's job, not yours.
 

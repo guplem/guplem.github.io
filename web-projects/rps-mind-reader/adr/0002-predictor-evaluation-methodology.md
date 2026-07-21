@@ -52,5 +52,5 @@ Add a second-tier evaluation suite under `bench/`, kept separate from the lean `
 - Cost: a second harness to maintain. Mitigated by keeping it dependency-free, deterministic,
   and runnable with one `bun` command, the same constraints as `benchmark.js`.
 
-Complements ADR 0001 (the algorithm) and root ADR 0009 (rounds-not-model persistence, which lets the
+Complements ADR 0001 (the algorithm) and root ADR 0007 (rounds-not-model persistence, which lets the
 suite replay any session deterministically).

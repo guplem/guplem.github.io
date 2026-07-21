@@ -1,6 +1,6 @@
 // Generates the crawler-facing static HTML fallback blocks inside index.html
 // and web-projects/index.html, between `<!-- BEGIN GENERATED:<NAME> -->` /
-// `<!-- END GENERATED:<NAME> -->` marker comments (root ADR 0014). The JSON in
+// `<!-- END GENERATED:<NAME> -->` marker comments (root ADR 0010). The JSON in
 // data/ stays the single hand-edited source of truth; these blocks are a
 // derived mirror so crawlers see the content without executing JavaScript.
 // The JS app clears each block and renders the dynamic version at load time.

@@ -142,7 +142,7 @@ The `if (COUNT_DECAY < 1.0)` guard means setting it to 1.0 produces the exact or
 **Risk:**
 - The benchmark `worstNet` will nominally show −0.3% vs baseline at 40 seeds; this is sampling noise verified by 1000-seed run (expected value ≈ 0).
 - The `predictor.test.js` persistence test (`expect(rebuilt.tables).toEqual(live.tables)`) will continue to pass because float equality holds for deterministic replays.
-- One concern: `game.js` `normalizeState()` at line 124 calls `toCount(n)` which does `Math.floor(n)` — but that's only for the UI game state, not the model tables. The predictor model is not serialized via this path (ADR 0009 stores rounds, not the model). Safe.
+- One concern: `game.js` `normalizeState()` at line 124 calls `toCount(n)` which does `Math.floor(n)` — but that's only for the UI game state, not the model tables. The predictor model is not serialized via this path (ADR 0007 stores rounds, not the model). Safe.
 
 **Effort:** S (< 2 hours including test verification)
 

@@ -1,5 +1,5 @@
 // Generates sitemap.xml from the portfolio data, so crawlers can discover
-// every locally hosted web-project without executing JavaScript (root ADR 0014).
+// every locally hosted web-project without executing JavaScript (root ADR 0010).
 //
 // Run: bun scripts/generateSitemap.js
 //
@@ -36,7 +36,7 @@ export function buildSitemapXml(works) {
   const entries = urls.map((url) => `  <url>\n    <loc>${url}</loc>\n  </url>`).join("\n");
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
-    `<!-- GENERATED FILE - do not edit by hand. Regenerate with: bun scripts/generateSitemap.js (root ADR 0014) -->`,
+    `<!-- GENERATED FILE - do not edit by hand. Regenerate with: bun scripts/generateSitemap.js (root ADR 0010) -->`,
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
     entries,
     `</urlset>`,

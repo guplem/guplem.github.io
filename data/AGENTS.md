@@ -16,7 +16,7 @@ All portfolio content is data-driven. The site never hardcodes content in HTML. 
 1. Create `data/projects/<slug>.json` (kebab-case filename derived from the title)
 2. Add `"$schema": "../schemas/project.schema.json"` as the first field for editor support
 3. Add the filename to the `projects` array in `data/projects/index.json`
-4. Regenerate the derived SEO artifacts: `bun scripts/generateSitemap.js && bun scripts/generateSeoBlocks.js` (automatic with the lefthook pre-commit hook; CI drift tests fail if skipped -- root ADR 0014)
+4. Regenerate the derived SEO artifacts: `bun scripts/generateSitemap.js && bun scripts/generateSeoBlocks.js` (automatic with the lefthook pre-commit hook; CI drift tests fail if skipped -- root ADR 0010)
 
 If the project is a **web-project** hosted in `web-projects/`, follow the full checklist in `web-projects/AGENTS.md` instead. It includes these data steps plus the additional steps for the project folder, README, and documentation updates.
 

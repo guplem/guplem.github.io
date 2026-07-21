@@ -1,4 +1,4 @@
-# ADR 0013: GitHub Actions CI to Run Bun Tests on Pull Requests
+# ADR 0009: GitHub Actions CI to Run Bun Tests on Pull Requests
 
 ## Context
 
