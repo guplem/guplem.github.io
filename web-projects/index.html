@@ -8,6 +8,12 @@
     <meta name="description" content="Standalone web experiments, games, and tools hosted on triunitystudios.com." />
     <link rel="canonical" href="https://triunitystudios.com/web-projects/" />
 
+    <!-- Warm the connection to the esm.sh CDN early. `marked` is a nested module
+         import (js/utils/textUtils.js), invisible to the preload scanner, so the
+         browser discovers it late. This preconnect does the DNS + TLS handshake
+         ahead of time, off the render path. See root ADR 0005. -->
+    <link rel="preconnect" href="https://esm.sh" crossorigin />
+
     <link rel="preload" href="../resources/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="../css/global/fonts.css" />
 
