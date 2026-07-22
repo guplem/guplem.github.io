@@ -28,6 +28,13 @@
       }
     </script>
 
+    <!-- Warm the connection to the esm.sh CDN early. `marked` is a nested module
+         import (js/utils/textUtils.js), so the browser's preload scanner cannot
+         see it in this HTML and only discovers it late, after our JS runs. This
+         preconnect does the DNS + TLS handshake ahead of time, off the render path
+         for the markdown-rendered content. See root ADR 0005. -->
+    <link rel="preconnect" href="https://esm.sh" crossorigin />
+
     <link rel="preload" href="resources/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="css/global/fonts.css" />
 
@@ -75,7 +82,7 @@
         <div class="section-label" id="aboutMeTitle"></div>
         <div class="about-grid">
           <div class="about-photo">
-            <img id="aboutMeImage" alt="" />
+            <img id="aboutMeImage" alt="" loading="lazy" />
           </div>
           <div class="about-text" id="aboutMeContents">
             <!-- BEGIN GENERATED:ABOUT -->
