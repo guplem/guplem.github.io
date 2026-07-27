@@ -20,6 +20,10 @@
   ],
   "links": [
     {
+      "type": "download",
+      "url": "resources/deliverables/Minecraft/Worlds/201305 - Zombie Survival.rar"
+    },
+    {
       "type": "play",
       "url": "https://youtu.be/chfp5sMP97o"
     }

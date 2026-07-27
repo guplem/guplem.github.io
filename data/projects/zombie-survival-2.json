@@ -20,6 +20,10 @@
   ],
   "links": [
     {
+      "type": "download",
+      "url": "resources/deliverables/Minecraft/Worlds/201309 - Zombie Survival 2.rar"
+    },
+    {
       "type": "play",
       "url": "https://youtu.be/PdrY4Uvafeo"
     }

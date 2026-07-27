@@ -20,6 +20,10 @@
   ],
   "links": [
     {
+      "type": "download",
+      "url": "resources/deliverables/Minecraft/Worlds/201308 - TheRooms 1-2-2.rar"
+    },
+    {
       "type": "play",
       "url": "https://youtu.be/xN4IEYy9JII"
     }
