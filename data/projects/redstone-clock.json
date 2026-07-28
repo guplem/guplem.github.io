@@ -18,6 +18,10 @@
   ],
   "links": [
     {
+      "type": "download",
+      "url": "resources/deliverables/Minecraft/Worlds/201302 - Minecraft Redstone Clock by MCyPoy.rar"
+    },
+    {
       "type": "play",
       "url": "https://youtu.be/IStbIAZnC3Q"
     }

@@ -20,6 +20,10 @@
   ],
   "links": [
     {
+      "type": "download",
+      "url": "resources/deliverables/Minecraft/Worlds/201304 - Defend your Base 2.rar"
+    },
+    {
       "type": "play",
       "url": "https://youtu.be/tx8Pq1m49Vk"
     }
