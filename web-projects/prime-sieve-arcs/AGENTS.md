@@ -4,49 +4,107 @@
 
 ## What this is
 
-A canvas animation of the Sieve of Eratosthenes. A front sweeps along the number line. Each prime hops over its own multiples, and each hop is a half circle. `README.md` explains the idea for a reader; this file holds the numbers and the rules that the code must keep.
+A canvas animation of the Sieve of Eratosthenes. Every number sits on the line as a chip.
+A **scanner** walks the line and names a prime whenever it lands on a number that nothing
+has crossed out. Each prime then **hops** over its own multiples, one half circle a hop,
+alternating above and below the line. A hop that lands on a number crosses it out.
 
-## The reference frame is the spec
+`README.md` explains the idea for a reader. This file holds the numbers and the rules that
+the code must keep.
 
-The look copies one video frame. That frame lives at `reference/inspiration-frame.webp`, committed on purpose so the source of the art style stays next to the code. No page links to it. The original maker is unknown: the frame carries no author or title.
+## The reference frames are the spec
 
-Nothing was copied from the source video. The construction and the palette were measured out of that frame, pixel by pixel, with a Hough transform (a way to find shapes in an image) for the arcs and direct pixel reads for the colours. **Treat the frame as the reference for any change to the look.** These are the measurements:
+The look copies frames of one video. The first frame is committed at
+`reference/inspiration-frame.webp`, on purpose, so the source of the art style stays next
+to the code. No page links to it. The original maker is unknown: the frames carry no author
+and no title.
+
+Nothing was copied from the source video. The construction and the palette were measured
+out of those frames, pixel by pixel, with a Hough transform (a way to find shapes in an
+image) for the arcs and direct pixel reads for the colours. **Treat the frames as the
+reference for any change to the look.**
 
 | Measured | Value |
 |---|---|
-| Scale of the frame | 23.1 pixels per number, number 0 at x = 179 |
+| Scale of the first frame | 23.1 pixels per number, number 0 at x = 179 |
 | Every arc diameter | Exactly a prime: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 |
 | Chain for a prime `p` | `p^2p`, `2p v 3p`, `3p^4p`, ... (`^` above the line, `v` below) |
 | First hop | Always above the line, from `p` to `2p`, never from `p*p` |
-| Arc core colour | `#e6e689`, a pale yellow-green, about 1.3 px wide |
+| Arc core colour | Pale warm yellow, about 1.4 px wide |
 | Arc companion strand | Red-orange, a couple of pixels beside the core |
-| Violet halo under a prime | `(138,88,138)` half a number out, `(75,49,79)` one number out, `(17,14,17)` three numbers out |
 | Background | `#050505` with faint dust and a vignette |
-| Number line | A single faint violet-grey row of pixels |
 
-`sieve.test.js` pins the chains that were measured in the frame, so a change to the hop rule fails a test.
+### What the later frames added
+
+Three frames of the same run, later in the sweep, fixed the behaviour over time. They are
+not committed (they came as pasted images with no files), so the measurements are here:
+
+| Measured | Value |
+|---|---|
+| Numbers on screen | All of them, from the first frame, as white chips with digits |
+| A crossed number | Loses its digits and its white face, leaving a bare glowing ring |
+| A prime | Turns amber, with its digits, when its own chain leaves |
+| 1 | Stays white for ever: neither prime nor a multiple |
+| Zoom | 97, 68 and 26 pixels a number across three frames; 20, 29 and 78 numbers on screen |
+| Camera anchor | 1 stays at the left edge, the leading pen sits near the right edge |
+| Pens | Staggered, never one shared front; the newest chains trail the leading arcs |
+| Amber against white | Amber ran to 17 while 19 was still white, and to 37 while 41 was still white |
+| Lines | They do not meet cleanly where they cross the line, a hop sits a hair off its neighbour |
+| Digits | A serif face |
+
+## The model
+
+Everything is a function of one number, the seconds elapsed. That keeps the whole thing
+testable and lets any frame be drawn directly.
+
+- `scannerAt(t)` walks at `scanSpeed` numbers a second, after an intro where it waits on 2.
+- `penAt(p, t)` runs at `penRatio` times that speed, from the moment the scanner reached `p`.
+  2 is the exception: it leaves at once, which is the opening of the animation.
+- `crossTime(n)` is when the chain of `n`'s smallest prime factor lands on it.
+- `numberStateAt(n, t)` gives the chip its look: `unknown`, `prime` or `crossed`, plus a
+  fade for the change between looks.
+
+**The pens must stay faster than the scanner.** That single fact is what makes the sieve
+honest: the chain of a composite's smallest prime factor left earlier and moves faster, so
+it always crosses the number before the scanner arrives. A ratio of 1 or less would let the
+scanner call a composite prime. Two tests hold this margin, one at the default pace and one
+across a range of ratios.
 
 ## Files
 
 | File | Role |
 |---|---|
-| `sieve.js` | Pure logic: primes, hop geometry, canvas sweep angles, the camera maths and the timeline state machine. No DOM. |
+| `sieve.js` | Pure logic: primes, hop geometry, canvas sweep angles, pace, chip states, the kink offset, camera maths, timeline state machine. No DOM. |
 | `sieve.test.js` | Bun tests for every export of `sieve.js`. |
-| `render.js` | Canvas, layers, input, HUD. Holds no maths of its own. |
+| `render.js` | Canvas, input, HUD. Holds no maths of its own. |
 | `index.html`, `style.css` | Page and overlay. |
-| `reference/inspiration-frame.webp` | The frame the look comes from. Never delete it. |
-| `adr/0001-...`, `adr/0002-...` | Why the construction and the layering are what they are. |
+| `reference/inspiration-frame.webp` | The first reference frame. Never delete it. |
+| `adr/0001-...`, `adr/0002-...` | Why the construction and the renderer are what they are. |
 
 ## Rules
 
-- **Keep maths out of `render.js`.** Anything that can be checked without a canvas belongs in `sieve.js` with a test. The timeline (sweep, hold, fade, restart) lives there for this reason, because a browser could not be driven in the session that wrote it.
-- **Light painting, not redraw.** A finished hop is stroked once onto the trail layer and never again. Cost per frame stays flat as the picture fills up. Only the hops still growing are drawn every frame.
-- **`replay()` rebuilds both painted layers** from the timeline alone. Call it after anything that invalidates them: a resize, a seek, a restart. The picture must always be a pure function of `(frontier, view size)`.
-- **The camera never zooms during a sweep.** `CAMERA_FILL` fits a little less than the whole sweep, so the front leaves the right edge before the end and the finished picture is a crop, like the reference frame. Changing this breaks the light painting, which assumes a fixed scale.
-- **Chips only mark primes** (and 1). Composites stay unmarked: the empty spots are the point of the sieve.
+- **Keep maths out of `render.js`.** Anything checkable without a canvas belongs in
+  `sieve.js` with a test. The pace, the chip states and the timeline all live there, because
+  a browser could not be driven in the session that wrote them.
+- **Redraw the whole frame.** The camera zooms out, so no drawing can be cached and reused
+  (ADR 0002). Cache only what does not depend on the zoom: the background, and one glow
+  sprite per chip look.
+- **The picture must stay a pure function of the elapsed time.** No counters, no
+  "already drawn" sets. That is what makes `?at=` and the resize path correct for free.
+- **Chips mark every number.** Composites are not hidden, they are emptied to rings. The
+  ring pattern is the result of the sieve, so do not skip drawing them.
+- **Keep the kink.** `hopWobble` puts each hop a hair off its neighbour where they meet.
+  It is copied from the source frames on purpose.
 
 ## Gotchas
 
-- **`Number(null)` is `0`, not `NaN`.** A missing URL parameter read with `Number(params.get(name))` silently becomes 0 and then clamps to the minimum. Guard with `params.has(name)` first. This bug once made `limit` 12 instead of 120.
-- **Angles run in canvas order.** Canvas y grows downwards, so a hop above the line sweeps from `PI` to `2*PI` (through `3*PI/2`, the top) and a hop below the line from `PI` down to `0`. `hopSweep` owns this; do not re-derive it.
-- **A hidden tab never fires `requestAnimationFrame`.** A headless browser without a shown window renders one frame and stops, so the animation cannot be checked that way. Use `?at=<number>` to capture a frame instead.
+- **`Number(null)` is `0`, not `NaN`.** A missing URL parameter read with
+  `Number(params.get(name))` silently becomes 0 and then clamps to the minimum. Guard with
+  `params.has(name)` first. This bug once made `limit` 12 instead of 120.
+- **Angles run in canvas order.** Canvas y grows downwards, so a hop above the line sweeps
+  from `PI` to `2*PI` (through `3*PI/2`, the top) and a hop below the line from `PI` down to
+  `0`. `hopSweep` owns this; do not re-derive it.
+- **A hidden tab never fires `requestAnimationFrame`.** A headless browser without a shown
+  window renders one frame and stops, so the animation cannot be watched that way. Use
+  `?at=<number>` to capture any frame instead. On Windows a headless window also cannot go
+  narrower than 500 pixels, so a phone-width layout cannot be screenshotted there either.

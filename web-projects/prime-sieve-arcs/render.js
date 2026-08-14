@@ -1,12 +1,10 @@
 // Canvas, timing and DOM glue. All sieve and geometry maths lives in sieve.js.
 //
-// Three layers stack up every frame:
-//   background (repainted on resize)  -> dust and vignette
-//   glow       (light painting)       -> the violet halo under every prime
-//   trail      (light painting)       -> every hop that already landed
-// The live layer draws straight on the visible canvas: the hops still growing, their
-// pen tips, and the number chips. Light painting keeps the cost per frame flat: a
-// finished hop is stroked once and never again.
+// The whole picture is a function of one number: the seconds elapsed. From that come the
+// scanner, every pen, every chip state and the zoom, so the frame is redrawn from scratch
+// each time and any moment can be reached directly (see the `at` parameter). The camera
+// zooms out to keep 1 on the left and the leading pen near the right edge, which is why
+// nothing can be cached: at a new zoom, every arc lands on new pixels.
 
 import {
   primesUpTo,
@@ -15,8 +13,13 @@ import {
   completedHopCount,
   hopArc,
   hopSweep,
+  hopWobble,
   pixelsPerUnit,
   projectUnit,
+  scannerAt,
+  leadAt,
+  penAt,
+  numberStateAt,
   createTimeline,
   seekTimeline,
   advanceTimeline,
@@ -34,44 +37,53 @@ const readNumber = (name, fallback, min, max) => {
   return Math.min(Math.max(raw, min), max);
 };
 
-// The camera fits a little less than the whole sweep, so the sieve front runs off the
-// right edge before the end and the finished picture is a crop, like the reference frame.
-const CAMERA_FILL = 0.93;
-
 const PADDING = (width) => Math.min(Math.max(width * 0.045, 14), 90);
 
-// The reference frame gives a number about 22 pixels of room. Keep that scale on every
-// screen and let the sweep length follow the window, so the picture always looks the
-// same and only runs shorter on a small screen. The sweep length is fixed at load: a
-// resize rescales the same sweep instead of starting a different one.
+// The camera fits a little less than the leading pen, so the picture is a crop with arcs
+// running off the right edge. Early on it holds a minimum span, so the opening shows a
+// row of numbers waiting rather than a huge close-up of the first three.
+const CAMERA_FILL = 0.92;
+const MIN_SPAN = 20;
+
+const SPEED = readNumber("speed", 4, 0.2, 40); // numbers per second for the scanner
+const PACE = {
+  scanSpeed: SPEED,
+  penRatio: readNumber("ratio", 2, 1.05, 6), // pens run this much faster than the scanner
+  introSeconds: 0.7, // 2 draws on its own for this long
+};
+
+// A sweep to `limit` ends with the leading pen near 2 * limit, so aim for about 26 pixels
+// a number by then: the density of the last reference frame, where the digits on the
+// primes are still readable. Fixed at load, so a resize rescales the same sweep instead
+// of starting a different one.
 const autoLimit = () => {
   const width = window.innerWidth;
   const usable = Math.max(width - 2 * PADDING(width), 240);
-  return Math.min(Math.max(Math.round(usable / 22 / CAMERA_FILL), 24), 400);
+  return Math.min(Math.max(Math.round(usable / (26 * 2 * CAMERA_FILL)), 18), 400);
 };
 
-const LIMIT = Math.round(readNumber("limit", autoLimit(), 12, 1200));
-const START_AT = params.has("at") ? readNumber("at", 0, 0, LIMIT) : null; // deep link to one frame
-const SPEED = readNumber("speed", 4, 0.2, 60); // numbers per second
+const LIMIT = Math.round(readNumber("limit", autoLimit(), 8, 1200));
+const START_AT = params.has("at") ? readNumber("at", 2, 0, LIMIT) : null; // deep link to one frame
 const LOOP = params.get("loop") !== "0";
-const HOLD_SECONDS = 3; // pause on the finished picture before looping
-const FADE_SECONDS = 0.9;
+const HOLD_SECONDS = 3;
+const FADE_SECONDS = 0.9; // the fade out at the end of a sweep
+const CHIP_FADE = 0.45; // how long a chip takes to change look
+const KINK_PX = 1.7; // how far a hop sits off its neighbour where they meet
 
-// Sampled from the reference frame, pixel by pixel: a pale yellow-green core with a
-// red-orange strand beside it, over a violet halo on the number line.
+// Sampled from the reference frames: warm lines, white chips for numbers still in play,
+// amber for a prime that has started hopping, a bare ring for one that is crossed out.
 const COLORS = {
   space: "#050505",
-  axis: "rgba(150, 120, 150, 0.16)",
-  haloWide: "rgba(190, 58, 14, 0.07)",
-  strand: "rgba(214, 88, 22, 0.5)",
-  core: "rgba(226, 228, 132, 0.72)",
-  tip: "rgba(246, 246, 190, 1)",
-  chipFill: "#e69b29",
-  chipRing: "rgba(236, 201, 77, 0.95)",
-  chipText: "#2a1605",
-  oneFill: "#f2f5fb",
-  oneRing: "rgba(159, 180, 208, 0.95)",
-  oneText: "#17202b",
+  axis: "rgba(190, 196, 214, 0.1)",
+  halo: "rgba(190, 74, 16, 0.06)",
+  strand: "rgba(216, 106, 24, 0.62)",
+  core: "rgba(246, 210, 128, 1)",
+  tip: "rgba(255, 244, 196, 1)",
+  chipInk: "#12161d",
+  chipFace: "#f3f5f9",
+  primeFace: "#eeb04a",
+  primeInk: "#2a1605",
+  ring: "rgba(226, 233, 246, 0.5)",
 };
 
 // ---------------------------------------------------------------- state
@@ -79,20 +91,16 @@ const COLORS = {
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const background = document.createElement("canvas");
-const glow = document.createElement("canvas");
-const trail = document.createElement("canvas");
 
 const TIMELINE = {
-  speed: SPEED,
   limit: LIMIT,
   loop: LOOP,
   holdSeconds: HOLD_SECONDS,
   fadeSeconds: FADE_SECONDS,
+  pace: PACE,
 };
 
 const primes = primesUpTo(LIMIT);
-const drawnHops = new Map(); // prime -> hops already stamped on the trail layer
-let sparks = []; // brief flashes where a hop lands on a composite
 let timeline = createTimeline();
 let paused = false;
 let lastTimestamp = null;
@@ -114,21 +122,28 @@ function layout() {
   view.height = window.innerHeight;
   view.dpr = Math.min(window.devicePixelRatio || 1, 2.5);
   view.padding = PADDING(view.width);
-  view.ppu = pixelsPerUnit(view.width, LIMIT * CAMERA_FILL, view.padding);
-  view.axisY = Math.round(view.height * 0.53);
+  view.axisY = Math.round(view.height * 0.52);
 
   sizeLayer(canvas);
-  sizeLayer(glow);
-  sizeLayer(trail);
   paintBackground(sizeLayer(background));
-  replay();
+}
+
+/** Set the zoom for this frame: 1 stays put on the left, the lead sits near the edge. */
+function aimCamera(lead) {
+  const span = Math.max(MIN_SPAN, lead * CAMERA_FILL);
+  view.ppu = pixelsPerUnit(view.width, span, view.padding);
 }
 
 const x = (unit) => projectUnit(unit, view.ppu, view.padding);
+const lastVisibleNumber = () => Math.ceil((view.width - view.padding) / view.ppu) + 1;
 
 // ---------------------------------------------------------------- background
 
-function dustPattern(c) {
+function paintBackground(c) {
+  c.fillStyle = COLORS.space;
+  c.fillRect(0, 0, view.width, view.height);
+
+  // dust, so the black is not flat
   const tile = document.createElement("canvas");
   tile.width = tile.height = 220;
   const tc = tile.getContext("2d");
@@ -139,19 +154,11 @@ function dustPattern(c) {
     image.data[i + 3] = speck > 0 ? 255 : 0;
   }
   tc.putImageData(image, 0, 0);
-  return c.createPattern(tile, "repeat");
-}
-
-function paintBackground(c) {
-  c.fillStyle = COLORS.space;
-  c.fillRect(0, 0, view.width, view.height);
-
   c.globalAlpha = 0.5;
-  c.fillStyle = dustPattern(c);
+  c.fillStyle = c.createPattern(tile, "repeat");
   c.fillRect(0, 0, view.width, view.height);
   c.globalAlpha = 1;
 
-  // a few soft motes, like specks of dust caught in the light
   for (let i = 0; i < 26; i++) {
     const mx = Math.random() * view.width;
     const my = Math.random() * view.height;
@@ -176,206 +183,186 @@ function paintBackground(c) {
   c.fillRect(0, view.axisY, view.width, 1);
 }
 
+/** A soft round glow, drawn once and then stretched to whatever size a chip needs. */
+function glowSprite(inner) {
+  const size = 128;
+  const sprite = document.createElement("canvas");
+  sprite.width = sprite.height = size;
+  const c = sprite.getContext("2d");
+  const halo = c.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  halo.addColorStop(0, inner);
+  halo.addColorStop(0.32, inner);
+  halo.addColorStop(1, "rgba(0, 0, 0, 0)");
+  c.fillStyle = halo;
+  c.fillRect(0, 0, size, size);
+  return sprite;
+}
+
+const GLOW = {
+  unknown: glowSprite("rgba(206, 220, 248, 0.16)"),
+  prime: glowSprite("rgba(240, 176, 74, 0.18)"),
+  crossed: glowSprite("rgba(198, 214, 246, 0.1)"),
+};
+
 // ---------------------------------------------------------------- painting
 
-function strokeHop(c, hop, clipTo) {
+/** Draw one hop, up to `clipTo`. Returns the pen point, or null if it has not started. */
+function strokeHop(c, hop, clipTo, prime, index) {
   const sweep = hopSweep(hop, clipTo);
   if (!sweep) return null;
   const { center, radius } = hopArc(hop);
   const cx = x(center);
   const r = radius * view.ppu;
+  // the hop sits a hair off the line, so neighbours meet with a small kink
+  const cy = view.axisY + hopWobble(prime, index) * KINK_PX;
 
   c.save();
   c.globalCompositeOperation = "lighter";
   c.lineCap = "round";
-  // [colour, line width, radius offset]: the offset splits the strand from the core,
-  // which is what gives the reference frame its two-tone look.
+  // [colour, line width, radius offset]: the offset splits the strand from the core
   const passes = [
-    [COLORS.haloWide, 9, 0],
-    [COLORS.strand, 1.5, 2.2],
-    [COLORS.core, 1.35, 0],
+    [COLORS.halo, 8, 0],
+    [COLORS.strand, 1.5, 2.1],
+    [COLORS.core, 1.4, 0],
   ];
   for (const [color, width, dr] of passes) {
     c.beginPath();
-    c.arc(cx, view.axisY, Math.max(r + dr, 0.5), sweep.start, sweep.end, sweep.anticlockwise);
+    c.arc(cx, cy, Math.max(r + dr, 0.5), sweep.start, sweep.end, sweep.anticlockwise);
     c.strokeStyle = color;
     c.lineWidth = width;
     c.stroke();
   }
   c.restore();
-  return { cx, r, endAngle: sweep.end };
+  return { px: cx + (r + 1) * Math.cos(sweep.end), py: cy + (r + 1) * Math.sin(sweep.end) };
 }
 
-// Stops traced from the reference frame: the violet halo keeps a long, slow tail
-// instead of fading straight to black, which is what welds the halos into one band.
-const PRIME_GLOW_STOPS = [
-  [0, "rgba(236, 190, 246, 0.72)"],
-  [0.13, "rgba(230, 148, 230, 0.44)"],
-  [0.19, "rgba(222, 142, 226, 0.31)"],
-  [0.25, "rgba(214, 136, 220, 0.24)"],
-  [0.33, "rgba(200, 128, 208, 0.16)"],
-  [0.6, "rgba(180, 116, 190, 0.095)"],
-  [0.8, "rgba(160, 104, 172, 0.05)"],
-  [1, "rgba(140, 92, 156, 0)"],
-];
-
-function stampPrimeGlow(c, unit) {
-  const r = Math.max(view.ppu * 4, 44);
-  const px = x(unit);
-  const halo = c.createRadialGradient(px, view.axisY, 0, px, view.axisY, r);
-  for (const [stop, color] of PRIME_GLOW_STOPS) halo.addColorStop(stop, color);
+function drawTip(c, point) {
   c.save();
   c.globalCompositeOperation = "lighter";
+  const halo = c.createRadialGradient(point.px, point.py, 0, point.px, point.py, 9);
+  halo.addColorStop(0, "rgba(255, 244, 196, 0.6)");
+  halo.addColorStop(1, "rgba(255, 244, 196, 0)");
   c.fillStyle = halo;
-  c.fillRect(px - r, view.axisY - r, r * 2, r * 2);
-  c.restore();
-}
-
-function chipRadius() {
-  return Math.min(Math.max(view.ppu * 0.44, 6), 13);
-}
-
-function drawChip(c, n, first) {
-  const r = chipRadius();
-  const px = x(n);
-  c.save();
+  c.fillRect(point.px - 9, point.py - 9, 18, 18);
   c.beginPath();
-  c.arc(px, view.axisY, r, 0, Math.PI * 2);
-  c.fillStyle = first ? COLORS.oneFill : COLORS.chipFill;
-  c.fill();
-  c.lineWidth = 1.2;
-  c.strokeStyle = first ? COLORS.oneRing : COLORS.chipRing;
-  c.stroke();
-  if (r >= 6) {
-    // Keep long labels inside the chip: the more digits, the smaller the type.
-    const digits = String(n).length;
-    const size = Math.max(Math.round((r * 1.9) / (digits + 0.8)), 7);
-    c.fillStyle = first ? COLORS.oneText : COLORS.chipText;
-    c.font = `700 ${size}px ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif`;
-    c.textAlign = "center";
-    c.textBaseline = "middle";
-    c.fillText(String(n), px, view.axisY + 0.5);
-  }
-  c.restore();
-}
-
-function drawTip(c, cx, r, angle) {
-  const px = cx + r * Math.cos(angle);
-  const py = view.axisY + r * Math.sin(angle);
-  c.save();
-  c.globalCompositeOperation = "lighter";
-  const halo = c.createRadialGradient(px, py, 0, px, py, 8);
-  halo.addColorStop(0, "rgba(246, 246, 190, 0.6)");
-  halo.addColorStop(1, "rgba(246, 246, 190, 0)");
-  c.fillStyle = halo;
-  c.fillRect(px - 8, py - 8, 16, 16);
-  c.beginPath();
-  c.arc(px, py, 1.4, 0, Math.PI * 2);
+  c.arc(point.px, point.py, 1.5, 0, Math.PI * 2);
   c.fillStyle = COLORS.tip;
   c.fill();
   c.restore();
 }
 
-function drawSparks(c) {
+function chipRadius() {
+  return Math.min(Math.max(view.ppu * 0.4, 2.5), 44);
+}
+
+function drawGlow(c, sprite, px, r, alpha) {
+  if (alpha <= 0.01) return;
+  const reach = r * 2.1;
   c.save();
   c.globalCompositeOperation = "lighter";
-  for (const spark of sparks) {
-    const r = 4 + 16 * (1 - spark.life);
-    const px = x(spark.unit);
-    const halo = c.createRadialGradient(px, view.axisY, 0, px, view.axisY, r);
-    halo.addColorStop(0, `rgba(255, 214, 132, ${0.5 * spark.life})`);
-    halo.addColorStop(1, "rgba(255, 214, 132, 0)");
-    c.fillStyle = halo;
-    c.fillRect(px - r, view.axisY - r, r * 2, r * 2);
-  }
+  c.globalAlpha = alpha;
+  c.drawImage(sprite, px - reach, view.axisY - reach, reach * 2, reach * 2);
   c.restore();
 }
 
-// ---------------------------------------------------------------- sieve progress
+function drawFace(c, px, r, fill, alpha) {
+  if (alpha <= 0.01) return;
+  c.save();
+  c.globalAlpha = alpha;
+  c.beginPath();
+  c.arc(px, view.axisY, r, 0, Math.PI * 2);
+  c.fillStyle = fill;
+  c.fill();
+  c.restore();
+}
 
-/** Stamp every hop and prime halo that the frontier has already passed. */
-function catchUp(withSparks) {
-  const frontier = timeline.frontier;
-  for (const p of primes) {
-    if (p > frontier) break;
-    let drawn = drawnHops.get(p);
-    if (drawn === undefined) {
-      drawn = 0;
-      drawnHops.set(p, 0);
-      stampPrimeGlow(glow.getContext("2d"), p);
-    }
-    const done = completedHopCount(p, frontier);
-    const trailCtx = trail.getContext("2d");
-    for (; drawn < done; drawn++) {
-      const hop = hopAt(p, drawn);
-      strokeHop(trailCtx, hop, hop.to);
-      if (withSparks) sparks.push({ unit: hop.to, life: 1 });
-    }
-    drawnHops.set(p, drawn);
+function drawDigits(c, n, px, r, ink, alpha) {
+  if (alpha <= 0.01) return;
+  const digits = String(n).length;
+  const size = (r * 1.85) / (digits + 0.65);
+  if (size < 5.5) return;
+  c.save();
+  c.globalAlpha = alpha;
+  c.fillStyle = ink;
+  c.font = `${Math.round(size)}px Georgia, "Times New Roman", serif`;
+  c.textAlign = "center";
+  c.textBaseline = "middle";
+  c.fillText(String(n), px, view.axisY + size * 0.06);
+  c.restore();
+}
+
+/**
+ * Every number carries a chip. It starts white with its digits on, turns amber when its
+ * own chain leaves, and empties out to a bare ring once a hop lands on it.
+ */
+function drawChip(c, n, look) {
+  const r = chipRadius();
+  const px = x(n);
+  const fade = look.fade;
+
+  if (look.state === "crossed") {
+    drawGlow(c, GLOW.crossed, px, r, 1);
+    drawFace(c, px, r, COLORS.chipFace, 1 - fade);
+    drawDigits(c, n, px, r, COLORS.chipInk, 1 - fade);
+    c.save();
+    c.globalCompositeOperation = "lighter";
+    c.globalAlpha = 0.35 + 0.65 * fade;
+    c.beginPath();
+    c.arc(px, view.axisY, r, 0, Math.PI * 2);
+    c.strokeStyle = COLORS.ring;
+    c.lineWidth = Math.max(r * 0.1, 1);
+    c.stroke();
+    c.restore();
+    return;
   }
-}
 
-/** Rebuild both light-painting layers from scratch, for a resize or a restart. */
-function replay() {
-  glow.getContext("2d").clearRect(0, 0, view.width, view.height);
-  trail.getContext("2d").clearRect(0, 0, view.width, view.height);
-  drawnHops.clear();
-  stampPrimeGlow(glow.getContext("2d"), 1);
-  catchUp(false);
-}
+  if (look.state === "prime") {
+    drawGlow(c, GLOW.unknown, px, r, 1 - fade);
+    drawGlow(c, GLOW.prime, px, r, fade);
+    drawFace(c, px, r, COLORS.chipFace, 1 - fade);
+    drawFace(c, px, r, COLORS.primeFace, fade);
+    drawDigits(c, n, px, r, COLORS.chipInk, 1 - fade);
+    drawDigits(c, n, px, r, COLORS.primeInk, fade);
+    return;
+  }
 
-/** Jump the sieve straight to a number, with no flashes left over from the way there. */
-function seek(unit) {
-  timeline = seekTimeline(unit, TIMELINE);
-  sparks = [];
-  replay();
-}
-
-function restart() {
-  seek(0);
+  drawGlow(c, GLOW.unknown, px, r, 1);
+  drawFace(c, px, r, COLORS.chipFace, 1);
+  drawDigits(c, n, px, r, COLORS.chipInk, 1);
 }
 
 // ---------------------------------------------------------------- frame
 
-function update(dt) {
-  if (paused) return;
-
-  for (const spark of sparks) spark.life -= dt / 0.55;
-  if (sparks.length) sparks = sparks.filter((s) => s.life > 0);
-
-  const before = timeline;
-  timeline = advanceTimeline(timeline, dt, TIMELINE);
-  if (timeline.frontier < before.frontier) {
-    // the loop came round again
-    sparks = [];
-    replay();
-    return;
-  }
-  if (timeline.phase === "sweeping" || timeline.frontier > before.frontier) catchUp(true);
-}
-
 function draw() {
-  const frontier = timeline.frontier;
+  const t = timeline.elapsed;
+  const scanner = timeline.frontier;
+  aimCamera(leadAt(t, PACE));
+
   ctx.clearRect(0, 0, view.width, view.height);
   ctx.drawImage(background, 0, 0, view.width, view.height);
-  ctx.drawImage(glow, 0, 0, view.width, view.height);
-  ctx.drawImage(trail, 0, 0, view.width, view.height);
 
-  drawSparks(ctx);
+  const edge = lastVisibleNumber();
 
   for (const p of primes) {
-    if (p > frontier) break;
-    const hop = hopInProgress(p, frontier);
-    if (!hop) continue;
-    const drawn = strokeHop(ctx, hop, frontier);
-    if (drawn) drawTip(ctx, drawn.cx, drawn.r, drawn.endAngle);
+    if (p > scanner) break;
+    const pen = penAt(p, t, PACE);
+    if (pen === null) continue;
+
+    const done = completedHopCount(p, pen);
+    for (let k = 0; k < done; k++) {
+      const hop = hopAt(p, k);
+      if (hop.from > edge) break;
+      strokeHop(ctx, hop, hop.to, p, k);
+    }
+
+    const growing = hopInProgress(p, pen);
+    if (growing && growing.from <= edge) {
+      const tip = strokeHop(ctx, growing, pen, p, done);
+      if (tip) drawTip(ctx, tip);
+    }
   }
 
-  drawChip(ctx, 1, true);
-  for (const p of primes) {
-    if (p > frontier) break;
-    drawChip(ctx, p, false);
-  }
+  for (let n = 1; n <= edge; n++) drawChip(ctx, n, numberStateAt(n, t, PACE, CHIP_FADE));
 
   const fade = fadeAlpha(timeline, FADE_SECONDS);
   if (fade > 0) {
@@ -387,7 +374,8 @@ function draw() {
 function frame(timestamp) {
   const dt = lastTimestamp === null ? 0 : Math.min((timestamp - lastTimestamp) / 1000, 0.05);
   lastTimestamp = timestamp;
-  update(dt); // real elapsed time, not a fixed step: this is a clock-driven animation
+  // real elapsed time, not a fixed step: this is a clock-driven animation
+  if (!paused) timeline = advanceTimeline(timeline, dt, TIMELINE);
   draw();
   updateHud();
   requestAnimationFrame(frame);
@@ -402,15 +390,14 @@ const hud = {
 };
 const playButton = document.getElementById("play");
 const restartButton = document.getElementById("restart");
-let hudShown = { number: -1, count: -1 };
+const hudShown = { number: -1, count: -1 };
 
 function updateHud() {
-  const frontier = timeline.frontier;
-  const reached = Math.floor(frontier);
+  const reached = Math.floor(timeline.frontier);
   if (reached === hudShown.number) return;
   hudShown.number = reached;
   hud.number.textContent = String(reached);
-  const found = primes.filter((p) => p <= frontier);
+  const found = primes.filter((p) => p <= timeline.frontier);
   if (found.length !== hudShown.count) {
     hudShown.count = found.length;
     hud.count.textContent = String(found.length);
@@ -427,7 +414,7 @@ function setPaused(value) {
 
 playButton.addEventListener("click", () => setPaused(!paused));
 restartButton.addEventListener("click", () => {
-  restart();
+  timeline = createTimeline();
   setPaused(false);
 });
 canvas.addEventListener("pointerdown", () => setPaused(!paused));
@@ -438,7 +425,7 @@ window.addEventListener("keydown", (event) => {
     setPaused(!paused);
   }
   if (event.key.toLowerCase() === "r") {
-    restart();
+    timeline = createTimeline();
     setPaused(false);
   }
 });
@@ -455,11 +442,11 @@ layout();
 setPaused(false);
 
 if (START_AT !== null) {
-  seek(START_AT);
+  timeline = seekTimeline(START_AT, TIMELINE);
   setPaused(true);
 } else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   // Show the finished picture instead of animating towards it.
-  seek(LIMIT);
+  timeline = seekTimeline(LIMIT, TIMELINE);
   setPaused(true);
 }
 

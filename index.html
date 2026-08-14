@@ -116,9 +116,9 @@
 <article>
 <h3><a href="web-projects/prime-sieve-arcs/">Prime Sieve Arcs</a></h3>
 <p>2026</p>
-<p>Prime Sieve Arcs is an animation of the Sieve of Eratosthenes, the oldest method for finding prime numbers. A front sweeps along the number line, every prime hops over its own multiples in glowing arcs, and the numbers that no arc ever lands on are the primes.</p>
+<p>Prime Sieve Arcs is an animation of the Sieve of Eratosthenes, the oldest method for finding prime numbers. A scanner walks the number line, every prime hops over its own multiples in glowing arcs, and the numbers that no arc ever lands on are the primes.</p>
 <p>The project started from a single video frame I liked and could not identify. I set the art style as the goal and let an agent work autonomously: it recovered the rule behind the arcs by measuring the frame itself, then rebuilt the animation from scratch. Every arc turned out to be a half circle whose diameter is a prime, chained across that prime's multiples and alternating above and below the line.</p>
-<p>The maths and the timing are covered by tests, and the renderer paints each finished arc once onto a kept layer, so the picture builds up like a long-exposure photograph and the cost per frame stays flat. The reference frame is committed next to the code, and two decision records explain how the rule was recovered and why the camera stays still.</p>
+<p>Every number sits on the line as a chip: white while it is still a candidate, amber once it is named prime, and an empty ring once an arc crosses it off. A scanner walks the line slower than the arcs draw, which is what makes the animation honest, and the maths is covered by tests that prove the scanner can never call a composite prime. The reference frame is committed next to the code, and two decision records explain how the rule was recovered and why the whole picture is redrawn every frame.</p>
 <p>Skills: Vibe Coded</p>
 <p><a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/prime-sieve-arcs">Prime Sieve Arcs on Github</a></p>
 </article>
