@@ -1,0 +1,24 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Prime Sieve Arcs",
+  "description": [
+    "*Prime Sieve Arcs* is an **animation of the Sieve of Eratosthenes**, the oldest method for finding prime numbers. A front sweeps along the number line, every prime hops over its own multiples in glowing arcs, and the numbers that no arc ever lands on are the primes.",
+    "The project started from a single video frame I liked and could not identify. I set the art style as the goal and let an agent work autonomously: it recovered the rule behind the arcs by measuring the frame itself, then rebuilt the animation from scratch. Every arc turned out to be a half circle whose diameter is a prime, chained across that prime's multiples and alternating above and below the line.",
+    "The maths and the timing are **covered by tests**, and the renderer paints each finished arc once onto a kept layer, so the picture builds up like a long-exposure photograph and the cost per frame stays flat. The reference frame is committed next to the code, and two decision records explain how the rule was recovered and why the camera stays still."
+  ],
+  "image": "resources/images/projects/primeSieveArcs.webp",
+  "imageStretched": true,
+  "imageAlt": "Glowing arcs hopping along a number line, marking the primes",
+  "skills": ["Vibe Coded"],
+  "links": [
+    {
+      "url": "web-projects/prime-sieve-arcs/"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/prime-sieve-arcs"
+    }
+  ]
+}

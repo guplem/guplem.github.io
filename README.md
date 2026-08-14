@@ -46,6 +46,7 @@ Self-contained mini-apps in `web-projects/`. Browse them all at [triunitystudios
 - **`liga-under-tkd/`** — Live taekwondo tournament site (standings, combats, athlete profiles) read from a shared Google Sheet, in CA/ES/EN
 - **`rps-mind-reader/`** — Rock-paper-scissors against an AI that learns your habits and adapts
 - **`street-name-history/`** — Search any street for all its names across languages, its former names, and its etymology (OpenStreetMap + Wikidata + OpenHistoricalMap)
+- **`prime-sieve-arcs/`** — The Sieve of Eratosthenes as an animation: every prime hops over its multiples in glowing arcs
 
 ## Deployment
 
