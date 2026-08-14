@@ -49,7 +49,7 @@ not committed (they came as pasted images with no files), so the measurements ar
 | Camera anchor | 1 stays at the left edge, the leading pen sits near the right edge |
 | Pens | Staggered, never one shared front; the newest chains trail the leading arcs |
 | Amber against white | Amber ran to 17 while 19 was still white, and to 37 while 41 was still white |
-| Lines | They do not meet cleanly where they cross the line, a hop sits a hair off its neighbour |
+| Lines | Not smooth where they cross the line: the two halves meet on the number, but at a corner |
 | Digits | A serif face |
 
 ## The model
@@ -74,7 +74,7 @@ across a range of ratios.
 
 | File | Role |
 |---|---|
-| `sieve.js` | Pure logic: primes, hop geometry, canvas sweep angles, pace, chip states, the kink offset, camera maths, timeline state machine. No DOM. |
+| `sieve.js` | Pure logic: primes, hop geometry, canvas sweep angles, pace, chip states, the kink, camera maths, timeline state machine. No DOM. |
 | `sieve.test.js` | Bun tests for every export of `sieve.js`. |
 | `render.js` | Canvas, input, HUD. Holds no maths of its own. |
 | `index.html`, `style.css` | Page and overlay. |
@@ -93,8 +93,12 @@ across a range of ratios.
   "already drawn" sets. That is what makes `?at=` and the resize path correct for free.
 - **Chips mark every number.** Composites are not hidden, they are emptied to rings. The
   ring pattern is the result of the sieve, so do not skip drawing them.
-- **Keep the kink.** `hopWobble` puts each hop a hair off its neighbour where they meet.
-  It is copied from the source frames on purpose.
+- **Keep the kink, keep the join.** Each hop is drawn a hair flatter than a half circle
+  (`hopArc(hop, bulge)`), which keeps both ends exactly on their numbers while the ends tilt
+  off vertical, so two hops meet at a small corner. `hopWobble` varies the bulge hop by hop.
+  Never fake the kink by moving a hop off the line: that leaves a step, and the two halves
+  stop meeting. The strand beside the core is shifted across the screen for the same reason,
+  not along the radius, or it would jump sides at the crossing.
 
 ## Gotchas
 
@@ -102,8 +106,9 @@ across a range of ratios.
   `Number(params.get(name))` silently becomes 0 and then clamps to the minimum. Guard with
   `params.has(name)` first. This bug once made `limit` 12 instead of 120.
 - **Angles run in canvas order.** Canvas y grows downwards, so a hop above the line sweeps
-  from `PI` to `2*PI` (through `3*PI/2`, the top) and a hop below the line from `PI` down to
-  `0`. `hopSweep` owns this; do not re-derive it.
+  from `-PI` up to `0` (through `-PI/2`, the top) and a hop below the line from `PI` down to
+  `0`. With a bulge the ends stop a little short of `-PI` and `PI`. `hopSweep` owns all of
+  this; do not re-derive it.
 - **A hidden tab never fires `requestAnimationFrame`.** A headless browser without a shown
   window renders one frame and stops, so the animation cannot be watched that way. Use
   `?at=<number>` to capture any frame instead. On Windows a headless window also cannot go

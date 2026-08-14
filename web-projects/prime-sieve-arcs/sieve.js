@@ -6,8 +6,6 @@
 // composite exactly when some hop lands on it. See AGENTS.md for the measurements
 // that fix these rules.
 
-const TAU = Math.PI * 2;
-
 /** Primes from 2 up to and including `limit`. */
 export function primesUpTo(limit) {
   if (!Number.isFinite(limit) || limit < 2) return [];
@@ -54,25 +52,40 @@ export function hopInProgress(p, frontier) {
   return frontier > hop.from && frontier < hop.to ? hop : null;
 }
 
-/** The circle a hop rides on: centre and radius, in number-line units. */
-export function hopArc({ from, to }) {
-  return { center: (from + to) / 2, radius: (to - from) / 2 };
+/**
+ * The circle a hop rides on, in number-line units. With no bulge it is a half circle
+ * centred on the line. A bulge grows the radius and pushes the centre `offset` to the far
+ * side of the line, which keeps both ends exactly on their numbers while the arc gets a
+ * little flatter and its ends tilt off vertical. That tilt is the kink where two hops
+ * meet: they touch, but the line has a corner. See `hopWobble`.
+ */
+export function hopArc({ from, to }, bulge = 0) {
+  const half = (to - from) / 2;
+  const radius = half * (1 + Math.max(bulge, 0));
+  return {
+    center: (from + to) / 2,
+    radius,
+    offset: Math.sqrt(Math.max(radius * radius - half * half, 0)),
+  };
 }
 
 /**
- * Canvas angles for the part of a hop drawn so far, given the frontier at `clipTo`.
- * Returns null while the hop has not started. Canvas y grows downwards, so an "above"
- * hop sweeps from PI to TAU (through 3*PI/2, the top) and a "below" hop from PI to 0.
+ * Canvas angles for the part of a hop drawn so far, given the pen at `clipTo`. Returns
+ * null while the hop has not started. Canvas y grows downwards, so an "above" hop sweeps
+ * from -PI up to 0 (through -PI/2, the top) and a "below" hop from PI down to 0. The
+ * caller puts the centre `offset` below the line for an "above" hop, above it for a
+ * "below" one.
  */
-export function hopSweep(hop, clipTo) {
+export function hopSweep(hop, clipTo, bulge = 0) {
   const { from, to, side } = hop;
   if (clipTo <= from) return null;
-  const { center, radius } = hopArc(hop);
-  const reach = Math.min(Math.max((Math.min(clipTo, to) - center) / radius, -1), 1);
-  const swept = Math.acos(reach); // PI at the left end, 0 at the right end
+  const { center, radius } = hopArc(hop, bulge);
+  const swept = (unit) => Math.acos(Math.min(Math.max((unit - center) / radius, -1), 1));
+  const start = swept(from); // PI at the left end with no bulge, a little less with one
+  const end = swept(Math.min(clipTo, to)); // 0 at the right end
   return side === "above"
-    ? { start: Math.PI, end: TAU - swept, anticlockwise: false }
-    : { start: Math.PI, end: swept, anticlockwise: true };
+    ? { start: -start, end: end === 0 ? 0 : -end, anticlockwise: false }
+    : { start, end, anticlockwise: true };
 }
 
 /** Pixels per number-line unit so that `visibleUnits` fit inside a padded width. */
@@ -167,9 +180,10 @@ export function numberStateAt(n, elapsed, pace = DEFAULT_PACE, fadeSeconds = 0.5
 }
 
 /**
- * A tiny offset, -1 to 1, for one hop. The lines in the reference frames do not meet
- * cleanly where they cross the number line, so each hop sits a hair off its neighbour.
- * Deterministic, because the picture is redrawn from scratch every frame.
+ * A tiny number, -1 to 1, that varies one hop's bulge. The lines in the reference frames
+ * are not smooth where they cross the number line, and varying the bulge keeps those
+ * corners from all looking alike. Deterministic, because the picture is redrawn from
+ * scratch every frame.
  */
 export function hopWobble(prime, index) {
   const spun = Math.sin(prime * 12.9898 + index * 78.233) * 43758.5453;
