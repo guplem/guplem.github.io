@@ -69,6 +69,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `js/planetSimulation/AGENTS.md` | Particle simulation: architecture, config, performance |
 | `web-projects/AGENTS.md` | Web projects: conventions, TDD with Bun, full checklist for adding a new web-project |
 | `web-projects/rps-mind-reader/AGENTS.md` | rps-mind-reader: predictor architecture + contracts, R&D workflow, strategies tried/rejected |
+| `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frame as spec, layer rules, geometry gotchas |
 | `adr/*.md`, `web-projects/*/adr/*.md` | Architecture Decision Records: why behind key choices (root = main-site/cross-cutting; per-project = project-specific) |
 | `README.md` (root) | Human-facing: what the site is, how to run locally, project list |
 | `web-projects/*/README.md` | Human-facing: per-project features, how to run |
@@ -182,6 +183,8 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [rps-mind-reader 0001](web-projects/rps-mind-reader/adr/0001-custom-statistical-predictor-no-ml-library.md) | Custom statistical predictor instead of an ML library |
 | [rps-mind-reader 0002](web-projects/rps-mind-reader/adr/0002-predictor-evaluation-methodology.md) | Predictor evaluation methodology: switching battery + held-out real sessions |
 | [street-name-history 0001](web-projects/street-name-history/adr/0001-federated-geodata-sources.md) | Federate Nominatim + Wikidata + OpenHistoricalMap client-side; Nominatim (not Overpass) as sole OSM tag source |
+| [prime-sieve-arcs 0001](web-projects/prime-sieve-arcs/adr/0001-reference-frame-measured-as-the-spec.md) | Recover the construction by measuring the reference frame, and keep that frame as the spec |
+| [prime-sieve-arcs 0002](web-projects/prime-sieve-arcs/adr/0002-light-painting-layers-and-a-fixed-camera.md) | Light-painting canvas layers and a fixed camera, so cost per frame stays flat |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 

@@ -51,6 +51,7 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 
 ## Existing Projects
 
+- **prime-sieve-arcs** -- The Sieve of Eratosthenes as a canvas animation: each prime hops over its multiples in glowing half-circle arcs, and the numbers no hop lands on are the primes. The art style was measured out of a committed reference frame, which is the spec (TDD-covered pure logic, see prime-sieve-arcs ADR 0001 and 0002)
 - **street-name-history** -- Search any street to see all its names across languages, its former names, and its etymology; federates OpenStreetMap (Nominatim), Wikidata, and OpenHistoricalMap client-side (TDD-covered pure modules, see street-name-history ADR 0001)
 - **ChatGPTPong** -- Classic Pong game generated entirely by ChatGPT (GPT-3.5) in Dec 2022
 - **gravity-sandbox** -- Interactive N-body gravitational simulation with slingshot spawning, merging, trails, and presets
