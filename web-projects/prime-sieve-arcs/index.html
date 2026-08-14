@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="An animation of the Sieve of Eratosthenes: every prime hops over its multiples in glowing arcs, and the numbers no arc lands on are the primes." />
+  <title>Prime Sieve Arcs · The Sieve of Eratosthenes as glowing hops · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/prime-sieve-arcs/" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div id="overlay">
+    <header id="caption">
+      <h1>Prime Sieve Arcs</h1>
+      <p>Every prime hops over its multiples. A number that no hop lands on is prime.</p>
+    </header>
+
+    <div id="hud">
+      <span><b id="hud-number">0</b> reached</span>
+      <span><b id="hud-count">0</b> primes</span>
+      <span>last <b id="hud-latest">--</b></span>
+    </div>
+
+    <div id="controls">
+      <button id="play" type="button" aria-label="Pause the animation">Pause</button>
+      <button id="restart" type="button" aria-label="Restart the animation">Restart</button>
+      <span id="hint">space to pause &middot; R to restart</span>
+    </div>
+  </div>
+
+  <script src="render.js" type="module"></script>
+</body>
+</html>
