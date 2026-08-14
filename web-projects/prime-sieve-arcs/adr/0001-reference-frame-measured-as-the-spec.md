@@ -49,8 +49,8 @@ number that no hop lands on is prime. The numbers on the chips are the primes, i
 their true positions on a linear number line at 23.1 pixels per number.
 
 The palette was read straight out of the same frame, and the code carries the measured
-values: a pale yellow-green core (`#e6e689`) with a red-orange strand beside it, and a
-violet halo under each prime whose falloff was traced point by point.
+values: a pale warm core with a red-orange strand beside it, over a glow on the number line
+whose falloff was traced point by point.
 
 The later frames added the behaviour over time, and each point became a rule in the code:
 
@@ -65,9 +65,11 @@ The later frames added the behaviour over time, and each point became a rule in 
   gets there first, so the scanner can never be wrong. `crossTime` and its tests hold that
   margin for any ratio above 1.
 - **The camera zooms out**, keeping 1 at the left. See ADR 0002.
-- **The lines do not meet cleanly.** Where a hop crosses the number line it sits a hair off
-  its neighbour. `hopWobble` reproduces that on purpose; it is a signature of the source,
-  not a defect to fix.
+- **The lines are not smooth where they cross.** The two halves do meet on the number, but
+  the line has a corner there. Each hop is drawn a hair flatter than a half circle, which
+  keeps its ends on their numbers and tilts them off vertical; `hopWobble` varies it. This is
+  a signature of the source, not a defect to fix. The first attempt shifted whole hops off
+  the line instead, which left a visible step, and a step is a defect.
 
 Two consequences follow for the code:
 
@@ -82,8 +84,9 @@ Two consequences follow for the code:
 
 - The animation is a true rendering of a real algorithm, so the chips, the gaps and the
   growing fan all mean something. It teaches instead of decorating.
-- The look was reproduced closely: the violet falloff of the finished render matches the
-  frame within about 20% at every distance measured, and the geometry matches exactly.
+- The look was reproduced closely: the geometry matches exactly, and the glow falloff of the
+  finished render was matched against the frame to within about 20% at every distance
+  measured.
 - Any future change to the look has a reference to answer to, which is committed and
   will not disappear.
 - The measurement itself was cheap to redo and is written down in `AGENTS.md`, so nobody

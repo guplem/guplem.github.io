@@ -68,7 +68,10 @@ const LOOP = params.get("loop") !== "0";
 const HOLD_SECONDS = 3;
 const FADE_SECONDS = 0.9; // the fade out at the end of a sweep
 const CHIP_FADE = 0.45; // how long a chip takes to change look
-const KINK_PX = 1.7; // how far a hop sits off its neighbour where they meet
+// How much flatter than a half circle a hop is drawn. It keeps both ends exactly on their
+// numbers while the ends tilt off vertical, so two hops meet at a small corner instead of
+// a step. The reference frames show that corner; hopWobble varies it hop by hop.
+const BULGE = 0.004;
 
 // Sampled from the reference frames: warm lines, white chips for numbers still in play,
 // amber for a prime that has started hopping, a bare ring for one that is crossed out.
@@ -208,26 +211,30 @@ const GLOW = {
 
 /** Draw one hop, up to `clipTo`. Returns the pen point, or null if it has not started. */
 function strokeHop(c, hop, clipTo, prime, index) {
-  const sweep = hopSweep(hop, clipTo);
+  const bulge = BULGE * (0.6 + 0.4 * hopWobble(prime, index));
+  const sweep = hopSweep(hop, clipTo, bulge);
   if (!sweep) return null;
-  const { center, radius } = hopArc(hop);
+  const { center, radius, offset } = hopArc(hop, bulge);
   const cx = x(center);
   const r = radius * view.ppu;
-  // the hop sits a hair off the line, so neighbours meet with a small kink
-  const cy = view.axisY + hopWobble(prime, index) * KINK_PX;
+  // the centre sits on the far side of the line, which tilts the ends and makes the kink
+  const cy = view.axisY + (hop.side === "above" ? offset : -offset) * view.ppu;
 
   c.save();
   c.globalCompositeOperation = "lighter";
   c.lineCap = "round";
-  // [colour, line width, radius offset]: the offset splits the strand from the core
+  // [colour, line width, sideways shift]: the shift splits the strand from the core, the
+  // way the reference frames show two tones side by side. It has to be a shift across the
+  // screen, not along the radius, or the strand would jump sides where a hop crosses the
+  // number line and break the join.
   const passes = [
-    [COLORS.halo, 8, 0],
-    [COLORS.strand, 1.5, 2.1],
-    [COLORS.core, 1.4, 0],
+    [COLORS.halo, 8, 0, 0],
+    [COLORS.strand, 1.5, 1.9, 1.2],
+    [COLORS.core, 1.4, 0, 0],
   ];
-  for (const [color, width, dr] of passes) {
+  for (const [color, width, dx, dy] of passes) {
     c.beginPath();
-    c.arc(cx, cy, Math.max(r + dr, 0.5), sweep.start, sweep.end, sweep.anticlockwise);
+    c.arc(cx + dx, cy + dy, Math.max(r, 0.5), sweep.start, sweep.end, sweep.anticlockwise);
     c.strokeStyle = color;
     c.lineWidth = width;
     c.stroke();

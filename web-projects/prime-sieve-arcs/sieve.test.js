@@ -119,19 +119,25 @@ describe("hopInProgress", () => {
 });
 
 describe("hopArc", () => {
-  test("turns a hop into a circle centred on the number line", () => {
-    expect(hopArc({ from: 7, to: 14, side: "above" })).toEqual({ center: 10.5, radius: 3.5 });
-    expect(hopArc({ from: 2, to: 4, side: "below" })).toEqual({ center: 3, radius: 1 });
+  test("turns a hop into a circle sitting on the number line", () => {
+    expect(hopArc({ from: 7, to: 14, side: "above" })).toEqual({ center: 10.5, radius: 3.5, offset: 0 });
+    expect(hopArc({ from: 2, to: 4, side: "below" })).toEqual({ center: 3, radius: 1, offset: 0 });
+  });
+
+  test("a bulge grows the circle and pushes its centre off the line", () => {
+    const arc = hopArc({ from: 0, to: 10, side: "above" }, 0.01);
+    expect(arc.center).toBe(5);
+    expect(arc.radius).toBeCloseTo(5.05, 10);
+    // the centre drops by exactly the amount that keeps the ends on the line
+    expect(arc.offset).toBeCloseTo(Math.sqrt(5.05 ** 2 - 25), 10);
   });
 });
 
 describe("hopSweep", () => {
-  const TAU = Math.PI * 2;
-
   test("a finished hop above the line sweeps the upper half clockwise", () => {
     expect(hopSweep({ from: 2, to: 4, side: "above" }, 4)).toEqual({
-      start: Math.PI,
-      end: TAU,
+      start: -Math.PI,
+      end: 0,
       anticlockwise: false,
     });
   });
@@ -144,17 +150,59 @@ describe("hopSweep", () => {
     });
   });
 
-  test("clips a growing hop at the frontier", () => {
+  test("clips a growing hop at the pen", () => {
     const above = hopSweep({ from: 2, to: 4, side: "above" }, 3);
-    expect(above.end).toBeCloseTo(TAU - Math.PI / 2, 10); // apex, straight up
+    expect(above.end).toBeCloseTo(-Math.PI / 2, 10); // apex, straight up
     const below = hopSweep({ from: 4, to: 6, side: "below" }, 5);
     expect(below.end).toBeCloseTo(Math.PI / 2, 10); // apex, straight down
   });
 
-  test("clamps a frontier past the landing and returns null before the start", () => {
-    expect(hopSweep({ from: 2, to: 4, side: "above" }, 99).end).toBeCloseTo(TAU, 10);
+  test("clamps a pen past the landing and returns null before the start", () => {
+    expect(hopSweep({ from: 2, to: 4, side: "above" }, 99).end).toBeCloseTo(0, 10);
     expect(hopSweep({ from: 2, to: 4, side: "above" }, 2)).toBeNull();
     expect(hopSweep({ from: 2, to: 4, side: "above" }, 1)).toBeNull();
+  });
+});
+
+// The lines in the reference frames are not smooth where they cross the number line, but
+// they do meet: no step, no gap. Drawing each hop a hair flatter than a half circle keeps
+// both ends exactly on their numbers while the tangent tilts, so neighbours meet at a
+// small corner.
+describe("a bulged hop still lands on its numbers", () => {
+  const endpoints = (hop, bulge) => {
+    const { center, radius, offset } = hopArc(hop, bulge);
+    const sweep = hopSweep(hop, hop.to, bulge);
+    const lift = hop.side === "above" ? offset : -offset; // centre sits on the far side
+    const point = (angle) => ({
+      x: center + radius * Math.cos(angle),
+      y: lift + radius * Math.sin(angle), // measured down from the number line
+    });
+    return [point(sweep.start), point(sweep.end)];
+  };
+
+  for (const side of ["above", "below"]) {
+    test(`both ends of a hop ${side} the line stay on it`, () => {
+      for (const bulge of [0, 0.0005, 0.004, 0.02]) {
+        const [left, right] = endpoints({ from: 12, to: 30, side }, bulge);
+        expect(left.x).toBeCloseTo(12, 9);
+        expect(right.x).toBeCloseTo(30, 9);
+        expect(left.y).toBeCloseTo(0, 9);
+        expect(right.y).toBeCloseTo(0, 9);
+      }
+    });
+  }
+
+  test("a bulge tilts the ends off vertical, which is what makes the corner", () => {
+    const straight = hopSweep({ from: 0, to: 10, side: "above" }, 10, 0);
+    const tilted = hopSweep({ from: 0, to: 10, side: "above" }, 10, 0.004);
+    expect(tilted.start).toBeGreaterThan(straight.start); // starts short of straight down
+    expect(Math.abs(tilted.start - straight.start)).toBeLessThan(0.2); // and only just
+  });
+
+  test("a bulged hop is a little flatter, never taller", () => {
+    const { radius, offset } = hopArc({ from: 0, to: 10, side: "above" }, 0.004);
+    expect(radius - offset).toBeLessThan(5);
+    expect(radius - offset).toBeGreaterThan(4.5);
   });
 });
 
