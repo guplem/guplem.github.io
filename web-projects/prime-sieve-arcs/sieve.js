@@ -86,27 +86,112 @@ export function projectUnit(unit, ppu, padding) {
   return padding + unit * ppu;
 }
 
-/** Where the sieve front has reached after `elapsed` seconds. */
-export function frontierAt(elapsed, unitsPerSecond) {
-  return Math.max(0, elapsed) * unitsPerSecond;
+// ---------------------------------------------------------------- pace
+//
+// Two things move. A **scanner** walks the number line at `scanSpeed`, and it decides:
+// the number it lands on is prime when nothing has crossed it out, so a new chain leaves
+// from there. Every **pen** draws its chain at `penRatio` times the scanner speed.
+//
+// The pens being faster is what makes the sieve honest. A composite is crossed by the
+// chain of its smallest prime factor, which left earlier and moves faster, so it is
+// always already crossed when the scanner arrives. `crossTime` and the tests prove it
+// for any ratio above 1.
+//
+// 2 is the one exception: it has nothing to wait for, so it leaves at time 0 while the
+// scanner waits out `introSeconds` on 2. That is the opening of the animation, one line
+// growing on its own.
+
+export const DEFAULT_PACE = { scanSpeed: 4, penRatio: 2, introSeconds: 0.7 };
+
+const FIRST_PRIME = 2;
+
+/** Where the scanner stands after `elapsed` seconds. */
+export function scannerAt(elapsed, pace = DEFAULT_PACE) {
+  const moving = Math.max(0, elapsed - pace.introSeconds);
+  return FIRST_PRIME + moving * pace.scanSpeed;
+}
+
+/** When the scanner stands on `unit`. The inverse of `scannerAt`. */
+export function timeForScanner(unit, pace = DEFAULT_PACE) {
+  return pace.introSeconds + Math.max(0, unit - FIRST_PRIME) / pace.scanSpeed;
+}
+
+/** When the chain of prime `p` starts drawing. */
+export function launchTime(p, pace = DEFAULT_PACE) {
+  return p === FIRST_PRIME ? 0 : timeForScanner(p, pace);
+}
+
+/** Where the pen of prime `p` has reached, or null before its chain leaves. */
+export function penAt(p, elapsed, pace = DEFAULT_PACE) {
+  const started = launchTime(p, pace);
+  if (elapsed < started) return null;
+  return p + (elapsed - started) * pace.scanSpeed * pace.penRatio;
+}
+
+/** The rightmost pen, which is always the pen of 2. The camera has to fit this. */
+export function leadAt(elapsed, pace = DEFAULT_PACE) {
+  return penAt(FIRST_PRIME, elapsed, pace);
+}
+
+/** The smallest prime that divides `n`, or null when `n` is 1 or prime. */
+function smallestPrimeFactor(n) {
+  if (!Number.isInteger(n) || n < 4) return null;
+  if (n % 2 === 0) return 2;
+  for (let d = 3; d * d <= n; d += 2) if (n % d === 0) return d;
+  return null;
+}
+
+/** When a hop lands on `n` and crosses it out, or null when `n` is 1 or prime. */
+export function crossTime(n, pace = DEFAULT_PACE) {
+  const factor = smallestPrimeFactor(n);
+  if (factor === null) return null;
+  return launchTime(factor, pace) + (n - factor) / (pace.scanSpeed * pace.penRatio);
+}
+
+/**
+ * What the chip for `n` shows: "unknown" (white, still a candidate), "prime" (its chain
+ * has left) or "crossed" (a hop landed on it). `fade` runs 0 to 1 over `fadeSeconds`,
+ * for the change between looks.
+ */
+export function numberStateAt(n, elapsed, pace = DEFAULT_PACE, fadeSeconds = 0.5) {
+  const ramp = (since) => (fadeSeconds > 0 ? Math.min(Math.max((elapsed - since) / fadeSeconds, 0), 1) : 1);
+
+  const crossed = crossTime(n, pace);
+  if (crossed !== null && elapsed >= crossed) return { state: "crossed", fade: ramp(crossed) };
+
+  if (isPrime(n)) {
+    const left = launchTime(n, pace);
+    if (elapsed >= left) return { state: "prime", fade: ramp(left) };
+  }
+  return { state: "unknown", fade: 1 };
+}
+
+/**
+ * A tiny offset, -1 to 1, for one hop. The lines in the reference frames do not meet
+ * cleanly where they cross the number line, so each hop sits a hair off its neighbour.
+ * Deterministic, because the picture is redrawn from scratch every frame.
+ */
+export function hopWobble(prime, index) {
+  const spun = Math.sin(prime * 12.9898 + index * 78.233) * 43758.5453;
+  return (spun - Math.floor(spun)) * 2 - 1;
 }
 
 // ---------------------------------------------------------------- timeline
 //
-// One sweep runs through four phases: "sweeping" moves the front, "holding" rests on
+// One sweep runs through four phases: "sweeping" moves the scanner, "holding" rests on
 // the finished picture, "fading" dims it, and "done" freezes it when looping is off.
 
-/** A timeline parked at the start of a sweep. */
+/** A timeline parked at the start of a sweep, with the scanner still on 2. */
 export function createTimeline() {
-  return { elapsed: 0, frontier: 0, phase: "sweeping", phaseLeft: 0 };
+  return { elapsed: 0, frontier: FIRST_PRIME, phase: "sweeping", phaseLeft: 0 };
 }
 
-/** A timeline frozen at one number, for a deep link to a single frame. */
-export function seekTimeline(unit, { speed, limit, holdSeconds = 0 }) {
-  const frontier = Math.min(Math.max(unit, 0), limit);
+/** A timeline frozen with the scanner on one number, for a deep link to a single frame. */
+export function seekTimeline(unit, { limit, holdSeconds = 0, pace = DEFAULT_PACE }) {
+  const frontier = Math.min(Math.max(unit, FIRST_PRIME), limit);
   const atEnd = frontier >= limit;
   return {
-    elapsed: frontier / speed,
+    elapsed: timeForScanner(frontier, pace),
     frontier,
     phase: atEnd ? "holding" : "sweeping",
     phaseLeft: atEnd ? holdSeconds : 0,
@@ -114,7 +199,7 @@ export function seekTimeline(unit, { speed, limit, holdSeconds = 0 }) {
 }
 
 /** The timeline `dt` seconds later. Never mutates the state it is given. */
-export function advanceTimeline(state, dt, { speed, limit, loop, holdSeconds, fadeSeconds }) {
+export function advanceTimeline(state, dt, { limit, loop, holdSeconds, fadeSeconds, pace = DEFAULT_PACE }) {
   if (state.phase === "done") return state;
 
   if (state.phase === "holding") {
@@ -131,7 +216,7 @@ export function advanceTimeline(state, dt, { speed, limit, loop, holdSeconds, fa
   }
 
   const elapsed = state.elapsed + dt;
-  const frontier = Math.min(frontierAt(elapsed, speed), limit);
+  const frontier = Math.min(scannerAt(elapsed, pace), limit);
   return frontier >= limit
     ? { elapsed, frontier, phase: "holding", phaseLeft: holdSeconds }
     : { elapsed, frontier, phase: "sweeping", phaseLeft: 0 };

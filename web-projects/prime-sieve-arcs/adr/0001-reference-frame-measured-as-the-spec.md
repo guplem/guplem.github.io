@@ -1,4 +1,4 @@
-# ADR 0001: The Reference Frame, Measured, Is the Spec (Prime Sieve Arcs)
+# ADR 0001: The Reference Frames, Measured, Are the Spec (Prime Sieve Arcs)
 
 ## Context
 
@@ -7,6 +7,11 @@ arcs jumping along a number line, with numbers on chips. The request was an anim
 in a "very similar art style", with the lines growing and jumping the numbers from
 left to right. The frame carried no author, no title, and no explanation of the rule
 behind the arcs, and a search for the source found nothing that matched.
+
+Three more frames of the same run arrived after the first version shipped, and they
+settled the parts one frame could not show: what the animation does over time. They are
+described in `AGENTS.md` under "What the later frames added", and they forced two changes
+that are recorded here and in ADR 0002.
 
 So there were two unknowns: **what the picture means**, and **how it is drawn**. Both
 had to be settled before any code, because they decide everything else: the geometry,
@@ -47,6 +52,23 @@ The palette was read straight out of the same frame, and the code carries the me
 values: a pale yellow-green core (`#e6e689`) with a red-orange strand beside it, and a
 violet halo under each prime whose falloff was traced point by point.
 
+The later frames added the behaviour over time, and each point became a rule in the code:
+
+- **Every number is on screen from the start**, as a white chip with its digits. A chip
+  empties out to a bare ring once a hop lands on it, and turns amber once its own chain
+  leaves. So the picture shows candidates, decided primes and crossed-out composites at a
+  glance, and the numbers that vanish are exactly the composites.
+- **Two speeds, not one front.** The pens are staggered, and a chain launches well behind
+  the leading arcs. That is a scanner walking the line slower than the pens draw. The
+  scanner decides: whatever it lands on with nothing crossing it is prime. Because every
+  pen is faster than the scanner, the chain of a composite's smallest prime factor always
+  gets there first, so the scanner can never be wrong. `crossTime` and its tests hold that
+  margin for any ratio above 1.
+- **The camera zooms out**, keeping 1 at the left. See ADR 0002.
+- **The lines do not meet cleanly.** Where a hop crosses the number line it sits a hair off
+  its neighbour. `hopWobble` reproduces that on purpose; it is a signature of the source,
+  not a defect to fix.
+
 Two consequences follow for the code:
 
 - `sieve.test.js` pins the exact chains measured in the frame, so a change to the hop
@@ -74,9 +96,14 @@ Two consequences follow for the code:
   unlisted, but it does sit in a public repository. Should the maker ever object or be
   identified, the file is one delete or one credit away, and nothing in the code depends
   on it at runtime.
-- The frame fixes only the moment it captured. The timing of the source video, its camera
-  behaviour over time and its ending were not recoverable, so those were designed here
-  (see ADR 0002) and are not claimed to match the source.
+- A frame fixes only the moment it captured. The first version had to invent the behaviour
+  over time and got the camera wrong (it held still) and the pens wrong (one shared front).
+  The later frames corrected both. The exact speeds of the source are still unknown: the
+  ratio of pen speed to scanner speed was fitted so that the composition matches the frames,
+  not derived.
+- Only the first frame is committed. The three later ones arrived as pasted images with no
+  files behind them, so they live in this repository as the written measurements above
+  rather than as pictures.
 
 ## Scope
 
