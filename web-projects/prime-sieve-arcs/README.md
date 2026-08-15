@@ -32,6 +32,9 @@ shape while more and more numbers fit on screen.
   crossed the number, and the maths that guarantees that is covered by tests.
 - **Live count** — the number the scanner has reached, how many primes it has found, and the
   newest one.
+- **Your pace, your length** — two sliders set how fast the scanner walks and how far it
+  counts. Both can be moved while it runs, and changing the speed does not move the picture,
+  only the rate. The address bar follows, so the link you copy plays what you set up.
 - **Deep link to one frame** — `?at=37` freezes the picture with the scanner on 37, ready to
   share.
 - **Loops on its own** — it holds on the finished picture, fades out and starts again.
@@ -44,13 +47,18 @@ shape while more and more numbers fit on screen.
 |---|---|---|
 | Play or pause | `Space` | Click the canvas, or the Pause button |
 | Restart | `R` | Restart button |
+| Change the pace | | The **speed** slider: numbers a second |
+| Change the length | | The **count to** slider: where the sweep stops |
+
+The picture ends up about twice as wide as **count to**, because the lines run ahead of the
+scanner. A higher number means a longer sweep and a smaller picture at the end.
 
 ## URL Parameters
 
 | Parameter | Default | What it does |
 |---|---|---|
-| `limit` | fits the window | Highest number the scanner reaches (8 to 1200). By default it follows the window width, so the finished picture lands at about 26 pixels a number, the density of the last reference frame. |
-| `speed` | `4` | Numbers per second for the scanner (0.2 to 40). |
+| `limit` | fits the window | Highest number the scanner reaches (8 to 1200), the **count to** slider. By default it follows the window width, so the finished picture lands at about 26 pixels a number, the density of the last reference frame. |
+| `speed` | `1.5` | Numbers per second for the scanner (0.25 to 12), the **speed** slider. At the default a sweep runs for about half a minute. |
 | `ratio` | `2` | How much faster the pens draw than the scanner walks (1.05 to 6). Higher means the arcs run further ahead. |
 | `at` | none | Freeze the animation with the scanner on this number, paused. |
 | `loop` | on | `loop=0` stops on the finished picture instead of starting again. |

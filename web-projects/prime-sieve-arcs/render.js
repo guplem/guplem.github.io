@@ -17,6 +17,7 @@ import {
   pixelsPerUnit,
   projectUnit,
   scannerAt,
+  timeForScanner,
   leadAt,
   penAt,
   numberStateAt,
@@ -45,25 +46,26 @@ const PADDING = (width) => Math.min(Math.max(width * 0.045, 14), 90);
 const CAMERA_FILL = 0.92;
 const MIN_SPAN = 20;
 
-const SPEED = readNumber("speed", 4, 0.2, 40); // numbers per second for the scanner
+// Both of these can be changed while the animation runs, through the sliders.
 const PACE = {
-  scanSpeed: SPEED,
+  scanSpeed: readNumber("speed", 1.5, 0.25, 12), // numbers a second for the scanner
   penRatio: readNumber("ratio", 2, 1.05, 6), // pens run this much faster than the scanner
-  introSeconds: 0.7, // 2 draws on its own for this long
+  headStart: 5, // numbers that 2 covers on its own before the scanner sets off
 };
 
 // A sweep to `limit` ends with the leading pen near 2 * limit, so aim for about 26 pixels
-// a number by then: the density of the last reference frame, where the digits on the
-// primes are still readable. Fixed at load, so a resize rescales the same sweep instead
-// of starting a different one.
+// a number by then: the density of the last reference frame, where the digits on the primes
+// are still readable. Length comes from the speed instead, which at the default is about
+// half a minute a sweep. The viewer can change both with the sliders; a resize changes
+// neither, so it rescales the same sweep instead of starting a different one.
 const autoLimit = () => {
   const width = window.innerWidth;
   const usable = Math.max(width - 2 * PADDING(width), 240);
   return Math.min(Math.max(Math.round(usable / (26 * 2 * CAMERA_FILL)), 18), 400);
 };
 
-const LIMIT = Math.round(readNumber("limit", autoLimit(), 8, 1200));
-const START_AT = params.has("at") ? readNumber("at", 2, 0, LIMIT) : null; // deep link to one frame
+let limit = Math.round(readNumber("limit", autoLimit(), 8, 1200));
+const START_AT = params.has("at") ? readNumber("at", 2, 0, limit) : null; // deep link to one frame
 const LOOP = params.get("loop") !== "0";
 const HOLD_SECONDS = 3;
 const FADE_SECONDS = 0.9; // the fade out at the end of a sweep
@@ -96,14 +98,14 @@ const ctx = canvas.getContext("2d");
 const background = document.createElement("canvas");
 
 const TIMELINE = {
-  limit: LIMIT,
+  limit,
   loop: LOOP,
   holdSeconds: HOLD_SECONDS,
   fadeSeconds: FADE_SECONDS,
   pace: PACE,
 };
 
-const primes = primesUpTo(LIMIT);
+let primes = primesUpTo(limit);
 let timeline = createTimeline();
 let paused = false;
 let lastTimestamp = null;
@@ -287,7 +289,7 @@ function drawDigits(c, n, px, r, ink, alpha) {
   if (alpha <= 0.01) return;
   const digits = String(n).length;
   const size = (r * 1.85) / (digits + 0.65);
-  if (size < 5.5) return;
+  if (size < 5) return;
   c.save();
   c.globalAlpha = alpha;
   c.fillStyle = ink;
@@ -419,6 +421,72 @@ function setPaused(value) {
   document.body.classList.toggle("is-paused", paused);
 }
 
+// ---------------------------------------------------------------- the two dials
+
+const speedInput = document.getElementById("speed-input");
+const speedValue = document.getElementById("speed-value");
+const limitInput = document.getElementById("limit-input");
+const limitValue = document.getElementById("limit-value");
+
+/** Widen a slider if the value it has to show came from the URL and sits outside it. */
+function fitRange(input, value) {
+  if (value < Number(input.min)) input.min = String(value);
+  if (value > Number(input.max)) input.max = String(value);
+  input.value = String(value);
+}
+
+function showDials() {
+  fitRange(speedInput, PACE.scanSpeed);
+  fitRange(limitInput, limit);
+  speedValue.textContent = PACE.scanSpeed.toFixed(2).replace(/\.?0+$/, "");
+  limitValue.textContent = String(limit);
+}
+
+let urlTimer = null;
+function rememberInUrl() {
+  clearTimeout(urlTimer);
+  urlTimer = setTimeout(() => {
+    const url = new URL(location.href);
+    url.searchParams.set("speed", String(PACE.scanSpeed));
+    url.searchParams.set("limit", String(limit));
+    url.searchParams.delete("at"); // the frozen frame is gone once a dial moves
+    // Opened straight from disk there is no history to write to, and Chrome throws.
+    try {
+      history.replaceState(null, "", url);
+    } catch {
+      /* keep going: the dials work, the address bar just cannot follow */
+    }
+  }, 400);
+}
+
+/**
+ * Change the pace without moving the picture. Every distance in `sieve.js` is counted in
+ * numbers, so holding the scanner still and re-deriving the elapsed time leaves every pen
+ * exactly where it was: only the rate changes.
+ */
+speedInput.addEventListener("input", () => {
+  const scanner = timeline.frontier;
+  PACE.scanSpeed = Number(speedInput.value);
+  timeline = { ...timeline, elapsed: timeForScanner(scanner, PACE) };
+  showDials();
+  rememberInUrl();
+});
+
+/** Change how far the sweep counts. A longer sweep carries on from where it stands. */
+limitInput.addEventListener("input", () => {
+  limit = Number(limitInput.value);
+  TIMELINE.limit = limit;
+  primes = primesUpTo(limit);
+  if (timeline.frontier > limit) {
+    timeline = seekTimeline(limit, TIMELINE);
+  } else if (timeline.phase !== "sweeping") {
+    timeline = { ...timeline, phase: "sweeping", phaseLeft: 0 };
+  }
+  hudShown.number = -1; // force the counters to catch up
+  showDials();
+  rememberInUrl();
+});
+
 playButton.addEventListener("click", () => setPaused(!paused));
 restartButton.addEventListener("click", () => {
   timeline = createTimeline();
@@ -447,13 +515,14 @@ window.addEventListener("resize", () => {
 
 layout();
 setPaused(false);
+showDials();
 
 if (START_AT !== null) {
   timeline = seekTimeline(START_AT, TIMELINE);
   setPaused(true);
 } else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   // Show the finished picture instead of animating towards it.
-  timeline = seekTimeline(LIMIT, TIMELINE);
+  timeline = seekTimeline(limit, TIMELINE);
   setPaused(true);
 }
 
