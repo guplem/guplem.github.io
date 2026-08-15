@@ -96,14 +96,17 @@ canvas {
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem 0.55rem;
+  gap: 0.45rem 1.15rem;
+  max-width: min(46rem, 94vw);
+  padding: 0.4rem 0.8rem;
   border: 1px solid var(--panel-edge);
-  border-radius: var(--radius);
+  border-radius: 1.4rem;
   background: var(--panel);
   backdrop-filter: blur(6px);
-  opacity: 0.32;
+  opacity: 0.45;
   transition: opacity var(--transition);
 }
 
@@ -133,6 +136,76 @@ body.is-paused #controls {
   outline: none;
 }
 
+/* a named slider with its live value: speed, count to */
+.dial {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-dim);
+  cursor: pointer;
+}
+
+.dial-name {
+  white-space: nowrap;
+}
+
+.dial output {
+  min-width: 2.1rem;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.dial input[type="range"] {
+  width: clamp(4.5rem, 11vw, 7rem);
+  height: 1.1rem;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.dial input[type="range"]::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: var(--radius);
+  background: rgba(240, 232, 214, 0.28);
+}
+
+.dial input[type="range"]::-moz-range-track {
+  height: 2px;
+  border-radius: var(--radius);
+  background: rgba(240, 232, 214, 0.28);
+}
+
+.dial input[type="range"]::-webkit-slider-thumb {
+  width: 0.72rem;
+  height: 0.72rem;
+  margin-top: -0.29rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 8px rgba(230, 155, 41, 0.7);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.dial input[type="range"]::-moz-range-thumb {
+  width: 0.72rem;
+  height: 0.72rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 8px rgba(230, 155, 41, 0.7);
+}
+
+.dial input[type="range"]:focus-visible {
+  outline: 1px solid rgba(236, 201, 77, 0.6);
+  outline-offset: 4px;
+}
+
 #hint {
   padding-right: 0.5rem;
   font-size: 0.72rem;
@@ -146,13 +219,12 @@ body.is-paused #controls {
     display: none;
   }
 
-  /* the caption and the counters cannot share the top row on a phone */
+  /* the caption and the counters cannot share the top row on a phone, and the control bar
+     grows to three rows down there, so the counters tuck under the caption instead */
   #hud {
-    top: auto;
+    top: calc(clamp(14px, 3vh, 34px) + 1.9rem);
     right: auto;
-    bottom: calc(clamp(16px, 4vh, 40px) + 2.9rem);
-    left: 50%;
-    transform: translateX(-50%);
+    left: clamp(14px, 3vw, 40px);
     gap: 0.8rem;
   }
 }

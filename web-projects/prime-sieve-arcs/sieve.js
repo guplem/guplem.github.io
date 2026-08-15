@@ -110,23 +110,33 @@ export function projectUnit(unit, ppu, padding) {
 // always already crossed when the scanner arrives. `crossTime` and the tests prove it
 // for any ratio above 1.
 //
-// 2 is the one exception: it has nothing to wait for, so it leaves at time 0 while the
-// scanner waits out `introSeconds` on 2. That is the opening of the animation, one line
-// growing on its own.
+// 2 is the one exception: it has nothing to wait for, so it leaves at time 0 and covers
+// `headStart` numbers on its own before the scanner sets off. That is the opening of the
+// animation, one line growing by itself.
+//
+// The head start is counted in numbers, not seconds, and every other distance here is too.
+// That is what lets the speed change while the animation runs: at a given scanner position
+// the picture is identical whatever `scanSpeed` is, so a viewer sees the pace change and
+// nothing jump. A test holds that.
 
-export const DEFAULT_PACE = { scanSpeed: 4, penRatio: 2, introSeconds: 0.7 };
+export const DEFAULT_PACE = { scanSpeed: 2, penRatio: 2, headStart: 5 };
 
 const FIRST_PRIME = 2;
 
+/** How long 2 draws on its own before the scanner sets off. */
+function introSeconds(pace) {
+  return pace.headStart / (pace.scanSpeed * pace.penRatio);
+}
+
 /** Where the scanner stands after `elapsed` seconds. */
 export function scannerAt(elapsed, pace = DEFAULT_PACE) {
-  const moving = Math.max(0, elapsed - pace.introSeconds);
+  const moving = Math.max(0, elapsed - introSeconds(pace));
   return FIRST_PRIME + moving * pace.scanSpeed;
 }
 
 /** When the scanner stands on `unit`. The inverse of `scannerAt`. */
 export function timeForScanner(unit, pace = DEFAULT_PACE) {
-  return pace.introSeconds + Math.max(0, unit - FIRST_PRIME) / pace.scanSpeed;
+  return introSeconds(pace) + Math.max(0, unit - FIRST_PRIME) / pace.scanSpeed;
 }
 
 /** When the chain of prime `p` starts drawing. */

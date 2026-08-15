@@ -57,12 +57,19 @@ not committed (they came as pasted images with no files), so the measurements ar
 Everything is a function of one number, the seconds elapsed. That keeps the whole thing
 testable and lets any frame be drawn directly.
 
-- `scannerAt(t)` walks at `scanSpeed` numbers a second, after an intro where it waits on 2.
+- `scannerAt(t)` walks at `scanSpeed` numbers a second, after waiting on 2 while the chain
+  of 2 covers its `headStart`.
 - `penAt(p, t)` runs at `penRatio` times that speed, from the moment the scanner reached `p`.
   2 is the exception: it leaves at once, which is the opening of the animation.
 - `crossTime(n)` is when the chain of `n`'s smallest prime factor lands on it.
 - `numberStateAt(n, t)` gives the chip its look: `unknown`, `prime` or `crossed`, plus a
   fade for the change between looks.
+
+**Every distance is counted in numbers, never in seconds** (`headStart` included). That is
+what lets the speed slider work: at a given scanner position the picture is identical
+whatever the speed, so the renderer only has to hold the scanner still and re-derive the
+elapsed time. A test holds that property. Put a duration in seconds into the pace and the
+picture will jump whenever the speed changes.
 
 **The pens must stay faster than the scanner.** That single fact is what makes the sieve
 honest: the chain of a composite's smallest prime factor left earlier and moves faster, so
@@ -93,6 +100,9 @@ across a range of ratios.
   "already drawn" sets. That is what makes `?at=` and the resize path correct for free.
 - **Chips mark every number.** Composites are not hidden, they are emptied to rings. The
   ring pattern is the result of the sieve, so do not skip drawing them.
+- **The dials write to the URL** (root ADR 0006), so a link carries the pace and the length.
+  Wrap `history.replaceState` in a `try`: it throws when the page is opened straight from
+  disk, and this project has to work that way.
 - **Keep the kink, keep the join.** Each hop is drawn a hair flatter than a half circle
   (`hopArc(hop, bulge)`), which keeps both ends exactly on their numbers while the ends tilt
   off vertical, so two hops meet at a small corner. `hopWobble` varies the bulge hop by hop.

@@ -236,49 +236,74 @@ describe("camera", () => {
 });
 
 describe("the pace of the sweep", () => {
-  const pace = { scanSpeed: 4, penRatio: 2, introSeconds: 0.7 };
+  // headStart is in numbers, not seconds: 2 covers 5 numbers before the scanner sets off
+  const pace = { scanSpeed: 4, penRatio: 2, headStart: 5 };
+  const intro = 5 / (4 * 2); // 0.625s, the time 2 needs for its head start
 
   test("the default pace keeps the pens faster than the scanner", () => {
     expect(DEFAULT_PACE.penRatio).toBeGreaterThan(1);
   });
 
-  test("the scanner waits at 2 through the intro, then walks at a steady speed", () => {
+  test("the scanner waits on 2 for the head start, then walks at a steady speed", () => {
     expect(scannerAt(0, pace)).toBe(2);
-    expect(scannerAt(0.7, pace)).toBe(2);
-    expect(scannerAt(1.7, pace)).toBeCloseTo(6, 6);
+    expect(scannerAt(intro, pace)).toBe(2);
+    expect(scannerAt(intro + 1, pace)).toBeCloseTo(6, 6);
   });
 
   test("timeForScanner is the inverse of scannerAt", () => {
-    expect(timeForScanner(2, pace)).toBeCloseTo(0.7, 6);
+    expect(timeForScanner(2, pace)).toBeCloseTo(intro, 6);
     expect(scannerAt(timeForScanner(37, pace), pace)).toBeCloseTo(37, 6);
-    expect(timeForScanner(1, pace)).toBeCloseTo(0.7, 6); // clamped to the start
+    expect(timeForScanner(1, pace)).toBeCloseTo(intro, 6); // clamped to the start
   });
 
   test("2 leaves at once and every other prime leaves when the scanner reaches it", () => {
     expect(launchTime(2, pace)).toBe(0);
-    expect(launchTime(3, pace)).toBeCloseTo(0.95, 6);
-    expect(launchTime(11, pace)).toBeCloseTo(2.95, 6);
+    expect(launchTime(3, pace)).toBeCloseTo(intro + 0.25, 6);
+    expect(launchTime(11, pace)).toBeCloseTo(intro + 2.25, 6);
   });
 
   test("a pen only exists once its chain has left, then runs at the pen speed", () => {
     expect(penAt(3, 0.5, pace)).toBeNull();
-    expect(penAt(3, 0.95, pace)).toBeCloseTo(3, 6);
-    expect(penAt(3, 1.95, pace)).toBeCloseTo(11, 6); // 8 numbers per second
-    expect(penAt(2, 0.7, pace)).toBeCloseTo(7.6, 6); // the head start that 2 gets
+    expect(penAt(3, launchTime(3, pace), pace)).toBeCloseTo(3, 6);
+    expect(penAt(3, launchTime(3, pace) + 1, pace)).toBeCloseTo(11, 6); // 8 numbers a second
+    expect(penAt(2, intro, pace)).toBeCloseTo(2 + pace.headStart, 6);
   });
 
   test("the lead is the pen of 2, and the camera has to fit it", () => {
     expect(leadAt(1.7, pace)).toBeCloseTo(penAt(2, 1.7, pace), 10);
     expect(leadAt(1.7, pace)).toBeGreaterThan(scannerAt(1.7, pace));
   });
+
+  // What lets the speed be changed while the animation runs: at a given scanner position
+  // the picture is identical, whatever the speed. The viewer sees the pace change and
+  // nothing jump.
+  test("the picture does not move when the speed changes", () => {
+    const slow = { scanSpeed: 0.5, penRatio: 2, headStart: 5 };
+    const fast = { scanSpeed: 9, penRatio: 2, headStart: 5 };
+    for (const scanner of [2, 3.5, 10, 41]) {
+      for (const p of [2, 3, 7, 31]) {
+        const a = penAt(p, timeForScanner(scanner, slow), slow);
+        const b = penAt(p, timeForScanner(scanner, fast), fast);
+        if (a === null) expect(b).toBeNull();
+        else expect(a).toBeCloseTo(b, 9);
+      }
+    }
+  });
+
+  test("a faster sweep only makes the same picture arrive sooner", () => {
+    const slow = { scanSpeed: 2, penRatio: 2, headStart: 5 };
+    const fast = { scanSpeed: 8, penRatio: 2, headStart: 5 };
+    expect(timeForScanner(50, fast)).toBeLessThan(timeForScanner(50, slow));
+    expect(leadAt(timeForScanner(50, fast), fast)).toBeCloseTo(leadAt(timeForScanner(50, slow), slow), 9);
+  });
 });
 
 describe("crossing out the composites", () => {
-  const pace = { scanSpeed: 4, penRatio: 2, introSeconds: 0.7 };
+  const pace = { scanSpeed: 4, penRatio: 2, headStart: 5 };
 
   test("a composite is crossed by the chain of its smallest prime factor", () => {
-    // 9 waits for the chain of 3: it leaves at 0.95s, then covers 6 numbers at 8 a second
-    expect(crossTime(9, pace)).toBeCloseTo(1.7, 6);
+    // 9 waits for the chain of 3, which leaves when the scanner gets there
+    expect(crossTime(9, pace)).toBeCloseTo(launchTime(3, pace) + 6 / 8, 6);
     expect(crossTime(4, pace)).toBeCloseTo(0.25, 6); // 2 left at once
   });
 
@@ -309,7 +334,7 @@ describe("crossing out the composites", () => {
 });
 
 describe("numberStateAt", () => {
-  const pace = { scanSpeed: 4, penRatio: 2, introSeconds: 0.7 };
+  const pace = { scanSpeed: 4, penRatio: 2, headStart: 5 };
   const state = (n, t) => numberStateAt(n, t, pace, 0.5);
 
   test("every number starts unknown, so they are all on screen from the first frame", () => {
@@ -331,8 +356,8 @@ describe("numberStateAt", () => {
   });
 
   test("a prime turns prime when its own chain leaves", () => {
-    expect(state(3, 0.9).state).toBe("unknown");
-    expect(state(3, 1).state).toBe("prime");
+    expect(state(3, launchTime(3, pace) - 0.01).state).toBe("unknown");
+    expect(state(3, launchTime(3, pace)).state).toBe("prime");
   });
 
   test("a composite is crossed while the scanner is still far behind it", () => {
@@ -366,7 +391,7 @@ describe("the timeline", () => {
     loop: true,
     holdSeconds: 1,
     fadeSeconds: 0.5,
-    pace: { scanSpeed: 4, penRatio: 2, introSeconds: 0.7 },
+    pace: { scanSpeed: 4, penRatio: 2, headStart: 5 },
   };
   const run = (state, seconds, step = 0.1, opts = options) => {
     let next = state;
@@ -381,7 +406,7 @@ describe("the timeline", () => {
   test("moves the scanner forward while sweeping", () => {
     const state = run(createTimeline(), 2);
     expect(state.phase).toBe("sweeping");
-    expect(state.frontier).toBeCloseTo(7.2, 6); // 2 + 4 * (2 - 0.7)
+    expect(state.frontier).toBeCloseTo(7.5, 6); // 2 + 4 * (2 - 0.625)
   });
 
   test("holds on the finished picture when the scanner reaches the limit", () => {
@@ -411,7 +436,7 @@ describe("the timeline", () => {
   });
 
   test("seekTimeline jumps straight to a number and clamps to the limit", () => {
-    expect(seekTimeline(12, options)).toEqual({ elapsed: 3.2, frontier: 12, phase: "sweeping", phaseLeft: 0 });
+    expect(seekTimeline(12, options)).toEqual({ elapsed: 3.125, frontier: 12, phase: "sweeping", phaseLeft: 0 });
     expect(seekTimeline(999, options).frontier).toBe(20);
     expect(seekTimeline(999, options).phase).toBe("holding");
     expect(seekTimeline(-5, options).frontier).toBe(2);

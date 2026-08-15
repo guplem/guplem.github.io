@@ -26,6 +26,19 @@
     <div id="controls">
       <button id="play" type="button" aria-label="Pause the animation">Pause</button>
       <button id="restart" type="button" aria-label="Restart the animation">Restart</button>
+
+      <label class="dial" for="speed-input" title="How many numbers the scanner walks each second">
+        <span class="dial-name">speed</span>
+        <input id="speed-input" type="range" min="0.25" max="8" step="0.25">
+        <output id="speed-value" for="speed-input">2</output>
+      </label>
+
+      <label class="dial" for="limit-input" title="How far the sweep counts. The picture ends up about twice as wide as this.">
+        <span class="dial-name">count to</span>
+        <input id="limit-input" type="range" min="20" max="250" step="5">
+        <output id="limit-value" for="limit-input">50</output>
+      </label>
+
       <span id="hint">space to pause &middot; R to restart</span>
     </div>
   </div>
