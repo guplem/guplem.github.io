@@ -115,6 +115,20 @@ main {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  /* Every card needs a place in the paint order. `backdrop-filter` creates a
+     stacking context, which traps the country panel inside the card that holds
+     it: the panel's own z-index then counts only against its siblings in that
+     card, never against a later card. Without this, the "Recent numbers" card
+     painted over the open panel and hid half the country list. Do not remove
+     these two rules while the cards keep `backdrop-filter`. */
+  position: relative;
+  z-index: 1;
+}
+
+/* The card that holds the country panel has to sit above the cards below it,
+   because the panel drops out of the card and over them. */
+#dial-form {
+  z-index: 2;
 }
 
 .field {
