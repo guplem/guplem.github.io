@@ -90,8 +90,11 @@ export function glyphMask(digit, scale = 4) {
  * @param {Record<number, number[]>} [options.notes] pencil marks per cell index:
  *   the small candidate digits a player writes in a corner. The reader must
  *   ignore these, so tests draw them at the size real apps use.
- * @param {number} [options.selectedCell] cell index to paint as a solid
- *   highlight, the way an app marks the cell the player is on
+ * @param {number[]} [options.highlights] cell indexes to paint with a solid
+ *   block of colour behind their contents, the way an app marks the cell the
+ *   player is on, or every cell holding the digit they picked. A highlighted
+ *   cell may be empty or may hold a digit; the digit is drawn on top.
+ * @param {number} [options.highlightLevel] brightness of that block
  * @returns {{rgba: Uint8ClampedArray, width: number, height: number,
  *   origin: {x: number, y: number}, cell: number, size: number}}
  */
@@ -105,7 +108,11 @@ export function renderSudokuScreenshot(options = {}) {
     darkMode = false,
     lineWidth = 2,
     notes = {},
-    selectedCell = null,
+    highlights = [],
+    // Measured off a real screenshot: the block sits at about seven tenths of
+    // the page brightness, close enough to the page that a threshold taken over
+    // a wider window marks only part of it as ink.
+    highlightLevel = darkMode ? 70 : 176,
   } = options;
   const size = cell * 9;
   const width = options.width ?? originX * 2 + size;
@@ -128,16 +135,20 @@ export function renderSudokuScreenshot(options = {}) {
     }
     fillRect(rgba, width, height, 40, originY + size + 40, 150, 44, soft);
     fillRect(rgba, width, height, 220, originY + size + 40, 150, 44, soft);
-    // A large filled panel: a decoy that is bigger than the grid but has no
-    // line structure inside it.
-    fillRect(rgba, width, height, width - 46, originY, 30, size, darkMode ? 60 : 205);
+    // A tall filled panel beside the grid: a decoy with no line structure in it.
+    // It is drawn only when it fits clear of the grid, because a decoy touching
+    // the grid would merge with it and stop being a decoy.
+    if (originX + size + 46 < width) {
+      fillRect(rgba, width, height, width - 46, originY, 30, size, darkMode ? 60 : 205);
+    }
   }
 
-  // The cell the player is on: a solid block of colour that fills the cell.
-  if (selectedCell !== null) {
-    const row = Math.floor(selectedCell / 9);
-    const col = selectedCell % 9;
-    fillRect(rgba, width, height, originX + col * cell + 2, originY + row * cell + 2, cell - 4, cell - 4, darkMode ? 70 : 186);
+  // Highlighted cells: a solid block of colour that fills the cell, drawn before
+  // the rules and the digits so that anything in the cell sits on top of it.
+  for (const index of highlights) {
+    const row = Math.floor(index / 9);
+    const col = index % 9;
+    fillRect(rgba, width, height, originX + col * cell + 2, originY + row * cell + 2, cell - 4, cell - 4, highlightLevel);
   }
 
   // The grid: thin lines everywhere, thick lines on the box borders.

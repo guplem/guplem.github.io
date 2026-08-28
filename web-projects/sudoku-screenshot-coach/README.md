@@ -15,6 +15,9 @@ on the board.
   file, paste from the clipboard with `Ctrl+V`, or choose a file.
 - **Ignores your pencil marks.** The small candidate digits you write in the
   corners are measured and skipped, so they never become placed digits.
+- **Reads highlighted cells.** Apps paint a block of colour behind the digit you
+  picked, or behind the cell you are on. Each cell is read on its own, so the
+  colour behind a digit does not hide it.
 - **Fixes its own misreadings.** After reading, it checks the grid against the
   rules of sudoku. When a reading breaks them, it corrects the cell it was least
   sure about and tells you what it changed.

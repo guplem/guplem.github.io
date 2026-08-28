@@ -358,6 +358,10 @@ export const MESSAGES = {
     en: "{count} cells left. Easiest move available: {technique}.",
     es: "Quedan {count} celdas. El movimiento más fácil disponible es: {technique}.",
   },
+  "coach.next.one": {
+    en: "One cell left. Easiest move available: {technique}.",
+    es: "Queda una celda. El movimiento más fácil disponible es: {technique}.",
+  },
   "coach.stuck": {
     en: "None of the {count} techniques this coach knows applies here. The verified solution puts {digit} in {cell}. Proving that by hand needs a technique beyond this catalogue, such as a chain or a unique-rectangle pattern.",
     es: "Ninguna de las {count} técnicas que conoce este entrenador sirve aquí. La solución verificada pone un {digit} en {cell}. Demostrarlo a mano necesita una técnica fuera de este catálogo, como una cadena o un rectángulo único.",
@@ -395,7 +399,12 @@ export const MESSAGES = {
   },
   "read.working": { en: "Reading the picture…", es: "Leyendo la imagen…" },
   "read.count": { en: "Read {count} digits.", es: "Leídas {count} cifras." },
+  "read.count.one": { en: "Read one digit.", es: "Leída una cifra." },
   "read.repaired": {
+    en: "The rules of sudoku showed some readings were wrong, so it corrected {list}.",
+    es: "Las reglas del sudoku mostraron que algunas lecturas eran incorrectas, así que se han corregido {list}.",
+  },
+  "read.repaired.one": {
     en: "The rules of sudoku showed a reading was wrong, so it corrected {list}.",
     es: "Las reglas del sudoku mostraron que una lectura era incorrecta, así que se ha corregido {list}.",
   },
@@ -404,6 +413,10 @@ export const MESSAGES = {
   "read.uncertain": {
     en: "{count} cells are marked as doubtful. Check them before you trust the advice.",
     es: "{count} celdas están marcadas como dudosas. Revísalas antes de fiarte del consejo.",
+  },
+  "read.uncertain.one": {
+    en: "One cell is marked as doubtful. Check it before you trust the advice.",
+    es: "Una celda está marcada como dudosa. Revísala antes de fiarte del consejo.",
   },
   "read.failed": { en: "That image could not be read: {message}", es: "No se ha podido leer esa imagen: {message}" },
   "read.elimOnly": {
