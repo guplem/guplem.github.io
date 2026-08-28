@@ -7,8 +7,8 @@ plain digits. It must therefore decide how much it checks that number.
 
 Every country has its own numbering plan: how many digits a number holds, which
 prefixes exist, and whether a number written at home carries a trunk zero that
-the international form drops. A UK mobile is `07911 123456` at home and
-`44 7911 123456` abroad. Italy is the opposite: the leading zero is part of the
+the international form drops. A UK mobile is `07700 900123` at home and
+`44 7700 900123` abroad. Italy is the opposite: the leading zero is part of the
 number and removing it breaks the call. These plans also change as operators get
 new ranges.
 

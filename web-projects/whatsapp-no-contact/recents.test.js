@@ -7,8 +7,8 @@ import {
   deserializeRecents,
 } from "./recents.js";
 
-const ES = { dial: "34", national: "639078482" };
-const UK = { dial: "44", national: "7911123456" };
+const ES = { dial: "34", national: "123456789" };
+const UK = { dial: "44", national: "7700900123" };
 const US = { dial: "1", national: "2125550123" };
 
 describe("storage key", () => {
@@ -38,12 +38,12 @@ describe("addRecent", () => {
   });
 
   test("treats the same number written differently as one entry", () => {
-    const written = { dial: "44", national: "(0) 7911 123456" };
+    const written = { dial: "44", national: "(0) 7700 900123" };
     expect(addRecent([UK, ES], written)).toEqual([UK, ES]);
   });
 
   test("stores the normalized number, not the raw typing", () => {
-    expect(addRecent([], { dial: "44", national: "07911 123456" })).toEqual([UK]);
+    expect(addRecent([], { dial: "44", national: "07700 900123" })).toEqual([UK]);
   });
 
   test("caps the list at the maximum, dropping the oldest entry", () => {
@@ -53,7 +53,7 @@ describe("addRecent", () => {
 
   test("ignores a number that is not valid", () => {
     expect(addRecent([ES], { dial: "34", national: "" })).toEqual([ES]);
-    expect(addRecent([ES], { dial: null, national: "639078482" })).toEqual([ES]);
+    expect(addRecent([ES], { dial: null, national: "123456789" })).toEqual([ES]);
     expect(addRecent([ES], null)).toEqual([ES]);
   });
 
@@ -71,7 +71,7 @@ describe("serializeRecents and deserializeRecents", () => {
 
   test("store only the dial code and the number", () => {
     const stored = JSON.parse(serializeRecents([{ ...ES, note: "drop me" }]));
-    expect(stored).toEqual([{ dial: "34", national: "639078482" }]);
+    expect(stored).toEqual([{ dial: "34", national: "123456789" }]);
   });
 
   test("deserialize returns an empty list for anything unreadable", () => {
@@ -85,7 +85,7 @@ describe("serializeRecents and deserializeRecents", () => {
   });
 
   test("deserialize drops entries that are not usable numbers", () => {
-    const raw = JSON.stringify([ES, { dial: "34" }, { national: "639078482" }, "nope", null, UK]);
+    const raw = JSON.stringify([ES, { dial: "34" }, { national: "123456789" }, "nope", null, UK]);
     expect(deserializeRecents(raw)).toEqual([ES, UK]);
   });
 
@@ -98,7 +98,7 @@ describe("serializeRecents and deserializeRecents", () => {
     const raw = JSON.stringify([ES, ES, UK, US, ES]);
     expect(deserializeRecents(raw)).toEqual([ES, UK, US]);
     const many = JSON.stringify(
-      Array.from({ length: 20 }, (_, i) => ({ dial: "34", national: `6390784${String(i).padStart(2, "0")}` }))
+      Array.from({ length: 20 }, (_, i) => ({ dial: "34", national: `1234567${String(i).padStart(2, "0")}` }))
     );
     expect(deserializeRecents(many)).toHaveLength(MAX_RECENTS);
   });

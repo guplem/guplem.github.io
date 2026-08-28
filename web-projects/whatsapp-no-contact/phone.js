@@ -5,8 +5,8 @@
 import { splitDialCode, findByDial } from "./countries.js";
 
 // Most countries write a national number with a trunk zero that the
-// international form drops: a UK mobile is 07911 123456 at home and
-// 44 7911 123456 abroad. Italy is the exception, where the leading zero is
+// international form drops: a UK mobile is 07700 900123 at home and
+// 44 7700 900123 abroad. Italy is the exception, where the leading zero is
 // part of the number and removing it breaks the call.
 const DIALS_KEEPING_LEADING_ZERO = new Set(["39"]);
 
@@ -116,7 +116,7 @@ export function buildWhatsAppUrl(state) {
  * check before opening the chat. The national part is not regrouped, because
  * grouping rules differ per country and a wrong guess reads as an error.
  * @param {{dial: ?string, national: ?string}} state
- * @returns {string} e.g. "+34 639078482", or "" when there is no country
+ * @returns {string} e.g. "+34 123456789", or "" when there is no country
  */
 export function formatForDisplay(state) {
   const dial = digitsOnly(state?.dial);
@@ -143,7 +143,7 @@ export function parseUrlState(search) {
  * Write the number into a query string. An incomplete number serializes to
  * nothing, so a half-typed number never ends up in a shared link.
  * @param {{dial: ?string, national: ?string}} state
- * @returns {string} e.g. "p=34639078482", or ""
+ * @returns {string} e.g. "p=34123456789", or ""
  */
 export function serializeUrlState(state) {
   if (!validateNumber(state).valid) return "";

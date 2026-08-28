@@ -160,7 +160,7 @@ describe("searchCountries", () => {
 
 describe("splitDialCode", () => {
   test("splits a plain international number into dial code and national part", () => {
-    expect(splitDialCode("34639078482")).toEqual({ dial: "34", national: "639078482" });
+    expect(splitDialCode("34123456789")).toEqual({ dial: "34", national: "123456789" });
   });
 
   test("prefers the longest matching dial code", () => {
@@ -170,13 +170,13 @@ describe("splitDialCode", () => {
   });
 
   test("handles a two-digit and a three-digit code", () => {
-    expect(splitDialCode("447911123456")).toEqual({ dial: "44", national: "7911123456" });
+    expect(splitDialCode("447700900123")).toEqual({ dial: "44", national: "7700900123" });
     expect(splitDialCode("3519123456789")).toEqual({ dial: "351", national: "9123456789" });
   });
 
   test("strips a leading plus, zeros and separators before splitting", () => {
-    expect(splitDialCode("+34 639 07 84 82")).toEqual({ dial: "34", national: "639078482" });
-    expect(splitDialCode("0034-639-078-482")).toEqual({ dial: "34", national: "639078482" });
+    expect(splitDialCode("+34 123 456 789")).toEqual({ dial: "34", national: "123456789" });
+    expect(splitDialCode("0034-123-456-789")).toEqual({ dial: "34", national: "123456789" });
   });
 
   test("returns null when no dial code matches", () => {
