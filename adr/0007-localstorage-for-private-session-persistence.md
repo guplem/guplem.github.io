@@ -63,4 +63,5 @@ URL state; projects that need **private cross-session memory** use `localStorage
 projects that need neither can stay in-memory. A project that needs both (a
 shareable setup *and* private device-local preferences) may combine them, as
 `taboo-game` already does (URL for shared inputs, `localStorage` for personal
-info).
+info) and as `whatsapp-no-contact` does (URL for the number being shared,
+`localStorage` for the private list of numbers this browser used).

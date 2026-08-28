@@ -2,7 +2,7 @@
 
 ## Context
 
-Some `web-projects/` are small tools whose primary value depends on **sharing the exact same view with someone else** -- e.g. `random-option-picker` (a draw is only useful if a teammate can verify the same result), and similar future tools where a teammate, classmate, or future-self needs to reproduce a setup.
+Some `web-projects/` are small tools whose primary value depends on **sharing the exact same view with someone else** -- e.g. `random-option-picker` (a draw is only useful if a teammate can verify the same result), `whatsapp-no-contact` (a link that opens a chat with one number is the point of the page), and similar future tools where a teammate, classmate, or future-self needs to reproduce a setup.
 
 Storage options for the in-app state:
 
@@ -16,7 +16,7 @@ For web-projects whose value depends on shareability or reproducibility, **URL q
 
 Conventions:
 
-- Short, lowercase param names (`o` for option, `n` for count, `s` for seed). One occurrence per item for list values (`?o=A&o=B`) -- not CSV -- so options containing commas, equals signs, or other separators round-trip correctly through `URLSearchParams`.
+- Short, lowercase param names (`o` for option, `n` for count, `s` for seed, `p` for phone number). One occurrence per item for list values (`?o=A&o=B`) -- not CSV -- so options containing commas, equals signs, or other separators round-trip correctly through `URLSearchParams`.
 - Defaults are not serialized (e.g. `n` is omitted when count is 1) to keep links short.
 - Parsing and serializing live in the project's pure logic module (`picker.js`) and are covered by tests, so the URL contract is verifiable without a browser.
 - `history.replaceState` (not `pushState`) is used so editing options does not pollute the back-button history.
@@ -35,7 +35,7 @@ Conventions:
 **Negative:**
 
 - Total state size is bounded by browser URL length limits (~2KB safe, ~8KB upper). Lists with thousands of items are not supported.
-- All state is visible and editable by the user. Sensitive values must never be put in URL state.
+- All state is visible and editable by the user. Sensitive values must never be put in URL state. Personal data is only acceptable when sharing it **is** the feature the visitor asked for, as with the phone number in `whatsapp-no-contact`, and the page must say that the link carries it.
 - The user-facing URL changes as they type, which can feel noisy; this is mitigated by using `replaceState` and only serializing meaningful values.
 - Round-trip fidelity depends on consistent encoding -- options containing percent or plus characters must rely on `URLSearchParams` rather than ad-hoc string concatenation.
 

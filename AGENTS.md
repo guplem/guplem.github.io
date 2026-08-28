@@ -185,6 +185,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [street-name-history 0001](web-projects/street-name-history/adr/0001-federated-geodata-sources.md) | Federate Nominatim + Wikidata + OpenHistoricalMap client-side; Nominatim (not Overpass) as sole OSM tag source |
 | [prime-sieve-arcs 0001](web-projects/prime-sieve-arcs/adr/0001-reference-frame-measured-as-the-spec.md) | Recover the construction by measuring the reference frame, and keep that frame as the spec |
 | [prime-sieve-arcs 0002](web-projects/prime-sieve-arcs/adr/0002-redraw-every-frame-zooming-camera.md) | Redraw every frame because the camera zooms out, so any frame can be drawn directly |
+| [whatsapp-no-contact 0001](web-projects/whatsapp-no-contact/adr/0001-loose-number-checks-no-phone-library.md) | Check numbers loosely against E.164 and ship no phone-number library |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 

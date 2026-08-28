@@ -47,6 +47,7 @@ Self-contained mini-apps in `web-projects/`. Browse them all at [triunitystudios
 - **`rps-mind-reader/`** — Rock-paper-scissors against an AI that learns your habits and adapts
 - **`street-name-history/`** — Search any street for all its names across languages, its former names, and its etymology (OpenStreetMap + Wikidata + OpenHistoricalMap)
 - **`prime-sieve-arcs/`** — The Sieve of Eratosthenes as an animation: every prime hops over its multiples in glowing arcs
+- **`whatsapp-no-contact/`** — Open a WhatsApp chat with any phone number without saving it as a contact: searchable country selector, number field, one button
 
 ## Deployment
 
