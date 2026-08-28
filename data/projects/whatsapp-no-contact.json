@@ -1,0 +1,21 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "WhatsApp Without Saving a Contact",
+  "description": [
+    "*WhatsApp Without Saving a Contact* is a **one-screen web tool** that opens a WhatsApp chat with any phone number, with no need to save that number as a contact first. The visitor picks a country, types the number, and the page builds the standard WhatsApp link that opens the chat.",
+    "I set the concept and the usability bar: one country selector, one number field, one button, and nothing else on screen. The page is **responsive** for phones and desktops, preselects the visitor's own country from the browser locale, and reads a number that already carries its country code. Paste **+44 (0) 7911 123456** and it selects the United Kingdom, removes the trunk zero, and keeps the rest.",
+    "The number rules are **covered by tests written before the code**: 227 countries, the longest-match rule that tells +1 876 (Jamaica) from a plain +1, the 15-digit E.164 limit, and the trunk-zero rule with Italy as its exception. The number lives in the page URL, so any link opens the tool ready to send, and the list of recent numbers stays in the browser and is never sent anywhere."
+  ],
+  "skills": ["Vibe Coded", "UI/UX"],
+  "links": [
+    {
+      "url": "web-projects/whatsapp-no-contact/"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/whatsapp-no-contact"
+    }
+  ]
+}
