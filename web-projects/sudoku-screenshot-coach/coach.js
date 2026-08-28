@@ -120,7 +120,10 @@ export function nextHint(board, lang = DEFAULT_LANGUAGE) {
 
   const message = ambiguous
     ? analysis.message
-    : t(lang, "coach.next", { count: emptyCount(board), technique: explanation.technique.name });
+    : t(lang, emptyCount(board) === 1 ? "coach.next.one" : "coach.next", {
+        count: emptyCount(board),
+        technique: explanation.technique.name,
+      });
   return { status: ambiguous ? "multiple" : "ok", message, analysis, explanation, unlocks, fallback: null };
 }
 

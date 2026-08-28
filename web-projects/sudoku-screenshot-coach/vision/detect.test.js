@@ -161,6 +161,14 @@ describe("scoreGridLines", () => {
     expect(scoreGridLines(mask, 288)).toBeLessThan(0.2);
   });
 
+  test("scores a completely filled square low, because a grid needs gaps too", () => {
+    // Every row of a solid block is dense, so a check that only looks for lines
+    // calls it a perfect grid. It is the empty space between the rules that
+    // makes a sudoku, so the score must count that as well.
+    const size = 288;
+    expect(scoreGridLines(new Uint8Array(size * size).fill(1), size)).toBeLessThan(0.6);
+  });
+
   test("scores an empty-bordered box low, because it has no inner lines", () => {
     const size = 288;
     const mask = new Uint8Array(size * size);
@@ -220,6 +228,38 @@ describe("findGrid", () => {
     const found = findGrid(toGray(shot.rgba, shot.width, shot.height), shot.width, shot.height);
     expect(found).not.toBeNull();
     expect(cornerError(found.quad[0], shot.origin.x, shot.origin.y)).toBeLessThan(6);
+  });
+
+  // A phone screenshot is tall and narrow. Scaling its longest side down to the
+  // working limit shrinks the width far more than the grid can afford: a
+  // hairline rule falls below one pixel and averages away, so the grid stops
+  // looking like a grid. The search must still find it. See ADR 0005.
+  test("finds a hairline grid in a tall phone screenshot", () => {
+    const shot = renderSudokuScreenshot({
+      puzzle: PUZZLE,
+      cell: 97,
+      originX: 10,
+      originY: 500,
+      width: 912,
+      height: 2046,
+      lineWidth: 1,
+      clutter: true,
+    });
+    const found = findGrid(toGray(shot.rgba, shot.width, shot.height), shot.width, shot.height);
+    expect(found).not.toBeNull();
+    expect(found.score).toBeGreaterThan(0.9);
+    expect(cornerError(found.quad[0], shot.origin.x, shot.origin.y)).toBeLessThan(8);
+  });
+
+  test("prefers the larger region when two candidates score alike", () => {
+    // A small patch of texture can imitate a grid once it is blown up to the
+    // flattened square. The real puzzle is the biggest thing that looks like
+    // one, so a tie must not go to the small patch.
+    const shot = renderSudokuScreenshot({ puzzle: PUZZLE, cell: 60, originX: 40, originY: 200, clutter: true });
+    const found = findGrid(toGray(shot.rgba, shot.width, shot.height), shot.width, shot.height);
+    expect(found).not.toBeNull();
+    const width = found.quad[1].x - found.quad[0].x;
+    expect(width).toBeGreaterThan(shot.size * 0.9);
   });
 
   test("returns null when the image holds no grid", () => {

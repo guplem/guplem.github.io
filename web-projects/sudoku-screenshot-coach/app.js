@@ -252,7 +252,7 @@ async function handleImage(blob) {
 
     loadPuzzleText(result.text, { uncertain: result.uncertainCells });
 
-    const parts = [say("read.count", { count: result.filled })];
+    const parts = [say(result.filled === 1 ? "read.count.one" : "read.count", { count: result.filled })];
     if (result.repairs.length > 0) {
       const fixes = result.repairs
         .map((repair) =>
@@ -263,10 +263,14 @@ async function handleImage(blob) {
           })
         )
         .join(", ");
-      parts.push(say("read.repaired", { list: fixes }));
+      parts.push(say(result.repairs.length === 1 ? "read.repaired.one" : "read.repaired", { list: fixes }));
     }
     if (result.uncertainCells.length > 0) {
-      parts.push(say("read.uncertain", { count: result.uncertainCells.length }));
+      parts.push(
+        say(result.uncertainCells.length === 1 ? "read.uncertain.one" : "read.uncertain", {
+          count: result.uncertainCells.length,
+        })
+      );
     }
     const kind = result.uncertainCells.length > 0 || result.repairs.length > 0 ? "warn" : "good";
     setStatus(dom.readStatus, parts.join(" "), kind);

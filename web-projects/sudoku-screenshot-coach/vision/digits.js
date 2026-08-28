@@ -11,7 +11,6 @@
 // two paths stay comparable.
 
 import { labelComponents } from "./detect.js";
-import { adaptiveThreshold } from "./imaging.js";
 
 /** Side of the little square picture every digit is squeezed into. */
 export const GLYPH_SIZE = 16;
@@ -29,6 +28,12 @@ export const MIN_DIGIT_HEIGHT_OF_CELL = 0.35;
  * whose digits are drawn small, where the fixed share above is too generous.
  */
 export const MIN_DIGIT_HEIGHT_OF_REFERENCE = 0.55;
+/**
+ * How far apart the two brightness groups of a cell must sit before the darker
+ * one counts as ink. Below this the cell holds one shade with a little wobble,
+ * which is an empty cell, plain or highlighted.
+ */
+export const MIN_CELL_CONTRAST = 45;
 
 /** Where one cell sits inside the flattened grid. */
 export function cellRegion(row, col, warpSize) {
@@ -134,22 +139,78 @@ export function classifyGlyph(glyph, templates) {
   return { digit, distance, runnerUp: runner ? runner[0] : null, confidence };
 }
 
+/**
+ * Split one cell into ink and background, judging it against itself.
+ *
+ * The cut is Otsu's: the brightness that best separates the pixels of the cell
+ * into two groups. Judging the cell on its own is what makes a highlighted cell
+ * readable. An app paints a block of colour behind a digit, and a threshold
+ * taken over the whole page marks part of that block as ink, where it merges
+ * with the digit into one shape that fills the cell. Inside the cell the block
+ * is simply the background, and only the digit is ink. See adr/0005.
+ *
+ * @param {Uint8ClampedArray} gray the brightness of every pixel of the cell
+ * @param {number} size the side of the square patch
+ * @returns {Uint8Array|null} 1 where there is ink, or null when the cell holds
+ *   only one shade, which is what an empty cell looks like.
+ */
+export function cellInkMask(gray, size) {
+  const total = size * size;
+  const histogram = new Uint32Array(256);
+  for (let index = 0; index < total; index += 1) histogram[gray[index]] += 1;
+
+  let sum = 0;
+  for (let level = 0; level < 256; level += 1) sum += level * histogram[level];
+
+  let darkCount = 0;
+  let darkSum = 0;
+  let bestSpread = -1;
+  let cut = 0;
+  let darkMean = 0;
+  let lightMean = 0;
+  for (let level = 0; level < 256; level += 1) {
+    darkCount += histogram[level];
+    if (darkCount === 0) continue;
+    const lightCount = total - darkCount;
+    if (lightCount === 0) break;
+    darkSum += level * histogram[level];
+    const meanDark = darkSum / darkCount;
+    const meanLight = (sum - darkSum) / lightCount;
+    // Otsu: the cut that pushes the two group means furthest apart.
+    const spread = darkCount * lightCount * (meanDark - meanLight) ** 2;
+    if (spread > bestSpread) {
+      bestSpread = spread;
+      cut = level;
+      darkMean = meanDark;
+      lightMean = meanLight;
+    }
+  }
+
+  // One flat shade always splits somewhere, so require the two groups to be
+  // genuinely different before calling the darker one ink.
+  if (lightMean - darkMean < MIN_CELL_CONTRAST) return null;
+
+  const mask = new Uint8Array(total);
+  for (let index = 0; index < total; index += 1) mask[index] = gray[index] <= cut ? 1 : 0;
+  return mask;
+}
+
 /** Cut one cell out of the flattened grid, trimming the margin that holds the rules. */
-function cropCell(mask, warpSize, row, col) {
+function cropCell(warped, warpSize, row, col) {
   const region = cellRegion(row, col, warpSize);
   const margin = Math.round(region.size * CELL_MARGIN);
   const cropSize = region.size - margin * 2;
   if (cropSize < 6) return null;
-  const crop = new Uint8Array(cropSize * cropSize);
+  const gray = new Uint8ClampedArray(cropSize * cropSize);
   for (let y = 0; y < cropSize; y += 1) {
     for (let x = 0; x < cropSize; x += 1) {
-      const sx = region.x + margin + x;
-      const sy = region.y + margin + y;
-      if (sx >= warpSize || sy >= warpSize) continue;
-      crop[y * cropSize + x] = mask[sy * warpSize + sx];
+      const sx = Math.min(warpSize - 1, region.x + margin + x);
+      const sy = Math.min(warpSize - 1, region.y + margin + y);
+      gray[y * cropSize + x] = warped[sy * warpSize + sx];
     }
   }
-  return { crop, cropSize };
+  const crop = cellInkMask(gray, cropSize);
+  return crop ? { crop, cropSize } : { crop: null, cropSize };
 }
 
 /**
@@ -234,7 +295,6 @@ function looksLikeDigit(box, cropSize, minHeight) {
  *   `alternates` holds the second-best digit per cell, which the repair step uses.
  */
 export function readGrid(warped, warpSize, templates) {
-  const mask = adaptiveThreshold(warped, warpSize, warpSize);
   const digits = new Int8Array(81);
   const confidences = new Float32Array(81);
   const alternates = new Int8Array(81);
@@ -246,10 +306,10 @@ export function readGrid(warped, warpSize, templates) {
   let cropSize = 0;
   for (let row = 0; row < 9; row += 1) {
     for (let col = 0; col < 9; col += 1) {
-      const cropped = cropCell(mask, warpSize, row, col);
+      const cropped = cropCell(warped, warpSize, row, col);
       if (!cropped) continue;
       cropSize = cropped.cropSize;
-      shapes[row * 9 + col] = mainShape(cropped.crop, cropped.cropSize);
+      if (cropped.crop) shapes[row * 9 + col] = mainShape(cropped.crop, cropped.cropSize);
     }
   }
 

@@ -6,7 +6,8 @@ step, nothing fetched at run time.
 Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explain-with-human-techniques-not-a-solver.md),
 [ADR 0002](adr/0002-read-digits-by-template-match-not-an-ocr-library.md),
 [ADR 0003](adr/0003-tell-pencil-marks-from-digits-by-measured-size.md),
-[ADR 0004](adr/0004-one-message-catalogue-for-generated-explanations.md).
+[ADR 0004](adr/0004-one-message-catalogue-for-generated-explanations.md),
+[ADR 0005](adr/0005-judge-the-grid-at-full-resolution-and-each-cell-against-itself.md).
 
 ## Module map (pure logic is separated from the DOM so it can be unit-tested)
 
@@ -22,7 +23,7 @@ Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explai
 | `urlState.js` | yes | Parse and serialize `p` (puzzle), `m` (mode) and `lang`. Root ADR 0006. |
 | `vision/imaging.js` | yes | Grayscale, downscale, integral image, adaptive threshold, dilate. |
 | `vision/detect.js` | yes | Connected shapes, corner finding, homography, warp, grid scoring. |
-| `vision/digits.js` | yes | Cell cropping, shape picking, glyph normalising, nearest-template match. |
+| `vision/digits.js` | yes | Cell cropping, per-cell thresholding, shape picking, glyph normalising, nearest-template match. |
 | `vision/builtinDigits.js` | yes | Digit shapes as stroke paths, so the reader needs no system font. |
 | `vision/fonts.js` | no | Draws the reference pictures on a canvas, from device fonts and the built-in paths. |
 | `vision/testFixtures.js` | yes | Test-only. Draws synthetic screenshots with clutter, pencil marks and highlights. |
@@ -63,6 +64,18 @@ edits -> `coach.nextHint` -> `techniques` find a Move -> `explain` writes it ->
   dark-mode screenshot is a light grid on a dark page, and a hairline rule breaks
   into pieces unless the ink is grown first. The winner is the candidate whose
   flattened square really holds ten lines each way, not the biggest shape.
+- **Candidates are found on the small image but scored on the full-size one.**
+  Do not move the scoring back onto the downscaled image to save time. A phone
+  screenshot is tall, so fitting its longest side to the working limit shrinks
+  the width by more than half, and a hairline rule averages away. Measured, the
+  same grid scores 0.70 small and 1.00 full size. See ADR 0005.
+- **A candidate must be mostly empty, not just full of lines.** A solid block has
+  a dense row at every position and would score a perfect grid. The ink-share
+  check is what rejects it; keep it ahead of the line count.
+- **Each cell is thresholded against its own pixels** (`cellInkMask`, Otsu). An
+  app paints a block of colour behind a digit, and a threshold taken across the
+  page marks part of that block as ink, where it merges with the digit into one
+  cell-filling shape. Never go back to a single mask for the whole grid.
 - **The coach always offers the easiest technique that applies.** That ordering
   is the product, not an implementation detail. `TECHNIQUES` is sorted by rank
   and `findEasiestMove` takes the first hit.

@@ -191,6 +191,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [sudoku-screenshot-coach 0002](web-projects/sudoku-screenshot-coach/adr/0002-read-digits-by-template-match-not-an-ocr-library.md) | Read digits by template match, with digit shapes the tool carries itself |
 | [sudoku-screenshot-coach 0003](web-projects/sudoku-screenshot-coach/adr/0003-tell-pencil-marks-from-digits-by-measured-size.md) | Tell pencil marks from digits by measured size, and repair the rest with the rules |
 | [sudoku-screenshot-coach 0004](web-projects/sudoku-screenshot-coach/adr/0004-one-message-catalogue-for-generated-explanations.md) | One message catalogue, so generated explanations translate too |
+| [sudoku-screenshot-coach 0005](web-projects/sudoku-screenshot-coach/adr/0005-judge-the-grid-at-full-resolution-and-each-cell-against-itself.md) | Judge the grid at full resolution, and each cell against itself |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 

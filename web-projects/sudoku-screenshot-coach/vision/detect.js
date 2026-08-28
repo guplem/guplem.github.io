@@ -16,6 +16,13 @@ import { adaptiveThreshold, dilate, downscale, invertGray } from "./imaging.js";
 export const WORK_MAX_DIM = 900;
 /** Side of the flattened grid the rest of the pipeline reads. 9 cells of 48 px. */
 export const WARP_SIZE = 432;
+/** Share of a row that must be ink for it to count as a rule. */
+const LINE_DENSITY = 0.55;
+/**
+ * Most of a sudoku is empty. A shape whose ink covers more than this share of
+ * the flattened square is a block of colour, not a grid.
+ */
+const MAX_INK_SHARE = 0.5;
 
 /**
  * Group the ink into connected shapes, counting diagonal contact as connected.
@@ -193,10 +200,21 @@ export function warpGray(gray, width, height, matrix, size) {
 
 /**
  * How much the flattened square looks like a sudoku grid, from 0 to 1.
- * A sudoku has ten lines across and ten down, evenly spaced. The score is the
- * share of those twenty lines that are really there.
+ *
+ * A sudoku is ten rules across and ten down, evenly spaced. The score is the
+ * share of those twenty rules that are really there.
+ *
+ * One check comes first. A sudoku is mostly empty space: its rules and digits
+ * cover only a small part of it. A shape that is filled with ink has a dense row
+ * at every position, so it would pass for a rule everywhere and score perfectly.
+ * A block of highlight colour, or a dark page seen through the inverted pass, is
+ * exactly that. Anything that solid scores zero whatever its rows look like.
  */
 export function scoreGridLines(mask, size) {
+  let ink = 0;
+  for (let index = 0; index < mask.length; index += 1) ink += mask[index];
+  if (ink / mask.length > MAX_INK_SHARE) return 0;
+
   const step = size / 9;
   const tolerance = Math.max(2, Math.round(step / 5));
 
@@ -206,18 +224,18 @@ export function scoreGridLines(mask, size) {
     for (let offset = -tolerance; offset <= tolerance; offset += 1) {
       const index = centre + offset;
       if (index < 0 || index >= size) continue;
-      let ink = 0;
-      for (let along = 0; along < size; along += 1) {
-        ink += horizontal ? mask[index * size + along] : mask[along * size + index];
+      let along = 0;
+      for (let step2 = 0; step2 < size; step2 += 1) {
+        along += horizontal ? mask[index * size + step2] : mask[step2 * size + index];
       }
-      if (ink / size >= 0.55) return true;
+      if (along / size >= LINE_DENSITY) return true;
     }
     return false;
   };
 
   let found = 0;
   for (let index = 0; index <= 9; index += 1) {
-    // The outer lines sit on the very edge, so nudge them inwards by a pixel.
+    // The outer rules sit on the very edge, so nudge them inwards by a pixel.
     const position = Math.min(size - 1, Math.max(0, index * step + (index === 0 ? 1 : index === 9 ? -1 : 0)));
     if (hasLine(position, true)) found += 1;
     if (hasLine(position, false)) found += 1;
@@ -249,8 +267,37 @@ const FLAT_SQUARE = (size) => [
   { x: 0, y: size },
 ];
 
-/** Try one polarity and one amount of gap-closing, and return the best quad it yields. */
-function searchOnce(gray, width, height, dilateRadius, warpSize) {
+/** Two candidates score alike when they sit this close. */
+const SCORE_TIE = 0.02;
+
+/**
+ * Is this candidate a better grid than the one held so far?
+ * A clearly higher score wins. When two scores are alike, the larger region
+ * wins: a small patch of texture can imitate a grid once it is blown up to the
+ * flattened square, and the real puzzle is the biggest thing that looks like one.
+ */
+function isBetter(candidate, best) {
+  if (!best) return true;
+  if (candidate.score > best.score + SCORE_TIE) return true;
+  if (best.score > candidate.score + SCORE_TIE) return false;
+  return candidate.area > best.area;
+}
+
+/**
+ * Try one polarity and one amount of gap-closing, and return the best quad.
+ *
+ * Candidates are located on the small working image, because labelling every
+ * connected shape is the expensive step. Each candidate is then scored on a warp
+ * taken from the FULL-resolution image. That split matters: a hairline rule does
+ * not survive the downscale, so a score measured on the small image misses real
+ * grids. See adr/0005.
+ *
+ * @param {{gray, width, height, back}} work the downscaled image; `back` maps
+ *   a working coordinate to a full-resolution one
+ * @param {{gray, width, height}} full the image at its own resolution
+ */
+function searchOnce(work, full, dilateRadius, warpSize) {
+  const { gray, width, height } = work;
   const mask = dilate(adaptiveThreshold(gray, width, height), width, height, dilateRadius);
   const { labels, components } = labelComponents(mask, width, height);
   const minSide = Math.max(30, Math.round(Math.min(width, height) * 0.08));
@@ -268,13 +315,17 @@ function searchOnce(gray, width, height, dilateRadius, warpSize) {
 
   let best = null;
   for (const component of candidates) {
-    const quad = cornersOfComponent(labels, width, height, component);
-    if (!quad || !looksSquare(quad)) continue;
+    const found = cornersOfComponent(labels, width, height, component);
+    if (!found || !looksSquare(found)) continue;
+    // Move the corners to full-resolution coordinates before warping.
+    const quad = found.map((corner) => ({ x: corner.x * work.back, y: corner.y * work.back }));
     const matrix = solveHomography(FLAT_SQUARE(warpSize), quad);
     if (!matrix) continue;
-    const warped = warpGray(gray, width, height, matrix, warpSize);
+    const warped = warpGray(full.gray, full.width, full.height, matrix, warpSize);
     const score = scoreGridLines(adaptiveThreshold(warped, warpSize, warpSize), warpSize);
-    if (!best || score > best.score) best = { quad, matrix, warped, score };
+    const area = (component.maxX - component.minX + 1) * (component.maxY - component.minY + 1);
+    const candidate = { quad, warped, score, area };
+    if (isBetter(candidate, best)) best = candidate;
   }
   return best;
 }
@@ -294,14 +345,21 @@ function searchOnce(gray, width, height, dilateRadius, warpSize) {
 export function findGrid(gray, width, height, options = {}) {
   const { warpSize = WARP_SIZE, minScore = 0.75, maxDim = WORK_MAX_DIM } = options;
   const small = downscale(gray, width, height, maxDim);
+  const back = 1 / small.scale;
 
   let best = null;
   for (const inverted of [false, true]) {
     // A light grid on a dark page becomes a dark grid on a light page.
-    const working = inverted ? invertGray(small.data) : small.data;
+    const work = {
+      gray: inverted ? invertGray(small.data) : small.data,
+      width: small.width,
+      height: small.height,
+      back,
+    };
+    const full = { gray: inverted ? invertGray(gray) : gray, width, height };
     for (const dilateRadius of [0, 1, 2]) {
-      const found = searchOnce(working, small.width, small.height, dilateRadius, warpSize);
-      if (found && (!best || found.score > best.score)) best = { ...found, inverted, working };
+      const found = searchOnce(work, full, dilateRadius, warpSize);
+      if (found && isBetter(found, best)) best = { ...found, inverted };
       // A perfect score cannot be beaten, so stop early.
       if (best && best.score >= 1) break;
     }
@@ -309,14 +367,6 @@ export function findGrid(gray, width, height, options = {}) {
   }
 
   if (!best || best.score < minScore) return null;
-
-  // Map the quad back to the coordinates of the image that came in, then warp
-  // from the full-resolution image so the digits stay as sharp as possible.
-  const back = 1 / small.scale;
-  const quad = best.quad.map((corner) => ({ x: corner.x * back, y: corner.y * back }));
-  const fullGray = best.inverted ? invertGray(gray) : gray;
-  const matrix = solveHomography(FLAT_SQUARE(warpSize), quad);
-  const warped = matrix ? warpGray(fullGray, width, height, matrix, warpSize) : best.warped;
-
-  return { quad, score: best.score, warped, warpSize, inverted: best.inverted };
+  // `quad` and `warped` already sit at full resolution, so nothing is redone here.
+  return { quad: best.quad, score: best.score, warped: best.warped, warpSize, inverted: best.inverted };
 }

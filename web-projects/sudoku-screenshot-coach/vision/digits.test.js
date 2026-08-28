@@ -1,7 +1,7 @@
 import { describe, test, expect } from "bun:test";
 import { toGray } from "./imaging.js";
 import { findGrid } from "./detect.js";
-import { GLYPH_SIZE, classifyGlyph, cellRegion, inkBoundingBox, normalizeGlyph, readGrid } from "./digits.js";
+import { GLYPH_SIZE, cellInkMask, classifyGlyph, cellRegion, inkBoundingBox, normalizeGlyph, readGrid } from "./digits.js";
 import { fontTemplates, glyphMask, renderSudokuScreenshot } from "./testFixtures.js";
 
 const PUZZLE =
@@ -78,6 +78,59 @@ describe("normalizeGlyph", () => {
       expect(value).toBeGreaterThanOrEqual(0);
       expect(value).toBeLessThanOrEqual(1);
     }
+  });
+});
+
+describe("cellInkMask", () => {
+  /** A square patch of one brightness, with a darker bar drawn in the middle. */
+  function patch(background, barLevel, size = 32) {
+    const gray = new Uint8ClampedArray(size * size).fill(background);
+    if (barLevel !== null) {
+      for (let y = 8; y < 24; y += 1) for (let x = 12; x < 20; x += 1) gray[y * size + x] = barLevel;
+    }
+    return gray;
+  }
+
+  const inkAt = (mask, size, x, y) => mask[y * size + x];
+
+  test("marks a dark digit on a white cell", () => {
+    const mask = cellInkMask(patch(240, 40), 32);
+    expect(mask).not.toBeNull();
+    expect(inkAt(mask, 32, 16, 16)).toBe(1); // inside the bar
+    expect(inkAt(mask, 32, 2, 2)).toBe(0); // background
+  });
+
+  // The key case: an app paints a block of colour behind a digit to highlight
+  // it. Thresholded against the whole page, part of that block reads as ink and
+  // merges with the digit. Judged inside the cell, the block is background and
+  // only the digit is ink. See adr/0005.
+  test("marks only the digit when the cell sits on a block of colour", () => {
+    const mask = cellInkMask(patch(176, 48), 32);
+    expect(mask).not.toBeNull();
+    expect(inkAt(mask, 32, 16, 16)).toBe(1); // the digit
+    expect(inkAt(mask, 32, 2, 2)).toBe(0); // the block behind it is not ink
+    let ink = 0;
+    for (const value of mask) ink += value;
+    expect(ink).toBe(16 * 8); // exactly the bar, nothing more
+  });
+
+  test("reports nothing for a cell of one flat colour", () => {
+    expect(cellInkMask(patch(240, null), 32)).toBeNull(); // empty white cell
+    expect(cellInkMask(patch(176, null), 32)).toBeNull(); // empty highlighted cell
+    expect(cellInkMask(patch(60, null), 32)).toBeNull(); // empty dark cell
+  });
+
+  test("ignores the small brightness wobble a photo or a JPEG leaves behind", () => {
+    const size = 32;
+    const gray = new Uint8ClampedArray(size * size);
+    for (let i = 0; i < gray.length; i += 1) gray[i] = 235 + ((i * 7) % 12);
+    expect(cellInkMask(gray, size)).toBeNull();
+  });
+
+  test("finds a faint digit as long as it stands out from its background", () => {
+    const mask = cellInkMask(patch(200, 120), 32);
+    expect(mask).not.toBeNull();
+    expect(inkAt(mask, 32, 16, 16)).toBe(1);
   });
 });
 
@@ -174,8 +227,31 @@ describe("readGrid", () => {
     expect(result.text).toBe(PUZZLE.replace(/0/g, "."));
   });
 
-  test("ignores the solid block an app paints on the selected cell", () => {
-    const { result } = readScreenshot({ puzzle: PUZZLE, cell: 54, clutter: true, selectedCell: 2 });
+  test("ignores the solid block an app paints on an empty selected cell", () => {
+    const { result } = readScreenshot({ puzzle: PUZZLE, cell: 54, clutter: true, highlights: [2] });
+    expect(result.text).toBe(PUZZLE.replace(/0/g, "."));
+  });
+
+  // An app highlights every cell holding the digit the player picked, so the
+  // digit sits on a block of colour. Thresholded against the page, the block and
+  // the digit merge into one shape that fills the cell, and the digit is lost.
+  // See adr/0005.
+  test("reads a digit that sits on a highlighted cell", () => {
+    // r1c1 (5), r1c2 (3), r2c1 (6) and r5c1 (4) all hold digits in this puzzle.
+    const { result } = readScreenshot({
+      puzzle: PUZZLE,
+      cell: 54,
+      clutter: true,
+      highlights: [0, 1, 9, 36],
+    });
+    expect(result.text).toBe(PUZZLE.replace(/0/g, "."));
+  });
+
+  test("reads highlighted and plain cells alike across a whole grid", () => {
+    // Every cell that holds a 9 is highlighted, the way an app marks a picked digit.
+    const highlights = [];
+    for (let cell = 0; cell < 81; cell += 1) if (PUZZLE[cell] === "9") highlights.push(cell);
+    const { result } = readScreenshot({ puzzle: PUZZLE, cell: 54, clutter: true, highlights });
     expect(result.text).toBe(PUZZLE.replace(/0/g, "."));
   });
 
