@@ -22,14 +22,30 @@ If the project is a **web-project** hosted in `web-projects/`, follow the full c
 
 ## Writing Project Descriptions
 
-Each `description` array should follow this structure (one paragraph per element):
+Each `description` array should cover these three points. Give each point its own paragraph, or join two of them in one paragraph:
 
 1. **Project Name & Concept**: What the project is and its purpose. Mention the product type (app, game, web, etc.). Use italics for the project name, bold for key terms.
 2. **Role & Responsibilities**: Guillem's role (e.g. lead developer, front-end developer). Key tasks and technologies used.
 3. **Outcome or Impact**: Results, metrics, lessons learned, or notable achievements.
 
+### Length limits (hard rules)
+
+A visitor skims the work cards to pick one. A long description loses that visitor, so keep it short.
+
+- Write **2 or 3 paragraphs**. Never write more.
+- Aim for **about 70 words in total**. Never pass **110 words**.
+- Keep **every paragraph under 50 words**.
+- Cut the detail that the project's own `README.md` already holds. The description sells the project; the README explains it.
+
+These limits are hard for every description that you write or edit. Some older descriptions predate the limits and still break them. Shorten one whenever you touch it for another reason.
+
+Audit every description against the limits:
+
+```bash
+bun -e 'const fs=require("fs");for(const f of fs.readdirSync("data/projects")){if(!f.endsWith(".json")||f==="index.json")continue;const d=JSON.parse(fs.readFileSync("data/projects/"+f,"utf8")).description||[];const w=d.join(" ").split(/\s+/).filter(Boolean).length,p=Math.max(...d.map(x=>x.split(/\s+/).length));const e=[];if(d.length>3)e.push(d.length+" paragraphs");if(w>110)e.push(w+" words");if(p>50)e.push("longest paragraph "+p);if(e.length)console.log(f,"->",e.join(", "))}'
+```
+
 ### Style rules (extracted from existing projects):
-- **Short and direct**: typically 2–4 paragraphs, rarely more
 - **First person** when describing role ("I built…", "I focused on…"), **third person** for the project itself ("The app features…")
 - **Bold** key terms and technologies: `**React**`, `**CI/CD**`, `**real-time synchronization**`
 - **Italic** for project names: `*Bondy*`, `*DishForge*`
