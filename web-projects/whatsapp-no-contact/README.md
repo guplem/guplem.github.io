@@ -8,8 +8,8 @@ WhatsApp accepts a link of the form `https://api.whatsapp.com/send?phone=<number
 
 - **Country selector with search** -- 227 countries. Search by name, by dialling code (`+34`), or by ISO code (`ES`). Accents are ignored, so `reunion` finds Réunion. Full keyboard support: arrow keys, Home, End, Enter, Escape.
 - **Your country is preselected** -- read from the browser locale.
-- **Paste a full number** -- type or paste `+44 (0) 7911 123456` or `0044 7911 123456` and the page selects the United Kingdom and keeps only the national part.
-- **The trunk zero is handled** -- a number written `07911 123456` at home becomes `44 7911 123456` abroad. The page removes the leading zero and says that it did. Italy is the exception, where the leading zero is part of the number and stays.
+- **Paste a full number** -- type or paste `+44 (0) 7700 900123` or `0044 7700 900123` and the page selects the United Kingdom and keeps only the national part.
+- **The trunk zero is handled** -- a number written `07700 900123` at home becomes `44 7700 900123` abroad. The page removes the leading zero and says that it did. Italy is the exception, where the leading zero is part of the number and stays.
 - **Clear feedback** -- the number is shown the way it is dialled internationally before you open the chat, and an unusable number says what is wrong instead of failing silently.
 - **Shareable link** -- the number is kept in the page URL, so a link opens the tool ready to send. Useful for a "message me" link.
 - **Recent numbers** -- the last 6 numbers this browser used, kept in `localStorage` and never sent anywhere. One button clears them.
@@ -39,9 +39,9 @@ bun test
 
 ## URL Parameters
 
-- `p` -- the full international number as digits, e.g. `?p=34639078482`. A leading `+` (as `%2B`) or a `0034` exit code is also accepted.
+- `p` -- the full international number as digits, e.g. `?p=34123456789`. A leading `+` (as `%2B`) or a `0034` exit code is also accepted.
 
-Example: `https://triunitystudios.com/web-projects/whatsapp-no-contact/?p=34639078482`
+Example: `https://triunitystudios.com/web-projects/whatsapp-no-contact/?p=34123456789`
 
 The number in a shared link is visible to anyone who has the link. Only share a number you are happy to hand out.
 
