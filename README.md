@@ -36,6 +36,7 @@ To make this automatic on every commit, install [lefthook](https://github.com/ev
 
 Self-contained mini-apps in `web-projects/`. Browse them all at [triunitystudios.com/web-projects/](https://triunitystudios.com/web-projects/), an index page that lists every project automatically from the portfolio data.
 
+- **`sudoku-screenshot-coach/`** — Reads a sudoku out of a screenshot and explains the next best move, in English or Spanish
 - **`ChatGPTPong/`** — Canvas-based Pong game
 - **`gravity-sandbox/`** — Interactive N-body gravitational simulation
 - **`photo-editor/`** — Mobile photo editor with drawing, stickers, filters, and cropping
