@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f1523" />
+  <meta name="description" content="Drop a screenshot that has a sudoku somewhere in it. The tool finds the grid, reads the digits, and explains the next best move with the technique a human solver would use — or shows the full solution." />
+  <title>Sudoku Screenshot Coach · Next Move Explained · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/sudoku-screenshot-coach/" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="page-header">
+    <div class="language-row">
+      <label class="language-picker">
+        <span class="visually-hidden" data-i18n="ui.language">Language</span>
+        <select id="language-select" aria-label="Language"></select>
+      </label>
+    </div>
+    <h1 data-i18n="ui.title">Sudoku Screenshot Coach</h1>
+    <p class="subtitle" data-i18n="ui.subtitle">
+      Drop in a screenshot with a sudoku somewhere in it. The tool finds the grid, reads the digits,
+      and tells you the next move to make, and why that move is forced.
+    </p>
+  </header>
+
+  <main>
+    <!-- Step 1: get a puzzle in -->
+    <section class="panel" aria-labelledby="load-heading">
+      <h2 id="load-heading" class="panel-title" data-i18n="ui.step1">1. Load a puzzle</h2>
+
+      <div id="dropzone" class="dropzone" tabindex="0" role="button"
+           aria-describedby="dropzone-hint">
+        <svg class="dropzone-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3M12 3v13M7 8l5-5 5 5"
+                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p class="dropzone-title" data-i18n="ui.drop.title">Drop a screenshot, paste it, or choose a file</p>
+        <p id="dropzone-hint" class="dropzone-hint" data-i18n="ui.drop.hint">
+          The sudoku can sit anywhere in the picture, next to anything else. Press Ctrl+V (Cmd+V on a
+          Mac) to paste one straight from the clipboard.
+        </p>
+        <input id="file-input" type="file" accept="image/*" hidden />
+      </div>
+
+      <p class="row">
+        <button id="example-button" class="ghost-button" type="button" data-i18n="ui.example">Load an example puzzle</button>
+        <button id="clear-button" class="ghost-button" type="button" data-i18n="ui.clear">Clear the grid</button>
+      </p>
+
+      <p id="read-status" class="status" role="status" aria-live="polite"></p>
+
+      <details id="reader-details" class="reader-details" hidden>
+        <summary data-i18n="ui.readerDetails">What the reader saw</summary>
+        <div class="reader-previews">
+          <figure>
+            <canvas id="source-canvas" class="preview-canvas"></canvas>
+            <figcaption data-i18n="ui.readerSource">The picture you gave it, with the grid it found outlined.</figcaption>
+          </figure>
+          <figure>
+            <canvas id="warp-canvas" class="preview-canvas"></canvas>
+            <figcaption data-i18n="ui.readerWarp">The same grid pulled flat. This is what the digit reader works on.</figcaption>
+          </figure>
+        </div>
+      </details>
+    </section>
+
+    <!-- Step 2: check and fix the grid -->
+    <section class="panel" aria-labelledby="grid-heading">
+      <h2 id="grid-heading" class="panel-title" data-i18n="ui.step2">2. Check the grid</h2>
+      <p class="panel-note" data-i18n="ui.step2.note">
+        Select a cell and type a digit to fix anything the reader got wrong. Press Backspace to empty
+        a cell. Cells the reader was unsure about are marked.
+      </p>
+
+      <div class="board-wrap">
+        <div id="board" class="board" role="grid" aria-label="Sudoku grid"></div>
+      </div>
+
+      <div id="digit-pad" class="digit-pad" role="group" aria-label="Digits"></div>
+
+      <p class="row">
+        <label class="toggle">
+          <input id="show-candidates" type="checkbox" />
+          <span data-i18n="ui.showCandidates">Show the candidates left in each empty cell</span>
+        </label>
+      </p>
+      <p class="row">
+        <button id="copy-link" class="ghost-button" type="button" data-i18n="ui.copyLink">Copy a link to this grid</button>
+        <span id="share-status" class="share-status" aria-live="polite"></span>
+      </p>
+    </section>
+
+    <!-- Step 3: the coaching -->
+    <section class="panel" aria-labelledby="coach-heading">
+      <h2 id="coach-heading" class="panel-title" data-i18n="ui.step3">3. Get the move</h2>
+
+      <div class="mode-switch" role="tablist" aria-label="What to show">
+        <button id="mode-hint" class="mode-button is-active" type="button" role="tab" aria-selected="true"
+                data-i18n="ui.mode.hint">Next best move</button>
+        <button id="mode-solution" class="mode-button" type="button" role="tab" aria-selected="false"
+                data-i18n="ui.mode.solution">Full solution</button>
+      </div>
+
+      <div id="coach-output" class="coach-output" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="glossary-heading">
+      <h2 id="glossary-heading" class="panel-title" data-i18n="ui.glossary">The techniques it knows</h2>
+      <p class="panel-note" data-i18n="ui.glossary.note">
+        The coach always offers the easiest technique that works on your grid, the way a teacher would.
+        These are the ones it can find and explain, from the simplest to the hardest.
+      </p>
+      <div id="glossary" class="glossary"></div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p data-i18n="ui.footer">
+      Everything runs in your browser. The picture never leaves your device, and nothing is uploaded.
+    </p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

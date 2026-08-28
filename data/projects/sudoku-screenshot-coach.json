@@ -1,0 +1,21 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Sudoku Screenshot Coach",
+  "description": [
+    "*Sudoku Screenshot Coach* is a **web tool** that takes a screenshot with a sudoku anywhere in it, finds the grid, reads the digits, and explains the **next best move** and why it is forced — in **English or Spanish**.",
+    "I directed the concept and the **architecture**: a **computer-vision pipeline** written from scratch (no OCR library) that ignores the player's pencil marks and repairs its own misreadings using the rules of sudoku, plus a coach that reasons with **13 human solving techniques** instead of a solver's answer.",
+    "The result teaches rather than spoils: every hint names the technique and the exact cells that force it. All pure logic is **TDD-covered** with Bun, and nothing leaves the browser."
+  ],
+  "skills": ["Vibe Coded", "Architecture", "UI/UX"],
+  "links": [
+    {
+      "url": "web-projects/sudoku-screenshot-coach/"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/sudoku-screenshot-coach"
+    }
+  ]
+}

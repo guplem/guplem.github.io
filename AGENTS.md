@@ -70,6 +70,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/AGENTS.md` | Web projects: conventions, TDD with Bun, full checklist for adding a new web-project |
 | `web-projects/rps-mind-reader/AGENTS.md` | rps-mind-reader: predictor architecture + contracts, R&D workflow, strategies tried/rejected |
 | `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frames as spec, the scanner and pen model, geometry gotchas |
+| `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
 | `adr/*.md`, `web-projects/*/adr/*.md` | Architecture Decision Records: why behind key choices (root = main-site/cross-cutting; per-project = project-specific) |
 | `README.md` (root) | Human-facing: what the site is, how to run locally, project list |
 | `web-projects/*/README.md` | Human-facing: per-project features, how to run |
@@ -186,6 +187,10 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [prime-sieve-arcs 0001](web-projects/prime-sieve-arcs/adr/0001-reference-frame-measured-as-the-spec.md) | Recover the construction by measuring the reference frame, and keep that frame as the spec |
 | [prime-sieve-arcs 0002](web-projects/prime-sieve-arcs/adr/0002-redraw-every-frame-zooming-camera.md) | Redraw every frame because the camera zooms out, so any frame can be drawn directly |
 | [whatsapp-no-contact 0001](web-projects/whatsapp-no-contact/adr/0001-loose-number-checks-no-phone-library.md) | Check numbers loosely against E.164 and ship no phone-number library |
+| [sudoku-screenshot-coach 0001](web-projects/sudoku-screenshot-coach/adr/0001-explain-with-human-techniques-not-a-solver.md) | Explain moves with human techniques, not with the solver's answer |
+| [sudoku-screenshot-coach 0002](web-projects/sudoku-screenshot-coach/adr/0002-read-digits-by-template-match-not-an-ocr-library.md) | Read digits by template match, with digit shapes the tool carries itself |
+| [sudoku-screenshot-coach 0003](web-projects/sudoku-screenshot-coach/adr/0003-tell-pencil-marks-from-digits-by-measured-size.md) | Tell pencil marks from digits by measured size, and repair the rest with the rules |
+| [sudoku-screenshot-coach 0004](web-projects/sudoku-screenshot-coach/adr/0004-one-message-catalogue-for-generated-explanations.md) | One message catalogue, so generated explanations translate too |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
