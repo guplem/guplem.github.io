@@ -711,3 +711,16 @@ kbd {
     grid-template-columns: 1fr;
   }
 }
+
+/* --- deployed-at line --- */
+
+.deploy-line {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.deploy-line a {
+  color: var(--accent);
+}

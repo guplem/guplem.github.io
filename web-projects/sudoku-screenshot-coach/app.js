@@ -7,6 +7,7 @@
 
 import { CELL_COUNT, HOUSES, cellName, computeCandidates, digitsOf, findConflicts, formatBoard, parseBoard } from "./board.js";
 import { applyMoveToState, nextHint, reduceCandidates, solvePath } from "./coach.js";
+import { redrawDeployLine, startDeployLine } from "./deployFooter.js";
 import { LANGUAGES, pickLanguage, t } from "./i18n.js";
 import { readPuzzleFromImage } from "./recognize.js";
 import { techniqueCatalogue, techniqueInfo } from "./techniques.js";
@@ -35,7 +36,11 @@ const dom = {
   glossary: document.getElementById("glossary"),
   languageSelect: document.getElementById("language-select"),
   digitPad: document.getElementById("digit-pad"),
+  deployLine: document.getElementById("deploy-line"),
 };
+
+/** The folder this project lives in, used to ask when it was last deployed. */
+const PROJECT_PATH = "web-projects/sudoku-screenshot-coach";
 
 /** Everything the page shows is derived from this. */
 const state = {
@@ -561,6 +566,7 @@ function setLanguage(lang) {
   dom.board.setAttribute("aria-label", say("ui.boardLabel"));
   dom.languageSelect.setAttribute("aria-label", say("ui.language"));
   renderGlossary();
+  redrawDeployLine(dom.deployLine, lang, say, escapeHtml);
   syncUrl();
   renderBoard();
   renderCoach();
@@ -682,6 +688,10 @@ function start() {
     loadPuzzleText(fromUrl.puzzle);
     setStatus(dom.readStatus, say("ui.fromLink"), "good");
   }
+
+  // The footer line is the last thing to arrive and the least important, so it
+  // is never awaited and never allowed to interrupt the page.
+  startDeployLine(dom.deployLine, PROJECT_PATH, state.lang, say, escapeHtml);
 }
 
 start();
