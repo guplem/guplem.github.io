@@ -595,6 +595,18 @@ export function findEasiestMove(state) {
   return null;
 }
 
+/**
+ * The easiest move that only rules candidates out, or null.
+ * Used to reduce a candidate grid without placing any digit.
+ */
+export function findEasiestElimination(state) {
+  for (const technique of TECHNIQUES) {
+    const move = technique.find(state);
+    if (move && move.eliminations.length > 0) return move;
+  }
+  return null;
+}
+
 /** One move per technique that applies right now, easiest first. */
 export function findAllMoves(state) {
   const moves = [];

@@ -6,10 +6,10 @@
 // and `explain.js` writes the reason -> this file paints it.
 
 import { CELL_COUNT, HOUSES, cellName, computeCandidates, digitsOf, findConflicts, formatBoard, parseBoard } from "./board.js";
-import { applyMoveToState, nextHint, solvePath } from "./coach.js";
+import { applyMoveToState, nextHint, reduceCandidates, solvePath } from "./coach.js";
 import { LANGUAGES, pickLanguage, t } from "./i18n.js";
 import { readPuzzleFromImage } from "./recognize.js";
-import { techniqueCatalogue } from "./techniques.js";
+import { techniqueCatalogue, techniqueInfo } from "./techniques.js";
 import { DEFAULT_MODE, parseUrlState, serializeUrlState } from "./urlState.js";
 import { buildDigitTemplates } from "./vision/fonts.js";
 
@@ -26,6 +26,7 @@ const dom = {
   warpCanvas: document.getElementById("warp-canvas"),
   board: document.getElementById("board"),
   showCandidates: document.getElementById("show-candidates"),
+  reduceButton: document.getElementById("reduce-candidates"),
   copyLink: document.getElementById("copy-link"),
   shareStatus: document.getElementById("share-status"),
   modeHint: document.getElementById("mode-hint"),
@@ -42,6 +43,10 @@ const state = {
   givens: new Uint8Array(CELL_COUNT), // 1 where the digit came from the image or the link
   uncertain: new Set(), // cells the reader was unsure about
   selected: 0,
+  // The candidates in play. They start as the plain ones, from the rules alone,
+  // and shrink as the player applies the eliminations the coach proves. The
+  // coach reads the same set, so the grid and the advice never disagree.
+  cands: null,
   mode: DEFAULT_MODE,
   lang: "en",
   highlight: null, // {focus, support, houses, eliminations, placements}
@@ -117,7 +122,7 @@ function selectCell(cell) {
 function renderBoard() {
   const conflictCells = new Set();
   for (const conflict of findConflicts(state.board)) for (const cell of conflict.cells) conflictCells.add(cell);
-  const candidates = dom.showCandidates.checked ? computeCandidates(state.board) : null;
+  const candidates = dom.showCandidates.checked ? state.cands : null;
   const highlight = state.highlight;
   const focus = new Set(highlight?.focus ?? []);
   const support = new Set(highlight?.support ?? []);
@@ -165,12 +170,21 @@ function renderBoard() {
   }
 }
 
-/** Change one cell and refresh everything that depends on the grid. */
-function setDigit(cell, digit) {
+/**
+ * Change one cell and refresh everything that depends on the grid.
+ *
+ * A digit the coach proved keeps the eliminations already applied, because they
+ * were proved from the same grid and still hold. A digit the player typed throws
+ * them away: they may have been reasoned from a misread clue that is now fixed.
+ */
+function setDigit(cell, digit, { proved = false } = {}) {
   state.board[cell] = digit;
   state.givens[cell] = 0;
   state.uncertain.delete(cell);
   state.highlight = null;
+  const fresh = computeCandidates(state.board);
+  if (proved && state.cands) for (let index = 0; index < CELL_COUNT; index += 1) fresh[index] &= state.cands[index];
+  state.cands = fresh;
   syncUrl();
   renderBoard();
   renderCoach();
@@ -182,6 +196,7 @@ function loadPuzzleText(text, { asGivens = true, uncertain = [] } = {}) {
   if (asGivens) for (let cell = 0; cell < CELL_COUNT; cell += 1) state.givens[cell] = state.board[cell] !== 0 ? 1 : 0;
   state.uncertain = new Set(uncertain);
   state.highlight = null;
+  state.cands = computeCandidates(state.board);
   syncUrl();
   renderBoard();
   renderCoach();
@@ -350,7 +365,7 @@ function renderCoach() {
 }
 
 function renderHint() {
-  const hint = nextHint(state.board, state.lang);
+  const hint = nextHint(state.board, state.lang, state.cands);
   state.highlight = null;
 
   if (hint.status === "conflict" || hint.status === "unsolvable") {
@@ -372,7 +387,7 @@ function renderHint() {
     if (hint.fallback) {
       state.highlight = { focus: [hint.fallback.cell], support: [], houses: [], placements: [hint.fallback], eliminations: [] };
       document.getElementById("apply-move").addEventListener("click", () => {
-        setDigit(hint.fallback.cell, hint.fallback.digit);
+        setDigit(hint.fallback.cell, hint.fallback.digit, { proved: true });
       });
     }
     renderBoard();
@@ -411,29 +426,24 @@ function renderHint() {
 }
 
 /**
- * Carry out the move on the grid. A placement writes a digit. An elimination
- * changes no digit, so the coach walks past it to the first placement it makes
- * possible; otherwise the button would look like it did nothing.
+ * Carry out the move on the grid.
+ *
+ * A placement writes its digit. An elimination writes no digit: it rules
+ * candidates out, and those stay ruled out, so the player watches them leave the
+ * grid and the coach moves on to the next step instead of repeating itself.
  */
 function applyHintMove(move) {
   if (move.placements.length > 0) {
     const { cell, digit } = move.placements[0];
-    setDigit(cell, digit);
+    setDigit(cell, digit, { proved: true });
     return;
   }
-  let working = { board: Int8Array.from(state.board), cands: computeCandidates(state.board) };
-  working = applyMoveToState(working, move);
-  for (let guard = 0; guard < 12; guard += 1) {
-    const followUp = nextHint(working.board);
-    if (!followUp.explanation) break;
-    const followMove = followUp.explanation.move;
-    if (followMove.placements.length > 0) {
-      setDigit(followMove.placements[0].cell, followMove.placements[0].digit);
-      return;
-    }
-    working = applyMoveToState(working, followMove);
-  }
-  setStatus(dom.readStatus, say("read.elimOnly"), "warn");
+  state.cands = applyMoveToState({ board: state.board, cands: state.cands }, move).cands;
+  state.highlight = null;
+  // Turn the candidates on, or the player sees nothing happen.
+  dom.showCandidates.checked = true;
+  renderBoard();
+  renderCoach();
 }
 
 function renderSolution() {
@@ -618,6 +628,25 @@ function wire() {
   });
 
   dom.showCandidates.addEventListener("change", renderBoard);
+  dom.reduceButton.addEventListener("click", () => {
+    const reduced = reduceCandidates(state.board, state.cands);
+    state.cands = reduced.cands;
+    state.highlight = null;
+    dom.showCandidates.checked = true;
+    renderBoard();
+    renderCoach();
+    const names = reduced.techniques.map((id) => techniqueInfo(id, state.lang).name);
+    setStatus(
+      dom.readStatus,
+      reduced.removed === 0
+        ? say("ui.reduce.none")
+        : say(reduced.removed === 1 ? "ui.reduce.done.one" : "ui.reduce.done", {
+            count: reduced.removed,
+            techniques: names.join(", "),
+          }),
+      "good"
+    );
+  });
   dom.languageSelect.addEventListener("change", () => setLanguage(dom.languageSelect.value));
   dom.modeHint.addEventListener("click", () => setMode("hint"));
   dom.modeSolution.addEventListener("click", () => setMode("solution"));
