@@ -70,6 +70,30 @@ Rules the line follows:
 - **A refusal is cached too, for fifteen minutes.** Without that, a visitor who
   is out of anonymous calls spends two more on every single reload and never
   recovers. Fifteen minutes is short enough to heal on its own.
+- **The site's publish stamp decides whether the cached answer still stands.**
+  Time alone is the wrong test, and a player reported why: they were watching for
+  a deploy, so they had loaded the page an hour earlier, and the six-hour cache
+  then showed the previous pull request for hours after the new one went out. The
+  entry therefore stores the `Last-Modified` the page carried when the answer was
+  fetched. A different stamp means GitHub Pages republished the site since, so the
+  answer is checked again, even inside the six hours and even inside the refusal
+  backoff. That costs one lookup per deploy, because the attempt records the new
+  stamp whether it succeeds or fails.
+
+  The test is **"the stamp changed"**, never "the page is newer than the pull
+  request". Every push to `main` republishes the whole site, so the page is newer
+  than this project's last pull request most of the time and it means nothing.
+  Asking on that would spend two calls on every load and undo the cache.
+
+  While the stamp is new and GitHub has not confirmed the pull request, the line
+  shows the page's own publish time instead of the old pull request. Naming a
+  pull request that is known to be out of date is the one failure worse than
+  naming none.
+- **The publish stamp is read with `cache: "no-cache"`.** GitHub Pages serves
+  pages with `max-age=600`, so without forcing revalidation the browser hands
+  back a stamp up to ten minutes old and hides the deploy that just happened. It
+  is a conditional request answered with 304, and it is same-origin, so it costs
+  nothing that matters.
 - **Every request gives up after eight seconds**, so a hanging call cannot leave
   the line waiting for ever.
 - **The parsing is pure and tested** (`deployInfo.js`), against payloads copied

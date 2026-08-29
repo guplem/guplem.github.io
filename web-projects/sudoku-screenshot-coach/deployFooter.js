@@ -53,12 +53,13 @@ const readCache = () => {
 };
 
 /**
- * Remember the answer, and remember whether the lookup failed, so a refusal
- * backs off for minutes while a good answer is kept for hours.
+ * Remember the answer, whether the lookup failed, and the site's publish stamp
+ * at the time. A refusal backs off for minutes while a good answer is kept for
+ * hours, and `pageDate` says which version of the site the answer describes.
  */
-const writeCache = (record, failed = false) => {
+const writeCache = (record, failed = false, pageDate = null) => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ fetchedAt: Date.now(), record, failed }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ fetchedAt: Date.now(), record, failed, pageDate }));
   } catch {
     // Storage may be full or blocked. The line still shows; it just asks again.
   }
@@ -86,9 +87,12 @@ async function getJson(url) {
  */
 async function readPageDate() {
   try {
-    // Drop the query string: the puzzle in the address does not change the file,
-    // and the plain address is the one the browser already has in its cache.
-    const response = await withTimeout(location.pathname, { method: "HEAD" });
+    // Drop the query string: the puzzle in the address does not change the file.
+    // `no-cache` revalidates rather than refetches, and it is needed: GitHub
+    // Pages serves this page with `max-age=600`, so the browser would otherwise
+    // hand back a stamp up to ten minutes old and hide a deploy that just
+    // happened. A revalidation is a conditional request answered with 304.
+    const response = await withTimeout(location.pathname, { method: "HEAD", cache: "no-cache" });
     if (!response.ok) return null;
     return parsePageDate(response.headers.get("Last-Modified"));
   } catch {
@@ -147,9 +151,6 @@ export async function startDeployLine(element, path, lang, t, escape) {
   const draw = () => renderDeployLine(element, current, lang, t, escape, path);
 
   const cached = readCache();
-  // A refusal is remembered for far less time than a good answer, so a visitor
-  // who is out of anonymous calls recovers on their own.
-  const fresh = isFresh(cached, Date.now(), cached?.failed ? FAILURE_TTL_MS : CACHE_TTL_MS);
 
   // Take the stored answer, even when it is stale, so the line does not flicker
   // away on every visit.
@@ -159,10 +160,40 @@ export async function startDeployLine(element, path, lang, t, escape) {
   // network is working. With nothing known yet this draws the plain link.
   draw();
 
-  // The floor. Same-origin and cheap, so the line carries a date before GitHub
-  // is even asked, and keeps one if GitHub never answers.
+  // The site's publish stamp. Same-origin, so nothing throttles it, and it does
+  // two jobs: it is the floor the line falls back to, and it is the only way to
+  // tell that a stored answer has been overtaken.
+  const pageDate = await readPageDate();
+
+  // GitHub Pages republishes the whole site on every push to `main` and stamps
+  // the moment on every file it serves. A stamp that differs from the one the
+  // stored answer was fetched against means the site went out again since, so
+  // the answer may name the wrong pull request and has to be checked.
+  //
+  // The test is "the stamp changed", never "the page is newer than the pull
+  // request". The second is true most of the time and means nothing: a push
+  // that changes another project republishes this page without changing when
+  // this project last changed. Asking on that would spend two of the sixty
+  // anonymous calls an hour on every single load.
+  const republished = Boolean(pageDate) && Boolean(cached) && cached.pageDate !== pageDate;
+
+  // A refusal is remembered for far less time than a good answer, so a visitor
+  // who is out of anonymous calls recovers on their own. A republish gets
+  // through either way, because the stored answer is known to be out of date.
+  // That costs one lookup per deploy, not one per load: the attempt records the
+  // new stamp below, whether it succeeds or fails.
+  const fresh = isFresh(cached, Date.now(), cached?.failed ? FAILURE_TTL_MS : CACHE_TTL_MS) && !republished;
+
+  // Do not keep naming a pull request the site has outrun. Until GitHub says
+  // which one deployed this version, the publish time is what is certainly true.
+  if (republished) {
+    current = deployRecord(null, null, pageDate);
+    draw();
+  }
+
+  // The floor, for a visitor with nothing stored at all.
   if (!current) {
-    current = deployRecord(null, null, await readPageDate());
+    current = deployRecord(null, null, pageDate);
     draw();
   }
 
@@ -173,7 +204,7 @@ export async function startDeployLine(element, path, lang, t, escape) {
     const record = await lookUp(path);
     if (record) {
       current = record;
-      writeCache(record);
+      writeCache(record, false, pageDate);
       draw();
       return;
     }
@@ -183,5 +214,5 @@ export async function startDeployLine(element, path, lang, t, escape) {
   // Say so where a developer will see it. The visitor still sees a date. Keep
   // any answer GitHub gave before, rather than dropping back to the page time.
   console.warn("[deployFooter] GitHub did not answer. Showing what the page itself knows.");
-  writeCache(current && current.source !== "page" ? current : null, true);
+  writeCache(current && current.source !== "page" ? current : null, true, pageDate);
 }
