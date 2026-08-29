@@ -727,6 +727,14 @@
           </div>
         </div>
         <button id="worksExpandButton" class="works-expand-btn">Show More Projects</button>
+        <!-- Navigation affordance, like the top nav links: site chrome, not
+             portfolio content, so it stays in the HTML and not in
+             data/info.json. It points at web-projects/, the directory index of
+             the small projects that this site hosts itself. -->
+        <a class="works-playground" href="web-projects/">
+          <span class="works-playground-label">Visit the Playground <span class="works-playground-arrow" aria-hidden="true">→</span></span>
+          <span class="works-playground-hint">Small tools and games that live inside this site. Open any of them right now.</span>
+        </a>
       </div>
     </section>
 
