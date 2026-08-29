@@ -496,9 +496,11 @@ export const MESSAGES = {
     es: "El entrenador siempre ofrece la técnica más fácil que funcione en tu cuadrícula, como haría un profesor. Estas son las que sabe encontrar y explicar, de la más simple a la más difícil.",
   },
   "ui.footer": {
-    en: "Everything runs in your browser. The picture never leaves your device, and nothing is uploaded.",
-    es: "Todo funciona en tu navegador. La imagen nunca sale de tu dispositivo y no se sube nada.",
+    en: "The puzzle is read in your browser. Your picture never leaves your device and is never uploaded.",
+    es: "El pasatiempo se lee en tu navegador. Tu imagen nunca sale de tu dispositivo y nunca se sube.",
   },
+  "ui.deployed": { en: "Deployed {date} by pull request {pr}.", es: "Desplegado el {date} por la pull request {pr}." },
+  "ui.deployedNoPull": { en: "Deployed {date}, commit {commit}.", es: "Desplegado el {date}, commit {commit}." },
   "ui.whyForced": { en: "Why this is forced", es: "Por qué es obligado" },
   "ui.apply.place": { en: "Place it and show the next move", es: "Colocarlo y ver el siguiente movimiento" },
   "ui.apply.eliminate": { en: "Apply it and show the next move", es: "Aplicarlo y ver el siguiente movimiento" },

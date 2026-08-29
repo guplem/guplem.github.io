@@ -174,6 +174,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0010](adr/0010-pre-commit-generated-static-seo-content.md) | Pre-commit generated static SEO content (sitemap + HTML fallback blocks) |
 | [0011](adr/0011-agent-docs-structure.md) | AGENTS.md root map + shim, skills, area docs are AGENTS.md + CLAUDE.md shim pairs |
 | [0012](adr/0012-red-green-tdd-for-testable-logic.md) | Red-green TDD mandatory for pure logic; DOM rendering exempt |
+| [0013](adr/0013-deployed-at-footer-from-the-github-api.md) | "Deployed at" footer read from the GitHub API at run time |
 
 ### Per-project ADRs
 

@@ -37,8 +37,10 @@ on the board.
   carried in the link.
 - **Works on a phone and on a desktop.** Type with the keyboard or tap the digit
   pad under the grid.
-- **Nothing is uploaded.** The picture is read in your browser and never leaves
-  your device.
+- **Your picture is never uploaded.** It is read in your browser and never leaves
+  your device. The one network call the page makes is to GitHub, to fill in the
+  "deployed at" line in the footer.
+- **Says when it was deployed**, and links the pull request that deployed it.
 
 ## How to Run
 
