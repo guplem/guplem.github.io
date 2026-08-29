@@ -71,6 +71,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/rps-mind-reader/AGENTS.md` | rps-mind-reader: predictor architecture + contracts, R&D workflow, strategies tried/rejected |
 | `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frames as spec, the scanner and pen model, geometry gotchas |
 | `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
+| `web-projects/unit-converter/AGENTS.md` | unit-converter: module map, the one-input-box contract, unit-catalogue and number-parsing gotchas |
 | `adr/*.md`, `web-projects/*/adr/*.md` | Architecture Decision Records: why behind key choices (root = main-site/cross-cutting; per-project = project-specific) |
 | `README.md` (root) | Human-facing: what the site is, how to run locally, project list |
 | `web-projects/*/README.md` | Human-facing: per-project features, how to run |
@@ -197,6 +198,9 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [sudoku-screenshot-coach 0005](web-projects/sudoku-screenshot-coach/adr/0005-judge-the-grid-at-full-resolution-and-each-cell-against-itself.md) | Judge the grid at full resolution, and each cell against itself |
 | [sudoku-screenshot-coach 0006](web-projects/sudoku-screenshot-coach/adr/0006-one-candidate-state-shared-by-the-grid-and-the-coach.md) | One candidate state, shared by the grid and the coach |
 | [sudoku-screenshot-coach 0007](web-projects/sudoku-screenshot-coach/adr/0007-uniqueness-techniques-run-only-on-a-grid-with-one-answer.md) | Uniqueness techniques run only on a grid with one answer |
+| [unit-converter 0001](web-projects/unit-converter/adr/0001-one-input-box-instead-of-pickers.md) | One input box carries the whole interface; no category picker, no dropdowns |
+| [unit-converter 0002](web-projects/unit-converter/adr/0002-answer-every-unit-ordered-by-usefulness.md) | Answer every compatible unit at once, ordered by commonness plus readability |
+| [unit-converter 0003](web-projects/unit-converter/adr/0003-live-rates-over-a-bundled-snapshot.md) | Live exchange rates over a bundled snapshot, and always say which is in use |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 

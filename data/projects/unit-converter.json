@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Unit Converter",
+  "description": [
+    "*Unit Converter* is a **one-box web tool**. Type `100 km`, `5'10\"`, `1 1/2 cup` or `100 USD` and every unit it can be appears at once, so there is no category to pick and no second dropdown.",
+    "I set the usability bar: the source unit alone decides the category, and the answers are ordered by **how useful each number is**, not just how common the unit is.",
+    "It covers **17 kinds of measurement and 59 currencies**, with **live exchange rates** and an offline copy when they fail. The conversions are **covered by tests written before the code**."
+  ],
+  "skills": ["Vibe Coded", "UI/UX", "Architecture", "API Integration"],
+  "links": [
+    { "url": "web-projects/unit-converter/" },
+    { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/unit-converter" }
+  ]
+}
