@@ -28,9 +28,11 @@ on the board.
   impossible, so the notes are as tight as a good player's from the moment you
   open it. Under the move, "how the candidates were narrowed" walks you through
   every elimination it applied and the technique behind each one.
-- **Knows thirteen techniques**, from Naked Single to Swordfish and XYZ-Wing.
-  Every one has a plain-language description in the glossary at the bottom of the
-  page.
+- **Knows twenty-three techniques**, from Naked Single up through Swordfish,
+  Jellyfish, the wings, Skyscraper, Simple Coloring, XY-Chain, Unique Rectangle
+  and BUG+1. Every one has a plain-language description in the glossary at the
+  bottom of the page. The last two argue from the puzzle having a single answer,
+  so the coach uses them only after it has checked that the grid does.
 - **Full solution too**, with every step in order, the technique each step used,
   and a difficulty rating drawn from the hardest technique the puzzle needed.
 - **English and Spanish**, chosen from the picker or from your browser, and
