@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#12121a" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="Convert units by typing them. One box takes 100 km, 5'10&quot;, 1 1/2 cup, 20°C or 100 USD and shows every unit it can be at once: length, weight, temperature, data, currency, speed, volume and more." />
+  <title>Unit Converter · Type It, See Every Answer · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/unit-converter/" />
+  <!-- Drawn inline so the page still asks the network for nothing but the rates. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23dc5a00'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 12h13M7 12l4-4M7 12l4 4'/%3E%3Cpath d='M25 20H12m13 0-4-4m4 4-4 4'/%3E%3C/g%3E%3C/svg%3E" />
+  <!-- Which pull request published this file. Never hand-edit: written by
+       `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
+  <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="0" />
+  <meta name="deploy-date" content="1970-01-01T00:00:00.000Z" />
+<!-- END GENERATED:DEPLOY -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#results">Skip to the results</a>
+
+  <div class="page">
+    <header class="masthead">
+      <div class="masthead-text">
+        <h1 id="title">Convert anything</h1>
+        <p class="tagline" id="tagline">Type an amount and a unit. Every answer appears at once.</p>
+      </div>
+      <div class="lang" id="lang-picker" role="group" aria-label="Language"></div>
+    </header>
+
+    <main>
+      <!-- The whole interface. There is no category picker and no second
+           dropdown: the unit you type says what kind of thing you mean. -->
+      <div class="field-wrap">
+        <div class="field" id="field">
+          <svg class="field-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M4 8h11M4 8l3-3M4 8l3 3M20 16H9m11 0-3-3m3 3-3 3" />
+          </svg>
+          <input
+            id="query"
+            type="text"
+            role="combobox"
+            aria-expanded="false"
+            aria-controls="suggestions"
+            aria-autocomplete="list"
+            aria-label="Amount and unit to convert"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            enterkeyhint="search"
+            placeholder="100 km"
+          />
+          <button type="button" id="clear" class="icon-button" hidden aria-label="Clear">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18" /></svg>
+          </button>
+        </div>
+        <ul id="suggestions" class="suggestions" role="listbox" aria-label="Matching units" hidden></ul>
+      </div>
+
+      <p class="reading" id="reading" aria-live="polite" hidden></p>
+
+      <section id="results" class="results" aria-labelledby="results-heading" hidden>
+        <h2 class="section-heading" id="results-heading">Results</h2>
+        <div id="target-slot"></div>
+        <ul id="rows" class="rows"></ul>
+        <button type="button" id="show-all" class="text-button" hidden></button>
+        <p id="rates-note" class="note" hidden></p>
+      </section>
+
+      <section id="prompt" class="prompt" aria-labelledby="prompt-heading">
+        <h2 class="section-heading" id="prompt-heading">What are you converting?</h2>
+        <p class="prompt-hint" id="prompt-hint">Type it however you say it. All of these work:</p>
+        <div class="chips" id="examples"></div>
+
+        <h2 class="section-heading" id="recents-heading" hidden>Recent</h2>
+        <div class="chips" id="recents" hidden></div>
+
+        <h2 class="section-heading" id="categories-heading">Or start from a kind of thing</h2>
+        <div class="chips chips-grid" id="categories"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="privacy" id="privacy">Everything is worked out in your browser. The only thing this page fetches is the exchange-rate table.</p>
+      <p id="deploy-line" class="deploy-line"></p>
+      <p><a class="back-link" id="back-link" href="../">All web projects</a></p>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

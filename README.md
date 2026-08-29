@@ -36,6 +36,7 @@ To make this automatic on every commit, install [lefthook](https://github.com/ev
 
 Self-contained mini-apps in `web-projects/`. Browse them all at [triunitystudios.com/web-projects/](https://triunitystudios.com/web-projects/), an index page that lists every project automatically from the portfolio data.
 
+- **`unit-converter/`** — Type an amount and a unit in one box (`100 km`, `5'10"`, `1 1/2 cup`, `100 USD`) and see every unit it can be at once, currencies included
 - **`sudoku-screenshot-coach/`** — Reads a sudoku out of a screenshot and explains the next best move, in English or Spanish
 - **`ChatGPTPong/`** — Canvas-based Pong game
 - **`gravity-sandbox/`** — Interactive N-body gravitational simulation

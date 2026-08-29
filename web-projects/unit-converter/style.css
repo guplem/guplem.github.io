@@ -1,0 +1,770 @@
+/* Unit converter.
+ *
+ * One column, one input, one list of answers. The look follows the portfolio's
+ * "Golden Hour" palette (warm orange on a cool off-white) but the tokens are
+ * declared here, because a web-project is self-contained and never imports the
+ * site's global CSS.
+ *
+ * Two rules shape most of what follows:
+ *   - numbers are the content, so they get the size, the weight and
+ *     `tabular-nums`, and everything else stays quiet around them
+ *   - the input has to stay reachable while a long list of answers scrolls, so
+ *     it sticks to the top on every screen
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #eef0f5;
+  --bg-wash-a: rgba(220, 90, 0, 0.07);
+  --bg-wash-b: rgba(67, 28, 93, 0.06);
+  --surface: #ffffff;
+  --surface-sunk: #f4f5f8;
+  --border: rgba(20, 20, 34, 0.09);
+  --border-strong: rgba(20, 20, 34, 0.16);
+
+  --text: #141422;
+  --text-body: #2e2e3e;
+  --muted: #6b6b80;
+
+  --accent: rgb(220 90 0);
+  --accent-rgb: 220, 90, 0;
+  --accent-ink: rgb(150 58 0);
+  --accent-soft: rgba(220, 90, 0, 0.1);
+
+  --shadow-sm: 0 1px 3px rgba(20, 20, 34, 0.06);
+  --shadow-md: 0 6px 24px rgba(20, 20, 34, 0.09);
+  --shadow-lg: 0 16px 48px rgba(20, 20, 34, 0.14);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+
+  --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --fast: 140ms;
+  --normal: 280ms;
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --measure: 40rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101017;
+    --bg-wash-a: rgba(255, 138, 61, 0.09);
+    --bg-wash-b: rgba(128, 92, 200, 0.08);
+    --surface: #1a1a24;
+    --surface-sunk: #14141d;
+    --border: rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.18);
+
+    --text: #f3f3f8;
+    --text-body: #dcdce6;
+    --muted: #9a9aae;
+
+    --accent: #ff8f45;
+    --accent-rgb: 255, 143, 69;
+    --accent-ink: #ffb182;
+    --accent-soft: rgba(255, 143, 69, 0.14);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* The browser hides a `hidden` element with `display: none`, and any `display`
+   an author writes wins over it. `app.js` shows and hides most of this page
+   through that attribute, so without this rule a hidden `.chips` or
+   `.text-button` stays on screen. It showed as a "Show 0 more units" button
+   under a category that had nothing more to show. */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text-body);
+  background:
+    radial-gradient(1100px 600px at 15% -10%, var(--bg-wash-a), transparent 60%),
+    radial-gradient(900px 500px at 90% 5%, var(--bg-wash-b), transparent 55%),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+h1,
+h2 {
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0;
+}
+
+a {
+  color: var(--accent-ink);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 20;
+  padding: 0.6rem 1rem;
+  background: var(--surface);
+  border-radius: 0 0 var(--radius-sm) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+.page {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.masthead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2.25rem 0 1.25rem;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 6vw, 2.1rem);
+  letter-spacing: -0.02em;
+  font-weight: 660;
+}
+
+.tagline {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  max-width: 44ch;
+}
+
+.lang {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.lang button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.lang button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+/* --- the input ----------------------------------------------------------- */
+/* Sticky, because the answer list can be long and the thing you want to edit
+   is always the line you typed. */
+
+.field-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 0.5rem 1rem 0.75rem;
+  margin: 0 -1rem;
+}
+
+/* The bar carries the page's own background, pinned to the viewport exactly as
+   the body's is, so the two line up at every scroll position. A gradient of a
+   flat colour cannot do that: it shows as a paler rectangle over the washes. */
+.field-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -14px;
+  z-index: -1;
+  background:
+    radial-gradient(1100px 600px at 15% -10%, var(--bg-wash-a), transparent 60%),
+    radial-gradient(900px 500px at 90% 5%, var(--bg-wash-b), transparent 55%),
+    var(--bg);
+  background-attachment: fixed;
+  mask-image: linear-gradient(#000 calc(100% - 14px), transparent);
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 14px), transparent);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.6rem 0.55rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+}
+
+.field:focus-within {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md), 0 0 0 4px var(--accent-soft);
+}
+
+.field-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.field:focus-within .field-icon {
+  stroke: var(--accent);
+}
+
+#query {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.35rem 0;
+  font-family: inherit;
+  font-size: 1.35rem;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+#query:focus {
+  outline: none;
+}
+
+#query::placeholder {
+  color: var(--muted);
+  font-weight: 450;
+  opacity: 0.75;
+}
+
+.icon-button {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--surface-sunk);
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+
+.icon-button svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.icon-button:hover {
+  background: var(--accent-soft);
+}
+
+.icon-button:hover svg {
+  stroke: var(--accent);
+}
+
+/* --- suggestions --------------------------------------------------------- */
+
+/* Floating over the answers rather than pushing them down: the list opens and
+   closes on almost every keystroke, and content that jumps that often is
+   unreadable. `.field-wrap` is sticky, which already makes it the box this is
+   positioned against. */
+.suggestions {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  top: 100%;
+  z-index: 12;
+  list-style: none;
+  margin: -0.35rem 0 0;
+  padding: 0.3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-height: min(50vh, 320px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.suggestion {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.suggestion[aria-selected="true"],
+.suggestion:hover {
+  background: var(--accent-soft);
+}
+
+.suggestion-sym {
+  font-weight: 680;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  min-width: 3.2rem;
+}
+
+.suggestion-name {
+  color: var(--text-body);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suggestion-cat {
+  font-size: 0.75rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* --- what the page understood -------------------------------------------- */
+
+.reading {
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  padding-inline: 0.2rem;
+}
+
+.reading strong {
+  color: var(--text-body);
+  font-weight: 620;
+}
+
+.reading.is-warning {
+  color: var(--accent-ink);
+}
+
+/* --- headings ------------------------------------------------------------ */
+
+.section-heading {
+  font-size: 0.75rem;
+  font-weight: 680;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 1.6rem 0 0.6rem;
+  padding-inline: 0.2rem;
+}
+
+.results .section-heading:first-child {
+  margin-top: 0.2rem;
+}
+
+/* --- the target a person asked for --------------------------------------- */
+
+.target-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  padding: 1.05rem 1.15rem;
+  margin-bottom: 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md), 0 0 0 4px var(--accent-soft);
+  cursor: pointer;
+  animation: rise var(--normal) var(--ease) both;
+}
+
+.target-card .value {
+  font-size: clamp(1.7rem, 7vw, 2.3rem);
+}
+
+.target-card .sym {
+  font-size: 1.1rem;
+  color: var(--accent-ink);
+}
+
+/* --- the answers --------------------------------------------------------- */
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.rows:empty {
+  display: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--border);
+}
+
+.row:first-child {
+  border-top: 0;
+}
+
+.row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 0.7rem 0.5rem 0.75rem 1.05rem;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease);
+}
+
+.row-main:hover,
+.target-card:hover {
+  background: var(--accent-soft);
+}
+
+.value-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  max-width: 100%;
+}
+
+.value {
+  font-size: 1.3rem;
+  font-weight: 650;
+  color: var(--text);
+  letter-spacing: -0.015em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+}
+
+.about {
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sym {
+  font-size: 0.95rem;
+  font-weight: 620;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.about-note {
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compound {
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-ink);
+}
+
+.row-swap {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  align-self: stretch;
+  border: 0;
+  border-left: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease);
+}
+
+.row-swap svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.row-swap:hover {
+  background: var(--accent-soft);
+}
+
+.row-swap:hover svg {
+  stroke: var(--accent);
+}
+
+.text-button {
+  display: block;
+  margin: 0.7rem auto 0;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease);
+}
+
+.text-button:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.note {
+  margin: 0.9rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  padding-inline: 0.2rem;
+}
+
+/* --- chips: examples, recents, categories -------------------------------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding-inline: 0.2rem;
+}
+
+.chips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  color: var(--text-body);
+  font-size: 0.9rem;
+  font-weight: 550;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--fast) var(--ease), transform var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.chip-code {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.chip-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: hsl(var(--hue) 58% 48%);
+}
+
+.chip-category {
+  justify-content: flex-start;
+  border-radius: var(--radius-md);
+}
+
+.prompt-hint {
+  margin: 0 0 0.7rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding-inline: 0.2rem;
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.footer {
+  margin-top: auto;
+  padding-top: 2.5rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.footer p {
+  margin: 0.35rem 0;
+}
+
+.privacy {
+  max-width: 44ch;
+  margin-inline: auto;
+}
+
+/* --- toast --------------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translate(-50%, 1.5rem);
+  z-index: 30;
+  max-width: calc(100vw - 2rem);
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-full);
+  background: var(--text);
+  color: var(--surface);
+  font-size: 0.85rem;
+  font-weight: 560;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--normal) var(--ease), transform var(--normal) var(--ease);
+}
+
+.toast.is-shown {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* --- motion -------------------------------------------------------------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.results:not([hidden]) .rows {
+  animation: rise var(--normal) var(--ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* --- small screens ------------------------------------------------------- */
+
+@media (max-width: 30rem) {
+  .masthead {
+    padding: 1.5rem 0 0.9rem;
+  }
+
+  .tagline {
+    font-size: 0.88rem;
+  }
+
+  #query {
+    font-size: 1.2rem;
+  }
+
+  .row-main {
+    gap: 0.7rem;
+    padding-left: 0.85rem;
+  }
+
+  .value {
+    font-size: 1.15rem;
+  }
+
+  .chips-grid {
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  }
+}
+
+/* Wide screens get a two-column answer list, because a long single column
+   makes a person scroll for something that already fits on the screen. */
+@media (min-width: 56rem) {
+  :root {
+    --measure: 54rem;
+  }
+
+  .rows {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .row:nth-child(2) {
+    border-top: 0;
+  }
+
+  .row:nth-child(even) {
+    border-left: 1px solid var(--border);
+  }
+}
