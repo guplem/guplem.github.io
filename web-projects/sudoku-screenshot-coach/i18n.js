@@ -464,26 +464,18 @@ export const MESSAGES = {
     en: "Select a cell and type a digit to fix anything the reader got wrong. Press Backspace to empty a cell. Cells the reader was unsure about are marked.",
     es: "Selecciona una celda y escribe una cifra para corregir lo que el lector no acertó. Pulsa Retroceso para vaciar una celda. Las celdas dudosas están marcadas.",
   },
+  "ui.copyLink": { en: "Copy a link to this grid", es: "Copiar un enlace a esta cuadrícula" },
   "ui.showCandidates": {
     en: "Show the candidates left in each empty cell",
     es: "Mostrar los candidatos que quedan en cada celda vacía",
   },
-  "ui.copyLink": { en: "Copy a link to this grid", es: "Copiar un enlace a esta cuadrícula" },
-  "ui.reduce": {
-    en: "Rule out everything the coach can prove",
-    es: "Descartar todo lo que el entrenador puede demostrar",
+  "ui.narrowing": {
+    en: "How the candidates were narrowed ({count} steps)",
+    es: "Cómo se han reducido los candidatos ({count} pasos)",
   },
-  "ui.reduce.done": {
-    en: "Ruled out {count} candidates, using {techniques}. The grid now shows only what the coach cannot disprove.",
-    es: "Descartados {count} candidatos, usando {techniques}. La cuadrícula ahora solo muestra lo que el entrenador no puede descartar.",
-  },
-  "ui.reduce.done.one": {
-    en: "Ruled out one candidate, using {techniques}. The grid now shows only what the coach cannot disprove.",
-    es: "Descartado un candidato, usando {techniques}. La cuadrícula ahora solo muestra lo que el entrenador no puede descartar.",
-  },
-  "ui.reduce.none": {
-    en: "Nothing left to rule out. Every candidate shown is one the coach cannot disprove.",
-    es: "No queda nada por descartar. Cada candidato que se muestra es uno que el entrenador no puede descartar.",
+  "ui.narrowing.note": {
+    en: "These are already applied: they are why the grid shows what it shows. Select one to see the technique that ruled those candidates out.",
+    es: "Ya están aplicados: son la razón de lo que muestra la cuadrícula. Selecciona uno para ver la técnica que descartó esos candidatos.",
   },
   "ui.copied": { en: "Link copied.", es: "Enlace copiado." },
   "ui.copyFailed": { en: "Copy failed. Use the address bar instead.", es: "No se pudo copiar. Usa la barra de direcciones." },

@@ -24,10 +24,10 @@ on the board.
 - **Explains the next best move.** It always offers the easiest technique that
   works on your grid, names it, explains how the technique works in general, and
   then names the cells that force it here.
-- **Shows the candidates, and can narrow them.** The grid starts with the
-  candidates the rules allow. Apply a hint and the candidates it rules out
-  disappear, so you see the technique work. One button applies everything the
-  coach can prove at once, for notes as tight as a good player's.
+- **Candidates you can trust.** The grid never lists a digit the tool can prove
+  impossible, so the notes are as tight as a good player's from the moment you
+  open it. Under the move, "how the candidates were narrowed" walks you through
+  every elimination it applied and the technique behind each one.
 - **Knows thirteen techniques**, from Naked Single to Swordfish and XYZ-Wing.
   Every one has a plain-language description in the glossary at the bottom of the
   page.

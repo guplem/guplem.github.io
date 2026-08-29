@@ -171,6 +171,27 @@ describe("reduceCandidates", () => {
     }
   });
 
+  test("reports each elimination it applied, explained", () => {
+    // The narrowing is the teaching. Every step must carry the same explanation
+    // a hint would, so the player can see why each candidate went.
+    const reduced = reduceCandidates(parseBoard(REPORTED));
+    expect(reduced.steps.length).toBeGreaterThan(0);
+    const first = reduced.steps[0];
+    expect(first.explanation.technique.name).toBe("Pointing Pair or Triple");
+    expect(first.explanation.reasons.length).toBeGreaterThan(0);
+    expect(first.summary).toContain("removes");
+    // The step that removed the candidates the player asked about.
+    const text = reduced.steps.map((step) => step.summary).join(" ");
+    expect(text).toContain("r7c6");
+    expect(text).toContain("r9c6");
+  });
+
+  test("explains the narrowing in the language asked for", () => {
+    const spanish = reduceCandidates(parseBoard(REPORTED), undefined, "es");
+    expect(spanish.steps[0].explanation.technique.name).toBe("Par o trío apuntador");
+    for (const step of spanish.steps) expect(step.summary).not.toContain("removes");
+  });
+
   test("running it again changes nothing", () => {
     const board = parseBoard(REPORTED);
     const once = reduceCandidates(board);

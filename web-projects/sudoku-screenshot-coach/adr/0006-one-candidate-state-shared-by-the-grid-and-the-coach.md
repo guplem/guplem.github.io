@@ -22,56 +22,65 @@ Two things caused that:
   A player pressing it on a Pointing Pair saw a digit appear somewhere else, and
   never saw the candidates it was told about leave the grid.
 
-The question was not only how to fix the display. Fully reducing the candidates
-on load was the obvious answer, and it is wrong. On the reported puzzle, applying
-every elimination the catalogue can prove leaves **no move at all**: the coach
-runs out and falls back to the verified solution. Reducing by default would erase
-the teaching, which is the product.
+The first attempt at a fix kept the plain candidates on screen and let the player
+apply each elimination themselves. The reasoning was that reducing everything on
+load would erase the teaching: on the reported puzzle, applying every elimination
+the catalogue can prove leaves **no move at all**, so the coach runs out and falls
+back to the verified solution.
+
+The player reported the same 5s again. The grid still opened showing them, marked
+as struck through because the first hint was the very move that removes them, and
+that mark is too quiet to read at the size candidates are drawn. The reasoning
+above was also wrong in its own terms: the teaching was not the *doing* of the
+elimination, it was the *explanation* of it, and an explanation does not need the
+player to press anything.
 
 ## Decision
 
-**The page holds one candidate state. The grid draws it and the coach reads it.**
+**The grid never shows a candidate the coach can rule out, and the eliminations
+are taught as the reason it looks that way.**
 
-- `state.cands` starts as the plain candidates and travels with the board.
-- `nextHint(board, lang, cands)` takes it, so the coach never offers an
-  elimination that has already been applied.
-- Applying an elimination now applies it. The candidates leave the grid, in
-  front of the player, and the coach moves on to the next step.
-- `reduceCandidates(board, cands)` applies every elimination the catalogue can
-  prove, in one go. It is offered as a button, **not** run automatically, for the
-  reason above. It reports how many candidates went and which techniques took
-  them, so the player learns what happened rather than watching numbers vanish.
+- `state.cands` is derived from the board by `reduceCandidates`, every time the
+  board changes. It is never edited in place, so it cannot be stale, and it can
+  never be reasoning left over from a grid the player has since corrected.
+- `nextHint(board, lang, cands)` reads the same set. Since every provable
+  elimination is already applied, the coach offers placements, or says honestly
+  that its catalogue is exhausted. It can no longer contradict the grid, and it
+  can no longer repeat itself.
+- `reduceCandidates` returns **each elimination it applied, explained**, in the
+  order it applied them. The page lists them under the move as "how the
+  candidates were narrowed". Selecting one shows the technique, the cells that
+  force it, and highlights them on the grid, exactly as a hint would.
 
-When the board changes, the candidates follow the change:
-
-- A digit the **coach proved** keeps the eliminations already applied. They were
-  proved from the same grid and still hold.
-- A digit the **player typed** throws them away and starts again from the rules.
-  The player may be correcting a misread clue, and an elimination reasoned from a
-  wrong grid is worthless.
+So nothing is lost. Every Pointing Pair, Claiming and wing the catalogue can find
+is still named and still explained. What changed is the tense: the coach used to
+say "do this next", and now says "this is why that digit is gone".
 
 ## Consequences
 
 **Positive:**
 
-- The grid and the advice can no longer contradict each other. Whatever the coach
-  can prove is what the grid shows, once the player has taken the step.
-- An elimination is finally visible. Pointing Pairs, Naked Triples and the rest
-  teach something, instead of quietly skipping to a placement.
-- A player who only wants notes as good as their app's presses one button. On the
-  reported puzzle that produces exactly the notes the app showed, in all four
-  cells where the two disagreed.
-- The coach stops repeating itself, because an applied elimination is gone from
-  the state it reads.
+- The grid is truthful with nothing pressed. On the reported puzzle it opens with
+  exactly the notes the player's own app showed, in all four cells where the two
+  disagreed.
+- The grid and the advice can no longer contradict each other, in any state.
+- The candidates are a pure function of the board again, so no sequence of edits
+  can leave them wrong.
+- The elimination techniques are still all taught, and are now easier to study:
+  they sit in a list the player can walk through, instead of appearing one at a
+  time only if the player keeps pressing.
 
 **Negative:**
 
-- The candidate state is now real state, so it can be stale in a way a derived
-  value cannot. The rule above, on which edits keep it and which throw it away,
-  is the whole defence, and it errs towards throwing away.
-- Pressing the reduce button can end the coaching on a hard puzzle, as it does on
-  the reported one. That is honest, but it is a sharp edge: the button says what
-  it does, and the coach then says plainly that its catalogue is exhausted.
+- On a puzzle past what the catalogue can prove, the coach reaches "no technique
+  applies" immediately rather than after a few elimination steps. It gets there
+  either way; it is just faster and blunter now. The narrowing list is what keeps
+  that from feeling empty.
 - Reduction runs the whole technique search repeatedly until nothing more can be
-  removed. It is bounded by the number of candidates on the grid, and it only
-  runs when the button is pressed.
+  removed, on every board change. Measured at about 9 ms for a grid with 34 empty
+  cells, against 0.01 ms for the plain candidates. That is cheap enough for a
+  keystroke, but it is a thousand times the cost, so it must stay off the render
+  path and be done only when the board really changes.
+- A player who wants to practise spotting eliminations themselves no longer can:
+  the grid hands them the answer. The narrowing list explains each one, which
+  serves learning, but it does not test it.

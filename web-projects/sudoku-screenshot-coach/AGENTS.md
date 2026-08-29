@@ -82,17 +82,21 @@ edits -> `coach.nextHint` -> `techniques` find a Move -> `explain` writes it ->
 - **The coach always offers the easiest technique that applies.** That ordering
   is the product, not an implementation detail. `TECHNIQUES` is sorted by rank
   and `findEasiestMove` takes the first hit.
-- **The page holds one candidate state, and both the grid and the coach use it**
-  (`state.cands`, passed into `nextHint`). Never recompute the plain candidates
-  just to draw the grid: the coach can prove more than the rules alone, and a
-  grid drawn from the rules alone contradicts its own advice. A player reported
-  exactly that. See ADR 0006.
-- **Never reduce the candidates automatically.** On a hard grid, applying every
-  elimination the catalogue can prove leaves no move at all, so the coaching
-  disappears. `reduceCandidates` is a button the player presses.
-- **An elimination move changes no digit, and that is fine.** Applying one
-  removes the candidates and they stay removed, so the player watches them go.
-  Do not go back to skipping ahead to the next placement.
+- **The grid never shows a candidate the coach can rule out.** `state.cands` is
+  `reduceCandidates(board)`, recomputed whenever the board changes, and the same
+  set goes into `nextHint`. Never draw the grid from `computeCandidates`: the
+  coach can prove more than the rules alone, and a grid drawn from the rules
+  alone contradicts its own advice. A player reported that twice. See ADR 0006.
+- **Marking a candidate as struck is not enough.** That was the first fix and the
+  player read the struck 5 as a normal candidate anyway. A digit the tool can
+  disprove must not be in the list at all.
+- **The eliminations are still taught, in the past tense.** `reduceCandidates`
+  returns every step explained, and the page lists them as "how the candidates
+  were narrowed". Removing that list would silently drop Pointing Pairs, Claiming
+  and the wings from everything the tool teaches.
+- **Keep the candidates derived, never edited.** They are a pure function of the
+  board, so no sequence of edits can leave them stale or reasoned from a grid the
+  player has since corrected.
 - **The footer line must never matter.** `startDeployLine` is never awaited and
   never throws: GitHub can be down or the visitor out of anonymous calls, and the
   line then stays empty. Keep the six-hour cache, and keep the privacy sentence
