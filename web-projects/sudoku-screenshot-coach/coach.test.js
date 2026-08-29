@@ -1,6 +1,6 @@
 import { describe, test, expect } from "bun:test";
 import { cellAt, emptyBoard, formatBoard, isConsistent, parseBoard } from "./board.js";
-import { solve } from "./solver.js";
+import { countSolutions, solve } from "./solver.js";
 import { CELL_COUNT, cellName, computeCandidates, digitsOf, makeState } from "./board.js";
 import { DIFFICULTY_TIERS, applyMoveToState, nextHint, rateDifficulty, reduceCandidates, solvePath } from "./coach.js";
 
@@ -223,16 +223,43 @@ describe("nextHint with a candidate state", () => {
     expect(sameCells).not.toBe(JSON.stringify(first.explanation.move.eliminations));
   });
 
-  test("stops offering eliminations once they have all been applied", () => {
-    // On this grid the catalogue runs out after its eliminations. The coach must
-    // say so honestly and hand over a verified digit, not repeat itself.
+  test("still has a move once the narrowing has been applied", () => {
+    // A player reported this grid as one the coach could not explain. It ran out
+    // of techniques and had to hand over the verified digit for r1c2 instead.
+    // A Unique Rectangle and a W-Wing now narrow the candidates far enough that
+    // r1c2 is a plain Naked Single, so the coach can prove the digit it gives.
     const board = parseBoard(REPORTED);
     const reduced = reduceCandidates(board);
     const hint = nextHint(board, "en", reduced.cands);
-    expect(hint.status).toBe("stuck");
-    expect(hint.explanation).toBeNull();
-    expect(hint.fallback).not.toBeNull();
-    expect(hint.fallback.digit).toBe(solve(board)[hint.fallback.cell]);
+    expect(hint.status).toBe("ok");
+    expect(hint.fallback).toBeNull();
+    expect(hint.explanation.move.placements).toEqual([{ cell: cellAt(0, 1), digit: 2 }]);
+    expect(hint.explanation.move.placements[0].digit).toBe(solve(board)[cellAt(0, 1)]);
+    expect(reduced.techniques).toContain("unique-rectangle");
+    expect(reduced.techniques).toContain("w-wing");
+  });
+
+  test("walks the reported grid to the end with techniques alone", () => {
+    // The whole point of the catalogue: finish without falling back to search.
+    const path = solvePath(parseBoard(REPORTED));
+    expect(path.solved).toBe(true);
+    expect(path.usedSearch).toBe(false);
+    expect(formatBoard(path.finalBoard)).toBe(formatBoard(solve(parseBoard(REPORTED))));
+    expect(path.difficulty.label).toBe("Master");
+  });
+
+  test("keeps the uniqueness techniques out of a grid with several solutions", () => {
+    // Clear r1c1 and r1c7 from the reported grid. It then has two answers, and a
+    // Unique Rectangle would be reasoning from something untrue.
+    const board = parseBoard(REPORTED);
+    board[cellAt(0, 0)] = 0;
+    board[cellAt(0, 6)] = 0;
+    expect(countSolutions(board, 2)).toBeGreaterThan(1);
+    const reduced = reduceCandidates(board);
+    expect(reduced.techniques).not.toContain("unique-rectangle");
+    expect(reduced.techniques).not.toContain("bug-plus-one");
+    // The techniques that do not need one answer still run.
+    expect(reduced.techniques).toContain("pointing");
   });
 });
 

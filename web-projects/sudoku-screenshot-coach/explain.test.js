@@ -1,16 +1,9 @@
 import { describe, test, expect } from "bun:test";
-import { ALL_DIGITS, CELL_COUNT, cellAt, emptyBoard, makeState, maskOf } from "./board.js";
-import { findTechnique } from "./techniques.js";
-import { describeEliminations, explainMove, moveSummary } from "./explain.js";
-
-function candState(overrides = {}, strips = []) {
-  const cands = new Uint16Array(CELL_COUNT).fill(ALL_DIGITS);
-  for (const strip of strips) {
-    for (const cell of strip.cells) for (const digit of strip.remove) cands[cell] &= ~(1 << (digit - 1));
-  }
-  for (const [cell, digits] of Object.entries(overrides)) cands[Number(cell)] = maskOf(digits);
-  return { board: emptyBoard(), cands };
-}
+import { cellAt, emptyBoard, makeState } from "./board.js";
+import { LANGUAGE_CODES } from "./i18n.js";
+import { TECHNIQUES, findTechnique } from "./techniques.js";
+import { candState, fixtureState } from "./techniqueFixtures.js";
+import { EXPLAINED_TECHNIQUES, describeEliminations, explainMove, moveSummary } from "./explain.js";
 
 const rowCells = (row) => Array.from({ length: 9 }, (_, col) => cellAt(row, col));
 const allText = (explanation) => [explanation.title, explanation.action, ...explanation.reasons].join(" ");
@@ -217,6 +210,36 @@ describe("Spanish", () => {
       expect(text).not.toContain("explain.");
       expect(text).not.toContain("technique.");
       expect(text).not.toContain("{");
+    }
+  });
+
+  test("every technique in the catalogue has an explainer", () => {
+    for (const technique of TECHNIQUES) expect(EXPLAINED_TECHNIQUES).toContain(technique.id);
+  });
+
+  test("every technique turns into finished sentences, in every language", () => {
+    // The fixtures live in techniqueFixtures.js, one per technique. This walks
+    // all of them, so a new technique with a missing message shows up here and
+    // not in front of a player.
+    for (const technique of TECHNIQUES) {
+      const state = fixtureState(technique.id);
+      const move = findTechnique(technique.id, state);
+      for (const lang of LANGUAGE_CODES) {
+        const explanation = explainMove(move, state, lang);
+        const text = allText(explanation);
+        expect(`${technique.id}/${lang}: ${explanation.title.length > 0}`).toBe(`${technique.id}/${lang}: true`);
+        expect(explanation.reasons.length).toBeGreaterThan(0);
+        for (const reason of explanation.reasons) expect(reason.length).toBeGreaterThan(0);
+        // A key or an unfilled slot that leaked into the sentences.
+        expect(`${technique.id}/${lang}: ${text}`).not.toContain("explain.");
+        expect(`${technique.id}/${lang}: ${text}`).not.toContain("{");
+        expect(explanation.technique.name).not.toContain("technique.");
+        expect(["placement", "elimination"]).toContain(explanation.kind);
+        // A move that names the same cell twice reads badly, so the title must
+        // name each cell once.
+        const named = explanation.title.match(/r\dc\d/g) ?? [];
+        expect(`${technique.id}: ${named.length}`).toBe(`${technique.id}: ${new Set(named).size}`);
+      }
     }
   });
 });

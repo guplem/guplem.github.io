@@ -62,8 +62,15 @@ function describeWitnesses(witnesses, lang) {
   );
 }
 
-/** The cells a move removes candidates from, as one phrase. */
-const targetCells = (move, lang) => joinList(lang, move.eliminations.map((elimination) => cellName(elimination.cell)));
+/**
+ * The cells a move removes candidates from, as one phrase. A move that takes two
+ * digits out of one cell names that cell once.
+ */
+const targetCells = (move, lang) =>
+  joinList(
+    lang,
+    [...new Set(move.eliminations.map((elimination) => elimination.cell))].sort((a, b) => a - b).map(cellName)
+  );
 
 /** Names of the cover houses of a fish, e.g. "column 2 and column 7". */
 const coverNames = (move, lang) => joinList(lang, (move.coverHouses ?? []).map((id) => houseName(id, lang)));
@@ -265,6 +272,257 @@ function explainXyzWing(move, state, lang) {
   };
 }
 
+/** "r1c1, r4c1 and r4c7" -- a plain list of cell names. */
+const cellList = (cells, lang) => joinList(lang, cells.map(cellName));
+
+function explainSkyscraper(move, state, lang) {
+  const digit = move.digits[0];
+  const [firstHouse, secondHouse] = move.houses;
+  const [roofA, roofB] = move.roof;
+  return {
+    title: t(lang, "explain.rule-out.title", { digit, cells: targetCells(move, lang) }),
+    action: t(lang, "explain.remove.action", { list: describeEliminations(move.eliminations, lang) }),
+    reasons: [
+      t(lang, "explain.skyscraper.1", {
+        digit,
+        first: houseName(firstHouse, lang),
+        second: houseName(secondHouse, lang),
+        cells: cellList(move.patternCells, lang),
+      }),
+      t(lang, "explain.skyscraper.2", {
+        cells: cellList(move.baseCells, lang),
+        house: houseName(move.baseHouse, lang),
+        digit,
+      }),
+      t(lang, "explain.skyscraper.3", { first: cellName(roofA), second: cellName(roofB), digit }),
+      t(lang, "explain.chain.conclusion", { digit }),
+    ],
+    kind: "elimination",
+    highlight: {
+      focus: move.eliminations.map((elimination) => elimination.cell),
+      support: move.patternCells,
+      houses: move.houses,
+    },
+  };
+}
+
+function explainTwoStringKite(move, state, lang) {
+  const digit = move.digits[0];
+  const [rowHouse, colHouse] = move.houses;
+  const [endA, endB] = move.ends;
+  return {
+    title: t(lang, "explain.rule-out.title", { digit, cells: targetCells(move, lang) }),
+    action: t(lang, "explain.remove.action", { list: describeEliminations(move.eliminations, lang) }),
+    reasons: [
+      t(lang, "explain.two-string-kite.1", {
+        digit,
+        first: houseName(rowHouse, lang),
+        second: houseName(colHouse, lang),
+        cells: cellList(move.patternCells, lang),
+      }),
+      t(lang, "explain.two-string-kite.2", {
+        cells: cellList(move.hinge, lang),
+        house: houseName(move.baseHouse, lang),
+        digit,
+      }),
+      t(lang, "explain.two-string-kite.3", { first: cellName(endA), second: cellName(endB), digit }),
+      t(lang, "explain.chain.conclusion", { digit }),
+    ],
+    kind: "elimination",
+    highlight: {
+      focus: move.eliminations.map((elimination) => elimination.cell),
+      support: move.patternCells,
+      houses: [...move.houses, move.baseHouse],
+    },
+  };
+}
+
+function explainWWing(move, state, lang) {
+  const digit = move.digits[0];
+  const [first, second] = move.ends;
+  const [linkA, linkB] = move.link;
+  const [a, b] = digitsOf(state.cands[first]);
+  return {
+    title: t(lang, "explain.rule-out.title", { digit, cells: targetCells(move, lang) }),
+    action: t(lang, "explain.remove.action", { list: describeEliminations(move.eliminations, lang) }),
+    reasons: [
+      t(lang, "explain.w-wing.1", { first: cellName(first), second: cellName(second), a, b }),
+      t(lang, "explain.w-wing.2", {
+        house: houseName(move.houses[0], lang),
+        link: move.linkDigit,
+        first: cellName(linkA),
+        second: cellName(linkB),
+      }),
+      t(lang, "explain.w-wing.3", {
+        linkFirst: cellName(linkA),
+        linkSecond: cellName(linkB),
+        link: move.linkDigit,
+        first: cellName(first),
+        second: cellName(second),
+        digit,
+      }),
+      t(lang, "explain.chain.conclusion", { digit }),
+    ],
+    kind: "elimination",
+    highlight: {
+      focus: move.eliminations.map((elimination) => elimination.cell),
+      support: [...move.ends, ...move.link],
+      houses: move.houses,
+    },
+  };
+}
+
+function explainRemotePairs(move, state, lang) {
+  const [a, b] = move.digits;
+  const [first, last] = move.ends;
+  return {
+    title: t(lang, "explain.rule-out.title", {
+      digit: joinList(lang, move.digits.map(String)),
+      cells: targetCells(move, lang),
+    }),
+    action: t(lang, "explain.remove.action", { list: describeEliminations(move.eliminations, lang) }),
+    reasons: [
+      t(lang, "explain.remote-pairs.1", { cells: cellList(move.chain, lang), a, b }),
+      t(lang, "explain.remote-pairs.2", { first: cellName(first), second: cellName(last) }),
+      t(lang, "explain.remote-pairs.3", { a, b }),
+    ],
+    kind: "elimination",
+    highlight: {
+      focus: move.eliminations.map((elimination) => elimination.cell),
+      support: move.chain,
+      houses: [],
+    },
+  };
+}
+
+function explainSimpleColoring(move, state, lang) {
+  const digit = move.digits[0];
+  const [groupA, groupB] = move.colours;
+  const reasons = [
+    t(lang, "explain.simple-coloring.1", { digit, cells: cellList(move.patternCells, lang) }),
+    t(lang, "explain.simple-coloring.2", {
+      first: cellList(groupA, lang),
+      second: cellList(groupB, lang),
+      digit,
+    }),
+  ];
+  if (move.variant === "wrap") {
+    reasons.push(
+      t(lang, "explain.simple-coloring.wrap", {
+        first: cellName(move.clash[0]),
+        second: cellName(move.clash[1]),
+        digit,
+      })
+    );
+  } else {
+    reasons.push(t(lang, "explain.simple-coloring.trap", { digit }));
+  }
+  return {
+    title: t(lang, "explain.rule-out.title", { digit, cells: targetCells(move, lang) }),
+    action: t(lang, "explain.remove.action", { list: describeEliminations(move.eliminations, lang) }),
+    reasons,
+    kind: "elimination",
+    highlight: {
+      focus: move.eliminations.map((elimination) => elimination.cell),
+      support: move.patternCells,
+      houses: [],
+    },
+  };
+}
+
+function explainXyChain(move, state, lang) {
+  const digit = move.digits[0];
+  const [first, last] = move.ends;
+  return {
+    title: t(lang, "explain.rule-out.title", { digit, cells: targetCells(move, lang) }),
+    action: t(lang, "explain.remove.action", { list: describeEliminations(move.eliminations, lang) }),
+    reasons: [
+      t(lang, "explain.xy-chain.1", { cells: describeCellsWithCandidates(move.chain, state, lang) }),
+      t(lang, "explain.xy-chain.2", { first: cellName(first), second: cellName(last), digit }),
+      t(lang, "explain.xy-chain.3", { digit }),
+      t(lang, "explain.chain.conclusion", { digit }),
+    ],
+    kind: "elimination",
+    highlight: {
+      focus: move.eliminations.map((elimination) => elimination.cell),
+      support: move.chain,
+      houses: [],
+    },
+  };
+}
+
+function explainUniqueRectangle(move, state, lang) {
+  const [a, b] = move.digits;
+  const [first, second] = move.roof;
+  const reasons = [
+    t(lang, "explain.unique-rectangle.1", { cells: cellList(move.patternCells, lang), a, b }),
+    t(lang, "explain.unique-rectangle.2", { a, b }),
+  ];
+  if (move.variant === "1") {
+    reasons.push(t(lang, "explain.unique-rectangle.type1", { cell: cellName(move.roof[0]), a, b }));
+  } else if (move.variant === "2") {
+    reasons.push(
+      t(lang, "explain.unique-rectangle.type2", {
+        first: cellName(first),
+        second: cellName(second),
+        digit: move.extra,
+      })
+    );
+  } else if (move.variant === "3") {
+    reasons.push(
+      t(lang, "explain.unique-rectangle.type3", {
+        first: cellName(first),
+        second: cellName(second),
+        cells: cellList(move.subsetCells, lang),
+        digits: joinList(lang, move.subsetDigits.map(String)),
+        house: houseName(move.houses[0], lang),
+      })
+    );
+  } else {
+    reasons.push(
+      t(lang, "explain.unique-rectangle.type4", {
+        house: houseName(move.houses[0], lang),
+        keep: move.keep,
+        drop: move.drop,
+        first: cellName(first),
+        second: cellName(second),
+      })
+    );
+  }
+  return {
+    title: t(lang, "explain.rule-out.title", {
+      digit: joinList(
+        lang,
+        [...new Set(move.eliminations.map((elimination) => elimination.digit))].sort((a, b) => a - b).map(String)
+      ),
+      cells: targetCells(move, lang),
+    }),
+    action: t(lang, "explain.remove.action", { list: describeEliminations(move.eliminations, lang) }),
+    reasons,
+    kind: "elimination",
+    highlight: {
+      focus: move.eliminations.map((elimination) => elimination.cell),
+      support: move.patternCells,
+      houses: move.houses,
+    },
+  };
+}
+
+function explainBugPlusOne(move, state, lang) {
+  const { cell, digit } = move.placements[0];
+  return {
+    title: t(lang, "explain.place.title", { digit, cell: cellName(cell) }),
+    action: t(lang, "explain.place.action", { digit, cell: cellName(cell) }),
+    reasons: [
+      t(lang, "explain.bug-plus-one.1", { cell: cellName(cell) }),
+      t(lang, "explain.bug-plus-one.2"),
+      t(lang, "explain.bug-plus-one.3", { digit, cell: cellName(cell) }),
+    ],
+    kind: "placement",
+    highlight: { focus: [cell], support: [], houses: move.houses },
+  };
+}
+
 const EXPLAINERS = {
   "naked-single": explainNakedSingle,
   "hidden-single": explainHiddenSingle,
@@ -275,11 +533,27 @@ const EXPLAINERS = {
   "naked-quad": explainNakedSubset,
   "hidden-pair": explainHiddenSubset,
   "hidden-triple": explainHiddenSubset,
+  "hidden-quad": explainHiddenSubset,
   "x-wing": explainFish,
   swordfish: explainFish,
+  jellyfish: explainFish,
   "y-wing": explainYWing,
   "xyz-wing": explainXyzWing,
+  skyscraper: explainSkyscraper,
+  "two-string-kite": explainTwoStringKite,
+  "w-wing": explainWWing,
+  "remote-pairs": explainRemotePairs,
+  "simple-coloring": explainSimpleColoring,
+  "xy-chain": explainXyChain,
+  "unique-rectangle": explainUniqueRectangle,
+  "bug-plus-one": explainBugPlusOne,
 };
+
+/**
+ * The technique ids this file can put into words. A technique without an entry
+ * here makes `explainMove` throw, so a test checks the catalogue against it.
+ */
+export const EXPLAINED_TECHNIQUES = Object.keys(EXPLAINERS);
 
 /**
  * Build the full explanation of a move.

@@ -194,6 +194,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [sudoku-screenshot-coach 0004](web-projects/sudoku-screenshot-coach/adr/0004-one-message-catalogue-for-generated-explanations.md) | One message catalogue, so generated explanations translate too |
 | [sudoku-screenshot-coach 0005](web-projects/sudoku-screenshot-coach/adr/0005-judge-the-grid-at-full-resolution-and-each-cell-against-itself.md) | Judge the grid at full resolution, and each cell against itself |
 | [sudoku-screenshot-coach 0006](web-projects/sudoku-screenshot-coach/adr/0006-one-candidate-state-shared-by-the-grid-and-the-coach.md) | One candidate state, shared by the grid and the coach |
+| [sudoku-screenshot-coach 0007](web-projects/sudoku-screenshot-coach/adr/0007-uniqueness-techniques-run-only-on-a-grid-with-one-answer.md) | Uniqueness techniques run only on a grid with one answer |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 

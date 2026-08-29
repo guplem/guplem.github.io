@@ -8,7 +8,8 @@ Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explai
 [ADR 0003](adr/0003-tell-pencil-marks-from-digits-by-measured-size.md),
 [ADR 0004](adr/0004-one-message-catalogue-for-generated-explanations.md),
 [ADR 0005](adr/0005-judge-the-grid-at-full-resolution-and-each-cell-against-itself.md),
-[ADR 0006](adr/0006-one-candidate-state-shared-by-the-grid-and-the-coach.md).
+[ADR 0006](adr/0006-one-candidate-state-shared-by-the-grid-and-the-coach.md),
+[ADR 0007](adr/0007-uniqueness-techniques-run-only-on-a-grid-with-one-answer.md).
 
 ## Module map (pure logic is separated from the DOM so it can be unit-tested)
 
@@ -16,7 +17,7 @@ Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explai
 |---|---|---|
 | `board.js` | yes | The 9x9 model: houses, peers, candidate masks, parse and format, conflict checks. |
 | `solver.js` | yes | Backtracking solver. Proves a grid is legal, unique, and finishes what techniques cannot. |
-| `techniques.js` | yes | The 13 solving techniques. Each `find(state)` returns a Move with its evidence, or null. |
+| `techniques.js` | yes | The 23 solving techniques. Each `find(state)` returns a Move with its evidence, or null. |
 | `explain.js` | yes | Move plus evidence to sentences, through `i18n.js`. Writes no text of its own. |
 | `coach.js` | yes | Picks the next best move, reduces candidates, walks a whole solve, rates difficulty. |
 | `recognize.js` | yes | Screenshot to 81 digits: joins the vision steps, then repairs the reading with the rules. |
@@ -28,6 +29,7 @@ Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explai
 | `vision/builtinDigits.js` | yes | Digit shapes as stroke paths, so the reader needs no system font. |
 | `vision/fonts.js` | no | Draws the reference pictures on a canvas, from device fonts and the built-in paths. |
 | `vision/testFixtures.js` | yes | Test-only. Draws synthetic screenshots with clutter, pencil marks and highlights. |
+| `techniqueFixtures.js` | yes | Test-only. One grid per technique, read by `techniques.test.js` and `explain.test.js`. |
 | `deployInfo.js` | yes | Builds the GitHub URLs, parses the answers, ranks the deploy sources, formats the date. |
 | `deployFooter.js` | no | The only file that fetches, caches and draws the "deployed at" line. Root ADR 0013. Tested with stubs, because the reported bug lived here. |
 | `app.js` | no | DOM controller: input, board painting, coaching output, language switch. |
@@ -46,6 +48,18 @@ edits -> `coach.nextHint` -> `techniques` find a Move -> `explain` writes it ->
   runs every technique against dozens of generated grids and fails if any move
   ever eliminates a candidate the real solution needs. Add a technique and that
   sweep covers it at once. Do not weaken it.
+- **Uniqueness techniques read `state.unique`, and it defaults to false.** Unique
+  Rectangle and BUG+1 argue that the puzzle has exactly one answer. On a grid with
+  two answers that argument is wrong, and a misread screenshot often gives such a
+  grid. `makeState` defaults the flag to false; only a caller that has counted the
+  solutions may set it. Never make a technique assume it. See ADR 0007.
+- **The rank lives in the catalogue and nowhere else.** `TECHNIQUES` stamps it
+  onto every move a finder returns, so a finder cannot drift from the order the
+  coach teaches in. Two finders had already drifted before the stamping went in.
+- **A new technique needs a fixture in `techniqueFixtures.js`.** Two tests walk
+  every catalogue entry through its fixture: one checks the finder reports a move,
+  the other checks the move turns into finished sentences in every language. A
+  technique with no fixture fails the first of them.
 - **`explain.js` contains no sentences.** Every string is a key in `i18n.js`.
   Adding a technique means adding `technique.<id>.name`, `.summary`, `.how` and
   its explanation keys in **every** language, or `i18n.test.js` fails. See ADR 0004.
@@ -112,8 +126,12 @@ edits -> `coach.nextHint` -> `techniques` find a Move -> `explain` writes it ->
 ## Adding a technique
 
 1. Write `find(state)` in `techniques.js`, returning a Move with its evidence.
-2. Add the catalogue entry with its `id`, `rank` and `categoryKey`.
-3. Add `technique.<id>.name`, `.summary` and `.how` to `i18n.js` in every language.
-4. Add an explainer to `EXPLAINERS` in `explain.js` and its sentence keys.
-5. Write a focused test that builds a candidate grid holding just that pattern.
-   The soundness sweep then covers it automatically.
+   Leave `rank` out: the catalogue stamps it.
+2. Add the catalogue entry with its `id`, `rank` and `categoryKey`. Give it the
+   rank a human teacher would, and renumber the entries after it.
+3. Check `DIFFICULTY_TIERS` in `coach.js` still covers the last rank.
+4. Add `technique.<id>.name`, `.summary` and `.how` to `i18n.js` in every language.
+5. Add an explainer to `EXPLAINERS` in `explain.js` and its sentence keys.
+6. Add a fixture to `techniqueFixtures.js`: a grid that holds just that pattern.
+   Two tests then walk it, and the soundness sweep covers the technique too.
+7. Write a focused test that names the exact cells and digits the move reports.

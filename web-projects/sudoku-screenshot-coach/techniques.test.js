@@ -1,34 +1,26 @@
 import { describe, test, expect } from "bun:test";
 import {
-  ALL_DIGITS,
   CELL_COUNT,
   cellAt,
   cellName,
   digitsOf,
   emptyBoard,
-  maskOf,
+  isComplete,
   parseBoard,
   makeState,
 } from "./board.js";
+import { applyMoveToState } from "./coach.js";
 import { LANGUAGE_CODES } from "./i18n.js";
-import { TECHNIQUES, findTechnique, findAllMoves, techniqueCatalogue, techniqueInfo } from "./techniques.js";
-import { solve } from "./solver.js";
-
-/**
- * A state whose board is empty and whose candidates start as "anything", then
- * get narrowed by the given overrides. It isolates one pattern so a test can
- * check a single technique without building a whole puzzle.
- * @param {Record<number, number[]>} overrides cell index -> allowed digits
- * @param {Array<{cells: number[], remove: number[]}>} strips digits to drop from cells
- */
-function candState(overrides = {}, strips = []) {
-  const cands = new Uint16Array(CELL_COUNT).fill(ALL_DIGITS);
-  for (const strip of strips) {
-    for (const cell of strip.cells) for (const digit of strip.remove) cands[cell] &= ~(1 << (digit - 1));
-  }
-  for (const [cell, digits] of Object.entries(overrides)) cands[Number(cell)] = maskOf(digits);
-  return { board: emptyBoard(), cands };
-}
+import {
+  TECHNIQUES,
+  findTechnique,
+  findAllMoves,
+  findEasiestMove,
+  techniqueCatalogue,
+  techniqueInfo,
+} from "./techniques.js";
+import { BUG_PLUS_ONE_GRID, TECHNIQUE_FIXTURES, candState, fixtureState } from "./techniqueFixtures.js";
+import { countSolutions, solve } from "./solver.js";
 
 const rowCells = (row) => Array.from({ length: 9 }, (_, col) => cellAt(row, col));
 const colCells = (col) => Array.from({ length: 9 }, (_, row) => cellAt(row, col));
@@ -75,6 +67,18 @@ describe("technique catalogue", () => {
   test("technique ids are unique", () => {
     const ids = TECHNIQUES.map((technique) => technique.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  test("every technique in the catalogue has a fixture that makes it fire", () => {
+    // A new technique with no fixture would slip past every check below, and
+    // past the explanation check in explain.test.js as well.
+    for (const technique of TECHNIQUES) {
+      expect(TECHNIQUE_FIXTURES[technique.id]).toBeDefined();
+      const move = findTechnique(technique.id, fixtureState(technique.id));
+      expect(`${technique.id}: ${move === null ? "no move" : "move"}`).toBe(`${technique.id}: move`);
+      expect(move.technique).toBe(technique.id);
+      expect(move.rank).toBe(technique.rank);
+    }
   });
 });
 
@@ -231,6 +235,19 @@ describe("hidden subsets", () => {
       [`${cellName(cellAt(0, 0))}#1`, `${cellName(cellAt(0, 1))}#2`, `${cellName(cellAt(0, 2))}#3`].sort()
     );
   });
+
+  test("hidden quad keeps only the four digits in their four cells", () => {
+    const move = find("hidden-quad", fixtureState("hidden-quad"));
+    expect(move.digits).toEqual([4, 5, 6, 7]);
+    expect(elimPairs(move)).toEqual(
+      [
+        `${cellName(cellAt(0, 0))}#1`,
+        `${cellName(cellAt(0, 1))}#2`,
+        `${cellName(cellAt(0, 2))}#3`,
+        `${cellName(cellAt(0, 3))}#1`,
+      ].sort()
+    );
+  });
 });
 
 describe("fish patterns", () => {
@@ -261,6 +278,12 @@ describe("fish patterns", () => {
     expect(move.digits).toEqual([3]);
     expect(move.eliminations).toHaveLength(18); // 6 other rows x 3 columns
   });
+
+  test("Jellyfish on four rows clears the digit from the four columns", () => {
+    const move = find("jellyfish", fixtureState("jellyfish"));
+    expect(move.digits).toEqual([3]);
+    expect(move.eliminations).toHaveLength(20); // 5 other rows x 4 columns
+  });
 });
 
 describe("wings", () => {
@@ -284,6 +307,172 @@ describe("wings", () => {
     const move = find("xyz-wing", state);
     expect(move.digits).toEqual([3]);
     expect(elimPairs(move)).toEqual([`${cellName(cellAt(1, 0))}#3`, `${cellName(cellAt(2, 0))}#3`].sort());
+  });
+});
+
+describe("single-digit chains", () => {
+  test("Skyscraper clears the digit from the cells both roof ends see", () => {
+    const move = find("skyscraper", fixtureState("skyscraper"));
+    expect(move.digits).toEqual([5]);
+    // The two roof cells share box 2, so the rest of that box loses the 5.
+    expect(elimPairs(move)).toEqual(
+      [cellAt(2, 3), cellAt(2, 4), cellAt(2, 5)].map((cell) => `${cellName(cell)}#5`).sort()
+    );
+  });
+
+  test("Two-String Kite clears the digit from the cell both far ends see", () => {
+    const move = find("two-string-kite", fixtureState("two-string-kite"));
+    expect(move.digits).toEqual([4]);
+    expect(elimPairs(move)).toEqual([`${cellName(cellAt(5, 7))}#4`]);
+  });
+
+  test("Simple Coloring traps a cell that sees both colours", () => {
+    const move = find("simple-coloring", fixtureState("simple-coloring"));
+    expect(move.variant).toBe("trap");
+    expect(move.digits).toEqual([6]);
+    expect(elimPairs(move)).toEqual(
+      [cellAt(3, 1), cellAt(3, 2), cellAt(4, 1), cellAt(4, 2)].map((cell) => `${cellName(cell)}#6`).sort()
+    );
+  });
+
+  test("Simple Coloring drops a whole colour when two of its cells see each other", () => {
+    // Four strong links on 7 that close an odd loop: r1c1 and r1c3 end up the
+    // same colour and share box 1, so that colour cannot be the true one.
+    const state = candState({}, [
+      { cells: rowCells(0).filter((cell) => cell !== cellAt(0, 2)), remove: [7] },
+      { cells: rowCells(1).filter((cell) => ![cellAt(1, 1), cellAt(1, 5)].includes(cell)), remove: [7] },
+      { cells: rowCells(2).filter((cell) => ![cellAt(2, 5), cellAt(2, 2)].includes(cell)), remove: [7] },
+      { cells: colCells(5).filter((cell) => ![cellAt(1, 5), cellAt(2, 5)].includes(cell)), remove: [7] },
+      { cells: colCells(2).filter((cell) => ![cellAt(2, 2), cellAt(0, 2)].includes(cell)), remove: [7] },
+    ]);
+    const move = find("simple-coloring", state);
+    expect(move.variant).toBe("wrap");
+    expect(move.digits).toEqual([7]);
+    // Every cell of the losing colour drops the 7.
+    expect(elimPairs(move)).toEqual(
+      [cellAt(0, 2), cellAt(1, 1), cellAt(2, 5)].map((cell) => `${cellName(cell)}#7`).sort()
+    );
+  });
+});
+
+describe("chains of two-candidate cells", () => {
+  test("W-Wing clears the other digit from the cells both wing cells see", () => {
+    const move = find("w-wing", fixtureState("w-wing"));
+    expect(move.digits).toEqual([1]);
+    expect(elimPairs(move)).toEqual([`${cellName(cellAt(0, 4))}#1`, `${cellName(cellAt(4, 0))}#1`].sort());
+  });
+
+  test("Remote Pairs clears both digits from the cells both ends see", () => {
+    const move = find("remote-pairs", fixtureState("remote-pairs"));
+    expect(move.digits).toEqual([3, 4]);
+    expect(elimPairs(move)).toEqual(
+      [
+        `${cellName(cellAt(0, 5))}#3`,
+        `${cellName(cellAt(0, 5))}#4`,
+        `${cellName(cellAt(4, 0))}#3`,
+        `${cellName(cellAt(4, 0))}#4`,
+      ].sort()
+    );
+  });
+
+  test("Remote Pairs needs an odd number of steps between the two ends", () => {
+    // Three cells only. The two ends are two steps apart, so they can hold the
+    // same digit and nothing follows.
+    const state = candState({
+      [cellAt(0, 0)]: [3, 4],
+      [cellAt(0, 1)]: [3, 4],
+      [cellAt(4, 1)]: [3, 4],
+    });
+    expect(find("remote-pairs", state)).toBeNull();
+  });
+
+  test("XY-Chain clears the shared end digit from the cells both ends see", () => {
+    const move = find("xy-chain", fixtureState("xy-chain"));
+    expect(move.digits).toEqual([1]);
+    expect(elimPairs(move)).toEqual([`${cellName(cellAt(0, 8))}#1`, `${cellName(cellAt(4, 0))}#1`].sort());
+  });
+});
+
+describe("uniqueness techniques", () => {
+  const urState = (overrides) =>
+    candState(overrides, [{ cells: Array.from({ length: CELL_COUNT }, (_, cell) => cell), remove: [1, 2] }]);
+
+  /** The four corners of one rectangle across box 1 and box 2. */
+  const CORNERS = { topLeft: cellAt(0, 0), topRight: cellAt(0, 4), bottomLeft: cellAt(1, 0), bottomRight: cellAt(1, 4) };
+
+  test("Type 1: the one corner with extra digits loses both rectangle digits", () => {
+    const move = find("unique-rectangle", { ...fixtureState("unique-rectangle") });
+    expect(move.variant).toBe("1");
+    expect(elimPairs(move)).toEqual(
+      [`${cellName(CORNERS.bottomRight)}#1`, `${cellName(CORNERS.bottomRight)}#2`].sort()
+    );
+  });
+
+  test("Type 2: the shared extra digit leaves every cell both corners see", () => {
+    const state = {
+      ...urState({
+        [CORNERS.topLeft]: [1, 2],
+        [CORNERS.bottomLeft]: [1, 2],
+        [CORNERS.topRight]: [1, 2, 5],
+        [CORNERS.bottomRight]: [1, 2, 5],
+      }),
+      unique: true,
+    };
+    const move = find("unique-rectangle", state);
+    expect(move.variant).toBe("2");
+    for (const elimination of move.eliminations) expect(elimination.digit).toBe(5);
+    // Both corners sit in column 5, so the rest of that column loses the 5.
+    expect(move.eliminations.map((elimination) => elimination.cell)).toContain(cellAt(2, 4));
+  });
+
+  test("Type 3: the two corners join a cell of their house to make a naked pair", () => {
+    const state = {
+      ...urState({
+        [CORNERS.topLeft]: [1, 2],
+        [CORNERS.bottomLeft]: [1, 2],
+        [CORNERS.topRight]: [1, 2, 3],
+        [CORNERS.bottomRight]: [1, 2, 4],
+        [cellAt(5, 4)]: [3, 4],
+      }),
+      unique: true,
+    };
+    const move = find("unique-rectangle", state);
+    expect(move.variant).toBe("3");
+    expect(move.subsetDigits).toEqual([3, 4]);
+    expect(move.subsetCells).toEqual([cellAt(5, 4)]);
+    for (const elimination of move.eliminations) expect([3, 4]).toContain(elimination.digit);
+  });
+
+  test("Type 4: the digit with no other place in the house pushes the other one out", () => {
+    const state = {
+      ...urState({
+        [CORNERS.topLeft]: [1, 2],
+        [CORNERS.bottomLeft]: [1, 2],
+        [CORNERS.topRight]: [1, 2, 3],
+        [CORNERS.bottomRight]: [1, 2, 4],
+      }),
+      unique: true,
+    };
+    const move = find("unique-rectangle", state);
+    expect(move.variant).toBe("4");
+    expect(elimPairs(move)).toEqual(
+      [`${cellName(CORNERS.topRight)}#2`, `${cellName(CORNERS.bottomRight)}#2`].sort()
+    );
+  });
+
+  test("BUG+1 places the digit that appears an odd number of times", () => {
+    const move = find("bug-plus-one", fixtureState("bug-plus-one"));
+    expect(move.placements).toEqual([{ cell: cellAt(8, 7), digit: 6 }]);
+    expect(move.placements[0].digit).toBe(solve(parseBoard(BUG_PLUS_ONE_GRID))[cellAt(8, 7)]);
+  });
+
+  test("both stay silent unless the grid is known to have one solution", () => {
+    // Their whole argument is "this puzzle has one answer". Without that proof
+    // they must report nothing, because on a grid with two answers the
+    // reasoning is wrong.
+    for (const id of ["unique-rectangle", "bug-plus-one"]) {
+      expect(find(id, { ...fixtureState(id), unique: false })).toBeNull();
+    }
   });
 });
 
@@ -383,6 +572,53 @@ describe("soundness sweep", () => {
         for (const placement of move.placements) expect(board[placement.cell]).toBe(0);
       }
     }
+  });
+
+  // The sweep above builds boards by punching random holes, so many of them have
+  // several solutions. `makeState` leaves `unique` false, which keeps the
+  // uniqueness techniques out of that sweep on purpose: their reasoning is only
+  // valid for a grid with one answer. This sweep gives them grids that qualify.
+  test("the uniqueness techniques never contradict the one real solution", () => {
+    const random = mulberry32(4242);
+    let movesChecked = 0;
+    for (let round = 0; round < 40; round += 1) {
+      const solution = shuffledSolution(random);
+      const board = Int8Array.from(solution);
+      // Remove a cell only while the grid still has exactly one completion, so
+      // the solution above stays the only answer.
+      const order = [...Array(CELL_COUNT).keys()];
+      for (let i = CELL_COUNT - 1; i > 0; i -= 1) {
+        const j = Math.floor(random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      for (const cell of order) {
+        const kept = board[cell];
+        board[cell] = 0;
+        if (countSolutions(board, 2) !== 1) board[cell] = kept;
+      }
+      let state = makeState(board, { unique: true });
+      for (let step = 0; step < 120 && !isComplete(state.board); step += 1) {
+        for (const id of ["unique-rectangle", "bug-plus-one"]) {
+          const move = findTechnique(id, state);
+          if (!move) continue;
+          movesChecked += 1;
+          for (const placement of move.placements) {
+            expect(`${id} ${cellName(placement.cell)}=${placement.digit}`).toBe(
+              `${id} ${cellName(placement.cell)}=${solution[placement.cell]}`
+            );
+          }
+          for (const elimination of move.eliminations) {
+            expect(`${id} ${cellName(elimination.cell)}#${elimination.digit}`).not.toBe(
+              `${id} ${cellName(elimination.cell)}#${solution[elimination.cell]}`
+            );
+          }
+        }
+        const next = findEasiestMove(state);
+        if (!next) break;
+        state = applyMoveToState(state, next);
+      }
+    }
+    expect(movesChecked).toBeGreaterThan(0);
   });
 
   test("the generated grids are real solutions", () => {

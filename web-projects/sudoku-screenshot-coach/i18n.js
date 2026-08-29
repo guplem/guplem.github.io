@@ -42,6 +42,8 @@ export const MESSAGES = {
   "category.subset": { en: "Subset", es: "Subconjunto" },
   "category.fish": { en: "Fish", es: "Pez" },
   "category.wing": { en: "Wing", es: "Ala" },
+  "category.chain": { en: "Chain", es: "Cadena" },
+  "category.uniqueness": { en: "One answer only", es: "Solución única" },
 
   "technique.naked-single.name": { en: "Naked Single", es: "Única candidata" },
   "technique.naked-single.summary": {
@@ -133,6 +135,16 @@ export const MESSAGES = {
     es: "La idea del par desnudo con cuatro celdas: cuando cuatro celdas de una casa contienen solo cuatro cifras entre todas, esas cifras se agotan ahí y salen de las demás celdas de la casa.",
   },
 
+  "technique.hidden-quad.name": { en: "Hidden Quad", es: "Cuarteto escondido" },
+  "technique.hidden-quad.summary": {
+    en: "Four digits that fit in only four cells of a house.",
+    es: "Cuatro cifras que solo caben en cuatro celdas de una casa.",
+  },
+  "technique.hidden-quad.how": {
+    en: "Find four digits that have no place left in a house outside the same four cells. Those cells take those four digits, so every other candidate leaves them.",
+    es: "Busca cuatro cifras que no tengan sitio en una casa fuera de las mismas cuatro celdas. Esas celdas llevan esas cuatro cifras, así que cualquier otro candidato sale de ellas.",
+  },
+
   "technique.x-wing.name": { en: "X-Wing", es: "X-Wing" },
   "technique.x-wing.summary": {
     en: "A digit boxed into the same two columns on two rows.",
@@ -171,6 +183,96 @@ export const MESSAGES = {
   "technique.xyz-wing.how": {
     en: "Find a pivot with three candidates {a,b,c} and two cells it sees holding {a,c} and {b,c}. One of the three cells must be c, so c cannot stay in a cell that sees all three.",
     es: "Busca un pivote con tres candidatos {a,b,c} y dos celdas que vea con {a,c} y {b,c}. Una de las tres celdas tiene que ser c, así que c no puede quedarse en una celda que vea a las tres.",
+  },
+
+  "technique.skyscraper.name": { en: "Skyscraper", es: "Rascacielos" },
+  "technique.skyscraper.summary": {
+    en: "Two short lines for one digit, joined at one end.",
+    es: "Dos líneas cortas para una cifra, unidas por un extremo.",
+  },
+  "technique.skyscraper.how": {
+    en: "Find two rows in which a digit has only two places each, with one place of each row in the same column. Those two places cannot both hold the digit, so one of the two remaining places must. The digit leaves every cell that sees both of them. It also works with rows and columns swapped.",
+    es: "Busca dos filas en las que una cifra tenga solo dos sitios cada una, con un sitio de cada fila en la misma columna. Esos dos sitios no pueden llevar los dos la cifra, así que uno de los dos sitios restantes tiene que llevarla. La cifra sale de toda celda que vea a los dos. También sirve cambiando filas por columnas.",
+  },
+
+  "technique.two-string-kite.name": { en: "Two-String Kite", es: "Cometa de dos cuerdas" },
+  "technique.two-string-kite.summary": {
+    en: "A row and a column for one digit, joined inside a box.",
+    es: "Una fila y una columna para una cifra, unidas dentro de una caja.",
+  },
+  "technique.two-string-kite.how": {
+    en: "Find a row and a column in which a digit has only two places each, with one place of the row and one place of the column in the same box. Those two cannot both hold the digit, so one of the two far ends must. The digit leaves every cell that sees both ends.",
+    es: "Busca una fila y una columna en las que una cifra tenga solo dos sitios cada una, con un sitio de la fila y un sitio de la columna en la misma caja. Esos dos no pueden llevar los dos la cifra, así que uno de los dos extremos lejanos tiene que llevarla. La cifra sale de toda celda que vea a los dos extremos.",
+  },
+
+  "technique.w-wing.name": { en: "W-Wing", es: "W-Wing" },
+  "technique.w-wing.summary": {
+    en: "Two cells with the same pair, joined by a strong link.",
+    es: "Dos celdas con el mismo par, unidas por un enlace fuerte.",
+  },
+  "technique.w-wing.how": {
+    en: "Find two cells that hold the same two candidates {a,b} and do not see each other. Then find a house where b has only two places, one seen by each cell. One of those places is b, so the cell that sees it must be a. Either way one of the two cells is a, so a leaves every cell that sees both.",
+    es: "Busca dos celdas con los mismos dos candidatos {a,b} que no se vean entre sí. Luego busca una casa donde b solo tenga dos sitios, cada uno visto por una de las celdas. Uno de esos sitios es b, así que la celda que lo ve tiene que ser a. En cualquier caso una de las dos celdas es a, así que a sale de toda celda que vea a las dos.",
+  },
+
+  "technique.jellyfish.name": { en: "Jellyfish", es: "Medusa" },
+  "technique.jellyfish.summary": {
+    en: "The same fish idea, on four rows and four columns.",
+    es: "La misma idea del pez, en cuatro filas y cuatro columnas.",
+  },
+  "technique.jellyfish.how": {
+    en: "Find four rows in which a digit has only two, three or four possible cells, and all of them fall inside the same four columns. The digit takes one cell per row and fills all four columns, so it leaves every other cell of those columns. It also works with rows and columns swapped.",
+    es: "Busca cuatro filas en las que una cifra tenga solo dos, tres o cuatro celdas posibles, y que todas caigan dentro de las mismas cuatro columnas. La cifra ocupa una celda por fila y llena las cuatro columnas, así que sale de las demás celdas de esas columnas. También sirve cambiando filas por columnas.",
+  },
+
+  "technique.remote-pairs.name": { en: "Remote Pairs", es: "Pares remotos" },
+  "technique.remote-pairs.summary": {
+    en: "A run of cells that all hold the same two digits.",
+    es: "Una cadena de celdas que llevan las mismas dos cifras.",
+  },
+  "technique.remote-pairs.how": {
+    en: "Find a run of cells that all hold the same pair {a,b}, where each cell sees the next one. The two digits swap along the run, so two cells an odd number of steps apart always differ. A cell that sees both of those ends loses a and b.",
+    es: "Busca una cadena de celdas con el mismo par {a,b}, donde cada celda ve a la siguiente. Las dos cifras se alternan a lo largo de la cadena, así que dos celdas separadas por un número impar de pasos siempre son distintas. Una celda que vea a esos dos extremos pierde a y b.",
+  },
+
+  "technique.simple-coloring.name": { en: "Simple Coloring", es: "Coloreado simple" },
+  "technique.simple-coloring.summary": {
+    en: "Paint one digit in two colours and follow the chain.",
+    es: "Pinta una cifra en dos colores y sigue la cadena.",
+  },
+  "technique.simple-coloring.how": {
+    en: "Take a digit and find the houses where it has only two places left. Paint the two places of each house in opposite colours and join the chains. One colour is true and the other is false. A cell that sees both colours cannot hold the digit. If two cells of one colour see each other, that whole colour is false.",
+    es: "Coge una cifra y busca las casas donde solo le quedan dos sitios. Pinta los dos sitios de cada casa con colores opuestos y une las cadenas. Un color es verdadero y el otro es falso. Una celda que ve los dos colores no puede llevar la cifra. Si dos celdas del mismo color se ven entre sí, ese color entero es falso.",
+  },
+
+  "technique.unique-rectangle.name": { en: "Unique Rectangle", es: "Rectángulo único" },
+  "technique.unique-rectangle.summary": {
+    en: "A shape that would give the puzzle two answers.",
+    es: "Una forma que daría dos soluciones al pasatiempo.",
+  },
+  "technique.unique-rectangle.how": {
+    en: "Find four cells in two rows, two columns and two boxes that all still allow the same two digits. If those cells held only those two digits, the digits could be swapped around the rectangle and the puzzle would have two answers. A puzzle with one answer cannot allow that, so whatever prevents the shape must be true.",
+    es: "Busca cuatro celdas en dos filas, dos columnas y dos cajas que sigan admitiendo las mismas dos cifras. Si esas celdas llevaran solo esas dos cifras, se podrían intercambiar alrededor del rectángulo y el pasatiempo tendría dos soluciones. Un pasatiempo con una sola solución no lo permite, así que lo que impide esa forma tiene que ser cierto.",
+  },
+
+  "technique.bug-plus-one.name": { en: "BUG+1", es: "BUG+1" },
+  "technique.bug-plus-one.summary": {
+    en: "One cell with three candidates, and all the rest with two.",
+    es: "Una celda con tres candidatos y todas las demás con dos.",
+  },
+  "technique.bug-plus-one.how": {
+    en: "Check that every empty cell holds two candidates except one, which holds three. A grid where every digit has an even number of places in every house always has two answers. This puzzle has one, so the odd cell takes the digit that appears an odd number of times in its row, its column and its box.",
+    es: "Comprueba que todas las celdas vacías tienen dos candidatos menos una, que tiene tres. Una cuadrícula donde cada cifra tiene un número par de sitios en cada casa siempre tiene dos soluciones. Este pasatiempo tiene una, así que la celda impar lleva la cifra que aparece un número impar de veces en su fila, su columna y su caja.",
+  },
+
+  "technique.xy-chain.name": { en: "XY-Chain", es: "Cadena XY" },
+  "technique.xy-chain.summary": {
+    en: "A run of two-candidate cells with the same digit at both ends.",
+    es: "Una cadena de celdas de dos candidatos con la misma cifra en los dos extremos.",
+  },
+  "technique.xy-chain.how": {
+    en: "Find a run of cells that each hold two candidates, where each cell shares a digit with the next one. Both ends must still allow the same digit z. Follow the run either way and one end comes out as z, so z leaves every cell that sees both ends.",
+    es: "Busca una cadena de celdas con dos candidatos cada una, donde cada celda comparte una cifra con la siguiente. Los dos extremos tienen que admitir la misma cifra z. Recorre la cadena en cualquier sentido y un extremo acaba siendo z, así que z sale de toda celda que vea a los dos extremos.",
   },
 
   // --- explanations ----------------------------------------------------------
@@ -322,6 +424,131 @@ export const MESSAGES = {
     es: "Por eso una celda que vea a las tres no puede ser {digit}.",
   },
 
+  "explain.chain.conclusion": {
+    en: "So no cell that sees both of them can be {digit}.",
+    es: "Así que ninguna celda que vea a las dos puede ser {digit}.",
+  },
+
+  "explain.skyscraper.1": {
+    en: "In {first} and in {second}, the digit {digit} has only two places left: {cells}.",
+    es: "En {first} y en {second}, la cifra {digit} solo tiene dos sitios: {cells}.",
+  },
+  "explain.skyscraper.2": {
+    en: "{cells} share {house}, so at most one of them holds the {digit}.",
+    es: "{cells} comparten {house}, así que como mucho una de ellas lleva el {digit}.",
+  },
+  "explain.skyscraper.3": {
+    en: "That leaves {first} and {second}, and at least one of those two must be the {digit}.",
+    es: "Quedan {first} y {second}, y al menos una de esas dos tiene que ser el {digit}.",
+  },
+
+  "explain.two-string-kite.1": {
+    en: "In {first} and in {second}, the digit {digit} has only two places left: {cells}.",
+    es: "En {first} y en {second}, la cifra {digit} solo tiene dos sitios: {cells}.",
+  },
+  "explain.two-string-kite.2": {
+    en: "{cells} share {house}, so at most one of them holds the {digit}.",
+    es: "{cells} comparten {house}, así que como mucho una de ellas lleva el {digit}.",
+  },
+  "explain.two-string-kite.3": {
+    en: "The far ends are {first} and {second}, and at least one of those two must be the {digit}.",
+    es: "Los extremos lejanos son {first} y {second}, y al menos uno de esos dos tiene que ser el {digit}.",
+  },
+
+  "explain.w-wing.1": {
+    en: "{first} and {second} both hold only {a} and {b}, and they do not see each other.",
+    es: "{first} y {second} llevan solo {a} y {b}, y no se ven entre sí.",
+  },
+  "explain.w-wing.2": {
+    en: "In {house}, the digit {link} has only two places left: {first} and {second}.",
+    es: "En {house}, la cifra {link} solo tiene dos sitios: {first} y {second}.",
+  },
+  "explain.w-wing.3": {
+    en: "If the {link} sits in {linkFirst}, then {first} cannot be {link} and must be {digit}. If it sits in {linkSecond}, then {second} must be {digit}.",
+    es: "Si el {link} está en {linkFirst}, entonces {first} no puede ser {link} y tiene que ser {digit}. Si está en {linkSecond}, entonces {second} tiene que ser {digit}.",
+  },
+
+  "explain.remote-pairs.1": {
+    en: "{cells} all hold only {a} and {b}, and each one sees the next.",
+    es: "{cells} llevan solo {a} y {b}, y cada una ve a la siguiente.",
+  },
+  "explain.remote-pairs.2": {
+    en: "The two digits swap along the run, so {first} and {second} can never hold the same digit.",
+    es: "Las dos cifras se alternan a lo largo de la cadena, así que {first} y {second} nunca llevan la misma cifra.",
+  },
+  "explain.remote-pairs.3": {
+    en: "Between them those two cells use both {a} and {b}, so a cell that sees both loses the two digits.",
+    es: "Entre las dos, esas celdas usan {a} y {b}, así que una celda que vea a las dos pierde las dos cifras.",
+  },
+
+  "explain.simple-coloring.1": {
+    en: "Follow the digit {digit} through the houses where it has only two places left: {cells}.",
+    es: "Sigue la cifra {digit} por las casas donde solo le quedan dos sitios: {cells}.",
+  },
+  "explain.simple-coloring.2": {
+    en: "The chain splits into two groups, {first} and {second}. One group holds the {digit}, the other does not.",
+    es: "La cadena se parte en dos grupos, {first} y {second}. Un grupo lleva el {digit} y el otro no.",
+  },
+  "explain.simple-coloring.trap": {
+    en: "Each cell below sees a cell of both groups, so one of the two groups puts a {digit} next to it either way.",
+    es: "Cada celda de abajo ve una celda de los dos grupos, así que uno de los dos grupos le pone un {digit} al lado en cualquier caso.",
+  },
+  "explain.simple-coloring.wrap": {
+    en: "{first} and {second} belong to the same group and see each other, so that group cannot be the one that holds the {digit}.",
+    es: "{first} y {second} son del mismo grupo y se ven entre sí, así que ese grupo no puede ser el que lleva el {digit}.",
+  },
+
+  "explain.xy-chain.1": {
+    en: "Each of these cells holds only two candidates and shares a digit with the next one: {cells}.",
+    es: "Cada una de estas celdas lleva solo dos candidatos y comparte una cifra con la siguiente: {cells}.",
+  },
+  "explain.xy-chain.2": {
+    en: "The two ends are {first} and {second}, and both still allow {digit}.",
+    es: "Los dos extremos son {first} y {second}, y los dos siguen admitiendo el {digit}.",
+  },
+  "explain.xy-chain.3": {
+    en: "Follow the run from either end and one of those two cells comes out as {digit}.",
+    es: "Recorre la cadena desde cualquier extremo y una de esas dos celdas acaba siendo {digit}.",
+  },
+
+  "explain.unique-rectangle.1": {
+    en: "{cells} form a rectangle across two rows, two columns and two boxes, and all four still allow {a} and {b}.",
+    es: "{cells} forman un rectángulo en dos filas, dos columnas y dos cajas, y las cuatro siguen admitiendo {a} y {b}.",
+  },
+  "explain.unique-rectangle.2": {
+    en: "If those four cells held only {a} and {b}, the two digits could be swapped around the rectangle and this puzzle would have two answers. It has one, so that cannot happen.",
+    es: "Si esas cuatro celdas llevaran solo {a} y {b}, las dos cifras se podrían intercambiar alrededor del rectángulo y este pasatiempo tendría dos soluciones. Solo tiene una, así que eso no puede pasar.",
+  },
+  "explain.unique-rectangle.type1": {
+    en: "{cell} is the only corner with other candidates, so it has to take one of them. It can be neither {a} nor {b}.",
+    es: "{cell} es la única esquina con otros candidatos, así que tiene que llevar uno de ellos. No puede ser ni {a} ni {b}.",
+  },
+  "explain.unique-rectangle.type2": {
+    en: "{first} and {second} both carry the same extra digit {digit}, and one of the two has to take it.",
+    es: "{first} y {second} llevan la misma cifra extra {digit}, y una de las dos tiene que cogerla.",
+  },
+  "explain.unique-rectangle.type3": {
+    en: "{first} and {second} take their extra digits between them. With {cells} that gives the digits {digits} their own cells inside {house}, so no other cell of {house} can hold them.",
+    es: "{first} y {second} se reparten sus cifras extra. Junto con {cells}, eso da a las cifras {digits} sus propias celdas dentro de {house}, así que ninguna otra celda de {house} puede llevarlas.",
+  },
+  "explain.unique-rectangle.type4": {
+    en: "In {house}, the digit {keep} has no place left outside {first} and {second}, so one of them is {keep}. If the other were {drop}, the rectangle would close, so {drop} leaves both cells.",
+    es: "En {house}, la cifra {keep} no tiene sitio fuera de {first} y {second}, así que una de las dos es {keep}. Si la otra fuera {drop}, el rectángulo se cerraría, así que el {drop} sale de las dos celdas.",
+  },
+
+  "explain.bug-plus-one.1": {
+    en: "Every empty cell holds exactly two candidates, except {cell}, which holds three.",
+    es: "Todas las celdas vacías tienen exactamente dos candidatos, menos {cell}, que tiene tres.",
+  },
+  "explain.bug-plus-one.2": {
+    en: "A grid where every digit has an even number of places in every house always has two answers. This puzzle has one, so the odd cell has to break that shape.",
+    es: "Una cuadrícula donde cada cifra tiene un número par de sitios en cada casa siempre tiene dos soluciones. Este pasatiempo tiene una, así que la celda impar tiene que romper esa forma.",
+  },
+  "explain.bug-plus-one.3": {
+    en: "{digit} is the one digit that appears an odd number of times in the row, the column and the box of {cell}, so {cell} takes it.",
+    es: "El {digit} es la única cifra que aparece un número impar de veces en la fila, la columna y la caja de {cell}, así que {cell} lo lleva.",
+  },
+
   "summary.placement": { en: "{technique}: {cell} = {digit}", es: "{technique}: {cell} = {digit}" },
   "summary.elimination": { en: "{technique}: removes {list}", es: "{technique}: elimina {list}" },
 
@@ -385,7 +612,15 @@ export const MESSAGES = {
   "difficulty.hard": { en: "Hard", es: "Difícil" },
   "difficulty.hard.blurb": { en: "Needs pairs, triples or quads.", es: "Necesita pares, tríos o cuartetos." },
   "difficulty.expert": { en: "Expert", es: "Experta" },
-  "difficulty.expert.blurb": { en: "Needs a fish or a wing pattern.", es: "Necesita un patrón de pez o de ala." },
+  "difficulty.expert.blurb": {
+    en: "Needs a fish, a wing or a single-digit pattern.",
+    es: "Necesita un patrón de pez, de ala o de una sola cifra.",
+  },
+  "difficulty.master": { en: "Master", es: "Maestra" },
+  "difficulty.master.blurb": {
+    en: "Needs a chain, or the fact that the puzzle has one answer.",
+    es: "Necesita una cadena, o el hecho de que el pasatiempo tiene una sola solución.",
+  },
   "difficulty.beyond": { en: "Beyond these techniques", es: "Más allá de estas técnicas" },
   "difficulty.beyond.blurb": {
     en: "No technique in the catalogue cracks it, so the rest comes from search.",
