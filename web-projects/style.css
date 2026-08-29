@@ -77,6 +77,19 @@ main {
 .search {
   max-width: 480px;
   margin: 0 auto var(--sp-lg);
+  /* app.js scrolls this box to the top of the screen on the first typed
+     character. The margin keeps a small gap above it. That gap falls inside
+     main's own top padding, so the header above stays out of sight. */
+  scroll-margin-top: var(--sp-md);
+}
+
+/* While the visitor searches, the page must stay tall enough to scroll the
+   search box all the way to the top of the screen, even when one card matches.
+   The header above main is never taller than the screen, so one screen of
+   height under the box is always enough. */
+body.searching main {
+  padding-top: var(--sp-md);
+  min-height: 100vh;
 }
 
 .search-input {
