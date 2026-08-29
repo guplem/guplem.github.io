@@ -18,7 +18,7 @@ import {
 } from "./board.js";
 import { explainMove, moveSummary } from "./explain.js";
 import { DEFAULT_LANGUAGE, t } from "./i18n.js";
-import { analyseBoard, solve } from "./solver.js";
+import { analyseBoard, hasOneSolution, solve } from "./solver.js";
 import { TECHNIQUES, findEasiestElimination, findEasiestMove, techniqueInfo } from "./techniques.js";
 
 /**
@@ -28,8 +28,9 @@ import { TECHNIQUES, findEasiestElimination, findEasiestMove, techniqueInfo } fr
 export const DIFFICULTY_TIERS = [
   { maxRank: 2, key: "easy" },
   { maxRank: 4, key: "medium" },
-  { maxRank: 9, key: "hard" },
-  { maxRank: 13, key: "expert" },
+  { maxRank: 10, key: "hard" },
+  { maxRank: 18, key: "expert" },
+  { maxRank: 23, key: "master" },
   { maxRank: Number.POSITIVE_INFINITY, key: "beyond" },
 ];
 
@@ -54,7 +55,8 @@ export function applyMoveToState(state, move) {
   for (const { cell, digit } of move.placements) board[cell] = digit;
   const cands = state.cands && move.placements.length === 0 ? Uint16Array.from(state.cands) : computeCandidates(board);
   for (const { cell, digit } of move.eliminations) cands[cell] &= ~bitOf(digit);
-  return { board, cands };
+  // A sound move keeps every solution the grid had, so a unique grid stays unique.
+  return { board, cands, unique: state.unique === true };
 }
 
 /**
@@ -77,23 +79,28 @@ export function applyMoveToState(state, move) {
  * @param {Int8Array} board the grid as it stands
  * @param {Uint16Array} [startCands] candidates to start from; the plain ones by default
  * @param {string} [lang] language for the explanations
+ * @param {{unique?: boolean, maxRounds?: number}} [options] `unique` says the grid
+ *   has exactly one solution, which the uniqueness techniques need. It is worked
+ *   out here when the caller does not pass it.
  * @returns {{cands: Uint16Array, removed: number, techniques: string[], steps: Array}}
  *   `removed` counts the candidates ruled out, `techniques` names the ones that
  *   did it, and `steps` holds each one explained, in the order they were applied.
  */
-export function reduceCandidates(board, startCands = computeCandidates(board), lang = DEFAULT_LANGUAGE, maxRounds = 800) {
+export function reduceCandidates(board, startCands = computeCandidates(board), lang = DEFAULT_LANGUAGE, options = {}) {
+  const { maxRounds = 800 } = options;
+  const unique = options.unique ?? hasOneSolution(board);
   const cands = Uint16Array.from(startCands);
   const techniques = [];
   const steps = [];
   let removed = 0;
 
   for (let round = 0; round < maxRounds; round += 1) {
-    const state = { board, cands };
+    const state = { board, cands, unique };
     const move = findEasiestElimination(state);
     if (!move) break;
     // Explain the move against the grid as it stood BEFORE the move, or the
     // candidates it talks about would already be gone from the reasoning.
-    const explanation = explainMove(move, { board, cands: Uint16Array.from(cands) }, lang);
+    const explanation = explainMove(move, { board, cands: Uint16Array.from(cands), unique }, lang);
     let removedThisRound = 0;
     for (const { cell, digit } of move.eliminations) {
       if ((cands[cell] & bitOf(digit)) === 0) continue;
@@ -141,7 +148,8 @@ export function nextHint(board, lang = DEFAULT_LANGUAGE, cands = null) {
   const ambiguous = analysis.status === "multiple";
   // Work from the candidates the page is showing, so the coach never offers an
   // elimination the player has already applied.
-  const state = cands ? { board, cands } : makeState(board);
+  const unique = analysis.status === "ok";
+  const state = cands ? { board, cands, unique } : makeState(board, { unique });
   const move = findEasiestMove(state);
   if (!move) {
     // No known technique fits. Offer the verified digit so the player is never
@@ -210,7 +218,7 @@ export function solvePath(board, lang = DEFAULT_LANGUAGE, maxSteps = 400) {
     };
   }
 
-  let state = makeState(cloneBoard(board));
+  let state = makeState(cloneBoard(board), { unique: analysis.status === "ok" });
   const steps = [];
   let hardestRank = 0;
   let hardestTechnique = null;

@@ -131,6 +131,16 @@ export function countSolutions(board, limit = 2) {
   return search(cloneBoard(board), computeCandidates(board), limit, () => {});
 }
 
+/**
+ * True when the grid can be completed in exactly one way.
+ *
+ * The uniqueness techniques argue from the fact that the puzzle has one answer,
+ * so they must never run on a grid that has two. Ask this first.
+ */
+export function hasOneSolution(board) {
+  return countSolutions(board, 2) === 1;
+}
+
 /** Plain-language summary of the first conflicts, for the status line. */
 function describeConflicts(conflicts, lang) {
   const parts = conflicts.slice(0, 3).map((conflict) =>

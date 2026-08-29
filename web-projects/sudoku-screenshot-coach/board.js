@@ -187,9 +187,17 @@ export function computeCandidates(board) {
   return cands;
 }
 
-/** Board plus its candidate masks, the input every technique reads. */
-export function makeState(board) {
-  return { board, cands: computeCandidates(board) };
+/**
+ * Board plus its candidate masks, the input every technique reads.
+ *
+ * `unique` says that this grid has exactly one solution. Most techniques do not
+ * care. The uniqueness techniques (Unique Rectangle, BUG+1) are sound only when
+ * it is true, so it defaults to false and a caller must prove it first.
+ * @param {Int8Array} board the grid
+ * @param {{unique?: boolean}} [options]
+ */
+export function makeState(board, { unique = false } = {}) {
+  return { board, cands: computeCandidates(board), unique };
 }
 
 /**
