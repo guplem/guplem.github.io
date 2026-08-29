@@ -68,7 +68,7 @@ Create `web-projects/<PROJECT_SLUG>/` with:
    });
    ```
 
-5. **`deployInfo.js` + `deployFooter.js`** - Copy both, and `deployInfo.test.js`, from `web-projects/sudoku-screenshot-coach/`. They put a "deployed at <date> by pull request #N" line in the footer, read from the GitHub API at load. Add a `<p id="deploy-line" class="deploy-line"></p>` to the footer and call `startDeployLine(element, "web-projects/<PROJECT_SLUG>", ...)` at the end of start-up. See root ADR 0013 and the section in `web-projects/AGENTS.md`.
+5. **`deployInfo.js` + `deployFooter.js`** - Copy both, and both test files, from `web-projects/sudoku-screenshot-coach/`. They put a "deployed at <date> by pull request #N" line in the footer, read from the GitHub API at load, and fall back to the page's own `Last-Modified` header when GitHub does not answer, so the line is never blank. Add a `<p id="deploy-line" class="deploy-line"></p>` to the footer and call `startDeployLine(element, "web-projects/<PROJECT_SLUG>", ...)` at the end of start-up. See root ADR 0013 and the section in `web-projects/AGENTS.md`.
 
 6. **`README.md`** - Project README following existing web-project READMEs:
    ```markdown

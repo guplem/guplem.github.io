@@ -633,7 +633,7 @@ function setLanguage(lang) {
   dom.languageSelect.setAttribute("aria-label", say("ui.language"));
   renderGlossary();
   refreshCandidates();
-  redrawDeployLine(dom.deployLine, lang, say, escapeHtml);
+  redrawDeployLine(dom.deployLine, lang, say, escapeHtml, PROJECT_PATH);
   syncUrl();
   renderBoard();
   renderCoach();

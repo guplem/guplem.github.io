@@ -27,24 +27,32 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
 
 Every new web-project should end with a footer line saying when it was last
 deployed and which pull request deployed it, linked. There is no build step to
-stamp that in, so the page asks the GitHub API for it at load: the newest commit
-that touched the project's folder, then the pull request that carried it. Root
-ADR 0013 holds the reasoning and the rules it must follow.
+stamp that in, so the page works it out at load, from three sources, best first:
+the pull request that last touched the project's folder (GitHub API), the commit
+that did (GitHub API), and the `Last-Modified` header of the page itself
+(same-origin, so nothing throttles it). Root ADR 0013 holds the reasoning and the
+rules it must follow.
 
 To add it, copy two files from `sudoku-screenshot-coach`:
 
-- `deployInfo.js` -- pure: builds the two API URLs, parses the responses, formats
-  the date. Copy its tests too.
+- `deployInfo.js` -- pure: builds the URLs, parses the responses, ranks the
+  sources, formats the date. Copy its tests too.
 - `deployFooter.js` -- the only file that fetches, caches and draws. Call
   `startDeployLine(element, "web-projects/<slug>", ...)` at the end of start-up.
+  Copy its tests too: it takes the element, the message lookup and the escaper as
+  arguments, so stubs for `fetch`, `localStorage` and `location` test it fully.
 
 Rules that matter:
 
-- **Never await it and never let it throw.** GitHub can be down or the visitor
-  can be out of anonymous calls; the line then stays empty and nothing else
-  changes.
-- **Keep the six-hour `localStorage` cache.** Anonymous callers get 60 calls an
-  hour per address and each page load needs two.
+- **Never await it and never let it throw**, and **never let it go blank**. Those
+  are two different rules. A player reported the footer as missing when it was
+  merely empty, because a blank line and an absent feature look the same. Always
+  draw something: the date from the page's own headers at worst, and a link to
+  the folder's commit history.
+- **Keep the six-hour `localStorage` cache, and cache refusals for fifteen
+  minutes.** Anonymous callers get 60 calls an hour per address and each page
+  load needs two. Without the short negative cache a visitor who runs out spends
+  two more on every reload and never recovers.
 - **Do not promise more than is true.** A page that says it does everything
   locally must word that precisely once it calls an API for its footer.
 

@@ -38,9 +38,11 @@ on the board.
 - **Works on a phone and on a desktop.** Type with the keyboard or tap the digit
   pad under the grid.
 - **Your picture is never uploaded.** It is read in your browser and never leaves
-  your device. The one network call the page makes is to GitHub, to fill in the
-  "deployed at" line in the footer.
-- **Says when it was deployed**, and links the pull request that deployed it.
+  your device. The only network calls the page makes are for the "deployed at"
+  line in the footer: one to its own address, and up to two to GitHub.
+- **Says when it was deployed**, and links the pull request that deployed it. If
+  GitHub does not answer, the line still shows the date, read from the page's own
+  headers, with a link to what changed.
 
 ## How to Run
 
