@@ -30,8 +30,7 @@ Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explai
 | `vision/fonts.js` | no | Draws the reference pictures on a canvas, from device fonts and the built-in paths. |
 | `vision/testFixtures.js` | yes | Test-only. Draws synthetic screenshots with clutter, pencil marks and highlights. |
 | `techniqueFixtures.js` | yes | Test-only. One grid per technique, read by `techniques.test.js` and `explain.test.js`. |
-| `deployInfo.js` | yes | Builds the GitHub URLs, parses the answers, ranks the deploy sources, formats the date. |
-| `deployFooter.js` | no | The only file that fetches, caches and draws the "deployed at" line. Root ADR 0013. Tested with stubs, because the reported bug lived here. |
+| `deployStamp.js` | yes | Reads the deploy stamp out of this page's `<head>` and writes the "deployed at" line. Fetches nothing. Root ADR 0013. |
 | `app.js` | no | DOM controller: input, board painting, coaching output, language switch. |
 | `*.test.js` | no | Bun tests. Run `bun test` here. |
 
@@ -121,22 +120,19 @@ edits -> `coach.nextHint` -> `techniques` find a Move -> `explain` writes it ->
 - **Keep the candidates derived, never edited.** They are a pure function of the
   board, so no sequence of edits can leave them stale or reasoned from a grid the
   player has since corrected.
-- **The footer line must never matter, and must never be blank.** Those are two
-  rules. `startDeployLine` is never awaited and never throws, so a failure
-  changes nothing else; and it always draws, because a player reported the line
-  as missing when it was merely empty. GitHub can be down or the visitor out of
-  anonymous calls, and the date then comes from this page's own `Last-Modified`
-  header, which is same-origin and cannot be throttled. Keep the six-hour cache,
-  keep the fifteen-minute cache on refusals, and keep the privacy sentence
-  precise now that the page calls an API. Root ADR 0013.
-- **The cached footer answer is validated against the page's `Last-Modified`, not
-  against the clock.** The entry stores the stamp the site carried when the answer
-  was fetched. A different stamp means the site was republished, so the answer is
-  looked up again even inside the six hours. Without that check the footer named
-  the previous pull request for hours after a deploy, which a player reported.
-  Never test "the page is newer than the pull request" instead: every push to
-  `main` republishes the site, so that is true on almost every load and would
-  spend two GitHub calls each time. Root ADR 0013.
+- **The footer line reads this page's own `<head>`, and fetches nothing.** The
+  pull request number and date are stamped into `index.html` by
+  `bun scripts/generateDeployStamp.js` before the pull request merges, and the
+  required `test` check verifies the number is that pull request's. So the line
+  is a property of the file: a browser serving a cached page serves that page's
+  own number and cannot claim a version the reader is not looking at. Never move
+  the stamp into a separate file, and never fetch it: both bring back bugs a
+  player reported. It must also never go blank, so an unstamped page still names
+  the branch and links the folder's history. Root ADR 0013.
+- **The page makes no network requests at all.** That is what lets the footer
+  sentence promise your picture never leaves your device with no exception
+  attached. A browser check counts the requests. Keep it at zero, or reword the
+  promise.
 - **All external text is escaped through `escapeHtml` before `innerHTML`.** The
   explanations are generated, but they carry digits and cell names built from
   user-editable state. Keep the escaping.

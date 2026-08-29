@@ -68,7 +68,7 @@ Create `web-projects/<PROJECT_SLUG>/` with:
    });
    ```
 
-5. **`deployInfo.js` + `deployFooter.js`** - Copy both, and both test files, from `web-projects/sudoku-screenshot-coach/`. They put a "deployed at <date> by pull request #N" line in the footer, read from the GitHub API at load, and fall back to the page's own `Last-Modified` header when GitHub does not answer, so the line is never blank. Add a `<p id="deploy-line" class="deploy-line"></p>` to the footer and call `startDeployLine(element, "web-projects/<PROJECT_SLUG>", ...)` at the end of start-up. See root ADR 0013 and the section in `web-projects/AGENTS.md`.
+5. **`deployStamp.js`** - Copy it and its test file from `web-projects/sudoku-screenshot-coach/`. It puts a "deployed at <date> by pull request #N" line in the footer, read from two meta tags in this page's own `<head>`. It fetches nothing. Add a `<p id="deploy-line" class="deploy-line"></p>` to the footer, add the `GENERATED:DEPLOY` block to the `<head>` (copy it with its placeholder values), and call `renderDeployLine(element, readStamp(document), lang, say, escapeHtml, "web-projects/<PROJECT_SLUG>")` at start-up and on every language change. `scripts/generateDeployStamp.js` finds the block automatically, so there is nothing to register. Remember that the pull request stamps itself in a second commit, after it is opened. See root ADR 0013 and the section in `web-projects/AGENTS.md`.
 
 6. **`README.md`** - Project README following existing web-project READMEs:
    ```markdown

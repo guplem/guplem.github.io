@@ -139,6 +139,8 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Generated SEO artifacts (never hand-edit):** `sitemap.xml` and the `<!-- BEGIN GENERATED:<NAME> -->` ... `<!-- END GENERATED:<NAME> -->` blocks in `index.html` and `web-projects/index.html` are derived from `data/` by `bun scripts/generateSitemap.js` and `bun scripts/generateSeoBlocks.js` (see ADR 0010). After any edit to `data/info.json` or `data/projects/*.json`, run both scripts (automatic with the lefthook pre-commit hook); CI drift tests fail otherwise. The static head metadata in `index.html` (title/description) must stay identical to `web-title`/`web-description` in `data/info.json` (enforced by a drift test in `scripts/generateSeoBlocks.test.js`).
 
+**The deploy stamp (never hand-edit, and it is not generated from `data/`):** the `GENERATED:DEPLOY` block in a web-project's `index.html` holds the pull request number that published that file, written by `bun scripts/generateDeployStamp.js --pr N --date ISO`. It cannot be generated at commit time, because a commit does not know its own pull request number. **Stamp it in a second commit after you open the pull request.** The `test` job runs the script with `--check` on every pull request and fails when the number is not that pull request's, so an unstamped branch cannot merge. See ADR 0013 for why the number is embedded rather than fetched.
+
 **Adding a new project:** For web-projects, use the `/add-web-project` command -- it automates the full scaffolding checklist. For other projects, see `data/AGENTS.md` for the data-only steps.
 
 ## Test-Driven Development (mandatory for testable logic)
@@ -174,7 +176,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0010](adr/0010-pre-commit-generated-static-seo-content.md) | Pre-commit generated static SEO content (sitemap + HTML fallback blocks) |
 | [0011](adr/0011-agent-docs-structure.md) | AGENTS.md root map + shim, skills, area docs are AGENTS.md + CLAUDE.md shim pairs |
 | [0012](adr/0012-red-green-tdd-for-testable-logic.md) | Red-green TDD mandatory for pure logic; DOM rendering exempt |
-| [0013](adr/0013-deployed-at-footer-from-the-github-api.md) | "Deployed at" footer read from the GitHub API at run time |
+| [0013](adr/0013-deployed-at-footer-stamped-into-the-page.md) | "Deployed at" footer stamped into the page before merge, never fetched |
 
 ### Per-project ADRs
 
@@ -218,6 +220,7 @@ Whenever you create a GitHub issue, use the `create-issue` skill. Whenever you i
 - Branch from `main`, PR back to `main` (merging deploys the live site via GitHub Pages). **Never push to `main`.** Whenever you create a branch, use the `create-branch` skill.
 - Conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`. Whenever you commit, use the `write-commit` skill.
 - CI runs `bun test .` on every PR; the `test` check is required on `main`, so a PR with failing tests cannot merge.
+- **After opening a PR, stamp it and push again:** `bun scripts/generateDeployStamp.js --pr <N> --date <the PR's created_at>`, then commit. The same `test` check verifies it, so the first run on an unstamped PR fails by design. This is the one step that cannot happen before the PR exists, because the number does not exist before then. See ADR 0013.
 - **PRs merge automatically, with no human review gate.** `auto-merge.yml` flags every non-draft PR for GitHub auto-merge, repo-wide, so a PR merges the moment the required `test` check passes. The tests are the review, which is what makes the TDD protocol above non-negotiable. This flow fits how most work here is produced: fast, AI-generated ("vibe-coded") changes, concentrated in `web-projects/` but not limited to it. The rule does not depend on who wrote the code: a hand-coded project can live in `web-projects/`, and a vibe-coded change can land elsewhere; either way a green `test` check is the only gate. The `waiting-for-human-check` label still marks a PR as unverified but does not block the merge. Open a PR as a draft if you do not want it to merge yet.
 
 ## Refactoring Safety

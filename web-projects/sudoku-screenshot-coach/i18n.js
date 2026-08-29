@@ -750,10 +750,9 @@ export const MESSAGES = {
     es: "El pasatiempo se lee en tu navegador. Tu imagen nunca sale de tu dispositivo y nunca se sube.",
   },
   "ui.deployed": { en: "Deployed {date} by pull request {pr}.", es: "Desplegado el {date} por la pull request {pr}." },
-  "ui.deployedNoPull": { en: "Deployed {date}, commit {commit}.", es: "Desplegado el {date}, commit {commit}." },
-  // Shown when GitHub does not answer. The date still comes from this page's own
-  // headers, so the line says what it knows instead of going blank.
-  "ui.deployedDateOnly": { en: "Deployed {date}. See {history}.", es: "Desplegado el {date}. Ver {history}." },
+  // Shown when the page carries no stamp, which happens only when it is opened
+  // straight from the repository rather than from the published site. The line
+  // says what it knows instead of going blank.
   "ui.deployedUnknown": { en: "Published from the main branch. See {history}.", es: "Publicado desde la rama main. Ver {history}." },
   "ui.deployHistory": { en: "what changed", es: "qué cambió" },
   "ui.whyForced": { en: "Why this is forced", es: "Por qué es obligado" },
