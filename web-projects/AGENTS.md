@@ -25,42 +25,48 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
 
 ## The "deployed at" footer (recommended for new projects)
 
-Every new web-project should end with a footer line saying when it was last
-deployed and which pull request deployed it, linked. There is no build step to
-stamp that in, so the page works it out at load, from three sources, best first:
-the pull request that last touched the project's folder (GitHub API), the commit
-that did (GitHub API), and the `Last-Modified` header of the page itself
-(same-origin, so nothing throttles it). Root ADR 0013 holds the reasoning and the
-rules it must follow.
+Every new web-project should end with a footer line saying when it was deployed
+and which pull request deployed it, linked. The number is **written into the
+page** before the pull request merges, not fetched at load. Root ADR 0013 holds
+the reasoning, including the three ways the fetched version got it wrong.
 
-To add it, copy two files from `sudoku-screenshot-coach`:
+To add it to a project:
 
-- `deployInfo.js` -- pure: builds the URLs, parses the responses, ranks the
-  sources, formats the date. Copy its tests too.
-- `deployFooter.js` -- the only file that fetches, caches and draws. Call
-  `startDeployLine(element, "web-projects/<slug>", ...)` at the end of start-up.
-  Copy its tests too: it takes the element, the message lookup and the escaper as
-  arguments, so stubs for `fetch`, `localStorage` and `location` test it fully.
+1. Copy `deployStamp.js` and `deployStamp.test.js` from `sudoku-screenshot-coach`.
+   It is pure: it reads two meta tags and writes the sentence. It fetches nothing
+   and stores nothing.
+2. Put a `<p id="deploy-line" class="deploy-line"></p>` in the footer, and this
+   block in the `<head>`, placeholder values and all:
+
+   ```html
+   <!-- BEGIN GENERATED:DEPLOY -->
+   <meta name="deploy-pull-request" content="0" />
+   <meta name="deploy-date" content="1970-01-01T00:00:00.000Z" />
+   <!-- END GENERATED:DEPLOY -->
+   ```
+
+3. Call `renderDeployLine(element, readStamp(document), lang, t, escape, path)` at
+   start-up, and again when the language changes.
+
+`scripts/generateDeployStamp.js` finds the block in every page under
+`web-projects/` automatically, so there is nothing to register.
 
 Rules that matter:
 
-- **Never await it and never let it throw**, and **never let it go blank**. Those
-  are two different rules. A player reported the footer as missing when it was
-  merely empty, because a blank line and an absent feature look the same. Always
-  draw something: the date from the page's own headers at worst, and a link to
-  the folder's commit history.
-- **Keep the six-hour `localStorage` cache, and cache refusals for fifteen
-  minutes.** Anonymous callers get 60 calls an hour per address and each page
-  load needs two. Without the short negative cache a visitor who runs out spends
-  two more on every reload and never recovers.
-- **Store the page's `Last-Modified` beside the cached answer, and re-ask when it
-  changes.** Time alone does not tell you a deploy happened, so without this the
-  footer names the previous pull request for hours after a new one ships. That
-  was reported. Compare the stamp against the stored one; never compare the page
-  date against the pull request date, because every push to `main` republishes
-  the whole site and would make that true on almost every load.
-- **Do not promise more than is true.** A page that says it does everything
-  locally must word that precisely once it calls an API for its footer.
+- **The stamp lives in the same file as the page it describes.** Never move it to
+  a `deploy.json` or any other separate file. A separate file is cached by the
+  browser independently of the HTML, so the page would show a number belonging to
+  a version the reader is not running. That exact bug is why this design exists.
+- **Never let the line go blank.** A player reported the footer as missing when it
+  was merely empty, because a blank line and an absent feature look the same. A
+  page with no stamp still names the branch and links the folder's history.
+- **Stamp the pull request in a second commit, after you open it.** The number
+  does not exist before the pull request does. The required `test` check runs
+  `generateDeployStamp.js --check`, so the first run on an unstamped branch fails
+  on purpose and nothing merges unstamped.
+- **Do not promise more than is true.** The page now makes no network calls at
+  all, so a "nothing leaves your device" claim can be absolute. Keep it accurate
+  if that ever changes.
 
 **When a third project adopts this, promote it** to a shared module under
 `web-projects/` and record the exception to the self-contained rule in an ADR,
