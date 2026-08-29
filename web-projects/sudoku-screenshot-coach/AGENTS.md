@@ -119,6 +119,14 @@ edits -> `coach.nextHint` -> `techniques` find a Move -> `explain` writes it ->
   header, which is same-origin and cannot be throttled. Keep the six-hour cache,
   keep the fifteen-minute cache on refusals, and keep the privacy sentence
   precise now that the page calls an API. Root ADR 0013.
+- **The cached footer answer is validated against the page's `Last-Modified`, not
+  against the clock.** The entry stores the stamp the site carried when the answer
+  was fetched. A different stamp means the site was republished, so the answer is
+  looked up again even inside the six hours. Without that check the footer named
+  the previous pull request for hours after a deploy, which a player reported.
+  Never test "the page is newer than the pull request" instead: every push to
+  `main` republishes the site, so that is true on almost every load and would
+  spend two GitHub calls each time. Root ADR 0013.
 - **All external text is escaped through `escapeHtml` before `innerHTML`.** The
   explanations are generated, but they carry digits and cell names built from
   user-editable state. Keep the escaping.

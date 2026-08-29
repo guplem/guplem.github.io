@@ -263,6 +263,132 @@ describe("startDeployLine", () => {
     expect(element.innerHTML).toContain(">#77<");
   });
 
+  // The grid a player reported, in reverse: the page was new and the footer was
+  // old. They loaded the page while pull request #78 was the newest, so #78 went
+  // into the cache. Pull request #79 merged forty-seven minutes later and the
+  // site republished, but the stored answer was still inside its six hours, so
+  // every reload showed #78. The page's own `Last-Modified` proves the stored
+  // answer wrong, and it is free to read, so it is the check that was missing.
+  const PULL_78 = {
+    number: 78,
+    title: 'fix: never leave the "deployed at" line blank',
+    url: "https://github.com/guplem/guplem.github.io/pull/78",
+    mergedAt: "2026-08-29T10:37:43Z",
+  };
+  const RECORD_78 = { date: PULL_78.mergedAt, source: "pull", commit: COMMIT, pull: PULL_78 };
+  /** The stamp the site carried while #78 was the newest deploy. */
+  const PAGE_BEFORE = new Date("Sat, 29 Aug 2026 10:39:02 GMT").toISOString();
+  /** GitHub's answer after pull request #79 merged. */
+  const AFTER_79 = {
+    commits: [
+      {
+        sha: "41cb58b86c23efceb1783b6aa60d422c1159d253",
+        html_url: "https://github.com/guplem/guplem.github.io/commit/41cb58b",
+        commit: { committer: { date: "2026-08-29T11:18:36Z" } },
+      },
+    ],
+    pulls: [
+      {
+        number: 79,
+        title: "feat: teach the sudoku coach ten more solving techniques",
+        html_url: "https://github.com/guplem/guplem.github.io/pull/79",
+        merged_at: "2026-08-29T11:24:33Z",
+      },
+    ],
+    // GitHub Pages republished two minutes after the merge.
+    page: "Sat, 29 Aug 2026 11:26:10 GMT",
+  };
+
+  test("asks GitHub again when the page was published after the stored answer", async () => {
+    const { startDeployLine } = await loadFooter();
+    store.set(
+      "sudoku-screenshot-coach.deploy",
+      JSON.stringify({ fetchedAt: Date.now() - 20 * 60 * 1000, record: RECORD_78, failed: false })
+    );
+    const calls = stubFetch(AFTER_79);
+    const element = stubElement();
+    await startDeployLine(element, PATH, "en", say, escape);
+    expect(githubCalls(calls).length).toBeGreaterThan(0);
+    expect(element.innerHTML).toContain(">#79<");
+    expect(element.innerHTML).not.toContain(">#78<");
+  });
+
+  test("shows what it can prove, rather than the old pull request, when GitHub will not answer", async () => {
+    // The same republish, but the visitor has spent their anonymous calls.
+    // Naming #78 would be a confident wrong answer, so the line falls back to
+    // the page's own publish time, which is true whatever GitHub says.
+    const { startDeployLine } = await loadFooter();
+    store.set(
+      "sudoku-screenshot-coach.deploy",
+      JSON.stringify({ fetchedAt: Date.now() - 60 * 1000, record: RECORD_78, failed: true, pageDate: PAGE_BEFORE })
+    );
+    stubFetch({ ...AFTER_79, commits: false });
+    const element = stubElement();
+    await startDeployLine(element, PATH, "en", say, escape);
+    expect(element.innerHTML).not.toContain(">#78<");
+    expect(element.innerHTML).toContain("2026");
+    expect(element.innerHTML).toContain(`/commits/main/${PATH}`);
+  });
+
+  test("spends at most one lookup per republish when GitHub keeps refusing", async () => {
+    // A republish is allowed through the fifteen-minute backoff, because the
+    // stored answer is known to be out of date. That must cost one lookup, not
+    // one on every reload: the failed attempt records the new publish stamp, so
+    // the backoff takes over again until the site is published once more.
+    const { startDeployLine } = await loadFooter();
+    store.set(
+      "sudoku-screenshot-coach.deploy",
+      JSON.stringify({ fetchedAt: Date.now() - 60 * 1000, record: RECORD_78, failed: true, pageDate: PAGE_BEFORE })
+    );
+    const calls = stubFetch({ ...AFTER_79, commits: false });
+    await startDeployLine(stubElement(), PATH, "en", say, escape);
+    const afterFirst = githubCalls(calls).length;
+    expect(afterFirst).toBeGreaterThan(0);
+    await startDeployLine(stubElement(), PATH, "en", say, escape);
+    expect(githubCalls(calls).length).toBe(afterFirst);
+  });
+
+  test("keeps the stored answer while the site has not been published again", async () => {
+    // The ordinary case, and the one that protects the hourly allowance. The
+    // page carries the same publish stamp as when the answer was stored, so the
+    // answer still stands and GitHub is not asked. This must hold even though
+    // the page is newer than the pull request: every push to `main` republishes
+    // the whole site, including pushes that change nothing in this project.
+    const { startDeployLine } = await loadFooter();
+    store.set(
+      "sudoku-screenshot-coach.deploy",
+      JSON.stringify({
+        fetchedAt: Date.now() - 20 * 60 * 1000,
+        record: RECORD_78,
+        failed: false,
+        pageDate: new Date("Sat, 29 Aug 2026 10:38:00 GMT").toISOString(),
+      })
+    );
+    const calls = stubFetch({ page: "Sat, 29 Aug 2026 10:38:00 GMT" });
+    const element = stubElement();
+    await startDeployLine(element, PATH, "en", say, escape);
+    expect(githubCalls(calls).length).toBe(0);
+    expect(element.innerHTML).toContain(">#78<");
+  });
+
+  test("asks once more after an entry stored before the stamp was kept", async () => {
+    // Every visitor carrying an entry from the previous version has no stamp to
+    // compare, so the first load after this ships asks GitHub once and stores
+    // one. That is what clears the stale line the player reported.
+    const { startDeployLine } = await loadFooter();
+    store.set(
+      "sudoku-screenshot-coach.deploy",
+      JSON.stringify({ fetchedAt: Date.now() - 20 * 60 * 1000, record: RECORD_78, failed: false })
+    );
+    const calls = stubFetch(AFTER_79);
+    const element = stubElement();
+    await startDeployLine(element, PATH, "en", say, escape);
+    expect(githubCalls(calls).length).toBeGreaterThan(0);
+    expect(element.innerHTML).toContain(">#79<");
+    await startDeployLine(stubElement(), PATH, "en", say, escape);
+    expect(githubCalls(calls).length).toBe(2);
+  });
+
   test("redraws in a new language without asking GitHub again", async () => {
     const { redrawDeployLine, startDeployLine } = await loadFooter();
     const calls = stubFetch();

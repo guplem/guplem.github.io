@@ -53,6 +53,12 @@ Rules that matter:
   minutes.** Anonymous callers get 60 calls an hour per address and each page
   load needs two. Without the short negative cache a visitor who runs out spends
   two more on every reload and never recovers.
+- **Store the page's `Last-Modified` beside the cached answer, and re-ask when it
+  changes.** Time alone does not tell you a deploy happened, so without this the
+  footer names the previous pull request for hours after a new one ships. That
+  was reported. Compare the stamp against the stored one; never compare the page
+  date against the pull request date, because every push to `main` republishes
+  the whole site and would make that true on almost every load.
 - **Do not promise more than is true.** A page that says it does everything
   locally must word that precisely once it calls an API for its footer.
 
