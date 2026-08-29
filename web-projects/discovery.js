@@ -158,3 +158,31 @@ export function filterProjectsByText(projects, query) {
   if (!Array.isArray(projects)) return [];
   return projects.filter((project) => projectMatchesQuery(project, query));
 }
+
+/**
+ * Whether the search box holds a real query. Spaces alone do not count,
+ * because projectMatchesQuery() also trims them and then matches everything.
+ *
+ * @param {unknown} query
+ * @returns {boolean}
+ */
+export function hasSearchText(query) {
+  return typeof query === "string" && query.trim().length > 0;
+}
+
+/**
+ * Whether the page must scroll the search box to the top of the screen, so the
+ * box and the filtered results are the only things that the visitor sees.
+ *
+ * This is true only on the change from an empty box to a box that holds text.
+ * The page must not scroll again on every later keystroke: the visitor can
+ * scroll where they want while they refine the query, and a scroll on each
+ * character would fight them.
+ *
+ * @param {unknown} previousQuery - The text in the box before the change.
+ * @param {unknown} nextQuery - The text in the box after the change.
+ * @returns {boolean}
+ */
+export function shouldPinSearchToTop(previousQuery, nextQuery) {
+  return !hasSearchText(previousQuery) && hasSearchText(nextQuery);
+}

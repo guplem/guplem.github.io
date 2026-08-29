@@ -6,7 +6,7 @@
 // whose link points into web-projects/ makes it appear here with no edits.
 
 import { marked } from "https://esm.sh/marked@17.0.5/es2022/marked.bundle.mjs";
-import { selectWebProjects, projectMatchesQuery } from "./discovery.js";
+import { selectWebProjects, projectMatchesQuery, hasSearchText, shouldPinSearchToTop } from "./discovery.js";
 
 marked.setOptions({ breaks: true });
 
@@ -157,21 +157,42 @@ async function render() {
 
 /**
  * Wire the search box to show/hide cards as the user types.
+ *
+ * The box also pins itself to the top of the screen on the first typed
+ * character, so the visitor sees only the box and the filtered results. The
+ * "searching" class on <body> gives the page the extra height that this scroll
+ * needs when few cards remain (see style.css).
+ *
  * @param {Array<{ project: import("./discovery.js").WebProjectCard, element: HTMLElement }>} entries
  */
 function setupSearch(entries) {
   const input = document.getElementById("search");
   const noResults = document.getElementById("noResults");
+  const searchBox = document.querySelector(".search");
   if (!input) return;
 
+  // Some browsers restore the typed text on reload, so read the starting value
+  // instead of assuming an empty box.
+  let previousQuery = input.value;
+
   input.addEventListener("input", () => {
+    const query = input.value;
     let visibleCount = 0;
     for (const { project, element } of entries) {
-      const matches = projectMatchesQuery(project, input.value);
+      const matches = projectMatchesQuery(project, query);
       element.hidden = !matches;
       if (matches) visibleCount += 1;
     }
     if (noResults) noResults.hidden = visibleCount > 0;
+    document.body.classList.toggle("searching", hasSearchText(query));
+
+    // Filter and set the class first, then scroll: the browser can only scroll
+    // to the top of the box after the page has its final height.
+    if (searchBox && shouldPinSearchToTop(previousQuery, query)) {
+      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      searchBox.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    }
+    previousQuery = query;
   });
 }
 

@@ -6,6 +6,8 @@ import {
   selectWebProjects,
   projectMatchesQuery,
   filterProjectsByText,
+  hasSearchText,
+  shouldPinSearchToTop,
 } from "./discovery.js";
 
 describe("localWebProjectPath", () => {
@@ -204,5 +206,52 @@ describe("filterProjectsByText", () => {
 
   it("returns an empty array for invalid input", () => {
     expect(filterProjectsByText(null, "game")).toEqual([]);
+  });
+});
+
+describe("hasSearchText", () => {
+  it("is false for an empty box", () => {
+    expect(hasSearchText("")).toBe(false);
+  });
+
+  it("is false for spaces only", () => {
+    expect(hasSearchText("   ")).toBe(false);
+  });
+
+  it("is false for a value that is not a string", () => {
+    expect(hasSearchText(null)).toBe(false);
+    expect(hasSearchText(undefined)).toBe(false);
+  });
+
+  it("is true for real text", () => {
+    expect(hasSearchText("game")).toBe(true);
+  });
+});
+
+describe("shouldPinSearchToTop", () => {
+  it("pins on the first typed character", () => {
+    expect(shouldPinSearchToTop("", "g")).toBe(true);
+  });
+
+  it("does not pin again while the user keeps typing", () => {
+    expect(shouldPinSearchToTop("g", "ga")).toBe(false);
+  });
+
+  it("does not pin when the user deletes back to an empty box", () => {
+    expect(shouldPinSearchToTop("g", "")).toBe(false);
+  });
+
+  it("pins again after the user clears the box and types once more", () => {
+    expect(shouldPinSearchToTop("", "a")).toBe(true);
+  });
+
+  it("treats a box that holds only spaces as empty", () => {
+    expect(shouldPinSearchToTop("  ", "  a")).toBe(true);
+    expect(shouldPinSearchToTop("a", "   ")).toBe(false);
+  });
+
+  it("does not pin when nothing changes", () => {
+    expect(shouldPinSearchToTop("", "")).toBe(false);
+    expect(shouldPinSearchToTop("game", "game")).toBe(false);
   });
 });

@@ -77,6 +77,19 @@ main {
 .search {
   max-width: 480px;
   margin: 0 auto var(--sp-lg);
+  /* app.js scrolls this box to the top of the screen on the first typed
+     character. The margin keeps a small gap above it. That gap falls inside
+     main's own top padding, so the header above stays out of sight. */
+  scroll-margin-top: var(--sp-md);
+}
+
+/* While the visitor searches, the page must stay tall enough to scroll the
+   search box all the way to the top of the screen, even when one card matches.
+   The header above main is never taller than the screen, so one screen of
+   height under the box is always enough. */
+body.searching main {
+  padding-top: var(--sp-md);
+  min-height: 100vh;
 }
 
 .search-input {
@@ -208,6 +221,51 @@ main {
   border: 1px solid rgba(0, 0, 0, 0.06);
   background: var(--bg-light);
   color: var(--text-muted);
+}
+
+/* === Compact result cards, on a phone and during a search only ===
+   A full card costs about one screen on a phone, so a search that keeps three
+   projects still needs three swipes to compare them. While a search is active,
+   a phone gets a short card: the title and one line of the description, no
+   image. The visitor scans the whole result list at once, which is the point of
+   the search.
+
+   Both conditions are deliberate:
+   - `body.searching` (set by app.js) only. A visitor who lands on the page with
+     an empty box still sees the full cards, images and all.
+   - The phone width only. A big screen shows several cards side by side, so it
+     never had the problem and keeps the full cards during a search too. */
+@media (max-width: 767px) {
+  body.searching .projects-grid {
+    gap: var(--sp-sm);
+  }
+
+  body.searching .project-image,
+  body.searching .project-date,
+  body.searching .project-skills {
+    display: none;
+  }
+
+  body.searching .project-body {
+    gap: 2px;
+    padding: var(--sp-sm) var(--sp-md);
+  }
+
+  body.searching .project-title {
+    font-size: 1rem;
+  }
+
+  /* Cut the description to one line. teaserMarkdown() gives one paragraph, so
+     one clamped <p> covers the whole teaser. */
+  body.searching .project-teaser p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    overflow: hidden;
+    margin: 0;
+    font-size: 0.85rem;
+  }
 }
 
 /* === Footer === */
