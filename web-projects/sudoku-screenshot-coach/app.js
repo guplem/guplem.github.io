@@ -7,7 +7,7 @@
 
 import { CELL_COUNT, HOUSES, cellName, computeCandidates, digitsOf, findConflicts, formatBoard, parseBoard } from "./board.js";
 import { applyMoveToState, explainCellCandidates, nextHint, reduceCandidates, solvePath } from "./coach.js";
-import { redrawDeployLine, startDeployLine } from "./deployFooter.js";
+import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { LANGUAGES, pickLanguage, t } from "./i18n.js";
 import { readPuzzleFromImage } from "./recognize.js";
 import { techniqueCatalogue } from "./techniques.js";
@@ -39,7 +39,7 @@ const dom = {
   deployLine: document.getElementById("deploy-line"),
 };
 
-/** The folder this project lives in, used to ask when it was last deployed. */
+/** The folder this project lives in, for the link to its commit history. */
 const PROJECT_PATH = "web-projects/sudoku-screenshot-coach";
 
 /** Everything the page shows is derived from this. */
@@ -696,7 +696,7 @@ function setLanguage(lang) {
   dom.languageSelect.setAttribute("aria-label", say("ui.language"));
   renderGlossary();
   refreshCandidates();
-  redrawDeployLine(dom.deployLine, lang, say, escapeHtml, PROJECT_PATH);
+  renderDeployLine(dom.deployLine, readStamp(document), lang, say, escapeHtml, PROJECT_PATH);
   syncUrl();
   renderBoard();
   renderCellNotes();
@@ -801,9 +801,9 @@ function start() {
     setStatus(dom.readStatus, say("ui.fromLink"), "good");
   }
 
-  // The footer line is the last thing to arrive and the least important, so it
-  // is never awaited and never allowed to interrupt the page.
-  startDeployLine(dom.deployLine, PROJECT_PATH, state.lang, say, escapeHtml);
+  // The footer line is read straight out of this page's own <head>, so it
+  // needs no network and cannot describe a version other than this one.
+  renderDeployLine(dom.deployLine, readStamp(document), state.lang, say, escapeHtml, PROJECT_PATH);
 }
 
 start();

@@ -32,3 +32,17 @@ jobs:
       # automatically.
       - name: Run all tests
         run: bun test .
+
+      # The "deployed at" footer reads a pull request number written into the
+      # page itself, so the page cannot claim a version the reader is not
+      # looking at (root ADR 0013). Nothing else can check that the number is
+      # this pull request's, because only the event knows the number. This step
+      # is part of the required `test` check, so an unstamped pull request
+      # cannot merge and the footer cannot go stale.
+      - name: Check the deploy stamp
+        if: github.event_name == 'pull_request'
+        run: |
+          bun scripts/generateDeployStamp.js \
+            --pr "${{ github.event.pull_request.number }}" \
+            --date "${{ github.event.pull_request.created_at }}" \
+            --check
