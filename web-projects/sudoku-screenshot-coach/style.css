@@ -724,3 +724,22 @@ kbd {
 .deploy-line a {
   color: var(--accent);
 }
+
+/* --- how the candidates were narrowed --- */
+
+.narrowing {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.narrowing summary {
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.narrowing .panel-note {
+  margin: 0.6rem 0 0;
+}

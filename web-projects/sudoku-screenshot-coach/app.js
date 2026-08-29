@@ -10,7 +10,7 @@ import { applyMoveToState, nextHint, reduceCandidates, solvePath } from "./coach
 import { redrawDeployLine, startDeployLine } from "./deployFooter.js";
 import { LANGUAGES, pickLanguage, t } from "./i18n.js";
 import { readPuzzleFromImage } from "./recognize.js";
-import { techniqueCatalogue, techniqueInfo } from "./techniques.js";
+import { techniqueCatalogue } from "./techniques.js";
 import { DEFAULT_MODE, parseUrlState, serializeUrlState } from "./urlState.js";
 import { buildDigitTemplates } from "./vision/fonts.js";
 
@@ -27,7 +27,6 @@ const dom = {
   warpCanvas: document.getElementById("warp-canvas"),
   board: document.getElementById("board"),
   showCandidates: document.getElementById("show-candidates"),
-  reduceButton: document.getElementById("reduce-candidates"),
   copyLink: document.getElementById("copy-link"),
   shareStatus: document.getElementById("share-status"),
   modeHint: document.getElementById("mode-hint"),
@@ -48,10 +47,13 @@ const state = {
   givens: new Uint8Array(CELL_COUNT), // 1 where the digit came from the image or the link
   uncertain: new Set(), // cells the reader was unsure about
   selected: 0,
-  // The candidates in play. They start as the plain ones, from the rules alone,
-  // and shrink as the player applies the eliminations the coach proves. The
-  // coach reads the same set, so the grid and the advice never disagree.
+  // The candidates in play. Always narrowed as far as the coach can prove, so
+  // the grid never shows a digit the tool can rule out. Derived from the board,
+  // never edited in place.
   cands: null,
+  // The eliminations that narrowing applied, each explained. This is where the
+  // Pointing Pairs and the rest are taught, now that they are already applied.
+  narrowing: [],
   mode: DEFAULT_MODE,
   lang: "en",
   highlight: null, // {focus, support, houses, eliminations, placements}
@@ -176,20 +178,26 @@ function renderBoard() {
 }
 
 /**
- * Change one cell and refresh everything that depends on the grid.
+ * Work out the candidates for the board as it stands.
  *
- * A digit the coach proved keeps the eliminations already applied, because they
- * were proved from the same grid and still hold. A digit the player typed throws
- * them away: they may have been reasoned from a misread clue that is now fixed.
+ * The plain candidates come from the rules alone. The coach can prove more than
+ * that, and a grid that shows a digit the coach can rule out contradicts its own
+ * advice, so the narrowing runs every time. It is derived, never edited, so it
+ * can never be stale or wrong about a grid the player has since corrected.
  */
-function setDigit(cell, digit, { proved = false } = {}) {
+function refreshCandidates() {
+  const reduced = reduceCandidates(state.board, undefined, state.lang);
+  state.cands = reduced.cands;
+  state.narrowing = reduced.steps;
+}
+
+/** Change one cell and refresh everything that depends on the grid. */
+function setDigit(cell, digit) {
   state.board[cell] = digit;
   state.givens[cell] = 0;
   state.uncertain.delete(cell);
   state.highlight = null;
-  const fresh = computeCandidates(state.board);
-  if (proved && state.cands) for (let index = 0; index < CELL_COUNT; index += 1) fresh[index] &= state.cands[index];
-  state.cands = fresh;
+  refreshCandidates();
   syncUrl();
   renderBoard();
   renderCoach();
@@ -201,7 +209,7 @@ function loadPuzzleText(text, { asGivens = true, uncertain = [] } = {}) {
   if (asGivens) for (let cell = 0; cell < CELL_COUNT; cell += 1) state.givens[cell] = state.board[cell] !== 0 ? 1 : 0;
   state.uncertain = new Set(uncertain);
   state.highlight = null;
-  state.cands = computeCandidates(state.board);
+  refreshCandidates();
   syncUrl();
   renderBoard();
   renderCoach();
@@ -364,6 +372,59 @@ function moveCard(explanation, { badge = "", extra = "" } = {}) {
     </article>`;
 }
 
+/**
+ * The eliminations that narrowed the grid, listed under the move.
+ *
+ * They are already applied, so they are not something to do. They are the
+ * reason the candidates look the way they do, and each one carries the same
+ * explanation a hint would, so the techniques are still taught.
+ */
+function narrowingSection() {
+  if (state.narrowing.length === 0) return "";
+  const rows = state.narrowing
+    .map(
+      (step) => `
+      <button class="step" type="button" data-narrow="${step.index}">
+        <span class="step-index">${step.index}</span>
+        <span><span class="step-technique">${escapeHtml(step.explanation.technique.name)}</span> — ${escapeHtml(
+          step.summary.replace(`${step.explanation.technique.name}: `, "")
+        )}</span>
+      </button>`
+    )
+    .join("");
+  return `
+    <details class="narrowing">
+      <summary>${escapeHtml(say("ui.narrowing", { count: state.narrowing.length }))}</summary>
+      <p class="panel-note">${escapeHtml(say("ui.narrowing.note"))}</p>
+      <div class="step-list">${rows}</div>
+      <div id="narrow-detail"></div>
+    </details>`;
+}
+
+/** Wire the narrowing rows, so selecting one shows why that candidate went. */
+function wireNarrowing() {
+  for (const button of dom.coachOutput.querySelectorAll("[data-narrow]")) {
+    button.addEventListener("click", () => {
+      const step = state.narrowing.find((candidate) => candidate.index === Number(button.dataset.narrow));
+      if (!step) return;
+      for (const other of dom.coachOutput.querySelectorAll("[data-narrow]")) {
+        other.classList.toggle("is-active", other === button);
+      }
+      document.getElementById("narrow-detail").innerHTML = moveCard(step.explanation, {
+        badge: `${say("ui.step", { n: step.index })} · ${step.explanation.technique.name}`,
+      });
+      state.highlight = {
+        focus: step.explanation.highlight.focus,
+        support: step.explanation.highlight.support,
+        houses: step.explanation.highlight.houses,
+        placements: [],
+        eliminations: step.move.eliminations,
+      };
+      renderBoard();
+    });
+  }
+}
+
 function renderCoach() {
   if (state.mode === "solution") renderSolution();
   else renderHint();
@@ -386,15 +447,18 @@ function renderHint() {
   if (!hint.explanation) {
     const notice = `<div class="notice is-warn">${escapeHtml(hint.message)}</div>`;
     const apply = hint.fallback
-      ? `<p class="row"><button class="primary-button" id="apply-move" type="button">Place ${hint.fallback.digit} in ${cellName(hint.fallback.cell)}</button></p>`
+      ? `<p class="row"><button class="primary-button" id="apply-move" type="button">${escapeHtml(
+          say("ui.apply.fallback", { digit: hint.fallback.digit, cell: cellName(hint.fallback.cell) })
+        )}</button></p>`
       : "";
-    dom.coachOutput.innerHTML = notice + apply;
+    dom.coachOutput.innerHTML = notice + apply + narrowingSection();
     if (hint.fallback) {
       state.highlight = { focus: [hint.fallback.cell], support: [], houses: [], placements: [hint.fallback], eliminations: [] };
       document.getElementById("apply-move").addEventListener("click", () => {
-        setDigit(hint.fallback.cell, hint.fallback.digit, { proved: true });
+        setDigit(hint.fallback.cell, hint.fallback.digit);
       });
     }
+    wireNarrowing();
     renderBoard();
     return;
   }
@@ -424,9 +488,11 @@ function renderHint() {
     <p class="row">
       <button class="primary-button" id="apply-move" type="button">${escapeHtml(buttonLabel)}</button>
       <span class="share-status">${escapeHtml(hint.status === "multiple" ? "" : hint.message)}</span>
-    </p>`;
+    </p>
+    ${narrowingSection()}`;
 
   document.getElementById("apply-move").addEventListener("click", () => applyHintMove(move));
+  wireNarrowing();
   renderBoard();
 }
 
@@ -440,7 +506,7 @@ function renderHint() {
 function applyHintMove(move) {
   if (move.placements.length > 0) {
     const { cell, digit } = move.placements[0];
-    setDigit(cell, digit, { proved: true });
+    setDigit(cell, digit);
     return;
   }
   state.cands = applyMoveToState({ board: state.board, cands: state.cands }, move).cands;
@@ -566,6 +632,7 @@ function setLanguage(lang) {
   dom.board.setAttribute("aria-label", say("ui.boardLabel"));
   dom.languageSelect.setAttribute("aria-label", say("ui.language"));
   renderGlossary();
+  refreshCandidates();
   redrawDeployLine(dom.deployLine, lang, say, escapeHtml);
   syncUrl();
   renderBoard();
@@ -634,25 +701,6 @@ function wire() {
   });
 
   dom.showCandidates.addEventListener("change", renderBoard);
-  dom.reduceButton.addEventListener("click", () => {
-    const reduced = reduceCandidates(state.board, state.cands);
-    state.cands = reduced.cands;
-    state.highlight = null;
-    dom.showCandidates.checked = true;
-    renderBoard();
-    renderCoach();
-    const names = reduced.techniques.map((id) => techniqueInfo(id, state.lang).name);
-    setStatus(
-      dom.readStatus,
-      reduced.removed === 0
-        ? say("ui.reduce.none")
-        : say(reduced.removed === 1 ? "ui.reduce.done.one" : "ui.reduce.done", {
-            count: reduced.removed,
-            techniques: names.join(", "),
-          }),
-      "good"
-    );
-  });
   dom.languageSelect.addEventListener("change", () => setLanguage(dom.languageSelect.value));
   dom.modeHint.addEventListener("click", () => setMode("hint"));
   dom.modeSolution.addEventListener("click", () => setMode("solution"));

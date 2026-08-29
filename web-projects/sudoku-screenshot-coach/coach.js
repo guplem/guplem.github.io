@@ -70,20 +70,30 @@ export function applyMoveToState(state, move) {
  * No digit is ever placed here. Only candidates are ruled out, and only ones a
  * technique proves impossible, so nothing is guessed.
  *
+ * Each step is kept, with the same explanation a hint would carry, because the
+ * narrowing is the teaching: it is where Pointing Pairs, Naked Triples and the
+ * rest are shown at work.
+ *
  * @param {Int8Array} board the grid as it stands
  * @param {Uint16Array} [startCands] candidates to start from; the plain ones by default
- * @returns {{cands: Uint16Array, removed: number, techniques: string[]}}
- *   `removed` counts the candidates ruled out, and `techniques` names the ones
- *   that did it, so the page can say what happened.
+ * @param {string} [lang] language for the explanations
+ * @returns {{cands: Uint16Array, removed: number, techniques: string[], steps: Array}}
+ *   `removed` counts the candidates ruled out, `techniques` names the ones that
+ *   did it, and `steps` holds each one explained, in the order they were applied.
  */
-export function reduceCandidates(board, startCands = computeCandidates(board), maxRounds = 800) {
+export function reduceCandidates(board, startCands = computeCandidates(board), lang = DEFAULT_LANGUAGE, maxRounds = 800) {
   const cands = Uint16Array.from(startCands);
   const techniques = [];
+  const steps = [];
   let removed = 0;
 
   for (let round = 0; round < maxRounds; round += 1) {
-    const move = findEasiestElimination({ board, cands });
+    const state = { board, cands };
+    const move = findEasiestElimination(state);
     if (!move) break;
+    // Explain the move against the grid as it stood BEFORE the move, or the
+    // candidates it talks about would already be gone from the reasoning.
+    const explanation = explainMove(move, { board, cands: Uint16Array.from(cands) }, lang);
     let removedThisRound = 0;
     for (const { cell, digit } of move.eliminations) {
       if ((cands[cell] & bitOf(digit)) === 0) continue;
@@ -95,10 +105,11 @@ export function reduceCandidates(board, startCands = computeCandidates(board), m
     // stopping here keeps that guarantee cheap to rely on.
     if (removedThisRound === 0) break;
     removed += removedThisRound;
+    steps.push({ index: steps.length + 1, move, explanation, summary: moveSummary(move, lang) });
     if (!techniques.includes(move.technique)) techniques.push(move.technique);
   }
 
-  return { cands, removed, techniques };
+  return { cands, removed, techniques, steps };
 }
 
 /**
