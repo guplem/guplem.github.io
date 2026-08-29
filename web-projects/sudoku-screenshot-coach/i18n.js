@@ -493,6 +493,11 @@ export const MESSAGES = {
   },
   "ui.deployed": { en: "Deployed {date} by pull request {pr}.", es: "Desplegado el {date} por la pull request {pr}." },
   "ui.deployedNoPull": { en: "Deployed {date}, commit {commit}.", es: "Desplegado el {date}, commit {commit}." },
+  // Shown when GitHub does not answer. The date still comes from this page's own
+  // headers, so the line says what it knows instead of going blank.
+  "ui.deployedDateOnly": { en: "Deployed {date}. See {history}.", es: "Desplegado el {date}. Ver {history}." },
+  "ui.deployedUnknown": { en: "Published from the main branch. See {history}.", es: "Publicado desde la rama main. Ver {history}." },
+  "ui.deployHistory": { en: "what changed", es: "qué cambió" },
   "ui.whyForced": { en: "Why this is forced", es: "Por qué es obligado" },
   "ui.apply.place": { en: "Place it and show the next move", es: "Colocarlo y ver el siguiente movimiento" },
   "ui.apply.eliminate": { en: "Apply it and show the next move", es: "Aplicarlo y ver el siguiente movimiento" },

@@ -2,13 +2,16 @@ import { describe, test, expect } from "bun:test";
 import {
   CACHE_TTL_MS,
   DEFAULT_REPO,
+  FAILURE_TTL_MS,
   buildCommitsUrl,
+  buildHistoryUrl,
   buildPullsUrl,
   deployRecord,
   formatDeployDate,
   isFresh,
   parseLatestCommit,
   parseMergedPull,
+  parsePageDate,
 } from "./deployInfo.js";
 
 // Trimmed from real GitHub API responses for this repository, so the parsing is
@@ -107,21 +110,66 @@ describe("parseMergedPull", () => {
   });
 });
 
+describe("buildHistoryUrl", () => {
+  test("points at the branch history of the project folder", () => {
+    expect(buildHistoryUrl({ path: "web-projects/sudoku-screenshot-coach" })).toBe(
+      `https://github.com/${DEFAULT_REPO}/commits/main/web-projects/sudoku-screenshot-coach`
+    );
+  });
+
+  test("points at the branch history alone when there is no path", () => {
+    expect(buildHistoryUrl({})).toBe(`https://github.com/${DEFAULT_REPO}/commits/main`);
+  });
+});
+
+describe("parsePageDate", () => {
+  // GitHub Pages sends this header on every file it serves, and it holds the
+  // moment the site was published. It is same-origin, so no allowance limits it.
+  test("reads the publish time out of a real Last-Modified header", () => {
+    expect(parsePageDate("Sat, 29 Aug 2026 10:16:34 GMT")).toBe("2026-08-29T10:16:34.000Z");
+  });
+
+  test("returns nothing when the header is missing or unreadable", () => {
+    expect(parsePageDate(null)).toBeNull();
+    expect(parsePageDate("")).toBeNull();
+    expect(parsePageDate("some time last week")).toBeNull();
+  });
+});
+
 describe("deployRecord", () => {
   test("uses the merge time, because merging is what publishes the site", () => {
     const record = deployRecord(parseLatestCommit(COMMITS_PAYLOAD), parseMergedPull(PULLS_PAYLOAD));
     expect(record.date).toBe("2026-08-29T09:40:32Z"); // the merge, not the commit
     expect(record.pull.number).toBe(75);
+    expect(record.source).toBe("pull");
   });
 
   test("falls back to the commit date when no pull request carried it", () => {
     const record = deployRecord(parseLatestCommit(COMMITS_PAYLOAD), null);
     expect(record.date).toBe("2026-08-29T09:39:34Z");
     expect(record.pull).toBeNull();
+    expect(record.source).toBe("commit");
   });
 
-  test("returns nothing without a commit", () => {
+  // The line went blank in front of a player because GitHub was the only source
+  // it had. The page's own publish time is the floor it never drops below.
+  test("falls back to the page's publish time when GitHub answers nothing", () => {
+    const record = deployRecord(null, null, "2026-08-29T10:16:34.000Z");
+    expect(record.date).toBe("2026-08-29T10:16:34.000Z");
+    expect(record.source).toBe("page");
+    expect(record.commit).toBeNull();
+    expect(record.pull).toBeNull();
+  });
+
+  test("prefers what GitHub says over the page's publish time", () => {
+    const record = deployRecord(parseLatestCommit(COMMITS_PAYLOAD), parseMergedPull(PULLS_PAYLOAD), "2026-12-25T00:00:00.000Z");
+    expect(record.date).toBe("2026-08-29T09:40:32Z");
+    expect(record.source).toBe("pull");
+  });
+
+  test("returns nothing when there is no date from anywhere", () => {
     expect(deployRecord(null, parseMergedPull(PULLS_PAYLOAD))).toBeNull();
+    expect(deployRecord(null, null, null)).toBeNull();
   });
 });
 
@@ -158,5 +206,14 @@ describe("isFresh", () => {
     expect(isFresh(null)).toBe(false);
     expect(isFresh({})).toBe(false);
     expect(isFresh({ fetchedAt: "yesterday" })).toBe(false);
+  });
+
+  // A visitor who is out of anonymous calls must not spend two more on every
+  // reload, but must also recover on their own well before the six hours are up.
+  test("holds a failed lookup for a much shorter window", () => {
+    expect(FAILURE_TTL_MS).toBeLessThan(CACHE_TTL_MS);
+    const entry = { fetchedAt: 1_000_000 };
+    expect(isFresh(entry, 1_000_000 + FAILURE_TTL_MS - 1, FAILURE_TTL_MS)).toBe(true);
+    expect(isFresh(entry, 1_000_000 + FAILURE_TTL_MS, FAILURE_TTL_MS)).toBe(false);
   });
 });

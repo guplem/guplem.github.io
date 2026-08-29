@@ -13,6 +13,13 @@
 // publishes the site. When no pull request is found, the commit's own date is
 // the best answer left.
 //
+// Those calls can fail, and the first version of this footer then showed
+// nothing at all. A blank line reads as a missing feature, which is exactly how
+// a player reported it. So there is a third source that cannot fail the same
+// way: the `Last-Modified` header of this very page. GitHub Pages sets it to
+// the moment the site was published. It comes from the page's own address, so
+// no allowance limits it and no other service has to answer.
+//
 // Everything here is pure. `deployFooter.js` does the fetching, the caching and
 // the drawing, so this file can be tested without a browser or a network.
 
@@ -26,6 +33,12 @@ export const DEFAULT_BRANCH = "main";
  * spend them. A deploy is rare; six hours of staleness costs nothing.
  */
 export const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+/**
+ * How long to wait after GitHub refuses before asking again. A visitor who has
+ * spent their hourly allowance gets nothing from asking twice a minute, and the
+ * page shows its own publish time meanwhile. Short enough to recover on its own.
+ */
+export const FAILURE_TTL_MS = 15 * 60 * 1000;
 
 /** The newest commit on a branch that touched one path. */
 export function buildCommitsUrl({ repo = DEFAULT_REPO, path, branch = DEFAULT_BRANCH }) {
@@ -36,6 +49,28 @@ export function buildCommitsUrl({ repo = DEFAULT_REPO, path, branch = DEFAULT_BR
 /** The pull requests that carried one commit. */
 export function buildPullsUrl({ repo = DEFAULT_REPO, sha }) {
   return `https://api.github.com/repos/${repo}/commits/${sha}/pulls`;
+}
+
+/**
+ * Where a reader can see what changed. This is a page on github.com, not an API
+ * call, so it always works and it is what the footer offers when the lookup
+ * cannot say more.
+ */
+export function buildHistoryUrl({ repo = DEFAULT_REPO, path = "", branch = DEFAULT_BRANCH }) {
+  const base = `https://github.com/${repo}/commits/${branch}`;
+  return path ? `${base}/${path}` : base;
+}
+
+/**
+ * Read a `Last-Modified` header into an ISO moment.
+ * GitHub Pages sets it to the time the site was published, so it answers "when
+ * was this deployed" without asking any service.
+ * @returns {string|null} the moment, or null when the header is missing or unreadable
+ */
+export function parsePageDate(header) {
+  if (typeof header !== "string" || header === "") return null;
+  const when = new Date(header);
+  return Number.isNaN(when.getTime()) ? null : when.toISOString();
 }
 
 /**
@@ -80,12 +115,22 @@ export function parseMergedPull(payload) {
 }
 
 /**
- * Join a commit and its pull request into the one record the footer shows.
- * @returns {{date: string, commit: object, pull: object|null}|null}
+ * Join what is known into the one record the footer shows.
+ *
+ * The sources are ranked by how much they say. A pull request names the change
+ * and when it merged. A commit names the change alone. The page's publish time
+ * names neither, but it is always there, and it keeps the line from going blank.
+ *
+ * @param {object|null} commit the newest commit that touched this project
+ * @param {object|null} pull the pull request that carried it
+ * @param {string|null} pageDate when this page was published, from its own headers
+ * @returns {{date: string, source: "pull"|"commit"|"page", commit: object|null, pull: object|null}|null}
  */
-export function deployRecord(commit, pull = null) {
-  if (!commit) return null;
-  return { date: pull?.mergedAt ?? commit.date, commit, pull };
+export function deployRecord(commit, pull = null, pageDate = null) {
+  if (commit && pull) return { date: pull.mergedAt, source: "pull", commit, pull };
+  if (commit) return { date: commit.date, source: "commit", commit, pull: null };
+  if (pageDate) return { date: pageDate, source: "page", commit: null, pull: null };
+  return null;
 }
 
 /**

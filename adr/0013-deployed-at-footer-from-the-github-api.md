@@ -29,31 +29,54 @@ The options:
 - **Ask GitHub at run time.** The facts are already in the repository's history,
   and the public API serves them without a key.
 
+A first version asked GitHub and nothing else. A player then reported that the
+line was not there at all. The code was correct and deployed, but the API had not
+answered, and the page drew an empty line. **A blank line is indistinguishable
+from a missing feature**, so "fail quietly" turned out to mean "fail invisibly",
+and the reader had nothing to act on.
+
 ## Decision
 
-**The footer asks the GitHub API, in the visitor's browser, for the newest commit
-that touched the project's folder and the pull request that carried it.**
+**The footer names the pull request when GitHub answers, and always shows at
+least the moment this page was published, which it reads from the page itself.**
 
-Two calls, both anonymous:
+Three sources, best first. The first one that answers wins:
 
-1. `GET /repos/{repo}/commits?path={project}&sha=main&per_page=1`
-2. `GET /repos/{repo}/commits/{sha}/pulls`
+1. **The pull request that last changed this project.** Two anonymous calls:
+   `GET /repos/{repo}/commits?path={project}&sha=main&per_page=1`, then
+   `GET /repos/{repo}/commits/{sha}/pulls`. The pull request's `merged_at` is the
+   deploy time, because merging into `main` is what publishes the site.
+2. **The commit that last changed it**, when no pull request carried it. The line
+   links the commit instead.
+3. **The `Last-Modified` header of this page**, read with one `HEAD` request to
+   the page's own address. GitHub Pages sets it to the moment the site was
+   published. It is same-origin, so no allowance limits it and no other service
+   has to answer.
 
-The pull request's `merged_at` is the deploy time, because merging into `main` is
-what publishes the site. With no pull request, the commit's own date is used and
-the line links the commit instead.
+With none of the three, the line still names the branch and links the folder's
+commit history, so a reader always has somewhere to go.
 
 Rules the line follows:
 
-- **It may never matter that it failed.** GitHub can be unreachable, or the
-  visitor may have spent their hourly allowance of anonymous calls. The line then
-  stays empty and nothing else changes. It is started without being awaited.
+- **It may never matter that it failed, and it may never be blank.** Those are
+  two rules, not one. It is started without being awaited and it never throws, so
+  a failure changes nothing else on the page; and it always draws, because a
+  blank line reads as a bug. A failed lookup also writes a line to the console,
+  so the next report is diagnosable.
 - **The answer is cached in `localStorage` for six hours** (root ADR 0007).
   Anonymous callers get 60 calls an hour per address and this needs two, so a
   visitor who reloads often must not spend them. A stale value is shown while a
   fresh one is on its way, so the line does not flicker away.
+- **A refusal is cached too, for fifteen minutes.** Without that, a visitor who
+  is out of anonymous calls spends two more on every single reload and never
+  recovers. Fifteen minutes is short enough to heal on its own.
+- **Every request gives up after eight seconds**, so a hanging call cannot leave
+  the line waiting for ever.
 - **The parsing is pure and tested** (`deployInfo.js`), against payloads copied
-  from real API responses. Only `deployFooter.js` fetches, stores or draws.
+  from real API responses. Only `deployFooter.js` fetches, stores or draws, and
+  it is tested too: it takes the element, the message lookup and the escaper as
+  arguments, so stubs for `fetch`, `localStorage` and `location` are enough. The
+  reported bug lived in that file, not in the pure one.
 
 ## Consequences
 
@@ -66,16 +89,25 @@ Rules the line follows:
 - A reader can go from the live page to the pull request, its description and its
   diff, in one click.
 
+- The line survives GitHub being down, blocked or exhausted. It loses the pull
+  request number and keeps the date.
+
 **Negative:**
 
-- The page now makes a network call it did not make before. For a tool that
+- The page now makes network calls it did not make before. For a tool that
   advertises doing its work locally, the footer text must stay precise: the
   picture is still read in the browser and never uploaded, and the wording says
   exactly that rather than claiming the page never talks to anything.
 - Anonymous API calls are rate limited. The cache keeps a normal visitor far
   inside the limit, but a shared address behind one gateway could exhaust it, and
-  the line then stays empty.
-- The line depends on GitHub being up and the repository being public.
+  the line then shows the publish time without the pull request.
+- The pull request number depends on GitHub being up and the repository being
+  public. The date does not.
+- The two dates answer different questions. Sources 1 and 2 answer "when did this
+  project last change"; source 3 answers "when was this site last published".
+  They agree when the last deploy carried this project, and drift apart when it
+  did not. Each wording says which one it is showing, and neither claims the
+  other.
 - The lookup runs per project folder, so a change elsewhere in the repository
   does not move the date even though the deploy republished the whole site. This
   is deliberate: "when did this project last change" is the useful answer.

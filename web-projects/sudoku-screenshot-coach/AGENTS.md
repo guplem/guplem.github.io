@@ -28,8 +28,8 @@ Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explai
 | `vision/builtinDigits.js` | yes | Digit shapes as stroke paths, so the reader needs no system font. |
 | `vision/fonts.js` | no | Draws the reference pictures on a canvas, from device fonts and the built-in paths. |
 | `vision/testFixtures.js` | yes | Test-only. Draws synthetic screenshots with clutter, pencil marks and highlights. |
-| `deployInfo.js` | yes | Builds the two GitHub API URLs, parses the answers, formats the deploy date. |
-| `deployFooter.js` | no | The only file that fetches, caches and draws the "deployed at" line. Root ADR 0013. |
+| `deployInfo.js` | yes | Builds the GitHub URLs, parses the answers, ranks the deploy sources, formats the date. |
+| `deployFooter.js` | no | The only file that fetches, caches and draws the "deployed at" line. Root ADR 0013. Tested with stubs, because the reported bug lived here. |
 | `app.js` | no | DOM controller: input, board painting, coaching output, language switch. |
 | `*.test.js` | no | Bun tests. Run `bun test` here. |
 
@@ -97,9 +97,13 @@ edits -> `coach.nextHint` -> `techniques` find a Move -> `explain` writes it ->
 - **Keep the candidates derived, never edited.** They are a pure function of the
   board, so no sequence of edits can leave them stale or reasoned from a grid the
   player has since corrected.
-- **The footer line must never matter.** `startDeployLine` is never awaited and
-  never throws: GitHub can be down or the visitor out of anonymous calls, and the
-  line then stays empty. Keep the six-hour cache, and keep the privacy sentence
+- **The footer line must never matter, and must never be blank.** Those are two
+  rules. `startDeployLine` is never awaited and never throws, so a failure
+  changes nothing else; and it always draws, because a player reported the line
+  as missing when it was merely empty. GitHub can be down or the visitor out of
+  anonymous calls, and the date then comes from this page's own `Last-Modified`
+  header, which is same-origin and cannot be throttled. Keep the six-hour cache,
+  keep the fifteen-minute cache on refusals, and keep the privacy sentence
   precise now that the page calls an API. Root ADR 0013.
 - **All external text is escaped through `escapeHtml` before `innerHTML`.** The
   explanations are generated, but they carry digits and cell names built from
