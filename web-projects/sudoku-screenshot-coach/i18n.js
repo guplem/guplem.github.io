@@ -469,6 +469,22 @@ export const MESSAGES = {
     es: "Mostrar los candidatos que quedan en cada celda vacía",
   },
   "ui.copyLink": { en: "Copy a link to this grid", es: "Copiar un enlace a esta cuadrícula" },
+  "ui.reduce": {
+    en: "Rule out everything the coach can prove",
+    es: "Descartar todo lo que el entrenador puede demostrar",
+  },
+  "ui.reduce.done": {
+    en: "Ruled out {count} candidates, using {techniques}. The grid now shows only what the coach cannot disprove.",
+    es: "Descartados {count} candidatos, usando {techniques}. La cuadrícula ahora solo muestra lo que el entrenador no puede descartar.",
+  },
+  "ui.reduce.done.one": {
+    en: "Ruled out one candidate, using {techniques}. The grid now shows only what the coach cannot disprove.",
+    es: "Descartado un candidato, usando {techniques}. La cuadrícula ahora solo muestra lo que el entrenador no puede descartar.",
+  },
+  "ui.reduce.none": {
+    en: "Nothing left to rule out. Every candidate shown is one the coach cannot disprove.",
+    es: "No queda nada por descartar. Cada candidato que se muestra es uno que el entrenador no puede descartar.",
+  },
   "ui.copied": { en: "Link copied.", es: "Enlace copiado." },
   "ui.copyFailed": { en: "Copy failed. Use the address bar instead.", es: "No se pudo copiar. Usa la barra de direcciones." },
   "ui.step3": { en: "3. Get the move", es: "3. Consigue el movimiento" },

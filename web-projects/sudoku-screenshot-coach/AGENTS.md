@@ -7,7 +7,8 @@ Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explai
 [ADR 0002](adr/0002-read-digits-by-template-match-not-an-ocr-library.md),
 [ADR 0003](adr/0003-tell-pencil-marks-from-digits-by-measured-size.md),
 [ADR 0004](adr/0004-one-message-catalogue-for-generated-explanations.md),
-[ADR 0005](adr/0005-judge-the-grid-at-full-resolution-and-each-cell-against-itself.md).
+[ADR 0005](adr/0005-judge-the-grid-at-full-resolution-and-each-cell-against-itself.md),
+[ADR 0006](adr/0006-one-candidate-state-shared-by-the-grid-and-the-coach.md).
 
 ## Module map (pure logic is separated from the DOM so it can be unit-tested)
 
@@ -17,7 +18,7 @@ Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explai
 | `solver.js` | yes | Backtracking solver. Proves a grid is legal, unique, and finishes what techniques cannot. |
 | `techniques.js` | yes | The 13 solving techniques. Each `find(state)` returns a Move with its evidence, or null. |
 | `explain.js` | yes | Move plus evidence to sentences, through `i18n.js`. Writes no text of its own. |
-| `coach.js` | yes | Picks the next best move, walks a whole solve, rates difficulty. |
+| `coach.js` | yes | Picks the next best move, reduces candidates, walks a whole solve, rates difficulty. |
 | `recognize.js` | yes | Screenshot to 81 digits: joins the vision steps, then repairs the reading with the rules. |
 | `i18n.js` | yes | The one message catalogue, `t()` and `joinList()`. Root of all text. |
 | `urlState.js` | yes | Parse and serialize `p` (puzzle), `m` (mode) and `lang`. Root ADR 0006. |
@@ -79,9 +80,17 @@ edits -> `coach.nextHint` -> `techniques` find a Move -> `explain` writes it ->
 - **The coach always offers the easiest technique that applies.** That ordering
   is the product, not an implementation detail. `TECHNIQUES` is sorted by rank
   and `findEasiestMove` takes the first hit.
-- **An elimination move changes no digit.** The "apply" button walks past
-  eliminations to the first placement they make possible, or says plainly that
-  the grid does not change yet.
+- **The page holds one candidate state, and both the grid and the coach use it**
+  (`state.cands`, passed into `nextHint`). Never recompute the plain candidates
+  just to draw the grid: the coach can prove more than the rules alone, and a
+  grid drawn from the rules alone contradicts its own advice. A player reported
+  exactly that. See ADR 0006.
+- **Never reduce the candidates automatically.** On a hard grid, applying every
+  elimination the catalogue can prove leaves no move at all, so the coaching
+  disappears. `reduceCandidates` is a button the player presses.
+- **An elimination move changes no digit, and that is fine.** Applying one
+  removes the candidates and they stay removed, so the player watches them go.
+  Do not go back to skipping ahead to the next placement.
 - **All external text is escaped through `escapeHtml` before `innerHTML`.** The
   explanations are generated, but they carry digits and cell names built from
   user-editable state. Keep the escaping.

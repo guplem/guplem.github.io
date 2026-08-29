@@ -11,6 +11,7 @@ import {
   cellName,
   cloneBoard,
   computeCandidates,
+  digitsOf,
   emptyCount,
   isComplete,
   makeState,
@@ -18,7 +19,7 @@ import {
 import { explainMove, moveSummary } from "./explain.js";
 import { DEFAULT_LANGUAGE, t } from "./i18n.js";
 import { analyseBoard, solve } from "./solver.js";
-import { TECHNIQUES, findEasiestMove, techniqueInfo } from "./techniques.js";
+import { TECHNIQUES, findEasiestElimination, findEasiestMove, techniqueInfo } from "./techniques.js";
 
 /**
  * How hard a puzzle is, from the hardest technique its solution needs.
@@ -57,13 +58,60 @@ export function applyMoveToState(state, move) {
 }
 
 /**
+ * Apply every elimination the coach can prove, and hand back the candidates that
+ * survive.
+ *
+ * The plain candidates of a cell come from the rules alone: a digit stays
+ * possible until a peer holds it. The coach knows more than that. It can prove,
+ * with a Pointing Pair or a Naked Triple, that a digit cannot go somewhere the
+ * rules alone still allow. A candidate grid that shows those digits contradicts
+ * the coach's own advice, so this brings the two together.
+ *
+ * No digit is ever placed here. Only candidates are ruled out, and only ones a
+ * technique proves impossible, so nothing is guessed.
+ *
+ * @param {Int8Array} board the grid as it stands
+ * @param {Uint16Array} [startCands] candidates to start from; the plain ones by default
+ * @returns {{cands: Uint16Array, removed: number, techniques: string[]}}
+ *   `removed` counts the candidates ruled out, and `techniques` names the ones
+ *   that did it, so the page can say what happened.
+ */
+export function reduceCandidates(board, startCands = computeCandidates(board), maxRounds = 800) {
+  const cands = Uint16Array.from(startCands);
+  const techniques = [];
+  let removed = 0;
+
+  for (let round = 0; round < maxRounds; round += 1) {
+    const move = findEasiestElimination({ board, cands });
+    if (!move) break;
+    let removedThisRound = 0;
+    for (const { cell, digit } of move.eliminations) {
+      if ((cands[cell] & bitOf(digit)) === 0) continue;
+      cands[cell] &= ~bitOf(digit);
+      removedThisRound += 1;
+    }
+    // A technique that changes nothing would loop for ever. It should not
+    // happen, because a finder only reports candidates a cell still holds, but
+    // stopping here keeps that guarantee cheap to rely on.
+    if (removedThisRound === 0) break;
+    removed += removedThisRound;
+    if (!techniques.includes(move.technique)) techniques.push(move.technique);
+  }
+
+  return { cands, removed, techniques };
+}
+
+/**
  * The move to show the player right now.
+ * @param {Int8Array} board the grid as it stands
+ * @param {string} [lang] language code
+ * @param {Uint16Array} [cands] the candidates in play; the plain ones by default
  * @returns {{status: string, message: string, analysis: object,
  *   explanation: object|null, unlocks: object|null, fallback: {cell: number, digit: number}|null}}
  *   `status` is "ok" with a move, "solved", "stuck" (valid but past the known
  *   techniques), or one of the problem states from `analyseBoard`.
  */
-export function nextHint(board, lang = DEFAULT_LANGUAGE) {
+export function nextHint(board, lang = DEFAULT_LANGUAGE, cands = null) {
   const analysis = analyseBoard(board, lang);
   if (analysis.status === "conflict" || analysis.status === "unsolvable") {
     return { status: analysis.status, message: analysis.message, analysis, explanation: null, unlocks: null, fallback: null };
@@ -80,7 +128,9 @@ export function nextHint(board, lang = DEFAULT_LANGUAGE) {
   }
 
   const ambiguous = analysis.status === "multiple";
-  const state = makeState(board);
+  // Work from the candidates the page is showing, so the coach never offers an
+  // elimination the player has already applied.
+  const state = cands ? { board, cands } : makeState(board);
   const move = findEasiestMove(state);
   if (!move) {
     // No known technique fits. Offer the verified digit so the player is never

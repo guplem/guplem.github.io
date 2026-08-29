@@ -1,7 +1,8 @@
 import { describe, test, expect } from "bun:test";
 import { cellAt, emptyBoard, formatBoard, isConsistent, parseBoard } from "./board.js";
 import { solve } from "./solver.js";
-import { DIFFICULTY_TIERS, applyMoveToState, nextHint, rateDifficulty, solvePath } from "./coach.js";
+import { CELL_COUNT, cellName, computeCandidates, digitsOf, makeState } from "./board.js";
+import { DIFFICULTY_TIERS, applyMoveToState, nextHint, rateDifficulty, reduceCandidates, solvePath } from "./coach.js";
 
 const EASY =
   "530070000" + "600195000" + "098000060" + "800060003" + "400803001" + "700020006" + "060000280" + "000419005" + "000080079";
@@ -139,6 +140,78 @@ describe("solvePath", () => {
     const path = solvePath(board);
     expect(path.solved).toBe(false);
     expect(path.status).toBe("unsolvable");
+  });
+});
+
+// The grid a player reported: the candidate grid showed a 5 in r7c6 and r9c6
+// that the coach itself could already rule out with a Pointing Pair.
+const REPORTED = "4.86..79.9..7286.476.94.8..89..57.463.7486.196.4..9....4689.1...83.7496..79.6.4..";
+
+describe("reduceCandidates", () => {
+  test("rules out what the coach can prove, on the grid a player reported", () => {
+    const board = parseBoard(REPORTED);
+    const before = computeCandidates(board);
+    // The naive candidates hold the 5 the player said should not be there.
+    expect(digitsOf(before[cellAt(6, 5)])).toContain(5);
+    expect(digitsOf(before[cellAt(8, 5)])).toContain(5);
+
+    const reduced = reduceCandidates(board);
+    expect(digitsOf(reduced.cands[cellAt(6, 5)])).toEqual([2, 3]);
+    expect(digitsOf(reduced.cands[cellAt(8, 5)])).toEqual([1, 2, 3]);
+    expect(reduced.removed).toBeGreaterThan(0);
+    expect(reduced.techniques).toContain("pointing");
+  });
+
+  test("never rules out a digit the real solution needs", () => {
+    const solution = solve(parseBoard(REPORTED));
+    const reduced = reduceCandidates(parseBoard(REPORTED));
+    for (let cell = 0; cell < CELL_COUNT; cell += 1) {
+      if (reduced.cands[cell] === 0) continue; // a filled cell
+      expect(`${cellName(cell)}:${digitsOf(reduced.cands[cell]).join("")}`).toContain(String(solution[cell]));
+    }
+  });
+
+  test("running it again changes nothing", () => {
+    const board = parseBoard(REPORTED);
+    const once = reduceCandidates(board);
+    const twice = reduceCandidates(board, once.cands);
+    expect([...twice.cands]).toEqual([...once.cands]);
+    expect(twice.removed).toBe(0);
+  });
+
+  test("leaves an easy puzzle alone when singles carry it", () => {
+    // Nothing to rule out beyond the rules: the result matches the plain candidates.
+    const board = parseBoard(EASY);
+    const reduced = reduceCandidates(board);
+    for (let cell = 0; cell < CELL_COUNT; cell += 1) {
+      expect(digitsOf(reduced.cands[cell]).length).toBeLessThanOrEqual(digitsOf(computeCandidates(board)[cell]).length);
+    }
+  });
+});
+
+describe("nextHint with a candidate state", () => {
+  test("does not offer an elimination that has already been applied", () => {
+    const board = parseBoard(REPORTED);
+    const first = nextHint(board);
+    expect(first.explanation.move.eliminations.length).toBeGreaterThan(0);
+
+    // Apply it, then ask again: the same move must not come back.
+    const after = applyMoveToState(makeState(board), first.explanation.move);
+    const second = nextHint(board, "en", after.cands);
+    const sameCells = JSON.stringify(second.explanation?.move?.eliminations ?? []);
+    expect(sameCells).not.toBe(JSON.stringify(first.explanation.move.eliminations));
+  });
+
+  test("stops offering eliminations once they have all been applied", () => {
+    // On this grid the catalogue runs out after its eliminations. The coach must
+    // say so honestly and hand over a verified digit, not repeat itself.
+    const board = parseBoard(REPORTED);
+    const reduced = reduceCandidates(board);
+    const hint = nextHint(board, "en", reduced.cands);
+    expect(hint.status).toBe("stuck");
+    expect(hint.explanation).toBeNull();
+    expect(hint.fallback).not.toBeNull();
+    expect(hint.fallback.digit).toBe(solve(board)[hint.fallback.cell]);
   });
 });
 
