@@ -2,7 +2,15 @@ import { describe, test, expect } from "bun:test";
 import { cellAt, emptyBoard, formatBoard, isConsistent, parseBoard } from "./board.js";
 import { countSolutions, solve } from "./solver.js";
 import { CELL_COUNT, cellName, computeCandidates, digitsOf, makeState } from "./board.js";
-import { DIFFICULTY_TIERS, applyMoveToState, nextHint, rateDifficulty, reduceCandidates, solvePath } from "./coach.js";
+import {
+  DIFFICULTY_TIERS,
+  applyMoveToState,
+  explainCellCandidates,
+  nextHint,
+  rateDifficulty,
+  reduceCandidates,
+  solvePath,
+} from "./coach.js";
 
 const EASY =
   "530070000" + "600195000" + "098000060" + "800060003" + "400803001" + "700020006" + "060000280" + "000419005" + "000080079";
@@ -207,6 +215,90 @@ describe("reduceCandidates", () => {
     for (let cell = 0; cell < CELL_COUNT; cell += 1) {
       expect(digitsOf(reduced.cands[cell]).length).toBeLessThanOrEqual(digitsOf(computeCandidates(board)[cell]).length);
     }
+  });
+
+  test("each step records the candidates it really removed", () => {
+    // A technique can report an elimination an earlier step already applied. The
+    // step must own only the removals that changed the grid, or a cell would be
+    // credited to the wrong technique.
+    const reduced = reduceCandidates(parseBoard(REPORTED));
+    let total = 0;
+    for (const step of reduced.steps) {
+      expect(step.removals.length).toBeGreaterThan(0);
+      for (const removal of step.removals) expect(step.move.eliminations).toContainEqual(removal);
+      total += step.removals.length;
+    }
+    expect(total).toBe(reduced.removed);
+  });
+});
+
+describe("explainCellCandidates", () => {
+  // A player read the notes in r1c2 as a misreading of their screenshot: their
+  // app showed 2 and 3 there, and the tool showed 2 alone. Nothing was misread.
+  // The tool proves the 3 impossible, and this is what says so, cell by cell.
+  test("names the technique that ruled out each digit of one cell", () => {
+    const board = parseBoard(REPORTED);
+    const reduced = reduceCandidates(board);
+    const notes = explainCellCandidates(board, cellAt(0, 1), reduced);
+
+    expect(notes.digit).toBe(0);
+    expect(notes.plain).toEqual([1, 2, 3, 5]);
+    expect(notes.left).toEqual([2]);
+    expect(notes.ruledOut.map((entry) => entry.digit)).toEqual([1, 3, 5]);
+
+    const byDigit = new Map(notes.ruledOut.map((entry) => [entry.digit, entry]));
+    expect(byDigit.get(5).technique).toBe("pointing");
+    expect(byDigit.get(1).technique).toBe("claiming");
+    expect(byDigit.get(3).technique).toBe("w-wing");
+  });
+
+  test("points every entry at the narrowing step that removed it", () => {
+    const board = parseBoard(REPORTED);
+    const reduced = reduceCandidates(board);
+    const notes = explainCellCandidates(board, cellAt(0, 1), reduced);
+    for (const entry of notes.ruledOut) {
+      const step = reduced.steps.find((candidate) => candidate.index === entry.step);
+      expect(step).toBeDefined();
+      expect(step.move.technique).toBe(entry.technique);
+      expect(step.removals).toContainEqual({ cell: cellAt(0, 1), digit: entry.digit });
+    }
+  });
+
+  test("accounts for every digit the rules allow, in every cell", () => {
+    // Nothing may go missing: a digit the rules allow is either still possible
+    // or carries the step that removed it.
+    const board = parseBoard(REPORTED);
+    const reduced = reduceCandidates(board);
+    for (let cell = 0; cell < CELL_COUNT; cell += 1) {
+      if (board[cell] !== 0) continue;
+      const notes = explainCellCandidates(board, cell, reduced);
+      const covered = [...notes.left, ...notes.ruledOut.map((entry) => entry.digit)].sort((a, b) => a - b);
+      expect(covered).toEqual(notes.plain);
+    }
+  });
+
+  test("reports a filled cell as filled, with nothing to explain", () => {
+    const board = parseBoard(REPORTED);
+    const reduced = reduceCandidates(board);
+    const notes = explainCellCandidates(board, cellAt(0, 0), reduced);
+    expect(notes.digit).toBe(4);
+    expect(notes.plain).toEqual([]);
+    expect(notes.left).toEqual([]);
+    expect(notes.ruledOut).toEqual([]);
+  });
+
+  test("a cell the coach never touched keeps the notes the rules give it", () => {
+    const board = parseBoard(EASY);
+    const reduced = reduceCandidates(board);
+    let untouched = 0;
+    for (let cell = 0; cell < CELL_COUNT; cell += 1) {
+      if (board[cell] !== 0) continue;
+      const notes = explainCellCandidates(board, cell, reduced);
+      if (notes.ruledOut.length > 0) continue;
+      expect(notes.left).toEqual(notes.plain);
+      untouched += 1;
+    }
+    expect(untouched).toBeGreaterThan(0);
   });
 });
 

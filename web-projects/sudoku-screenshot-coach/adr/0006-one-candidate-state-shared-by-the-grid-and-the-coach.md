@@ -35,6 +35,14 @@ above was also wrong in its own terms: the teaching was not the *doing* of the
 elimination, it was the *explanation* of it, and an explanation does not need the
 player to press anything.
 
+A third report, on the same grid, came from the other direction. The tool showed
+one note in r1c2 where the player's own app showed two, and the player read that
+as a misreading of their screenshot. Nothing was misread: the reader never looks
+at pencil marks at all (ADR 0003), and a W-Wing proves the second note
+impossible. So a narrowed cell can look like a broken cell, and the flat list of
+narrowing steps did not answer the question the player actually had, which was
+about one cell and not about the grid.
+
 ## Decision
 
 **The grid never shows a candidate the coach can rule out, and the eliminations
@@ -51,6 +59,17 @@ are taught as the reason it looks that way.**
   order it applied them. The page lists them under the move as "how the
   candidates were narrowed". Selecting one shows the technique, the cells that
   force it, and highlights them on the grid, exactly as a hint would.
+- Every step also carries `removals`, the candidates it **really** took off the
+  grid. A later technique can name an elimination an earlier one already applied,
+  so the full `eliminations` list would credit the wrong technique.
+- **The selected cell explains itself.** `explainCellCandidates` takes one cell
+  apart into what the rules alone allow, what survives, and the narrowing step
+  that removed each of the rest. The page draws that under the grid, so the
+  answer to "why is my other note gone?" sits next to the cell that raised the
+  question. Each row opens the same move card the narrowing list does.
+- **The page says the notes are computed, never read.** The reader discards
+  pencil marks, so a shorter list is never a misreading. The wording next to the
+  candidates toggle says so plainly.
 
 So nothing is lost. Every Pointing Pair, Claiming and wing the catalogue can find
 is still named and still explained. What changed is the tense: the coach used to
@@ -69,6 +88,8 @@ say "do this next", and now says "this is why that digit is gone".
 - The elimination techniques are still all taught, and are now easier to study:
   they sit in a list the player can walk through, instead of appearing one at a
   time only if the player keeps pressing.
+- A player who compares the tool with their own app can settle the disagreement
+  themselves, on the cell they are looking at, without reading the whole list.
 
 **Negative:**
 
@@ -84,3 +105,7 @@ say "do this next", and now says "this is why that digit is gone".
 - A player who wants to practise spotting eliminations themselves no longer can:
   the grid hands them the answer. The narrowing list explains each one, which
   serves learning, but it does not test it.
+- The tool still cannot tell a player which of **their own** pencil marks are
+  wrong, because it never reads them. It can only show what it works out itself.
+  Naming a player's missing or extra marks would mean reading the marks off the
+  screenshot, which ADR 0003 rejects, so that is left undone on purpose.

@@ -82,9 +82,17 @@
       <p class="row">
         <label class="toggle">
           <input id="show-candidates" type="checkbox" />
-          <span data-i18n="ui.showCandidates">Show the candidates left in each empty cell</span>
+          <span data-i18n="ui.showCandidates">Show the notes the coach works out for each empty cell</span>
         </label>
       </p>
+      <p class="panel-note" data-i18n="ui.showCandidates.note">
+        The tool never reads the pencil marks in your picture. It works these notes out from the
+        grid, and it applies every elimination it can prove, so its list is often shorter than the
+        one your sudoku app shows.
+      </p>
+
+      <div id="cell-notes" class="cell-notes" aria-live="polite"></div>
+
       <p class="row">
         <button id="copy-link" class="ghost-button" type="button" data-i18n="ui.copyLink">Copy a link to this grid</button>
         <span id="share-status" class="share-status" aria-live="polite"></span>
