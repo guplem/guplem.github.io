@@ -19,7 +19,7 @@ Human docs: [README.md](README.md). Decision records: [ADR 0001](adr/0001-explai
 | `solver.js` | yes | Backtracking solver. Proves a grid is legal, unique, and finishes what techniques cannot. |
 | `techniques.js` | yes | The 23 solving techniques. Each `find(state)` returns a Move with its evidence, or null. |
 | `explain.js` | yes | Move plus evidence to sentences, through `i18n.js`. Writes no text of its own. |
-| `coach.js` | yes | Picks the next best move, reduces candidates, walks a whole solve, rates difficulty. |
+| `coach.js` | yes | Picks the next best move, reduces candidates, explains one cell's notes, walks a whole solve, rates difficulty. |
 | `recognize.js` | yes | Screenshot to 81 digits: joins the vision steps, then repairs the reading with the rules. |
 | `i18n.js` | yes | The one message catalogue, `t()` and `joinList()`. Root of all text. |
 | `urlState.js` | yes | Parse and serialize `p` (puzzle), `m` (mode) and `lang`. Root ADR 0006. |
@@ -108,6 +108,16 @@ edits -> `coach.nextHint` -> `techniques` find a Move -> `explain` writes it ->
   returns every step explained, and the page lists them as "how the candidates
   were narrowed". Removing that list would silently drop Pointing Pairs, Claiming
   and the wings from everything the tool teaches.
+- **A narrower cell reads as a broken cell, so the page explains each one.** A
+  player saw one note where their own app showed two and reported the reader as
+  broken. The reader had read nothing: it never looks at pencil marks. Keep
+  `explainCellCandidates` and the panel under the grid, and keep the wording that
+  says the notes are computed and never read from the picture. This has now been
+  reported three times, from three directions, on the same grid. See ADR 0006.
+- **A narrowing step owns only the candidates it really removed.** Use
+  `step.removals`, not `step.move.eliminations`, to say which technique took a
+  candidate. A later technique often names an elimination an earlier one already
+  applied, and the full list would credit the wrong one.
 - **Keep the candidates derived, never edited.** They are a pure function of the
   board, so no sequence of edits can leave them stale or reasoned from a grid the
   player has since corrected.

@@ -6,7 +6,7 @@
 // and `explain.js` writes the reason -> this file paints it.
 
 import { CELL_COUNT, HOUSES, cellName, computeCandidates, digitsOf, findConflicts, formatBoard, parseBoard } from "./board.js";
-import { applyMoveToState, nextHint, reduceCandidates, solvePath } from "./coach.js";
+import { applyMoveToState, explainCellCandidates, nextHint, reduceCandidates, solvePath } from "./coach.js";
 import { redrawDeployLine, startDeployLine } from "./deployFooter.js";
 import { LANGUAGES, pickLanguage, t } from "./i18n.js";
 import { readPuzzleFromImage } from "./recognize.js";
@@ -27,6 +27,7 @@ const dom = {
   warpCanvas: document.getElementById("warp-canvas"),
   board: document.getElementById("board"),
   showCandidates: document.getElementById("show-candidates"),
+  cellNotes: document.getElementById("cell-notes"),
   copyLink: document.getElementById("copy-link"),
   shareStatus: document.getElementById("share-status"),
   modeHint: document.getElementById("mode-hint"),
@@ -122,6 +123,7 @@ function buildDigitPad() {
 function selectCell(cell) {
   state.selected = cell;
   renderBoard();
+  renderCellNotes();
   cellButtons[cell].focus();
 }
 
@@ -200,6 +202,7 @@ function setDigit(cell, digit) {
   refreshCandidates();
   syncUrl();
   renderBoard();
+  renderCellNotes();
   renderCoach();
 }
 
@@ -212,6 +215,7 @@ function loadPuzzleText(text, { asGivens = true, uncertain = [] } = {}) {
   refreshCandidates();
   syncUrl();
   renderBoard();
+  renderCellNotes();
   renderCoach();
 }
 
@@ -401,16 +405,19 @@ function narrowingSection() {
     </details>`;
 }
 
-/** Wire the narrowing rows, so selecting one shows why that candidate went. */
-function wireNarrowing() {
-  for (const button of dom.coachOutput.querySelectorAll("[data-narrow]")) {
+/**
+ * Wire a list of narrowing rows, so selecting one shows why that candidate went.
+ * Both the list under the move and the per-cell notes use it, so the two teach
+ * the same step in the same way.
+ */
+function wireNarrowing(container, detailId) {
+  const buttons = container.querySelectorAll("[data-narrow]");
+  for (const button of buttons) {
     button.addEventListener("click", () => {
       const step = state.narrowing.find((candidate) => candidate.index === Number(button.dataset.narrow));
       if (!step) return;
-      for (const other of dom.coachOutput.querySelectorAll("[data-narrow]")) {
-        other.classList.toggle("is-active", other === button);
-      }
-      document.getElementById("narrow-detail").innerHTML = moveCard(step.explanation, {
+      for (const other of buttons) other.classList.toggle("is-active", other === button);
+      document.getElementById(detailId).innerHTML = moveCard(step.explanation, {
         badge: `${say("ui.step", { n: step.index })} · ${step.explanation.technique.name}`,
       });
       state.highlight = {
@@ -423,6 +430,61 @@ function wireNarrowing() {
       renderBoard();
     });
   }
+}
+
+/**
+ * Why the selected cell shows the notes it shows.
+ *
+ * A player read a cell holding one note as a misreading of their screenshot,
+ * because their own app showed two. The reader never looks at pencil marks, so
+ * there was nothing to misread: the coach had proved the second one impossible.
+ * This panel says that out loud, digit by digit, with the technique behind each.
+ */
+function renderCellNotes() {
+  // An untouched page has nothing to explain: every cell would read "1 to 9".
+  if (!state.cands || state.board.every((digit) => digit === 0)) {
+    dom.cellNotes.innerHTML = "";
+    return;
+  }
+  const cell = state.selected;
+  const notes = explainCellCandidates(state.board, cell, { cands: state.cands, steps: state.narrowing });
+  const name = cellName(cell);
+
+  if (notes.digit !== 0) {
+    dom.cellNotes.innerHTML = `<p class="panel-note">${escapeHtml(
+      say("ui.cellNotes.filled", { cell: name, digit: notes.digit })
+    )}</p>`;
+    return;
+  }
+
+  const list = (digits) => digits.join(" ");
+  const left =
+    notes.left.length > 0
+      ? `<span class="notes-left">${escapeHtml(say("ui.cellNotes.left", { list: list(notes.left) }))}</span>`
+      : `<span class="notes-left is-empty">${escapeHtml(say("ui.cellNotes.none"))}</span>`;
+
+  let ruledOut = `<p class="panel-note">${escapeHtml(say("ui.cellNotes.kept"))}</p>`;
+  if (notes.ruledOut.length > 0) {
+    const rows = notes.ruledOut
+      .map(
+        (entry) => `
+        <button class="step" type="button" data-narrow="${entry.step}">
+          <span class="step-index is-digit">${entry.digit}</span>
+          <span class="step-technique">${escapeHtml(entry.name)}</span>
+        </button>`
+      )
+      .join("");
+    ruledOut = `
+      <p class="panel-note">${escapeHtml(say("ui.cellNotes.ruledOut"))}</p>
+      <div class="step-list">${rows}</div>`;
+  }
+
+  dom.cellNotes.innerHTML = `
+    <p class="notes-head"><strong>${escapeHtml(say("ui.cellNotes", { cell: name }))}</strong> ${left}</p>
+    <p class="panel-note">${escapeHtml(say("ui.cellNotes.plain", { list: list(notes.plain) }))}</p>
+    ${ruledOut}
+    <div id="cell-note-detail"></div>`;
+  wireNarrowing(dom.cellNotes, "cell-note-detail");
 }
 
 function renderCoach() {
@@ -458,7 +520,7 @@ function renderHint() {
         setDigit(hint.fallback.cell, hint.fallback.digit);
       });
     }
-    wireNarrowing();
+    wireNarrowing(dom.coachOutput, "narrow-detail");
     renderBoard();
     return;
   }
@@ -492,7 +554,7 @@ function renderHint() {
     ${narrowingSection()}`;
 
   document.getElementById("apply-move").addEventListener("click", () => applyHintMove(move));
-  wireNarrowing();
+  wireNarrowing(dom.coachOutput, "narrow-detail");
   renderBoard();
 }
 
@@ -514,6 +576,7 @@ function applyHintMove(move) {
   // Turn the candidates on, or the player sees nothing happen.
   dom.showCandidates.checked = true;
   renderBoard();
+  renderCellNotes();
   renderCoach();
 }
 
@@ -636,6 +699,7 @@ function setLanguage(lang) {
   redrawDeployLine(dom.deployLine, lang, say, escapeHtml, PROJECT_PATH);
   syncUrl();
   renderBoard();
+  renderCellNotes();
   renderCoach();
 }
 

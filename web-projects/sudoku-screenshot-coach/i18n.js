@@ -701,8 +701,31 @@ export const MESSAGES = {
   },
   "ui.copyLink": { en: "Copy a link to this grid", es: "Copiar un enlace a esta cuadrícula" },
   "ui.showCandidates": {
-    en: "Show the candidates left in each empty cell",
-    es: "Mostrar los candidatos que quedan en cada celda vacía",
+    en: "Show the notes the coach works out for each empty cell",
+    es: "Mostrar las notas que el entrenador deduce para cada celda vacía",
+  },
+  "ui.showCandidates.note": {
+    en: "The tool never reads the pencil marks in your picture. It works these notes out from the grid, and it applies every elimination it can prove, so its list is often shorter than the one your sudoku app shows.",
+    es: "La herramienta nunca lee las anotaciones a lápiz de tu imagen. Deduce estas notas de la cuadrícula y aplica cada descarte que puede demostrar, así que su lista suele ser más corta que la de tu aplicación de sudoku.",
+  },
+  "ui.cellNotes": { en: "Notes in {cell}", es: "Notas en {cell}" },
+  "ui.cellNotes.filled": {
+    en: "{cell} holds {digit}. Notes are kept for empty cells only.",
+    es: "{cell} contiene {digit}. Las notas solo se guardan para las celdas vacías.",
+  },
+  "ui.cellNotes.left": { en: "Still possible: {list}.", es: "Todavía posibles: {list}." },
+  "ui.cellNotes.none": {
+    en: "No digit fits here. A digit somewhere else in the grid must be wrong.",
+    es: "Aquí no cabe ninguna cifra. Alguna cifra en otro punto de la cuadrícula tiene que estar mal.",
+  },
+  "ui.cellNotes.plain": { en: "The rules alone allow {list}.", es: "Solo con las reglas caben {list}." },
+  "ui.cellNotes.ruledOut": {
+    en: "The coach ruled the rest out. Select one to see the technique that did it:",
+    es: "El entrenador descartó el resto. Selecciona uno para ver la técnica que lo hizo:",
+  },
+  "ui.cellNotes.kept": {
+    en: "The coach could rule none of them out.",
+    es: "El entrenador no pudo descartar ninguna.",
   },
   "ui.narrowing": {
     en: "How the candidates were narrowed ({count} steps)",

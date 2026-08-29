@@ -28,6 +28,11 @@ on the board.
   impossible, so the notes are as tight as a good player's from the moment you
   open it. Under the move, "how the candidates were narrowed" walks you through
   every elimination it applied and the technique behind each one.
+- **Every cell explains its own notes.** Select a cell and the panel under the
+  grid shows what the rules alone allow, what is still possible, and the
+  technique that ruled out each of the rest. These notes are worked out from the
+  grid and never read from your picture, so a shorter list than your sudoku app's
+  means the tool proved something extra, not that it misread a digit.
 - **Knows twenty-three techniques**, from Naked Single up through Swordfish,
   Jellyfish, the wings, Skyscraper, Simple Coloring, XY-Chain, Unique Rectangle
   and BUG+1. Every one has a plain-language description in the glossary at the

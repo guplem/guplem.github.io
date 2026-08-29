@@ -743,3 +743,45 @@ kbd {
 .narrowing .panel-note {
   margin: 0.6rem 0 0;
 }
+
+/* --- why one cell shows the notes it shows --- */
+
+.cell-notes:empty {
+  display: none;
+}
+
+.cell-notes {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+  margin-top: 0.7rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cell-notes .panel-note {
+  margin: 0.5rem 0 0;
+}
+
+.cell-notes .step-list {
+  margin-top: 0.5rem;
+  max-height: none;
+}
+
+.notes-head {
+  font-size: 0.95rem;
+}
+
+.notes-left {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.notes-left.is-empty {
+  color: var(--error);
+}
+
+.step-index.is-digit {
+  color: var(--text);
+  font-weight: 600;
+  text-align: center;
+}

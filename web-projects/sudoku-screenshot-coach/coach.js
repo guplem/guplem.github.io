@@ -85,6 +85,7 @@ export function applyMoveToState(state, move) {
  * @returns {{cands: Uint16Array, removed: number, techniques: string[], steps: Array}}
  *   `removed` counts the candidates ruled out, `techniques` names the ones that
  *   did it, and `steps` holds each one explained, in the order they were applied.
+ *   Every step carries `removals`, the candidates it really took off the grid.
  */
 export function reduceCandidates(board, startCands = computeCandidates(board), lang = DEFAULT_LANGUAGE, options = {}) {
   const { maxRounds = 800 } = options;
@@ -101,22 +102,70 @@ export function reduceCandidates(board, startCands = computeCandidates(board), l
     // Explain the move against the grid as it stood BEFORE the move, or the
     // candidates it talks about would already be gone from the reasoning.
     const explanation = explainMove(move, { board, cands: Uint16Array.from(cands), unique }, lang);
-    let removedThisRound = 0;
+    // Only the eliminations that really changed the grid belong to this step. A
+    // later technique can name a candidate an earlier one already took, and
+    // crediting the step that repeated it would point a cell at the wrong reason.
+    const removals = [];
     for (const { cell, digit } of move.eliminations) {
       if ((cands[cell] & bitOf(digit)) === 0) continue;
       cands[cell] &= ~bitOf(digit);
-      removedThisRound += 1;
+      removals.push({ cell, digit });
     }
     // A technique that changes nothing would loop for ever. It should not
     // happen, because a finder only reports candidates a cell still holds, but
     // stopping here keeps that guarantee cheap to rely on.
-    if (removedThisRound === 0) break;
-    removed += removedThisRound;
-    steps.push({ index: steps.length + 1, move, explanation, summary: moveSummary(move, lang) });
+    if (removals.length === 0) break;
+    removed += removals.length;
+    steps.push({ index: steps.length + 1, move, explanation, removals, summary: moveSummary(move, lang) });
     if (!techniques.includes(move.technique)) techniques.push(move.technique);
   }
 
   return { cands, removed, techniques, steps };
+}
+
+/**
+ * Why one cell shows the notes it shows.
+ *
+ * The grid draws the narrowed candidates, so a cell often holds fewer digits
+ * than the rules alone allow, and fewer than the player's own sudoku app shows.
+ * A player read that gap as a misreading of their screenshot. It is not: the
+ * tool never reads pencil marks, it works the notes out, and it can prove more
+ * than the rules alone. This takes one cell apart and says, digit by digit,
+ * which technique took each one away.
+ *
+ * @param {Int8Array} board the grid as it stands
+ * @param {number} cell the cell to explain
+ * @param {{cands: Uint16Array, steps: Array}} reduced the result of `reduceCandidates`
+ * @returns {{cell: number, digit: number, plain: number[], left: number[],
+ *   ruledOut: Array<{digit: number, technique: string, name: string, step: number}>}}
+ *   `plain` is what the rules alone allow, `left` what survives, and `ruledOut`
+ *   names the narrowing step that removed each of the rest, lowest digit first.
+ *   A filled cell has nothing to explain, so every list comes back empty.
+ */
+export function explainCellCandidates(board, cell, reduced) {
+  if (board[cell] !== 0) return { cell, digit: board[cell], plain: [], left: [], ruledOut: [] };
+
+  const ruledOut = [];
+  for (const step of reduced.steps ?? []) {
+    for (const removal of step.removals ?? []) {
+      if (removal.cell !== cell) continue;
+      ruledOut.push({
+        digit: removal.digit,
+        technique: step.move.technique,
+        name: step.explanation.technique.name,
+        step: step.index,
+      });
+    }
+  }
+  ruledOut.sort((a, b) => a.digit - b.digit);
+
+  return {
+    cell,
+    digit: 0,
+    plain: digitsOf(computeCandidates(board)[cell]),
+    left: digitsOf(reduced.cands[cell]),
+    ruledOut,
+  };
 }
 
 /**
