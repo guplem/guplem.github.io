@@ -223,6 +223,51 @@ body.searching main {
   color: var(--text-muted);
 }
 
+/* === Compact result cards, on a phone and during a search only ===
+   A full card costs about one screen on a phone, so a search that keeps three
+   projects still needs three swipes to compare them. While a search is active,
+   a phone gets a short card: the title and one line of the description, no
+   image. The visitor scans the whole result list at once, which is the point of
+   the search.
+
+   Both conditions are deliberate:
+   - `body.searching` (set by app.js) only. A visitor who lands on the page with
+     an empty box still sees the full cards, images and all.
+   - The phone width only. A big screen shows several cards side by side, so it
+     never had the problem and keeps the full cards during a search too. */
+@media (max-width: 767px) {
+  body.searching .projects-grid {
+    gap: var(--sp-sm);
+  }
+
+  body.searching .project-image,
+  body.searching .project-date,
+  body.searching .project-skills {
+    display: none;
+  }
+
+  body.searching .project-body {
+    gap: 2px;
+    padding: var(--sp-sm) var(--sp-md);
+  }
+
+  body.searching .project-title {
+    font-size: 1rem;
+  }
+
+  /* Cut the description to one line. teaserMarkdown() gives one paragraph, so
+     one clamped <p> covers the whole teaser. */
+  body.searching .project-teaser p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    overflow: hidden;
+    margin: 0;
+    font-size: 0.85rem;
+  }
+}
+
 /* === Footer === */
 .page-footer {
   text-align: center;
