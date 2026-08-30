@@ -1,4 +1,4 @@
-# ADR 0005: Three layouts, and a fractional pixel scale on a dense screen
+# ADR 0006: Three layouts, and a fractional pixel scale on a dense screen
 
 ## Context
 
