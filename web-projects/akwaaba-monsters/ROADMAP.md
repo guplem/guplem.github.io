@@ -100,9 +100,6 @@ nothing else.
   `species.js`, and the save keeps `seen` and `caught` lists that are already
   filled in as you play. The player screen shows the counts. There is no screen
   that lists them.
-- **The box.** A seventh creature goes to `state.box` and stays there. There is
-  no way to look at the box or to swap a creature out of it. `PARTY_LIMIT` and
-  `addMonster` in `save.js` handle the storing; the screen is missing.
 - **Nicknames.** `monster.nickname` is honoured everywhere by `displayName`, and
   the save keeps it. Nothing ever asks for one.
 - **Where a creature was met.** `metAt` and `metLevel` are recorded on every
@@ -160,9 +157,11 @@ turns, weather, and a move that hits every creature on the field.
 
 Honest list of things that work but could be better.
 
-- **The box has no exit.** A creature sent to the box in this iteration cannot
-  come back. Nothing in area 1 can fill a party of six before the gym, so it is
-  unlikely, but it is a dead end and the box screen fixes it.
+- **The box holds one page and no groups.** Every creature sits in one long
+  list that scrolls six rows at a time. The real games give you several boxes
+  with names and a wallpaper. One list is enough for the numbers area 1 can
+  produce, and `state.box` is a plain array, so a later iteration can group it
+  without touching the save format.
 - **Losing a battle** heals the party and moves the player home (or to the
   Akwaaba Centre once the mine is cleared). It costs no money, which the real
   games do charge.

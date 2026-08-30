@@ -23,6 +23,8 @@ at a time, and `ROADMAP.md` is the handover note that says how.
   critical hits, lasting conditions, stat changes, levels, experience,
   evolution, and catching with a calabash instead of a ball.
 - **Ten maps and fourteen trainers**, from your bedroom to the gym floor.
+- **A team of six, and a box for the rest.** Catch a seventh creature and it
+  waits in the box. Open the box from the menu to bring it back out.
 - **A rival who is a cook.** Mama Sopa meets you three times, and each time she
   offers a bowl of banku and soup. You can refuse. If you do not, your whole
   team really is poisoned.

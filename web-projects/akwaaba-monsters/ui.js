@@ -157,7 +157,12 @@ export function pixelScale(windowW, windowH, screenW, screenH, max = 6) {
  */
 export function fieldMenuItems(state) {
   const items = [];
-  if ((state.party ?? []).length > 0) items.push({ id: "party", label: "Creatures" });
+  if ((state.party ?? []).length > 0) {
+    items.push({ id: "party", label: "Creatures" });
+    // The box is where a creature caught with a full team waits. Without this
+    // entry there is no way to bring one back, and it is stranded for good.
+    items.push({ id: "box", label: "Box" });
+  }
   items.push({ id: "bag", label: "Bag" });
   items.push({ id: "player", label: state.player?.name ?? "Player" });
   items.push({ id: "save", label: "Save" });

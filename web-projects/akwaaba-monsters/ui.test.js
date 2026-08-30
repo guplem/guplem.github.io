@@ -212,6 +212,13 @@ describe("fieldMenuItems", () => {
     expect(withOne.map((entry) => entry.id)).toContain("party");
   });
 
+  test("offers the box alongside the creature list, so nothing is stranded", () => {
+    const items = fieldMenuItems({ party: [{}], player: { name: "Guillem" } }).map((e) => e.id);
+    expect(items).toContain("box");
+    const none = fieldMenuItems({ party: [], player: {} }).map((e) => e.id);
+    expect(none).not.toContain("box");
+  });
+
   test("names the player's own entry after the player", () => {
     const items = fieldMenuItems({ party: [], player: { name: "Nana" } });
     expect(items.find((entry) => entry.id === "player").label).toBe("Nana");

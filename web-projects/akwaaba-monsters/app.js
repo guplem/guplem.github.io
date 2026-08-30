@@ -38,9 +38,11 @@ import {
 } from "./world.js";
 import { ScriptRunner, evaluateCondition } from "./events.js";
 import {
+  PARTY_LIMIT,
   addMonster,
   awardBadge,
   createSave,
+  depositToBox,
   exportFileName,
   formatPlayTime,
   hasFlag,
@@ -49,9 +51,13 @@ import {
   markCaught,
   markSeen,
   parseSave,
+  reorderBox,
+  reorderParty,
   saveToStorage,
   serialise,
   setFlag,
+  swapWithBox,
+  withdrawFromBox,
 } from "./save.js";
 import {
   createMonster,
@@ -82,9 +88,11 @@ import { paginate } from "./art/font.js";
 import { PERSON_LIFT } from "./art/people.js";
 import {
   affordable,
+  barWidth,
   cameraFor,
   clampScroll,
   fieldMenuItems,
+  healthColor,
   messagePage,
   moveCursor,
   moveGridCursor,
@@ -1298,6 +1306,13 @@ function updateMenu() {
     else if (id === "party") {
       menu.view = "party";
       menu.cursor = 0;
+    } else if (id === "box") {
+      menu.view = "box";
+      menu.side = "party";
+      menu.partyCursor = 0;
+      menu.boxCursor = 0;
+      menu.boxScroll = 0;
+      menu.held = null;
     } else if (id === "bag") {
       menu.view = "bag";
       menu.cursor = 0;
@@ -1330,6 +1345,11 @@ function updateMenu() {
       menu.view = "party";
       audio.playSound("back");
     }
+    return;
+  }
+
+  if (menu.view === "box") {
+    updateBox(menu);
     return;
   }
 
@@ -1398,6 +1418,214 @@ function updateMenu() {
     menu.view = "root";
     audio.playSound("back");
   }
+}
+
+// --- The box ---------------------------------------------------------------
+//
+// Two columns: the team on the left, the box on the right. One rule works
+// everywhere. A picks a creature up, A puts it down. Where it lands decides
+// which of the five moves in `save.js` runs.
+//
+// Each column ends in one empty slot. That slot is what makes a move possible
+// with no partner: drop a creature on the empty box row to put it away, drop a
+// boxed creature on the empty team row to bring it out.
+
+/** How many rows the box screen shows in each column. */
+const BOX_ROWS = 6;
+
+/** How tall one row of the box screen is, and where the first one sits. */
+const BOX_ROW_H = 18;
+const BOX_TOP = 34;
+
+/** Where each column starts, and how wide it is. */
+const BOX_COLUMNS = { party: 8, box: 122 };
+const BOX_COL_W = 110;
+
+/**
+ * How many rows each column has, counting the empty slot at the end.
+ * The team never shows more than six, because it never holds more than six.
+ */
+function boxRowCounts(state) {
+  return {
+    party: Math.min(PARTY_LIMIT, state.party.length + 1),
+    box: state.box.length + 1,
+  };
+}
+
+/** Keep both cursors inside their column after a move changed the counts. */
+function clampBoxCursors(menu) {
+  const rows = boxRowCounts(game.state);
+  menu.partyCursor = Math.max(0, Math.min(menu.partyCursor, rows.party - 1));
+  menu.boxCursor = Math.max(0, Math.min(menu.boxCursor, rows.box - 1));
+  menu.boxScroll = clampScroll(menu.boxCursor, menu.boxScroll, BOX_ROWS, rows.box);
+}
+
+function updateBox(menu) {
+  const state = game.state;
+  const rows = boxRowCounts(state);
+  const rowsHere = menu.side === "party" ? rows.party : rows.box;
+  const cursorKey = menu.side === "party" ? "partyCursor" : "boxCursor";
+
+  if (tapped("up")) {
+    menu[cursorKey] = moveCursor(menu[cursorKey], -1, rowsHere);
+    audio.playSound("blip");
+  }
+  if (tapped("down")) {
+    menu[cursorKey] = moveCursor(menu[cursorKey], 1, rowsHere);
+    audio.playSound("blip");
+  }
+  if (tapped("left") && menu.side === "box") {
+    menu.side = "party";
+    audio.playSound("blip");
+  }
+  if (tapped("right") && menu.side === "party") {
+    menu.side = "box";
+    audio.playSound("blip");
+  }
+  clampBoxCursors(menu);
+
+  if (tapped("b")) {
+    audio.playSound("back");
+    // The first B puts the creature down. Only the second one leaves, so a
+    // player carrying somebody cannot walk out of the screen by accident.
+    if (menu.held) menu.held = null;
+    else menu.view = "root";
+    return;
+  }
+  if (!tapped("a")) return;
+
+  const index = menu.side === "party" ? menu.partyCursor : menu.boxCursor;
+  const list = menu.side === "party" ? state.party : state.box;
+
+  if (!menu.held) {
+    if (!list[index]) {
+      audio.playSound("bump");
+      return;
+    }
+    menu.held = { side: menu.side, index };
+    audio.playSound("select");
+    return;
+  }
+  placeHeldCreature(menu, menu.side, index);
+}
+
+/** Put the creature the player is carrying into the slot under the cursor. */
+function placeHeldCreature(menu, side, index) {
+  const state = game.state;
+  const held = menu.held;
+  const carried = held.side === "party" ? state.party[held.index] : state.box[held.index];
+  if (!carried) {
+    menu.held = null;
+    return;
+  }
+
+  // Same column: swap the two, or do nothing at all on the empty end slot.
+  if (held.side === side) {
+    const list = side === "party" ? state.party : state.box;
+    if (list[index]) {
+      game.state =
+        side === "party"
+          ? reorderParty(state, held.index, index)
+          : reorderBox(state, held.index, index);
+    }
+    menu.held = null;
+    audio.playSound("select");
+    clampBoxCursors(menu);
+    return;
+  }
+
+  const partyIndex = side === "party" ? index : held.index;
+  const boxIndex = side === "box" ? index : held.index;
+  const target = side === "party" ? state.party[index] : state.box[index];
+
+  let outcome;
+  if (target) {
+    const swap = swapWithBox(state, partyIndex, boxIndex);
+    outcome = { state: swap.state, ok: swap.swapped, reason: swap.reason };
+  } else if (side === "box") {
+    const put = depositToBox(state, held.index);
+    outcome = { state: put.state, ok: put.moved, reason: put.reason };
+  } else {
+    const out = withdrawFromBox(state, held.index);
+    outcome = { state: out.state, ok: out.moved, reason: out.reason };
+  }
+
+  if (!outcome.ok) {
+    // Keep hold of the creature so the player can try another slot.
+    audio.playSound("bump");
+    say(outcome.reason);
+    return;
+  }
+  game.state = outcome.state;
+  menu.held = null;
+  audio.playSound("select");
+  clampBoxCursors(menu);
+}
+
+/** One row of one column: a creature, or the empty slot at the end. */
+function drawBoxRow(monster, x, y, { held, chosen }) {
+  if (held) renderer.rect(x, y - 4, BOX_COL_W, BOX_ROW_H - 2, "#f7d98c");
+  if (chosen) renderer.cursor(x + 2, y + 1);
+  if (!monster) {
+    renderer.text("- - -", x + 20, y, { color: UI.border });
+    return;
+  }
+  renderer.creature(monster.species, x + 8, y - 4, { scale: 0.35 });
+  renderer.text(displayName(monster), x + 24, y - 2);
+  renderer.textRight(`L${monster.level}`, x + BOX_COL_W - 4, y - 2);
+  // The numbers go on the left of the second line and the bar on the right of
+  // it. A creature at 100/100 is the widest this ever gets, and it still clears
+  // the bar.
+  const full = maxHp(monster);
+  renderer.text(`${monster.hp}/${full}`, x + 24, y + 6);
+  renderer.rect(x + 68, y + 7, 38, 5, UI.ink);
+  renderer.rect(x + 69, y + 8, 36, 3, UI.paperShade);
+  renderer.rect(x + 69, y + 8, barWidth(monster.hp, full, 36), 3, healthColor(monster.hp, full));
+}
+
+/** Draw one column of the box screen, and make each row a tap target. */
+function drawBoxColumn(menu, side, list, scroll, cursor, rowCount) {
+  const x = BOX_COLUMNS[side];
+  for (let row = 0; row < Math.min(BOX_ROWS, rowCount - scroll); row++) {
+    const at = scroll + row;
+    const y = BOX_TOP + row * BOX_ROW_H;
+    drawBoxRow(list[at], x, y, {
+      held: menu.held?.side === side && menu.held.index === at,
+      chosen: menu.side === side && cursor === at,
+    });
+    hotChoose(x, y - 5, BOX_COL_W, BOX_ROW_H, () => {
+      menu.side = side;
+      if (side === "party") menu.partyCursor = at;
+      else menu.boxCursor = at;
+    });
+  }
+}
+
+function drawBox() {
+  const menu = game.menu;
+  const state = game.state;
+  const rows = boxRowCounts(state);
+  renderer.box(4, 4, 232, 152);
+  renderer.text("Box", 14, 10);
+  renderer.textRight(`Team ${state.party.length}/${PARTY_LIMIT}`, 226, 10);
+  renderer.text("TEAM", BOX_COLUMNS.party + 2, 22);
+  renderer.text(`BOX ${state.box.length}`, BOX_COLUMNS.box + 2, 22);
+  renderer.rect(120, 20, 1, 118, UI.border);
+
+  drawBoxColumn(menu, "party", state.party, 0, menu.partyCursor, rows.party);
+  drawBoxColumn(menu, "box", state.box, menu.boxScroll, menu.boxCursor, rows.box);
+
+  const carried = menu.held
+    ? menu.held.side === "party"
+      ? state.party[menu.held.index]
+      : state.box[menu.held.index]
+    : null;
+  // The hint stays short so it never runs into the back label on the right. The
+  // widest it gets is "Holding Baobanto.", and the label owns everything past
+  // x 176.
+  renderer.text(carried ? `Holding ${displayName(carried)}.` : "A picks up and puts down", 14, 142);
+  renderer.textRight("B: back", 226, 142);
+  hot(176, 136, 60, 20, () => virtualPress("b"));
 }
 
 function openSaveMenu() {
@@ -1836,6 +2064,11 @@ function drawMenu() {
     });
     renderer.text("B or tap to go back", 118, 146);
     hot(0, 0, SCREEN_W, SCREEN_H, () => virtualPress("b"));
+    return;
+  }
+
+  if (menu.view === "box") {
+    drawBox();
     return;
   }
 
