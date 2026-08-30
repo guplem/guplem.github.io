@@ -72,6 +72,8 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frames as spec, the scanner and pen model, geometry gotchas |
 | `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
 | `web-projects/unit-converter/AGENTS.md` | unit-converter: module map, the one-input-box contract, unit-catalogue and number-parsing gotchas |
+| `web-projects/akwaaba-monsters/AGENTS.md` | akwaaba-monsters: the engine/content line, the permanent-identifier rule, how to add an area |
+| `web-projects/akwaaba-monsters/ROADMAP.md` | akwaaba-monsters: what the first area left out, and where each missing piece plugs in |
 | `adr/*.md`, `web-projects/*/adr/*.md` | Architecture Decision Records: why behind key choices (root = main-site/cross-cutting; per-project = project-specific) |
 | `README.md` (root) | Human-facing: what the site is, how to run locally, project list |
 | `web-projects/*/README.md` | Human-facing: per-project features, how to run |
@@ -201,6 +203,10 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [unit-converter 0001](web-projects/unit-converter/adr/0001-one-input-box-instead-of-pickers.md) | One input box carries the whole interface; no category picker, no dropdowns |
 | [unit-converter 0002](web-projects/unit-converter/adr/0002-answer-every-unit-ordered-by-usefulness.md) | Answer every compatible unit at once, ordered by commonness plus readability |
 | [unit-converter 0003](web-projects/unit-converter/adr/0003-live-rates-over-a-bundled-snapshot.md) | Live exchange rates over a bundled snapshot, and always say which is in use |
+| [akwaaba-monsters 0001](web-projects/akwaaba-monsters/adr/0001-draw-and-play-everything-from-code.md) | Draw every picture from code, not from image files |
+| [akwaaba-monsters 0002](web-projects/akwaaba-monsters/adr/0002-one-versioned-save-additive-only.md) | One versioned save document, only ever added to, so a save survives new areas |
+| [akwaaba-monsters 0003](web-projects/akwaaba-monsters/adr/0003-an-area-is-one-file.md) | An area is one file, and adding one changes no engine code |
+| [akwaaba-monsters 0004](web-projects/akwaaba-monsters/adr/0004-generated-audio-not-audio-files.md) | Generate the music, do not ship it |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
