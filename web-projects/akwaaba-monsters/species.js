@@ -26,7 +26,12 @@ const SPECIES_LIST = [
     id: "baobo",
     name: "Baobo",
     types: ["grass"],
-    base: { hp: 50, attack: 48, defense: 55, spAttack: 55, spDefense: 55, speed: 35 },
+    // 318 points, the same as the other two starters, the way Treecko, Torchic
+    // and Mudkip all carry exactly 310. Baobo used to carry 298, which made the
+    // grass choice the weakest creature as well as the one with the hardest
+    // road. The points went into health, defence and special attack, because
+    // "slow and stubborn" is what its entry promises. The speed of 35 stays.
+    base: { hp: 55, attack: 48, defense: 60, spAttack: 62, spDefense: 58, speed: 35 },
     catchRate: 45,
     baseExp: 62,
     growth: "medium",
@@ -71,7 +76,8 @@ const SPECIES_LIST = [
     id: "ananse",
     name: "Ananse",
     types: ["fire"],
-    base: { hp: 44, attack: 58, defense: 44, spAttack: 60, spDefense: 48, speed: 62 },
+    // 318 points, matching the other two starters.
+    base: { hp: 45, attack: 58, defense: 44, spAttack: 60, spDefense: 49, speed: 62 },
     catchRate: 45,
     baseExp: 62,
     growth: "medium",
@@ -327,13 +333,17 @@ const SPECIES_LIST = [
     catchRate: 190,
     baseExp: 50,
     growth: "fast",
+    // Sumsu is the Taillow of this game, and Taillow gets its 60 power Wing
+    // Attack at level 13. Wing Beat sat at level 5 here, which handed the first
+    // trainer on the road a move that hit the grass starter for 180 effective
+    // power and ended the fight in one turn.
     learnset: [
       [1, "peck"],
       [1, "growl"],
-      [5, "wingBeat"],
-      [9, "sandThrow"],
-      [14, "fineFeather"],
-      [20, "harmattan"],
+      [5, "sandThrow"],
+      [13, "wingBeat"],
+      [17, "fineFeather"],
+      [22, "harmattan"],
     ],
     evolve: null,
     height: 0.2,
@@ -348,13 +358,16 @@ const SPECIES_LIST = [
     catchRate: 190,
     baseExp: 54,
     growth: "fast",
+    // Gori is the Poochyena of this game, and Poochyena gets its 60 power Bite
+    // at level 13, with Howl at 5. Bite sat at level 5 here, which is the same
+    // mistake Sumsu carried.
     learnset: [
       [1, "scratch"],
       [1, "tailWhip"],
-      [5, "bite"],
-      [10, "growl"],
-      [16, "bodySlam"],
-      [22, "nap"],
+      [5, "growl"],
+      [13, "bite"],
+      [18, "bodySlam"],
+      [24, "nap"],
     ],
     evolve: null,
     height: 0.5,
@@ -365,18 +378,24 @@ const SPECIES_LIST = [
     id: "kanku",
     name: "Kanku",
     types: ["poison"],
-    base: { hp: 48, attack: 62, defense: 48, spAttack: 50, spDefense: 45, speed: 50 },
+    // The common roadside creature of the first route, so its numbers sit with
+    // Sumsu and Gori and below every starter. It used to total 303, which put
+    // it between the starters, and it carried Venom Sting from level 1. Poison
+    // is twice as strong against grass, so the very first wild Kanku beat the
+    // grass starter in two hits. See `areas/balance.test.js`.
+    base: { hp: 45, attack: 50, defense: 45, spAttack: 42, spDefense: 42, speed: 48 },
     catchRate: 150,
     baseExp: 58,
     growth: "fast",
     learnset: [
       [1, "tackle"],
-      [1, "venomSting"],
-      [6, "toxicDust"],
-      [11, "bite"],
-      [17, "acid"],
-      [23, "bankuSoup"],
-      [29, "sharpStone"],
+      [1, "growl"],
+      [7, "venomSting"],
+      [12, "toxicDust"],
+      [15, "bite"],
+      [20, "acid"],
+      [26, "bankuSoup"],
+      [32, "sharpStone"],
     ],
     evolve: null,
     height: 0.9,
@@ -435,14 +454,19 @@ const SPECIES_LIST = [
     catchRate: 120,
     baseExp: 72,
     growth: "fast",
+    // Toxic Dust poisons every time it lands and the foe's chooser rates a
+    // status move above most early attacks, so it sat on the river at level 5
+    // and poisoned the player on sight. It now arrives at 14, past the whole
+    // first half of the area. Venom Sting stays at level 1: it poisons three
+    // times in ten, which is the Wurmple of this game.
     learnset: [
       [1, "peck"],
       [1, "venomSting"],
-      [5, "toxicDust"],
       [10, "acid"],
-      [16, "wingBeat"],
-      [22, "fineFeather"],
-      [28, "harmattan"],
+      [14, "toxicDust"],
+      [18, "wingBeat"],
+      [24, "fineFeather"],
+      [30, "harmattan"],
     ],
     evolve: null,
     height: 0.2,

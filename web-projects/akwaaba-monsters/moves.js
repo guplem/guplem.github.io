@@ -130,7 +130,13 @@ const MOVE_LIST = [
     id: "vineWhip",
     name: "Vine Whip",
     type: "grass",
-    cat: "physical",
+    // Special, like every other grass move here. Absorb and Seed Bomb always
+    // were. Vine Whip and Razor Leaf were physical, which left Baobo, a
+    // creature built around 55 special attack, fighting with its 48 attack
+    // instead. It was the only starter whose moves missed its best stat.
+    // Generation 3, which this battle engine follows, makes every grass move
+    // special for the same reason.
+    cat: "special",
     power: 45,
     acc: 100,
     pp: 25,
@@ -140,7 +146,7 @@ const MOVE_LIST = [
     id: "razorLeaf",
     name: "Razor Leaf",
     type: "grass",
-    cat: "physical",
+    cat: "special",
     power: 55,
     acc: 95,
     pp: 25,
