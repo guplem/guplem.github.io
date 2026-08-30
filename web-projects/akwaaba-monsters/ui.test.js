@@ -7,6 +7,7 @@ import {
   fieldMenuItems,
   healthColor,
   isCritical,
+  layoutMode,
   messagePage,
   moveCursor,
   moveGridCursor,
@@ -194,13 +195,75 @@ describe("pixelScale", () => {
   });
 
   test("never goes past the ceiling it is given", () => {
-    expect(pixelScale(4000, 4000, 240, 160, 6)).toBe(6);
+    expect(pixelScale(4000, 4000, 240, 160, { max: 6 })).toBe(6);
   });
 
-  test("only ever gives whole numbers, because half a pixel looks muddy", () => {
+  test("only ever gives whole numbers on a screen with big pixels", () => {
     for (let w = 200; w < 2000; w += 37) {
       expect(Number.isInteger(pixelScale(w, w, 240, 160))).toBe(true);
     }
+  });
+
+  // A phone is the reason the fraction exists. 390 wide is a common phone, and
+  // a whole number there means scale 1: the game fills 240 of the 390 and looks
+  // like a stamp. The screen is dense enough that nobody can see the seam.
+  test("fills the width on a dense screen when a whole number would waste it", () => {
+    expect(pixelScale(390, 700, 240, 160, { pixelRatio: 3 })).toBeCloseTo(1.625);
+  });
+
+  test("keeps the whole number on a dense screen when it wastes little", () => {
+    // 1000 wide is 4.16 times 240. Scale 4 uses 96% of the room, so the fraction
+    // buys almost nothing and costs an even pixel.
+    expect(pixelScale(1000, 700, 240, 160, { pixelRatio: 3 })).toBe(4);
+  });
+
+  test("never fills on a screen with big pixels, however much room is wasted", () => {
+    expect(pixelScale(390, 700, 240, 160, { pixelRatio: 1 })).toBe(1);
+  });
+
+  test("still stops at the ceiling when it is allowed to fill", () => {
+    expect(pixelScale(4000, 4000, 240, 160, { max: 6, pixelRatio: 3 })).toBe(6);
+  });
+
+  test("never returns a scale that overflows the room it was given", () => {
+    for (let w = 240; w < 2000; w += 13) {
+      const scale = pixelScale(w, 4000, 240, 160, { pixelRatio: 3 });
+      expect(scale * 240).toBeLessThanOrEqual(w);
+    }
+  });
+});
+
+describe("layoutMode", () => {
+  test("puts the pad over the screen in fullscreen, whatever the shape", () => {
+    expect(layoutMode({ fullscreen: true, width: 390, height: 844, coarsePointer: true })).toBe(
+      "overlay",
+    );
+    expect(layoutMode({ fullscreen: true, width: 1440, height: 900, coarsePointer: false })).toBe(
+      "overlay",
+    );
+  });
+
+  // A phone held sideways is about 390 tall. The screen alone wants 390 of that,
+  // so there is no room under it for a pad. The pad has to float.
+  test("puts the pad over the screen on a touch screen held sideways", () => {
+    expect(layoutMode({ fullscreen: false, width: 844, height: 390, coarsePointer: true })).toBe(
+      "overlay",
+    );
+  });
+
+  test("puts the pad at the bottom on a touch screen held upright", () => {
+    expect(layoutMode({ fullscreen: false, width: 390, height: 844, coarsePointer: true })).toBe(
+      "theater",
+    );
+  });
+
+  test("leaves a machine with a mouse on the ordinary page", () => {
+    expect(layoutMode({ fullscreen: false, width: 1440, height: 900, coarsePointer: false })).toBe(
+      "page",
+    );
+    expect(layoutMode({ fullscreen: false, width: 700, height: 1200, coarsePointer: false })).toBe(
+      "page",
+    );
   });
 });
 

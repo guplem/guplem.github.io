@@ -10,7 +10,7 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="90" />
+  <meta name="deploy-pull-request" content="89" />
   <meta name="deploy-date" content="2026-08-30T22:10:35.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
@@ -20,6 +20,17 @@
     <div class="screen-frame">
       <canvas id="screen" width="240" height="160" aria-label="Akwaaba Monsters game screen"></canvas>
     </div>
+
+    <!-- Ask for the big screen. It tries the browser's own fullscreen first and
+         falls back to a layer that covers the window, because Safari on an
+         iPhone refuses fullscreen to everything except a video. -->
+    <button id="fullscreen" class="fullscreen-toggle" type="button" aria-pressed="false">
+      <svg class="fullscreen-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path d="M1 5V1h4M11 1h4v4M15 11v4h-4M5 15H1v-4" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span class="fullscreen-word">Fullscreen</span>
+    </button>
 
     <!-- The one place the game asks for typing. An input beats an on-screen
          keyboard here: it works with a real keyboard and with a phone. -->
@@ -60,7 +71,13 @@
     </p>
     <p>
       <strong>Controls.</strong> Arrow keys or WASD to walk. Z or Enter to talk and to confirm.
-      X or Escape for the menu. M mutes the sound. On a phone, use the pad under the screen.
+      X or Escape for the menu. M mutes the sound. On a phone, use the pad under the screen,
+      or drag on the screen to walk and tap what you want to reach.
+    </p>
+    <p>
+      <strong>A bigger screen.</strong> Press Fullscreen and the game fills the window, with the
+      pad floating faintly over it. On a phone held upright the pad sits at the bottom of the
+      screen, in reach of a thumb, and the game takes the full width.
     </p>
     <p>
       <strong>Your save.</strong> The game saves itself to this browser as you play. Nothing is

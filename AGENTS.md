@@ -208,6 +208,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [akwaaba-monsters 0003](web-projects/akwaaba-monsters/adr/0003-an-area-is-one-file.md) | An area is one file, and adding one changes no engine code |
 | [akwaaba-monsters 0004](web-projects/akwaaba-monsters/adr/0004-generated-audio-not-audio-files.md) | Generate the music, do not ship it |
 | [akwaaba-monsters 0005](web-projects/akwaaba-monsters/adr/0005-early-game-balance-copies-emerald.md) | The early game copies Pokemon Emerald, number for number |
+| [akwaaba-monsters 0006](web-projects/akwaaba-monsters/adr/0006-three-layouts-and-a-fractional-scale-on-a-dense-screen.md) | Three layouts, and a fractional pixel scale on a dense screen |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
