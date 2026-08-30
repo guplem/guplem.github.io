@@ -155,7 +155,7 @@ describe("isStatusMove", () => {
 
 describe("the signature moves the story leans on", () => {
   test("Mama Sopa's soup is a poison move that can poison", () => {
-    const soup = getMove("bitterSoup");
+    const soup = getMove("bankuSoup");
     expect(soup.type).toBe("poison");
     expect(soup.effects.some((effect) => effect.status === "poison")).toBe(true);
   });

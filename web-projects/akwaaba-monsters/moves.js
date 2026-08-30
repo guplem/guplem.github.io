@@ -479,15 +479,15 @@ const MOVE_LIST = [
     desc: "Sprays a liquid that eats through anything.",
   },
   {
-    id: "bitterSoup",
-    name: "Bitter Soup",
+    id: "bankuSoup",
+    name: "Banku Soup",
     type: "poison",
     cat: "special",
     power: 70,
     acc: 100,
     pp: 15,
     effects: [{ kind: "status", status: "poison", chance: 20 }],
-    desc: "A hot bowl that nobody should have eaten.",
+    desc: "Fermented dough and a hot bowl of soup. It sat out too long.",
   },
 
   // --- Spirit -------------------------------------------------------------

@@ -230,12 +230,17 @@ export function seesPlayer(map, trainer, player, characters = []) {
 
 /**
  * Whether a step onto this tile starts a wild battle.
- * Only tall grass counts, and only at the map's own rate.
+ *
+ * Out in the open only tall grass counts, so the player can see danger coming.
+ * A cave has no grass to grow, so a map may set `encounters.anywhere` and then
+ * any tile you can stand on will do.
  */
 export function rollsEncounter(map, x, y, rng) {
-  if (!isEncounterTile(map, x, y)) return false;
   const rate = map.encounters?.rate ?? 0;
   if (rate <= 0) return false;
+  const onGrass = isEncounterTile(map, x, y);
+  const anywhere = Boolean(map.encounters?.anywhere) && !isSolid(map, x, y);
+  if (!onGrass && !anywhere) return false;
   return rng.next() < rate;
 }
 
@@ -341,10 +346,12 @@ export function validateMap(map, allMaps = {}) {
       if (entry.min > entry.max) say(`encounter ${entry.species} has min above max`);
       if (entry.min < 1) say(`encounter ${entry.species} can appear below level 1`);
     }
-    const hasGrass = map.ground.some((row) =>
-      [...row].some((character) => map.legend[character] === "tall"),
-    );
-    if (!hasGrass) say("has an encounter table but no tall grass to walk in");
+    if (!map.encounters.anywhere) {
+      const hasGrass = map.ground.some((row) =>
+        [...row].some((character) => map.legend[character] === "tall"),
+      );
+      if (!hasGrass) say("has an encounter table but no tall grass to walk in");
+    }
   }
 
   return problems;

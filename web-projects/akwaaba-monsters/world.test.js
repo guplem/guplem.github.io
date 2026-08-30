@@ -275,6 +275,23 @@ describe("wild encounters", () => {
     expect(hits).toBeLessThan(500);
   });
 
+  test("happen anywhere on a map that says so, which is how caves work", () => {
+    const cave = {
+      ...sample,
+      encounters: { ...sample.encounters, anywhere: true },
+    };
+    const rng = new Rng(4);
+    let hits = 0;
+    for (let i = 0; i < 2000; i++) if (rollsEncounter(cave, 1, 1, rng)) hits++;
+    expect(hits).toBeGreaterThan(100);
+  });
+
+  test("never happen inside a wall, even on a map that says anywhere", () => {
+    const cave = { ...sample, encounters: { ...sample.encounters, anywhere: true } };
+    const rng = new Rng(4);
+    for (let i = 0; i < 200; i++) expect(rollsEncounter(cave, 0, 0, rng)).toBe(false);
+  });
+
   test("never happen on a map with no rate", () => {
     const quiet = { ...sample, encounters: { rate: 0, table: [] } };
     const rng = new Rng(1);
@@ -352,6 +369,15 @@ describe("validateMap", () => {
       ground: sample.ground.map((row) => row.replace(/T/g, ".")),
     };
     expect(validateMap(broken, { other: sample }).join(" ")).toContain("no tall grass");
+  });
+
+  test("allows a cave to have encounters with no grass at all", () => {
+    const cave = {
+      ...sample,
+      ground: sample.ground.map((row) => row.replace(/T/g, ".")),
+      encounters: { ...sample.encounters, anywhere: true },
+    };
+    expect(validateMap(cave, { other: sample }).join(" ")).not.toContain("no tall grass");
   });
 
   test("catches an encounter with the levels the wrong way round", () => {

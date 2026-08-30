@@ -35,6 +35,7 @@ export const STEP_NAMES = [
   "hide",
   "show",
   "chooseStarter",
+  "poisonParty",
   "wait",
   "music",
   "sound",
@@ -223,6 +224,9 @@ export class ScriptRunner {
           return { type: "visible", who: args[0], visible: true };
         case "chooseStarter":
           return { type: "chooseStarter" };
+        case "poisonParty":
+          // Mama Sopa's soup. It is a joke with a real cost.
+          return { type: "poisonParty" };
         case "wait":
           return { type: "wait", ms: args[0] ?? 300 };
         case "music":

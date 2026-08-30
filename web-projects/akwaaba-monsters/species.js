@@ -375,7 +375,7 @@ const SPECIES_LIST = [
       [6, "toxicDust"],
       [11, "bite"],
       [17, "acid"],
-      [23, "bitterSoup"],
+      [23, "bankuSoup"],
       [29, "sharpStone"],
     ],
     evolve: null,
