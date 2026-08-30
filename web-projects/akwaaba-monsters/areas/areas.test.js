@@ -377,10 +377,14 @@ describe("the trainers", () => {
   });
 
   test("give the gym leader the last word: nobody in the area is stronger", () => {
+    // Nana Sika used to be exempt from this, and his ace sat level with the
+    // leader's. Emerald keeps the villain the player meets before a gym well
+    // under the gym leader, so the badge is still the hardest thing in the
+    // town. He is now under it too, and the exemption is gone.
     const highest = (trainer) => Math.max(...trainer.party.map((entry) => entry.level));
     const leader = highest(TRAINERS.nanaKofi);
     for (const [id, trainer] of allTrainers) {
-      if (id === "nanaKofi" || id === "nanaSika") continue;
+      if (id === "nanaKofi") continue;
       expect(`${id}: ${highest(trainer) <= leader}`).toBe(`${id}: true`);
     }
   });

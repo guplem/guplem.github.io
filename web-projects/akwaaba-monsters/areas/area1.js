@@ -26,6 +26,10 @@
 //   gotStarter      chose a first creature
 //   beatSopa1/2/3   beat Mama Sopa at the village, the river and the gym door
 //   ateSoup         accepted a bowl at least once (a joke, and a poisoned party)
+//   ateSoup1/2/3    accepted the bowl at that one meeting. The soup poisons the
+//                   party after the fight, so each meeting needs its own flag:
+//                   `ateSoup` never clears, and would poison a player who ate
+//                   once and refused every time after that.
 //   beatGrunt1..4   beat each Equip Galamsey member
 //   beatBoss        beat Nana Sika, which opens the road east
 //   metNacho        woke the huge thing sleeping by the river
@@ -101,8 +105,8 @@ export const TRAINERS = {
     sprite: "mamaSopa",
     prize: 520,
     party: [
-      { species: "kanku", level: 11 },
-      { species: "krabo", level: 12 },
+      { species: "kanku", level: 10 },
+      { species: "krabo", level: 11 },
     ],
     intro: "The banku pot is bigger now. I have been busy.",
     defeat: "You are quicker than the last one. He is still lying down.",
@@ -112,9 +116,9 @@ export const TRAINERS = {
     sprite: "mamaSopa",
     prize: 900,
     party: [
-      { species: "kanku", level: 13 },
-      { species: "tsetse", level: 14 },
-      { species: "krabo", level: 15 },
+      { species: "kanku", level: 12 },
+      { species: "tsetse", level: 13 },
+      { species: "krabo", level: 14 },
     ],
     intro: "The gym? First you eat. Everybody eats before the gym.",
     defeat: "Go on then. Go and win. I will keep some warm for you.",
@@ -124,9 +128,11 @@ export const TRAINERS = {
     name: "Farmer Kojo",
     sprite: "villagerMan",
     prize: 200,
+    // The first trainer on the road. Nothing here is strong against any
+    // starter, which is what makes it the first one. See `balance.test.js`.
     party: [
-      { species: "gori", level: 6 },
-      { species: "sumsu", level: 6 },
+      { species: "gori", level: 5 },
+      { species: "kanku", level: 5 },
     ],
     intro: "This one keeps stealing my groundnuts. Maybe you can tire it out.",
     defeat: "Take a rest. The road north is long and the sun is not kind.",
@@ -135,19 +141,22 @@ export const TRAINERS = {
     name: "Watcher Ama",
     sprite: "villagerWoman",
     prize: 260,
+    // She used to bring two creatures of the sky, and the sky is twice as
+    // strong against grass, so every move she had beat the grass starter. The
+    // thief that empties her nests answers that and tells a better joke.
     party: [
-      { species: "sumsu", level: 7 },
-      { species: "tsetse", level: 8 },
+      { species: "sumsu", level: 6 },
+      { species: "gori", level: 6 },
     ],
     intro: "Quiet! I have been counting nests since sunrise. You have ruined it.",
-    defeat: "Forty one nests. All of them empty. That bird has a problem.",
+    defeat: "Forty one nests. All of them empty. And now I know where the eggs went.",
   },
   fisherKweku: {
     name: "Fisher Kweku",
     sprite: "fisherman",
     prize: 300,
     party: [
-      { species: "krabo", level: 9 },
+      { species: "krabo", level: 8 },
       { species: "volti", level: 9 },
     ],
     intro: "No fish today. No fish for three weeks. You want to know why? Look at the water.",
@@ -158,7 +167,13 @@ export const TRAINERS = {
     name: "Galamsey Digger",
     sprite: "grunt",
     prize: 280,
-    party: [{ species: "kanku", level: 8 }],
+    // Kanku learns Venom Sting at 7, and poison is twice as strong against
+    // grass. At level 6 he blocks the road with two creatures instead of one,
+    // which is a step up in size and not in element.
+    party: [
+      { species: "gori", level: 6 },
+      { species: "kanku", level: 6 },
+    ],
     intro: "This road is ours now. Everything under it is ours too.",
     defeat: "Fine. Go and see the mess for yourself.",
   },
@@ -196,10 +211,14 @@ export const TRAINERS = {
     name: "Nana Sika",
     sprite: "boss",
     prize: 2000,
+    // The biggest fight before the gym, and still under it. All three of these
+    // are metal or earth and metal, which resists five of the ten elements, so
+    // the party matters more here than the levels do. His ace used to sit at 16,
+    // level with the gym leader's, which left the leader nothing to add.
     party: [
-      { species: "siko", level: 13 },
-      { species: "dungu", level: 14 },
-      { species: "carsla", level: 16 },
+      { species: "siko", level: 12 },
+      { species: "dungu", level: 13 },
+      { species: "carsla", level: 14 },
     ],
     intro:
       "Gold does not belong to a river. It belongs to whoever is willing to take it out. That has always been the rule.",
@@ -561,7 +580,7 @@ const village = {
                 ["sound", "hit"],
                 ["say", "The banku is warm and the soup is warmer. Something in the soup is moving."],
                 ["setFlag", "ateSoup"],
-                ["poisonParty"],
+                ["setFlag", "ateSoup1"],
                 ["say", "Mama Sopa laughs so hard she has to sit down."],
               ],
             },
@@ -574,6 +593,27 @@ const village = {
         ["say", "Then we settle it the other way."],
         ["battle", "mamaSopa1"],
         ["setFlag", "beatSopa1"],
+        // The soup only bites once the fight is over. A poisoned party walking
+        // into a battle the player cannot leave is a loss with no way out of
+        // it, so the poison waits and the leaf comes with it.
+        [
+          "if",
+          { flag: "ateSoup1" },
+          [
+            ["say", "Then the soup finds your creatures, and every one of them turns a colour."],
+            ["poisonParty"],
+            [
+              "say",
+              "Mama Sopa is still laughing. She pushes a handful of dark leaves across the pot at you.",
+            ],
+            ["give", "bitterLeaf", 3],
+            [
+              "say",
+              "Bitter leaf. Chew it and the poison goes. Open your bag, pick the leaf, pick the creature.",
+            ],
+          ],
+          [["say", "You kept your mouth shut and your creatures thank you for it."]],
+        ],
         ["say", "Go on. I will see you at the river."],
         ["hide", "sopaVillage"],
         ["music", "town"],
@@ -619,12 +659,15 @@ const route1 = {
   encounters: {
     rate: 0.13,
     table: [
-      { species: "sumsu", min: 2, max: 4, weight: 30 },
-      { species: "gori", min: 2, max: 4, weight: 24 },
-      { species: "polete", min: 3, max: 5, weight: 20 },
-      { species: "kanku", min: 3, max: 5, weight: 14 },
-      { species: "hinoko", min: 4, max: 6, weight: 8 },
-      { species: "poya", min: 5, max: 6, weight: 4 },
+      // Three common creatures, all below the level the starter walks in at.
+      // This is Emerald's Route 101: Lv 2-3 creatures in front of a Lv 5
+      // starter, so the first hour holds a fight the player can always win.
+      // Polete, Hinoko and Poya used to stand here. They are three of the
+      // seven, they carry 327 to 432 base stat points against a starter's 298,
+      // and they now wait on the river and in the mine.
+      { species: "sumsu", min: 2, max: 4, weight: 38 },
+      { species: "gori", min: 2, max: 4, weight: 34 },
+      { species: "kanku", min: 3, max: 4, weight: 28 },
     ],
   },
   warps: [
@@ -739,12 +782,15 @@ const river = {
   encounters: {
     rate: 0.13,
     table: [
-      { species: "krabo", min: 6, max: 9, weight: 28 },
-      { species: "tsetse", min: 6, max: 9, weight: 22 },
-      { species: "sumsu", min: 6, max: 8, weight: 18 },
-      { species: "kanku", min: 7, max: 9, weight: 14 },
-      { species: "gis", min: 8, max: 10, weight: 10 },
-      { species: "hinoko", min: 7, max: 9, weight: 8 },
+      // The second grass, and it opens where Route 1 stopped so there is no
+      // level wall between them. This is where the first of the seven turn up.
+      { species: "krabo", min: 5, max: 8, weight: 24 },
+      { species: "tsetse", min: 5, max: 8, weight: 20 },
+      { species: "sumsu", min: 5, max: 7, weight: 16 },
+      { species: "kanku", min: 5, max: 8, weight: 14 },
+      { species: "polete", min: 6, max: 8, weight: 10 },
+      { species: "gis", min: 7, max: 9, weight: 10 },
+      { species: "hinoko", min: 7, max: 9, weight: 6 },
     ],
   },
   warps: [
@@ -878,7 +924,7 @@ const river = {
                 ["sound", "hit"],
                 ["say", "Same banku. Same soup. You recognise the taste, which is the worst part."],
                 ["setFlag", "ateSoup"],
-                ["poisonParty"],
+                ["setFlag", "ateSoup2"],
               ],
             },
             { label: "Refuse", then: [["say", "Twice. Nobody has ever refused twice."]] },
@@ -886,6 +932,8 @@ const river = {
         ],
         ["battle", "mamaSopa2"],
         ["setFlag", "beatSopa2"],
+        // Same rule as the village: the soup bites after the fight, never before.
+        ["if", { flag: "ateSoup2" }, [["poisonParty"]], []],
         ["say", "The gym is in Bosua. I will be outside it. Do not eat before you go in."],
         ["hide", "sopaRiver"],
         ["music", "route"],
@@ -922,11 +970,15 @@ const mine = {
     rate: 0.11,
     anywhere: true,
     table: [
-      { species: "dungu", min: 8, max: 11, weight: 32 },
-      { species: "siko", min: 9, max: 12, weight: 24 },
-      { species: "kanku", min: 8, max: 11, weight: 20 },
+      // The last grass before the gym, and the only place Poya lives. It hits
+      // harder than anything else in the area, so it waits until the player has
+      // a team rather than one starter.
+      { species: "dungu", min: 8, max: 11, weight: 28 },
+      { species: "siko", min: 9, max: 12, weight: 22 },
+      { species: "kanku", min: 8, max: 11, weight: 16 },
       { species: "seryi", min: 10, max: 12, weight: 12 },
       { species: "sasabon", min: 10, max: 12, weight: 12 },
+      { species: "poya", min: 10, max: 12, weight: 10 },
     ],
   },
   warps: [{ x: 9, y: 12, to: "river", tx: 13, ty: 2, dir: "down" }],
@@ -1142,7 +1194,7 @@ const bosua = {
                 ["sound", "hit"],
                 ["say", "Three times. At this point it is your own fault."],
                 ["setFlag", "ateSoup"],
-                ["poisonParty"],
+                ["setFlag", "ateSoup3"],
               ],
             },
             {
@@ -1153,6 +1205,8 @@ const bosua = {
         ],
         ["battle", "mamaSopa3"],
         ["setFlag", "beatSopa3"],
+        // Same rule as the village: the soup bites after the fight, never before.
+        ["if", { flag: "ateSoup3" }, [["poisonParty"]], []],
         ["say", "Go on then. Go and win. I will keep some warm for you."],
         ["give", "kelewele", 1],
         ["say", "And take this. Fried, not boiled, and no banku anywhere near it. You will be fine."],

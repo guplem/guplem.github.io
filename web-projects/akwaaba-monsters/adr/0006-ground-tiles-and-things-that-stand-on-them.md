@@ -1,4 +1,4 @@
-# ADR 0005: A tile is either ground or a thing standing on it, and each screen declares its ground
+# ADR 0006: A tile is either ground or a thing standing on it, and each screen declares its ground
 
 ## Context
 

@@ -28,6 +28,12 @@ To add area 2:
    new maps join up, that every warp leads back, that no trainer stands on the
    only path and that difficulty climbs. It found seven real mistakes in area 1.
 
+`areas/balance.test.js` checks the difficulty of what you add. Its rules copy
+measured numbers out of Pokemon Emerald, and ADR 0005 lists every one with the
+number it came from. The rules that bite hardest when you write a new area are
+these: a route holds nothing that out-hits what the player carries, and no
+script poisons the party and then starts a battle.
+
 Two rules are not negotiable, because save files hold them:
 
 - **Never rename an identifier.** Species, move, item, map, flag and badge
@@ -176,7 +182,7 @@ Honest list of things that work but could be better.
   battle in a field.
 - **No shoreline.** Water meets sand along a straight line, one square wide, and
   so does every other pair of grounds. The tile set now splits ground from the
-  things standing on it (ADR 0005), so softening a join means new art and no new
+  things standing on it (ADR 0006), so softening a join means new art and no new
   design: draw a `shore` tile that stands on the ground, holes and all, and lay
   it along the water's edge on the `over` layer. The join between two *grounds*
   still needs a picture per corner, which is why it was left.

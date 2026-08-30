@@ -72,9 +72,36 @@ climbs to the gym leader, and all seven friend creatures appear somewhere.
 
 It found seven real mistakes while area 1 was being written. Keep it fed.
 
+`areas/balance.test.js` is the other unusual one. `areas.test.js` checks that
+the world joins up. `balance.test.js` checks that the world can be beaten, and
+every rule in it copies a measured number out of Pokemon Emerald. Read ADR 0005
+before you change any level, learnset or base stat.
+
 `art/font.test.js` reads every string in the game and fails if any character is
 missing from the font, or if any line needs more than four pages of the message
 box. That catches a pasted curly quote before a player sees a question mark.
+
+## The balance rules, in one place
+
+A level 5 starter is the fixed point. Emerald is the reference for each rule.
+
+- **The first grass stays below the starter's level.** Emerald runs Route 101 at
+  Lv 2-3 against a Lv 5 starter.
+- **The first grass holds no creature stronger than the weakest starter**, and
+  none of the seven friend creatures. Emerald tops Route 101 out at Zigzagoon,
+  240 points against a 310 starter.
+- **Nothing on the first route out-hits the starter's own best move.** Emerald
+  holds Bite and Wing Attack, both 60 power, back to level 13. Both once sat at
+  level 5 here, and one Sumsu ended the grass starter in a single turn.
+- **Nothing in the first grass can leave a lasting condition.** Emerald teaches
+  Wurmple its Poison Sting at Lv 5 and stops Route 101 at Lv 3, so the move is
+  one level out of reach.
+- **No early trainer fields a party that beats one starter's element outright.**
+  The player still has one creature and cannot switch out of a bad matchup.
+- **The three starters carry the same base stat total.** Treecko, Torchic and
+  Mudkip all carry exactly 310.
+- **A script never poisons the party and then starts a battle.** The player
+  cannot reach the bag between the two steps.
 
 ## Gotchas
 
@@ -84,7 +111,7 @@ box. That catches a pasted curly quote before a player sees a question mark.
   patch of tall grass. `TILES` in `world.js` is the register, and a tile with no
   `base` field is ground. `art/art.test.js` checks the art agrees. Fill in the
   background of a thing and it puts a square of the wrong colour into every map
-  that uses different ground. See ADR 0005.
+  that uses different ground. See ADR 0006.
 - **Every map declares `base`, the ground its screen is made of.** That is what
   shows through a palm tree. `validateMap` refuses a map without one.
 - **Tiles carry no outline and no shading.** Both draw a seam between two copies
@@ -132,4 +159,5 @@ box. That catches a pasted curly quote before a player sees a question mark.
 | [0002](adr/0002-one-versioned-save-additive-only.md) | One versioned save document, only ever added to |
 | [0003](adr/0003-an-area-is-one-file.md) | An area is one file, and adding one changes no engine code |
 | [0004](adr/0004-generated-audio-not-audio-files.md) | Generate the music, do not ship it |
-| [0005](adr/0005-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
+| [0005](adr/0005-early-game-balance-copies-emerald.md) | The early game copies Pokemon Emerald, number for number |
+| [0006](adr/0006-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
