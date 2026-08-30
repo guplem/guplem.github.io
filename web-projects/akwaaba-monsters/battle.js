@@ -5,6 +5,13 @@
 // screen in `app.js` plays the events back one at a time, which is why the
 // animation can be slow while the maths is instant.
 //
+// The order of the events is part of the design, not an accident. A player must
+// read what happens before they see it happen, so a `message` event always comes
+// before the event that changes the picture. `battlePlayback.js` rebuilds the
+// picture from these events, one at a time, and it can only be as correct as
+// this order is. The one deliberate exception is `faint`: the creature drops and
+// then the log names it, the same as in the real games.
+//
 // A battle is never saved. The real games do not let you save mid-fight either,
 // so `battle.rng` is allowed to be a live object rather than a plain number.
 //
@@ -194,8 +201,8 @@ function applyStatChange(battle, side, stat, delta, events) {
   }
   stages[stat] = after;
   const word = describeStatChange(delta);
-  events.push({ type: "stat", side, stat, delta });
   events.push({ type: "message", text: `${name}'s ${statLabel(stat)} ${word}!` });
+  events.push({ type: "stat", side, stat, delta });
 }
 
 /** How a stat is written in the battle log. */
@@ -245,8 +252,8 @@ function applyStatus(battle, side, status, events) {
   if (status === "paralysis" && types.includes("thunder")) return false;
   monster.status = status;
   if (status === "sleep") monster.sleepTurns = battle.rng.range(1, 3);
-  events.push({ type: "status", side, status });
   events.push({ type: "message", text: `${name} is ${statusLabel(status)}!` });
+  events.push({ type: "status", side, status });
   return true;
 }
 
@@ -267,8 +274,8 @@ function healActive(battle, side, amount, events) {
   monster.hp = Math.min(maxHp(monster), monster.hp + Math.floor(amount));
   const gained = monster.hp - before;
   if (gained > 0) {
-    events.push({ type: "heal", side, amount: gained, hp: monster.hp, max: maxHp(monster) });
     events.push({ type: "message", text: `${battleName(battle, side)} regained health!` });
+    events.push({ type: "heal", side, amount: gained, hp: monster.hp, max: maxHp(monster) });
   }
   return gained;
 }
@@ -293,8 +300,8 @@ function useMove(battle, side, slotIndex, events) {
     if (monster.sleepTurns > 0) monster.sleepTurns -= 1;
     if (monster.sleepTurns <= 0) {
       monster.status = null;
-      events.push({ type: "statusEnd", side, status: "sleep" });
       events.push({ type: "message", text: `${name} woke up!` });
+      events.push({ type: "statusEnd", side, status: "sleep" });
     } else {
       events.push({ type: "message", text: `${name} is fast asleep.` });
       return false;
@@ -318,8 +325,8 @@ function useMove(battle, side, slotIndex, events) {
   }
 
   slot.pp -= 1;
-  events.push({ type: "useMove", side, moveId: move.id, name: move.name });
   events.push({ type: "message", text: `${name} used ${move.name}!` });
+  events.push({ type: "useMove", side, moveId: move.id, name: move.name });
 
   if (!rollAccuracy(battle, side, move)) {
     events.push({ type: "miss", side });
@@ -394,8 +401,8 @@ function endOfTurnDamage(battle, side, events) {
   const bite = Math.max(1, Math.floor(maxHp(monster) / BURN_POISON_FRACTION));
   const name = battleName(battle, side);
   const word = monster.status === "poison" ? "poison" : "burn";
-  dealDamage(battle, side, bite, events);
   events.push({ type: "message", text: `${name} is hurt by its ${word}!` });
+  dealDamage(battle, side, bite, events);
   return isFainted(monster);
 }
 
@@ -505,13 +512,24 @@ function awardExp(battle, defeated, events) {
   const result = gainExp(winner, amount);
   battle.player.party[index] = result.monster;
 
-  events.push({ type: "exp", amount, partyIndex: index });
+  // Both events carry the value they land on, not only the step, so the screen
+  // can rebuild the panel from the events alone. A level also lifts the health,
+  // which is why `levelUp` carries `hp`.
   events.push({ type: "message", text: `${displayName(result.monster)} gained ${amount} EXP!` });
+  events.push({ type: "exp", amount, partyIndex: index, exp: result.monster.exp });
 
-  for (const level of result.levels) {
-    events.push({ type: "levelUp", partyIndex: index, level });
+  result.levels.forEach((level, step) => {
+    // Only the last level carries the health. A run of levels raises it once, at
+    // the end, and no message in between should move the bar.
+    const last = step === result.levels.length - 1;
     events.push({ type: "message", text: `${displayName(result.monster)} grew to level ${level}!` });
-  }
+    events.push({
+      type: "levelUp",
+      partyIndex: index,
+      level,
+      ...(last ? { hp: result.monster.hp } : {}),
+    });
+  });
   for (const entry of result.learned) {
     battle.pendingLearns.push({ partyIndex: index, moveId: entry.moveId });
   }
@@ -528,12 +546,12 @@ function sendOutNext(battle, side, events) {
   state.active = index;
   state.stages = freshStages();
   state.flinched = false;
-  events.push({ type: "sendOut", side, partyIndex: index });
   const name = displayName(state.party[index]);
   events.push({
     type: "message",
     text: side === "player" ? `Go, ${name}!` : `${battle.trainer?.name ?? "The foe"} sent out ${name}!`,
   });
+  events.push({ type: "sendOut", side, partyIndex: index });
   return true;
 }
 
@@ -596,8 +614,8 @@ export function takeTurn(battle, action) {
     next.player.stages = freshStages();
     next.player.flinched = false;
     next.awaiting = null;
-    events.push({ type: "sendOut", side: "player", partyIndex: action.index });
     events.push({ type: "message", text: `Go, ${displayName(target)}!` });
+    events.push({ type: "sendOut", side: "player", partyIndex: action.index });
     return { battle: next, events };
   }
 
@@ -656,8 +674,8 @@ export function takeTurn(battle, action) {
       next.player.active = action.index;
       next.player.stages = freshStages();
       next.player.flinched = false;
-      events.push({ type: "sendOut", side: "player", partyIndex: action.index });
       events.push({ type: "message", text: `Go, ${displayName(target)}!` });
+      events.push({ type: "sendOut", side: "player", partyIndex: action.index });
     }
   } else if (action.kind === "item") {
     events.push({ type: "message", text: action.message ?? "You used an item!" });

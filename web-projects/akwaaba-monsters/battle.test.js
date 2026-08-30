@@ -814,3 +814,92 @@ describe("a battle always finishes", () => {
     }
   });
 });
+
+describe("the order of the events", () => {
+  // The screen plays the events back one at a time. A player must read what
+  // happens before they see it happen, the way the real games do it. So every
+  // event that changes the picture comes after the line that announces it.
+
+  /** Where an event sits in the list, or -1 when it is not there. */
+  function positionOf(events, predicate) {
+    return events.findIndex(predicate);
+  }
+
+  /** Where the first message whose text holds `part` sits. */
+  function messageAt(events, part) {
+    return positionOf(events, (event) => event.type === "message" && event.text.includes(part));
+  }
+
+  test("the line that names the move comes before the move animation", () => {
+    const battle = battleWith({ mine: monster("nacho", 30), theirs: monster("nacho", 30) });
+    const { events } = takeTurn(battle, { kind: "move", slot: 0 });
+    const said = messageAt(events, "used ");
+    const played = positionOf(events, (event) => event.type === "useMove");
+    expect(said).toBeGreaterThanOrEqual(0);
+    expect(said).toBeLessThan(played);
+  });
+
+  test("the move animation comes before the damage it does", () => {
+    const battle = battleWith({ mine: monster("nacho", 30), theirs: monster("nacho", 30) });
+    const { events } = takeTurn(battle, { kind: "move", slot: 0 });
+    const played = positionOf(events, (event) => event.type === "useMove");
+    const hurt = positionOf(events, (event) => event.type === "damage");
+    expect(played).toBeLessThan(hurt);
+  });
+
+  test("the line that reports a stat change comes before the change", () => {
+    const battle = battleWith({
+      mine: monster("carsla", 30, ["royalOrder"]),
+      theirs: monster("nacho", 30),
+    });
+    const { events } = takeTurn(battle, { kind: "move", slot: 0 });
+    const said = messageAt(events, "Attack fell");
+    const changed = positionOf(events, (event) => event.type === "stat" && event.stat === "attack");
+    expect(said).toBeGreaterThanOrEqual(0);
+    expect(said).toBeLessThan(changed);
+  });
+
+  test("the line that reports a status comes before the status", () => {
+    const battle = battleWith({
+      mine: monster("kanku", 30, ["toxicDust"]),
+      theirs: monster("nacho", 30),
+      seed: 11,
+    });
+    const { events } = takeTurn(battle, { kind: "move", slot: 0 });
+    const said = messageAt(events, "poisoned!");
+    const applied = positionOf(events, (event) => event.type === "status");
+    expect(said).toBeGreaterThanOrEqual(0);
+    expect(said).toBeLessThan(applied);
+  });
+
+  test("the line that reports experience comes before the bar fills", () => {
+    const battle = battleWith({ mine: monster("nacho", 40), theirs: monster("sumsu", 2) });
+    const { events } = takeTurn(battle, { kind: "move", slot: 0 });
+    const said = messageAt(events, "EXP!");
+    const gained = positionOf(events, (event) => event.type === "exp");
+    expect(said).toBeGreaterThanOrEqual(0);
+    expect(said).toBeLessThan(gained);
+  });
+
+  test("the line that sends a creature out comes before it arrives", () => {
+    const battle = battleWith({
+      mine: [monster("nacho", 30), monster("hinoko", 30)],
+      theirs: monster("nacho", 30),
+    });
+    const { events } = takeTurn(battle, { kind: "switch", index: 1 });
+    const said = messageAt(events, "Go, ");
+    const arrived = positionOf(events, (event) => event.type === "sendOut");
+    expect(said).toBeGreaterThanOrEqual(0);
+    expect(said).toBeLessThan(arrived);
+  });
+
+  test("a creature falls before the line that says it fainted", () => {
+    // The sprite drops and only then the log names it, the same as Gen 3.
+    const battle = battleWith({ mine: monster("nacho", 50), theirs: monster("sumsu", 2) });
+    const { events } = takeTurn(battle, { kind: "move", slot: 0 });
+    const fell = positionOf(events, (event) => event.type === "faint");
+    const said = messageAt(events, "fainted!");
+    expect(fell).toBeGreaterThanOrEqual(0);
+    expect(fell).toBeLessThan(said);
+  });
+});
