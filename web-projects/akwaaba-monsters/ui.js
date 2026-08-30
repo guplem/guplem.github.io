@@ -130,11 +130,19 @@ export function stepProgress(elapsed, duration) {
  *
  * A map smaller than the screen is centred instead, so a small room does not
  * sit in the top left with a black gap beside it.
+ *
+ * The answer always lands on a whole pixel. Half way through a step the player
+ * stands on a fraction of a pixel, and a camera on a fraction puts every tile
+ * on a fraction too. The browser then blends each tile edge with what is behind
+ * it, and the map grows a dark seam along every row and every column. Because
+ * the player only stands on a fraction while they walk, the seams appear only
+ * while they walk. The player still moves smoothly: a step covers 16 pixels
+ * over several frames, so the rounded camera advances one or two pixels a frame.
  */
 export function cameraFor({ centreX, centreY, viewW, viewH, mapW, mapH }) {
   const x = mapW <= viewW ? (mapW - viewW) / 2 : clamp(centreX - viewW / 2, 0, mapW - viewW);
   const y = mapH <= viewH ? (mapH - viewH) / 2 : clamp(centreY - viewH / 2, 0, mapH - viewH);
-  return { x, y };
+  return { x: Math.round(x), y: Math.round(y) };
 }
 
 function clamp(value, min, max) {

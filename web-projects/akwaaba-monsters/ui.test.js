@@ -185,6 +185,22 @@ describe("the camera", () => {
     expect(camera.x).toBe(-40);
     expect(camera.y).toBe(-16);
   });
+
+  test("sits on a whole pixel while the player walks between two tiles", () => {
+    // Half way through a step the player stands on a fraction of a pixel. A
+    // camera on a fraction draws every tile on a fraction, and the browser
+    // blends each tile edge with what is behind it. That paints a dark seam
+    // along every row of the map, which the player sees only while walking.
+    const camera = cameraFor({ centreX: 500.4, centreY: 400.6, ...view, mapW: 1000, mapH: 800 });
+    expect(camera.x).toBe(Math.trunc(camera.x));
+    expect(camera.y).toBe(Math.trunc(camera.y));
+  });
+
+  test("sits on a whole pixel when it centres a map with an odd size", () => {
+    const camera = cameraFor({ centreX: 80, centreY: 64, ...view, mapW: 161, mapH: 129 });
+    expect(camera.x).toBe(Math.trunc(camera.x));
+    expect(camera.y).toBe(Math.trunc(camera.y));
+  });
 });
 
 describe("pixelScale", () => {
