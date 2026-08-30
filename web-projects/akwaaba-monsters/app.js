@@ -111,6 +111,7 @@ import {
   stepQuantity,
 } from "./ui.js";
 import { activeMonster, battleResult, createBattle, takeTurn, usableMoves } from "./battle.js";
+import { applyBattleEvent, easeToward, snapshotBattle } from "./battlePlayback.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { escapeHtml, say as deploySay } from "./deployText.js";
 
@@ -923,6 +924,13 @@ function beginBattle(battle, npc) {
     flash: 0,
     throwFrames: 0,
     finished: false,
+    // What the screen draws. It trails the battle by however much of the queue
+    // has still to play, which is what makes one thing happen at a time.
+    shown: snapshotBattle(battle),
+    faintFrames: { player: 0, foe: 0 },
+    // Set after a turn, so the picture is checked against the engine once the
+    // last event of that turn has played, and not on every idle frame.
+    needsSync: false,
   };
   const isBoss = battle.kind === "trainer" && (battle.trainer?.prize ?? 0) >= 1200;
   audio.playMusic(isBoss ? "boss" : "battle");
@@ -941,9 +949,16 @@ function beginBattle(battle, npc) {
   game.battleView.queue.push({ type: "message", text: `Go, ${displayName(mine)}!` });
 }
 
-/** Play one battle event, and say how long to hold it on screen. */
+/** How long the creature takes to slide off the screen once it is beaten. */
+const FAINT_FRAMES = 26;
+
+/**
+ * Play one battle event: move the picture forward by it, and say how long to
+ * hold the result on screen before the next event plays.
+ */
 function playBattleEvent(event) {
   const view = game.battleView;
+  view.shown = applyBattleEvent(view.shown, event);
   switch (event.type) {
     case "message":
       view.text = event.text;
@@ -956,7 +971,8 @@ function playBattleEvent(event) {
       return;
     case "faint":
       audio.playSound("faint");
-      view.timer = 26;
+      view.faintFrames[event.side] = FAINT_FRAMES;
+      view.timer = FAINT_FRAMES;
       return;
     case "useMove":
       view.timer = 6;
@@ -984,9 +1000,10 @@ function playBattleEvent(event) {
       return;
     case "sendOut":
       if (event.side === "foe") {
-        const foe = activeMonster(game.battle, "foe");
+        const foe = activeMonster(view.shown, "foe");
         audio.playCry(foe.species, getSpecies(foe.species).weight);
       }
+      view.faintFrames[event.side] = 0;
       view.showHp[event.side] = null;
       view.timer = 16;
       return;
@@ -1000,25 +1017,45 @@ function updateBattle() {
   const battle = game.battle;
   if (!view || !battle) return;
 
-  // Ease the health bars toward the real numbers.
+  // Ease the health bars toward the numbers the picture holds, not the ones the
+  // engine already worked out. A bar may only move once its event has played.
+  let barsMoving = false;
   for (const side of ["player", "foe"]) {
-    const monster = activeMonster(battle, side);
+    const monster = activeMonster(view.shown, side);
     if (view.showHp[side] === null) view.showHp[side] = monster.hp;
-    const gap = monster.hp - view.showHp[side];
-    if (gap !== 0) view.showHp[side] += Math.sign(gap) * Math.max(1, Math.ceil(Math.abs(gap) / 8));
+    if (view.showHp[side] !== monster.hp) {
+      view.showHp[side] = easeToward(view.showHp[side], monster.hp);
+      barsMoving = true;
+    }
   }
   if (view.flash > 0) view.flash -= 1;
   if (view.throwFrames > 0) view.throwFrames -= 1;
+  for (const side of ["player", "foe"]) {
+    if (view.faintFrames[side] > 0) view.faintFrames[side] -= 1;
+  }
 
   if (view.timer > 0) {
     view.timer -= 1;
-    if (tapped("a") || tapped("b")) view.timer = 0;
+    // A press skips the wait, but never the bar: a player must see the health
+    // land on the number the next line is about to talk about.
+    if ((tapped("a") || tapped("b")) && !barsMoving) view.timer = 0;
     return;
   }
+
+  // Hold the next event back until the bar it belongs to has finished sliding.
+  if (barsMoving) return;
 
   if (view.queue.length > 0) {
     playBattleEvent(view.queue.shift());
     return;
+  }
+
+  // The turn has played out, so the picture has caught the battle up. Take the
+  // engine's word for it once, in case a future event changes something the
+  // playback does not know how to copy.
+  if (view.needsSync) {
+    view.shown = snapshotBattle(battle);
+    view.needsSync = false;
   }
 
   if (battle.over) {
@@ -1173,8 +1210,11 @@ function updateBattleParty() {
 
 function submitBattleAction(action) {
   const { battle, events } = takeTurn(game.battle, action);
+  // The engine jumps straight to the end of the turn. `game.battleView.shown`
+  // stays where it is and walks there one event at a time.
   game.battle = battle;
   game.battleView.queue = events;
+  game.battleView.needsSync = true;
   game.battleView.phase = "playing";
   game.battleView.text = "";
   game.battleView.timer = 0;
@@ -2242,15 +2282,39 @@ function drawShop() {
   }
 }
 
+/**
+ * Draw one side's creature, or slide it away when that side has just fainted.
+ *
+ * A beaten creature drops out of the frame and then stays off it, so the player
+ * sees an empty space while the log names the faint and calls the next one out.
+ */
+function drawBattleCreature(side, speciesId, x, y, options) {
+  const view = game.battleView;
+  if (!view.shown.fainted[side]) {
+    renderer.creature(speciesId, x, y, options);
+    return;
+  }
+  const left = view.faintFrames[side];
+  if (left <= 0) return; // Already gone.
+  const share = 1 - left / FAINT_FRAMES;
+  renderer.creature(speciesId, x, y + share * 34, { ...options, alpha: 1 - share });
+}
+
 function drawBattle() {
   const battle = game.battle;
   const view = game.battleView;
   if (!battle || !view) return;
   renderer.battleBackdrop(battle.kind);
 
-  const foe = activeMonster(battle, "foe");
-  const mine = activeMonster(battle, "player");
+  // The field is drawn from the snapshot, which is one event behind the engine
+  // whenever a turn is still playing. The menus below read `battle` instead:
+  // they only open once the queue has drained and the two agree.
+  const shown = view.shown;
+  const foe = activeMonster(shown, "foe");
+  const mine = activeMonster(shown, "player");
   const foeShake = view.flash > 0 && view.flash % 4 < 2 ? 2 : 0;
+
+  const drawFoe = () => drawBattleCreature("foe", foe.species, 158 + foeShake, 18, {});
 
   if (view.throwFrames > 0) {
     // The calabash arcs across the screen and shakes where the creature was.
@@ -2261,11 +2325,11 @@ function drawBattle() {
     renderer.ctx.beginPath();
     renderer.ctx.arc(x, y, 5, 0, Math.PI * 2);
     renderer.ctx.fill();
-    if (share < 0.5) renderer.creature(foe.species, 158 + foeShake, 18);
+    if (share < 0.5) drawFoe();
   } else {
-    renderer.creature(foe.species, 158 + foeShake, 18);
+    drawFoe();
   }
-  renderer.creature(mine.species, 30, 54, { scale: 1.2, flip: true });
+  drawBattleCreature("player", mine.species, 30, 54, { scale: 1.2, flip: true });
 
   renderer.statusPanel({
     x: 8,
