@@ -12,6 +12,7 @@ import {
   moveCursor,
   moveGridCursor,
   pixelScale,
+  tileVariant,
   stepProgress,
   stepQuantity,
 } from "./ui.js";
@@ -295,5 +296,47 @@ describe("fieldMenuItems", () => {
 
   test("survives a state with almost nothing in it", () => {
     expect(fieldMenuItems({}).length).toBeGreaterThan(0);
+  });
+});
+
+describe("tileVariant", () => {
+  test("always picks a version that exists", () => {
+    for (let x = -20; x < 40; x++) {
+      for (let y = -20; y < 40; y++) {
+        const variant = tileVariant(x, y, 4);
+        expect(Number.isInteger(variant)).toBe(true);
+        expect(variant).toBeGreaterThanOrEqual(0);
+        expect(variant).toBeLessThan(4);
+      }
+    }
+  });
+
+  test("gives the same answer for the same square every time", () => {
+    // The ground would crawl under the player if this ever changed.
+    expect(tileVariant(7, 12, 4)).toBe(tileVariant(7, 12, 4));
+  });
+
+  test("uses every version across a field, and none of them too much", () => {
+    const seen = [0, 0, 0, 0];
+    for (let x = 0; x < 24; x++) for (let y = 0; y < 24; y++) seen[tileVariant(x, y, 4)]++;
+    for (const count of seen) {
+      // An even split would be 144. A third of that is loose enough not to be
+      // brittle and tight enough to catch a hash that ignores one coordinate.
+      expect(count).toBeGreaterThan(48);
+    }
+  });
+
+  test("does not give neighbours the same version everywhere", () => {
+    let same = 0;
+    for (let x = 0; x < 20; x++) {
+      for (let y = 0; y < 20; y++) if (tileVariant(x, y, 4) === tileVariant(x + 1, y, 4)) same++;
+    }
+    expect(same).toBeLessThan(200);
+  });
+
+  test("falls back to the one version there is", () => {
+    expect(tileVariant(3, 4, 1)).toBe(0);
+    expect(tileVariant(3, 4, 0)).toBe(0);
+    expect(tileVariant(3, 4, NaN)).toBe(0);
   });
 });

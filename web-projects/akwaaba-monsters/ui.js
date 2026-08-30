@@ -190,6 +190,29 @@ export function layoutMode({ fullscreen = false, width = 0, height = 0, coarsePo
 }
 
 /**
+ * Which version of a tile to draw at a position on the map.
+ *
+ * Ground comes in several versions so that a field is not one tile repeated.
+ * The choice has to come from the position and from nothing else: a random
+ * choice would reshuffle the whole field on every frame, and the ground would
+ * crawl under the player.
+ *
+ * @param {number} x tile column
+ * @param {number} y tile row
+ * @param {number} count how many versions exist
+ * @returns {number} 0 to count - 1
+ */
+export function tileVariant(x, y, count) {
+  if (!Number.isFinite(count) || count < 2) return 0;
+  // A cheap integer hash. The two multipliers are odd and share no factor with
+  // the counts we use, so neighbours rarely land on the same version.
+  let hash = Math.trunc(x) * 73856093 + Math.trunc(y) * 19349663;
+  hash = (hash ^ (hash >>> 13)) * 1274126177;
+  hash ^= hash >>> 16;
+  return Math.abs(hash) % Math.trunc(count);
+}
+
+/**
  * The list of things the field menu offers.
  * The field guide and the map are not built yet, so they are not listed. See
  * ROADMAP.md.

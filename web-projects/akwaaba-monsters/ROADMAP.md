@@ -180,3 +180,13 @@ Honest list of things that work but could be better.
   where the player will be. `areas.test.js` checks that line exists.
 - **The battle backdrop** is the same everywhere. A cave battle looks like a
   battle in a field.
+- **No shoreline.** Water meets sand along a straight line, one square wide, and
+  so does every other pair of grounds. The tile set now splits ground from the
+  things standing on it (ADR 0008), so softening a join means new art and no new
+  design: draw a `shore` tile that stands on the ground, holes and all, and lay
+  it along the water's edge on the `over` layer. The join between two *grounds*
+  still needs a picture per corner, which is why it was left.
+- **Tall grass is a rectangle.** Its shade is a dither over the ground rather
+  than a fill, so the edge of a patch breaks up rather than ruling a line, but a
+  patch is still the rectangle the map wrote. Rounding a patch needs edge tiles
+  in the same way a shoreline does.

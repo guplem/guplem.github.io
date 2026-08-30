@@ -7,15 +7,19 @@
 //
 // This file touches the browser, so it holds no rules and no decisions. It is
 // handed a map, a battle or a menu and it draws exactly that. The deciding
-// happens in `app.js`, and the arithmetic in `ui.js`.
+// happens in `app.js`, and the arithmetic in `ui.js` and `world.js`. What it
+// asks those two: which version of a tile a square gets (`tileVariant`), what
+// the ground at a square is and what stands on it (`groundAt`, `tileStack`) and
+// which squares drop a strip of shade (`castsShadow`).
 
 import { CHAR_H, CHAR_W, LEADING, TRACKING, glyphFor, rowsThatFit, wrapText } from "./art/font.js";
 import { CREATURE_ART_IDS, creatureDrawing, SPRITE_SIZE } from "./art/creatures.js";
-import { TILE_ART_IDS, TILE_SIZE, tileDrawing } from "./art/tiles.js";
+import { TILE_ART_IDS, TILE_SIZE, TILE_VARIANTS, tileDrawing } from "./art/tiles.js";
 import { PEOPLE_IDS, PERSON_H, PERSON_LIFT, PERSON_W, personDrawing } from "./art/people.js";
 import { pixelsToCanvas, rasterise } from "./art/pixelArt.js";
 import { TYPE_COLORS, TYPE_NAMES } from "./types.js";
-import { barWidth, healthColor } from "./ui.js";
+import { barWidth, healthColor, tileVariant } from "./ui.js";
+import { castsShadow, groundAt, tileStack } from "./world.js";
 
 /** The size of the screen the game draws, before it is scaled up. */
 export const SCREEN_W = 240;
@@ -33,7 +37,13 @@ export const UI = {
   skyLow: "#cfe6ef",
   ground: "#c9a06a",
   shadow: "rgba(32, 20, 10, 0.25)",
+  // The strip of shade at the foot of anything that stands up out of the
+  // ground. Without it a hut looks painted flat onto the grass.
+  dropShadow: "rgba(24, 16, 8, 0.22)",
 };
+
+/** How deep the strip of shade at the foot of a solid tile is, in pixels. */
+export const DROP_SHADOW_H = 3;
 
 /** The margin a box keeps on both sides of its words, in pixels. */
 export const BOX_MARGIN = 16;
@@ -99,9 +109,13 @@ export const PANELS = {
  * frame afterwards a straight copy.
  */
 export function buildAtlas(documentRef = globalThis.document) {
+  // Every tile comes as a list, one entry per variant, so a field of grass is
+  // made of several different tiles instead of one repeated.
   const tiles = {};
   for (const id of TILE_ART_IDS) {
-    tiles[id] = pixelsToCanvas(rasterise(tileDrawing(id)), 1, documentRef);
+    tiles[id] = Array.from({ length: TILE_VARIANTS }, (_, variant) =>
+      pixelsToCanvas(rasterise(tileDrawing(id, variant)), 1, documentRef),
+    );
   }
   const creatures = {};
   for (const id of CREATURE_ART_IDS) {
@@ -133,6 +147,47 @@ export class Renderer {
     this.atlas = buildAtlas(documentRef);
     this.shakeUntil = 0;
     this.shakeFrames = 0;
+    // Ground plus the thing standing on it, flattened into one picture the first
+    // time that pair is asked for. Without this the map draws two pictures per
+    // square, 150 squares a frame, for a result that never changes.
+    this.stacked = new Map();
+  }
+
+  /**
+   * One square of map, ready to copy: the ground and anything standing on it.
+   *
+   * @param {string} tileId the tile the map asks for
+   * @param {string} groundId the ground under it
+   * @param {number} variant which version of the tile to use
+   */
+  mapTile(tileId, groundId, variant) {
+    const key = `${tileId}|${groundId}|${variant}`;
+    const ready = this.stacked.get(key);
+    // A tile with no art is remembered as null, so it is worked out once too.
+    if (ready !== undefined) return ready;
+    this.stacked.set(key, this.#composeTile(tileId, groundId, variant));
+    return this.stacked.get(key);
+  }
+
+  /** Work out one square of map. Called once per square, then remembered. */
+  #composeTile(tileId, groundId, variant) {
+    const stack = tileStack(tileId, groundId);
+    const top = this.atlas.tiles[stack[stack.length - 1]];
+    if (!top) return null;
+    const pick = ((variant % top.length) + top.length) % top.length;
+    // Ground on its own needs no second picture, so hand back the atlas entry.
+    if (stack.length === 1) return top[pick];
+
+    const canvas = this.document.createElement("canvas");
+    canvas.width = TILE;
+    canvas.height = TILE;
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+    for (const id of stack) {
+      const set = this.atlas.tiles[id];
+      if (set) ctx.drawImage(set[pick % set.length], 0, 0);
+    }
+    return canvas;
   }
 
   /** Fill the whole screen with one colour. */
@@ -315,26 +370,41 @@ export class Renderer {
 
     this.clear("#101820");
 
-    const drawLayer = (layer, allowBlank) => {
+    const drawLayer = (layer) => {
       for (let row = top; row < top + down; row++) {
         for (let column = left; column < left + across; column++) {
-          const line = layer?.[row];
-          const character = line?.[column];
-          if (character === undefined) continue;
-          if (character === " ") {
-            if (!allowBlank) continue;
-            continue;
-          }
+          const character = layer?.[row]?.[column];
+          if (character === undefined || character === " ") continue;
           const tileId = map.legend[character];
-          const image = this.atlas.tiles[tileId];
+          if (!tileId) continue;
+          const variant = tileVariant(column, row, TILE_VARIANTS);
+          const image = this.mapTile(tileId, groundAt(map, column, row), variant);
           if (!image) continue;
           ctx.drawImage(image, column * TILE - camera.x, row * TILE - camera.y);
         }
       }
     };
 
-    drawLayer(map.ground, true);
-    drawLayer(map.over, false);
+    drawLayer(map.ground);
+    drawLayer(map.over);
+
+    // A strip of shade at the foot of everything that stands up out of the
+    // ground. It goes on after the map and before the people, so somebody
+    // walking past a hut walks over its shadow rather than under it.
+    ctx.save();
+    ctx.fillStyle = UI.dropShadow;
+    for (let row = top; row < top + down; row++) {
+      for (let column = left; column < left + across; column++) {
+        if (!castsShadow(map, column, row)) continue;
+        ctx.fillRect(
+          column * TILE - camera.x,
+          (row + 1) * TILE - camera.y,
+          TILE,
+          DROP_SHADOW_H,
+        );
+      }
+    }
+    ctx.restore();
 
     // Everyone, back to front, so somebody lower on the screen stands in front.
     const everyone = [...characters.filter((entry) => !entry.hidden), player].sort(
@@ -368,33 +438,80 @@ export class Renderer {
   /** The sky, the sun and the two patches of ground the creatures stand on. */
   battleBackdrop(kind = "wild") {
     const ctx = this.ctx;
-    for (let y = 0; y < 96; y++) {
-      const share = y / 96;
+    /** Where the land meets the sky. */
+    const horizon = 92;
+    for (let y = 0; y < horizon; y++) {
+      const share = y / horizon;
       ctx.fillStyle = mix(UI.sky, UI.skyLow, share);
       ctx.fillRect(0, y, SCREEN_W, 1);
     }
-    ctx.fillStyle = kind === "trainer" ? "#d8a86a" : "#cfa86e";
-    ctx.fillRect(0, 96, SCREEN_W, SCREEN_H - 96);
-    ctx.fillStyle = "#e8c98a";
-    ctx.beginPath();
-    ctx.ellipse(178, 58, 46, 12, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#b98d57";
-    ctx.beginPath();
-    ctx.ellipse(58, 104, 54, 14, 0, 0, Math.PI * 2);
-    ctx.fill();
-    // A low sun and a couple of flat-topped trees on the horizon.
+    // A low sun, before the land, so the land covers its bottom edge.
     ctx.fillStyle = "#f7d98c";
     ctx.beginPath();
     ctx.arc(32, 26, 11, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = "#5f8a4a";
-    for (const x of [96, 128, 210]) {
-      ctx.fillRect(x, 78, 3, 14);
+
+    // Flat-topped savannah trees standing on the horizon. Their trunks used to
+    // stop four pixels short of the ground, so they hung in the air.
+    ctx.fillStyle = "#4a6f3a";
+    for (const [x, height] of [
+      [92, 18],
+      [126, 14],
+      [150, 20],
+      [208, 16],
+    ]) {
+      ctx.fillRect(x, horizon - height, 3, height);
       ctx.beginPath();
-      ctx.ellipse(x + 1, 76, 11, 4, 0, 0, Math.PI * 2);
+      ctx.ellipse(x + 1, horizon - height - 1, 11, 4, 0, 0, Math.PI * 2);
       ctx.fill();
     }
+
+    // The land, in two bands: a strip of scrub at the horizon and the bare
+    // ground in front of it, so the join is not one hard line.
+    ctx.fillStyle = "#8a9a52";
+    ctx.fillRect(0, horizon, SCREEN_W, 6);
+    ctx.fillStyle = kind === "trainer" ? "#d8a86a" : "#cfa86e";
+    ctx.fillRect(0, horizon + 6, SCREEN_W, SCREEN_H - horizon - 6);
+
+    // The two patches the creatures stand on.
+    ctx.fillStyle = "#e8c98a";
+    ctx.beginPath();
+    ctx.ellipse(178, 58, 46, 12, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#c19464";
+    ctx.beginPath();
+    ctx.ellipse(178, 58, 46, 12, 0, 0, Math.PI, false);
+    ctx.fill();
+    ctx.fillStyle = "#e8c98a";
+    ctx.beginPath();
+    ctx.ellipse(178, 56, 44, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#a87c4e";
+    ctx.beginPath();
+    ctx.ellipse(58, 104, 54, 14, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#b98d57";
+    ctx.beginPath();
+    ctx.ellipse(58, 102, 52, 12, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  /**
+   * The pool of shade a creature stands in.
+   *
+   * Takes the same position and scale as the `creature` call it goes with, and is
+   * drawn just before it, so the creature sits on it. Without the shade a
+   * creature floats above the patch of ground it is meant to be standing on.
+   */
+  creatureShadow(x, y, scale = 1) {
+    const size = SPRITE_SIZE * scale;
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.fillStyle = UI.shadow;
+    ctx.beginPath();
+    ctx.ellipse(x + size / 2, y + size - 3, size * 0.34, size * 0.1, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
   }
 
   /**
@@ -518,10 +635,13 @@ export function statusShort(status) {
   return { poison: "PSN", burn: "BRN", sleep: "SLP", paralysis: "PAR" }[status] ?? "???";
 }
 
-/** How big a creature is drawn in battle. The player's side is nearer. */
+/**
+ * Where a creature is drawn in battle. The player's side is nearer, so it is
+ * drawn larger. `app.js` `drawBattle` passes these same numbers.
+ */
 export const CREATURE_SLOTS = {
   foe: { x: 158, y: 18, scale: 1 },
-  player: { x: 38, y: 56, scale: 1.2 },
+  player: { x: 30, y: 54, scale: 1.2 },
 };
 
 /** The middle of a creature's slot, for the catch animation to fly at. */

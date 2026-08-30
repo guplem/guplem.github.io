@@ -2290,13 +2290,17 @@ function drawShop() {
  */
 function drawBattleCreature(side, speciesId, x, y, options) {
   const view = game.battleView;
+  const scale = options?.scale ?? 1;
   if (!view.shown.fainted[side]) {
+    // The pool of shade goes on first, so the creature stands on it.
+    renderer.creatureShadow(x, y, scale);
     renderer.creature(speciesId, x, y, options);
     return;
   }
   const left = view.faintFrames[side];
   if (left <= 0) return; // Already gone.
   const share = 1 - left / FAINT_FRAMES;
+  // No shade while it faints: the creature slides down out of its own light.
   renderer.creature(speciesId, x, y + share * 34, { ...options, alpha: 1 - share });
 }
 

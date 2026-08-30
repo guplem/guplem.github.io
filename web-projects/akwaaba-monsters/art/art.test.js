@@ -1,6 +1,6 @@
 import { describe, test, expect } from "bun:test";
 import { CREATURE_ART_IDS, SPRITE_SIZE, creatureDrawing } from "./creatures.js";
-import { TILE_ART_IDS, TILE_SIZE, tileDrawing } from "./tiles.js";
+import { TILE_ART_IDS, TILE_SIZE, TILE_VARIANTS, tileDrawing } from "./tiles.js";
 import {
   PEOPLE,
   PEOPLE_IDS,
@@ -11,7 +11,12 @@ import {
 } from "./people.js";
 import { countPainted, paintedBounds, rasterise } from "./pixelArt.js";
 import { SPECIES_IDS } from "../species.js";
-import { TILE_IDS } from "../world.js";
+import { GROUND_TILE_IDS, TILE_IDS, isGroundTile } from "../world.js";
+
+/** Every variant of every tile, as a flat list of [id, variant] pairs. */
+const everyTile = TILE_ART_IDS.flatMap((id) =>
+  Array.from({ length: TILE_VARIANTS }, (_, variant) => [id, variant]),
+);
 
 describe("every creature has art", () => {
   test("one drawing per species, and no drawing for a species that is gone", () => {
@@ -70,25 +75,49 @@ describe("every map tile has art", () => {
     expect([...TILE_ART_IDS].sort()).toEqual([...TILE_IDS].sort());
   });
 
-  test("every tile is the right size and completely filled", () => {
-    for (const id of TILE_ART_IDS) {
-      const pixels = rasterise(tileDrawing(id));
+  test("every variant of every tile is the right size", () => {
+    for (const [id, variant] of everyTile) {
+      const pixels = rasterise(tileDrawing(id, variant));
       expect(pixels.length).toBe(TILE_SIZE);
       expect(pixels[0].length).toBe(TILE_SIZE);
-      // A tile with a hole in it would show the page behind the map.
-      expect(`${id}: ${countPainted(pixels)}`).toBe(`${id}: ${TILE_SIZE * TILE_SIZE}`);
+    }
+  });
+
+  test("every ground tile is completely filled, so nothing shows through it", () => {
+    // Ground is the bottom of the picture. A hole in it would show the void.
+    for (const [id, variant] of everyTile) {
+      if (!isGroundTile(id)) continue;
+      const painted = countPainted(rasterise(tileDrawing(id, variant)));
+      expect(`${id}/${variant}: ${painted}`).toBe(`${id}/${variant}: ${TILE_SIZE * TILE_SIZE}`);
+    }
+  });
+
+  test("every tile that stands on the ground leaves the ground showing", () => {
+    // This is the whole point of the split. A palm tree that filled its square
+    // put a square of sand in the middle of a grass field.
+    for (const [id, variant] of everyTile) {
+      if (isGroundTile(id)) continue;
+      const painted = countPainted(rasterise(tileDrawing(id, variant)));
+      const whole = TILE_SIZE * TILE_SIZE;
+      expect(`${id}/${variant} fills the square: ${painted === whole}`).toBe(
+        `${id}/${variant} fills the square: false`,
+      );
+      // ...and still paints enough to be worth drawing.
+      expect(`${id}/${variant} paints something: ${painted > 12}`).toBe(
+        `${id}/${variant} paints something: true`,
+      );
     }
   });
 
   test("no tile carries an outline, which would draw a grid over the ground", () => {
-    for (const id of TILE_ART_IDS) {
-      expect(`${id}: ${tileDrawing(id).outline}`).toBe(`${id}: null`);
+    for (const [id, variant] of everyTile) {
+      expect(`${id}: ${tileDrawing(id, variant).outline}`).toBe(`${id}: null`);
     }
   });
 
   test("no tile is shaded, which would put a seam between two of the same tile", () => {
-    for (const id of TILE_ART_IDS) {
-      expect(`${id}: ${tileDrawing(id).shade}`).toBe(`${id}: false`);
+    for (const [id, variant] of everyTile) {
+      expect(`${id}: ${tileDrawing(id, variant).shade}`).toBe(`${id}: false`);
     }
   });
 
@@ -98,8 +127,34 @@ describe("every map tile has art", () => {
     expect(tall).not.toEqual(grass);
   });
 
+  test("the ground the player walks over comes in more than one version", () => {
+    // One version of a grass tile repeated across a field draws the same
+    // speckles every 16 pixels, and the eye reads that grid as wallpaper.
+    for (const id of ["grass", "path", "sand", "water", "cave"]) {
+      expect(`${id} varies: ${GROUND_TILE_IDS.includes(id)}`).toBe(`${id} varies: true`);
+      const first = rasterise(tileDrawing(id, 0));
+      const second = rasterise(tileDrawing(id, 1));
+      expect(`${id} varies: ${JSON.stringify(first) !== JSON.stringify(second)}`).toBe(
+        `${id} varies: true`,
+      );
+    }
+  });
+
+  test("the same variant is drawn the same way every time", () => {
+    // A tile that changed between reloads would make the ground crawl.
+    for (const [id, variant] of everyTile) {
+      expect(rasterise(tileDrawing(id, variant))).toEqual(rasterise(tileDrawing(id, variant)));
+    }
+  });
+
+  test("asking for a variant that does not exist wraps round instead of failing", () => {
+    expect(tileDrawing("grass", TILE_VARIANTS)).toEqual(tileDrawing("grass", 0));
+    expect(tileDrawing("grass", -1)).toEqual(tileDrawing("grass", TILE_VARIANTS - 1));
+  });
+
   test("asking for a tile with no art gives null", () => {
     expect(tileDrawing("lava")).toBeNull();
+    expect(tileDrawing("lava", 2)).toBeNull();
   });
 });
 
