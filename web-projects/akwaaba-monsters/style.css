@@ -3,8 +3,18 @@
  * The game itself is one canvas. Everything here is the frame around it: the
  * page background, the touch pad under the screen, and the notes below.
  *
- * The canvas is sized in JavaScript to a whole multiple of 240 by 160, and
+ * The canvas is sized in JavaScript to a multiple of 240 by 160, and
  * `image-rendering: pixelated` stops the browser smoothing it back into mush.
+ *
+ * The page has three layouts. `layoutMode` in `ui.js` picks one and `app.js`
+ * writes it on `<body data-layout>`. Each layout has its own block below.
+ *
+ *   page     the screen, the pad under it, then the notes. A machine with a
+ *            mouse gets this one.
+ *   theater  the screen at the top at full width, the pad held at the bottom of
+ *            the window where a thumb reaches it. A phone held upright.
+ *   overlay  the screen fills the window and the pad floats over it, faint.
+ *            Fullscreen, and a phone held sideways.
  */
 
 :root {
@@ -136,6 +146,10 @@ body {
 /* --- The touch pad ------------------------------------------------------- */
 
 .pad {
+  /* One key width drives the whole cross. A layout that wants a bigger pad sets
+   * this and nothing else moves. */
+  --key: 44px;
+  --round: 62px;
   display: flex;
   width: 100%;
   max-width: 420px;
@@ -143,6 +157,20 @@ body {
   align-items: center;
   gap: 20px;
   user-select: none;
+}
+
+/* Only the buttons themselves catch a finger. In the overlay layout the pad
+ * lies on top of the screen, and the boxes around the buttons are mostly empty
+ * air. Without this a tap on that air would be swallowed, and a drag that
+ * started there would not walk the player. */
+.pad,
+.dpad,
+.buttons {
+  pointer-events: none;
+}
+
+.pad-button {
+  pointer-events: auto;
 }
 
 /* On a machine with a mouse the pad is a fallback, not the main way to play,
@@ -160,15 +188,15 @@ body {
 
 .dpad {
   position: relative;
-  width: 132px;
-  height: 132px;
+  width: calc(var(--key) * 3);
+  height: calc(var(--key) * 3);
   flex: 0 0 auto;
 }
 
 .pad-button {
   position: absolute;
-  width: 44px;
-  height: 44px;
+  width: var(--key);
+  height: var(--key);
   border: 2px solid #1a1008;
   border-radius: 6px;
   background: linear-gradient(#6b4a26, #3d2717);
@@ -185,20 +213,20 @@ body {
 }
 
 .dpad .up {
-  left: 44px;
+  left: var(--key);
   top: 0;
 }
 .dpad .left {
   left: 0;
-  top: 44px;
+  top: var(--key);
 }
 .dpad .right {
-  left: 88px;
-  top: 44px;
+  left: calc(var(--key) * 2);
+  top: var(--key);
 }
 .dpad .down {
-  left: 44px;
-  top: 88px;
+  left: var(--key);
+  top: calc(var(--key) * 2);
 }
 
 .buttons {
@@ -209,8 +237,8 @@ body {
 
 .pad-button.round {
   position: static;
-  width: 62px;
-  height: 62px;
+  width: var(--round);
+  height: var(--round);
   border-radius: 50%;
   font-size: 1.2rem;
   font-weight: 700;
@@ -223,6 +251,199 @@ body {
 
 .pad-button.b {
   background: linear-gradient(#c9a227, #8a6c12);
+}
+
+/* --- The fullscreen button ----------------------------------------------- */
+
+.fullscreen-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 2px solid rgba(244, 234, 210, 0.35);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--paper);
+  cursor: pointer;
+}
+
+.fullscreen-toggle:hover {
+  border-color: var(--gold);
+}
+
+.fullscreen-icon {
+  width: 13px;
+  height: 13px;
+}
+
+/* --- Layout: theater ------------------------------------------------------
+ * A phone held upright. The screen takes the whole width at the top and the pad
+ * is held at the bottom of the window, where a thumb reaches without a stretch.
+ * The notes stay where they were, one scroll below.
+ */
+
+body[data-layout="theater"] {
+  padding: 0;
+  gap: 0;
+}
+
+body[data-layout="theater"] .game {
+  /* `dvh`, not `vh`: on a phone the address bar grows and shrinks, and `vh`
+   * measures the window as if it were never there. That difference is exactly
+   * the strip the pad was falling into. */
+  min-height: 100dvh;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+}
+
+body[data-layout="theater"] .screen-frame {
+  width: 100%;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+}
+
+body[data-layout="theater"] #screen {
+  border-width: 0;
+  border-radius: 0;
+}
+
+/* Two `auto` margins share the slack evenly: one above the screen and one under
+ * the fullscreen button. The screen ends up in the middle of what is left over
+ * the pad, which is both easier to reach and less lonely than pinned to the top. */
+body[data-layout="theater"] .screen-frame {
+  margin-top: auto;
+}
+
+body[data-layout="theater"] .pad {
+  margin-top: auto; /* eats the rest of the slack, so the pad sits on the edge */
+  /* A phone has room to spare and a finger is not a mouse pointer, so the keys
+   * grow. `.pad` sets both sizes and every button follows. */
+  --key: 50px;
+  --round: 68px;
+  max-width: 460px;
+  padding: 0 16px;
+}
+
+/* Out of the column, so showing and hiding it moves nothing else. The screen is
+ * centred by two `auto` margins, and a form that took space in the column would
+ * shove the screen up as it appeared and drop it back as it went. */
+body[data-layout="theater"] .game {
+  position: relative;
+}
+
+body[data-layout="theater"] .name-form {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  max-width: min(380px, 100% - 24px);
+}
+
+body[data-layout="theater"] .page-footer {
+  padding: 0 12px 32px;
+}
+
+/* --- Layout: overlay ------------------------------------------------------
+ * Fullscreen, and a phone held sideways. One grid cell holds everything, so the
+ * screen is centred for free and the pad lies on top of it rather than under.
+ * The pad is outlined and faint: the game has to stay readable through it.
+ */
+
+body[data-layout="overlay"] {
+  overflow: hidden;
+}
+
+body[data-layout="overlay"] .game {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  gap: 0;
+  padding: 0;
+  background: #05060a;
+}
+
+body[data-layout="overlay"] .screen-frame,
+body[data-layout="overlay"] .name-form,
+body[data-layout="overlay"] .pad,
+body[data-layout="overlay"] .fullscreen-toggle {
+  grid-area: 1 / 1;
+}
+
+body[data-layout="overlay"] .screen-frame {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+body[data-layout="overlay"] #screen {
+  border-width: 0;
+}
+
+body[data-layout="overlay"] .name-form {
+  z-index: 2;
+}
+
+body[data-layout="overlay"] .pad {
+  align-self: end;
+  width: 100%;
+  max-width: none;
+  padding: 0 16px calc(14px + env(safe-area-inset-bottom));
+  /* Faint enough to read the game through, solid enough to find in a hurry. */
+  opacity: 0.5;
+}
+
+/* A finger on the pad brings it back, so the player can see what they pressed. */
+body[data-layout="overlay"] .pad:has(.pad-button:active) {
+  opacity: 0.9;
+}
+
+body[data-layout="overlay"] .pad-button {
+  background: rgba(5, 6, 10, 0.35);
+  border-color: rgba(244, 234, 210, 0.9);
+  color: rgba(244, 234, 210, 0.95);
+}
+
+body[data-layout="overlay"] .pad-button.a {
+  border-color: #f0743c;
+  background: rgba(224, 98, 43, 0.25);
+}
+
+body[data-layout="overlay"] .pad-button.b {
+  border-color: var(--gold);
+  background: rgba(201, 162, 39, 0.22);
+}
+
+body[data-layout="overlay"] .pad-button:active {
+  background: rgba(244, 234, 210, 0.3);
+}
+
+body[data-layout="overlay"] .fullscreen-toggle {
+  align-self: start;
+  justify-self: end;
+  margin: calc(8px + env(safe-area-inset-top)) calc(8px + env(safe-area-inset-right)) 0 0;
+  padding: 7px;
+  opacity: 0.4;
+}
+
+body[data-layout="overlay"] .fullscreen-toggle:hover,
+body[data-layout="overlay"] .fullscreen-toggle:focus-visible {
+  opacity: 1;
+}
+
+body[data-layout="overlay"] .fullscreen-word {
+  display: none;
+}
+
+body[data-layout="overlay"] .page-footer {
+  display: none;
 }
 
 /* --- The notes below ----------------------------------------------------- */

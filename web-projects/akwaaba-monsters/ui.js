@@ -142,12 +142,51 @@ function clamp(value, min, max) {
 }
 
 /**
- * The biggest whole-number scale at which the screen still fits the window.
- * Whole numbers only: half a pixel is what makes a pixel game look muddy.
+ * How wide each game pixel is drawn, in the page's own pixels.
+ *
+ * A whole number is what you want: every game pixel then covers the same square
+ * of screen, and the picture stays even. A fraction draws some game pixels one
+ * screen pixel wider than their neighbours.
+ *
+ * Whole numbers alone are not enough on a phone. A phone is about 390 wide, and
+ * the screen is 240, so the biggest whole number that fits is 1. The game fills
+ * 240 of the 390 and the player is asked to read a stamp. This is why the
+ * fraction exists, and it is allowed under two conditions together:
+ *
+ *   1. the whole number wastes real room (it uses less than `WHOLE_ENOUGH` of
+ *      what is free), and
+ *   2. `pixelRatio` says the screen packs at least two of its own pixels into
+ *      each page pixel, which is every phone and no ordinary monitor.
+ *
+ * On such a screen one game pixel covers four or five screen pixels, so a
+ * neighbour one screen pixel wider is far too small a difference to see. On a
+ * monitor the same difference is plain, so a monitor never gets the fraction.
  */
-export function pixelScale(windowW, windowH, screenW, screenH, max = 6) {
-  const fit = Math.min(windowW / screenW, windowH / screenH);
-  return Math.max(1, Math.min(max, Math.floor(fit)));
+const WHOLE_ENOUGH = 0.9;
+
+export function pixelScale(availableW, availableH, screenW, screenH, options = {}) {
+  const { max = 6, pixelRatio = 1 } = options;
+  const fit = Math.min(max, availableW / screenW, availableH / screenH);
+  const whole = Math.max(1, Math.floor(fit));
+  if (whole / fit >= WHOLE_ENOUGH) return whole;
+  return pixelRatio >= 2 ? fit : whole;
+}
+
+/**
+ * Which of the three page layouts to use. See `style.css`, which draws them.
+ *
+ *   `page`     the screen, then the pad under it, then the notes. The ordinary
+ *              page, for a machine with a mouse.
+ *   `theater`  the screen at the top at full width, the pad held at the bottom
+ *              of the window where a thumb reaches it. For a phone held upright.
+ *   `overlay`  the screen fills the window and the pad floats over it, faint.
+ *              For fullscreen, and for a phone held sideways: sideways there is
+ *              no room under the screen for a pad, so the pad has to float.
+ */
+export function layoutMode({ fullscreen = false, width = 0, height = 0, coarsePointer = false }) {
+  if (fullscreen) return "overlay";
+  if (!coarsePointer) return "page";
+  return width > height ? "overlay" : "theater";
 }
 
 /**

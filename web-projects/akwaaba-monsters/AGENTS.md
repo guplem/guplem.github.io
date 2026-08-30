@@ -37,7 +37,7 @@ engine holds rules and no world; the content holds a world and no rules.
 | `species.js`, `moves.js`, `items.js`, `types.js` | The data tables |
 | `save.js` | The save document, its checking, and its migration |
 | `rng.js` | The seeded generator whose position the save keeps |
-| `ui.js` | Menu arithmetic: cursors, scrolling, bars, the camera |
+| `ui.js` | Menu arithmetic: cursors, scrolling, bars, the camera, the page layout |
 | `music.js` | The songs, the notation, and the creature cries |
 | `art/pixelArt.js` | The rasteriser: shapes to pixels, outline, shading |
 | `art/creatures.js`, `art/tiles.js`, `art/people.js`, `art/font.js` | The pictures |
@@ -145,7 +145,7 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   that names the move and both health bars fall while the box still reads
   "Nacho used Tackle!". The one exception is `faint`: the creature drops, and
   the log then names it. `battle.test.js` pins the rule under "the order of the
-  events". See ADR 0006.
+  events". See ADR 0007.
 - **An event that changes the picture carries the value it lands on**, not only
   the step: `damage` carries the health left, `exp` the new total, `levelUp` the
   health a level gained. `applyBattleEvent` copies those values across rather
@@ -156,14 +156,34 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   `art/art.test.js` fails if any other character uses `SKIN.visitor`.
 - **Only tall grass starts a battle outdoors.** A cave sets
   `encounters.anywhere` instead, because it has no grass to grow.
-- **Each column of the box screen ends in one empty slot.** That slot is not
-  decoration. It is the only target that makes a move with no partner: drop a
-  creature on the empty box row to put it away, drop a boxed creature on the
-  empty team row to bring it out. Remove the slot and the screen can only swap.
+- **Each column of the box screen ends in one empty slot, except the team
+  column when the team is full.** That slot is not decoration. It is the only
+  target that makes a move with no partner: drop a creature on the empty box
+  row to put it away, drop a boxed creature on the empty team row to bring it
+  out. Remove the slot and the screen can only swap.
 - **The party always keeps one creature that can fight.** `depositToBox` and
   `swapWithBox` refuse a move that leaves the team empty, or that leaves only
   fainted creatures. `createBattle` throws on a party where everything has
   fainted, so without this guard the next patch of tall grass crashes the game.
+- **A tap on the screen sends `pointerdown` first and a `click` after it.** The
+  game acts on the `pointerdown`. If the page moves in between, the browser
+  hands that `click` to whatever now sits under the finger. One tap was starting
+  the game AND pressing the Fullscreen button that had slid into that spot.
+  `preventDefault` on the `pointerdown` does not stop it: it never suppresses
+  `click`. `app.js` catches the click on the way down and drops it. Read that
+  comment before you put another control near the screen.
+- **The page has three layouts and `layoutMode` in `ui.js` picks one.** `app.js`
+  writes it on `<body data-layout>` and `style.css` draws it. Test a change in
+  all three: a mouse gets `page`, a phone held upright gets `theater`, and
+  fullscreen or a phone held sideways gets `overlay`. See ADR 0006.
+- **`pixelScale` can return a fraction.** Only on a screen dense enough to hide
+  the uneven pixel, and only when a whole number would waste real room. Nothing
+  may assume the canvas is a whole multiple of 240 by 160. `canvasPoint` in
+  `app.js` already measures the canvas rather than dividing by a scale, which is
+  what keeps every tap target true. See ADR 0006.
+- **In `overlay` the pad lies on top of the screen**, so `.pad`, `.dpad` and
+  `.buttons` take no pointer events and only `.pad-button` does. Give that back
+  and the empty air inside the pad swallows taps meant for the game.
 
 ## Architecture Decision Records
 
@@ -174,4 +194,5 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
 | [0003](adr/0003-an-area-is-one-file.md) | An area is one file, and adding one changes no engine code |
 | [0004](adr/0004-generated-audio-not-audio-files.md) | Generate the music, do not ship it |
 | [0005](adr/0005-early-game-balance-copies-emerald.md) | The early game copies Pokemon Emerald, number for number |
-| [0006](adr/0006-the-screen-trails-the-engine-by-one-event.md) | The screen keeps its own copy of the battle and trails the engine by one event |
+| [0006](adr/0006-three-layouts-and-a-fractional-scale-on-a-dense-screen.md) | Three layouts, and a fractional pixel scale on a dense screen |
+| [0007](adr/0007-the-screen-trails-the-engine-by-one-event.md) | The screen keeps its own copy of the battle and trails the engine by one event |

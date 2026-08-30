@@ -44,6 +44,12 @@ at a time, and `ROADMAP.md` is the handover note that says how.
 Every menu entry can also be tapped or clicked directly, and the pad under the
 screen works for anything else.
 
+**On a phone the page rearranges itself.** Held upright, the game takes the full
+width and the pad sits on the bottom edge, in reach of a thumb. Press Fullscreen
+and the game fills the window with the pad floating faintly on top; held
+sideways it does that on its own, because a sideways phone has no room under the
+screen for a pad.
+
 ## Your save
 
 The game saves itself to your browser as you play. Nothing is sent anywhere.
