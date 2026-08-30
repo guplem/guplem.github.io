@@ -11,7 +11,17 @@
 // Screens stack in a simple way: `game.screen` says which one is running, and a
 // message box or a question sits on top of any of them.
 
-import { Renderer, SCREEN_W, SCREEN_H, TILE, UI, BOX } from "./render.js";
+import {
+  Renderer,
+  SCREEN_W,
+  SCREEN_H,
+  TILE,
+  UI,
+  BOX,
+  BOX_MARGIN,
+  PANELS,
+  PROMPT_W,
+} from "./render.js";
 import { AudioEngine } from "./audio.js";
 import { Rng } from "./rng.js";
 import {
@@ -84,7 +94,7 @@ import {
   removeItem,
 } from "./items.js";
 import { TYPE_COLORS, TYPE_NAMES } from "./types.js";
-import { paginate } from "./art/font.js";
+import { paginate, wrapText } from "./art/font.js";
 import { PERSON_LIFT } from "./art/people.js";
 import {
   affordable,
@@ -93,6 +103,7 @@ import {
   clampScroll,
   fieldMenuItems,
   healthColor,
+  layoutMode,
   messagePage,
   moveCursor,
   moveGridCursor,
@@ -321,6 +332,42 @@ canvas.addEventListener("pointerup", endStick);
 canvas.addEventListener("pointercancel", endStick);
 
 /**
+ * Throw away the click that follows a tap on the screen.
+ *
+ * A finger on a touch screen sends `pointerdown` first and a `click` after it.
+ * The game acts on the `pointerdown`, and by the time the `click` arrives the
+ * page may have moved: the browser then hands that click to whatever now sits
+ * under the finger. One tap on the screen was starting the game AND pressing
+ * the Fullscreen button that had slid into that spot. `preventDefault` on the
+ * `pointerdown` does not stop it, because it never suppresses `click`.
+ *
+ * So the click is caught on the way down and dropped. Any button pressed on
+ * purpose gets its own `pointerdown` first, which clears the flag, so a real
+ * press is never eaten.
+ */
+let swallowNextClick = false;
+
+document.addEventListener(
+  "pointerdown",
+  (event) => {
+    swallowNextClick = event.target === canvas;
+  },
+  true,
+);
+
+document.addEventListener(
+  "click",
+  (event) => {
+    if (!swallowNextClick) return;
+    swallowNextClick = false;
+    if (event.target === canvas) return;
+    event.preventDefault();
+    event.stopPropagation();
+  },
+  true,
+);
+
+/**
  * The direction the player wants to walk, or null.
  *
  * A direction still held counts, one pressed and let go inside the same frame
@@ -338,9 +385,20 @@ function heldDirection() {
 // Messages and questions
 // ---------------------------------------------------------------------------
 
+/**
+ * Draw a description into a panel that cannot turn a page.
+ *
+ * The panel shows every line the text needs, because a line it left out would
+ * go nowhere: no arrow shows and no key advances it. `art/font.test.js` checks
+ * that each description still fits the panel that shows it.
+ */
+function drawPanel(panel, text) {
+  renderer.lines(wrapText(text, panel.w), panel.x, panel.y);
+}
+
 /** Put a message on screen and run `after` once the player reads it all. */
 function say(text, after = null, { width = BOX.w } = {}) {
-  game.msg = { pages: paginate(text, width - 16, 2), index: 0, after, width };
+  game.msg = { pages: paginate(text, width - BOX_MARGIN, 2), index: 0, after, width };
 }
 
 /** Ask a question with a small list of answers. */
@@ -856,7 +914,7 @@ function beginBattle(battle, npc) {
     phase: "intro",
     queue: [],
     timer: 0,
-    text: [],
+    text: "",
     cursor: 0,
     moveCursor: 0,
     listCursor: 0,
@@ -888,7 +946,7 @@ function playBattleEvent(event) {
   const view = game.battleView;
   switch (event.type) {
     case "message":
-      view.text = paginate(event.text, BOX.w - 16, 2)[0];
+      view.text = event.text;
       view.timer = AUTO_ADVANCE;
       return;
     case "damage":
@@ -1063,7 +1121,7 @@ function updateBattleBag() {
 
   if (isBall(entry.item)) {
     if (game.battle.kind === "trainer") {
-      view.text = ["You cannot catch another trainer's creature!"];
+      view.text = "You cannot catch another trainer's creature!";
       view.timer = AUTO_ADVANCE;
       view.phase = "playing";
       return;
@@ -1080,7 +1138,7 @@ function updateBattleBag() {
   const target = activeMonster(game.battle, "player");
   const result = applyItem(entry.item, target, maxHp(target));
   if (!result.used) {
-    view.text = [result.message];
+    view.text = result.message;
     view.timer = AUTO_ADVANCE;
     return;
   }
@@ -1118,7 +1176,7 @@ function submitBattleAction(action) {
   game.battle = battle;
   game.battleView.queue = events;
   game.battleView.phase = "playing";
-  game.battleView.text = [];
+  game.battleView.text = "";
   game.battleView.timer = 0;
 }
 
@@ -1426,9 +1484,10 @@ function updateMenu() {
 // everywhere. A picks a creature up, A puts it down. Where it lands decides
 // which of the five moves in `save.js` runs.
 //
-// Each column ends in one empty slot. That slot is what makes a move possible
-// with no partner: drop a creature on the empty box row to put it away, drop a
-// boxed creature on the empty team row to bring it out.
+// Each column ends in one empty slot, except the team column when the team is
+// full. That slot is what makes a move possible with no partner: drop a
+// creature on the empty box row to put it away, drop a boxed creature on the
+// empty team row to bring it out.
 
 /** How many rows the box screen shows in each column. */
 const BOX_ROWS = 6;
@@ -1937,7 +1996,7 @@ function drawTitle() {
   renderer.textBigCentred("MONSTERS", 120, 40, 2, { color: "#f7d98c", shadow: "#20140a" });
 
   if (game.screen === "nameEntry") {
-    renderer.message(["Type your name in the box below the screen."]);
+    renderer.message("Type your name in the box below the screen.");
     return;
   }
   const options = titleOptions();
@@ -2085,7 +2144,7 @@ function drawMenu() {
       renderer.text(`x${entry.count}`, 190, y);
       if (at === menu.cursor) {
         renderer.cursor(12, y + 1);
-        renderer.lines(paginate(entry.item.desc, 210, 2)[0] ?? [], 14, 128);
+        drawPanel(PANELS.bag, entry.item.desc);
       }
       hotChoose(12, y - 4, 210, 15, () => {
         menu.cursor = at;
@@ -2146,7 +2205,7 @@ function drawStarter() {
   renderer.box(4, 92, 232, 46);
   renderer.rect(12, 100, 40, 9, TYPE_COLORS[species.types[0]]);
   renderer.textCentred(TYPE_NAMES[species.types[0]], 32, 101, { color: "#ffffff" });
-  renderer.lines(paginate(entry.blurb, 176, 2)[0] ?? [], 58, 100);
+  drawPanel(PANELS.starter, entry.blurb);
   renderer.textCentred("Left and right to look, Z to take", 120, 148);
 }
 
@@ -2167,17 +2226,19 @@ function drawShop() {
     });
   });
   renderer.box(4, 100, 232, 56);
-  renderer.lines(paginate(item.desc, 210, 2)[0] ?? [], 12, 108);
+  // The description takes the rows above the key hint, which sits on the last
+  // row of the box. `PANELS.shop` and this hint have to move together.
+  drawPanel(PANELS.shop, item.desc);
   if (shop.mode === "quantity") {
     renderer.box(154, 4, 82, 44);
     renderer.text(`x ${shop.quantity}`, 168, 14);
     renderer.text(formatMoney(item.price * shop.quantity), 164, 30);
-    renderer.text("Up and down, Z to buy, X to stop", 12, 132);
+    renderer.text("Up and down, Z to buy, X to stop", 12, 140);
     hot(154, 4, 82, 22, () => virtualPress("up"));
     hot(154, 26, 82, 22, () => virtualPress("down"));
   } else {
-    renderer.text("Z to choose, X or tap here to leave", 12, 132);
-    hot(4, 126, 232, 26, () => virtualPress("b"));
+    renderer.text("Z to choose, X or tap here to leave", 12, 140);
+    hot(4, 136, 232, 20, () => virtualPress("b"));
   }
 }
 
@@ -2235,7 +2296,7 @@ function drawBattle() {
   if (battle.kind === "trainer") renderer.text(battle.trainer.name, 10, 50);
 
   if (view.phase === "menu") {
-    renderer.message([`What will ${displayName(mine)} do?`], { width: 124 });
+    renderer.message(`What will\n${displayName(mine)} do?`, { width: PROMPT_W });
     renderer.actionMenu(BATTLE_ACTIONS, view.cursor);
     BATTLE_ACTIONS.forEach((label, index) => {
       const x = 132 + (index % 2) * 54;
@@ -2372,13 +2433,126 @@ function loop(now) {
   draw();
 }
 
+// ---------------------------------------------------------------------------
+// Fitting the screen to the window
+//
+// `layoutMode` in `ui.js` picks one of three layouts and `style.css` draws it.
+// The work left here is to measure how much room that layout leaves and to set
+// the canvas to fill it.
+// ---------------------------------------------------------------------------
+
+const gameRoot = document.querySelector("main.game");
+const padElement = document.querySelector(".pad");
+const fullscreenButton = document.getElementById("fullscreen");
+
+/**
+ * True while the player has asked for the big screen.
+ *
+ * This is not the same as the browser being in fullscreen. Safari on an iPhone
+ * gives fullscreen to a video and to nothing else, so the request fails there.
+ * The overlay layout covers the window on its own, so the game still fills the
+ * phone; only the browser's own bars stay. Holding the wish separately from the
+ * browser's answer is what lets both cases share one layout.
+ */
+let immersive = false;
+
+/** Room the page layout takes above and beside the screen. */
+const PAGE_MARGIN_X = 16;
+const PAGE_MARGIN_Y = 260;
+
+/**
+ * The two 10px gaps the theater column puts between its three parts.
+ * `style.css` sets them, and nothing else here can measure them.
+ */
+const THEATER_GAPS = 20;
+
 function resize() {
-  const scale = pixelScale(window.innerWidth - 16, window.innerHeight - 260, SCREEN_W, SCREEN_H);
+  const mode = layoutMode({
+    fullscreen: immersive,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    coarsePointer: window.matchMedia("(pointer: coarse)").matches,
+  });
+  // Set the layout before measuring anything. The layout decides how tall the
+  // pad is and where it sits, and the next three lines read those back.
+  document.body.dataset.layout = mode;
+  fullscreenButton.setAttribute("aria-pressed", String(immersive));
+
+  // `clientWidth` of the document, not `innerWidth`: it leaves out a scrollbar,
+  // and it cannot be widened by a canvas that the last call sized too big.
+  const viewportW = document.documentElement.clientWidth;
+  let availableW = viewportW - PAGE_MARGIN_X;
+  let availableH = window.innerHeight - PAGE_MARGIN_Y;
+  if (mode === "theater") {
+    const reserved =
+      padElement.offsetHeight + fullscreenButton.offsetHeight + THEATER_GAPS + bottomPadding();
+    availableW = viewportW;
+    availableH = window.innerHeight - reserved;
+  } else if (mode === "overlay") {
+    // The pad floats on top, so it takes nothing away.
+    availableW = viewportW;
+    availableH = window.innerHeight;
+  }
+
+  const scale = pixelScale(availableW, availableH, SCREEN_W, SCREEN_H, {
+    // Fullscreen means as big as it goes, so the ceiling lifts.
+    max: mode === "overlay" ? 12 : 6,
+    pixelRatio: window.devicePixelRatio || 1,
+  });
   canvas.style.width = `${SCREEN_W * scale}px`;
   canvas.style.height = `${SCREEN_H * scale}px`;
 }
 
+/**
+ * The space kept under the pad, which no `offsetHeight` counts.
+ * On a phone this holds the strip the system keeps for its own home bar.
+ */
+function bottomPadding() {
+  return Number.parseFloat(getComputedStyle(gameRoot).paddingBottom) || 0;
+}
+
+/**
+ * Ask for the big screen, or give it back.
+ *
+ * The browser's fullscreen is tried first and its failure is ignored on purpose:
+ * the overlay layout alone already covers the window, so a browser that refuses
+ * costs the player nothing but the browser's own bars.
+ */
+function setImmersive(wanted) {
+  immersive = wanted;
+  const request = gameRoot.requestFullscreen ?? gameRoot.webkitRequestFullscreen;
+  const exit = document.exitFullscreen ?? document.webkitExitFullscreen;
+  try {
+    if (wanted) {
+      request?.call(gameRoot)?.catch(() => {});
+    } else if (document.fullscreenElement || document.webkitFullscreenElement) {
+      exit?.call(document)?.catch(() => {});
+    }
+  } catch {
+    // An older browser throws here instead of refusing quietly. Same answer.
+  }
+  resize();
+}
+
+fullscreenButton.addEventListener("click", () => {
+  audio.unlock();
+  setImmersive(!immersive);
+});
+
+// Escape and the phone's own back gesture leave fullscreen without telling the
+// button. This puts the page back in step when that happens.
+for (const event of ["fullscreenchange", "webkitfullscreenchange"]) {
+  document.addEventListener(event, () => {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) immersive = false;
+    resize();
+  });
+}
+
 window.addEventListener("resize", resize);
+window.addEventListener("orientationchange", resize);
+// A phone's address bar slides away as the page scrolls. That changes how much
+// room there is without firing `resize` on some browsers.
+window.visualViewport?.addEventListener("resize", resize);
 resize();
 
 // The "deployed at" line in the footer, read out of this page's own head.

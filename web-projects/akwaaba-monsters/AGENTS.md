@@ -36,18 +36,22 @@ engine holds rules and no world; the content holds a world and no rules.
 | `species.js`, `moves.js`, `items.js`, `types.js` | The data tables |
 | `save.js` | The save document, its checking, and its migration |
 | `rng.js` | The seeded generator whose position the save keeps |
-| `ui.js` | Screen arithmetic: cursors, scrolling, bars, the camera, which tile version a square gets |
+| `ui.js` | Screen arithmetic: cursors, scrolling, bars, the camera, the page layout, which tile version a square gets |
 | `music.js` | The songs, the notation, and the creature cries |
 | `art/pixelArt.js` | The rasteriser: shapes to pixels, outline, shading |
 | `art/creatures.js`, `art/people.js`, `art/font.js` | The pictures |
 | `art/tiles.js` | The map tiles: ground fills its square, a thing lets the ground through |
-| `render.js` | Canvas drawing. Holds no rules and makes no decisions |
+| `render.js` | Canvas drawing, and where each box and panel sits. Holds no rules and makes no decisions |
 | `audio.js` | Web Audio scheduling. Holds no notes |
 | `app.js` | The loop, the input and every screen. The only file with mutable state |
 
 Everything above `render.js` in that table is pure and tested. `render.js`,
 `audio.js` and `app.js` touch the browser and have no tests, which is why they
-are kept thin: anything worth testing was pushed next door.
+are kept thin: anything worth testing was pushed next door. The one thing the
+tests do read from `render.js` is its geometry: `BOX`, `PROMPT_W` and `PANELS`
+are plain numbers, and `art/font.test.js` measures the game's words against
+them. Keep the top of `render.js` free of anything that touches the browser, or
+those tests stop loading.
 
 ## Adding an area
 
@@ -78,8 +82,10 @@ every rule in it copies a measured number out of Pokemon Emerald. Read ADR 0005
 before you change any level, learnset or base stat.
 
 `art/font.test.js` reads every string in the game and fails if any character is
-missing from the font, or if any line needs more than four pages of the message
-box. That catches a pasted curly quote before a player sees a question mark.
+missing from the font, if any line needs more than four pages of the message
+box, or if any description needs more rows than the panel that shows it. That
+catches a pasted curly quote before a player sees a question mark, and a blurb
+one word too long before a player loses the end of it.
 
 ## The balance rules, in one place
 
@@ -111,9 +117,23 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   patch of tall grass. `TILES` in `world.js` is the register, and a tile with no
   `base` field is ground. `art/art.test.js` checks the art agrees. Fill in the
   background of a thing and it puts a square of the wrong colour into every map
-  that uses different ground. See ADR 0006.
+  that uses different ground. See ADR 0007.
 - **Every map declares `base`, the ground its screen is made of.** That is what
   shows through a palm tree. `validateMap` refuses a map without one.
+- **A panel that turns no page must show every line.** The starter blurb, the
+  bag description and the shop description have no arrow and no key to press, so
+  a line they leave out is a line the player never reads. Each one takes its
+  width and its row count from `PANELS` in `render.js`, and each row count comes
+  from the height the panel really has. `paginate(text, w, 2)[0]` is the shape
+  of the bug that cut the end off all three: it asks for two rows and throws the
+  rest away without a word. Use `wrapText` and give the panel its real height.
+- **Give `renderer.message` a string, not lines.** The box then breaks the
+  string to its own width. Hand it an array only when you paged the text
+  yourself, which is what `say` does. A string passed as one line used to run
+  off the box, and on the battle screen the action menu drawn next to it hid the
+  ending.
+- **The shop hint sits on the last row of the description box.** `PANELS.shop`
+  stops above it. Move one and you must move the other.
 - **Tiles carry no outline and no shading.** Both draw a seam between two copies
   of the same tile. `art/art.test.js` enforces it. A thing standing on the
   ground gets the same effect on purpose, by putting dark green along the edge of
@@ -142,14 +162,34 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   `art/art.test.js` fails if any other character uses `SKIN.visitor`.
 - **Only tall grass starts a battle outdoors.** A cave sets
   `encounters.anywhere` instead, because it has no grass to grow.
-- **Each column of the box screen ends in one empty slot.** That slot is not
-  decoration. It is the only target that makes a move with no partner: drop a
-  creature on the empty box row to put it away, drop a boxed creature on the
-  empty team row to bring it out. Remove the slot and the screen can only swap.
+- **Each column of the box screen ends in one empty slot, except the team
+  column when the team is full.** That slot is not decoration. It is the only
+  target that makes a move with no partner: drop a creature on the empty box
+  row to put it away, drop a boxed creature on the empty team row to bring it
+  out. Remove the slot and the screen can only swap.
 - **The party always keeps one creature that can fight.** `depositToBox` and
   `swapWithBox` refuse a move that leaves the team empty, or that leaves only
   fainted creatures. `createBattle` throws on a party where everything has
   fainted, so without this guard the next patch of tall grass crashes the game.
+- **A tap on the screen sends `pointerdown` first and a `click` after it.** The
+  game acts on the `pointerdown`. If the page moves in between, the browser
+  hands that `click` to whatever now sits under the finger. One tap was starting
+  the game AND pressing the Fullscreen button that had slid into that spot.
+  `preventDefault` on the `pointerdown` does not stop it: it never suppresses
+  `click`. `app.js` catches the click on the way down and drops it. Read that
+  comment before you put another control near the screen.
+- **The page has three layouts and `layoutMode` in `ui.js` picks one.** `app.js`
+  writes it on `<body data-layout>` and `style.css` draws it. Test a change in
+  all three: a mouse gets `page`, a phone held upright gets `theater`, and
+  fullscreen or a phone held sideways gets `overlay`. See ADR 0006.
+- **`pixelScale` can return a fraction.** Only on a screen dense enough to hide
+  the uneven pixel, and only when a whole number would waste real room. Nothing
+  may assume the canvas is a whole multiple of 240 by 160. `canvasPoint` in
+  `app.js` already measures the canvas rather than dividing by a scale, which is
+  what keeps every tap target true. See ADR 0006.
+- **In `overlay` the pad lies on top of the screen**, so `.pad`, `.dpad` and
+  `.buttons` take no pointer events and only `.pad-button` does. Give that back
+  and the empty air inside the pad swallows taps meant for the game.
 
 ## Architecture Decision Records
 
@@ -160,4 +200,5 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
 | [0003](adr/0003-an-area-is-one-file.md) | An area is one file, and adding one changes no engine code |
 | [0004](adr/0004-generated-audio-not-audio-files.md) | Generate the music, do not ship it |
 | [0005](adr/0005-early-game-balance-copies-emerald.md) | The early game copies Pokemon Emerald, number for number |
-| [0006](adr/0006-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
+| [0006](adr/0006-three-layouts-and-a-fractional-scale-on-a-dense-screen.md) | Three layouts, and a fractional pixel scale on a dense screen |
+| [0007](adr/0007-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |

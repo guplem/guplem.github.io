@@ -182,7 +182,7 @@ Honest list of things that work but could be better.
   battle in a field.
 - **No shoreline.** Water meets sand along a straight line, one square wide, and
   so does every other pair of grounds. The tile set now splits ground from the
-  things standing on it (ADR 0006), so softening a join means new art and no new
+  things standing on it (ADR 0007), so softening a join means new art and no new
   design: draw a `shore` tile that stands on the ground, holes and all, and lay
   it along the water's edge on the `over` layer. The join between two *grounds*
   still needs a picture per corner, which is why it was left.
