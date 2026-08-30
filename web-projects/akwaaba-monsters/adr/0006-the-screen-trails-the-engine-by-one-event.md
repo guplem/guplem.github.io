@@ -1,4 +1,4 @@
-# ADR 0005: The screen keeps its own copy of the battle and trails the engine by one event
+# ADR 0006: The screen keeps its own copy of the battle and trails the engine by one event
 
 ## Context
 

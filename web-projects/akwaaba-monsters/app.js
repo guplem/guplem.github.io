@@ -11,7 +11,17 @@
 // Screens stack in a simple way: `game.screen` says which one is running, and a
 // message box or a question sits on top of any of them.
 
-import { Renderer, SCREEN_W, SCREEN_H, TILE, UI, BOX } from "./render.js";
+import {
+  Renderer,
+  SCREEN_W,
+  SCREEN_H,
+  TILE,
+  UI,
+  BOX,
+  BOX_MARGIN,
+  PANELS,
+  PROMPT_W,
+} from "./render.js";
 import { AudioEngine } from "./audio.js";
 import { Rng } from "./rng.js";
 import {
@@ -84,7 +94,7 @@ import {
   removeItem,
 } from "./items.js";
 import { TYPE_COLORS, TYPE_NAMES } from "./types.js";
-import { paginate } from "./art/font.js";
+import { paginate, wrapText } from "./art/font.js";
 import { PERSON_LIFT } from "./art/people.js";
 import {
   affordable,
@@ -339,9 +349,20 @@ function heldDirection() {
 // Messages and questions
 // ---------------------------------------------------------------------------
 
+/**
+ * Draw a description into a panel that cannot turn a page.
+ *
+ * The panel shows every line the text needs, because a line it left out would
+ * go nowhere: no arrow shows and no key advances it. `art/font.test.js` checks
+ * that each description still fits the panel that shows it.
+ */
+function drawPanel(panel, text) {
+  renderer.lines(wrapText(text, panel.w), panel.x, panel.y);
+}
+
 /** Put a message on screen and run `after` once the player reads it all. */
 function say(text, after = null, { width = BOX.w } = {}) {
-  game.msg = { pages: paginate(text, width - 16, 2), index: 0, after, width };
+  game.msg = { pages: paginate(text, width - BOX_MARGIN, 2), index: 0, after, width };
 }
 
 /** Ask a question with a small list of answers. */
@@ -857,7 +878,7 @@ function beginBattle(battle, npc) {
     phase: "intro",
     queue: [],
     timer: 0,
-    text: [],
+    text: "",
     cursor: 0,
     moveCursor: 0,
     listCursor: 0,
@@ -903,7 +924,7 @@ function playBattleEvent(event) {
   view.shown = applyBattleEvent(view.shown, event);
   switch (event.type) {
     case "message":
-      view.text = paginate(event.text, BOX.w - 16, 2)[0];
+      view.text = event.text;
       view.timer = AUTO_ADVANCE;
       return;
     case "damage":
@@ -1100,7 +1121,7 @@ function updateBattleBag() {
 
   if (isBall(entry.item)) {
     if (game.battle.kind === "trainer") {
-      view.text = ["You cannot catch another trainer's creature!"];
+      view.text = "You cannot catch another trainer's creature!";
       view.timer = AUTO_ADVANCE;
       view.phase = "playing";
       return;
@@ -1117,7 +1138,7 @@ function updateBattleBag() {
   const target = activeMonster(game.battle, "player");
   const result = applyItem(entry.item, target, maxHp(target));
   if (!result.used) {
-    view.text = [result.message];
+    view.text = result.message;
     view.timer = AUTO_ADVANCE;
     return;
   }
@@ -1158,7 +1179,7 @@ function submitBattleAction(action) {
   game.battleView.queue = events;
   game.battleView.needsSync = true;
   game.battleView.phase = "playing";
-  game.battleView.text = [];
+  game.battleView.text = "";
   game.battleView.timer = 0;
 }
 
@@ -1977,7 +1998,7 @@ function drawTitle() {
   renderer.textBigCentred("MONSTERS", 120, 40, 2, { color: "#f7d98c", shadow: "#20140a" });
 
   if (game.screen === "nameEntry") {
-    renderer.message(["Type your name in the box below the screen."]);
+    renderer.message("Type your name in the box below the screen.");
     return;
   }
   const options = titleOptions();
@@ -2125,7 +2146,7 @@ function drawMenu() {
       renderer.text(`x${entry.count}`, 190, y);
       if (at === menu.cursor) {
         renderer.cursor(12, y + 1);
-        renderer.lines(paginate(entry.item.desc, 210, 2)[0] ?? [], 14, 128);
+        drawPanel(PANELS.bag, entry.item.desc);
       }
       hotChoose(12, y - 4, 210, 15, () => {
         menu.cursor = at;
@@ -2186,7 +2207,7 @@ function drawStarter() {
   renderer.box(4, 92, 232, 46);
   renderer.rect(12, 100, 40, 9, TYPE_COLORS[species.types[0]]);
   renderer.textCentred(TYPE_NAMES[species.types[0]], 32, 101, { color: "#ffffff" });
-  renderer.lines(paginate(entry.blurb, 176, 2)[0] ?? [], 58, 100);
+  drawPanel(PANELS.starter, entry.blurb);
   renderer.textCentred("Left and right to look, Z to take", 120, 148);
 }
 
@@ -2207,17 +2228,19 @@ function drawShop() {
     });
   });
   renderer.box(4, 100, 232, 56);
-  renderer.lines(paginate(item.desc, 210, 2)[0] ?? [], 12, 108);
+  // The description takes the rows above the key hint, which sits on the last
+  // row of the box. `PANELS.shop` and this hint have to move together.
+  drawPanel(PANELS.shop, item.desc);
   if (shop.mode === "quantity") {
     renderer.box(154, 4, 82, 44);
     renderer.text(`x ${shop.quantity}`, 168, 14);
     renderer.text(formatMoney(item.price * shop.quantity), 164, 30);
-    renderer.text("Up and down, Z to buy, X to stop", 12, 132);
+    renderer.text("Up and down, Z to buy, X to stop", 12, 140);
     hot(154, 4, 82, 22, () => virtualPress("up"));
     hot(154, 26, 82, 22, () => virtualPress("down"));
   } else {
-    renderer.text("Z to choose, X or tap here to leave", 12, 132);
-    hot(4, 126, 232, 26, () => virtualPress("b"));
+    renderer.text("Z to choose, X or tap here to leave", 12, 140);
+    hot(4, 136, 232, 20, () => virtualPress("b"));
   }
 }
 
@@ -2294,7 +2317,7 @@ function drawBattle() {
   if (battle.kind === "trainer") renderer.text(battle.trainer.name, 10, 50);
 
   if (view.phase === "menu") {
-    renderer.message([`What will ${displayName(mine)} do?`], { width: 124 });
+    renderer.message(`What will\n${displayName(mine)} do?`, { width: PROMPT_W });
     renderer.actionMenu(BATTLE_ACTIONS, view.cursor);
     BATTLE_ACTIONS.forEach((label, index) => {
       const x = 132 + (index % 2) * 54;
