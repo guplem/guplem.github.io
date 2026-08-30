@@ -1426,9 +1426,10 @@ function updateMenu() {
 // everywhere. A picks a creature up, A puts it down. Where it lands decides
 // which of the five moves in `save.js` runs.
 //
-// Each column ends in one empty slot. That slot is what makes a move possible
-// with no partner: drop a creature on the empty box row to put it away, drop a
-// boxed creature on the empty team row to bring it out.
+// Each column ends in one empty slot, except the team column when the team is
+// full. That slot is what makes a move possible with no partner: drop a
+// creature on the empty box row to put it away, drop a boxed creature on the
+// empty team row to bring it out.
 
 /** How many rows the box screen shows in each column. */
 const BOX_ROWS = 6;

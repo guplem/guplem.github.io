@@ -95,10 +95,11 @@ box. That catches a pasted curly quote before a player sees a question mark.
   `art/art.test.js` fails if any other character uses `SKIN.visitor`.
 - **Only tall grass starts a battle outdoors.** A cave sets
   `encounters.anywhere` instead, because it has no grass to grow.
-- **Each column of the box screen ends in one empty slot.** That slot is not
-  decoration. It is the only target that makes a move with no partner: drop a
-  creature on the empty box row to put it away, drop a boxed creature on the
-  empty team row to bring it out. Remove the slot and the screen can only swap.
+- **Each column of the box screen ends in one empty slot, except the team
+  column when the team is full.** That slot is not decoration. It is the only
+  target that makes a move with no partner: drop a creature on the empty box
+  row to put it away, drop a boxed creature on the empty team row to bring it
+  out. Remove the slot and the screen can only swap.
 - **The party always keeps one creature that can fight.** `depositToBox` and
   `swapWithBox` refuse a move that leaves the team empty, or that leaves only
   fainted creatures. `createBattle` throws on a party where everything has
