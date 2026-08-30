@@ -93,6 +93,7 @@ import {
   clampScroll,
   fieldMenuItems,
   healthColor,
+  layoutMode,
   messagePage,
   moveCursor,
   moveGridCursor,
@@ -319,6 +320,42 @@ function endStick(event) {
 
 canvas.addEventListener("pointerup", endStick);
 canvas.addEventListener("pointercancel", endStick);
+
+/**
+ * Throw away the click that follows a tap on the screen.
+ *
+ * A finger on a touch screen sends `pointerdown` first and a `click` after it.
+ * The game acts on the `pointerdown`, and by the time the `click` arrives the
+ * page may have moved: the browser then hands that click to whatever now sits
+ * under the finger. One tap on the screen was starting the game AND pressing
+ * the Fullscreen button that had slid into that spot. `preventDefault` on the
+ * `pointerdown` does not stop it, because it never suppresses `click`.
+ *
+ * So the click is caught on the way down and dropped. Any button pressed on
+ * purpose gets its own `pointerdown` first, which clears the flag, so a real
+ * press is never eaten.
+ */
+let swallowNextClick = false;
+
+document.addEventListener(
+  "pointerdown",
+  (event) => {
+    swallowNextClick = event.target === canvas;
+  },
+  true,
+);
+
+document.addEventListener(
+  "click",
+  (event) => {
+    if (!swallowNextClick) return;
+    swallowNextClick = false;
+    if (event.target === canvas) return;
+    event.preventDefault();
+    event.stopPropagation();
+  },
+  true,
+);
 
 /**
  * The direction the player wants to walk, or null.
@@ -2368,13 +2405,126 @@ function loop(now) {
   draw();
 }
 
+// ---------------------------------------------------------------------------
+// Fitting the screen to the window
+//
+// `layoutMode` in `ui.js` picks one of three layouts and `style.css` draws it.
+// The work left here is to measure how much room that layout leaves and to set
+// the canvas to fill it.
+// ---------------------------------------------------------------------------
+
+const gameRoot = document.querySelector("main.game");
+const padElement = document.querySelector(".pad");
+const fullscreenButton = document.getElementById("fullscreen");
+
+/**
+ * True while the player has asked for the big screen.
+ *
+ * This is not the same as the browser being in fullscreen. Safari on an iPhone
+ * gives fullscreen to a video and to nothing else, so the request fails there.
+ * The overlay layout covers the window on its own, so the game still fills the
+ * phone; only the browser's own bars stay. Holding the wish separately from the
+ * browser's answer is what lets both cases share one layout.
+ */
+let immersive = false;
+
+/** Room the page layout takes above and beside the screen. */
+const PAGE_MARGIN_X = 16;
+const PAGE_MARGIN_Y = 260;
+
+/**
+ * The two 10px gaps the theater column puts between its three parts.
+ * `style.css` sets them, and nothing else here can measure them.
+ */
+const THEATER_GAPS = 20;
+
 function resize() {
-  const scale = pixelScale(window.innerWidth - 16, window.innerHeight - 260, SCREEN_W, SCREEN_H);
+  const mode = layoutMode({
+    fullscreen: immersive,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    coarsePointer: window.matchMedia("(pointer: coarse)").matches,
+  });
+  // Set the layout before measuring anything. The layout decides how tall the
+  // pad is and where it sits, and the next three lines read those back.
+  document.body.dataset.layout = mode;
+  fullscreenButton.setAttribute("aria-pressed", String(immersive));
+
+  // `clientWidth` of the document, not `innerWidth`: it leaves out a scrollbar,
+  // and it cannot be widened by a canvas that the last call sized too big.
+  const viewportW = document.documentElement.clientWidth;
+  let availableW = viewportW - PAGE_MARGIN_X;
+  let availableH = window.innerHeight - PAGE_MARGIN_Y;
+  if (mode === "theater") {
+    const reserved =
+      padElement.offsetHeight + fullscreenButton.offsetHeight + THEATER_GAPS + bottomPadding();
+    availableW = viewportW;
+    availableH = window.innerHeight - reserved;
+  } else if (mode === "overlay") {
+    // The pad floats on top, so it takes nothing away.
+    availableW = viewportW;
+    availableH = window.innerHeight;
+  }
+
+  const scale = pixelScale(availableW, availableH, SCREEN_W, SCREEN_H, {
+    // Fullscreen means as big as it goes, so the ceiling lifts.
+    max: mode === "overlay" ? 12 : 6,
+    pixelRatio: window.devicePixelRatio || 1,
+  });
   canvas.style.width = `${SCREEN_W * scale}px`;
   canvas.style.height = `${SCREEN_H * scale}px`;
 }
 
+/**
+ * The space kept under the pad, which no `offsetHeight` counts.
+ * On a phone this holds the strip the system keeps for its own home bar.
+ */
+function bottomPadding() {
+  return Number.parseFloat(getComputedStyle(gameRoot).paddingBottom) || 0;
+}
+
+/**
+ * Ask for the big screen, or give it back.
+ *
+ * The browser's fullscreen is tried first and its failure is ignored on purpose:
+ * the overlay layout alone already covers the window, so a browser that refuses
+ * costs the player nothing but the browser's own bars.
+ */
+function setImmersive(wanted) {
+  immersive = wanted;
+  const request = gameRoot.requestFullscreen ?? gameRoot.webkitRequestFullscreen;
+  const exit = document.exitFullscreen ?? document.webkitExitFullscreen;
+  try {
+    if (wanted) {
+      request?.call(gameRoot)?.catch(() => {});
+    } else if (document.fullscreenElement || document.webkitFullscreenElement) {
+      exit?.call(document)?.catch(() => {});
+    }
+  } catch {
+    // An older browser throws here instead of refusing quietly. Same answer.
+  }
+  resize();
+}
+
+fullscreenButton.addEventListener("click", () => {
+  audio.unlock();
+  setImmersive(!immersive);
+});
+
+// Escape and the phone's own back gesture leave fullscreen without telling the
+// button. This puts the page back in step when that happens.
+for (const event of ["fullscreenchange", "webkitfullscreenchange"]) {
+  document.addEventListener(event, () => {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) immersive = false;
+    resize();
+  });
+}
+
 window.addEventListener("resize", resize);
+window.addEventListener("orientationchange", resize);
+// A phone's address bar slides away as the page scrolls. That changes how much
+// room there is without firing `resize` on some browsers.
+window.visualViewport?.addEventListener("resize", resize);
 resize();
 
 // The "deployed at" line in the footer, read out of this page's own head.
