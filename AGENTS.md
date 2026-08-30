@@ -211,6 +211,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [akwaaba-monsters 0006](web-projects/akwaaba-monsters/adr/0006-three-layouts-and-a-fractional-scale-on-a-dense-screen.md) | Three layouts, and a fractional pixel scale on a dense screen |
 | [akwaaba-monsters 0007](web-projects/akwaaba-monsters/adr/0007-the-screen-trails-the-engine-by-one-event.md) | The screen keeps its own copy of the battle and trails the engine by one event |
 | [akwaaba-monsters 0008](web-projects/akwaaba-monsters/adr/0008-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
+| [akwaaba-monsters 0009](web-projects/akwaaba-monsters/adr/0009-the-pad-follows-the-finger-and-buzzes.md) | The pad follows the finger, and the phone buzzes for every press |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 

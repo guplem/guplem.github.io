@@ -44,6 +44,15 @@ at a time, and `ROADMAP.md` is the handover note that says how.
 Every menu entry can also be tapped or clicked directly, and the pad under the
 screen works for anything else.
 
+**The pad follows your thumb.** Press an arrow and slide to the next one without
+lifting your finger. The corners of the cross count as the arrow nearest to
+them, so a turn never drops the press.
+
+**Your phone buzzes for 12 milliseconds on every press.** A glass screen gives a
+thumb nothing to feel, and the buzz puts that back. Open the menu, choose
+**Options**, and switch **Vibration** off if you would rather it did not. The
+row appears only on a device that can vibrate, so an iPhone never shows it.
+
 **On a phone the page rearranges itself.** Held upright, the game takes the full
 width and the pad sits on the bottom edge, in reach of a thumb. Press Fullscreen
 and the game fills the window with the pad floating faintly on top; held

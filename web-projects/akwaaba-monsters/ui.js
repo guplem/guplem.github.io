@@ -234,6 +234,24 @@ function distanceToRect(point, rect) {
 }
 
 /**
+ * The settings the options screen offers, in the order it draws them.
+ *
+ * The vibration row appears only where the browser can vibrate. A row that does
+ * nothing is worse than no row: the player presses it and reads the machine as
+ * broken.
+ *
+ * @param {object} state
+ * @param {boolean} state.muted whether the sound is off
+ * @param {boolean} state.canVibrate whether the browser can vibrate
+ * @param {boolean} [state.vibration] whether the buzz is on
+ */
+export function optionRows({ muted, canVibrate, vibration }) {
+  const rows = [{ id: "sound", label: `Sound: ${muted ? "off" : "on"}` }];
+  if (canVibrate) rows.push({ id: "vibration", label: `Vibration: ${vibration ? "on" : "off"}` });
+  return rows;
+}
+
+/**
  * Which version of a tile to draw at a position on the map.
  *
  * Ground comes in several versions so that a field is not one tile repeated.

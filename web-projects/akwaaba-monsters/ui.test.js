@@ -11,6 +11,7 @@ import {
   messagePage,
   moveCursor,
   moveGridCursor,
+  optionRows,
   padActionAt,
   pixelScale,
   tileVariant,
@@ -386,5 +387,23 @@ describe("padActionAt", () => {
 
   test("presses nothing when there are no buttons", () => {
     expect(padActionAt({ x: 10, y: 10 }, [])).toBeNull();
+  });
+});
+
+describe("optionRows", () => {
+  test("lists the sound setting and reads its state", () => {
+    expect(optionRows({ muted: false, canVibrate: false })).toEqual([
+      { id: "sound", label: "Sound: on" },
+    ]);
+    expect(optionRows({ muted: true, canVibrate: false })[0].label).toBe("Sound: off");
+  });
+
+  test("adds the vibration setting only where the browser can vibrate", () => {
+    const rows = optionRows({ muted: false, canVibrate: true, vibration: true });
+    expect(rows.map((row) => row.id)).toEqual(["sound", "vibration"]);
+    expect(rows[1].label).toBe("Vibration: on");
+    expect(optionRows({ muted: false, canVibrate: true, vibration: false })[1].label).toBe(
+      "Vibration: off",
+    );
   });
 });
