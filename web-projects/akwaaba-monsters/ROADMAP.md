@@ -28,6 +28,12 @@ To add area 2:
    new maps join up, that every warp leads back, that no trainer stands on the
    only path and that difficulty climbs. It found seven real mistakes in area 1.
 
+`areas/balance.test.js` checks the difficulty of what you add. Its rules copy
+measured numbers out of Pokemon Emerald, and ADR 0005 lists every one with the
+number it came from. The rules that bite hardest when you write a new area are
+these: a route holds nothing that out-hits what the player carries, and no
+script poisons the party and then starts a battle.
+
 Two rules are not negotiable, because save files hold them:
 
 - **Never rename an identifier.** Species, move, item, map, flag and badge

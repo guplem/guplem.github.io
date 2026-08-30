@@ -27,7 +27,8 @@ at a time, and `ROADMAP.md` is the handover note that says how.
   waits in the box. Open the box from the menu to bring it back out.
 - **A rival who is a cook.** Mama Sopa meets you three times, and each time she
   offers a bowl of banku and soup. You can refuse. If you do not, your whole
-  team really is poisoned.
+  team really is poisoned, once the fight is over. The first time, she hands you
+  the bitter leaf that cures it.
 - **An antagonist with a real grievance.** Equip Galamsey dredge the Pra for
   gold, and the mercury goes into the water. Nana Sika is not sorry.
 
