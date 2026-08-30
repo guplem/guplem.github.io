@@ -40,13 +40,17 @@ engine holds rules and no world; the content holds a world and no rules.
 | `music.js` | The songs, the notation, and the creature cries |
 | `art/pixelArt.js` | The rasteriser: shapes to pixels, outline, shading |
 | `art/creatures.js`, `art/tiles.js`, `art/people.js`, `art/font.js` | The pictures |
-| `render.js` | Canvas drawing. Holds no rules and makes no decisions |
+| `render.js` | Canvas drawing, and where each box and panel sits. Holds no rules and makes no decisions |
 | `audio.js` | Web Audio scheduling. Holds no notes |
 | `app.js` | The loop, the input and every screen. The only file with mutable state |
 
 Everything above `render.js` in that table is pure and tested. `render.js`,
 `audio.js` and `app.js` touch the browser and have no tests, which is why they
-are kept thin: anything worth testing was pushed next door.
+are kept thin: anything worth testing was pushed next door. The one thing the
+tests do read from `render.js` is its geometry: `BOX`, `PROMPT_W` and `PANELS`
+are plain numbers, and `art/font.test.js` measures the game's words against
+them. Keep the top of `render.js` free of anything that touches the browser, or
+those tests stop loading.
 
 ## Adding an area
 
@@ -71,11 +75,27 @@ climbs to the gym leader, and all seven friend creatures appear somewhere.
 It found seven real mistakes while area 1 was being written. Keep it fed.
 
 `art/font.test.js` reads every string in the game and fails if any character is
-missing from the font, or if any line needs more than four pages of the message
-box. That catches a pasted curly quote before a player sees a question mark.
+missing from the font, if any line needs more than four pages of the message
+box, or if any description needs more rows than the panel that shows it. That
+catches a pasted curly quote before a player sees a question mark, and a blurb
+one word too long before a player loses the end of it.
 
 ## Gotchas
 
+- **A panel that turns no page must show every line.** The starter blurb, the
+  bag description and the shop description have no arrow and no key to press, so
+  a line they leave out is a line the player never reads. Each one takes its
+  width and its row count from `PANELS` in `render.js`, and each row count comes
+  from the height the panel really has. `paginate(text, w, 2)[0]` is the shape
+  of the bug that cut the end off all three: it asks for two rows and throws the
+  rest away without a word. Use `wrapText` and give the panel its real height.
+- **Give `renderer.message` a string, not lines.** The box then breaks the
+  string to its own width. Hand it an array only when you paged the text
+  yourself, which is what `say` does. A string passed as one line used to run
+  off the box, and on the battle screen the action menu drawn next to it hid the
+  ending.
+- **The shop hint sits on the last row of the description box.** `PANELS.shop`
+  stops above it. Move one and you must move the other.
 - **Tiles carry no outline and no shading.** Both draw a seam between two copies
   of the same tile. `art/art.test.js` enforces it.
 - **A creature faces the viewer and is symmetric about 19.5**, not 20. The

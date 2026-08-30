@@ -22,6 +22,8 @@ import {
 import { createMonster, flatIvs, isFainted, maxHp } from "./monsters.js";
 import { getMove } from "./moves.js";
 import { Rng } from "./rng.js";
+import { BOX } from "./render.js";
+import { wrapText } from "./art/font.js";
 
 const ivs = flatIvs(15);
 
@@ -811,6 +813,58 @@ describe("a battle always finishes", () => {
           expect(entry.hp).toBeLessThanOrEqual(maxHp(entry));
         }
       }
+    }
+  });
+});
+
+describe("the lines a battle writes", () => {
+  // The battle box turns no page: each line shows for a moment and the next one
+  // takes its place. A message that needs one row more than the box holds loses
+  // its ending, so every message a battle can write has to fit the box whole.
+  const NAME_LIMIT = 12;
+
+  /** A creature with the longest name the save file will keep. */
+  function longNamed(species, level) {
+    return { ...monster(species, level), nickname: "a".repeat(NAME_LIMIT) };
+  }
+
+  /** Every message a whole battle writes, from the first turn to the last. */
+  function messagesOf(battle, action = { kind: "move", slot: 0 }, limit = 200) {
+    const texts = [];
+    let current = battle;
+    for (let i = 0; i < limit && !current.over; i++) {
+      const next = takeTurn(current, current.awaiting === "switch" ? findSwitch(current) : action);
+      for (const event of next.events) if (event.type === "message") texts.push(event.text);
+      current = next.battle;
+    }
+    return texts;
+  }
+
+  test("fit the battle box, even with the longest name a player can give", () => {
+    const trainer = { name: "Gatekeeper Adjoa", intro: "Stop.", defeat: "Go on." };
+    const seen = [];
+    for (const kind of ["wild", "trainer"]) {
+      for (let seed = 1; seed <= 6; seed++) {
+        for (const action of [{ kind: "move", slot: 0 }, { kind: "run" }]) {
+          seen.push(
+            ...messagesOf(
+              battleWith({
+                mine: [longNamed("hinoko", 30), longNamed("carsla", 30)],
+                theirs: [longNamed("poya", 30), longNamed("sasabon", 30)],
+                kind,
+                seed,
+                trainer: kind === "trainer" ? trainer : null,
+              }),
+              action,
+            ),
+          );
+        }
+      }
+    }
+    expect(seen.length).toBeGreaterThan(20);
+    for (const text of seen) {
+      const lines = wrapText(text, BOX.textW);
+      expect(`${text}: ${lines.length} rows`).toBe(`${text}: ${Math.min(lines.length, BOX.rows)} rows`);
     }
   });
 });
