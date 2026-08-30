@@ -32,6 +32,7 @@ engine holds rules and no world; the content holds a world and no rules.
 | `world.js` | Tiles, collision, ledges, sight lines, encounters, map checking |
 | `events.js` | The script engine every conversation and cut scene runs on |
 | `battle.js` | Turn resolution, damage, status, stat stages, catching, the foe's choices |
+| `battlePlayback.js` | What the battle screen shows: a copy of the battle that events move forward one at a time |
 | `monsters.js` | One creature: stats, experience curves, levelling, evolution, moves |
 | `species.js`, `moves.js`, `items.js`, `types.js` | The data tables |
 | `save.js` | The save document, its checking, and its migration |
@@ -117,7 +118,7 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   patch of tall grass. `TILES` in `world.js` is the register, and a tile with no
   `base` field is ground. `art/art.test.js` checks the art agrees. Fill in the
   background of a thing and it puts a square of the wrong colour into every map
-  that uses different ground. See ADR 0007.
+  that uses different ground. See ADR 0008.
 - **Every map declares `base`, the ground its screen is made of.** That is what
   shows through a palm tree. `validateMap` refuses a map without one.
 - **A panel that turns no page must show every line.** The starter blurb, the
@@ -157,6 +158,19 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   which creature the next patch of grass holds.
 - **A battle is never saved**, so `battle.rng` is allowed to be a live object.
   The real games do not let you save mid-fight either.
+- **In `battle.js`, a `message` event comes before the event that changes the
+  picture.** The battle screen draws `battleView.shown`, a copy of the battle
+  that `battlePlayback.js` moves forward one event at a time, so the order the
+  events carry is the order the player sees. Push a `damage` before the line
+  that names the move and both health bars fall while the box still reads
+  "Nacho used Tackle!". The one exception is `faint`: the creature drops, and
+  the log then names it. `battle.test.js` pins the rule under "the order of the
+  events". See ADR 0007.
+- **An event that changes the picture carries the value it lands on**, not only
+  the step: `damage` carries the health left, `exp` the new total, `levelUp` the
+  health a level gained. `applyBattleEvent` copies those values across rather
+  than redoing the engine's arithmetic, so the two can never disagree. Teach
+  `applyBattleEvent` about any new event of this kind.
 - **The player is the only light-skinned person in the region.** That is the
   setting, and it is what the children shouting "obroni" are reacting to.
   `art/art.test.js` fails if any other character uses `SKIN.visitor`.
@@ -201,4 +215,5 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
 | [0004](adr/0004-generated-audio-not-audio-files.md) | Generate the music, do not ship it |
 | [0005](adr/0005-early-game-balance-copies-emerald.md) | The early game copies Pokemon Emerald, number for number |
 | [0006](adr/0006-three-layouts-and-a-fractional-scale-on-a-dense-screen.md) | Three layouts, and a fractional pixel scale on a dense screen |
-| [0007](adr/0007-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
+| [0007](adr/0007-the-screen-trails-the-engine-by-one-event.md) | The screen keeps its own copy of the battle and trails the engine by one event |
+| [0008](adr/0008-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
