@@ -207,6 +207,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [akwaaba-monsters 0002](web-projects/akwaaba-monsters/adr/0002-one-versioned-save-additive-only.md) | One versioned save document, only ever added to, so a save survives new areas |
 | [akwaaba-monsters 0003](web-projects/akwaaba-monsters/adr/0003-an-area-is-one-file.md) | An area is one file, and adding one changes no engine code |
 | [akwaaba-monsters 0004](web-projects/akwaaba-monsters/adr/0004-generated-audio-not-audio-files.md) | Generate the music, do not ship it |
+| [akwaaba-monsters 0005](web-projects/akwaaba-monsters/adr/0005-the-screen-trails-the-engine-by-one-event.md) | The screen keeps its own copy of the battle and trails the engine by one event |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
