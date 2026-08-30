@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2a1a0e" />
+  <meta name="description" content="A handheld-style creature-collecting role playing game set in tropical Ghana. Choose a starter, cross the Pra river, stop an illegal gold mine and take the first gym badge. All art and music are generated in the browser; your save lives on your device and exports to a file." />
+  <title>Akwaaba Monsters · A Ghana Creature RPG · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/akwaaba-monsters/" />
+  <!-- Which pull request published this file. Never hand-edit: written by
+       `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
+  <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="86" />
+  <meta name="deploy-date" content="2026-08-30T20:11:14.000Z" />
+<!-- END GENERATED:DEPLOY -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game">
+    <div class="screen-frame">
+      <canvas id="screen" width="240" height="160" aria-label="Akwaaba Monsters game screen"></canvas>
+    </div>
+
+    <!-- The one place the game asks for typing. An input beats an on-screen
+         keyboard here: it works with a real keyboard and with a phone. -->
+    <form id="name-form" class="name-form" hidden>
+      <label for="name-input">What is your name?</label>
+      <input id="name-input" name="name" type="text" maxlength="10" autocomplete="off" value="Guillem" />
+      <fieldset class="sprite-choice">
+        <legend>Pick a look</legend>
+        <label><input type="radio" name="sprite" value="boy" checked /> Cap and blue shirt</label>
+        <label><input type="radio" name="sprite" value="girl" /> Red shirt</label>
+      </fieldset>
+      <button type="submit">Start</button>
+    </form>
+
+    <!-- The touch pad. Hidden on a machine with a keyboard, by pointer type. -->
+    <div class="pad" aria-hidden="true">
+      <div class="dpad">
+        <button data-key="up" class="pad-button up">▲</button>
+        <button data-key="left" class="pad-button left">◀</button>
+        <button data-key="right" class="pad-button right">▶</button>
+        <button data-key="down" class="pad-button down">▼</button>
+      </div>
+      <div class="buttons">
+        <button data-key="b" class="pad-button round b">B</button>
+        <button data-key="a" class="pad-button round a">A</button>
+      </div>
+    </div>
+  </main>
+
+  <input id="load-file" type="file" accept="application/json,.json" hidden />
+
+  <footer class="page-footer">
+    <h1>Akwaaba Monsters</h1>
+    <p>
+      A handheld-style creature game set in tropical Ghana. Walk from Aduma village to the
+      Bosua gym: choose a starter, cross the Pra river, stop an illegal gold mine that is
+      poisoning it, and beat Nana Kofi for the River Stone Badge.
+    </p>
+    <p>
+      <strong>Controls.</strong> Arrow keys or WASD to walk. Z or Enter to talk and to confirm.
+      X or Escape for the menu. M mutes the sound. On a phone, use the pad under the screen.
+    </p>
+    <p>
+      <strong>Your save.</strong> The game saves itself to this browser as you play. Nothing is
+      sent anywhere. Open the menu and choose Save to download a copy of the save as a
+      <code>.json</code> file, then load that file on another device to carry on where you
+      stopped.
+    </p>
+    <p>
+      <strong>Everything here is made in code.</strong> There are no image files and no audio
+      files. Every creature, tile and letter is drawn from a list of shapes when the page
+      loads, and every note is played by the browser.
+    </p>
+    <p class="deploy-line" id="deploy-line"></p>
+    <p class="back-link"><a href="../">Back to the Playground</a></p>
+  </footer>
+
+  <script type="module" src="app.js" defer></script>
+</body>
+</html>

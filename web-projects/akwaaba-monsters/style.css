@@ -1,0 +1,279 @@
+/* Akwaaba Monsters.
+ *
+ * The game itself is one canvas. Everything here is the frame around it: the
+ * page background, the touch pad under the screen, and the notes below.
+ *
+ * The canvas is sized in JavaScript to a whole multiple of 240 by 160, and
+ * `image-rendering: pixelated` stops the browser smoothing it back into mush.
+ */
+
+:root {
+  color-scheme: dark;
+  --ink: #20140a;
+  --paper: #f4ead2;
+  --sand: #c9a06a;
+  --earth: #2a1a0e;
+  --earth-soft: #3d2717;
+  --accent: #e0622b;
+  --gold: #c9a227;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% 0%, #5a3a1e 0%, #2a1a0e 60%, #1a1008 100%);
+  color: var(--paper);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 12px 32px;
+  gap: 14px;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* A carved wooden bezel round the screen, so the canvas does not float. */
+.screen-frame {
+  padding: 10px;
+  border-radius: 10px;
+  background: linear-gradient(160deg, #6b4a26, #3d2717 60%, #2a1a0e);
+  box-shadow:
+    0 0 0 2px #1a1008,
+    0 10px 24px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 226, 170, 0.18);
+}
+
+#screen {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: #101820;
+  border: 2px solid #1a1008;
+  border-radius: 2px;
+  touch-action: none;
+}
+
+/* --- Name entry ---------------------------------------------------------- */
+
+.name-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: var(--earth-soft);
+  border: 2px solid var(--gold);
+  max-width: 380px;
+  width: 100%;
+}
+
+.name-form[hidden] {
+  display: none;
+}
+
+.name-form label {
+  font-size: 0.95rem;
+}
+
+.name-form input[type="text"] {
+  font: inherit;
+  font-size: 1.1rem;
+  padding: 8px 10px;
+  width: 100%;
+  border-radius: 4px;
+  border: 2px solid var(--sand);
+  background: var(--paper);
+  color: var(--ink);
+  text-align: center;
+}
+
+.sprite-choice {
+  border: 1px solid rgba(244, 234, 210, 0.25);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  width: 100%;
+  padding: 6px 10px 8px;
+  margin: 0;
+}
+
+.sprite-choice legend {
+  padding: 0 4px;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.name-form button {
+  font: inherit;
+  font-weight: 700;
+  padding: 8px 26px;
+  border-radius: 4px;
+  border: 2px solid #8a3a15;
+  background: var(--accent);
+  color: #fff6ea;
+  cursor: pointer;
+}
+
+.name-form button:hover {
+  background: #f0743c;
+}
+
+/* --- The touch pad ------------------------------------------------------- */
+
+.pad {
+  display: flex;
+  width: 100%;
+  max-width: 420px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  user-select: none;
+}
+
+/* On a machine with a mouse the pad is a fallback, not the main way to play,
+ * so it takes up less room. It is never hidden: it is the only way a
+ * mouse-only visitor can reach every button. */
+@media (pointer: fine) {
+  .pad {
+    max-width: 320px;
+    opacity: 0.75;
+  }
+  .pad:hover {
+    opacity: 1;
+  }
+}
+
+.dpad {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  flex: 0 0 auto;
+}
+
+.pad-button {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border: 2px solid #1a1008;
+  border-radius: 6px;
+  background: linear-gradient(#6b4a26, #3d2717);
+  color: var(--paper);
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.pad-button:active {
+  background: linear-gradient(#3d2717, #2a1a0e);
+  transform: translateY(1px);
+}
+
+.dpad .up {
+  left: 44px;
+  top: 0;
+}
+.dpad .left {
+  left: 0;
+  top: 44px;
+}
+.dpad .right {
+  left: 88px;
+  top: 44px;
+}
+.dpad .down {
+  left: 44px;
+  top: 88px;
+}
+
+.buttons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.pad-button.round {
+  position: static;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.pad-button.a {
+  background: linear-gradient(#e0622b, #a8401a);
+  transform: translateY(-10px);
+}
+
+.pad-button.b {
+  background: linear-gradient(#c9a227, #8a6c12);
+}
+
+/* --- The notes below ----------------------------------------------------- */
+
+.page-footer {
+  max-width: 640px;
+  width: 100%;
+  line-height: 1.55;
+  font-size: 0.92rem;
+  color: #e6d9c1;
+}
+
+.page-footer h1 {
+  font-size: 1.5rem;
+  margin: 0 0 8px;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.page-footer p {
+  margin: 0 0 10px;
+}
+
+.page-footer strong {
+  color: var(--paper);
+}
+
+.page-footer code {
+  background: rgba(0, 0, 0, 0.35);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
+.page-footer a {
+  color: var(--gold);
+}
+
+.deploy-line {
+  font-size: 0.82rem;
+  opacity: 0.75;
+  border-top: 1px solid rgba(244, 234, 210, 0.15);
+  padding-top: 10px;
+}
+
+.back-link {
+  font-size: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pad-button:active {
+    transform: none;
+  }
+}
