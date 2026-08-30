@@ -23,6 +23,7 @@ import {
   PROMPT_W,
 } from "./render.js";
 import { AudioEngine } from "./audio.js";
+import { Haptics } from "./haptics.js";
 import { Rng } from "./rng.js";
 import {
   MAPS,
@@ -107,6 +108,8 @@ import {
   messagePage,
   moveCursor,
   moveGridCursor,
+  optionRows,
+  padActionAt,
   pixelScale,
   stepQuantity,
 } from "./ui.js";
@@ -127,6 +130,7 @@ const BATTLE_ACTIONS = ["Fight", "Bag", "Team", "Run"];
 const canvas = document.getElementById("screen");
 const renderer = new Renderer(canvas);
 const audio = new AudioEngine();
+const haptics = new Haptics();
 
 /** Everything that changes while the game runs. */
 const game = {
@@ -226,23 +230,104 @@ window.addEventListener("keydown", (event) => {
   press(action);
 });
 window.addEventListener("keyup", (event) => release(KEY_MAP[event.code]));
-window.addEventListener("blur", () => held.clear());
+window.addEventListener("blur", () => {
+  held.clear();
+  // A finger the page never saw lift would hold its arrow down for ever.
+  padFingers.clear();
+  paintPad();
+});
 
-for (const button of document.querySelectorAll("[data-key]")) {
-  const action = button.dataset.key;
-  const down = (event) => {
-    event.preventDefault();
-    press(action);
-  };
-  const up = (event) => {
-    event.preventDefault();
-    release(action);
-  };
-  button.addEventListener("pointerdown", down);
-  button.addEventListener("pointerup", up);
-  button.addEventListener("pointerleave", up);
-  button.addEventListener("pointercancel", up);
+// --- The pad ---------------------------------------------------------------
+//
+// A thumb does not lift between arrows. It slides: left, then the corner, then
+// down. So the pad follows the finger rather than the button it landed on.
+//
+// Each finger keeps the cluster it pressed first, the four arrows or the two
+// round buttons, and `padActionAt` says which button of that cluster the finger
+// is over now. A slide can therefore never wander from an arrow onto A.
+//
+// The browser gives the first button an implicit pointer capture on a touch
+// screen. That capture stays: every later move and the release then arrive
+// here, even over the canvas, and this code hit tests by hand anyway. It also
+// pins CSS `:active` to the button the finger landed on, which is why the
+// pressed look is painted from here with a class instead.
+
+const padButtons = [...document.querySelectorAll("[data-key]")];
+
+/** The clusters a finger may slide inside. */
+const padClusters = [...document.querySelectorAll(".dpad, .buttons")];
+
+/** Every finger on the pad: pointer id -> the cluster it holds and its action. */
+const padFingers = new Map();
+
+function clusterOf(button) {
+  return padClusters.find((cluster) => cluster.contains(button)) ?? button;
 }
+
+/** The buttons of one cluster, measured where they sit on the page right now. */
+function clusterButtons(cluster) {
+  const buttons = cluster.matches("[data-key]") ? [cluster] : cluster.querySelectorAll("[data-key]");
+  return [...buttons].map((button) => {
+    const rect = button.getBoundingClientRect();
+    return { action: button.dataset.key, x: rect.left, y: rect.top, w: rect.width, h: rect.height };
+  });
+}
+
+/** Paint the pressed look, which CSS cannot do while a capture holds `:active`. */
+function paintPad() {
+  const down = new Set([...padFingers.values()].map((finger) => finger.action));
+  for (const button of padButtons) button.classList.toggle("pressed", down.has(button.dataset.key));
+}
+
+/** Move one finger onto a button, or off the pad when `action` is null. */
+function holdPad(finger, action) {
+  if (finger.action === action) return;
+  const previous = finger.action;
+  finger.action = action;
+  // Let go only once no other finger is still holding that same button.
+  if (previous && ![...padFingers.values()].some((other) => other.action === previous)) {
+    release(previous);
+  }
+  if (action) {
+    press(action);
+    if (finger.touch) haptics.buzz();
+  }
+  paintPad();
+}
+
+for (const button of padButtons) {
+  button.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    const finger = {
+      cluster: clusterOf(button),
+      action: null,
+      touch: event.pointerType !== "mouse",
+    };
+    padFingers.set(event.pointerId, finger);
+    holdPad(finger, button.dataset.key);
+  });
+}
+
+// The window hears the moves, not the button. A finger that slides off the pad
+// still has to let go of the arrow it left behind.
+window.addEventListener("pointermove", (event) => {
+  const finger = padFingers.get(event.pointerId);
+  if (!finger) return;
+  event.preventDefault();
+  const point = { x: event.clientX, y: event.clientY };
+  holdPad(finger, padActionAt(point, clusterButtons(finger.cluster)));
+});
+
+function endPadFinger(event) {
+  const finger = padFingers.get(event.pointerId);
+  if (!finger) return;
+  event.preventDefault();
+  holdPad(finger, null);
+  padFingers.delete(event.pointerId);
+}
+
+window.addEventListener("pointerup", endPadFinger);
+window.addEventListener("pointercancel", endPadFinger);
 
 /**
  * Rectangles of the screen a tap can act on.
@@ -286,18 +371,21 @@ let stick = null;
 canvas.addEventListener("pointerdown", (event) => {
   event.preventDefault();
   audio.unlock();
+  const touch = event.pointerType !== "mouse";
   const point = canvasPoint(event);
   for (let i = hotspots.length - 1; i >= 0; i--) {
     if (pointIn(hotspots[i], point)) {
+      if (touch) haptics.buzz();
       hotspots[i].run();
       return;
     }
   }
   if (game.screen === "field" && !overlayBusy()) {
-    stick = { id: event.pointerId, x: point.x, y: point.y, dir: null, moved: false };
+    stick = { id: event.pointerId, x: point.x, y: point.y, dir: null, moved: false, touch };
     canvas.setPointerCapture(event.pointerId);
     return;
   }
+  if (touch) haptics.buzz();
   virtualPress("a");
 });
 
@@ -308,15 +396,20 @@ canvas.addEventListener("pointermove", (event) => {
   const dy = point.y - stick.y;
   if (Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return;
   stick.moved = true;
-  stick.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up";
+  const dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up";
+  // Buzz on the turn, not on every move: a drag sends a move event per frame.
+  if (dir !== stick.dir && stick.touch) haptics.buzz();
+  stick.dir = dir;
 });
 
 function endStick(event) {
   if (!stick || (event && event.pointerId !== stick.id)) return;
   const wasATap = !stick.moved;
   const origin = { x: stick.x, y: stick.y };
+  const touch = stick.touch;
   stick = null;
   if (!wasATap) return;
+  if (touch) haptics.buzz();
   // A tap with no drag: turn toward the tile touched, if it is next door, and
   // then talk to whatever is there.
   const tileX = Math.floor((origin.x + game.camera.x) / TILE);
@@ -1417,7 +1510,10 @@ function updateMenu() {
       menu.scroll = 0;
     } else if (id === "player") menu.view = "player";
     else if (id === "save") openSaveMenu();
-    else if (id === "options") menu.view = "options";
+    else if (id === "options") {
+      menu.view = "options";
+      menu.cursor = 0;
+    }
     return;
   }
 
@@ -1508,9 +1604,17 @@ function updateMenu() {
     return;
   }
 
-  if (menu.view === "options" && tapped("a")) {
-    audio.toggleMuted();
-    audio.playSound("select");
+  if (menu.view === "options") {
+    const rows = currentOptionRows();
+    if (tapped("up")) menu.cursor = moveCursor(menu.cursor, -1, rows.length);
+    if (tapped("down")) menu.cursor = moveCursor(menu.cursor, 1, rows.length);
+    if (tapped("a")) {
+      const id = rows[menu.cursor]?.id;
+      if (id === "sound") audio.toggleMuted();
+      // Buzz once on the way on, so the player feels what they just switched on.
+      if (id === "vibration" && haptics.toggle()) haptics.buzz();
+      audio.playSound("select");
+    }
   }
   if (tapped("b")) {
     menu.view = "root";
@@ -2212,18 +2316,36 @@ function drawMenu() {
   }
 
   if (menu.view === "options") {
+    const rows = currentOptionRows();
     renderer.box(4, 4, 232, 152);
     renderer.text("Options", 16, 16);
-    renderer.text(`Sound: ${audio.muted ? "off" : "on"}  (A to change)`, 16, 40);
-    hot(12, 34, 200, 14, () => virtualPress("a"));
-    renderer.text("Arrow keys or WASD to walk", 16, 62);
-    renderer.text("Z or Enter to talk and confirm", 16, 74);
-    renderer.text("X or Escape for the menu", 16, 86);
-    renderer.text("Drag the map to walk, tap to talk", 16, 98);
-    renderer.text("M mutes the sound", 16, 110);
+    rows.forEach((row, index) => {
+      const y = 36 + index * 14;
+      renderer.text(row.label, 24, y);
+      if (index === menu.cursor) renderer.cursor(12, y + 1);
+      hotChoose(12, y - 3, 200, 14, () => {
+        menu.cursor = index;
+      });
+    });
+    const help = 44 + rows.length * 14;
+    renderer.text("A changes the setting", 16, help);
+    renderer.text("Arrow keys or WASD to walk", 16, help + 12);
+    renderer.text("Z or Enter to talk and confirm", 16, help + 24);
+    renderer.text("X or Escape for the menu", 16, help + 36);
+    renderer.text("Drag the map to walk, tap to talk", 16, help + 48);
+    renderer.text("M mutes the sound", 16, help + 60);
     renderer.text("B or tap here to go back", 16, 146);
     hot(0, 138, SCREEN_W, 22, () => virtualPress("b"));
   }
+}
+
+/** The options screen's rows, read from the settings as they stand now. */
+function currentOptionRows() {
+  return optionRows({
+    muted: audio.muted,
+    canVibrate: haptics.supported,
+    vibration: haptics.enabled,
+  });
 }
 
 function drawStarter() {

@@ -44,11 +44,14 @@ engine holds rules and no world; the content holds a world and no rules.
 | `art/tiles.js` | The map tiles: ground fills its square, a thing lets the ground through |
 | `render.js` | Canvas drawing, and where each box and panel sits. Holds no rules and makes no decisions |
 | `audio.js` | Web Audio scheduling. Holds no notes |
+| `haptics.js` | The short buzz a phone gives for a press, and its on or off setting |
 | `app.js` | The loop, the input and every screen. The only file with mutable state |
 
 Everything above `render.js` in that table is pure and tested. `render.js`,
 `audio.js` and `app.js` touch the browser and have no tests, which is why they
-are kept thin: anything worth testing was pushed next door. The one thing the
+are kept thin: anything worth testing was pushed next door. `haptics.js` sits
+between the two groups. It takes the browser's own `vibrate` as an argument, so
+the tests give it a fake and it keeps its tests. The one thing the
 tests do read from `render.js` is its geometry: `BOX`, `PROMPT_W` and `PANELS`
 are plain numbers, and `art/font.test.js` measures the game's words against
 them. Keep the top of `render.js` free of anything that touches the browser, or
@@ -204,6 +207,20 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
 - **In `overlay` the pad lies on top of the screen**, so `.pad`, `.dpad` and
   `.buttons` take no pointer events and only `.pad-button` does. Give that back
   and the empty air inside the pad swallows taps meant for the game.
+- **The pad follows the finger, not the button it landed on.** A thumb slides
+  between arrows without lifting. `app.js` tracks each finger, and `padActionAt`
+  in `ui.js` says which button of the finger's cluster it is over now. Three
+  things fall out of that and each one looks removable on its own. The finger
+  keeps the cluster it started in (`.dpad` or `.buttons`), so a slide can never
+  reach A from an arrow. The touch screen's implicit pointer capture is left in
+  place on purpose, so every move and the release arrive even over the canvas.
+  And the pressed look is a `.pressed` class written from `app.js`, because that
+  same capture pins CSS `:active` to the button the finger landed on. Any new
+  rule for `:active` in `style.css` needs `.pressed` beside it. See ADR 0009.
+- **A buzz is best effort and nothing may wait on one.** `haptics.js` calls
+  `navigator.vibrate`, which every iPhone and most desktop browsers ignore. The
+  Options screen hides the Vibration row where the browser cannot vibrate, so
+  the player never presses a setting that does nothing. A mouse never buzzes.
 
 ## Architecture Decision Records
 
@@ -217,3 +234,4 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
 | [0006](adr/0006-three-layouts-and-a-fractional-scale-on-a-dense-screen.md) | Three layouts, and a fractional pixel scale on a dense screen |
 | [0007](adr/0007-the-screen-trails-the-engine-by-one-event.md) | The screen keeps its own copy of the battle and trails the engine by one event |
 | [0008](adr/0008-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
+| [0009](adr/0009-the-pad-follows-the-finger-and-buzzes.md) | The pad follows the finger, and the phone buzzes for every press |
