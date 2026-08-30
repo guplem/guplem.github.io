@@ -1,6 +1,11 @@
 import { describe, test, expect } from "bun:test";
 import {
   GAME_ID,
+  depositToBox,
+  reorderBox,
+  reorderParty,
+  swapWithBox,
+  withdrawFromBox,
   PARTY_LIMIT,
   SAVE_VERSION,
   STORAGE_KEY,
@@ -402,5 +407,188 @@ describe("formatPlayTime", () => {
 
   test("never shows a negative time", () => {
     expect(formatPlayTime(-10)).toBe("0:00");
+  });
+});
+
+describe("moving creatures between the party and the box", () => {
+  /** A game with `inParty` creatures out and `inBox` waiting. */
+  function withCounts(inParty, inBox) {
+    let state = createSave();
+    const party = [];
+    for (let i = 0; i < inParty; i++) {
+      party.push(createMonster({ species: "baobo", level: i + 2, rng: new Rng(i + 1) }));
+    }
+    const box = [];
+    for (let i = 0; i < inBox; i++) {
+      box.push(createMonster({ species: "gori", level: i + 20, rng: new Rng(i + 50) }));
+    }
+    return { ...state, party, box };
+  }
+
+  describe("withdrawFromBox", () => {
+    test("brings a creature out of the box and into the party", () => {
+      const before = withCounts(2, 2);
+      const after = withdrawFromBox(before, 1);
+      expect(after.moved).toBe(true);
+      expect(after.state.party.length).toBe(3);
+      expect(after.state.box.length).toBe(1);
+      expect(after.state.party[2].level).toBe(21);
+    });
+
+    test("refuses when the party is already full, and says why", () => {
+      const result = withdrawFromBox(withCounts(PARTY_LIMIT, 1), 0);
+      expect(result.moved).toBe(false);
+      expect(result.reason).toContain("full");
+    });
+
+    test("refuses a box slot that is not there", () => {
+      expect(withdrawFromBox(withCounts(2, 1), 5).moved).toBe(false);
+      expect(withdrawFromBox(withCounts(2, 1), -1).moved).toBe(false);
+      expect(withdrawFromBox(withCounts(2, 0), 0).moved).toBe(false);
+    });
+
+    test("leaves the state it was given alone", () => {
+      const before = withCounts(2, 2);
+      withdrawFromBox(before, 0);
+      expect(before.party.length).toBe(2);
+      expect(before.box.length).toBe(2);
+    });
+  });
+
+  describe("depositToBox", () => {
+    test("puts a creature away", () => {
+      const after = depositToBox(withCounts(3, 0), 1);
+      expect(after.moved).toBe(true);
+      expect(after.state.party.length).toBe(2);
+      expect(after.state.box.length).toBe(1);
+      expect(after.state.box[0].level).toBe(3);
+    });
+
+    test("never leaves the player with nothing to fight with", () => {
+      const result = depositToBox(withCounts(1, 3), 0);
+      expect(result.moved).toBe(false);
+      expect(result.reason).toContain("last");
+    });
+
+    test("refuses a party slot that is not there", () => {
+      expect(depositToBox(withCounts(3, 0), 9).moved).toBe(false);
+      expect(depositToBox(withCounts(3, 0), -1).moved).toBe(false);
+    });
+
+    test("never leaves the player with nothing that can fight", () => {
+      // `createBattle` throws when every creature in the party has fainted, so
+      // the next patch of tall grass would end the game with an error.
+      const state = withCounts(2, 0);
+      state.party[0] = { ...state.party[0], hp: 0 };
+      const result = depositToBox(state, 1);
+      expect(result.moved).toBe(false);
+      expect(result.reason).toContain("fight");
+    });
+
+    test("still puts a fainted creature away while a healthy one stays out", () => {
+      const state = withCounts(2, 0);
+      state.party[0] = { ...state.party[0], hp: 0 };
+      expect(depositToBox(state, 0).moved).toBe(true);
+    });
+  });
+
+  describe("swapWithBox", () => {
+    test("exchanges the two, keeping both counts the same", () => {
+      const before = withCounts(PARTY_LIMIT, 2);
+      const after = swapWithBox(before, 0, 1);
+      expect(after.swapped).toBe(true);
+      expect(after.state.party.length).toBe(PARTY_LIMIT);
+      expect(after.state.box.length).toBe(2);
+      expect(after.state.party[0].species).toBe("gori");
+      expect(after.state.box[1].species).toBe("baobo");
+    });
+
+    test("works even with a full party, which is the whole point", () => {
+      const result = swapWithBox(withCounts(PARTY_LIMIT, 1), 3, 0);
+      expect(result.swapped).toBe(true);
+    });
+
+    test("refuses an index that is not there", () => {
+      expect(swapWithBox(withCounts(2, 1), 7, 0).swapped).toBe(false);
+      expect(swapWithBox(withCounts(2, 1), 0, 7).swapped).toBe(false);
+    });
+
+    test("refuses to swap away the only creature that can still fight", () => {
+      const state = withCounts(2, 1);
+      state.party[0] = { ...state.party[0], hp: 0 };
+      state.box[0] = { ...state.box[0], hp: 0 };
+      const result = swapWithBox(state, 1, 0);
+      expect(result.swapped).toBe(false);
+      expect(result.reason).toContain("fight");
+    });
+
+    test("allows a swap that brings a healthy creature in", () => {
+      const state = withCounts(2, 1);
+      state.party[0] = { ...state.party[0], hp: 0 };
+      state.party[1] = { ...state.party[1], hp: 0 };
+      expect(swapWithBox(state, 0, 0).swapped).toBe(true);
+    });
+
+    test("leaves the state it was given alone", () => {
+      const before = withCounts(2, 1);
+      swapWithBox(before, 0, 0);
+      expect(before.party[0].species).toBe("baobo");
+      expect(before.box[0].species).toBe("gori");
+    });
+  });
+
+  describe("reorderParty", () => {
+    test("swaps two creatures inside the party", () => {
+      const before = withCounts(3, 0);
+      const after = reorderParty(before, 0, 2);
+      expect(after.party[0].level).toBe(4);
+      expect(after.party[2].level).toBe(2);
+    });
+
+    test("ignores an index that is not there, and swapping a slot with itself", () => {
+      const before = withCounts(3, 0);
+      expect(reorderParty(before, 0, 9).party.map((m) => m.level)).toEqual([2, 3, 4]);
+      expect(reorderParty(before, 1, 1).party.map((m) => m.level)).toEqual([2, 3, 4]);
+    });
+  });
+
+  describe("reorderBox", () => {
+    test("swaps two creatures inside the box", () => {
+      const before = withCounts(1, 3);
+      const after = reorderBox(before, 0, 2);
+      expect(after.box[0].level).toBe(22);
+      expect(after.box[2].level).toBe(20);
+    });
+
+    test("ignores an index that is not there, and swapping a slot with itself", () => {
+      const before = withCounts(1, 3);
+      expect(reorderBox(before, 0, 9).box.map((m) => m.level)).toEqual([20, 21, 22]);
+      expect(reorderBox(before, 1, 1).box.map((m) => m.level)).toEqual([20, 21, 22]);
+    });
+
+    test("leaves the party alone", () => {
+      const before = withCounts(2, 2);
+      expect(reorderBox(before, 0, 1).party).toEqual(before.party);
+    });
+  });
+
+  test("nothing can strand a creature: what goes in can always come out", () => {
+    // The bug this whole screen exists to close. Fill the party, catch a
+    // seventh, and check the seventh can be brought back into play.
+    let state = withCounts(PARTY_LIMIT, 0);
+    const extra = createMonster({ species: "polete", level: 30, rng: new Rng(7) });
+    const added = addMonster(state, extra);
+    expect(added.wentToBox).toBe(true);
+    state = added.state;
+
+    const back = swapWithBox(state, 0, 0);
+    expect(back.swapped).toBe(true);
+    expect(back.state.party.some((m) => m.species === "polete")).toBe(true);
+    expect(back.state.party.length).toBe(PARTY_LIMIT);
+  });
+
+  test("every move survives being written to JSON and read back", () => {
+    const state = withdrawFromBox(withCounts(2, 2), 0).state;
+    expect(migrate(JSON.parse(JSON.stringify(state))).party.length).toBe(3);
   });
 });

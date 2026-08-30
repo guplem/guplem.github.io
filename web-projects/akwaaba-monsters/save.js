@@ -19,7 +19,7 @@
 import { getSpecies } from "./species.js";
 import { getItem } from "./items.js";
 import { getMove } from "./moves.js";
-import { MOVE_SLOTS, createMonster, maxHp } from "./monsters.js";
+import { MOVE_SLOTS, createMonster, maxHp, partyCanFight } from "./monsters.js";
 import { randomSeed } from "./rng.js";
 
 /** Bumped only when the shape changes in a way `migrate` has to know about. */
@@ -111,6 +111,104 @@ export function addMonster(state, monster) {
     state: markCaught({ ...state, box: [...state.box, monster] }, monster.species),
     wentToBox: true,
   };
+}
+
+// --- Moving creatures between the party and the box -------------------------
+//
+// A creature caught with a full party goes into the box. These five are the way
+// back out. Three rules hold, and all three are tested:
+//
+//   * the party never grows past PARTY_LIMIT
+//   * the party never empties, because a player with nothing to fight with
+//     cannot walk out of the tall grass again
+//   * the party always keeps one creature that can fight. `createBattle` throws
+//     on a party where everything has fainted, so a screen that let the player
+//     put the last healthy creature away would crash on the next patch of grass.
+//
+// Each one returns the new state and whether it did anything, so the screen can
+// say why it refused rather than just beeping.
+
+/**
+ * Bring a creature out of the box and into the party.
+ * @returns {{state: object, moved: boolean, reason: string|null}}
+ */
+export function withdrawFromBox(state, boxIndex) {
+  const creature = state.box?.[boxIndex];
+  if (!creature) return { state, moved: false, reason: "There is nothing in that slot." };
+  if (state.party.length >= PARTY_LIMIT) {
+    return { state, moved: false, reason: "Your team is full." };
+  }
+  const box = [...state.box];
+  box.splice(boxIndex, 1);
+  return { state: { ...state, party: [...state.party, creature], box }, moved: true, reason: null };
+}
+
+/**
+ * Put a creature from the party away in the box.
+ * @returns {{state: object, moved: boolean, reason: string|null}}
+ */
+export function depositToBox(state, partyIndex) {
+  const creature = state.party?.[partyIndex];
+  if (!creature) return { state, moved: false, reason: "There is nothing in that slot." };
+  if (state.party.length <= 1) {
+    return { state, moved: false, reason: "That is your last creature." };
+  }
+  const party = [...state.party];
+  party.splice(partyIndex, 1);
+  if (!partyCanFight(party)) {
+    return { state, moved: false, reason: "Nothing left on your team can fight." };
+  }
+  return { state: { ...state, party, box: [...state.box, creature] }, moved: true, reason: null };
+}
+
+/**
+ * Exchange a creature in the party for one in the box.
+ *
+ * This is the one that matters with a full party. Neither side changes size, so
+ * a full team is never a reason to refuse and nothing can be stranded. The one
+ * swap it does refuse takes the last creature that can fight off the team.
+ *
+ * @returns {{state: object, swapped: boolean, reason: string|null}}
+ */
+export function swapWithBox(state, partyIndex, boxIndex) {
+  const fromParty = state.party?.[partyIndex];
+  const fromBox = state.box?.[boxIndex];
+  if (!fromParty || !fromBox) {
+    return { state, swapped: false, reason: "There is nothing in that slot." };
+  }
+  const party = [...state.party];
+  const box = [...state.box];
+  party[partyIndex] = fromBox;
+  box[boxIndex] = fromParty;
+  if (!partyCanFight(party)) {
+    return { state, swapped: false, reason: "Nothing left on your team can fight." };
+  }
+  return { state: { ...state, party, box }, swapped: true, reason: null };
+}
+
+/** Swap two creatures inside the party, which is how the player picks a lead. */
+export function reorderParty(state, a, b) {
+  if (a === b) return state;
+  if (!state.party?.[a] || !state.party?.[b]) return state;
+  const party = [...state.party];
+  [party[a], party[b]] = [party[b], party[a]];
+  return { ...state, party };
+}
+
+/**
+ * Swap two creatures inside the box.
+ *
+ * The order of the box changes nothing about the game. This exists so the box
+ * screen can hold one rule for both columns: A picks a creature up, A puts it
+ * down. A player who learns that on the party side does not have to learn a
+ * second rule on the box side.
+ */
+export function reorderBox(state, a, b) {
+  if (a === b) return state;
+  if (!state.box?.[a] || !state.box?.[b]) return state;
+  const box = [...state.box];
+  [box[a], box[b]] = [box[b], box[a]];
+  return { ...state, box };
 }
 
 /** True when the player has this badge. */
