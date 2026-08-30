@@ -142,6 +142,14 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   of the same tile. `art/art.test.js` enforces it. A thing standing on the
   ground gets the same effect on purpose, by putting dark green along the edge of
   a palm frond by hand.
+- **The camera must sit on a whole pixel, and `cameraFor` in `ui.js` rounds it.**
+  `drawMap` draws every tile at `column * TILE - camera.x`. A camera on a
+  fraction puts every tile on a fraction, and the browser blends each tile edge
+  with what is behind it, even with `imageSmoothingEnabled` off. The map then
+  grows a dark seam along every row and every column. The player stands on a
+  fraction only part way through a step, so the seams show up only while the
+  player walks, and a screenshot of a player standing still looks perfect. Round
+  any new camera or scroll offset for the same reason.
 - **Ground comes in four versions, picked from the position** by `tileVariant` in
   `ui.js`. One version repeated draws its speckles every 16 pixels, and the eye
   reads that grid as wallpaper. Pick the version from anything but the position
