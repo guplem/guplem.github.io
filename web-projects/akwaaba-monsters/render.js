@@ -9,7 +9,7 @@
 // handed a map, a battle or a menu and it draws exactly that. The deciding
 // happens in `app.js`, and the arithmetic in `ui.js`.
 
-import { CHAR_H, CHAR_W, LEADING, TRACKING, glyphFor } from "./art/font.js";
+import { CHAR_H, CHAR_W, LEADING, TRACKING, glyphFor, rowsThatFit, wrapText } from "./art/font.js";
 import { CREATURE_ART_IDS, creatureDrawing, SPRITE_SIZE } from "./art/creatures.js";
 import { TILE_ART_IDS, TILE_SIZE, tileDrawing } from "./art/tiles.js";
 import { PEOPLE_IDS, PERSON_H, PERSON_LIFT, PERSON_W, personDrawing } from "./art/people.js";
@@ -35,8 +35,61 @@ export const UI = {
   shadow: "rgba(32, 20, 10, 0.25)",
 };
 
-/** Where the message box sits, and how much room the words have inside it. */
-export const BOX = { x: 4, y: 110, w: 232, h: 46, textX: 12, textY: 121, textW: 216 };
+/** The margin a box keeps on both sides of its words, in pixels. */
+export const BOX_MARGIN = 16;
+
+/** The border of a box, in pixels. The paper of the box starts inside it. */
+export const BOX_BORDER = 3;
+
+/**
+ * Where the message box sits, and how much room the words have inside it.
+ *
+ * `rows` is how many lines of text the paper really holds. Dialogue turns its
+ * pages two lines at a time, which is the handheld look, but a line that cannot
+ * turn a page (a battle line, a prompt) may use every row.
+ */
+const BOX_Y = 110;
+const BOX_H = 46;
+const BOX_TEXT_Y = 121;
+
+export const BOX = {
+  x: 4,
+  y: BOX_Y,
+  w: 232,
+  h: BOX_H,
+  textX: 12,
+  textY: BOX_TEXT_Y,
+  textW: 216,
+  rows: rowsThatFit(BOX_Y + BOX_H - BOX_BORDER - BOX_TEXT_Y),
+};
+
+/** The narrow message box that asks the question beside the battle menu. */
+export const PROMPT_W = 124;
+
+/**
+ * The panels that describe whatever the cursor sits on: a starter creature, an
+ * item in the bag, an item on the shop counter.
+ *
+ * None of them turns a page. No arrow shows and no key advances them, so every
+ * line has to be on screen at once. Each panel takes the height it really has,
+ * because a panel asked for fewer rows than its text needs drops the ending in
+ * silence. `art/font.test.js` checks that every description still fits.
+ *
+ * `bottom` is the last row of pixels the panel may draw on: the paper of the
+ * box that holds it, or whatever sits under the panel inside that box.
+ */
+function panel(x, y, w, bottom) {
+  return { x, y, w, rows: rowsThatFit(bottom - y) };
+}
+
+export const PANELS = {
+  // Under the three starter pictures, beside the type badge. Box (4, 92, 232, 46).
+  starter: panel(58, 100, 175, 92 + 46 - BOX_BORDER),
+  // The foot of the bag screen. Box (4, 4, 232, 152).
+  bag: panel(14, 122, 210, 4 + 152 - BOX_BORDER),
+  // The shop counter. Box (4, 100, 232, 56), with the key hint on its last row.
+  shop: panel(12, 108, 210, 137),
+};
 
 /**
  * Draw every picture in the game once, into offscreen canvases.
@@ -409,9 +462,17 @@ export class Renderer {
     });
   }
 
-  /** The message box, with its page arrow. */
-  message(lines, { arrow = false, blink = true, width = BOX.w } = {}) {
+  /**
+   * The message box, with its page arrow.
+   *
+   * Give it a string and the box breaks the string to its own width. Give it
+   * lines only when you paged the text yourself, which is what dialogue does.
+   * A string that arrived unbroken used to run straight off the box, and the
+   * menu drawn next to it hid the ending.
+   */
+  message(text, { arrow = false, blink = true, width = BOX.w } = {}) {
     this.box(BOX.x, BOX.y, width, BOX.h);
+    const lines = Array.isArray(text) ? text : wrapText(text, width - BOX_MARGIN);
     this.lines(lines, BOX.textX, BOX.textY);
     if (arrow) this.pageArrow(BOX.x + width - 16, BOX.y + BOX.h - 12, blink);
   }

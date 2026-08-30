@@ -4,15 +4,18 @@ import {
   CHAR_H,
   CHAR_W,
   GLYPHS,
+  LEADING,
   charsThatFit,
   glyphFor,
   hasGlyph,
   measureBlock,
   measureText,
   paginate,
+  rowsThatFit,
   wrapText,
 } from "./font.js";
-import { MAPS, TRAINERS } from "../areas/index.js";
+import { BOX, BOX_MARGIN, PANELS, PROMPT_W } from "../render.js";
+import { MAPS, STARTER_CHOICE, TRAINERS } from "../areas/index.js";
 import { SPECIES, SPECIES_IDS } from "../species.js";
 import { MOVES, MOVE_IDS } from "../moves.js";
 import { ITEMS, ITEM_IDS } from "../items.js";
@@ -83,6 +86,26 @@ describe("measuring", () => {
     expect(charsThatFit(11)).toBe(2);
     expect(charsThatFit(0)).toBe(0);
     expect(charsThatFit(-10)).toBe(0);
+  });
+
+  test("works out how many rows fit a height", () => {
+    expect(rowsThatFit(CHAR_H)).toBe(1);
+    expect(rowsThatFit(CHAR_H - 1)).toBe(0);
+    expect(rowsThatFit(CHAR_H * 2 + LEADING)).toBe(2);
+    expect(rowsThatFit(CHAR_H * 2 + LEADING - 1)).toBe(1);
+    expect(rowsThatFit(0)).toBe(0);
+    expect(rowsThatFit(-10)).toBe(0);
+  });
+
+  test("agrees with the block it measures", () => {
+    // A panel of this many rows must be no taller than the panel allows.
+    for (const height of [7, 12, 20, 31, 35, 46, 100]) {
+      const rows = rowsThatFit(height);
+      expect(`${height}: ${measureBlock(Array(rows).fill("x")) <= height}`).toBe(`${height}: true`);
+      expect(`${height}: ${measureBlock(Array(rows + 1).fill("x")) > height}`).toBe(
+        `${height}: true`,
+      );
+    }
   });
 });
 
@@ -159,6 +182,7 @@ describe("every word in the game can actually be drawn", () => {
       add(ITEMS[id].name, `item ${id}`);
       add(ITEMS[id].desc, `item desc ${id}`);
     }
+    for (const entry of STARTER_CHOICE) add(entry.blurb, `starter blurb ${entry.species}`);
     for (const [id, trainer] of Object.entries(TRAINERS)) {
       add(trainer.name, `trainer ${id}`);
       add(trainer.intro, `intro ${id}`);
@@ -215,5 +239,91 @@ describe("every word in the game can actually be drawn", () => {
       const pages = paginate(value, 216, 2);
       expect(`${where}: ${pages.length <= 4}`).toBe(`${where}: true`);
     }
+  });
+});
+
+describe("the panels that describe what the cursor sits on", () => {
+  // These panels turn no page. No arrow shows and no key advances them, so a
+  // description that needs one row more than the panel holds is simply lost.
+  // That is what cut the end off every starter blurb until the panels were
+  // given their real height.
+
+  /** Every line the panel would draw for this text. */
+  function linesIn(panel, text) {
+    return wrapText(text, panel.w);
+  }
+
+  test("hold at least two rows each, or no description reads as a sentence", () => {
+    for (const [name, panel] of Object.entries(PANELS)) {
+      expect(`${name}: ${panel.rows >= 2}`).toBe(`${name}: true`);
+    }
+  });
+
+  test("show every line of every starter blurb", () => {
+    for (const entry of STARTER_CHOICE) {
+      const lines = linesIn(PANELS.starter, entry.blurb);
+      expect(`${entry.species}: ${lines.length} rows`).toBe(
+        `${entry.species}: ${Math.min(lines.length, PANELS.starter.rows)} rows`,
+      );
+    }
+  });
+
+  test("show every line of every item description, in the bag and in the shop", () => {
+    for (const id of ITEM_IDS) {
+      for (const which of ["bag", "shop"]) {
+        const lines = linesIn(PANELS[which], ITEMS[id].desc);
+        expect(`${which} ${id}: ${lines.length} rows`).toBe(
+          `${which} ${id}: ${Math.min(lines.length, PANELS[which].rows)} rows`,
+        );
+      }
+    }
+  });
+
+  test("keep every line inside the width they were given", () => {
+    for (const [name, panel] of Object.entries(PANELS)) {
+      for (const id of ITEM_IDS) {
+        for (const line of linesIn(panel, ITEMS[id].desc)) {
+          expect(`${name} ${id}: ${measureText(line) <= panel.w}`).toBe(`${name} ${id}: true`);
+        }
+      }
+    }
+  });
+});
+
+describe("the message box", () => {
+  test("keeps its rows inside the paper of the box, and wastes no room", () => {
+    // The border of a box is three pixels, so the paper ends three above it.
+    const paperBottom = BOX.y + BOX.h - 3;
+    expect(BOX.textY + measureBlock(Array(BOX.rows).fill("x"))).toBeLessThanOrEqual(paperBottom);
+    expect(BOX.textY + measureBlock(Array(BOX.rows + 1).fill("x"))).toBeGreaterThan(paperBottom);
+  });
+
+  test("takes the prompts that are written straight into it, with no paging", () => {
+    // These are the lines the game hands to the box as one string. Nothing
+    // pages them, so each one has to fit the box whole.
+    const straightIn = [
+      "Type your name in the box below the screen.",
+      "You cannot catch another trainer's creature!",
+      "The bag is empty. Press X or tap.",
+    ];
+    for (const text of straightIn) {
+      const lines = wrapText(text, BOX.textW);
+      expect(`${text}: ${lines.length} rows`).toBe(
+        `${text}: ${Math.min(lines.length, BOX.rows)} rows`,
+      );
+      for (const line of lines) {
+        expect(`${line}: ${measureText(line) <= BOX.textW}`).toBe(`${line}: true`);
+      }
+    }
+  });
+
+  test("fits the battle question beside the action menu, with the longest name", () => {
+    // A nickname is cut to twelve letters when the game is saved, so that is the
+    // longest name the question can ever hold. The narrow box sits next to the
+    // action menu: a question too wide for it is drawn under the menu and lost.
+    const question = `What will\n${"a".repeat(12)} do?`;
+    const lines = wrapText(question, PROMPT_W - BOX_MARGIN);
+    expect(lines.length).toBeLessThanOrEqual(BOX.rows);
+    for (const line of lines) expect(measureText(line)).toBeLessThanOrEqual(PROMPT_W - BOX_MARGIN);
   });
 });

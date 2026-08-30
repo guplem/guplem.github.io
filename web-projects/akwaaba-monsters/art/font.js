@@ -147,6 +147,18 @@ export function charsThatFit(width) {
 }
 
 /**
+ * How many rows of text fit inside a height, in pixels.
+ *
+ * The gap only sits between two rows, so the first row costs its height alone.
+ * A panel that shows its whole text at once uses this to say how much it holds,
+ * instead of carrying a number somebody guessed.
+ */
+export function rowsThatFit(height) {
+  if (height < CHAR_H) return 0;
+  return 1 + Math.floor((height - CHAR_H) / (CHAR_H + LEADING));
+}
+
+/**
  * Break a sentence into lines that fit a width.
  *
  * A word longer than the whole line is broken rather than dropped, because a
