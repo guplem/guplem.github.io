@@ -450,7 +450,7 @@ const MOVE_LIST = [
     name: "Venom Sting",
     type: "poison",
     cat: "physical",
-    power: 50,
+    power: 40,
     acc: 100,
     pp: 25,
     effects: [{ kind: "status", status: "poison", chance: 30 }],

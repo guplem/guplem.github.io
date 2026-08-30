@@ -40,6 +40,7 @@ export const TILES = {
   crop: { solid: true },
   fence: { solid: true },
   hut: { solid: true },
+  roof: { solid: true },
   wall: { solid: true },
   table: { solid: true },
   counter: { solid: true },

@@ -146,6 +146,21 @@ export const TILE_ART = {
       { k: "px", pts: [[3, 6], [11, 10]], c: "#9c6f3c" },
     ]),
 
+  // A thatched roof. Every building puts this on its top row: without it a hut
+  // is a flat brown rectangle and reads as a wall, not as somewhere to live.
+  roof: () =>
+    tile([
+      fill("#b8893f"),
+      speckle("#a67a33", 0.16, 151),
+      { k: "line", pts: [[0, 5], [5, 0]], c: "#d1a352" },
+      { k: "line", pts: [[0, 11], [11, 0]], c: "#d1a352" },
+      { k: "line", pts: [[4, 15], [15, 4]], c: "#d1a352" },
+      { k: "line", pts: [[10, 15], [15, 10]], c: "#d1a352" },
+      { k: "line", pts: [[0, 8], [8, 0]], c: "#94682a" },
+      { k: "line", pts: [[7, 15], [15, 7]], c: "#94682a" },
+      { k: "rect", x: 0, y: 14, w: 16, h: 2, c: "#7d5620" },
+    ]),
+
   wall: () =>
     tile([
       fill("#9c7a5a"),
