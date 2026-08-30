@@ -11,6 +11,7 @@ import {
   messagePage,
   moveCursor,
   moveGridCursor,
+  padActionAt,
   pixelScale,
   tileVariant,
   stepProgress,
@@ -338,5 +339,52 @@ describe("tileVariant", () => {
     expect(tileVariant(3, 4, 1)).toBe(0);
     expect(tileVariant(3, 4, 0)).toBe(0);
     expect(tileVariant(3, 4, NaN)).toBe(0);
+  });
+});
+
+describe("padActionAt", () => {
+  // The cross the page draws: four 44 pixel keys around an empty middle.
+  const KEY = 44;
+  const CROSS = [
+    { action: "up", x: KEY, y: 0, w: KEY, h: KEY },
+    { action: "left", x: 0, y: KEY, w: KEY, h: KEY },
+    { action: "right", x: KEY * 2, y: KEY, w: KEY, h: KEY },
+    { action: "down", x: KEY, y: KEY * 2, w: KEY, h: KEY },
+  ];
+
+  test("presses the button the finger sits on", () => {
+    expect(padActionAt({ x: 66, y: 22 }, CROSS)).toBe("up");
+    expect(padActionAt({ x: 22, y: 66 }, CROSS)).toBe("left");
+    expect(padActionAt({ x: 110, y: 66 }, CROSS)).toBe("right");
+    expect(padActionAt({ x: 66, y: 110 }, CROSS)).toBe("down");
+  });
+
+  test("presses the nearest arrow in the empty corners of the cross", () => {
+    expect(padActionAt({ x: 36, y: 20 }, CROSS)).toBe("up");
+    expect(padActionAt({ x: 20, y: 36 }, CROSS)).toBe("left");
+    expect(padActionAt({ x: 96, y: 112 }, CROSS)).toBe("down");
+  });
+
+  test("never falls into a hole while a finger slides from one arrow to the next", () => {
+    // The straight line from the middle of "up" to the middle of "right".
+    for (let step = 0; step <= 20; step++) {
+      const share = step / 20;
+      const point = { x: 66 + share * 44, y: 22 + share * 44 };
+      expect(padActionAt(point, CROSS)).not.toBeNull();
+    }
+  });
+
+  test("keeps the press when the finger drifts just off the edge", () => {
+    expect(padActionAt({ x: 66, y: 140 }, CROSS)).toBe("down");
+    expect(padActionAt({ x: -8, y: 66 }, CROSS)).toBe("left");
+  });
+
+  test("presses nothing once the finger leaves the cross", () => {
+    expect(padActionAt({ x: 66, y: 200 }, CROSS)).toBeNull();
+    expect(padActionAt({ x: 300, y: 66 }, CROSS)).toBeNull();
+  });
+
+  test("presses nothing when there are no buttons", () => {
+    expect(padActionAt({ x: 10, y: 10 }, [])).toBeNull();
   });
 });

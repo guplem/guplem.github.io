@@ -190,6 +190,50 @@ export function layoutMode({ fullscreen = false, width = 0, height = 0, coarsePo
 }
 
 /**
+ * Which pad button a finger at `point` is pressing.
+ *
+ * A finger inside a button presses that button. The cross has empty corners,
+ * and a finger that slides from one arrow to the next crosses them, so a finger
+ * in a corner presses the nearest arrow instead of nothing. The same slack
+ * reaches a little past the outer edge, for a thumb that overshoots. A finger
+ * that leaves the cluster presses nothing.
+ *
+ * The slack is half the smallest button, so a bigger pad gets a bigger slack
+ * and this function needs no measurement of the page.
+ *
+ * @param {{x: number, y: number}} point where the finger is, in page pixels
+ * @param {{action: string, x: number, y: number, w: number, h: number}[]} buttons
+ *   one cluster of buttons, each with its rectangle in page pixels
+ * @returns {?string} the action to press, or null
+ */
+export function padActionAt(point, buttons) {
+  if (!buttons || buttons.length === 0) return null;
+  const slack = Math.min(...buttons.map((button) => Math.min(button.w, button.h))) / 2;
+  const left = Math.min(...buttons.map((button) => button.x)) - slack;
+  const right = Math.max(...buttons.map((button) => button.x + button.w)) + slack;
+  const top = Math.min(...buttons.map((button) => button.y)) - slack;
+  const bottom = Math.max(...buttons.map((button) => button.y + button.h)) + slack;
+  if (point.x < left || point.x > right || point.y < top || point.y > bottom) return null;
+  let best = null;
+  let shortest = Infinity;
+  for (const button of buttons) {
+    const distance = distanceToRect(point, button);
+    if (distance < shortest) {
+      shortest = distance;
+      best = button.action;
+    }
+  }
+  return best;
+}
+
+/** How far a point lies from a rectangle. Zero when the point is inside it. */
+function distanceToRect(point, rect) {
+  const dx = Math.max(rect.x - point.x, 0, point.x - (rect.x + rect.w));
+  const dy = Math.max(rect.y - point.y, 0, point.y - (rect.y + rect.h));
+  return Math.hypot(dx, dy);
+}
+
+/**
  * Which version of a tile to draw at a position on the map.
  *
  * Ground comes in several versions so that a field is not one tile repeated.

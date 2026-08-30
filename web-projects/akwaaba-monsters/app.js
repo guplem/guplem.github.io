@@ -107,6 +107,7 @@ import {
   messagePage,
   moveCursor,
   moveGridCursor,
+  padActionAt,
   pixelScale,
   stepQuantity,
 } from "./ui.js";
@@ -226,23 +227,97 @@ window.addEventListener("keydown", (event) => {
   press(action);
 });
 window.addEventListener("keyup", (event) => release(KEY_MAP[event.code]));
-window.addEventListener("blur", () => held.clear());
+window.addEventListener("blur", () => {
+  held.clear();
+  // A finger the page never saw lift would hold its arrow down for ever.
+  padFingers.clear();
+  paintPad();
+});
 
-for (const button of document.querySelectorAll("[data-key]")) {
-  const action = button.dataset.key;
-  const down = (event) => {
-    event.preventDefault();
-    press(action);
-  };
-  const up = (event) => {
-    event.preventDefault();
-    release(action);
-  };
-  button.addEventListener("pointerdown", down);
-  button.addEventListener("pointerup", up);
-  button.addEventListener("pointerleave", up);
-  button.addEventListener("pointercancel", up);
+// --- The pad ---------------------------------------------------------------
+//
+// A thumb does not lift between arrows. It slides: left, then the corner, then
+// down. So the pad follows the finger rather than the button it landed on.
+//
+// Each finger keeps the cluster it pressed first, the four arrows or the two
+// round buttons, and `padActionAt` says which button of that cluster the finger
+// is over now. A slide can therefore never wander from an arrow onto A.
+//
+// The browser gives the first button an implicit pointer capture on a touch
+// screen. That capture stays: every later move and the release then arrive
+// here, even over the canvas, and this code hit tests by hand anyway. It also
+// pins CSS `:active` to the button the finger landed on, which is why the
+// pressed look is painted from here with a class instead.
+
+const padButtons = [...document.querySelectorAll("[data-key]")];
+
+/** The clusters a finger may slide inside. */
+const padClusters = [...document.querySelectorAll(".dpad, .buttons")];
+
+/** Every finger on the pad: pointer id -> the cluster it holds and its action. */
+const padFingers = new Map();
+
+function clusterOf(button) {
+  return padClusters.find((cluster) => cluster.contains(button)) ?? button;
 }
+
+/** The buttons of one cluster, measured where they sit on the page right now. */
+function clusterButtons(cluster) {
+  const buttons = cluster.matches("[data-key]") ? [cluster] : cluster.querySelectorAll("[data-key]");
+  return [...buttons].map((button) => {
+    const rect = button.getBoundingClientRect();
+    return { action: button.dataset.key, x: rect.left, y: rect.top, w: rect.width, h: rect.height };
+  });
+}
+
+/** Paint the pressed look, which CSS cannot do while a capture holds `:active`. */
+function paintPad() {
+  const down = new Set([...padFingers.values()].map((finger) => finger.action));
+  for (const button of padButtons) button.classList.toggle("pressed", down.has(button.dataset.key));
+}
+
+/** Move one finger onto a button, or off the pad when `action` is null. */
+function holdPad(finger, action) {
+  if (finger.action === action) return;
+  const previous = finger.action;
+  finger.action = action;
+  // Let go only once no other finger is still holding that same button.
+  if (previous && ![...padFingers.values()].some((other) => other.action === previous)) {
+    release(previous);
+  }
+  if (action) press(action);
+  paintPad();
+}
+
+for (const button of padButtons) {
+  button.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    const finger = { cluster: clusterOf(button), action: null };
+    padFingers.set(event.pointerId, finger);
+    holdPad(finger, button.dataset.key);
+  });
+}
+
+// The window hears the moves, not the button. A finger that slides off the pad
+// still has to let go of the arrow it left behind.
+window.addEventListener("pointermove", (event) => {
+  const finger = padFingers.get(event.pointerId);
+  if (!finger) return;
+  event.preventDefault();
+  const point = { x: event.clientX, y: event.clientY };
+  holdPad(finger, padActionAt(point, clusterButtons(finger.cluster)));
+});
+
+function endPadFinger(event) {
+  const finger = padFingers.get(event.pointerId);
+  if (!finger) return;
+  event.preventDefault();
+  holdPad(finger, null);
+  padFingers.delete(event.pointerId);
+}
+
+window.addEventListener("pointerup", endPadFinger);
+window.addEventListener("pointercancel", endPadFinger);
 
 /**
  * Rectangles of the screen a tap can act on.

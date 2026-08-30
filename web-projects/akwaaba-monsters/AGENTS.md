@@ -204,6 +204,16 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
 - **In `overlay` the pad lies on top of the screen**, so `.pad`, `.dpad` and
   `.buttons` take no pointer events and only `.pad-button` does. Give that back
   and the empty air inside the pad swallows taps meant for the game.
+- **The pad follows the finger, not the button it landed on.** A thumb slides
+  between arrows without lifting. `app.js` tracks each finger, and `padActionAt`
+  in `ui.js` says which button of the finger's cluster it is over now. Three
+  things fall out of that and each one looks removable on its own. The finger
+  keeps the cluster it started in (`.dpad` or `.buttons`), so a slide can never
+  reach A from an arrow. The touch screen's implicit pointer capture is left in
+  place on purpose, so every move and the release arrive even over the canvas.
+  And the pressed look is a `.pressed` class written from `app.js`, because that
+  same capture pins CSS `:active` to the button the finger landed on. Any new
+  rule for `:active` in `style.css` needs `.pressed` beside it. See ADR 0009.
 
 ## Architecture Decision Records
 

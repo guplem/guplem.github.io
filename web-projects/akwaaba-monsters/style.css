@@ -207,7 +207,11 @@ body {
   touch-action: none;
 }
 
-.pad-button:active {
+/* `.pressed` is the pad's own pressed look, and it must go everywhere `:active`
+ * goes. A finger that slides from one arrow to the next keeps the browser's
+ * `:active` on the arrow it landed on, because of the pointer capture, so
+ * `app.js` writes this class onto the arrow the finger is really over. */
+.pad-button:is(:active, .pressed) {
   background: linear-gradient(#3d2717, #2a1a0e);
   transform: translateY(1px);
 }
@@ -401,7 +405,7 @@ body[data-layout="overlay"] .pad {
 }
 
 /* A finger on the pad brings it back, so the player can see what they pressed. */
-body[data-layout="overlay"] .pad:has(.pad-button:active) {
+body[data-layout="overlay"] .pad:has(.pad-button:is(:active, .pressed)) {
   opacity: 0.9;
 }
 
@@ -421,7 +425,7 @@ body[data-layout="overlay"] .pad-button.b {
   background: rgba(201, 162, 39, 0.22);
 }
 
-body[data-layout="overlay"] .pad-button:active {
+body[data-layout="overlay"] .pad-button:is(:active, .pressed) {
   background: rgba(244, 234, 210, 0.3);
 }
 
@@ -494,7 +498,7 @@ body[data-layout="overlay"] .page-footer {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pad-button:active {
+  .pad-button:is(:active, .pressed) {
     transform: none;
   }
 }
