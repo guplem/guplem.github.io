@@ -1,8 +1,11 @@
 import { describe, test, expect } from "bun:test";
 import {
   DIRECTIONS,
+  GROUND_TILE_IDS,
+  MAP_GROUND,
   TILES,
   TILE_IDS,
+  castsShadow,
   characterAt,
   directionTowards,
   facingPosition,
@@ -10,6 +13,8 @@ import {
   isEncounterTile,
   isSolid,
   isTileId,
+  groundAt,
+  isGroundTile,
   ledgeAt,
   oppositeDirection,
   pickEncounter,
@@ -18,6 +23,7 @@ import {
   signAt,
   tileAt,
   tileBehaviour,
+  tileStack,
   triggersAt,
   tryStep,
   validateMap,
@@ -39,6 +45,7 @@ const sample = {
   name: "Sample",
   width: 7,
   height: 6,
+  base: "grass",
   legend: { "#": "wall", ".": "path", T: "tall", t: "tree", L: "ledge", "~": "water" },
   ground: [
     "#######",
@@ -83,6 +90,114 @@ describe("the tile table", () => {
   test("makes tall grass the only tile that starts a battle", () => {
     const withEncounters = TILE_IDS.filter((id) => TILES[id].encounter);
     expect(withEncounters).toEqual(["tall"]);
+  });
+});
+
+describe("ground and the things that stand on it", () => {
+  test("a ground tile names no base, and everything else names one", () => {
+    expect(isGroundTile("grass")).toBe(true);
+    expect(isGroundTile("palm")).toBe(false);
+    expect(TILES.grass.base).toBeUndefined();
+    expect(TILES.palm.base).toBe(MAP_GROUND);
+  });
+
+  test("lists every ground tile, and nothing that stands on one", () => {
+    expect(GROUND_TILE_IDS).toContain("grass");
+    expect(GROUND_TILE_IDS).toContain("cave");
+    expect(GROUND_TILE_IDS).not.toContain("tall");
+    expect(GROUND_TILE_IDS).not.toContain("sign");
+  });
+
+  test("every base names a tile this game knows", () => {
+    for (const id of TILE_IDS) {
+      const base = TILES[id].base;
+      if (base === undefined || base === MAP_GROUND) continue;
+      expect(`${id} stands on ${base}: ${isTileId(base)}`).toBe(`${id} stands on ${base}: true`);
+    }
+  });
+
+  test("a base is never a tile that itself stands on something", () => {
+    // A chain of two would draw three pictures for one square and invites a loop.
+    for (const id of TILE_IDS) {
+      const base = TILES[id].base;
+      if (base === undefined || base === MAP_GROUND) continue;
+      expect(`${id}: ${isGroundTile(base)}`).toBe(`${id}: true`);
+    }
+  });
+
+  test("finds the ground a thing at a position stands on", () => {
+    expect(groundAt(sample, 1, 1)).toBe("path");
+    expect(groundAt(sample, 0, 0)).toBe("wall");
+  });
+
+  test("falls back to the screen's ground where the map wrote a thing instead", () => {
+    // 2,2 holds tall grass, which is a thing and not ground.
+    expect(groundAt(sample, 2, 2)).toBe("grass");
+    expect(groundAt(sample, 3, 3)).toBe("grass");
+  });
+
+  test("gives a thing on the over layer the ground under it, not the screen's", () => {
+    // The tree at 3,1 stands on the path that the ground layer draws there.
+    expect(groundAt(sample, 3, 1)).toBe("path");
+    expect(tileStack("tree", groundAt(sample, 3, 1))).toEqual(["path", "tree"]);
+  });
+
+  test("falls back to the screen's ground outside the map", () => {
+    expect(groundAt(sample, -1, -1)).toBe("grass");
+  });
+
+  test("stacks a ground tile on its own", () => {
+    expect(tileStack("grass", "grass")).toEqual(["grass"]);
+    expect(tileStack("cave", "grass")).toEqual(["cave"]);
+  });
+
+  test("puts the screen's own ground under anything that stands on it", () => {
+    expect(tileStack("palm", "grass")).toEqual(["grass", "palm"]);
+    expect(tileStack("palm", "sand")).toEqual(["sand", "palm"]);
+    expect(tileStack("statue", "gymFloor")).toEqual(["gymFloor", "statue"]);
+  });
+
+  test("lets a tile name its own base instead of the screen's", () => {
+    // A doorway is a hole in a wall, so the wall goes under it wherever it is.
+    expect(tileStack("door", "grass")).toEqual(["hut", "door"]);
+    expect(tileStack("door", "floor")).toEqual(["hut", "door"]);
+  });
+
+  test("gives an unknown tile back on its own instead of throwing", () => {
+    expect(tileStack("lava", "grass")).toEqual(["lava"]);
+    expect(tileStack("palm", "lava")).toEqual(["palm"]);
+  });
+});
+
+describe("which tiles drop a shadow", () => {
+  test("a solid tile with something walkable below it drops one", () => {
+    // The tree on the over layer at 3,1 has path below it.
+    expect(castsShadow(sample, 3, 1)).toBe(true);
+  });
+
+  test("a solid tile with another solid tile below it does not", () => {
+    // The top wall row has more wall under it, so a shadow would land inside it.
+    expect(castsShadow(sample, 0, 0)).toBe(false);
+  });
+
+  test("nothing you can walk on drops a shadow", () => {
+    expect(castsShadow(sample, 1, 1)).toBe(false);
+    expect(castsShadow(sample, 2, 2)).toBe(false);
+  });
+
+  test("nothing off the map drops a shadow", () => {
+    expect(castsShadow(sample, -1, 0)).toBe(false);
+    expect(castsShadow(sample, 0, 5)).toBe(false);
+  });
+
+  test("water drops no shadow, because it is not standing up", () => {
+    const pond = {
+      ...sample,
+      legend: { ...sample.legend },
+      ground: ["#######", "#..~..#", "#.....#", "#.....#", "#.....#", "#######"],
+      over: ["       ", "       ", "       ", "       ", "       ", "       "],
+    };
+    expect(castsShadow(pond, 3, 1)).toBe(false);
   });
 });
 

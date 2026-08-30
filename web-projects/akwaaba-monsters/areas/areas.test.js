@@ -10,7 +10,7 @@ import {
   getTrainer,
   spawnCharacters,
 } from "./index.js";
-import { isSolid, seesPlayer, validateMap, warpAt } from "../world.js";
+import { isGroundTile, isSolid, seesPlayer, validateMap, warpAt } from "../world.js";
 import { validateScript } from "../events.js";
 import { SPECIES, SPECIES_IDS, getSpecies } from "../species.js";
 import { ITEM_IDS, ITEMS } from "../items.js";
@@ -68,6 +68,15 @@ describe("every map is sound", () => {
   test("passes the world engine's own checks", () => {
     for (const [id, map] of Object.entries(MAPS)) {
       expect(`${id}: ${validateMap(map, MAPS).join(" | ")}`).toBe(`${id}: `);
+    }
+  });
+
+  test("gives every map a ground it is made of", () => {
+    // A palm tree, a rock and a patch of tall grass are all drawn with holes in
+    // them, and this is what shows through. A map with no ground would show the
+    // void through every one of them.
+    for (const [id, map] of Object.entries(MAPS)) {
+      expect(`${id}: ${isGroundTile(map.base)}`).toBe(`${id}: true`);
     }
   });
 

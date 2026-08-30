@@ -249,6 +249,7 @@ const playerHouse = {
   music: "town",
   width: 10,
   height: 8,
+  base: "floor",
   legend: LEGEND,
   ground: [
     "##########",
@@ -278,6 +279,7 @@ const villagerHouse = {
   music: "town",
   width: 10,
   height: 8,
+  base: "floor",
   legend: LEGEND,
   ground: [
     "##########",
@@ -327,6 +329,7 @@ const profHut = {
   music: "town",
   width: 12,
   height: 9,
+  base: "floor",
   legend: LEGEND,
   ground: [
     "############",
@@ -408,6 +411,7 @@ const village = {
   music: "town",
   width: 22,
   height: 18,
+  base: "grass",
   legend: LEGEND,
   ground: [
     "TTTTTTTTTT..TTTTTTTTTT",
@@ -584,6 +588,7 @@ const route1 = {
   music: "route",
   width: 20,
   height: 24,
+  base: "grass",
   legend: LEGEND,
   ground: [
     "TTTTTTTTT..TTTTTTTTT",
@@ -709,6 +714,7 @@ const river = {
   music: "route",
   width: 24,
   height: 18,
+  base: "grass",
   legend: LEGEND,
   ground: [
     "TTTTTTTTTT%%%%%%TTTTTTTT",
@@ -894,6 +900,7 @@ const mine = {
   music: "cave",
   width: 18,
   height: 14,
+  base: "cave",
   legend: LEGEND,
   ground: [
     "%%%%%%%%%%%%%%%%%%",
@@ -1004,6 +1011,7 @@ const bosua = {
   music: "town",
   width: 22,
   height: 16,
+  base: "grass",
   legend: LEGEND,
   ground: [
     "TTTTTTTTTTTTTTTTTTTTTT",
@@ -1161,6 +1169,7 @@ const centre = {
   music: "town",
   width: 12,
   height: 9,
+  base: "floor",
   legend: LEGEND,
   ground: [
     "############",
@@ -1237,6 +1246,7 @@ const gym = {
   music: "boss",
   width: 14,
   height: 16,
+  base: "gymFloor",
   legend: LEGEND,
   ground: [
     "##############",

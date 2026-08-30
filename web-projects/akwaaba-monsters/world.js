@@ -9,6 +9,19 @@
 // `ground` is always there, `over` is drawn on top and wins for collision when
 // it is not blank. A third layer, `top`, is drawn above the player so it can
 // walk under a tree canopy.
+//
+// A tile is one of two kinds. Ground is the surface itself. Everything else is a
+// thing standing on the ground, drawn with holes in it so the ground shows
+// through. Every map says which ground its screen is made of, in `base`.
+
+/**
+ * The ground a screen is made of, for a tile that stands on whatever is there.
+ *
+ * A map declares its own ground in `base`. A palm tree writes this instead of a
+ * tile name, so the same palm can stand on grass in one map and on sand in the
+ * next.
+ */
+export const MAP_GROUND = "@map";
 
 /**
  * What every tile does.
@@ -17,48 +30,87 @@
  * encounter walking on it can start a wild battle
  * ledge     you can only enter it moving this way, and you land two tiles on
  * water     reserved: nothing can cross it yet, see ROADMAP.md
+ * base      what this tile stands on, for a tile that is a thing and not ground
+ *
+ * A tile with no `base` is **ground**: it is the surface itself, and its art
+ * fills the whole 16 by 16 pixels. Every other tile is a **thing standing on
+ * the ground**: its art has holes in it, and `base` says what to draw first.
+ * Almost everything writes `MAP_GROUND`, which means "whatever ground this
+ * screen is made of". `art/art.test.js` checks the art matches this table.
+ *
+ * Before this split, a palm tree carried its own square of sand and left a sand
+ * square in the middle of a grass field. See `art/tiles.js`.
  */
 export const TILES = {
+  // --- Ground: the surface itself, drawn edge to edge ----------------------
   path: {},
   grass: {},
-  tall: { encounter: true },
   sand: {},
   mud: {},
-  flowers: {},
   bridge: {},
   floor: {},
-  mat: {},
-  bed: {},
   cave: {},
   gymFloor: {},
-  ledge: { ledge: "down" },
-
-  water: { solid: true, water: true },
-  rock: { solid: true },
-  tree: { solid: true },
-  palm: { solid: true },
-  crop: { solid: true },
-  fence: { solid: true },
   hut: { solid: true },
   roof: { solid: true },
   wall: { solid: true },
-  table: { solid: true },
-  counter: { solid: true },
-  shelf: { solid: true },
-  sign: { solid: true },
   caveWall: { solid: true },
-  oreRock: { solid: true },
-  pot: { solid: true },
-  statue: { solid: true },
+  water: { solid: true, water: true },
 
-  // Walkable but usually carrying a warp.
-  door: {},
-  stairs: {},
-  exit: {},
+  // --- Things that stand on the ground -------------------------------------
+  tall: { encounter: true, base: MAP_GROUND },
+  flowers: { base: MAP_GROUND },
+  mat: { base: MAP_GROUND },
+  bed: { base: MAP_GROUND },
+  ledge: { ledge: "down", base: MAP_GROUND },
+  rock: { solid: true, base: MAP_GROUND },
+  tree: { solid: true, base: MAP_GROUND },
+  palm: { solid: true, base: MAP_GROUND },
+  crop: { solid: true, base: MAP_GROUND },
+  fence: { solid: true, base: MAP_GROUND },
+  table: { solid: true, base: MAP_GROUND },
+  counter: { solid: true, base: MAP_GROUND },
+  shelf: { solid: true, base: MAP_GROUND },
+  sign: { solid: true, base: MAP_GROUND },
+  oreRock: { solid: true, base: MAP_GROUND },
+  pot: { solid: true, base: MAP_GROUND },
+  statue: { solid: true, base: MAP_GROUND },
+
+  // Walkable but usually carrying a warp. A doorway is a hole in a wall, so it
+  // carries the wall with it rather than taking the ground of the screen.
+  door: { base: "hut" },
+  stairs: { base: MAP_GROUND },
+  exit: { base: MAP_GROUND },
 };
 
 /** Every tile identifier a map legend is allowed to use. */
 export const TILE_IDS = Object.keys(TILES);
+
+/** Every tile that is the ground itself, so its art fills the whole square. */
+export const GROUND_TILE_IDS = TILE_IDS.filter((id) => TILES[id].base === undefined);
+
+/** True when the tile is the ground itself rather than a thing standing on it. */
+export function isGroundTile(id) {
+  return Object.prototype.hasOwnProperty.call(TILES, id) && TILES[id].base === undefined;
+}
+
+/**
+ * Every picture to draw for one tile, from the bottom up.
+ *
+ * A ground tile comes back on its own. Anything else comes back with what it
+ * stands on in front of it, so the renderer draws the ground and then the thing.
+ *
+ * @param {string} tileId the tile the map asks for
+ * @param {string} mapGround the ground this screen is made of
+ * @returns {string[]} one or two tile identifiers, bottom first
+ */
+export function tileStack(tileId, mapGround) {
+  const base = TILES[tileId]?.base;
+  if (base === undefined) return [tileId];
+  const under = base === MAP_GROUND ? mapGround : base;
+  if (!isGroundTile(under)) return [tileId];
+  return [under, tileId];
+}
 
 /** The four directions, and what each one adds to a position. */
 export const DIRECTIONS = {
@@ -99,6 +151,22 @@ export function tileAt(map, x, y) {
   return map.legend[groundChar] ?? null;
 }
 
+/**
+ * The ground at a position: what a thing standing there is standing on.
+ *
+ * The ground layer of a map holds the surface almost everywhere, so that is the
+ * answer. Where the ground layer holds a thing instead (a palm tree written
+ * straight into it), the screen's own ground is the answer.
+ *
+ * A sign written on the `over` layer above a path has to stand on that path.
+ * Reaching for the screen's ground there would paint a square of grass over the
+ * path first, which is the bug this whole split was made to end.
+ */
+export function groundAt(map, x, y) {
+  const id = map.legend?.[charAt(map.ground, x, y)];
+  return isGroundTile(id) ? id : map.base;
+}
+
 /** What that tile does. An unknown tile behaves like a solid wall. */
 export function tileBehaviour(map, x, y) {
   const id = tileAt(map, x, y);
@@ -115,6 +183,25 @@ export function isSolid(map, x, y) {
 /** True when standing here can start a wild battle. */
 export function isEncounterTile(map, x, y) {
   return Boolean(tileBehaviour(map, x, y).encounter);
+}
+
+/**
+ * True when this tile should drop a shadow onto the square below it.
+ *
+ * Something solid stands up out of the ground, so the sun leaves a dark strip
+ * at its foot. That strip is the only thing that stops a hut, a tree or a rock
+ * from looking painted flat onto the grass.
+ *
+ * Water is solid but lies flat, so it casts nothing, and a shadow that would
+ * land on more of the same wall is not drawn at all.
+ */
+export function castsShadow(map, x, y) {
+  if (!inBounds(map, x, y)) return false;
+  const here = tileBehaviour(map, x, y);
+  if (!here.solid || here.water) return false;
+  if (!inBounds(map, x, y + 1)) return false;
+  const below = tileBehaviour(map, x, y + 1);
+  return !below.solid;
 }
 
 /** The ledge at this position, or null. A ledge can only be jumped one way. */
@@ -269,6 +356,11 @@ export function validateMap(map, allMaps = {}) {
 
   if (!map.id) problems.push("a map has no id");
   if (!map.name) say("has no name");
+  // Everything that stands on the ground is drawn with holes in it, so a map
+  // with no ground of its own would show the void through every palm tree.
+  if (!isGroundTile(map.base)) {
+    say(`base is "${map.base}", which is not a ground tile`);
+  }
   if (map.ground.length !== map.height) {
     say(`ground has ${map.ground.length} rows but height is ${map.height}`);
   }

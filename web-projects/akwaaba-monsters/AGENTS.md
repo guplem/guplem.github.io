@@ -36,10 +36,11 @@ engine holds rules and no world; the content holds a world and no rules.
 | `species.js`, `moves.js`, `items.js`, `types.js` | The data tables |
 | `save.js` | The save document, its checking, and its migration |
 | `rng.js` | The seeded generator whose position the save keeps |
-| `ui.js` | Menu arithmetic: cursors, scrolling, bars, the camera |
+| `ui.js` | Screen arithmetic: cursors, scrolling, bars, the camera, which tile version a square gets |
 | `music.js` | The songs, the notation, and the creature cries |
 | `art/pixelArt.js` | The rasteriser: shapes to pixels, outline, shading |
-| `art/creatures.js`, `art/tiles.js`, `art/people.js`, `art/font.js` | The pictures |
+| `art/creatures.js`, `art/people.js`, `art/font.js` | The pictures |
+| `art/tiles.js` | The map tiles: ground fills its square, a thing lets the ground through |
 | `render.js` | Canvas drawing. Holds no rules and makes no decisions |
 | `audio.js` | Web Audio scheduling. Holds no notes |
 | `app.js` | The loop, the input and every screen. The only file with mutable state |
@@ -50,7 +51,8 @@ are kept thin: anything worth testing was pushed next door.
 
 ## Adding an area
 
-1. Write `areas/areaN.js` exporting `MAPS`, `TRAINERS` and any `BADGES`.
+1. Write `areas/areaN.js` exporting `MAPS`, `TRAINERS` and any `BADGES`. Give
+   every map a `base`: the ground that screen is made of (see the Gotchas).
 2. Add one line to `areas/index.js`.
 3. Join it with a warp. The north road out of Bosua is the intended seam.
 4. Add species to `species.js` and art to `art/creatures.js`.
@@ -76,8 +78,26 @@ box. That catches a pasted curly quote before a player sees a question mark.
 
 ## Gotchas
 
+- **A tile is either ground or a thing standing on ground.** Ground fills its
+  whole square (`grass`, `sand`, `cave`, `hut`, `water`). Everything else has
+  holes in it, and the ground shows through: a palm tree, a rock, a sign, a
+  patch of tall grass. `TILES` in `world.js` is the register, and a tile with no
+  `base` field is ground. `art/art.test.js` checks the art agrees. Fill in the
+  background of a thing and it puts a square of the wrong colour into every map
+  that uses different ground. See ADR 0005.
+- **Every map declares `base`, the ground its screen is made of.** That is what
+  shows through a palm tree. `validateMap` refuses a map without one.
 - **Tiles carry no outline and no shading.** Both draw a seam between two copies
-  of the same tile. `art/art.test.js` enforces it.
+  of the same tile. `art/art.test.js` enforces it. A thing standing on the
+  ground gets the same effect on purpose, by putting dark green along the edge of
+  a palm frond by hand.
+- **Ground comes in four versions, picked from the position** by `tileVariant` in
+  `ui.js`. One version repeated draws its speckles every 16 pixels, and the eye
+  reads that grid as wallpaper. Pick the version from anything but the position
+  and the ground crawls under the player.
+- **Anything solid drops a strip of shade on the square below it**
+  (`castsShadow` in `world.js`). It is the only thing stopping a hut from looking
+  painted flat onto the grass.
 - **A creature faces the viewer and is symmetric about 19.5**, not 20. The
   battle screen flips the player's side rather than holding a second drawing.
 - **A person is 16 by 20 and the map lifts them 4 pixels**, so the head overlaps
@@ -112,3 +132,4 @@ box. That catches a pasted curly quote before a player sees a question mark.
 | [0002](adr/0002-one-versioned-save-additive-only.md) | One versioned save document, only ever added to |
 | [0003](adr/0003-an-area-is-one-file.md) | An area is one file, and adding one changes no engine code |
 | [0004](adr/0004-generated-audio-not-audio-files.md) | Generate the music, do not ship it |
+| [0005](adr/0005-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |

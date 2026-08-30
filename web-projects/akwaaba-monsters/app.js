@@ -2200,10 +2200,15 @@ function drawBattle() {
     renderer.ctx.beginPath();
     renderer.ctx.arc(x, y, 5, 0, Math.PI * 2);
     renderer.ctx.fill();
-    if (share < 0.5) renderer.creature(foe.species, 158 + foeShake, 18);
+    if (share < 0.5) {
+      renderer.creatureShadow(158 + foeShake, 18);
+      renderer.creature(foe.species, 158 + foeShake, 18);
+    }
   } else {
+    renderer.creatureShadow(158 + foeShake, 18);
     renderer.creature(foe.species, 158 + foeShake, 18);
   }
+  renderer.creatureShadow(30, 54, 1.2);
   renderer.creature(mine.species, 30, 54, { scale: 1.2, flip: true });
 
   renderer.statusPanel({
