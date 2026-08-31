@@ -2238,8 +2238,10 @@ function drawMenu() {
       14,
       12,
     );
+    // Twenty pixels a row, not twenty one: a full team of six put its last
+    // health numbers on the same row as the "go back" line at the foot.
     game.state.party.forEach((monster, index) => {
-      const y = 26 + index * 21;
+      const y = 26 + index * 20;
       const species = getSpecies(monster.species);
       const share = monster.hp / maxHp(monster);
       renderer.creature(monster.species, 14, y - 4, { scale: 0.45 });
