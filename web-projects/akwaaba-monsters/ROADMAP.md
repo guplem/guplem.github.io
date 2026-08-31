@@ -24,7 +24,10 @@ To add area 2:
 4. Add species to `species.js`, moves to `moves.js` and art to
    `art/creatures.js`. `art/art.test.js` fails until every new species has a
    drawing, which is the reminder.
-5. Run `bun test .` from the repository root. `areas/areas.test.js` checks the
+5. Give the area somewhere to heal. A healing machine and a storage computer are
+   tiles: write `e` and `k` into a map, side by side, and leave a square in
+   front of each. `areas.test.js` checks both. See ADR 0010.
+6. Run `bun test .` from the repository root. `areas/areas.test.js` checks the
    new maps join up, that every warp leads back, that no trainer stands on the
    only path and that difficulty climbs. It found seven real mistakes in area 1.
 

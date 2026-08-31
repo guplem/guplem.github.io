@@ -30,6 +30,7 @@ engine holds rules and no world; the content holds a world and no rules.
 | `areas/area1.js` | **All of area 1**: maps, people, trainers, badge, every line of dialogue |
 | `areas/index.js` | The register that merges areas and refuses clashing identifiers |
 | `world.js` | Tiles, collision, ledges, sight lines, encounters, map checking |
+| `objects.js` | The machines you press A on: the healing machine and the storage computer, and what each one says |
 | `events.js` | The script engine every conversation and cut scene runs on |
 | `battle.js` | Turn resolution, damage, status, stat stages, catching, the foe's choices |
 | `battlePlayback.js` | What the battle screen shows: a copy of the battle that events move forward one at a time |
@@ -57,6 +58,21 @@ are plain numbers, and `art/font.test.js` measures the game's words against
 them. Keep the top of `render.js` free of anything that touches the browser, or
 those tests stop loading.
 
+## Adding a machine to a map
+
+A healing machine and a storage computer are **tiles**. To put either one in a
+map, write its character into the map grid. That is the whole procedure.
+
+1. Use the character the area legend gives it. Area 1 uses `e` for the healing
+   machine and `k` for the storage computer.
+2. Leave a square in front of it that the player can stand on.
+3. Put a storage computer next to every healing machine. `areas.test.js`
+   enforces both of these.
+
+`objects.js` holds what each machine says and does. Do not write a healing
+machine as an NPC: the machine already exists, and a second copy of the words
+drifts from the first. See ADR 0010.
+
 ## Adding an area
 
 1. Write `areas/areaN.js` exporting `MAPS`, `TRAINERS` and any `BADGES`. Give
@@ -75,8 +91,10 @@ thought: the vocabulary is deliberately small.
 data and checks the *world*: every map joins up and can be reached from where a
 new game starts, every warp leads back, no trainer stands on the only path, no
 person stands on a warp, every sign sits on something solid so the player can
-face it, every trainer has a line of sight somebody can walk into, difficulty
-climbs to the gym leader, and all seven friend creatures appear somewhere.
+face it, every machine has a square in front of it and a storage computer
+beside it, the room where the first creature is chosen can also heal, every
+trainer has a line of sight somebody can walk into, difficulty climbs to the gym
+leader, and all seven friend creatures appear somewhere.
 
 It found seven real mistakes while area 1 was being written. Keep it fed.
 
@@ -187,6 +205,10 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   `art/art.test.js` fails if any other character uses `SKIN.visitor`.
 - **Only tall grass starts a battle outdoors.** A cave sets
   `encounters.anywhere` instead, because it has no grass to grow.
+- **The box screen has exactly one way in: a storage computer in the world.**
+  It is not in the pause menu any more (ADR 0010). `openBoxScreen` in `app.js`
+  opens it, B closes it and hands the machine's script back its turn. A menu
+  entry that opened the same screen would need its own way out of it.
 - **Each column of the box screen ends in one empty slot, except the team
   column when the team is full.** That slot is not decoration. It is the only
   target that makes a move with no partner: drop a creature on the empty box
@@ -249,3 +271,4 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
 | [0007](adr/0007-the-screen-trails-the-engine-by-one-event.md) | The screen keeps its own copy of the battle and trails the engine by one event |
 | [0008](adr/0008-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
 | [0009](adr/0009-the-pad-follows-the-finger-and-buzzes.md) | The pad follows the finger, and the phone buzzes for every press |
+| [0010](adr/0010-machines-are-tiles-you-walk-up-to.md) | A machine is a tile you walk up to, and the box left the menu |

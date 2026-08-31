@@ -213,6 +213,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [akwaaba-monsters 0007](web-projects/akwaaba-monsters/adr/0007-the-screen-trails-the-engine-by-one-event.md) | The screen keeps its own copy of the battle and trails the engine by one event |
 | [akwaaba-monsters 0008](web-projects/akwaaba-monsters/adr/0008-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
 | [akwaaba-monsters 0009](web-projects/akwaaba-monsters/adr/0009-the-pad-follows-the-finger-and-buzzes.md) | The pad follows the finger, and the phone buzzes for every press |
+| [akwaaba-monsters 0010](web-projects/akwaaba-monsters/adr/0010-machines-are-tiles-you-walk-up-to.md) | A machine is a tile you walk up to, and the box left the menu |
 | [global-news-map 0001](web-projects/global-news-map/adr/0001-wikipedia-current-events-as-the-news-source.md) | Wikipedia's Current Events portal as the news source, not a news API |
 | [global-news-map 0002](web-projects/global-news-map/adr/0002-place-a-story-by-the-smallest-linked-place.md) | Place a story by the smallest place it links, and read no sentences |
 | [global-news-map 0003](web-projects/global-news-map/adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
