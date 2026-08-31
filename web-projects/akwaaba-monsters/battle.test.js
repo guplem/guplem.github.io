@@ -392,6 +392,30 @@ describe("taking a turn", () => {
     expect(after.player.stages).toEqual(freshStages());
   });
 
+  test("a switch costs the player's turn, and the foe still acts", () => {
+    const battle = battleWith({
+      mine: [monster("nacho", 30), monster("gori", 30)],
+      theirs: monster("krabo", 5, ["tackle"]),
+    });
+    const { events } = takeTurn(battle, { kind: "switch", index: 1 });
+    const moves = events.filter((event) => event.type === "useMove");
+    expect(moves.every((event) => event.side === "foe")).toBe(true);
+    expect(moves.length).toBe(1);
+  });
+
+  test("an item costs the player's turn, and the foe still acts", () => {
+    const hurt = { ...monster("nacho", 30), hp: 10 };
+    const battle = battleWith({ mine: hurt, theirs: monster("krabo", 5, ["tackle"]) });
+    const { events } = takeTurn(battle, {
+      kind: "item",
+      message: "You used the Herbal Salve.",
+      heal: 20,
+    });
+    const moves = events.filter((event) => event.type === "useMove");
+    expect(moves.every((event) => event.side === "foe")).toBe(true);
+    expect(moves.length).toBe(1);
+  });
+
   test("the faster creature moves first", () => {
     // Polete is the fastest creature in the game; Nacho the slowest.
     const battle = battleWith({
@@ -658,6 +682,39 @@ describe("trainer battles", () => {
     const after = playOut(battle);
     expect(after.outcome).toBe("win");
     expect(battleResult(after).prize).toBe(200);
+  });
+
+  test("the creature the trainer sends out mid-turn does not also attack", () => {
+    // The player is much faster and knocks the first creature out. The second
+    // one takes its place, and in the real games it must wait for the next turn.
+    const battle = battleWith({
+      mine: monster("poya", 45, ["tackle"]),
+      theirs: [{ ...monster("kanku", 3), hp: 1 }, monster("krabo", 5)],
+      kind: "trainer",
+      trainer: { name: "Mama Sopa", prize: 200 },
+    });
+    const before = activeMonster(battle, "player").hp;
+    const { battle: after, events } = takeTurn(battle, { kind: "move", slot: 0 });
+    const sentOut = events.findIndex(
+      (event) => event.type === "sendOut" && event.side === "foe",
+    );
+    expect(sentOut).toBeGreaterThanOrEqual(0);
+    expect(events.slice(sentOut).some((event) => event.type === "useMove")).toBe(false);
+    expect(activeMonster(after, "player").hp).toBe(before);
+  });
+
+  test("the creature the trainer sends out attacks on the turn after", () => {
+    const battle = battleWith({
+      mine: monster("poya", 45, ["tackle"]),
+      theirs: [{ ...monster("kanku", 3), hp: 1 }, monster("krabo", 5)],
+      kind: "trainer",
+      trainer: { name: "Mama Sopa", prize: 200 },
+    });
+    const { battle: afterFirst } = takeTurn(battle, { kind: "move", slot: 0 });
+    // The player uses an item on the second turn, so the new creature lives
+    // long enough to take its own turn.
+    const { events } = takeTurn(afterFirst, { kind: "item", message: "You used an item!" });
+    expect(events.some((event) => event.type === "useMove")).toBe(true);
   });
 
   test("pay no prize money for a loss", () => {
