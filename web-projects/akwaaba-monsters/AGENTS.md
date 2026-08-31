@@ -212,6 +212,13 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   "Nacho used Tackle!". The one exception is `faint`: the creature drops, and
   the log then names it. `battle.test.js` pins the rule under "the order of the
   events". See ADR 0007.
+- **A creature that takes the field on a turn does not also attack on it.** A
+  switch costs a turn, and so does an item. The player's side gets this from
+  `playerActs` in `takeTurn`: only a `move` action attacks. The foe's side gets
+  it from `sentOutThisTurn`, which `sendOutNext` sets and the end of the turn
+  clears. Without that flag a trainer whose creature fell to the player's attack
+  sent out the next one and hit with it in the same turn, using the move slot
+  the engine had picked for the creature that just fainted.
 - **An event that changes the picture carries the value it lands on**, not only
   the step: `damage` carries the health left, `exp` the new total, `levelUp` the
   health a level gained. `applyBattleEvent` copies those values across rather

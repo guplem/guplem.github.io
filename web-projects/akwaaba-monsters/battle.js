@@ -74,7 +74,14 @@ export function accuracyMultiplier(stage) {
 
 /** One side of a battle: a party, whichever creature is out, and its buffs. */
 function makeSide(party) {
-  return { party, active: 0, stages: freshStages(), flinched: false, runAttempts: 0 };
+  return {
+    party,
+    active: 0,
+    stages: freshStages(),
+    flinched: false,
+    sentOutThisTurn: false,
+    runAttempts: 0,
+  };
 }
 
 /**
@@ -546,6 +553,10 @@ function sendOutNext(battle, side, events) {
   state.active = index;
   state.stages = freshStages();
   state.flinched = false;
+  // The creature arrives in the middle of a turn, and that turn is spent. It
+  // waits for the next one, the same as in the real games. `takeTurn` reads this
+  // flag and skips the side, then clears it when the turn ends.
+  state.sentOutThisTurn = true;
   const name = displayName(state.party[index]);
   events.push({
     type: "message",
@@ -705,6 +716,9 @@ export function takeTurn(battle, action) {
     if (next.over) break;
     if (side === "player" && !playerActs) continue;
     if (isFainted(activeMonster(next, side))) continue;
+    // A creature that took the field this turn waits for the next one. Coming
+    // out is what this side spent its turn on.
+    if (next[side].sentOutThisTurn) continue;
     const sideAction = side === "player" ? action : foeAction;
     if (sideAction.kind === "struggle") {
       // Out of power points on every move: a small hit and no effects.
@@ -730,6 +744,8 @@ export function takeTurn(battle, action) {
 
   next.player.flinched = false;
   next.foe.flinched = false;
+  next.player.sentOutThisTurn = false;
+  next.foe.sentOutThisTurn = false;
   return { battle: next, events };
 }
 
