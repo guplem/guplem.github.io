@@ -7,7 +7,7 @@ import {
   choosePlace,
   countryName,
   locateStories,
-  pinsWithGroupFirst,
+  placeTitlesOf,
   placeLabel,
   placeScale,
 } from "./places.js";
@@ -311,40 +311,23 @@ describe("buildCountryIndex", () => {
   });
 });
 
-describe("pinsWithGroupFirst", () => {
-  const pins = ["a", "b", "c", "d", "e"].map((id) => ({ story: { id } }));
-  const ids = (list) => list.map((pin) => pin.story.id);
+describe("placeTitlesOf", () => {
+  const pin = (title) => ({ place: { title } });
 
-  test("brings the chosen group to the top, together", () => {
-    expect(ids(pinsWithGroupFirst(pins, ["c", "e"]))).toEqual(["c", "e", "a", "b", "d"]);
+  test("names each place once, however many stories stand on it", () => {
+    expect(placeTitlesOf([pin("Caen"), pin("Caen"), pin("Bishkek")])).toEqual(["Caen", "Bishkek"]);
   });
 
-  // The reader is looking at a list; a group that keeps the list's own order is
-  // easier to follow than one shuffled into the marker's internal order.
-  test("keeps the list's own order inside the group and outside it", () => {
-    expect(ids(pinsWithGroupFirst(pins, ["e", "c"]))).toEqual(["c", "e", "a", "b", "d"]);
+  // This is the whole point of the function. Asking about every place found on
+  // the day took six seconds; asking only about the ones actually pinned took a
+  // quarter of one, because the query's cost climbs faster than its length.
+  test("leaves out a place that carries no pin", () => {
+    expect(placeTitlesOf([pin("Caen")])).toEqual(["Caen"]);
+    expect(placeTitlesOf([])).toEqual([]);
   });
 
-  test("changes nothing when no group is chosen", () => {
-    expect(ids(pinsWithGroupFirst(pins, []))).toEqual(["a", "b", "c", "d", "e"]);
-    expect(ids(pinsWithGroupFirst(pins, null))).toEqual(["a", "b", "c", "d", "e"]);
-  });
-
-  test("ignores an id that is not in the list", () => {
-    expect(ids(pinsWithGroupFirst(pins, ["c", "missing"]))).toEqual(["c", "a", "b", "d", "e"]);
-  });
-
-  test("never loses or duplicates a story", () => {
-    for (const group of [[], ["a"], ["a", "e"], ["a", "b", "c", "d", "e"]]) {
-      const out = pinsWithGroupFirst(pins, group);
-      expect(out).toHaveLength(pins.length);
-      expect(new Set(ids(out)).size).toBe(pins.length);
-    }
-  });
-
-  test("leaves the original list untouched", () => {
-    const before = ids(pins);
-    pinsWithGroupFirst(pins, ["e"]);
-    expect(ids(pins)).toEqual(before);
+  test("survives a pin with no place, rather than throwing", () => {
+    expect(placeTitlesOf([pin("Caen"), {}, { place: {} }, null])).toEqual(["Caen"]);
+    expect(placeTitlesOf(null)).toEqual([]);
   });
 });

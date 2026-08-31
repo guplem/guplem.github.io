@@ -18,7 +18,7 @@ import { NoNewsForDay, loadDay } from "./dataSource.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, zoomAt } from "./geo.js";
 import { LANGUAGES, makeSay, pickLanguage } from "./i18n.js";
-import { pinsWithGroupFirst, placeLabel } from "./places.js";
+import { placeLabel } from "./places.js";
 import { buildSearch, readState } from "./urlState.js";
 import { LAND_SHAPES } from "./world.js";
 
@@ -38,14 +38,12 @@ const elements = {
   zoomOut: $("zoom-out"),
   resetView: $("reset-view"),
   status: $("status"),
-  card: $("story-card"),
-  cardCategory: $("story-card-category"),
-  cardHeading: $("story-card-heading"),
-  cardText: $("story-card-text"),
-  cardPlace: $("story-card-place"),
-  cardGroup: $("story-card-group"),
-  cardSources: $("story-card-sources"),
-  cardClose: $("story-close"),
+  panel: $("selected-panel"),
+  panelLabel: $("selected-label"),
+  panelHeading: $("selected-heading"),
+  panelCount: $("selected-count"),
+  panelStories: $("selected-stories"),
+  panelClose: $("selected-close"),
   listHeading: $("story-list-heading"),
   listHint: $("list-hint"),
   stories: $("stories"),
@@ -286,10 +284,9 @@ function storyItem(story, place) {
 }
 
 function renderLists() {
-  // The chosen marker's stories come first, as one block, so a marker reading
-  // "5" puts its five stories where the reader is already looking.
-  const ordered = pinsWithGroupFirst(state.pins, state.group);
-  elements.stories.replaceChildren(...ordered.map((pin) => storyItem(pin.story, pin.place)));
+  // The portal's own order, always. The chosen location has its own panel above
+  // this list, so promoting its stories here would print each of them twice.
+  elements.stories.replaceChildren(...state.pins.map((pin) => storyItem(pin.story, pin.place)));
   elements.unplaced.replaceChildren(...state.unplaced.map((story) => storyItem(story, null)));
 
   const hasUnplaced = state.unplaced.length > 0;
@@ -339,50 +336,82 @@ function refreshHighlight() {
       item.toggleAttribute("data-grouped", !open && grouped.size > 1 && grouped.has(id));
     }
   }
-  renderGroupLine();
 }
 
 /**
- * The "2 of 5 at this place" line on the open story.
+ * Every story at the chosen location, in full, above the day's full list.
  *
- * Kept apart from `renderCard` so a zoom can update it: zooming in splits a
- * group, and a line still claiming "of 5" would then be wrong.
+ * This replaced a panel that showed only the story that was tapped. A marker
+ * reading "5" stood for five stories and showed one of them, which a reader
+ * reported twice: first as "only one is highlighted", then as "only one appears
+ * under the map". The whole group belongs here.
  */
-function renderGroupLine() {
-  const group = state.group;
-  const position = group.indexOf(state.selectedId) + 1;
-  const show = group.length > 1 && position > 0;
-  elements.cardGroup.hidden = !show;
-  elements.cardGroup.textContent = show ? say("story.oneOfGroup", { index: position, count: group.length }) : "";
-}
+function renderSelectedPanel() {
+  const byId = new Map(state.pins.map((pin) => [pin.story.id, pin]));
+  const chosen = byId.get(state.selectedId);
+  const unplaced = state.unplaced.find((story) => story.id === state.selectedId);
 
-function renderCard() {
-  const pin = state.pins.find((candidate) => candidate.story.id === state.selectedId);
-  const story = pin?.story ?? state.unplaced.find((candidate) => candidate.id === state.selectedId);
-  if (!story) {
-    elements.card.hidden = true;
-    elements.cardGroup.hidden = true;
+  if (!chosen && !unplaced) {
+    elements.panel.hidden = true;
+    elements.panelStories.replaceChildren();
     return;
   }
-  elements.card.hidden = false;
-  elements.cardCategory.textContent = story.category;
-  // The topic trail is the closest thing the portal gives a story to a headline.
-  elements.cardHeading.textContent = story.topics.at(-1) ?? story.category;
-  elements.cardText.textContent = story.text;
-  elements.cardPlace.textContent = pin
-    ? say("story.place", { place: placeLabel(pin.place, state.lang) })
-    : say("story.unplacedHeading");
-  renderGroupLine();
+  elements.panel.hidden = false;
 
-  const sources = story.sources.map((source) => {
-    const link = document.createElement("a");
-    link.href = source.url;
-    link.target = "_blank";
-    link.rel = "noopener nofollow";
-    link.textContent = source.label;
-    return link;
-  });
-  elements.cardSources.replaceChildren(...sources);
+  // A story with no place is its own group of one; there is no location to head.
+  const group = chosen ? state.group.filter((id) => byId.has(id)) : [state.selectedId];
+  const stories = chosen ? group.map((id) => byId.get(id).story) : [unplaced];
+
+  elements.panelLabel.textContent = say(chosen ? "selected.label" : "story.unplacedHeading");
+  elements.panelHeading.textContent = chosen ? placeLabel(chosen.place, state.lang) : unplaced.category;
+  const count = stories.length;
+  elements.panelCount.hidden = count < 2;
+  elements.panelCount.textContent = count < 2 ? "" : say("selected.count", { count });
+
+  elements.panelStories.replaceChildren(...stories.map((story) => selectedStory(story, story.id === state.selectedId)));
+}
+
+/** One story inside the panel: its own words, and the sources that reported it. */
+function selectedStory(story, isChosen) {
+  const article = document.createElement("article");
+  article.className = "selected-story";
+  // Marks which of the group was actually tapped, without hiding the others.
+  if (isChosen) article.setAttribute("aria-current", "true");
+
+  const category = document.createElement("p");
+  category.className = "story-category";
+  category.textContent = story.category;
+
+  // The topic trail is the closest thing the portal gives a story to a headline,
+  // and some stories have none. Falling back to the category printed it twice,
+  // once as the label above and once as the heading, so the heading is left out
+  // instead of repeating what the reader has just read.
+  const topic = story.topics.at(-1);
+  const heading = topic && topic !== story.category ? document.createElement("h3") : null;
+  if (heading) {
+    heading.className = "story-heading";
+    heading.textContent = topic;
+  }
+
+  const text = document.createElement("p");
+  text.className = "story-text";
+  text.textContent = story.text;
+
+  const sources = document.createElement("div");
+  sources.className = "story-sources";
+  sources.replaceChildren(
+    ...story.sources.map((source) => {
+      const link = document.createElement("a");
+      link.href = source.url;
+      link.target = "_blank";
+      link.rel = "noopener nofollow";
+      link.textContent = source.label;
+      return link;
+    }),
+  );
+
+  article.append(...[category, heading, text, sources].filter(Boolean));
+  return article;
 }
 
 function renderCredits() {
@@ -425,7 +454,7 @@ function renderChrome() {
   elements.zoomIn.setAttribute("aria-label", say("map.zoomIn"));
   elements.zoomOut.setAttribute("aria-label", say("map.zoomOut"));
   elements.resetView.setAttribute("aria-label", say("map.reset"));
-  elements.cardClose.setAttribute("aria-label", say("story.close"));
+  elements.panelClose.setAttribute("aria-label", say("story.close"));
   elements.listHeading.textContent = say("story.listHeading");
   elements.unplacedHeading.textContent = say("story.unplacedHeading");
   elements.unplacedWhy.textContent = say("story.unplacedWhy");
@@ -445,7 +474,13 @@ function renderDayBar() {
 function renderCounts() {
   if (state.loading) return;
   setStatus(say("status.counts", { placed: state.pins.length, unplaced: state.unplaced.length }));
-  elements.listHint.textContent = state.pins.length ? say("story.selectHint") : "";
+  renderListHint();
+}
+
+/** The "pick a pin" nudge, which has nothing to say once one is open. */
+function renderListHint() {
+  const show = state.pins.length > 0 && state.selectedId === null;
+  elements.listHint.textContent = show ? say("story.selectHint") : "";
 }
 
 // --- state changes ----------------------------------------------------------
@@ -460,8 +495,9 @@ function clearSelection() {
   if (state.selectedId === null) return;
   state.selectedId = null;
   state.group = [];
-  renderCard();
+  renderSelectedPanel();
   renderLists();
+  renderListHint();
   writeUrl();
   scheduleDraw();
 }
@@ -480,8 +516,9 @@ function selectStory(id, { centre = false } = {}) {
       state.view = clampView({ zoom, cx: (pin.lon + 180) / 360, cy: (90 - pin.lat) / 180 }, size);
     }
   }
-  renderCard();
+  renderSelectedPanel();
   renderLists();
+  renderListHint();
   writeUrl();
   scheduleDraw();
 }
@@ -494,7 +531,7 @@ function setLanguage(code) {
   // The list is rebuilt too: a place is written "Caen, France" or "Caen, Francia"
   // depending on the language, so its rows are not language-neutral.
   renderLists();
-  renderCard();
+  renderSelectedPanel();
   renderCounts();
   writeUrl();
 }
@@ -509,7 +546,7 @@ async function showDay(date, { keepStory = null } = {}) {
   state.stories = [];
   renderDayBar();
   renderLists();
-  renderCard();
+  renderSelectedPanel();
   renderCredits();
   writeUrl();
   scheduleDraw();
@@ -523,6 +560,13 @@ async function showDay(date, { keepStory = null } = {}) {
     const day = await loadDay(date, {
       signal: controller.signal,
       onProgress: (stage) => setStatus(say(stage === "locating" ? "status.locating" : "status.loading"), "loading"),
+      // The countries land after the map is already drawn, so the place names
+      // they belong to have to be written again when they do.
+      onCountries: () => {
+        if (controller.signal.aborted) return;
+        renderLists();
+        renderSelectedPanel();
+      },
     });
     if (controller.signal.aborted) return;
     state.loading = false;
@@ -536,7 +580,7 @@ async function showDay(date, { keepStory = null } = {}) {
     updateMarkers();
     captureGroup();
     renderLists();
-    renderCard();
+    renderSelectedPanel();
     renderCounts();
     writeUrl();
     scheduleDraw();
@@ -683,7 +727,7 @@ function wireChrome() {
     if (chosen && isSelectableDay(chosen)) showDay(chosen);
     else renderDayBar();
   });
-  elements.cardClose.addEventListener("click", clearSelection);
+  elements.panelClose.addEventListener("click", clearSelection);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") clearSelection();
   });

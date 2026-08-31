@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="100" />
-  <meta name="deploy-date" content="2026-08-31T11:16:47.000Z" />
+  <meta name="deploy-pull-request" content="101" />
+  <meta name="deploy-date" content="2026-08-31T11:43:28.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -73,18 +73,21 @@
            it on a phone. The open story is never drawn over the map, so the pins
            it is being compared against stay visible. -->
       <div class="side">
-        <!-- Filled when a pin or a list item is chosen. -->
-        <aside class="story-card" id="story-card" hidden aria-labelledby="story-card-heading">
-          <button type="button" id="story-close" class="icon-button story-close" aria-label="Close">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18" /></svg>
-          </button>
-          <p class="story-category" id="story-card-category"></p>
-          <h2 class="story-heading" id="story-card-heading"></h2>
-          <p class="story-text" id="story-card-text"></p>
-          <p class="story-place" id="story-card-place"></p>
-          <!-- "2 of 5 at this place", when the pin holds more than one story. -->
-          <p class="story-group" id="story-card-group" hidden></p>
-          <div class="story-sources" id="story-card-sources"></div>
+        <!-- Every story at the chosen location, in full. A marker reading "5"
+             fills this with five stories, so the whole place can be read in one
+             go without hunting for its stories in the day's full list below. -->
+        <aside class="selected" id="selected-panel" hidden aria-labelledby="selected-heading">
+          <div class="selected-head">
+            <div class="selected-titles">
+              <p class="selected-label" id="selected-label"></p>
+              <h2 class="selected-heading" id="selected-heading"></h2>
+              <p class="selected-count" id="selected-count"></p>
+            </div>
+            <button type="button" id="selected-close" class="icon-button selected-close" aria-label="Close">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+          </div>
+          <div class="selected-stories" id="selected-stories"></div>
         </aside>
 
         <section class="list" id="story-list" aria-labelledby="story-list-heading">
