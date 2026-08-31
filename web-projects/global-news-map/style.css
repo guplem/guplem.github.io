@@ -273,13 +273,13 @@ main {
 #map {
   display: block;
   width: 100%;
-  /* The world is exactly twice as wide as it is tall, so the canvas is too. Any
-     other shape leaves a band of empty ocean above and below the map at the
-     zoom the page opens on. `min-height` stops a narrow phone column making the
-     map a letterbox slit; a little empty ocean there is the lesser problem. */
+  /* The world is exactly twice as wide as it is tall, so the canvas is too, and
+     nothing may give it a floor. Any other shape leaves a band of empty ocean
+     above and below the map at the zoom the page opens on. A `min-height: 15rem`
+     used to sit here, to stop a narrow phone making the map a slit. A reader
+     reported the empty ocean that floor paid for, so the floor is gone. */
   aspect-ratio: 2 / 1;
   height: auto;
-  min-height: 15rem;
   max-height: 78vh;
   touch-action: none;
   cursor: grab;
@@ -320,40 +320,24 @@ main {
   color: var(--accent-ink);
 }
 
-/* --- the line under the map (phone only) ---------------------------------- */
-
-/* Which place the map has marked, and the way to the other places on the same
-   pin. It is always exactly one line tall, even when it is empty: the reader
-   scrolling the list rewrites it, and a box that grew would move the list they
-   are reading. The wide layout says all of this in the panel instead. */
-.stage-note {
+/* The way to the other places on the chosen pin. The wide layout says this in
+   the panel, so only a phone shows the button, and it stands over the map
+   rather than in the layout: the reader scrolling the list makes it come and
+   go, and a box in the layout would move the list they are reading. */
+.next-place {
   display: none;
-  align-items: center;
-  gap: 0.5rem;
-  height: 1.9rem;
-  margin: 0.45rem 0 0;
-  font-size: 0.82rem;
-}
-
-.stage-place {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  color: var(--accent-ink);
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.stage-next {
-  flex: 0 0 auto;
-  padding: 0.15rem 0.65rem;
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  padding: 0.3rem 0.75rem;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-full);
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   color: var(--accent-ink);
   font: inherit;
   font-size: 0.78rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
 }
 
@@ -682,15 +666,20 @@ main {
   }
 
   #map {
-    /* Leave the larger half of the screen to the stories. In portrait the map
-       keeps its own 2:1 shape; in landscape the max-height is what stops it
-       filling the screen. */
-    min-height: min(15rem, 38dvh);
+    /* The map keeps its own 2:1 shape, so this only has to stop it filling a
+       landscape screen, where that shape would be taller than the phone. */
     max-height: 44dvh;
   }
 
-  .stage-note {
-    display: flex;
+  .next-place:not([hidden]) {
+    display: block;
+  }
+
+  /* The counts are the one thing the pill says that nobody is waiting for, and
+     it stands over the map. A phone keeps the pill for what a reader does wait
+     for: the loading line, the empty day and the failure. */
+  .status[data-state="counts"] {
+    display: none;
   }
 
   .side {

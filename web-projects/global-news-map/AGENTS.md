@@ -134,7 +134,10 @@ the day and the map to the top of the screen and scrolls only the list, where
 - **The projection is equirectangular and the canvas is 2:1.** The height of the
   world is always half its width; that ratio *is* the projection. Give the canvas
   another shape and the map sits in a band of empty ocean at the opening zoom,
-  which is why `style.css` sets `aspect-ratio: 2 / 1` rather than a height.
+  which is why `style.css` sets `aspect-ratio: 2 / 1` rather than a height. Give
+  it no floor either: a `min-height` did exactly that on a phone, and a reader
+  reported the empty ocean it made. A `max-height` is safe, because it only
+  crops the map on a screen too short for the world's own shape.
 - **`app.js` never writes `innerHTML`.** Story text comes from Wikipedia, which
   anyone can edit. Every string reaches the screen through `textContent`, so
   there is nothing to escape and no way for an edit to become markup. The one
@@ -178,7 +181,7 @@ the day and the map to the top of the screen and scrolls only the list, where
   marker are unreachable in practice, because nothing on screen hints that they
   exist. The panel shows one place; the marker may hold several. The narrow
   layout shows no panel, so it carries the same fact as the "next place" button
-  in the line under the map. Both must stay.
+  over the map. Both must stay.
 - **The chosen location's stories all appear in the panel above the day's list**,
   on a wide screen. `renderSelectedPanel` builds it, one block per story, each
   with its own sources. A reader reported this twice: first that only one story
@@ -200,7 +203,8 @@ the day and the map to the top of the screen and scrolls only the list, where
 - **A mark on a row must never change how tall the row is.** The open row's bar is
   an inset `box-shadow`, not a thicker border: a border makes the text narrower,
   the row rewraps, and every row below it jumps while the reader scrolls. The same
-  rule is why the line under the map is one line tall whether it is empty or full.
+  rule is why the "next place" button stands over the map and not in the layout:
+  the reader scrolling the list makes it come and go.
 
 ### The narrow layout (ADR 0004)
 
@@ -216,6 +220,16 @@ the day and the map to the top of the screen and scrolls only the list, where
   scrolls.** Both live inside the scrolling column, so either one resizes that
   column as the selection follows the scrolling, which scrolls it again. That is
   a loop, not a glitch.
+- **Nothing that the selection changes may take room in the phone's layout.**
+  The same trap, one step out: the selection follows the scrolling, so a box that
+  grows or appears with it moves the list under the reader's eyes. Anything the
+  selection changes goes over the map, the way the "next place" button does. A
+  line under the map held the chosen place for one version, and it went for this
+  reason and because the reader is reading that place in the list anyway.
+- **The counts stay off the phone.** `renderCounts` marks the pill
+  `data-state="counts"` and `style.css` hides that one state on a narrow screen,
+  so the pill still carries the loading line, the empty day and the failure.
+  Nobody waits for the counts, and the pill stands over the map.
 - **The footer carries a `min-height` of nearly a screen, and it is load-bearing.**
   The last story can only reach the top of the list, and so be the story the map
   marks, when something below it can still scroll. Delete that rule and the last
