@@ -31,7 +31,11 @@ Wikipedia's own GeoData for the articles each story links.
 
 One day costs three requests: one `action=parse` for the day's page, two
 `action=query&prop=coordinates` calls covering about 90 linked titles in batches
-of 50, and one Wikidata query for the countries Wikipedia had none for.
+of 50, and one Wikidata query for the countries of the places that carry a pin.
+
+Only the first two block. The country query runs behind the finished map, because
+a country is a label on a pin and not the pin. Awaiting it cost 6.5 seconds before
+anything appeared, and a reader reported the page as stuck.
 
 No news source is federated in. A second one would need its own location model,
 its own licence line and its own failure mode, and the portal already answers the
@@ -49,9 +53,10 @@ That is a deliberate widening of "one service", so it is fenced:
 
 - It asks for a **code**, never a name, so `Intl.DisplayNames` still does all the
   naming and both sources spell a country identically.
-- It is **not load-bearing**. `fetchCountries` returns nothing on any failure and
-  the day still loads, without country names. Wikipedia going down breaks the page;
-  Wikidata going down costs a label.
+- It is **not load-bearing**, and it does not even delay the page. `fetchCountries`
+  returns nothing on any failure, and it is never awaited: the map draws from the
+  coordinates and the names fill in behind it. Wikipedia going down breaks the
+  page; Wikidata going down or being slow costs a label and nothing else.
 - It carries **no licence obligation**: Wikidata is CC0.
 - It **is** a second host in the privacy line, which now names both. That claim was
   absolute before and had to be reworded rather than quietly stretched.

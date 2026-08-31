@@ -19,14 +19,14 @@ Human docs: [README.md](README.md). Decision records:
 |---|---|---|
 | `calendar.js` | yes | Which day is shown, and its Wikipedia page title. Every date is UTC. |
 | `stories.js` | yes | One day's portal HTML into stories: text, category, topic trail, sources, linked titles. |
-| `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), and the list order (`pinsWithGroupFirst`). |
+| `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), and which places need a country (`placeTitlesOf`). |
 | `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, and `groupMatesOf` to name every story sharing one marker. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
 | `i18n.js` | yes | Every word the page says, in English and Spanish. |
 | `urlState.js` | yes | Reading and writing the address bar (root ADR 0006). |
 | `deployStamp.js` | yes | The "deployed at" line (root ADR 0013). |
 | `portalFixture.js` | yes | Test-only. A real portal page, kept as the parser's spec. |
-| `dataSource.js` | no | The **only** file that calls `fetch`. Three requests a day: the portal page, the coordinates, and the Wikidata country lookup. |
+| `dataSource.js` | no | The **only** file that calls `fetch`. Three requests a day: the portal page, the coordinates, and the Wikidata country lookup. Only the first two block. |
 | `buildWorld.js` | no | Dev-only. Rebuilds `world.js` from Natural Earth. Never runs in the page. |
 | `app.js` | no | The page: canvas, pointer, elements. |
 
@@ -65,6 +65,17 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
   way: a country is a smaller loss than a day that will not open. It does mean no
   countries at all when Wikidata is down, which is the accepted price of not
   mixing in Wikipedia's unreliable field.
+- **The country lookup must never block the map. Never `await` it in `loadDay`.**
+  A country is a label on a pin, not the pin. An earlier version awaited it and a
+  reader reported the page as stuck on "Looking up where it happened": the map took
+  6.5 seconds to appear. It now runs behind the finished map and calls
+  `onCountries`, which rewrites the labels in place. Measured after the fix: the
+  map draws in 1.06s and the names arrive 0.4s later.
+- **Ask only about the places that carry a pin.** `placeTitlesOf` picks them. A day
+  finds about forty places and pins about sixteen, because a story names its
+  country and province as well as its town. Measured on one real day: forty titles
+  took 6032ms, sixteen took 279ms. A SPARQL query's cost climbs faster than its
+  length, so the invisible places were most of the wait.
 - **A place spanning several countries gets none.** The Strait of Hormuz really
   answers Iran, Oman and the UAE, and picking one would be wrong.
 - **A country is never written after itself.** "Niger, Niger" reads as a mistake,
@@ -138,10 +149,13 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
   putting the group at the top: re-reading it mid-pinch reshuffled the rows under
   the reader. Choosing again is what re-reads it. `captureGroup` therefore runs
   **before** any centring moves the view, so the group is the one the reader saw.
-- **The list puts the chosen group at the top, as one block.** `pinsWithGroupFirst`
-  does it, and both halves keep the portal's own order. This is what a reader asked
-  for: a marker reading "5" should put its five stories where they are already
-  looking, not leave them scattered down the list.
+- **The chosen location's stories all appear in the panel above the day's list.**
+  `renderSelectedPanel` builds it, one block per story, each with its own sources.
+  A reader reported this twice: first that only one story was highlighted, then
+  that only one appeared under the map. The whole group belongs in the panel.
+- **The day's list always keeps the portal's own order.** An earlier version lifted
+  the chosen group to the top of it. That is now wrong: the panel already shows
+  those stories in full, so promoting them again printed each of them twice.
 - **`refreshHighlight` toggles attributes on existing rows; it never rebuilds.**
   Rebuilding would throw away keyboard focus.
 - **A tap is told from a drag by distance, not by time.** Without that check a

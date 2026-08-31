@@ -249,22 +249,26 @@ export function buildCountryIndex(response) {
 }
 
 /**
- * The pins reordered so the chosen group sits at the top, together.
+ * Each place that actually carries a pin, named once.
  *
- * Both halves keep the list's own order, which is the portal's order. Sorting the
- * group into the marker's internal order instead would shuffle rows the reader
- * has just been reading.
- *
- * @param {Array<object>} pins
- * @param {Iterable<string>|null} groupIds story ids to bring to the top
+ * This is what the country lookup asks about, and the difference is not small.
+ * A day finds about forty places but pins only about sixteen of them, because a
+ * story names its country and its province as well as its town. Measured against
+ * a real day, asking about all forty took 6.0 seconds and asking about the
+ * sixteen took 0.28: a SPARQL query's cost climbs faster than its length, so the
+ * places nobody can see were most of the wait.
  */
-export function pinsWithGroupFirst(pins, groupIds) {
-  const group = new Set(groupIds ?? []);
-  if (!group.size) return [...(pins ?? [])];
-  const inGroup = [];
-  const rest = [];
-  for (const pin of pins ?? []) (group.has(pin.story.id) ? inGroup : rest).push(pin);
-  return [...inGroup, ...rest];
+export function placeTitlesOf(pins) {
+  const titles = [];
+  const seen = new Set();
+  for (const pin of pins ?? []) {
+    const title = pin?.place?.title;
+    if (title && !seen.has(title)) {
+      seen.add(title);
+      titles.push(title);
+    }
+  }
+  return titles;
 }
 
 /**

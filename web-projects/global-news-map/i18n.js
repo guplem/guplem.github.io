@@ -51,12 +51,9 @@ export const MESSAGES = {
   "map.zoomIn": { en: "Zoom in", es: "Acercar" },
   "map.zoomOut": { en: "Zoom out", es: "Alejar" },
   "map.reset": { en: "Whole world", es: "Todo el mundo" },
-  "map.hereOne": { en: "1 story here", es: "1 noticia aquí" },
-  "map.hereMany": { en: "{count} stories here", es: "{count} noticias aquí" },
 
   // --- a story --------------------------------------------------------------
   "story.sources": { en: "Sources", es: "Fuentes" },
-  "story.place": { en: "Placed at {place}", es: "Situada en {place}" },
   "story.readMore": { en: "Read {title} on Wikipedia", es: "Leer {title} en Wikipedia" },
   "story.close": { en: "Close", es: "Cerrar" },
   "story.listHeading": { en: "All the day's stories", es: "Todas las noticias del día" },
@@ -66,12 +63,9 @@ export const MESSAGES = {
     es: "Wikipedia geolocaliza lugares, no ideas. Estas noticias no enlazan ni un pueblo ni un país.",
   },
   "story.selectHint": { en: "Pick a pin to read a story.", es: "Elige un marcador para leer una noticia." },
-  // Shown when the chosen pin holds more than one story. The whole group is moved
-  // to the top of the list, so the line only has to say where the reader is in it.
-  "story.oneOfGroup": {
-    en: "Story {index} of {count} at this place, listed together below.",
-    es: "Noticia {index} de {count} en este lugar, agrupadas abajo.",
-  },
+  // The panel above the day's list, holding every story at the chosen location.
+  "selected.label": { en: "Selected location", es: "Lugar seleccionado" },
+  "selected.count": { en: "{count} stories here", es: "{count} noticias aquí" },
 
   // --- credit ---------------------------------------------------------------
   "credit.wikipedia": {

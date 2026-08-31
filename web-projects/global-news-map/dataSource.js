@@ -3,8 +3,12 @@
 // A day of news takes three requests. The first asks Wikipedia for the Current
 // Events portal page for that day. The second asks for the coordinates of every
 // article that page linked, in batches of fifty titles. The third asks Wikidata
-// for the country of every place found, because Wikipedia's own country field is
-// too unreliable to mix in (see `fetchCountries`).
+// for the country of each place that carries a pin, because Wikipedia's own
+// country field is too unreliable to mix in (see `fetchCountries`).
+//
+// Only the first two block. The third runs behind the finished map and the names
+// appear when they arrive: awaiting it held the map back by six seconds on a real
+// day, which reads as a broken page rather than a slow one.
 //
 // Every one of them needs no key and no account. The two Wikipedia calls work
 // from a browser because `origin=*` makes the API answer with the CORS header
@@ -20,7 +24,15 @@
 // `places.js` so it can be tested without a network.
 
 import { portalPageTitle } from "./calendar.js";
-import { TITLES_PER_REQUEST, buildCountryIndex, buildGeoIndex, chunk, collectTitles, locateStories } from "./places.js";
+import {
+  TITLES_PER_REQUEST,
+  buildCountryIndex,
+  buildGeoIndex,
+  chunk,
+  collectTitles,
+  locateStories,
+  placeTitlesOf,
+} from "./places.js";
 import { parseCurrentEvents } from "./stories.js";
 
 const API = "https://en.wikipedia.org/w/api.php";
@@ -154,9 +166,34 @@ export async function fetchCountries(titles, signal) {
  * @param {{signal?: AbortSignal, onProgress?: (stage: string) => void}} options
  * @returns {Promise<{stories: Array<object>, pins: Array<object>, unplaced: Array<object>}>}
  */
-export async function loadDay(date, { signal, onProgress } = {}) {
+/**
+ * Write the countries onto the places the pins point at.
+ *
+ * Several aliases in the index can share one place object, so this works on the
+ * objects themselves: filling one fills every alias pointing at it.
+ *
+ * @returns {Promise<boolean>} whether anything changed, so a caller knows whether
+ *   redrawing is worth it
+ */
+async function fillCountries(pins, signal) {
+  const titles = placeTitlesOf(pins);
+  if (!titles.length) return false;
+  const countries = await fetchCountries(titles, signal);
+  if (!countries.size) return false;
+  for (const place of new Set(pins.map((pin) => pin.place))) {
+    place.country = countries.get(place.title) ?? null;
+  }
+  return true;
+}
+
+export async function loadDay(date, { signal, onProgress, onCountries } = {}) {
   const key = date.toISOString().slice(0, 10);
-  if (dayCache.has(key)) return dayCache.get(key);
+  const cached = dayCache.get(key);
+  if (cached) {
+    // A day already loaded has its countries, so there is nothing to wait for.
+    if (cached.countriesLoaded) onCountries?.();
+    return cached;
+  }
 
   onProgress?.("loading");
   const html = await fetchPortalHtml(date, signal);
@@ -166,20 +203,24 @@ export async function loadDay(date, { signal, onProgress } = {}) {
   onProgress?.("locating");
   const responses = await fetchCoordinates(collectTitles(stories), signal);
   const geoIndex = buildGeoIndex(responses);
-
-  // The index holds several aliases per place, so work on the distinct place
-  // objects: filling one fills every alias pointing at it.
-  const places = [...new Set(geoIndex.values())];
-  if (places.length) {
-    const countries = await fetchCountries(
-      places.map((place) => place.title),
-      signal,
-    );
-    for (const place of places) place.country = countries.get(place.title) ?? null;
-  }
-
   const located = locateStories(stories, geoIndex);
-  const day = { stories, ...located };
+
+  const day = { stories, ...located, countriesLoaded: false };
   dayCache.set(key, day);
+
+  // The countries are deliberately NOT awaited. They are a label on a pin, not
+  // the pin, so the map draws as soon as the coordinates are in and the names
+  // fill in behind it. Awaiting this held the whole map back by six seconds on a
+  // real day, which read as a broken page rather than a slow one.
+  fillCountries(located.pins, signal)
+    .then((changed) => {
+      day.countriesLoaded = true;
+      if (changed && !signal?.aborted) onCountries?.();
+    })
+    .catch(() => {
+      // A country is optional. Nothing to report and nothing to redraw.
+      day.countriesLoaded = true;
+    });
+
   return day;
 }
