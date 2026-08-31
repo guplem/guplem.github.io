@@ -81,9 +81,12 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
 - **A country is never written after itself.** "Niger, Niger" reads as a mistake,
   and a title such as "Barah, Sudan" already carries it. `placeLabel` holds both
   checks.
-- **A place label is language-dependent, so the list is rebuilt on a language
-  change.** "Caen, France" becomes "Caen, Francia". `setLanguage` calls
-  `renderLists` for exactly this reason; dropping that call leaves stale rows.
+- **The language is chosen once, at start-up, and the page shows no picker.**
+  `pickLanguage` reads the `lang` parameter, then the browser's own languages.
+  There is no `setLanguage` and nothing rewrites the page's words after start-up,
+  so a picker cannot be added back without one.
+  A place label is still language-dependent ("Caen, France" becomes "Caen,
+  Francia"), which is why `renderLists` runs again when the countries arrive.
 - **The page opens on yesterday, not today.** Editors fill today's page as the day
   goes on, so at 01:00 UTC it is nearly empty and the map looks broken.
   `defaultDay()` is what encodes that; do not "fix" it to today.

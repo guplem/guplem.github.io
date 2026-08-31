@@ -17,7 +17,7 @@ import { addDays, defaultDay, fromIsoDay, isSelectableDay, portalPageUrl, toIsoD
 import { NoNewsForDay, loadDay } from "./dataSource.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, zoomAt } from "./geo.js";
-import { LANGUAGES, makeSay, pickLanguage } from "./i18n.js";
+import { makeSay, pickLanguage } from "./i18n.js";
 import { nextPlaceOnMarker, placeLabel, storyIdsAtPlace } from "./places.js";
 import { buildSearch, readState } from "./urlState.js";
 import { LAND_SHAPES } from "./world.js";
@@ -27,7 +27,6 @@ const $ = (id) => document.getElementById(id);
 const elements = {
   title: $("title"),
   tagline: $("tagline"),
-  langPicker: $("lang-picker"),
   prevDay: $("prev-day"),
   nextDay: $("next-day"),
   latestDay: $("latest-day"),
@@ -257,19 +256,6 @@ function setStatus(text, stateName = "") {
   elements.status.dataset.state = stateName;
 }
 
-function renderLanguagePicker() {
-  elements.langPicker.replaceChildren();
-  for (const language of LANGUAGES) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = language.label;
-    button.setAttribute("aria-pressed", String(language.code === state.lang));
-    button.addEventListener("click", () => setLanguage(language.code));
-    elements.langPicker.append(button);
-  }
-  elements.langPicker.setAttribute("aria-label", say("ui.language"));
-}
-
 /** One story in the list. A button, so a keyboard reaches every story. */
 function storyItem(story, place) {
   const item = document.createElement("li");
@@ -469,7 +455,12 @@ function renderCredits() {
   elements.creditPrivacy.textContent = say("credit.privacy");
 }
 
-/** Every fixed word on the page, in the current language. */
+/**
+ * Every fixed word on the page, in the reader's language.
+ *
+ * This runs once, at start-up. The page shows no language picker: it follows the
+ * `lang` parameter in the address bar, then the browser's own languages.
+ */
 function renderChrome() {
   document.documentElement.lang = state.lang;
   elements.title.textContent = say("app.title");
@@ -487,7 +478,6 @@ function renderChrome() {
   elements.unplacedHeading.textContent = say("story.unplacedHeading");
   elements.unplacedWhy.textContent = say("story.unplacedWhy");
   elements.backLink.textContent = say("ui.backToProjects");
-  renderLanguagePicker();
   renderCredits();
   renderDeployLine(elements.deployLine, readStamp(document), state.lang, say, escapeHtml, "web-projects/global-news-map");
 }
@@ -550,19 +540,6 @@ function selectStory(id, { centre = false } = {}) {
   renderListHint();
   writeUrl();
   scheduleDraw();
-}
-
-function setLanguage(code) {
-  state.lang = code;
-  say = makeSay(code);
-  renderChrome();
-  renderDayBar();
-  // The list is rebuilt too: a place is written "Caen, France" or "Caen, Francia"
-  // depending on the language, so its rows are not language-neutral.
-  renderLists();
-  renderSelectedPanel();
-  renderCounts();
-  writeUrl();
 }
 
 async function showDay(date, { keepStory = null } = {}) {

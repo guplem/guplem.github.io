@@ -22,7 +22,8 @@ reported by, so you can read the original article.
   being dropped.
 - **Pan, zoom and pinch**, on a map drawn from coastline data the page carries
   itself. There is no tile server, so nothing is requested while you move around.
-- **English and Spanish.**
+- **English and Spanish**, chosen by your browser. The page shows no language
+  picker; add `?lang=es` or `?lang=en` to the address to override it.
 - **A shareable link.** The day, the open story and the language all live in the
   address bar.
 - **No key, no account, no tracking.** The page talks only to Wikipedia and

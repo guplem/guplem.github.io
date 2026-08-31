@@ -7,13 +7,14 @@
 
 export const DEFAULT_LANGUAGE = "en";
 
-/** The languages the page offers, in the order the picker shows them. */
-export const LANGUAGES = [
-  { code: "en", label: "English" },
-  { code: "es", label: "Español" },
-];
-
-export const LANGUAGE_CODES = LANGUAGES.map((language) => language.code);
+/**
+ * The languages the page speaks.
+ *
+ * The page shows no language picker. It follows the `lang` parameter in the
+ * address bar, then the browser's own languages, then English. So a code needs
+ * no label: nothing on screen ever names a language.
+ */
+export const LANGUAGE_CODES = ["en", "es"];
 
 export const MESSAGES = {
   "app.title": { en: "Global News Map", es: "Mapa mundial de noticias" },
@@ -102,7 +103,6 @@ export const MESSAGES = {
   },
   "ui.deployHistory": { en: "what changed", es: "qué cambió" },
   "ui.backToProjects": { en: "All web projects", es: "Todos los proyectos web" },
-  "ui.language": { en: "Language", es: "Idioma" },
 };
 
 /**

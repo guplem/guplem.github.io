@@ -164,33 +164,6 @@ h1 {
   font-size: 0.98rem;
 }
 
-.lang {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  background: var(--surface-sunk);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-}
-
-.lang button {
-  padding: 0.3rem 0.8rem;
-  border: 0;
-  border-radius: var(--radius-full);
-  background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.86rem;
-  cursor: pointer;
-  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
-}
-
-.lang button[aria-pressed="true"] {
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow-sm);
-}
-
 /* --- the day bar ---------------------------------------------------------- */
 
 .daybar {
