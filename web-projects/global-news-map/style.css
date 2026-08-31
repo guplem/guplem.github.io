@@ -273,13 +273,13 @@ main {
 #map {
   display: block;
   width: 100%;
-  /* The world is exactly twice as wide as it is tall, so the canvas is too. Any
-     other shape leaves a band of empty ocean above and below the map at the
-     zoom the page opens on. `min-height` stops a narrow phone column making the
-     map a letterbox slit; a little empty ocean there is the lesser problem. */
+  /* The world is exactly twice as wide as it is tall, so the canvas is too, and
+     nothing may give it a floor. Any other shape leaves a band of empty ocean
+     above and below the map at the zoom the page opens on. A `min-height: 15rem`
+     used to sit here, to stop a narrow phone making the map a slit. A reader
+     reported the empty ocean that floor paid for, so the floor is gone. */
   aspect-ratio: 2 / 1;
   height: auto;
-  min-height: 15rem;
   max-height: 78vh;
   touch-action: none;
   cursor: grab;
@@ -682,10 +682,8 @@ main {
   }
 
   #map {
-    /* Leave the larger half of the screen to the stories. In portrait the map
-       keeps its own 2:1 shape; in landscape the max-height is what stops it
-       filling the screen. */
-    min-height: min(15rem, 38dvh);
+    /* The map keeps its own 2:1 shape, so this only has to stop it filling a
+       landscape screen, where that shape would be taller than the phone. */
     max-height: 44dvh;
   }
 
