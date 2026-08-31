@@ -10,9 +10,10 @@ reported by, so you can read the original article.
 
 - **A pin per story**, placed on the most specific place the story names. A story
   about a town is pinned on the town, not on the country around it.
-- **Pins that sit together become one numbered marker.** Choose it and every
-  story standing on it appears in full under the map, with its own sources, so a
-  marker reading "5" gives you five stories to read in one place.
+- **Choose a pin and every story at that place appears in full** under the map,
+  with its own sources. Pins that sit close together share one numbered marker, so
+  a marker can cover more than one place: the panel says when it does, and
+  choosing the marker again moves to the next place on it.
 - **Places are named with their country**, so "Caen" reads as "Caen, France".
 - **Any day**, back through the portal's whole history. Step a day at a time or
   type a date.

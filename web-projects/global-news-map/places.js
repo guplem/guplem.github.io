@@ -272,6 +272,46 @@ export function placeTitlesOf(pins) {
 }
 
 /**
+ * Every story at one place, in the order the day's list shows them.
+ *
+ * This is what the selected-location panel holds, and it groups by **place**, not
+ * by distance on screen. Grouping by distance was a real bug: Aarau in
+ * Switzerland and Amsterdam in the Netherlands land 5.9 pixels apart at the
+ * opening zoom on a phone, so they became one marker, and a Swiss shooting was
+ * shown under the heading "Amsterdam, Netherlands".
+ *
+ * One pin on screen is not one location. Keep the two ideas apart.
+ */
+export function storyIdsAtPlace(pins, placeTitle) {
+  if (!placeTitle) return [];
+  return (pins ?? []).filter((pin) => pin?.place?.title === placeTitle).map((pin) => pin.story.id);
+}
+
+/**
+ * The first story at the next place on one marker.
+ *
+ * A marker can cover several places, so choosing it again moves to the next of
+ * them. It used to step through the marker's stories instead, which meant a pin
+ * holding two Amsterdam stories and one Aarau story took three taps to reach
+ * Aarau, and the reader had no way to know Aarau was there at all.
+ *
+ * @param {Array<object>} markerPins the pins standing on one marker
+ * @param {string|null} currentPlaceTitle the place being shown, if any
+ * @returns {string|null} a story id, or null when the marker holds no place
+ */
+export function nextPlaceOnMarker(markerPins, currentPlaceTitle) {
+  const titles = [];
+  for (const pin of markerPins ?? []) {
+    const title = pin?.place?.title;
+    if (title && !titles.includes(title)) titles.push(title);
+  }
+  if (!titles.length) return null;
+  // An unknown current place starts at the first, which is what a fresh tap wants.
+  const next = titles[(titles.indexOf(currentPlaceTitle) + 1) % titles.length];
+  return markerPins.find((pin) => pin?.place?.title === next)?.story?.id ?? null;
+}
+
+/**
  * Turn the day's stories into map pins.
  * @returns {{pins: Array<object>, unplaced: Array<object>}} every story lands in
  *   exactly one of the two lists

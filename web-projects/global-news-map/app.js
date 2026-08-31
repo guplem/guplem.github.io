@@ -18,7 +18,7 @@ import { NoNewsForDay, loadDay } from "./dataSource.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, zoomAt } from "./geo.js";
 import { LANGUAGES, makeSay, pickLanguage } from "./i18n.js";
-import { placeLabel } from "./places.js";
+import { nextPlaceOnMarker, placeLabel, storyIdsAtPlace } from "./places.js";
 import { buildSearch, readState } from "./urlState.js";
 import { LAND_SHAPES } from "./world.js";
 
@@ -42,6 +42,7 @@ const elements = {
   panelLabel: $("selected-label"),
   panelHeading: $("selected-heading"),
   panelCount: $("selected-count"),
+  panelNote: $("selected-note"),
   panelStories: $("selected-stories"),
   panelClose: $("selected-close"),
   listHeading: $("story-list-heading"),
@@ -71,14 +72,23 @@ const state = {
   stories: [],
   selectedId: null,
   /**
-   * The stories standing on the chosen marker, captured when it was chosen.
+   * The stories at the same PLACE as the chosen one. This is what the panel holds
+   * and what the list marks.
    *
-   * Held rather than recomputed, because the list now puts this group at the top.
-   * The grouping depends on the zoom, so recomputing it would reshuffle the rows
-   * under the reader's eyes on every frame of a pinch. Choosing again is what
-   * re-reads it.
+   * Grouped by place and never by distance on screen. One marker can cover
+   * several places, so a distance group put a story in Aarau, Switzerland under
+   * the heading "Amsterdam, Netherlands": the two land about six pixels apart at
+   * the opening zoom on a phone.
    */
   group: [],
+  /**
+   * The stories on the marker that was chosen, which can span several places.
+   *
+   * Used for two things only: to say that the pin also covers stories elsewhere,
+   * and to step to the next place when the same marker is chosen again. Captured
+   * at the moment of choosing, because the grouping moves with the zoom.
+   */
+  pinGroup: [],
   /** Markers as last drawn, so a tap can be matched against what is on screen. */
   markers: [],
   loading: false,
@@ -307,10 +317,21 @@ function renderLists() {
  * they are reading.
  */
 function captureGroup() {
+  const chosen = state.pins.find((pin) => pin.story.id === state.selectedId);
+  // What the panel shows: one place, so its heading is always true of every story
+  // in it.
+  state.group = chosen ? storyIdsAtPlace(state.pins, chosen.place.title) : [];
+
+  // What the marker covers, which may be more than one place.
   const mates = groupMatesOf(state.markers, (item) => item.story.id === state.selectedId);
-  const ids = new Set(mates.map((item) => item.story.id));
-  // Kept in the list's own order, so "3 of 5" counts down the screen.
-  state.group = state.pins.filter((pin) => ids.has(pin.story.id)).map((pin) => pin.story.id);
+  const onPin = new Set(mates.map((item) => item.story.id));
+  state.pinGroup = state.pins.filter((pin) => onPin.has(pin.story.id)).map((pin) => pin.story.id);
+}
+
+/** The pins standing on the marker that was chosen, in the list's order. */
+function chosenMarkerPins() {
+  const ids = new Set(state.pinGroup);
+  return state.pins.filter((pin) => ids.has(pin.story.id));
 }
 
 /**
@@ -368,15 +389,22 @@ function renderSelectedPanel() {
   elements.panelCount.hidden = count < 2;
   elements.panelCount.textContent = count < 2 ? "" : say("selected.count", { count });
 
-  elements.panelStories.replaceChildren(...stories.map((story) => selectedStory(story, story.id === state.selectedId)));
+  // A marker can cover several places while the panel shows one. Say so, or the
+  // other places on that pin are unreachable in practice: nothing hints at them.
+  const elsewhere = chosen ? state.pinGroup.filter((id) => !group.includes(id)).length : 0;
+  elements.panelNote.hidden = elsewhere === 0;
+  elements.panelNote.textContent = elsewhere === 0 ? "" : say("selected.alsoOnPin", { count: elsewhere });
+
+  elements.panelStories.replaceChildren(...stories.map((story) => selectedStory(story)));
 }
 
 /** One story inside the panel: its own words, and the sources that reported it. */
-function selectedStory(story, isChosen) {
+function selectedStory(story) {
   const article = document.createElement("article");
   article.className = "selected-story";
-  // Marks which of the group was actually tapped, without hiding the others.
-  if (isChosen) article.setAttribute("aria-current", "true");
+  // No mark for "the one you tapped". A reader asked what the bar down the side
+  // meant, which is the answer: nothing worth a mark. Every story in the panel is
+  // at the same place and all of them are meant to be read.
 
   const category = document.createElement("p");
   category.className = "story-category";
@@ -495,6 +523,7 @@ function clearSelection() {
   if (state.selectedId === null) return;
   state.selectedId = null;
   state.group = [];
+  state.pinGroup = [];
   renderSelectedPanel();
   renderLists();
   renderListHint();
@@ -540,6 +569,7 @@ async function showDay(date, { keepStory = null } = {}) {
   state.day = date;
   state.selectedId = keepStory;
   state.group = [];
+  state.pinGroup = [];
   state.loading = true;
   state.pins = [];
   state.unplaced = [];
@@ -681,11 +711,16 @@ function wireMap() {
         clearSelection();
         return;
       }
-      // Tapping a group again moves to the next story in it, so every story in a
-      // group is reachable without zooming in far enough to split it.
-      const ids = marker.items.map((item) => item.story.id);
-      const next = ids[(ids.indexOf(state.selectedId) + 1) % ids.length];
-      selectStory(next);
+      // Choosing a marker again moves to the next PLACE on it. A marker can cover
+      // several places, and the panel shows one place at a time, so stepping by
+      // story would need three taps to reach the second place on a pin holding
+      // two stories at the first.
+      const here = state.pins.find((pin) => pin.story.id === state.selectedId)?.place?.title ?? null;
+      const next = nextPlaceOnMarker(
+        marker.items,
+        marker.items.some((item) => item.story.id === state.selectedId) ? here : null,
+      );
+      if (next) selectStory(next);
     }
   };
 
