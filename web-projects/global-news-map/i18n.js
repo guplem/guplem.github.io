@@ -66,6 +66,12 @@ export const MESSAGES = {
     es: "Wikipedia geolocaliza lugares, no ideas. Estas noticias no enlazan ni un pueblo ni un país.",
   },
   "story.selectHint": { en: "Pick a pin to read a story.", es: "Elige un marcador para leer una noticia." },
+  // Shown when the chosen pin holds more than one story. The others are marked in
+  // the list, so the reader can see there is more here and reach it.
+  "story.oneOfGroup": {
+    en: "Story {index} of {count} at this place. The others are marked below.",
+    es: "Noticia {index} de {count} en este lugar. Las demás están marcadas abajo.",
+  },
 
   // --- credit ---------------------------------------------------------------
   "credit.wikipedia": {

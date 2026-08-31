@@ -3,6 +3,7 @@ import {
   MIN_ZOOM,
   clampView,
   clusterPoints,
+  groupMatesOf,
   lonLatToUnit,
   panBy,
   project,
@@ -223,5 +224,57 @@ describe("clusterPoints", () => {
 
   test("handles no points at all", () => {
     expect(clusterPoints([], 20)).toEqual([]);
+  });
+});
+
+describe("groupMatesOf", () => {
+  // A marker showing "5" holds five stories. Selecting it has to be able to say
+  // which five, or the list can only ever highlight the one that is open.
+  const groups = [
+    { x: 0, y: 0, items: [{ id: "a" }, { id: "b" }, { id: "c" }] },
+    { x: 50, y: 50, items: [{ id: "d" }] },
+  ];
+
+  test("gives back every item sharing a group with the chosen one", () => {
+    expect(groupMatesOf(groups, (item) => item.id === "b").map((i) => i.id)).toEqual(["a", "b", "c"]);
+  });
+
+  test("includes the chosen item itself", () => {
+    expect(groupMatesOf(groups, (item) => item.id === "b").map((i) => i.id)).toContain("b");
+  });
+
+  test("gives back a group of one for a lone item", () => {
+    expect(groupMatesOf(groups, (item) => item.id === "d").map((i) => i.id)).toEqual(["d"]);
+  });
+
+  test("gives back nothing when the chosen item is in no group", () => {
+    expect(groupMatesOf(groups, (item) => item.id === "missing")).toEqual([]);
+  });
+
+  test("gives back nothing when nothing is chosen, rather than throwing", () => {
+    expect(groupMatesOf(groups, () => false)).toEqual([]);
+    expect(groupMatesOf([], (item) => item.id === "a")).toEqual([]);
+    expect(groupMatesOf(null, (item) => item.id === "a")).toEqual([]);
+  });
+
+  test("takes only the first group when an item somehow sits in two", () => {
+    const overlapping = [
+      { x: 0, y: 0, items: [{ id: "a" }] },
+      { x: 1, y: 1, items: [{ id: "a" }, { id: "z" }] },
+    ];
+    expect(groupMatesOf(overlapping, (item) => item.id === "a").map((i) => i.id)).toEqual(["a"]);
+  });
+
+  // The real use: the group has to come from the same clustering the map drew,
+  // so the highlight follows the pins as the reader zooms in and they split.
+  test("works on the output of clusterPoints", () => {
+    const points = [
+      { x: 100, y: 100, id: "near1" },
+      { x: 104, y: 102, id: "near2" },
+      { x: 500, y: 300, id: "far" },
+    ];
+    const tight = clusterPoints(points, 20);
+    expect(groupMatesOf(tight, (p) => p.id === "near1").map((p) => p.id).sort()).toEqual(["near1", "near2"]);
+    expect(groupMatesOf(tight, (p) => p.id === "far").map((p) => p.id)).toEqual(["far"]);
   });
 });

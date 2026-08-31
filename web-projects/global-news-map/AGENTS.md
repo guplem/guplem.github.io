@@ -20,7 +20,7 @@ Human docs: [README.md](README.md). Decision records:
 | `calendar.js` | yes | Which day is shown, and its Wikipedia page title. Every date is UTC. |
 | `stories.js` | yes | One day's portal HTML into stories: text, category, topic trail, sources, linked titles. |
 | `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, and the specificity ranking. |
-| `geo.js` | yes | Degrees to pixels, pan, zoom and the grouping of pins that overlap. |
+| `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, and `groupMatesOf` to name every story sharing one marker. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
 | `i18n.js` | yes | Every word the page says, in English and Spanish. |
 | `urlState.js` | yes | Reading and writing the address bar (root ADR 0006). |
@@ -32,7 +32,8 @@ Human docs: [README.md](README.md). Decision records:
 
 Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` →
 `places.collectTitles` → the coordinates request → `places.buildGeoIndex` →
-`places.locateStories` → `geo.project` → `geo.clusterPoints` → canvas.
+`places.locateStories` → `geo.project` → `geo.clusterPoints` → canvas, and
+`geo.groupMatesOf` off the same grouping → the list's highlight.
 
 ## Non-obvious conventions and gotchas
 
@@ -91,6 +92,18 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
   `role="img"` with a label, and every story is a real button in the list, so a
   keyboard and a screen reader reach every story without touching the canvas.
   Never move a story's only route to the screen into the canvas.
+- **A marker holding several stories must highlight all of them in the list.**
+  One marker reading "5" stands for five stories, and marking only the open one
+  makes the other four look unrelated to the pin the reader just tapped. This was
+  reported. Two marks carry it: `aria-current` on the one open story, and
+  `data-grouped` on the others sharing its marker. `refreshHighlight` owns both,
+  so `storyItem` must not set either while building a row.
+- **The list marks and the canvas must read the same grouping.** `updateMarkers`
+  exists for that: the grouping depends on the zoom, so a group that splits as the
+  reader zooms in has to shrink the highlight and the "of 5" count with it. That
+  is why `refreshHighlight` runs after every draw, and why it toggles attributes
+  on the existing rows instead of rebuilding the list, which would throw away
+  keyboard focus on every frame of a drag.
 - **A tap is told from a drag by distance, not by time.** Without that check a
   drag that ends over a pin opens a story the reader never asked for.
 - **The map redraws from scratch every frame that changes.** The whole world is

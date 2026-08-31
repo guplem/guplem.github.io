@@ -162,3 +162,21 @@ export function clusterPoints(points, radius) {
   }
   return groups.map(({ x, y, items }) => ({ x, y, items }));
 }
+
+/**
+ * Every item that shares a group with the chosen one, the chosen one included.
+ *
+ * A marker showing "5" stands for five stories, so choosing it has to be able to
+ * name all five. Without this the list can only highlight the one story that is
+ * open, and the other four look unrelated to the pin the reader just tapped.
+ *
+ * The groups must be the ones the map actually drew, so the answer changes with
+ * the zoom, exactly as the pins do.
+ *
+ * @param {Array<{items: Array<object>}>} groups output of `clusterPoints`
+ * @param {(item: object) => boolean} isChosen picks the item that was chosen
+ * @returns {Array<object>} the whole group, or an empty array when nothing matches
+ */
+export function groupMatesOf(groups, isChosen) {
+  return (groups ?? []).find((group) => group.items.some(isChosen))?.items ?? [];
+}

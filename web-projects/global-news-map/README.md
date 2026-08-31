@@ -10,6 +10,9 @@ reported by, so you can read the original article.
 
 - **A pin per story**, placed on the most specific place the story names. A story
   about a town is pinned on the town, not on the country around it.
+- **Pins that sit together become one numbered marker.** Choose it and every
+  story standing on it is marked in the list, so a marker reading "5" points at
+  five stories you can read in turn.
 - **Any day**, back through the portal's whole history. Step a day at a time or
   type a date.
 - **The sources**, linked, on every story. The page never becomes the source.
