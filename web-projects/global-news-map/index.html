@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#eef0f5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#101017" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="A world map of the day's news. Every story from Wikipedia's Current Events portal is pinned where it happened, with its own sources. Step back through any day, in English or Spanish." />
+  <title>Global News Map · The Day's News, Pinned Where It Happened · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/global-news-map/" />
+  <!-- Drawn inline, so the page asks the network for nothing but the news. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23dc5a00'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='16' cy='16' r='9'/%3E%3Cpath d='M7 16h18M16 7c4 4.5 4 13.5 0 18M16 7c-4 4.5-4 13.5 0 18'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='3.4' fill='%23fff'/%3E%3C/svg%3E" />
+  <!-- Which pull request published this file. Never hand-edit: written by
+       `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
+  <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="97" />
+  <meta name="deploy-date" content="2026-08-31T09:15:29.000Z" />
+<!-- END GENERATED:DEPLOY -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#story-list">Skip to the list of stories</a>
+
+  <div class="page">
+    <header class="masthead">
+      <div class="masthead-text">
+        <h1 id="title">Global News Map</h1>
+        <p class="tagline" id="tagline">The day's news, pinned where it happened.</p>
+      </div>
+      <div class="lang" id="lang-picker" role="group" aria-label="Language"></div>
+    </header>
+
+    <!-- The day being shown. The buttons and the date box are the same state,
+         which also lives in the address bar. -->
+    <nav class="daybar" aria-label="Choose a day">
+      <button type="button" id="prev-day" class="icon-button" aria-label="Previous day">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" /></svg>
+      </button>
+      <label class="day-field">
+        <span class="visually-hidden" id="day-label">Choose a day</span>
+        <input type="date" id="day-input" aria-labelledby="day-label" />
+      </label>
+      <button type="button" id="next-day" class="icon-button" aria-label="Next day">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" /></svg>
+      </button>
+      <button type="button" id="latest-day" class="text-button">Latest</button>
+    </nav>
+
+    <main>
+      <div class="map-wrap">
+        <!-- The map itself. It is a picture of the story list below, so the
+             canvas is marked as an image and the list carries the real content
+             for a screen reader and for a search engine. -->
+        <canvas id="map" role="img" aria-label="World map of the day's news"></canvas>
+
+        <div class="map-controls">
+          <button type="button" id="zoom-in" class="icon-button" aria-label="Zoom in">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6v12M6 12h12" /></svg>
+          </button>
+          <button type="button" id="zoom-out" class="icon-button" aria-label="Zoom out">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 12h12" /></svg>
+          </button>
+          <button type="button" id="reset-view" class="icon-button" aria-label="Whole world">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" /><path d="M4 12h16M12 4c3.5 4 3.5 12 0 16M12 4c-3.5 4-3.5 12 0 16" /></svg>
+          </button>
+        </div>
+
+        <p class="status" id="status" role="status" aria-live="polite">Reading the day's news…</p>
+      </div>
+
+      <!-- The reading column. It sits beside the map on a wide screen and under
+           it on a phone. The open story is never drawn over the map, so the pins
+           it is being compared against stay visible. -->
+      <div class="side">
+        <!-- Filled when a pin or a list item is chosen. -->
+        <aside class="story-card" id="story-card" hidden aria-labelledby="story-card-heading">
+          <button type="button" id="story-close" class="icon-button story-close" aria-label="Close">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18" /></svg>
+          </button>
+          <p class="story-category" id="story-card-category"></p>
+          <h2 class="story-heading" id="story-card-heading"></h2>
+          <p class="story-text" id="story-card-text"></p>
+          <p class="story-place" id="story-card-place"></p>
+          <div class="story-sources" id="story-card-sources"></div>
+        </aside>
+
+        <section class="list" id="story-list" aria-labelledby="story-list-heading">
+          <h2 class="section-heading" id="story-list-heading">All the day's stories</h2>
+          <p class="hint" id="list-hint">Pick a pin to read a story.</p>
+          <ul class="stories" id="stories"></ul>
+
+          <h2 class="section-heading" id="unplaced-heading" hidden>Named no place</h2>
+          <p class="hint" id="unplaced-why" hidden></p>
+          <ul class="stories stories-quiet" id="unplaced"></ul>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p class="credit" id="credit-wikipedia"></p>
+      <p class="credit" id="credit-coastlines"></p>
+      <p class="credit" id="credit-privacy"></p>
+      <p id="deploy-line" class="deploy-line"></p>
+      <p><a class="back-link" id="back-link" href="../">All web projects</a></p>
+    </footer>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

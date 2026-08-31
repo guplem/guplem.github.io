@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Global News Map",
+  "description": [
+    "*Global News Map* is a **world map of the day's news**. Every story from Wikipedia's Current Events portal is pinned where it happened, with the sources it was reported by, and any past day can be opened.",
+    "I chose the data path: Wikipedia geotags places but not ideas, so the **articles a story links are its candidate locations**, and the smallest one wins. That puts the pin on the town instead of the country.",
+    "The map is **drawn from coastline data the page carries itself**, with no tile server, so it needs no API key and no account. The projection, parsing and ranking are **covered by tests written before the code**."
+  ],
+  "skills": ["Vibe Coded", "Architecture", "API Integration", "Data Visualization"],
+  "links": [
+    { "url": "web-projects/global-news-map/" },
+    { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/global-news-map" }
+  ]
+}

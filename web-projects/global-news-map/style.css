@@ -1,0 +1,539 @@
+/* Global news map.
+ *
+ * The map is the content, so it gets the space and everything else stays quiet
+ * around it. The look follows the portfolio's "Golden Hour" palette (warm orange
+ * on a cool off-white), but the tokens are declared here, because a web-project
+ * is self-contained and never imports the site's global CSS.
+ *
+ * Two rules shape the layout:
+ *   - on a wide screen the map and the reading column sit side by side, because a
+ *     reader compares the pins against the stories
+ *   - the canvas keeps the world's own 2:1 shape, so the map fills it with no
+ *     empty ocean above and below at the zoom the page opens on
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #eef0f5;
+  --surface: #ffffff;
+  --surface-sunk: #f4f5f8;
+  --border: rgba(20, 20, 34, 0.09);
+  --border-strong: rgba(20, 20, 34, 0.16);
+
+  --text: #141422;
+  --text-body: #2e2e3e;
+  --muted: #6b6b80;
+
+  --accent: rgb(220 90 0);
+  --accent-ink: rgb(150 58 0);
+  --accent-soft: rgba(220, 90, 0, 0.12);
+
+  /* The map's own colours. Land is quiet so the pins are what the eye finds. */
+  --ocean: #dfe4ee;
+  --land: #c3c9d6;
+  --land-edge: #a8b0c1;
+  --graticule: rgba(20, 20, 34, 0.06);
+  --pin: rgb(220 90 0);
+  --pin-ink: #ffffff;
+
+  --shadow-sm: 0 1px 3px rgba(20, 20, 34, 0.06);
+  --shadow-md: 0 6px 24px rgba(20, 20, 34, 0.09);
+  --shadow-lg: 0 16px 48px rgba(20, 20, 34, 0.14);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+
+  --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --fast: 140ms;
+  --normal: 280ms;
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101017;
+    --surface: #1a1a24;
+    --surface-sunk: #14141d;
+    --border: rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.18);
+
+    --text: #f2f2f7;
+    --text-body: #d8d8e2;
+    --muted: #9a9aae;
+
+    --accent: rgb(255 138 61);
+    --accent-ink: rgb(255 173 117);
+    --accent-soft: rgba(255, 138, 61, 0.14);
+
+    --ocean: #0d1220;
+    --land: #232a3b;
+    --land-edge: #38415a;
+    --graticule: rgba(255, 255, 255, 0.05);
+    --pin: rgb(255 138 61);
+    --pin-ink: #14141d;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 20;
+  padding: 0.75rem 1rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 0 0 var(--radius-sm) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+.page {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+/* --- masthead ------------------------------------------------------------- */
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.lang {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--surface-sunk);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+}
+
+.lang button {
+  padding: 0.3rem 0.8rem;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.lang button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+/* --- the day bar ---------------------------------------------------------- */
+
+.daybar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.day-field {
+  display: flex;
+  align-items: center;
+}
+
+#day-input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease);
+}
+
+.icon-button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.icon-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.icon-button svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.text-button {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.text-button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.text-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- the map -------------------------------------------------------------- */
+
+main {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.map-wrap {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--ocean);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+#map {
+  display: block;
+  width: 100%;
+  /* The world is exactly twice as wide as it is tall, so the canvas is too. Any
+     other shape leaves a band of empty ocean above and below the map at the
+     zoom the page opens on. `min-height` stops a narrow phone column making the
+     map a letterbox slit; a little empty ocean there is the lesser problem. */
+  aspect-ratio: 2 / 1;
+  height: auto;
+  min-height: 15rem;
+  max-height: 78vh;
+  touch-action: none;
+  cursor: grab;
+}
+
+#map.dragging {
+  cursor: grabbing;
+}
+
+.map-controls {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.map-controls .icon-button {
+  box-shadow: var(--shadow-sm);
+}
+
+.status {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.6rem;
+  margin: 0;
+  max-width: calc(100% - 5rem);
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--text-body);
+  font-size: 0.82rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.status[data-state="failed"] {
+  color: var(--accent-ink);
+}
+
+/* --- the open story ------------------------------------------------------- */
+
+.story-card {
+  position: relative;
+  margin: 0 0 1rem;
+  padding: 1rem 2.4rem 1rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.story-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  border-color: transparent;
+  background: transparent;
+}
+
+.story-category {
+  margin: 0 0 0.3rem;
+  color: var(--accent-ink);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.story-heading {
+  margin: 0 0 0.4rem;
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.story-text {
+  margin: 0 0 0.5rem;
+  font-size: 0.94rem;
+}
+
+.story-place {
+  margin: 0 0 0.6rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.story-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.story-sources a,
+.source-chip {
+  padding: 0.22rem 0.6rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--accent-ink);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.story-sources a:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* --- the story list ------------------------------------------------------- */
+
+.section-heading {
+  margin: 0 0 0.3rem;
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hint {
+  margin: 0 0 0.8rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.stories {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.stories + .section-heading {
+  margin-top: 1.75rem;
+}
+
+.story-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.story-item button {
+  display: block;
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease);
+}
+
+.story-item button:hover {
+  background: var(--accent-soft);
+}
+
+.story-item[aria-current="true"] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.story-item .item-where {
+  display: block;
+  color: var(--accent-ink);
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.story-item .item-text {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.stories-quiet .story-item {
+  background: var(--surface-sunk);
+}
+
+.stories-quiet .item-text {
+  color: var(--muted);
+}
+
+/* --- footer --------------------------------------------------------------- */
+
+.footer {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.footer p {
+  margin: 0 0 0.35rem;
+}
+
+.footer a {
+  color: var(--accent-ink);
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+/* --- wide screens --------------------------------------------------------- */
+
+@media (min-width: 60rem) {
+  main {
+    grid-template-columns: minmax(0, 1.65fr) minmax(19rem, 1fr);
+    align-items: start;
+  }
+
+  /* The reading column follows the page down, so a pin chosen after scrolling
+     still shows its story without a jump back up. */
+  .side {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    padding-right: 0.25rem;
+  }
+}

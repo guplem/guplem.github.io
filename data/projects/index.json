@@ -1,6 +1,7 @@
 {
   "title": "My Work",
   "projects": [
+    "global-news-map.json",
     "akwaaba-monsters.json",
     "unit-converter.json",
     "sudoku-screenshot-coach.json",
