@@ -21,6 +21,7 @@ import {
   BOX_MARGIN,
   PANELS,
   PROMPT_W,
+  statusColor,
 } from "./render.js";
 import { AudioEngine } from "./audio.js";
 import { Haptics } from "./haptics.js";
@@ -72,6 +73,7 @@ import {
   withdrawFromBox,
 } from "./save.js";
 import {
+  MOVE_SLOTS,
   createMonster,
   displayName,
   evolve,
@@ -82,6 +84,18 @@ import {
   maxHp,
   statsOf,
 } from "./monsters.js";
+import {
+  SUMMARY_PAGES,
+  SUMMARY_PAGE_LABELS,
+  conditionBadge,
+  conditionName,
+  expLines,
+  measurementLines,
+  metLines,
+  moveDetailLine,
+  moveRows,
+  statRows,
+} from "./summary.js";
 import { SPECIES, getSpecies } from "./species.js";
 import { getMove } from "./moves.js";
 import {
@@ -1555,14 +1569,37 @@ function updateMenu() {
       audio.playSound("select");
       audio.playCry(party[menu.cursor].species, getSpecies(party[menu.cursor].species).weight);
       menu.view = "summary";
+      menu.page = 0;
+      menu.moveCursor = 0;
     }
     return;
   }
 
+  // The summary reads like the real games: Left and Right turn the page, Up and
+  // Down walk the team without going back to the list. It shares `menu.cursor`
+  // with the list, so B lands on whichever creature the player ended up on.
   if (menu.view === "summary") {
-    if (tapped("a") || tapped("b")) {
+    const party = game.state.party;
+    if (tapped("b") || party.length === 0) {
       menu.view = "party";
       audio.playSound("back");
+      return;
+    }
+    if (tapped("left") || tapped("right")) {
+      menu.page = moveCursor(menu.page, tapped("left") ? -1 : 1, SUMMARY_PAGES.length);
+      menu.moveCursor = 0;
+      audio.playSound("blip");
+    }
+    if (tapped("up") || tapped("down")) {
+      menu.cursor = moveCursor(menu.cursor, tapped("up") ? -1 : 1, party.length);
+      menu.moveCursor = 0;
+      audio.playSound("blip");
+    }
+    // A is idle on the other two pages, so the moves page uses it to walk the
+    // four slots. The description below always belongs to the slot it sits on.
+    if (tapped("a") && SUMMARY_PAGES[menu.page] === "moves") {
+      menu.moveCursor = moveCursor(menu.moveCursor, 1, MOVE_SLOTS);
+      audio.playSound("blip");
     }
     return;
   }
@@ -2238,8 +2275,10 @@ function drawMenu() {
       14,
       12,
     );
+    // Twenty pixels a row, not twenty one: a full team of six put its last
+    // health numbers on the same row as the "go back" line at the foot.
     game.state.party.forEach((monster, index) => {
-      const y = 26 + index * 21;
+      const y = 26 + index * 20;
       const species = getSpecies(monster.species);
       const share = monster.hp / maxHp(monster);
       renderer.creature(monster.species, 14, y - 4, { scale: 0.45 });
@@ -2256,6 +2295,9 @@ function drawMenu() {
       );
       renderer.text(`${monster.hp}/${maxHp(monster)}`, 38, y + 8);
       renderer.text(species.types.map((type) => TYPE_NAMES[type]).join(" "), 92, y + 8);
+      // A fainted or poisoned creature reads the same as a healthy one without
+      // this badge: the bar alone says how much health is left, not why.
+      drawConditionBadge(monster, 198, y + 7);
       if (index === menu.cursor) renderer.cursor(6, y + 1);
       hotChoose(6, y - 6, 224, 20, () => {
         menu.cursor = index;
@@ -2267,37 +2309,7 @@ function drawMenu() {
   }
 
   if (menu.view === "summary") {
-    const monster = game.state.party[menu.cursor];
-    if (!monster) return;
-    const species = getSpecies(monster.species);
-    const stats = statsOf(monster);
-    renderer.box(4, 4, 232, 152);
-    renderer.creature(monster.species, 12, 14);
-    renderer.text(displayName(monster), 60, 14);
-    renderer.text(`Level ${monster.level}`, 60, 26);
-    species.types.forEach((type, index) => {
-      renderer.rect(60 + index * 44, 36, 40, 9, TYPE_COLORS[type]);
-      renderer.textCentred(TYPE_NAMES[type], 80 + index * 44, 37, { color: "#ffffff" });
-    });
-    renderer.text(`HP  ${monster.hp}/${stats.hp}`, 60, 50);
-    renderer.text(`Atk ${stats.attack}   Def ${stats.defense}`, 60, 60);
-    renderer.text(`SpA ${stats.spAttack}   SpD ${stats.spDefense}`, 60, 70);
-    renderer.text(`Spe ${stats.speed}`, 60, 80);
-    renderer.text("EXP", 14, 62);
-    renderer.rect(12, 74, 40, 4, UI.ink);
-    renderer.rect(13, 75, 38, 2, "#d8c9a6");
-    renderer.rect(13, 75, Math.round(38 * levelProgress(monster)), 2, "#8fd0ff");
-    monster.moves.forEach((slot, index) => {
-      const move = getMove(slot.id);
-      const y = 96 + index * 13;
-      renderer.rect(12, y, 34, 9, TYPE_COLORS[move.type]);
-      renderer.textCentred(TYPE_NAMES[move.type], 29, y + 1, { color: "#ffffff" });
-      renderer.text(move.name, 52, y + 1);
-      renderer.text(`${slot.pp}/${move.pp}`, 150, y + 1);
-      renderer.text(move.power ? `${move.power}` : "-", 194, y + 1);
-    });
-    renderer.text("B or tap to go back", 118, 146);
-    hot(0, 0, SCREEN_W, SCREEN_H, () => virtualPress("b"));
+    drawSummary(menu);
     return;
   }
 
@@ -2368,6 +2380,135 @@ function drawMenu() {
     renderer.text("B or tap here to go back", 16, 146);
     hot(0, 138, SCREEN_W, 22, () => virtualPress("b"));
   }
+}
+
+// --- The creature summary --------------------------------------------------
+//
+// Three pages over one header, and the header never changes: the player always
+// knows which creature they are looking at. Left and Right turn the page, Up
+// and Down walk the team. `summary.js` builds every line of text, so the code
+// below only places what it is handed.
+
+/** Where the parts of the summary screen sit. The three pages share them. */
+const SUMMARY_TAB_X = [18, 78, 138];
+const SUMMARY_TAB_W = 56;
+const SUMMARY_HINT_Y = 146;
+
+function drawSummary(menu) {
+  const party = game.state.party;
+  const monster = party[menu.cursor];
+  if (!monster) return;
+  const pageIndex = menu.page ?? 0;
+  const page = SUMMARY_PAGES[pageIndex] ?? SUMMARY_PAGES[0];
+  renderer.box(4, 4, 232, 152);
+
+  renderer.text(displayName(monster), 14, 8);
+  renderer.text(`Lv ${monster.level}`, 110, 8);
+  drawConditionBadge(monster, 150, 7);
+  renderer.textRight(`${menu.cursor + 1}/${party.length}`, 226, 8);
+
+  // The two arrows are the only hint the page turns with Left and Right.
+  renderer.text("<", 8, 20);
+  renderer.text(">", 202, 20);
+  SUMMARY_PAGES.forEach((id, index) => {
+    const x = SUMMARY_TAB_X[index];
+    const chosen = index === pageIndex;
+    if (chosen) renderer.rect(x, 19, SUMMARY_TAB_W, 11, UI.ink);
+    renderer.textCentred(
+      SUMMARY_PAGE_LABELS[id],
+      x + SUMMARY_TAB_W / 2,
+      21,
+      chosen ? { color: UI.paper } : undefined,
+    );
+    hot(x, 18, SUMMARY_TAB_W, 13, () => {
+      menu.page = index;
+      menu.moveCursor = 0;
+    });
+  });
+  renderer.rect(10, 33, 218, 1, UI.ink);
+
+  if (page === "info") drawSummaryInfo(monster);
+  else if (page === "stats") drawSummaryStats(monster);
+  else drawSummaryMoves(menu, monster);
+
+  renderer.text(
+    page === "moves"
+      ? "A move   < > page   Up/Down creature"
+      : "< > page   Up/Down creature   B back",
+    12,
+    SUMMARY_HINT_Y,
+  );
+  hot(4, 140, 232, 16, () => virtualPress("b"));
+}
+
+/** Page one: what the creature is, and where it came from. */
+function drawSummaryInfo(monster) {
+  const species = getSpecies(monster.species);
+  renderer.creature(monster.species, 12, 36, { scale: 0.85 });
+  species.types.forEach((type, index) => {
+    renderer.rect(58 + index * 44, 38, 40, 9, TYPE_COLORS[type]);
+    renderer.textCentred(TYPE_NAMES[type], 78 + index * 44, 39, { color: "#ffffff" });
+  });
+  measurementLines(species).forEach((line, index) => {
+    renderer.text(line, 58, 52 + index * 10);
+  });
+  metLines(monster, getMap(monster.metAt)?.name ?? null).forEach((line, index) => {
+    renderer.text(line, 10, 72 + index * 10);
+  });
+  drawPanel(PANELS.summary, species.entry);
+}
+
+/** Page two: the numbers the battle engine actually uses. */
+function drawSummaryStats(monster) {
+  const stats = statsOf(monster);
+  renderer.text("HP", 14, 40);
+  renderer.rect(40, 41, 112, 5, UI.ink);
+  renderer.rect(41, 42, 110, 3, UI.paperShade);
+  renderer.rect(41, 42, barWidth(monster.hp, stats.hp, 110), 3, healthColor(monster.hp, stats.hp));
+  renderer.textRight(`${monster.hp}/${stats.hp}`, 226, 40);
+  renderer.text("Condition", 14, 54);
+  renderer.text(conditionName(monster), 90, 54);
+  statRows(monster).forEach((row, index) => {
+    const y = 70 + index * 13;
+    renderer.text(row.label, 20, y);
+    renderer.textRight(String(row.value), 112, y);
+  });
+  expLines(monster).forEach((line, index) => {
+    renderer.text(line, 132, 70 + index * 13);
+  });
+  renderer.rect(132, 98, 92, 5, UI.ink);
+  renderer.rect(133, 99, 90, 3, UI.paperShade);
+  renderer.rect(133, 99, Math.round(90 * levelProgress(monster)), 3, "#8fd0ff");
+}
+
+/** Page three: the four move slots, and a line about the one under the cursor. */
+function drawSummaryMoves(menu, monster) {
+  const rows = moveRows(monster);
+  const chosen = Math.min(Math.max(menu.moveCursor ?? 0, 0), rows.length - 1);
+  rows.forEach((row, index) => {
+    const y = 40 + index * 14;
+    if (row.type) {
+      renderer.rect(14, y, 34, 9, TYPE_COLORS[row.type]);
+      renderer.textCentred(TYPE_NAMES[row.type], 31, y + 1, { color: "#ffffff" });
+    }
+    renderer.text(row.name, 54, y + 1);
+    renderer.textRight(row.pp, 226, y + 1);
+    if (index === chosen) renderer.cursor(6, y + 1);
+    hot(6, y - 2, 224, 14, () => {
+      menu.moveCursor = index;
+    });
+  });
+  const row = rows[chosen];
+  renderer.text(moveDetailLine(row?.move ?? null), 12, 98);
+  drawPanel(PANELS.moveInfo, row?.desc ?? "");
+}
+
+/** The badge that says what is wrong with a creature. Nothing, when nothing is. */
+function drawConditionBadge(monster, x, y) {
+  const badge = conditionBadge(monster);
+  if (!badge) return;
+  renderer.rect(x, y, 24, 9, isFainted(monster) ? "#6a6a6a" : statusColor(monster.status));
+  renderer.textCentred(badge, x + 12, y + 1, { color: "#ffffff" });
 }
 
 /** The options screen's rows, read from the settings as they stand now. */

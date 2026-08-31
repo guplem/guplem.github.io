@@ -20,6 +20,12 @@ import { SPECIES, SPECIES_IDS } from "../species.js";
 import { MOVES, MOVE_IDS } from "../moves.js";
 import { ITEMS, ITEM_IDS } from "../items.js";
 import { OBJECTS, OBJECT_TILE_IDS } from "../objects.js";
+import {
+  SUMMARY_PAGE_LABELS,
+  measurementLines,
+  metLines,
+  moveDetailLine,
+} from "../summary.js";
 
 describe("the glyphs", () => {
   test("are all seven rows of five", () => {
@@ -301,6 +307,26 @@ describe("the panels that describe what the cursor sits on", () => {
     }
   });
 
+  test("show every line of every field guide entry on the summary screen", () => {
+    // The Info page of the creature summary turns no page either. An entry one
+    // row too long loses its last sentence and nothing says so.
+    for (const id of SPECIES_IDS) {
+      const lines = linesIn(PANELS.summary, SPECIES[id].entry);
+      expect(`${id}: ${lines.length} rows`).toBe(
+        `${id}: ${Math.min(lines.length, PANELS.summary.rows)} rows`,
+      );
+    }
+  });
+
+  test("show every line of every move description on the summary screen", () => {
+    for (const id of MOVE_IDS) {
+      const lines = linesIn(PANELS.moveInfo, MOVES[id].desc);
+      expect(`${id}: ${lines.length} rows`).toBe(
+        `${id}: ${Math.min(lines.length, PANELS.moveInfo.rows)} rows`,
+      );
+    }
+  });
+
   test("keep every line inside the width they were given", () => {
     for (const [name, panel] of Object.entries(PANELS)) {
       for (const id of ITEM_IDS) {
@@ -308,6 +334,41 @@ describe("the panels that describe what the cursor sits on", () => {
           expect(`${name} ${id}: ${measureText(line) <= panel.w}`).toBe(`${name} ${id}: true`);
         }
       }
+    }
+  });
+});
+
+describe("the lines the summary screen builds for itself", () => {
+  // These are not written by hand anywhere: `summary.js` builds them out of the
+  // creature in front of the player. The widest map name and the widest move
+  // are the ones that overflow, so the test walks every one of them.
+
+  test("fit the width of the Info page, whatever the place is called", () => {
+    for (const [mapId, map] of Object.entries(MAPS)) {
+      for (const line of metLines({ metLevel: 100 }, map.name)) {
+        expect(`${mapId}: ${measureText(line)} <= ${PANELS.summary.w}`).toBe(
+          `${mapId}: ${Math.min(measureText(line), PANELS.summary.w)} <= ${PANELS.summary.w}`,
+        );
+      }
+    }
+  });
+
+  test("fit the width of the Moves page, whatever the move is", () => {
+    for (const id of MOVE_IDS) {
+      const line = moveDetailLine(MOVES[id]);
+      expect(`${id}: ${measureText(line) <= PANELS.moveInfo.w}`).toBe(`${id}: true`);
+    }
+  });
+
+  test("use no character the font is missing", () => {
+    const lines = [
+      ...metLines({ metLevel: 100 }, "Professor Abenaa's Hut"),
+      ...measurementLines(SPECIES[SPECIES_IDS[0]]),
+      ...MOVE_IDS.map((id) => moveDetailLine(MOVES[id])),
+      ...Object.values(SUMMARY_PAGE_LABELS),
+    ];
+    for (const line of lines) {
+      for (const character of line) expect(`${line}: ${hasGlyph(character)}`).toBe(`${line}: true`);
     }
   });
 });
