@@ -34,22 +34,32 @@ The link runs both ways:
 - The reader taps a pin and the list scrolls that story to its top, which is the
   same state reached from the other side.
 
-Four decisions follow from that one:
+Five decisions follow from that one:
 
 1. **The panel is not shown on a phone.** It sits inside the scrolling column, so
    a panel that rewrote itself as the reader scrolled would resize the column
    under them. Each row opens in place instead: a "show more" button turns the
    summary into the whole story with its sources. That button is also the only
    way to a source on a phone, which is why every row has one.
-2. **One line under the map carries what the panel used to say**: the place the
-   map has marked, and a button to the next place when the pin covers several.
-   The line is always exactly one line tall, empty or not, for the same reason as
-   above. Without it the other places on a marker cannot be reached at all.
-3. **The footer is the room the list needs.** The last story can only reach the
+2. **Nothing that the selection changes takes room in the layout.** The rule
+   above, one step out. The selection follows the scrolling, so a box that grows
+   or appears with it moves the list under the reader. What the phone still needs
+   from the panel is one thing: a marker can cover several places, and nothing
+   else would hint that the others are there. So a "next place" button floats
+   over the map, and it appears only when the chosen marker covers more than one
+   place.
+3. **The phone screen holds the news and nothing else.** Everything that is not
+   the day, the map or the stories is off it. The counts ("17 stories on the map,
+   2 without a place") are the clearest case: they stand over the map and no
+   reader waits for them. The pill they share still carries the loading line, the
+   empty day and the failure, which a reader does wait for. The map itself keeps
+   its own 2:1 shape with no floor under it, so no band of empty ocean takes room
+   above and below it either.
+4. **The footer is the room the list needs.** The last story can only reach the
    top of the screen when something below it can still scroll, so the footer
    carries a `min-height` of nearly a screen. The credits sit at the top of that
    room, right after the last story.
-4. **The page shows no language picker, on any screen.** It follows the `lang`
+5. **The page shows no language picker, on any screen.** It follows the `lang`
    parameter in the address bar, then the browser's own languages. A picker is
    two taps of screen space spent on a choice the browser has already made.
 

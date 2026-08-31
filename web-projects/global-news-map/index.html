@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="104" />
-  <meta name="deploy-date" content="2026-08-31T22:13:10.000Z" />
+  <meta name="deploy-pull-request" content="105" />
+  <meta name="deploy-date" content="2026-08-31T22:44:57.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -69,16 +69,14 @@
           </div>
 
           <p class="status" id="status" role="status" aria-live="polite">Reading the day's news…</p>
-        </div>
 
-        <!-- Phone only, and one line tall whatever it holds: the place the map
-             has marked, and the way to the other places on the same pin. Its
-             height never changes, because the reader scrolling the list changes
-             its words and a growing box would move the list under them. -->
-        <p class="stage-note">
-          <span class="stage-place" id="stage-place"></span>
-          <button type="button" id="stage-next" class="stage-next" hidden></button>
-        </p>
+          <!-- The way to the other places on the chosen pin, on a phone, which
+               has no panel to say that they are there. It floats over the map so
+               that it costs no height: the reader scrolling the list makes it
+               come and go, and a box in the layout would move the list under
+               them every time. -->
+          <button type="button" id="next-place" class="next-place" hidden></button>
+        </div>
       </div>
 
       <!-- The reading column. It sits beside the map on a wide screen and under
