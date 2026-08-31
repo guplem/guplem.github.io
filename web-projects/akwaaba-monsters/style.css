@@ -400,19 +400,19 @@ body[data-layout="overlay"] .pad {
   width: 100%;
   max-width: none;
   padding: 0 16px calc(14px + env(safe-area-inset-bottom));
-  /* Faint enough to read the game through, solid enough to find in a hurry. */
-  opacity: 0.5;
 }
 
-/* A finger on the pad brings it back, so the player can see what they pressed. */
-body[data-layout="overlay"] .pad:has(.pad-button:is(:active, .pressed)) {
-  opacity: 0.9;
-}
-
+/* The faintness sits on each button, never on the `.pad` around them. An
+ * `opacity` below 1 makes a group: the browser draws the whole pad first and
+ * then fades the finished picture, so no child can come out more solid than the
+ * group. One pressed arrow could then only be brought back by a rule that
+ * brightened all six buttons together, which is the bug this shape fixes. */
 body[data-layout="overlay"] .pad-button {
   background: rgba(5, 6, 10, 0.35);
   border-color: rgba(244, 234, 210, 0.9);
   color: rgba(244, 234, 210, 0.95);
+  /* Faint enough to read the game through, solid enough to find in a hurry. */
+  opacity: 0.5;
 }
 
 body[data-layout="overlay"] .pad-button.a {
@@ -425,8 +425,11 @@ body[data-layout="overlay"] .pad-button.b {
   background: rgba(201, 162, 39, 0.22);
 }
 
+/* A finger brings back the one button it is on, so the player sees what they
+ * pressed and the other five stay out of the way of the game. */
 body[data-layout="overlay"] .pad-button:is(:active, .pressed) {
   background: rgba(244, 234, 210, 0.3);
+  opacity: 1;
 }
 
 body[data-layout="overlay"] .fullscreen-toggle {

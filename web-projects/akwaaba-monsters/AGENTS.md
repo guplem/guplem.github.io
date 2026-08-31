@@ -225,6 +225,12 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
   And the pressed look is a `.pressed` class written from `app.js`, because that
   same capture pins CSS `:active` to the button the finger landed on. Any new
   rule for `:active` in `style.css` needs `.pressed` beside it. See ADR 0009.
+- **In `overlay` the faintness sits on each pad button, never on `.pad`.** An
+  `opacity` below 1 makes a group. The browser draws the whole pad first and then
+  fades the finished picture, so no child can come out more solid than the group.
+  `.pad` once held the `opacity`, so the only rule that could bring back the
+  arrow under the finger brought back all six buttons with it. Set `opacity` on
+  `.pad-button` and let the pressed one go to 1.
 - **A buzz is best effort and nothing may wait on one.** `haptics.js` calls
   `navigator.vibrate`, which every iPhone and most desktop browsers ignore. The
   Options screen hides the Vibration row where the browser cannot vibrate, so
