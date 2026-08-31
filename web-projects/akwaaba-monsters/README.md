@@ -26,6 +26,12 @@ at a time, and `ROADMAP.md` is the handover note that says how.
 - **A team of six, and a box for the rest.** Catch a seventh creature and it
   waits in the box. Walk up to a storage computer and press A to bring it back
   out.
+- **A summary page for every creature you carry.** Open the menu, choose
+  **Creatures**, and press A on one. Three pages tell you what it is (its types,
+  its size, where you met it and its field guide entry), what it can take and
+  give (health, condition, the five other stats and its experience), and what it
+  knows (its four moves, with power, accuracy and points left). Left and Right
+  turn the page. Up and Down walk the team.
 - **Machines you walk up to.** A healing machine puts your whole team back on
   its feet for free, and a storage computer beside it holds the creatures your
   team has no room for. Both stand in Professor Abenaa's hut, where you choose
