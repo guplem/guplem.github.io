@@ -38,8 +38,7 @@ const elements = {
   zoomOut: $("zoom-out"),
   resetView: $("reset-view"),
   status: $("status"),
-  stagePlace: $("stage-place"),
-  stageNext: $("stage-next"),
+  nextPlace: $("next-place"),
   reading: $("reading"),
   panel: $("selected-panel"),
   panelLabel: $("selected-label"),
@@ -443,25 +442,18 @@ function refreshHighlight() {
 }
 
 /**
- * The one line under the map, which only the narrow layout shows.
+ * The button over the map, which only the narrow layout shows.
  *
- * It names the place the map has marked, and it carries the way to the other
- * places standing on the same pin. The panel says both of those on a wide
- * screen; a phone has no panel, and without this line the other places on a
- * marker cannot be reached at all, because nothing hints that they are there.
+ * One marker can cover several places, and the reader is shown one of them. The
+ * panel says so on a wide screen. A phone has no panel, so without this button
+ * the other places on a marker cannot be reached at all: nothing would hint that
+ * they are there.
  */
-function renderStageNote() {
+function renderNextPlace() {
   const chosen = state.pins.find((pin) => pin.story.id === state.selectedId);
-  const unplaced = chosen ? null : state.unplaced.find((story) => story.id === state.selectedId);
-  elements.stagePlace.textContent = chosen
-    ? placeLabel(chosen.place, state.lang)
-    : unplaced
-      ? say("story.unplacedHeading")
-      : "";
-
   const elsewhere = chosen ? state.pinGroup.filter((id) => !state.group.includes(id)).length : 0;
-  elements.stageNext.hidden = elsewhere === 0;
-  elements.stageNext.textContent = elsewhere === 0 ? "" : say("selected.nextPlace", { count: elsewhere });
+  elements.nextPlace.hidden = elsewhere === 0;
+  elements.nextPlace.textContent = elsewhere === 0 ? "" : say("selected.nextPlace", { count: elsewhere });
 }
 
 // --- the list as the reader scrolls it (narrow layout) -----------------------
@@ -681,7 +673,9 @@ function renderDayBar() {
 
 function renderCounts() {
   if (state.loading) return;
-  setStatus(say("status.counts", { placed: state.pins.length, unplaced: state.unplaced.length }));
+  // The state name is what lets a phone leave this one out. The pill stands over
+  // the map, and the counts are the only thing it says that nobody waits for.
+  setStatus(say("status.counts", { placed: state.pins.length, unplaced: state.unplaced.length }), "counts");
   renderListHint();
 }
 
@@ -730,7 +724,7 @@ function clearSelection() {
   // The rows themselves do not change, only their marks. Rebuilding them would
   // throw away keyboard focus and fold open any story the reader had opened.
   refreshHighlight();
-  renderStageNote();
+  renderNextPlace();
   renderListHint();
   writeUrl();
   scheduleDraw();
@@ -763,7 +757,7 @@ function selectStory(id, { centre = false, reveal = false, url = true } = {}) {
   }
   renderSelectedPanel();
   refreshHighlight();
-  renderStageNote();
+  renderNextPlace();
   renderListHint();
   if (reveal && !isWide()) revealInList(id);
   if (url) writeUrl();
@@ -799,7 +793,7 @@ async function showDay(date, { keepStory = null } = {}) {
   renderDayBar();
   renderLists();
   renderSelectedPanel();
-  renderStageNote();
+  renderNextPlace();
   renderCredits();
   writeUrl();
   scheduleDraw();
@@ -819,7 +813,7 @@ async function showDay(date, { keepStory = null } = {}) {
         if (controller.signal.aborted) return;
         renderLists();
         renderSelectedPanel();
-        renderStageNote();
+        renderNextPlace();
       },
     });
     if (controller.signal.aborted) return;
@@ -835,7 +829,7 @@ async function showDay(date, { keepStory = null } = {}) {
     captureGroup();
     renderLists();
     renderSelectedPanel();
-    renderStageNote();
+    renderNextPlace();
     renderCounts();
     writeUrl();
     scheduleDraw();
@@ -1027,7 +1021,7 @@ function wireChrome() {
 
   // The other places on the chosen pin, one tap away. Same step as choosing the
   // marker again, which is what a wide screen tells the reader to do.
-  elements.stageNext.addEventListener("click", () => {
+  elements.nextPlace.addEventListener("click", () => {
     const chosen = state.pins.find((pin) => pin.story.id === state.selectedId);
     if (!chosen) return;
     const next = nextPlaceOnMarker(chosenMarkerPins(), chosen.place.title);
