@@ -79,8 +79,15 @@ place mentioned first wins an equal score.
 Measured against a real day: 14 of 15 stories were placed, the one miss was a
 field hockey final, and the wrong-spot cases were of the kinds above.
 
-**Why not fix the limit.** Telling a town from a province properly means asking
-Wikidata for each title's `P31` ("instance of"). That is one more request per
-story, roughly fifteen extra round trips a day, to move a handful of pins from
-the right region to the right spot. For a map at world scale that is the wrong
-trade. If the map ever gains a street-level zoom, revisit it.
+**Why not fix the limit, and an honest correction.** Telling a town from a
+province properly means asking Wikidata for each title's `P31` ("instance of").
+
+This ADR first put that cost at "one request per story, roughly fifteen round
+trips a day". **That was wrong.** ADR 0001's country lookup later showed that a
+single SPARQL query with a `VALUES` clause answers for every title on the day at
+once, so the real cost is **one** extra request, not fifteen.
+
+The limit is still open, but on its true price: one request, plus the work of
+deciding which `P31` classes count as "more specific than" which. It is no longer
+being declined on cost. Anyone picking it up should start from `fetchCountries`
+in `dataSource.js`, which already does the batched-title query this needs.

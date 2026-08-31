@@ -29,13 +29,32 @@ August 2026:
 Read the news from Wikipedia's Current Events portal, and get locations from
 Wikipedia's own GeoData for the articles each story links.
 
-One day costs three requests: one `action=parse` for the day's page, and two
+One day costs three requests: one `action=parse` for the day's page, two
 `action=query&prop=coordinates` calls covering about 90 linked titles in batches
-of 50.
+of 50, and one Wikidata query for the countries Wikipedia had none for.
 
-Nothing else is federated in. A second source would need its own location model,
+No news source is federated in. A second one would need its own location model,
 its own licence line and its own failure mode, and the portal already answers the
 question the project asks.
+
+**Wikidata was added later, for one narrow job.** A reader asked for the country
+beside each place name. Wikipedia's own `country` field looked like the answer and
+was tried first, but it is editor-supplied and turned out to be both patchy and
+wrong: absent for Caen, and tagging the article "Turkey" as a `city`, which made
+the page print "Turkey, Türkiye". Mixing it with a second source produced exactly
+that. So it is not read at all, and Wikidata answers `P17/P297` (the country's ISO
+code) for every place, in one request for the whole day.
+
+That is a deliberate widening of "one service", so it is fenced:
+
+- It asks for a **code**, never a name, so `Intl.DisplayNames` still does all the
+  naming and both sources spell a country identically.
+- It is **not load-bearing**. `fetchCountries` returns nothing on any failure and
+  the day still loads, without country names. Wikipedia going down breaks the page;
+  Wikidata going down costs a label.
+- It carries **no licence obligation**: Wikidata is CC0.
+- It **is** a second host in the privacy line, which now names both. That claim was
+  absolute before and had to be reworded rather than quietly stretched.
 
 ## Consequences
 
@@ -46,7 +65,8 @@ question the project asks.
   sources are real. A volume feed would need summarising before it could be shown.
 - Locations are the event's, not the publisher's. This is the thing GDELT could
   not give.
-- One organisation to credit, one licence to honour, one failure mode to handle.
+- One organisation to credit, one licence to honour, one load-bearing failure mode
+  to handle.
 
 **What it costs.**
 

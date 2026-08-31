@@ -66,11 +66,11 @@ export const MESSAGES = {
     es: "Wikipedia geolocaliza lugares, no ideas. Estas noticias no enlazan ni un pueblo ni un país.",
   },
   "story.selectHint": { en: "Pick a pin to read a story.", es: "Elige un marcador para leer una noticia." },
-  // Shown when the chosen pin holds more than one story. The others are marked in
-  // the list, so the reader can see there is more here and reach it.
+  // Shown when the chosen pin holds more than one story. The whole group is moved
+  // to the top of the list, so the line only has to say where the reader is in it.
   "story.oneOfGroup": {
-    en: "Story {index} of {count} at this place. The others are marked below.",
-    es: "Noticia {index} de {count} en este lugar. Las demás están marcadas abajo.",
+    en: "Story {index} of {count} at this place, listed together below.",
+    es: "Noticia {index} de {count} en este lugar, agrupadas abajo.",
   },
 
   // --- credit ---------------------------------------------------------------
@@ -85,8 +85,8 @@ export const MESSAGES = {
     es: "Costas de Natural Earth, dominio público.",
   },
   "credit.privacy": {
-    en: "The page talks only to Wikipedia. Nothing about you is stored or sent anywhere else.",
-    es: "La página solo habla con Wikipedia. Nada sobre ti se guarda ni se envía a otro sitio.",
+    en: "The page talks only to Wikipedia and Wikidata. Nothing about you is stored or sent anywhere else.",
+    es: "La página solo habla con Wikipedia y Wikidata. Nada sobre ti se guarda ni se envía a otro sitio.",
   },
 
   // --- the deployed-at line (root ADR 0013) ---------------------------------
