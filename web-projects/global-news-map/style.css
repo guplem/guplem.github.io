@@ -467,9 +467,27 @@ main {
   background: var(--accent-soft);
 }
 
+/* Two levels of marking, and the open story must be the louder of them.
+   The open story keeps the plain surface behind its text, so it stays the most
+   readable row, and earns its weight from the ring and the bar down its edge. */
 .story-item[aria-current="true"] {
   border-color: var(--accent);
+  border-left: 4px solid var(--accent);
   box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* The other stories standing on the same pin: tinted, but with no bar and no
+   ring, so a marker reading "5" points at five rows while one of them still
+   plainly reads as the one on screen. */
+.story-item[data-grouped] {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  background: var(--accent-soft);
+}
+
+.story-group {
+  margin: 0 0 0.6rem;
+  color: var(--accent-ink);
+  font-size: 0.82rem;
 }
 
 .story-item .item-where {

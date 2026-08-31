@@ -16,7 +16,7 @@
 import { addDays, defaultDay, fromIsoDay, isSelectableDay, portalPageUrl, toIsoDay, todayUtc } from "./calendar.js";
 import { NoNewsForDay, loadDay } from "./dataSource.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
-import { MIN_ZOOM, clampView, clusterPoints, project, zoomAt } from "./geo.js";
+import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, zoomAt } from "./geo.js";
 import { LANGUAGES, makeSay, pickLanguage } from "./i18n.js";
 import { buildSearch, readState } from "./urlState.js";
 import { LAND_SHAPES } from "./world.js";
@@ -42,6 +42,7 @@ const elements = {
   cardHeading: $("story-card-heading"),
   cardText: $("story-card-text"),
   cardPlace: $("story-card-place"),
+  cardGroup: $("story-card-group"),
   cardSources: $("story-card-sources"),
   cardClose: $("story-close"),
   listHeading: $("story-list-heading"),
@@ -170,6 +171,24 @@ function drawMarker(marker, colour, ink, selected) {
   }
 }
 
+/**
+ * Group the pins at the zoom they are about to be drawn at, so two towns that
+ * overlap when zoomed out separate as the reader zooms in.
+ *
+ * This lives apart from `draw` because the story list needs the same grouping:
+ * the list highlights every story sharing a marker, so it has to agree with the
+ * canvas about which stories those are.
+ */
+function updateMarkers() {
+  if (!size.width) return;
+  const points = state.pins.map((pin) => ({ ...project(pin.lon, pin.lat, state.view, size), pin }));
+  state.markers = clusterPoints(points, CLUSTER_RADIUS).map((group) => ({
+    x: group.x,
+    y: group.y,
+    items: group.items.map((point) => point.pin),
+  }));
+}
+
 function draw() {
   if (!size.width) return;
   const ocean = cssColour("--ocean") || "#dfe4ee";
@@ -184,14 +203,7 @@ function draw() {
   drawGraticule(graticule);
   drawLand(land, landEdge);
 
-  // Group the pins at the zoom they are being drawn at, so two towns that
-  // overlap when zoomed out separate as the reader zooms in.
-  const points = state.pins.map((pin_) => ({ ...project(pin_.lon, pin_.lat, state.view, size), pin: pin_ }));
-  state.markers = clusterPoints(points, CLUSTER_RADIUS).map((group) => ({
-    x: group.x,
-    y: group.y,
-    items: group.items.map((point) => point.pin),
-  }));
+  updateMarkers();
 
   const selectedMarkers = [];
   for (const marker of state.markers) {
@@ -208,6 +220,8 @@ function scheduleDraw() {
   frame = requestAnimationFrame(() => {
     frame = null;
     draw();
+    // Zooming and dragging re-group the pins, so the list marks follow them.
+    refreshHighlight();
   });
 }
 
@@ -244,7 +258,8 @@ function renderLanguagePicker() {
 function storyItem(story, place) {
   const item = document.createElement("li");
   item.className = "story-item";
-  if (story.id === state.selectedId) item.setAttribute("aria-current", "true");
+  // `refreshHighlight` marks which items are open or grouped, by this id.
+  item.dataset.storyId = story.id;
 
   const button = document.createElement("button");
   button.type = "button";
@@ -269,6 +284,62 @@ function renderLists() {
   const hasUnplaced = state.unplaced.length > 0;
   elements.unplacedHeading.hidden = !hasUnplaced;
   elements.unplacedWhy.hidden = !hasUnplaced;
+
+  // The list is rebuilt here, so the marks have to go back on. `updateMarkers`
+  // runs first because the highlight is derived from the grouping.
+  updateMarkers();
+  refreshHighlight();
+}
+
+/**
+ * The stories sharing a marker with the open one, in the order the list shows
+ * them. A marker showing "5" gives five ids back.
+ */
+function selectedGroupIds() {
+  const mates = groupMatesOf(state.markers, (item) => item.story.id === state.selectedId);
+  const ids = new Set(mates.map((item) => item.story.id));
+  // Re-ordered to match the list, so "3 of 5" counts down the screen.
+  return state.pins.filter((pin) => ids.has(pin.story.id)).map((pin) => pin.story.id);
+}
+
+/**
+ * Mark the list to match the map.
+ *
+ * Two levels, because they answer two different questions. `aria-current` marks
+ * the one story that is open. `data-grouped` marks the others standing on the
+ * same pin, which is what makes a marker reading "5" legible: the reader taps it
+ * and sees all five stories called out in the list, not just the one that opened.
+ *
+ * Attributes are toggled on the existing items rather than rebuilding the list,
+ * so this can run on every frame of a drag without losing keyboard focus.
+ */
+function refreshHighlight() {
+  const group = selectedGroupIds();
+  const grouped = new Set(group);
+  for (const list of [elements.stories, elements.unplaced]) {
+    for (const item of list.children) {
+      const id = item.dataset.storyId;
+      const open = id === state.selectedId;
+      if (open) item.setAttribute("aria-current", "true");
+      else item.removeAttribute("aria-current");
+      // A group of one needs no second mark: the open story already carries one.
+      item.toggleAttribute("data-grouped", !open && grouped.size > 1 && grouped.has(id));
+    }
+  }
+  renderGroupLine(group);
+}
+
+/**
+ * The "2 of 5 at this place" line on the open story.
+ *
+ * Kept apart from `renderCard` so a zoom can update it: zooming in splits a
+ * group, and a line still claiming "of 5" would then be wrong.
+ */
+function renderGroupLine(group = selectedGroupIds()) {
+  const position = group.indexOf(state.selectedId) + 1;
+  const show = group.length > 1 && position > 0;
+  elements.cardGroup.hidden = !show;
+  elements.cardGroup.textContent = show ? say("story.oneOfGroup", { index: position, count: group.length }) : "";
 }
 
 function renderCard() {
@@ -276,6 +347,7 @@ function renderCard() {
   const story = pin?.story ?? state.unplaced.find((candidate) => candidate.id === state.selectedId);
   if (!story) {
     elements.card.hidden = true;
+    elements.cardGroup.hidden = true;
     return;
   }
   elements.card.hidden = false;
@@ -284,6 +356,7 @@ function renderCard() {
   elements.cardHeading.textContent = story.topics.at(-1) ?? story.category;
   elements.cardText.textContent = story.text;
   elements.cardPlace.textContent = pin ? say("story.place", { place: pin.place.title }) : say("story.unplacedHeading");
+  renderGroupLine();
 
   const sources = story.sources.map((source) => {
     const link = document.createElement("a");
@@ -592,6 +665,7 @@ function wireChrome() {
     resizeTimer = setTimeout(() => {
       resizeCanvas();
       draw();
+      refreshHighlight();
     }, 100);
   });
 

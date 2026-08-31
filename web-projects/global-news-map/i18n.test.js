@@ -88,8 +88,30 @@ describe("makeSay", () => {
     expect(makeSay("es")("day.previous")).toBe("Día anterior");
   });
 
+  // One value per slot the catalogue uses. A new message with a new slot fails
+  // the first check below, which is the point: adding a slot is a decision, and
+  // the page has to be passing a value for it somewhere.
+  const sample = {
+    date: "1 January",
+    pr: "#1",
+    history: "here",
+    place: "Berlin",
+    title: "Berlin",
+    index: 2,
+    count: 3,
+    placed: 1,
+    unplaced: 0,
+    portal: "portal",
+    licence: "CC",
+  };
+
+  test("the sample covers every slot the catalogue uses", () => {
+    const used = new Set(Object.values(MESSAGES).flatMap((entry) => LANGUAGE_CODES.flatMap((lang) => slotsIn(entry[lang]))));
+    const missing = [...used].filter((slot) => !(slot in sample));
+    expect(`slots with no sample value: ${missing.join(", ")}`).toBe("slots with no sample value: ");
+  });
+
   test("leaves no unfilled slot in any message, in any language", () => {
-    const sample = { date: "1 January", pr: "#1", history: "here", place: "Berlin", title: "Berlin", count: 3, placed: 1, unplaced: 0, portal: "portal", licence: "CC" };
     for (const lang of LANGUAGE_CODES) {
       const say = makeSay(lang);
       for (const key of Object.keys(MESSAGES)) {
