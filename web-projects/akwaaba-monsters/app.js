@@ -47,6 +47,7 @@ import {
   tryStep,
   warpAt,
 } from "./world.js";
+import { objectAt } from "./objects.js";
 import { ScriptRunner, evaluateCondition } from "./events.js";
 import {
   PARTY_LIMIT,
@@ -789,6 +790,14 @@ function interact() {
     startScript(npc.script ?? [["say", "..."]], npc);
     return;
   }
+  // A machine standing in the world: a healing machine, a storage computer.
+  // It is checked before the signs, because a machine is the more specific
+  // thing to find on a square and a sign never sits on one.
+  const object = objectAt(game.map, front.x, front.y);
+  if (object) {
+    startScript(object.script, null);
+    return;
+  }
   const sign = signAt(game.map, front.x, front.y);
   if (!sign) return;
   if (sign.script) startScript(sign.script, null);
@@ -894,6 +903,9 @@ function runEffect(effect) {
       game.state = { ...game.state, party: healParty(game.state.party) };
       audio.playSound("heal");
       return false;
+    case "box":
+      openBoxScreen();
+      return true;
     case "shop":
       openShop(effect.stock);
       return true;
@@ -1473,6 +1485,26 @@ function closeMenu() {
   audio.playSound("back");
 }
 
+/**
+ * Open the box, for a storage computer standing in the world.
+ *
+ * This is the only way in. The box was once an entry in the field menu, and it
+ * is now a machine the player walks up to, so the screen opens on its own and B
+ * goes straight back to the field.
+ */
+function openBoxScreen() {
+  audio.playSound("select");
+  game.menu = {
+    view: "box",
+    side: "party",
+    partyCursor: 0,
+    boxCursor: 0,
+    boxScroll: 0,
+    held: null,
+  };
+  game.screen = "menu";
+}
+
 function updateMenu() {
   const menu = game.menu;
   if (!menu) return;
@@ -1497,13 +1529,6 @@ function updateMenu() {
     else if (id === "party") {
       menu.view = "party";
       menu.cursor = 0;
-    } else if (id === "box") {
-      menu.view = "box";
-      menu.side = "party";
-      menu.partyCursor = 0;
-      menu.boxCursor = 0;
-      menu.boxScroll = 0;
-      menu.held = null;
     } else if (id === "bag") {
       menu.view = "bag";
       menu.cursor = 0;
@@ -1692,7 +1717,13 @@ function updateBox(menu) {
     // The first B puts the creature down. Only the second one leaves, so a
     // player carrying somebody cannot walk out of the screen by accident.
     if (menu.held) menu.held = null;
-    else menu.view = "root";
+    else {
+      // A storage computer opened this screen, and its script is waiting for
+      // the player to shut the box again.
+      game.menu = null;
+      game.screen = "field";
+      advanceScript();
+    }
     return;
   }
   if (!tapped("a")) return;

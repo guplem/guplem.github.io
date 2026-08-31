@@ -19,6 +19,7 @@ import { MAPS, STARTER_CHOICE, TRAINERS } from "../areas/index.js";
 import { SPECIES, SPECIES_IDS } from "../species.js";
 import { MOVES, MOVE_IDS } from "../moves.js";
 import { ITEMS, ITEM_IDS } from "../items.js";
+import { OBJECTS, OBJECT_TILE_IDS } from "../objects.js";
 
 describe("the glyphs", () => {
   test("are all seven rows of five", () => {
@@ -187,6 +188,27 @@ describe("every word in the game can actually be drawn", () => {
       add(trainer.name, `trainer ${id}`);
       add(trainer.intro, `intro ${id}`);
       add(trainer.defeat, `defeat ${id}`);
+    }
+    const walkScript = (steps, where) => {
+      for (const step of steps ?? []) {
+        if (!Array.isArray(step)) continue;
+        if (step[0] === "say") add(step[1], where);
+        if (step[0] === "ask") {
+          add(step[1], where);
+          for (const option of step[2] ?? []) {
+            add(option.label, where);
+            walkScript(option.then, where);
+          }
+        }
+        if (step[0] === "if") {
+          walkScript(step[2], where);
+          walkScript(step[3], where);
+        }
+      }
+    };
+    for (const id of OBJECT_TILE_IDS) {
+      add(OBJECTS[id].name, `object ${id}`);
+      walkScript(OBJECTS[id].script, `object ${id}`);
     }
     for (const [mapId, map] of Object.entries(MAPS)) {
       add(map.name, `map ${mapId}`);

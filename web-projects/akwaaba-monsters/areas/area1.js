@@ -73,6 +73,11 @@ export const LEGEND = {
   h: "shelf",
   o: "pot",
   u: "statue",
+  // The two machines the player presses A on: `e` heals the party and `k`
+  // opens the box. Writing one into a map is all it takes; `objects.js` holds
+  // what each one says and does.
+  e: "healer",
+  k: "computer",
   ":": "cave",
   "%": "caveWall",
   "*": "oreRock",
@@ -352,7 +357,7 @@ const profHut = {
   legend: LEGEND,
   ground: [
     "############",
-    "#hhffffffhh#",
+    "#hhekffffhh#",
     "#ffffttffff#",
     "#ffffttffff#",
     "#ffffffffff#",
@@ -1227,7 +1232,7 @@ const centre = {
   legend: LEGEND,
   ground: [
     "############",
-    "#ccccc##ccc#",
+    "#cccek##ccc#",
     "#fffff##fff#",
     "#ffffffffff#",
     "#ffffffffff#",

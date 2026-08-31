@@ -28,6 +28,7 @@ export const STEP_NAMES = [
   "wildBattle",
   "warp",
   "heal",
+  "box",
   "shop",
   "badge",
   "face",
@@ -58,6 +59,7 @@ export const WAITING_STEPS = new Set([
   "battle",
   "wildBattle",
   "shop",
+  "box",
   "chooseStarter",
   "giveMonster",
   "walk",
@@ -210,6 +212,10 @@ export class ScriptRunner {
           return { type: "warp", map: args[0], x: args[1], y: args[2], dir: args[3] ?? "down" };
         case "heal":
           return { type: "heal" };
+        case "box":
+          // The storage computer. The script waits until the player shuts the
+          // box, the same way it waits for a shop.
+          return { type: "box" };
         case "shop":
           return { type: "shop", stock: args[0] ?? [] };
         case "badge":

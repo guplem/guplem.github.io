@@ -11,6 +11,7 @@ import {
   spawnCharacters,
 } from "./index.js";
 import { isGroundTile, isSolid, seesPlayer, validateMap, warpAt } from "../world.js";
+import { OBJECTS, OBJECT_TILE_IDS, objectPositions } from "../objects.js";
 import { validateScript } from "../events.js";
 import { SPECIES, SPECIES_IDS, getSpecies } from "../species.js";
 import { ITEM_IDS, ITEMS } from "../items.js";
@@ -42,7 +43,19 @@ function allScripts() {
       found.push({ where: `${mapId}/trigger ${trigger.x},${trigger.y}`, script: trigger.script });
     }
   }
+  // The objects standing in the world run scripts too, and a player reads them
+  // the same way, so every check below has to see them.
+  for (const id of OBJECT_TILE_IDS) {
+    found.push({ where: `object ${id}`, script: OBJECTS[id].script });
+  }
   return found;
+}
+
+/** Every object standing on any map of the game, with the map it stands on. */
+function allObjects() {
+  return Object.entries(MAPS).flatMap(([mapId, map]) =>
+    objectPositions(map).map((entry) => ({ ...entry, mapId, map })),
+  );
 }
 
 describe("the area register", () => {
@@ -135,6 +148,76 @@ describe("every map is sound", () => {
       for (const sign of map.signs ?? []) {
         expect(Boolean(sign.text || sign.script)).toBe(true);
       }
+    }
+  });
+});
+
+describe("the machines standing in the world", () => {
+  test("puts every kind of object somewhere, so none of them is only a drawing", () => {
+    const standing = new Set(allObjects().map((entry) => entry.id));
+    for (const id of OBJECT_TILE_IDS) {
+      expect(`${id} stands somewhere: ${standing.has(id)}`).toBe(`${id} stands somewhere: true`);
+    }
+  });
+
+  test("leaves a square in front of every object, so the player can face it", () => {
+    // The same rule the signs follow. An object walled in on all four sides is
+    // a machine nobody can ever press A on.
+    for (const { id, x, y, mapId, map } of allObjects()) {
+      const open = [
+        [x, y + 1],
+        [x, y - 1],
+        [x + 1, y],
+        [x - 1, y],
+      ].filter(([nx, ny]) => !isSolid(map, nx, ny));
+      expect(`${mapId} ${id} ${x},${y} can be faced: ${open.length > 0}`).toBe(
+        `${mapId} ${id} ${x},${y} can be faced: true`,
+      );
+    }
+  });
+
+  test("never stands an object on a warp, which would hide the way out", () => {
+    for (const { id, x, y, mapId, map } of allObjects()) {
+      expect(`${mapId} ${id} on a warp: ${Boolean(warpAt(map, x, y))}`).toBe(
+        `${mapId} ${id} on a warp: false`,
+      );
+    }
+  });
+
+  test("gives the player somewhere to heal and somewhere to store", () => {
+    // Every map can be reached from the start, which an earlier test proves, so
+    // one of each anywhere in the area is one of each the player can walk to.
+    const standing = allObjects();
+    expect(standing.some((entry) => entry.id === "healer")).toBe(true);
+    expect(standing.some((entry) => entry.id === "computer")).toBe(true);
+  });
+
+  test("puts a healing machine where the first creature is chosen", () => {
+    // The player leaves that room with one creature and no items. The nearest
+    // other machine is a village, a route and a river away.
+    const choosingMaps = Object.entries(MAPS).filter(([, map]) =>
+      (map.npcs ?? []).some((npc) =>
+        JSON.stringify(npc.script ?? []).includes('"chooseStarter"'),
+      ),
+    );
+    expect(choosingMaps.length).toBeGreaterThan(0);
+    for (const [id, map] of choosingMaps) {
+      const kinds = objectPositions(map).map((entry) => entry.id);
+      expect(`${id} heals: ${kinds.includes("healer")}`).toBe(`${id} heals: true`);
+    }
+  });
+
+  test("stands a storage computer beside every healing machine", () => {
+    // Both jobs belong in the same visit: a player who walks somewhere to heal
+    // should not have to walk somewhere else to move a creature.
+    const byMap = new Map();
+    for (const { id, mapId } of allObjects()) {
+      if (!byMap.has(mapId)) byMap.set(mapId, new Set());
+      byMap.get(mapId).add(id);
+    }
+    for (const [mapId, kinds] of byMap) {
+      if (!kinds.has("healer")) continue;
+      expect(`${mapId} also stores: ${kinds.has("computer")}`).toBe(`${mapId} also stores: true`);
     }
   });
 });

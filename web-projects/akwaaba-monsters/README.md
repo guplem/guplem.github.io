@@ -24,7 +24,12 @@ at a time, and `ROADMAP.md` is the handover note that says how.
   evolution, and catching with a calabash instead of a ball.
 - **Ten maps and fourteen trainers**, from your bedroom to the gym floor.
 - **A team of six, and a box for the rest.** Catch a seventh creature and it
-  waits in the box. Open the box from the menu to bring it back out.
+  waits in the box. Walk up to a storage computer and press A to bring it back
+  out.
+- **Machines you walk up to.** A healing machine puts your whole team back on
+  its feet for free, and a storage computer beside it holds the creatures your
+  team has no room for. Both stand in Professor Abenaa's hut, where you choose
+  your first creature, and both stand in the Akwaaba Centre in Bosua.
 - **A rival who is a cook.** Mama Sopa meets you three times, and each time she
   offers a bowl of banku and soup. You can refuse. If you do not, your whole
   team really is poisoned, once the fight is over. The first time, she hands you

@@ -510,6 +510,38 @@ export const TILE_ART = {
       { k: "rect", x: 3, y: 14, w: 10, h: 2, c: "#6a5c4a" },
     ]),
 
+  // --- Machines the player presses A on -----------------------------------
+  // Both stand against a wall, so both leave the two outside columns clear and
+  // the ground of the room shows down each side.
+
+  // A healing machine: a wooden cabinet with an enamel tray of six hollows, one
+  // for each creature, and a row of lamps that run along the top while it works.
+  healer: () =>
+    tile([
+      { k: "rect", x: 1, y: 4, w: 14, h: 10, c: "#8a6438" },
+      { k: "rect", x: 1, y: 4, w: 14, h: 2, c: "#a37d4c" },
+      { k: "rect", x: 2, y: 7, w: 12, h: 5, c: "#e8e2d4" },
+      { k: "px", pts: [[4, 8], [7, 8], [10, 8], [4, 10], [7, 10], [10, 10]], c: "#9aa4a8" },
+      { k: "px", pts: [[3, 5]], c: "#c0392b" },
+      { k: "px", pts: [[8, 5]], c: "#e3b23a" },
+      { k: "px", pts: [[13, 5]], c: "#4fbf46" },
+      { k: "rect", x: 1, y: 13, w: 14, h: 1, c: "#5f4324" },
+    ]),
+
+  // A storage computer on its desk. The three bright pixels are the list of
+  // creatures on the screen, which is what the box screen shows.
+  computer: () =>
+    tile([
+      { k: "rect", x: 2, y: 2, w: 12, h: 9, c: "#c9c2b0" },
+      { k: "rect", x: 2, y: 2, w: 12, h: 1, c: "#ddd6c4" },
+      { k: "rect", x: 3, y: 4, w: 10, h: 5, c: "#2b3f52" },
+      { k: "rect", x: 4, y: 5, w: 8, h: 3, c: "#3f88c0" },
+      { k: "px", pts: [[5, 6], [7, 6], [9, 6]], c: "#8fd0ff" },
+      { k: "rect", x: 6, y: 11, w: 4, h: 1, c: "#a89f8c" },
+      { k: "rect", x: 1, y: 12, w: 14, h: 2, c: "#8a6438" },
+      { k: "rect", x: 1, y: 12, w: 14, h: 1, c: "#a37d4c" },
+    ]),
+
   // --- Ways through -------------------------------------------------------
   door: () =>
     tile([
