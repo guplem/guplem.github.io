@@ -17,8 +17,9 @@ import { addDays, defaultDay, fromIsoDay, isSelectableDay, portalPageUrl, toIsoD
 import { NoNewsForDay, loadDay } from "./dataSource.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, zoomAt } from "./geo.js";
-import { LANGUAGES, makeSay, pickLanguage } from "./i18n.js";
+import { makeSay, pickLanguage } from "./i18n.js";
 import { nextPlaceOnMarker, placeLabel, storyIdsAtPlace } from "./places.js";
+import { summarise, topmostRow } from "./reading.js";
 import { buildSearch, readState } from "./urlState.js";
 import { LAND_SHAPES } from "./world.js";
 
@@ -27,7 +28,6 @@ const $ = (id) => document.getElementById(id);
 const elements = {
   title: $("title"),
   tagline: $("tagline"),
-  langPicker: $("lang-picker"),
   prevDay: $("prev-day"),
   nextDay: $("next-day"),
   latestDay: $("latest-day"),
@@ -38,6 +38,9 @@ const elements = {
   zoomOut: $("zoom-out"),
   resetView: $("reset-view"),
   status: $("status"),
+  stagePlace: $("stage-place"),
+  stageNext: $("stage-next"),
+  reading: $("reading"),
   panel: $("selected-panel"),
   panelLabel: $("selected-label"),
   panelHeading: $("selected-heading"),
@@ -62,6 +65,20 @@ const elements = {
 const CLUSTER_RADIUS = 18;
 /** How far a tap may miss a marker and still count as hitting it. */
 const TAP_SLACK = 16;
+/** How far below the top of the list a story brought there by the map sits. */
+const REVEAL_MARGIN = 8;
+/** How long the address bar waits while the reader keeps scrolling. */
+const URL_QUIET = 400;
+
+/**
+ * Which layout is on screen. The wide one puts the map and the reading column
+ * side by side; the narrow one stacks them and scrolls only the list.
+ *
+ * The query is the one `style.css` uses, written once here, so the page and its
+ * styles can never disagree about which layout the reader has.
+ */
+const wideLayout = window.matchMedia("(min-width: 60rem)");
+const isWide = () => wideLayout.matches;
 
 const state = {
   lang: "en",
@@ -91,6 +108,14 @@ const state = {
   pinGroup: [],
   /** Markers as last drawn, so a tap can be matched against what is on screen. */
   markers: [],
+  /**
+   * The stories the reader has opened in the list, by id.
+   *
+   * It is held here and not in the DOM because `renderLists` rebuilds every row
+   * when the countries arrive, about half a second after the map. Without this
+   * an opened story would fold itself again under the reader's eyes.
+   */
+  expanded: new Set(),
   loading: false,
   request: null,
 };
@@ -257,45 +282,104 @@ function setStatus(text, stateName = "") {
   elements.status.dataset.state = stateName;
 }
 
-function renderLanguagePicker() {
-  elements.langPicker.replaceChildren();
-  for (const language of LANGUAGES) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = language.label;
-    button.setAttribute("aria-pressed", String(language.code === state.lang));
-    button.addEventListener("click", () => setLanguage(language.code));
-    elements.langPicker.append(button);
-  }
-  elements.langPicker.setAttribute("aria-label", say("ui.language"));
-}
-
-/** One story in the list. A button, so a keyboard reaches every story. */
+/**
+ * One story in the list.
+ *
+ * The row is folded: it shows where the story happened and a summary of it, and
+ * a "show more" button opens the rest. On a phone this is the whole story, panel
+ * and all, because that layout shows no panel; the sources are only reachable
+ * through this button.
+ *
+ * The row is a button, so a keyboard reaches every story.
+ */
 function storyItem(story, place) {
   const item = document.createElement("li");
   item.className = "story-item";
   // `refreshHighlight` marks which items are open or grouped, by this id.
   item.dataset.storyId = story.id;
 
+  const open = state.expanded.has(story.id);
+  const { summary, folded } = summarise(story.text);
+
   const button = document.createElement("button");
   button.type = "button";
+  button.className = "item-main";
 
   const where = document.createElement("span");
   where.className = "item-where";
   where.textContent = place ? placeLabel(place, state.lang) : story.category;
+
+  // The topic trail's last entry is the closest thing the portal gives a story
+  // to a headline. It is left out when it only repeats the category.
+  const topic = story.topics.at(-1);
+  const heading = topic && topic !== story.category ? document.createElement("span") : null;
+  if (heading) {
+    heading.className = "item-topic";
+    heading.textContent = topic;
+  }
+
   const text = document.createElement("span");
   text.className = "item-text";
-  text.textContent = story.text;
+  text.textContent = open ? story.text : summary;
 
-  button.append(where, text);
-  button.addEventListener("click", () => selectStory(story.id, { centre: Boolean(place) }));
+  button.append(...[where, heading, text].filter(Boolean));
+  button.addEventListener("click", () =>
+    // A wide screen shows the story in the panel beside the map, so the map
+    // moves to it. A phone has no panel: the row itself goes to the top of the
+    // list, where it is the story the map marks.
+    selectStory(story.id, { centre: isWide() && Boolean(place), reveal: !isWide() }),
+  );
   item.append(button);
+
+  const more = document.createElement("div");
+  more.className = "item-more";
+  more.id = `more-${story.id}`;
+  more.hidden = !open;
+  // The category is the portal's own grouping of the day. A story with no place
+  // already carries it on its first line, so it is not written twice.
+  if (place && story.category) more.append(categoryLine(story.category));
+  if (story.sources.length) more.append(sourceLinks(story));
+
+  // A story with nothing more to show needs no button. Every story on the portal
+  // carries at least one source, so in practice every row has one.
+  if (folded || more.childElementCount) {
+    const fold = document.createElement("button");
+    fold.type = "button";
+    fold.className = "item-fold";
+    fold.textContent = say(open ? "story.showLess" : "story.showMore");
+    fold.setAttribute("aria-expanded", String(open));
+    fold.setAttribute("aria-controls", more.id);
+    fold.addEventListener("click", () => toggleStory(story, item));
+    item.append(more, fold);
+  }
   return item;
 }
 
+/**
+ * Open or fold one row, in place.
+ *
+ * The row is not rebuilt. Rebuilding it would move the focus off the button the
+ * reader just pressed, and on a phone it would also move the list under them.
+ */
+function toggleStory(story, item) {
+  const open = !state.expanded.has(story.id);
+  if (open) state.expanded.add(story.id);
+  else state.expanded.delete(story.id);
+
+  item.querySelector(".item-text").textContent = open ? story.text : summarise(story.text).summary;
+  const more = item.querySelector(".item-more");
+  if (more) more.hidden = !open;
+  const fold = item.querySelector(".item-fold");
+  if (fold) {
+    fold.textContent = say(open ? "story.showLess" : "story.showMore");
+    fold.setAttribute("aria-expanded", String(open));
+  }
+}
+
 function renderLists() {
-  // The portal's own order, always. The chosen location has its own panel above
-  // this list, so promoting its stories here would print each of them twice.
+  // The portal's own order, always. The chosen location is shown in full anyway,
+  // in the panel on a wide screen and in the row itself on a phone, so promoting
+  // its stories here would print each of them twice.
   elements.stories.replaceChildren(...state.pins.map((pin) => storyItem(pin.story, pin.place)));
   elements.unplaced.replaceChildren(...state.unplaced.map((story) => storyItem(story, null)));
 
@@ -312,9 +396,8 @@ function renderLists() {
 /**
  * Read the marker under the chosen story and remember what stands on it.
  *
- * Called when the selection changes, never on a redraw: the list puts this group
- * at the top, and re-reading it while the reader zooms would reshuffle the rows
- * they are reading.
+ * Called when the selection changes, never on a redraw: `pinGroup` moves with the
+ * zoom, and the marker it stands for has to be the one the reader chose.
  */
 function captureGroup() {
   const chosen = state.pins.find((pin) => pin.story.id === state.selectedId);
@@ -360,7 +443,92 @@ function refreshHighlight() {
 }
 
 /**
+ * The one line under the map, which only the narrow layout shows.
+ *
+ * It names the place the map has marked, and it carries the way to the other
+ * places standing on the same pin. The panel says both of those on a wide
+ * screen; a phone has no panel, and without this line the other places on a
+ * marker cannot be reached at all, because nothing hints that they are there.
+ */
+function renderStageNote() {
+  const chosen = state.pins.find((pin) => pin.story.id === state.selectedId);
+  const unplaced = chosen ? null : state.unplaced.find((story) => story.id === state.selectedId);
+  elements.stagePlace.textContent = chosen
+    ? placeLabel(chosen.place, state.lang)
+    : unplaced
+      ? say("story.unplacedHeading")
+      : "";
+
+  const elsewhere = chosen ? state.pinGroup.filter((id) => !state.group.includes(id)).length : 0;
+  elements.stageNext.hidden = elsewhere === 0;
+  elements.stageNext.textContent = elsewhere === 0 ? "" : say("selected.nextPlace", { count: elsewhere });
+}
+
+// --- the list as the reader scrolls it (narrow layout) -----------------------
+
+/**
+ * The story the list is being scrolled to, until it arrives.
+ *
+ * A scroll started by the map passes over other stories on its way, and each of
+ * those would otherwise be read as "the reader is looking at this one" and undo
+ * the choice they just made. So the scrolling is ignored until the story asked
+ * for is at the top, or until the reader touches the list themselves.
+ */
+let travellingTo = null;
+
+/** Where every row sits, in the scrolling list's own coordinates. */
+function rowMetrics() {
+  const box = elements.reading.getBoundingClientRect();
+  const offset = elements.reading.scrollTop - box.top;
+  const rows = [];
+  for (const list of [elements.stories, elements.unplaced]) {
+    for (const item of list.children) {
+      const rect = item.getBoundingClientRect();
+      rows.push({ id: item.dataset.storyId, top: rect.top + offset, bottom: rect.bottom + offset });
+    }
+  }
+  return rows;
+}
+
+/** Put one story at the top of the list, which is where the map reads it from. */
+function revealInList(id) {
+  const row = [...elements.stories.children, ...elements.unplaced.children].find(
+    (item) => item.dataset.storyId === id,
+  );
+  if (!row) return;
+  const box = elements.reading.getBoundingClientRect();
+  const top = elements.reading.scrollTop + row.getBoundingClientRect().top - box.top - REVEAL_MARGIN;
+  travellingTo = id;
+  // An explicit behaviour in JavaScript beats the `scroll-behavior` in the style
+  // sheet, so the reader's own setting has to be honoured here too.
+  const smooth = !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  elements.reading.scrollTo({ top: Math.max(0, top), behavior: smooth ? "smooth" : "auto" });
+}
+
+/**
+ * Mark the story at the top of the list on the map.
+ *
+ * This is what makes the two halves of the narrow layout one thing: the reader
+ * scrolls the list and the map follows, with no tapping at all.
+ */
+function followList() {
+  const id = topmostRow(rowMetrics(), elements.reading.scrollTop);
+  if (!id) return;
+  if (travellingTo) {
+    if (id !== travellingTo) return;
+    travellingTo = null;
+  }
+  // The address bar waits until the scrolling stops. Browsers limit how often a
+  // page may rewrite it, and a long scroll would spend that budget in seconds.
+  if (id !== state.selectedId) selectStory(id, { url: false });
+}
+
+/**
  * Every story at the chosen location, in full, above the day's full list.
+ *
+ * The wide layout only: the narrow one hides this panel and opens each row in
+ * place instead, because a panel that rewrote itself while the reader scrolled
+ * would resize the column they are scrolling.
  *
  * This replaced a panel that showed only the story that was tapped. A marker
  * reading "5" stood for five stories and showed one of them, which a reader
@@ -398,6 +566,31 @@ function renderSelectedPanel() {
   elements.panelStories.replaceChildren(...stories.map((story) => selectedStory(story)));
 }
 
+/** The portal's own grouping of the day, as a small label. */
+function categoryLine(category) {
+  const line = document.createElement("p");
+  line.className = "story-category";
+  line.textContent = category;
+  return line;
+}
+
+/** Who reported the story. The row and the panel both show these. */
+function sourceLinks(story) {
+  const sources = document.createElement("div");
+  sources.className = "story-sources";
+  sources.replaceChildren(
+    ...story.sources.map((source) => {
+      const link = document.createElement("a");
+      link.href = source.url;
+      link.target = "_blank";
+      link.rel = "noopener nofollow";
+      link.textContent = source.label;
+      return link;
+    }),
+  );
+  return sources;
+}
+
 /** One story inside the panel: its own words, and the sources that reported it. */
 function selectedStory(story) {
   const article = document.createElement("article");
@@ -405,10 +598,6 @@ function selectedStory(story) {
   // No mark for "the one you tapped". A reader asked what the bar down the side
   // meant, which is the answer: nothing worth a mark. Every story in the panel is
   // at the same place and all of them are meant to be read.
-
-  const category = document.createElement("p");
-  category.className = "story-category";
-  category.textContent = story.category;
 
   // The topic trail is the closest thing the portal gives a story to a headline,
   // and some stories have none. Falling back to the category printed it twice,
@@ -425,20 +614,7 @@ function selectedStory(story) {
   text.className = "story-text";
   text.textContent = story.text;
 
-  const sources = document.createElement("div");
-  sources.className = "story-sources";
-  sources.replaceChildren(
-    ...story.sources.map((source) => {
-      const link = document.createElement("a");
-      link.href = source.url;
-      link.target = "_blank";
-      link.rel = "noopener nofollow";
-      link.textContent = source.label;
-      return link;
-    }),
-  );
-
-  article.append(...[category, heading, text, sources].filter(Boolean));
+  article.append(...[categoryLine(story.category), heading, text, sourceLinks(story)].filter(Boolean));
   return article;
 }
 
@@ -469,7 +645,12 @@ function renderCredits() {
   elements.creditPrivacy.textContent = say("credit.privacy");
 }
 
-/** Every fixed word on the page, in the current language. */
+/**
+ * Every fixed word on the page, in the reader's language.
+ *
+ * This runs once, at start-up. The page shows no language picker: it follows the
+ * `lang` parameter in the address bar, then the browser's own languages.
+ */
 function renderChrome() {
   document.documentElement.lang = state.lang;
   elements.title.textContent = say("app.title");
@@ -487,7 +668,6 @@ function renderChrome() {
   elements.unplacedHeading.textContent = say("story.unplacedHeading");
   elements.unplacedWhy.textContent = say("story.unplacedWhy");
   elements.backLink.textContent = say("ui.backToProjects");
-  renderLanguagePicker();
   renderCredits();
   renderDeployLine(elements.deployLine, readStamp(document), state.lang, say, escapeHtml, "web-projects/global-news-map");
 }
@@ -514,24 +694,60 @@ function renderListHint() {
 // --- state changes ----------------------------------------------------------
 
 function writeUrl() {
+  clearTimeout(urlTimer);
   const search = buildSearch({ day: toIsoDay(state.day), story: state.selectedId, lang: state.lang });
   history.replaceState(null, "", `${location.pathname}${search}${location.hash}`);
 }
 
-/** Put the page back to "no story open". */
+/**
+ * Write the address bar once the reader stops scrolling.
+ *
+ * Scrolling the list changes which story is open, and a browser allows a page
+ * only so many rewrites of its address in a given time. One write per scroll,
+ * not one per row.
+ */
+let urlTimer = null;
+function writeUrlSoon() {
+  clearTimeout(urlTimer);
+  urlTimer = setTimeout(writeUrl, URL_QUIET);
+}
+
+/**
+ * Put the page back to "no story open".
+ *
+ * The narrow layout has no such state: there the map marks whatever story stands
+ * at the top of the list, and there is always one. So a tap on the open sea
+ * leaves that reader where they are, rather than blanking the pin they are
+ * reading about.
+ */
 function clearSelection() {
+  if (!isWide()) return;
   if (state.selectedId === null) return;
   state.selectedId = null;
   state.group = [];
   state.pinGroup = [];
   renderSelectedPanel();
-  renderLists();
+  // The rows themselves do not change, only their marks. Rebuilding them would
+  // throw away keyboard focus and fold open any story the reader had opened.
+  refreshHighlight();
+  renderStageNote();
   renderListHint();
   writeUrl();
   scheduleDraw();
 }
 
-function selectStory(id, { centre = false } = {}) {
+/**
+ * Open one story.
+ *
+ * @param {string} id the story to open
+ * @param {object} [options]
+ * @param {boolean} [options.centre] move the map to the story's pin
+ * @param {boolean} [options.reveal] bring the story to the top of the list,
+ *   which is what the map does when the reader taps a pin
+ * @param {boolean} [options.url] write the address bar now rather than once the
+ *   scrolling stops
+ */
+function selectStory(id, { centre = false, reveal = false, url = true } = {}) {
   state.selectedId = id;
   // Read the marker as it stands right now, before any centring moves the view:
   // the group must be the one the reader was looking at when they chose it.
@@ -546,23 +762,27 @@ function selectStory(id, { centre = false } = {}) {
     }
   }
   renderSelectedPanel();
-  renderLists();
+  refreshHighlight();
+  renderStageNote();
   renderListHint();
-  writeUrl();
+  if (reveal && !isWide()) revealInList(id);
+  if (url) writeUrl();
+  else writeUrlSoon();
   scheduleDraw();
 }
 
-function setLanguage(code) {
-  state.lang = code;
-  say = makeSay(code);
-  renderChrome();
-  renderDayBar();
-  // The list is rebuilt too: a place is written "Caen, France" or "Caen, Francia"
-  // depending on the language, so its rows are not language-neutral.
-  renderLists();
-  renderSelectedPanel();
-  renderCounts();
-  writeUrl();
+/**
+ * Make the map and the list agree, once the day's rows are on screen.
+ *
+ * On the narrow layout the story at the top of the list is the one the map
+ * marks, so a day has to open with one of them chosen: the story the address bar
+ * asked for, brought to the top, or else the first row of the day.
+ */
+function startReadingList() {
+  if (isWide()) return;
+  travellingTo = null;
+  if (state.selectedId) revealInList(state.selectedId);
+  else followList();
 }
 
 async function showDay(date, { keepStory = null } = {}) {
@@ -574,9 +794,12 @@ async function showDay(date, { keepStory = null } = {}) {
   state.pins = [];
   state.unplaced = [];
   state.stories = [];
+  state.expanded.clear();
+  travellingTo = null;
   renderDayBar();
   renderLists();
   renderSelectedPanel();
+  renderStageNote();
   renderCredits();
   writeUrl();
   scheduleDraw();
@@ -596,6 +819,7 @@ async function showDay(date, { keepStory = null } = {}) {
         if (controller.signal.aborted) return;
         renderLists();
         renderSelectedPanel();
+        renderStageNote();
       },
     });
     if (controller.signal.aborted) return;
@@ -611,9 +835,11 @@ async function showDay(date, { keepStory = null } = {}) {
     captureGroup();
     renderLists();
     renderSelectedPanel();
+    renderStageNote();
     renderCounts();
     writeUrl();
     scheduleDraw();
+    startReadingList();
   } catch (error) {
     if (controller.signal.aborted || error?.name === "AbortError") return;
     state.loading = false;
@@ -720,7 +946,9 @@ function wireMap() {
         marker.items,
         marker.items.some((item) => item.story.id === state.selectedId) ? here : null,
       );
-      if (next) selectStory(next);
+      // The list follows the map: the story the reader chose goes to the top of
+      // it, which on a phone is the only way to read the story at all.
+      if (next) selectStory(next, { reveal: true });
     }
   };
 
@@ -750,6 +978,36 @@ function wireMap() {
   });
 }
 
+/**
+ * The scrolling list, on the narrow layout.
+ *
+ * Scrolling is watched once per frame at most, because the wide layout scrolls
+ * the same element and reading every row's box is not free. The wide layout
+ * takes no part in this at all: there the panel sits inside this same scrolling
+ * column, so a selection that followed the scrolling would resize the column and
+ * scroll it again, on and on.
+ */
+function wireReadingList() {
+  let scrollFrame = null;
+  elements.reading.addEventListener(
+    "scroll",
+    () => {
+      if (isWide() || scrollFrame !== null) return;
+      scrollFrame = requestAnimationFrame(() => {
+        scrollFrame = null;
+        followList();
+      });
+    },
+    { passive: true },
+  );
+
+  // The reader's own hand wins over a scroll the map started: whatever they are
+  // scrolling towards is now the story they mean.
+  for (const event of ["pointerdown", "wheel", "touchstart", "keydown"]) {
+    elements.reading.addEventListener(event, () => (travellingTo = null), { passive: true });
+  }
+}
+
 function wireChrome() {
   elements.prevDay.addEventListener("click", () => showDay(addDays(state.day, -1)));
   elements.nextDay.addEventListener("click", () => {
@@ -767,6 +1025,17 @@ function wireChrome() {
     if (event.key === "Escape") clearSelection();
   });
 
+  // The other places on the chosen pin, one tap away. Same step as choosing the
+  // marker again, which is what a wide screen tells the reader to do.
+  elements.stageNext.addEventListener("click", () => {
+    const chosen = state.pins.find((pin) => pin.story.id === state.selectedId);
+    if (!chosen) return;
+    const next = nextPlaceOnMarker(chosenMarkerPins(), chosen.place.title);
+    if (next) selectStory(next, { reveal: true });
+  });
+
+  wireReadingList();
+
   let resizeTimer = null;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
@@ -774,6 +1043,14 @@ function wireChrome() {
       resizeCanvas();
       draw();
     }, 100);
+  });
+
+  // Turning a phone sideways can swap the layout. The narrow one needs a story
+  // chosen, because the map marks whatever stands at the top of the list.
+  wideLayout.addEventListener?.("change", () => {
+    resizeCanvas();
+    draw();
+    startReadingList();
   });
 
   // The map's colours come from CSS, so a change of theme has to redraw it.

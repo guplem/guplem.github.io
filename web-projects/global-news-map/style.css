@@ -5,9 +5,12 @@
  * on a cool off-white), but the tokens are declared here, because a web-project
  * is self-contained and never imports the site's global CSS.
  *
- * Two rules shape the layout:
+ * Three rules shape the layout:
  *   - on a wide screen the map and the reading column sit side by side, because a
  *     reader compares the pins against the stories
+ *   - on a phone the day and the map hold the top of the screen and the list of
+ *     stories scrolls under them, for the same reason: the reader must see the
+ *     map while they read
  *   - the canvas keeps the world's own 2:1 shape, so the map fills it with no
  *     empty ocean above and below at the zoom the page opens on
  */
@@ -164,33 +167,6 @@ h1 {
   font-size: 0.98rem;
 }
 
-.lang {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  background: var(--surface-sunk);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-}
-
-.lang button {
-  padding: 0.3rem 0.8rem;
-  border: 0;
-  border-radius: var(--radius-full);
-  background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.86rem;
-  cursor: pointer;
-  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
-}
-
-.lang button[aria-pressed="true"] {
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow-sm);
-}
-
 /* --- the day bar ---------------------------------------------------------- */
 
 .daybar {
@@ -344,6 +320,43 @@ main {
   color: var(--accent-ink);
 }
 
+/* --- the line under the map (phone only) ---------------------------------- */
+
+/* Which place the map has marked, and the way to the other places on the same
+   pin. It is always exactly one line tall, even when it is empty: the reader
+   scrolling the list rewrites it, and a box that grew would move the list they
+   are reading. The wide layout says all of this in the panel instead. */
+.stage-note {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  height: 1.9rem;
+  margin: 0.45rem 0 0;
+  font-size: 0.82rem;
+}
+
+.stage-place {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--accent-ink);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stage-next {
+  flex: 0 0 auto;
+  padding: 0.15rem 0.65rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  color: var(--accent-ink);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
 /* --- the open story ------------------------------------------------------- */
 
 .selected {
@@ -490,7 +503,7 @@ main {
   overflow: hidden;
 }
 
-.story-item button {
+.story-item .item-main {
   display: block;
   width: 100%;
   padding: 0.7rem 0.85rem;
@@ -503,17 +516,24 @@ main {
   transition: background var(--fast) var(--ease);
 }
 
-.story-item button:hover {
-  background: var(--accent-soft);
+/* Only where there is a pointer to hover with. A finger leaves the tint behind
+   on a phone, which makes an opened row look like two boxes of different
+   colours. */
+@media (hover: hover) {
+  .story-item .item-main:hover {
+    background: var(--accent-soft);
+  }
 }
 
 /* Two levels of marking, and the open story must be the louder of them.
    The open story keeps the plain surface behind its text, so it stays the most
-   readable row, and earns its weight from the ring and the bar down its edge. */
+   readable row, and earns its weight from the ring and the bar down its edge.
+   The bar is drawn inside the box rather than as a thicker border, because a
+   border changes how wide the text is: the row would rewrap and grow taller
+   every time the reader scrolled it to the top of the list. */
 .story-item[aria-current="true"] {
   border-color: var(--accent);
-  border-left: 4px solid var(--accent);
-  box-shadow: 0 0 0 1px var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), inset 4px 0 0 var(--accent);
 }
 
 /* The other stories standing on the same pin: tinted, but with no bar and no
@@ -533,11 +553,47 @@ main {
   text-transform: uppercase;
 }
 
+.story-item .item-topic {
+  display: block;
+  margin-top: 0.1rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
 .story-item .item-text {
   display: block;
   margin-top: 0.15rem;
   font-size: 0.9rem;
   line-height: 1.45;
+}
+
+/* The rest of the story, which the row shows only once the reader opens it.
+   On a phone this is the only way to the sources, because that layout has no
+   panel. */
+.item-more {
+  padding: 0 0.85rem;
+}
+
+.item-fold {
+  display: block;
+  width: 100%;
+  padding: 0.4rem 0.85rem 0.6rem;
+  border: 0;
+  background: transparent;
+  color: var(--accent-ink);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .item-fold:hover {
+    text-decoration: underline;
+  }
 }
 
 .stories-quiet .story-item {
@@ -569,6 +625,95 @@ main {
 .back-link {
   display: inline-block;
   margin-top: 0.5rem;
+}
+
+/* --- phones and narrow screens -------------------------------------------- */
+
+/* The whole screen is the app: the day and the map hold the top of it and never
+   move, and the list of stories under them is the only thing that scrolls. The
+   query is the exact opposite of the wide one below, and `app.js` asks the same
+   question with `matchMedia("(min-width: 60rem)")`, so the two never disagree
+   about which layout is on screen. */
+@media not all and (min-width: 60rem) {
+  html,
+  body {
+    height: 100%;
+  }
+
+  /* The page itself never scrolls. Only the reading column does. */
+  body {
+    overflow: hidden;
+  }
+
+  .page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    padding: 0.6rem 0.8rem 0;
+  }
+
+  /* The name of the page is in its title bar, in its metadata and on the card
+     that links to it, so on a phone it need not take room. It stays in the
+     document for a screen reader, which is why this hides it the way
+     `.visually-hidden` does and not with `display: none`. */
+  .masthead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  main {
+    flex: 1 1 auto;
+    /* The stage takes the room it needs; the list takes the rest and scrolls
+       inside it. `minmax(0, 1fr)` is what lets it be shorter than its content. */
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0.6rem;
+    min-height: 0;
+  }
+
+  .daybar {
+    margin-bottom: 0.6rem;
+  }
+
+  #map {
+    /* Leave the larger half of the screen to the stories. In portrait the map
+       keeps its own 2:1 shape; in landscape the max-height is what stops it
+       filling the screen. */
+    min-height: min(15rem, 38dvh);
+    max-height: 44dvh;
+  }
+
+  .stage-note {
+    display: flex;
+  }
+
+  .side {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    /* A list scrolled to its end must not start scrolling the page behind it. */
+    overscroll-behavior: contain;
+  }
+
+  /* No panel on a phone. The rows open in place instead, because a panel that
+     rewrote itself while the reader scrolled would move the list under them. */
+  .selected {
+    display: none;
+  }
+
+  .footer {
+    /* Also the room the list needs to scroll. The last story can only reach the
+       top of the screen, and so be the one the map marks, when something below
+       it can still move. The credits sit at the top of that room. */
+    min-height: calc(100% - 5rem);
+    margin-top: 1.5rem;
+  }
 }
 
 /* --- wide screens --------------------------------------------------------- */

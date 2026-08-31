@@ -217,6 +217,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [global-news-map 0001](web-projects/global-news-map/adr/0001-wikipedia-current-events-as-the-news-source.md) | Wikipedia's Current Events portal as the news source, not a news API |
 | [global-news-map 0002](web-projects/global-news-map/adr/0002-place-a-story-by-the-smallest-linked-place.md) | Place a story by the smallest place it links, and read no sentences |
 | [global-news-map 0003](web-projects/global-news-map/adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
+| [global-news-map 0004](web-projects/global-news-map/adr/0004-on-a-phone-the-list-drives-the-map.md) | On a phone the map holds still and the list drives it |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 

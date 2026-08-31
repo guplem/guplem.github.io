@@ -11,7 +11,8 @@ names. Vanilla ES modules, no build step.
 Human docs: [README.md](README.md). Decision records:
 [ADR 0001](adr/0001-wikipedia-current-events-as-the-news-source.md),
 [ADR 0002](adr/0002-place-a-story-by-the-smallest-linked-place.md),
-[ADR 0003](adr/0003-draw-the-map-from-carried-coastlines.md).
+[ADR 0003](adr/0003-draw-the-map-from-carried-coastlines.md),
+[ADR 0004](adr/0004-on-a-phone-the-list-drives-the-map.md).
 
 ## Module map (pure logic is separated from the DOM so it can be unit-tested)
 
@@ -21,6 +22,7 @@ Human docs: [README.md](README.md). Decision records:
 | `stories.js` | yes | One day's portal HTML into stories: text, category, topic trail, sources, linked titles. |
 | `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), which places need a country (`placeTitlesOf`), and grouping by place (`storyIdsAtPlace`, `nextPlaceOnMarker`). |
 | `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, and `groupMatesOf` to name every story sharing one marker. |
+| `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, and `topmostRow` says which row stands at the top of the scrolling list. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
 | `i18n.js` | yes | Every word the page says, in English and Spanish. |
 | `urlState.js` | yes | Reading and writing the address bar (root ADR 0006). |
@@ -34,6 +36,12 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
 `places.collectTitles` → the coordinates request → `places.buildGeoIndex` →
 `places.locateStories` → `geo.project` → `geo.clusterPoints` → canvas, and
 `geo.groupMatesOf` off the same grouping → the list's highlight.
+
+The two layouts: `app.js` asks `matchMedia("(min-width: 60rem)")` and `style.css`
+uses the same query, once each, so they can never disagree about which layout is
+on screen. Wide puts the map and the reading column side by side. Narrow fixes
+the day and the map to the top of the screen and scrolls only the list, where
+`reading.topmostRow` decides which story the map marks. See ADR 0004.
 
 ## Non-obvious conventions and gotchas
 
@@ -81,9 +89,12 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
 - **A country is never written after itself.** "Niger, Niger" reads as a mistake,
   and a title such as "Barah, Sudan" already carries it. `placeLabel` holds both
   checks.
-- **A place label is language-dependent, so the list is rebuilt on a language
-  change.** "Caen, France" becomes "Caen, Francia". `setLanguage` calls
-  `renderLists` for exactly this reason; dropping that call leaves stale rows.
+- **The language is chosen once, at start-up, and the page shows no picker.**
+  `pickLanguage` reads the `lang` parameter, then the browser's own languages.
+  There is no `setLanguage` and nothing rewrites the page's words after start-up,
+  so a picker cannot be added back without one. ADR 0004 says why it went.
+  A place label is still language-dependent ("Caen, France" becomes "Caen,
+  Francia"), which is why `renderLists` runs again when the countries arrive.
 - **The page opens on yesterday, not today.** Editors fill today's page as the day
   goes on, so at 01:00 UTC it is nearly empty and the map looks broken.
   `defaultDay()` is what encodes that; do not "fix" it to today.
@@ -165,11 +176,15 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
   Aarau.
 - **Keep the "this pin also covers N more" note.** Without it the other places on a
   marker are unreachable in practice, because nothing on screen hints that they
-  exist. The panel shows one place; the marker may hold several.
-- **The chosen location's stories all appear in the panel above the day's list.**
-  `renderSelectedPanel` builds it, one block per story, each with its own sources.
-  A reader reported this twice: first that only one story was highlighted, then
-  that only one appeared under the map. The whole place belongs in the panel.
+  exist. The panel shows one place; the marker may hold several. The narrow
+  layout shows no panel, so it carries the same fact as the "next place" button
+  in the line under the map. Both must stay.
+- **The chosen location's stories all appear in the panel above the day's list**,
+  on a wide screen. `renderSelectedPanel` builds it, one block per story, each
+  with its own sources. A reader reported this twice: first that only one story
+  was highlighted, then that only one appeared under the map. The whole place
+  belongs in the panel. The narrow layout hides the panel and opens each row in
+  place instead; the rows sharing the place still carry `data-grouped`.
 - **The panel marks no story as "the one you tapped".** It used to draw a bar down
   the side of it, and a reader asked what the bar meant. That was the answer:
   nothing worth a mark. Every story in the panel is at the same place, and all of
@@ -178,7 +193,40 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
   the chosen group to the top of it. That is now wrong: the panel already shows
   those stories in full, so promoting them again printed each of them twice.
 - **`refreshHighlight` toggles attributes on existing rows; it never rebuilds.**
-  Rebuilding would throw away keyboard focus.
+  Rebuilding would throw away keyboard focus, fold up any story the reader had
+  opened, and move the list under a reader who is scrolling it. `selectStory` and
+  `clearSelection` therefore call `refreshHighlight`, never `renderLists`. Only a
+  new day and the arrival of the countries rebuild the rows.
+- **A mark on a row must never change how tall the row is.** The open row's bar is
+  an inset `box-shadow`, not a thicker border: a border makes the text narrower,
+  the row rewraps, and every row below it jumps while the reader scrolls. The same
+  rule is why the line under the map is one line tall whether it is empty or full.
+
+### The narrow layout (ADR 0004)
+
+- **The story at the top of the list is the one the map marks, and the two are
+  linked both ways.** `followList` reads the top of the list on each scrolled
+  frame; `revealInList` scrolls the list when the map is tapped. Breaking either
+  half leaves the reader with a map and a list that disagree.
+- **`travellingTo` is what stops the two halves fighting.** A scroll started by
+  the map passes over other rows on its way, and each of those would otherwise be
+  read as a new choice and undo the tap. It is cleared when the story arrives, or
+  the moment the reader touches the list themselves.
+- **Never show the panel on a phone, and never rebuild the list while it
+  scrolls.** Both live inside the scrolling column, so either one resizes that
+  column as the selection follows the scrolling, which scrolls it again. That is
+  a loop, not a glitch.
+- **The footer carries a `min-height` of nearly a screen, and it is load-bearing.**
+  The last story can only reach the top of the list, and so be the story the map
+  marks, when something below it can still scroll. Delete that rule and the last
+  rows can never be chosen, and a pin tapped for one of them scrolls as far as it
+  can and is then overruled by `followList`.
+- **The address bar is written once the scrolling stops.** Browsers cap how often
+  a page may call `history.replaceState`, and a long scroll changes the open story
+  many times a second. `selectStory({ url: false })` is what defers it.
+- **A story the reader opened stays open when the rows are rebuilt.** The ids live
+  in `state.expanded`, not in the DOM, because the countries land about half a
+  second after the map and rebuild every row.
 - **A tap is told from a drag by distance, not by time.** Without that check a
   drag that ends over a pin opens a story the reader never asked for.
 - **The map redraws from scratch every frame that changes.** The whole world is
@@ -193,8 +241,10 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
 
 ## Tests
 
-Every module marked "Pure" above has a sibling `*.test.js`, and new behaviour goes
-in test-first (root ADR 0012). `app.js`, `dataSource.js` and `buildWorld.js` have
+Every pure module that holds logic has a sibling `*.test.js`, and new behaviour
+goes in test-first (root ADR 0012). Two pure files carry data instead of logic and
+so have no test of their own: `world.js` is generated, and `stories.test.js` reads
+`portalFixture.js`. `app.js`, `dataSource.js` and `buildWorld.js` have
 none by design; anything in them worth a test belongs in a pure module instead.
 
 ```bash
@@ -212,3 +262,4 @@ a test that needs Wikipedia fails in CI for reasons of its own.
 | [0001](adr/0001-wikipedia-current-events-as-the-news-source.md) | Wikipedia's Current Events portal as the news source, not a news API |
 | [0002](adr/0002-place-a-story-by-the-smallest-linked-place.md) | Place a story by the smallest place it links, and read no sentences |
 | [0003](adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
+| [0004](adr/0004-on-a-phone-the-list-drives-the-map.md) | On a phone the map holds still and the list drives it |
