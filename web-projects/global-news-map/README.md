@@ -11,8 +11,9 @@ reported by, so you can read the original article.
 - **A pin per story**, placed on the most specific place the story names. A story
   about a town is pinned on the town, not on the country around it.
 - **Pins that sit together become one numbered marker.** Choose it and every
-  story standing on it is marked in the list, so a marker reading "5" points at
-  five stories you can read in turn.
+  story standing on it moves to the top of the list as one block, so a marker
+  reading "5" puts its five stories where you are already looking.
+- **Places are named with their country**, so "Caen" reads as "Caen, France".
 - **Any day**, back through the portal's whole history. Step a day at a time or
   type a date.
 - **The sources**, linked, on every story. The page never becomes the source.
@@ -23,7 +24,8 @@ reported by, so you can read the original article.
 - **English and Spanish.**
 - **A shareable link.** The day, the open story and the language all live in the
   address bar.
-- **No key, no account, no tracking.** The page talks only to Wikipedia.
+- **No key, no account, no tracking.** The page talks only to Wikipedia and
+  Wikidata, and to nothing else at all once the day has loaded.
 
 ## How it places a story
 
@@ -35,6 +37,10 @@ is interpreted.
 When a story names a town, its province and its country all at once, the most
 specific one gets the pin. Wikipedia stores a `dim` with each coordinate, the
 size of the thing in metres, and the smallest one wins.
+
+The country shown next to a place comes from Wikidata. A place that spans several
+countries, such as the Strait of Hormuz, is shown without one, and a country is
+never labelled with itself.
 
 ## How to Run
 
@@ -56,5 +62,8 @@ bun test
 
 - News text: Wikipedia's Current Events portal, used under
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+- Country of each place: [Wikidata](https://www.wikidata.org/) (CC0). Country
+  names come from the browser's own `Intl.DisplayNames`, so they follow the
+  page's language.
 - Coastlines: [Natural Earth](https://www.naturalearthdata.com/) 1:110m land
   polygons, public domain.

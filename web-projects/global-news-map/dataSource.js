@@ -1,23 +1,30 @@
 // The only file that calls `fetch`.
 //
-// Two requests make a day of news. The first asks Wikipedia for the Current
+// A day of news takes three requests. The first asks Wikipedia for the Current
 // Events portal page for that day. The second asks for the coordinates of every
-// article that page linked, in batches of fifty titles.
+// article that page linked, in batches of fifty titles. The third asks Wikidata
+// for the country of every place found, because Wikipedia's own country field is
+// too unreliable to mix in (see `fetchCountries`).
 //
-// Both go to the same public endpoint, need no key and no account, and work from
-// a browser because `origin=*` makes the API answer with the CORS header that
-// lets a page on another domain read the response. Leave `origin=*` out and every
-// request fails in the browser while still working from a terminal, which is a
-// confusing way to lose an afternoon.
+// Every one of them needs no key and no account. The two Wikipedia calls work
+// from a browser because `origin=*` makes the API answer with the CORS header
+// that lets a page on another domain read the response. Leave `origin=*` out and
+// every request fails in the browser while still working from a terminal, which
+// is a confusing way to lose an afternoon. Wikidata sends that header always, so
+// it needs no such parameter.
+//
+// Only the first two are load-bearing. If Wikidata is slow or down the day still
+// loads, just without country names.
 //
 // Everything here returns plain data. The parsing lives in `stories.js` and
 // `places.js` so it can be tested without a network.
 
 import { portalPageTitle } from "./calendar.js";
-import { TITLES_PER_REQUEST, buildGeoIndex, chunk, collectTitles, locateStories } from "./places.js";
+import { TITLES_PER_REQUEST, buildCountryIndex, buildGeoIndex, chunk, collectTitles, locateStories } from "./places.js";
 import { parseCurrentEvents } from "./stories.js";
 
 const API = "https://en.wikipedia.org/w/api.php";
+const WIKIDATA = "https://query.wikidata.org/sparql";
 
 /** Raised when Wikipedia has no page for the day asked about. */
 export class NoNewsForDay extends Error {}
@@ -63,9 +70,10 @@ export async function fetchPortalHtml(date, signal) {
 /**
  * Coordinates for a list of article titles.
  *
- * `coprop=type|dim` is the important part: `dim` is the size of the place in
- * metres, and it is what lets `places.js` pin a story on the town it happened in
- * rather than the country around it.
+ * `coprop=type|dim` is why this asks for more than a point: `dim` is the size of
+ * the place in metres, and it is what lets `places.js` pin a story on the town it
+ * happened in rather than the country around it. `country` is deliberately not
+ * asked for; see `fetchCountries` for why it is not trusted.
  */
 export async function fetchCoordinates(titles, signal) {
   const batches = chunk(titles, TITLES_PER_REQUEST);
@@ -75,7 +83,7 @@ export async function fetchCoordinates(titles, signal) {
         {
           action: "query",
           prop: "coordinates",
-          coprop: "type|dim|name|country|region",
+          coprop: "type|dim",
           colimit: "max",
           redirects: "1",
           titles: batch.join("|"),
@@ -87,6 +95,56 @@ export async function fetchCoordinates(titles, signal) {
     ),
   );
   return responses.filter(Boolean);
+}
+
+/** A title inside a SPARQL string literal. */
+const sparqlString = (title) => `"${String(title).replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"@en`;
+
+/**
+ * The country of each place, as an ISO code, from Wikidata.
+ *
+ * `P17` is the country and `P297` its ISO 3166-1 alpha-2 code, so what comes back
+ * is a code and every country is still named by `Intl.DisplayNames`. One request
+ * covers the whole day.
+ *
+ * Three decisions are load-bearing here.
+ *
+ * It asks for the **code**, never the country's name. A name would arrive in one
+ * language and would not match the names the codes produce.
+ *
+ * It asks Wikidata for **every** place, not only those Wikipedia had no country
+ * for. Wikipedia's own field is editor-supplied and wrong in ways that show: it
+ * tags the article "Turkey" as a city, which made the page print
+ * "Turkey, Türkiye". Mixing the two sources is what produced that, so only this
+ * one answers.
+ *
+ * `FILTER NOT EXISTS { ?item wdt:P297 ?own }` drops any place that has an ISO
+ * country code **of its own**, which is exactly the set of countries. That is why
+ * "Turkey", "Jordan" and "Niger" come back with nothing, and it is a structural
+ * test rather than a comparison of names. Comparing names cannot work: "Turkey"
+ * and "Türkiye" are the same country, and "Jordan" is "Jordania" in Spanish.
+ *
+ * @returns {Promise<Map<string, string>>} empty when the service is unreachable,
+ *   because a missing country is a smaller loss than a day that will not load
+ */
+export async function fetchCountries(titles, signal) {
+  if (!titles.length) return new Map();
+  const query = `SELECT ?title ?code WHERE {
+  VALUES ?title { ${titles.map(sparqlString).join(" ")} }
+  ?sitelink schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> ; schema:name ?title .
+  ?item wdt:P17/wdt:P297 ?code .
+  FILTER NOT EXISTS { ?item wdt:P297 ?own }
+}`;
+  try {
+    const response = await fetch(`${WIKIDATA}?${new URLSearchParams({ query, format: "json" })}`, {
+      signal,
+      headers: { Accept: "application/sparql-results+json" },
+    });
+    if (!response.ok) return new Map();
+    return buildCountryIndex(await response.json());
+  } catch {
+    return new Map();
+  }
 }
 
 /**
@@ -107,8 +165,20 @@ export async function loadDay(date, { signal, onProgress } = {}) {
 
   onProgress?.("locating");
   const responses = await fetchCoordinates(collectTitles(stories), signal);
-  const located = locateStories(stories, buildGeoIndex(responses));
+  const geoIndex = buildGeoIndex(responses);
 
+  // The index holds several aliases per place, so work on the distinct place
+  // objects: filling one fills every alias pointing at it.
+  const places = [...new Set(geoIndex.values())];
+  if (places.length) {
+    const countries = await fetchCountries(
+      places.map((place) => place.title),
+      signal,
+    );
+    for (const place of places) place.country = countries.get(place.title) ?? null;
+  }
+
+  const located = locateStories(stories, geoIndex);
   const day = { stories, ...located };
   dayCache.set(key, day);
   return day;

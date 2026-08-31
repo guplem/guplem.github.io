@@ -13,9 +13,10 @@
 //
 // Known limit: `dim` is editor-supplied and sometimes wrong. A province with no
 // `type` and a small `dim` can outrank the town inside it, which puts the pin in
-// the right region but not on the exact spot. Fixing it needs a second source
-// (a Wikidata `P31` lookup per title), which costs a request per story and is not
-// worth it for a map at this scale.
+// the right region but not on the exact spot. Fixing it needs a second source, a
+// Wikidata `P31` ("instance of") lookup, which one batched query can answer for a
+// whole day. See ADR 0002: the limit is open, and the cost is one request plus
+// deciding which classes outrank which.
 
 /** The API takes at most this many titles in one request. */
 export const TITLES_PER_REQUEST = 50;
@@ -121,6 +122,11 @@ export function buildGeoIndex(responses) {
         lon: Number(coordinate.lon),
         dim: coordinate.dim ?? null,
         type: coordinate.type ?? null,
+        // Always null here. Wikipedia's own `country` field exists but is not
+        // trusted: it is editor-supplied and tags the article "Turkey" as a city,
+        // which made the page print "Turkey, Türkiye". `dataSource.js` fills this
+        // in from Wikidata, for every place, so one source answers.
+        country: null,
       };
       if (isOnEarth(place)) byTitle.set(page.title, place);
     }
@@ -164,6 +170,101 @@ export function choosePlace(story, geoIndex) {
   };
   // The sentence describes the event; the topic trail is only a fallback.
   return pick(story?.links) ?? pick(story?.topicLinks) ?? null;
+}
+
+/**
+ * Name a country from its two-letter ISO code, in the reader's language.
+ *
+ * The code is what travels, never a name. `Intl.DisplayNames` is in the browser
+ * already, so one code gives "France" and "Francia" with no table to keep and no
+ * translation to maintain. It also means the two sources of country codes
+ * (Wikipedia's own field and Wikidata) can never disagree about spelling.
+ *
+ * @returns {string} an empty string for anything unusable, so a caller can
+ *   simply leave the country out
+ */
+export function countryName(code, lang = "en") {
+  if (typeof code !== "string" || !/^[A-Za-z]{2}$/.test(code)) return "";
+  const upper = code.toUpperCase();
+  for (const locale of [lang, "en"]) {
+    try {
+      const name = new Intl.DisplayNames([locale], { type: "region" }).of(upper);
+      if (name && name !== upper) return name;
+    } catch {
+      // An unusable locale falls through to English.
+    }
+  }
+  return "";
+}
+
+/**
+ * How a place is written on screen: "Caen, France".
+ *
+ * The country is left out when it would only repeat the place. "Niger, Niger"
+ * reads as a mistake, and a title such as "Barah, Sudan" already carries it.
+ */
+export function placeLabel(place, lang = "en") {
+  const title = String(place?.title ?? "").trim();
+  if (!title) return "";
+  // A country needs no country after it. The query that supplies the code already
+  // excludes countries, so this is belt and braces rather than the main guard.
+  if (String(place?.type ?? "").toLowerCase() === "country") return title;
+  const country = countryName(place?.country, lang);
+  if (!country) return title;
+
+  // The title is always in English, but the country is named in the reader's
+  // language, so both spellings have to be checked. Compare only against the
+  // reader's language and "Barah, Sudan" becomes "Barah, Sudan, Sudán".
+  const spellings = [country, countryName(place?.country, "en")]
+    .filter(Boolean)
+    .map((name) => name.toLowerCase());
+  const lower = title.toLowerCase();
+  const lastPart = lower.split(",").pop().trim();
+  if (spellings.some((name) => lower === name || lastPart === name)) return title;
+  return `${title}, ${country}`;
+}
+
+/**
+ * Article title to country code, read from a Wikidata answer.
+ *
+ * A place that touches several countries is left out rather than credited to one
+ * of them: the Strait of Hormuz comes back as Iran, Oman and the UAE, and naming
+ * any single one of those would be wrong.
+ *
+ * @param {object|null} response a SPARQL JSON result
+ * @returns {Map<string, string>}
+ */
+export function buildCountryIndex(response) {
+  const seen = new Map();
+  for (const row of response?.results?.bindings ?? []) {
+    const title = row?.title?.value;
+    const code = row?.code?.value;
+    if (!title || !code) continue;
+    if (!seen.has(title)) seen.set(title, new Set());
+    seen.get(title).add(code.toUpperCase());
+  }
+  const index = new Map();
+  for (const [title, codes] of seen) if (codes.size === 1) index.set(title, [...codes][0]);
+  return index;
+}
+
+/**
+ * The pins reordered so the chosen group sits at the top, together.
+ *
+ * Both halves keep the list's own order, which is the portal's order. Sorting the
+ * group into the marker's internal order instead would shuffle rows the reader
+ * has just been reading.
+ *
+ * @param {Array<object>} pins
+ * @param {Iterable<string>|null} groupIds story ids to bring to the top
+ */
+export function pinsWithGroupFirst(pins, groupIds) {
+  const group = new Set(groupIds ?? []);
+  if (!group.size) return [...(pins ?? [])];
+  const inGroup = [];
+  const rest = [];
+  for (const pin of pins ?? []) (group.has(pin.story.id) ? inGroup : rest).push(pin);
+  return [...inGroup, ...rest];
 }
 
 /**
