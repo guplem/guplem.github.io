@@ -72,6 +72,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frames as spec, the scanner and pen model, geometry gotchas |
 | `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
 | `web-projects/unit-converter/AGENTS.md` | unit-converter: module map, the one-input-box contract, unit-catalogue and number-parsing gotchas |
+| `web-projects/global-news-map/AGENTS.md` | global-news-map: module map, the CORS and UTC gotchas, how a story gets its pin |
 | `web-projects/akwaaba-monsters/AGENTS.md` | akwaaba-monsters: the engine/content line, the permanent-identifier rule, how to add an area |
 | `web-projects/akwaaba-monsters/ROADMAP.md` | akwaaba-monsters: what the first area left out, and where each missing piece plugs in |
 | `adr/*.md`, `web-projects/*/adr/*.md` | Architecture Decision Records: why behind key choices (root = main-site/cross-cutting; per-project = project-specific) |
@@ -212,6 +213,9 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [akwaaba-monsters 0007](web-projects/akwaaba-monsters/adr/0007-the-screen-trails-the-engine-by-one-event.md) | The screen keeps its own copy of the battle and trails the engine by one event |
 | [akwaaba-monsters 0008](web-projects/akwaaba-monsters/adr/0008-ground-tiles-and-things-that-stand-on-them.md) | A tile is either ground or a thing standing on it, and each screen declares its ground |
 | [akwaaba-monsters 0009](web-projects/akwaaba-monsters/adr/0009-the-pad-follows-the-finger-and-buzzes.md) | The pad follows the finger, and the phone buzzes for every press |
+| [global-news-map 0001](web-projects/global-news-map/adr/0001-wikipedia-current-events-as-the-news-source.md) | Wikipedia's Current Events portal as the news source, not a news API |
+| [global-news-map 0002](web-projects/global-news-map/adr/0002-place-a-story-by-the-smallest-linked-place.md) | Place a story by the smallest place it links, and read no sentences |
+| [global-news-map 0003](web-projects/global-news-map/adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
