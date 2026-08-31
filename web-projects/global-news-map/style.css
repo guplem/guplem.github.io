@@ -387,6 +387,13 @@ main {
   font-size: 0.82rem;
 }
 
+.selected-note {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
 .selected-close {
   width: 2rem;
   height: 2rem;
@@ -404,14 +411,6 @@ main {
 .selected-story + .selected-story {
   margin-top: 0.85rem;
   border-top: 1px solid var(--border);
-}
-
-/* Which of the group was actually tapped. Quiet, because every story in the
-   panel is meant to be read; this only answers "which pin did I press". */
-.selected-story[aria-current="true"] {
-  margin-left: -1rem;
-  padding-left: calc(1rem - 3px);
-  border-left: 3px solid var(--accent);
 }
 
 .story-category {

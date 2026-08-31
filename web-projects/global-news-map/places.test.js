@@ -7,7 +7,9 @@ import {
   choosePlace,
   countryName,
   locateStories,
+  nextPlaceOnMarker,
   placeTitlesOf,
+  storyIdsAtPlace,
   placeLabel,
   placeScale,
 } from "./places.js";
@@ -329,5 +331,74 @@ describe("placeTitlesOf", () => {
   test("survives a pin with no place, rather than throwing", () => {
     expect(placeTitlesOf([pin("Caen"), {}, { place: {} }, null])).toEqual(["Caen"]);
     expect(placeTitlesOf(null)).toEqual([]);
+  });
+});
+
+describe("storyIdsAtPlace", () => {
+  const pin = (id, title) => ({ story: { id }, place: { title } });
+  const pins = [pin("a", "Aarau"), pin("b", "Amsterdam"), pin("c", "Amsterdam"), pin("d", "Bishkek")];
+
+  // The panel is headed by one place, so it must hold only that place's stories.
+  // Grouping by screen distance instead filed a story in Aarau, Switzerland under
+  // "Amsterdam, Netherlands": the two land 5.9px apart at the opening zoom.
+  test("gives every story at one place, in the list's order", () => {
+    expect(storyIdsAtPlace(pins, "Amsterdam")).toEqual(["b", "c"]);
+    expect(storyIdsAtPlace(pins, "Aarau")).toEqual(["a"]);
+  });
+
+  test("gives nothing for a place with no stories", () => {
+    expect(storyIdsAtPlace(pins, "Caen")).toEqual([]);
+    expect(storyIdsAtPlace(pins, null)).toEqual([]);
+    expect(storyIdsAtPlace(null, "Aarau")).toEqual([]);
+  });
+
+  test("matches the place exactly, never by part of the name", () => {
+    expect(storyIdsAtPlace([pin("a", "Amsterdam Avenue"), pin("b", "Amsterdam")], "Amsterdam")).toEqual(["b"]);
+  });
+
+  test("survives a pin with no place", () => {
+    expect(storyIdsAtPlace([pin("a", "Aarau"), {}, { place: {} }], "Aarau")).toEqual(["a"]);
+  });
+});
+
+describe("nextPlaceOnMarker", () => {
+  const pin = (id, title) => ({ story: { id }, place: { title } });
+  // One marker holding two places, the way Amsterdam and Aarau really do.
+  const marker = [pin("b", "Amsterdam"), pin("c", "Amsterdam"), pin("a", "Aarau")];
+
+  // A tap used to step through the marker's stories, so a pin holding two
+  // Amsterdam stories and one Aarau story needed three taps to reach Aarau. Now
+  // the panel is per place, so a tap steps through places instead.
+  test("steps to the next place on the marker, not the next story", () => {
+    expect(nextPlaceOnMarker(marker, "Amsterdam")).toBe("a");
+  });
+
+  test("comes back round to the first place", () => {
+    expect(nextPlaceOnMarker(marker, "Aarau")).toBe("b");
+  });
+
+  test("starts at the first place when nothing is chosen yet", () => {
+    expect(nextPlaceOnMarker(marker, null)).toBe("b");
+    expect(nextPlaceOnMarker(marker, "somewhere else entirely")).toBe("b");
+  });
+
+  test("stays put on a marker holding one place", () => {
+    expect(nextPlaceOnMarker([pin("a", "Aarau")], "Aarau")).toBe("a");
+  });
+
+  test("gives nothing back for an empty marker", () => {
+    expect(nextPlaceOnMarker([], "Aarau")).toBeNull();
+    expect(nextPlaceOnMarker(null, "Aarau")).toBeNull();
+  });
+
+  test("reaches every place on the marker by repeated stepping", () => {
+    const seen = new Set();
+    let title = null;
+    for (let step = 0; step < 4; step += 1) {
+      const id = nextPlaceOnMarker(marker, title);
+      title = marker.find((p) => p.story.id === id).place.title;
+      seen.add(title);
+    }
+    expect([...seen].sort()).toEqual(["Aarau", "Amsterdam"]);
   });
 });

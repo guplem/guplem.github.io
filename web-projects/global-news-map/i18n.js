@@ -66,6 +66,12 @@ export const MESSAGES = {
   // The panel above the day's list, holding every story at the chosen location.
   "selected.label": { en: "Selected location", es: "Lugar seleccionado" },
   "selected.count": { en: "{count} stories here", es: "{count} noticias aquí" },
+  // One marker can cover more than one place. Without this the other places on
+  // a pin are unreachable in practice, because nothing hints that they exist.
+  "selected.alsoOnPin": {
+    en: "This pin also covers {count} more at other places. Choose it again to see them.",
+    es: "Este marcador también cubre {count} más en otros lugares. Elígelo otra vez para verlas.",
+  },
 
   // --- credit ---------------------------------------------------------------
   "credit.wikipedia": {

@@ -19,7 +19,7 @@ Human docs: [README.md](README.md). Decision records:
 |---|---|---|
 | `calendar.js` | yes | Which day is shown, and its Wikipedia page title. Every date is UTC. |
 | `stories.js` | yes | One day's portal HTML into stories: text, category, topic trail, sources, linked titles. |
-| `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), and which places need a country (`placeTitlesOf`). |
+| `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), which places need a country (`placeTitlesOf`), and grouping by place (`storyIdsAtPlace`, `nextPlaceOnMarker`). |
 | `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, and `groupMatesOf` to name every story sharing one marker. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
 | `i18n.js` | yes | Every word the page says, in English and Spanish. |
@@ -142,17 +142,38 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
   reported. Two marks carry it: `aria-current` on the one open story, and
   `data-grouped` on the others sharing its marker. `refreshHighlight` owns both,
   so `storyItem` must not set either while building a row.
-- **The chosen group is captured once, not recomputed on every frame.** It lives
-  in `state.group`, written by `captureGroup` when the selection changes and
-  cleared when it clears. The grouping does depend on the zoom, so an earlier
-  version re-read it on every draw. That became wrong the moment the list started
-  putting the group at the top: re-reading it mid-pinch reshuffled the rows under
-  the reader. Choosing again is what re-reads it. `captureGroup` therefore runs
-  **before** any centring moves the view, so the group is the one the reader saw.
+- **Both groups are captured once, not recomputed on every frame.** `captureGroup`
+  writes them when the selection changes, and `clearSelection` empties them. Only
+  `pinGroup` depends on the zoom, and it must not move under the reader, so
+  `captureGroup` runs **before** any centring moves the view: the marker it reads
+  is the one the reader chose.
+- **One marker on screen is NOT one location. Never confuse the two.** This is the
+  most important rule in this file, because breaking it looks fine in every test
+  written from made-up data. `clusterPoints` groups pins by distance in pixels, so
+  a marker can cover several real places: Aarau in Switzerland and Amsterdam in
+  the Netherlands land about six pixels apart at the opening zoom on a phone. A
+  reader saw a Swiss shooting listed under the heading "Amsterdam, Netherlands".
+  - `state.group` is the stories at **one place**, keyed on `place.title` through
+    `storyIdsAtPlace`. The panel and the list marks use this, and only this, so
+    the panel's heading is always true of every story under it.
+  - `state.pinGroup` is the stories on **one marker**, which may span places. It is
+    used for two things only: the note saying the pin covers more, and stepping to
+    the next place when the marker is chosen again.
+- **Choosing a marker again steps to the next PLACE on it**, through
+  `nextPlaceOnMarker`, never to the next story. Stepping by story meant a pin
+  holding two Amsterdam stories and one Aarau story took three taps to reach
+  Aarau.
+- **Keep the "this pin also covers N more" note.** Without it the other places on a
+  marker are unreachable in practice, because nothing on screen hints that they
+  exist. The panel shows one place; the marker may hold several.
 - **The chosen location's stories all appear in the panel above the day's list.**
   `renderSelectedPanel` builds it, one block per story, each with its own sources.
   A reader reported this twice: first that only one story was highlighted, then
-  that only one appeared under the map. The whole group belongs in the panel.
+  that only one appeared under the map. The whole place belongs in the panel.
+- **The panel marks no story as "the one you tapped".** It used to draw a bar down
+  the side of it, and a reader asked what the bar meant. That was the answer:
+  nothing worth a mark. Every story in the panel is at the same place, and all of
+  them are meant to be read.
 - **The day's list always keeps the portal's own order.** An earlier version lifted
   the chosen group to the top of it. That is now wrong: the panel already shows
   those stories in full, so promoting them again printed each of them twice.
