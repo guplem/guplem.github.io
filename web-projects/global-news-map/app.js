@@ -18,6 +18,7 @@ import { NoNewsForDay, loadDay } from "./dataSource.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, zoomAt } from "./geo.js";
 import { LANGUAGES, makeSay, pickLanguage } from "./i18n.js";
+import { pinsWithGroupFirst, placeLabel } from "./places.js";
 import { buildSearch, readState } from "./urlState.js";
 import { LAND_SHAPES } from "./world.js";
 
@@ -71,6 +72,15 @@ const state = {
   unplaced: [],
   stories: [],
   selectedId: null,
+  /**
+   * The stories standing on the chosen marker, captured when it was chosen.
+   *
+   * Held rather than recomputed, because the list now puts this group at the top.
+   * The grouping depends on the zoom, so recomputing it would reshuffle the rows
+   * under the reader's eyes on every frame of a pinch. Choosing again is what
+   * re-reads it.
+   */
+  group: [],
   /** Markers as last drawn, so a tap can be matched against what is on screen. */
   markers: [],
   loading: false,
@@ -220,8 +230,6 @@ function scheduleDraw() {
   frame = requestAnimationFrame(() => {
     frame = null;
     draw();
-    // Zooming and dragging re-group the pins, so the list marks follow them.
-    refreshHighlight();
   });
 }
 
@@ -266,7 +274,7 @@ function storyItem(story, place) {
 
   const where = document.createElement("span");
   where.className = "item-where";
-  where.textContent = place ? place.title : story.category;
+  where.textContent = place ? placeLabel(place, state.lang) : story.category;
   const text = document.createElement("span");
   text.className = "item-text";
   text.textContent = story.text;
@@ -278,7 +286,10 @@ function storyItem(story, place) {
 }
 
 function renderLists() {
-  elements.stories.replaceChildren(...state.pins.map((pin) => storyItem(pin.story, pin.place)));
+  // The chosen marker's stories come first, as one block, so a marker reading
+  // "5" puts its five stories where the reader is already looking.
+  const ordered = pinsWithGroupFirst(state.pins, state.group);
+  elements.stories.replaceChildren(...ordered.map((pin) => storyItem(pin.story, pin.place)));
   elements.unplaced.replaceChildren(...state.unplaced.map((story) => storyItem(story, null)));
 
   const hasUnplaced = state.unplaced.length > 0;
@@ -292,14 +303,17 @@ function renderLists() {
 }
 
 /**
- * The stories sharing a marker with the open one, in the order the list shows
- * them. A marker showing "5" gives five ids back.
+ * Read the marker under the chosen story and remember what stands on it.
+ *
+ * Called when the selection changes, never on a redraw: the list puts this group
+ * at the top, and re-reading it while the reader zooms would reshuffle the rows
+ * they are reading.
  */
-function selectedGroupIds() {
+function captureGroup() {
   const mates = groupMatesOf(state.markers, (item) => item.story.id === state.selectedId);
   const ids = new Set(mates.map((item) => item.story.id));
-  // Re-ordered to match the list, so "3 of 5" counts down the screen.
-  return state.pins.filter((pin) => ids.has(pin.story.id)).map((pin) => pin.story.id);
+  // Kept in the list's own order, so "3 of 5" counts down the screen.
+  state.group = state.pins.filter((pin) => ids.has(pin.story.id)).map((pin) => pin.story.id);
 }
 
 /**
@@ -314,8 +328,7 @@ function selectedGroupIds() {
  * so this can run on every frame of a drag without losing keyboard focus.
  */
 function refreshHighlight() {
-  const group = selectedGroupIds();
-  const grouped = new Set(group);
+  const grouped = new Set(state.group);
   for (const list of [elements.stories, elements.unplaced]) {
     for (const item of list.children) {
       const id = item.dataset.storyId;
@@ -326,7 +339,7 @@ function refreshHighlight() {
       item.toggleAttribute("data-grouped", !open && grouped.size > 1 && grouped.has(id));
     }
   }
-  renderGroupLine(group);
+  renderGroupLine();
 }
 
 /**
@@ -335,7 +348,8 @@ function refreshHighlight() {
  * Kept apart from `renderCard` so a zoom can update it: zooming in splits a
  * group, and a line still claiming "of 5" would then be wrong.
  */
-function renderGroupLine(group = selectedGroupIds()) {
+function renderGroupLine() {
+  const group = state.group;
   const position = group.indexOf(state.selectedId) + 1;
   const show = group.length > 1 && position > 0;
   elements.cardGroup.hidden = !show;
@@ -355,7 +369,9 @@ function renderCard() {
   // The topic trail is the closest thing the portal gives a story to a headline.
   elements.cardHeading.textContent = story.topics.at(-1) ?? story.category;
   elements.cardText.textContent = story.text;
-  elements.cardPlace.textContent = pin ? say("story.place", { place: pin.place.title }) : say("story.unplacedHeading");
+  elements.cardPlace.textContent = pin
+    ? say("story.place", { place: placeLabel(pin.place, state.lang) })
+    : say("story.unplacedHeading");
   renderGroupLine();
 
   const sources = story.sources.map((source) => {
@@ -443,6 +459,7 @@ function writeUrl() {
 function clearSelection() {
   if (state.selectedId === null) return;
   state.selectedId = null;
+  state.group = [];
   renderCard();
   renderLists();
   writeUrl();
@@ -451,6 +468,10 @@ function clearSelection() {
 
 function selectStory(id, { centre = false } = {}) {
   state.selectedId = id;
+  // Read the marker as it stands right now, before any centring moves the view:
+  // the group must be the one the reader was looking at when they chose it.
+  updateMarkers();
+  captureGroup();
   if (state.selectedId && centre) {
     const pin = state.pins.find((candidate) => candidate.story.id === state.selectedId);
     // Bring the story into view without changing how far in the reader has zoomed.
@@ -470,6 +491,9 @@ function setLanguage(code) {
   say = makeSay(code);
   renderChrome();
   renderDayBar();
+  // The list is rebuilt too: a place is written "Caen, France" or "Caen, Francia"
+  // depending on the language, so its rows are not language-neutral.
+  renderLists();
   renderCard();
   renderCounts();
   writeUrl();
@@ -478,6 +502,7 @@ function setLanguage(code) {
 async function showDay(date, { keepStory = null } = {}) {
   state.day = date;
   state.selectedId = keepStory;
+  state.group = [];
   state.loading = true;
   state.pins = [];
   state.unplaced = [];
@@ -506,6 +531,10 @@ async function showDay(date, { keepStory = null } = {}) {
     state.unplaced = day.unplaced;
     // A story kept from the URL may not exist on this day.
     if (state.selectedId && !day.stories.some((story) => story.id === state.selectedId)) state.selectedId = null;
+    // The markers only exist once the day's pins do, so a story carried in from
+    // the address bar gets its group read here rather than at start-up.
+    updateMarkers();
+    captureGroup();
     renderLists();
     renderCard();
     renderCounts();
@@ -665,7 +694,6 @@ function wireChrome() {
     resizeTimer = setTimeout(() => {
       resizeCanvas();
       draw();
-      refreshHighlight();
     }, 100);
   });
 

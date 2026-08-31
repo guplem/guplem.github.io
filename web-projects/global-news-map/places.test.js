@@ -1,5 +1,16 @@
 import { describe, expect, test } from "bun:test";
-import { buildGeoIndex, chunk, collectTitles, choosePlace, locateStories, placeScale } from "./places.js";
+import {
+  buildCountryIndex,
+  buildGeoIndex,
+  chunk,
+  collectTitles,
+  choosePlace,
+  countryName,
+  locateStories,
+  pinsWithGroupFirst,
+  placeLabel,
+  placeScale,
+} from "./places.js";
 
 /** A story with only the fields the place picker reads. */
 const story = (links, topicLinks = []) => ({
@@ -138,6 +149,23 @@ describe("buildGeoIndex", () => {
     expect(geo.has("US military")).toBe(false);
   });
 
+  // Wikipedia's own `country` field is deliberately ignored. It is editor-supplied
+  // and wrong in ways that show: it tags the article "Turkey" as a city and would
+  // have the page print "Turkey, Türkiye". `dataSource.js` asks Wikidata instead,
+  // for every place, so one source answers and countries are excluded in the query.
+  test("ignores Wikipedia's own country field, leaving the country for Wikidata", () => {
+    const withCountry = {
+      query: { pages: { 1: { title: "Ketapang", coordinates: [{ lat: -1.85, lon: 109.98, country: "ID" }] } } },
+    };
+    expect(buildGeoIndex([withCountry]).get("Ketapang").country).toBeNull();
+  });
+
+  test("starts every place with no country rather than dropping it", () => {
+    const geo = buildGeoIndex([response]);
+    expect(geo.get("Belgorod").country).toBeNull();
+    expect(geo.has("Belgorod")).toBe(true);
+  });
+
   test("merges every response into one index", () => {
     const other = { query: { pages: { 1: { title: "Niger", coordinates: [{ lat: 16, lon: 8 }] } } } };
     const geo = buildGeoIndex([response, other]);
@@ -169,5 +197,154 @@ describe("locateStories", () => {
     const stories = [story(["Belgorod"]), story(["Niger"]), story(["Inflation"])];
     const located = locateStories(stories, geo);
     expect(located.pins.length + located.unplaced.length).toBe(stories.length);
+  });
+});
+
+describe("countryName", () => {
+  test("names a country from its ISO code", () => {
+    expect(countryName("FR", "en")).toBe("France");
+    expect(countryName("RU", "en")).toBe("Russia");
+  });
+
+  // The whole reason the code is carried rather than a name: one lookup path
+  // gives every country its name in the language the page is being read in.
+  test("names it in the language asked for", () => {
+    expect(countryName("FR", "es")).toBe("Francia");
+    expect(countryName("GB", "es")).toBe("Reino Unido");
+  });
+
+  test("gives nothing back for a code it cannot use, rather than throwing", () => {
+    for (const bad of ["", null, undefined, "F", "FRA", "fr!", 42, "nonsense"]) {
+      expect(countryName(bad, "en")).toBe("");
+    }
+  });
+
+  test("falls back to English when the language is unknown", () => {
+    expect(countryName("FR", "zz-nonsense")).toBe("France");
+  });
+});
+
+describe("placeLabel", () => {
+  test("writes the place and then its country", () => {
+    expect(placeLabel({ title: "Caen", country: "FR" }, "en")).toBe("Caen, France");
+    expect(placeLabel({ title: "Caen", country: "FR" }, "es")).toBe("Caen, Francia");
+  });
+
+  // "Niger, Niger" reads as a mistake. A country is already its own country.
+  test("does not repeat a country after itself", () => {
+    expect(placeLabel({ title: "Niger", country: "NE", type: "country" }, "en")).toBe("Niger");
+    expect(placeLabel({ title: "Japan", country: "JP" }, "en")).toBe("Japan");
+  });
+
+  test("leaves the place alone when no country is known", () => {
+    expect(placeLabel({ title: "Strait of Hormuz" }, "en")).toBe("Strait of Hormuz");
+    expect(placeLabel({ title: "Belgorod", country: null }, "en")).toBe("Belgorod");
+  });
+
+  // The title is always in English, but the country name follows the page. Compare
+  // against both, or Spanish prints "Barah, Sudan, Sudán".
+  test("does not repeat a country the title already ends with, in either language", () => {
+    expect(placeLabel({ title: "Barah, Sudan", country: "SD" }, "en")).toBe("Barah, Sudan");
+    expect(placeLabel({ title: "Barah, Sudan", country: "SD" }, "es")).toBe("Barah, Sudan");
+  });
+
+  test("still appends when the title's last part is a region, not the country", () => {
+    expect(placeLabel({ title: "Kure, Hiroshima", country: "JP" }, "en")).toBe("Kure, Hiroshima, Japan");
+    expect(placeLabel({ title: "Kure, Hiroshima", country: "JP" }, "es")).toBe("Kure, Hiroshima, Japón");
+  });
+
+  // These two are what the live run got wrong. The query now excludes countries,
+  // so they arrive with no code at all; this pins the outcome either way.
+  test("never writes a country after a country, whatever it is called", () => {
+    expect(placeLabel({ title: "Turkey", country: null }, "en")).toBe("Turkey");
+    expect(placeLabel({ title: "Jordan", country: null }, "es")).toBe("Jordan");
+    // Belt and braces: even if a code did arrive, the name must not double up.
+    expect(placeLabel({ title: "Jordan", country: "JO", type: "country" }, "es")).toBe("Jordan");
+  });
+
+  test("survives a place with no title at all", () => {
+    expect(placeLabel({}, "en")).toBe("");
+    expect(placeLabel(null, "en")).toBe("");
+  });
+});
+
+describe("buildCountryIndex", () => {
+  const response = {
+    results: {
+      bindings: [
+        { title: { value: "Caen" }, code: { value: "FR" } },
+        { title: { value: "Belgorod" }, code: { value: "RU" } },
+        // A strait touches three countries, so naming one of them would be wrong.
+        { title: { value: "Strait of Hormuz" }, code: { value: "IR" } },
+        { title: { value: "Strait of Hormuz" }, code: { value: "OM" } },
+        { title: { value: "Strait of Hormuz" }, code: { value: "AE" } },
+      ],
+    },
+  };
+
+  test("maps a title to its country code", () => {
+    const index = buildCountryIndex(response);
+    expect(index.get("Caen")).toBe("FR");
+    expect(index.get("Belgorod")).toBe("RU");
+  });
+
+  // Better to say nothing than to pick one of three arbitrarily.
+  test("leaves out a place that spans more than one country", () => {
+    expect(buildCountryIndex(response).has("Strait of Hormuz")).toBe(false);
+  });
+
+  test("keeps a title repeated with the same country once", () => {
+    const repeated = {
+      results: { bindings: [
+        { title: { value: "Caen" }, code: { value: "FR" } },
+        { title: { value: "Caen" }, code: { value: "FR" } },
+      ] },
+    };
+    expect(buildCountryIndex(repeated).get("Caen")).toBe("FR");
+  });
+
+  test("survives an empty, failed or malformed answer", () => {
+    expect(buildCountryIndex(null).size).toBe(0);
+    expect(buildCountryIndex({}).size).toBe(0);
+    expect(buildCountryIndex({ results: {} }).size).toBe(0);
+    expect(buildCountryIndex({ results: { bindings: [{}, { title: {} }] } }).size).toBe(0);
+  });
+});
+
+describe("pinsWithGroupFirst", () => {
+  const pins = ["a", "b", "c", "d", "e"].map((id) => ({ story: { id } }));
+  const ids = (list) => list.map((pin) => pin.story.id);
+
+  test("brings the chosen group to the top, together", () => {
+    expect(ids(pinsWithGroupFirst(pins, ["c", "e"]))).toEqual(["c", "e", "a", "b", "d"]);
+  });
+
+  // The reader is looking at a list; a group that keeps the list's own order is
+  // easier to follow than one shuffled into the marker's internal order.
+  test("keeps the list's own order inside the group and outside it", () => {
+    expect(ids(pinsWithGroupFirst(pins, ["e", "c"]))).toEqual(["c", "e", "a", "b", "d"]);
+  });
+
+  test("changes nothing when no group is chosen", () => {
+    expect(ids(pinsWithGroupFirst(pins, []))).toEqual(["a", "b", "c", "d", "e"]);
+    expect(ids(pinsWithGroupFirst(pins, null))).toEqual(["a", "b", "c", "d", "e"]);
+  });
+
+  test("ignores an id that is not in the list", () => {
+    expect(ids(pinsWithGroupFirst(pins, ["c", "missing"]))).toEqual(["c", "a", "b", "d", "e"]);
+  });
+
+  test("never loses or duplicates a story", () => {
+    for (const group of [[], ["a"], ["a", "e"], ["a", "b", "c", "d", "e"]]) {
+      const out = pinsWithGroupFirst(pins, group);
+      expect(out).toHaveLength(pins.length);
+      expect(new Set(ids(out)).size).toBe(pins.length);
+    }
+  });
+
+  test("leaves the original list untouched", () => {
+    const before = ids(pins);
+    pinsWithGroupFirst(pins, ["e"]);
+    expect(ids(pins)).toEqual(before);
   });
 });
