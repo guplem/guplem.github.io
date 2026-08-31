@@ -75,6 +75,10 @@ export const TILES = {
   oreRock: { solid: true, base: MAP_GROUND },
   pot: { solid: true, base: MAP_GROUND },
   statue: { solid: true, base: MAP_GROUND },
+  // Two machines the player presses A on. They are ordinary solid furniture
+  // here; `objects.js` says what each one does when the player faces it.
+  healer: { solid: true, base: MAP_GROUND },
+  computer: { solid: true, base: MAP_GROUND },
 
   // Walkable but usually carrying a warp. A doorway is a hole in a wall, so it
   // carries the wall with it rather than taking the ground of the screen.

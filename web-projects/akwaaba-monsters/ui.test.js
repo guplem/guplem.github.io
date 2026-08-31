@@ -294,11 +294,11 @@ describe("fieldMenuItems", () => {
     expect(withOne.map((entry) => entry.id)).toContain("party");
   });
 
-  test("offers the box alongside the creature list, so nothing is stranded", () => {
+  test("leaves the box out, because a storage computer in the world holds it", () => {
+    // The box used to be a menu entry. It is now a machine you walk up to, the
+    // way the real games do it, so the menu must not offer it as well.
     const items = fieldMenuItems({ party: [{}], player: { name: "Guillem" } }).map((e) => e.id);
-    expect(items).toContain("box");
-    const none = fieldMenuItems({ party: [], player: {} }).map((e) => e.id);
-    expect(none).not.toContain("box");
+    expect(items).not.toContain("box");
   });
 
   test("names the player's own entry after the player", () => {

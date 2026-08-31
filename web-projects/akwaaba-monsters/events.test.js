@@ -1,6 +1,7 @@
 import { describe, test, expect } from "bun:test";
 import {
   STEP_NAMES,
+  WAITING_STEPS,
   ScriptRunner,
   evaluateCondition,
   runScript,
@@ -262,6 +263,7 @@ describe("the effects the game has to carry out", () => {
       ["wildBattle", "nacho", 20],
       ["warp", "route1", 1, 2, "up"],
       ["heal"],
+      ["box"],
       ["shop", ["calabash"]],
       ["badge", "riverStone"],
       ["face", "npc", "left"],
@@ -282,6 +284,13 @@ describe("the effects the game has to carry out", () => {
 
   test("name every step in STEP_NAMES exactly once", () => {
     expect(new Set(STEP_NAMES).size).toBe(STEP_NAMES.length);
+  });
+
+  test("open the box and wait, because the player closes that screen", () => {
+    // The storage computer runs this step. The script stops until the player
+    // shuts the box, the same way a shop stops it.
+    expect(collect([["box"]])[0].type).toBe("box");
+    expect(WAITING_STEPS.has("box")).toBe(true);
   });
 
   test("fill in sensible defaults", () => {

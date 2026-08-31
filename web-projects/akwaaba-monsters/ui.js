@@ -284,6 +284,13 @@ export function tileVariant(x, y, count) {
 
 /**
  * The list of things the field menu offers.
+ *
+ * The box is deliberately not here. A creature caught with a full team waits in
+ * it, and the player fetches it back at a storage computer standing in the
+ * world (`objects.js`), the way the real games do it. Every map that holds a
+ * healing machine holds a computer beside it, and `areas.test.js` keeps that
+ * true, so nothing is ever stranded.
+ *
  * The field guide and the map are not built yet, so they are not listed. See
  * ROADMAP.md.
  */
@@ -291,9 +298,6 @@ export function fieldMenuItems(state) {
   const items = [];
   if ((state.party ?? []).length > 0) {
     items.push({ id: "party", label: "Creatures" });
-    // The box is where a creature caught with a full team waits. Without this
-    // entry there is no way to bring one back, and it is stranded for good.
-    items.push({ id: "box", label: "Box" });
   }
   items.push({ id: "bag", label: "Bag" });
   items.push({ id: "player", label: state.player?.name ?? "Player" });
