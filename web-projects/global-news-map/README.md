@@ -10,10 +10,17 @@ reported by, so you can read the original article.
 
 - **A pin per story**, placed on the most specific place the story names. A story
   about a town is pinned on the town, not on the country around it.
-- **Choose a pin and every story at that place appears in full** under the map,
-  with its own sources. Pins that sit close together share one numbered marker, so
-  a marker can cover more than one place: the panel says when it does, and
-  choosing the marker again moves to the next place on it.
+- **Choose a pin and every story at that place appears in full**, beside the map
+  on a wide screen and in the list itself on a phone, each with its own sources.
+  Pins that sit close together share one numbered marker, so a marker can cover
+  more than one place: the page says when it does, and choosing the marker again
+  moves to the next place on it.
+- **Every story folds to a summary**, and a "show more" button opens the rest of
+  it with the sources that reported it.
+- **Made for a phone.** The day and the map hold the top of the screen and never
+  move. Only the list of stories scrolls under them, and the story at the top of
+  that list is the one the map marks, so scrolling the list walks the map. Choose
+  a pin and the list scrolls to its story.
 - **Places are named with their country**, so "Caen" reads as "Caen, France".
 - **Any day**, back through the portal's whole history. Step a day at a time or
   type a date.

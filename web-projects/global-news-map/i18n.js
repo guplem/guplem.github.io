@@ -64,6 +64,10 @@ export const MESSAGES = {
     es: "Wikipedia geolocaliza lugares, no ideas. Estas noticias no enlazan ni un pueblo ni un país.",
   },
   "story.selectHint": { en: "Pick a pin to read a story.", es: "Elige un marcador para leer una noticia." },
+  // Every row in the list is folded to a summary. These name the button that
+  // opens one, which is how the sources are reached on a phone.
+  "story.showMore": { en: "Show more", es: "Ver más" },
+  "story.showLess": { en: "Show less", es: "Ver menos" },
   // The panel above the day's list, holding every story at the chosen location.
   "selected.label": { en: "Selected location", es: "Lugar seleccionado" },
   "selected.count": { en: "{count} stories here", es: "{count} noticias aquí" },
@@ -73,6 +77,9 @@ export const MESSAGES = {
     en: "This pin also covers {count} more at other places. Choose it again to see them.",
     es: "Este marcador también cubre {count} más en otros lugares. Elígelo otra vez para verlas.",
   },
+  // The phone shows no panel, so the same fact needs a button that fits on one
+  // line under the map. Without it the other places on a pin stay unreachable.
+  "selected.nextPlace": { en: "Next place (+{count})", es: "Otro lugar (+{count})" },
 
   // --- credit ---------------------------------------------------------------
   "credit.wikipedia": {

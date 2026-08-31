@@ -30,48 +30,62 @@
       </div>
     </header>
 
-    <!-- The day being shown. The buttons and the date box are the same state,
-         which also lives in the address bar. -->
-    <nav class="daybar" aria-label="Choose a day">
-      <button type="button" id="prev-day" class="icon-button" aria-label="Previous day">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" /></svg>
-      </button>
-      <label class="day-field">
-        <span class="visually-hidden" id="day-label">Choose a day</span>
-        <input type="date" id="day-input" aria-labelledby="day-label" />
-      </label>
-      <button type="button" id="next-day" class="icon-button" aria-label="Next day">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" /></svg>
-      </button>
-      <button type="button" id="latest-day" class="text-button">Latest</button>
-    </nav>
-
     <main>
-      <div class="map-wrap">
-        <!-- The map itself. It is a picture of the story list below, so the
-             canvas is marked as an image and the list carries the real content
-             for a screen reader and for a search engine. -->
-        <canvas id="map" role="img" aria-label="World map of the day's news"></canvas>
+      <!-- The day and the map. On a phone this block holds the top of the screen
+           and never scrolls, so the map stays in sight while the list moves. -->
+      <div class="stage">
+        <!-- The day being shown. The buttons and the date box are the same state,
+             which also lives in the address bar. -->
+        <nav class="daybar" aria-label="Choose a day">
+          <button type="button" id="prev-day" class="icon-button" aria-label="Previous day">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" /></svg>
+          </button>
+          <label class="day-field">
+            <span class="visually-hidden" id="day-label">Choose a day</span>
+            <input type="date" id="day-input" aria-labelledby="day-label" />
+          </label>
+          <button type="button" id="next-day" class="icon-button" aria-label="Next day">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" /></svg>
+          </button>
+          <button type="button" id="latest-day" class="text-button">Latest</button>
+        </nav>
 
-        <div class="map-controls">
-          <button type="button" id="zoom-in" class="icon-button" aria-label="Zoom in">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6v12M6 12h12" /></svg>
-          </button>
-          <button type="button" id="zoom-out" class="icon-button" aria-label="Zoom out">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 12h12" /></svg>
-          </button>
-          <button type="button" id="reset-view" class="icon-button" aria-label="Whole world">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" /><path d="M4 12h16M12 4c3.5 4 3.5 12 0 16M12 4c-3.5 4-3.5 12 0 16" /></svg>
-          </button>
+        <div class="map-wrap">
+          <!-- The map itself. It is a picture of the story list below, so the
+               canvas is marked as an image and the list carries the real content
+               for a screen reader and for a search engine. -->
+          <canvas id="map" role="img" aria-label="World map of the day's news"></canvas>
+
+          <div class="map-controls">
+            <button type="button" id="zoom-in" class="icon-button" aria-label="Zoom in">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 6v12M6 12h12" /></svg>
+            </button>
+            <button type="button" id="zoom-out" class="icon-button" aria-label="Zoom out">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 12h12" /></svg>
+            </button>
+            <button type="button" id="reset-view" class="icon-button" aria-label="Whole world">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" /><path d="M4 12h16M12 4c3.5 4 3.5 12 0 16M12 4c-3.5 4-3.5 12 0 16" /></svg>
+            </button>
+          </div>
+
+          <p class="status" id="status" role="status" aria-live="polite">Reading the day's news…</p>
         </div>
 
-        <p class="status" id="status" role="status" aria-live="polite">Reading the day's news…</p>
+        <!-- Phone only, and one line tall whatever it holds: the place the map
+             has marked, and the way to the other places on the same pin. Its
+             height never changes, because the reader scrolling the list changes
+             its words and a growing box would move the list under them. -->
+        <p class="stage-note">
+          <span class="stage-place" id="stage-place"></span>
+          <button type="button" id="stage-next" class="stage-next" hidden></button>
+        </p>
       </div>
 
       <!-- The reading column. It sits beside the map on a wide screen and under
-           it on a phone. The open story is never drawn over the map, so the pins
-           it is being compared against stay visible. -->
-      <div class="side">
+           it on a phone, where it is the only part that scrolls. The open story
+           is never drawn over the map, so the pins it is being compared against
+           stay visible. -->
+      <div class="side" id="reading">
         <!-- Every story at the chosen location, in full. A marker reading "5"
              fills this with five stories, so the whole place can be read in one
              go without hunting for its stories in the day's full list below. -->
@@ -100,16 +114,19 @@
           <p class="hint" id="unplaced-why" hidden></p>
           <ul class="stories stories-quiet" id="unplaced"></ul>
         </section>
+
+        <!-- The footer ends the reading column, and on a phone it is also the
+             room the list needs: the last story can only reach the top of the
+             screen when something below it can still scroll. -->
+        <footer class="footer">
+          <p class="credit" id="credit-wikipedia"></p>
+          <p class="credit" id="credit-coastlines"></p>
+          <p class="credit" id="credit-privacy"></p>
+          <p id="deploy-line" class="deploy-line"></p>
+          <p><a class="back-link" id="back-link" href="../">All web projects</a></p>
+        </footer>
       </div>
     </main>
-
-    <footer class="footer">
-      <p class="credit" id="credit-wikipedia"></p>
-      <p class="credit" id="credit-coastlines"></p>
-      <p class="credit" id="credit-privacy"></p>
-      <p id="deploy-line" class="deploy-line"></p>
-      <p><a class="back-link" id="back-link" href="../">All web projects</a></p>
-    </footer>
   </div>
 
   <script type="module" src="app.js"></script>
