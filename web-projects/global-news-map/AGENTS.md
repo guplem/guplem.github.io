@@ -241,8 +241,10 @@ the day and the map to the top of the screen and scrolls only the list, where
 
 ## Tests
 
-Every module marked "Pure" above has a sibling `*.test.js`, and new behaviour goes
-in test-first (root ADR 0012). `app.js`, `dataSource.js` and `buildWorld.js` have
+Every pure module that holds logic has a sibling `*.test.js`, and new behaviour
+goes in test-first (root ADR 0012). Two pure files carry data instead of logic and
+so have no test of their own: `world.js` is generated, and `stories.test.js` reads
+`portalFixture.js`. `app.js`, `dataSource.js` and `buildWorld.js` have
 none by design; anything in them worth a test belongs in a pure module instead.
 
 ```bash
