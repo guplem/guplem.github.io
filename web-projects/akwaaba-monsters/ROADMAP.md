@@ -105,14 +105,13 @@ What is missing is the map itself and the stalls to talk to.
 These already exist in the data and in the save file. They need a screen and
 nothing else.
 
-- **The field guide.** Every species has an `entry`, a height and a weight in
-  `species.js`, and the save keeps `seen` and `caught` lists that are already
-  filled in as you play. The player screen shows the counts. There is no screen
-  that lists them.
+- **The field guide.** The save keeps `seen` and `caught` lists that are already
+  filled in as you play, and the player screen shows the counts. There is no
+  screen that lists them. The entry, the height and the weight of a creature you
+  carry already show on the Info page of the summary, so a field guide screen
+  can read the same three functions out of `summary.js`.
 - **Nicknames.** `monster.nickname` is honoured everywhere by `displayName`, and
   the save keeps it. Nothing ever asks for one.
-- **Where a creature was met.** `metAt` and `metLevel` are recorded on every
-  creature. Nothing shows them.
 
 ---
 

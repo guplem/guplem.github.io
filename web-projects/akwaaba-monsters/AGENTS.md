@@ -36,6 +36,7 @@ engine holds rules and no world; the content holds a world and no rules.
 | `battlePlayback.js` | What the battle screen shows: a copy of the battle that events move forward one at a time |
 | `monsters.js` | One creature: stats, experience curves, levelling, evolution, moves |
 | `species.js`, `moves.js`, `items.js`, `types.js` | The data tables |
+| `summary.js` | Every line of text the creature summary screen shows |
 | `save.js` | The save document, its checking, and its migration |
 | `rng.js` | The seeded generator whose position the save keeps |
 | `ui.js` | Screen arithmetic: cursors, scrolling, bars, the camera, the page layout, which tile version a square gets |
@@ -143,12 +144,28 @@ A level 5 starter is the fixed point. Emerald is the reference for each rule.
 - **Every map declares `base`, the ground its screen is made of.** That is what
   shows through a palm tree. `validateMap` refuses a map without one.
 - **A panel that turns no page must show every line.** The starter blurb, the
-  bag description and the shop description have no arrow and no key to press, so
-  a line they leave out is a line the player never reads. Each one takes its
+  bag description, the shop description, the field guide entry on the summary
+  and the move description under it have no arrow and no key to press, so a line
+  they leave out is a line the player never reads. Each one takes its
   width and its row count from `PANELS` in `render.js`, and each row count comes
   from the height the panel really has. `paginate(text, w, 2)[0]` is the shape
   of the bug that cut the end off all three: it asks for two rows and throws the
   rest away without a word. Use `wrapText` and give the panel its real height.
+  `PANELS.summary` holds five rows and the longest entry today needs four, so a
+  new species with a long `entry` fails `art/font.test.js` rather than losing
+  its last sentence in silence. Shorten the entry; do not shrink the panel.
+- **The summary screen builds its own sentences, so `summary.js` holds them.**
+  Nothing on that screen is written by hand in `app.js`: the met line, the
+  height and weight, the stat labels, the experience lines and the line under
+  the highlighted move all come out of `summary.js`, which touches no browser.
+  That is what lets `summary.test.js` pin the words and `art/font.test.js`
+  measure them against the panel that draws them. A new line goes in
+  `summary.js` with a test, never inline in `drawSummary`.
+- **On the summary, Left and Right turn the page and Up and Down walk the team.**
+  That is what the real games do, and the tab strip draws a `<` and a `>` to say
+  so. A is free on two of the three pages, so the moves page uses it to step the
+  move cursor. The screen shares `menu.cursor` with the creature list, so B
+  lands on whichever creature the player ended up looking at.
 - **Give `renderer.message` a string, not lines.** The box then breaks the
   string to its own width. Hand it an array only when you paged the text
   yourself, which is what `say` does. A string passed as one line used to run

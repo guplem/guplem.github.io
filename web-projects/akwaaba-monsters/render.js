@@ -99,6 +99,11 @@ export const PANELS = {
   bag: panel(14, 122, 210, 4 + 152 - BOX_BORDER),
   // The shop counter. Box (4, 100, 232, 56), with the key hint on its last row.
   shop: panel(12, 108, 210, 137),
+  // The field guide entry on the summary's Info page. Box (4, 4, 232, 152),
+  // with the key hint on its last row, so the panel stops above it.
+  summary: panel(10, 92, 218, 140),
+  // The description of the highlighted move, on the summary's Moves page.
+  moveInfo: panel(10, 112, 218, 140),
 };
 
 /**
