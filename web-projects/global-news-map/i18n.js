@@ -52,9 +52,11 @@ export const MESSAGES = {
   "map.zoomIn": { en: "Zoom in", es: "Acercar" },
   "map.zoomOut": { en: "Zoom out", es: "Alejar" },
   "map.reset": { en: "Whole world", es: "Todo el mundo" },
-  // The two states of one button, which folds the map away and brings it back.
-  "map.hide": { en: "Hide map", es: "Ocultar mapa" },
-  "map.show": { en: "Show map", es: "Ver mapa" },
+  // The two states of one button, which shrinks the map to a bar and grows it
+  // back. It says "collapse" and not "hide", because the map never goes away:
+  // the collapsed bar still carries a small one.
+  "map.collapse": { en: "Collapse map", es: "Contraer mapa" },
+  "map.expand": { en: "Expand map", es: "Expandir mapa" },
 
   // --- a story --------------------------------------------------------------
   "story.sources": { en: "Sources", es: "Fuentes" },

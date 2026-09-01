@@ -180,10 +180,6 @@ let size = { width: 0, height: 0 };
  * scale the drawing so the rest of the code can work in CSS pixels.
  */
 function resizeCanvas() {
-  // A folded map has no box at all. Measuring it would leave a canvas one pixel
-  // wide behind, and the grouping of the pins works against that same size, so
-  // every pin would come back as one marker when the map is opened again.
-  if (state.mapCollapsed) return;
   const ratio = Math.min(window.devicePixelRatio || 1, 2);
   const box = canvas.getBoundingClientRect();
   size = { width: Math.max(1, Math.round(box.width)), height: Math.max(1, Math.round(box.height)) };
@@ -263,6 +259,31 @@ function drawMarker(marker, colour, ink, selected) {
 }
 
 /**
+ * Draw one plain dot per story, which is what the collapsed map shows.
+ *
+ * The collapsed map groups nothing. A numbered disc is 20 to 36 pixels across
+ * and the whole map is 160, so one disc would cover a quarter of it, and every
+ * pin would fall in the same group anyway. Dots say "here, and here" and that is
+ * all a map this size can say.
+ */
+function drawDots(colour, ink) {
+  for (const pin of state.pins) {
+    const point = project(pin.lon, pin.lat, state.view, size);
+    const chosen = pin.story.id === state.selectedId;
+    context.beginPath();
+    context.arc(point.x, point.y, chosen ? 4 : 2.5, 0, Math.PI * 2);
+    context.fillStyle = colour;
+    context.fill();
+    if (!chosen) continue;
+    // The chosen story gets a ring, because a dot one pixel bigger than its
+    // neighbours is not a difference anybody sees.
+    context.lineWidth = 1.5;
+    context.strokeStyle = ink;
+    context.stroke();
+  }
+}
+
+/**
  * Group the pins at the zoom they are about to be drawn at, so two towns that
  * overlap when zoomed out separate as the reader zooms in.
  *
@@ -271,7 +292,10 @@ function drawMarker(marker, colour, ink, selected) {
  * canvas about which stories those are.
  */
 function updateMarkers() {
-  if (!size.width) return;
+  // Nothing is chosen on the collapsed map, so the grouping stays as it was on
+  // the full-size one. Grouping against 160 pixels would make one marker of the
+  // whole world, and `pinGroup` feeds the panel's "also covers N more" note.
+  if (!size.width || state.mapCollapsed) return;
   const points = state.pins.map((pin) => ({ ...project(pin.lon, pin.lat, state.view, size), pin }));
   state.markers = clusterPoints(points, CLUSTER_RADIUS).map((group) => ({
     x: group.x,
@@ -281,7 +305,7 @@ function updateMarkers() {
 }
 
 function draw() {
-  if (!size.width || state.mapCollapsed) return;
+  if (!size.width) return;
   const ocean = cssColour("--ocean") || "#dfe4ee";
   const land = cssColour("--land") || "#c3c9d6";
   const landEdge = cssColour("--land-edge") || "#a8b0c1";
@@ -293,6 +317,13 @@ function draw() {
   context.fillRect(0, 0, size.width, size.height);
   drawGraticule(graticule);
   drawLand(land, landEdge);
+
+  // The collapsed map is a picture of where the day is happening, so it stops
+  // here, with a dot per story and no markers to aim at.
+  if (state.mapCollapsed) {
+    drawDots(pin, pinInk);
+    return;
+  }
 
   updateMarkers();
 
@@ -370,7 +401,6 @@ function glideTo(target) {
  *   which a tap on a row does and the reader's own scrolling never does
  */
 function moveMapToSelection({ closer = false } = {}) {
-  if (state.mapCollapsed) return;
   // Scrolling the list moves a map the reader has already zoomed into, and only
   // that map. At the opening zoom the whole world is on screen, so there is
   // nowhere to move to, and the whole world is what makes a pin worth looking
@@ -385,23 +415,34 @@ function moveMapToSelection({ closer = false } = {}) {
 }
 
 /**
- * Show the map folded or open.
+ * Collapse the map, or bring it back to full size.
  *
- * Folded, the block shrinks to a slim bar holding the button and the pill, so
- * the day can still say that it is loading, empty or unreachable. Nothing else
- * about the page changes: the list is the whole content, and it simply gets the
- * room the map gave up.
+ * Both the button and a tap on the small map come through here, so the two can
+ * never disagree about which state the map is in.
+ */
+function setMapCollapsed(collapsed) {
+  if (state.mapCollapsed === collapsed) return;
+  state.mapCollapsed = collapsed;
+  renderMapCollapsed();
+}
+
+/**
+ * Show the map collapsed or full size.
+ *
+ * Collapsed, the block is a bar holding the button, a small map and the pill, so
+ * the day can still say that it is loading, empty or unreachable, and the reader
+ * can still see where the day is happening. Nothing else about the page changes:
+ * the list is the whole content, and it gets the room the map gave up.
+ *
+ * The canvas changes shape here, so it is measured again before anything is
+ * drawn on it. `resizeCanvas` clamps the view to the new shape, and the map then
+ * moves to the story being read, at either size.
  */
 function renderMapCollapsed() {
+  cancelGlide();
   elements.mapWrap.toggleAttribute("data-collapsed", state.mapCollapsed);
-  elements.toggleMap.textContent = say(state.mapCollapsed ? "map.show" : "map.hide");
+  elements.toggleMap.textContent = say(state.mapCollapsed ? "map.expand" : "map.collapse");
   elements.toggleMap.setAttribute("aria-expanded", String(!state.mapCollapsed));
-  if (state.mapCollapsed) {
-    cancelGlide();
-    return;
-  }
-  // The canvas had no box while it was folded, so it is measured again before
-  // anything is drawn on it, and the map opens on the story being read.
   resizeCanvas();
   draw();
   moveMapToSelection();
@@ -1042,6 +1083,7 @@ async function showDay(date, { keepStory = null } = {}) {
   state.unplaced = [];
   state.stories = [];
   state.expanded.clear();
+  state.markers = [];
   travellingTo = null;
   cancelGlide();
   renderDayBar();
@@ -1127,7 +1169,15 @@ function wireMap() {
 
   const pointerList = () => [...pointers.values()];
 
+  // A tap on the small map expands it. Nothing else on it responds: the handlers
+  // below all return while it is collapsed, so a finger that lands on it neither
+  // pans a map too small to aim nor opens a story the reader could not see.
+  canvas.addEventListener("click", () => {
+    if (state.mapCollapsed) setMapCollapsed(false);
+  });
+
   canvas.addEventListener("pointerdown", (event) => {
+    if (state.mapCollapsed) return;
     // The reader's own hand wins over a slide the list started.
     cancelGlide();
     canvas.setPointerCapture(event.pointerId);
@@ -1208,6 +1258,7 @@ function wireMap() {
   canvas.addEventListener(
     "wheel",
     (event) => {
+      if (state.mapCollapsed) return;
       event.preventDefault();
       cancelGlide();
       const factor = Math.exp(-event.deltaY * 0.0015);
@@ -1274,10 +1325,7 @@ function wireChrome() {
     else renderDayBar();
   });
   elements.panelClose.addEventListener("click", clearSelection);
-  elements.toggleMap.addEventListener("click", () => {
-    state.mapCollapsed = !state.mapCollapsed;
-    renderMapCollapsed();
-  });
+  elements.toggleMap.addEventListener("click", () => setMapCollapsed(!state.mapCollapsed));
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") clearSelection();
   });
