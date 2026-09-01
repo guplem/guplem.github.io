@@ -124,6 +124,61 @@ export function panBy(view, size, dx, dy) {
 }
 
 /**
+ * A step of more than this many degrees of longitude means the outline jumped
+ * the 180th meridian. No real coastline moves half the world between two points.
+ */
+const WHOLE_WORLD_STEP = 180;
+
+/** The edge of the map that a longitude belongs to: the west edge or the east one. */
+const edgeFor = (lon) => (lon < 0 ? -180 : 180);
+
+/**
+ * Cut one coastline into pieces where it crosses the 180th meridian.
+ *
+ * The 180th meridian, or antimeridian, is where the map's east edge meets its
+ * west edge. Natural Earth cuts a landmass that spans it into a vertex at +180
+ * followed by a vertex at -180. On a globe those two are the same place. On a
+ * flat map they are opposite sides of the picture, so drawing a line between
+ * them draws a line across the whole world.
+ *
+ * Four shapes in `world.js` carry such a pair, and each one drew such a line:
+ * Eurasia where Chukotka runs past the meridian, Antarctica, Fiji and Wrangel
+ * Island. A reader reported the lines.
+ *
+ * Each piece is walked out to the edge of the map it belongs to, so the piece
+ * that is closing ends on the edge and the next piece starts on the other edge.
+ * The land then runs off one side and comes back on the other, which is what it
+ * really does. A piece of fewer than three points encloses no area and is
+ * dropped: the crossing vertex is often the shape's own first or last point.
+ *
+ * @param {number[]} shape flat run of [lon, lat, lon, lat, ...] in degrees
+ * @returns {number[][]} one flat run per piece, in the same form
+ */
+export function splitAtAntimeridian(shape) {
+  const points = shape ?? [];
+  const pieces = [];
+  let piece = [];
+
+  for (let i = 0; i < points.length; i += 2) {
+    const lon = points[i];
+    const lat = points[i + 1];
+    if (piece.length) {
+      const lastLon = piece[piece.length - 2];
+      const lastLat = piece[piece.length - 1];
+      if (Math.abs(lon - lastLon) > WHOLE_WORLD_STEP) {
+        piece.push(edgeFor(lastLon), lastLat);
+        pieces.push(piece);
+        piece = [edgeFor(lon), lat];
+      }
+    }
+    piece.push(lon, lat);
+  }
+  pieces.push(piece);
+
+  return pieces.filter((run) => run.length >= 6);
+}
+
+/**
  * Group points that would sit on top of each other on screen.
  *
  * The points are sorted before grouping, so the answer depends only on where the

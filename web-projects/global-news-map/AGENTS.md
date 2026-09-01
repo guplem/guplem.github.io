@@ -21,7 +21,7 @@ Human docs: [README.md](README.md). Decision records:
 | `calendar.js` | yes | Which day is shown, and its Wikipedia page title. Every date is UTC. |
 | `stories.js` | yes | One day's portal HTML into stories: text, category, topic trail, sources, linked titles. |
 | `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), which places need a country (`placeTitlesOf`), and grouping by place (`storyIdsAtPlace`, `nextPlaceOnMarker`). |
-| `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, and `groupMatesOf` to name every story sharing one marker. |
+| `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, `groupMatesOf` to name every story sharing one marker, and `splitAtAntimeridian` to cut a coastline where it crosses the 180th meridian. |
 | `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, and `topmostRow` says which row stands at the top of the scrolling list. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
 | `i18n.js` | yes | Every word the page says, in English and Spanish. |
@@ -138,6 +138,45 @@ the day and the map to the top of the screen and scrolls only the list, where
   it no floor either: a `min-height` did exactly that on a phone, and a reader
   reported the empty ocean it made. A `max-height` is safe, because it only
   crops the map on a screen too short for the world's own shape.
+- **Every coastline must be cut at the 180th meridian before it is drawn.** The
+  180th meridian, or antimeridian, is where the map's east edge meets its west
+  edge. Natural Earth spans it with a vertex at +180 next to one at -180, which
+  is one place on a globe and two opposite sides of a flat picture. Draw the
+  shape uncut and that pair becomes a straight line across the whole world. Four
+  shapes carry such a pair: Eurasia where Chukotka runs past the meridian,
+  Antarctica, Fiji and Wrangel Island. Three of them really did draw a line, for
+  months, and a reader reported them. `geo.splitAtAntimeridian` cuts the shapes
+  and `app.js` holds the result in `COASTLINES`, cut once at start-up because the
+  answer depends on the data and never on the zoom. **Never draw `LAND_SHAPES`
+  directly.** One closing edge across the world survives on purpose, and it is
+  Antarctica's own bottom; `geo.test.js` allows that one and forbids a second.
+- **The map moves when the reader has zoomed in, and holds still when they have
+  not.** `moveMapToSelection` is the one place that moves it. Zoomed out, every
+  pin is on screen and moving the map could only take the world away, which is
+  what ADR 0004 first decided. Zoomed in, the map is a window and an off-window
+  pin is invisible, which a reader reported. The zoom itself never changes when
+  the map follows the list; only a tap on a row on a *wide* screen zooms in, to
+  `CLOSE_ZOOM`. Never make the follow change the zoom: that is the exact thing
+  ADR 0004 rejected.
+- **The reader's hand always beats a slide.** `glideTo` runs one animation and
+  `cancelGlide` stops it. Every input that sets `state.view` itself calls
+  `cancelGlide` first: the drag, the pinch, the wheel, the two zoom buttons and
+  the "whole world" button. Miss one and the slide fights the reader's finger.
+- **A folded map is neither drawn nor measured.** `draw` and `resizeCanvas` both
+  return early on `state.mapCollapsed`. The reason is `resizeCanvas`: a folded
+  canvas has no box, so it would leave `size` one pixel wide, and `clusterPoints`
+  groups against that same size, so every pin would come back as one marker when
+  the map was opened again. `renderMapCollapsed` measures and draws again on the
+  way back, in that order.
+- **The fold keeps the status pill on screen.** The button lives *inside*
+  `.map-wrap`, so the folded block is a slim bar holding the button and the pill.
+  The pill is where "loading", "no news for this day" and "could not reach
+  Wikipedia" are said. Move the button out of that block and a folded map
+  swallows the one message the reader is waiting for.
+- **The fold is not remembered, and that is deliberate.** No `localStorage`, no
+  URL parameter. The credit line says "Nothing about you is stored or sent
+  anywhere else", and that sentence is worth more than saving the reader one tap
+  on their next visit. Storing the fold means rewriting that line first.
 - **`app.js` never writes `innerHTML`.** Story text comes from Wikipedia, which
   anyone can edit. Every string reaches the screen through `textContent`, so
   there is nothing to escape and no way for an edit to become markup. The one
@@ -244,11 +283,16 @@ the day and the map to the top of the screen and scrolls only the list, where
 - **A tap is told from a drag by distance, not by time.** Without that check a
   drag that ends over a pin opens a story the reader never asked for.
 - **The map redraws from scratch every frame that changes.** The whole world is
-  109 outlines and about 5,000 points, so it is cheap, and it removes the class of
+  111 outlines and about 5,000 points, so it is cheap, and it removes the class of
   bugs where the screen and the state disagree. Do not add partial redrawing.
 - **`world.js` is generated. Never hand-edit it.** `bun buildWorld.js` rebuilds it
   from the Natural Earth TopoJSON named at the top of that script. The page must
   keep working with no network beyond Wikipedia, so the coastlines ship with it.
+  It holds 109 shapes, which is what the source says; the canvas draws 111,
+  because `splitAtAntimeridian` cuts two of them in two. The cut belongs to the
+  drawing and not to the data, so **do not move it into `buildWorld.js`**: keeping
+  `world.js` a faithful copy of Natural Earth is what makes a regeneration a
+  one-command job with nothing to re-derive.
 - **`portalFixture.js` is a real response, not a hand-written sample.** Refresh it
   only with another real response. The parser has to survive the portal's actual
   nesting, its redirect links and its non-breaking spaces.

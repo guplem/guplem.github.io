@@ -21,6 +21,13 @@ reported by, so you can read the original article.
   move. Only the list of stories scrolls under them, and the story at the top of
   that list is the one the map marks, so scrolling the list walks the map. Choose
   a pin and the list scrolls to its story.
+- **Zoom in and the map follows what you read.** Once you have zoomed in, the map
+  slides to keep the story you are reading in the middle of it. Zoomed all the
+  way out it holds still, because every pin is already on screen. Your own
+  dragging, pinching and zooming always wins.
+- **Fold the map away** with one button, and the whole screen is the stories. The
+  bar it leaves still tells you when a day is loading, is empty, or could not be
+  reached.
 - **Places are named with their country**, so "Caen" reads as "Caen, France".
 - **Any day**, back through the portal's whole history. Step a day at a time or
   type a date.

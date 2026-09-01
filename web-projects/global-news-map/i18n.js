@@ -52,6 +52,9 @@ export const MESSAGES = {
   "map.zoomIn": { en: "Zoom in", es: "Acercar" },
   "map.zoomOut": { en: "Zoom out", es: "Alejar" },
   "map.reset": { en: "Whole world", es: "Todo el mundo" },
+  // The two states of one button, which folds the map away and brings it back.
+  "map.hide": { en: "Hide map", es: "Ocultar mapa" },
+  "map.show": { en: "Show map", es: "Ver mapa" },
 
   // --- a story --------------------------------------------------------------
   "story.sources": { en: "Sources", es: "Fuentes" },

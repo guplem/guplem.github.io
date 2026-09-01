@@ -23,9 +23,13 @@ Three more things made the phone worse than the wide screen:
 
 ## Decision
 
-**On a phone the day and the map hold the top of the screen and never move. Only
-the list of stories scrolls, and the story at the top of the list is the one the
-map marks.**
+**On a phone the day and the map hold the top of the screen and never leave it.
+Only the list of stories scrolls, and the story at the top of the list is the one
+the map marks.**
+
+"Hold the top of the screen" is about the map's place in the layout, which never
+changes. What the map shows can change, and the paragraph on the zoom below says
+when.
 
 The link runs both ways:
 
@@ -33,6 +37,26 @@ The link runs both ways:
   story at the top of the list is chosen, so scrolling the list walks the map.
 - The reader taps a pin and the list scrolls that story to its top, which is the
   same state reached from the other side.
+
+**A map the reader has zoomed into also slides to the chosen story. A map showing
+the whole world holds still.** The zoom is what tells the two apart, and the zoom
+itself never changes when the map follows the list. Zoomed out, every pin is
+already on screen, so moving the map could only take the world away. Zoomed in,
+the map is a window, and a pin outside that window is a pin the reader cannot
+see. The slide is eased over about a quarter of a second, and a reader who asked
+their system for less movement gets a cut instead.
+
+**The reader's own hand always wins.** A drag, a pinch, the zoom buttons and the
+"whole world" button all stop a slide in progress and none of them move the map
+back to the chosen story.
+
+**The map folds away.** One button over its top left corner turns the map into a
+slim bar, which gives the whole screen to the words for a reader who is reading
+and not looking. The bar keeps the pill that says the day is loading, is empty or
+could not be reached, because a folded map must not swallow the one message the
+reader is waiting for. The fold is not remembered between visits: the page stores
+nothing about the reader, and that is what lets the credit line say so with no
+caveat.
 
 Five decisions follow from that one:
 
@@ -70,9 +94,21 @@ anything else, so they stay in the document for a screen reader.
 
 - The phone layout has no "nothing chosen" state. A tap on the open sea leaves
   the reader where they are rather than blanking the pin they are reading about.
-- The map does not move when the selection follows the scrolling. Centring the
-  map on every row would zoom the world in and out under the reader's thumb, and
-  the whole world is what makes a pin worth looking at.
+- **The zoom is the switch between a map that holds still and a map that
+  follows.** An earlier version never moved the map at all, for a good reason:
+  centring on every row would have zoomed the world in and out under the reader's
+  thumb, and the whole world is what makes a pin worth looking at. Holding the
+  zoom fixed is what keeps that reason satisfied while the map still follows. A
+  reader reported the map as useless once zoomed in, which is the case this
+  answers: the pin they were reading about sat outside the window.
+- **A pin near the edge of the world cannot reach the middle of the canvas.**
+  `clampView` allows no gap between the edge of the map and the edge of the
+  canvas, so Wellington at 175 degrees east lands near the right-hand side rather
+  than in the centre. That is the projection being honest, not a fault.
+- **A folded map is not drawn and not measured.** `draw` and `resizeCanvas` both
+  return early. Measuring a folded canvas would leave a canvas one pixel wide
+  behind, and the grouping of the pins works against that same size, so every pin
+  would come back as one marker when the map was opened again.
 - The address bar is written once the scrolling stops, not once per row. A
   browser limits how often a page may rewrite its address, and a long scroll
   would spend that budget in seconds.

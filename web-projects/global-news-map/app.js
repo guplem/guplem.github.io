@@ -5,7 +5,7 @@
 // projection maths, no parsing and no ranking.
 //
 // The map is redrawn from scratch on every frame that changes. That is cheap
-// here, because the whole world is 109 outlines and about 5,000 points, and it
+// here, because the whole world is 111 outlines and about 5,000 points, and it
 // removes the whole class of bugs where the screen and the state disagree.
 //
 // Text reaches the screen through `textContent`, never `innerHTML`. Story text
@@ -16,7 +16,7 @@
 import { addDays, defaultDay, fromIsoDay, isSelectableDay, portalPageUrl, toIsoDay, todayUtc } from "./calendar.js";
 import { NoNewsForDay, loadDay } from "./dataSource.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
-import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, zoomAt } from "./geo.js";
+import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, splitAtAntimeridian, zoomAt } from "./geo.js";
 import { makeSay, pickLanguage } from "./i18n.js";
 import { nextPlaceOnMarker, placeLabel, storyIdsAtPlace } from "./places.js";
 import { summarise, topmostRow } from "./reading.js";
@@ -33,7 +33,9 @@ const elements = {
   latestDay: $("latest-day"),
   dayInput: $("day-input"),
   dayLabel: $("day-label"),
+  mapWrap: $("map-wrap"),
   map: $("map"),
+  toggleMap: $("toggle-map"),
   zoomIn: $("zoom-in"),
   zoomOut: $("zoom-out"),
   resetView: $("reset-view"),
@@ -60,6 +62,19 @@ const elements = {
   backLink: $("back-link"),
 };
 
+/**
+ * The coastlines the canvas draws: every shape from `world.js`, cut where it
+ * crosses the 180th meridian.
+ *
+ * Natural Earth spans that meridian with a vertex at +180 next to one at -180.
+ * The two are the same place on a globe and opposite sides of a flat map, so an
+ * uncut shape draws a straight line across the whole world. Four shapes carry
+ * such a pair and three of them drew such a line, which a reader reported. Cut
+ * once here, because the answer never changes: it depends on the data and not on
+ * the zoom. See `splitAtAntimeridian` and ADR 0003.
+ */
+const COASTLINES = LAND_SHAPES.flatMap(splitAtAntimeridian);
+
 /** How close two pins have to be, in pixels, before they become one marker. */
 const CLUSTER_RADIUS = 18;
 /** How far a tap may miss a marker and still count as hitting it. */
@@ -68,6 +83,10 @@ const TAP_SLACK = 16;
 const REVEAL_MARGIN = 8;
 /** How long the address bar waits while the reader keeps scrolling. */
 const URL_QUIET = 400;
+/** How long the map takes to slide from one story to the next, in milliseconds. */
+const GLIDE_MS = 260;
+/** How far in the map goes to show a place the reader tapped in the list. */
+const CLOSE_ZOOM = 3;
 
 /**
  * Which layout is on screen. The wide one puts the map and the reading column
@@ -115,6 +134,14 @@ const state = {
    * an opened story would fold itself again under the reader's eyes.
    */
   expanded: new Set(),
+  /**
+   * Whether the map is folded away, leaving the whole screen to the words.
+   *
+   * It is not remembered anywhere. The page stores nothing about the reader,
+   * which is what lets the credit line say so with no caveat, and a fold is a
+   * choice about this minute rather than about every visit.
+   */
+  mapCollapsed: false,
   loading: false,
   request: null,
 };
@@ -135,6 +162,10 @@ let size = { width: 0, height: 0 };
  * scale the drawing so the rest of the code can work in CSS pixels.
  */
 function resizeCanvas() {
+  // A folded map has no box at all. Measuring it would leave a canvas one pixel
+  // wide behind, and the grouping of the pins works against that same size, so
+  // every pin would come back as one marker when the map is opened again.
+  if (state.mapCollapsed) return;
   const ratio = Math.min(window.devicePixelRatio || 1, 2);
   const box = canvas.getBoundingClientRect();
   size = { width: Math.max(1, Math.round(box.width)), height: Math.max(1, Math.round(box.height)) };
@@ -169,7 +200,7 @@ function drawLand(fill, edge) {
   context.fillStyle = fill;
   context.strokeStyle = edge;
   context.lineWidth = 1;
-  for (const shape of LAND_SHAPES) {
+  for (const shape of COASTLINES) {
     context.beginPath();
     for (let i = 0; i < shape.length; i += 2) {
       const point = project(shape[i], shape[i + 1], state.view, size);
@@ -232,7 +263,7 @@ function updateMarkers() {
 }
 
 function draw() {
-  if (!size.width) return;
+  if (!size.width || state.mapCollapsed) return;
   const ocean = cssColour("--ocean") || "#dfe4ee";
   const land = cssColour("--land") || "#c3c9d6";
   const landEdge = cssColour("--land-edge") || "#a8b0c1";
@@ -263,6 +294,99 @@ function scheduleDraw() {
     frame = null;
     draw();
   });
+}
+
+// --- moving the map ---------------------------------------------------------
+
+/**
+ * The frame of a slide in progress, or null. Only one slide runs at a time: a
+ * second story chosen while the map is still moving replaces the first.
+ */
+let glide = null;
+
+/** Stop a slide, so the reader's own hand on the map always wins. */
+function cancelGlide() {
+  if (glide !== null) cancelAnimationFrame(glide);
+  glide = null;
+}
+
+/**
+ * Slide the map to another view rather than cut to it.
+ *
+ * The list scrolls smoothly, so a map that jumped from one story to the next
+ * would read as a fault. Only the view moves: the pins are drawn from it on
+ * every frame, so nothing else has to be told that the map went somewhere.
+ *
+ * A reader who asked their system for less movement gets the cut instead.
+ */
+function glideTo(target) {
+  cancelGlide();
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+    state.view = target;
+    scheduleDraw();
+    return;
+  }
+
+  const from = state.view;
+  const started = performance.now();
+  const step = (now) => {
+    const part = Math.min(1, (now - started) / GLIDE_MS);
+    // Eased out, so the map arrives softly instead of stopping dead.
+    const eased = 1 - (1 - part) ** 3;
+    const mix = (start, end) => start + (end - start) * eased;
+    state.view = clampView(
+      { zoom: mix(from.zoom, target.zoom), cx: mix(from.cx, target.cx), cy: mix(from.cy, target.cy) },
+      size,
+    );
+    draw();
+    glide = part < 1 ? requestAnimationFrame(step) : null;
+  };
+  glide = requestAnimationFrame(step);
+}
+
+/**
+ * Bring the chosen story's pin to the middle of the map.
+ *
+ * @param {object} [options]
+ * @param {boolean} [options.closer] also zoom in far enough to see the place,
+ *   which a tap on a row does and the reader's own scrolling never does
+ */
+function moveMapToSelection({ closer = false } = {}) {
+  if (state.mapCollapsed) return;
+  // Scrolling the list moves a map the reader has already zoomed into, and only
+  // that map. At the opening zoom the whole world is on screen, so there is
+  // nowhere to move to, and the whole world is what makes a pin worth looking
+  // at (ADR 0004).
+  if (!closer && state.view.zoom <= MIN_ZOOM) return;
+
+  const pin = state.pins.find((candidate) => candidate.story.id === state.selectedId);
+  if (!pin) return;
+  // Never zoom out: the reader is as close in as they put themselves.
+  const zoom = closer ? Math.max(state.view.zoom, CLOSE_ZOOM) : state.view.zoom;
+  glideTo(clampView({ zoom, cx: (pin.lon + 180) / 360, cy: (90 - pin.lat) / 180 }, size));
+}
+
+/**
+ * Show the map folded or open.
+ *
+ * Folded, the block shrinks to a slim bar holding the button and the pill, so
+ * the day can still say that it is loading, empty or unreachable. Nothing else
+ * about the page changes: the list is the whole content, and it simply gets the
+ * room the map gave up.
+ */
+function renderMapCollapsed() {
+  elements.mapWrap.toggleAttribute("data-collapsed", state.mapCollapsed);
+  elements.toggleMap.textContent = say(state.mapCollapsed ? "map.show" : "map.hide");
+  elements.toggleMap.setAttribute("aria-expanded", String(!state.mapCollapsed));
+  if (state.mapCollapsed) {
+    cancelGlide();
+    return;
+  }
+  // The canvas had no box while it was folded, so it is measured again before
+  // anything is drawn on it, and the map opens on the story being read.
+  resizeCanvas();
+  draw();
+  moveMapToSelection();
 }
 
 // --- the elements -----------------------------------------------------------
@@ -324,9 +448,14 @@ function storyItem(story, place) {
   button.append(...[where, heading, text].filter(Boolean));
   button.addEventListener("click", () =>
     // A wide screen shows the story in the panel beside the map, so the map
-    // moves to it. A phone has no panel: the row itself goes to the top of the
-    // list, where it is the story the map marks.
-    selectStory(story.id, { centre: isWide() && Boolean(place), reveal: !isWide() }),
+    // moves to it and zooms in on the place. A phone has no panel: the row
+    // itself goes to the top of the list, where it is the story the map marks,
+    // and a map the reader has zoomed into slides to it without zooming further.
+    selectStory(story.id, {
+      centre: isWide() && Boolean(place),
+      follow: !isWide(),
+      reveal: !isWide(),
+    }),
   );
   item.append(button);
 
@@ -502,6 +631,10 @@ function revealInList(id) {
  *
  * This is what makes the two halves of the narrow layout one thing: the reader
  * scrolls the list and the map follows, with no tapping at all.
+ *
+ * A map the reader has zoomed into also slides to the story, because a pin
+ * outside the window is a pin they cannot see. A map showing the whole world
+ * holds still: everything is already on it.
  */
 function followList() {
   const id = topmostRow(rowMetrics(), elements.reading.scrollTop);
@@ -512,7 +645,7 @@ function followList() {
   }
   // The address bar waits until the scrolling stops. Browsers limit how often a
   // page may rewrite it, and a long scroll would spend that budget in seconds.
-  if (id !== state.selectedId) selectStory(id, { url: false });
+  if (id !== state.selectedId) selectStory(id, { url: false, follow: true });
 }
 
 /**
@@ -655,6 +788,7 @@ function renderChrome() {
   elements.zoomIn.setAttribute("aria-label", say("map.zoomIn"));
   elements.zoomOut.setAttribute("aria-label", say("map.zoomOut"));
   elements.resetView.setAttribute("aria-label", say("map.reset"));
+  renderMapCollapsed();
   elements.panelClose.setAttribute("aria-label", say("story.close"));
   elements.listHeading.textContent = say("story.listHeading");
   elements.unplacedHeading.textContent = say("story.unplacedHeading");
@@ -735,26 +869,23 @@ function clearSelection() {
  *
  * @param {string} id the story to open
  * @param {object} [options]
- * @param {boolean} [options.centre] move the map to the story's pin
+ * @param {boolean} [options.centre] move the map to the story's pin, and zoom in
+ *   on it if the map is still showing the whole world
+ * @param {boolean} [options.follow] move the map to the story's pin without
+ *   touching the zoom, and do nothing while the whole world is on screen. This
+ *   is the reader scrolling the list on a phone.
  * @param {boolean} [options.reveal] bring the story to the top of the list,
  *   which is what the map does when the reader taps a pin
  * @param {boolean} [options.url] write the address bar now rather than once the
  *   scrolling stops
  */
-function selectStory(id, { centre = false, reveal = false, url = true } = {}) {
+function selectStory(id, { centre = false, follow = false, reveal = false, url = true } = {}) {
   state.selectedId = id;
   // Read the marker as it stands right now, before any centring moves the view:
   // the group must be the one the reader was looking at when they chose it.
   updateMarkers();
   captureGroup();
-  if (state.selectedId && centre) {
-    const pin = state.pins.find((candidate) => candidate.story.id === state.selectedId);
-    // Bring the story into view without changing how far in the reader has zoomed.
-    if (pin) {
-      const zoom = Math.max(state.view.zoom, 3);
-      state.view = clampView({ zoom, cx: (pin.lon + 180) / 360, cy: (90 - pin.lat) / 180 }, size);
-    }
-  }
+  if (state.selectedId && (centre || follow)) moveMapToSelection({ closer: centre });
   renderSelectedPanel();
   refreshHighlight();
   renderNextPlace();
@@ -790,6 +921,7 @@ async function showDay(date, { keepStory = null } = {}) {
   state.stories = [];
   state.expanded.clear();
   travellingTo = null;
+  cancelGlide();
   renderDayBar();
   renderLists();
   renderSelectedPanel();
@@ -874,6 +1006,8 @@ function wireMap() {
   const pointerList = () => [...pointers.values()];
 
   canvas.addEventListener("pointerdown", (event) => {
+    // The reader's own hand wins over a slide the list started.
+    cancelGlide();
     canvas.setPointerCapture(event.pointerId);
     pointers.set(event.pointerId, canvasPoint(event));
     dragged = 0;
@@ -953,6 +1087,7 @@ function wireMap() {
     "wheel",
     (event) => {
       event.preventDefault();
+      cancelGlide();
       const factor = Math.exp(-event.deltaY * 0.0015);
       state.view = zoomAt(state.view, size, canvasPoint(event), factor);
       scheduleDraw();
@@ -961,12 +1096,14 @@ function wireMap() {
   );
 
   const zoomFromCentre = (factor) => {
+    cancelGlide();
     state.view = zoomAt(state.view, size, { x: size.width / 2, y: size.height / 2 }, factor);
     scheduleDraw();
   };
   elements.zoomIn.addEventListener("click", () => zoomFromCentre(1.7));
   elements.zoomOut.addEventListener("click", () => zoomFromCentre(1 / 1.7));
   elements.resetView.addEventListener("click", () => {
+    cancelGlide();
     state.view = clampView({ zoom: MIN_ZOOM, cx: 0.5, cy: 0.5 }, size);
     scheduleDraw();
   });
@@ -1015,6 +1152,10 @@ function wireChrome() {
     else renderDayBar();
   });
   elements.panelClose.addEventListener("click", clearSelection);
+  elements.toggleMap.addEventListener("click", () => {
+    state.mapCollapsed = !state.mapCollapsed;
+    renderMapCollapsed();
+  });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") clearSelection();
   });

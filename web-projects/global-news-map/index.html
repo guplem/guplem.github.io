@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="106" />
-  <meta name="deploy-date" content="2026-08-31T22:53:51.000Z" />
+  <meta name="deploy-pull-request" content="107" />
+  <meta name="deploy-date" content="2026-09-01T10:51:31.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -50,7 +50,14 @@
           <button type="button" id="latest-day" class="text-button">Latest</button>
         </nav>
 
-        <div class="map-wrap">
+        <div class="map-wrap" id="map-wrap">
+          <!-- Folds the map away, which gives the whole screen to the words for
+               a reader who is reading and not looking. The button lives inside
+               this block on purpose: the folded map leaves a slim bar around it,
+               and that bar still carries the pill that says the day is loading,
+               is empty, or could not be reached. -->
+          <button type="button" id="toggle-map" class="map-toggle" aria-controls="map" aria-expanded="true">Hide map</button>
+
           <!-- The map itself. It is a picture of the story list below, so the
                canvas is marked as an image and the list carries the real content
                for a screen reader and for a search engine. -->
