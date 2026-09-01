@@ -410,13 +410,47 @@ main {
   border-top: 1px solid var(--border);
 }
 
-.story-category {
-  margin: 0 0 0.3rem;
-  color: var(--accent-ink);
-  font-size: 0.72rem;
+/* --- the category chip ---------------------------------------------------- */
+
+/* The portal's own grouping of the day, as an icon and a name. It stands on the
+   row's first line, so a folded story still says what kind of story it is, and
+   it widens to the category's full name when the row opens. The same chip heads
+   a story in the panel, where there is always room for the full name.
+
+   It is deliberately quieter than the place beside it. The icon carries the
+   colour and the name is muted, so the chip is read second and the row still
+   leads with where the story happened. A chip in the same loud orange as the
+   place made the two compete, and the full name shouted over the headline. */
+.item-category {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.3rem;
+  padding: 0.08rem 0.5rem 0.08rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--text) 5%, transparent);
+  color: var(--muted);
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.item-category-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.selected-story .item-category {
+  margin-bottom: 0.45rem;
 }
 
 .story-heading {
@@ -490,7 +524,9 @@ main {
 .story-item .item-main {
   display: block;
   width: 100%;
-  padding: 0.7rem 0.85rem;
+  /* Little room under the text: the chevron sits right below it and carries its
+     own padding, and the two together made the folded row look half empty. */
+  padding: 0.7rem 0.85rem 0.45rem;
   border: 0;
   background: transparent;
   color: inherit;
@@ -528,12 +564,25 @@ main {
   background: var(--accent-soft);
 }
 
+/* The row's first line carries both facts a reader sorts stories by: where it
+   happened, on the left, and what kind of story it is, on the right. A long
+   place name wraps rather than being cut, and the chip drops to its own line
+   when the two cannot share one. */
+.story-item .item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.25rem 0.6rem;
+}
+
 .story-item .item-where {
-  display: block;
+  min-width: 0;
   color: var(--accent-ink);
   font-size: 0.73rem;
   font-weight: 600;
   letter-spacing: 0.05em;
+  line-height: 1.45;
   text-transform: uppercase;
 }
 
@@ -557,26 +606,53 @@ main {
    On a phone this is the only way to the sources, because that layout has no
    panel. */
 .item-more {
-  padding: 0 0.85rem;
+  padding: 0.15rem 0.85rem 0;
 }
 
+/* The chevron that opens the row. It says "there is more here" with no words at
+   all, which is what leaves the folded row for the story itself. `app.js` keeps
+   its label in `aria-label`, so a screen reader still hears "Show more". */
 .item-fold {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 0.4rem 0.85rem 0.6rem;
+  padding: 0.1rem 0 0.25rem;
   border: 0;
   background: transparent;
-  color: var(--accent-ink);
-  font: inherit;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-align: left;
+  color: var(--muted);
   cursor: pointer;
+  transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.item-chevron {
+  width: 1.05rem;
+  height: 1.05rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--normal) var(--ease);
+}
+
+/* Pointing down means "opens downwards"; turned over, it means "folds away". */
+.item-fold[aria-expanded="true"] .item-chevron {
+  transform: rotate(180deg);
 }
 
 @media (hover: hover) {
   .item-fold:hover {
-    text-decoration: underline;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+}
+
+/* A reader who has asked for less motion gets none. `app.js` makes the same
+   check before it eases a row's height, so the two halves agree. */
+@media (prefers-reduced-motion: reduce) {
+  .item-chevron {
+    transition: none;
   }
 }
 

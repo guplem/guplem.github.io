@@ -64,10 +64,35 @@ export const MESSAGES = {
     es: "Wikipedia geolocaliza lugares, no ideas. Estas noticias no enlazan ni un pueblo ni un país.",
   },
   "story.selectHint": { en: "Pick a pin to read a story.", es: "Elige un marcador para leer una noticia." },
-  // Every row in the list is folded to a summary. These name the button that
-  // opens one, which is how the sources are reached on a phone.
+  // Every row in the list is folded to a summary. These name the chevron that
+  // opens one, which is how the sources are reached on a phone. The button shows
+  // no words, so these reach the reader as its label.
   "story.showMore": { en: "Show more", es: "Ver más" },
   "story.showLess": { en: "Show less", es: "Ver menos" },
+
+  // --- the portal's categories (see categories.js) --------------------------
+  // Each one twice: the short name a folded row has room for, and the full name
+  // the row shows once it opens. `categories.test.js` fails when one is missing.
+  "category.conflicts.short": { en: "Conflict", es: "Conflicto" },
+  "category.conflicts.full": { en: "Armed conflicts and attacks", es: "Conflictos armados y ataques" },
+  "category.disasters.short": { en: "Disaster", es: "Desastre" },
+  "category.disasters.full": { en: "Disasters and accidents", es: "Desastres y accidentes" },
+  "category.politics.short": { en: "Politics", es: "Política" },
+  "category.politics.full": { en: "Politics and elections", es: "Política y elecciones" },
+  "category.law.short": { en: "Law", es: "Justicia" },
+  "category.law.full": { en: "Law and crime", es: "Justicia y delitos" },
+  "category.sports.short": { en: "Sport", es: "Deporte" },
+  "category.sports.full": { en: "Sports", es: "Deportes" },
+  "category.relations.short": { en: "Relations", es: "Relaciones" },
+  "category.relations.full": { en: "International relations", es: "Relaciones internacionales" },
+  "category.health.short": { en: "Health", es: "Salud" },
+  "category.health.full": { en: "Health and environment", es: "Salud y medio ambiente" },
+  "category.arts.short": { en: "Culture", es: "Cultura" },
+  "category.arts.full": { en: "Arts and culture", es: "Arte y cultura" },
+  "category.business.short": { en: "Economy", es: "Economía" },
+  "category.business.full": { en: "Business and economy", es: "Negocios y economía" },
+  "category.science.short": { en: "Science", es: "Ciencia" },
+  "category.science.full": { en: "Science and technology", es: "Ciencia y tecnología" },
   // The panel above the day's list, holding every story at the chosen location.
   "selected.label": { en: "Selected location", es: "Lugar seleccionado" },
   "selected.count": { en: "{count} stories here", es: "{count} noticias aquí" },
