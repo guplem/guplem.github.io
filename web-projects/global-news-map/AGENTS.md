@@ -21,7 +21,7 @@ Human docs: [README.md](README.md). Decision records:
 | `calendar.js` | yes | Which day is shown, and its Wikipedia page title. Every date is UTC. |
 | `stories.js` | yes | One day's portal HTML into stories: text, category, topic trail, sources, linked titles. |
 | `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), which places need a country (`placeTitlesOf`), and grouping by place (`storyIdsAtPlace`, `nextPlaceOnMarker`). |
-| `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, and `groupMatesOf` to name every story sharing one marker. |
+| `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, `groupMatesOf` to name every story sharing one marker, and `splitAtAntimeridian` to cut a coastline where it crosses the 180th meridian. |
 | `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, and `topmostRow` says which row stands at the top of the scrolling list. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
 | `i18n.js` | yes | Every word the page says, in English and Spanish. |
@@ -244,11 +244,16 @@ the day and the map to the top of the screen and scrolls only the list, where
 - **A tap is told from a drag by distance, not by time.** Without that check a
   drag that ends over a pin opens a story the reader never asked for.
 - **The map redraws from scratch every frame that changes.** The whole world is
-  109 outlines and about 5,000 points, so it is cheap, and it removes the class of
+  111 outlines and about 5,000 points, so it is cheap, and it removes the class of
   bugs where the screen and the state disagree. Do not add partial redrawing.
 - **`world.js` is generated. Never hand-edit it.** `bun buildWorld.js` rebuilds it
   from the Natural Earth TopoJSON named at the top of that script. The page must
   keep working with no network beyond Wikipedia, so the coastlines ship with it.
+  It holds 109 shapes, which is what the source says; the canvas draws 111,
+  because `splitAtAntimeridian` cuts two of them in two. The cut belongs to the
+  drawing and not to the data, so **do not move it into `buildWorld.js`**: keeping
+  `world.js` a faithful copy of Natural Earth is what makes a regeneration a
+  one-command job with nothing to re-derive.
 - **`portalFixture.js` is a real response, not a hand-written sample.** Refresh it
   only with another real response. The parser has to survive the portal's actual
   nesting, its redirect links and its non-breaking spaces.

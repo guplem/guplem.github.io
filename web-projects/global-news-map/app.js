@@ -5,7 +5,7 @@
 // projection maths, no parsing and no ranking.
 //
 // The map is redrawn from scratch on every frame that changes. That is cheap
-// here, because the whole world is 109 outlines and about 5,000 points, and it
+// here, because the whole world is 111 outlines and about 5,000 points, and it
 // removes the whole class of bugs where the screen and the state disagree.
 //
 // Text reaches the screen through `textContent`, never `innerHTML`. Story text
@@ -16,7 +16,7 @@
 import { addDays, defaultDay, fromIsoDay, isSelectableDay, portalPageUrl, toIsoDay, todayUtc } from "./calendar.js";
 import { NoNewsForDay, loadDay } from "./dataSource.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
-import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, zoomAt } from "./geo.js";
+import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, splitAtAntimeridian, zoomAt } from "./geo.js";
 import { makeSay, pickLanguage } from "./i18n.js";
 import { nextPlaceOnMarker, placeLabel, storyIdsAtPlace } from "./places.js";
 import { summarise, topmostRow } from "./reading.js";
@@ -59,6 +59,19 @@ const elements = {
   deployLine: $("deploy-line"),
   backLink: $("back-link"),
 };
+
+/**
+ * The coastlines the canvas draws: every shape from `world.js`, cut where it
+ * crosses the 180th meridian.
+ *
+ * Natural Earth spans that meridian with a vertex at +180 next to one at -180.
+ * The two are the same place on a globe and opposite sides of a flat map, so an
+ * uncut shape draws a straight line across the whole world. Four shapes carry
+ * such a pair and three of them drew such a line, which a reader reported. Cut
+ * once here, because the answer never changes: it depends on the data and not on
+ * the zoom. See `splitAtAntimeridian` and ADR 0003.
+ */
+const COASTLINES = LAND_SHAPES.flatMap(splitAtAntimeridian);
 
 /** How close two pins have to be, in pixels, before they become one marker. */
 const CLUSTER_RADIUS = 18;
@@ -169,7 +182,7 @@ function drawLand(fill, edge) {
   context.fillStyle = fill;
   context.strokeStyle = edge;
   context.lineWidth = 1;
-  for (const shape of LAND_SHAPES) {
+  for (const shape of COASTLINES) {
     context.beginPath();
     for (let i = 0; i < shape.length; i += 2) {
       const point = project(shape[i], shape[i + 1], state.view, size);

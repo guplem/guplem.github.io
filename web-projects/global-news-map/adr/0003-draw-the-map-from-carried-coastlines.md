@@ -23,7 +23,10 @@ equirectangular projection.
 - **The projection** is equirectangular. Longitude goes straight across and
   latitude straight down, so the whole world is one rectangle exactly twice as
   wide as it is tall, and `project` is two multiplications.
-- **Every frame is drawn from scratch.** 109 outlines is cheap enough that
+- **Every shape is cut at the 180th meridian before it is drawn.**
+  `geo.splitAtAntimeridian` does it, once at start-up, and `app.js` draws the
+  result. See the first cost below for why.
+- **Every frame is drawn from scratch.** 111 outlines is cheap enough that
   partial redrawing would only add a way for the screen and the state to disagree.
 
 ## Consequences
@@ -48,6 +51,17 @@ equirectangular projection.
 
 **What it costs.**
 
+- **The page owns the flat-map problems a mapping library would have solved.**
+  The 180th meridian, or antimeridian, is where the map's east edge meets its
+  west edge. Natural Earth spans it with a vertex at +180 next to a vertex at
+  -180. Those two are one place on a globe and opposite sides of a flat picture,
+  so a line drawn between them crosses the whole world. Four shapes carry such a
+  pair: Eurasia where Chukotka runs past the meridian, Antarctica, Fiji and
+  Wrangel Island. Three of them drew a straight line across the map for months,
+  and a reader reported them. `geo.splitAtAntimeridian` now cuts every shape at
+  the meridian and walks each piece out to its own edge of the map, so the land
+  runs off one side and comes back on the other. `geo.test.js` guards the real
+  data against the same class of fault returning.
 - **No street-level detail, ever.** At 1:110m a coastline is visibly a chain of
   straight lines when zoomed in far. `MAX_ZOOM` is 32 for that reason: past it the
   page would only be showing off the limits of its own data.
