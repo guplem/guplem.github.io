@@ -145,8 +145,11 @@ export function parseCurrentEvents(html) {
   /** @type {Array<{label: string, links: string[], text: string, sources: any[], storyLinks: string[], closed: boolean}>} */
   const stack = [];
   let category = "";
-  let inBold = false;
-  let boldText = "";
+  /**
+   * Set while inside a category heading, so its words go to the category and not
+   * to the story. `tag` is the tag that closes it again.
+   */
+  let heading = null;
   /** Set while inside a source link, so its words go to the label and not the story. */
   let source = null;
 
@@ -159,8 +162,8 @@ export function parseCurrentEvents(html) {
       source.raw += raw;
       return;
     }
-    if (inBold) {
-      boldText += text;
+    if (heading) {
+      heading.text += text;
       return;
     }
     const frame = top();
@@ -181,11 +184,29 @@ export function parseCurrentEvents(html) {
     if (tag === "b" || tag === "strong") {
       if (closing) {
         // A bold line directly in the content block is a category heading.
-        if (!stack.length && tidy(boldText)) category = tidy(boldText);
-        inBold = false;
-      } else {
-        inBold = true;
-        boldText = "";
+        if (heading?.tag === tag) {
+          if (!stack.length && tidy(heading.text)) category = tidy(heading.text);
+          heading = null;
+        }
+      } else if (!heading) {
+        heading = { tag, text: "" };
+      }
+      continue;
+    }
+
+    // The portal has written its categories two ways. A day since about 2019
+    // writes `'''Law and crime'''`, which arrives as the bold line above. Every
+    // day before that writes `;Law and crime`, which the wiki renders as this
+    // div instead. Read only the bold form and every older day loses its
+    // categories, so both forms are read.
+    if (tag === "div") {
+      if (closing) {
+        if (heading?.tag === "div") {
+          if (tidy(heading.text)) category = tidy(heading.text);
+          heading = null;
+        }
+      } else if (!stack.length && !heading && /current-events-content-heading/i.test(ATTRIBUTE(attributes, "class"))) {
+        heading = { tag: "div", text: "" };
       }
       continue;
     }

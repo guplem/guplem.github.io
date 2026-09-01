@@ -62,9 +62,9 @@ Five decisions follow from that one:
 
 1. **The panel is not shown on a phone.** It sits inside the scrolling column, so
    a panel that rewrote itself as the reader scrolled would resize the column
-   under them. Each row opens in place instead: a "show more" button turns the
-   summary into the whole story with its sources. That button is also the only
-   way to a source on a phone, which is why every row has one.
+   under them. Each row opens in place instead: a chevron at the foot of the row
+   turns the summary into the whole story with its sources. That chevron is also
+   the only way to a source on a phone, which is why every row has one.
 2. **Nothing that the selection changes takes room in the layout.** The rule
    above, one step out. The selection follows the scrolling, so a box that grows
    or appears with it moves the list under the reader. What the phone still needs

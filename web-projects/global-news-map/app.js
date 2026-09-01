@@ -14,6 +14,7 @@
 // which needs a link inside a sentence and carries its own escaper.
 
 import { addDays, defaultDay, fromIsoDay, isSelectableDay, portalPageUrl, toIsoDay, todayUtc } from "./calendar.js";
+import { CATEGORY_ICONS, classifyCategory } from "./categories.js";
 import { NoNewsForDay, loadDay } from "./dataSource.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, splitAtAntimeridian, zoomAt } from "./geo.js";
@@ -87,6 +88,23 @@ const URL_QUIET = 400;
 const GLIDE_MS = 260;
 /** How far in the map goes to show a place the reader tapped in the list. */
 const CLOSE_ZOOM = 3;
+/** How long a row takes to open or fold. Short enough to feel like an answer. */
+const FOLD_MS = 220;
+/** The easing the style sheet uses, so the two agree about how motion looks. */
+const FOLD_EASE = "cubic-bezier(0.25, 1, 0.5, 1)";
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+/** The chevron on the fold button. It points down when the row is folded. */
+const CHEVRON = ["M6 9.5 12 15.5 18 9.5"];
+
+/**
+ * Whether the reader has asked their system for less movement.
+ *
+ * Four things on this page move: the map's slide, the list's scroll, a row's
+ * height and the block that appears inside it. All four ask here, so a reader
+ * who turns motion off is never left with one of them still animating.
+ */
+const reducedMotion = () => Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
 
 /**
  * Which layout is on screen. The wide one puts the map and the reading column
@@ -321,7 +339,7 @@ function cancelGlide() {
  */
 function glideTo(target) {
   cancelGlide();
-  if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+  if (reducedMotion()) {
     state.view = target;
     scheduleDraw();
     return;
@@ -408,10 +426,10 @@ function setStatus(text, stateName = "") {
 /**
  * One story in the list.
  *
- * The row is folded: it shows where the story happened and a summary of it, and
- * a "show more" button opens the rest. On a phone this is the whole story, panel
- * and all, because that layout shows no panel; the sources are only reachable
- * through this button.
+ * The row is folded: it shows where the story happened, what kind of story it
+ * is, and a summary of it. A chevron opens the rest. On a phone the opened row
+ * is the whole story, panel and all, because that layout shows no panel; the
+ * sources are only reachable through the chevron.
  *
  * The row is a button, so a keyboard reaches every story.
  */
@@ -428,9 +446,19 @@ function storyItem(story, place) {
   button.type = "button";
   button.className = "item-main";
 
-  const where = document.createElement("span");
-  where.className = "item-where";
-  where.textContent = place ? placeLabel(place, state.lang) : story.category;
+  // The first line carries both facts a reader sorts stories by: where it
+  // happened, and what kind of story it is. The place is left out when there is
+  // none, and then the chip stands alone rather than under an empty line.
+  const head = document.createElement("span");
+  head.className = "item-head";
+  if (place) {
+    const where = document.createElement("span");
+    where.className = "item-where";
+    where.textContent = placeLabel(place, state.lang);
+    head.append(where);
+  }
+  const chip = categoryChip(story.category, open);
+  if (chip) head.append(chip);
 
   // The topic trail's last entry is the closest thing the portal gives a story
   // to a headline. It is left out when it only repeats the category.
@@ -445,7 +473,7 @@ function storyItem(story, place) {
   text.className = "item-text";
   text.textContent = open ? story.text : summary;
 
-  button.append(...[where, heading, text].filter(Boolean));
+  button.append(...[head.childElementCount ? head : null, heading, text].filter(Boolean));
   button.addEventListener("click", () =>
     // A wide screen shows the story in the panel beside the map, so the map
     // moves to it and zooms in on the place. A phone has no panel: the row
@@ -459,24 +487,25 @@ function storyItem(story, place) {
   );
   item.append(button);
 
+  // The category is not repeated here: the chip on the first line carries it,
+  // open or folded, and writing it twice was the reason this block existed.
   const more = document.createElement("div");
   more.className = "item-more";
   more.id = `more-${story.id}`;
   more.hidden = !open;
-  // The category is the portal's own grouping of the day. A story with no place
-  // already carries it on its first line, so it is not written twice.
-  if (place && story.category) more.append(categoryLine(story.category));
   if (story.sources.length) more.append(sourceLinks(story));
 
-  // A story with nothing more to show needs no button. Every story on the portal
-  // carries at least one source, so in practice every row has one.
+  // A story with nothing more to show needs no chevron. Every story on the
+  // portal carries at least one source, so in practice every row has one.
   if (folded || more.childElementCount) {
     const fold = document.createElement("button");
     fold.type = "button";
     fold.className = "item-fold";
-    fold.textContent = say(open ? "story.showLess" : "story.showMore");
+    // The button shows a chevron and no words, so its name is its label.
+    fold.setAttribute("aria-label", say(open ? "story.showLess" : "story.showMore"));
     fold.setAttribute("aria-expanded", String(open));
     fold.setAttribute("aria-controls", more.id);
+    fold.append(iconSvg(CHEVRON, "item-chevron"));
     fold.addEventListener("click", () => toggleStory(story, item));
     item.append(more, fold);
   }
@@ -488,20 +517,65 @@ function storyItem(story, place) {
  *
  * The row is not rebuilt. Rebuilding it would move the focus off the button the
  * reader just pressed, and on a phone it would also move the list under them.
+ *
+ * The row's height is animated from what it was to what it becomes, which is the
+ * only way to make the whole change smooth: the summary is replaced by the full
+ * text at the same moment as the sources appear, and neither of those can be
+ * eased on its own.
  */
 function toggleStory(story, item) {
   const open = !state.expanded.has(story.id);
   if (open) state.expanded.add(story.id);
   else state.expanded.delete(story.id);
-
-  item.querySelector(".item-text").textContent = open ? story.text : summarise(story.text).summary;
   const more = item.querySelector(".item-more");
-  if (more) more.hidden = !open;
-  const fold = item.querySelector(".item-fold");
-  if (fold) {
-    fold.textContent = say(open ? "story.showLess" : "story.showMore");
-    fold.setAttribute("aria-expanded", String(open));
+
+  animateHeight(item, () => {
+    item.querySelector(".item-text").textContent = open ? story.text : summarise(story.text).summary;
+    if (more) more.hidden = !open;
+    // The chip widens to the category's full name once there is room for it.
+    const name = item.querySelector(".item-category-name");
+    if (name) name.textContent = categoryName(story.category, open);
+    const fold = item.querySelector(".item-fold");
+    if (fold) {
+      fold.setAttribute("aria-label", say(open ? "story.showLess" : "story.showMore"));
+      fold.setAttribute("aria-expanded", String(open));
+    }
+  });
+
+  if (open && more) fadeIn(more);
+}
+
+/**
+ * Run a change to a row and ease its height across it.
+ *
+ * The row already clips what it holds, so animating its height slides the new
+ * content into view. A reader who has asked for less motion gets the change with
+ * no animation at all.
+ */
+function animateHeight(item, change) {
+  if (reducedMotion() || typeof item.animate !== "function") {
+    change();
+    return;
   }
+  // Read the height the reader can see right now, which on a second press is
+  // part way through the first animation, and only then drop that animation. Do
+  // it the other way round and the row jumps to where it was going before it
+  // starts coming back.
+  const from = item.getBoundingClientRect().height;
+  for (const running of item.getAnimations()) running.cancel();
+  change();
+  const to = item.getBoundingClientRect().height;
+  if (Math.abs(to - from) < 1) return;
+  item.animate([{ height: `${from}px` }, { height: `${to}px` }], { duration: FOLD_MS, easing: FOLD_EASE });
+}
+
+/** Bring a block that has just appeared up out of the row rather than snapping it in. */
+function fadeIn(element) {
+  if (reducedMotion() || typeof element.animate !== "function") return;
+  element.animate([{ opacity: 0, transform: "translateY(-4px)" }, { opacity: 1, transform: "none" }], {
+    duration: FOLD_MS,
+    easing: FOLD_EASE,
+  });
 }
 
 function renderLists() {
@@ -622,8 +696,7 @@ function revealInList(id) {
   travellingTo = id;
   // An explicit behaviour in JavaScript beats the `scroll-behavior` in the style
   // sheet, so the reader's own setting has to be honoured here too.
-  const smooth = !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  elements.reading.scrollTo({ top: Math.max(0, top), behavior: smooth ? "smooth" : "auto" });
+  elements.reading.scrollTo({ top: Math.max(0, top), behavior: reducedMotion() ? "auto" : "smooth" });
 }
 
 /**
@@ -691,12 +764,60 @@ function renderSelectedPanel() {
   elements.panelStories.replaceChildren(...stories.map((story) => selectedStory(story)));
 }
 
-/** The portal's own grouping of the day, as a small label. */
-function categoryLine(category) {
-  const line = document.createElement("p");
-  line.className = "story-category";
-  line.textContent = category;
-  return line;
+/**
+ * What to call a category, in as much room as there is.
+ *
+ * A folded row gets the short name, an open one the full name. A heading the
+ * page does not recognise keeps the portal's own words either way, which are
+ * true of any heading an editor writes. See `categories.js`.
+ */
+function categoryName(category, full) {
+  const key = classifyCategory(category);
+  return key ? say(`category.${key}.${full ? "full" : "short"}`) : category;
+}
+
+/**
+ * The portal's own grouping of the day, as an icon and a name.
+ *
+ * @param {string} category the portal's heading, for example "Law and crime"
+ * @param {boolean} full show the full name rather than the short one
+ * @returns {HTMLElement|null} null when the story carries no category at all,
+ *   which happens on a day whose editor wrote no headings
+ */
+function categoryChip(category, full) {
+  if (!category) return null;
+  const key = classifyCategory(category);
+  const chip = document.createElement("span");
+  chip.className = "item-category";
+  if (key) chip.dataset.category = key;
+  // No icon for a heading the page does not recognise. A wrong picture on a
+  // story is worse than no picture, and the name still says what it is.
+  if (key) chip.append(iconSvg(CATEGORY_ICONS[key], "item-category-icon"));
+  const name = document.createElement("span");
+  name.className = "item-category-name";
+  name.textContent = categoryName(category, full);
+  chip.append(name);
+  return chip;
+}
+
+/**
+ * One icon, built from the path data a module carries.
+ *
+ * Built element by element rather than written as markup, because this file
+ * never writes `innerHTML`: see the note at the top.
+ */
+function iconSvg(paths, className) {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("class", className);
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  for (const d of paths) {
+    const path = document.createElementNS(SVG_NS, "path");
+    path.setAttribute("d", d);
+    svg.append(path);
+  }
+  return svg;
 }
 
 /** Who reported the story. The row and the panel both show these. */
@@ -739,7 +860,8 @@ function selectedStory(story) {
   text.className = "story-text";
   text.textContent = story.text;
 
-  article.append(...[categoryLine(story.category), heading, text, sourceLinks(story)].filter(Boolean));
+  // The panel shows a story in full, so its chip carries the full name too.
+  article.append(...[categoryChip(story.category, true), heading, text, sourceLinks(story)].filter(Boolean));
   return article;
 }
 
