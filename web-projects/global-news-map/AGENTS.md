@@ -219,7 +219,7 @@ the day and the map to the top of the screen and scrolls only the list, where
   A fold is a request for room to read, and a row of date buttons left above the
   card gives back most of the height the fold just won. Measured on a 360 by 780
   phone, with the map folded: everything above the list was 160 pixels tall and
-  is now 55, so the scrolling list grew from 611 pixels to 706. Three parts carry
+  is now 88, so the scrolling list grew from 611 pixels to 674. Three parts carry
   it, and each one looks removable on its own:
   - `app.js` sets `data-collapsed` on `.stage`, **not** on `.map-wrap`, because
     the day bar is the wrapper's sibling and the card holds both.
@@ -236,30 +236,36 @@ the day and the map to the top of the screen and scrolls only the list, where
   reach Wikipedia. Check your connection and try again." wrapped into a six-line
   ribbon. A full row also holds the card's shape steady: the pill comes and goes
   as a day loads, and the map must not hop between rows with it.
-- **All four day controls stay in the card, and the map is what gives way.** The
-  reader still steps days and still jumps to the latest one with the map folded.
-  Two rules keep the four controls and the map on one row of a phone:
+- **In the card the day is a stepper, and "Latest" is not in it.** The date box
+  stands on top and the two arrows sit side by side under it, in a two-column
+  grid. All four controls in one row beside the map left the map about 70 pixels
+  wide, which is too small to read as a map. Stacked, the day takes the width of
+  its own date box and the map keeps 128 by 64 pixels on any phone from 320
+  pixels up. Four rules hold that block together:
+  - **Place every cell by hand** (`grid-area` on `.day-field`, `#prev-day` and
+    `#next-day`). Auto-placement gives the date box a row of its own the moment
+    it spans two columns, so the arrows fall above and below it and the block
+    grows to three rows and 106 pixels.
+  - **"Latest" is dropped, not shrunk** (`display: none` on the card's
+    `.text-button`). It is the one day control the reader can do without here,
+    because the next-day arrow walks the same way, and dropping it is what buys
+    the stepper its narrow column. The button is still on the full-size map, one
+    tap away, so a reader deep in the past expands the map to jump back.
   - **A written `min-width` on the collapsed canvas is load-bearing.** A flex
     item's `min-width: auto` is its own content's width, a canvas carries an
     intrinsic width, and **a flex row wraps before it shrinks**. With `auto` the
     map refused to give up one pixel, wrapped onto a second line, and cost the
     height this card exists to save. The number is `3rem`, because the small map
     is the only way back to the big one and 48 by 24 pixels is the smallest
-    target a finger should have to hit. Below that width the map takes a row of
-    its own instead of becoming a target nobody can tap.
-  - **The card hides the date box's calendar button on a narrow screen only**
-    (`::-webkit-calendar-picker-indicator`). It is about 18 pixels wide, and
-    those 18 pixels are the whole margin. A touch screen opens the day picker
-    when the box takes focus, with or without the button. Keep the rule inside
-    the narrow query: on a wide screen a click on that button is the way in, and
-    the card has room for it.
+    target a finger should have to hit.
+  - **The map stops at 8rem, which is the height of the stepper beside it.** The
+    map is twice as wide as it is tall, so a wider map is a taller card, and this
+    card should be no taller than the controls it holds.
 
-  Below about 340 pixels the map takes a row of its own, and the card falls back
-  to the shape the collapsed bar had before. Nothing overflows, and nothing clips
-  the date. Measured from 340 pixels up, in both languages and at pixel ratios 2
-  and 3, the card holds one row. Measure it again after any change to it, at
-  those widths and in both languages: a native date box is wider at a higher
-  pixel ratio, and "Lo último" is wider than "Latest".
+  Measured at 320, 360, 390, 412, 768 and 1280 pixels, in both languages and at
+  pixel ratios 2 and 3: one row every time, nothing overflowing and no clipped
+  date. Measure it again after any change to the card, at those widths and in
+  both languages: a native date box is wider at a higher pixel ratio.
 - **The fold is not remembered, and that is deliberate.** No `localStorage`, no
   URL parameter. The credit line says "Nothing about you is stored or sent
   anywhere else", and that sentence is worth more than saving the reader one tap

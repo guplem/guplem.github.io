@@ -344,48 +344,66 @@ main {
   display: contents;
 }
 
-/* The day, first in the card and compact. This card is now the whole of the page
-   above the list, so every millimetre it gives up is another line of news.
+/* The day, first in the card, as a stepper: the date box on top and the two
+   arrows side by side under it. A row of four controls beside the map left the
+   map about 70 pixels wide on a phone. Stacked, the day takes only the width of
+   its own date box, so the map keeps a size worth looking at and the card still
+   fits a 320-pixel screen with no wrapping and no clipping.
 
-   All four day controls stay: a reader who folded the map away still steps
-   through days and still jumps back to the latest one. They keep one row on a
-   phone because each control is a little smaller here, and because the map takes
-   only what they leave. Below about 340 pixels the map drops to a row of its own
-   under them, which is the shape the collapsed bar had before. Nothing overflows
-   the card, and nothing clips the date. */
+   The grid is what stacks them, and it needs no change to the order of the
+   page's own markup: the date box spans both columns, and each arrow takes one,
+   so the two together are exactly as wide as the date above them. */
 .stage[data-collapsed] .daybar {
   order: 0;
-  /* It never grows: the room left over belongs to the map, which is pushed to
-     the far edge of the card. It does shrink, and it wraps rather than clip. */
-  flex: 0 1 auto;
-  flex-wrap: wrap;
+  /* It takes a share of the room the map does not want, up to a stop, because
+     the leftover would otherwise sit as a hole in the middle of the card. The
+     arrows are twice the width they were on a phone, which is the reason worth
+     having: they are the only way to step a day while the map is folded. */
+  flex: 1 1 auto;
+  max-width: 11rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.3rem;
   min-width: 0;
   margin: 0;
 }
 
-.stage[data-collapsed] .icon-button {
-  width: 2rem;
-  height: 2rem;
+/* Every cell is placed by hand. Left to place itself, the date box needs a row
+   of its own the moment it spans two columns, so the arrows fall above and below
+   it and the block grows to three rows. */
+.stage[data-collapsed] .day-field {
+  grid-area: 1 / 1 / 2 / -1;
+  min-width: 0;
 }
 
-/* The date box is the one control that can give width back, and the floor stops
-   it before it would clip its own date and read "30/08/20…". */
-.stage[data-collapsed] .day-field {
-  flex: 1 1 auto;
-  min-width: 0;
+.stage[data-collapsed] #prev-day {
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+.stage[data-collapsed] #next-day {
+  grid-area: 2 / 2 / 3 / 3;
 }
 
 .stage[data-collapsed] #day-input {
   width: 100%;
   min-width: 5rem;
-  padding: 0.35rem 0.4rem;
+  padding: 0.3rem 0.4rem;
   font-size: 0.85rem;
 }
 
+/* Each arrow fills its column, so the pair is one clear stepper under the date
+   and each half is a wider target than the square button it replaces. */
+.stage[data-collapsed] .icon-button {
+  width: auto;
+  height: 1.9rem;
+}
+
+/* "Latest" is not in the card. It is the one day control a reader can do
+   without while the map is folded, because the next-day arrow walks the same
+   way, and dropping it is what buys the stepper its narrow column. The button
+   is still there on the full-size map, one tap away. */
 .stage[data-collapsed] .text-button {
-  padding: 0.35rem 0.45rem;
-  font-size: 0.78rem;
+  display: none;
 }
 
 /* Nothing in the card folds the map back out: the small map itself is the way
@@ -428,8 +446,10 @@ main {
      It also takes only the width the day bar leaves, and the basis is what makes
      that work: a flex row WRAPS before it shrinks, so a basis of 10rem sent the
      map to a second row on a phone and cost the height this card is meant to
-     save. From 3rem it fits beside the day on any phone from about 340 pixels
-     up, then grows into whatever room is left, to the 10rem it wants. */
+     save. From 3rem it fits beside the day on every phone, then grows into
+     whatever room is left, to the 8rem it stops at. That ceiling is the height
+     of the day stepper beside it: a wider map is a taller card, and the card
+     should be no taller than the controls it holds. */
   order: 1;
   flex: 1 1 3rem;
   /* This floor is required, and a written one is required: a flex item's
@@ -440,7 +460,7 @@ main {
      finger should have to hit. Below that the map takes a row of its own rather
      than become a target nobody can tap. */
   min-width: 3rem;
-  max-width: 10rem;
+  max-width: 8rem;
   margin-left: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -902,15 +922,6 @@ main {
 
   .daybar {
     margin-bottom: 0.6rem;
-  }
-
-  /* The calendar button inside the date box, in the collapsed card only. It is
-     about 18 pixels wide, and those 18 pixels are what let the day's four
-     controls and the map share one row on a 360-pixel phone. A touch screen
-     opens the day picker when the box takes focus, with or without the button,
-     so nothing is lost here; the full-size map's own day bar keeps it. */
-  .stage[data-collapsed] #day-input::-webkit-calendar-picker-indicator {
-    display: none;
   }
 
   #map {
