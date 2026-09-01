@@ -15,8 +15,11 @@ reported by, so you can read the original article.
   Pins that sit close together share one numbered marker, so a marker can cover
   more than one place: the page says when it does, and choosing the marker again
   moves to the next place on it.
-- **Every story folds to a summary**, and a "show more" button opens the rest of
-  it with the sources that reported it.
+- **Every story folds to a summary**, and a chevron opens the rest of it with the
+  sources that reported it.
+- **A folded story says what kind of story it is.** Every row carries the
+  portal's own category as a small icon and a short name, next to the place. The
+  name grows to the full category when you open the row.
 - **Made for a phone.** The day and the map hold the top of the screen and never
   move. Only the list of stories scrolls under them, and the story at the top of
   that list is the one the map marks, so scrolling the list walks the map. Choose
@@ -50,6 +53,17 @@ size of the thing in metres, and the smallest one wins.
 The country shown next to a place comes from Wikidata. A place that spans several
 countries, such as the Strait of Hormuz, is shown without one, and a country is
 never labelled with itself.
+
+## The categories
+
+The portal groups each day's stories under headings such as "Law and crime". Ten
+of them do nearly all the work: counted over 710 real portal days from 2014 to
+2026, they head more than 99% of every story. The page carries an icon and a
+short name for each, in both languages.
+
+Nothing on Wikipedia enforces those ten, though. Editors sometimes write a
+retired name or a typo, so a heading the page does not recognise is shown exactly
+as the editor wrote it, with no icon.
 
 ## How to Run
 

@@ -12,7 +12,8 @@ Human docs: [README.md](README.md). Decision records:
 [ADR 0001](adr/0001-wikipedia-current-events-as-the-news-source.md),
 [ADR 0002](adr/0002-place-a-story-by-the-smallest-linked-place.md),
 [ADR 0003](adr/0003-draw-the-map-from-carried-coastlines.md),
-[ADR 0004](adr/0004-on-a-phone-the-list-drives-the-map.md).
+[ADR 0004](adr/0004-on-a-phone-the-list-drives-the-map.md),
+[ADR 0005](adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md).
 
 ## Module map (pure logic is separated from the DOM so it can be unit-tested)
 
@@ -20,6 +21,7 @@ Human docs: [README.md](README.md). Decision records:
 |---|---|---|
 | `calendar.js` | yes | Which day is shown, and its Wikipedia page title. Every date is UTC. |
 | `stories.js` | yes | One day's portal HTML into stories: text, category, topic trail, sources, linked titles. |
+| `categories.js` | yes (data) | The ten categories the portal uses, the words that name each one (`classifyCategory`), and an icon for each (`CATEGORY_ICONS`). See ADR 0005. |
 | `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), which places need a country (`placeTitlesOf`), and grouping by place (`storyIdsAtPlace`, `nextPlaceOnMarker`). |
 | `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, and `groupMatesOf` to name every story sharing one marker. |
 | `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, and `topmostRow` says which row stands at the top of the scrolling list. |
@@ -102,6 +104,20 @@ the day and the map to the top of the screen and scrolls only the list, where
   reading shows a reader in Sydney a different day from a reader in Los Angeles,
   and shows one of them an empty map for part of every day. `calendar.js` has no
   local-time call in it; keep it that way.
+- **The portal writes a category heading two ways, and both must be read.** A day
+  since about 2019 writes `'''Law and crime'''`, which arrives as `<p><b>…</b></p>`.
+  Every day before that writes `;Law and crime`, which arrives as
+  `<div class="current-events-content-heading">`. `stories.js` read only the bold
+  form for a long time, so **every story before 2019 carried no category at all**.
+  The bug hid because the category was shown only inside an opened row. Never
+  drop either branch, and check any parser change against a day from each era.
+- **The set of categories is a convention, not a rule.** Ten headings carry more
+  than 99% of every story, but nothing on Wikipedia enforces them, and about one
+  new typo appears each year ("Sience and technology" is real). `classifyCategory`
+  answers null for a heading it cannot read, and the page then prints the portal's
+  own words with no icon. Null is a normal answer; never make it throw, and never
+  make the code guess between two categories. ADR 0005 holds the survey the ten
+  came from.
 - **The leaves of the portal's list are the stories.** An item that holds a list
   is a running topic, not a story. Parsing every `<li>` as a story invents
   headline-shaped entries such as "2026 Iran war" that have no text of their own.
@@ -205,6 +221,23 @@ the day and the map to the top of the screen and scrolls only the list, where
   the row rewraps, and every row below it jumps while the reader scrolls. The same
   rule is why the "next place" button stands over the map and not in the layout:
   the reader scrolling the list makes it come and go.
+- **A folded row carries the place and the category, and the chip is the quieter
+  of the two.** `.item-head` puts the place on the left and the category chip on
+  the right. The chip's icon takes the accent colour and its name is muted, so the
+  row still leads with where the story happened. A chip in the same loud orange as
+  the place made the two compete, and the full name shouted over the headline.
+- **The chip is the only place the category is written.** It stands on the folded
+  row and widens to the full name when the row opens, so `item-more` holds the
+  sources and nothing else. Putting a category line back inside the opened row
+  prints it twice.
+- **`toggleStory` eases the row's height, and that is the only way to ease it.**
+  Opening a row swaps the summary for the whole text **and** reveals the sources
+  at the same moment. Neither of those can be transitioned on its own, so
+  `animateHeight` measures the row before and after the change and animates
+  between the two numbers. The row already clips what it holds, which is what
+  makes the content slide rather than jump. Both `animateHeight` and `fadeIn`
+  return early under `prefers-reduced-motion`, and `style.css` makes the same
+  check for the chevron's turn, so the two halves always agree.
 
 ### The narrow layout (ADR 0004)
 
@@ -261,6 +294,10 @@ so have no test of their own: `world.js` is generated, and `stories.test.js` rea
 `portalFixture.js`. `app.js`, `dataSource.js` and `buildWorld.js` have
 none by design; anything in them worth a test belongs in a pure module instead.
 
+`categories.test.js` also guards `i18n.js`: it fails when one of the ten
+categories has no short or full name in a language, or when a short name is
+longer than the full one it stands in for.
+
 ```bash
 cd web-projects/global-news-map && bun test
 ```
@@ -277,3 +314,4 @@ a test that needs Wikipedia fails in CI for reasons of its own.
 | [0002](adr/0002-place-a-story-by-the-smallest-linked-place.md) | Place a story by the smallest place it links, and read no sentences |
 | [0003](adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
 | [0004](adr/0004-on-a-phone-the-list-drives-the-map.md) | On a phone the map holds still and the list drives it |
+| [0005](adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md) | A fixed set of ten categories, and the portal's own words when it is none of them |
