@@ -262,22 +262,31 @@ function drawMarker(marker, colour, ink, selected) {
  * Draw one plain dot per story, which is what the collapsed map shows.
  *
  * The collapsed map groups nothing. A numbered disc is 20 to 36 pixels across
- * and the whole map is 160, so one disc would cover a quarter of it, and every
- * pin would fall in the same group anyway. Dots say "here, and here" and that is
- * all a map this size can say.
+ * and the whole map is 160 at its widest, so one disc would cover a quarter of
+ * it, and every pin would fall in the same group anyway. Dots say "here, and
+ * here" and that is all a map this size can say.
+ *
+ * The dots are measured against the canvas and not in fixed pixels. The card
+ * gives the map the width the day bar leaves, which is 48 pixels on the
+ * narrowest phone, and a fixed 2.5-pixel dot there covered a tenth of the world:
+ * a real day of news drew Europe as one orange blob. At 10rem, the width the
+ * small map asks for, this is the same 2.5 it always was.
  */
 function drawDots(colour, ink) {
+  const scale = Math.min(1, size.width / 160);
+  const plain = Math.max(1, 2.5 * scale);
+  const marked = Math.max(1.75, 4 * scale);
   for (const pin of state.pins) {
     const point = project(pin.lon, pin.lat, state.view, size);
     const chosen = pin.story.id === state.selectedId;
     context.beginPath();
-    context.arc(point.x, point.y, chosen ? 4 : 2.5, 0, Math.PI * 2);
+    context.arc(point.x, point.y, chosen ? marked : plain, 0, Math.PI * 2);
     context.fillStyle = colour;
     context.fill();
     if (!chosen) continue;
     // The chosen story gets a ring, because a dot one pixel bigger than its
     // neighbours is not a difference anybody sees.
-    context.lineWidth = 1.5;
+    context.lineWidth = Math.max(0.75, 1.5 * scale);
     context.strokeStyle = ink;
     context.stroke();
   }

@@ -194,6 +194,12 @@ the day and the map to the top of the screen and scrolls only the list, where
   the reader last saw at full size, and `draw` takes the `drawDots` path, which
   draws one plain dot per story straight from `state.pins`. `showDay` clears
   `state.markers`, because a grouping from a day that is gone must not be kept.
+- **`drawDots` measures its dots against the canvas, never in fixed pixels.** The
+  card gives the small map the width the day bar leaves, which is as little as 48
+  pixels, and a fixed 2.5-pixel dot there covers a tenth of the world. A real day
+  of fifteen stories drew Europe as one orange blob. The scale is the canvas width
+  over 160, capped at one, so the map at the width it asks for keeps the dots it
+  always had.
 - **The small map is no map to work, and it is the one way back to the big one.**
   There is no "expand" button: the reader taps or clicks the small map itself.
   `pointerdown` and `wheel` return early on `state.mapCollapsed`, so a finger
