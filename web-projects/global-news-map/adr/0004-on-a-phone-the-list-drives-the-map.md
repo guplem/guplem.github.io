@@ -53,8 +53,8 @@ back to the chosen story.
 **The map collapses to a bar, and the bar keeps a small map.** One button over
 the map's top left corner shrinks it, which gives most of the screen to the words
 for a reader who is reading more than they are looking. The bar holds three
-things: the button, a small live map, and the pill that says the day is loading,
-is empty or could not be reached.
+things: the day controls, a small live map, and the pill that says the day is
+loading, is empty or could not be reached.
 
 The small map is not decoration. `zoom` means "how many canvas widths the world
 is wide", so it is the same number on both sizes and the small map shows the same

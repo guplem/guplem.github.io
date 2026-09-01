@@ -314,41 +314,121 @@ main {
   color: var(--accent-ink);
 }
 
-/* The collapsed map: a slim bar holding the button, the pill and the map itself,
-   small, in a row. The map stays because a reader who collapses it is still
-   reading about places, and the small one still shows where. The pill stays
-   because it is where the loading line, the empty day and the failure are said,
-   and a collapsed map must not swallow them. */
-.map-wrap[data-collapsed] {
+/* The collapsed map: ONE card holding the day, the pill and the map itself,
+   small, in a row. The day bar moves inside the card, because a fold is a
+   request for room to read: left above the card, a second row of date buttons
+   gives back most of the height the fold just won.
+
+   `display: contents` on `.map-wrap` is what makes that possible with no node
+   moved between parents. The wrapper's box goes away while the map is small, so
+   the day bar and the map's own children stand in one flex row, and expanding
+   the map puts every box back exactly as it was.
+
+   The map stays because a reader who collapses it is still reading about places,
+   and the small one still shows where. The pill stays because it is where the
+   loading line, the empty day and the failure are said, and a collapsed map
+   must not swallow them. */
+.stage[data-collapsed] {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.45rem 0.6rem;
+  gap: 0.5rem;
+  padding: 0.45rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.stage[data-collapsed] .map-wrap {
+  display: contents;
+}
+
+/* The day, first in the card, as a stepper: the date box on top and the two
+   arrows side by side under it. A row of four controls beside the map left the
+   map about 70 pixels wide on a phone. Stacked, the day takes only the width of
+   its own date box, so the map keeps a size worth looking at and the card still
+   fits a 320-pixel screen with no wrapping and no clipping.
+
+   The grid is what stacks them, and it needs no change to the order of the
+   page's own markup: the date box spans both columns, and each arrow takes one,
+   so the two together are exactly as wide as the date above them. */
+.stage[data-collapsed] .daybar {
+  order: 0;
+  /* It takes a share of the room the map does not want, up to a stop, because
+     the leftover would otherwise sit as a hole in the middle of the card. The
+     arrows are twice the width they were on a phone, which is the reason worth
+     having: they are the only way to step a day while the map is folded. */
+  flex: 1 1 auto;
+  max-width: 11rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+  min-width: 0;
+  margin: 0;
+}
+
+/* Every cell is placed by hand. Left to place itself, the date box needs a row
+   of its own the moment it spans two columns, so the arrows fall above and below
+   it and the block grows to three rows. */
+.stage[data-collapsed] .day-field {
+  grid-area: 1 / 1 / 2 / -1;
+  min-width: 0;
+}
+
+.stage[data-collapsed] #prev-day {
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+.stage[data-collapsed] #next-day {
+  grid-area: 2 / 2 / 3 / 3;
+}
+
+.stage[data-collapsed] #day-input {
+  width: 100%;
+  min-width: 5rem;
+  padding: 0.3rem 0.4rem;
+  font-size: 0.85rem;
+}
+
+/* Each arrow fills its column, so the pair is one clear stepper under the date
+   and each half is a wider target than the square button it replaces. */
+.stage[data-collapsed] .icon-button {
+  width: auto;
+  height: 1.9rem;
+}
+
+/* "Latest" is not in the card. It is the one day control a reader can do
+   without while the map is folded, because the next-day arrow walks the same
+   way, and dropping it is what buys the stepper its narrow column. The button
+   is still there on the full-size map, one tap away. */
+.stage[data-collapsed] .text-button {
+  display: none;
+}
+
+/* Nothing in the card folds the map back out: the small map itself is the way
+   to the big one, and a second button here would take the room from the day.
+   The button is still the way in, over the full-size map. */
+.stage[data-collapsed] .map-toggle {
+  display: none;
 }
 
 /* No room for these on a bar, and nothing to aim them at: the small map is a
    picture to glance at, not a map to work. */
-.map-wrap[data-collapsed] .map-controls,
-.map-wrap[data-collapsed] .next-place {
+.stage[data-collapsed] .map-controls,
+.stage[data-collapsed] .next-place {
   display: none;
 }
 
-/* In the bar these stand in a row rather than over the map. */
-.map-wrap[data-collapsed] .map-toggle,
-.map-wrap[data-collapsed] .status {
-  position: static;
-}
-
-.map-wrap[data-collapsed] .status {
-  /* Always its own row under the button and the map, never a column squeezed
+.stage[data-collapsed] .status {
+  /* Always its own row under the day and the map, never a column squeezed
      between them. "Could not reach Wikipedia. Check your connection and try
      again." is a whole sentence, and in the gap left over it wrapped into a
-     six-line ribbon. A full row also keeps the bar's shape steady: the pill
+     six-line ribbon. A full row also keeps the card's shape steady: the pill
      comes and goes as a day loads, and the map must not hop between rows with
      it. */
   order: 2;
+  position: static;
   flex: 1 1 100%;
   max-width: none;
   padding: 0;
@@ -356,22 +436,38 @@ main {
   box-shadow: none;
 }
 
-.map-wrap[data-collapsed] #map {
+.stage[data-collapsed] #map {
   /* Last in the row and against the right edge, which is the free corner of the
-     bar. `aspect-ratio` still gives the height, so the world keeps its shape.
+     card. `aspect-ratio` still gives the height, so the world keeps its shape.
      The zoom means the same thing on both sizes ("how many canvas widths the
      world is wide"), so this shows the same ground as the big map, drawn small:
-     zoomed in it is a useful neighbourhood, zoomed out the whole world. */
+     zoomed in it is a useful neighbourhood, zoomed out the whole world.
+
+     It also takes only the width the day bar leaves, and the basis is what makes
+     that work: a flex row WRAPS before it shrinks, so a basis of 10rem sent the
+     map to a second row on a phone and cost the height this card is meant to
+     save. From 3rem it fits beside the day on every phone, then grows into
+     whatever room is left, to the 8rem it stops at. That ceiling is the height
+     of the day stepper beside it: a wider map is a taller card, and the card
+     should be no taller than the controls it holds. */
   order: 1;
-  flex: 0 0 auto;
-  width: 10rem;
+  flex: 1 1 3rem;
+  /* This floor is required, and a written one is required: a flex item's
+     `min-width: auto` is its own content's width, a canvas carries an intrinsic
+     width, so with `auto` the map refuses to shrink one pixel and the row wraps
+     it onto a second line instead. 3rem is the number because the map is the
+     only way back to the big one: 48 by 24 pixels is the smallest target a
+     finger should have to hit. Below that the map takes a row of its own rather
+     than become a target nobody can tap. */
+  min-width: 3rem;
+  max-width: 8rem;
   margin-left: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  /* A picture, not a control. Without this a finger on it would be captured by
-     `touch-action: none` and the list under it would refuse to scroll, and a
-     drag would pan a map too small to aim. A tap still expands it, which
-     `app.js` wires to the canvas. */
+  /* A picture, not a map to work. Without this a finger on it would be captured
+     by `touch-action: none` and the list under it would refuse to scroll, and a
+     drag would pan a map too small to aim. A tap or the Enter key still expands
+     it, which `app.js` wires to the canvas. */
   touch-action: auto;
   cursor: zoom-in;
 }
