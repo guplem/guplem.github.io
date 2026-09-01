@@ -289,6 +289,61 @@ main {
   cursor: grabbing;
 }
 
+/* The button that folds the map away. It stands over the map's top left corner,
+   where nothing else does, so an open map pays no height for it. */
+.map-toggle {
+  position: absolute;
+  z-index: 1;
+  top: 0.6rem;
+  left: 0.6rem;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.map-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* The folded map: a slim bar holding the button and the pill, side by side. The
+   pill has to stay, because it is where the loading line, the empty day and the
+   failure are said, and a folded map must not swallow them. */
+.map-wrap[data-collapsed] {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--surface);
+}
+
+.map-wrap[data-collapsed] #map,
+.map-wrap[data-collapsed] .map-controls,
+.map-wrap[data-collapsed] .next-place {
+  display: none;
+}
+
+/* In the bar the two stand in a row, rather than over a map that is not there. */
+.map-wrap[data-collapsed] .map-toggle,
+.map-wrap[data-collapsed] .status {
+  position: static;
+}
+
+.map-wrap[data-collapsed] .status {
+  max-width: none;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+
 .map-controls {
   position: absolute;
   top: 0.6rem;

@@ -7,11 +7,13 @@ import {
   lonLatToUnit,
   panBy,
   project,
+  splitAtAntimeridian,
   unitToLonLat,
   unproject,
   worldSize,
   zoomAt,
 } from "./geo.js";
+import { LAND_SHAPES } from "./world.js";
 
 const SIZE = { width: 800, height: 400 };
 const HOME = { zoom: 1, cx: 0.5, cy: 0.5 };
@@ -276,5 +278,97 @@ describe("groupMatesOf", () => {
     const tight = clusterPoints(points, 20);
     expect(groupMatesOf(tight, (p) => p.id === "near1").map((p) => p.id).sort()).toEqual(["near1", "near2"]);
     expect(groupMatesOf(tight, (p) => p.id === "far").map((p) => p.id)).toEqual(["far"]);
+  });
+});
+
+describe("splitAtAntimeridian", () => {
+  // The real bug this exists for. Natural Earth cuts a landmass that crosses the
+  // 180th meridian into a vertex at +180 followed by one at -180. On a flat map
+  // that pair is a straight line across the whole world, and four shapes carry
+  // one: Eurasia at Chukotka, Antarctica, Fiji and Wrangel Island. A reader
+  // reported the lines.
+  test("cuts a shape where its longitude jumps the whole world", () => {
+    // Fiji, shortened: two vertices east of the line, then two west of it.
+    const fiji = [179, -17, 179.5, -16.5, -179.5, -16.4, -179, -16.2];
+    const pieces = splitAtAntimeridian(fiji);
+    expect(pieces).toHaveLength(2);
+    expect(pieces[0]).toEqual([179, -17, 179.5, -16.5, 180, -16.5]);
+    expect(pieces[1]).toEqual([-180, -16.4, -179.5, -16.4, -179, -16.2]);
+  });
+
+  test("ends the piece it closes on the edge and starts the next one there", () => {
+    // Both pieces have to reach the edge of the map, or the fill leaves a wedge
+    // of ocean where the land should run off the side.
+    const pieces = splitAtAntimeridian([170, 10, 178, 20, -178, 30, -170, 40]);
+    expect(pieces[0].at(-2)).toBe(180);
+    expect(pieces[1][0]).toBe(-180);
+    // The edge point keeps the latitude of the vertex it belongs to.
+    expect(pieces[0].at(-1)).toBe(20);
+    expect(pieces[1][1]).toBe(30);
+  });
+
+  test("cuts a shape that crosses twice, which every real one does", () => {
+    // A ring has to come back, so it crosses an even number of times. Eurasia
+    // starts on the far side of the line, crosses to the near side and ends by
+    // crossing back.
+    const pieces = splitAtAntimeridian([-179, 65, -178, 64, 179, 63, 178, 62, 177, 61, -179, 60]);
+    expect(pieces).toHaveLength(2);
+    expect(pieces[0]).toEqual([-179, 65, -178, 64, -180, 64]);
+    expect(pieces[1]).toEqual([180, 63, 179, 63, 178, 62, 177, 61, 180, 61]);
+  });
+
+  test("leaves a shape that never crosses exactly as it was", () => {
+    const americas = [-168, 65, -34, -53, -80, 20];
+    expect(splitAtAntimeridian(americas)).toEqual([americas]);
+  });
+
+  test("drops a piece too small to be an outline", () => {
+    // The crossing vertex is often the shape's own first or last point, which
+    // leaves a piece of one point. Two points cannot enclose an area either.
+    expect(splitAtAntimeridian([-180, 71, 180, 70, 179, 70, 178, 71, -180, 71])).toEqual([
+      [180, 70, 180, 70, 179, 70, 178, 71, 180, 71],
+    ]);
+  });
+
+  test("gives back nothing for nothing, rather than throwing", () => {
+    expect(splitAtAntimeridian([])).toEqual([]);
+    expect(splitAtAntimeridian(null)).toEqual([]);
+    expect(splitAtAntimeridian(undefined)).toEqual([]);
+  });
+
+  // The guard on the real data, which is where the reported lines came from.
+  test("leaves no piece of the real world with a whole-world step in it", () => {
+    for (const piece of LAND_SHAPES.flatMap(splitAtAntimeridian)) {
+      for (let i = 2; i < piece.length; i += 2) {
+        expect(Math.abs(piece[i] - piece[i - 2])).toBeLessThanOrEqual(180);
+      }
+    }
+  });
+
+  test("leaves one closing edge across the world, and it is Antarctica's own bottom", () => {
+    // A piece is filled closed, so its last point joins its first one and that
+    // edge is drawn too. Antarctica is the one shape whose ring runs off one
+    // edge of the map and back on the other, so its closing edge crosses the
+    // whole world along about 84 degrees south. That edge is the solid bottom of
+    // the continent and it belongs there. Any second such edge is a stray line.
+    const wide = LAND_SHAPES.flatMap(splitAtAntimeridian).filter(
+      (piece) => Math.abs(piece[0] - piece.at(-2)) > 180,
+    );
+    expect(wide).toHaveLength(1);
+    expect(wide[0][1]).toBeLessThan(-60);
+    expect(wide[0].at(-1)).toBeLessThan(-60);
+  });
+
+  test("finds the four shapes in the real data that really do cross the line", () => {
+    // Eurasia where Chukotka runs past the meridian, Antarctica, Fiji and
+    // Wrangel Island. If this number changes, `world.js` came from another
+    // source and the map is worth looking at again.
+    const crossing = LAND_SHAPES.filter((shape) => {
+      for (let i = 2; i < shape.length; i += 2) {
+        if (Math.abs(shape[i] - shape[i - 2]) > 180) return true;
+      }
+      return false;
+    });
+    expect(crossing).toHaveLength(4);
   });
 });
