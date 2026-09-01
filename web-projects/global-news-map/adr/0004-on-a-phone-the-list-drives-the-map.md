@@ -50,13 +50,25 @@ their system for less movement gets a cut instead.
 "whole world" button all stop a slide in progress and none of them move the map
 back to the chosen story.
 
-**The map folds away.** One button over its top left corner turns the map into a
-slim bar, which gives the whole screen to the words for a reader who is reading
-and not looking. The bar keeps the pill that says the day is loading, is empty or
-could not be reached, because a folded map must not swallow the one message the
-reader is waiting for. The fold is not remembered between visits: the page stores
-nothing about the reader, and that is what lets the credit line say so with no
-caveat.
+**The map collapses to a bar, and the bar keeps a small map.** One button over
+the map's top left corner shrinks it, which gives most of the screen to the words
+for a reader who is reading more than they are looking. The bar holds three
+things: the button, a small live map, and the pill that says the day is loading,
+is empty or could not be reached.
+
+The small map is not decoration. `zoom` means "how many canvas widths the world
+is wide", so it is the same number on both sizes and the small map shows the same
+ground as the big one, drawn small. Zoomed out that is the whole world with a dot
+per story; zoomed in it is the neighbourhood the story happened in. It follows
+the list exactly as the big map does, so a reader who collapsed the map can still
+see where they are reading about.
+
+The button says "collapse" and not "hide", because the map never goes away. An
+earlier version did hide it, and hiding the one picture on the page to read the
+words is a trade nobody has to make.
+
+The fold is not remembered between visits: the page stores nothing about the
+reader, and that is what lets the credit line say so with no caveat.
 
 Five decisions follow from that one:
 
@@ -105,10 +117,17 @@ anything else, so they stay in the document for a screen reader.
   `clampView` allows no gap between the edge of the map and the edge of the
   canvas, so Wellington at 175 degrees east lands near the right-hand side rather
   than in the centre. That is the projection being honest, not a fault.
-- **A folded map is not drawn and not measured.** `draw` and `resizeCanvas` both
-  return early. Measuring a folded canvas would leave a canvas one pixel wide
-  behind, and the grouping of the pins works against that same size, so every pin
-  would come back as one marker when the map was opened again.
+- **The small map groups no pins.** It draws a plain dot per story and skips
+  `clusterPoints` entirely. Two reasons, and either one is enough: a numbered
+  disc is up to 36 pixels across on a map 160 wide, and at that size every pin
+  falls in one group anyway. `updateMarkers` therefore does nothing while the map
+  is collapsed, so `state.markers` keeps the grouping the reader last saw at full
+  size, which is what the panel's "this pin also covers N more" note is counted
+  from.
+- **The small map is a picture, not a control.** No panning, no pinching and no
+  choosing a pin on it: a tap expands it instead. A map 160 pixels wide cannot be
+  aimed at, and `touch-action: none` on it would capture a finger that meant to
+  scroll the list.
 - The address bar is written once the scrolling stops, not once per row. A
   browser limits how often a page may rewrite its address, and a long scroll
   would spend that budget in seconds.

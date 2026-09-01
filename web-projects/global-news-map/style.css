@@ -314,34 +314,66 @@ main {
   color: var(--accent-ink);
 }
 
-/* The folded map: a slim bar holding the button and the pill, side by side. The
-   pill has to stay, because it is where the loading line, the empty day and the
-   failure are said, and a folded map must not swallow them. */
+/* The collapsed map: a slim bar holding the button, the pill and the map itself,
+   small, in a row. The map stays because a reader who collapses it is still
+   reading about places, and the small one still shows where. The pill stays
+   because it is where the loading line, the empty day and the failure are said,
+   and a collapsed map must not swallow them. */
 .map-wrap[data-collapsed] {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.6rem;
   padding: 0.45rem 0.6rem;
   background: var(--surface);
 }
 
-.map-wrap[data-collapsed] #map,
+/* No room for these on a bar, and nothing to aim them at: the small map is a
+   picture to glance at, not a map to work. */
 .map-wrap[data-collapsed] .map-controls,
 .map-wrap[data-collapsed] .next-place {
   display: none;
 }
 
-/* In the bar the two stand in a row, rather than over a map that is not there. */
+/* In the bar these stand in a row rather than over the map. */
 .map-wrap[data-collapsed] .map-toggle,
 .map-wrap[data-collapsed] .status {
   position: static;
 }
 
 .map-wrap[data-collapsed] .status {
+  /* Always its own row under the button and the map, never a column squeezed
+     between them. "Could not reach Wikipedia. Check your connection and try
+     again." is a whole sentence, and in the gap left over it wrapped into a
+     six-line ribbon. A full row also keeps the bar's shape steady: the pill
+     comes and goes as a day loads, and the map must not hop between rows with
+     it. */
+  order: 2;
+  flex: 1 1 100%;
   max-width: none;
   padding: 0;
   background: none;
   box-shadow: none;
+}
+
+.map-wrap[data-collapsed] #map {
+  /* Last in the row and against the right edge, which is the free corner of the
+     bar. `aspect-ratio` still gives the height, so the world keeps its shape.
+     The zoom means the same thing on both sizes ("how many canvas widths the
+     world is wide"), so this shows the same ground as the big map, drawn small:
+     zoomed in it is a useful neighbourhood, zoomed out the whole world. */
+  order: 1;
+  flex: 0 0 auto;
+  width: 10rem;
+  margin-left: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  /* A picture, not a control. Without this a finger on it would be captured by
+     `touch-action: none` and the list under it would refuse to scroll, and a
+     drag would pan a map too small to aim. A tap still expands it, which
+     `app.js` wires to the canvas. */
+  touch-action: auto;
+  cursor: zoom-in;
 }
 
 .map-controls {

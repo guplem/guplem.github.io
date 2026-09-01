@@ -51,12 +51,12 @@
         </nav>
 
         <div class="map-wrap" id="map-wrap">
-          <!-- Folds the map away, which gives the whole screen to the words for
-               a reader who is reading and not looking. The button lives inside
-               this block on purpose: the folded map leaves a slim bar around it,
-               and that bar still carries the pill that says the day is loading,
-               is empty, or could not be reached. -->
-          <button type="button" id="toggle-map" class="map-toggle" aria-controls="map" aria-expanded="true">Hide map</button>
+          <!-- Shrinks the map to a bar, which gives most of the screen to the
+               words for a reader who is reading more than they are looking. The
+               button lives inside this block on purpose: the collapsed bar keeps
+               both the small map and the pill that says the day is loading, is
+               empty, or could not be reached. -->
+          <button type="button" id="toggle-map" class="map-toggle" aria-controls="map" aria-expanded="true">Collapse map</button>
 
           <!-- The map itself. It is a picture of the story list below, so the
                canvas is marked as an image and the list carries the real content

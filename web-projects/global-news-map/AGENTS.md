@@ -178,17 +178,37 @@ the day and the map to the top of the screen and scrolls only the list, where
   `cancelGlide` stops it. Every input that sets `state.view` itself calls
   `cancelGlide` first: the drag, the pinch, the wheel, the two zoom buttons and
   the "whole world" button. Miss one and the slide fights the reader's finger.
-- **A folded map is neither drawn nor measured.** `draw` and `resizeCanvas` both
-  return early on `state.mapCollapsed`. The reason is `resizeCanvas`: a folded
-  canvas has no box, so it would leave `size` one pixel wide, and `clusterPoints`
-  groups against that same size, so every pin would come back as one marker when
-  the map was opened again. `renderMapCollapsed` measures and draws again on the
-  way back, in that order.
-- **The fold keeps the status pill on screen.** The button lives *inside*
-  `.map-wrap`, so the folded block is a slim bar holding the button and the pill.
-  The pill is where "loading", "no news for this day" and "could not reach
-  Wikipedia" are said. Move the button out of that block and a folded map
-  swallows the one message the reader is waiting for.
+- **The collapsed map is still a live map, drawn and measured like the big one.**
+  It is the same canvas at 10rem wide, so `resizeCanvas` and `draw` run in both
+  states and `renderMapCollapsed` calls them in that order on every change of
+  size. `zoom` means "how many canvas widths the world is wide", so it is the
+  same number at both sizes and the small map shows the same ground, drawn small.
+  That is why it is worth keeping: zoomed in it is the neighbourhood of the story
+  being read, and it follows the list exactly as the big map does.
+- **`updateMarkers` must not run while the map is collapsed, and the small map
+  must not group.** Both are the same trap seen from two sides. `clusterPoints`
+  works in pixels, so on a canvas 160 wide every pin of the day falls into one
+  marker; `state.pinGroup` is counted from that grouping and feeds the panel's
+  "this pin also covers N more" note, which would then claim the whole day. So
+  `updateMarkers` returns early on `state.mapCollapsed` and keeps the grouping
+  the reader last saw at full size, and `draw` takes the `drawDots` path, which
+  draws one plain dot per story straight from `state.pins`. `showDay` clears
+  `state.markers`, because a grouping from a day that is gone must not be kept.
+- **The small map is a picture, not a control.** `pointerdown` and `wheel` return
+  early on `state.mapCollapsed`, `.map-toggle` and the canvas share
+  `setMapCollapsed`, and a `click` on the canvas expands it. `style.css` also
+  puts `touch-action: auto` back on it: with `none` a finger meaning to scroll
+  the list would be captured by a map too small to aim at.
+- **The collapsed bar keeps the status pill on screen.** The button lives
+  *inside* `.map-wrap`, so the collapsed block is a bar holding the button, the
+  small map and the pill. The pill is where "loading", "no news for this day" and
+  "could not reach Wikipedia" are said. Move the button out of that block and a
+  collapsed map swallows the one message the reader is waiting for.
+- **In the collapsed bar the pill takes a whole row of its own.** `flex: 1 1
+  100%`. In the gap between the button and the small map, "Could not reach
+  Wikipedia. Check your connection and try again." wrapped into a six-line
+  ribbon. A full row also holds the bar's shape steady: the pill comes and goes
+  as a day loads, and the map must not hop between rows with it.
 - **The fold is not remembered, and that is deliberate.** No `localStorage`, no
   URL parameter. The credit line says "Nothing about you is stored or sent
   anywhere else", and that sentence is worth more than saving the reader one tap
