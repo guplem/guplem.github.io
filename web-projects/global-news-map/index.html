@@ -32,8 +32,12 @@
 
     <main>
       <!-- The day and the map. On a phone this block holds the top of the screen
-           and never scrolls, so the map stays in sight while the list moves. -->
-      <div class="stage">
+           and never scrolls, so the map stays in sight while the list moves.
+           Collapsed, this whole block becomes one card: the day bar moves inside
+           it beside the small map, so the fold gives its room to the list and
+           not to a second row of date buttons. `data-collapsed` is set here, on
+           the block that holds both. -->
+      <div class="stage" id="stage">
         <!-- The day being shown. The buttons and the date box are the same state,
              which also lives in the address bar. -->
         <nav class="daybar" aria-label="Choose a day">
@@ -50,17 +54,18 @@
           <button type="button" id="latest-day" class="text-button">Latest</button>
         </nav>
 
-        <div class="map-wrap" id="map-wrap">
+        <div class="map-wrap">
           <!-- Shrinks the map to a bar, which gives most of the screen to the
-               words for a reader who is reading more than they are looking. The
-               button lives inside this block on purpose: the collapsed bar keeps
-               both the small map and the pill that says the day is loading, is
-               empty, or could not be reached. -->
+               words for a reader who is reading more than they are looking.
+               There is no button the other way: the small map itself expands,
+               and its room in the collapsed card goes to the day bar. -->
           <button type="button" id="toggle-map" class="map-toggle" aria-controls="map" aria-expanded="true">Collapse map</button>
 
-          <!-- The map itself. It is a picture of the story list below, so the
-               canvas is marked as an image and the list carries the real content
-               for a screen reader and for a search engine. -->
+          <!-- The map itself. Full size it is a picture of the story list below,
+               so the canvas is marked as an image and the list carries the real
+               content for a screen reader and for a search engine. Collapsed it
+               is the one control that brings the big map back, so `app.js`
+               marks it as a button for as long as it is small. -->
           <canvas id="map" role="img" aria-label="World map of the day's news"></canvas>
 
           <div class="map-controls">

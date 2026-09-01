@@ -179,9 +179,9 @@ the day and the map to the top of the screen and scrolls only the list, where
   `cancelGlide` first: the drag, the pinch, the wheel, the two zoom buttons and
   the "whole world" button. Miss one and the slide fights the reader's finger.
 - **The collapsed map is still a live map, drawn and measured like the big one.**
-  It is the same canvas at 10rem wide, so `resizeCanvas` and `draw` run in both
-  states and `renderMapCollapsed` calls them in that order on every change of
-  size. `zoom` means "how many canvas widths the world is wide", so it is the
+  It is the same canvas, at 10rem wide or less, so `resizeCanvas` and `draw` run
+  in both states and `renderMapCollapsed` calls them in that order on every
+  change of size. `zoom` means "how many canvas widths the world is wide", so it is the
   same number at both sizes and the small map shows the same ground, drawn small.
   That is why it is worth keeping: zoomed in it is the neighbourhood of the story
   being read, and it follows the list exactly as the big map does.
@@ -194,21 +194,66 @@ the day and the map to the top of the screen and scrolls only the list, where
   the reader last saw at full size, and `draw` takes the `drawDots` path, which
   draws one plain dot per story straight from `state.pins`. `showDay` clears
   `state.markers`, because a grouping from a day that is gone must not be kept.
-- **The small map is a picture, not a control.** `pointerdown` and `wheel` return
-  early on `state.mapCollapsed`, `.map-toggle` and the canvas share
-  `setMapCollapsed`, and a `click` on the canvas expands it. `style.css` also
-  puts `touch-action: auto` back on it: with `none` a finger meaning to scroll
-  the list would be captured by a map too small to aim at.
-- **The collapsed bar keeps the status pill on screen.** The button lives
-  *inside* `.map-wrap`, so the collapsed block is a bar holding the button, the
-  small map and the pill. The pill is where "loading", "no news for this day" and
-  "could not reach Wikipedia" are said. Move the button out of that block and a
-  collapsed map swallows the one message the reader is waiting for.
-- **In the collapsed bar the pill takes a whole row of its own.** `flex: 1 1
-  100%`. In the gap between the button and the small map, "Could not reach
-  Wikipedia. Check your connection and try again." wrapped into a six-line
-  ribbon. A full row also holds the bar's shape steady: the pill comes and goes
+- **The small map is no map to work, and it is the one way back to the big one.**
+  There is no "expand" button: the reader taps or clicks the small map itself.
+  `pointerdown` and `wheel` return early on `state.mapCollapsed`, so a finger
+  neither pans nor zooms it, and `style.css` puts `touch-action: auto` back on
+  it, because with `none` a finger meaning to scroll the list is captured by a
+  map too small to aim at. **A control needs a keyboard route, so
+  `renderMapCollapsed` marks the canvas `role="button"` with `tabindex="0"` and
+  the "Expand map" name for as long as it is small**, and gives back
+  `role="img"` and the map's own name at full size. `canvas` answers Enter and
+  Space there. Delete either half and the fold becomes a one-way door for a
+  keyboard. **The focus passes between the two controls, in both directions.**
+  The fold hides one and shows the other, and each stands where the other stood.
+  Let the one the reader just pressed disappear under the focus and the focus
+  falls to the document, which sends the next Tab back to the top of the page.
+  `renderMapCollapsed` holds both hand-offs.
+- **Collapsed, the whole stage is ONE card, and the day bar moves inside it.**
+  A fold is a request for room to read, and a row of date buttons left above the
+  card gives back most of the height the fold just won. Measured on a 360 by 780
+  phone, with the map folded: everything above the list was 160 pixels tall and
+  is now 55, so the scrolling list grew from 611 pixels to 706. Three parts carry
+  it, and each one looks removable on its own:
+  - `app.js` sets `data-collapsed` on `.stage`, **not** on `.map-wrap`, because
+    the day bar is the wrapper's sibling and the card holds both.
+  - `style.css` gives `.map-wrap` `display: contents` while the map is small, so
+    the wrapper's box goes away and the day bar, the canvas and the pill stand in
+    one flex row. Nothing moves between parents, so expanding puts every box
+    back.
+  - `.map-toggle` is hidden in the card. It only ever folds the map away now, so
+    `renderChrome` writes its word once and `map.expand` names the canvas.
+- **The pill stays in the card, and it takes a whole row of its own.** `flex: 1 1
+  100%`. The pill is where "loading", "no news for this day" and "could not reach
+  Wikipedia" are said, and a collapsed map must not swallow the one message the
+  reader is waiting for. In the gap between the day and the small map, "Could not
+  reach Wikipedia. Check your connection and try again." wrapped into a six-line
+  ribbon. A full row also holds the card's shape steady: the pill comes and goes
   as a day loads, and the map must not hop between rows with it.
+- **All four day controls stay in the card, and the map is what gives way.** The
+  reader still steps days and still jumps to the latest one with the map folded.
+  Two rules keep the four controls and the map on one row of a phone:
+  - **A written `min-width` on the collapsed canvas is load-bearing.** A flex
+    item's `min-width: auto` is its own content's width, a canvas carries an
+    intrinsic width, and **a flex row wraps before it shrinks**. With `auto` the
+    map refused to give up one pixel, wrapped onto a second line, and cost the
+    height this card exists to save. The number is `3rem`, because the small map
+    is the only way back to the big one and 48 by 24 pixels is the smallest
+    target a finger should have to hit. Below that width the map takes a row of
+    its own instead of becoming a target nobody can tap.
+  - **The card hides the date box's calendar button on a narrow screen only**
+    (`::-webkit-calendar-picker-indicator`). It is about 18 pixels wide, and
+    those 18 pixels are the whole margin. A touch screen opens the day picker
+    when the box takes focus, with or without the button. Keep the rule inside
+    the narrow query: on a wide screen a click on that button is the way in, and
+    the card has room for it.
+
+  Below about 340 pixels the map takes a row of its own, and the card falls back
+  to the shape the collapsed bar had before. Nothing overflows, and nothing clips
+  the date. Measured from 340 pixels up, in both languages and at pixel ratios 2
+  and 3, the card holds one row. Measure it again after any change to it, at
+  those widths and in both languages: a native date box is wider at a higher
+  pixel ratio, and "Lo último" is wider than "Latest".
 - **The fold is not remembered, and that is deliberate.** No `localStorage`, no
   URL parameter. The credit line says "Nothing about you is stored or sent
   anywhere else", and that sentence is worth more than saving the reader one tap

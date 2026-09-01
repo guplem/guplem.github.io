@@ -34,7 +34,7 @@ const elements = {
   latestDay: $("latest-day"),
   dayInput: $("day-input"),
   dayLabel: $("day-label"),
-  mapWrap: $("map-wrap"),
+  stage: $("stage"),
   map: $("map"),
   toggleMap: $("toggle-map"),
   zoomIn: $("zoom-in"),
@@ -429,10 +429,17 @@ function setMapCollapsed(collapsed) {
 /**
  * Show the map collapsed or full size.
  *
- * Collapsed, the block is a bar holding the button, a small map and the pill, so
- * the day can still say that it is loading, empty or unreachable, and the reader
- * can still see where the day is happening. Nothing else about the page changes:
- * the list is the whole content, and it gets the room the map gave up.
+ * Collapsed, the whole stage is one card holding the day bar, a small map and
+ * the pill, so the reader keeps every day control, can still see where the day
+ * is happening, and can still be told that the day is loading, empty or
+ * unreachable. The list is the rest of the page, and it gets the room the map
+ * gave up. The mark goes on the stage and not on the map's own wrapper, because
+ * the day bar is the wrapper's sibling and the card holds both.
+ *
+ * The small map is the only way back to the big one, so while it is small it is
+ * a real button: a screen reader announces it as one and the keyboard reaches
+ * it. Full size it is a picture again, and the story list is its accessible
+ * copy.
  *
  * The canvas changes shape here, so it is measured again before anything is
  * drawn on it. `resizeCanvas` clamps the view to the new shape, and the map then
@@ -440,8 +447,23 @@ function setMapCollapsed(collapsed) {
  */
 function renderMapCollapsed() {
   cancelGlide();
-  elements.mapWrap.toggleAttribute("data-collapsed", state.mapCollapsed);
-  elements.toggleMap.textContent = say(state.mapCollapsed ? "map.expand" : "map.collapse");
+  elements.stage.toggleAttribute("data-collapsed", state.mapCollapsed);
+  elements.map.setAttribute("role", state.mapCollapsed ? "button" : "img");
+  elements.map.setAttribute("aria-label", say(state.mapCollapsed ? "map.expand" : "map.label"));
+  // The fold hides one of these two controls and shows the other, and each one
+  // stands where the other stood. So the focus passes between them: whichever
+  // one the reader just used is about to disappear, and letting it disappear
+  // under the focus drops that focus to the document, which sends the next Tab
+  // back to the top of the page.
+  if (state.mapCollapsed) {
+    const held = document.activeElement === elements.toggleMap;
+    elements.map.setAttribute("tabindex", "0");
+    if (held) elements.map.focus();
+  } else {
+    const held = document.activeElement === elements.map;
+    elements.map.removeAttribute("tabindex");
+    if (held) elements.toggleMap.focus();
+  }
   elements.toggleMap.setAttribute("aria-expanded", String(!state.mapCollapsed));
   resizeCanvas();
   draw();
@@ -947,10 +969,12 @@ function renderChrome() {
   elements.nextDay.setAttribute("aria-label", say("day.next"));
   elements.latestDay.textContent = say("day.latest");
   elements.dayLabel.textContent = say("day.pick");
-  elements.map.setAttribute("aria-label", say("map.label"));
   elements.zoomIn.setAttribute("aria-label", say("map.zoomIn"));
   elements.zoomOut.setAttribute("aria-label", say("map.zoomOut"));
   elements.resetView.setAttribute("aria-label", say("map.reset"));
+  // The button only ever folds the map away; the small map is what unfolds it.
+  elements.toggleMap.textContent = say("map.collapse");
+  // Names the canvas for both states, and marks it a button while it is small.
   renderMapCollapsed();
   elements.panelClose.setAttribute("aria-label", say("story.close"));
   elements.listHeading.textContent = say("story.listHeading");
@@ -1174,6 +1198,17 @@ function wireMap() {
   // pans a map too small to aim nor opens a story the reader could not see.
   canvas.addEventListener("click", () => {
     if (state.mapCollapsed) setMapCollapsed(false);
+  });
+
+  // The same on a keyboard, because the small map is the only way back to the
+  // big one. `renderMapCollapsed` carries the focus over to the fold button.
+  canvas.addEventListener("keydown", (event) => {
+    if (!state.mapCollapsed) return;
+    if (event.key !== "Enter" && event.key !== " ") return;
+    // Space scrolls the page by default, and the page under a phone's list must
+    // not move because the reader opened the map.
+    event.preventDefault();
+    setMapCollapsed(false);
   });
 
   canvas.addEventListener("pointerdown", (event) => {
