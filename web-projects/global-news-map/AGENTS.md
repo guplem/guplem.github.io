@@ -138,6 +138,45 @@ the day and the map to the top of the screen and scrolls only the list, where
   it no floor either: a `min-height` did exactly that on a phone, and a reader
   reported the empty ocean it made. A `max-height` is safe, because it only
   crops the map on a screen too short for the world's own shape.
+- **Every coastline must be cut at the 180th meridian before it is drawn.** The
+  180th meridian, or antimeridian, is where the map's east edge meets its west
+  edge. Natural Earth spans it with a vertex at +180 next to one at -180, which
+  is one place on a globe and two opposite sides of a flat picture. Draw the
+  shape uncut and that pair becomes a straight line across the whole world. Four
+  shapes carry such a pair: Eurasia where Chukotka runs past the meridian,
+  Antarctica, Fiji and Wrangel Island. Three of them really did draw a line, for
+  months, and a reader reported them. `geo.splitAtAntimeridian` cuts the shapes
+  and `app.js` holds the result in `COASTLINES`, cut once at start-up because the
+  answer depends on the data and never on the zoom. **Never draw `LAND_SHAPES`
+  directly.** One closing edge across the world survives on purpose, and it is
+  Antarctica's own bottom; `geo.test.js` allows that one and forbids a second.
+- **The map moves when the reader has zoomed in, and holds still when they have
+  not.** `moveMapToSelection` is the one place that moves it. Zoomed out, every
+  pin is on screen and moving the map could only take the world away, which is
+  what ADR 0004 first decided. Zoomed in, the map is a window and an off-window
+  pin is invisible, which a reader reported. The zoom itself never changes when
+  the map follows the list; only a tap on a row on a *wide* screen zooms in, to
+  `CLOSE_ZOOM`. Never make the follow change the zoom: that is the exact thing
+  ADR 0004 rejected.
+- **The reader's hand always beats a slide.** `glideTo` runs one animation and
+  `cancelGlide` stops it. Every input that sets `state.view` itself calls
+  `cancelGlide` first: the drag, the pinch, the wheel, the two zoom buttons and
+  the "whole world" button. Miss one and the slide fights the reader's finger.
+- **A folded map is neither drawn nor measured.** `draw` and `resizeCanvas` both
+  return early on `state.mapCollapsed`. The reason is `resizeCanvas`: a folded
+  canvas has no box, so it would leave `size` one pixel wide, and `clusterPoints`
+  groups against that same size, so every pin would come back as one marker when
+  the map was opened again. `renderMapCollapsed` measures and draws again on the
+  way back, in that order.
+- **The fold keeps the status pill on screen.** The button lives *inside*
+  `.map-wrap`, so the folded block is a slim bar holding the button and the pill.
+  The pill is where "loading", "no news for this day" and "could not reach
+  Wikipedia" are said. Move the button out of that block and a folded map
+  swallows the one message the reader is waiting for.
+- **The fold is not remembered, and that is deliberate.** No `localStorage`, no
+  URL parameter. The credit line says "Nothing about you is stored or sent
+  anywhere else", and that sentence is worth more than saving the reader one tap
+  on their next visit. Storing the fold means rewriting that line first.
 - **`app.js` never writes `innerHTML`.** Story text comes from Wikipedia, which
   anyone can edit. Every string reaches the screen through `textContent`, so
   there is nothing to escape and no way for an edit to become markup. The one

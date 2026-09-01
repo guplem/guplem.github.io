@@ -50,7 +50,14 @@
           <button type="button" id="latest-day" class="text-button">Latest</button>
         </nav>
 
-        <div class="map-wrap">
+        <div class="map-wrap" id="map-wrap">
+          <!-- Folds the map away, which gives the whole screen to the words for
+               a reader who is reading and not looking. The button lives inside
+               this block on purpose: the folded map leaves a slim bar around it,
+               and that bar still carries the pill that says the day is loading,
+               is empty, or could not be reached. -->
+          <button type="button" id="toggle-map" class="map-toggle" aria-controls="map" aria-expanded="true">Hide map</button>
+
           <!-- The map itself. It is a picture of the story list below, so the
                canvas is marked as an image and the list carries the real content
                for a screen reader and for a search engine. -->
