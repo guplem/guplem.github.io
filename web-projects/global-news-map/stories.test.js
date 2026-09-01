@@ -158,6 +158,30 @@ describe("markup the parser must survive", () => {
     expect(story.category).toBe("Business");
   });
 
+  // A day before about 2019 writes its category as `;Armed conflicts and attacks`
+  // in the portal's source, which the wiki renders as a div and not as bold. Read
+  // only the bold form and every story on those days loses its category.
+  test("reads the category from the older heading div as well as from bold", () => {
+    const html = `<div class="current-events-content description">
+      <div class="current-events-content-heading" role="heading">Armed conflicts and attacks</div>
+      <ul><li>Forces launch an offensive in the north of the country overnight.</li></ul>
+      <div class="current-events-content-heading" role="heading">Law and crime</div>
+      <ul><li>A court sentences three people over a robbery committed last year.</li></ul></div>`;
+    const parsed = parseCurrentEvents(html);
+    expect(parsed).toHaveLength(2);
+    expect(parsed[0].category).toBe("Armed conflicts and attacks");
+    expect(parsed[1].category).toBe("Law and crime");
+  });
+
+  // The same div class also names the day itself, above the news. Reading that
+  // one would file the day's first stories under "8 March 2015".
+  test("ignores a heading div that stands inside a story", () => {
+    const html = `<div class="current-events-content description"><p><b>Sports</b></p>
+      <ul><li>A team wins the final after a <div class="current-events-content-heading">late</div> goal.</li></ul></div>`;
+    const [story] = parseCurrentEvents(html);
+    expect(story.category).toBe("Sports");
+  });
+
   test("treats a topic with one story as a topic, not two stories", () => {
     const html = `<div class="current-events-content description"><p><b>Disasters</b></p>
       <ul><li><a href="/wiki/Flood">Flood</a>
