@@ -730,13 +730,27 @@ main {
 
 /* Two levels of marking, and the open story must be the louder of them.
    The open story keeps the plain surface behind its text, so it stays the most
-   readable row, and earns its weight from the ring and the bar down its edge.
-   The bar is drawn inside the box rather than as a thicker border, because a
-   border changes how wide the text is: the row would rewrap and grow taller
-   every time the reader scrolled it to the top of the list. */
+   readable row, and earns its weight from one accent frame the same width on
+   all four sides: the 1px border, plus 2px of it drawn inside the box.
+
+   Two rules decide that shape, and breaking either one is visible:
+
+   - **The frame is drawn INSIDE the box, never outside it.** The reading column
+     scrolls, so it carries `overflow-y: auto`, and CSS then computes
+     `overflow-x: auto` as well: anything painted outside a row is cut off at
+     the column's left and right edges. An outer `0 0 0 1px` ring used to sit
+     here and was cut on both sides, while the top and the bottom of it showed.
+   - **The frame never becomes a thicker border.** A border changes how wide the
+     text is, so the row would rewrap and grow taller every time the reader
+     scrolled it to the top of the list. A `box-shadow` takes no room at all.
+
+   An `inset 4px 0 0` bar down the left edge used to carry the weight instead.
+   With the border under it that made the left edge 5px against the right edge's
+   1px, and a reader reported the row as having one side thicker than the other:
+   a bar and a frame look the same when both are drawn in the accent colour. */
 .story-item[aria-current="true"] {
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent), inset 4px 0 0 var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
 }
 
 /* The other stories standing on the same pin: tinted, but with no bar and no

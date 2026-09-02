@@ -332,11 +332,26 @@ the day and the map to the top of the screen and scrolls only the list, where
   opened, and move the list under a reader who is scrolling it. `selectStory` and
   `clearSelection` therefore call `refreshHighlight`, never `renderLists`. Only a
   new day and the arrival of the countries rebuild the rows.
-- **A mark on a row must never change how tall the row is.** The open row's bar is
-  an inset `box-shadow`, not a thicker border: a border makes the text narrower,
-  the row rewraps, and every row below it jumps while the reader scrolls. The same
-  rule is why the "next place" button stands over the map and not in the layout:
-  the reader scrolling the list makes it come and go.
+- **A mark on a row must never change how tall the row is.** The open row's frame
+  is an inset `box-shadow`, not a thicker border: a border makes the text
+  narrower, the row rewraps, and every row below it jumps while the reader
+  scrolls. The same rule is why the "next place" button stands over the map and
+  not in the layout: the reader scrolling the list makes it come and go.
+- **The open row's mark is drawn INSIDE the row, and it is the same width on all
+  four sides.** Two bugs met here, and both were reported as "one side is thicker
+  than the other".
+  - An **outer** ring (`box-shadow: 0 0 0 1px`) is cut off on the left and the
+    right. The reading column scrolls, so it carries `overflow-y: auto`, and CSS
+    then computes `overflow-x: auto` as well, which clips anything painted
+    outside a row. The top and the bottom of such a ring still show, so the row
+    looks framed on two sides only. Never mark a row from outside its own box.
+  - A **bar down one edge** (`inset 4px 0 0`) reads as a thicker border, because
+    a bar and a frame look the same when both are drawn in the accent colour.
+    With the 1px border under it the left edge was 5px against the right edge's
+    1px.
+
+  What stands there now is `inset 0 0 0 2px` over the accent border: one 3px
+  frame, equal on every side, costing no layout.
 - **A tap on a row opens the row too, on a phone.** `tapUnfolds` in `reading.js`
   holds the rule and the two limits on it: a tap never folds a row back (the row
   a reader taps is also the row the map marks, so a tap on an open row is a
