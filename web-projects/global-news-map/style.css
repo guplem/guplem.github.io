@@ -290,23 +290,45 @@ main {
 }
 
 /* The button that folds the map away. It stands over the map's top left corner,
-   where nothing else does, so an open map pays no height for it. */
+   where nothing else does, so an open map pays no height for it.
+
+   It carries an icon and no words. A word in that corner covers a piece of the
+   map, and on a phone "Collapse map" covered about a third of its width; the
+   icon covers a corner the eye already reads as a control. It is a circle the
+   size of the zoom buttons on the other corner, so every control over the map is
+   the same target. `app.js` keeps the button's name in `aria-label`. */
 .map-toggle {
   position: absolute;
   z-index: 1;
   top: 0.6rem;
   left: 0.6rem;
-  padding: 0.3rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-full);
   background: color-mix(in srgb, var(--surface) 92%, transparent);
   color: var(--text);
-  font: inherit;
-  font-size: 0.78rem;
-  font-weight: 600;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+/* The same drawing rules as `.icon-button svg`, written again rather than
+   shared: `.icon-button` also carries the size and the shape of the day bar's
+   buttons, and the collapsed card resizes those. This button is a circle over
+   the map and takes no part in that. */
+.map-toggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .map-toggle:hover {

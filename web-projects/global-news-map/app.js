@@ -990,7 +990,9 @@ function renderChrome() {
   elements.zoomOut.setAttribute("aria-label", say("map.zoomOut"));
   elements.resetView.setAttribute("aria-label", say("map.reset"));
   // The button only ever folds the map away; the small map is what unfolds it.
-  elements.toggleMap.textContent = say("map.collapse");
+  // It shows an icon and no words, so its name reaches the reader as its label.
+  // Never write `textContent` here: that would throw the icon away.
+  elements.toggleMap.setAttribute("aria-label", say("map.collapse"));
   // Names the canvas for both states, and marks it a button while it is small.
   renderMapCollapsed();
   elements.panelClose.setAttribute("aria-label", say("story.close"));

@@ -29,12 +29,12 @@ reported by, so you can read the original article.
   slides to keep the story you are reading in the middle of it. Zoomed all the
   way out it holds still, because every pin is already on screen. Your own
   dragging, pinching and zooming always wins.
-- **Collapse the map** with one button and it shrinks to a bar, which gives most
-  of the screen to the stories. The map stays there, small, showing the same
-  ground: the whole world when you are zoomed out, the neighbourhood of the story
-  you are reading when you are zoomed in. It keeps following the list, a tap on
-  it makes it big again, and the bar still tells you when a day is loading, is
-  empty, or could not be reached.
+- **Collapse the map** with the button on its top left corner and it shrinks to a
+  bar, which gives most of the screen to the stories. The map stays there, small,
+  showing the same ground: the whole world when you are zoomed out, the
+  neighbourhood of the story you are reading when you are zoomed in. It keeps
+  following the list, a tap on it makes it big again, and the bar still tells you
+  when a day is loading, is empty, or could not be reached.
 - **Places are named with their country**, so "Caen" reads as "Caen, France".
 - **Any day**, back through the portal's whole history. Step a day at a time or
   type a date.

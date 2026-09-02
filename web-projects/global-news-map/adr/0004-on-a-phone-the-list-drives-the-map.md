@@ -63,9 +63,12 @@ per story; zoomed in it is the neighbourhood the story happened in. It follows
 the list exactly as the big map does, so a reader who collapsed the map can still
 see where they are reading about.
 
-The button says "collapse" and not "hide", because the map never goes away. An
-earlier version did hide it, and hiding the one picture on the page to read the
-words is a trade nobody has to make.
+The button is named "collapse" and not "hide", because the map never goes away.
+An earlier version did hide it, and hiding the one picture on the page to read
+the words is a trade nobody has to make. The button carries that name in
+`aria-label` and shows the "make this smaller" icon, because a word in that
+corner covers a piece of the map: "Collapse map" took about a third of the width
+of a phone's map.
 
 The fold is not remembered between visits: the page stores nothing about the
 reader, and that is what lets the credit line say so with no caveat.

@@ -178,6 +178,13 @@ the day and the map to the top of the screen and scrolls only the list, where
   `cancelGlide` stops it. Every input that sets `state.view` itself calls
   `cancelGlide` first: the drag, the pinch, the wheel, the two zoom buttons and
   the "whole world" button. Miss one and the slide fights the reader's finger.
+- **The fold button carries an icon and no words.** It stands over the map's top
+  left corner, and a word there covers a piece of the map: "Collapse map" took
+  about a third of the width of a phone's map. It is a circle the size of the
+  zoom buttons on the other corner, so every control over the map is the same
+  target. Its name lives in `aria-label`, which is the only place a screen reader
+  can now read it, so `renderChrome` **must not** write `textContent` on it: that
+  would throw the icon away.
 - **The collapsed map is still a live map, drawn and measured like the big one.**
   It is the same canvas, at 10rem wide or less, so `resizeCanvas` and `draw` run
   in both states and `renderMapCollapsed` calls them in that order on every
@@ -228,7 +235,7 @@ the day and the map to the top of the screen and scrolls only the list, where
     one flex row. Nothing moves between parents, so expanding puts every box
     back.
   - `.map-toggle` is hidden in the card. It only ever folds the map away now, so
-    `renderChrome` writes its word once and `map.expand` names the canvas.
+    `renderChrome` writes its name once and `map.expand` names the canvas.
 - **The pill stays in the card, and it takes a whole row of its own.** `flex: 1 1
   100%`. The pill is where "loading", "no news for this day" and "could not reach
   Wikipedia" are said, and a collapsed map must not swallow the one message the
