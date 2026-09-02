@@ -405,6 +405,13 @@ the day and the map to the top of the screen and scrolls only the list, where
   selection changes goes over the map, the way the "next place" button does. A
   line under the map held the chosen place for one version, and it went for this
   reason and because the reader is reading that place in the list anyway.
+- **The "next place" button and the pill share the map's bottom left corner, and
+  they are never on screen together.** The button sits there because a thumb
+  reaches that corner and because the zoom buttons hold the other side. The pill
+  sits there too, and on a phone it only ever says that the day is loading, is
+  empty, or could not be reached. Each of those states has no pins, so nothing is
+  chosen and `renderNextPlace` hides the button. Give the pill anything to say
+  about a loaded day and the two will overlap.
 - **The counts stay off the phone.** `renderCounts` marks the pill
   `data-state="counts"` and `style.css` hides that one state on a narrow screen,
   so the pill still carries the loading line, the empty day and the failure.

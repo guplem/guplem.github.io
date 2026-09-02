@@ -528,11 +528,20 @@ main {
 /* The way to the other places on the chosen pin. The wide layout says this in
    the panel, so only a phone shows the button, and it stands over the map
    rather than in the layout: the reader scrolling the list makes it come and
-   go, and a box in the layout would move the list they are reading. */
+   go, and a box in the layout would move the list they are reading.
+
+   It stands in the bottom LEFT corner, which is the corner a thumb reaches on a
+   phone and the one furthest from the zoom buttons above the other side.
+
+   The pill stands in that corner too, and the two never share it: on a phone the
+   pill only ever says that the day is loading, is empty, or could not be
+   reached, and each of those states has no pin at all, so nothing is chosen and
+   this button is hidden. Give the pill anything to say about a loaded day and
+   these two will overlap. */
 .next-place {
   display: none;
   position: absolute;
-  right: 0.6rem;
+  left: 0.6rem;
   bottom: 0.6rem;
   padding: 0.3rem 0.75rem;
   border: 1px solid var(--border-strong);

@@ -91,8 +91,10 @@ Five decisions follow from that one:
    or appears with it moves the list under the reader. What the phone still needs
    from the panel is one thing: a marker can cover several places, and nothing
    else would hint that the others are there. So a "next place" button floats
-   over the map, and it appears only when the chosen marker covers more than one
-   place.
+   over the map's bottom left corner, where a thumb reaches it, and it appears
+   only when the chosen marker covers more than one place. The pill shares that
+   corner, and the two are never on screen together: on a phone the pill only
+   speaks about a day that has no pins yet.
 3. **The phone screen holds the news and nothing else.** Everything that is not
    the day, the map or the stories is off it. The counts ("17 stories on the map,
    2 without a place") are the clearest case: they stand over the map and no
