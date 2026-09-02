@@ -16,7 +16,8 @@ reported by, so you can read the original article.
   more than one place: the page says when it does, and choosing the marker again
   moves to the next place on it.
 - **Every story folds to a summary**, and a chevron opens the rest of it with the
-  sources that reported it.
+  sources that reported it. On a phone a tap on the story opens it as well, so
+  one tap both puts the story on the map and shows the whole of it.
 - **A folded story says what kind of story it is.** Every row carries the
   portal's own category as a small icon and a short name, next to the place. The
   name grows to the full category when you open the row.

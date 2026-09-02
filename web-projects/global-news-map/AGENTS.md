@@ -24,7 +24,7 @@ Human docs: [README.md](README.md). Decision records:
 | `categories.js` | yes (data) | The ten categories the portal uses, the words that name each one (`classifyCategory`), and an icon for each (`CATEGORY_ICONS`). See ADR 0005. |
 | `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), which places need a country (`placeTitlesOf`), and grouping by place (`storyIdsAtPlace`, `nextPlaceOnMarker`). |
 | `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, `groupMatesOf` to name every story sharing one marker, and `splitAtAntimeridian` to cut a coastline where it crosses the 180th meridian. |
-| `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, and `topmostRow` says which row stands at the top of the scrolling list. |
+| `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, `topmostRow` says which row stands at the top of the scrolling list, and `tapUnfolds` says whether a tap on a row also opens it. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
 | `i18n.js` | yes | Every word the page says, in English and Spanish. |
 | `urlState.js` | yes | Reading and writing the address bar (root ADR 0006). |
@@ -337,6 +337,14 @@ the day and the map to the top of the screen and scrolls only the list, where
   the row rewraps, and every row below it jumps while the reader scrolls. The same
   rule is why the "next place" button stands over the map and not in the layout:
   the reader scrolling the list makes it come and go.
+- **A tap on a row opens the row too, on a phone.** `tapUnfolds` in `reading.js`
+  holds the rule and the two limits on it: a tap never folds a row back (the row
+  a reader taps is also the row the map marks, so a tap on an open row is a
+  request to go back to it), and a wide screen leaves the row folded (the panel
+  above the list already prints the story in full, so opening the row as well
+  would print it twice). The chevron is still what folds a row. `storyItem`
+  unfolds **before** it scrolls the list: a row grows downwards, so its own top
+  does not move and `revealInList` still aims true.
 - **A folded row carries the place and the category, and the chip is the quieter
   of the two.** `.item-head` puts the place on the left and the category chip on
   the right. The chip's icon takes the accent colour and its name is muted, so the

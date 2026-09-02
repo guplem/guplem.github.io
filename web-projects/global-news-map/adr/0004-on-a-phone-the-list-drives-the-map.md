@@ -74,9 +74,15 @@ Five decisions follow from that one:
 
 1. **The panel is not shown on a phone.** It sits inside the scrolling column, so
    a panel that rewrote itself as the reader scrolled would resize the column
-   under them. Each row opens in place instead: a chevron at the foot of the row
-   turns the summary into the whole story with its sources. That chevron is also
-   the only way to a source on a phone, which is why every row has one.
+   under them. Each row opens in place instead: the summary becomes the whole
+   story with its sources. Two things open a row, and the row is the only way to
+   a source on a phone, so both are needed. A chevron at the foot of the row
+   opens and folds it. A tap on the story itself opens it as well, because the
+   chevron is one small target and a reader who taps a story means "show me this
+   story"; that tap never folds a row back, since the row a reader taps is also
+   the row the map marks, so a tap on an open row is a request to go back to it.
+   A wide screen leaves the row folded on a tap: there the panel already prints
+   the story in full, and opening the row too would print it twice.
 2. **Nothing that the selection changes takes room in the layout.** The rule
    above, one step out. The selection follows the scrolling, so a box that grows
    or appears with it moves the list under the reader. What the phone still needs
