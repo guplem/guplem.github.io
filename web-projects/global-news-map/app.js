@@ -20,7 +20,7 @@ import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, splitAtAntimeridian, zoomAt } from "./geo.js";
 import { makeSay, pickLanguage } from "./i18n.js";
 import { nextPlaceOnMarker, placeLabel, storyIdsAtPlace } from "./places.js";
-import { summarise, topmostRow } from "./reading.js";
+import { summarise, tapUnfolds, topmostRow } from "./reading.js";
 import { buildSearch, readState } from "./urlState.js";
 import { LAND_SHAPES } from "./world.js";
 
@@ -499,9 +499,9 @@ function setStatus(text, stateName = "") {
  * One story in the list.
  *
  * The row is folded: it shows where the story happened, what kind of story it
- * is, and a summary of it. A chevron opens the rest. On a phone the opened row
- * is the whole story, panel and all, because that layout shows no panel; the
- * sources are only reachable through the chevron.
+ * is, and a summary of it. A chevron opens the rest, and on a phone a tap on the
+ * row itself opens it too. On a phone the opened row is the whole story, panel
+ * and all, because that layout shows no panel.
  *
  * The row is a button, so a keyboard reaches every story.
  */
@@ -546,7 +546,15 @@ function storyItem(story, place) {
   text.textContent = open ? story.text : summary;
 
   button.append(...[head.childElementCount ? head : null, heading, text].filter(Boolean));
-  button.addEventListener("click", () =>
+  button.addEventListener("click", () => {
+    // On a phone the row is the whole story, so the tap opens it as well as
+    // choosing it: the chevron is one small target and a reader who taps a
+    // story means "show me this story". `tapUnfolds` holds the two limits on
+    // that, and both matter (see `reading.js`).
+    //
+    // The row is unfolded before the list is scrolled. A row grows downwards,
+    // so its own top does not move and the scroll below still aims true.
+    if (tapUnfolds({ wide: isWide(), open: state.expanded.has(story.id) })) toggleStory(story, item);
     // A wide screen shows the story in the panel beside the map, so the map
     // moves to it and zooms in on the place. A phone has no panel: the row
     // itself goes to the top of the list, where it is the story the map marks,
@@ -555,8 +563,8 @@ function storyItem(story, place) {
       centre: isWide() && Boolean(place),
       follow: !isWide(),
       reveal: !isWide(),
-    }),
-  );
+    });
+  });
   item.append(button);
 
   // The category is not repeated here: the chip on the first line carries it,
@@ -982,7 +990,9 @@ function renderChrome() {
   elements.zoomOut.setAttribute("aria-label", say("map.zoomOut"));
   elements.resetView.setAttribute("aria-label", say("map.reset"));
   // The button only ever folds the map away; the small map is what unfolds it.
-  elements.toggleMap.textContent = say("map.collapse");
+  // It shows an icon and no words, so its name reaches the reader as its label.
+  // Never write `textContent` here: that would throw the icon away.
+  elements.toggleMap.setAttribute("aria-label", say("map.collapse"));
   // Names the canvas for both states, and marks it a button while it is small.
   renderMapCollapsed();
   elements.panelClose.setAttribute("aria-label", say("story.close"));

@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="110" />
-  <meta name="deploy-date" content="2026-09-01T16:09:52.000Z" />
+  <meta name="deploy-pull-request" content="111" />
+  <meta name="deploy-date" content="2026-09-02T16:01:08.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -58,8 +58,14 @@
           <!-- Shrinks the map to a bar, which gives most of the screen to the
                words for a reader who is reading more than they are looking.
                There is no button the other way: the small map itself expands,
-               and its room in the collapsed card goes to the day bar. -->
-          <button type="button" id="toggle-map" class="map-toggle" aria-controls="map" aria-expanded="true">Collapse map</button>
+               and its room in the collapsed card goes to the day bar.
+
+               It shows the "make this smaller" icon and no words, so it takes a
+               corner of the map and never a strip of it. `app.js` keeps its name
+               in `aria-label`, which is how a screen reader hears it. -->
+          <button type="button" id="toggle-map" class="map-toggle" aria-controls="map" aria-expanded="true" aria-label="Collapse map">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 3v3a2 2 0 0 1-2 2H3" /><path d="M21 8h-3a2 2 0 0 1-2-2V3" /><path d="M3 16h3a2 2 0 0 1 2 2v3" /><path d="M16 21v-3a2 2 0 0 1 2-2h3" /></svg>
+          </button>
 
           <!-- The map itself. Full size it is a picture of the story list below,
                so the canvas is marked as an image and the list carries the real

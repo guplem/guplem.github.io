@@ -24,7 +24,7 @@ Human docs: [README.md](README.md). Decision records:
 | `categories.js` | yes (data) | The ten categories the portal uses, the words that name each one (`classifyCategory`), and an icon for each (`CATEGORY_ICONS`). See ADR 0005. |
 | `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), which places need a country (`placeTitlesOf`), and grouping by place (`storyIdsAtPlace`, `nextPlaceOnMarker`). |
 | `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, `groupMatesOf` to name every story sharing one marker, and `splitAtAntimeridian` to cut a coastline where it crosses the 180th meridian. |
-| `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, and `topmostRow` says which row stands at the top of the scrolling list. |
+| `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, `topmostRow` says which row stands at the top of the scrolling list, and `tapUnfolds` says whether a tap on a row also opens it. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
 | `i18n.js` | yes | Every word the page says, in English and Spanish. |
 | `urlState.js` | yes | Reading and writing the address bar (root ADR 0006). |
@@ -178,6 +178,13 @@ the day and the map to the top of the screen and scrolls only the list, where
   `cancelGlide` stops it. Every input that sets `state.view` itself calls
   `cancelGlide` first: the drag, the pinch, the wheel, the two zoom buttons and
   the "whole world" button. Miss one and the slide fights the reader's finger.
+- **The fold button carries an icon and no words.** It stands over the map's top
+  left corner, and a word there covers a piece of the map: "Collapse map" took
+  about a third of the width of a phone's map. It is a circle the size of the
+  zoom buttons on the other corner, so every control over the map is the same
+  target. Its name lives in `aria-label`, which is the only place a screen reader
+  can now read it, so `renderChrome` **must not** write `textContent` on it: that
+  would throw the icon away.
 - **The collapsed map is still a live map, drawn and measured like the big one.**
   It is the same canvas, at 10rem wide or less, so `resizeCanvas` and `draw` run
   in both states and `renderMapCollapsed` calls them in that order on every
@@ -228,7 +235,7 @@ the day and the map to the top of the screen and scrolls only the list, where
     one flex row. Nothing moves between parents, so expanding puts every box
     back.
   - `.map-toggle` is hidden in the card. It only ever folds the map away now, so
-    `renderChrome` writes its word once and `map.expand` names the canvas.
+    `renderChrome` writes its name once and `map.expand` names the canvas.
 - **The pill stays in the card, and it takes a whole row of its own.** `flex: 1 1
   100%`. The pill is where "loading", "no news for this day" and "could not reach
   Wikipedia" are said, and a collapsed map must not swallow the one message the
@@ -332,11 +339,34 @@ the day and the map to the top of the screen and scrolls only the list, where
   opened, and move the list under a reader who is scrolling it. `selectStory` and
   `clearSelection` therefore call `refreshHighlight`, never `renderLists`. Only a
   new day and the arrival of the countries rebuild the rows.
-- **A mark on a row must never change how tall the row is.** The open row's bar is
-  an inset `box-shadow`, not a thicker border: a border makes the text narrower,
-  the row rewraps, and every row below it jumps while the reader scrolls. The same
-  rule is why the "next place" button stands over the map and not in the layout:
-  the reader scrolling the list makes it come and go.
+- **A mark on a row must never change how tall the row is.** The open row's frame
+  is an inset `box-shadow`, not a thicker border: a border makes the text
+  narrower, the row rewraps, and every row below it jumps while the reader
+  scrolls. The same rule is why the "next place" button stands over the map and
+  not in the layout: the reader scrolling the list makes it come and go.
+- **The open row's mark is drawn INSIDE the row, and it is the same width on all
+  four sides.** Two bugs met here, and both were reported as "one side is thicker
+  than the other".
+  - An **outer** ring (`box-shadow: 0 0 0 1px`) is cut off on the left and the
+    right. The reading column scrolls, so it carries `overflow-y: auto`, and CSS
+    then computes `overflow-x: auto` as well, which clips anything painted
+    outside a row. The top and the bottom of such a ring still show, so the row
+    looks framed on two sides only. Never mark a row from outside its own box.
+  - A **bar down one edge** (`inset 4px 0 0`) reads as a thicker border, because
+    a bar and a frame look the same when both are drawn in the accent colour.
+    With the 1px border under it the left edge was 5px against the right edge's
+    1px.
+
+  What stands there now is `inset 0 0 0 2px` over the accent border: one 3px
+  frame, equal on every side, costing no layout.
+- **A tap on a row opens the row too, on a phone.** `tapUnfolds` in `reading.js`
+  holds the rule and the two limits on it: a tap never folds a row back (the row
+  a reader taps is also the row the map marks, so a tap on an open row is a
+  request to go back to it), and a wide screen leaves the row folded (the panel
+  above the list already prints the story in full, so opening the row as well
+  would print it twice). The chevron is still what folds a row. `storyItem`
+  unfolds **before** it scrolls the list: a row grows downwards, so its own top
+  does not move and `revealInList` still aims true.
 - **A folded row carries the place and the category, and the chip is the quieter
   of the two.** `.item-head` puts the place on the left and the category chip on
   the right. The chip's icon takes the accent colour and its name is muted, so the
@@ -375,6 +405,13 @@ the day and the map to the top of the screen and scrolls only the list, where
   selection changes goes over the map, the way the "next place" button does. A
   line under the map held the chosen place for one version, and it went for this
   reason and because the reader is reading that place in the list anyway.
+- **The "next place" button and the pill share the map's bottom left corner, and
+  they are never on screen together.** The button sits there because a thumb
+  reaches that corner and because the zoom buttons hold the other side. The pill
+  sits there too, and on a phone it only ever says that the day is loading, is
+  empty, or could not be reached. Each of those states has no pins, so nothing is
+  chosen and `renderNextPlace` hides the button. Give the pill anything to say
+  about a loaded day and the two will overlap.
 - **The counts stay off the phone.** `renderCounts` marks the pill
   `data-state="counts"` and `style.css` hides that one state on a narrow screen,
   so the pill still carries the loading line, the empty day and the failure.

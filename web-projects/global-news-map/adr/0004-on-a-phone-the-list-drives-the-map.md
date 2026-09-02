@@ -63,9 +63,12 @@ per story; zoomed in it is the neighbourhood the story happened in. It follows
 the list exactly as the big map does, so a reader who collapsed the map can still
 see where they are reading about.
 
-The button says "collapse" and not "hide", because the map never goes away. An
-earlier version did hide it, and hiding the one picture on the page to read the
-words is a trade nobody has to make.
+The button is named "collapse" and not "hide", because the map never goes away.
+An earlier version did hide it, and hiding the one picture on the page to read
+the words is a trade nobody has to make. The button carries that name in
+`aria-label` and shows the "make this smaller" icon, because a word in that
+corner covers a piece of the map: "Collapse map" took about a third of the width
+of a phone's map.
 
 The fold is not remembered between visits: the page stores nothing about the
 reader, and that is what lets the credit line say so with no caveat.
@@ -74,16 +77,24 @@ Five decisions follow from that one:
 
 1. **The panel is not shown on a phone.** It sits inside the scrolling column, so
    a panel that rewrote itself as the reader scrolled would resize the column
-   under them. Each row opens in place instead: a chevron at the foot of the row
-   turns the summary into the whole story with its sources. That chevron is also
-   the only way to a source on a phone, which is why every row has one.
+   under them. Each row opens in place instead: the summary becomes the whole
+   story with its sources. Two things open a row, and the row is the only way to
+   a source on a phone, so both are needed. A chevron at the foot of the row
+   opens and folds it. A tap on the story itself opens it as well, because the
+   chevron is one small target and a reader who taps a story means "show me this
+   story"; that tap never folds a row back, since the row a reader taps is also
+   the row the map marks, so a tap on an open row is a request to go back to it.
+   A wide screen leaves the row folded on a tap: there the panel already prints
+   the story in full, and opening the row too would print it twice.
 2. **Nothing that the selection changes takes room in the layout.** The rule
    above, one step out. The selection follows the scrolling, so a box that grows
    or appears with it moves the list under the reader. What the phone still needs
    from the panel is one thing: a marker can cover several places, and nothing
    else would hint that the others are there. So a "next place" button floats
-   over the map, and it appears only when the chosen marker covers more than one
-   place.
+   over the map's bottom left corner, where a thumb reaches it, and it appears
+   only when the chosen marker covers more than one place. The pill shares that
+   corner, and the two are never on screen together: on a phone the pill only
+   speaks about a day that has no pins yet.
 3. **The phone screen holds the news and nothing else.** Everything that is not
    the day, the map or the stories is off it. The counts ("17 stories on the map,
    2 without a place") are the clearest case: they stand over the map and no

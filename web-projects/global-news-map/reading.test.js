@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { ROW_SLACK, SUMMARY_LIMIT, summarise, topmostRow } from "./reading.js";
+import { ROW_SLACK, SUMMARY_LIMIT, summarise, tapUnfolds, topmostRow } from "./reading.js";
 
 describe("summarise", () => {
   test("leaves a short story alone and asks for no button", () => {
@@ -78,5 +78,26 @@ describe("topmostRow", () => {
     const single = [{ id: "only", top: 40, bottom: 90 }];
     expect(topmostRow(single, 0)).toBe("only");
     expect(topmostRow(single, 500)).toBe("only");
+  });
+});
+
+describe("tapUnfolds", () => {
+  // A phone shows no panel, so the row is the only place the whole story is
+  // written. The chevron under the summary is easy to miss.
+  test("opens a folded row on a phone", () => {
+    expect(tapUnfolds({ wide: false, open: false })).toBe(true);
+  });
+
+  // The row a reader taps is also the row the map marks, so a tap on an open row
+  // is a request to go back to it, not a request to lose the words.
+  test("never folds a row that is already open", () => {
+    expect(tapUnfolds({ wide: false, open: true })).toBe(false);
+  });
+
+  // The wide layout prints the chosen place in the panel above the list, in
+  // full. Unfolding the row too would print the same story twice on one screen.
+  test("leaves the row folded on a wide screen, where the panel holds the story", () => {
+    expect(tapUnfolds({ wide: true, open: false })).toBe(false);
+    expect(tapUnfolds({ wide: true, open: true })).toBe(false);
   });
 });

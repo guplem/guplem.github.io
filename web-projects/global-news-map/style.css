@@ -290,23 +290,45 @@ main {
 }
 
 /* The button that folds the map away. It stands over the map's top left corner,
-   where nothing else does, so an open map pays no height for it. */
+   where nothing else does, so an open map pays no height for it.
+
+   It carries an icon and no words. A word in that corner covers a piece of the
+   map, and on a phone "Collapse map" covered about a third of its width; the
+   icon covers a corner the eye already reads as a control. It is a circle the
+   size of the zoom buttons on the other corner, so every control over the map is
+   the same target. `app.js` keeps the button's name in `aria-label`. */
 .map-toggle {
   position: absolute;
   z-index: 1;
   top: 0.6rem;
   left: 0.6rem;
-  padding: 0.3rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-full);
   background: color-mix(in srgb, var(--surface) 92%, transparent);
   color: var(--text);
-  font: inherit;
-  font-size: 0.78rem;
-  font-weight: 600;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+/* The same drawing rules as `.icon-button svg`, written again rather than
+   shared: `.icon-button` also carries the size and the shape of the day bar's
+   buttons, and the collapsed card resizes those. This button is a circle over
+   the map and takes no part in that. */
+.map-toggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .map-toggle:hover {
@@ -506,11 +528,20 @@ main {
 /* The way to the other places on the chosen pin. The wide layout says this in
    the panel, so only a phone shows the button, and it stands over the map
    rather than in the layout: the reader scrolling the list makes it come and
-   go, and a box in the layout would move the list they are reading. */
+   go, and a box in the layout would move the list they are reading.
+
+   It stands in the bottom LEFT corner, which is the corner a thumb reaches on a
+   phone and the one furthest from the zoom buttons above the other side.
+
+   The pill stands in that corner too, and the two never share it: on a phone the
+   pill only ever says that the day is loading, is empty, or could not be
+   reached, and each of those states has no pin at all, so nothing is chosen and
+   this button is hidden. Give the pill anything to say about a loaded day and
+   these two will overlap. */
 .next-place {
   display: none;
   position: absolute;
-  right: 0.6rem;
+  left: 0.6rem;
   bottom: 0.6rem;
   padding: 0.3rem 0.75rem;
   border: 1px solid var(--border-strong);
@@ -730,13 +761,27 @@ main {
 
 /* Two levels of marking, and the open story must be the louder of them.
    The open story keeps the plain surface behind its text, so it stays the most
-   readable row, and earns its weight from the ring and the bar down its edge.
-   The bar is drawn inside the box rather than as a thicker border, because a
-   border changes how wide the text is: the row would rewrap and grow taller
-   every time the reader scrolled it to the top of the list. */
+   readable row, and earns its weight from one accent frame the same width on
+   all four sides: the 1px border, plus 2px of it drawn inside the box.
+
+   Two rules decide that shape, and breaking either one is visible:
+
+   - **The frame is drawn INSIDE the box, never outside it.** The reading column
+     scrolls, so it carries `overflow-y: auto`, and CSS then computes
+     `overflow-x: auto` as well: anything painted outside a row is cut off at
+     the column's left and right edges. An outer `0 0 0 1px` ring used to sit
+     here and was cut on both sides, while the top and the bottom of it showed.
+   - **The frame never becomes a thicker border.** A border changes how wide the
+     text is, so the row would rewrap and grow taller every time the reader
+     scrolled it to the top of the list. A `box-shadow` takes no room at all.
+
+   An `inset 4px 0 0` bar down the left edge used to carry the weight instead.
+   With the border under it that made the left edge 5px against the right edge's
+   1px, and a reader reported the row as having one side thicker than the other:
+   a bar and a frame look the same when both are drawn in the accent colour. */
 .story-item[aria-current="true"] {
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent), inset 4px 0 0 var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
 }
 
 /* The other stories standing on the same pin: tinted, but with no bar and no

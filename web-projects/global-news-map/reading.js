@@ -1,5 +1,5 @@
-// The reading list: how much of a story a folded row shows, and which row the
-// reader has at the top of the list.
+// The reading list: how much of a story a folded row shows, which row the reader
+// has at the top of the list, and what a tap on a row does to its fold.
 //
 // Both answers belong to the phone layout. There the day and the map hold the
 // top of the screen and only the list moves under them, so the list has to say
@@ -65,4 +65,29 @@ export function topmostRow(rows, scrollTop, slack = ROW_SLACK) {
     if (row.bottom >= line) return row.id;
   }
   return rows[rows.length - 1].id;
+}
+
+/**
+ * Whether a tap on a story row also unfolds that row.
+ *
+ * A folded row shows a summary, and the chevron under it opens the rest. The
+ * chevron is one small target, and a reader who taps the story itself means
+ * "show me this story". So the tap opens the row as well as putting it on the
+ * map. Two limits hold, and each one answers a real question:
+ *
+ *   - **A tap never folds a row back.** On a phone the row the reader taps is
+ *     also the row the map marks, so a tap on an open row is a request to go
+ *     back to it. Folding it away takes the words the reader asked for. The
+ *     chevron is what folds a row.
+ *   - **The wide layout leaves the row folded.** There the panel above the list
+ *     already prints every story at the chosen place, in full, so unfolding the
+ *     row too writes the same story twice on one screen.
+ *
+ * @param {object} row
+ * @param {boolean} row.wide the layout that shows the panel beside the map
+ * @param {boolean} row.open the row is unfolded already
+ * @returns {boolean} true when the tap has to unfold the row
+ */
+export function tapUnfolds({ wide, open }) {
+  return !wide && !open;
 }
