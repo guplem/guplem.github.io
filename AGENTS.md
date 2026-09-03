@@ -141,6 +141,8 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Filter normalization:** `idFromText()` in `textUtils.js` strips punctuation/spaces/special chars and capitalizes -- used for element IDs and type/skill button filter matching. Must be consistent across button-based filter code. The free-text work search (`workMatchesText` in `textUtils.js`) intentionally does NOT use `idFromText()` -- it matches raw lowercase substrings so users can type naturally.
 
+**Three-state work filters:** every type and skill chip cycles none -> include -> exclude -> none, and carries its state as a value in `data-tag-filter`, never in a boolean `selected` attribute (see ADR 0014 and `js/layoutBuilder/AGENTS.md`).
+
 **Masonry layout:** Work cards use JS-based column balancing (not CSS Grid). `displayFilteredWorks()` recalculates on resize (debounced 100ms).
 
 **Generated SEO artifacts (never hand-edit):** `sitemap.xml` and the `<!-- BEGIN GENERATED:<NAME> -->` ... `<!-- END GENERATED:<NAME> -->` blocks in `index.html` and `web-projects/index.html` are derived from `data/` by `bun scripts/generateSitemap.js` and `bun scripts/generateSeoBlocks.js` (see ADR 0010). After any edit to `data/info.json` or `data/projects/*.json`, run both scripts (automatic with the lefthook pre-commit hook); CI drift tests fail otherwise. The static head metadata in `index.html` (title/description) must stay identical to `web-title`/`web-description` in `data/info.json` (enforced by a drift test in `scripts/generateSeoBlocks.test.js`).
@@ -183,6 +185,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0011](adr/0011-agent-docs-structure.md) | AGENTS.md root map + shim, skills, area docs are AGENTS.md + CLAUDE.md shim pairs |
 | [0012](adr/0012-red-green-tdd-for-testable-logic.md) | Red-green TDD mandatory for pure logic; DOM rendering exempt |
 | [0013](adr/0013-deployed-at-footer-stamped-into-the-page.md) | "Deployed at" footer stamped into the page before merge, never fetched |
+| [0014](adr/0014-three-state-work-filters.md) | Three-state work filter chips, with one button that teaches the third state |
 
 ### Per-project ADRs
 

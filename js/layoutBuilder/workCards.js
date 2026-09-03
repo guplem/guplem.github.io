@@ -1,6 +1,14 @@
 import * as textUtils from "../utils/textUtils.js";
 import * as uiUtils from "../utils/uiUtils.js";
-import { selectedWorkTypes, selectedWorkSkills, onClickWorkSkill, getWorkSearchQuery } from "./workFilters.js";
+import {
+  includedWorkTypes,
+  excludedWorkTypes,
+  includedWorkSkills,
+  excludedWorkSkills,
+  onClickWorkSkill,
+  getWorkSearchQuery,
+  paintTagFilterButton,
+} from "./workFilters.js";
 
 const WORK_GRID_MAX_HEIGHT = 1400;
 
@@ -48,7 +56,8 @@ export async function displayFilteredWorks() {
 }
 
 /**
- * Get filtered works based on selected types and skills
+ * Get the works that pass the current filters: the type chips, the skill chips
+ * and the free-text search. Every rule must pass.
  * @param {boolean} includeSelected
  * @returns {Promise<{ filteredWorks: any[], allWorks: any[] }>}
  */
@@ -59,12 +68,16 @@ export async function getFilteredWorks(includeSelected = true) {
     throw new Error("Invalid data format: 'works' should be an array");
   }
 
-  const filteredWorks = allWorks.filter((work) => {
-    const hasSelectedType = selectedWorkTypes.length === 0 || (work.types && textUtils.allToId(work.types).some((type) => selectedWorkTypes.includes(type)));
-    const hasSelectedSkill = selectedWorkSkills.length === 0 || (work.skills && textUtils.allToId(work.skills).some((skill) => selectedWorkSkills.includes(skill)));
-    const matchesSearch = textUtils.workMatchesText(work, getWorkSearchQuery());
-    return hasSelectedType && hasSelectedSkill && matchesSearch;
-  });
+  const tagFilters = {
+    includedTypes: includedWorkTypes,
+    excludedTypes: excludedWorkTypes,
+    includedSkills: includedWorkSkills,
+    excludedSkills: excludedWorkSkills,
+  };
+
+  const filteredWorks = allWorks.filter(
+    (work) => textUtils.workMatchesTagFilters(work, tagFilters) && textUtils.workMatchesText(work, getWorkSearchQuery())
+  );
 
   if (includeSelected) {
     return { filteredWorks, allWorks };
@@ -148,10 +161,10 @@ async function createWorkCard(work, index) {
     for (const skill of work.skills) {
       const skillId = textUtils.idFromText(skill);
       const skillButton = uiUtils.createButton(skill, () => onClickWorkSkill(skillId, "myWorkFiltered"));
+      // The card chips share the filter row's three states, so one skill
+      // never looks different in the two places.
+      paintTagFilterButton(skillButton, "skills", skillId, skill);
       skillsElement.appendChild(skillButton);
-      if (selectedWorkSkills.includes(skillId)) {
-        skillButton.setAttribute("selected", "");
-      }
     }
     workElement.appendChild(skillsElement);
   }

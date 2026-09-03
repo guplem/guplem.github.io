@@ -1,6 +1,14 @@
 import * as textUtils from "../utils/textUtils.js";
 import { fillWithData, displayAdditionalSections, displayContactInfo } from "./sectionFiller.js";
-import { fillWithGroupedButtons, onClickWorkType, onClickWorkSkill, enableCollapsibleSections, setWorkSearchQuery } from "./workFilters.js";
+import {
+  fillWithGroupedButtons,
+  onClickWorkType,
+  onClickWorkSkill,
+  enableCollapsibleSections,
+  enableTagExclusionToggle,
+  enableClearFiltersButton,
+  setWorkSearchQuery,
+} from "./workFilters.js";
 export { displayFilteredWorks } from "./workCards.js";
 
 // - Metadata
@@ -26,6 +34,10 @@ enableCollapsibleSections("myWorkSkills");
 document.getElementById("myWorkSearch")?.addEventListener("input", (event) => {
   setWorkSearchQuery(/** @type {HTMLInputElement} */ (event.target).value);
 });
+// - One-click button that excludes the skill named in its data-tag-id, and the
+//   escape hatch that clears every filter
+enableTagExclusionToggle("myWorkExcludeToggle");
+enableClearFiltersButton("myWorkClearFilters");
 
 // Load the works title from the manifest
 (async () => {

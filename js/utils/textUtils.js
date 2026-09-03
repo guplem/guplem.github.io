@@ -5,7 +5,16 @@ marked.setOptions({ breaks: true });
 
 // Pure helpers live in textCore.js (CDN-free so Bun can test them); re-exported
 // here so callers keep one import surface.
-export { capitalizeFirstLetter, allToLower, turnTextArrayIntoDistinctPragraphs, idFromText, allToId, workMatchesText } from "./textCore.js";
+export {
+  capitalizeFirstLetter,
+  allToLower,
+  turnTextArrayIntoDistinctPragraphs,
+  idFromText,
+  allToId,
+  workMatchesText,
+  workMatchesTagFilters,
+  nextTagFilterState,
+} from "./textCore.js";
 
 // Cache to store JSON data for faster subsequent access
 const _jsonDataCached = new Map();

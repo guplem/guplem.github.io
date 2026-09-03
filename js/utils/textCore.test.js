@@ -6,6 +6,8 @@ import {
   idFromText,
   allToId,
   workMatchesText,
+  workMatchesTagFilters,
+  nextTagFilterState,
   markdownToPlainText,
 } from "./textCore.js";
 
@@ -97,6 +99,81 @@ describe("workMatchesText", () => {
     const bareWork = { title: "Mobile App" };
     expect(workMatchesText(bareWork, "mobile")).toBe(true);
     expect(workMatchesText(bareWork, "unity")).toBe(false);
+  });
+});
+
+describe("nextTagFilterState", () => {
+  it("turns an unused filter into must-include", () => {
+    expect(nextTagFilterState("none")).toBe("include");
+  });
+
+  it("turns must-include into must-exclude", () => {
+    expect(nextTagFilterState("include")).toBe("exclude");
+  });
+
+  it("turns must-exclude back into unused", () => {
+    expect(nextTagFilterState("exclude")).toBe("none");
+  });
+
+  it("treats an unknown state as unused", () => {
+    expect(nextTagFilterState(undefined)).toBe("include");
+  });
+});
+
+describe("workMatchesTagFilters", () => {
+  const work = {
+    types: ["Web"],
+    skills: ["Vibe Coded", "Architecture"],
+  };
+
+  it("matches every work when no filter is set", () => {
+    expect(workMatchesTagFilters(work, {})).toBe(true);
+  });
+
+  it("matches a work that carries one of the included skills", () => {
+    expect(workMatchesTagFilters(work, { includedSkills: ["Architecture"] })).toBe(true);
+  });
+
+  it("rejects a work that carries none of the included skills", () => {
+    expect(workMatchesTagFilters(work, { includedSkills: ["Unity"] })).toBe(false);
+  });
+
+  it("matches a work that carries any one of several included skills (OR inside a group)", () => {
+    expect(workMatchesTagFilters(work, { includedSkills: ["Unity", "Architecture"] })).toBe(true);
+  });
+
+  it("requires the type group and the skill group to both pass (AND between groups)", () => {
+    expect(workMatchesTagFilters(work, { includedTypes: ["Web"], includedSkills: ["Architecture"] })).toBe(true);
+    expect(workMatchesTagFilters(work, { includedTypes: ["Videogame"], includedSkills: ["Architecture"] })).toBe(false);
+  });
+
+  it("rejects a work that carries an excluded skill", () => {
+    expect(workMatchesTagFilters(work, { excludedSkills: ["VibeCoded"] })).toBe(false);
+  });
+
+  it("rejects a work that carries an excluded type", () => {
+    expect(workMatchesTagFilters(work, { excludedTypes: ["Web"] })).toBe(false);
+  });
+
+  it("matches a work that carries none of the excluded skills", () => {
+    expect(workMatchesTagFilters(work, { excludedSkills: ["Unity"] })).toBe(true);
+  });
+
+  it("lets an exclusion win over an inclusion", () => {
+    expect(workMatchesTagFilters(work, { includedSkills: ["Architecture"], excludedSkills: ["VibeCoded"] })).toBe(false);
+  });
+
+  it("normalizes the work's tags the same way as the filter ids", () => {
+    expect(workMatchesTagFilters({ skills: ["Mobile app"] }, { excludedSkills: ["MobileApp"] })).toBe(false);
+    expect(workMatchesTagFilters({ skills: ["Mobile app"] }, { includedSkills: ["MobileApp"] })).toBe(true);
+  });
+
+  it("keeps a work that has no skills at all when only exclusions are set", () => {
+    expect(workMatchesTagFilters({ types: ["Web"] }, { excludedSkills: ["VibeCoded"] })).toBe(true);
+  });
+
+  it("rejects a work that has no skills at all when an inclusion is set", () => {
+    expect(workMatchesTagFilters({ types: ["Web"] }, { includedSkills: ["VibeCoded"] })).toBe(false);
   });
 });
 
