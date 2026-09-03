@@ -73,6 +73,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
 | `web-projects/unit-converter/AGENTS.md` | unit-converter: module map, the one-input-box contract, unit-catalogue and number-parsing gotchas |
 | `web-projects/global-news-map/AGENTS.md` | global-news-map: module map, the CORS and UTC gotchas, how a story gets its pin |
+| `web-projects/whatsapp-sticker-creator/AGENTS.md` | whatsapp-sticker-creator: module map, the WebP container details that silently break a sticker, the pipeline order |
 | `web-projects/akwaaba-monsters/AGENTS.md` | akwaaba-monsters: the engine/content line, the permanent-identifier rule, how to add an area |
 | `web-projects/akwaaba-monsters/ROADMAP.md` | akwaaba-monsters: what the first area left out, and where each missing piece plugs in |
 | `adr/*.md`, `web-projects/*/adr/*.md` | Architecture Decision Records: why behind key choices (root = main-site/cross-cutting; per-project = project-specific) |
@@ -222,6 +223,11 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [global-news-map 0003](web-projects/global-news-map/adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
 | [global-news-map 0004](web-projects/global-news-map/adr/0004-on-a-phone-the-list-drives-the-map.md) | On a phone the map holds still and the list drives it |
 | [global-news-map 0005](web-projects/global-news-map/adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md) | A fixed set of ten categories, and the portal's own words when it is none of them |
+| [whatsapp-sticker-creator 0001](web-projects/whatsapp-sticker-creator/adr/0001-pack-frames-into-an-animated-webp-rather-than-encode-one.md) | Pack still frames into an animated WebP, rather than encode one |
+| [whatsapp-sticker-creator 0002](web-projects/whatsapp-sticker-creator/adr/0002-find-the-background-by-colour-from-the-frame-edges.md) | Find the background by colour from the frame edges, with no model |
+| [whatsapp-sticker-creator 0003](web-projects/whatsapp-sticker-creator/adr/0003-follow-the-validator-whatsapp-ships-not-only-its-written-guide.md) | Follow the validator WhatsApp ships, not only its written guide |
+| [whatsapp-sticker-creator 0004](web-projects/whatsapp-sticker-creator/adr/0004-keep-the-pack-in-indexeddb-not-localstorage.md) | Keep the pack in IndexedDB, not localStorage |
+| [whatsapp-sticker-creator 0005](web-projects/whatsapp-sticker-creator/adr/0005-hand-over-the-files-because-a-web-page-cannot-install-a-pack.md) | Hand over the files, because a web page cannot install a pack |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
