@@ -58,8 +58,12 @@
   position: relative;
 }
 
+/* Every chip carries its filter state in data-tag-filter: absent while the
+   chip filters nothing, "include" while it keeps only its own works, and
+   "exclude" while it hides them. */
+
 /* Type buttons (primary) */
-.filter-row:not(.filter-row--secondary) button {
+.filter-row--primary button {
   padding: 8px 20px;
   font-weight: 600;
   font-size: 0.88rem;
@@ -68,14 +72,14 @@
   border-color: rgba(0, 0, 0, 0.06);
 }
 
-.filter-row:not(.filter-row--secondary) button[selected] {
+.filter-row--primary button[data-tag-filter="include"] {
   background: var(--accent);
   color: white;
   border-color: var(--accent);
   box-shadow: 0 2px 12px rgba(var(--accent-rgb), 0.3);
 }
 
-.filter-row:not(.filter-row--secondary) button:hover:not([selected]) {
+.filter-row--primary button:hover:not([data-tag-filter]) {
   background: var(--bg-dark);
   border-color: var(--bg-dark);
 }
@@ -86,21 +90,81 @@
   font-size: 0.78rem;
 }
 
-.filter-row--secondary button:not([selected]):not(#collapseButton) {
+.filter-row--secondary button:not([data-tag-filter]):not(#collapseButton) {
   color: var(--text-muted);
   background: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.05);
 }
 
-.filter-row--secondary button[selected] {
+.filter-row--secondary button[data-tag-filter="include"] {
   background: var(--accent-secondary);
   color: white;
   border-color: var(--accent-secondary);
 }
 
-.filter-row--secondary button:hover:not([selected]):not(#collapseButton) {
+.filter-row--secondary button:hover:not([data-tag-filter]):not(#collapseButton) {
   color: var(--text-body);
   background: rgba(0, 0, 0, 0.06);
+}
+
+/* "Must exclude" chips. The fill says the chip still filters; the dashed
+   border and the strike-through say it now hides works instead of keeping
+   them. The card chips repeat this look further down the file. */
+.filters button[data-tag-filter="exclude"] {
+  background: var(--bg-dark);
+  color: var(--text-body);
+  border-color: var(--text-muted);
+  border-style: dashed;
+  text-decoration: line-through;
+}
+
+/* The minus marker. inline-block keeps the strike-through off the marker. */
+.filters button[data-tag-filter="exclude"]::before,
+.work .workSkills button[data-tag-filter="exclude"]::before,
+.filters .filter-toggle[aria-pressed="true"]::before {
+  content: "−";
+  display: inline-block;
+  margin-right: 4px;
+  font-weight: 700;
+}
+
+/* The one-click button that hides one skill's projects, and the escape hatch
+   that clears every filter. Both are hidden until they have work to do. */
+.filters .filter-toggle {
+  padding: 8px 18px;
+  font-size: 0.82rem;
+  color: var(--text-body);
+  background: var(--bg-light);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.filters .filter-toggle:hover {
+  background: var(--bg-dark);
+  border-color: var(--bg-dark);
+}
+
+/* Pressed, it matches the chip it drives, so the two read as one state. */
+.filters .filter-toggle[aria-pressed="true"] {
+  background: var(--bg-dark);
+  border-color: var(--text-muted);
+  border-style: dashed;
+}
+
+.filters .filter-clear {
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.filters .filter-clear:hover {
+  color: var(--text-body);
+}
+
+/* A hidden control must stay out of the flex row, whatever else styles it. */
+.filters button[hidden] {
+  display: none;
 }
 
 /* Collapse behavior */
@@ -407,13 +471,23 @@
   transition: all var(--duration-fast) var(--ease-out);
 }
 
-.work .workSkills button[selected] {
+.work .workSkills button[data-tag-filter="include"] {
   background: var(--accent-secondary);
   color: white;
   border-color: var(--accent-secondary);
 }
 
-.work .workSkills button:hover:not([selected]) {
+/* Same "must exclude" look as the filter row above, so one skill never reads
+   differently in the two places. */
+.work .workSkills button[data-tag-filter="exclude"] {
+  background: var(--bg-dark);
+  color: var(--text-body);
+  border-color: var(--text-muted);
+  border-style: dashed;
+  text-decoration: line-through;
+}
+
+.work .workSkills button:hover:not([data-tag-filter]) {
   background: var(--bg-dark);
   color: var(--text-body);
 }
