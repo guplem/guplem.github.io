@@ -26,6 +26,8 @@ game played in Ghana. They share the board and nothing else. See ADR 0001.
 | `search.js` | Yes | Random, greedy, one-move, minimax with alpha-beta, Monte Carlo tree search |
 | `agents.js` | Yes | The six opponents as data: a name, a tier and a plan |
 | `playback.js` | Yes | The picture on the screen, which trails the engine by one event |
+| `seedLayout.js` | Yes | Where the seeds sit inside a pit, and which place the next seed takes |
+| `captions.js` | Yes | The words: one event's pop-up, one move's summary, one held pit's line |
 | `rng.js` | Yes | A seeded generator, so a benchmark run repeats exactly |
 | `urlState.js` | Yes | Reading and writing the address bar (root ADR 0006) |
 | `store.js` | Yes | Setup, speed and the player's record, through an injected storage (root ADR 0007) |
@@ -49,6 +51,14 @@ describeMove(state, pit) -> what the move would do, without playing it
 
 The state shape is shared: `mode`, `pits`, `scores`, `turn`, `owner`, `over`,
 `winner`, `endReason`, `plies`. Ba-awa adds `starter` and `sinceCapture`.
+
+`describeMove` answers one shape too, because `captions.js` writes one preview
+line for both games: `gain` (what the mover ends up with), `captured` (what the
+mover takes out of pits), `given` (what the opponent takes), `laps`,
+`extraTurn`, `lands` (the pit the last seed rests in) and `landsInStore` (the
+store it falls into instead). A field a game cannot have is still answered with
+the value that game always has: Kalah answers `given: 0` and `laps: 1`, Ba-awa
+answers `extraTurn: false` and `landsInStore: null`.
 
 **Add a field to one engine and you must add it to the other**, or the opponents
 and the screen see a hole. Nothing enforces it but `modes.test.js`, which walks
@@ -116,6 +126,31 @@ pit from the snapshot, and `app.js` repaints the whole board from the engine
 after every move. A player can tap anywhere on the board to skip an animation
 at any point, and the skip is checked before the tap is matched to a pit.
 
+**A flying seed starts and ends on a place a pit draws, never on a pit's
+centre.** `seedLayout.js` fixes twelve places per pit and `restingPoint` in
+`render.js` turns one into pixels. Seed k of a lift leaves place k of the pit
+it comes out of and lands on the place its new pit is about to draw it in, so
+the swap from a flying seed to a drawn dot moves nothing. Aim a flight at
+`centreOf(pit)` again and every seed jumps into place as it arrives, which is
+the exact bug a player reported as a teleport. Two smaller parts of the same
+fix: the flying seed is `calc(var(--pit) * 0.14)` across, the size of a drawn
+one, and `--pit` therefore lives on `:root` and not on `.board`, because the
+layer the seeds fly on is a sibling of the board.
+
+**A hold is a look, and it plays nothing.** Press a pit for `HOLD_MS` and the
+board marks the pit its last seed would land in; the release then plays no
+move, because `eatClickUntil` swallows the click that ends a press that became
+a look. That is a moment and not a flag on purpose: a press that ends off the
+board sends no click, and a flag left standing would eat the next real one. A mouse resting on a pit for `DWELL_MS` opens the same look, and a pit
+reached with the keyboard opens it at once (`:focus-visible` tells a keyboard
+focus from a mouse press). The marks come from the engine's `describeMove`, so
+the screen never simulates a move of its own. ADR 0006 has the reasoning.
+
+**A line about a move must not be overwritten by the prompt.** `playMove` says
+whose turn it is ONLY when `summarise` had nothing to report, and passes that
+answer to `queueAgent` so the "thinking" line does not wipe it either. Both
+calls looked harmless and both hid every summary the game ever wrote.
+
 **The seeds of one lift fly together, not one at a time.** `sowingLaps` in
 `playback.js` groups a move's events into laps, one per `lift`, and `render.js`
 launches every seed of a lap at once: seed 1 lands in the next pit, seed 2 in
@@ -175,3 +210,4 @@ what the benchmark is for.
 | [0003](adr/0003-the-numbers-the-tradition-leaves-out.md) | Decide the numbers the tradition leaves to the players, and measure them |
 | [0004](adr/0004-rank-the-opponents-by-a-measured-tournament.md) | Rank the opponents by a measured tournament, not by opinion |
 | [0005](adr/0005-the-screen-trails-the-engine-by-one-event.md) | The engine answers with events, and the screen trails it by one |
+| [0006](adr/0006-a-hold-looks-ahead-and-plays-nothing.md) | A hold looks ahead, the engine answers the look, and the release plays nothing |
