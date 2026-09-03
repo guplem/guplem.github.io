@@ -1,0 +1,19 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Sticker Studio for WhatsApp",
+  "description": [
+    "*Sticker Studio* is a **web tool that turns a photo into a WhatsApp sticker**: it cuts out the background, frames and colours the picture, adds captions, and merges pictures into an animation.",
+    "Browsers can only encode one still picture, so I **wrote the animated WebP writer myself**, packing frames into the container rather than compressing them. The background is found by colour from the frame edges, with no model.",
+    "Stickers are checked against **WhatsApp's own validator source**, which differs from its written guide on four rules. The pixel work is **test-covered**, and nothing leaves the device."
+  ],
+  "skills": ["Vibe Coded", "Architecture", "UI/UX", "Frontend"],
+  "links": [
+    { "url": "web-projects/whatsapp-sticker-creator/" },
+    {
+      "type": "github",
+      "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/whatsapp-sticker-creator"
+    }
+  ]
+}
