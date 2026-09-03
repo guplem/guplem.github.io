@@ -211,7 +211,8 @@ function makeFrame({ rgba, width, height }) {
     zoom: 1,
     panX: 0,
     panY: 0,
-    durationMs: 100,
+    // No duration on purpose. `addFrame` fills it in from the frame before,
+    // so a person who chose 400 ms does not set it again for every frame.
   };
 }
 
@@ -299,12 +300,40 @@ function basePlacement(frame) {
 /* --------------------------------------------------------------- rendering */
 
 function renderAll() {
+  syncControlsToFrame();
   renderFrame();
   renderFramesTool();
   renderTextList();
   renderPackPanel();
   updateControls();
   scheduleBuild();
+}
+
+/**
+ * Move every control to match the frame now being edited.
+ *
+ * Each frame carries its own colour, framing and timing, so the sliders belong
+ * to the frame and not to the editor. Without this, choosing a second frame
+ * leaves the sliders showing the first frame's numbers, and the next touch of
+ * any one of them writes those numbers onto the frame that did not have them.
+ */
+function syncControlsToFrame() {
+  const frame = activeFrame();
+  if (!frame) return;
+  const set = (id, value, format = String) => {
+    dom[id].value = String(value);
+    if (dom[`${id}-out`]) dom[`${id}-out`].textContent = format(value);
+  };
+
+  set("colour-brightness", Math.round(frame.adjustments.brightness * 100));
+  set("colour-contrast", Math.round(frame.adjustments.contrast * 100), (v) => `${v}%`);
+  set("colour-saturation", Math.round(frame.adjustments.saturation * 100), (v) => `${v}%`);
+  set("colour-temperature", Math.round(frame.adjustments.temperature * 100));
+  set("crop-padding", frame.padding);
+  set("crop-zoom", Math.round(frame.zoom * 100), (v) => `${v}%`);
+  dom["frames-duration"].value = String(frame.durationMs);
+  dom["frames-duration-out"].textContent = say("frames.durationValue", { ms: frame.durationMs });
+  buildColourPresets();
 }
 
 /** Draw the active frame into the preview, on the next animation frame. */
@@ -567,10 +596,11 @@ function setFit(fit) {
   const frame = activeFrame();
   if (!frame) return;
   frame.fit = fit;
+  // A new fit starts from a clean view, or the old zoom and pan would move
+  // the picture somewhere the chosen fit never meant to put it.
   frame.zoom = 1;
   frame.panX = 0;
   frame.panY = 0;
-  dom["crop-zoom"].value = "100";
   renderAll();
 }
 
@@ -1082,7 +1112,9 @@ async function openInEditor(sticker) {
   try {
     const blob = new Blob([sticker.webp], { type: "image/webp" });
     const picture = await loadPicture(blob);
-    state.frames = [makeFrame(picture)];
+    // Through `addFrame`, so the frame gets its default timing the same way
+    // every other frame does.
+    state.frames = addFrame([], makeFrame(picture));
     state.activeFrame = 0;
     state.texts = [];
     state.editingStickerId = sticker.id;
@@ -1698,14 +1730,9 @@ function wireEvents() {
     if (!frame) return;
     frame.adjustments = { brightness: 0, contrast: 1, saturation: 1, temperature: 0 };
     frame.preset = "none";
-    dom["colour-brightness"].value = "0";
-    dom["colour-contrast"].value = "100";
-    dom["colour-saturation"].value = "100";
-    dom["colour-temperature"].value = "0";
-    for (const [id, , format] of colourSliders) {
-      dom[`${id}-out`].textContent = format(Number(dom[id].value));
-    }
-    buildColourPresets();
+    // The sliders belong to the frame, so moving them back is the same job as
+    // catching them up after choosing another frame.
+    syncControlsToFrame();
     renderFrame();
     scheduleBuild();
   });
