@@ -1,0 +1,927 @@
+/* Sticker Studio for WhatsApp.
+ *
+ * The tokens are declared here, because a web-project is self-contained and
+ * never imports the site's global CSS. The values echo the portfolio's own
+ * palette by eye so the tool sits alongside it, without depending on it.
+ *
+ * Two things in this file carry meaning rather than taste:
+ *
+ *  - `.canvas-wrap` draws a checkerboard. It is the only way a person can see
+ *    what a transparent sticker actually looks like, and a sticker with no
+ *    transparency is the commonest mistake this tool exists to prevent.
+ *  - The one breakpoint, 60rem, is queried here and in `app.js` with the same
+ *    string, so the two can never disagree about which layout is showing.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #eef0f5;
+  --surface: #ffffff;
+  --surface-sunk: #f4f5f8;
+  --border: rgba(20, 20, 34, 0.09);
+  --border-strong: rgba(20, 20, 34, 0.16);
+
+  --text: #141422;
+  --text-body: #2e2e3e;
+  --muted: #6b6b80;
+
+  --accent: rgb(220 90 0);
+  --accent-rgb: 220, 90, 0;
+  --accent-ink: rgb(150 58 0);
+  --accent-soft: rgba(220, 90, 0, 0.1);
+
+  --danger: #b3261e;
+  --danger-soft: rgba(179, 38, 30, 0.1);
+  --warn: #8a5a00;
+  --warn-soft: rgba(180, 120, 0, 0.12);
+  --good: #1f6b3a;
+  --good-soft: rgba(31, 107, 58, 0.1);
+
+  --shadow-sm: 0 1px 3px rgba(20, 20, 34, 0.06);
+  --shadow-md: 0 6px 24px rgba(20, 20, 34, 0.09);
+  --shadow-lg: 0 16px 48px rgba(20, 20, 34, 0.14);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+
+  --fast: 120ms;
+  --normal: 220ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+
+  /* The two greys of the transparency checkerboard. */
+  --check-a: #e2e4ea;
+  --check-b: #f7f8fa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101017;
+    --surface: #191922;
+    --surface-sunk: #14141c;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+
+    --text: #f2f2f6;
+    --text-body: #d3d3de;
+    --muted: #9a9aae;
+
+    --accent: #ff8f45;
+    --accent-rgb: 255, 143, 69;
+    --accent-ink: #ffb488;
+    --accent-soft: rgba(255, 143, 69, 0.14);
+
+    --danger: #ff8a80;
+    --danger-soft: rgba(255, 138, 128, 0.14);
+    --warn: #ffcc66;
+    --warn-soft: rgba(255, 204, 102, 0.14);
+    --good: #7ddba0;
+    --good-soft: rgba(125, 219, 160, 0.14);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+
+    --check-a: #24242e;
+    --check-b: #1c1c25;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* The `hidden` attribute is `display: none` in the browser's own stylesheet,
+ * and any `display` rule written here beats it. `.tool` and `.stage` both set
+ * `display: flex`, so without this every tool panel shows at once and the tabs
+ * do nothing. This has to stay ahead of every layout rule below. */
+[hidden] {
+  display: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
+}
+
+.page {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+}
+
+/* Masthead */
+
+.masthead {
+  text-align: center;
+  padding: 1rem 0 1.5rem;
+}
+
+h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  margin: 0.5rem auto 0;
+  max-width: 34rem;
+  color: var(--muted);
+}
+
+.lang {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.lang button {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--muted);
+  border-radius: var(--radius-full);
+  padding: 0.25rem 0.75rem;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease);
+}
+
+.lang button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Panels */
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 1.25rem;
+}
+
+h2 {
+  margin: 0 0 1rem;
+  color: var(--text);
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+}
+
+.banner {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--danger-soft);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  font-size: 0.92rem;
+}
+
+/* Picking a picture */
+
+.dropzone {
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 2rem 1rem;
+  text-align: center;
+  transition: border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.dropzone.over {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.dropzone-line {
+  margin: 0 0 1rem;
+  color: var(--text);
+}
+
+/* Buttons */
+
+.button {
+  appearance: none;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-sunk);
+  color: var(--text);
+  border-radius: var(--radius-full);
+  padding: 0.6rem 1.15rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--fast) var(--ease), background var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+.button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.button.primary:hover:not(:disabled) {
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: #fff;
+}
+
+.button.ghost {
+  background: transparent;
+}
+
+.button.small {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.button.danger {
+  color: var(--danger);
+  border-color: var(--danger-soft);
+}
+
+.button.danger:hover:not(:disabled) {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.75rem 0;
+}
+
+.row.exports {
+  margin-top: 1.25rem;
+}
+
+/* The sticker stage */
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 512px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  /* The checkerboard. Without it a person cannot tell a transparent
+   * background from a white one, which is the whole point of a sticker. */
+  background-image: conic-gradient(
+    var(--check-a) 0% 25%,
+    var(--check-b) 25% 50%,
+    var(--check-a) 50% 75%,
+    var(--check-b) 75% 100%
+  );
+  background-size: 24px 24px;
+  touch-action: none;
+}
+
+.canvas-wrap canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#overlay {
+  pointer-events: none;
+}
+
+.canvas-wrap.painting {
+  cursor: crosshair;
+}
+
+.stage-side {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tool tabs */
+
+.tabs {
+  display: flex;
+  gap: 0.3rem;
+  overflow-x: auto;
+  margin: 1.25rem 0 1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: thin;
+}
+
+.tabs button {
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.tabs button[aria-selected="true"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.tool {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* Fields */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+}
+
+.field.inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.field-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.field-label output {
+  color: var(--muted);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.empty {
+  margin: 0.5rem 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-style: italic;
+}
+
+.count {
+  margin: 0.5rem 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-sunk);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+}
+
+input[type="text"]:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+input[type="color"] {
+  width: 3rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: none;
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.check input {
+  accent-color: var(--accent);
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Chip rows: colour presets, emoji suggestions */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0;
+}
+
+.chips button {
+  border: 1px solid var(--border-strong);
+  background: var(--surface-sunk);
+  color: var(--text-body);
+  border-radius: var(--radius-full);
+  padding: 0.3rem 0.75rem;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.chips button:hover,
+.chips button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.chips.emoji button {
+  font-size: 1.15rem;
+  padding: 0.2rem 0.55rem;
+  line-height: 1.4;
+}
+
+/* Segmented control: the brush modes */
+
+.segmented {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--surface-sunk);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 0.2rem;
+  margin: 0.75rem 0 0.25rem;
+}
+
+.segmented button {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Text layers */
+
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.layer {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  background: var(--surface-sunk);
+}
+
+.layer.selected {
+  border-color: var(--accent);
+}
+
+.layer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.layer-title {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.layer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+/* The frame strip */
+
+.strip {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0.15rem;
+  scrollbar-width: thin;
+}
+
+.frame {
+  flex: 0 0 auto;
+  width: 5.25rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunk);
+  padding: 0.25rem;
+  cursor: pointer;
+  text-align: center;
+  font: inherit;
+  color: var(--muted);
+  transition: border-color var(--fast) var(--ease);
+}
+
+.frame[aria-current="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.frame canvas,
+.frame img {
+  width: 100%;
+  aspect-ratio: 1;
+  display: block;
+  border-radius: 6px;
+  background-image: conic-gradient(
+    var(--check-a) 0% 25%,
+    var(--check-b) 25% 50%,
+    var(--check-a) 50% 75%,
+    var(--check-b) 75% 100%
+  );
+  background-size: 12px 12px;
+}
+
+.frame-label {
+  display: block;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.15rem;
+}
+
+.frame-actions {
+  display: flex;
+  gap: 0.15rem;
+  justify-content: center;
+  margin-top: 0.15rem;
+}
+
+.frame-actions button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.8rem;
+  line-height: 1;
+  padding: 0.15rem 0.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.frame-actions button:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Findings */
+
+.check-summary {
+  margin: 0 0 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.check-summary.pass {
+  color: var(--good);
+}
+
+.findings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.findings li {
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+}
+
+.findings li.error {
+  background: var(--danger-soft);
+  border-left-color: var(--danger);
+  color: var(--danger);
+}
+
+.findings li.warning {
+  background: var(--warn-soft);
+  border-left-color: var(--warn);
+  color: var(--warn);
+}
+
+.rules {
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+}
+
+.rules summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.rules ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.rules p {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* The pack */
+
+.pack-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.25rem;
+  margin: 1rem 0;
+}
+
+.badge {
+  display: inline-block;
+  border-radius: var(--radius-full);
+  padding: 0.1rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--accent-soft);
+  color: var(--accent);
+  vertical-align: 0.05em;
+}
+
+.pack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: 0.6rem;
+  margin: 0.5rem 0;
+}
+
+.pack-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem;
+  background: var(--surface-sunk);
+  text-align: center;
+}
+
+.pack-item img {
+  width: 100%;
+  aspect-ratio: 1;
+  display: block;
+  border-radius: 6px;
+  background-image: conic-gradient(
+    var(--check-a) 0% 25%,
+    var(--check-b) 25% 50%,
+    var(--check-a) 50% 75%,
+    var(--check-b) 75% 100%
+  );
+  background-size: 12px 12px;
+}
+
+.pack-item.tray {
+  border-color: var(--accent);
+}
+
+.pack-item-meta {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.15rem;
+}
+
+.pack-item-actions {
+  display: flex;
+  gap: 0.1rem;
+  justify-content: center;
+  margin-top: 0.15rem;
+  flex-wrap: wrap;
+}
+
+.pack-item-actions button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  line-height: 1;
+  padding: 0.2rem 0.3rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pack-item-actions button:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Footer */
+
+.footer {
+  margin-top: 2.5rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.footer p {
+  margin: 0.4rem 0;
+}
+
+.privacy {
+  max-width: 34rem;
+  margin: 0 auto 0.5rem;
+}
+
+.footer a {
+  color: var(--accent);
+}
+
+.back-link {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* Wide screens: the sticker sits beside its tools instead of above them.
+ * `app.js` asks for this same query, once, so the two cannot disagree. */
+
+@media (min-width: 60rem) {
+  .page {
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .panel {
+    padding: 1.75rem;
+  }
+
+  #editor-panel {
+    display: grid;
+    grid-template-columns: minmax(20rem, 26rem) 1fr;
+    grid-template-areas:
+      "heading heading"
+      "stage tools";
+    column-gap: 2rem;
+    align-items: start;
+  }
+
+  #edit-heading {
+    grid-area: heading;
+  }
+
+  .stage {
+    grid-area: stage;
+    /* The sticker stays in view while the tool panel beside it scrolls, so
+     * a slider always shows its own effect. */
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  #editor-panel .tools {
+    grid-area: tools;
+  }
+
+  #editor-panel .tabs {
+    margin-top: 0;
+  }
+
+  .pack-meta {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .layer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
