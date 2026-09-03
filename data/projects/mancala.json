@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web", "Videogame"],
+  "date": "2026",
+  "title": "Mancala",
+  "description": [
+    "*Mancala* is a **two-game board game for the browser**: Kalah, the version most people know, and **Ba-awa**, the game played in Ghana, where one move crosses the board many times and the winner takes pits off the loser between rounds.",
+    "I set the rules from how Ba-awa is really played, and the bar for the feel: every seed is animated into the pit it lands in.",
+    "It ships **six AI opponents**, ranked by a **round-robin tournament the project runs itself**, from random play to a timed **minimax search**."
+  ],
+  "skills": ["Vibe Coded", "Game Design", "AI Integration", "UI/UX", "Architecture"],
+  "links": [
+    { "url": "web-projects/mancala/" },
+    { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/mancala" }
+  ]
+}

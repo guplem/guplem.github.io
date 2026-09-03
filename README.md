@@ -36,6 +36,7 @@ To make this automatic on every commit, install [lefthook](https://github.com/ev
 
 Self-contained mini-apps in `web-projects/`. Browse them all in the **Playground** at [triunitystudios.com/web-projects/](https://triunitystudios.com/web-projects/), an index page that lists every project automatically from the portfolio data. "Playground" is the visitor-facing name of that page; the folder and the URL keep the `web-projects` name.
 
+- **`mancala/`** — Two mancala games on one board: Kalah, and Ba-awa, the Ghanaian four-seed game with relay sowing and pits won between rounds; six AI opponents ranked by a tournament the project runs itself
 - **`whatsapp-sticker-creator/`** — Turn a photo into a WhatsApp sticker: background removal you can paint over, framing, colour, captions and animated frames, all held to WhatsApp's own sticker rules; the animated WebP writer is its own, so nothing is fetched and nothing leaves the device
 - **`global-news-map/`** — A world map of the day's news, pinned where it happened, read from Wikipedia's Current Events portal; any past day, with the original sources on every story
 - **`akwaaba-monsters/`** — A handheld-style creature-collecting game set in tropical Ghana, from the first village to the first gym; no image or audio files anywhere, every creature and note is generated in the browser

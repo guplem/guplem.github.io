@@ -72,6 +72,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frames as spec, the scanner and pen model, geometry gotchas |
 | `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
 | `web-projects/unit-converter/AGENTS.md` | unit-converter: module map, the one-input-box contract, unit-catalogue and number-parsing gotchas |
+| `web-projects/mancala/AGENTS.md` | mancala: the engine contract both rule sets answer, how to add a third, the Ba-awa traps |
 | `web-projects/global-news-map/AGENTS.md` | global-news-map: module map, the CORS and UTC gotchas, how a story gets its pin |
 | `web-projects/whatsapp-sticker-creator/AGENTS.md` | whatsapp-sticker-creator: module map, the WebP container details that silently break a sticker, the pipeline order |
 | `web-projects/akwaaba-monsters/AGENTS.md` | akwaaba-monsters: the engine/content line, the permanent-identifier rule, how to add an area |
@@ -223,6 +224,11 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [global-news-map 0003](web-projects/global-news-map/adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
 | [global-news-map 0004](web-projects/global-news-map/adr/0004-on-a-phone-the-list-drives-the-map.md) | On a phone the map holds still and the list drives it |
 | [global-news-map 0005](web-projects/global-news-map/adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md) | A fixed set of ten categories, and the portal's own words when it is none of them |
+| [mancala 0001](web-projects/mancala/adr/0001-two-engines-behind-one-interface.md) | Two rule sets, two engines, one interface |
+| [mancala 0002](web-projects/mancala/adr/0002-the-setup-is-in-the-link-the-position-is-not.md) | The link carries the setup, never the position |
+| [mancala 0003](web-projects/mancala/adr/0003-the-numbers-the-tradition-leaves-out.md) | Decide the numbers the tradition leaves to the players, and measure them |
+| [mancala 0004](web-projects/mancala/adr/0004-rank-the-opponents-by-a-measured-tournament.md) | Rank the opponents by a measured tournament, not by opinion |
+| [mancala 0005](web-projects/mancala/adr/0005-the-screen-trails-the-engine-by-one-event.md) | The engine answers with events, and the screen trails it by one |
 | [whatsapp-sticker-creator 0001](web-projects/whatsapp-sticker-creator/adr/0001-pack-frames-into-an-animated-webp-rather-than-encode-one.md) | Pack still frames into an animated WebP, rather than encode one |
 | [whatsapp-sticker-creator 0002](web-projects/whatsapp-sticker-creator/adr/0002-find-the-background-by-colour-from-the-frame-edges.md) | Find the background by colour from the frame edges, with no model |
 | [whatsapp-sticker-creator 0003](web-projects/whatsapp-sticker-creator/adr/0003-follow-the-validator-whatsapp-ships-not-only-its-written-guide.md) | Follow the validator WhatsApp ships, not only its written guide |
