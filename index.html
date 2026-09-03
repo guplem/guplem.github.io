@@ -106,8 +106,13 @@
         <div id="myWorkFilters" class="filters">
           <div class="filter-row filter-row--search">
             <input type="search" id="myWorkSearch" class="filter-search" placeholder="Search projects…" aria-label="Search projects" autocomplete="off" />
+            <!-- data-tag-id names the skill this button hides: idFromText("Vibe Coded"). It stays hidden until the script confirms that a project carries that skill. -->
+            <button type="button" id="myWorkExcludeToggle" class="filter-toggle" data-tag-id="VibeCoded" data-tag-label="Vibe Coded" aria-pressed="false" hidden>
+              Hide vibe coded
+            </button>
+            <button type="button" id="myWorkClearFilters" class="filter-clear" hidden>Clear filters</button>
           </div>
-          <div id="myWorkTypes" class="filter-row"></div>
+          <div id="myWorkTypes" class="filter-row filter-row--primary"></div>
           <div id="myWorkSkills" class="filter-row filter-row--secondary"></div>
         </div>
         <div id="myWorkGridWrapper" class="work-grid-wrapper" data-collapsed="true">
