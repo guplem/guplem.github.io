@@ -104,8 +104,8 @@ is handed to them.
 The two rule sets do not reward the same thinking equally. Ba-awa is shorter
 and sharper, so the gap between the top three narrows there. Dreamer beats
 Weaver 6-0 at Kalah, but only 3-2 with 1 drawn at Ba-awa. Chief beats Dreamer
-3-2 with 1 drawn at Kalah, and 2-0 with 4 drawn at Ba-awa, where six of its ten
-games were drawn.
+3-2 with 1 drawn at Kalah, and 2-0 at Ba-awa, where four of their six games
+were drawn.
 
 ## Benchmark
 
@@ -129,6 +129,11 @@ change the `tier` numbers in `agents.js` and this table together.
 makes a whole tournament finish in minutes. Do not rank from a scaled run: at
 `--scale 0.2` Dreamer drops below Weaver purely because it is given a fifth of
 its search.
+
+Chief searches at most 7 levels deep in Ba-awa, well inside its clock, and that
+is deliberate. Letting it use the whole clock, 16 levels, made it lose points:
+it drew every game against Dreamer instead of winning, and took nearly twice as
+long over each move. ADR 0004 carries the numbers.
 
 ## URL Parameters
 

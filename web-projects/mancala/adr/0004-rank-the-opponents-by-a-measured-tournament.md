@@ -60,3 +60,12 @@ pairings, 6 games each, both seats, both rule sets, 180 games.
 - The benchmark measures thinking time as well as strength. That is what keeps
   Chief's clock at 450ms: it averages 170ms a move, and a budget large enough to
   win by more would make a phone feel broken.
+- **A deeper search is not automatically a better one, and this was measured.**
+  Chief stops at 7 levels in Ba-awa, which its 450ms clock reaches easily, so
+  most of the clock goes unused. Raising the cap to 16, where the clock really
+  is the limit, made it WORSE: it drew all six games against Dreamer instead of
+  winning two, its win rate fell from 86.7% to 84.2%, and its thinking time
+  nearly doubled to 282ms a move. Deeper play in Ba-awa finds the lines where
+  both sides settle for the endgame split, and a draw scores half a win. The cap
+  is back at 7, with the measurement written next to it, so the unused clock is
+  not read as a bug to fix.

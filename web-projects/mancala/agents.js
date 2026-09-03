@@ -89,11 +89,14 @@ export const AGENTS = [
     level: "Expert",
     blurb: "Searches as deep as the clock allows, one level at a time.",
     pauseMs: 80,
-    // The clock, not the depth, is meant to be the limit. Ba-awa allows a
-    // deeper search than Kalah in the same time, because its pits empty and
-    // the tree narrows, so its cap is higher. Both caps are set above what
-    // 450ms reaches, and the deadline inside the search stops it.
-    plan: (mode) => ({ kind: "deepening", budgetMs: 450, maxDepth: mode === "baawa" ? 16 : 11 }),
+    // In Kalah the clock is the limit: 11 levels is more than 450ms reaches.
+    // In Ba-awa the CAP is the limit on purpose, and it stops at 7. Ba-awa's
+    // tree narrows as pits empty, so the same clock reaches 16 levels, and a
+    // measured run says that is worse rather than better: at 16 this opponent
+    // drew all six games against the tree-search opponent instead of winning
+    // two, its win rate fell from 86.7% to 84.2%, and its thinking time went
+    // from 170ms to 282ms a move. Do not "fix" the unused clock. See adr/0004.
+    plan: (mode) => ({ kind: "deepening", budgetMs: 450, maxDepth: mode === "baawa" ? 7 : 11 }),
   },
 ];
 
