@@ -241,6 +241,13 @@ async function addPictures(files, { replace = false } = {}) {
     state.texts = [];
     state.editingStickerId = null;
     state.built = null;
+    // The tags describe this sticker, and WhatsApp uses them to help people
+    // find it. Carrying them over would quietly give every sticker in a pack
+    // the same ones, which is the opposite of what they are for.
+    state.emojis = [];
+    state.accessibilityText = "";
+    dom["emoji-input"].value = "";
+    dom["a11y-input"].value = "";
   }
 
   for (const file of pictures) {
