@@ -36,6 +36,7 @@ To make this automatic on every commit, install [lefthook](https://github.com/ev
 
 Self-contained mini-apps in `web-projects/`. Browse them all in the **Playground** at [triunitystudios.com/web-projects/](https://triunitystudios.com/web-projects/), an index page that lists every project automatically from the portfolio data. "Playground" is the visitor-facing name of that page; the folder and the URL keep the `web-projects` name.
 
+- **`mancala/`** — Two mancala games on one board: Kalah, and Ba-awa, the Ghanaian four-seed game with relay sowing and pits won between rounds; six AI opponents ranked by a tournament the project runs itself
 - **`global-news-map/`** — A world map of the day's news, pinned where it happened, read from Wikipedia's Current Events portal; any past day, with the original sources on every story
 - **`akwaaba-monsters/`** — A handheld-style creature-collecting game set in tropical Ghana, from the first village to the first gym; no image or audio files anywhere, every creature and note is generated in the browser
 - **`unit-converter/`** — Type an amount and a unit in one box (`100 km`, `5'10"`, `1 1/2 cup`, `100 USD`) and see every unit it can be at once, currencies included
