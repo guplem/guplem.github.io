@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f1ece2" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#161219" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="Play mancala in the browser: Kalah, the classic, and Ba-awa, the Ghanaian four-seed game with rounds and pit conquest. Six AI opponents, ranked by a measured tournament, or two people on one device." />
+  <title>Mancala · Kalah and Ba-awa · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/mancala/" />
+  <!-- Drawn inline so the page asks the network for nothing at all. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e0a45c'/%3E%3Ccircle cx='10' cy='11' r='4.4' fill='%232f6f9f'/%3E%3Ccircle cx='22' cy='11' r='4.4' fill='%23e2554b'/%3E%3Ccircle cx='10' cy='22' r='4.4' fill='%232f6f9f'/%3E%3Ccircle cx='22' cy='22' r='4.4' fill='%23e2554b'/%3E%3C/svg%3E" />
+  <!-- Which pull request published this file. Never hand-edit: written by
+       `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
+  <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="0" />
+  <meta name="deploy-date" content="1970-01-01T00:00:00.000Z" />
+  <!-- END GENERATED:DEPLOY -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#board">Skip to the board</a>
+
+  <div class="page">
+    <!-- ============================= setup ============================= -->
+    <section class="screen screen--setup" id="setup">
+      <header class="hero">
+        <h1 class="hero__title">Mancala</h1>
+        <p class="hero__sub">
+          Two games on one board. Sow the seeds, take what you can, and hold the last row.
+        </p>
+      </header>
+
+      <section class="panel">
+        <h2 class="panel__title">Choose the game</h2>
+        <div class="mode-grid" id="mode-grid"></div>
+        <div class="rounds-row" id="rounds-row" hidden>
+          <button class="toggle" id="rounds-toggle" type="button" aria-pressed="true"></button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel__title">Choose the players</h2>
+        <div class="seats">
+          <div class="seat seat--blue" id="seat-blue">
+            <h3 class="seat__title"><span class="dotmark dotmark--blue"></span>Blue<span class="seat__note">moves first, bottom row</span></h3>
+            <div class="seat__kind" role="group" aria-label="Who plays Blue"></div>
+            <div class="seat__levels" role="group" aria-label="How hard Blue plays"></div>
+            <p class="seat__blurb"></p>
+          </div>
+          <div class="seat seat--red" id="seat-red">
+            <h3 class="seat__title"><span class="dotmark dotmark--red"></span>Red<span class="seat__note">top row</span></h3>
+            <div class="seat__kind" role="group" aria-label="Who plays Red"></div>
+            <div class="seat__levels" role="group" aria-label="How hard Red plays"></div>
+            <p class="seat__blurb"></p>
+          </div>
+        </div>
+      </section>
+
+      <div class="setup-actions">
+        <button class="btn btn--primary" id="start" type="button">Play</button>
+        <button class="btn btn--ghost" id="rules-open" type="button">How to play</button>
+      </div>
+      <p class="record" id="record"></p>
+      <button class="linkish" id="share" type="button">Copy a link to this setup</button>
+    </section>
+
+    <!-- ============================= game ============================= -->
+    <section class="screen screen--game" id="game" hidden>
+      <div class="scoreboard">
+        <div class="chip chip--red" id="chip-red">
+          <span class="chip__name">Red</span>
+          <span class="chip__who" id="chip-red-who"></span>
+          <span class="chip__score" id="chip-red-score">0</span>
+        </div>
+        <span class="scoreboard__vs">vs</span>
+        <div class="chip chip--blue" id="chip-blue">
+          <span class="chip__name">Blue</span>
+          <span class="chip__who" id="chip-blue-who"></span>
+          <span class="chip__score" id="chip-blue-score">0</span>
+        </div>
+      </div>
+
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+
+      <div class="board-wrap">
+        <div class="board" id="board"></div>
+        <div class="fly-layer" id="fly-layer" aria-hidden="true"></div>
+      </div>
+
+      <p class="round-strip" id="round-strip" hidden></p>
+
+      <div class="game-actions">
+        <button class="btn btn--small" id="game-menu" type="button">Menu</button>
+        <button class="btn btn--small" id="game-again" type="button">Restart</button>
+        <button class="btn btn--small" id="speed" type="button" aria-pressed="false">Speed &times;1</button>
+        <button class="btn btn--small" id="rules-open-game" type="button">Rules</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================ overlays ============================ -->
+  <div class="overlay" id="rules" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+      <div class="sheet__head">
+        <h2 class="sheet__heading">How to play</h2>
+        <button class="icon-btn" id="rules-close" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="tabs" id="rules-tabs" role="group" aria-label="Which rule set"></div>
+      <div class="card">
+        <div class="card__figure">
+          <div class="board board--mini" id="rules-board"></div>
+        </div>
+        <h3 class="card__title" id="rules-title"></h3>
+        <p class="card__text" id="rules-text"></p>
+        <p class="card__step" id="rules-step"></p>
+      </div>
+      <div class="dots" id="rules-dots"></div>
+      <div class="sheet__actions">
+        <button class="btn btn--small" id="rules-prev" type="button">Back</button>
+        <button class="btn btn--primary" id="rules-ok" type="button">OK</button>
+        <button class="btn btn--small" id="rules-next" type="button">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="result" hidden data-tone="draw">
+    <div class="sheet sheet--result" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <h2 class="result__title" id="result-title"></h2>
+      <p class="result__line" id="result-line"></p>
+      <p class="result__detail" id="result-detail"></p>
+      <div class="sheet__actions sheet__actions--result">
+        <button class="btn btn--primary" id="result-main" type="button"></button>
+        <button class="btn btn--ghost" id="result-second" type="button"></button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p class="privacy">
+      Everything runs in this page. It makes no network calls at all, and the only thing it keeps is
+      your setup, your speed choice and your record against each opponent, in this browser.
+    </p>
+    <p class="deploy-line" id="deploy-line"></p>
+    <p><a class="back-link" href="../">All web projects</a></p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
