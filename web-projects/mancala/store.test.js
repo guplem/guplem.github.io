@@ -115,9 +115,19 @@ describe("the speed setting", () => {
     expect(loadSpeed(storage)).toBe(2);
   });
 
+  it("remembers each speed the button offers", () => {
+    for (const speed of [1, 2, 3]) {
+      const storage = fakeStorage();
+      saveSpeed(storage, speed);
+      expect(loadSpeed(storage)).toBe(speed);
+    }
+  });
+
   it("refuses a speed it does not have", () => {
     const storage = fakeStorage();
     saveSpeed(storage, 99);
+    expect(loadSpeed(storage)).toBe(1);
+    saveSpeed(storage, 0);
     expect(loadSpeed(storage)).toBe(1);
   });
 });

@@ -14,7 +14,17 @@ import { createMatch, recordRound } from "./match.js";
 import { snapshot, paceFor } from "./playback.js";
 import { buildBoard, paintBoard, animateMove, flashBadge, pulse } from "./render.js";
 import { parseSetup, serializeSetup, DEFAULT_SETUP, isSeat } from "./urlState.js";
-import { loadSetup, saveSetup, loadRecord, saveRecord, addResult, recordFor, loadSpeed, saveSpeed } from "./store.js";
+import {
+  loadSetup,
+  saveSetup,
+  loadRecord,
+  saveRecord,
+  addResult,
+  recordFor,
+  loadSpeed,
+  saveSpeed,
+  nextSpeed,
+} from "./store.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { say, escapeHtml } from "./deployText.js";
 
@@ -640,8 +650,10 @@ function showScreen(name) {
 
 /** Put the animation speed on its button. */
 function paintSpeed() {
-  dom.speed.textContent = ui.speed === 2 ? "Speed \u00d72" : "Speed \u00d71";
-  dom.speed.setAttribute("aria-pressed", String(ui.speed === 2));
+  dom.speed.textContent = `Speed \u00d7${ui.speed}`;
+  dom.speed.setAttribute("aria-pressed", String(ui.speed !== 1));
+  dom.speed.title =
+    ui.speed === 1 ? "The normal pace. Tap for a faster one." : "Tap to change the pace.";
 }
 
 /** Copy a link that opens this exact setup. */
@@ -668,13 +680,14 @@ function wire() {
   });
 
   dom.board.addEventListener("click", (event) => {
-    const button = event.target.closest(".pit");
-    if (!button) return;
+    // An impatient player taps the board, not necessarily a pit, so the skip
+    // is checked before the pit is looked up.
     if (ui.busy) {
-      // An impatient player may skip the rest of the animation.
       ui.cancelled = true;
       return;
     }
+    const button = event.target.closest(".pit");
+    if (!button) return;
     if (!canClick()) return;
     const pit = Number(button.dataset.pit);
     if (!rulesFor(ui.setup.mode).legalMoves(ui.game).includes(pit)) {
@@ -687,7 +700,7 @@ function wire() {
   el("game-menu").addEventListener("click", () => showScreen("setup"));
   el("game-again").addEventListener("click", startMatch);
   dom.speed.addEventListener("click", () => {
-    ui.speed = ui.speed === 2 ? 1 : 2;
+    ui.speed = nextSpeed(ui.speed);
     saveSpeed(storage, ui.speed);
     paintSpeed();
   });
@@ -727,10 +740,12 @@ function wire() {
     { passive: true }
   );
 
-  // The board is measured in pixels while a seed is in the air, so a resize
-  // in the middle of a move would send seeds to the wrong place. Redrawing
-  // from the snapshot is always safe.
+  // A seed's flight is measured in pixels when it launches, so a resize in the
+  // middle of a move would carry it to where a pit used to be. Landing the
+  // seeds at once is the honest answer, and redrawing from the snapshot is
+  // always safe.
   window.addEventListener("resize", () => {
+    if (ui.busy) ui.cancelled = true;
     if (ui.board && ui.shown) paintBoard(ui.board, ui.shown, {
       playable: canClick() ? rulesFor(ui.setup.mode).legalMoves(ui.game) : [],
       names: SEAT_NAMES,

@@ -116,22 +116,36 @@ export function saveRecord(storage, record) {
   return write(storage, RECORD_KEY, record);
 }
 
+/** The speeds the button offers, in the order it cycles through them. */
+export const SPEEDS = [1, 2, 3];
+
 /**
- * The animation speed the player chose: 1 normal, 2 fast.
+ * The animation speed the player chose. 1 is the normal pace, and 2 and 3 run
+ * the same animation that many times faster.
  * @param {Storage} storage a localStorage-shaped object, or null
- * @returns {number}
+ * @returns {number} one of SPEEDS
  */
 export function loadSpeed(storage) {
   const speed = read(storage, SPEED_KEY, 1);
-  return speed === 2 ? 2 : 1;
+  return SPEEDS.includes(speed) ? speed : 1;
 }
 
 /**
  * Remember the animation speed.
  * @param {Storage} storage a localStorage-shaped object, or null
- * @param {number} speed 1 or 2
+ * @param {number} speed one of SPEEDS; anything else stores the normal pace
  * @returns {boolean} whether it was stored
  */
 export function saveSpeed(storage, speed) {
-  return write(storage, SPEED_KEY, speed === 2 ? 2 : 1);
+  return write(storage, SPEED_KEY, SPEEDS.includes(speed) ? speed : 1);
+}
+
+/**
+ * The speed after this one, wrapping round to the start.
+ * @param {number} speed the speed now
+ * @returns {number} the next speed
+ */
+export function nextSpeed(speed) {
+  const at = SPEEDS.indexOf(speed);
+  return SPEEDS[(at + 1) % SPEEDS.length];
 }
