@@ -167,7 +167,7 @@ Example: <https://triunitystudios.com/web-projects/mancala/?mode=baawa&red=deep>
 | `deployStamp.js` | Yes | The "deployed at" footer, read from this page's own head (root ADR 0013) |
 | `deployText.js` | Yes | The words that footer uses |
 | `render.js` | No | Builds the board's elements and animates the seeds |
-| `app.js` | No | Listens to clicks, calls the modules above, owns the only clock |
+| `app.js` | No | Listens to clicks, calls the modules above, decides the pace of an animation |
 | `benchmark.js` | No | Development only: the round-robin tournament |
 
 ## Privacy

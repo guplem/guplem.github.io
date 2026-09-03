@@ -36,7 +36,7 @@ pairings, 6 games each, both seats, both rule sets, 180 games.
 | 2 | Magpie | most seeds this turn | 24.2% | 26.7% | 0.0 |
 | 3 | Farmer | one move deep, on the evaluation | 37.5% | 38.3% | 0.0 |
 | 4 | Weaver | alpha-beta, fixed depth 4 (3 in Ba-awa) | 64.2% | 71.7% | 0.5 |
-| 5 | Dreamer | Monte Carlo tree search, 1200 tries | 81.7% | 75.0% | 49.9 |
+| 5 | Dreamer | Monte Carlo tree search, 1200 tries (400 in Ba-awa) | 81.7% | 75.0% | 49.9 |
 | 6 | Chief | alpha-beta, deepening on a 450ms clock | 86.7% | 81.7% | 169.7 |
 
 ## Consequences

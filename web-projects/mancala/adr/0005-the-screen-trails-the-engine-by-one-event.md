@@ -37,9 +37,11 @@ applyEvent(shown, e)   -> the picture after one event
 applyEvents(shown, es) -> the picture after a whole move
 ```
 
-`app.js` owns the only clock in the project. `render.js` walks the events, flies
-one seed element per drop, and paints each pit from the snapshot rather than
-from the animation, so a number on screen is never guessed.
+`app.js` decides the pace (`paceFor`, scaled by the speed setting and set to
+zero under reduced motion) and hands it to `render.js`, which owns the actual
+waiting: it walks the events, flies one seed element per drop at that pace,
+and paints each pit from the snapshot rather than from the animation, so a
+number on screen is never guessed.
 
 This copies `akwaaba-monsters` ADR 0007, which reached the same design for the
 same reason in a turn-based battle.

@@ -22,7 +22,7 @@ game played in Ghana. They share the board and nothing else. See ADR 0001.
 | `baawa.js` | Yes | The Ba-awa rules, one round of them |
 | `match.js` | Yes | Rounds into a match: captured seeds into pits, and who won the match |
 | `modes.js` | Yes | The two engines behind one interface, and the how-to-play cards |
-| `evaluate.js` | Yes | How good a position is, per rule set. The only file above the engines that reads `state.mode` |
+| `evaluate.js` | Yes | How good a position is, per rule set. The file where the rule set changes which formula runs |
 | `search.js` | Yes | Random, greedy, one-move, minimax with alpha-beta, Monte Carlo tree search |
 | `agents.js` | Yes | The six opponents as data: a name, a tier and a plan |
 | `playback.js` | Yes | The picture on the screen, which trails the engine by one event |
@@ -32,7 +32,7 @@ game played in Ghana. They share the board and nothing else. See ADR 0001.
 | `deployStamp.js` | Yes | The "deployed at" footer. Copied verbatim; never rewrite it (root ADR 0013) |
 | `deployText.js` | Yes | The words that footer uses |
 | `render.js` | No | Builds the board's elements and animates the seeds |
-| `app.js` | No | Listens to clicks, calls the modules above, owns the only clock |
+| `app.js` | No | Listens to clicks, calls the modules above, decides the pace of an animation |
 | `benchmark.js` | No | Development only. The round-robin tournament that ranks the opponents |
 
 ## The engine contract

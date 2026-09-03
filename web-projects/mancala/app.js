@@ -3,8 +3,9 @@
 // kalah.js, baawa.js or match.js, every opponent from agents.js, and every
 // number on the board from playback.js.
 //
-// It is the one file with a clock. The engines and the playback are pure and
-// have no idea that an animation exists.
+// It decides the pace of an animation and hands it to render.js, which does the
+// waiting. The engines and the playback are pure and have no idea that an
+// animation exists at all.
 
 import { SOUTH, NORTH, other } from "./board.js";
 import { MODES, MODE_IDS, modeById, rulesFor, newGame } from "./modes.js";

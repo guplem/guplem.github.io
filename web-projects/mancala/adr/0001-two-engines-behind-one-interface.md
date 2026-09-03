@@ -44,11 +44,13 @@ board shape for everything above.
 `board.js` holds what is genuinely shared: the ring, the geometry and the
 counting. It knows no rules.
 
-`modes.js` holds the registry. Everything above it, `agents.js`, `search.js`,
-`playback.js`, `render.js` and `benchmark.js`, is handed an engine and never
-asks which one it has. `evaluate.js` is the one exception, and it says so: a
-position is worth different things in the two games, so it dispatches on
-`state.mode` and nothing else does.
+`modes.js` holds the registry. `search.js`, `playback.js`, `render.js` and
+`benchmark.js` are handed an engine and never ask which one it is.
+`evaluate.js` is the file where that matters most: a position is worth
+different things in the two games, so it dispatches on `state.mode` to choose
+which formula to score with. `agents.js` reads `mode` too, but only to scale a
+plan's search depth or iteration count for the shorter Ba-awa game; it never
+changes which algorithm a plan calls.
 
 ## Consequences
 
