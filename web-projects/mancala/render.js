@@ -16,7 +16,7 @@
 // sleep, the board still ends up correct.
 
 import { PIT_COUNT, ROW } from "./board.js";
-import { applyEvent } from "./playback.js";
+import { applyEvent, applyEvents, sowingLaps } from "./playback.js";
 import { mulberry32 } from "./rng.js";
 
 /** The most seed dots drawn in one pit. Above this the number does the work. */
@@ -194,111 +194,233 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => resolve()));
 
 /**
- * Play one move's events onto the board, one at a time.
+ * Play one move onto the board.
+ *
+ * The seeds of one lift all leave the pit together and fly as a stream. The
+ * first drops into the next pit, the second carries on to the pit after it,
+ * and the last one crosses the whole distance, so several seeds are in the air
+ * at once and each one visibly travels. That is how the game this copies moves
+ * its seeds, and it is what the earlier version got wrong: it flew one seed at
+ * a time and waited for each to land, so a seed crossed one pit in a tenth of
+ * a second and the board looked like it was jumping rather than sowing.
+ *
+ * A Ba-awa relay lifts again and again, so a move is a run of laps. Each lap
+ * waits for the one before it.
  *
  * @param {Object} refs the elements from buildBoard
  * @param {Object} before the snapshot the move starts from
  * @param {Object[]} events the events of the move
  * @param {Object} view what the board needs to keep drawing correctly:
- *   `pace` milliseconds per seed, `flyLayer` the element flying seeds go on,
- *   `playable` a function giving the clickable pits for a snapshot, `names`,
- *   `onShown` called with each snapshot, `cancelled` a function that can stop
- *   the animation early, and `chip` a function giving the element a captured
- *   seed should fly to.
+ *   `pace` milliseconds for one seed to cross one pit, `flyLayer` the element
+ *   flying seeds go on, `names`, `onShown` called with each snapshot,
+ *   `cancelled` a function that can stop the animation early, and `chip` a
+ *   function giving the element a captured seed should fly to.
  * @returns {Promise<Object>} the snapshot after the last event
  */
 export async function animateMove(refs, before, events, view) {
-  const pace = view.pace ?? 120;
+  const pace = view.pace ?? 300;
   let shown = before;
-  let from = null;
 
-  for (const event of events) {
-    const cancelled = view.cancelled?.() ?? false;
-    shown = applyEvent(shown, event);
+  /** Draw a snapshot and tell the caller about it. */
+  const show = (next) => {
+    shown = next;
+    paintBoard(refs, shown, { playable: [], names: view.names });
+    view.onShown?.(shown);
+  };
 
-    if (cancelled || pace === 0) {
-      view.onShown?.(shown);
+  /** Has the player asked to see the rest at once? */
+  const stopped = () => (view.cancelled?.() ?? false) || pace === 0;
+
+  const { laps, tail } = sowingLaps(events);
+
+  for (const lap of laps) {
+    if (stopped()) {
+      shown = applyEvents(shown, [lap.lift, ...lap.steps.flatMap((step) => [step.event, ...step.extras])]);
+      show(shown);
       continue;
     }
+    shown = await playLap(refs, shown, lap, pace, view, show);
+  }
 
-    switch (event.type) {
-      case "lift": {
-        from = refs.pits[event.pit];
-        pulse(from, "pit--lifting", pace * 2);
-        paintBoard(refs, shown, { playable: [], names: view.names });
-        await wait(Math.min(160, pace * 1.4));
-        break;
-      }
-
-      case "drop": {
-        const to = refs.pits[event.pit];
-        await flySeed(view.flyLayer, from ?? to, to, pace);
-        from = to;
-        paintBoard(refs, shown, { playable: [], names: view.names });
-        pulse(to, "pit--hit", pace);
-        await wait(pace * 0.35);
-        break;
-      }
-
-      case "store": {
-        const to = refs.stores[event.player];
-        if (to) {
-          await flySeed(view.flyLayer, from ?? to, to, pace);
-          from = to;
-          pulse(to, "store--hit", pace);
-        }
-        paintBoard(refs, shown, { playable: [], names: view.names });
-        await wait(pace * 0.35);
-        break;
-      }
-
-      case "capture": {
-        const target = view.chip?.(event.player) ?? refs.stores[event.player] ?? refs.pits[event.pit];
-        const sources = [refs.pits[event.pit]];
-        if (typeof event.facing === "number") sources.push(refs.pits[event.facing]);
-        for (const source of sources) pulse(source, "pit--taken", pace * 3);
-        await wait(pace * 0.8);
-        const flights = Math.min(event.count, MAX_FLYING);
-        await Promise.all(
-          Array.from({ length: flights }, (_, index) =>
-            wait(index * Math.min(50, pace * 0.4)).then(() =>
-              flySeed(view.flyLayer, sources[index % sources.length], target, pace * 2, "seed--taken")
-            )
-          )
-        );
-        paintBoard(refs, shown, { playable: [], names: view.names });
-        pulse(target, "chip--hit", pace * 3);
-        await wait(pace * 0.6);
-        break;
-      }
-
-      case "sweep": {
-        const target = view.chip?.(event.player) ?? refs.stores[event.player];
-        const sources = (event.pits ?? []).map((pit) => refs.pits[pit]).filter(Boolean);
-        for (const source of sources) pulse(source, "pit--taken", pace * 3);
-        await Promise.all(
-          sources
-            .slice(0, MAX_FLYING)
-            .map((source, index) =>
-              wait(index * 40).then(() =>
-                flySeed(view.flyLayer, source, target, pace * 2, "seed--taken")
-              )
-            )
-        );
-        paintBoard(refs, shown, { playable: [], names: view.names });
-        await wait(pace);
-        break;
-      }
-
-      default:
-        view.onShown?.(shown);
-        continue;
+  for (const event of tail) {
+    shown = applyEvent(shown, event);
+    if (!stopped() && event.type === "sweep") {
+      await sweepSeeds(refs, event, pace, view);
     }
-
-    view.onShown?.(shown);
+    show(shown);
   }
 
   return shown;
+}
+
+/**
+ * Fly one lift: every seed leaves at once and each stops at its own pit.
+ * @param {Object} refs the elements from buildBoard
+ * @param {Object} start the snapshot before the lift
+ * @param {Object} lap one entry from `sowingLaps`
+ * @param {number} pace milliseconds for one seed to cross one pit
+ * @param {Object} view the drawing helpers from animateMove
+ * @param {(shown: Object) => void} show paints a snapshot
+ * @returns {Promise<Object>} the snapshot after the lap
+ */
+async function playLap(refs, start, lap, pace, view, show) {
+  const source = refs.pits[lap.lift.pit];
+  pulse(source, "pit--lifting", pace);
+
+  // The pit empties as the hand picks the seeds up, before any of them move.
+  show(applyEvent(start, lap.lift));
+  await wait(Math.min(180, pace * 0.45));
+
+  const stops = lap.steps.map((step) =>
+    step.event.type === "store" ? refs.stores[step.event.player] : refs.pits[step.event.pit]
+  );
+  const centres = [source, ...stops].map((element) => centreOf(element ?? source, view.flyLayer));
+  const middle = centreOf(refs.container, view.flyLayer);
+
+  // Every seed of the lift is in the air from the same moment. Seed k flies
+  // through the first k stops, so it lands one pace later than seed k-1. Only
+  // its own first and last points sit on a pit; the ones it merely passes are
+  // pulled into the wood between the pits, so the stream flows down the board
+  // instead of across the pits it is not landing in.
+  const flights = lap.steps.map((_, index) => {
+    const legs = centres.slice(0, index + 2);
+    const route = legs.map((point, at) =>
+      at === 0 || at === legs.length - 1 ? point : towards(point, middle, CHANNEL_PULL)
+    );
+    return sowSeed(view.flyLayer, route, pace * (index + 1), index);
+  });
+
+  let shown = applyEvent(start, lap.lift);
+  for (let index = 0; index < lap.steps.length; index += 1) {
+    // A player who has seen enough taps the board. The rest of the lap then
+    // lands at once rather than after the seeds still in the air.
+    if (view.cancelled?.()) {
+      for (const flight of flights) flight.land();
+      for (const rest of lap.steps.slice(index)) {
+        shown = applyEvent(shown, rest.event);
+        for (const extra of rest.extras) shown = applyEvent(shown, extra);
+      }
+      show(shown);
+      break;
+    }
+
+    await wait(pace);
+    const step = lap.steps[index];
+    shown = applyEvent(shown, step.event);
+    show(shown);
+    pulse(stops[index], step.event.type === "store" ? "store--hit" : "pit--hit", pace * 0.6);
+
+    for (const extra of step.extras) {
+      shown = applyEvent(shown, extra);
+      if (extra.type === "capture") await captureSeeds(refs, extra, pace, view);
+      show(shown);
+    }
+  }
+
+  await Promise.all(flights.map((flight) => flight.done));
+  return shown;
+}
+
+/**
+ * Send the seeds of a capture to the player's score.
+ * @param {Object} refs the elements from buildBoard
+ * @param {Object} event the capture event
+ * @param {number} pace milliseconds for one seed to cross one pit
+ * @param {Object} view the drawing helpers from animateMove
+ */
+async function captureSeeds(refs, event, pace, view) {
+  const target = view.chip?.(event.player) ?? refs.stores[event.player] ?? refs.pits[event.pit];
+  const sources = [refs.pits[event.pit]];
+  if (typeof event.facing === "number") sources.push(refs.pits[event.facing]);
+  for (const element of sources) pulse(element, "pit--taken", pace);
+  const flights = Math.min(event.count, MAX_FLYING);
+  await Promise.all(
+    Array.from({ length: flights }, (_, index) =>
+      wait(index * 45).then(() =>
+        flySeed(view.flyLayer, sources[index % sources.length], target, pace * 0.9, "seed--taken")
+      )
+    )
+  );
+  pulse(target, "chip--hit", pace);
+}
+
+/**
+ * Send every seed left on the board to the player who takes them.
+ * @param {Object} refs the elements from buildBoard
+ * @param {Object} event the sweep event
+ * @param {number} pace milliseconds for one seed to cross one pit
+ * @param {Object} view the drawing helpers from animateMove
+ */
+async function sweepSeeds(refs, event, pace, view) {
+  const target = view.chip?.(event.player) ?? refs.stores[event.player];
+  const sources = (event.pits ?? []).map((pit) => refs.pits[pit]).filter(Boolean);
+  for (const element of sources) pulse(element, "pit--taken", pace);
+  await Promise.all(
+    sources
+      .slice(0, MAX_FLYING)
+      .map((element, index) =>
+        wait(index * 60).then(() => flySeed(view.flyLayer, element, target, pace * 0.9, "seed--taken"))
+      )
+  );
+  pulse(target, "chip--hit", pace);
+}
+
+/** How far a passed-over pit pulls the flight path towards the board's middle. */
+const CHANNEL_PULL = 0.5;
+
+/**
+ * A point moved part of the way towards another point.
+ * @param {{x: number, y: number}} point where it starts
+ * @param {{x: number, y: number}} target what it moves towards
+ * @param {number} part 0 leaves it alone, 1 moves it all the way
+ * @returns {{x: number, y: number}}
+ */
+function towards(point, target, part) {
+  return { x: point.x + (target.x - point.x) * part, y: point.y + (target.y - point.y) * part };
+}
+
+/**
+ * Send one seed along a path of pit centres at a steady speed.
+ *
+ * The browser animates it, not a chain of transitions, so one seed can cross
+ * several pits in one movement and the whole stream stays in step.
+ *
+ * @param {HTMLElement} layer the element flying seeds are added to
+ * @param {Array<{x: number, y: number}>} path the centres to fly through
+ * @param {number} ms how long the whole flight takes
+ * @param {number} index which seed of the lift this is, used to spread the
+ *   stream out so it reads as several seeds and not as one
+ * @returns {Promise<void>} resolved when the seed has landed
+ */
+function sowSeed(layer, path, ms, index) {
+  if (!layer || path.length < 2) return { done: Promise.resolve(), land: () => {} };
+  const seed = document.createElement("i");
+  seed.className = "seed seed--fly";
+  layer.append(seed);
+
+  // A small fixed offset per seed, so seeds travelling together do not sit
+  // exactly on top of each other.
+  const spread = 3.5;
+  const shift = {
+    x: ((index % 3) - 1) * spread,
+    y: ((Math.floor(index / 3) % 3) - 1) * spread,
+  };
+
+  const frames = path.map((point, at) => ({
+    transform: `translate(${point.x + shift.x}px, ${point.y + shift.y}px)`,
+    offset: at / (path.length - 1),
+  }));
+
+  if (typeof seed.animate !== "function") {
+    seed.style.transform = frames[frames.length - 1].transform;
+    return { done: wait(ms).then(() => seed.remove()), land: () => seed.remove() };
+  }
+
+  const flight = seed.animate(frames, { duration: ms, easing: "linear", fill: "forwards" });
+  return {
+    done: flight.finished.catch(() => {}).then(() => seed.remove()),
+    land: () => flight.finish(),
+  };
 }
 
 /**
