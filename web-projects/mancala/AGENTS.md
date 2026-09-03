@@ -113,7 +113,23 @@ so the ballast changes nothing else.
 
 **The animation must never be the source of a number.** `render.js` paints each
 pit from the snapshot, and `app.js` repaints the whole board from the engine
-after every move. A player can tap to skip an animation at any point.
+after every move. A player can tap anywhere on the board to skip an animation
+at any point, and the skip is checked before the tap is matched to a pit.
+
+**The seeds of one lift fly together, not one at a time.** `sowingLaps` in
+`playback.js` groups a move's events into laps, one per `lift`, and `render.js`
+launches every seed of a lap at once: seed 1 lands in the next pit, seed 2 in
+the pit after it, and the last seed crosses the whole distance. This is
+measured from the game the project copies, and the first version got it wrong
+by flying one seed and waiting for it. Do not "simplify" it back. ADR 0005 has
+the frame-by-frame numbers.
+
+**The pace is per pit crossed, not per event.** `BASE_GAP` in `playback.js` is
+560ms, which is what the measured game averages. A lap of five seeds therefore
+runs for five gaps. `MOVE_BUDGET` shrinks the gap on a long Ba-awa relay,
+because the last seed of a forty-seed move would otherwise fly for twenty
+seconds, and `MIN_GAP` is the floor. The speed button divides the gap by 1, 2
+or 3, and the normal pace is the slowest of the three on purpose.
 
 **The board's size comes from one custom property.** `--pit` in `style.css` is
 capped against the viewport width AND height, so the tall phone board never runs

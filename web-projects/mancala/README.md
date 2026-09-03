@@ -21,11 +21,16 @@ each other and watch.
   sets and both seats, and the table it prints is the order they are listed in.
 - **Any seat, any player.** A person or a program in each seat, so you can play
   a friend, play a program, or watch two programs.
-- **Animated, and the animation can never lie.** The engine answers a move with
-  the finished position plus an ordered list of everything that happened. The
-  screen replays that list one seed at a time, and it paints the final position
-  from the engine when it is done, so a skipped or interrupted animation still
-  leaves the board correct.
+- **The seeds are sown, not moved.** Every seed of a lift leaves the pit at the
+  same moment and they fly as one stream: the first drops into the next pit,
+  the second into the pit after it, and the last one crosses the whole
+  distance. The pace comes from the game this copies, measured frame by frame,
+  and three speeds are on the board (the normal one is the slowest). Tap the
+  board to land the rest at once.
+- **The animation can never lie.** The engine answers a move with the finished
+  position plus an ordered list of everything that happened. Every number on
+  screen comes from that list, and the board is repainted from the engine when
+  the move ends, so a skipped or interrupted animation still leaves it correct.
 - **Nothing is fetched.** No network calls at all, no fonts, no images, no
   libraries. The only thing kept is your setup, your speed choice and your
   record against each opponent, in this browser.
