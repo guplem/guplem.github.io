@@ -41,6 +41,6 @@ Ship both, because each one covers the other's weakness.
 **Negative:**
 
 - A second click no longer clears a chip. A visitor who wants to clear one chip clicks it twice more, or clears every filter at once.
-- The "exclude" look needs no new palette colour, so it says "excluded" with a fill, a dashed border, a leading minus and a strike-through, instead of with the red that a reader may expect.
+- The "exclude" look needs no new palette colour, so it says "excluded" with a fill, a dashed border and a strike-through, instead of with the red that a reader may expect.
 - Nothing checks that the button's `data-tag-id` still matches a skill in `data/`. A renamed skill leaves the button hidden, which is silent but visible on the page.
 - Filter state lives in memory only. A reload clears it, and a visitor cannot share a filtered view by URL. Root ADR 0006 keeps URL state for `web-projects/`, and the main site holds no user state worth persisting.

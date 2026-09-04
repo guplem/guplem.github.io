@@ -118,16 +118,6 @@
   text-decoration: line-through;
 }
 
-/* The minus marker. inline-block keeps the strike-through off the marker. */
-.filters button[data-tag-filter="exclude"]::before,
-.work .workSkills button[data-tag-filter="exclude"]::before,
-.filters .filter-toggle[aria-pressed="true"]::before {
-  content: "−";
-  display: inline-block;
-  margin-right: 4px;
-  font-weight: 700;
-}
-
 /* The one-click button that hides one skill's projects, and the escape hatch
    that clears every filter. Both are hidden until they have work to do. */
 .filters .filter-toggle {
