@@ -12,6 +12,7 @@ import { MODES, MODE_IDS, modeById, rulesFor, newGame } from "./modes.js";
 import { AGENTS, HUMAN, DEFAULT_AGENT, agentById, chooseMove, isAgent } from "./agents.js";
 import { createMatch, recordRound } from "./match.js";
 import { snapshot, paceFor } from "./playback.js";
+import { captionFor, summarise, previewText } from "./captions.js";
 import { buildBoard, paintBoard, animateMove, flashBadge, pulse } from "./render.js";
 import { parseSetup, serializeSetup, DEFAULT_SETUP, isSeat } from "./urlState.js";
 import {
@@ -77,6 +78,12 @@ const dom = {
   resultSecond: el("result-second"),
 };
 
+/** How long a press must last before it counts as a look, not a move. */
+const HOLD_MS = 240;
+
+/** How long a mouse must rest on a pit before it shows the same look. */
+const DWELL_MS = 380;
+
 const ui = {
   setup: { ...DEFAULT_SETUP },
   match: null,
@@ -86,6 +93,11 @@ const ui = {
   busy: false,
   cancelled: false,
   speed: 1,
+  // The pit a player is looking at, and where its last seed would land:
+  // `{from, to, store}`, or null when nobody is looking.
+  peek: null,
+  // Did a press open the look? If it did, the release must not play the move.
+  peekHeld: false,
   record: {},
   rulesMode: DEFAULT_SETUP.mode,
   rulesCard: 0,
@@ -273,6 +285,9 @@ function seatLabel(seat) {
   return value === HUMAN ? SEAT_NAMES[seat] : agentById(value).name;
 }
 
+/** What to call both players, the way captions.js wants them. */
+const seatNames = () => [seatLabel(SOUTH), seatLabel(NORTH)];
+
 /** Keep the address bar in step with the setup, without adding history steps. */
 function writeUrl() {
   const query = serializeSetup(ui.setup);
@@ -295,6 +310,8 @@ function startRound() {
   ui.game = newGame(mode, { owner: ui.match.owner, firstPlayer: ui.match.firstPlayer });
   ui.shown = snapshot(ui.game);
   ui.cancelled = false;
+  ui.peek = null;
+  ui.peekHeld = false;
   ui.runId += 1;
   paintGame();
   announceTurn();
@@ -315,6 +332,7 @@ function paintGame() {
   paintBoard(ui.board, ui.shown, {
     playable: canClick() ? rulesFor(ui.setup.mode).legalMoves(ui.game) : [],
     names: SEAT_NAMES,
+    peek: ui.peek,
   });
 
   const strip = dom.roundStrip;
@@ -338,9 +356,9 @@ function announceTurn() {
   if (seatIsAgent(seat)) {
     setStatus(`${seatLabel(seat)} is thinking…`, "think");
   } else if (humanSeats().length === 2) {
-    setStatus(`${SEAT_NAMES[seat]}, pick one of your pits.`);
+    setStatus(`${SEAT_NAMES[seat]}: tap a pit, or hold one to look ahead.`);
   } else {
-    setStatus("Your move: pick one of your pits.");
+    setStatus("Your move: tap a pit, or hold one to look ahead.");
   }
 }
 
@@ -354,6 +372,82 @@ function setStatus(text, tone = "") {
   dom.status.className = `status ${tone ? `status--${tone}` : ""}`.trim();
 }
 
+// --- looking before you leap -------------------------------------------------
+
+/** The timer that turns a press or a hover into a look. */
+let peekTimer = null;
+
+/**
+ * Until when a click has to be swallowed, because the press it ends was a
+ * look. It is a moment and not a flag: a press that ends off the board sends
+ * no click at all, and a flag left standing would eat the next real one,
+ * including a move played with the keyboard.
+ */
+let eatClickUntil = 0;
+
+/** How long after a look the click that ended it may still arrive. */
+const EAT_CLICK_MS = 300;
+
+/**
+ * Mark where a pit's last seed would land, and say what the move would do.
+ * The engine answers this, so the marks can never disagree with the move.
+ * @param {number} pit the pit being looked at
+ * @param {boolean} held did a press open this look?
+ */
+function openPeek(pit, held) {
+  if (!canClick()) return;
+  const rules = rulesFor(ui.setup.mode);
+  const moves = rules.legalMoves(ui.game);
+  if (!moves.includes(pit)) return;
+  const look = rules.describeMove(ui.game, pit);
+  ui.peek = { from: pit, to: look.lands, store: look.landsInStore };
+  ui.peekHeld = held;
+  paintBoard(ui.board, ui.shown, { playable: moves, names: SEAT_NAMES, peek: ui.peek });
+  setStatus(previewText(look, ui.game.turn, seatNames()), "peek");
+}
+
+/**
+ * Take the marks off again.
+ * @param {boolean} [sayTurn] put the prompt back in the status line
+ */
+function closePeek(sayTurn = true) {
+  stopPeekTimer();
+  if (!ui.peek) return;
+  ui.peek = null;
+  ui.peekHeld = false;
+  if (ui.game && ui.match && ui.shown) paintGame();
+  if (sayTurn) announceTurn();
+}
+
+/**
+ * Open a look after a wait, so a tap stays a tap and a mouse crossing the
+ * board does not flash a look at every pit it passes.
+ * @param {number} pit the pit being looked at
+ * @param {number} delay milliseconds to wait
+ * @param {boolean} held did a press start this?
+ */
+function startPeekTimer(pit, delay, held) {
+  stopPeekTimer();
+  peekTimer = setTimeout(() => {
+    peekTimer = null;
+    openPeek(pit, held);
+  }, delay);
+}
+
+/** Forget a look that has not opened yet. */
+function stopPeekTimer() {
+  if (peekTimer === null) return;
+  clearTimeout(peekTimer);
+  peekTimer = null;
+}
+
+/** A press has ended: a look closes, and the click it ends with plays nothing. */
+function endPress() {
+  stopPeekTimer();
+  if (ui.peekHeld) eatClickUntil = Date.now() + EAT_CLICK_MS;
+  closePeek();
+}
+
 /** Play a move, animate it and then work out what happens next. */
 async function playMove(pit) {
   const rules = rulesFor(ui.setup.mode);
@@ -364,9 +458,11 @@ async function playMove(pit) {
   ui.busy = true;
   ui.cancelled = false;
   ui.game = after;
+  closePeek(false);
   paintBoard(ui.board, ui.shown, { playable: [], names: SEAT_NAMES });
 
   const pace = paceFor(events, reducedMotion() ? 0 : ui.speed);
+  const names = seatNames();
   ui.shown = await animateMove(ui.board, ui.shown, events, {
     pace,
     flyLayer: dom.flyLayer,
@@ -377,6 +473,13 @@ async function playMove(pit) {
       ui.shown = shown;
       for (const seat of [SOUTH, NORTH]) dom.chipScores[seat].textContent = String(shown.scores[seat]);
     },
+    // The words for one event: render.js pops the short ones over the board,
+    // and the sentence goes in the status line as it happens.
+    caption: (event) => {
+      const said = captionFor(event, mover, names);
+      if (said?.status) setStatus(said.status, said.mood);
+      return said;
+    },
   });
 
   if (run !== ui.runId) return;
@@ -386,46 +489,42 @@ async function playMove(pit) {
   // engine's own position. A cut-short move can never leave it wrong.
   ui.shown = snapshot(ui.game);
   paintGame();
-  reportMove(events, mover);
+  const spoke = reportMove(events, mover);
 
   if (ui.game.over) {
     finishRound();
     return;
   }
-  if (!seatIsAgent(ui.game.turn)) announceTurn();
-  queueAgent();
+  // A move that did something leaves its line up. Saying whose turn it is
+  // straight afterwards would wipe the only report the player gets.
+  if (!spoke) announceTurn();
+  queueAgent(spoke);
 }
 
-/** Say in one line what the move that just happened did. */
+/**
+ * Say in one line what the move that just happened did.
+ * @param {Object[]} events the events of the move
+ * @param {number} mover the player who moved
+ * @returns {boolean} did it have anything to say?
+ */
 function reportMove(events, mover) {
-  const captures = events.filter((event) => event.type === "capture");
-  const extra = events.some((event) => event.type === "extraTurn");
-  const mine = captures.filter((event) => event.player === mover).reduce((sum, event) => sum + event.count, 0);
-  const theirs = captures.filter((event) => event.player !== mover).reduce((sum, event) => sum + event.count, 0);
-  const laps = events.filter((event) => event.type === "lift").length;
-
-  if (extra) {
-    flashBadge(dom.chips[mover], "+1 turn");
-    setStatus(`${seatLabel(mover)} lands in their own store and plays again.`, "good");
-    return;
-  }
-  const parts = [];
-  if (mine > 0) parts.push(`${seatLabel(mover)} takes ${mine}`);
-  if (theirs > 0) parts.push(`${seatLabel(other(mover))} takes ${theirs}`);
-  if (laps > 1) parts.push(`${laps} laps`);
-  if (parts.length > 0) {
-    setStatus(`${parts.join(", ")}.`, mine >= theirs ? "good" : "bad");
-    return;
-  }
-  announceTurn();
+  const said = summarise(events, mover, seatNames());
+  if (said.badge) flashBadge(dom.chips[mover], said.badge);
+  if (said.text === null) return false;
+  setStatus(said.text, said.tone);
+  return true;
 }
 
-/** Let a program take its turn, after a pause so its move can be seen. */
-function queueAgent() {
+/**
+ * Let a program take its turn, after a pause so its move can be seen.
+ * @param {boolean} [quiet] leave the status line alone, because it is still
+ *   showing what the move before did
+ */
+function queueAgent(quiet = false) {
   if (!ui.game || ui.game.over || !seatIsAgent(ui.game.turn)) return;
   const run = ui.runId;
   const id = seatValue(ui.game.turn);
-  announceTurn();
+  if (!quiet) announceTurn();
   setTimeout(async () => {
     if (run !== ui.runId || ui.busy || !ui.game || ui.game.over) return;
     // Give the browser a frame to paint "thinking" before the search blocks it.
@@ -641,6 +740,9 @@ const hide = (element) => {
 function showScreen(name) {
   ui.runId += 1;
   ui.busy = false;
+  stopPeekTimer();
+  ui.peek = null;
+  ui.peekHeld = false;
   for (const [key, element] of Object.entries(dom.screens)) element.hidden = key !== name;
   if (name === "setup") {
     paintSetup();
@@ -686,6 +788,11 @@ function wire() {
       ui.cancelled = true;
       return;
     }
+    // The press that ended here was a look at the pit, not a move on it.
+    if (Date.now() < eatClickUntil) {
+      eatClickUntil = 0;
+      return;
+    }
     const button = event.target.closest(".pit");
     if (!button) return;
     if (!canClick()) return;
@@ -696,6 +803,44 @@ function wire() {
     }
     playMove(pit);
   });
+
+  // A player can look before they leap: hold a pit down, or rest a mouse on
+  // it, and the board marks the pit its last seed would land in. A hold is a
+  // look and nothing else, so letting go plays no move.
+  dom.board.addEventListener("pointerdown", (event) => {
+    eatClickUntil = 0;
+    if (ui.busy) return;
+    const button = event.target.closest(".pit");
+    if (!button || !canClick()) return;
+    startPeekTimer(Number(button.dataset.pit), HOLD_MS, true);
+  });
+
+  dom.board.addEventListener("pointerover", (event) => {
+    // Only a mouse hovers. A finger sliding over a pit is not looking at it,
+    // and a finger holding one is already covered above.
+    if (event.pointerType && event.pointerType !== "mouse") return;
+    if (ui.busy || !canClick()) return;
+    const button = event.target.closest(".pit");
+    const pit = button ? Number(button.dataset.pit) : null;
+    if (ui.peek && ui.peek.from === pit) return;
+    closePeek();
+    if (pit === null) return;
+    startPeekTimer(pit, DWELL_MS, false);
+  });
+
+  dom.board.addEventListener("pointerleave", endPress);
+  window.addEventListener("pointerup", endPress);
+  window.addEventListener("pointercancel", endPress);
+
+  // A keyboard cannot hold a pit down, so a pit reached with the keyboard
+  // shows its look at once. `:focus-visible` is the browser's own answer to
+  // "did this focus come from the keyboard?", so a mouse press does not.
+  dom.board.addEventListener("focusin", (event) => {
+    const button = event.target.closest(".pit");
+    if (!button || !canClick() || !button.matches(":focus-visible")) return;
+    openPeek(Number(button.dataset.pit), false);
+  });
+  dom.board.addEventListener("focusout", () => closePeek());
 
   el("game-menu").addEventListener("click", () => showScreen("setup"));
   el("game-again").addEventListener("click", startMatch);
@@ -746,10 +891,8 @@ function wire() {
   // always safe.
   window.addEventListener("resize", () => {
     if (ui.busy) ui.cancelled = true;
-    if (ui.board && ui.shown) paintBoard(ui.board, ui.shown, {
-      playable: canClick() ? rulesFor(ui.setup.mode).legalMoves(ui.game) : [],
-      names: SEAT_NAMES,
-    });
+    stopPeekTimer();
+    if (ui.game && ui.match && ui.shown) paintGame();
   });
 }
 

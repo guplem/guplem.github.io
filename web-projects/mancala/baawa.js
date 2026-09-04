@@ -286,12 +286,19 @@ function close(state, events, reason) {
 }
 
 /**
- * What a move would do, without committing to it.
- * `gain` is what the mover would capture, `given` is what the opponent would
- * capture from the same move, and `laps` is how many times the relay lifts.
+ * What a move would do, without committing to it. A held pit shows this, the
+ * simpler opponents use it as their whole brain, and both engines answer it
+ * with the same fields (see modes.js).
  * @param {GameState} state the position to move from
  * @param {number} pit the pit to lift
- * @returns {{gain: number, given: number, laps: number, state: GameState}}
+ * @returns {{gain: number, given: number, laps: number, captured: number,
+ *   extraTurn: boolean, lands: number|null, landsInStore: number|null,
+ *   state: GameState}} `gain` is what the mover would capture, `captured` is
+ *   the same number here because every Ba-awa seed is scored out of a pit,
+ *   `given` is what the opponent would capture from the same move, `laps` is
+ *   how many times the relay lifts, `extraTurn` is never true because the game
+ *   has no extra turns, `lands` is the pit the last seed comes to rest in and
+ *   `landsInStore` is always null because the game has no stores.
  */
 export function describeMove(state, pit) {
   const { state: after, events } = applyMove(state, pit);
@@ -299,13 +306,26 @@ export function describeMove(state, pit) {
   let gain = 0;
   let given = 0;
   let laps = 0;
+  let lands = null;
   for (const event of events) {
     if (event.type === "lift") laps += 1;
+    // Where the seeds end up: each drop overwrites the one before, so the last
+    // drop of the last lap is where the last seed rests.
+    if (event.type === "drop") lands = event.pit;
     if (event.type !== "capture") continue;
     if (event.player === mover) gain += event.count;
     else given += event.count;
   }
-  return { gain, given, laps, state: after };
+  return {
+    gain,
+    given,
+    laps,
+    captured: gain,
+    extraTurn: false,
+    lands,
+    landsInStore: null,
+    state: after,
+  };
 }
 
 export { SOUTH, NORTH };

@@ -229,6 +229,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [mancala 0003](web-projects/mancala/adr/0003-the-numbers-the-tradition-leaves-out.md) | Decide the numbers the tradition leaves to the players, and measure them |
 | [mancala 0004](web-projects/mancala/adr/0004-rank-the-opponents-by-a-measured-tournament.md) | Rank the opponents by a measured tournament, not by opinion |
 | [mancala 0005](web-projects/mancala/adr/0005-the-screen-trails-the-engine-by-one-event.md) | The engine answers with events, and the screen trails it by one |
+| [mancala 0006](web-projects/mancala/adr/0006-a-hold-looks-ahead-and-plays-nothing.md) | A hold looks ahead, the engine answers the look, and the release plays nothing |
 | [whatsapp-sticker-creator 0001](web-projects/whatsapp-sticker-creator/adr/0001-pack-frames-into-an-animated-webp-rather-than-encode-one.md) | Pack still frames into an animated WebP, rather than encode one |
 | [whatsapp-sticker-creator 0002](web-projects/whatsapp-sticker-creator/adr/0002-find-the-background-by-colour-from-the-frame-edges.md) | Find the background by colour from the frame edges, with no model |
 | [whatsapp-sticker-creator 0003](web-projects/whatsapp-sticker-creator/adr/0003-follow-the-validator-whatsapp-ships-not-only-its-written-guide.md) | Follow the validator WhatsApp ships, not only its written guide |

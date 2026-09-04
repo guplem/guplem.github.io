@@ -81,10 +81,61 @@ The pace is now **per pit crossed**, not per event: `BASE_GAP` is 560ms, near
 the 570ms the measured game averages. The old value was 150ms for a whole
 flight, so a seed crossed a pit in a tenth of a second, which reads as a jump.
 
+## Decision: a seed starts and ends on a place a pit draws
+
+The stream above still ended badly. A player said the seeds "teleport to snap
+into their resting place", and they did: a flight ran from the middle of one
+pit to the middle of the next, and the pit then drew the seed as a dot 14 to 25
+per cent of a pit away from that middle. The flying seed vanished and the dot
+appeared somewhere else, in the same frame.
+
+So the places a pit draws seeds in are now the animation's own targets.
+`seedLayout.js` holds them: twelve fixed places per pit, spread by the golden
+angle, in the order the pit fills them. It is pure and tested, because the
+animation now depends on it being exactly what the pit draws.
+
+`restingPoint` in `render.js` turns place number *n* of a pit into pixels.
+Seed *k* of a lift leaves place *k* of the pit it comes out of and lands on the
+place its new pit is about to draw it in. Nothing moves when the flying seed is
+replaced by the dot.
+
+Three smaller parts of the same fix:
+
+- The flying seed is `calc(var(--pit) * 0.14)` across, the size of a drawn one.
+  It used to be a fixed `0.55rem`, so on a wide screen it also changed size as
+  it landed. `--pit` moved from `.board` to `:root` for this, because the layer
+  the seeds fly on is a sibling of the board and could not read it.
+- The last leg of a flight slows down (`LANDING`), so a seed settles instead of
+  stopping dead. Every earlier leg stays linear, so the stream keeps its pace.
+- A dot that has just been drawn scales up from small (`seed-settle`), so the
+  arrival has nothing sharp in it.
+
+## Decision: the words come from the events too
+
+The board now says what a move did, as it does it. `captions.js` is pure and
+turns one event into the few words that pop up over the board (`+4`,
+`Play again`) and the sentence for the status line. `render.js` puts the words
+on the flying layer, over the pit or the store the event belongs to.
+
+The words therefore have the same source as the numbers: the engine's event
+list. The screen cannot congratulate a player on a capture the engine did not
+report.
+
+This also fixed a bug that had hidden every summary the game ever wrote. After
+a move, `playMove` said whose turn it was, and that call overwrote the line
+`summarise` had just written. `playMove` now announces the turn only when the
+summary had nothing to say, and tells `queueAgent` to leave the line alone for
+the same reason.
+
 ## Consequences
 
 - The player sees the seeds move. A relay reads as a relay and a capture reads
   as a capture, because each seed leaves one pit and arrives in another.
+- Nothing jumps when a seed lands. The cost is that `seedLayout.js` and the
+  `.seed` rule in `style.css` are now one thing in two places: change where a
+  dot sits in CSS and the flights aim at the old place.
+- A skipped or reduced-motion move pops no words at all, because there is no
+  moment to hang them on. The one summary line still reports the whole move.
 - A move takes longer, on purpose: about 2.3 seconds for four seeds instead of
   0.8. The speed button therefore offers three paces, and the normal one is the
   slowest of them, as the same player asked.

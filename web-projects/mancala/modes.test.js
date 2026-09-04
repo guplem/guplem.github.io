@@ -70,5 +70,17 @@ describe("every engine answers the same calls", () => {
       expect(events[0].type).toBe("lift");
       expect(typeof rules.describeMove(game, 0).state).toBe("object");
     });
+
+    it(`${id} describes a move with the same fields as the other rule set`, () => {
+      // The screen shows one preview line and one summary line for both games
+      // (see captions.js), so both engines must answer the same questions.
+      const rules = rulesFor(id);
+      const game = newGame(id);
+      const look = rules.describeMove(game, rules.legalMoves(game)[0]);
+      for (const field of ["gain", "given", "laps", "captured", "extraTurn", "landsInStore"]) {
+        expect(look).toHaveProperty(field);
+      }
+      expect(look.lands === null || (look.lands >= 0 && look.lands < 12)).toBe(true);
+    });
   }
 });

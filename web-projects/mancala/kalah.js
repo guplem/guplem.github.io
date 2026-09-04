@@ -202,17 +202,26 @@ function finish(state, events) {
 }
 
 /**
- * What a move would do, without committing to it. The setup screen uses this
- * for hints and the simpler opponents use it as their whole brain.
+ * What a move would do, without committing to it. A held pit shows this, the
+ * simpler opponents use it as their whole brain, and both engines answer it
+ * with the same fields (see modes.js).
  * @param {GameState} state the position to move from
  * @param {number} pit the pit to lift
- * @returns {{extraTurn: boolean, captured: number, gain: number, state: GameState}}
+ * @returns {{extraTurn: boolean, captured: number, gain: number, given: number,
+ *   laps: number, lands: number|null, landsInStore: number|null, state: GameState}}
+ *   `captured` is what the mover takes out of pits, `gain` is what the mover
+ *   ends up with, `given` is what the opponent takes (never anything in
+ *   Kalah), `laps` is how many times the move lifts (always one in Kalah),
+ *   `lands` is the pit the last seed comes to rest in and `landsInStore` the
+ *   store it falls into instead.
  */
 export function describeMove(state, pit) {
   const { state: after, events } = applyMove(state, pit);
   let captured = 0;
   let stored = 0;
   let extraTurn = false;
+  let lands = null;
+  let landsInStore = null;
   for (const event of events) {
     if (event.type === "capture") captured += event.count;
     if (event.type === "store") stored += 1;
@@ -220,8 +229,27 @@ export function describeMove(state, pit) {
     // A move that ends the game still counted as an extra turn if the last
     // seed reached the store, but no extraTurn event is emitted then.
     if (event.type === "store" && event.last) extraTurn = true;
+    // Where the seeds end up: each drop or store overwrites the one before,
+    // so the last one left standing is where the last seed rests.
+    if (event.type === "drop") {
+      lands = event.pit;
+      landsInStore = null;
+    }
+    if (event.type === "store") {
+      lands = null;
+      landsInStore = event.player;
+    }
   }
-  return { extraTurn, captured, gain: captured + stored, state: after };
+  return {
+    extraTurn,
+    captured,
+    gain: captured + stored,
+    given: 0,
+    laps: 1,
+    lands,
+    landsInStore,
+    state: after,
+  };
 }
 
 export { SOUTH, NORTH };
