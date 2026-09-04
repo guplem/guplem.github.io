@@ -203,4 +203,23 @@ describe("describeMove", () => {
     const start = position({ pits: [1, 0, 1, 0, 0, 0, 4, 4, 5, 4, 4, 4] });
     expect(describeMove(start, 2)).toMatchObject({ extraTurn: false, captured: 6, gain: 6 });
   });
+
+  it("names the pit the last seed would land in", () => {
+    // The screen holds a pit down to show this pit, so the number has to be
+    // the pit the last seed comes to rest in, capture and all.
+    const start = position({ pits: [1, 0, 1, 0, 0, 0, 4, 4, 5, 4, 4, 4] });
+    expect(describeMove(start, 2)).toMatchObject({ lands: 3, landsInStore: null });
+  });
+
+  it("says when the last seed would fall in the store instead", () => {
+    const start = position({ pits: [1, 0, 0, 0, 0, 1, 4, 4, 4, 4, 4, 4] });
+    expect(describeMove(start, 5)).toMatchObject({ lands: null, landsInStore: 0 });
+  });
+
+  it("answers the fields the other rule set answers too", () => {
+    // Kalah never pays the opponent and never lifts twice, so both numbers are
+    // fixed here. They are still answered, because everything above the
+    // engines reads one shape (see modes.js).
+    expect(describeMove(createGame(), 0)).toMatchObject({ given: 0, laps: 1 });
+  });
 });

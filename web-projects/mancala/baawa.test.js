@@ -300,4 +300,23 @@ describe("describeMove", () => {
     const start = position({ turn: 1, pits: [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] });
     expect(describeMove(start, 11)).toMatchObject({ gain: 4, given: 0 });
   });
+
+  it("names the pit the last seed would land in, after the whole relay", () => {
+    // The screen holds a pit down to show this pit. A relay can cross the
+    // board many times, so only the finished move knows where it stops.
+    const start = position({ turn: 1, pits: [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2] });
+    expect(describeMove(start, 11)).toMatchObject({ lands: 1, landsInStore: null });
+  });
+
+  it("answers the fields the other rule set answers too", () => {
+    // Ba-awa has no stores and no extra turns, and every seed it scores comes
+    // out of a pit. The fields are still answered, because everything above
+    // the engines reads one shape (see modes.js).
+    const start = position({ turn: 1, pits: [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] });
+    expect(describeMove(start, 11)).toMatchObject({
+      landsInStore: null,
+      extraTurn: false,
+      captured: 4,
+    });
+  });
 });

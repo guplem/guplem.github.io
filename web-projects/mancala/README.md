@@ -24,9 +24,20 @@ each other and watch.
 - **The seeds are sown, not moved.** Every seed of a lift leaves the pit at the
   same moment and they fly as one stream: the first drops into the next pit,
   the second into the pit after it, and the last one crosses the whole
-  distance. The pace comes from the game this copies, measured frame by frame,
-  and three speeds are on the board (the normal one is the slowest). Tap the
-  board to land the rest at once.
+  distance. Each seed leaves the place it was drawn in and lands on the place
+  its new pit draws it in, so nothing jumps when it arrives. The pace comes
+  from the game this copies, measured frame by frame, and three speeds are on
+  the board (the normal one is the slowest). Tap the board to land the rest at
+  once.
+- **Hold a pit to look before you leap.** Press and hold one of your pits, or
+  rest a mouse on it, and the board marks the pit its last seed would land in
+  and says what the move would take. Letting go plays nothing: a hold is a
+  look. A quick tap still plays the move.
+- **The board says what happened, as it happens.** `+4` pops over a pit that is
+  emptied, `+1` over a store that takes a seed, `Play again` over the store
+  that gives you another turn, and one line under the score explains it in
+  words: whose four it was, why a relay lifted again, and what the whole move
+  came to.
 - **The animation can never lie.** The engine answers a move with the finished
   position plus an ordered list of everything that happened. Every number on
   screen comes from that list, and the board is repainted from the engine when
@@ -171,6 +182,8 @@ Example: <https://triunitystudios.com/web-projects/mancala/?mode=baawa&red=deep>
 | `search.js` | Yes | Random, greedy, one-move, minimax and Monte Carlo tree search |
 | `agents.js` | Yes | The six opponents as data: a name, a tier and a plan |
 | `playback.js` | Yes | The picture on the screen, which trails the engine by one event |
+| `seedLayout.js` | Yes | Where the seeds sit inside a pit, and which place the next seed takes |
+| `captions.js` | Yes | The words: a pop-up per event, a line per move, a line per held pit |
 | `rng.js` | Yes | A seeded random-number generator, so a benchmark run repeats |
 | `urlState.js` | Yes | Reading and writing the address bar (root ADR 0006) |
 | `store.js` | Yes | Setup, speed and your record, through an injected storage (root ADR 0007) |
