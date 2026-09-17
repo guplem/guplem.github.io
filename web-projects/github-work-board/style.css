@@ -121,6 +121,10 @@ p {
 }
 
 .masthead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
@@ -668,7 +672,7 @@ textarea.input {
 }
 
 .subheading {
-  margin-top: 1.25rem;
+  margin-top: 1.75rem;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -698,6 +702,15 @@ textarea.input {
 
 .token-row:hover {
   border-color: hsl(var(--ring) / 0.3);
+}
+
+/* Settings holds several blocks in one card, so each needs air above it. */
+#settings-view .subheading:first-of-type {
+  margin-top: 0;
+}
+
+#settings-view .token-guide-slot {
+  margin-top: 0.75rem;
 }
 
 .board-counts {
