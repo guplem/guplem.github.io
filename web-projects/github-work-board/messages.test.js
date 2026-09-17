@@ -1,5 +1,43 @@
 import { describe, expect, test } from "bun:test";
-import { MESSAGES, escapeHtml, say } from "./messages.js";
+import { MESSAGES, escapeHtml, joinWithAnd, say, sayEmptyBoard } from "./messages.js";
+
+describe("joinWithAnd", () => {
+  test("reads a list the way a person says it", () => {
+    expect(joinWithAnd(["guplem"])).toBe("guplem");
+    expect(joinWithAnd(["guplem", "Galtea-AI"])).toBe("guplem and Galtea-AI");
+    expect(joinWithAnd(["a", "b", "c"])).toBe("a, b and c");
+  });
+
+  test("answers with nothing for nothing", () => {
+    expect(joinWithAnd([])).toBe("");
+    expect(joinWithAnd(null)).toBe("");
+    expect(joinWithAnd(["", null, "a"])).toBe("a");
+  });
+});
+
+describe("sayEmptyBoard", () => {
+  // "Nothing is assigned to you" is a lie when the truth is "your token cannot
+  // see the organisation your work lives in". The sentence has to say how far
+  // the board can actually see.
+  test("says how many tokens are in use and what they reach", () => {
+    const sentence = sayEmptyBoard({ tokenCount: 2, owners: ["guplem", "Galtea-AI"] });
+    expect(sentence).toContain("2 tokens");
+    expect(sentence).toContain("guplem and Galtea-AI");
+  });
+
+  test("counts one token in the singular", () => {
+    expect(sayEmptyBoard({ tokenCount: 1, owners: ["guplem"] })).toContain("1 token,");
+  });
+
+  test("says plainly when the tokens reached nowhere at all", () => {
+    expect(sayEmptyBoard({ tokenCount: 1, owners: [] })).toContain("no repository");
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(typeof sayEmptyBoard()).toBe("string");
+    expect(sayEmptyBoard({ tokenCount: 0 })).toContain("No token");
+  });
+});
 
 describe("say", () => {
   test("puts the parameters into the sentence", () => {

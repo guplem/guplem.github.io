@@ -3,13 +3,18 @@
 //
 // Two rules hold here and `invariants.test.js` guards both:
 //   - Nothing reaches the screen through `innerHTML` except the deploy line,
-//     which carries its own escaper. Issue titles come from other people.
+//     which carries its own escaper. Titles come from other people.
 //   - Storage is only ever touched through `settings.js`.
+//
+// The board reads from every saved token and merges the answers, because a
+// fine-grained token belongs to one owner and most people's work is spread
+// across their own account and one or more organisations (ADR 0007).
 
 import { DOCUMENT_PATH, emptyDocument, parseDocument, readNote, writeNote } from "./boardDocument.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { fetchAssignedIssues, fetchBoardFile, fetchRepository, fetchViewer, saveBoardFile } from "./gateway.js";
 import { describeFailure } from "./githubErrors.js";
+import { escapeHtml, say, sayEmptyBoard } from "./messages.js";
 import {
   CONNECTION_CHECKS,
   REQUIRED_PERMISSIONS,
@@ -17,37 +22,38 @@ import {
   permissionsFingerprint,
   tokenNeedsUpdate,
 } from "./permissions.js";
-import { DEFAULT_SORT_ID, SORT_OPTIONS, sortWorkItems } from "./sorting.js";
-import { buildSearch, readStateFromSearch } from "./urlState.js";
-import { countByKind, normalizeWorkItems } from "./workItems.js";
-import { escapeHtml, say } from "./messages.js";
 import {
   DEFAULT_DATA_REPO_NAME,
+  addToken,
+  boardWritingToken,
   browserStorage,
-  forgetToken,
+  forgetAllTokens,
   readDataRepo,
-  readGrantedPermissions,
-  readToken,
+  readTokens,
+  removeToken,
   saveDataRepo,
-  saveGrantedPermissions,
-  saveToken,
+  saveTokens,
+  updateToken,
 } from "./settings.js";
+import { DEFAULT_SORT_ID, SORT_OPTIONS, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
+import { buildSearch, readStateFromSearch } from "./urlState.js";
+import { countByKind, normalizeWorkItems } from "./workItems.js";
 
 const SAVE_DELAY_MS = 1200;
 const PROJECT_PATH = "web-projects/github-work-board";
 
 const storage = browserStorage();
 const element = (id) => document.getElementById(id);
+const newId = () => (globalThis.crypto?.randomUUID ? crypto.randomUUID() : `t${Date.now()}${Math.random()}`);
 
-/** Everything the page holds between events. The board document is the only part that is written back. */
+/** Everything the page holds between events. The board document is the only part written back. */
 const state = {
-  token: null,
-  owner: null,
-  repo: null,
+  tokens: [],
+  login: null,
+  repoName: DEFAULT_DATA_REPO_NAME,
   board: emptyDocument(new Date().toISOString()),
   remoteSha: null,
-  remoteText: null,
   saveTimer: null,
   items: [],
   sortId: DEFAULT_SORT_ID,
@@ -83,20 +89,17 @@ function buildPermissionRow(permission) {
 }
 
 /**
- * Tell the reader their token is behind, and name exactly what to add.
- *
- * This is what makes the single permission list worth having: the list grows in
- * `permissions.js`, and every reader who already connected is told, rather than
- * meeting a 403 months later with no idea which box to tick (ADR 0005).
+ * Tell the reader a token is behind what the board now asks for, and name
+ * exactly what to add (ADR 0005).
  */
 function renderTokenNotice() {
-  const granted = readGrantedPermissions(storage);
+  const behind = state.tokens.filter((entry) => tokenNeedsUpdate(entry.grantedPermissions));
   const notice = element("token-outdated");
-  if (!tokenNeedsUpdate(granted)) {
+  if (behind.length === 0) {
     notice.hidden = true;
     return;
   }
-  const missing = newPermissionsSince(granted);
+  const missing = newPermissionsSince(behind[0].grantedPermissions);
   element("token-outdated-list").replaceChildren(
     ...missing.map((permission) => {
       const row = document.createElement("li");
@@ -186,6 +189,41 @@ function buildWorkItemCard(item) {
   return card;
 }
 
+/** One saved token, with what it turned out to reach. */
+function buildTokenRow(entry) {
+  const row = document.createElement("li");
+  row.className = "token-row";
+
+  const reach = document.createElement("div");
+  const owners = document.createElement("p");
+  owners.className = "check-label";
+  owners.textContent = entry.owners.length > 0 ? entry.owners.join(", ") : "No assigned work found";
+  reach.append(owners);
+
+  const detail = document.createElement("p");
+  detail.className = "check-detail";
+  detail.textContent = entry.canWriteBoard ? "Reads your issues and writes your notes." : "Reads your issues.";
+  reach.append(detail);
+
+  const drop = document.createElement("button");
+  drop.type = "button";
+  drop.className = "button button-danger";
+  drop.textContent = "Remove";
+  drop.addEventListener("click", () => {
+    state.tokens = removeToken(state.tokens, entry.id);
+    saveTokens(storage, state.tokens);
+    if (state.tokens.length === 0) return signOut();
+    connectAll();
+  });
+
+  row.append(reach, drop);
+  return row;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Rendering                                                                  */
+/* -------------------------------------------------------------------------- */
+
 /**
  * Put the list on the screen in the chosen order.
  *
@@ -202,6 +240,18 @@ function renderBoard() {
   if (issues > 0) parts.push(`${issues} ${issues === 1 ? "issue" : "issues"}`);
   if (pullRequests > 0) parts.push(`${pullRequests} ${pullRequests === 1 ? "pull request" : "pull requests"}`);
   element("board-counts").textContent = parts.join(" and ");
+
+  const owners = [...new Set(state.tokens.flatMap((entry) => entry.owners))];
+  const empty = state.items.length === 0;
+  element("board-empty").hidden = !empty;
+  element("board-empty-reason").textContent = empty
+    ? sayEmptyBoard({ tokenCount: state.tokens.length, owners })
+    : "";
+}
+
+function renderTokenList() {
+  element("tokens").replaceChildren(...state.tokens.map(buildTokenRow));
+  element("connection").hidden = state.tokens.length === 0;
 }
 
 /** Keep the address bar showing the chosen order, so a reload and a shared link both keep it. */
@@ -215,91 +265,113 @@ function rememberSortInUrl() {
 /* -------------------------------------------------------------------------- */
 
 function showChecks(rows) {
-  const list = element("checks");
-  list.replaceChildren(...rows.map(buildCheckRow));
+  element("checks").replaceChildren(...rows.map(buildCheckRow));
   element("connection").hidden = false;
 }
 
 /**
- * Prove the token works, one call per permission, and say which one is missing
- * when a call fails. Stops at the first failure: a later check would fail for
- * the same reason and bury the one thing the reader has to fix.
+ * Ask one token what it can reach.
+ *
+ * Every call says which permission it needed, so a failure names the permission
+ * to add rather than repeating GitHub's own wording (ADR 0005).
+ *
+ * @returns {{entry: object, raw: array, rows: array}} the entry with what it
+ *   learned, the raw items it returned, and what to show about it.
  */
-async function connect(token, repoName) {
+async function inspectToken(entry) {
   const rows = [];
-  const fail = (check, failure) => {
-    rows.push({ label: check.label, ok: false, detail: describeFailure({ ...failure, need: check.need }) });
-    showChecks(rows);
-  };
+  const [identity, work, board] = CONNECTION_CHECKS;
+  let updated = { ...entry, owners: [], canWriteBoard: false };
 
-  const [identity, issues, board] = CONNECTION_CHECKS;
-
-  const viewer = await fetchViewer(token);
-  if (!viewer.ok) return fail(identity, viewer);
-  const owner = viewer.data?.login ?? "";
-  rows.push({ label: identity.label, ok: true, detail: `Signed in as ${owner}.` });
-
-  const repository = await fetchRepository(token, { owner, repo: repoName });
-  if (!repository.ok) {
-    return fail(board, {
-      ...repository,
-      message:
-        repository.status === 404
-          ? `No repository called ${owner}/${repoName}. Create it as private, then connect again.`
-          : repository.message,
-    });
+  const viewer = await fetchViewer(entry.token);
+  if (!viewer.ok) {
+    rows.push({ label: identity.label, ok: false, detail: describeFailure({ ...viewer, need: identity.need }) });
+    return { entry: updated, raw: [], rows };
   }
-  if (repository.data?.private === false) {
-    rows.push({
-      label: board.label,
-      ok: false,
-      detail: `${owner}/${repoName} is public. Your notes would be readable by anyone. Make it private first.`,
-    });
-    return showChecks(rows);
-  }
+  const login = viewer.data?.login ?? "";
+  state.login = state.login ?? login;
+  rows.push({ label: identity.label, ok: true, detail: `Signed in as ${login}.` });
 
-  const file = await fetchBoardFile(token, { owner, repo: repoName });
-  if (!file.ok) return fail(board, file);
+  const answer = await fetchAssignedIssues(entry.token);
+  if (!answer.ok) {
+    rows.push({ label: work.label, ok: false, detail: describeFailure({ ...answer, need: work.need }) });
+    return { entry: updated, raw: [], rows };
+  }
+  const raw = Array.isArray(answer.data) ? answer.data : [];
+  const items = normalizeWorkItems(raw);
+  const owners = [...new Set(items.map((item) => item.repository.split("/")[0]).filter(Boolean))];
+  const counted = countByKind(items);
+  updated = { ...updated, owners };
   rows.push({
-    label: board.label,
+    label: work.label,
     ok: true,
-    detail: file.data.missing
-      ? `${owner}/${repoName} is ready. ${DOCUMENT_PATH} is written on your first note.`
-      : `Read ${DOCUMENT_PATH} from ${owner}/${repoName}.`,
+    detail:
+      items.length === 0
+        ? "This token reached no repository with work assigned to you."
+        : `${counted.issues} issues and ${counted.pullRequests} pull requests, in ${owners.join(", ")}.`,
   });
 
-  const answer = await fetchAssignedIssues(token);
-  if (!answer.ok) return fail(issues, answer);
-  const list = normalizeWorkItems(answer.data);
-  const counted = countByKind(list);
-  rows.push({
-    label: issues.label,
-    ok: true,
-    detail: `${counted.issues} open issues and ${counted.pullRequests} pull requests are assigned to you.`,
-  });
+  // Only one token can reach the notes repository, and it is the one whose
+  // owner holds it. A token that cannot is not broken; it just is not that one.
+  const repository = await fetchRepository(entry.token, { owner: login, repo: state.repoName });
+  if (repository.ok) {
+    if (repository.data?.private === false) {
+      rows.push({
+        label: board.label,
+        ok: false,
+        detail: `${login}/${state.repoName} is public. Your notes would be readable by anyone. Make it private first.`,
+      });
+    } else {
+      const file = await fetchBoardFile(entry.token, { owner: login, repo: state.repoName });
+      if (file.ok) {
+        updated = { ...updated, canWriteBoard: true, grantedPermissions: permissionsFingerprint() };
+        state.remoteSha = file.data.sha;
+        state.board = file.data.missing
+          ? emptyDocument(new Date().toISOString())
+          : parseDocument(file.data.text, new Date().toISOString());
+        saveDataRepo(storage, { owner: login, repo: state.repoName });
+        rows.push({
+          label: board.label,
+          ok: true,
+          detail: file.data.missing
+            ? `${login}/${state.repoName} is ready. ${DOCUMENT_PATH} is written on your first note.`
+            : `Read ${DOCUMENT_PATH} from ${login}/${state.repoName}.`,
+        });
+      } else {
+        rows.push({ label: board.label, ok: false, detail: describeFailure({ ...file, need: board.need }) });
+      }
+    }
+  }
+
+  if (updated.grantedPermissions === null) updated = { ...updated, grantedPermissions: permissionsFingerprint() };
+  return { entry: updated, raw, rows };
+}
+
+/** Ask every saved token, merge what they return, and show the board. */
+async function connectAll() {
+  if (state.tokens.length === 0) return;
+  setStatus("Reading GitHub...");
+
+  const rows = [];
+  const everything = [];
+  for (const entry of state.tokens) {
+    const result = await inspectToken(entry);
+    state.tokens = updateToken(state.tokens, entry.id, result.entry);
+    everything.push(...result.raw);
+    rows.push(...result.rows);
+  }
+
+  saveTokens(storage, state.tokens);
+  // Merging here, not per token, is what removes an item two tokens both see.
+  state.items = normalizeWorkItems(everything);
+
   showChecks(rows);
-
-  // Everything worked, so this is the point where the settings are worth keeping.
-  state.token = token;
-  state.owner = owner;
-  state.repo = repoName;
-  state.remoteSha = file.data.sha;
-  state.remoteText = file.data.text;
-  state.board = file.data.missing
-    ? emptyDocument(new Date().toISOString())
-    : parseDocument(file.data.text, new Date().toISOString());
-  saveToken(storage, token);
-  saveDataRepo(storage, { owner, repo: repoName });
-  // Every check passed, so this token really does carry the access the board
-  // asks for today. That is what the fingerprint records.
-  saveGrantedPermissions(storage, permissionsFingerprint());
-  element("token-outdated").hidden = true;
-
-  state.items = list;
+  renderTokenList();
+  renderTokenNotice();
   element("setup").hidden = true;
   element("board").hidden = false;
   renderBoard();
-  setStatus(list.length === 0 ? "Nothing is assigned to you right now." : "Notes save by themselves.");
+  setStatus(boardWritingToken(state.tokens) ? "Notes save by themselves." : "No token can write your notes file.");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -317,12 +389,14 @@ function scheduleSave() {
 /**
  * Save the notes, re-reading first so another device's work is merged rather
  * than overwritten. A 409 means someone saved between the read and the write,
- * so the whole thing runs once more against the newer file.
+ * so the whole thing runs once more against the newer file (ADR 0002).
  */
 async function save(attempt = 0) {
-  if (!state.token) return;
+  const writer = boardWritingToken(state.tokens);
+  const repo = readDataRepo(storage);
+  if (!writer || !repo) return setStatus("No token can write your notes file.");
 
-  const fresh = await fetchBoardFile(state.token, { owner: state.owner, repo: state.repo });
+  const fresh = await fetchBoardFile(writer.token, repo);
   if (!fresh.ok) return setStatus(describeFailure(fresh));
   const now = new Date().toISOString();
   const remote = fresh.data.missing ? null : parseDocument(fresh.data.text, now);
@@ -331,9 +405,8 @@ async function save(attempt = 0) {
   state.board = plan.document;
   if (plan.action === "skip") return setStatus("Saved.");
 
-  const written = await saveBoardFile(state.token, {
-    owner: state.owner,
-    repo: state.repo,
+  const written = await saveBoardFile(writer.token, {
+    ...repo,
     text: planText(plan),
     sha: plan.sha,
     message: `Update board notes (${now})`,
@@ -351,11 +424,12 @@ async function save(attempt = 0) {
 /* -------------------------------------------------------------------------- */
 
 function signOut() {
-  forgetToken(storage);
+  forgetAllTokens(storage);
   clearTimeout(state.saveTimer);
-  state.token = null;
-  state.board = emptyDocument(new Date().toISOString());
+  state.tokens = [];
   state.items = [];
+  state.login = null;
+  state.board = emptyDocument(new Date().toISOString());
   element("token").value = "";
   element("setup").hidden = false;
   element("board").hidden = true;
@@ -363,10 +437,24 @@ function signOut() {
   renderTokenNotice();
 }
 
+function connectPastedToken(field) {
+  const pasted = field.value.trim();
+  if (pasted === "") {
+    return showChecks([{ label: "Paste a token", ok: false, detail: "The token box is empty." }]);
+  }
+  field.value = "";
+  const grown = addToken(state.tokens, { id: newId(), token: pasted });
+  if (grown.length === state.tokens.length) {
+    return showChecks([{ label: "Already added", ok: false, detail: "The board is already using that token." }]);
+  }
+  state.tokens = grown;
+  saveTokens(storage, state.tokens);
+  connectAll();
+}
+
 function start() {
   renderDeployLine(element("deploy-line"), readStamp(document), "en", say, escapeHtml, PROJECT_PATH);
   element("permissions").replaceChildren(...REQUIRED_PERMISSIONS.map(buildPermissionRow));
-  renderTokenNotice();
 
   state.sortId = readStateFromSearch(location.search).sortId;
   const sortField = element("sort");
@@ -388,24 +476,24 @@ function start() {
   const saved = readDataRepo(storage);
   const repoField = element("repo-name");
   repoField.value = saved?.repo ?? DEFAULT_DATA_REPO_NAME;
-  element("create-repo-link").href = `https://github.com/new?name=${encodeURIComponent(repoField.value)}&visibility=private`;
+  state.repoName = repoField.value;
+  const createLink = () => {
+    element("create-repo-link").href =
+      `https://github.com/new?name=${encodeURIComponent(state.repoName)}&visibility=private`;
+  };
+  createLink();
   repoField.addEventListener("input", () => {
-    element("create-repo-link").href = `https://github.com/new?name=${encodeURIComponent(repoField.value.trim())}&visibility=private`;
+    state.repoName = repoField.value.trim() || DEFAULT_DATA_REPO_NAME;
+    createLink();
   });
 
-  element("connect").addEventListener("click", () => {
-    const typed = element("token").value.trim();
-    const token = typed === "" ? readToken(storage) : typed;
-    if (!token) return showChecks([{ label: "Paste a token", ok: false, detail: "The token box is empty." }]);
-    element("token").value = "";
-    connect(token, repoField.value.trim() || DEFAULT_DATA_REPO_NAME);
-  });
-
+  element("connect").addEventListener("click", () => connectPastedToken(element("token")));
+  element("add-token").addEventListener("click", () => connectPastedToken(element("another-token")));
   element("sign-out").addEventListener("click", signOut);
 
-  // A token saved on an earlier visit means the reader is already set up.
-  const token = readToken(storage);
-  if (token) connect(token, repoField.value.trim() || DEFAULT_DATA_REPO_NAME);
+  state.tokens = readTokens(storage);
+  renderTokenNotice();
+  if (state.tokens.length > 0) connectAll();
 }
 
 start();
