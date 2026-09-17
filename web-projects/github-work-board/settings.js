@@ -14,6 +14,7 @@
 export const STORAGE_KEYS = {
   token: "github-work-board.token",
   dataRepo: "github-work-board.dataRepo",
+  grantedPermissions: "github-work-board.grantedPermissions",
 };
 
 /** What the setup guide suggests calling the private repository. */
@@ -73,9 +74,29 @@ export function saveToken(storage, token) {
   writeRaw(storage, STORAGE_KEYS.token, clean);
 }
 
-/** Forget the token. The button that calls this promises nothing survives. */
+/**
+ * Forget the token, and what that token could do.
+ *
+ * The fingerprint goes too. Leaving it behind would tell the next token it is
+ * already up to date, and the reader would never be asked to widen it.
+ */
 export function forgetToken(storage) {
   removeRaw(storage, STORAGE_KEYS.token);
+  removeRaw(storage, STORAGE_KEYS.grantedPermissions);
+}
+
+/** The permission set the saved token was approved against, or null. */
+export function readGrantedPermissions(storage) {
+  const stored = readRaw(storage, STORAGE_KEYS.grantedPermissions);
+  const clean = typeof stored === "string" ? stored.trim() : "";
+  return clean === "" ? null : clean;
+}
+
+/** Remember what the token that just connected was approved against (see `permissions.js`). */
+export function saveGrantedPermissions(storage, fingerprint) {
+  const clean = typeof fingerprint === "string" ? fingerprint.trim() : "";
+  if (clean === "") return;
+  writeRaw(storage, STORAGE_KEYS.grantedPermissions, clean);
 }
 
 /** The chosen data repository, or null when none is chosen or what is stored is not one. */

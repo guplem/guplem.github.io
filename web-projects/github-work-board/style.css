@@ -432,12 +432,138 @@ textarea.input {
   color: hsl(var(--foreground));
 }
 
+.step-action {
+  margin-top: 0.875rem;
+}
+
+/* One thing GitHub's form asks for. The label sits above its answer so the
+ * reader can match the page against the form field by field, instead of
+ * finding three instructions inside one paragraph. */
+.action {
+  margin-top: 1rem;
+  padding-left: 0.875rem;
+  border-left: 2px solid hsl(var(--border));
+}
+
+.action-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsl(var(--foreground));
+}
+
+.action-body > * + * {
+  margin-top: 0.5rem;
+}
+
+.plain-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.plain-list li + li {
+  margin-top: 0.25rem;
+}
+
+/* The permission rows, built from `permissions.js`. Name, level and reason each
+ * hold their own column so the three are read as a table, not as prose. */
 .permissions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.375rem;
+}
+
+.permission {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.permission-name {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  background: hsl(var(--muted));
+}
+
+.permission-level {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+
+.permission-why {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.8125rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Callout                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.callout {
+  border: 1px solid hsl(var(--border));
+  border-left-width: 3px;
+  border-radius: calc(var(--radius) - 2px);
+  padding: 0.75rem 0.875rem;
+  font-size: 0.875rem;
+  background: hsl(var(--muted) / 0.6);
+}
+
+.callout > * + * {
+  margin-top: 0.5rem;
+}
+
+.callout-warning {
+  border-left-color: hsl(var(--destructive));
+  background: hsl(var(--destructive) / 0.07);
+  margin-bottom: 1.25rem;
+}
+
+.callout-inline {
+  border-left-color: hsl(var(--destructive));
+  background: hsl(var(--destructive) / 0.07);
+  color: hsl(var(--foreground));
+}
+
+.callout-title {
+  font-weight: 600;
+}
+
+.callout-list {
+  margin: 0;
   padding-left: 1.1rem;
 }
 
-.permissions li {
+.callout-list li + li {
   margin-top: 0.25rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Labelled field                                                             */
+/* -------------------------------------------------------------------------- */
+
+.field {
+  margin-top: 0.875rem;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 0.3125rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+}
+
+.field-help {
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
 }
 
 /* -------------------------------------------------------------------------- */

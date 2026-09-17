@@ -12,6 +12,7 @@ import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
 import { normalizeIssue } from "./issues.js";
+import { REQUIRED_PERMISSIONS } from "./permissions.js";
 import { STORAGE_KEYS } from "./settings.js";
 
 const FOLDER = import.meta.dir;
@@ -37,6 +38,7 @@ describe("the stored document (ADR 0002)", () => {
     expect(STORAGE_KEYS).toEqual({
       token: "github-work-board.token",
       dataRepo: "github-work-board.dataRepo",
+      grantedPermissions: "github-work-board.grantedPermissions",
     });
   });
 
@@ -141,6 +143,41 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     const block = css.slice(css.indexOf("prefers-reduced-motion"));
     expect(block).toContain("transition-duration");
     expect(block).not.toContain(":hover");
+  });
+});
+
+// A permission list written twice is a permission list that drifts. The code
+// asks GitHub for the access; the page and the README only report what the code
+// asks for. ADR 0005.
+describe("the permission list is written once (ADR 0005)", () => {
+  test("the page does not spell out the permissions, it carries the slot the code fills", () => {
+    const page = read("index.html");
+    expect(page).toContain('id="permissions"');
+    for (const permission of REQUIRED_PERMISSIONS) {
+      expect(`index.html names ${permission.name}: ${page.includes(`<code>${permission.name}</code>`)}`).toBe(
+        `index.html names ${permission.name}: false`,
+      );
+    }
+    expect(page).not.toContain("Read and write");
+    expect(page).not.toContain("Read-only");
+  });
+
+  // The README is read by a person setting the board up for the first time,
+  // before the page can tell them anything.
+  test("the README names every permission the code asks for, at the level it asks for", () => {
+    const readme = read("README.md");
+    for (const permission of REQUIRED_PERMISSIONS) {
+      expect(`README covers ${permission.name}`).toBe(
+        readme.includes(`\`${permission.name}\` → ${permission.level}`)
+          ? `README covers ${permission.name}`
+          : `README is MISSING ${permission.name} → ${permission.level}`,
+      );
+    }
+  });
+
+  test("the reader is offered the token page wherever a permission is named", () => {
+    expect(read("index.html")).toContain("settings/personal-access-tokens");
+    expect(read("README.md")).toContain("settings/personal-access-tokens");
   });
 });
 

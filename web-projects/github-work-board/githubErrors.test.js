@@ -1,16 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { CONNECTION_CHECKS, PERMISSIONS, describeFailure } from "./githubErrors.js";
-
-describe("CONNECTION_CHECKS", () => {
-  test("every check has a unique id and names the permission it needs", () => {
-    const ids = CONNECTION_CHECKS.map((check) => check.id);
-    expect(new Set(ids).size).toBe(ids.length);
-    for (const check of CONNECTION_CHECKS) {
-      expect(check.label.length).toBeGreaterThan(0);
-      expect(Object.values(PERMISSIONS)).toContain(check.need);
-    }
-  });
-});
+import { describeFailure } from "./githubErrors.js";
+import { PERMISSIONS } from "./permissions.js";
 
 describe("describeFailure", () => {
   // GitHub answers a missing fine-grained permission with "Resource not

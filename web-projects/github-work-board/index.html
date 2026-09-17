@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="121" />
-  <meta name="deploy-date" content="2026-09-17T14:38:37.000Z" />
+  <meta name="deploy-pull-request" content="122" />
+  <meta name="deploy-date" content="2026-09-17T14:55:28.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -27,12 +27,23 @@
     </header>
 
     <main>
+      <!-- Shown when the board has grown to need access the saved token was
+           never granted. Filled by app.js from permissions.js (ADR 0005). -->
+      <div id="token-outdated" class="callout callout-warning" hidden>
+        <p class="callout-title">Your token needs more access than it has</p>
+        <p>The board has grown since you made it. Add the following to the same token, then connect again.</p>
+        <ul id="token-outdated-list" class="callout-list"></ul>
+        <p>
+          <a class="button button-primary" href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">Open your tokens</a>
+        </p>
+      </div>
+
       <!-- Step one. Hidden once the board is connected, shown again by "Sign out". -->
       <section id="setup" class="card" aria-labelledby="setup-heading">
         <div class="card-header">
           <h2 id="setup-heading">Connect it, once</h2>
           <p class="lead">
-            This page has no server. It talks to GitHub straight from your browser with a token you make
+            This page has no server. It talks to GitHub straight from your browser, with a token you make
             yourself, and it keeps your notes in a private repository that you own.
           </p>
         </div>
@@ -40,37 +51,71 @@
         <div class="card-content">
           <ol class="steps">
             <li>
-              <h3>Make a private repository for your notes</h3>
-              <p>Call it <code>work-board-data</code> and set the visibility to <strong>Private</strong>.</p>
+              <h3>Create a private repository for your notes</h3>
               <p>
-                <a class="button button-outline" id="create-repo-link" target="_blank" rel="noopener">Open the new-repository page</a>
+                One repository that holds nothing but your notes. The board writes a single file into it.
+                Call it <code>work-board-data</code>, and set <strong>Visibility</strong> to <strong>Private</strong>.
+              </p>
+              <p class="step-action">
+                <a class="button button-outline" id="create-repo-link" target="_blank" rel="noopener">Create work-board-data</a>
               </p>
             </li>
+
             <li>
-              <h3>Make a fine-grained token</h3>
-              <p>Give it access to the repositories you work in <em>and</em> the notes repository, then grant exactly these:</p>
-              <ul class="permissions">
-                <li><code>Metadata</code> &rarr; Read-only <span class="muted">(GitHub requires it)</span></li>
-                <li><code>Issues</code> &rarr; Read and write <span class="muted">(the board reads your issues)</span></li>
-                <li><code>Contents</code> &rarr; Read and write <span class="muted">(your notes file)</span></li>
-              </ul>
-              <p>Set an expiry date. 90 days is a good default.</p>
-              <p>
-                <a class="button button-outline" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Open the token page</a>
+              <h3>Create a fine-grained token</h3>
+              <p>GitHub's form asks you three things. Here is the answer to each one.</p>
+
+              <div class="action">
+                <p class="action-label">Repository access</p>
+                <div class="action-body">
+                  <p>Choose <strong>Only select repositories</strong>, then select <strong>both</strong>:</p>
+                  <ul class="plain-list">
+                    <li><code>work-board-data</code>, the repository you just created</li>
+                    <li>every repository whose issues you want on the board</li>
+                  </ul>
+                  <p class="callout callout-inline">
+                    <strong>This is the step people skip.</strong> If <code>work-board-data</code> is not in that
+                    list, the board can read your issues and cannot save a single note.
+                  </p>
+                </div>
+              </div>
+
+              <div class="action">
+                <p class="action-label">Repository permissions</p>
+                <div class="action-body">
+                  <p>Set these three. Leave every other permission alone.</p>
+                  <!-- Built from REQUIRED_PERMISSIONS, never written here (ADR 0005). -->
+                  <ul class="permissions" id="permissions"></ul>
+                </div>
+              </div>
+
+              <div class="action">
+                <p class="action-label">Expiration</p>
+                <div class="action-body">
+                  <p>Pick a date. 90 days is a good default: a token that never expires is one you cannot lose track of.</p>
+                </div>
+              </div>
+
+              <p class="step-action">
+                <a class="button button-outline" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Open GitHub's token form</a>
               </p>
             </li>
+
             <li>
-              <h3>Paste it here</h3>
-              <p class="field-row">
-                <label class="visually-hidden" for="token">Personal access token</label>
+              <h3>Paste the token here</h3>
+              <div class="field">
+                <label class="field-label" for="token">Token</label>
                 <input id="token" class="input" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..." />
-              </p>
-              <p class="field-row">
-                <label class="visually-hidden" for="repo-name">Notes repository name</label>
-                <input id="repo-name" class="input" type="text" autocomplete="off" spellcheck="false" value="work-board-data" />
-                <button id="connect" type="button" class="button button-primary">Connect</button>
-              </p>
-              <p>
+                <p class="field-help">GitHub shows it once, when you create it. Copy it before you leave that page.</p>
+              </div>
+              <div class="field">
+                <label class="field-label" for="repo-name">Name of the repository you created in step 1</label>
+                <div class="field-row">
+                  <input id="repo-name" class="input" type="text" autocomplete="off" spellcheck="false" value="work-board-data" />
+                  <button id="connect" type="button" class="button button-primary">Connect</button>
+                </div>
+              </div>
+              <p class="field-help">
                 The token stays in this browser and is sent only to GitHub. Anything else with access to this
                 browser can read it, so keep it scoped to the repositories you need and give it an expiry date.
               </p>
@@ -86,7 +131,7 @@
         </div>
         <div class="card-content">
           <ul id="checks" class="checks"></ul>
-          <p class="field-row" style="margin-top: 1rem">
+          <p class="step-action">
             <button id="sign-out" type="button" class="button button-danger">Sign out and forget the token</button>
           </p>
         </div>

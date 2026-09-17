@@ -9,7 +9,14 @@
 import { DOCUMENT_PATH, emptyDocument, parseDocument, readNote, writeNote } from "./boardDocument.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { fetchAssignedIssues, fetchBoardFile, fetchRepository, fetchViewer, saveBoardFile } from "./gateway.js";
-import { CONNECTION_CHECKS, describeFailure } from "./githubErrors.js";
+import { describeFailure } from "./githubErrors.js";
+import {
+  CONNECTION_CHECKS,
+  REQUIRED_PERMISSIONS,
+  newPermissionsSince,
+  permissionsFingerprint,
+  tokenNeedsUpdate,
+} from "./permissions.js";
 import { normalizeIssues, sortByRecentActivity } from "./issues.js";
 import { escapeHtml, say } from "./messages.js";
 import {
@@ -17,8 +24,10 @@ import {
   browserStorage,
   forgetToken,
   readDataRepo,
+  readGrantedPermissions,
   readToken,
   saveDataRepo,
+  saveGrantedPermissions,
   saveToken,
 } from "./settings.js";
 import { planSave, planText } from "./sync.js";
@@ -46,6 +55,52 @@ const state = {
 
 function setStatus(text) {
   element("board-status").textContent = text;
+}
+
+/** One row of the setup guide's permission list, from `permissions.js`. */
+function buildPermissionRow(permission) {
+  const row = document.createElement("li");
+  row.className = "permission";
+
+  const name = document.createElement("code");
+  name.className = "permission-name";
+  name.textContent = permission.name;
+
+  const level = document.createElement("span");
+  level.className = "badge permission-level";
+  level.textContent = permission.level;
+
+  const why = document.createElement("span");
+  why.className = "permission-why";
+  why.textContent = permission.why;
+
+  row.append(name, level, why);
+  return row;
+}
+
+/**
+ * Tell the reader their token is behind, and name exactly what to add.
+ *
+ * This is what makes the single permission list worth having: the list grows in
+ * `permissions.js`, and every reader who already connected is told, rather than
+ * meeting a 403 months later with no idea which box to tick (ADR 0005).
+ */
+function renderTokenNotice() {
+  const granted = readGrantedPermissions(storage);
+  const notice = element("token-outdated");
+  if (!tokenNeedsUpdate(granted)) {
+    notice.hidden = true;
+    return;
+  }
+  const missing = newPermissionsSince(granted);
+  element("token-outdated-list").replaceChildren(
+    ...missing.map((permission) => {
+      const row = document.createElement("li");
+      row.textContent = `${permission.name} → ${permission.level}, for ${permission.why}`;
+      return row;
+    }),
+  );
+  notice.hidden = false;
 }
 
 function buildCheckRow({ label, ok, detail }) {
@@ -187,6 +242,10 @@ async function connect(token, repoName) {
     : parseDocument(file.data.text, new Date().toISOString());
   saveToken(storage, token);
   saveDataRepo(storage, { owner, repo: repoName });
+  // Every check passed, so this token really does carry the access the board
+  // asks for today. That is what the fingerprint records.
+  saveGrantedPermissions(storage, permissionsFingerprint());
+  element("token-outdated").hidden = true;
 
   element("setup").hidden = true;
   element("board").hidden = false;
@@ -251,10 +310,13 @@ function signOut() {
   element("setup").hidden = false;
   element("board").hidden = true;
   element("connection").hidden = true;
+  renderTokenNotice();
 }
 
 function start() {
   renderDeployLine(element("deploy-line"), readStamp(document), "en", say, escapeHtml, PROJECT_PATH);
+  element("permissions").replaceChildren(...REQUIRED_PERMISSIONS.map(buildPermissionRow));
+  renderTokenNotice();
 
   const saved = readDataRepo(storage);
   const repoField = element("repo-name");

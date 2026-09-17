@@ -20,19 +20,30 @@ to make here, and nothing is stored anywhere except GitHub.
 
 ## Setting it up, once
 
-1. **Make a private repository for your notes.** Call it `work-board-data` and
-   set the visibility to **Private**. The page links you to the right form.
-2. **Make a fine-grained personal access token** at
-   [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new).
-   Give it access to the repositories you work in *and* the notes repository,
-   then grant:
-   - `Metadata` → Read-only
-   - `Issues` → Read and write
-   - `Contents` → Read and write
+1. **Create a private repository for your notes.** Call it `work-board-data`,
+   and set **Visibility** to **Private**. It holds nothing but your notes: the
+   board writes one file into it.
 
-   Set an expiry date. 90 days is a good default.
+2. **Create a fine-grained personal access token** at
+   [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new).
+   The form asks three things:
+
+   - **Repository access:** choose **Only select repositories**, then select
+     **both** `work-board-data` *and* every repository whose issues you want on
+     the board. Leaving `work-board-data` out is the mistake people make: the
+     board can then read your issues and cannot save a single note.
+   - **Repository permissions:** set these three and leave the rest alone.
+     - `Metadata` → Read-only
+     - `Issues` → Read and write
+     - `Contents` → Read and write
+   - **Expiration:** pick a date. 90 days is a good default.
+
 3. **Paste the token into the page** and press Connect. The page checks each
    permission and tells you exactly which one is missing if any call fails.
+
+If the board later needs access your token does not have, the page says so on
+load and names what to add. The permission list lives in the code, so the page
+and this README cannot fall behind it.
 
 The token is kept in this browser and is sent only to GitHub. Anything else with
 access to this browser can read it, so keep the repository list short and keep

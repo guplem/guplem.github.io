@@ -14,7 +14,7 @@
 
 import { DOCUMENT_PATH } from "./boardDocument.js";
 import { decodeBase64, encodeBase64 } from "./documentCodec.js";
-import { PERMISSIONS } from "./githubErrors.js";
+import { PERMISSIONS } from "./permissions.js";
 
 const API = "https://api.github.com";
 const TIMEOUT_MS = 15000;

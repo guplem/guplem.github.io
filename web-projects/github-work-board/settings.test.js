@@ -5,8 +5,10 @@ import {
   browserStorage,
   forgetToken,
   readDataRepo,
+  readGrantedPermissions,
   readToken,
   saveDataRepo,
+  saveGrantedPermissions,
   saveToken,
 } from "./settings.js";
 
@@ -91,6 +93,36 @@ describe("the data repository", () => {
 
   test("suggests a name when the reader has not chosen one", () => {
     expect(DEFAULT_DATA_REPO_NAME).toBe("work-board-data");
+  });
+});
+
+describe("the permissions a token was approved against", () => {
+  test("round-trips the fingerprint", () => {
+    saveGrantedPermissions(storage, "contents:read and write|issues:read and write");
+    expect(readGrantedPermissions(storage)).toBe("contents:read and write|issues:read and write");
+  });
+
+  test("reads as null when nothing was ever stored", () => {
+    expect(readGrantedPermissions(storage)).toBeNull();
+  });
+
+  test("an empty fingerprint is not stored, so it cannot read as 'approved against nothing'", () => {
+    saveGrantedPermissions(storage, "  ");
+    expect(readGrantedPermissions(storage)).toBeNull();
+  });
+
+  // Signing out throws the token away, so what that token could do is gone too.
+  // Leaving it behind would tell the next token it is already up to date.
+  test("forgetToken clears it as well", () => {
+    saveToken(storage, "github_pat_11ABCDEF");
+    saveGrantedPermissions(storage, "issues:read-only");
+    forgetToken(storage);
+    expect(readGrantedPermissions(storage)).toBeNull();
+  });
+
+  test("a browser that refuses to store never breaks the page", () => {
+    expect(() => saveGrantedPermissions(refusingStorage, "x")).not.toThrow();
+    expect(readGrantedPermissions(refusingStorage)).toBeNull();
   });
 });
 
