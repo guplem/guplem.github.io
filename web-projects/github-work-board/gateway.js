@@ -1,0 +1,107 @@
+// The only file in this project that touches the network.
+//
+// It asks GitHub and hands the answer over. It decides nothing: what an answer
+// means lives in `issues.js`, `boardDocument.js` and `githubErrors.js`, which
+// are pure and tested. Keeping the boundary in one file is what lets every
+// other module run under `bun test` with no browser and no network, and it is
+// the only place the token is ever attached to a request.
+//
+// Every call answers with the same shape, and never throws:
+//   { ok: true, data }
+//   { ok: false, status, message, need }
+// `need` is the permission the call required, so the reader can be told which
+// one to add. `status: 0` means the request never reached GitHub at all.
+
+import { DOCUMENT_PATH } from "./boardDocument.js";
+import { decodeBase64, encodeBase64 } from "./documentCodec.js";
+import { PERMISSIONS } from "./githubErrors.js";
+
+const API = "https://api.github.com";
+const TIMEOUT_MS = 15000;
+
+async function call(token, path, { method = "GET", body = null, need = "" } = {}) {
+  const headers = { Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  if (body) headers["Content-Type"] = "application/json";
+
+  let response;
+  try {
+    response = await fetch(`${API}${path}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+      signal: AbortSignal.timeout ? AbortSignal.timeout(TIMEOUT_MS) : undefined,
+    });
+  } catch {
+    return { ok: false, status: 0, message: "The request never completed.", need };
+  }
+
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) {
+    const message = typeof payload?.message === "string" ? payload.message : response.statusText;
+    return { ok: false, status: response.status, message, need };
+  }
+  return { ok: true, data: payload };
+}
+
+/** Who the token belongs to. Also the cheapest proof that the token is valid at all. */
+export function fetchViewer(token) {
+  return call(token, "/user", { need: PERMISSIONS.metadata });
+}
+
+/** Whether the data repository exists and the token can see it. */
+export function fetchRepository(token, { owner, repo }) {
+  return call(token, `/repos/${owner}/${repo}`, { need: PERMISSIONS.metadata });
+}
+
+/**
+ * Every open issue assigned to the token's owner, across every repository the
+ * token can read. Pull requests come back in this answer too; `issues.js`
+ * drops them.
+ */
+export function fetchAssignedIssues(token) {
+  return call(token, "/issues?filter=assigned&state=open&sort=updated&per_page=100", {
+    need: PERMISSIONS.issuesRead,
+  });
+}
+
+/**
+ * The board file, with the sha of the version read.
+ *
+ * A repository with no board file yet is not a failure: it answers
+ * `{ missing: true }`, which is what the first save turns into a create.
+ */
+export async function fetchBoardFile(token, { owner, repo }) {
+  const path = `/repos/${owner}/${repo}/contents/${DOCUMENT_PATH}`;
+  const result = await call(token, path, { need: PERMISSIONS.contentsWrite });
+  if (!result.ok) {
+    if (result.status === 404) return { ok: true, data: { missing: true, text: null, sha: null } };
+    return result;
+  }
+  const text = decodeBase64(result.data?.content ?? "");
+  if (text === null) {
+    return {
+      ok: false,
+      status: 422,
+      message: "The board file in that repository is not readable text.",
+      need: PERMISSIONS.contentsWrite,
+    };
+  }
+  return { ok: true, data: { missing: false, text, sha: result.data?.sha ?? null } };
+}
+
+/**
+ * Write the board file.
+ *
+ * `sha` names the version being replaced. GitHub answers 409 when that is no
+ * longer the current one, which is the signal that another device saved first.
+ * Leaving it out is only correct when the file does not exist yet.
+ */
+export function saveBoardFile(token, { owner, repo, text, sha, message }) {
+  const path = `/repos/${owner}/${repo}/contents/${DOCUMENT_PATH}`;
+  return call(token, path, {
+    method: "PUT",
+    need: PERMISSIONS.contentsWrite,
+    body: { message, content: encodeBase64(text), ...(sha ? { sha } : {}) },
+  });
+}
