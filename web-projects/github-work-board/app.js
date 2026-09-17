@@ -37,7 +37,7 @@ import {
 } from "./settings.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
-import { buildSearch, readStateFromSearch } from "./urlState.js";
+import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
 import { countByKind, normalizeWorkItems } from "./workItems.js";
 
 const SAVE_DELAY_MS = 1200;
@@ -57,6 +57,7 @@ const state = {
   saveTimer: null,
   items: [],
   sortId: DEFAULT_SORT_ID,
+  view: DEFAULT_VIEW,
 };
 
 /* -------------------------------------------------------------------------- */
@@ -86,6 +87,22 @@ function buildPermissionRow(permission) {
 
   row.append(name, level, why);
   return row;
+}
+
+/**
+ * Put the "how to make a token" guide into every slot that asks for it.
+ *
+ * It is written once, as a `<template>` in the page, and shown on the welcome
+ * screen and in Settings. Writing it twice is how the two copies drift, which is
+ * the same failure ADR 0005 removed from the permission list itself.
+ */
+function fillTokenGuides() {
+  const guide = element("token-guide");
+  for (const slot of document.querySelectorAll(".token-guide-slot")) {
+    const copy = guide.content.cloneNode(true);
+    copy.querySelector(".permissions").replaceChildren(...REQUIRED_PERMISSIONS.map(buildPermissionRow));
+    slot.replaceChildren(copy);
+  }
 }
 
 /**
@@ -251,12 +268,29 @@ function renderBoard() {
 
 function renderTokenList() {
   element("tokens").replaceChildren(...state.tokens.map(buildTokenRow));
-  element("connection").hidden = state.tokens.length === 0;
+  element("settings-repo-name").value = state.repoName;
 }
 
-/** Keep the address bar showing the chosen order, so a reload and a shared link both keep it. */
-function rememberSortInUrl() {
-  const search = buildSearch({ sortId: state.sortId });
+/**
+ * Show one screen.
+ *
+ * Which screen is open lives in the address bar (root ADR 0006), so a reload
+ * comes back to the same place. Settings needs a token to manage, so before the
+ * first connection the welcome screen is the only screen there is.
+ */
+function showView(view) {
+  const connected = state.tokens.length > 0;
+  state.view = connected ? view : DEFAULT_VIEW;
+  element("open-settings").hidden = !connected;
+  element("setup").hidden = connected;
+  element("board").hidden = !connected || state.view === "settings";
+  element("settings-view").hidden = state.view !== "settings";
+  rememberUrl();
+}
+
+/** Keep the address bar showing the open screen and the chosen order. */
+function rememberUrl() {
+  const search = buildSearch({ sortId: state.sortId, view: state.view });
   history.replaceState(null, "", `${location.pathname}${search}${location.hash}`);
 }
 
@@ -266,7 +300,6 @@ function rememberSortInUrl() {
 
 function showChecks(rows) {
   element("checks").replaceChildren(...rows.map(buildCheckRow));
-  element("connection").hidden = false;
 }
 
 /**
@@ -368,9 +401,8 @@ async function connectAll() {
   showChecks(rows);
   renderTokenList();
   renderTokenNotice();
-  element("setup").hidden = true;
-  element("board").hidden = false;
   renderBoard();
+  showView(state.view);
   setStatus(boardWritingToken(state.tokens) ? "Notes save by themselves." : "No token can write your notes file.");
 }
 
@@ -431,9 +463,7 @@ function signOut() {
   state.login = null;
   state.board = emptyDocument(new Date().toISOString());
   element("token").value = "";
-  element("setup").hidden = false;
-  element("board").hidden = true;
-  element("connection").hidden = true;
+  showView(DEFAULT_VIEW);
   renderTokenNotice();
 }
 
@@ -454,9 +484,11 @@ function connectPastedToken(field) {
 
 function start() {
   renderDeployLine(element("deploy-line"), readStamp(document), "en", say, escapeHtml, PROJECT_PATH);
-  element("permissions").replaceChildren(...REQUIRED_PERMISSIONS.map(buildPermissionRow));
+  fillTokenGuides();
 
-  state.sortId = readStateFromSearch(location.search).sortId;
+  const asked = readStateFromSearch(location.search);
+  state.sortId = asked.sortId;
+  state.view = asked.view;
   const sortField = element("sort");
   sortField.replaceChildren(
     ...SORT_OPTIONS.map((option) => {
@@ -469,7 +501,7 @@ function start() {
   sortField.value = state.sortId;
   sortField.addEventListener("change", () => {
     state.sortId = sortField.value;
-    rememberSortInUrl();
+    rememberUrl();
     renderBoard();
   });
 
@@ -490,9 +522,18 @@ function start() {
   element("connect").addEventListener("click", () => connectPastedToken(element("token")));
   element("add-token").addEventListener("click", () => connectPastedToken(element("another-token")));
   element("sign-out").addEventListener("click", signOut);
+  element("open-settings").addEventListener("click", () => showView("settings"));
+  element("empty-open-settings").addEventListener("click", () => showView("settings"));
+  element("close-settings").addEventListener("click", () => showView("board"));
+  element("save-repo-name").addEventListener("click", () => {
+    state.repoName = element("settings-repo-name").value.trim() || DEFAULT_DATA_REPO_NAME;
+    element("settings-repo-name").value = state.repoName;
+    connectAll();
+  });
 
   state.tokens = readTokens(storage);
   renderTokenNotice();
+  showView(state.view);
   if (state.tokens.length > 0) connectAll();
 }
 

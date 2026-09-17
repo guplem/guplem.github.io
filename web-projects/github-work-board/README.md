@@ -20,6 +20,8 @@ to make here, and nothing is stored anywhere except GitHub.
   wrote is overwritten by the other device.
 - **Plain error messages.** When a call fails, the page names the permission to
   add instead of showing GitHub's own wording.
+- **A settings screen** for your tokens: what each one reaches, how to add
+  another, and which repository holds your notes.
 
 ## Setting it up, once
 
@@ -45,12 +47,12 @@ to make here, and nothing is stored anywhere except GitHub.
 3. **Paste the token into the page** and press Connect. The page checks each
    permission and tells you exactly which one is missing if any call fails.
 
-4. **Work in an organisation? Add a second token.** A fine-grained token belongs
+4. **Work in an organisation? Add a second token** from **Settings**. A fine-grained token belongs
    to one owner. A token owned by your account cannot see an organisation's
    repositories, whatever permissions you give it. Create another token with the
-   organisation as the **Resource owner**, grant it `Metadata` → Read-only,
-   `Issues` → Read and write and `Pull requests` → Read-only, and add it under
-   **Connection**. An organisation owner may have to approve it first.
+   organisation as the **Resource owner**, grant it the same permissions, and
+   paste it there. Settings repeats the whole guide, so you do not have to come
+   back here. An organisation owner may have to approve the token first.
 
    Keep the notes repository on your personal token. An organisation's owners
    can read its repositories, and these notes are meant for you alone.

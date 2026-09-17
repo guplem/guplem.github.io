@@ -183,7 +183,7 @@ describe("a sort order named in a link keeps its name (ADR 0006)", () => {
 describe("the permission list is written once (ADR 0005)", () => {
   test("the page does not spell out the permissions, it carries the slot the code fills", () => {
     const page = read("index.html");
-    expect(page).toContain('id="permissions"');
+    expect(page).toContain('class="permissions"');
     for (const permission of REQUIRED_PERMISSIONS) {
       expect(`index.html names ${permission.name}: ${page.includes(`<code>${permission.name}</code>`)}`).toBe(
         `index.html names ${permission.name}: false`,
@@ -204,6 +204,16 @@ describe("the permission list is written once (ADR 0005)", () => {
           : `README is MISSING ${permission.name} → ${permission.level}`,
       );
     }
+  });
+
+  // The welcome screen and Settings both explain how to make a token. One
+  // `<template>`, cloned into every slot, is what stops the two drifting apart
+  // (ADR 0008).
+  test("the guide for making a token is written once", () => {
+    const page = read("index.html");
+    expect(page.match(/id="token-guide"/g).length).toBe(1);
+    expect(page.match(/class="token-guide-slot"/g).length).toBeGreaterThan(1);
+    expect(page.match(/class="permissions"/g).length).toBe(1);
   });
 
   test("the reader is offered the token page wherever a permission is named", () => {

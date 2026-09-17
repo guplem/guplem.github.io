@@ -43,7 +43,7 @@ It is the short procedure for all of the above.
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
-| `urlState.js` | Yes | The chosen order in the address bar, and nothing else (root ADR 0006) |
+| `urlState.js` | Yes | The open view and the chosen order in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The list of tokens and the data repository, through an injected storage (ADR 0007) |
@@ -67,6 +67,14 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
 - **Exactly one token writes the notes file.** `boardWritingToken` picks it. A
   save with any other token fails, because the notes repository belongs to one
   owner.
+- **The token guide lives once, as the `<template id="token-guide">` in
+  `index.html`**, and `app.js` clones it into every `.token-guide-slot` (the
+  welcome screen and Settings). Never copy that markup into a second place: a
+  test fails, and the two copies would drift the way the permission list once
+  did (ADR 0008).
+- **A `<template>` is inert**, so nothing inside it is reachable by
+  `getElementById`. Find things inside a clone by class instead, which is why
+  the permission list inside the guide carries a class and no id.
 - **Never tell the reader "nothing is assigned to you" on its own.** It is a
   confident wrong answer when the truth is that no token reaches the
   organisation their work lives in. `sayEmptyBoard` always says how far the
@@ -141,6 +149,7 @@ cd web-projects/github-work-board && bun test
 | [0005](adr/0005-the-permission-list-lives-in-the-code.md) | The permission list lives in the code, and the page asks for a wider token |
 | [0006](adr/0006-one-list-of-work-items-and-the-order-lives-in-the-link.md) | One list of work items, and the chosen order lives in the link |
 | [0007](adr/0007-one-token-per-owner-and-an-empty-board-explains-itself.md) | One token per owner, and an empty board that explains itself |
+| [0008](adr/0008-settings-is-a-view-and-the-token-guide-is-written-once.md) | Settings is a view in the link, and the token guide is written once |
 
 ## What is not built yet
 
