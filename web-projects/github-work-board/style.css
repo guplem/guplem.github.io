@@ -1,0 +1,306 @@
+/* Self-contained, like every web-project. No shared tokens, no web font. */
+
+:root {
+  color-scheme: light dark;
+  --bg: #eef0f4;
+  --surface: #ffffff;
+  --surface-sunken: #f5f6f8;
+  --text: #1a1d21;
+  --text-soft: #5a6270;
+  --line: #d9dde3;
+  --accent: #2f6f4e;
+  --accent-text: #ffffff;
+  --ok: #2f6f4e;
+  --bad: #b3261e;
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101017;
+    --surface: #1a1a24;
+    --surface-sunken: #14141d;
+    --text: #e9ecf1;
+    --text-soft: #9aa3b2;
+    --line: #2b2b38;
+    --accent: #5fbf8d;
+    --accent-text: #0e1a14;
+    --ok: #5fbf8d;
+    --bad: #ff8a80;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.55;
+}
+
+.page {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.masthead h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+}
+
+.tagline {
+  margin: 0.25rem 0 1.5rem;
+  color: var(--text-soft);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+.lead {
+  color: var(--text-soft);
+}
+
+.steps {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.steps > li {
+  margin-bottom: 1.75rem;
+}
+
+.steps h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.steps p {
+  margin: 0.35rem 0;
+}
+
+.permissions {
+  margin: 0.5rem 0;
+  padding-left: 1.1rem;
+}
+
+.permissions .why {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0.05em 0.35em;
+}
+
+.note {
+  width: 100%;
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+  font: inherit;
+  color: inherit;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+textarea {
+  resize: vertical;
+  width: 100%;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+.button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.button {
+  display: inline-block;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+}
+
+.button.primary {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+p.note {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.checks {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.check {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.check:first-child {
+  border-top: 0;
+}
+
+.check-mark {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  margin-top: 0.15rem;
+}
+
+.check.ok .check-mark {
+  color: var(--accent-text);
+  background: var(--ok);
+}
+
+.check.failed .check-mark {
+  color: #fff;
+  background: var(--bad);
+}
+
+.check-label {
+  margin: 0;
+  font-weight: 600;
+}
+
+.check-detail {
+  margin: 0.15rem 0 0;
+  color: var(--text-soft);
+}
+
+.status {
+  color: var(--text-soft);
+  min-height: 1.4em;
+}
+
+.issues {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.issue {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+}
+
+.issue-where {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.issue-title {
+  display: inline-block;
+  margin: 0.15rem 0 0.5rem;
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.issue-title:hover {
+  text-decoration: underline;
+}
+
+.issue-labels {
+  margin: 0 0 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.05rem 0.55rem;
+}
+
+.footer {
+  margin-top: 2.5rem;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.footer a {
+  color: inherit;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 30rem) {
+  .page {
+    padding: 1.25rem 0.75rem 2.5rem;
+  }
+
+  .card {
+    padding: 1rem 0.85rem;
+  }
+}

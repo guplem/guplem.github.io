@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Work Board",
+  "description": [
+    "*Work Board* is a **personal board built on GitHub issues**. It runs with no server: you paste a fine-grained token and the page talks to GitHub straight from the browser.",
+    "The notes you write are **private and yours**. They live in a JSON file in a private repository you own, so the board follows you from laptop to phone and every change keeps a history.",
+    "Two devices can edit at once. The merge runs **record by record**, so nothing you wrote is overwritten, and a set of tests pins the decisions that are expensive to break."
+  ],
+  "skills": ["Vibe Coded", "Architecture", "UI/UX"],
+  "links": [
+    { "url": "web-projects/github-work-board/" },
+    { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/github-work-board" }
+  ]
+}
