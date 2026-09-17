@@ -102,6 +102,9 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   check and the prompt that tells existing readers to widen their token all
   follow from it. Never write a permission into `index.html` or `README.md` by
   hand; `invariants.test.js` fails when you do (ADR 0005).
+- **Never write a count of generated items in prose.** The page said "set these
+  three" and the generated permission list grew to four on the next change. Say
+  "each of these" instead; the list is the count.
 - **The setup guide cannot prefill a fine-grained token form.** GitHub supports
   prefilled links for classic tokens only. The guide lists the permissions
   instead, and `githubErrors.js` names the missing one when a call fails.
