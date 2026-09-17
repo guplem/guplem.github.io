@@ -46,6 +46,7 @@ It is the short procedure for all of the above.
 | `settings.js` | Yes | The token and the data repository, through an injected storage |
 | `messages.js` | Yes | Every sentence the page says, and the one HTML escaper |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
+| `style.css` | - | The design system: colour roles, one radius, and the four parts every screen is built from (ADR 0004) |
 | `gateway.js` | No | The **only** file that calls the network |
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
@@ -80,6 +81,14 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
 - **This project takes no CDN import**, although root ADR 0005 would allow one. A
   third-party script on a page holding a credential can read that credential
   (ADR 0001).
+- **Colour tokens are bare HSL channels (`240 10% 3.9%`), never finished
+  colours.** Every hover state is built by taking an alpha at the point of use,
+  `hsl(var(--primary) / 0.88)`, which a hex value cannot do. Tidying the tokens
+  into hex breaks every hover state at once and the page still loads (ADR 0004).
+- **Build a screen from the four parts** (`.button` and its variants, `.input`,
+  `.card`, `.badge`), and give any new interactive part a hover, a press and a
+  focus-visible state. `invariants.test.js` fails when a `.button-*` variant has
+  no `:hover`.
 - **The setup guide cannot prefill a fine-grained token form.** GitHub supports
   prefilled links for classic tokens only. The guide lists the permissions
   instead, and `githubErrors.js` names the missing one when a call fails.
@@ -100,6 +109,7 @@ cd web-projects/github-work-board && bun test
 | [0001](adr/0001-the-token-lives-in-this-browser.md) | The token lives in this browser, and the page says so |
 | [0002](adr/0002-merge-record-by-record-not-file-by-file.md) | Merge record by record, and let the remote side win a tie |
 | [0003](adr/0003-tests-that-guard-decisions-not-only-behaviour.md) | Tests that guard decisions, not only behaviour |
+| [0004](adr/0004-one-set-of-parts-in-the-shape-shadcn-uses.md) | One set of parts, in the shape shadcn/ui uses |
 
 ## What is not built yet
 
