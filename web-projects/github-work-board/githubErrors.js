@@ -4,21 +4,8 @@
 // words "Resource not accessible by personal access token". That sentence names
 // neither the permission nor the repository, so a reader who sees it has no way
 // forward. Every call this page makes therefore says which permission it needs,
-// and the failure is reported with that permission named. See ADR 0001.
-
-export const PERMISSIONS = {
-  metadata: "Metadata: read",
-  issuesRead: "Issues: read",
-  issuesWrite: "Issues: write",
-  contentsWrite: "Contents: read and write",
-};
-
-/** The calls the setup panel makes, in order, to prove the token works. */
-export const CONNECTION_CHECKS = [
-  { id: "identity", label: "Read your GitHub account", need: PERMISSIONS.metadata },
-  { id: "issues", label: "Read the issues assigned to you", need: PERMISSIONS.issuesRead },
-  { id: "board", label: "Read and write the board file", need: PERMISSIONS.contentsWrite },
-];
+// and the failure is reported with that permission named. The permissions
+// themselves live in `permissions.js`. See ADR 0001 and ADR 0005.
 
 /**
  * One failed call as a sentence for the reader.

@@ -46,6 +46,17 @@ case exists when the reason is not obvious from the name.
   deploy line.
 - No import from outside this folder, and no CDN import (ADR 0001).
 
+## 3b. If the change calls GitHub for something new
+
+A new call almost always needs access the reader has not granted. Add one entry
+to `REQUIRED_PERMISSIONS` in `permissions.js`, and nothing else. The setup guide,
+the README check and the notice that asks existing readers to widen their token
+all follow from that entry (ADR 0005).
+
+Never write a permission into `index.html` or `README.md` by hand. Ask only for
+what the board uses today: widening later costs the reader one prompt they
+cannot miss, so there is no reason to over-ask.
+
 ## 4. Run the whole suite
 
 ```bash

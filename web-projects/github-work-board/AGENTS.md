@@ -42,6 +42,7 @@ It is the short procedure for all of the above.
 | `sync.js` | Yes | Merging two copies of the document, and deciding create / update / skip (ADR 0002) |
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `issues.js` | Yes | GitHub's answer about issues into the items the board shows |
+| `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The token and the data repository, through an injected storage |
 | `messages.js` | Yes | Every sentence the page says, and the one HTML escaper |
@@ -89,6 +90,11 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   `.card`, `.badge`), and give any new interactive part a hover, a press and a
   focus-visible state. `invariants.test.js` fails when a `.button-*` variant has
   no `:hover`.
+- **A new GitHub call that needs new access means one edit: add an entry to
+  `REQUIRED_PERMISSIONS` in `permissions.js`.** The setup guide, the README
+  check and the prompt that tells existing readers to widen their token all
+  follow from it. Never write a permission into `index.html` or `README.md` by
+  hand; `invariants.test.js` fails when you do (ADR 0005).
 - **The setup guide cannot prefill a fine-grained token form.** GitHub supports
   prefilled links for classic tokens only. The guide lists the permissions
   instead, and `githubErrors.js` names the missing one when a call fails.
@@ -110,6 +116,7 @@ cd web-projects/github-work-board && bun test
 | [0002](adr/0002-merge-record-by-record-not-file-by-file.md) | Merge record by record, and let the remote side win a tie |
 | [0003](adr/0003-tests-that-guard-decisions-not-only-behaviour.md) | Tests that guard decisions, not only behaviour |
 | [0004](adr/0004-one-set-of-parts-in-the-shape-shadcn-uses.md) | One set of parts, in the shape shadcn/ui uses |
+| [0005](adr/0005-the-permission-list-lives-in-the-code.md) | The permission list lives in the code, and the page asks for a wider token |
 
 ## What is not built yet
 
