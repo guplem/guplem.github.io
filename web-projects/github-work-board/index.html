@@ -4,18 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light dark" />
-  <meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#12121a" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
   <meta name="description" content="A personal work board on top of GitHub issues. Paste a fine-grained token, keep private notes in your own private repository, and the board syncs itself across your devices." />
   <title>Work Board · Your GitHub Issues, Your Notes · Guillem Poy</title>
   <link rel="canonical" href="https://triunitystudios.com/web-projects/github-work-board/" />
   <!-- Drawn inline, so the page asks the network for nothing but GitHub. -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f6f4e'/%3E%3Cg fill='%23fff'%3E%3Crect x='6' y='8' width='5' height='16' rx='1.5'/%3E%3Crect x='13.5' y='8' width='5' height='11' rx='1.5'/%3E%3Crect x='21' y='8' width='5' height='7' rx='1.5'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2318181b'/%3E%3Cg fill='%23fafafa'%3E%3Crect x='6' y='8' width='5' height='16' rx='1.5'/%3E%3Crect x='13.5' y='8' width='5' height='11' rx='1.5'/%3E%3Crect x='21' y='8' width='5' height='7' rx='1.5'/%3E%3C/g%3E%3C/svg%3E" />
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="120" />
-  <meta name="deploy-date" content="2026-09-17T13:58:19.000Z" />
+  <meta name="deploy-pull-request" content="121" />
+  <meta name="deploy-date" content="2026-09-17T14:38:37.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -28,75 +28,83 @@
 
     <main>
       <!-- Step one. Hidden once the board is connected, shown again by "Sign out". -->
-      <section id="setup" class="card setup" aria-labelledby="setup-heading">
-        <h2 id="setup-heading">Connect it, once</h2>
-        <p class="lead">
-          This page has no server. It talks to GitHub straight from your browser with a token you make
-          yourself, and it keeps your notes in a private repository that you own.
-        </p>
+      <section id="setup" class="card" aria-labelledby="setup-heading">
+        <div class="card-header">
+          <h2 id="setup-heading">Connect it, once</h2>
+          <p class="lead">
+            This page has no server. It talks to GitHub straight from your browser with a token you make
+            yourself, and it keeps your notes in a private repository that you own.
+          </p>
+        </div>
 
-        <ol class="steps">
-          <li>
-            <h3>Make a private repository for your notes</h3>
-            <p>Call it <code>work-board-data</code> and set the visibility to <strong>Private</strong>.</p>
-            <p>
-              <a class="button" id="create-repo-link" target="_blank" rel="noopener">Open the new-repository page</a>
-            </p>
-          </li>
-          <li>
-            <h3>Make a fine-grained token</h3>
-            <p>Give it access to the repositories you work in <em>and</em> the notes repository, then grant exactly these:</p>
-            <ul class="permissions">
-              <li><code>Metadata</code> &rarr; Read-only <span class="why">(GitHub requires it)</span></li>
-              <li><code>Issues</code> &rarr; Read and write <span class="why">(the board reads your issues)</span></li>
-              <li><code>Contents</code> &rarr; Read and write <span class="why">(your notes file)</span></li>
-            </ul>
-            <p>Set an expiry date. 90 days is a good default.</p>
-            <p>
-              <a class="button" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Open the token page</a>
-            </p>
-          </li>
-          <li>
-            <h3>Paste it here</h3>
-            <p class="field-row">
-              <label class="visually-hidden" for="token">Personal access token</label>
-              <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..." />
-            </p>
-            <p class="field-row">
-              <label class="visually-hidden" for="repo-name">Notes repository name</label>
-              <input id="repo-name" type="text" autocomplete="off" spellcheck="false" value="work-board-data" />
-              <button id="connect" type="button" class="button primary">Connect</button>
-            </p>
-            <p class="note">
-              The token stays in this browser and is sent only to GitHub. Anything else with access to this
-              browser can read it, so keep it scoped to the repositories you need and give it an expiry date.
-            </p>
-          </li>
-        </ol>
+        <div class="card-content">
+          <ol class="steps">
+            <li>
+              <h3>Make a private repository for your notes</h3>
+              <p>Call it <code>work-board-data</code> and set the visibility to <strong>Private</strong>.</p>
+              <p>
+                <a class="button button-outline" id="create-repo-link" target="_blank" rel="noopener">Open the new-repository page</a>
+              </p>
+            </li>
+            <li>
+              <h3>Make a fine-grained token</h3>
+              <p>Give it access to the repositories you work in <em>and</em> the notes repository, then grant exactly these:</p>
+              <ul class="permissions">
+                <li><code>Metadata</code> &rarr; Read-only <span class="muted">(GitHub requires it)</span></li>
+                <li><code>Issues</code> &rarr; Read and write <span class="muted">(the board reads your issues)</span></li>
+                <li><code>Contents</code> &rarr; Read and write <span class="muted">(your notes file)</span></li>
+              </ul>
+              <p>Set an expiry date. 90 days is a good default.</p>
+              <p>
+                <a class="button button-outline" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Open the token page</a>
+              </p>
+            </li>
+            <li>
+              <h3>Paste it here</h3>
+              <p class="field-row">
+                <label class="visually-hidden" for="token">Personal access token</label>
+                <input id="token" class="input" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..." />
+              </p>
+              <p class="field-row">
+                <label class="visually-hidden" for="repo-name">Notes repository name</label>
+                <input id="repo-name" class="input" type="text" autocomplete="off" spellcheck="false" value="work-board-data" />
+                <button id="connect" type="button" class="button button-primary">Connect</button>
+              </p>
+              <p>
+                The token stays in this browser and is sent only to GitHub. Anything else with access to this
+                browser can read it, so keep it scoped to the repositories you need and give it an expiry date.
+              </p>
+            </li>
+          </ol>
+        </div>
       </section>
 
       <!-- What each check proved, and exactly what to fix when one fails. -->
       <section id="connection" class="card" aria-labelledby="connection-heading" hidden>
-        <h2 id="connection-heading">Connection</h2>
-        <ul id="checks" class="checks"></ul>
-        <p class="field-row">
-          <button id="sign-out" type="button" class="button">Sign out and forget the token</button>
-        </p>
+        <div class="card-header">
+          <h2 id="connection-heading">Connection</h2>
+        </div>
+        <div class="card-content">
+          <ul id="checks" class="checks"></ul>
+          <p class="field-row" style="margin-top: 1rem">
+            <button id="sign-out" type="button" class="button button-danger">Sign out and forget the token</button>
+          </p>
+        </div>
       </section>
 
-      <section id="board" class="board" aria-labelledby="board-heading" hidden>
-        <h2 id="board-heading">Open issues assigned to you</h2>
+      <section id="board" aria-labelledby="board-heading" hidden>
+        <div class="board-heading-row">
+          <h2 id="board-heading">Assigned to you</h2>
+        </div>
         <p id="board-status" class="status" role="status" aria-live="polite"></p>
         <ul id="issues" class="issues"></ul>
       </section>
     </main>
 
     <footer class="footer">
-      <p class="privacy">
-        Everything happens in your browser. Your notes go to your own private repository and nowhere else.
-      </p>
-      <p id="deploy-line" class="deploy-line"></p>
-      <p><a class="back-link" href="../">All web projects</a></p>
+      <p>Everything happens in your browser. Your notes go to your own private repository and nowhere else.</p>
+      <p id="deploy-line"></p>
+      <p><a href="../">All web projects</a></p>
     </footer>
   </div>
 

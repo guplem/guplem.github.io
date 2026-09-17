@@ -52,8 +52,8 @@ function buildCheckRow({ label, ok, detail }) {
   const row = document.createElement("li");
   row.className = ok ? "check ok" : "check failed";
   const mark = document.createElement("span");
-  mark.className = "check-mark";
-  mark.textContent = ok ? "OK" : "!";
+  mark.className = ok ? "badge badge-success" : "badge badge-destructive";
+  mark.textContent = ok ? "Done" : "Fix";
   const body = document.createElement("div");
   const name = document.createElement("p");
   name.className = "check-label";
@@ -91,7 +91,7 @@ function buildIssueCard(issue) {
     labels.className = "issue-labels";
     for (const label of issue.labels) {
       const chip = document.createElement("span");
-      chip.className = "label";
+      chip.className = "badge badge-outline";
       chip.textContent = label.name;
       labels.append(chip);
     }
@@ -99,7 +99,7 @@ function buildIssueCard(issue) {
   }
 
   const note = document.createElement("textarea");
-  note.className = "note";
+  note.className = "input note";
   note.rows = 2;
   note.placeholder = "A note only you can see";
   note.value = readNote(state.board, issue.key);

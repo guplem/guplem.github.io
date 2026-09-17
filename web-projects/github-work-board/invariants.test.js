@@ -102,6 +102,48 @@ describe("the token never leaves the browser except toward GitHub (ADR 0001)", (
   });
 });
 
+// Visual work is exempt from TDD (root ADR 0012), and this is not a test of how
+// the page looks. It is a test that every part a person can point at answers
+// them. The first version of this page shipped with no hover state on any
+// button at all, which reads as a dead control, and nothing caught it.
+describe("every control answers the pointer and the keyboard (ADR 0004)", () => {
+  const css = read("style.css");
+
+  test("each button variant has a hover state", () => {
+    const variants = [...css.matchAll(/^\.(button-[a-z]+)\s*\{/gm)].map((match) => match[1]);
+    expect(variants.length).toBeGreaterThan(0);
+    for (const variant of variants) {
+      expect(`${variant} has :hover`).toBe(
+        css.includes(`.${variant}:hover`) ? `${variant} has :hover` : `${variant} has NO :hover`,
+      );
+    }
+  });
+
+  test("buttons answer a press and a keyboard focus", () => {
+    expect(css).toContain(".button:active");
+    expect(css).toContain(".button:focus-visible");
+  });
+
+  test("text boxes answer hover and focus", () => {
+    expect(css).toContain(".input:hover");
+    expect(css).toContain(".input:focus");
+  });
+
+  test("an issue card answers the pointer and a focus inside it", () => {
+    expect(css).toContain(".issue:hover");
+    expect(css).toContain(".issue:focus-within");
+  });
+
+  // Feedback is not decoration: a reader who asked for less motion still needs
+  // to see which control is under the pointer, so only the movement goes.
+  test("reduced motion drops the movement and keeps the colours", () => {
+    expect(css).toContain("prefers-reduced-motion");
+    const block = css.slice(css.indexOf("prefers-reduced-motion"));
+    expect(block).toContain("transition-duration");
+    expect(block).not.toContain(":hover");
+  });
+});
+
 describe("the page itself", () => {
   test("carries the deploy stamp block the generator looks for (root ADR 0013)", () => {
     const page = read("index.html");
