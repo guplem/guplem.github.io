@@ -41,7 +41,9 @@ It is the short procedure for all of the above.
 | `boardDocument.js` | Yes | The stored document: schema version, `migrate`, reading and writing one note |
 | `sync.js` | Yes | Merging two copies of the document, and deciding create / update / skip (ADR 0002) |
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
-| `issues.js` | Yes | GitHub's answer about issues into the items the board shows |
+| `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
+| `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
+| `urlState.js` | Yes | The chosen order in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The token and the data repository, through an injected storage |
@@ -52,7 +54,7 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `issues.normalizeIssues` → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `sorting.sortWorkItems` → elements.
 Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
@@ -67,7 +69,12 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   transferred to another repository keeps its node id and changes its number, so
   a note filed under the number would later attach itself to a different issue.
 - **`GET /issues` returns pull requests too**, marked only by a `pull_request`
-  field. `normalizeIssues` drops them.
+  field. The board keeps both and tags each item with `kind` (ADR 0006).
+- **Every sort comparison ends with a fallback to the item's key.** Two items
+  updated in the same second must land the same way round every render, or the
+  list appears to shuffle itself while somebody is reading it.
+- **A sort id travels in the address bar, so it is permanent.** Renaming one
+  silently breaks every link anybody saved; `invariants.test.js` pins the set.
 - **A save re-reads the file first and writes with the sha from that read.** The
   sha is GitHub's optimistic-concurrency check. Passing a remembered one is how a
   save silently overwrites another device's work. A 409 means somebody saved in
@@ -95,6 +102,9 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   check and the prompt that tells existing readers to widen their token all
   follow from it. Never write a permission into `index.html` or `README.md` by
   hand; `invariants.test.js` fails when you do (ADR 0005).
+- **Never write a count of generated items in prose.** The page said "set these
+  three" and the generated permission list grew to four on the next change. Say
+  "each of these" instead; the list is the count.
 - **The setup guide cannot prefill a fine-grained token form.** GitHub supports
   prefilled links for classic tokens only. The guide lists the permissions
   instead, and `githubErrors.js` names the missing one when a call fails.
@@ -117,10 +127,12 @@ cd web-projects/github-work-board && bun test
 | [0003](adr/0003-tests-that-guard-decisions-not-only-behaviour.md) | Tests that guard decisions, not only behaviour |
 | [0004](adr/0004-one-set-of-parts-in-the-shape-shadcn-uses.md) | One set of parts, in the shape shadcn/ui uses |
 | [0005](adr/0005-the-permission-list-lives-in-the-code.md) | The permission list lives in the code, and the page asks for a wider token |
+| [0006](adr/0006-one-list-of-work-items-and-the-order-lives-in-the-link.md) | One list of work items, and the chosen order lives in the link |
 
 ## What is not built yet
 
-Phase 1 proves the hard parts: connect, read issues, write a private note, merge
-two devices. Still to come, roughly in this order: custom tags, kanban columns
-with automatic moves, a "what's next" queue, and filters in the URL (root ADR
-0006, and never the token).
+Connecting, the one list of issues and pull requests, private notes and the
+seven orders are built. Still to come, roughly in this order: filtering by kind
+and by label, custom tags, kanban columns with automatic moves, and a "what's
+next" queue. Every new view state goes in the address bar beside `sort`, and the
+token never does.

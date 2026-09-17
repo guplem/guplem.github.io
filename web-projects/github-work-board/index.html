@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="122" />
-  <meta name="deploy-date" content="2026-09-17T14:55:28.000Z" />
+  <meta name="deploy-pull-request" content="123" />
+  <meta name="deploy-date" content="2026-09-17T15:31:06.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -83,7 +83,7 @@
               <div class="action">
                 <p class="action-label">Repository permissions</p>
                 <div class="action-body">
-                  <p>Set these three. Leave every other permission alone.</p>
+                  <p>Set each of these. Leave every other permission alone.</p>
                   <!-- Built from REQUIRED_PERMISSIONS, never written here (ADR 0005). -->
                   <ul class="permissions" id="permissions"></ul>
                 </div>
@@ -140,7 +140,13 @@
       <section id="board" aria-labelledby="board-heading" hidden>
         <div class="board-heading-row">
           <h2 id="board-heading">Assigned to you</h2>
+          <div class="sort-control">
+            <label class="sort-label" for="sort">Sort by</label>
+            <!-- Filled from SORT_OPTIONS, so an order exists in one place (ADR 0006). -->
+            <select id="sort" class="select"></select>
+          </div>
         </div>
+        <p id="board-counts" class="board-counts"></p>
         <p id="board-status" class="status" role="status" aria-live="polite"></p>
         <ul id="issues" class="issues"></ul>
       </section>

@@ -6,8 +6,11 @@ to make here, and nothing is stored anywhere except GitHub.
 
 ## Features
 
-- **Every open issue assigned to you**, across every repository your token can
-  read, in one list.
+- **Every open issue and pull request assigned to you**, across every repository
+  your token can read, in one list, each marked with what it is.
+- **Seven ways to sort it**: recently updated, least recently updated, newest,
+  oldest, ones you noted first, by repository, or by title. The choice goes into
+  the address bar, so a reload keeps it and a link carries it.
 - **A private note on any issue.** Notes are yours alone. They never appear on
   GitHub's issue page, and nobody else sees them.
 - **Your notes sync themselves.** They live in a JSON file in a private
@@ -35,6 +38,7 @@ to make here, and nothing is stored anywhere except GitHub.
    - **Repository permissions:** set these three and leave the rest alone.
      - `Metadata` → Read-only
      - `Issues` → Read and write
+     - `Pull requests` → Read-only
      - `Contents` → Read and write
    - **Expiration:** pick a date. 90 days is a good default.
 
