@@ -46,7 +46,7 @@ It is the short procedure for all of the above.
 | `urlState.js` | Yes | The chosen order in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
-| `settings.js` | Yes | The token and the data repository, through an injected storage |
+| `settings.js` | Yes | The list of tokens and the data repository, through an injected storage (ADR 0007) |
 | `messages.js` | Yes | Every sentence the page says, and the one HTML escaper |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `style.css` | - | The design system: colour roles, one radius, and the four parts every screen is built from (ADR 0004) |
@@ -59,6 +59,18 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
 
 ## Non-obvious conventions and gotchas
 
+- **A fine-grained token belongs to one owner**, your account or one
+  organisation, and cannot see the other's repositories whatever permissions it
+  carries. The board therefore holds a **list** of tokens, asks every one, and
+  merges the answers. Anyone working in an organisation needs at least two
+  (ADR 0007).
+- **Exactly one token writes the notes file.** `boardWritingToken` picks it. A
+  save with any other token fails, because the notes repository belongs to one
+  owner.
+- **Never tell the reader "nothing is assigned to you" on its own.** It is a
+  confident wrong answer when the truth is that no token reaches the
+  organisation their work lives in. `sayEmptyBoard` always says how far the
+  board can see.
 - **`btoa` is not enough.** The Contents API carries file content as base64, and
   the browser's `btoa` throws on any character above 255. A note with an accent
   or an emoji arrives on day one, so text goes through `TextEncoder` first.
@@ -128,6 +140,7 @@ cd web-projects/github-work-board && bun test
 | [0004](adr/0004-one-set-of-parts-in-the-shape-shadcn-uses.md) | One set of parts, in the shape shadcn/ui uses |
 | [0005](adr/0005-the-permission-list-lives-in-the-code.md) | The permission list lives in the code, and the page asks for a wider token |
 | [0006](adr/0006-one-list-of-work-items-and-the-order-lives-in-the-link.md) | One list of work items, and the chosen order lives in the link |
+| [0007](adr/0007-one-token-per-owner-and-an-empty-board-explains-itself.md) | One token per owner, and an empty board that explains itself |
 
 ## What is not built yet
 

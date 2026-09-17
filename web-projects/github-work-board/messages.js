@@ -24,6 +24,33 @@ export function say(key, params = {}) {
   );
 }
 
+/** A list of names as a person would read it out. */
+export function joinWithAnd(names) {
+  const clean = (Array.isArray(names) ? names : []).filter((one) => typeof one === "string" && one !== "");
+  if (clean.length === 0) return "";
+  if (clean.length === 1) return clean[0];
+  return `${clean.slice(0, -1).join(", ")} and ${clean.at(-1)}`;
+}
+
+/**
+ * Why the board is empty.
+ *
+ * "Nothing is assigned to you" is a lie when the truth is "these tokens cannot
+ * see where your work lives", and that second case is the common one: a
+ * fine-grained token belongs to one owner, so a personal token sees nothing in
+ * an organisation. The sentence therefore always says how far the board can
+ * actually see (ADR 0007).
+ */
+export function sayEmptyBoard({ tokenCount = 0, owners = [] } = {}) {
+  if (tokenCount === 0) return "No token is connected yet.";
+  const counted = tokenCount === 1 ? "1 token" : `${tokenCount} tokens`;
+  const reach =
+    owners.length > 0
+      ? `The board is using ${counted}, which reach ${joinWithAnd(owners)}.`
+      : `The board is using ${counted}, and they reached no repository holding work for you.`;
+  return `Nothing open is assigned to you. ${reach}`;
+}
+
 /** Text made safe to put inside HTML. The ampersand goes first, or the rest double-escape. */
 export function escapeHtml(text) {
   if (text === null || text === undefined) return "";

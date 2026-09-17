@@ -1,15 +1,18 @@
 import { beforeEach, describe, expect, test } from "bun:test";
 import {
   DEFAULT_DATA_REPO_NAME,
+  LEGACY_KEYS,
   STORAGE_KEYS,
+  addToken,
+  boardWritingToken,
   browserStorage,
-  forgetToken,
+  forgetAllTokens,
   readDataRepo,
-  readGrantedPermissions,
-  readToken,
+  readTokens,
+  removeToken,
   saveDataRepo,
-  saveGrantedPermissions,
-  saveToken,
+  saveTokens,
+  updateToken,
 } from "./settings.js";
 
 const fakeStorage = () => {
@@ -34,42 +37,147 @@ const refusingStorage = {
   },
 };
 
+/** An entry in the shape `readTokens` and `addToken` always hand back. */
+const entry = (over = {}) => ({
+  id: "t1",
+  token: "github_pat_11ABCDEF",
+  grantedPermissions: null,
+  owners: [],
+  canWriteBoard: false,
+  ...over,
+});
+
 let storage;
 beforeEach(() => {
   storage = fakeStorage();
 });
 
-describe("the token", () => {
-  test("comes back exactly as it was saved", () => {
-    saveToken(storage, "github_pat_11ABCDEF");
-    expect(readToken(storage)).toBe("github_pat_11ABCDEF");
+describe("the saved tokens", () => {
+  test("round-trip", () => {
+    saveTokens(storage, [entry(), entry({ id: "t2", token: "github_pat_22" })]);
+    expect(readTokens(storage).map((one) => one.id)).toEqual(["t1", "t2"]);
+    expect(readTokens(storage)[0].token).toBe("github_pat_11ABCDEF");
   });
 
-  test("is trimmed, because a pasted token carries spaces and newlines", () => {
-    saveToken(storage, "  github_pat_11ABCDEF\n");
-    expect(readToken(storage)).toBe("github_pat_11ABCDEF");
+  test("read as an empty list when nothing was ever saved", () => {
+    expect(readTokens(storage)).toEqual([]);
+    expect(readTokens(undefined)).toEqual([]);
+    expect(readTokens(refusingStorage)).toEqual([]);
   });
 
-  test("an empty value is not stored", () => {
-    saveToken(storage, "   ");
-    expect(readToken(storage)).toBeNull();
-    expect(storage.data.has(STORAGE_KEYS.token)).toBe(false);
+  test("anything that is not a list of tokens reads as an empty list", () => {
+    for (const junk of ["{}", "null", "not json", '"a string"', "[7]", '[{"id":"x"}]']) {
+      storage.setItem(STORAGE_KEYS.tokens, junk);
+      expect(readTokens(storage)).toEqual([]);
+    }
   });
 
-  // The reader asked the board to forget. Nothing may survive that, or the
-  // promise the button makes is false.
-  test("forgetToken removes it from storage", () => {
-    saveToken(storage, "github_pat_11ABCDEF");
-    forgetToken(storage);
-    expect(readToken(storage)).toBeNull();
-    expect(storage.data.has(STORAGE_KEYS.token)).toBe(false);
+  test("an entry keeps what it was given, and fills in what it was not", () => {
+    saveTokens(storage, [entry()]);
+    expect(readTokens(storage)[0]).toEqual({
+      id: "t1",
+      token: "github_pat_11ABCDEF",
+      grantedPermissions: null,
+      owners: [],
+      canWriteBoard: false,
+    });
+  });
+
+  // The board used to hold exactly one token. Somebody who connected before
+  // this change must not have to set the whole thing up again.
+  test("a token saved by the one-token version becomes the first entry", () => {
+    storage.setItem(LEGACY_KEYS.token, "github_pat_OLD");
+    storage.setItem(LEGACY_KEYS.grantedPermissions, "issues:read and write");
+    const tokens = readTokens(storage);
+    expect(tokens.length).toBe(1);
+    expect(tokens[0].token).toBe("github_pat_OLD");
+    expect(tokens[0].grantedPermissions).toBe("issues:read and write");
+    expect(tokens[0].id.length).toBeGreaterThan(0);
+  });
+
+  test("the saved list wins over a token left behind by the old version", () => {
+    storage.setItem(LEGACY_KEYS.token, "github_pat_OLD");
+    saveTokens(storage, [entry({ token: "github_pat_NEW" })]);
+    expect(readTokens(storage).map((one) => one.token)).toEqual(["github_pat_NEW"]);
+  });
+
+  // Signing out throws every credential away. Anything left behind is a
+  // credential the reader believes they deleted.
+  test("forgetAllTokens clears the list and anything the old version left", () => {
+    storage.setItem(LEGACY_KEYS.token, "github_pat_OLD");
+    storage.setItem(LEGACY_KEYS.grantedPermissions, "x");
+    saveTokens(storage, [entry()]);
+    forgetAllTokens(storage);
+    expect(readTokens(storage)).toEqual([]);
+    expect(storage.data.size).toBe(0);
   });
 
   test("a browser that refuses to store never breaks the page", () => {
-    expect(() => saveToken(refusingStorage, "x")).not.toThrow();
-    expect(() => forgetToken(refusingStorage)).not.toThrow();
-    expect(readToken(refusingStorage)).toBeNull();
-    expect(readToken(undefined)).toBeNull();
+    expect(() => saveTokens(refusingStorage, [entry()])).not.toThrow();
+    expect(() => forgetAllTokens(refusingStorage)).not.toThrow();
+  });
+});
+
+describe("addToken", () => {
+  test("adds one and leaves the list it was given alone", () => {
+    const before = [entry()];
+    const after = addToken(before, { id: "t2", token: "github_pat_22" });
+    expect(before.length).toBe(1);
+    expect(after.map((one) => one.id)).toEqual(["t1", "t2"]);
+  });
+
+  test("trims the pasted token, because a copied token carries spaces", () => {
+    expect(addToken([], { id: "t1", token: "  github_pat_11\n" })[0].token).toBe("github_pat_11");
+  });
+
+  test("refuses an empty token", () => {
+    expect(addToken([], { id: "t1", token: "   " })).toEqual([]);
+    expect(addToken([], { id: "t1", token: null })).toEqual([]);
+  });
+
+  // Pasting the same token twice is a mistake that would double every item on
+  // the board and look like a syncing bug.
+  test("refuses a token the list already holds", () => {
+    const list = addToken([], { id: "t1", token: "same" });
+    expect(addToken(list, { id: "t2", token: "same" })).toEqual(list);
+  });
+});
+
+describe("removeToken and updateToken", () => {
+  test("removeToken drops one by its id and keeps the rest", () => {
+    const list = [entry(), entry({ id: "t2", token: "b" })];
+    expect(removeToken(list, "t1").map((one) => one.id)).toEqual(["t2"]);
+    expect(removeToken(list, "nope").length).toBe(2);
+  });
+
+  test("updateToken changes one entry and leaves the others untouched", () => {
+    const list = [entry(), entry({ id: "t2", token: "b" })];
+    const after = updateToken(list, "t2", { owners: ["Galtea-AI"], canWriteBoard: true });
+    expect(after[1].owners).toEqual(["Galtea-AI"]);
+    expect(after[1].canWriteBoard).toBe(true);
+    expect(after[0].owners).toEqual([]);
+    expect(list[1].owners).toEqual([]);
+  });
+
+  test("updateToken cannot change the token itself or its id", () => {
+    const after = updateToken([entry()], "t1", { token: "stolen", id: "other" });
+    expect(after[0].token).toBe("github_pat_11ABCDEF");
+    expect(after[0].id).toBe("t1");
+  });
+});
+
+describe("boardWritingToken", () => {
+  // The notes file lives in one repository, so exactly one token can write it.
+  // Picking the wrong one means every save fails with a permission error.
+  test("is the first token that reached the notes repository", () => {
+    const list = [entry({ id: "a" }), entry({ id: "b", token: "b", canWriteBoard: true })];
+    expect(boardWritingToken(list).id).toBe("b");
+  });
+
+  test("is null when no token can write the notes file", () => {
+    expect(boardWritingToken([entry()])).toBeNull();
+    expect(boardWritingToken([])).toBeNull();
+    expect(boardWritingToken(null)).toBeNull();
   });
 });
 
@@ -96,42 +204,10 @@ describe("the data repository", () => {
   });
 });
 
-describe("the permissions a token was approved against", () => {
-  test("round-trips the fingerprint", () => {
-    saveGrantedPermissions(storage, "contents:read and write|issues:read and write");
-    expect(readGrantedPermissions(storage)).toBe("contents:read and write|issues:read and write");
-  });
-
-  test("reads as null when nothing was ever stored", () => {
-    expect(readGrantedPermissions(storage)).toBeNull();
-  });
-
-  test("an empty fingerprint is not stored, so it cannot read as 'approved against nothing'", () => {
-    saveGrantedPermissions(storage, "  ");
-    expect(readGrantedPermissions(storage)).toBeNull();
-  });
-
-  // Signing out throws the token away, so what that token could do is gone too.
-  // Leaving it behind would tell the next token it is already up to date.
-  test("forgetToken clears it as well", () => {
-    saveToken(storage, "github_pat_11ABCDEF");
-    saveGrantedPermissions(storage, "issues:read-only");
-    forgetToken(storage);
-    expect(readGrantedPermissions(storage)).toBeNull();
-  });
-
-  test("a browser that refuses to store never breaks the page", () => {
-    expect(() => saveGrantedPermissions(refusingStorage, "x")).not.toThrow();
-    expect(readGrantedPermissions(refusingStorage)).toBeNull();
-  });
-});
-
 describe("browserStorage", () => {
-  // It is the one place that names `localStorage`, so it is also the one place
-  // that can throw when a browser has storage switched off.
   test("answers with a storage or with null, and never throws", () => {
     expect(() => browserStorage()).not.toThrow();
-    const storage = browserStorage();
-    expect(storage === null || typeof storage === "object").toBe(true);
+    const found = browserStorage();
+    expect(found === null || typeof found === "object").toBe(true);
   });
 });

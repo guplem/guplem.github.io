@@ -45,6 +45,16 @@ to make here, and nothing is stored anywhere except GitHub.
 3. **Paste the token into the page** and press Connect. The page checks each
    permission and tells you exactly which one is missing if any call fails.
 
+4. **Work in an organisation? Add a second token.** A fine-grained token belongs
+   to one owner. A token owned by your account cannot see an organisation's
+   repositories, whatever permissions you give it. Create another token with the
+   organisation as the **Resource owner**, grant it `Metadata` → Read-only,
+   `Issues` → Read and write and `Pull requests` → Read-only, and add it under
+   **Connection**. An organisation owner may have to approve it first.
+
+   Keep the notes repository on your personal token. An organisation's owners
+   can read its repositories, and these notes are meant for you alone.
+
 If the board later needs access your token does not have, the page says so on
 load and names what to add. The permission list lives in the code, so the page
 and this README cannot fall behind it.

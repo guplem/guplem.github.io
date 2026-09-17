@@ -14,7 +14,7 @@ import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocu
 import { SORT_OPTIONS } from "./sorting.js";
 import { normalizeWorkItem } from "./workItems.js";
 import { REQUIRED_PERMISSIONS } from "./permissions.js";
-import { STORAGE_KEYS } from "./settings.js";
+import { LEGACY_KEYS, STORAGE_KEYS } from "./settings.js";
 
 const FOLDER = import.meta.dir;
 const sourceFiles = readdirSync(FOLDER).filter((name) => name.endsWith(".js") && !name.endsWith(".test.js"));
@@ -37,8 +37,17 @@ describe("the note key is permanent (ADR 0002)", () => {
 describe("the stored document (ADR 0002)", () => {
   test("the storage keys are exactly these, because renaming one loses the saved value", () => {
     expect(STORAGE_KEYS).toEqual({
-      token: "github-work-board.token",
+      tokens: "github-work-board.tokens",
       dataRepo: "github-work-board.dataRepo",
+    });
+  });
+
+  // The one-token version of the board wrote these two, and `readTokens` still
+  // reads them so that nobody has to set the board up again. Dropping the
+  // migration strands every reader who connected before the change.
+  test("the keys the one-token version wrote are still read", () => {
+    expect(LEGACY_KEYS).toEqual({
+      token: "github-work-board.token",
       grantedPermissions: "github-work-board.grantedPermissions",
     });
   });
@@ -77,7 +86,7 @@ describe("the shape of the project (ADR 0001, ADR 0003)", () => {
   });
 
   test("the token key appears in one file only", () => {
-    const holders = sourceFiles.filter((name) => read(name).includes(STORAGE_KEYS.token));
+    const holders = sourceFiles.filter((name) => read(name).includes(STORAGE_KEYS.tokens));
     expect(holders).toEqual(["settings.js"]);
   });
 

@@ -131,8 +131,30 @@
         </div>
         <div class="card-content">
           <ul id="checks" class="checks"></ul>
+
+          <h3 class="subheading">Tokens in use</h3>
+          <ul id="tokens" class="tokens"></ul>
+
+          <div class="action">
+            <p class="action-label">Add another token</p>
+            <div class="action-body">
+              <p>
+                A fine-grained token belongs to <strong>one owner</strong>. A token owned by your account cannot
+                see an organisation's repositories, whatever permissions it carries. To put an organisation's
+                work on this board, create a second token with that organisation as the
+                <strong>Resource owner</strong> and add it here. An owner of the organisation may have to approve
+                it before it works.
+              </p>
+              <div class="field-row">
+                <label class="visually-hidden" for="another-token">Another token</label>
+                <input id="another-token" class="input" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..." />
+                <button id="add-token" type="button" class="button button-primary">Add</button>
+              </div>
+            </div>
+          </div>
+
           <p class="step-action">
-            <button id="sign-out" type="button" class="button button-danger">Sign out and forget the token</button>
+            <button id="sign-out" type="button" class="button button-danger">Sign out and forget every token</button>
           </p>
         </div>
       </section>
@@ -148,6 +170,17 @@
         </div>
         <p id="board-counts" class="board-counts"></p>
         <p id="board-status" class="status" role="status" aria-live="polite"></p>
+
+        <!-- An empty board has several causes, and "nothing is assigned to you"
+             is a lie for most of them (ADR 0007). -->
+        <div id="board-empty" class="callout" hidden>
+          <p id="board-empty-reason" class="callout-title"></p>
+          <p>
+            If your work lives in an organisation, add a token owned by that organisation under
+            <strong>Connection</strong> above. One token cannot reach two owners.
+          </p>
+        </div>
+
         <ul id="issues" class="issues"></ul>
       </section>
     </main>

@@ -667,6 +667,39 @@ textarea.input {
   box-shadow: 0 0 0 3px hsl(var(--ring) / 0.15);
 }
 
+.subheading {
+  margin-top: 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsl(var(--foreground));
+}
+
+.tokens {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.token-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 2px);
+  background: hsl(var(--muted) / 0.4);
+  transition: border-color 0.15s ease;
+}
+
+.token-row:hover {
+  border-color: hsl(var(--ring) / 0.3);
+}
+
 .board-counts {
   margin-top: 0.125rem;
   font-size: 0.8125rem;
