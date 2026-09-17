@@ -11,7 +11,8 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
-import { normalizeIssue } from "./issues.js";
+import { SORT_OPTIONS } from "./sorting.js";
+import { normalizeWorkItem } from "./workItems.js";
 import { REQUIRED_PERMISSIONS } from "./permissions.js";
 import { STORAGE_KEYS } from "./settings.js";
 
@@ -22,13 +23,13 @@ const read = (name) => readFileSync(join(FOLDER, name), "utf8");
 describe("the note key is permanent (ADR 0002)", () => {
   test("a note is keyed by the GitHub node id, never by repository and number", () => {
     const raw = { node_id: "I_permanent", number: 42, title: "t", html_url: "u" };
-    expect(normalizeIssue(raw).key).toBe("I_permanent");
-    expect(normalizeIssue(raw).key).not.toContain("42");
+    expect(normalizeWorkItem(raw).key).toBe("I_permanent");
+    expect(normalizeWorkItem(raw).key).not.toContain("42");
   });
 
   test("an issue moved to another repository keeps the key its note is filed under", () => {
-    const before = normalizeIssue({ node_id: "I_permanent", number: 42, repository: { full_name: "me/old" } });
-    const after = normalizeIssue({ node_id: "I_permanent", number: 7, repository: { full_name: "me/new" } });
+    const before = normalizeWorkItem({ node_id: "I_permanent", number: 42, repository: { full_name: "me/old" } });
+    const after = normalizeWorkItem({ node_id: "I_permanent", number: 7, repository: { full_name: "me/new" } });
     expect(after.key).toBe(before.key);
   });
 });
@@ -131,6 +132,11 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(css).toContain(".input:focus");
   });
 
+  test("the sort dropdown answers hover and focus", () => {
+    expect(css).toContain(".select:hover");
+    expect(css).toContain(".select:focus-visible");
+  });
+
   test("an issue card answers the pointer and a focus inside it", () => {
     expect(css).toContain(".issue:hover");
     expect(css).toContain(".issue:focus-within");
@@ -143,6 +149,22 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     const block = css.slice(css.indexOf("prefers-reduced-motion"));
     expect(block).toContain("transition-duration");
     expect(block).not.toContain(":hover");
+  });
+});
+
+describe("a sort order named in a link keeps its name (ADR 0006)", () => {
+  // The chosen order travels in the address bar, so a renamed id silently
+  // breaks every link anybody saved or shared.
+  test("these are the orders, and an id is never renamed", () => {
+    expect(SORT_OPTIONS.map((option) => option.id).sort()).toEqual([
+      "created-asc",
+      "created-desc",
+      "noted-first",
+      "repository",
+      "title",
+      "updated-asc",
+      "updated-desc",
+    ]);
   });
 });
 

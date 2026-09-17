@@ -20,6 +20,7 @@ export const PERMISSIONS = {
   metadata: "Metadata: read",
   issuesRead: "Issues: read",
   issuesWrite: "Issues: write",
+  pullRequestsRead: "Pull requests: read",
   contentsWrite: "Contents: read and write",
 };
 
@@ -41,6 +42,12 @@ export const REQUIRED_PERMISSIONS = [
     why: "the board reads the issues assigned to you",
   },
   {
+    id: "pull-requests",
+    name: "Pull requests",
+    level: "Read-only",
+    why: "the board shows the pull requests assigned to you, beside your issues",
+  },
+  {
     id: "contents",
     name: "Contents",
     level: "Read and write",
@@ -51,7 +58,7 @@ export const REQUIRED_PERMISSIONS = [
 /** The calls the setup panel makes, in order, to prove the token works. */
 export const CONNECTION_CHECKS = [
   { id: "identity", label: "Read your GitHub account", need: PERMISSIONS.metadata },
-  { id: "issues", label: "Read the issues assigned to you", need: PERMISSIONS.issuesRead },
+  { id: "issues", label: "Read the issues and pull requests assigned to you", need: PERMISSIONS.issuesRead },
   { id: "board", label: "Read and write the board file", need: PERMISSIONS.contentsWrite },
 ];
 

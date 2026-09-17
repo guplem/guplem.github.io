@@ -17,7 +17,9 @@ import {
   permissionsFingerprint,
   tokenNeedsUpdate,
 } from "./permissions.js";
-import { normalizeIssues, sortByRecentActivity } from "./issues.js";
+import { DEFAULT_SORT_ID, SORT_OPTIONS, sortWorkItems } from "./sorting.js";
+import { buildSearch, readStateFromSearch } from "./urlState.js";
+import { countByKind, normalizeWorkItems } from "./workItems.js";
 import { escapeHtml, say } from "./messages.js";
 import {
   DEFAULT_DATA_REPO_NAME,
@@ -47,6 +49,8 @@ const state = {
   remoteSha: null,
   remoteText: null,
   saveTimer: null,
+  items: [],
+  sortId: DEFAULT_SORT_ID,
 };
 
 /* -------------------------------------------------------------------------- */
@@ -124,27 +128,42 @@ function buildCheckRow({ label, ok, detail }) {
   return row;
 }
 
-function buildIssueCard(issue) {
+function buildWorkItemCard(item) {
   const card = document.createElement("li");
   card.className = "issue";
 
   const heading = document.createElement("p");
   heading.className = "issue-where";
-  heading.textContent = `${issue.repository} #${issue.number}`;
+
+  const kind = document.createElement("span");
+  kind.className = item.kind === "pull-request" ? "badge badge-pull" : "badge badge-issue";
+  kind.textContent = item.kind === "pull-request" ? "PR" : "Issue";
+  heading.append(kind);
+
+  if (item.isDraft) {
+    const draft = document.createElement("span");
+    draft.className = "badge badge-outline";
+    draft.textContent = "Draft";
+    heading.append(draft);
+  }
+
+  const where = document.createElement("span");
+  where.textContent = `${item.repository} #${item.number}`;
+  heading.append(where);
   card.append(heading);
 
   const link = document.createElement("a");
   link.className = "issue-title";
-  link.href = issue.url;
+  link.href = item.url;
   link.target = "_blank";
   link.rel = "noopener";
-  link.textContent = issue.title;
+  link.textContent = item.title;
   card.append(link);
 
-  if (issue.labels.length > 0) {
+  if (item.labels.length > 0) {
     const labels = document.createElement("p");
     labels.className = "issue-labels";
-    for (const label of issue.labels) {
+    for (const label of item.labels) {
       const chip = document.createElement("span");
       chip.className = "badge badge-outline";
       chip.textContent = label.name;
@@ -157,14 +176,38 @@ function buildIssueCard(issue) {
   note.className = "input note";
   note.rows = 2;
   note.placeholder = "A note only you can see";
-  note.value = readNote(state.board, issue.key);
+  note.value = readNote(state.board, item.key);
   note.addEventListener("input", () => {
-    state.board = writeNote(state.board, issue.key, note.value, new Date().toISOString());
+    state.board = writeNote(state.board, item.key, note.value, new Date().toISOString());
     scheduleSave();
   });
   card.append(note);
 
   return card;
+}
+
+/**
+ * Put the list on the screen in the chosen order.
+ *
+ * Called on load, when the order changes, and after a note is written, because
+ * "ones you noted first" moves an item the moment the first character lands.
+ */
+function renderBoard() {
+  const hasNote = (key) => readNote(state.board, key).trim() !== "";
+  const ordered = sortWorkItems(state.items, state.sortId, hasNote);
+  element("issues").replaceChildren(...ordered.map(buildWorkItemCard));
+
+  const { issues, pullRequests } = countByKind(state.items);
+  const parts = [];
+  if (issues > 0) parts.push(`${issues} ${issues === 1 ? "issue" : "issues"}`);
+  if (pullRequests > 0) parts.push(`${pullRequests} ${pullRequests === 1 ? "pull request" : "pull requests"}`);
+  element("board-counts").textContent = parts.join(" and ");
+}
+
+/** Keep the address bar showing the chosen order, so a reload and a shared link both keep it. */
+function rememberSortInUrl() {
+  const search = buildSearch({ sortId: state.sortId });
+  history.replaceState(null, "", `${location.pathname}${search}${location.hash}`);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -227,8 +270,13 @@ async function connect(token, repoName) {
 
   const answer = await fetchAssignedIssues(token);
   if (!answer.ok) return fail(issues, answer);
-  const list = sortByRecentActivity(normalizeIssues(answer.data));
-  rows.push({ label: issues.label, ok: true, detail: `${list.length} open issues assigned to you.` });
+  const list = normalizeWorkItems(answer.data);
+  const counted = countByKind(list);
+  rows.push({
+    label: issues.label,
+    ok: true,
+    detail: `${counted.issues} open issues and ${counted.pullRequests} pull requests are assigned to you.`,
+  });
   showChecks(rows);
 
   // Everything worked, so this is the point where the settings are worth keeping.
@@ -247,10 +295,11 @@ async function connect(token, repoName) {
   saveGrantedPermissions(storage, permissionsFingerprint());
   element("token-outdated").hidden = true;
 
+  state.items = list;
   element("setup").hidden = true;
   element("board").hidden = false;
-  element("issues").replaceChildren(...list.map(buildIssueCard));
-  setStatus(list.length === 0 ? "No open issues are assigned to you." : "Notes save by themselves.");
+  renderBoard();
+  setStatus(list.length === 0 ? "Nothing is assigned to you right now." : "Notes save by themselves.");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -306,6 +355,7 @@ function signOut() {
   clearTimeout(state.saveTimer);
   state.token = null;
   state.board = emptyDocument(new Date().toISOString());
+  state.items = [];
   element("token").value = "";
   element("setup").hidden = false;
   element("board").hidden = true;
@@ -317,6 +367,23 @@ function start() {
   renderDeployLine(element("deploy-line"), readStamp(document), "en", say, escapeHtml, PROJECT_PATH);
   element("permissions").replaceChildren(...REQUIRED_PERMISSIONS.map(buildPermissionRow));
   renderTokenNotice();
+
+  state.sortId = readStateFromSearch(location.search).sortId;
+  const sortField = element("sort");
+  sortField.replaceChildren(
+    ...SORT_OPTIONS.map((option) => {
+      const choice = document.createElement("option");
+      choice.value = option.id;
+      choice.textContent = option.label;
+      return choice;
+    }),
+  );
+  sortField.value = state.sortId;
+  sortField.addEventListener("change", () => {
+    state.sortId = sortField.value;
+    rememberSortInUrl();
+    renderBoard();
+  });
 
   const saved = readDataRepo(storage);
   const repoField = element("repo-name");

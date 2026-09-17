@@ -140,7 +140,13 @@
       <section id="board" aria-labelledby="board-heading" hidden>
         <div class="board-heading-row">
           <h2 id="board-heading">Assigned to you</h2>
+          <div class="sort-control">
+            <label class="sort-label" for="sort">Sort by</label>
+            <!-- Filled from SORT_OPTIONS, so an order exists in one place (ADR 0006). -->
+            <select id="sort" class="select"></select>
+          </div>
         </div>
+        <p id="board-counts" class="board-counts"></p>
         <p id="board-status" class="status" role="status" aria-live="polite"></p>
         <ul id="issues" class="issues"></ul>
       </section>

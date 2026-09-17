@@ -242,6 +242,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0003](web-projects/github-work-board/adr/0003-tests-that-guard-decisions-not-only-behaviour.md) | Tests that guard decisions, not only behaviour |
 | [github-work-board 0004](web-projects/github-work-board/adr/0004-one-set-of-parts-in-the-shape-shadcn-uses.md) | One set of parts, in the shape shadcn/ui uses |
 | [github-work-board 0005](web-projects/github-work-board/adr/0005-the-permission-list-lives-in-the-code.md) | The permission list lives in the code, and the page asks for a wider token |
+| [github-work-board 0006](web-projects/github-work-board/adr/0006-one-list-of-work-items-and-the-order-lives-in-the-link.md) | One list of work items, and the chosen order lives in the link |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
