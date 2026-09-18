@@ -143,6 +143,16 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(css).toContain(".input:focus");
   });
 
+  // The settings screen is taller than a window. The only way back to the board
+  // used to sit at the top of it, which put it out of reach the moment anybody
+  // scrolled, and left a reader with no way out (ADR 0008).
+  test("the header that holds the way between the screens does not scroll away", () => {
+    const masthead = css.slice(css.indexOf(".masthead {"), css.indexOf(".masthead.is-stuck"));
+    expect(masthead).toContain("position: sticky");
+    expect(masthead).toContain("top: 0");
+    expect(read("index.html")).toContain('id="view-toggle"');
+  });
+
   test("a filter chip answers hover, a press and a keyboard focus", () => {
     expect(css).toContain(".chip:hover");
     expect(css).toContain(".chip:active");

@@ -86,7 +86,7 @@ body {
 .page {
   max-width: 44rem;
   margin: 0 auto;
-  padding: 3rem 1.25rem 4rem;
+  padding: 1rem 1.25rem 4rem;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -120,12 +120,26 @@ p {
   margin: 0;
 }
 
+/* The header holds the only way between the board and the settings screen, and
+ * the settings screen is taller than a window, so it stays put while the rest
+ * scrolls under it. */
 .masthead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 2rem;
+  padding-block: 1rem;
+  background: hsl(var(--background));
+  border-bottom: 1px solid transparent;
+}
+
+/* The line appears only once something has scrolled behind the header. */
+.masthead.is-stuck {
+  border-bottom-color: hsl(var(--border));
 }
 
 .tagline,

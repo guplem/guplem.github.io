@@ -135,6 +135,10 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   come back with overlapping owners and the same capped count. The reader names
   a token; the board only suggests a name from where it found work, and shows
   the token masked so a row can be matched against GitHub's own list (ADR 0007).
+- **The masthead toggle is the only way between the board and Settings, and the
+  masthead is sticky.** Settings is more than twice the height of a window, so a
+  control that scrolls away leaves a reader with no way out. Do not add a second
+  exit inside a screen; keep the one in the header (ADR 0008).
 - **A placeholder mirrors the row it replaces, line for line.** A token row is
   two stacked lines and a button, so its placeholder is too. Two bars appended
   to a plain `div` render as one line with no gap, which is what the first

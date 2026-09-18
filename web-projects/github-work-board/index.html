@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="128" />
-  <meta name="deploy-date" content="2026-09-18T08:32:40.000Z" />
+  <meta name="deploy-pull-request" content="129" />
+  <meta name="deploy-date" content="2026-09-18T16:10:17.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -77,7 +77,7 @@
         <h1>Work board</h1>
         <p class="tagline">Your GitHub issues and pull requests, with notes only you can see.</p>
       </div>
-      <button id="open-settings" type="button" class="button button-outline" hidden>Settings</button>
+      <button id="view-toggle" type="button" class="button button-outline" hidden>Settings</button>
     </header>
 
     <main>
@@ -192,10 +192,7 @@
       <section id="settings-view" aria-labelledby="settings-heading" hidden>
         <div class="card">
           <div class="card-header">
-            <div class="board-heading-row">
-              <h2 id="settings-heading">Settings</h2>
-              <button id="close-settings" type="button" class="button button-outline">Back to the board</button>
-            </div>
+            <h2 id="settings-heading">Settings</h2>
           </div>
 
           <div class="card-content">
