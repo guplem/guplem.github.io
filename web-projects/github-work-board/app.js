@@ -476,7 +476,13 @@ function renderTokenList() {
 function showView(view) {
   const connected = state.tokens.length > 0;
   state.view = connected ? view : DEFAULT_VIEW;
-  element("open-settings").hidden = !connected;
+
+  // One control, in a header that never scrolls away. The settings screen is
+  // taller than a window, so an exit that sits at the top of it is an exit the
+  // reader cannot reach once they scroll (ADR 0008).
+  const toggle = element("view-toggle");
+  toggle.hidden = !connected;
+  toggle.textContent = state.view === "settings" ? "Back to the board" : "Settings";
   element("setup").hidden = connected;
   element("board").hidden = !connected || state.view === "settings";
   element("settings-view").hidden = state.view !== "settings";
@@ -736,9 +742,17 @@ function start() {
   element("connect").addEventListener("click", () => connectPastedToken(element("token")));
   element("add-token").addEventListener("click", () => connectPastedToken(element("another-token")));
   element("sign-out").addEventListener("click", signOut);
-  element("open-settings").addEventListener("click", () => showView("settings"));
+  // The header's line appears only once something has scrolled behind it, so a
+  // page that has not moved keeps a clean top edge.
+  const masthead = document.querySelector(".masthead");
+  const markStuck = () => masthead.classList.toggle("is-stuck", window.scrollY > 4);
+  markStuck();
+  window.addEventListener("scroll", markStuck, { passive: true });
+
+  element("view-toggle").addEventListener("click", () =>
+    showView(state.view === "settings" ? "board" : "settings"),
+  );
   element("empty-open-settings").addEventListener("click", () => showView("settings"));
-  element("close-settings").addEventListener("click", () => showView("board"));
   element("clear-filters").addEventListener("click", clearFilters);
   element("save-repo-name").addEventListener("click", () => {
     state.repoName = element("settings-repo-name").value.trim() || DEFAULT_DATA_REPO_NAME;

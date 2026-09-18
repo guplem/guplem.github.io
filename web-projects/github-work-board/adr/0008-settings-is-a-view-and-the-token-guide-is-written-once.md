@@ -30,6 +30,16 @@ and a bookmark works.
 Settings needs a token to manage, so before the first connection it is not
 reachable: the welcome screen is the settings screen at that point.
 
+**One control moves between the screens, and it does not scroll away.** The
+masthead button is the only way in and the only way out: it reads "Settings" on
+the board and "Back to the board" in settings, and the masthead is sticky.
+
+The first version put the way out at the top of the settings card. Settings is
+taller than a window (about 1900 pixels against 840), so scrolling even once put
+the only exit off the screen, with nothing below it to click. A reader who had
+scrolled had no way back at all. One toggle in a header that stays put cannot
+have that failure, and it removes the second button that said the same thing.
+
 **The token guide is a `<template>` in the page, cloned into every slot.**
 `index.html` holds it once; `app.js` clones it into the welcome screen and into
 settings, filling the permission list inside each copy from
@@ -53,6 +63,11 @@ meets it before they meet either place it appears.
 `getElementById`. Anything the code needs inside a copy has to be found through
 the clone, by class, which is why the permission list inside it carries a class
 and not an id.
+
+**A sticky header costs vertical room on every screen**, including the board,
+where nothing needed it. It is a small price for a control that is always
+reachable, and the line under it appears only once the page has scrolled, so a
+page at rest still looks flat.
 
 **Settings is not reachable before connecting.** Somebody who lands on
 `?view=settings` with no token saved gets the welcome screen instead. That is
