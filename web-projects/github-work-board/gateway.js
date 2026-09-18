@@ -66,6 +66,57 @@ export function fetchAssignedIssues(token) {
 }
 
 /**
+ * Everything GitHub itself links to an item: its parent issue, what blocks it,
+ * and the pull requests that would close it.
+ *
+ * One call for a whole batch, keyed by the node ids the board already holds, so
+ * no relationship costs a call of its own. GraphQL takes at most 100 ids at a
+ * time, and the caller sends one batch per token: a node id from one owner is
+ * not readable by another owner's token (ADR 0010).
+ */
+const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
+  nodes(ids: $ids) {
+    __typename
+    ... on Issue {
+      id
+      parent { id number title url repository { nameWithOwner } }
+      blockedBy(first: 20) { nodes { id number title state url } }
+      subIssuesSummary { total completed }
+      closedByPullRequestsReferences(first: 20, includeClosedPrs: false) {
+        nodes { id number title state url }
+      }
+    }
+    ... on PullRequest {
+      id
+      closingIssuesReferences(first: 20) { nodes { id number title state url } }
+    }
+  }
+}`;
+
+/** How many ids GraphQL accepts in one `nodes` call. */
+export const RELATIONSHIP_BATCH = 100;
+
+export async function fetchRelationships(token, ids) {
+  const wanted = Array.isArray(ids) ? ids.filter((id) => typeof id === "string" && id !== "") : [];
+  if (wanted.length === 0) return { ok: true, data: [] };
+
+  const found = [];
+  for (let start = 0; start < wanted.length; start += RELATIONSHIP_BATCH) {
+    const batch = wanted.slice(start, start + RELATIONSHIP_BATCH);
+    const answer = await call(token, "/graphql", {
+      method: "POST",
+      need: PERMISSIONS.issuesRead,
+      body: { query: RELATIONSHIPS_QUERY, variables: { ids: batch } },
+    });
+    if (!answer.ok) return answer;
+    // GraphQL answers 200 with an `errors` array when part of a query fails.
+    // A partial answer is still worth keeping: the board shows what it got.
+    found.push(...(Array.isArray(answer.data?.data?.nodes) ? answer.data.data.nodes : []));
+  }
+  return { ok: true, data: found };
+}
+
+/**
  * The board file, with the sha of the version read.
  *
  * A repository with no board file yet is not a failure: it answers

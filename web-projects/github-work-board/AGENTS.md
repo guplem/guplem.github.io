@@ -46,6 +46,7 @@ It is the short procedure for all of the above.
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
+| `relationships.js` | Yes | GitHub's own links between items, and nesting a pull request under its issue (ADR 0010) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
@@ -57,7 +58,7 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `filters.filterWorkItems` → `sorting.sortWorkItems` → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → elements.
 Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
@@ -129,6 +130,18 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   come from `readLastCounts`, so the placeholder matches the last visit. This
   holds for any new list or panel added later, not only the ones built so far
   (ADR 0004).
+- **Never read a relationship out of a description.** `Closes #123` in a
+  pull request body is a guess: it misses links made through GitHub's sidebar,
+  misses other spellings, and invents links from any sentence with a number in
+  it. Ask GraphQL for `parent`, `blockedBy` and `closedByPullRequestsReferences`
+  instead. A test fails on `closes #` appearing in any module (ADR 0010).
+- **Relationships are fetched with the token that returned those items**, in one
+  batched GraphQL call, and are never saved to `board.json`: they are GitHub's
+  data, not the reader's.
+- **Only an open blocker blocks.** A closed one is history, and counting it
+  would leave half the board marked "Blocked" for ever.
+- **GraphQL answers 200 with an `errors` array** when part of a query fails,
+  unlike every REST path in `gateway.js`. Keep the nodes that came back.
 - **Nothing tells you which owner a token is scoped to.** `GET /user/repos`
   looks like it does and does not: it lists what the **person** is affiliated
   with, as far as the token can see, one page at a time, so two different tokens
@@ -181,11 +194,13 @@ cd web-projects/github-work-board && bun test
 | [0007](adr/0007-one-token-per-owner-and-an-empty-board-explains-itself.md) | One token per owner, and an empty board that explains itself |
 | [0008](adr/0008-settings-is-a-view-and-the-token-guide-is-written-once.md) | Settings is a view in the link, and the token guide is written once |
 | [0009](adr/0009-filters-widen-within-a-kind-and-narrow-across-kinds.md) | Filters widen within one kind and narrow across kinds |
+| [0010](adr/0010-relationships-come-from-githubs-graph.md) | Relationships come from GitHub's graph, in one call per token |
 
 ## What is not built yet
 
 Connecting with several tokens, the one list of issues and pull requests,
 private notes, the seven orders, the filters and the settings screen are built.
-Still to come, roughly in this order: custom tags, kanban columns with automatic
-moves, and a "what's next" queue. Every new view state goes in the address bar
+Still to come, roughly in this order: kanban columns with automatic moves,
+custom tags, and a "what's next" queue, which the blocked marking now makes
+answerable. Every new view state goes in the address bar
 beside `view`, `sort`, `kind`, `repo` and `label`, and the tokens never do.
