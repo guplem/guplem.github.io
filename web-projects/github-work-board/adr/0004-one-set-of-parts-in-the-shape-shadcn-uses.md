@@ -32,6 +32,14 @@ components.
    a header and a content area, and `.badge` with variants. A new screen composes
    these. It does not invent a fifth part without a reason.
 
+**Nothing appears out of nothing after a pause.** Every list the board is about
+to fill draws a placeholder first, in the shape of what is coming and in as
+close to the right number as the page can know. The number is what the board
+held last time, kept in storage by `settings.js` and clamped by `skeletons.js`,
+so a reader with eleven items sees eleven placeholders and the page barely moves
+when the real eleven land. A spinner says "something is happening"; a
+placeholder says "this is what is coming, and this is how much of it".
+
 **Every part answers the pointer and the keyboard.** A hover state on every
 button variant, a press state, a focus ring that stays readable on any surface,
 a hover and a focus state on every text box, and a lift on an issue card. This is
@@ -52,6 +60,16 @@ Radix, so no dialogs, no popovers, and no component API. What this project gets
 is the palette, the spacing, the radius, the focus ring and the button variants.
 A feature that truly needs a dialog gets a hand-built one held to the same
 system, or it gets designed differently.
+
+**A placeholder that lies is worse than none.** The counts are remembered from
+the last visit, so the first visit guesses, and a board that changed a lot
+between visits still jumps. That is accepted: being close most of the time beats
+being empty every time. A placeholder must never be reachable, so it takes no
+pointer events and answers no hover.
+
+**Movement is the only thing a reader who asked for less of it loses.** The
+placeholder stays; its sweep stops. A reader who turned motion down still needs
+to see that something is loading.
 
 **A test now touches the stylesheet.** It is a text search, so it is fragile in
 the usual way: renaming a variant class silently stops that variant from being

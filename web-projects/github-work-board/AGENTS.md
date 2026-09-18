@@ -44,6 +44,7 @@ It is the short procedure for all of the above.
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
+| `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
@@ -121,6 +122,16 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   colours.** Every hover state is built by taking an alpha at the point of use,
   `hsl(var(--primary) / 0.88)`, which a hex value cannot do. Tidying the tokens
   into hex breaks every hover state at once and the page still loads (ADR 0004).
+- **Never let anything appear out of nothing after a pause.** Every list the
+  board is about to fill draws placeholders first, in the shape of what is
+  coming and in as close to the right number as the page can know. The counts
+  come from `readLastCounts`, so the placeholder matches the last visit. This
+  holds for any new list or panel added later, not only the ones built so far
+  (ADR 0004).
+- **A token is named by the owner it reaches**, read from the repositories it
+  can see, never from where work happens to be assigned. A token with nothing
+  assigned in it still has an owner, and "no assigned work found" is a status,
+  not a name (ADR 0007).
 - **Build a screen from the four parts** (`.button` and its variants, `.input`,
   `.card`, `.badge`), and give any new interactive part a hover, a press and a
   focus-visible state. `invariants.test.js` fails when a `.button-*` variant has

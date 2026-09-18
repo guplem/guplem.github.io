@@ -12,7 +12,14 @@
 
 import { DOCUMENT_PATH, emptyDocument, parseDocument, readNote, writeNote } from "./boardDocument.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
-import { fetchAssignedIssues, fetchBoardFile, fetchRepository, fetchViewer, saveBoardFile } from "./gateway.js";
+import {
+  fetchAccessibleRepositories,
+  fetchAssignedIssues,
+  fetchBoardFile,
+  fetchRepository,
+  fetchViewer,
+  saveBoardFile,
+} from "./gateway.js";
 import {
   DEFAULT_KIND,
   KIND_FILTERS,
@@ -38,16 +45,19 @@ import {
   browserStorage,
   forgetAllTokens,
   readDataRepo,
+  readLastCounts,
   readTokens,
   removeToken,
   saveDataRepo,
+  saveLastCounts,
   saveTokens,
   updateToken,
 } from "./settings.js";
+import { skeletonCount } from "./skeletons.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
-import { countByKind, normalizeWorkItems } from "./workItems.js";
+import { countByKind, normalizeRepositories, normalizeWorkItems, ownersOf } from "./workItems.js";
 
 const SAVE_DELAY_MS = 1200;
 const PROJECT_PATH = "web-projects/github-work-board";
@@ -70,6 +80,7 @@ const state = {
   kind: DEFAULT_KIND,
   repositories: [],
   labels: [],
+  loading: false,
 };
 
 /* -------------------------------------------------------------------------- */
@@ -218,6 +229,74 @@ function buildWorkItemCard(item) {
   return card;
 }
 
+/* -------------------------------------------------------------------------- */
+/* Placeholders while the board waits                                         */
+/* -------------------------------------------------------------------------- */
+
+/** One grey bar. `width` is any CSS length. */
+function buildSkeletonBar(width, extra = "") {
+  const bar = document.createElement("span");
+  bar.className = `skeleton ${extra}`.trim();
+  bar.style.width = width;
+  return bar;
+}
+
+/** A placeholder in the shape of a work item card. */
+function buildSkeletonCard() {
+  const card = document.createElement("li");
+  card.className = "issue skeleton-card";
+  const where = document.createElement("p");
+  where.className = "issue-where";
+  where.append(buildSkeletonBar("2.5rem", "skeleton-pill"), buildSkeletonBar("9rem"));
+  const title = document.createElement("p");
+  title.append(buildSkeletonBar("70%", "skeleton-title"));
+  const note = document.createElement("p");
+  note.append(buildSkeletonBar("100%", "skeleton-note"));
+  card.append(where, title, note);
+  return card;
+}
+
+function buildSkeletonTokenRow() {
+  const row = document.createElement("li");
+  row.className = "token-row skeleton-card";
+  const body = document.createElement("div");
+  body.append(buildSkeletonBar("7rem", "skeleton-title"), buildSkeletonBar("12rem"));
+  row.append(body, buildSkeletonBar("5rem", "skeleton-button"));
+  return row;
+}
+
+const times = (count, make) => Array.from({ length: count }, make);
+
+/**
+ * Draw the shape of what is coming, before it comes.
+ *
+ * Nothing on this page appears out of nothing after a pause (ADR 0004). The
+ * counts come from what the board held last time, so the placeholder is close to
+ * the right size and the page barely moves when the real thing lands.
+ */
+function renderLoading() {
+  const last = readLastCounts(storage);
+  const issues = element("issues");
+  issues.setAttribute("aria-busy", "true");
+  issues.replaceChildren(...times(skeletonCount(last.items), buildSkeletonCard));
+  element("board-counts").replaceChildren(buildSkeletonBar("9rem"));
+  element("board-empty").hidden = true;
+
+  element("repository-group").hidden = !(last.repositories > 1);
+  element("repository-filters").replaceChildren(
+    ...times(skeletonCount(last.repositories, 2), () => buildSkeletonBar("7rem", "skeleton-pill")),
+  );
+  element("label-group").hidden = !(last.labels > 0);
+  element("label-filters").replaceChildren(
+    ...times(skeletonCount(last.labels, 3), () => buildSkeletonBar("4.5rem", "skeleton-pill")),
+  );
+
+  element("tokens").replaceChildren(
+    ...times(skeletonCount(last.tokens ?? state.tokens.length, 1), buildSkeletonTokenRow),
+  );
+  element("checks").replaceChildren(...times(CONNECTION_CHECKS.length, buildSkeletonTokenRow));
+}
+
 /** One filter chip. Pressed or not, and it says which through `aria-pressed`. */
 function buildChip(label, pressed, onToggle) {
   const chip = document.createElement("button");
@@ -287,14 +366,25 @@ function buildTokenRow(entry) {
   row.className = "token-row";
 
   const reach = document.createElement("div");
+
+  // The owner names the token, because that is what a reader can match against
+  // their own list of tokens on GitHub. What it found is a status, not a name: a
+  // token that reached nothing would otherwise have no name at all (ADR 0007).
   const owners = document.createElement("p");
   owners.className = "check-label";
-  owners.textContent = entry.owners.length > 0 ? entry.owners.join(", ") : "No assigned work found";
+  owners.textContent = entry.owners.length > 0 ? entry.owners.join(", ") : "Owner unknown";
+
+  const hint = document.createElement("span");
+  hint.className = "token-hint";
+  hint.textContent = `ends ${entry.token.slice(-4)}`;
+  owners.append(hint);
   reach.append(owners);
 
+  const repositories = entry.repositoryCount === 1 ? "1 repository" : `${entry.repositoryCount} repositories`;
+  const does = entry.canWriteBoard ? "reads your work and writes your notes" : "reads your work";
   const detail = document.createElement("p");
   detail.className = "check-detail";
-  detail.textContent = entry.canWriteBoard ? "Reads your issues and writes your notes." : "Reads your issues.";
+  detail.textContent = `${repositories} · ${does}`;
   reach.append(detail);
 
   const drop = document.createElement("button");
@@ -416,9 +506,15 @@ async function inspectToken(entry) {
   }
   const raw = Array.isArray(answer.data) ? answer.data : [];
   const items = normalizeWorkItems(raw);
-  const owners = [...new Set(items.map((item) => item.repository.split("/")[0]).filter(Boolean))];
   const counted = countByKind(items);
-  updated = { ...updated, owners };
+
+  // The owner names this token on screen, and it comes from the repositories the
+  // token can reach, not from where work happens to be assigned. A token with
+  // nothing assigned in it still has an owner (ADR 0007).
+  const reachable = await fetchAccessibleRepositories(entry.token);
+  const repositories = reachable.ok ? normalizeRepositories(reachable.data) : [];
+  const owners = repositories.length > 0 ? ownersOf(repositories) : ownersOf(items.map((item) => item.repository));
+  updated = { ...updated, owners, repositoryCount: repositories.length };
   rows.push({
     label: work.label,
     ok: true,
@@ -467,7 +563,10 @@ async function inspectToken(entry) {
 /** Ask every saved token, merge what they return, and show the board. */
 async function connectAll() {
   if (state.tokens.length === 0) return;
+  state.loading = true;
   setStatus("Reading GitHub...");
+  showView(state.view);
+  renderLoading();
 
   const rows = [];
   const everything = [];
@@ -482,12 +581,20 @@ async function connectAll() {
   // Merging here, not per token, is what removes an item two tokens both see.
   state.items = normalizeWorkItems(everything);
 
+  state.loading = false;
+  element("issues").removeAttribute("aria-busy");
   showChecks(rows);
   renderTokenList();
   renderTokenNotice();
   renderFilters();
   renderBoard();
   showView(state.view);
+  saveLastCounts(storage, {
+    items: state.items.length,
+    repositories: availableRepositories(state.items).length,
+    labels: availableLabels(state.items).length,
+    tokens: state.tokens.length,
+  });
   setStatus(boardWritingToken(state.tokens) ? "Notes save by themselves." : "No token can write your notes file.");
 }
 

@@ -8,9 +8,11 @@ import {
   browserStorage,
   forgetAllTokens,
   readDataRepo,
+  readLastCounts,
   readTokens,
   removeToken,
   saveDataRepo,
+  saveLastCounts,
   saveTokens,
   updateToken,
 } from "./settings.js";
@@ -43,6 +45,7 @@ const entry = (over = {}) => ({
   token: "github_pat_11ABCDEF",
   grantedPermissions: null,
   owners: [],
+  repositoryCount: 0,
   canWriteBoard: false,
   ...over,
 });
@@ -79,6 +82,7 @@ describe("the saved tokens", () => {
       token: "github_pat_11ABCDEF",
       grantedPermissions: null,
       owners: [],
+      repositoryCount: 0,
       canWriteBoard: false,
     });
   });
@@ -201,6 +205,34 @@ describe("the data repository", () => {
 
   test("suggests a name when the reader has not chosen one", () => {
     expect(DEFAULT_DATA_REPO_NAME).toBe("work-board-data");
+  });
+});
+
+describe("the remembered counts", () => {
+  test("round-trip", () => {
+    saveLastCounts(storage, { items: 11, repositories: 2, labels: 5, tokens: 2 });
+    expect(readLastCounts(storage)).toEqual({ items: 11, repositories: 2, labels: 5, tokens: 2 });
+  });
+
+  test("read as nothing when there is nothing, or nonsense", () => {
+    expect(readLastCounts(storage)).toEqual({});
+    for (const junk of ["[]", "null", "not json", '"7"']) {
+      storage.setItem(STORAGE_KEYS.lastCounts, junk);
+      expect(readLastCounts(storage)).toEqual({});
+    }
+  });
+
+  test("a count that is not a count is dropped, and its neighbours are kept", () => {
+    storage.setItem(STORAGE_KEYS.lastCounts, JSON.stringify({ items: 4, labels: "many", tokens: -1 }));
+    expect(readLastCounts(storage)).toEqual({ items: 4 });
+  });
+
+  // Signing out throws away what the board knew, and how big it was is part of
+  // that: the next reader on this browser is not the same person.
+  test("forgetAllTokens clears them", () => {
+    saveLastCounts(storage, { items: 11 });
+    forgetAllTokens(storage);
+    expect(readLastCounts(storage)).toEqual({});
   });
 });
 
