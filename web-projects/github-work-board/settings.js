@@ -21,6 +21,7 @@
 export const STORAGE_KEYS = {
   tokens: "github-work-board.tokens",
   dataRepo: "github-work-board.dataRepo",
+  lastCounts: "github-work-board.lastCounts",
 };
 
 /** Where the one-token version kept things. Read once, then cleared. */
@@ -81,6 +82,7 @@ function readEntry(value) {
     token,
     grantedPermissions: typeof value.grantedPermissions === "string" ? value.grantedPermissions : null,
     owners: Array.isArray(value.owners) ? value.owners.filter((one) => typeof one === "string") : [],
+    repositoryCount: Number.isFinite(value.repositoryCount) ? value.repositoryCount : 0,
     canWriteBoard: value.canWriteBoard === true,
   };
 }
@@ -113,6 +115,7 @@ export function readTokens(storage) {
       token: clean,
       grantedPermissions: readRaw(storage, LEGACY_KEYS.grantedPermissions),
       owners: [],
+      repositoryCount: 0,
       canWriteBoard: false,
     },
   ];
@@ -132,6 +135,36 @@ export function forgetAllTokens(storage) {
   removeRaw(storage, LEGACY_KEYS.token);
   removeRaw(storage, LEGACY_KEYS.grantedPermissions);
   removeRaw(storage, STORAGE_KEYS.dataRepo);
+  removeRaw(storage, STORAGE_KEYS.lastCounts);
+}
+
+/**
+ * How many of each thing the board held last time.
+ *
+ * It is remembered for one reason: the placeholders drawn while the board waits
+ * for GitHub are the right size, so the page barely moves when the real thing
+ * arrives (ADR 0004). Nothing else reads it, and a wrong number costs nothing.
+ */
+export function readLastCounts(storage) {
+  const raw = readRaw(storage, STORAGE_KEYS.lastCounts);
+  if (raw === null) return {};
+  let stored = null;
+  try {
+    stored = JSON.parse(raw);
+  } catch {
+    return {};
+  }
+  if (!stored || typeof stored !== "object" || Array.isArray(stored)) return {};
+  const counts = {};
+  for (const [name, value] of Object.entries(stored)) {
+    if (Number.isFinite(value) && value >= 0) counts[name] = value;
+  }
+  return counts;
+}
+
+export function saveLastCounts(storage, counts) {
+  if (!counts || typeof counts !== "object") return;
+  writeRaw(storage, STORAGE_KEYS.lastCounts, JSON.stringify(counts));
 }
 
 /**

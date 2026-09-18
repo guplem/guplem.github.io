@@ -704,6 +704,14 @@ textarea.input {
   border-color: hsl(var(--ring) / 0.3);
 }
 
+.token-hint {
+  margin-left: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: hsl(var(--muted-foreground));
+}
+
 /* Settings holds several blocks in one card, so each needs air above it. */
 #settings-view .subheading:first-of-type {
   margin-top: 0;
@@ -711,6 +719,69 @@ textarea.input {
 
 #settings-view .token-guide-slot {
   margin-top: 0.75rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Placeholders                                                               */
+/* -------------------------------------------------------------------------- */
+
+/* Nothing on this page appears out of nothing after a pause (ADR 0004). While
+ * the board waits for GitHub it draws these in the shape, and in as close to
+ * the number, of what is coming. */
+.skeleton {
+  display: inline-block;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted-foreground) / 0.18) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.4s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+.skeleton-title {
+  height: 1rem;
+  margin: 0.375rem 0;
+}
+
+.skeleton-pill {
+  height: 1.125rem;
+  border-radius: 9999px;
+}
+
+.skeleton-note {
+  height: 3.25rem;
+  border-radius: calc(var(--radius) - 2px);
+  margin-top: 0.5rem;
+}
+
+.skeleton-button {
+  height: 2.25rem;
+  border-radius: calc(var(--radius) - 2px);
+  flex: 0 0 auto;
+}
+
+/* A placeholder is not something to point at, so it answers nothing. */
+.skeleton-card {
+  pointer-events: none;
+}
+
+.skeleton-card:hover {
+  border-color: hsl(var(--border));
+  box-shadow: var(--shadow-sm);
+}
+
+@keyframes skeleton-sweep {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -945,5 +1016,10 @@ textarea.input {
 
   .button:active {
     transform: none;
+  }
+
+  .skeleton {
+    animation: none;
+    background: hsl(var(--muted));
   }
 }

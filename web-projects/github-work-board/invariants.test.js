@@ -40,6 +40,7 @@ describe("the stored document (ADR 0002)", () => {
     expect(STORAGE_KEYS).toEqual({
       tokens: "github-work-board.tokens",
       dataRepo: "github-work-board.dataRepo",
+      lastCounts: "github-work-board.lastCounts",
     });
   });
 
@@ -146,6 +147,16 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(css).toContain(".chip:hover");
     expect(css).toContain(".chip:active");
     expect(css).toContain(".chip:focus-visible");
+  });
+
+  // Nothing may appear out of nothing after a pause. Every list the board is
+  // about to fill draws a placeholder in the shape of what is coming first.
+  test("there are placeholders, and they hold still for a reader who asked for less motion", () => {
+    expect(css).toContain(".skeleton");
+    expect(css).toContain("@keyframes skeleton-sweep");
+    const quiet = css.slice(css.indexOf("prefers-reduced-motion"));
+    expect(quiet).toContain(".skeleton");
+    expect(quiet).toContain("animation: none");
   });
 
   test("the sort dropdown answers hover and focus", () => {

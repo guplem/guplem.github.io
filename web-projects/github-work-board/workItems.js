@@ -67,3 +67,27 @@ export function countByKind(items) {
     pullRequests: list.filter((item) => item?.kind === "pull-request").length,
   };
 }
+
+/** The full names of the repositories an answer lists. */
+export function normalizeRepositories(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((one) => (isPlainObject(one) && typeof one.full_name === "string" ? one.full_name : ""))
+    .filter((name) => name !== "");
+}
+
+/**
+ * The owners behind a list of `owner/name` repositories, each once.
+ *
+ * This is how a token is named on screen. A fine-grained token reaches exactly
+ * one owner, so this is normally one name, and it is the only name a reader can
+ * match against their own list of tokens on GitHub (ADR 0007).
+ */
+export function ownersOf(fullNames) {
+  // Only a name shaped `owner/repository` names an owner. A bare word is a
+  // broken answer, and reading it as an owner would put it on screen as one.
+  const owners = (Array.isArray(fullNames) ? fullNames : [])
+    .map((name) => (typeof name === "string" && name.includes("/") ? name.split("/")[0] : ""))
+    .filter((owner) => owner !== "");
+  return [...new Set(owners)].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+}
