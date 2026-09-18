@@ -480,9 +480,11 @@ function showView(view) {
   // One control, in a header that never scrolls away. The settings screen is
   // taller than a window, so an exit that sits at the top of it is an exit the
   // reader cannot reach once they scroll (ADR 0008).
+  const leaving = state.view === "settings";
   const toggle = element("view-toggle");
   toggle.hidden = !connected;
-  toggle.textContent = state.view === "settings" ? "Back to the board" : "Settings";
+  element("view-toggle-label").textContent = leaving ? "Back to the board" : "Settings";
+  element("view-toggle-arrow").hidden = !leaving;
   element("setup").hidden = connected;
   element("board").hidden = !connected || state.view === "settings";
   element("settings-view").hidden = state.view !== "settings";
