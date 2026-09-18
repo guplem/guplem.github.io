@@ -13,6 +13,15 @@
 import { DOCUMENT_PATH, emptyDocument, parseDocument, readNote, writeNote } from "./boardDocument.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { fetchAssignedIssues, fetchBoardFile, fetchRepository, fetchViewer, saveBoardFile } from "./gateway.js";
+import {
+  DEFAULT_KIND,
+  KIND_FILTERS,
+  activeFilterCount,
+  availableLabels,
+  availableRepositories,
+  filterWorkItems,
+  toggleInList,
+} from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
 import { escapeHtml, say, sayEmptyBoard } from "./messages.js";
 import {
@@ -58,6 +67,9 @@ const state = {
   items: [],
   sortId: DEFAULT_SORT_ID,
   view: DEFAULT_VIEW,
+  kind: DEFAULT_KIND,
+  repositories: [],
+  labels: [],
 };
 
 /* -------------------------------------------------------------------------- */
@@ -206,6 +218,69 @@ function buildWorkItemCard(item) {
   return card;
 }
 
+/** One filter chip. Pressed or not, and it says which through `aria-pressed`. */
+function buildChip(label, pressed, onToggle) {
+  const chip = document.createElement("button");
+  chip.type = "button";
+  chip.className = "chip";
+  chip.setAttribute("aria-pressed", pressed ? "true" : "false");
+  chip.textContent = label;
+  chip.addEventListener("click", onToggle);
+  return chip;
+}
+
+/**
+ * Build the chips from what the list actually holds.
+ *
+ * A repository or a label nobody is assigned anything in is not offered: a
+ * filter that can only ever empty the board is noise (ADR 0009).
+ */
+function renderFilters() {
+  element("kind-filters").replaceChildren(
+    ...KIND_FILTERS.map((kind) =>
+      buildChip(kind.label, state.kind === kind.id, () => {
+        state.kind = kind.id;
+        afterFilterChange();
+      }),
+    ),
+  );
+
+  const repositories = availableRepositories(state.items);
+  element("repository-group").hidden = repositories.length < 2;
+  element("repository-filters").replaceChildren(
+    ...repositories.map((name) =>
+      buildChip(name, state.repositories.includes(name), () => {
+        state.repositories = toggleInList(state.repositories, name);
+        afterFilterChange();
+      }),
+    ),
+  );
+
+  const labels = availableLabels(state.items);
+  element("label-group").hidden = labels.length === 0;
+  element("label-filters").replaceChildren(
+    ...labels.map((name) =>
+      buildChip(name, state.labels.includes(name), () => {
+        state.labels = toggleInList(state.labels, name);
+        afterFilterChange();
+      }),
+    ),
+  );
+}
+
+function afterFilterChange() {
+  rememberUrl();
+  renderFilters();
+  renderBoard();
+}
+
+function clearFilters() {
+  state.kind = DEFAULT_KIND;
+  state.repositories = [];
+  state.labels = [];
+  afterFilterChange();
+}
+
 /** One saved token, with what it turned out to reach. */
 function buildTokenRow(entry) {
   const row = document.createElement("li");
@@ -249,21 +324,30 @@ function buildTokenRow(entry) {
  */
 function renderBoard() {
   const hasNote = (key) => readNote(state.board, key).trim() !== "";
-  const ordered = sortWorkItems(state.items, state.sortId, hasNote);
+  const visible = filterWorkItems(state.items, state);
+  const ordered = sortWorkItems(visible, state.sortId, hasNote);
   element("issues").replaceChildren(...ordered.map(buildWorkItemCard));
 
-  const { issues, pullRequests } = countByKind(state.items);
+  const { issues, pullRequests } = countByKind(visible);
   const parts = [];
   if (issues > 0) parts.push(`${issues} ${issues === 1 ? "issue" : "issues"}`);
   if (pullRequests > 0) parts.push(`${pullRequests} ${pullRequests === 1 ? "pull request" : "pull requests"}`);
-  element("board-counts").textContent = parts.join(" and ");
+  const narrowed = activeFilterCount(state) > 0;
+  element("board-counts").textContent = narrowed
+    ? `${parts.join(" and ") || "Nothing"} · ${visible.length} of ${state.items.length}`
+    : parts.join(" and ");
 
+  // An empty list has two very different causes, and the way out of each one is
+  // different too: widen the filters, or add a token (ADR 0007, ADR 0009).
+  const hiddenByFilters = state.items.length > 0 && visible.length === 0;
   const owners = [...new Set(state.tokens.flatMap((entry) => entry.owners))];
-  const empty = state.items.length === 0;
-  element("board-empty").hidden = !empty;
-  element("board-empty-reason").textContent = empty
-    ? sayEmptyBoard({ tokenCount: state.tokens.length, owners })
-    : "";
+  element("board-empty").hidden = visible.length > 0;
+  element("board-empty-reason").textContent = hiddenByFilters
+    ? "Nothing here matches the filters you chose."
+    : sayEmptyBoard({ tokenCount: state.tokens.length, owners });
+  element("board-empty-hint").hidden = hiddenByFilters;
+  element("empty-open-settings").hidden = hiddenByFilters;
+  element("clear-filters").hidden = !narrowed;
 }
 
 function renderTokenList() {
@@ -290,7 +374,7 @@ function showView(view) {
 
 /** Keep the address bar showing the open screen and the chosen order. */
 function rememberUrl() {
-  const search = buildSearch({ sortId: state.sortId, view: state.view });
+  const search = buildSearch(state);
   history.replaceState(null, "", `${location.pathname}${search}${location.hash}`);
 }
 
@@ -401,6 +485,7 @@ async function connectAll() {
   showChecks(rows);
   renderTokenList();
   renderTokenNotice();
+  renderFilters();
   renderBoard();
   showView(state.view);
   setStatus(boardWritingToken(state.tokens) ? "Notes save by themselves." : "No token can write your notes file.");
@@ -489,6 +574,10 @@ function start() {
   const asked = readStateFromSearch(location.search);
   state.sortId = asked.sortId;
   state.view = asked.view;
+  state.kind = asked.kind;
+  state.repositories = asked.repositories;
+  state.labels = asked.labels;
+  renderFilters();
   const sortField = element("sort");
   sortField.replaceChildren(
     ...SORT_OPTIONS.map((option) => {
@@ -525,6 +614,7 @@ function start() {
   element("open-settings").addEventListener("click", () => showView("settings"));
   element("empty-open-settings").addEventListener("click", () => showView("settings"));
   element("close-settings").addEventListener("click", () => showView("board"));
+  element("clear-filters").addEventListener("click", clearFilters);
   element("save-repo-name").addEventListener("click", () => {
     state.repoName = element("settings-repo-name").value.trim() || DEFAULT_DATA_REPO_NAME;
     element("settings-repo-name").value = state.repoName;
