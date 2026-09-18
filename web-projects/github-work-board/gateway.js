@@ -49,17 +49,6 @@ export function fetchViewer(token) {
   return call(token, "/user", { need: PERMISSIONS.metadata });
 }
 
-/**
- * Every repository this token can reach.
- *
- * This is what names a token on screen. A fine-grained token belongs to one
- * owner, and the owner of these repositories is that owner, whether or not any
- * work is assigned in them (ADR 0007).
- */
-export function fetchAccessibleRepositories(token) {
-  return call(token, "/user/repos?per_page=100&sort=updated", { need: PERMISSIONS.metadata });
-}
-
 /** Whether the data repository exists and the token can see it. */
 export function fetchRepository(token, { owner, repo }) {
   return call(token, `/repos/${owner}/${repo}`, { need: PERMISSIONS.metadata });

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { countByKind, normalizeRepositories, normalizeWorkItem, normalizeWorkItems, ownersOf } from "./workItems.js";
+import { countByKind, normalizeWorkItem, normalizeWorkItems, ownersOf } from "./workItems.js";
 
 const RAW_ISSUE = {
   id: 2312,
@@ -110,25 +110,9 @@ describe("countByKind", () => {
   });
 });
 
-describe("normalizeRepositories", () => {
-  test("reads the full names of the repositories a token can reach", () => {
-    expect(normalizeRepositories([{ full_name: "Galtea-AI/monorepo" }, { full_name: "guplem/site" }])).toEqual([
-      "Galtea-AI/monorepo",
-      "guplem/site",
-    ]);
-  });
-
-  test("drops anything that is not a repository, and always answers with an array", () => {
-    expect(normalizeRepositories([{ full_name: "me/a" }, null, 7, {}, { full_name: "" }])).toEqual(["me/a"]);
-    expect(normalizeRepositories(null)).toEqual([]);
-    expect(normalizeRepositories({ message: "Bad credentials" })).toEqual([]);
-  });
-});
-
 describe("ownersOf", () => {
-  // This is how a token is named on screen. A fine-grained token reaches one
-  // owner, so in practice this is one name, and it is the only name the reader
-  // can match against their list of tokens on GitHub.
+  // Where a token found work. It is the board's suggestion for that token's
+  // name, which the reader can then change (ADR 0007).
   test("takes the owner out of each full name, once each, in a readable order", () => {
     expect(ownersOf(["guplem/site", "Galtea-AI/monorepo", "guplem/other"])).toEqual(["Galtea-AI", "guplem"]);
   });

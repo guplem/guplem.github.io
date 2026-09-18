@@ -42,6 +42,23 @@ no route from the symptom to the cause.
 - The same token twice is refused. It would double every item on the board and
   read as a syncing fault rather than a slip of the clipboard.
 
+**The reader names each token, and the board suggests a name.** GitHub does not
+say which owner a token is scoped to, and two attempts to work it out both
+failed:
+
+1. Naming a token by the owners it had found **work** in. That is a status, not
+   a name: the token holding only the notes repository found nothing, so its row
+   read "No assigned work found" beside a row reading "Galtea-AI", and nothing
+   said which token either row was.
+2. Naming it by the owners of `GET /user/repos`. That call lists what the
+   **person** is affiliated with, as far as the token can see, one page at a
+   time. Two different tokens came back with overlapping owner lists and the
+   same capped count of 100, so the board showed a confident wrong name.
+
+So the name is the reader's. The board fills it in from where the token found
+work, shows the token masked (`••••aohu`) so a row can be matched against
+GitHub's own list, and never overwrites a name the reader typed.
+
 **An empty board says how far it can see.** `sayEmptyBoard` never says "nothing
 is assigned to you" on its own: it always names how many tokens are in use and
 which owners they reach, and the page adds the one thing worth trying, which is
@@ -70,10 +87,16 @@ rather than lowering it.
 an organisation, because an organisation's owners can read its repositories, and
 "notes only you can see" would stop being true.
 
+**A name the reader typed can go stale**, which is the cost of letting them type
+it. It is the smaller cost: both derived answers produced a name that was either
+absent or confidently wrong, and a wrong name is worse than an old one.
+
 **Rejected: one token owned by the organisation, with the notes repository
 inside it.** One token, one setup, and the notes become readable by the
-organisation. That trades away the feature. **Rejected: asking the reader to name
-each token.** The board can say what a token actually reached, which is more
-useful than a label somebody typed and never updated. **Rejected: detecting the
-resource owner from the token itself.** GitHub does not expose it; what the token
-reaches is the only honest answer, and the board learns that by asking.
+organisation. That trades away the feature. **Rejected: detecting the resource
+owner from the token itself.** GitHub does not expose it, and `GET /user/repos`
+answers a different question convincingly enough to be dangerous.
+
+This decision first rejected asking the reader to name each token, on the
+grounds that the board could say what a token actually reached. The two attempts
+above are why that was reversed.

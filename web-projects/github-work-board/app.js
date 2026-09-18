@@ -13,7 +13,6 @@
 import { DOCUMENT_PATH, emptyDocument, parseDocument, readNote, writeNote } from "./boardDocument.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
-  fetchAccessibleRepositories,
   fetchAssignedIssues,
   fetchBoardFile,
   fetchRepository,
@@ -48,6 +47,7 @@ import {
   readLastCounts,
   readTokens,
   removeToken,
+  renameToken,
   saveDataRepo,
   saveLastCounts,
   saveTokens,
@@ -57,7 +57,8 @@ import { skeletonCount } from "./skeletons.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
-import { countByKind, normalizeRepositories, normalizeWorkItems, ownersOf } from "./workItems.js";
+import { describeTokenReach, suggestedTokenName } from "./tokenIdentity.js";
+import { countByKind, normalizeWorkItems, ownersOf } from "./workItems.js";
 
 const SAVE_DELAY_MS = 1200;
 const PROJECT_PATH = "web-projects/github-work-board";
@@ -256,12 +257,25 @@ function buildSkeletonCard() {
   return card;
 }
 
+/** A placeholder in the shape of a token row: a name box, a line of facts, a button. */
 function buildSkeletonTokenRow() {
   const row = document.createElement("li");
   row.className = "token-row skeleton-card";
-  const body = document.createElement("div");
-  body.append(buildSkeletonBar("7rem", "skeleton-title"), buildSkeletonBar("12rem"));
-  row.append(body, buildSkeletonBar("5rem", "skeleton-button"));
+  const lines = document.createElement("div");
+  lines.className = "token-lines";
+  lines.append(buildSkeletonBar("11rem", "skeleton-input"), buildSkeletonBar("60%"));
+  row.append(lines, buildSkeletonBar("5.5rem", "skeleton-button"));
+  return row;
+}
+
+/** A placeholder in the shape of a connection check: a badge, then two lines. */
+function buildSkeletonCheckRow() {
+  const row = document.createElement("li");
+  row.className = "check skeleton-card";
+  const lines = document.createElement("div");
+  lines.className = "token-lines";
+  lines.append(buildSkeletonBar("13rem", "skeleton-title"), buildSkeletonBar("80%"));
+  row.append(buildSkeletonBar("2.75rem", "skeleton-pill"), lines);
   return row;
 }
 
@@ -294,7 +308,7 @@ function renderLoading() {
   element("tokens").replaceChildren(
     ...times(skeletonCount(last.tokens ?? state.tokens.length, 1), buildSkeletonTokenRow),
   );
-  element("checks").replaceChildren(...times(CONNECTION_CHECKS.length, buildSkeletonTokenRow));
+  element("checks").replaceChildren(...times(CONNECTION_CHECKS.length, buildSkeletonCheckRow));
 }
 
 /** One filter chip. Pressed or not, and it says which through `aria-pressed`. */
@@ -360,31 +374,38 @@ function clearFilters() {
   afterFilterChange();
 }
 
-/** One saved token, with what it turned out to reach. */
-function buildTokenRow(entry) {
+/**
+ * One saved token: a name the reader owns, and one line of facts under it.
+ *
+ * The name is theirs because GitHub does not say which owner a token is scoped
+ * to. The board suggests one from where the token found work, and never
+ * overwrites what the reader typed (ADR 0007).
+ */
+function buildTokenRow(entry, index) {
   const row = document.createElement("li");
   row.className = "token-row";
 
   const reach = document.createElement("div");
+  reach.className = "token-lines";
 
-  // The owner names the token, because that is what a reader can match against
-  // their own list of tokens on GitHub. What it found is a status, not a name: a
-  // token that reached nothing would otherwise have no name at all (ADR 0007).
-  const owners = document.createElement("p");
-  owners.className = "check-label";
-  owners.textContent = entry.owners.length > 0 ? entry.owners.join(", ") : "Owner unknown";
+  const suggestion = suggestedTokenName(entry, index);
+  const name = document.createElement("input");
+  name.className = "input token-name";
+  name.type = "text";
+  name.value = entry.name || suggestion;
+  name.placeholder = suggestion;
+  name.setAttribute("aria-label", "Name for this token");
+  // On change, not on input: renaming must not save on every keystroke, and the
+  // row must not be rebuilt under the cursor.
+  name.addEventListener("change", () => {
+    state.tokens = renameToken(state.tokens, entry.id, name.value);
+    saveTokens(storage, state.tokens);
+  });
+  reach.append(name);
 
-  const hint = document.createElement("span");
-  hint.className = "token-hint";
-  hint.textContent = `ends ${entry.token.slice(-4)}`;
-  owners.append(hint);
-  reach.append(owners);
-
-  const repositories = entry.repositoryCount === 1 ? "1 repository" : `${entry.repositoryCount} repositories`;
-  const does = entry.canWriteBoard ? "reads your work and writes your notes" : "reads your work";
   const detail = document.createElement("p");
   detail.className = "check-detail";
-  detail.textContent = `${repositories} · ${does}`;
+  detail.textContent = describeTokenReach(entry);
   reach.append(detail);
 
   const drop = document.createElement("button");
@@ -441,7 +462,7 @@ function renderBoard() {
 }
 
 function renderTokenList() {
-  element("tokens").replaceChildren(...state.tokens.map(buildTokenRow));
+  element("tokens").replaceChildren(...state.tokens.map((entry, index) => buildTokenRow(entry, index)));
   element("settings-repo-name").value = state.repoName;
 }
 
@@ -488,7 +509,7 @@ function showChecks(rows) {
 async function inspectToken(entry) {
   const rows = [];
   const [identity, work, board] = CONNECTION_CHECKS;
-  let updated = { ...entry, owners: [], canWriteBoard: false };
+  let updated = { ...entry, owners: [], itemCount: 0, canWriteBoard: false };
 
   const viewer = await fetchViewer(entry.token);
   if (!viewer.ok) {
@@ -508,13 +529,10 @@ async function inspectToken(entry) {
   const items = normalizeWorkItems(raw);
   const counted = countByKind(items);
 
-  // The owner names this token on screen, and it comes from the repositories the
-  // token can reach, not from where work happens to be assigned. A token with
-  // nothing assigned in it still has an owner (ADR 0007).
-  const reachable = await fetchAccessibleRepositories(entry.token);
-  const repositories = reachable.ok ? normalizeRepositories(reachable.data) : [];
-  const owners = repositories.length > 0 ? ownersOf(repositories) : ownersOf(items.map((item) => item.repository));
-  updated = { ...updated, owners, repositoryCount: repositories.length };
+  // Where this token found work, which is the suggestion for its name and the
+  // one thing about its reach the board can state honestly (ADR 0007).
+  const owners = ownersOf(items.map((item) => item.repository));
+  updated = { ...updated, owners, itemCount: items.length };
   rows.push({
     label: work.label,
     ok: true,
