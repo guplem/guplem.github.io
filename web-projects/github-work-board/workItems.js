@@ -68,20 +68,12 @@ export function countByKind(items) {
   };
 }
 
-/** The full names of the repositories an answer lists. */
-export function normalizeRepositories(raw) {
-  if (!Array.isArray(raw)) return [];
-  return raw
-    .map((one) => (isPlainObject(one) && typeof one.full_name === "string" ? one.full_name : ""))
-    .filter((name) => name !== "");
-}
-
 /**
  * The owners behind a list of `owner/name` repositories, each once.
  *
- * This is how a token is named on screen. A fine-grained token reaches exactly
- * one owner, so this is normally one name, and it is the only name a reader can
- * match against their own list of tokens on GitHub (ADR 0007).
+ * Where a token found work. It is only the board's suggestion for that token's
+ * name, which the reader can then change: GitHub does not say which owner a
+ * token is scoped to, and no call answers it honestly (ADR 0007).
  */
 export function ownersOf(fullNames) {
   // Only a name shaped `owner/repository` names an owner. A bare word is a

@@ -45,6 +45,7 @@ It is the short procedure for all of the above.
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
+| `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
@@ -128,10 +129,16 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   come from `readLastCounts`, so the placeholder matches the last visit. This
   holds for any new list or panel added later, not only the ones built so far
   (ADR 0004).
-- **A token is named by the owner it reaches**, read from the repositories it
-  can see, never from where work happens to be assigned. A token with nothing
-  assigned in it still has an owner, and "no assigned work found" is a status,
-  not a name (ADR 0007).
+- **Nothing tells you which owner a token is scoped to.** `GET /user/repos`
+  looks like it does and does not: it lists what the **person** is affiliated
+  with, as far as the token can see, one page at a time, so two different tokens
+  come back with overlapping owners and the same capped count. The reader names
+  a token; the board only suggests a name from where it found work, and shows
+  the token masked so a row can be matched against GitHub's own list (ADR 0007).
+- **A placeholder mirrors the row it replaces, line for line.** A token row is
+  two stacked lines and a button, so its placeholder is too. Two bars appended
+  to a plain `div` render as one line with no gap, which is what the first
+  version did: give the container `.token-lines` (ADR 0004).
 - **Build a screen from the four parts** (`.button` and its variants, `.input`,
   `.card`, `.badge`), and give any new interactive part a hover, a press and a
   focus-visible state. `invariants.test.js` fails when a `.button-*` variant has

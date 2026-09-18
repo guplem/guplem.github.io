@@ -81,8 +81,9 @@ function readEntry(value) {
     id,
     token,
     grantedPermissions: typeof value.grantedPermissions === "string" ? value.grantedPermissions : null,
+    name: typeof value.name === "string" ? value.name.trim() : "",
     owners: Array.isArray(value.owners) ? value.owners.filter((one) => typeof one === "string") : [],
-    repositoryCount: Number.isFinite(value.repositoryCount) ? value.repositoryCount : 0,
+    itemCount: Number.isFinite(value.itemCount) ? value.itemCount : 0,
     canWriteBoard: value.canWriteBoard === true,
   };
 }
@@ -114,8 +115,9 @@ export function readTokens(storage) {
       id: "legacy",
       token: clean,
       grantedPermissions: readRaw(storage, LEGACY_KEYS.grantedPermissions),
+      name: "",
       owners: [],
-      repositoryCount: 0,
+      itemCount: 0,
       canWriteBoard: false,
     },
   ];
@@ -196,6 +198,17 @@ export function updateToken(list, id, changes) {
   return (Array.isArray(list) ? list : []).map((one) =>
     one.id === id ? (readEntry({ ...one, ...changes, id: one.id, token: one.token }) ?? one) : one,
   );
+}
+
+/**
+ * The list with one token renamed.
+ *
+ * The name is the reader's, so it is the one thing the board never overwrites
+ * when it reconnects. An empty name means "use the suggestion" (ADR 0007).
+ */
+export function renameToken(list, id, name) {
+  const clean = typeof name === "string" ? name.trim() : "";
+  return (Array.isArray(list) ? list : []).map((one) => (one.id === id ? { ...one, name: clean } : one));
 }
 
 /**

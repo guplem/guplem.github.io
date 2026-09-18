@@ -11,6 +11,7 @@ import {
   readLastCounts,
   readTokens,
   removeToken,
+  renameToken,
   saveDataRepo,
   saveLastCounts,
   saveTokens,
@@ -44,8 +45,9 @@ const entry = (over = {}) => ({
   id: "t1",
   token: "github_pat_11ABCDEF",
   grantedPermissions: null,
+  name: "",
   owners: [],
-  repositoryCount: 0,
+  itemCount: 0,
   canWriteBoard: false,
   ...over,
 });
@@ -81,8 +83,9 @@ describe("the saved tokens", () => {
       id: "t1",
       token: "github_pat_11ABCDEF",
       grantedPermissions: null,
+      name: "",
       owners: [],
-      repositoryCount: 0,
+      itemCount: 0,
       canWriteBoard: false,
     });
   });
@@ -167,6 +170,22 @@ describe("removeToken and updateToken", () => {
     const after = updateToken([entry()], "t1", { token: "stolen", id: "other" });
     expect(after[0].token).toBe("github_pat_11ABCDEF");
     expect(after[0].id).toBe("t1");
+  });
+});
+
+describe("renameToken", () => {
+  test("renames one and leaves the list it was given alone", () => {
+    const list = [entry(), entry({ id: "t2", token: "b" })];
+    const after = renameToken(list, "t2", "  Work  ");
+    expect(after[1].name).toBe("Work");
+    expect(after[0].name).toBe("");
+    expect(list[1].name).toBe("");
+  });
+
+  // The name is the reader's. Emptying it means "go back to the suggestion",
+  // which is what a reader who clears the box expects.
+  test("an empty name is stored as empty, not refused", () => {
+    expect(renameToken([entry({ name: "Work" })], "t1", "   ")[0].name).toBe("");
   });
 });
 
