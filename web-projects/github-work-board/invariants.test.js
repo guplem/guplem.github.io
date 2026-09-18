@@ -12,6 +12,7 @@ import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
 import { SORT_OPTIONS } from "./sorting.js";
+import { KIND_FILTERS } from "./filters.js";
 import { normalizeWorkItem } from "./workItems.js";
 import { REQUIRED_PERMISSIONS } from "./permissions.js";
 import { LEGACY_KEYS, STORAGE_KEYS } from "./settings.js";
@@ -141,6 +142,12 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(css).toContain(".input:focus");
   });
 
+  test("a filter chip answers hover, a press and a keyboard focus", () => {
+    expect(css).toContain(".chip:hover");
+    expect(css).toContain(".chip:active");
+    expect(css).toContain(".chip:focus-visible");
+  });
+
   test("the sort dropdown answers hover and focus", () => {
     expect(css).toContain(".select:hover");
     expect(css).toContain(".select:focus-visible");
@@ -174,6 +181,21 @@ describe("a sort order named in a link keeps its name (ADR 0006)", () => {
       "updated-asc",
       "updated-desc",
     ]);
+  });
+});
+
+describe("a filter named in a link keeps its name (ADR 0009)", () => {
+  // The chosen kind travels in the address bar, so a renamed id silently
+  // breaks every link anybody saved.
+  test("these are the kinds, and an id is never renamed", () => {
+    expect(KIND_FILTERS.map((one) => one.id)).toEqual(["all", "issue", "pull-request"]);
+  });
+
+  // The two ids that also name a work item's own kind. Renaming one of these
+  // would break the filter and the badge on every card at the same time.
+  test("the kind ids match what a work item calls itself", () => {
+    expect(normalizeWorkItem({ node_id: "I_x" }).kind).toBe("issue");
+    expect(normalizeWorkItem({ node_id: "P_x", pull_request: {} }).kind).toBe("pull-request");
   });
 });
 

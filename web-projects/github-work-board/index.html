@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="125" />
-  <meta name="deploy-date" content="2026-09-17T16:07:47.000Z" />
+  <meta name="deploy-pull-request" content="126" />
+  <meta name="deploy-date" content="2026-09-18T06:32:10.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -153,6 +153,22 @@
             <select id="sort" class="select"></select>
           </div>
         </div>
+        <!-- Chips built from what the list actually holds (ADR 0009). -->
+        <div class="filters">
+          <div class="filter-group">
+            <p class="filter-label">Kind</p>
+            <div class="chips" id="kind-filters" role="group" aria-label="Kind"></div>
+          </div>
+          <div class="filter-group" id="repository-group" hidden>
+            <p class="filter-label">Repository</p>
+            <div class="chips" id="repository-filters" role="group" aria-label="Repository"></div>
+          </div>
+          <div class="filter-group" id="label-group" hidden>
+            <p class="filter-label">Label</p>
+            <div class="chips" id="label-filters" role="group" aria-label="Label"></div>
+          </div>
+        </div>
+
         <p id="board-counts" class="board-counts"></p>
         <p id="board-status" class="status" role="status" aria-live="polite"></p>
 
@@ -160,11 +176,14 @@
              is a lie for most of them (ADR 0007). -->
         <div id="board-empty" class="callout" hidden>
           <p id="board-empty-reason" class="callout-title"></p>
-          <p>
+          <p id="board-empty-hint">
             If your work lives in an organisation, add a token owned by that organisation. One token
             reaches one owner and never a second.
           </p>
-          <p><button id="empty-open-settings" type="button" class="button button-primary">Add a token in Settings</button></p>
+          <p id="board-empty-actions">
+            <button id="empty-open-settings" type="button" class="button button-primary">Add a token in Settings</button>
+            <button id="clear-filters" type="button" class="button button-outline" hidden>Clear the filters</button>
+          </p>
         </div>
 
         <ul id="issues" class="issues"></ul>

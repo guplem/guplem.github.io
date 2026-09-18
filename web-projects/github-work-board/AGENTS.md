@@ -43,7 +43,8 @@ It is the short procedure for all of the above.
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
-| `urlState.js` | Yes | The open view and the chosen order in the address bar, and nothing else (root ADR 0006) |
+| `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
+| `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The list of tokens and the data repository, through an injected storage (ADR 0007) |
@@ -54,7 +55,7 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `sorting.sortWorkItems` → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `filters.filterWorkItems` → `sorting.sortWorkItems` → elements.
 Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
@@ -95,6 +96,13 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   list appears to shuffle itself while somebody is reading it.
 - **A sort id travels in the address bar, so it is permanent.** Renaming one
   silently breaks every link anybody saved; `invariants.test.js` pins the set.
+  The same holds for the view names and the filter kind ids.
+- **Filters widen within one kind and narrow across kinds** (ADR 0009). Two
+  labels means either; a kind plus a repository means both. Getting that
+  backwards empties the board on the second click.
+- **The `issue` and `pull-request` ids name two things at once**: a work item's
+  own `kind`, and a filter in the address bar. Renaming one breaks the filter
+  and every card's badge together.
 - **A save re-reads the file first and writes with the sha from that read.** The
   sha is GitHub's optimistic-concurrency check. Passing a remembered one is how a
   save silently overwrites another device's work. A 409 means somebody saved in
@@ -150,11 +158,12 @@ cd web-projects/github-work-board && bun test
 | [0006](adr/0006-one-list-of-work-items-and-the-order-lives-in-the-link.md) | One list of work items, and the chosen order lives in the link |
 | [0007](adr/0007-one-token-per-owner-and-an-empty-board-explains-itself.md) | One token per owner, and an empty board that explains itself |
 | [0008](adr/0008-settings-is-a-view-and-the-token-guide-is-written-once.md) | Settings is a view in the link, and the token guide is written once |
+| [0009](adr/0009-filters-widen-within-a-kind-and-narrow-across-kinds.md) | Filters widen within one kind and narrow across kinds |
 
 ## What is not built yet
 
-Connecting, the one list of issues and pull requests, private notes and the
-seven orders are built. Still to come, roughly in this order: filtering by kind
-and by label, custom tags, kanban columns with automatic moves, and a "what's
-next" queue. Every new view state goes in the address bar beside `sort`, and the
-token never does.
+Connecting with several tokens, the one list of issues and pull requests,
+private notes, the seven orders, the filters and the settings screen are built.
+Still to come, roughly in this order: custom tags, kanban columns with automatic
+moves, and a "what's next" queue. Every new view state goes in the address bar
+beside `view`, `sort`, `kind`, `repo` and `label`, and the tokens never do.
