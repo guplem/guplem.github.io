@@ -14,6 +14,7 @@ import { DOCUMENT_PATH, emptyDocument, parseDocument, readNote, writeNote } from
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
   fetchAssignedIssues,
+  fetchRelationships,
   fetchBoardFile,
   fetchRepository,
   fetchViewer,
@@ -57,6 +58,13 @@ import { skeletonCount } from "./skeletons.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
+import {
+  groupByLinkedIssue,
+  isBlocked,
+  normalizeRelationships,
+  openBlockers,
+  readRelationship,
+} from "./relationships.js";
 import { describeTokenReach, suggestedTokenName } from "./tokenIdentity.js";
 import { countByKind, normalizeWorkItems, ownersOf } from "./workItems.js";
 
@@ -76,6 +84,7 @@ const state = {
   remoteSha: null,
   saveTimer: null,
   items: [],
+  links: {},
   sortId: DEFAULT_SORT_ID,
   view: DEFAULT_VIEW,
   kind: DEFAULT_KIND,
@@ -191,6 +200,13 @@ function buildWorkItemCard(item) {
     heading.append(draft);
   }
 
+  if (isBlocked(readRelationship(state.links, item.key))) {
+    const blocked = document.createElement("span");
+    blocked.className = "badge badge-blocked";
+    blocked.textContent = "Blocked";
+    heading.append(blocked);
+  }
+
   const where = document.createElement("span");
   where.textContent = `${item.repository} #${item.number}`;
   heading.append(where);
@@ -214,6 +230,29 @@ function buildWorkItemCard(item) {
       labels.append(chip);
     }
     card.append(labels);
+  }
+
+  const relationship = readRelationship(state.links, item.key);
+
+  if (relationship.parent) {
+    card.append(buildLinkLine("Part of", [relationship.parent]));
+  }
+
+  const blockers = openBlockers(relationship);
+  if (blockers.length > 0) {
+    card.append(buildLinkLine("Blocked by", blockers));
+  }
+
+  if (relationship.subIssues.total > 0) {
+    const progress = document.createElement("p");
+    progress.className = "issue-links";
+    const label = document.createElement("span");
+    label.className = "link-label";
+    label.textContent = "Children";
+    const value = document.createElement("span");
+    value.textContent = `${relationship.subIssues.completed} of ${relationship.subIssues.total} done`;
+    progress.append(label, value);
+    card.append(progress);
   }
 
   const note = document.createElement("textarea");
@@ -427,6 +466,28 @@ function buildTokenRow(entry, index) {
 /* Rendering                                                                  */
 /* -------------------------------------------------------------------------- */
 
+/** One line of links on a card: a label, then each linked item. */
+function buildLinkLine(label, links) {
+  const line = document.createElement("p");
+  line.className = "issue-links";
+
+  const name = document.createElement("span");
+  name.className = "link-label";
+  name.textContent = label;
+  line.append(name);
+
+  for (const link of links) {
+    const anchor = document.createElement("a");
+    anchor.href = link.url;
+    anchor.target = "_blank";
+    anchor.rel = "noopener";
+    anchor.className = "issue-link";
+    anchor.textContent = `#${link.number} ${link.title}`;
+    line.append(anchor);
+  }
+  return line;
+}
+
 /**
  * Put the list on the screen in the chosen order.
  *
@@ -437,7 +498,18 @@ function renderBoard() {
   const hasNote = (key) => readNote(state.board, key).trim() !== "";
   const visible = filterWorkItems(state.items, state);
   const ordered = sortWorkItems(visible, state.sortId, hasNote);
-  element("issues").replaceChildren(...ordered.map(buildWorkItemCard));
+  const grouped = groupByLinkedIssue(ordered, state.links);
+  element("issues").replaceChildren(
+    ...grouped.map(({ item, children }) => {
+      const card = buildWorkItemCard(item);
+      if (children.length === 0) return card;
+      const nest = document.createElement("ul");
+      nest.className = "issues nested";
+      nest.replaceChildren(...children.map(buildWorkItemCard));
+      card.append(nest);
+      return card;
+    }),
+  );
 
   const { issues, pullRequests } = countByKind(visible);
   const parts = [];
@@ -518,11 +590,12 @@ async function inspectToken(entry) {
   const rows = [];
   const [identity, work, board] = CONNECTION_CHECKS;
   let updated = { ...entry, owners: [], itemCount: 0, canWriteBoard: false };
+  let links = {};
 
   const viewer = await fetchViewer(entry.token);
   if (!viewer.ok) {
     rows.push({ label: identity.label, ok: false, detail: describeFailure({ ...viewer, need: identity.need }) });
-    return { entry: updated, raw: [], rows };
+    return { entry: updated, raw: [], rows, links };
   }
   const login = viewer.data?.login ?? "";
   state.login = state.login ?? login;
@@ -531,7 +604,7 @@ async function inspectToken(entry) {
   const answer = await fetchAssignedIssues(entry.token);
   if (!answer.ok) {
     rows.push({ label: work.label, ok: false, detail: describeFailure({ ...answer, need: work.need }) });
-    return { entry: updated, raw: [], rows };
+    return { entry: updated, raw: [], rows, links };
   }
   const raw = Array.isArray(answer.data) ? answer.data : [];
   const items = normalizeWorkItems(raw);
@@ -541,6 +614,11 @@ async function inspectToken(entry) {
   // one thing about its reach the board can state honestly (ADR 0007).
   const owners = ownersOf(items.map((item) => item.repository));
   updated = { ...updated, owners, itemCount: items.length };
+
+  // The relationships of this token's own items, with this token: a node id
+  // from one owner is not readable by another owner's token (ADR 0010).
+  const linked = await fetchRelationships(entry.token, items.map((item) => item.key));
+  const links = linked.ok ? normalizeRelationships(linked.data) : {};
   rows.push({
     label: work.label,
     ok: true,
@@ -583,7 +661,7 @@ async function inspectToken(entry) {
   }
 
   if (updated.grantedPermissions === null) updated = { ...updated, grantedPermissions: permissionsFingerprint() };
-  return { entry: updated, raw, rows };
+  return { entry: updated, raw, rows, links };
 }
 
 /** Ask every saved token, merge what they return, and show the board. */
@@ -596,12 +674,15 @@ async function connectAll() {
 
   const rows = [];
   const everything = [];
+  let links = {};
   for (const entry of state.tokens) {
     const result = await inspectToken(entry);
     state.tokens = updateToken(state.tokens, entry.id, result.entry);
     everything.push(...result.raw);
     rows.push(...result.rows);
+    links = { ...links, ...(result.links ?? {}) };
   }
+  state.links = links;
 
   saveTokens(storage, state.tokens);
   // Merging here, not per token, is what removes an item two tokens both see.
@@ -678,6 +759,7 @@ function signOut() {
   clearTimeout(state.saveTimer);
   state.tokens = [];
   state.items = [];
+  state.links = {};
   state.login = null;
   state.board = emptyDocument(new Date().toISOString());
   element("token").value = "";

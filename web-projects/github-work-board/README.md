@@ -8,6 +8,10 @@ to make here, and nothing is stored anywhere except GitHub.
 
 - **Every open issue and pull request assigned to you**, across every repository
   your token can read, in one list, each marked with what it is.
+- **The real links between your work.** A pull request appears inside the card
+  of the issue it closes, an issue says what it is part of, and anything waiting
+  on unfinished work is marked **Blocked**. All of it read from GitHub's own
+  relationships, never guessed from a description.
 - **Filter by kind, repository or label.** Two labels means either of them; a
   kind plus a repository means both. The filters go into the address bar too, so
   "everything tagged urgent in this repository" is a link.

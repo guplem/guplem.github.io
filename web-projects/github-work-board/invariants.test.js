@@ -265,6 +265,26 @@ describe("the permission list is written once (ADR 0005)", () => {
   });
 });
 
+// GitHub's own links, not anything read out of a description. The moment this
+// is done by reading text, it is wrong for every issue whose description is
+// written differently (ADR 0010).
+describe("relationships come from GitHub's graph (ADR 0010)", () => {
+  test("nothing parses a description looking for a linked issue", () => {
+    for (const name of sourceFiles) {
+      const source = read(name);
+      expect(source).not.toMatch(/\b(closes|fixes|resolves)\s*#/i);
+      expect(source).not.toMatch(/body[\s\S]{0,40}match[\s\S]{0,40}#/i);
+    }
+  });
+
+  test("the relationship query asks GitHub for each kind by name", () => {
+    const query = read("gateway.js");
+    for (const field of ["parent", "blockedBy", "closedByPullRequestsReferences", "closingIssuesReferences"]) {
+      expect(query).toContain(field);
+    }
+  });
+});
+
 describe("the page itself", () => {
   test("carries the deploy stamp block the generator looks for (root ADR 0013)", () => {
     const page = read("index.html");
