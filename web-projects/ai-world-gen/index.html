@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="Describe a setting and watch an AI build its map one tile at a time. A language model invents the world's vocabulary once; a fast decision model (Jev) then places every cell from its neighbours. Bring your own OpenRouter key." />
+  <title>AI World Gen · A map that decides itself, one cell at a time · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/ai-world-gen/" />
+  <!-- Drawn inline, so the page asks the network for nothing but OpenRouter and its own tileset. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2318181b'/%3E%3Cg fill='%23fafafa'%3E%3Crect x='5' y='5' width='6' height='6'/%3E%3Crect x='13' y='5' width='6' height='6' opacity='.55'/%3E%3Crect x='21' y='5' width='6' height='6' opacity='.25'/%3E%3Crect x='5' y='13' width='6' height='6' opacity='.55'/%3E%3Crect x='13' y='13' width='6' height='6'/%3E%3Crect x='21' y='13' width='6' height='6' opacity='.55'/%3E%3Crect x='5' y='21' width='6' height='6' opacity='.25'/%3E%3Crect x='13' y='21' width='6' height='6' opacity='.55'/%3E%3Crect x='21' y='21' width='6' height='6'/%3E%3C/g%3E%3C/svg%3E" />
+  <!-- Which pull request published this file. Never hand-edit: written by
+       `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
+  <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="0" />
+  <meta name="deploy-date" content="1970-01-01T00:00:00.000Z" />
+<!-- END GENERATED:DEPLOY -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <div class="masthead-title">
+        <h1>AI World Gen</h1>
+        <p class="tagline">Describe a place. A language model invents what it is made of. A decision model places it, one cell at a time.</p>
+      </div>
+      <!-- The three screens are states of this one page, named in the link (root ADR 0006). -->
+      <nav class="views" aria-label="Screens">
+        <button type="button" class="view-tab" data-view="setup">1. World</button>
+        <button type="button" class="view-tab" data-view="ai">2. AI Setup</button>
+        <button type="button" class="view-tab" data-view="map">3. Map</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ============================================================ -->
+      <!-- Screen 1: the world                                            -->
+      <!-- ============================================================ -->
+      <section id="view-setup" class="view" aria-labelledby="setup-heading">
+        <div class="card">
+          <div class="card-header">
+            <h2 id="setup-heading">Describe the world</h2>
+            <p class="lead">
+              Where is it, when is it, and what is it like? Pick a suggestion or write your own. The model that
+              invents the vocabulary reads exactly these three fields.
+            </p>
+          </div>
+          <div class="card-content">
+            <div class="field">
+              <p class="field-label">Suggestions</p>
+              <div id="presets" class="chips" role="group" aria-label="Setting suggestions"></div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="location">Location</label>
+              <input id="location" class="input" type="text" autocomplete="off" placeholder="A research station in orbit around a gas giant" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="era">Year or era</label>
+              <input id="era" class="input" type="text" autocomplete="off" placeholder="The year 2312" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="notes">Tone and notes</label>
+              <textarea id="notes" class="input" rows="3" placeholder="Clean sci-fi. Corridors, labs, a hangar, and one sealed section nobody talks about."></textarea>
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label class="field-label" for="size">Grid size</label>
+                <select id="size" class="select"></select>
+                <div id="custom-size" class="field-row" hidden>
+                  <input id="custom-width" class="input input-small" type="number" min="4" max="40" value="12" aria-label="Width in cells" />
+                  <span class="times">×</span>
+                  <input id="custom-height" class="input input-small" type="number" min="4" max="40" value="12" aria-label="Height in cells" />
+                </div>
+                <p class="field-help">One model call per cell. A 12 × 12 map is 144 decisions.</p>
+              </div>
+              <div class="field">
+                <label class="field-label" for="order">Generation order</label>
+                <select id="order" class="select"></select>
+                <p id="order-help" class="field-help"></p>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button id="generate" type="button" class="button button-primary">Generate the world</button>
+              <label class="button button-outline file-button">
+                Load a saved map
+                <input id="load-file" type="file" accept="application/json,.json" hidden />
+              </label>
+            </div>
+            <p id="setup-status" class="status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <details class="card card-quiet">
+          <summary>How this works, and why two models</summary>
+          <div class="card-content">
+            <p>
+              <strong>One creative call.</strong> A language model (Claude, GPT, Gemini, your pick) reads your three fields
+              and writes the <em>vocabulary</em> of the world: 6 to 24 element types, each with a description, placement
+              rules, whether you can walk on it, and the properties one instance of it would need later. That JSON is
+              checked, and the model is asked to fix it if it is wrong.
+            </p>
+            <p>
+              <strong>Many fast decisions.</strong> Then, for every cell, a decision model (TypeSafe's Jev, by default)
+              is given the neighbouring cells and asked one typed question: which type goes here? It answers with a
+              choice and a probability per option, not with text. Cheap, fast, and exactly the kind of decision it is
+              built for.
+            </p>
+            <p>
+              <strong>Plain code checks the result.</strong> When the map is full, a flood fill finds walkable cells that
+              cannot be reached from the largest open area, so a sealed-off room is reported rather than hidden.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- Screen 2: the AI connection                                    -->
+      <!-- ============================================================ -->
+      <section id="view-ai" class="view" aria-labelledby="ai-heading" hidden>
+        <div class="card">
+          <div class="card-header">
+            <h2 id="ai-heading">Connect the models</h2>
+            <p class="lead">
+              Every AI request goes through <a href="https://openrouter.ai" target="_blank" rel="noopener">OpenRouter</a>,
+              one gateway to Claude, GPT, Gemini, Jev and hundreds more. You bring your own key, so you pay only for
+              what you generate, and this page has no server that could see it.
+            </p>
+          </div>
+          <div class="card-content">
+            <ol class="steps">
+              <li>
+                <h3>Create a free OpenRouter account</h3>
+                <p>No subscription and no card is required to make a key. Some models are free; the defaults here cost a few cents per map.</p>
+                <p class="step-action">
+                  <a class="button button-outline" href="https://openrouter.ai/keys" target="_blank" rel="noopener">Open OpenRouter's keys page</a>
+                </p>
+              </li>
+              <li>
+                <h3>Create a key</h3>
+                <p>On that page press <strong>Create Key</strong>, give it a name, and set a credit limit if you like. OpenRouter shows the key once: copy it.</p>
+              </li>
+              <li>
+                <h3>Paste it here</h3>
+                <div class="field">
+                  <label class="field-label" for="api-key">OpenRouter API key</label>
+                  <div class="field-row">
+                    <input id="api-key" class="input" type="password" autocomplete="off" spellcheck="false" placeholder="sk-or-v1-..." />
+                    <button id="toggle-key" type="button" class="button button-outline" aria-pressed="false">Show</button>
+                  </div>
+                </div>
+                <label class="check">
+                  <input id="remember-key" type="checkbox" checked />
+                  <span>Remember this key in this browser</span>
+                </label>
+                <p class="field-help">
+                  The key stays in this browser and is sent only to openrouter.ai. Anything else with access to this
+                  browser can read it, so set a credit limit on the key, and forget it here when you are done.
+                </p>
+                <div class="actions">
+                  <button id="test-key" type="button" class="button button-primary">Test connection</button>
+                  <button id="forget-key" type="button" class="button button-danger">Forget the key</button>
+                </div>
+                <p id="key-status" class="status" role="status" aria-live="polite"></p>
+              </li>
+              <li>
+                <h3>Choose which model does which job</h3>
+                <div class="field">
+                  <label class="field-label" for="decision-model">Decision model (one call per cell)</label>
+                  <select id="decision-model" class="select"></select>
+                  <p class="field-help">
+                    <strong>Jev Latest</strong> is the default: it answers typed questions with probabilities, at about
+                    $0.04 per million tokens. A text model can stand in when Jev is down, slower and dearer.
+                  </p>
+                </div>
+                <div class="field">
+                  <label class="field-label" for="narrative-model">Narrative model (one call per world)</label>
+                  <select id="narrative-model" class="select"></select>
+                  <p class="field-help">Writes the vocabulary as strict JSON. <strong>Claude Sonnet</strong> is the default; any model that supports JSON output works.</p>
+                </div>
+                <p id="models-status" class="status" role="status" aria-live="polite"></p>
+              </li>
+            </ol>
+            <div class="actions">
+              <button id="ai-done" type="button" class="button button-primary">Back to the world</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- Screen 3: the map                                              -->
+      <!-- ============================================================ -->
+      <section id="view-map" class="view view-map" aria-labelledby="map-heading" hidden>
+        <div class="map-layout">
+          <div class="map-column">
+            <div class="map-toolbar">
+              <div class="map-title">
+                <h2 id="map-heading">World</h2>
+                <p id="world-summary" class="world-summary"></p>
+              </div>
+              <div class="toolbar-buttons">
+                <button id="zoom-out" type="button" class="button button-outline button-icon" aria-label="Zoom out">−</button>
+                <button id="zoom-fit" type="button" class="button button-outline">Fit</button>
+                <button id="zoom-in" type="button" class="button button-outline button-icon" aria-label="Zoom in">+</button>
+                <button id="stop" type="button" class="button button-danger" hidden>Stop</button>
+                <button id="download" type="button" class="button button-outline" hidden>Download JSON</button>
+              </div>
+            </div>
+            <div class="canvas-wrap">
+              <canvas id="map" class="map-canvas" aria-label="The generated map. Click a cell to inspect it."></canvas>
+            </div>
+            <div class="progress" aria-hidden="true"><div id="progress-bar" class="progress-bar"></div></div>
+            <p id="map-status" class="status" role="status" aria-live="polite"></p>
+            <p class="field-help">Drag to pan, wheel or pinch to zoom, click a cell to inspect it. An orange corner marks a fallback cell; a blue corner marks a cell you changed.</p>
+          </div>
+
+          <aside class="map-sidebar">
+            <section class="panel" aria-labelledby="inspector-heading">
+              <h3 id="inspector-heading">Cell</h3>
+              <p id="inspector-empty" class="field-help">Click a cell on the map.</p>
+              <div id="inspector" hidden>
+                <div class="inspector-head">
+                  <span id="inspector-tile" class="inspector-tile"></span>
+                  <div>
+                    <p id="inspector-label" class="inspector-label"></p>
+                    <p id="inspector-coords" class="mono muted"></p>
+                  </div>
+                </div>
+                <p id="inspector-description" class="inspector-text"></p>
+                <dl id="inspector-properties" class="properties"></dl>
+                <div class="field">
+                  <label class="field-label" for="inspector-type">Change the type</label>
+                  <select id="inspector-type" class="select"></select>
+                </div>
+                <div class="actions actions-tight">
+                  <button id="regenerate-cell" type="button" class="button button-outline">Ask the model again</button>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel" aria-labelledby="check-heading">
+              <h3 id="check-heading">Reachability check</h3>
+              <p id="check-summary" class="field-help">Runs when the map is complete.</p>
+              <ul id="check-list" class="plain-list"></ul>
+            </section>
+
+            <section class="panel" aria-labelledby="legend-heading">
+              <h3 id="legend-heading">Vocabulary</h3>
+              <ul id="legend" class="legend"></ul>
+            </section>
+
+            <section class="panel" aria-labelledby="log-heading">
+              <h3 id="log-heading">Decisions</h3>
+              <ul id="log" class="log mono"></ul>
+            </section>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Everything runs in your browser. The only server this page talks to is openrouter.ai, with your own key.
+        Tiles from the <a href="https://vurmux.itch.io/urizen-onebit-tileset" target="_blank" rel="noopener">Urizen 1-bit tileset</a> by vurmux (CC0).
+      </p>
+      <p id="deploy-line"></p>
+      <p><a href="../">All web projects</a></p>
+    </footer>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

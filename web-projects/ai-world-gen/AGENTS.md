@@ -1,0 +1,63 @@
+# web-projects/ai-world-gen/AGENTS.md
+
+> **SCOPE:** files under `web-projects/ai-world-gen/`. Read `web-projects/AGENTS.md` first for the rules that cover every web-project.
+
+## What this is
+
+A map generator with two kinds of model. A text model writes a world's vocabulary once (ADR 0002); a decision model (TypeSafe's Jev) then places one cell at a time from its neighbours. Everything goes through OpenRouter with a key the reader pastes (ADR 0001). The `README.md` holds the concept, the roadmap with its phases, and the open questions; keep it current, because it is the memory of the project between sessions.
+
+## Module map
+
+| File | Pure? | Responsibility |
+|---|---|---|
+| `openRouterClient.js` | No | The **only** file that calls `fetch`. `checkKey`, `listModels`, `generate` (chat), `decide` (decisions). Never throws: `{ok, ...}` or `{ok: false, status, message}` |
+| `models.js` | Yes | Default model ids, `readCatalogue` from `/api/v1/models`, `transportFor` (decisions or chat) |
+| `settings.js` | Yes | The key and the model choices, through an injected storage. The only file that names `localStorage` |
+| `vocabulary.js` | Yes | The prompt, `VOCABULARY_SCHEMA`, `normaliseVocabulary` (every error names its element), `generateVocabulary` with an injected `generate` |
+| `cellDecision.js` | Yes | `buildCellDecision` (state + one choice question), `readDecisionAnswer`, `chooseType` (sampling), the chat stand-in, `fallbackType` |
+| `generation.js` | Yes | `runGeneration` (sequential loop, retries, fallbacks, stop rules) with an injected `decide`; `createDecider` builds one from the client and the transport |
+| `orderStrategies.js` | Yes | Five orders behind `nextCoordinate(placed: Set<string>)` |
+| `grid.js` | Yes | The grid (mutated in place), neighbours, ring counts, JSON in and out |
+| `reachability.js` | Yes | Four-way flood fill over walkable cells; `ok` is false on more than one region |
+| `tileset.js` | Yes (data) | Sheet geometry and the `VISUAL_TAGS` manifest (ADR 0003) |
+| `camera.js` | Yes | Fit, pan, zoom around a point, cell under a point |
+| `presets.js` | Yes | Setting suggestions, grid sizes, `cleanSetting`, `describeSetting` |
+| `urlState.js` | Yes | The view and the setup in the link; never the key |
+| `random.js` | Yes | `mulberry32`, `seedFromText`, `hashCoordinate` |
+| `openRouterErrors.js` | Yes | A failure into one sentence that names the fix |
+| `render.js` | No | The canvas: `createRenderer`, `loadTilesheet`, `tileThumbnail` |
+| `app.js` | No | The page: three views, wiring, the generation flow |
+| `deployStamp.js`, `deployText.js` | Yes | The "deployed at" line (root ADR 0013) |
+
+Data flow for one world: `app.js` → `vocabulary.generateVocabulary(client.generate)` → `orderStrategies.createOrder` → `generation.runGeneration(createDecider(client))` → for each cell `cellDecision.buildCellDecision` → `decide` → `cellDecision.chooseType` → `grid.setCell` → `render.draw` → at the end `reachability.analyseReachability`.
+
+## Non-obvious conventions and gotchas
+
+- **Two endpoints, two request shapes.** `decide()` posts `{model, state, questions}` to `/api/alpha/decisions` and reads `answers.<key>.{choice, confidence, probabilities}`. `generate()` posts OpenAI-shaped messages to `/api/v1/chat/completions`. Sending Jev a chat request is a 400. `models.transportFor` is the one place that tells the two kinds apart; do not branch on a model name anywhere else.
+- **Jev's payload was not exercised with a real key before the first deploy** (no key in the build session). `readDecisionAnswer` follows the documented System One shape. If the first real run shows a different shape, fix it there and update the README's open questions.
+- **The state sent per cell never carries the grid.** It carries the 8-neighbours, counts within `NEARBY_RADIUS` (2) and whole-map counts. `cellDecision.test.js` asserts the serialised state has no `cells` key. Keep it that way: a 24 × 24 grid per call multiplies the cost by the map size.
+- **The map samples the probabilities.** `chooseType` with `spread` 1 draws from the returned probabilities, dropping options below `SAMPLE_FLOOR` (8%) of the best. A cell records both `typeId` (what was placed) and `modelChoice` (the model's top pick), and the inspector shows both when they differ. Setting `spread` to 0 makes the loop deterministic given the model.
+- **A visual tag outside `VISUAL_TAGS` is a validation error, not a fallback**, so the model fixes it. The fallback tag `unknown` exists for cells loaded from an older file or drawn before the vocabulary is known. The sheet has four separator columns (25, 51, 77, 103); `tileset.test.js` fails on a tag placed on one.
+- **Tile positions are `[column, row]`, and the pixel is `1 + index * 13`.** The sheet is 206 × 50 tiles. `tileset.test.js` reads the PNG header, so a replaced PNG with another size fails loudly.
+- **`FATAL_STATUSES` (401, 402, 403, 404) stop the run at once**; 0, 429 and 5xx are retried with a growing pause and then fall back. Four fallbacks in a row also stop the run. A fallback cell has `source: "fallback"` and `error`; a hand-changed cell has `source: "hand"`. The renderer marks both with a coloured corner.
+- **`app.js` never writes `innerHTML`.** Every label comes from a model. The one `innerHTML` in the project is inside `deployStamp.js`, with its own escaper. `invariants.test.js` checks it.
+- **The order strategies take the placed Set, not their own progress**, so a cell decided by hand or loaded from a file is never offered again. A new strategy must visit every free cell exactly once; `orderStrategies.test.js` drains each one on a 7 × 5 grid and a 1 × 1 grid.
+- **The key is remembered by default.** Unticking "Remember" forgets it in storage and keeps it in memory for the tab. `settings.js` is the only file that names `localStorage`, `urlState.js` never mentions the key, and both facts are pinned in `invariants.test.js`.
+- **The model catalogue is fetched without a key** (`/api/v1/models` needs none) when the AI Setup screen opens, and `FALLBACK_CATALOGUE` fills the pickers until then. `:batch` variants and image or audio models are dropped in `readCatalogue`.
+- **Prose in the prompts follows the same writing rules as the docs.** The vocabulary prompt and the per-cell instructions are read by a model, but a person edits them; keep them short and literal (Jev answers the exact question asked, and negations underperform).
+
+## Tests
+
+Every module marked "Pure" has a sibling `*.test.js`, and new behaviour goes in test-first (root ADR 0012). `app.js`, `render.js` and `openRouterClient.js` have none by design; anything in them worth a test belongs in a pure module instead. `invariants.test.js` pins the decisions of the three ADRs.
+
+```bash
+cd web-projects/ai-world-gen && bun test
+```
+
+## Architecture Decision Records
+
+| ADR | Topic |
+|---|---|
+| [0001](adr/0001-openrouter-is-the-one-gateway-and-the-key-lives-here.md) | OpenRouter is the one gateway (CORS verified), and the key lives in this browser |
+| [0002](adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
+| [0003](adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, and a visual tag between the vocabulary and the tile |
