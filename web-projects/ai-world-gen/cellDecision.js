@@ -28,12 +28,11 @@ const SAMPLE_FLOOR = 0.08;
 const INSTRUCTIONS = [
   "Which element type belongs in this cell of the map?",
   "Follow each type's placement rules and keep the cell consistent with its placed neighbours.",
-  "Structures first: when a barrier or route line reaches this cell (see continuations), the type that",
-  "continues it fits best, unless its rules forbid it here. A barrier line goes on until it closes a shape;",
-  "a route goes on until it reaches a place.",
-  "Otherwise the finished map must use its whole vocabulary in the shares the rules describe:",
-  "choose a type that balance.needed lists and avoid one that balance.overused lists.",
-  "Ground types form patches of several cells, never a single scattered cell.",
+  "When continuations.suggested names a type, that type continues or closes a structure here and fits best,",
+  "unless its rules forbid it in this place.",
+  "When continuations.suggested is null, no structure needs this cell: choose a type from balance.needed",
+  "whose rules allow it here, avoid every type in balance.overused, and keep ground types in patches of",
+  "several cells rather than single scattered cells.",
 ].join(" ");
 
 const ROUTE_TAGS = new Set(["path", "road", "pavement", "bridge", "stairs"]);
@@ -53,15 +52,23 @@ const SIDES = [
   { name: "west", dx: -1, dy: 0, opposite: "east" },
 ];
 
+/** A straight line this long is long enough; the model is not asked to extend it further. */
+export const MAX_CONTINUED_LINE = 4;
+
 /**
- * The barrier and route lines that reach a cell from its four sides, and the
- * types that stand on two opposite sides (ADR 0002).
+ * The barrier and route lines that reach a cell from its four sides, the
+ * types that stand on two opposite sides, and the one type the code suggests
+ * continuing here, or null (ADR 0002).
  *
  * v2 balanced the vocabulary and scattered it: single walls and single path
- * cells everywhere. The model sees neighbours as a list of types; it does not
- * see that three walls to the west are a line that wants a fourth. This says so.
+ * cells everywhere. v3 asked the model to continue every line and it did,
+ * across the whole map. So the judgement is code now: a gap between two
+ * segments is closed, a line shorter than `MAX_CONTINUED_LINE` is continued,
+ * and a type the balance sheet calls overused is never suggested.
+ *
+ * @param {{overused: string[]}} balance the balance sheet of the map so far
  */
-export function continuationHints(grid, vocabulary, x, y) {
+export function continuationHints(grid, vocabulary, x, y, balance = { overused: [] }) {
   const lines = [];
   const bySide = {};
   for (const side of SIDES) {
@@ -79,7 +86,25 @@ export function continuationHints(grid, vocabulary, x, y) {
     const opposite = SIDES.find((one) => one.name === side).opposite;
     if (bySide[side] && bySide[side] === bySide[opposite] && !joins.includes(bySide[side])) joins.push(bySide[side]);
   }
-  return { lines, joins };
+
+  const allowed = (type) => !(balance?.overused ?? []).includes(type);
+  let suggested = null;
+  const join = joins.find(allowed);
+  if (join) {
+    suggested = { type: join, reason: `closes the gap between two ${join} segments` };
+  } else {
+    const candidates = lines
+      .filter((one) => one.length < MAX_CONTINUED_LINE && allowed(one.type))
+      .sort((a, b) => (a.role === b.role ? b.length - a.length : a.role === "barrier" ? -1 : 1));
+    if (candidates.length > 0) {
+      const best = candidates[0];
+      suggested = {
+        type: best.type,
+        reason: `continues the ${best.type} ${best.role === "barrier" ? "line" : "route"} of ${best.length} cell${best.length === 1 ? "" : "s"} from the ${best.direction}`,
+      };
+    }
+  }
+  return { lines, joins, suggested };
 }
 
 /**
@@ -162,9 +187,11 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
     neighbours: neighboursOf(grid, x, y).map((one) => ({ direction: one.direction, type: one.cell.typeId })),
     nearbyCounts: ringCounts(grid, x, y, NEARBY_RADIUS),
     mapCounts: placed,
-    balance: balanceSheet(vocabulary, placed, grid.width * grid.height),
-    continuations: continuationHints(grid, vocabulary, x, y),
+    balance: null,
+    continuations: null,
   };
+  state.balance = balanceSheet(vocabulary, placed, grid.width * grid.height);
+  state.continuations = continuationHints(grid, vocabulary, x, y, state.balance);
   const criteria = {};
   for (const type of vocabulary.elements) {
     const flags = [type.walkable ? "walkable" : "not walkable", type.isBarrier ? "barrier" : null, type.interactable ? "interactable" : null]

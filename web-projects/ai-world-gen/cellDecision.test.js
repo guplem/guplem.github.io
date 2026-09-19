@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   CHAT_DECISION_SCHEMA,
+  MAX_CONTINUED_LINE,
   NEARBY_RADIUS,
   TARGET_SHARES,
   balanceSheet,
@@ -71,9 +72,9 @@ describe("buildCellDecision", () => {
     expect(state.balance.shares.grass.now).toBe(75);
     expect(questions.type.instructions).toMatch(/needed/);
     expect(questions.type.instructions).toMatch(/overused/);
-    expect(questions.type.instructions).toMatch(/continuations/);
+    expect(questions.type.instructions).toMatch(/continuations\.suggested/);
     expect(questions.type.instructions).not.toMatch(/most common ground type/);
-    expect(state.continuations).toEqual({ lines: [], joins: [] });
+    expect(state.continuations).toEqual({ lines: [], joins: [], suggested: null });
   });
 
   test("a cell on the edge says which edges it touches", () => {
@@ -156,34 +157,53 @@ describe("continuationHints", () => {
     ],
   };
 
-  test("names each barrier or route line that reaches the cell, with its length", () => {
+  const nothingOverused = { overused: [] };
+
+  test("names each barrier or route line that reaches the cell, with its length, and suggests the short barrier", () => {
     const grid = createGrid(6, 3);
     setCell(grid, 0, 1, { typeId: "wall" });
     setCell(grid, 1, 1, { typeId: "wall" });
     setCell(grid, 2, 1, { typeId: "wall" });
     setCell(grid, 3, 0, { typeId: "path" });
     setCell(grid, 3, 2, { typeId: "grass" });
-    expect(continuationHints(grid, world, 3, 1)).toEqual({
+    expect(continuationHints(grid, world, 3, 1, nothingOverused)).toEqual({
       lines: [
         { direction: "north", type: "path", role: "route", length: 1 },
         { direction: "west", type: "wall", role: "barrier", length: 3 },
       ],
       joins: [],
+      suggested: { type: "wall", reason: "continues the wall line of 3 cells from the west" },
     });
   });
 
-  test("a type on two opposite sides is a join, and ground types give no hint", () => {
+  test("a type on two opposite sides is a join and is suggested first; ground types give no hint", () => {
     const grid = createGrid(3, 3);
     setCell(grid, 0, 1, { typeId: "wall" });
     setCell(grid, 2, 1, { typeId: "wall" });
     setCell(grid, 1, 0, { typeId: "grass" });
-    const hints = continuationHints(grid, world, 1, 1);
+    const hints = continuationHints(grid, world, 1, 1, nothingOverused);
     expect(hints.joins).toEqual(["wall"]);
     expect(hints.lines.map((one) => one.direction)).toEqual(["east", "west"]);
+    expect(hints.suggested).toEqual({ type: "wall", reason: "closes the gap between two wall segments" });
+  });
+
+  test("a line that is long enough is reported but not suggested, so a wall cannot run across the map", () => {
+    const grid = createGrid(8, 1);
+    for (let x = 0; x < MAX_CONTINUED_LINE; x += 1) setCell(grid, x, 0, { typeId: "path" });
+    const hints = continuationHints(grid, world, MAX_CONTINUED_LINE, 0, nothingOverused);
+    expect(hints.lines[0].length).toBe(MAX_CONTINUED_LINE);
+    expect(hints.suggested).toBeNull();
+  });
+
+  test("an overused type is never suggested, even for a join", () => {
+    const grid = createGrid(3, 3);
+    setCell(grid, 0, 1, { typeId: "wall" });
+    setCell(grid, 2, 1, { typeId: "wall" });
+    expect(continuationHints(grid, world, 1, 1, { overused: ["wall"] }).suggested).toBeNull();
   });
 
   test("an empty neighbourhood gives empty hints", () => {
-    expect(continuationHints(createGrid(3, 3), world, 1, 1)).toEqual({ lines: [], joins: [] });
+    expect(continuationHints(createGrid(3, 3), world, 1, 1, nothingOverused)).toEqual({ lines: [], joins: [], suggested: null });
   });
 });
 
