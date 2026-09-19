@@ -32,7 +32,8 @@ A map generator with two kinds of model. A text model writes a world's vocabular
 | `deployStamp.js`, `deployText.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `evaluation/mapMetrics.js` | Yes | The three specifications, their metrics, `scoreMap` and `renderAscii` (ADR 0005) |
 | `evaluation/runTestCase.js` | No | Bun command line: one test case in, one generated and scored map out, with the real client |
-| `evaluation/evaluate.py` | No | The Galtea side: `setup`, `run --version vN`, `report`. Reads the rule names from `mapMetrics.js` |
+| `evaluation/evaluate.py` | No | The Galtea side: `setup`, `run --version vN`, `report`, `render`. Reads the rule names from `mapMetrics.js`; uploads each map's PNG and attaches it to the output |
+| `evaluation/renderMap.py` | Yes | A grid to a PNG with the page's tiles, first variant only; reads the manifest from `tileset.js` through Bun. Tested by `renderMap_test.py` (`python -m unittest`) |
 | `evaluation/testCases.json` | Yes (data) | Three datasets of five seeds each, matched to Galtea test cases by their `id` |
 | `evaluation/galtea.json` | Yes (data) | The Galtea ids `setup` created or found. Committed; no secrets |
 
@@ -66,7 +67,7 @@ OPENROUTER_API_KEY=sk-or-... python evaluate.py run --version vN --description "
 python evaluate.py report --version vN --against v(N-1)
 ```
 
-`vN` is the next version name after the last file in `evaluation/results/`. The run costs about 960 decisions and a few minutes. Put the report's per-specification numbers in the pull request. A new rule is an entry in `SPECIFICATIONS` and `METRICS` in `mapMetrics.js` with a test, a dataset in `testCases.json`, then `python evaluate.py setup` to create it in Galtea.
+`vN` is the next version name after the last file in `evaluation/results/`. The run also draws every map to `results/vN/<case>.png` and attaches it to the Galtea output as a file part (`{"assistant_message": text, "content": [{"type": "file", "uri": "s3://...", "mimeType": "image/png"}]}`); the `s3://` form is what the API stores for its own uploads. Commit the PNGs: they are small and they are how a map is compared across versions without opening Galtea. The run costs about 960 decisions and a few minutes. Put the report's per-specification numbers in the pull request. A new rule is an entry in `SPECIFICATIONS` and `METRICS` in `mapMetrics.js` with a test, a dataset in `testCases.json`, then `python evaluate.py setup` to create it in Galtea.
 
 ## Tests
 

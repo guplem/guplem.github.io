@@ -121,13 +121,13 @@ Every iteration of the generator is a version in [Galtea](https://galtea.ai): on
 
 ```bash
 cd web-projects/ai-world-gen/evaluation
-pip install -r requirements.txt                         # once: the Galtea SDK
+pip install -r requirements.txt                         # once: the Galtea SDK, the renderer and its upload
 python evaluate.py setup                                # once: the product, specifications, metrics and datasets
 OPENROUTER_API_KEY=sk-or-... python evaluate.py run --version v1 --description "baseline"
 python evaluate.py report --version v2 --against v1     # after the next iteration
 ```
 
-The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`), so runs stay comparable when OpenRouter adds newer ones. Results are also written to `evaluation/results/vN.json`.
+Every map is also drawn as a PNG with the page's own tiles, saved under `evaluation/results/vN/`, and attached to the Galtea output next to the ASCII view, so a result can be seen at a glance in the dashboard and compared across versions in the repository. The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`), so runs stay comparable when OpenRouter adds newer ones. Results are also written to `evaluation/results/vN.json`.
 
 ### Baseline, v1 (2026-09-19)
 
