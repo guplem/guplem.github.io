@@ -8,14 +8,17 @@
 //
 // The state sent with each question is small on purpose. It carries the eight
 // neighbouring cells, counts within a short radius, and counts for the whole
-// map so far. It never carries the grid itself: a 24 by 24 map would cost more
-// tokens per cell than the answer is worth, and the model does not need it.
+// map so far. It also carries two things the code, not the model, works out:
+// a balance sheet of each type against its target share, and continuation
+// hints that name the one type worth continuing here, or none. It never
+// carries the grid itself: a 24 by 24 map would cost more tokens per cell
+// than the answer is worth, and the model does not need it.
 //
 // A text model can answer the same question through `chat/completions` when
 // Jev is not available. That path is slower and dearer, and it exists so a
 // live demo does not die with a beta endpoint.
 
-import { DIRECTIONS, countByType, neighboursOf, ringCounts } from "./grid.js";
+import { DIRECTIONS, countByType, getCell, neighboursOf, ringCounts } from "./grid.js";
 import { describeSetting } from "./presets.js";
 import { extractJson, typeById } from "./vocabulary.js";
 
@@ -27,10 +30,138 @@ const SAMPLE_FLOOR = 0.08;
 
 const INSTRUCTIONS = [
   "Which element type belongs in this cell of the map?",
-  "Follow each type's placement rules. Keep the cell consistent with its placed neighbours,",
-  "keep the whole map varied and believable for this world, and do not over-use one type.",
-  "Where nothing is placed nearby yet, prefer the most common ground type.",
+  "Follow each type's placement rules and keep the cell consistent with its placed neighbours.",
+  "When continuations.suggested names a type, that type continues or closes a structure here and fits best,",
+  "unless its rules forbid it in this place.",
+  "When continuations.suggested is null, no structure needs this cell: choose a type from balance.needed",
+  "whose rules allow it here, avoid every type in balance.overused, and keep ground types in patches of",
+  "several cells rather than single scattered cells.",
 ].join(" ");
+
+const ROUTE_TAGS = new Set(["path", "road", "pavement", "bridge", "stairs"]);
+const ROUTE_WORDS = /\b(path|road|street|corridor|walkway|trail|lane|track|alley|hallway|avenue|passage)\b/i;
+
+/** Whether a type is a route: by its visual tag, or by what it is called. Shared with the metrics. */
+export function isRouteType(type) {
+  if (!type) return false;
+  if (ROUTE_TAGS.has(type.visualTag)) return true;
+  return ROUTE_WORDS.test(`${type.id} ${type.label}`);
+}
+
+const SIDES = [
+  { name: "north", dx: 0, dy: -1, opposite: "south" },
+  { name: "east", dx: 1, dy: 0, opposite: "west" },
+  { name: "south", dx: 0, dy: 1, opposite: "north" },
+  { name: "west", dx: -1, dy: 0, opposite: "east" },
+];
+
+/** A straight line this long is long enough; the model is not asked to extend it further. */
+export const MAX_CONTINUED_LINE = 4;
+
+/**
+ * The barrier and route lines that reach a cell from its four sides, the
+ * types that stand on two opposite sides, and the one type the code suggests
+ * continuing here, or null (ADR 0002).
+ *
+ * v2 balanced the vocabulary and scattered it: single walls and single path
+ * cells everywhere. v3 asked the model to continue every line and it did,
+ * across the whole map. So the judgement is code now: a gap between two
+ * segments is closed, a line shorter than `MAX_CONTINUED_LINE` is continued,
+ * and a type the balance sheet calls overused is never suggested.
+ *
+ * @param {{overused: string[]}} balance the balance sheet of the map so far
+ */
+export function continuationHints(grid, vocabulary, x, y, balance = { overused: [] }) {
+  const lines = [];
+  const bySide = {};
+  for (const side of SIDES) {
+    const first = getCell(grid, x + side.dx, y + side.dy);
+    const type = first ? typeById(vocabulary, first.typeId) : null;
+    const role = type?.isBarrier ? "barrier" : isRouteType(type) ? "route" : null;
+    if (!role) continue;
+    let length = 0;
+    while (getCell(grid, x + side.dx * (length + 1), y + side.dy * (length + 1))?.typeId === first.typeId) length += 1;
+    lines.push({ direction: side.name, type: first.typeId, role, length });
+    bySide[side.name] = first.typeId;
+  }
+  const joins = [];
+  for (const side of ["north", "east"]) {
+    const opposite = SIDES.find((one) => one.name === side).opposite;
+    if (bySide[side] && bySide[side] === bySide[opposite] && !joins.includes(bySide[side])) joins.push(bySide[side]);
+  }
+
+  const allowed = (type) => !(balance?.overused ?? []).includes(type);
+  let suggested = null;
+  const join = joins.find(allowed);
+  if (join) {
+    suggested = { type: join, reason: `closes the gap between two ${join} segments` };
+  } else {
+    const candidates = lines
+      .filter((one) => one.length < MAX_CONTINUED_LINE && allowed(one.type))
+      .sort((a, b) => (a.role === b.role ? b.length - a.length : a.role === "barrier" ? -1 : 1));
+    if (candidates.length > 0) {
+      const best = candidates[0];
+      suggested = {
+        type: best.type,
+        reason: `continues the ${best.type} ${best.role === "barrier" ? "line" : "route"} of ${best.length} cell${best.length === 1 ? "" : "s"} from the ${best.direction}`,
+      };
+    }
+  }
+  return { lines, joins, suggested };
+}
+
+/**
+ * The share of the map a type should take, read from the rarity word in its
+ * placement rules. The vocabulary prompt asks for exactly these words.
+ */
+export const TARGET_SHARES = { mostCommon: 0.45, common: 0.15, uncommon: 0.06, rare: 0.02, unspecified: 0.05 };
+
+const RARITY_WORDS = [
+  [/most common/i, TARGET_SHARES.mostCommon],
+  [/\bcommon\b/i, TARGET_SHARES.common],
+  [/\buncommon\b/i, TARGET_SHARES.uncommon],
+  [/\brare\b|\bexactly one\b|\bonly one\b/i, TARGET_SHARES.rare],
+];
+
+/** The target share of one type. The first rarity word in the rules wins. */
+export function targetShare(placementRules) {
+  const text = String(placementRules ?? "");
+  let best = null;
+  for (const [pattern, share] of RARITY_WORDS) {
+    const match = pattern.exec(text);
+    if (match && (best === null || match.index < best.index)) best = { index: match.index, share };
+  }
+  return best ? best.share : TARGET_SHARES.unspecified;
+}
+
+/** A type is overused once its share passes its target by this factor. */
+const OVERUSE_FACTOR = 1.3;
+const MIN_CELLS_FOR_OVERUSE = 3;
+const MAX_NEEDED = 5;
+
+/**
+ * Where every type stands against its target share, for the state (ADR 0002).
+ *
+ * Without this the model answers each cell from its neighbours alone, and a
+ * map that starts with grass ends as grass: v1 used one type for more than 85%
+ * of the cells on thirteen maps out of fifteen. `needed` lists the types most
+ * below their target, the most missing first; `overused` the ones far above.
+ */
+export function balanceSheet(vocabulary, counts, totalCells) {
+  const shares = {};
+  const gaps = [];
+  const overused = [];
+  for (const type of vocabulary.elements) {
+    const target = Math.round(targetShare(type.placementRules) * 100);
+    const count = counts[type.id] ?? 0;
+    const now = totalCells > 0 ? Math.round((count / totalCells) * 100) : 0;
+    shares[type.id] = { target, now };
+    if (now < target) gaps.push({ id: type.id, missing: (target - now) / target });
+    if (count >= MIN_CELLS_FOR_OVERUSE && now > target * OVERUSE_FACTOR) overused.push(type.id);
+  }
+  gaps.sort((a, b) => b.missing - a.missing);
+  return { needed: gaps.slice(0, MAX_NEEDED).map((one) => one.id), overused, shares };
+}
 
 function edgesOf(grid, x, y) {
   const edges = [];
@@ -59,7 +190,11 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
     neighbours: neighboursOf(grid, x, y).map((one) => ({ direction: one.direction, type: one.cell.typeId })),
     nearbyCounts: ringCounts(grid, x, y, NEARBY_RADIUS),
     mapCounts: placed,
+    balance: null,
+    continuations: null,
   };
+  state.balance = balanceSheet(vocabulary, placed, grid.width * grid.height);
+  state.continuations = continuationHints(grid, vocabulary, x, y, state.balance);
   const criteria = {};
   for (const type of vocabulary.elements) {
     const flags = [type.walkable ? "walkable" : "not walkable", type.isBarrier ? "barrier" : null, type.interactable ? "interactable" : null]

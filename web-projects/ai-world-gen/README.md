@@ -48,7 +48,7 @@ This is the founding project of a side project started at the **AI Hackathon Bar
 
 ### How a cell is decided
 
-For each cell the decision model receives a small state: the world's name and summary, the setting text, the cell's coordinates and which grid edges it touches, its placed 8-neighbours with their types, type counts within two steps, and type counts for the whole map so far. It never receives the whole grid. It is asked one `choice` question whose options are the type ids, each described with its label, description, placement rules and flags. It answers with a choice, a confidence and a probability per option.
+For each cell the decision model receives a small state: the world's name and summary, the setting text, the cell's coordinates and which grid edges it touches, its placed 8-neighbours with their types, type counts within two steps, type counts for the whole map so far, and two things the code works out for it. A **balance sheet**: each type's target share, read from the rarity word in its placement rules ("most common" 45%, "common" 15%, "uncommon" 6%, "rare" 2%), against its share so far, with the types most below target listed as needed and those far above as overused. And **continuation hints**: the barrier and route lines that reach the cell from its four sides with their length, the types standing on two opposite sides, and one *suggested* type when a gap can be closed or a line shorter than four cells continued (never an overused type). It never receives the whole grid. It is asked one `choice` question whose options are the type ids, each described with its label, description, placement rules and flags, with an instruction to follow the suggestion when there is one and the balance sheet when there is none. It answers with a choice, a confidence and a probability per option.
 
 ### Files
 
@@ -104,7 +104,9 @@ Anything raised mid-build that is not ready to implement yet. Add to it; strike 
 - **The vocabulary box is raw JSON.** Honest and dense. A form with one row per type (label, flags, tag, rules) would make editing common instead of possible. Wait until somebody edits.
 - **Shipped vocabularies go stale in spirit.** The tests catch one that no longer validates, not one that a better prompt would have written differently. Regenerate them with the model when the prompt changes meaningfully, and paste the answers back.
 - **A monotone map fools the path metrics.** A map that is all corridor scores 1.0 on every path metric. The paths specification needs a metric that punishes paths covering most of the map (a `path-share-in-range`, like the barrier one), and the structures specification could use one that asks for at least one enclosed room. Add them once the first three specifications are agreed, so v1 stays comparable.
-- **The generator collapses to one type.** Jev gives the ground type 85% or more on almost every cell once a few neighbours are ground. Candidates to try, one version each: drop the "prefer the most common ground type" line; put the target counts from the placement rules into the state; sample with a higher spread or a temperature; ask two questions per cell (kind of cell first, then which type).
+- **Closed shapes need a door.** v4 walls close rectangles and nothing opens them, so walkable regions split. Candidates: a hint that names the interactable type whose rules say "in a wall" when the cell would close a shape; or a repair pass in code that replaces one barrier between two regions with the most common walkable type, reported as such.
+- **Coverage fell back to 0.63 in v4.** The suggestion wins over the balance sheet. A cap on how often a suggestion is followed in a row, or a suggestion that yields to a rare type still at zero, would give the vocabulary its turn.
+- **Sampling noise.** `chooseType` still samples any option above 8% of the best. With structure hints in the state, sampling may now break more lines than it saves. Try a higher floor (40%) as its own version.
 - **Cost display**: OpenRouter returns token usage per call; summing it into "this world cost $0.03" would make the pitch concrete, and would show that a preset world costs cents.
 
 ## Evaluation in Galtea
@@ -129,15 +131,23 @@ python evaluate.py report --version v2 --against v1     # after the next iterati
 
 Every map is also drawn as a PNG with the page's own tiles, saved under `evaluation/results/vN/`, and attached to the Galtea output next to the ASCII view, so a result can be seen at a glance in the dashboard and compared across versions in the repository. The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`), so runs stay comparable when OpenRouter adds newer ones. Results are also written to `evaluation/results/vN.json`.
 
-### Baseline, v1 (2026-09-19)
+### Versions so far (2026-09-19)
 
-| Specification | Mean score |
-|---|---|
-| Barriers form structures, not debris | 0.19 |
-| Paths form continuous routes | 0.99 |
-| Every walkable area is reachable, and the map is playable | 0.68 |
+| Version | What changed | Structures | Paths | Reachable and playable |
+|---|---|---|---|---|
+| v1 | The generator as first shipped | 0.19 | 0.99 | 0.68 |
+| v2 | Balance sheet in the state; "prefer the ground type" line removed | 0.67 | 0.43 | 0.85 |
+| v3 | Continuation hints; instruction says "structures first, continue the line" | 0.60 | 0.96 | 0.74 |
+| v4 | Code judges the one suggested continuation (short lines, closable gaps, never an overused type) | **0.93** | **0.80** | **0.82** |
 
-What v1 actually draws: **monotone maps**. Thirteen of the fifteen use one type for more than 85% of the cells (a village that is all grass with one oak, a station that is all corridor, a mansion that is all hall floor); vocabulary coverage averages 0.15. The few barriers are scattered singles. The per-cell instruction "where nothing is placed nearby, prefer the most common ground type" plus neighbour reinforcement plus sampling makes the ground type win every cell. The paths score is high for the wrong reason: a map that is all corridor has no isolated path cell. That is the first thing to fix in the generation, and the first gap in the metrics (see open questions).
+What each version actually drew:
+
+- **v1: monotone maps.** Thirteen of fifteen used one type for more than 85% of the cells (a village that is all grass with one oak, a station that is all corridor); vocabulary coverage 0.15. The paths score was high for the wrong reason: a map that is all corridor has no isolated path cell. Read v1's 0.99 as "not measured".
+- **v2: confetti.** The balance sheet fixed coverage (0.91) but the model placed the needed types anywhere: single walls, single path cells, nothing joined up. Paths 0.43 is the first honest paths number.
+- **v3: floods.** Told to continue every line, the model did, across the map: 39 path cells in a village, 58 corridors in a station. Paths 0.96, but barrier share and walkable share went out of range and coverage fell to 0.53.
+- **v4: structures.** With the continuation judged by code, walls form lines and closed shapes (barrier in structure 0.94) and routes mostly join up. Two things remain: closed shapes get no door, so walkable regions split (single region 0.58), and coverage is 0.63 because the suggestion crowds out the rarer types.
+
+Pictures of every map of every version are under `evaluation/results/vN/`.
 
 ## Tests
 

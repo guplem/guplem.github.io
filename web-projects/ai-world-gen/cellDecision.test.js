@@ -1,13 +1,19 @@
 import { describe, expect, test } from "bun:test";
 import {
   CHAT_DECISION_SCHEMA,
+  MAX_CONTINUED_LINE,
   NEARBY_RADIUS,
+  TARGET_SHARES,
+  balanceSheet,
   buildCellDecision,
   buildChatDecisionMessages,
   chooseType,
+  continuationHints,
   fallbackType,
+  isRouteType,
   readChatDecision,
   readDecisionAnswer,
+  targetShare,
 } from "./cellDecision.js";
 import { createGrid, setCell } from "./grid.js";
 import { mulberry32 } from "./random.js";
@@ -57,11 +63,147 @@ describe("buildCellDecision", () => {
     expect(JSON.stringify(state)).not.toContain("cells");
   });
 
+  test("the state carries the balance sheet, and the instructions ask for it and no longer favour the ground type", () => {
+    const grid = createGrid(4, 4);
+    for (let i = 0; i < 12; i += 1) setCell(grid, i % 4, Math.floor(i / 4), { typeId: "grass" });
+    const { state, questions } = buildCellDecision({ vocabulary, setting, grid, x: 0, y: 3 });
+    expect(state.balance.overused).toEqual(["grass"]);
+    expect(state.balance.needed).toEqual(["wall", "door"]);
+    expect(state.balance.shares.grass.now).toBe(75);
+    expect(questions.type.instructions).toMatch(/needed/);
+    expect(questions.type.instructions).toMatch(/overused/);
+    expect(questions.type.instructions).toMatch(/continuations\.suggested/);
+    expect(questions.type.instructions).not.toMatch(/most common ground type/);
+    expect(state.continuations).toEqual({ lines: [], joins: [], suggested: null });
+  });
+
   test("a cell on the edge says which edges it touches", () => {
     const { state } = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 0, y: 4 });
     expect(state.cell.edges).toEqual(["south", "west"]);
     const corner = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 4, y: 0 });
     expect(corner.state.cell.edges).toEqual(["north", "east"]);
+  });
+});
+
+describe("targetShare", () => {
+  test("reads the rarity word out of the placement rules", () => {
+    expect(targetShare("The most common cell. Fills every open space.")).toBe(TARGET_SHARES.mostCommon);
+    expect(targetShare("Common. Forms lines between houses.")).toBe(TARGET_SHARES.common);
+    expect(targetShare("Uncommon. Exactly one per cottage.")).toBe(TARGET_SHARES.uncommon);
+    expect(targetShare("Rare. On grass or path.")).toBe(TARGET_SHARES.rare);
+    expect(targetShare("Exactly one, on the green.")).toBe(TARGET_SHARES.rare);
+    expect(targetShare("Around houses.")).toBe(TARGET_SHARES.unspecified);
+  });
+
+  test("the most common word wins over a later rarer one, and matching is case-insensitive", () => {
+    expect(targetShare("MOST COMMON in the north, rare elsewhere.")).toBe(TARGET_SHARES.mostCommon);
+    expect(targetShare("rare, uncommon in the south")).toBe(TARGET_SHARES.rare);
+  });
+});
+
+describe("balanceSheet", () => {
+  const balanced = {
+    elements: [
+      { id: "grass", placementRules: "The most common cell." },
+      { id: "wall", placementRules: "Common. Forms rectangles." },
+      { id: "door", placementRules: "Uncommon. One per house." },
+      { id: "chest", placementRules: "Rare. Inside houses." },
+    ],
+  };
+
+  test("names the types below their target share as needed, the most missing first, and those far above as overused", () => {
+    const sheet = balanceSheet(balanced, { grass: 20, wall: 1 }, 64);
+    expect(sheet.needed).toEqual(["door", "chest", "wall", "grass"]);
+    expect(sheet.overused).toEqual([]);
+    const later = balanceSheet(balanced, { grass: 40, wall: 2 }, 64);
+    expect(later.overused).toEqual(["grass"]);
+    expect(later.needed).toEqual(["door", "chest", "wall"]);
+  });
+
+  test("a type at its target is neither needed nor overused, and nothing is overused with fewer than three cells", () => {
+    const sheet = balanceSheet(balanced, { grass: 29, wall: 10, door: 4, chest: 1 }, 64);
+    expect(sheet.needed).toEqual([]);
+    expect(sheet.overused).toEqual([]);
+    expect(balanceSheet(balanced, { chest: 2 }, 64).overused).toEqual([]);
+  });
+
+  test("carries the target and current share of every type, as percentages", () => {
+    const sheet = balanceSheet(balanced, { grass: 32 }, 64);
+    expect(sheet.shares.grass).toEqual({ target: 45, now: 50 });
+    expect(sheet.shares.chest).toEqual({ target: 2, now: 0 });
+  });
+
+  test("needed is ordered by the share of the target that is still missing", () => {
+    const sheet = balanceSheet(balanced, { grass: 5, door: 3 }, 64);
+    expect(sheet.needed).toEqual(["wall", "chest", "grass", "door"]);
+  });
+});
+
+describe("isRouteType", () => {
+  test("a route is a path-like tag or a path-like name", () => {
+    expect(isRouteType({ id: "dirt-path", label: "Dirt path", visualTag: "path" })).toBe(true);
+    expect(isRouteType({ id: "corridor", label: "Corridor", visualTag: "metal-floor" })).toBe(true);
+    expect(isRouteType({ id: "grass", label: "Grass", visualTag: "grass" })).toBe(false);
+    expect(isRouteType(null)).toBe(false);
+  });
+});
+
+describe("continuationHints", () => {
+  const world = {
+    elements: [
+      { id: "grass", label: "Grass", visualTag: "grass", isBarrier: false },
+      { id: "wall", label: "Wall", visualTag: "stone-wall", isBarrier: true },
+      { id: "path", label: "Dirt path", visualTag: "path", isBarrier: false },
+    ],
+  };
+
+  const nothingOverused = { overused: [] };
+
+  test("names each barrier or route line that reaches the cell, with its length, and suggests the short barrier", () => {
+    const grid = createGrid(6, 3);
+    setCell(grid, 0, 1, { typeId: "wall" });
+    setCell(grid, 1, 1, { typeId: "wall" });
+    setCell(grid, 2, 1, { typeId: "wall" });
+    setCell(grid, 3, 0, { typeId: "path" });
+    setCell(grid, 3, 2, { typeId: "grass" });
+    expect(continuationHints(grid, world, 3, 1, nothingOverused)).toEqual({
+      lines: [
+        { direction: "north", type: "path", role: "route", length: 1 },
+        { direction: "west", type: "wall", role: "barrier", length: 3 },
+      ],
+      joins: [],
+      suggested: { type: "wall", reason: "continues the wall line of 3 cells from the west" },
+    });
+  });
+
+  test("a type on two opposite sides is a join and is suggested first; ground types give no hint", () => {
+    const grid = createGrid(3, 3);
+    setCell(grid, 0, 1, { typeId: "wall" });
+    setCell(grid, 2, 1, { typeId: "wall" });
+    setCell(grid, 1, 0, { typeId: "grass" });
+    const hints = continuationHints(grid, world, 1, 1, nothingOverused);
+    expect(hints.joins).toEqual(["wall"]);
+    expect(hints.lines.map((one) => one.direction)).toEqual(["east", "west"]);
+    expect(hints.suggested).toEqual({ type: "wall", reason: "closes the gap between two wall segments" });
+  });
+
+  test("a line that is long enough is reported but not suggested, so a wall cannot run across the map", () => {
+    const grid = createGrid(8, 1);
+    for (let x = 0; x < MAX_CONTINUED_LINE; x += 1) setCell(grid, x, 0, { typeId: "path" });
+    const hints = continuationHints(grid, world, MAX_CONTINUED_LINE, 0, nothingOverused);
+    expect(hints.lines[0].length).toBe(MAX_CONTINUED_LINE);
+    expect(hints.suggested).toBeNull();
+  });
+
+  test("an overused type is never suggested, even for a join", () => {
+    const grid = createGrid(3, 3);
+    setCell(grid, 0, 1, { typeId: "wall" });
+    setCell(grid, 2, 1, { typeId: "wall" });
+    expect(continuationHints(grid, world, 1, 1, { overused: ["wall"] }).suggested).toBeNull();
+  });
+
+  test("an empty neighbourhood gives empty hints", () => {
+    expect(continuationHints(createGrid(3, 3), world, 1, 1, nothingOverused)).toEqual({ lines: [], joins: [], suggested: null });
   });
 });
 
