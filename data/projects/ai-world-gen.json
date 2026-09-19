@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "AI World Gen",
+  "description": [
+    "*AI World Gen* is a **map generator with two kinds of AI**. Describe a place, and a language model invents its vocabulary once; a fast **typed-decision model** (TypeSafe's Jev) then places every cell from its neighbours, live, one tile at a time.",
+    "Started at the [AI Hackathon Barcelona 2026](https://www.norrsken.org/houses/barcelona), I designed the split: the one creative job goes to a language model, the hundreds of repetitive decisions go to the model built for that. Bring your own **OpenRouter** key; the page has no server.",
+    "A flood fill catches sealed-off rooms, an inspector shows every cell's probabilities, and the logic is **covered by tests written before the code**."
+  ],
+  "skills": ["Vibe Coded", "AI Integration", "API Integration", "Architecture", "UI/UX"],
+  "links": [
+    { "url": "web-projects/ai-world-gen/" },
+    { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/ai-world-gen" }
+  ]
+}
