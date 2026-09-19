@@ -43,9 +43,10 @@ generator.**
    modules the page uses (`runTestCase.js`), then logs each map as one
    session with one inference result (input: the parameters; output: the map
    as text and JSON, with a PNG of the map drawn by `renderMap.py` attached
-   as a file part) and one evaluation per metric with the computed score.
-   The local results are written to `results/vN.json`, and `report` prints
-   the change against another version.
+   as a file part) and one evaluation per metric with the computed score,
+   then finishes the session, because a map is one turn and a session left
+   open reads as an unfinished conversation. The local results are written to
+   `results/vN.json`, and `report` prints the change against another version.
 
 4. **Test cases use the shipped vocabularies and small grids.** The presets
    make the creative call unnecessary (ADR 0004), and 8 by 8 cells keep a full
