@@ -1,6 +1,6 @@
-// What this browser remembers: the OpenRouter key, and which model does which
-// job. Nothing else, and nothing here is ever sent anywhere but OpenRouter
-// (root ADR 0007, ADR 0001).
+// What this browser remembers: the OpenRouter key, which model does which
+// job, and the chosen art style. Nothing else, and nothing here is ever sent
+// anywhere but OpenRouter (root ADR 0007, ADR 0001).
 //
 // Every function takes the storage to use rather than reaching for
 // `localStorage` itself. That is what makes this file testable without a
@@ -12,10 +12,12 @@
 // threat model and why it is stored at all.
 
 import { DEFAULT_DECISION_MODEL, DEFAULT_NARRATIVE_MODEL } from "./models.js";
+import { readStyleId } from "./tileStyles.js";
 
 export const STORAGE_KEYS = {
   apiKey: "ai-world-gen.apiKey",
   models: "ai-world-gen.models",
+  style: "ai-world-gen.style",
 };
 
 function readRaw(storage, key) {
@@ -94,6 +96,15 @@ export function readModelChoices(storage) {
     decisionModel: cleanModelId(stored?.decisionModel, DEFAULT_DECISION_MODEL),
     narrativeModel: cleanModelId(stored?.narrativeModel, DEFAULT_NARRATIVE_MODEL),
   };
+}
+
+/** The art style the map is drawn in. A preference, so it is private and stays here. */
+export function readStoredStyle(storage) {
+  return readStyleId(readRaw(storage, STORAGE_KEYS.style));
+}
+
+export function saveStoredStyle(storage, styleId) {
+  writeRaw(storage, STORAGE_KEYS.style, readStyleId(styleId));
 }
 
 export function saveModelChoices(storage, choices) {

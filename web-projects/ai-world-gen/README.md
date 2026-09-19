@@ -25,7 +25,8 @@ This is the founding project of a side project started at the **AI Hackathon Bar
 - **Map tool**: pan by drag, zoom by wheel, pinch or buttons; click a cell for its name, type, coordinates, flags, placement rules, instance fields, confidence, the model's top options and timing.
 - **Personalisation**: change a cell's type by hand, ask the model again about one cell, download the world as JSON, load it back.
 - **Graceful degradation**: any text model can stand in for Jev (slower, one JSON answer per cell). A failed cell is retried, then filled with a fallback and marked orange. A dead key or a dead model stops the run with a sentence that names the fix.
-- **Tileset**: the Urizen 1-bit tileset, one style for every setting. The vocabulary names a *visual tag*, never a tile.
+- **Four art styles, switchable at any moment**: Urizen 1-bit pixel tiles, emoji, roguelike letters, flat colour blocks. The vocabulary names a *visual tag*, never a tile, so a style change is a redraw of the same map.
+- **No creative call for a preset.** Every suggestion chip ships its vocabulary. The **Vocabulary (optional)** box on the setup screen shows it as JSON; edit it, paste your own, or clear it to have the model write one. A generated vocabulary is written back into the box, so the next run of that world is free.
 
 ## Architecture, and why
 
@@ -39,7 +40,9 @@ This is the founding project of a side project started at the **AI Hackathon Bar
 
 **The vocabulary declares its own instance fields.** Each element type lists the properties one instance of it will need later (a chest: `contents`, `locked`; a station's crew member: `rank`, `clearance`). That is what lets the schema adapt to any setting instead of carrying hard-coded NPC and chest logic. Phase 3 fills those fields.
 
-**Visual tags, not sprites** ([ADR 0003](adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md)). The tileset manifest maps a fixed list of tags to sheet positions. The vocabulary must use a tag from that list; a wrong one is a validation error the model is asked to fix.
+**Visual tags, not sprites** ([ADR 0003](adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md)). The tileset manifest maps a fixed list of tags to sheet positions, and a glyph table gives every tag an emoji, a roguelike letter and a colour. The vocabulary must use a tag from that list; a wrong one is a validation error the model is asked to fix. Every art style reads the tag, which is why the style can change while the map is still being generated.
+
+**The vocabulary is shipped for the presets and editable for everyone** ([ADR 0004](adr/0004-ship-the-vocabulary-for-every-preset-and-let-the-reader-edit-it.md)). The creative call is most of a world's cost, and a preset asks the same question every time. The eight preset vocabularies were written once (by Claude, in the build session) and pass the same validation a generated one must pass. The setup screen shows the vocabulary in a box that a person can read, edit or clear.
 
 **Plain code checks the result.** The reachability check is a two-minute breadth-first search, and it catches the one class of broken map that no per-cell decision can see.
 
@@ -53,16 +56,18 @@ For each cell the decision model receives a small state: the world's name and su
 |---|---|
 | `openRouterClient.js` | The **only** file that calls the network: `checkKey`, `listModels`, `generate`, `decide` |
 | `models.js` | Default model ids, the catalogue read from OpenRouter, and which endpoint a model needs |
-| `settings.js` | The key and the model choices, in an injected storage |
-| `vocabulary.js` | The vocabulary prompt, its JSON schema, validation, and the ask-again loop |
+| `settings.js` | The key, the model choices and the art style, in an injected storage |
+| `vocabulary.js` | The vocabulary prompt, its JSON schema, validation, the ask-again loop, and reading the setup box's text |
 | `cellDecision.js` | The per-cell state and question, reading the answer, sampling a type, the chat stand-in, the fallback |
 | `generation.js` | The sequential loop with retries, fallbacks and stop conditions; `createDecider` picks the transport |
 | `orderStrategies.js` | The five generation orders behind `nextCoordinate(placed)` |
 | `grid.js` | The grid, neighbours, counts, JSON in and out |
 | `reachability.js` | The flood fill |
 | `tileset.js` | The visual-tag manifest and the sheet geometry |
+| `tileStyles.js` | The four art styles, and the emoji, letter and colour of every visual tag |
+| `presetVocabularies.js` | One ready vocabulary per suggestion chip |
 | `camera.js` | Pan, zoom and hit-testing arithmetic |
-| `presets.js` | Setting suggestions, grid sizes, the shape of a setting |
+| `presets.js` | Setting suggestions, grid sizes, the shape of a setting, and matching a link's setting back to its preset |
 | `urlState.js` | What the link carries: the screen and the setup, never the key |
 | `random.js` | A seeded random number generator and coordinate hashing |
 | `openRouterErrors.js` | Turns a failed call into one sentence that names the fix |
@@ -78,6 +83,7 @@ Each phase is a complete, demoable state before the next one starts.
 
 - [x] **Phase 1 — Map generator + inspector (the hackathon deliverable).** Setup screen with presets, grid size and order picker. AI Setup screen with key, test connection and model pickers. Vocabulary generation with validation and retry. Sequential per-cell generation, rendered live. Reachability check. Map tool: pan, zoom, click a cell for its properties. Urizen tileset.
 - [x] **Phase 2 — Map personalisation.** Change a cell's type by hand, ask the model again about one cell, download and load the map as JSON. *(Landed with Phase 1 because the architecture made it cheap; the "goal placement" use of it waits for Phase 6.)*
+- [x] **Phase 2b — Styles and a free start.** Four switchable art styles, and a shipped, editable vocabulary for every preset so a preset world makes no creative call. *(Asked for after the first live runs showed the creative call was most of the cost.)*
 - [ ] **Phase 3 — Interactive element detail generation.** A second pass over interactable cells that fills each type's self-declared `instanceFields`, typed values through `decide()` and flavour text through `generate()`, grounded in the setting.
 - [ ] **Phase 4 — Player + movement.** A player token, keyboard and click movement, optional fog of war.
 - [ ] **Phase 5 — Interaction narrative.** The player interacts with an object or a person; `generate()` writes dialogue or an outcome grounded in that cell's instance properties.
@@ -93,8 +99,10 @@ Anything raised mid-build that is not ready to implement yet. Add to it; strike 
 - **Placement rules are prose.** The model reads them and the reachability check catches sealed rooms, but nothing enforces "never next to X" mechanically. A rule language (adjacency lists in the vocabulary, checked in code) would be the Galtea stretch goal's first concrete rule.
 - **Larger maps** are limited by one sequential call per cell (a 24 × 24 map is 576 calls). Parallel decisions are possible for the random order (no dependency between cells) and for cells far apart in the frontier order. Not done, because the visible sequence is the demo.
 - **Sealed regions could be repaired** automatically (replace one barrier between two regions with the most common walkable type) rather than only reported.
-- **The tileset manifest was read off the sheet by eye.** Some tags are approximations (`bridge` is a plank, `trap` is a hatched pit). Kenney's packs remain the richer alternative if one style per setting ever matters more than one style for all.
-- **Cost display**: OpenRouter returns token usage per call; summing it into "this world cost $0.03" would make the pitch concrete.
+- **The tileset manifest was read off the sheet by eye.** Some tags are approximations (`bridge` is a plank, `trap` is a hatched pit). A Kenney style (their CC0 roguelike packs, richer and coloured) would be a fifth entry in the style list with its own sheet and manifest; the code needs nothing else.
+- **The vocabulary box is raw JSON.** Honest and dense. A form with one row per type (label, flags, tag, rules) would make editing common instead of possible. Wait until somebody edits.
+- **Shipped vocabularies go stale in spirit.** The tests catch one that no longer validates, not one that a better prompt would have written differently. Regenerate them with the model when the prompt changes meaningfully, and paste the answers back.
+- **Cost display**: OpenRouter returns token usage per call; summing it into "this world cost $0.03" would make the pitch concrete, and would show that a preset world costs cents.
 
 ## Tests
 

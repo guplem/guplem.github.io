@@ -267,6 +267,35 @@ export function parseVocabulary(text, visualTags) {
   return normaliseVocabulary(raw, visualTags);
 }
 
+/**
+ * What the vocabulary box on the setup screen holds (ADR 0004): nothing (the
+ * model writes it), a valid vocabulary (no creative call needed), or a text
+ * with problems. The summary is the one line shown under the box.
+ */
+export function describeVocabularyText(text, visualTags) {
+  const clean = typeof text === "string" ? text.trim() : "";
+  if (clean === "") {
+    return { state: "empty", vocabulary: null, errors: [], summary: "Empty: the narrative model will write the vocabulary (one paid call)." };
+  }
+  const parsed = parseVocabulary(clean, visualTags);
+  if (!parsed.ok) {
+    const count = parsed.errors.length;
+    return { state: "invalid", vocabulary: null, errors: parsed.errors, summary: `${count} problem${count === 1 ? "" : "s"}. Fix them, or clear the box to let the model write it.` };
+  }
+  const { vocabulary } = parsed;
+  return {
+    state: "valid",
+    vocabulary,
+    errors: [],
+    summary: `Ready: "${vocabulary.name}", ${vocabulary.elements.length} types. No creative call will be made.`,
+  };
+}
+
+/** A vocabulary as readable JSON for the box. */
+export function formatVocabulary(vocabulary) {
+  return JSON.stringify(vocabulary, null, 2);
+}
+
 export function typeById(vocabulary, id) {
   return vocabulary?.elements?.find((one) => one.id === id) ?? null;
 }

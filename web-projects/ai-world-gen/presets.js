@@ -77,6 +77,18 @@ export function isSettingComplete(setting) {
   return cleanSetting(setting).location !== "";
 }
 
+/**
+ * The preset a setting still equals, field for field, or null once any field
+ * was edited. A matching preset has a shipped vocabulary (`presetVocabularies.js`).
+ */
+export function presetMatching(setting) {
+  const clean = cleanSetting(setting);
+  return (
+    SETTING_PRESETS.find((one) => one.location === clean.location && one.era === clean.era && one.notes === clean.notes) ??
+    null
+  );
+}
+
 /** The setting as one paragraph for a prompt. Empty fields are left out. */
 export function describeSetting(setting) {
   const clean = cleanSetting(setting);

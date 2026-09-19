@@ -1,4 +1,4 @@
-# ADR 0003: One tileset for every setting, and a tag between the vocabulary and the tile
+# ADR 0003: One tileset for every setting, a tag between the vocabulary and the tile, and styles that read the tag
 
 ## Context
 
@@ -31,6 +31,16 @@ picks the variant, so a field of grass does not repeat one drawing.
 **The tag `unknown` is the fallback.** A type whose tag the manifest does not
 know draws a visible question mark, never nothing.
 
+**Every art style reads the same tag, and a style is a redraw.** The sprite
+style is one of four. `tileStyles.js` gives every tag an emoji, a one-character
+roguelike glyph and a colour, and `render.drawTag` draws a tag in any style
+into any square. A person switches style in the map toolbar at any moment,
+during generation or after, and the grid, the legend and the inspector redraw.
+Nothing about the world changes, because nothing about the world ever named a
+picture. The chosen style is a private preference and lives in `settings.js`.
+`tileStyles.test.js` fails when the glyph table and the sheet manifest name
+different tags, so a new tag must be given a look in every style at once.
+
 **The sheet geometry is data.** 12 pixel tiles, a 1 pixel margin, 1 pixel
 between tiles, 206 columns by 50 rows. `tileset.test.js` reads the PNG header
 and fails if the file and the numbers disagree, and fails on any tag whose
@@ -47,10 +57,12 @@ the sheet by eye and some entries are approximations (`bridge` is a plank).
 Adding a tag is one line in `tileset.js`; the prompt and the validator pick it
 up with no other change.
 
-**One-bit art is a look, not everyone's.** Kenney's CC0 packs are richer and
-more colourful, and the same artist drew them, so they mix. They are the swap
-if that ever matters more than one style for all settings. The tag indirection
-means the swap touches `tileset.js` and the PNG, and nothing else.
+**One-bit art is a look, not everyone's.** That is why the three code styles
+exist: emoji for warmth, roguelike letters for the classic feel, flat colour
+blocks for reading a map's structure. Kenney's CC0 packs are richer and more
+colourful, and the same artist drew them, so they mix; a Kenney style would be
+a fifth entry in `VISUAL_STYLES`, a second sheet and a second manifest, and
+nothing else.
 
 **Rejected: hardcode a sprite per generated type id.** The id does not exist
 until the model writes it. **Rejected: a pack per genre.** A genre detector, a

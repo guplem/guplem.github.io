@@ -4,7 +4,9 @@ import {
   VOCABULARY_LIMITS,
   VOCABULARY_SCHEMA,
   buildVocabularyMessages,
+  describeVocabularyText,
   extractJson,
+  formatVocabulary,
   generateVocabulary,
   normaliseVocabulary,
   parseVocabulary,
@@ -155,6 +157,37 @@ describe("parseVocabulary", () => {
     const bad = parseVocabulary("nothing", tags);
     expect(bad.ok).toBe(false);
     expect(bad.errors[0]).toMatch(/JSON/);
+  });
+});
+
+describe("describeVocabularyText and formatVocabulary", () => {
+  test("an empty box means the model will write the vocabulary", () => {
+    const result = describeVocabularyText("   ", tags);
+    expect(result.state).toBe("empty");
+    expect(result.vocabulary).toBeNull();
+    expect(result.summary).toMatch(/model/i);
+  });
+
+  test("a valid box names the world and counts its types", () => {
+    const result = describeVocabularyText(JSON.stringify(good()), tags);
+    expect(result.state).toBe("valid");
+    expect(result.vocabulary.name).toBe("Ashford");
+    expect(result.summary).toContain("Ashford");
+    expect(result.summary).toContain("6 types");
+  });
+
+  test("an invalid box carries the errors and says how many", () => {
+    const result = describeVocabularyText(JSON.stringify({ ...good(), elements: [] }), tags);
+    expect(result.state).toBe("invalid");
+    expect(result.errors.length).toBeGreaterThan(0);
+    expect(result.summary).toMatch(/problem/);
+  });
+
+  test("formatVocabulary writes readable JSON that reads back unchanged", () => {
+    const vocabulary = normaliseVocabulary(good(), tags).vocabulary;
+    const text = formatVocabulary(vocabulary);
+    expect(text).toContain("\n");
+    expect(JSON.parse(text)).toEqual(vocabulary);
   });
 });
 

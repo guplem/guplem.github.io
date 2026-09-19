@@ -12,24 +12,26 @@ A map generator with two kinds of model. A text model writes a world's vocabular
 |---|---|---|
 | `openRouterClient.js` | No | The **only** file that calls `fetch`. `checkKey`, `listModels`, `generate` (chat), `decide` (decisions). Never throws: `{ok, ...}` or `{ok: false, status, message}` |
 | `models.js` | Yes | Default model ids, `readCatalogue` from `/api/v1/models`, `transportFor` (decisions or chat) |
-| `settings.js` | Yes | The key and the model choices, through an injected storage. The only file that names `localStorage` |
-| `vocabulary.js` | Yes | The prompt, `VOCABULARY_SCHEMA`, `normaliseVocabulary` (every error names its element), `generateVocabulary` with an injected `generate` |
+| `settings.js` | Yes | The key, the model choices and the art style, through an injected storage. The only file that names `localStorage` |
+| `vocabulary.js` | Yes | The prompt, `VOCABULARY_SCHEMA`, `normaliseVocabulary` (every error names its element), `generateVocabulary` with an injected `generate`, `describeVocabularyText` for the setup box |
 | `cellDecision.js` | Yes | `buildCellDecision` (state + one choice question), `readDecisionAnswer`, `chooseType` (sampling), the chat stand-in, `fallbackType` |
 | `generation.js` | Yes | `runGeneration` (sequential loop, retries, fallbacks, stop rules) with an injected `decide`; `createDecider` builds one from the client and the transport |
 | `orderStrategies.js` | Yes | Five orders behind `nextCoordinate(placed: Set<string>)` |
 | `grid.js` | Yes | The grid (mutated in place), neighbours, ring counts, JSON in and out |
 | `reachability.js` | Yes | Four-way flood fill over walkable cells; `ok` is false on more than one region |
 | `tileset.js` | Yes (data) | Sheet geometry and the `VISUAL_TAGS` manifest (ADR 0003) |
+| `tileStyles.js` | Yes (data) | The four art styles and, per visual tag, the emoji, roguelike glyph and colour the code styles draw (ADR 0003) |
+| `presetVocabularies.js` | Yes (data) | One ready vocabulary per setting preset, so a preset needs no creative call (ADR 0004) |
 | `camera.js` | Yes | Fit, pan, zoom around a point, cell under a point |
-| `presets.js` | Yes | Setting suggestions, grid sizes, `cleanSetting`, `describeSetting` |
+| `presets.js` | Yes | Setting suggestions, grid sizes, `cleanSetting`, `describeSetting`, `presetMatching` |
 | `urlState.js` | Yes | The view and the setup in the link; never the key |
 | `random.js` | Yes | `mulberry32`, `seedFromText`, `hashCoordinate` |
 | `openRouterErrors.js` | Yes | A failure into one sentence that names the fix |
-| `render.js` | No | The canvas: `createRenderer`, `loadTilesheet`, `tileThumbnail` |
+| `render.js` | No | The canvas: `createRenderer`, `loadTilesheet`, `drawTag` (one tag, one style, one square), `tileThumbnail` |
 | `app.js` | No | The page: three views, wiring, the generation flow |
 | `deployStamp.js`, `deployText.js` | Yes | The "deployed at" line (root ADR 0013) |
 
-Data flow for one world: `app.js` → `vocabulary.generateVocabulary(client.generate)` → `orderStrategies.createOrder` → `generation.runGeneration(createDecider(client))` → for each cell `cellDecision.buildCellDecision` → `decide` → `cellDecision.chooseType` → `grid.setCell` → `render.draw` → at the end `reachability.analyseReachability`.
+Data flow for one world: `app.js` → the vocabulary box (`vocabulary.describeVocabularyText`; a preset chip fills it from `presetVocabularies.js`) or, when the box is empty, `vocabulary.generateVocabulary(client.generate)` → `orderStrategies.createOrder` → `generation.runGeneration(createDecider(client))` → for each cell `cellDecision.buildCellDecision` → `decide` → `cellDecision.chooseType` → `grid.setCell` → `render.draw` → at the end `reachability.analyseReachability`.
 
 ## Non-obvious conventions and gotchas
 
@@ -37,6 +39,8 @@ Data flow for one world: `app.js` → `vocabulary.generateVocabulary(client.gene
 - **Jev's payload was not exercised with a real key before the first deploy** (no key in the build session). `readDecisionAnswer` follows the documented System One shape. If the first real run shows a different shape, fix it there and update the README's open questions.
 - **The state sent per cell never carries the grid.** It carries the 8-neighbours, counts within `NEARBY_RADIUS` (2) and whole-map counts. `cellDecision.test.js` asserts the serialised state has no `cells` key. Keep it that way: a 24 × 24 grid per call multiplies the cost by the map size.
 - **The map samples the probabilities.** `chooseType` with `spread` 1 draws from the returned probabilities, dropping options below `SAMPLE_FLOOR` (8%) of the best. A cell records both `typeId` (what was placed) and `modelChoice` (the model's top pick), and the inspector shows both when they differ. Setting `spread` to 0 makes the loop deterministic given the model.
+- **A new visual tag needs a row in two files**: `VISUAL_TAGS` in `tileset.js` (the sprite) and `STYLE_GLYPHS` in `tileStyles.js` (emoji, glyph, colour). `tileStyles.test.js` fails until both agree. Only `render.js` may call `tileFor` or `glyphFor`; `invariants.test.js` pins that.
+- **The vocabulary box is the source when it is valid.** `generateWorld` in `app.js` reads the box first: valid means no model call, empty means the model writes it and the answer is written back into the box, invalid stops with the errors shown. Changing the prompt rules or the tag list can invalidate a shipped vocabulary in `presetVocabularies.js`; the tests fail, and the fix is to edit the shipped text, not the validator.
 - **A visual tag outside `VISUAL_TAGS` is a validation error, not a fallback**, so the model fixes it. The fallback tag `unknown` exists for cells loaded from an older file or drawn before the vocabulary is known. The sheet has four separator columns (25, 51, 77, 103); `tileset.test.js` fails on a tag placed on one.
 - **Tile positions are `[column, row]`, and the pixel is `1 + index * 13`.** The sheet is 206 × 50 tiles. `tileset.test.js` reads the PNG header, so a replaced PNG with another size fails loudly.
 - **`FATAL_STATUSES` (401, 402, 403, 404) stop the run at once**; 0, 429 and 5xx are retried with a growing pause and then fall back. Four fallbacks in a row also stop the run. A fallback cell has `source: "fallback"` and `error`; a hand-changed cell has `source: "hand"`. The renderer marks both with a coloured corner.
@@ -48,7 +52,7 @@ Data flow for one world: `app.js` → `vocabulary.generateVocabulary(client.gene
 
 ## Tests
 
-Every module marked "Pure" has a sibling `*.test.js`, and new behaviour goes in test-first (root ADR 0012). `app.js`, `render.js` and `openRouterClient.js` have none by design; anything in them worth a test belongs in a pure module instead. `invariants.test.js` pins the decisions of the three ADRs.
+Every module marked "Pure" has a sibling `*.test.js`, and new behaviour goes in test-first (root ADR 0012). `app.js`, `render.js` and `openRouterClient.js` have none by design; anything in them worth a test belongs in a pure module instead. `invariants.test.js` pins the decisions of the four ADRs.
 
 ```bash
 cd web-projects/ai-world-gen && bun test
@@ -60,4 +64,5 @@ cd web-projects/ai-world-gen && bun test
 |---|---|
 | [0001](adr/0001-openrouter-is-the-one-gateway-and-the-key-lives-here.md) | OpenRouter is the one gateway (CORS verified), and the key lives in this browser |
 | [0002](adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
-| [0003](adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, and a visual tag between the vocabulary and the tile |
+| [0003](adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |
+| [0004](adr/0004-ship-the-vocabulary-for-every-preset-and-let-the-reader-edit-it.md) | Ship the vocabulary for every preset, and let the reader edit it on the setup screen |
