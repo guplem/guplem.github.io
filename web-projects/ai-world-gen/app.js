@@ -36,9 +36,11 @@ import {
   readApiKey,
   readModelChoices,
   readStoredStyle,
+  readStoredSpriteVariation,
   saveApiKey,
   saveModelChoices,
   saveStoredStyle,
+  saveStoredSpriteVariation,
 } from "./settings.js";
 import { TILE_SIZE, visualTagNames } from "./tileset.js";
 import { VISUAL_STYLES, readStyleId } from "./tileStyles.js";
@@ -69,6 +71,7 @@ const state = {
   catalogue: readCatalogue(null),
   catalogueLoaded: false,
   styleId: readStoredStyle(storage),
+  varySprites: readStoredSpriteVariation(storage),
   sheet: null,
   renderer: null,
   vocabulary: null,
@@ -410,7 +413,14 @@ function redraw() {
     selected: state.selected,
     latest: state.latest,
     styleId: state.styleId,
+    varySprites: state.varySprites,
   });
+}
+
+/** The toggle only means something in the pixel style; the code styles have one drawing per tag. */
+function renderSpriteVariationControl() {
+  element("vary-sprites").checked = state.varySprites;
+  element("vary-sprites-control").hidden = state.styleId !== "urizen";
 }
 
 function renderStyleSelect() {
@@ -428,6 +438,7 @@ function renderStyleSelect() {
 function changeStyle(styleId) {
   state.styleId = readStyleId(styleId);
   saveStoredStyle(storage, state.styleId);
+  renderSpriteVariationControl();
   renderLegend();
   renderInspector();
   redraw();
@@ -930,6 +941,11 @@ function wireEvents() {
     renderSetupStatus();
   });
   element("style").addEventListener("change", (event) => changeStyle(event.target.value));
+  element("vary-sprites").addEventListener("change", (event) => {
+    state.varySprites = event.target.checked;
+    saveStoredSpriteVariation(storage, state.varySprites);
+    redraw();
+  });
   element("load-file").addEventListener("change", (event) => {
     const file = event.target.files?.[0];
     if (file) loadMapFile(file);
@@ -984,6 +1000,7 @@ async function start() {
   renderSizeSelect();
   renderOrderSelect();
   renderStyleSelect();
+  renderSpriteVariationControl();
   renderKeyField();
   renderModelSelects();
   // A shared link to a preset world is free too: its vocabulary is shipped (ADR 0004).

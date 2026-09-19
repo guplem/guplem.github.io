@@ -43,7 +43,12 @@ describe("the key lives in this browser and goes to OpenRouter only (ADR 0001)",
   });
 
   test("the storage keys are exactly these, because renaming one loses the saved key", () => {
-    expect(STORAGE_KEYS).toEqual({ apiKey: "ai-world-gen.apiKey", models: "ai-world-gen.models", style: "ai-world-gen.style" });
+    expect(STORAGE_KEYS).toEqual({
+      apiKey: "ai-world-gen.apiKey",
+      models: "ai-world-gen.models",
+      style: "ai-world-gen.style",
+      spriteVariation: "ai-world-gen.spriteVariation",
+    });
   });
 
   test("no module writes the key into the address bar", () => {

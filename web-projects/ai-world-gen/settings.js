@@ -18,6 +18,7 @@ export const STORAGE_KEYS = {
   apiKey: "ai-world-gen.apiKey",
   models: "ai-world-gen.models",
   style: "ai-world-gen.style",
+  spriteVariation: "ai-world-gen.spriteVariation",
 };
 
 function readRaw(storage, key) {
@@ -105,6 +106,19 @@ export function readStoredStyle(storage) {
 
 export function saveStoredStyle(storage, styleId) {
   writeRaw(storage, STORAGE_KEYS.style, readStyleId(styleId));
+}
+
+/**
+ * Whether the pixel style varies a tag's sprite from cell to cell. On by
+ * default, because a field of one repeated drawing looks like wallpaper; off
+ * when a person wants every cell of one type to look the same, to read a map.
+ */
+export function readStoredSpriteVariation(storage) {
+  return readRaw(storage, STORAGE_KEYS.spriteVariation) !== "off";
+}
+
+export function saveStoredSpriteVariation(storage, enabled) {
+  writeRaw(storage, STORAGE_KEYS.spriteVariation, enabled ? "on" : "off");
 }
 
 export function saveModelChoices(storage, choices) {

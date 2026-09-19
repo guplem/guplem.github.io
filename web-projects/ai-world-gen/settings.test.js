@@ -6,9 +6,11 @@ import {
   readApiKey,
   readModelChoices,
   readStoredStyle,
+  readStoredSpriteVariation,
   saveApiKey,
   saveModelChoices,
   saveStoredStyle,
+  saveStoredSpriteVariation,
 } from "./settings.js";
 import { DEFAULT_STYLE_ID } from "./tileStyles.js";
 
@@ -99,5 +101,23 @@ describe("the art style", () => {
     saveStoredStyle(storage, "nope");
     expect(readStoredStyle(storage)).toBe(DEFAULT_STYLE_ID);
     expect(readStoredStyle(refusingStorage)).toBe(DEFAULT_STYLE_ID);
+  });
+});
+
+describe("sprite variation", () => {
+  test("is on by default, and off once switched off", () => {
+    const storage = fakeStorage();
+    expect(readStoredSpriteVariation(storage)).toBe(true);
+    saveStoredSpriteVariation(storage, false);
+    expect(readStoredSpriteVariation(storage)).toBe(false);
+    saveStoredSpriteVariation(storage, true);
+    expect(readStoredSpriteVariation(storage)).toBe(true);
+  });
+
+  test("garbage or a refused storage reads as on", () => {
+    const storage = fakeStorage();
+    storage.setItem(STORAGE_KEYS.spriteVariation, "maybe");
+    expect(readStoredSpriteVariation(storage)).toBe(true);
+    expect(readStoredSpriteVariation(refusingStorage)).toBe(true);
   });
 });

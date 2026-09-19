@@ -25,7 +25,7 @@ This is the founding project of a side project started at the **AI Hackathon Bar
 - **Map tool**: pan by drag, zoom by wheel, pinch or buttons; click a cell for its name, type, coordinates, flags, placement rules, instance fields, confidence, the model's top options and timing.
 - **Personalisation**: change a cell's type by hand, ask the model again about one cell, download the world as JSON, load it back.
 - **Graceful degradation**: any text model can stand in for Jev (slower, one JSON answer per cell). A failed cell is retried, then filled with a fallback and marked orange. A dead key or a dead model stops the run with a sentence that names the fix.
-- **Four art styles, switchable at any moment**: Urizen 1-bit pixel tiles, emoji, roguelike letters, flat colour blocks. The vocabulary names a *visual tag*, never a tile, so a style change is a redraw of the same map.
+- **Four art styles, switchable at any moment**: Urizen 1-bit pixel tiles, emoji, roguelike letters, flat colour blocks. The vocabulary names a *visual tag*, never a tile, so a style change is a redraw of the same map. In the pixel style a **Vary sprites** toggle turns the per-cell tile variants off, so every cell of a type looks like its legend entry, which is easier to read when checking a map.
 - **No creative call for a preset.** Every suggestion chip ships its vocabulary. The **Vocabulary (optional)** box on the setup screen shows it as JSON; edit it, paste your own, or clear it to have the model write one. A generated vocabulary is written back into the box, so the next run of that world is free.
 
 ## Architecture, and why
