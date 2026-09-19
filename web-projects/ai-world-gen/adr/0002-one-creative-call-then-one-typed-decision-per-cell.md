@@ -34,10 +34,18 @@ Repetitive, structured decisions go to a decision model, once per cell.**
 
 2. **`decide()` places every cell.** For each cell, `cellDecision.js` builds a
    small state (the world, the cell and its edges, the placed 8-neighbours,
-   type counts within two steps, type counts for the whole map so far) and one
+   type counts within two steps, type counts for the whole map so far, a
+   balance sheet of each type against its target share, and the barrier and
+   route lines that reach the cell with one code-judged suggestion) and one
    `choice` question whose options are the type ids, each described with its
    rules. The model answers with a choice and probabilities. The state never
    carries the grid.
+
+   The two judgements are code on purpose. Measured against the
+   specifications (ADR 0005): a model that sees only neighbours collapses the
+   map to one type (v1); a balance sheet alone scatters the vocabulary (v2);
+   an instruction to continue every line floods the map (v3); a suggestion
+   limited by code to short lines and closable gaps builds structures (v4).
 
 3. **The two are not interchangeable.** `openRouterClient.js` has two methods
    with two request shapes and two endpoints. `models.transportFor` says which

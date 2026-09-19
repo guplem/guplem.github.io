@@ -8,8 +8,11 @@
 //
 // The state sent with each question is small on purpose. It carries the eight
 // neighbouring cells, counts within a short radius, and counts for the whole
-// map so far. It never carries the grid itself: a 24 by 24 map would cost more
-// tokens per cell than the answer is worth, and the model does not need it.
+// map so far. It also carries two things the code, not the model, works out:
+// a balance sheet of each type against its target share, and continuation
+// hints that name the one type worth continuing here, or none. It never
+// carries the grid itself: a 24 by 24 map would cost more tokens per cell
+// than the answer is worth, and the model does not need it.
 //
 // A text model can answer the same question through `chat/completions` when
 // Jev is not available. That path is slower and dearer, and it exists so a
