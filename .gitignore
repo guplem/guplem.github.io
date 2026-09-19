@@ -15,3 +15,6 @@ Thumbs.db
 
 # Local keys for the AI World Gen evaluation (OPENROUTER_API_KEY, GALTEA_API_KEY)
 web-projects/ai-world-gen/evaluation/.env
+
+# Python bytecode (the evaluation script)
+__pycache__/
