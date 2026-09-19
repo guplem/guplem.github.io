@@ -5,9 +5,12 @@ import {
   forgetApiKey,
   readApiKey,
   readModelChoices,
+  readStoredStyle,
   saveApiKey,
   saveModelChoices,
+  saveStoredStyle,
 } from "./settings.js";
+import { DEFAULT_STYLE_ID } from "./tileStyles.js";
 
 function fakeStorage() {
   const map = new Map();
@@ -79,5 +82,22 @@ describe("the model choices", () => {
     storage.setItem(STORAGE_KEYS.models, "{not json");
     expect(readModelChoices(storage).decisionModel).toBe(DEFAULT_DECISION_MODEL);
     expect(readModelChoices(refusingStorage).narrativeModel).toBe(DEFAULT_NARRATIVE_MODEL);
+  });
+});
+
+describe("the art style", () => {
+  test("defaults to the sprite sheet and is read back once saved", () => {
+    const storage = fakeStorage();
+    expect(readStoredStyle(storage)).toBe(DEFAULT_STYLE_ID);
+    saveStoredStyle(storage, "emoji");
+    expect(readStoredStyle(storage)).toBe("emoji");
+    expect(storage.map.get(STORAGE_KEYS.style)).toBe("emoji");
+  });
+
+  test("an unknown or refused value falls back to the default", () => {
+    const storage = fakeStorage();
+    saveStoredStyle(storage, "nope");
+    expect(readStoredStyle(storage)).toBe(DEFAULT_STYLE_ID);
+    expect(readStoredStyle(refusingStorage)).toBe(DEFAULT_STYLE_ID);
   });
 });
