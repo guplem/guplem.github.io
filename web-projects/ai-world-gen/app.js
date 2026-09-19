@@ -17,7 +17,16 @@ import { formatPricePerMillion, readCatalogue, transportFor } from "./models.js"
 import { describeFailure } from "./openRouterErrors.js";
 import * as client from "./openRouterClient.js";
 import { ORDER_STRATEGIES, createOrder, readOrderId } from "./orderStrategies.js";
-import { GRID_LIMITS, GRID_SIZES, SETTING_PRESETS, cleanSetting, isSettingComplete, readGridSize } from "./presets.js";
+import { presetVocabularyFor } from "./presetVocabularies.js";
+import {
+  GRID_LIMITS,
+  GRID_SIZES,
+  SETTING_PRESETS,
+  cleanSetting,
+  isSettingComplete,
+  presetMatching,
+  readGridSize,
+} from "./presets.js";
 import { mulberry32, seedFromText } from "./random.js";
 import { analyseReachability } from "./reachability.js";
 import { createRenderer, loadTilesheet, tileThumbnail } from "./render.js";
@@ -26,12 +35,21 @@ import {
   forgetApiKey,
   readApiKey,
   readModelChoices,
+  readStoredStyle,
   saveApiKey,
   saveModelChoices,
+  saveStoredStyle,
 } from "./settings.js";
 import { TILE_SIZE, visualTagNames } from "./tileset.js";
+import { VISUAL_STYLES, readStyleId } from "./tileStyles.js";
 import { buildSearch, readStateFromSearch } from "./urlState.js";
-import { generateVocabulary, normaliseVocabulary, typeById } from "./vocabulary.js";
+import {
+  describeVocabularyText,
+  formatVocabulary,
+  generateVocabulary,
+  normaliseVocabulary,
+  typeById,
+} from "./vocabulary.js";
 
 const PROJECT_PATH = "web-projects/ai-world-gen";
 const CUSTOM_SIZE_ID = "custom";
@@ -50,6 +68,7 @@ const state = {
   models: readModelChoices(storage),
   catalogue: readCatalogue(null),
   catalogueLoaded: false,
+  styleId: readStoredStyle(storage),
   sheet: null,
   renderer: null,
   vocabulary: null,
@@ -144,8 +163,11 @@ function renderPresets() {
     chip.addEventListener("click", () => {
       state.setting = cleanSetting(preset);
       renderSettingFields();
+      // A suggestion brings its vocabulary, so this world costs no creative call (ADR 0004).
+      setVocabularyText(formatVocabulary(presetVocabularyFor(preset.id)));
       rememberUrl();
       renderPresets();
+      renderSetupStatus();
     });
     const matches = state.setting.location === preset.location && state.setting.era === preset.era && state.setting.notes === preset.notes;
     chip.setAttribute("aria-pressed", matches ? "true" : "false");
@@ -219,7 +241,37 @@ function renderSetupStatus() {
   }
   const transport = transportFor(state.models.decisionModel, state.catalogue);
   const note = transport === "chat" ? " (a text model standing in for Jev: slower)" : "";
-  setStatus("setup-status", `${modelName(state.models.decisionModel)} decides each cell${note}. ${modelName(state.models.narrativeModel)} writes the vocabulary.`);
+  const box = readVocabularyBox();
+  const vocabularyLine =
+    box.state === "valid"
+      ? `The vocabulary comes from the box: no creative call.`
+      : `${modelName(state.models.narrativeModel)} writes the vocabulary.`;
+  setStatus("setup-status", `${modelName(state.models.decisionModel)} decides each cell${note}. ${vocabularyLine}`);
+}
+
+/* The vocabulary box: a preset fills it, a person may edit it, and an empty box
+ * means the model writes it (ADR 0004). */
+
+function readVocabularyBox() {
+  return describeVocabularyText(element("vocabulary-json").value, visualTagNames());
+}
+
+function setVocabularyText(text) {
+  element("vocabulary-json").value = text;
+  renderVocabularyStatus();
+}
+
+function renderVocabularyStatus() {
+  const box = readVocabularyBox();
+  const tone = box.state === "valid" ? "ok" : box.state === "invalid" ? "error" : "";
+  setStatus("vocabulary-status", box.summary, tone);
+  element("vocabulary-summary").textContent = box.summary;
+  const errors = element("vocabulary-errors");
+  clear(errors);
+  for (const problem of box.errors.slice(0, 8)) errors.append(make("li", { text: problem }));
+  if (box.errors.length > 8) errors.append(make("li", { text: `…and ${box.errors.length - 8} more.` }));
+  element("vocabulary-format").disabled = box.state !== "valid";
+  element("vocabulary-clear").disabled = box.state === "empty";
 }
 
 /* -------------------------------------------------------------------------- */
@@ -341,8 +393,44 @@ function fitMap() {
 
 function redraw() {
   if (!state.renderer) return;
-  if (state.grid && !state.camera) state.camera = fitCamera(state.grid, TILE_SIZE, canvasViewport());
-  state.renderer.draw({ grid: state.grid, vocabulary: state.vocabulary, camera: state.camera, selected: state.selected, latest: state.latest });
+  // A hidden canvas measures 0 by 0, and a camera fitted to that is a dot in a
+  // corner. Fit only once the canvas has a size; until then there is nothing to see.
+  if (state.grid && !state.camera) {
+    const viewport = canvasViewport();
+    if (viewport.width === 0 || viewport.height === 0) {
+      requestAnimationFrame(redraw);
+      return;
+    }
+    state.camera = fitCamera(state.grid, TILE_SIZE, viewport);
+  }
+  state.renderer.draw({
+    grid: state.grid,
+    vocabulary: state.vocabulary,
+    camera: state.camera,
+    selected: state.selected,
+    latest: state.latest,
+    styleId: state.styleId,
+  });
+}
+
+function renderStyleSelect() {
+  const select = element("style");
+  clear(select);
+  for (const style of VISUAL_STYLES) {
+    const item = option(style.id, style.label);
+    item.title = style.description;
+    select.append(item);
+  }
+  select.value = state.styleId;
+}
+
+/** A style change is a redraw of the same grid, and the legend and inspector follow (ADR 0003). */
+function changeStyle(styleId) {
+  state.styleId = readStyleId(styleId);
+  saveStoredStyle(storage, state.styleId);
+  renderLegend();
+  renderInspector();
+  redraw();
 }
 
 function renderProgress(done, total) {
@@ -361,7 +449,7 @@ function renderLegend() {
   for (const type of state.vocabulary.elements) {
     const item = make("li");
     item.title = `${type.description} Placement: ${type.placementRules}`;
-    item.append(tileThumbnail(state.sheet, type.visualTag, 0));
+    item.append(tileThumbnail(state.sheet, type.visualTag, 0, 2, state.styleId));
     const text = make("div");
     text.append(make("div", { text: type.label }), make("div", { className: "legend-flags", text: typeFlags(type) }));
     item.append(text, make("span", { className: "legend-count", text: String(counts[type.id] ?? 0) }));
@@ -389,7 +477,7 @@ function renderInspector() {
 
   const tile = element("inspector-tile");
   clear(tile);
-  tile.append(tileThumbnail(state.sheet, type?.visualTag ?? "unknown", 0, 4));
+  tile.append(tileThumbnail(state.sheet, type?.visualTag ?? "unknown", 0, 4, state.styleId));
   element("inspector-label").textContent = type?.label ?? (cell ? cell.typeId : "Not decided yet");
   element("inspector-coords").textContent = `x ${state.selected.x}, y ${state.selected.y}`;
   element("inspector-description").textContent = type?.description ?? "";
@@ -514,6 +602,13 @@ async function generateWorld() {
     return;
   }
   if (state.running) return;
+  const box = readVocabularyBox();
+  if (box.state === "invalid") {
+    setStatus("setup-status", "The vocabulary box has problems. Fix them or clear it.", "error");
+    element("vocabulary-details").open = true;
+    element("vocabulary-json").focus();
+    return;
+  }
 
   const { width, height } = readGridSize(state.size);
   state.vocabulary = null;
@@ -531,32 +626,40 @@ async function generateWorld() {
   showView("map");
   afterGridChange();
 
-  setStatus("map-status", `Asking ${modelName(state.models.narrativeModel)} what this world is made of…`);
-  log(`Vocabulary: asking ${state.models.narrativeModel}`);
-  const started = performance.now();
-  const result = await generateVocabulary({
-    generate: makeGenerate(),
-    setting: state.setting,
-    visualTags: visualTagNames(),
-    attempts: 3,
-    onAttempt: ({ attempt, errors }) => {
-      if (attempt > 1) {
-        setStatus("map-status", `The vocabulary had ${errors.length} problem${errors.length === 1 ? "" : "s"}; asking again (attempt ${attempt} of 3)…`, "warn");
-        log(`Vocabulary attempt ${attempt}: ${errors.slice(0, 3).join(" | ")}`, "warn");
-      }
-    },
-  });
-  if (!result.ok) {
-    state.running = false;
-    element("stop").hidden = true;
-    const reason = result.failure ? describeFailure(result.failure) : `The model could not produce a valid vocabulary in ${result.attempts} attempts. Last problems: ${result.errors.slice(0, 3).join(" ")}`;
-    setStatus("map-status", reason, "error");
-    log(reason, "error");
-    return;
+  if (box.state === "valid") {
+    // The box already holds a checked vocabulary: no creative call (ADR 0004).
+    state.vocabulary = box.vocabulary;
+    log(`Vocabulary: "${box.vocabulary.name}", ${box.vocabulary.elements.length} types from the setup screen, no model call`);
+  } else {
+    setStatus("map-status", `Asking ${modelName(state.models.narrativeModel)} what this world is made of…`);
+    log(`Vocabulary: asking ${state.models.narrativeModel}`);
+    const started = performance.now();
+    const result = await generateVocabulary({
+      generate: makeGenerate(),
+      setting: state.setting,
+      visualTags: visualTagNames(),
+      attempts: 3,
+      onAttempt: ({ attempt, errors }) => {
+        if (attempt > 1) {
+          setStatus("map-status", `The vocabulary had ${errors.length} problem${errors.length === 1 ? "" : "s"}; asking again (attempt ${attempt} of 3)…`, "warn");
+          log(`Vocabulary attempt ${attempt}: ${errors.slice(0, 3).join(" | ")}`, "warn");
+        }
+      },
+    });
+    if (!result.ok) {
+      state.running = false;
+      element("stop").hidden = true;
+      const reason = result.failure ? describeFailure(result.failure) : `The model could not produce a valid vocabulary in ${result.attempts} attempts. Last problems: ${result.errors.slice(0, 3).join(" ")}`;
+      setStatus("map-status", reason, "error");
+      log(reason, "error");
+      return;
+    }
+    state.vocabulary = result.vocabulary;
+    const vocabularyMs = Math.round(performance.now() - started);
+    log(`Vocabulary: ${result.vocabulary.elements.length} types in ${vocabularyMs} ms (${result.attempts} attempt${result.attempts === 1 ? "" : "s"})`);
+    // Put the paid answer in the box, so the next run of this world is free and editable.
+    setVocabularyText(formatVocabulary(result.vocabulary));
   }
-  state.vocabulary = result.vocabulary;
-  const vocabularyMs = Math.round(performance.now() - started);
-  log(`Vocabulary: ${result.vocabulary.elements.length} types in ${vocabularyMs} ms (${result.attempts} attempt${result.attempts === 1 ? "" : "s"})`);
   renderWorldHeader();
   renderLegend();
 
@@ -682,6 +785,7 @@ async function loadMapFile(file) {
   renderSettingFields();
   renderOrderSelect();
   renderPresets();
+  setVocabularyText(formatVocabulary(state.vocabulary));
   renderWorldHeader();
   renderProgress(1, 1);
   showView("map");
@@ -813,6 +917,19 @@ function wireEvents() {
     rememberUrl();
   });
   element("generate").addEventListener("click", generateWorld);
+  element("vocabulary-json").addEventListener("input", () => {
+    renderVocabularyStatus();
+    renderSetupStatus();
+  });
+  element("vocabulary-format").addEventListener("click", () => {
+    const box = readVocabularyBox();
+    if (box.state === "valid") setVocabularyText(formatVocabulary(box.vocabulary));
+  });
+  element("vocabulary-clear").addEventListener("click", () => {
+    setVocabularyText("");
+    renderSetupStatus();
+  });
+  element("style").addEventListener("change", (event) => changeStyle(event.target.value));
   element("load-file").addEventListener("change", (event) => {
     const file = event.target.files?.[0];
     if (file) loadMapFile(file);
@@ -866,8 +983,12 @@ async function start() {
   renderSettingFields();
   renderSizeSelect();
   renderOrderSelect();
+  renderStyleSelect();
   renderKeyField();
   renderModelSelects();
+  // A shared link to a preset world is free too: its vocabulary is shipped (ADR 0004).
+  const preset = presetMatching(state.setting);
+  setVocabularyText(preset ? formatVocabulary(presetVocabularyFor(preset.id)) : "");
   renderDeployLine(element("deploy-line"), readStamp(document), "en", say, escapeHtml, PROJECT_PATH);
   wireEvents();
 

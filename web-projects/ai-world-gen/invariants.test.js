@@ -12,10 +12,13 @@ import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { DEFAULT_DECISION_MODEL, DEFAULT_NARRATIVE_MODEL } from "./models.js";
 import { ORDER_STRATEGIES } from "./orderStrategies.js";
+import { PRESET_VOCABULARIES } from "./presetVocabularies.js";
+import { SETTING_PRESETS } from "./presets.js";
 import { STORAGE_KEYS } from "./settings.js";
-import { VISUAL_TAGS } from "./tileset.js";
+import { VISUAL_TAGS, visualTagNames } from "./tileset.js";
+import { VISUAL_STYLES } from "./tileStyles.js";
 import { VIEWS } from "./urlState.js";
-import { VOCABULARY_SCHEMA } from "./vocabulary.js";
+import { VOCABULARY_SCHEMA, normaliseVocabulary } from "./vocabulary.js";
 
 const FOLDER = import.meta.dir;
 const sourceFiles = readdirSync(FOLDER).filter((name) => name.endsWith(".js") && !name.endsWith(".test.js"));
@@ -40,7 +43,7 @@ describe("the key lives in this browser and goes to OpenRouter only (ADR 0001)",
   });
 
   test("the storage keys are exactly these, because renaming one loses the saved key", () => {
-    expect(STORAGE_KEYS).toEqual({ apiKey: "ai-world-gen.apiKey", models: "ai-world-gen.models" });
+    expect(STORAGE_KEYS).toEqual({ apiKey: "ai-world-gen.apiKey", models: "ai-world-gen.models", style: "ai-world-gen.style" });
   });
 
   test("no module writes the key into the address bar", () => {
@@ -100,6 +103,28 @@ describe("the vocabulary names tags, never tiles (ADR 0003)", () => {
 
   test("the fallback tag exists, so an unknown tag draws something visible", () => {
     expect(VISUAL_TAGS.unknown).toBeDefined();
+  });
+
+  test("the style ids are stored, so they never change", () => {
+    expect(VISUAL_STYLES.map((one) => one.id)).toEqual(["urizen", "emoji", "roguelike", "blocks"]);
+  });
+
+  test("only render.js draws; no other module reads a glyph or a tile position", () => {
+    const drawers = sourceFiles.filter((name) => !["render.js", "tileset.js", "tileStyles.js"].includes(name) && /tileFor\(|glyphFor\(/.test(read(name)));
+    expect(drawers).toEqual([]);
+  });
+});
+
+describe("a preset world needs no creative call (ADR 0004)", () => {
+  test("every preset ships a vocabulary, and every shipped vocabulary has a preset", () => {
+    expect(Object.keys(PRESET_VOCABULARIES).sort()).toEqual(SETTING_PRESETS.map((one) => one.id).sort());
+  });
+
+  test("the shipped vocabularies pass the validation a generated one must pass", () => {
+    for (const [id, vocabulary] of Object.entries(PRESET_VOCABULARIES)) {
+      const result = normaliseVocabulary(vocabulary, visualTagNames());
+      expect(`${id}: ${(result.errors ?? []).join(" ")}`).toBe(`${id}: `);
+    }
   });
 });
 

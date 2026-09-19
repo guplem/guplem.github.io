@@ -84,6 +84,29 @@
               </div>
             </div>
 
+            <!-- The one expensive call is the vocabulary. A preset ships its own, and
+                 anything a person pastes or edits here is used as is (ADR 0004). -->
+            <details id="vocabulary-details" class="details-field">
+              <summary>
+                <span class="field-label">Vocabulary <span class="muted">(optional)</span></span>
+                <span id="vocabulary-summary" class="field-help"></span>
+              </summary>
+              <div class="details-body">
+                <p class="field-help">
+                  The list of element types the map is built from, as JSON. A suggestion fills it in for free.
+                  Leave it empty and the narrative model writes one for your setting (the one paid call). Edit it
+                  as you like: the same checks a model's answer must pass run on this box.
+                </p>
+                <textarea id="vocabulary-json" class="input input-code" rows="12" spellcheck="false" placeholder='{ "name": "...", "summary": "...", "elements": [ ... ] }'></textarea>
+                <p id="vocabulary-status" class="status" role="status" aria-live="polite"></p>
+                <ul id="vocabulary-errors" class="plain-list status-list"></ul>
+                <div class="actions actions-tight">
+                  <button id="vocabulary-format" type="button" class="button button-outline">Tidy the JSON</button>
+                  <button id="vocabulary-clear" type="button" class="button button-outline">Clear, let the model write it</button>
+                </div>
+              </div>
+            </details>
+
             <div class="actions">
               <button id="generate" type="button" class="button button-primary">Generate the world</button>
               <label class="button button-outline file-button">
@@ -99,10 +122,12 @@
           <summary>How this works, and why two models</summary>
           <div class="card-content">
             <p>
-              <strong>One creative call.</strong> A language model (Claude, GPT, Gemini, your pick) reads your three fields
-              and writes the <em>vocabulary</em> of the world: 6 to 24 element types, each with a description, placement
-              rules, whether you can walk on it, and the properties one instance of it would need later. That JSON is
-              checked, and the model is asked to fix it if it is wrong.
+              <strong>One creative call, or none.</strong> A language model (Claude, GPT, Gemini, your pick) reads your three
+              fields and writes the <em>vocabulary</em> of the world: 6 to 24 element types, each with a description,
+              placement rules, whether you can walk on it, and the properties one instance of it would need later. That
+              JSON is checked, and the model is asked to fix it if it is wrong. It is also the expensive part, so every
+              suggestion ships with its vocabulary written already, and you can read, edit or replace it in the
+              <em>Vocabulary</em> box above.
             </p>
             <p>
               <strong>Many fast decisions.</strong> Then, for every cell, a decision model (TypeSafe's Jev, by default)
@@ -204,6 +229,11 @@
                 <p id="world-summary" class="world-summary"></p>
               </div>
               <div class="toolbar-buttons">
+                <!-- Filled from VISUAL_STYLES. A change redraws the same grid (ADR 0003). -->
+                <label class="style-control">
+                  <span class="field-label">Style</span>
+                  <select id="style" class="select"></select>
+                </label>
                 <button id="zoom-out" type="button" class="button button-outline button-icon" aria-label="Zoom out">−</button>
                 <button id="zoom-fit" type="button" class="button button-outline">Fit</button>
                 <button id="zoom-in" type="button" class="button button-outline button-icon" aria-label="Zoom in">+</button>
