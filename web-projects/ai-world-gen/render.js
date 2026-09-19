@@ -97,7 +97,13 @@ export function createRenderer(canvas, sheet) {
     return ratio;
   }
 
-  function draw({ grid, vocabulary, camera, selected = null, latest = null, styleId = DEFAULT_STYLE_ID }) {
+  /**
+   * @param {object} options
+   * @param {boolean} [options.varySprites] pick a sprite variant per cell (on) or
+   *   draw every cell of a tag with its first variant (off), which is what the
+   *   legend shows and what makes a map easy to read while debugging
+   */
+  function draw({ grid, vocabulary, camera, selected = null, latest = null, styleId = DEFAULT_STYLE_ID, varySprites = true }) {
     const ratio = resize();
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
     context.imageSmoothingEnabled = false;
@@ -115,7 +121,7 @@ export function createRenderer(canvas, sheet) {
           context.fillRect(rect.x, rect.y, rect.size, rect.size);
           continue;
         }
-        drawTag(context, styleId, sheet, tagFor(vocabulary, cell), hashCoordinate(x, y), rect);
+        drawTag(context, styleId, sheet, tagFor(vocabulary, cell), varySprites ? hashCoordinate(x, y) : 0, rect);
         if (cell.source === "fallback") {
           context.fillStyle = "rgba(255, 140, 0, 0.9)";
           context.fillRect(rect.x, rect.y, Math.max(2, rect.size * 0.2), Math.max(2, rect.size * 0.2));

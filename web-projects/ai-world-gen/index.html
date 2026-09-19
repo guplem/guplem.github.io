@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="135" />
-  <meta name="deploy-date" content="2026-09-19T12:08:33.000Z" />
+  <meta name="deploy-pull-request" content="136" />
+  <meta name="deploy-date" content="2026-09-19T13:50:46.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -233,6 +233,11 @@
                 <label class="style-control">
                   <span class="field-label">Style</span>
                   <select id="style" class="select"></select>
+                </label>
+                <!-- Off, every cell of a type shows the legend's tile, which is easier to read. -->
+                <label id="vary-sprites-control" class="check style-control" title="In the pixel style, draw a different sprite variant per cell. Off, every cell of a type looks like its legend entry.">
+                  <input id="vary-sprites" type="checkbox" checked />
+                  <span>Vary sprites</span>
                 </label>
                 <button id="zoom-out" type="button" class="button button-outline button-icon" aria-label="Zoom out">−</button>
                 <button id="zoom-fit" type="button" class="button button-outline">Fit</button>
