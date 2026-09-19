@@ -9,6 +9,7 @@
 // The same names are used here, in `evaluate.py` and in the Galtea product,
 // so a score in the dashboard can be traced back to one function below.
 
+import { isRouteType } from "../cellDecision.js";
 import { getCell } from "../grid.js";
 import { analyseReachability } from "../reachability.js";
 import { glyphFor } from "../tileStyles.js";
@@ -59,14 +60,9 @@ export function metricsForSpecification(specificationId) {
   return METRICS.filter((one) => one.specificationId === specificationId);
 }
 
-const PATH_TAGS = new Set(["path", "road", "pavement", "bridge", "stairs"]);
-const PATH_WORDS = /\b(path|road|street|corridor|walkway|trail|lane|track|alley|hallway|avenue|passage)\b/i;
-
-/** Whether a vocabulary type is a route: by its visual tag, or by what it is called. */
+/** Whether a vocabulary type is a route. One definition, shared with the per-cell hints in cellDecision.js. */
 export function isPathType(type) {
-  if (!type) return false;
-  if (PATH_TAGS.has(type.visualTag)) return true;
-  return PATH_WORDS.test(`${type.id} ${type.label}`);
+  return isRouteType(type);
 }
 
 function isBarrierType(type) {

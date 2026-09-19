@@ -7,7 +7,9 @@ import {
   buildCellDecision,
   buildChatDecisionMessages,
   chooseType,
+  continuationHints,
   fallbackType,
+  isRouteType,
   readChatDecision,
   readDecisionAnswer,
   targetShare,
@@ -69,7 +71,9 @@ describe("buildCellDecision", () => {
     expect(state.balance.shares.grass.now).toBe(75);
     expect(questions.type.instructions).toMatch(/needed/);
     expect(questions.type.instructions).toMatch(/overused/);
+    expect(questions.type.instructions).toMatch(/continuations/);
     expect(questions.type.instructions).not.toMatch(/most common ground type/);
+    expect(state.continuations).toEqual({ lines: [], joins: [] });
   });
 
   test("a cell on the edge says which edges it touches", () => {
@@ -131,6 +135,55 @@ describe("balanceSheet", () => {
   test("needed is ordered by the share of the target that is still missing", () => {
     const sheet = balanceSheet(balanced, { grass: 5, door: 3 }, 64);
     expect(sheet.needed).toEqual(["wall", "chest", "grass", "door"]);
+  });
+});
+
+describe("isRouteType", () => {
+  test("a route is a path-like tag or a path-like name", () => {
+    expect(isRouteType({ id: "dirt-path", label: "Dirt path", visualTag: "path" })).toBe(true);
+    expect(isRouteType({ id: "corridor", label: "Corridor", visualTag: "metal-floor" })).toBe(true);
+    expect(isRouteType({ id: "grass", label: "Grass", visualTag: "grass" })).toBe(false);
+    expect(isRouteType(null)).toBe(false);
+  });
+});
+
+describe("continuationHints", () => {
+  const world = {
+    elements: [
+      { id: "grass", label: "Grass", visualTag: "grass", isBarrier: false },
+      { id: "wall", label: "Wall", visualTag: "stone-wall", isBarrier: true },
+      { id: "path", label: "Dirt path", visualTag: "path", isBarrier: false },
+    ],
+  };
+
+  test("names each barrier or route line that reaches the cell, with its length", () => {
+    const grid = createGrid(6, 3);
+    setCell(grid, 0, 1, { typeId: "wall" });
+    setCell(grid, 1, 1, { typeId: "wall" });
+    setCell(grid, 2, 1, { typeId: "wall" });
+    setCell(grid, 3, 0, { typeId: "path" });
+    setCell(grid, 3, 2, { typeId: "grass" });
+    expect(continuationHints(grid, world, 3, 1)).toEqual({
+      lines: [
+        { direction: "north", type: "path", role: "route", length: 1 },
+        { direction: "west", type: "wall", role: "barrier", length: 3 },
+      ],
+      joins: [],
+    });
+  });
+
+  test("a type on two opposite sides is a join, and ground types give no hint", () => {
+    const grid = createGrid(3, 3);
+    setCell(grid, 0, 1, { typeId: "wall" });
+    setCell(grid, 2, 1, { typeId: "wall" });
+    setCell(grid, 1, 0, { typeId: "grass" });
+    const hints = continuationHints(grid, world, 1, 1);
+    expect(hints.joins).toEqual(["wall"]);
+    expect(hints.lines.map((one) => one.direction)).toEqual(["east", "west"]);
+  });
+
+  test("an empty neighbourhood gives empty hints", () => {
+    expect(continuationHints(createGrid(3, 3), world, 1, 1)).toEqual({ lines: [], joins: [] });
   });
 });
 
