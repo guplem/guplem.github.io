@@ -68,6 +68,8 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `js/layoutBuilder/AGENTS.md` | Layout modules: responsibilities, data flow, key patterns |
 | `js/planetSimulation/AGENTS.md` | Particle simulation: architecture, config, performance |
 | `web-projects/AGENTS.md` | Web projects: conventions, TDD with Bun, full checklist for adding a new web-project |
+| `web-projects/ai-world-gen/AGENTS.md` | ai-world-gen: module map, the two OpenRouter endpoints and their shapes, the per-cell state rules, the tileset gotchas |
+| `web-projects/ai-world-gen/README.md` | ai-world-gen: the concept, the phase roadmap with progress, and the open questions (the project's memory between sessions) |
 | `web-projects/github-work-board/AGENTS.md` | github-work-board: module map, the higher reliability bar and why, the GitHub API gotchas |
 | `web-projects/github-work-board/.claude/skills/change-the-board/SKILL.md` | github-work-board: the procedure for any change in that folder |
 | `web-projects/rps-mind-reader/AGENTS.md` | rps-mind-reader: predictor architecture + contracts, R&D workflow, strategies tried/rejected |
@@ -247,6 +249,9 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0008](web-projects/github-work-board/adr/0008-settings-is-a-view-and-the-token-guide-is-written-once.md) | Settings is a view in the link, and the token guide is written once |
 | [github-work-board 0009](web-projects/github-work-board/adr/0009-filters-widen-within-a-kind-and-narrow-across-kinds.md) | Filters widen within one kind and narrow across kinds |
 | [github-work-board 0010](web-projects/github-work-board/adr/0010-relationships-come-from-githubs-graph.md) | Relationships come from GitHub's graph, in one call per token |
+| [ai-world-gen 0001](web-projects/ai-world-gen/adr/0001-openrouter-is-the-one-gateway-and-the-key-lives-here.md) | OpenRouter is the one gateway (browser CORS verified), and the key lives in this browser |
+| [ai-world-gen 0002](web-projects/ai-world-gen/adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
+| [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, and a visual tag between the vocabulary and the tile |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
