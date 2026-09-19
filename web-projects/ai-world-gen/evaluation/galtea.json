@@ -1,0 +1,43 @@
+{
+  "productId": "product_md97xp7ial74cku959oe0s5t",
+  "metricIds": {
+    "barrier-not-isolated": "metric_g5he34ou5fvz226xmmgucyu9",
+    "barrier-in-structure": "metric_ib4ugdm8nrewqkkiqerotydj",
+    "barrier-share-in-range": "metric_haxk1q5nkw2plgq0eu4d8ogt",
+    "path-not-isolated": "metric_tevuufe7qx3kkgi9b5p68y7a",
+    "path-in-largest-network": "metric_xt325isab9ljf3phzywbiyej",
+    "path-continuity": "metric_m5dqa46dk33awh74209t0pma",
+    "walkable-reachable-share": "metric_iofxamd2cm7ig314dzn7ximg",
+    "single-walkable-region": "metric_jk8ia0spmottxwzecej2mg3c",
+    "walkable-share-in-range": "metric_m0hqg5clj1dfdlzag1v98td8",
+    "vocabulary-coverage": "metric_lmhrpfrw4ydz41xwnkw13skp",
+    "model-answered": "metric_wtrihqcmih3m83s9kxt4tc2w"
+  },
+  "specificationIds": {
+    "structures": "specification_z2cysa3cgffur4vssnes5yub",
+    "paths": "specification_erap0bvqvcqczy5irfoia9l4",
+    "reachability": "specification_xws7nggozthcw8mjrcpzbdb3"
+  },
+  "testIds": {
+    "structures": "test_ykwwzvrdncdshurydhrqbh09",
+    "paths": "test_c9bne2a6owk2vs3315n9agvn",
+    "reachability": "test_dxveh09y24k5zvanvzvo48w0"
+  },
+  "testCaseIds": {
+    "structures-village-spiral": "testCase_yd2wsrgi2pljvj5dlaik03sq",
+    "structures-station-frontier": "testCase_rhc2kk4ksm5g8jygsmbdfogv",
+    "structures-mansion-spiral": "testCase_lxj3ukx5g42quyk0mjumvh27",
+    "structures-arctic-clustered": "testCase_y2mj7l38n2j6udpz37kt2nug",
+    "structures-cyberpunk-branching": "testCase_xvpichp3hxftiu5r1hg53mlp",
+    "paths-village-frontier": "testCase_vzbf5rvad77ackxpf8j52k6m",
+    "paths-cyberpunk-spiral": "testCase_jphh8wdt4hj18zvnf5jonz0n",
+    "paths-market-clustered": "testCase_to0y2jwlnqmodg9bdmzlpbpg",
+    "paths-station-branching": "testCase_gtz0719atobdae8l8lboe3m7",
+    "paths-jungle-frontier": "testCase_m7q8uqkseu77avojqnhabibg",
+    "reach-mansion-random": "testCase_xzs0ggt2izh4lkiuvz35j98w",
+    "reach-station-spiral": "testCase_ydmafnersffbjoqkkfpdamek",
+    "reach-desert-frontier": "testCase_z50s6ok5tg2sqeo0xo6n01p8",
+    "reach-jungle-clustered": "testCase_wmf5bgev7v174gcljuzpjg3j",
+    "reach-arctic-random": "testCase_ognky6u2vj276tf7982tu6iy"
+  }
+}
