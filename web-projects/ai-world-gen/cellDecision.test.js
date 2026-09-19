@@ -2,12 +2,15 @@ import { describe, expect, test } from "bun:test";
 import {
   CHAT_DECISION_SCHEMA,
   NEARBY_RADIUS,
+  TARGET_SHARES,
+  balanceSheet,
   buildCellDecision,
   buildChatDecisionMessages,
   chooseType,
   fallbackType,
   readChatDecision,
   readDecisionAnswer,
+  targetShare,
 } from "./cellDecision.js";
 import { createGrid, setCell } from "./grid.js";
 import { mulberry32 } from "./random.js";
@@ -57,11 +60,77 @@ describe("buildCellDecision", () => {
     expect(JSON.stringify(state)).not.toContain("cells");
   });
 
+  test("the state carries the balance sheet, and the instructions ask for it and no longer favour the ground type", () => {
+    const grid = createGrid(4, 4);
+    for (let i = 0; i < 12; i += 1) setCell(grid, i % 4, Math.floor(i / 4), { typeId: "grass" });
+    const { state, questions } = buildCellDecision({ vocabulary, setting, grid, x: 0, y: 3 });
+    expect(state.balance.overused).toEqual(["grass"]);
+    expect(state.balance.needed).toEqual(["wall", "door"]);
+    expect(state.balance.shares.grass.now).toBe(75);
+    expect(questions.type.instructions).toMatch(/needed/);
+    expect(questions.type.instructions).toMatch(/overused/);
+    expect(questions.type.instructions).not.toMatch(/most common ground type/);
+  });
+
   test("a cell on the edge says which edges it touches", () => {
     const { state } = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 0, y: 4 });
     expect(state.cell.edges).toEqual(["south", "west"]);
     const corner = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 4, y: 0 });
     expect(corner.state.cell.edges).toEqual(["north", "east"]);
+  });
+});
+
+describe("targetShare", () => {
+  test("reads the rarity word out of the placement rules", () => {
+    expect(targetShare("The most common cell. Fills every open space.")).toBe(TARGET_SHARES.mostCommon);
+    expect(targetShare("Common. Forms lines between houses.")).toBe(TARGET_SHARES.common);
+    expect(targetShare("Uncommon. Exactly one per cottage.")).toBe(TARGET_SHARES.uncommon);
+    expect(targetShare("Rare. On grass or path.")).toBe(TARGET_SHARES.rare);
+    expect(targetShare("Exactly one, on the green.")).toBe(TARGET_SHARES.rare);
+    expect(targetShare("Around houses.")).toBe(TARGET_SHARES.unspecified);
+  });
+
+  test("the most common word wins over a later rarer one, and matching is case-insensitive", () => {
+    expect(targetShare("MOST COMMON in the north, rare elsewhere.")).toBe(TARGET_SHARES.mostCommon);
+    expect(targetShare("rare, uncommon in the south")).toBe(TARGET_SHARES.rare);
+  });
+});
+
+describe("balanceSheet", () => {
+  const balanced = {
+    elements: [
+      { id: "grass", placementRules: "The most common cell." },
+      { id: "wall", placementRules: "Common. Forms rectangles." },
+      { id: "door", placementRules: "Uncommon. One per house." },
+      { id: "chest", placementRules: "Rare. Inside houses." },
+    ],
+  };
+
+  test("names the types below their target share as needed, the most missing first, and those far above as overused", () => {
+    const sheet = balanceSheet(balanced, { grass: 20, wall: 1 }, 64);
+    expect(sheet.needed).toEqual(["door", "chest", "wall", "grass"]);
+    expect(sheet.overused).toEqual([]);
+    const later = balanceSheet(balanced, { grass: 40, wall: 2 }, 64);
+    expect(later.overused).toEqual(["grass"]);
+    expect(later.needed).toEqual(["door", "chest", "wall"]);
+  });
+
+  test("a type at its target is neither needed nor overused, and nothing is overused with fewer than three cells", () => {
+    const sheet = balanceSheet(balanced, { grass: 29, wall: 10, door: 4, chest: 1 }, 64);
+    expect(sheet.needed).toEqual([]);
+    expect(sheet.overused).toEqual([]);
+    expect(balanceSheet(balanced, { chest: 2 }, 64).overused).toEqual([]);
+  });
+
+  test("carries the target and current share of every type, as percentages", () => {
+    const sheet = balanceSheet(balanced, { grass: 32 }, 64);
+    expect(sheet.shares.grass).toEqual({ target: 45, now: 50 });
+    expect(sheet.shares.chest).toEqual({ target: 2, now: 0 });
+  });
+
+  test("needed is ordered by the share of the target that is still missing", () => {
+    const sheet = balanceSheet(balanced, { grass: 5, door: 3 }, 64);
+    expect(sheet.needed).toEqual(["wall", "chest", "grass", "door"]);
   });
 });
 

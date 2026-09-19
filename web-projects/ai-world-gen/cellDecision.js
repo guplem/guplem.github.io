@@ -27,10 +27,64 @@ const SAMPLE_FLOOR = 0.08;
 
 const INSTRUCTIONS = [
   "Which element type belongs in this cell of the map?",
-  "Follow each type's placement rules. Keep the cell consistent with its placed neighbours,",
-  "keep the whole map varied and believable for this world, and do not over-use one type.",
-  "Where nothing is placed nearby yet, prefer the most common ground type.",
+  "Follow each type's placement rules and keep the cell consistent with its placed neighbours.",
+  "The finished map must use its whole vocabulary in the shares the rules describe:",
+  "when several types fit, choose one that balance.needed lists and avoid one that balance.overused lists.",
+  "Barriers continue lines and close shapes; routes continue their line; things stand where their rules say.",
 ].join(" ");
+
+/**
+ * The share of the map a type should take, read from the rarity word in its
+ * placement rules. The vocabulary prompt asks for exactly these words.
+ */
+export const TARGET_SHARES = { mostCommon: 0.45, common: 0.15, uncommon: 0.06, rare: 0.02, unspecified: 0.05 };
+
+const RARITY_WORDS = [
+  [/most common/i, TARGET_SHARES.mostCommon],
+  [/\bcommon\b/i, TARGET_SHARES.common],
+  [/\buncommon\b/i, TARGET_SHARES.uncommon],
+  [/\brare\b|\bexactly one\b|\bonly one\b/i, TARGET_SHARES.rare],
+];
+
+/** The target share of one type. The first rarity word in the rules wins. */
+export function targetShare(placementRules) {
+  const text = String(placementRules ?? "");
+  let best = null;
+  for (const [pattern, share] of RARITY_WORDS) {
+    const match = pattern.exec(text);
+    if (match && (best === null || match.index < best.index)) best = { index: match.index, share };
+  }
+  return best ? best.share : TARGET_SHARES.unspecified;
+}
+
+/** A type is overused once its share passes its target by this factor. */
+const OVERUSE_FACTOR = 1.3;
+const MIN_CELLS_FOR_OVERUSE = 3;
+const MAX_NEEDED = 5;
+
+/**
+ * Where every type stands against its target share, for the state (ADR 0002).
+ *
+ * Without this the model answers each cell from its neighbours alone, and a
+ * map that starts with grass ends as grass: v1 used one type for more than 85%
+ * of the cells on thirteen maps out of fifteen. `needed` lists the types most
+ * below their target, the most missing first; `overused` the ones far above.
+ */
+export function balanceSheet(vocabulary, counts, totalCells) {
+  const shares = {};
+  const gaps = [];
+  const overused = [];
+  for (const type of vocabulary.elements) {
+    const target = Math.round(targetShare(type.placementRules) * 100);
+    const count = counts[type.id] ?? 0;
+    const now = totalCells > 0 ? Math.round((count / totalCells) * 100) : 0;
+    shares[type.id] = { target, now };
+    if (now < target) gaps.push({ id: type.id, missing: (target - now) / target });
+    if (count >= MIN_CELLS_FOR_OVERUSE && now > target * OVERUSE_FACTOR) overused.push(type.id);
+  }
+  gaps.sort((a, b) => b.missing - a.missing);
+  return { needed: gaps.slice(0, MAX_NEEDED).map((one) => one.id), overused, shares };
+}
 
 function edgesOf(grid, x, y) {
   const edges = [];
@@ -59,6 +113,7 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
     neighbours: neighboursOf(grid, x, y).map((one) => ({ direction: one.direction, type: one.cell.typeId })),
     nearbyCounts: ringCounts(grid, x, y, NEARBY_RADIUS),
     mapCounts: placed,
+    balance: balanceSheet(vocabulary, placed, grid.width * grid.height),
   };
   const criteria = {};
   for (const type of vocabulary.elements) {
