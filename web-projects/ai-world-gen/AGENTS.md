@@ -30,6 +30,11 @@ A map generator with two kinds of model. A text model writes a world's vocabular
 | `render.js` | No | The canvas: `createRenderer`, `loadTilesheet`, `drawTag` (one tag, one style, one square), `tileThumbnail` |
 | `app.js` | No | The page: three views, wiring, the generation flow |
 | `deployStamp.js`, `deployText.js` | Yes | The "deployed at" line (root ADR 0013) |
+| `evaluation/mapMetrics.js` | Yes | The three specifications, their metrics, `scoreMap` and `renderAscii` (ADR 0005) |
+| `evaluation/runTestCase.js` | No | Bun command line: one test case in, one generated and scored map out, with the real client |
+| `evaluation/evaluate.py` | No | The Galtea side: `setup`, `run --version vN`, `report`. Reads the rule names from `mapMetrics.js` |
+| `evaluation/testCases.json` | Yes (data) | Three datasets of five seeds each, matched to Galtea test cases by their `id` |
+| `evaluation/galtea.json` | Yes (data) | The Galtea ids `setup` created or found. Committed; no secrets |
 
 Data flow for one world: `app.js` → the vocabulary box (`vocabulary.describeVocabularyText`; a preset chip fills it from `presetVocabularies.js`) or, when the box is empty, `vocabulary.generateVocabulary(client.generate)` → `orderStrategies.createOrder` → `generation.runGeneration(createDecider(client))` → for each cell `cellDecision.buildCellDecision` → `decide` → `cellDecision.chooseType` → `grid.setCell` → `render.draw` → at the end `reachability.analyseReachability`.
 
@@ -51,6 +56,18 @@ Data flow for one world: `app.js` → the vocabulary box (`vocabulary.describeVo
 - **The model catalogue is fetched without a key** (`/api/v1/models` needs none) when the AI Setup screen opens, and `FALLBACK_CATALOGUE` fills the pickers until then. `:batch` variants and image or audio models are dropped in `readCatalogue`.
 - **Prose in the prompts follows the same writing rules as the docs.** The vocabulary prompt and the per-cell instructions are read by a model, but a person edits them; keep them short and literal (Jev answers the exact question asked, and negations underperform).
 
+## Evaluation before a change to the generation
+
+Any change that can alter the maps (the per-cell prompt or state, the sampling, the orders, the shipped vocabularies) is measured before it ships (ADR 0005):
+
+```bash
+cd web-projects/ai-world-gen/evaluation
+OPENROUTER_API_KEY=sk-or-... python evaluate.py run --version vN --description "what changed"
+python evaluate.py report --version vN --against v(N-1)
+```
+
+`vN` is the next version name after the last file in `evaluation/results/`. The run costs about 960 decisions and a few minutes. Put the report's per-specification numbers in the pull request. A new rule is an entry in `SPECIFICATIONS` and `METRICS` in `mapMetrics.js` with a test, a dataset in `testCases.json`, then `python evaluate.py setup` to create it in Galtea.
+
 ## Tests
 
 Every module marked "Pure" has a sibling `*.test.js`, and new behaviour goes in test-first (root ADR 0012). `app.js`, `render.js` and `openRouterClient.js` have none by design; anything in them worth a test belongs in a pure module instead. `invariants.test.js` pins the decisions of the four ADRs.
@@ -67,3 +84,4 @@ cd web-projects/ai-world-gen && bun test
 | [0002](adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
 | [0003](adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |
 | [0004](adr/0004-ship-the-vocabulary-for-every-preset-and-let-the-reader-edit-it.md) | Ship the vocabulary for every preset, and let the reader edit it on the setup screen |
+| [0005](adr/0005-the-map-is-evaluated-against-specifications-in-galtea.md) | The map is evaluated against written specifications, in Galtea, before every iteration |

@@ -12,3 +12,6 @@ Thumbs.db
 
 # Claude Code agent worktrees (transient, per-session)
 .claude/worktrees/
+
+# Local keys for the AI World Gen evaluation (OPENROUTER_API_KEY, GALTEA_API_KEY)
+web-projects/ai-world-gen/evaluation/.env

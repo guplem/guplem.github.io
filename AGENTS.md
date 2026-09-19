@@ -253,6 +253,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [ai-world-gen 0002](web-projects/ai-world-gen/adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
 | [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |
 | [ai-world-gen 0004](web-projects/ai-world-gen/adr/0004-ship-the-vocabulary-for-every-preset-and-let-the-reader-edit-it.md) | Ship the vocabulary for every preset, and let the reader edit it on the setup screen |
+| [ai-world-gen 0005](web-projects/ai-world-gen/adr/0005-the-map-is-evaluated-against-specifications-in-galtea.md) | The map is evaluated against written specifications, in Galtea, before every iteration |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
