@@ -84,6 +84,7 @@ Each phase is a complete, demoable state before the next one starts.
 - [x] **Phase 1 — Map generator + inspector (the hackathon deliverable).** Setup screen with presets, grid size and order picker. AI Setup screen with key, test connection and model pickers. Vocabulary generation with validation and retry. Sequential per-cell generation, rendered live. Reachability check. Map tool: pan, zoom, click a cell for its properties. Urizen tileset.
 - [x] **Phase 2 — Map personalisation.** Change a cell's type by hand, ask the model again about one cell, download and load the map as JSON. *(Landed with Phase 1 because the architecture made it cheap; the "goal placement" use of it waits for Phase 6.)*
 - [x] **Phase 2b — Styles and a free start.** Four switchable art styles, and a shipped, editable vocabulary for every preset so a preset world makes no creative call. *(Asked for after the first live runs showed the creative call was most of the cost.)*
+- [x] **Phase 2c — Measured quality.** Three specifications with deterministic metrics, fifteen seeded test cases, and a Galtea product where every iteration of the generator is a version with its scores. The baseline is `v1`.
 - [ ] **Phase 3 — Interactive element detail generation.** A second pass over interactable cells that fills each type's self-declared `instanceFields`, typed values through `decide()` and flavour text through `generate()`, grounded in the setting.
 - [ ] **Phase 4 — Player + movement.** A player token, keyboard and click movement, optional fog of war.
 - [ ] **Phase 5 — Interaction narrative.** The player interacts with an object or a person; `generate()` writes dialogue or an outcome grounded in that cell's instance properties.
@@ -102,7 +103,41 @@ Anything raised mid-build that is not ready to implement yet. Add to it; strike 
 - **The tileset manifest was read off the sheet by eye.** Some tags are approximations (`bridge` is a plank, `trap` is a hatched pit). A Kenney style (their CC0 roguelike packs, richer and coloured) would be a fifth entry in the style list with its own sheet and manifest; the code needs nothing else.
 - **The vocabulary box is raw JSON.** Honest and dense. A form with one row per type (label, flags, tag, rules) would make editing common instead of possible. Wait until somebody edits.
 - **Shipped vocabularies go stale in spirit.** The tests catch one that no longer validates, not one that a better prompt would have written differently. Regenerate them with the model when the prompt changes meaningfully, and paste the answers back.
+- **A monotone map fools the path metrics.** A map that is all corridor scores 1.0 on every path metric. The paths specification needs a metric that punishes paths covering most of the map (a `path-share-in-range`, like the barrier one), and the structures specification could use one that asks for at least one enclosed room. Add them once the first three specifications are agreed, so v1 stays comparable.
+- **The generator collapses to one type.** Jev gives the ground type 85% or more on almost every cell once a few neighbours are ground. Candidates to try, one version each: drop the "prefer the most common ground type" line; put the target counts from the placement rules into the state; sample with a higher spread or a temperature; ask two questions per cell (kind of cell first, then which type).
 - **Cost display**: OpenRouter returns token usage per call; summing it into "this world cost $0.03" would make the pitch concrete, and would show that a preset world costs cents.
+
+## Evaluation in Galtea
+
+The quality of the maps is measured, not eyeballed ([ADR 0005](adr/0005-the-map-is-evaluated-against-specifications-in-galtea.md)). Three specifications say what a good map does, each with a few deterministic metrics computed from the finished grid, and each with a dataset of five seeds:
+
+| Specification | Metrics |
+|---|---|
+| Barriers form structures, not debris | share of barrier cells with a barrier neighbour; share in a group of 3 or more; barrier share in a healthy range |
+| Paths form continuous routes | share of path cells with a path neighbour; share in the largest path network; share with two or more path neighbours |
+| Every walkable area is reachable, and the map is playable | share of walkable cells in the largest region; 1 / number of regions; walkable share in range; vocabulary coverage; share of cells the model answered |
+
+Every iteration of the generator is a version in [Galtea](https://galtea.ai): one session per test case, one inference result with the parameters and the map, one evaluation per metric. The rules live in `evaluation/mapMetrics.js` and are tested like the rest of the code.
+
+```bash
+cd web-projects/ai-world-gen/evaluation
+pip install -r requirements.txt                         # once: the Galtea SDK
+python evaluate.py setup                                # once: the product, specifications, metrics and datasets
+OPENROUTER_API_KEY=sk-or-... python evaluate.py run --version v1 --description "baseline"
+python evaluate.py report --version v2 --against v1     # after the next iteration
+```
+
+The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`), so runs stay comparable when OpenRouter adds newer ones. Results are also written to `evaluation/results/vN.json`.
+
+### Baseline, v1 (2026-09-19)
+
+| Specification | Mean score |
+|---|---|
+| Barriers form structures, not debris | 0.19 |
+| Paths form continuous routes | 0.99 |
+| Every walkable area is reachable, and the map is playable | 0.68 |
+
+What v1 actually draws: **monotone maps**. Thirteen of the fifteen use one type for more than 85% of the cells (a village that is all grass with one oak, a station that is all corridor, a mansion that is all hall floor); vocabulary coverage averages 0.15. The few barriers are scattered singles. The per-cell instruction "where nothing is placed nearby, prefer the most common ground type" plus neighbour reinforcement plus sampling makes the ground type win every cell. The paths score is high for the wrong reason: a map that is all corridor has no isolated path cell. That is the first thing to fix in the generation, and the first gap in the metrics (see open questions).
 
 ## Tests
 
