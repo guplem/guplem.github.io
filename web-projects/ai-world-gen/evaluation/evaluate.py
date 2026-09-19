@@ -5,6 +5,12 @@ Three commands, run from this folder or from anywhere:
     python evaluate.py setup                  # create or find the Galtea product, specifications, metrics, datasets
     python evaluate.py run --version v2       # generate every test case, log it as a session, score it
     python evaluate.py report --version v2    # print the scores of a version, and the change since another
+    python evaluate.py render --version v2    # draw results/v2/<case>.png again from the saved results
+
+Every map is also drawn as a PNG (`renderMap.py`), saved under `results/vN/`,
+uploaded to Galtea's storage and attached to the inference result's output as
+a file part next to the ASCII map, so the dashboard shows the picture. Pass
+`--no-images` to skip the upload.
 
 `setup` is idempotent: it matches everything by name and writes the ids to
 `galtea.json`, which is committed. `run` needs two keys in the environment:
@@ -317,6 +323,44 @@ def generate(case: dict) -> dict:
     return json.loads(completed.stdout)
 
 
+def upload_image(path: Path) -> dict:
+    """Put a PNG in Galtea's storage and return the content part that names it in an output envelope."""
+    import requests
+
+    presign = cli("storage", "generate-put-url", "--key", f"ai-world-gen/{path.parent.name}/{path.name}", "--file-type", "file")
+    data = path.read_bytes()
+    response = requests.put(presign["uploadPresignedUrl"], data=data, headers={"Content-Type": "image/png"}, timeout=60)
+    response.raise_for_status()
+    object_url = presign["downloadPresignedUrl"].split("?")[0]
+    host, object_path = object_url.split("/")[2], "/".join(object_url.split("/")[3:])
+    return {
+        "type": "file",
+        "uri": f"s3://{host.split('.s3.')[0]}/{object_path}",
+        "mimeType": "image/png",
+        "filename": path.name,
+        "sizeBytes": len(data),
+    }
+
+
+def render_results(version_name: str, results: dict[str, dict]) -> dict[str, Path]:
+    """Draw every map of a run to results/<version>/<case>.png. Returns case id -> path."""
+    import renderMap
+
+    manifest = renderMap.load_manifest(BUN)
+    preset_tags = renderMap.load_preset_tags(BUN)
+    sheet = renderMap.load_sheet()
+    folder = RESULTS_DIR / version_name
+    folder.mkdir(parents=True, exist_ok=True)
+    paths: dict[str, Path] = {}
+    for case_id, result in results.items():
+        vocabulary = result["vocabulary"]
+        tags = renderMap.tags_by_type(vocabulary) if isinstance(vocabulary.get("elements"), list) else preset_tags[result["input"]["preset"]]
+        path = folder / f"{case_id}.png"
+        renderMap.render_map(result["grid"], tags, sheet, manifest).save(path)
+        paths[case_id] = path
+    return paths
+
+
 def git_description() -> str:
     try:
         sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=PROJECT).stdout.strip()
@@ -325,7 +369,7 @@ def git_description() -> str:
         return "unknown commit"
 
 
-def run(version_name: str, description: str | None, parallel: int, only: list[str] | None) -> None:
+def run(version_name: str, description: str | None, parallel: int, only: list[str] | None, images: bool = True) -> None:
     galtea = galtea_client()
     config = read_config()
     if not config.get("testCaseIds"):
@@ -370,6 +414,9 @@ def run(version_name: str, description: str | None, parallel: int, only: list[st
             print(f"  {case_id}: {result['elapsedMs'] / 1000:.1f} s, "
                   + ", ".join(f"{name}={value:.2f}" for name, value in scores.items()))
 
+    pictures = render_results(version_name, results)
+    print(f"drew {len(pictures)} maps into {RESULTS_DIR / version_name}")
+
     print("logging to Galtea ...")
     for case in cases:
         result = results[case["id"]]
@@ -379,9 +426,11 @@ def run(version_name: str, description: str | None, parallel: int, only: list[st
             version_id=version.id,
             test_case_id=config["testCaseIds"][case["id"]],
         )
-        output = result["ascii"] + "\n\n" + json.dumps(
+        text = result["ascii"] + "\n\n" + json.dumps(
             {"summary": result["summary"], "scores": result["scores"], "vocabulary": result["vocabulary"]["name"], "grid": result["grid"]}
         )
+        # The scored output is the text; the picture rides along as a file part, which the dashboard shows.
+        output = {"assistant_message": text, "content": [upload_image(pictures[case["id"]])]} if images else text
         galtea.inference_results.create(
             session_id=session.id,
             input=json.dumps(case),
@@ -442,6 +491,16 @@ def print_summary(rules: dict, summary: dict, previous: dict | None = None) -> N
                 print(f"    {metric['name']:<28} {fmt(summary['metrics'][metric['name']])}{delta(metric['name'], 'metrics')}")
 
 
+def render(version_name: str) -> None:
+    """Draw the maps of a saved run again, for example after a change to the tileset."""
+    path = RESULTS_DIR / f"{version_name}.json"
+    if not path.exists():
+        sys.exit(f"No local results for {version_name}.")
+    saved = json.loads(path.read_text(encoding="utf8"))
+    pictures = render_results(version_name, saved["results"])
+    print(f"drew {len(pictures)} maps into {RESULTS_DIR / version_name}")
+
+
 def report(version_name: str, against: str | None) -> None:
     rules = read_rules()
     path = RESULTS_DIR / f"{version_name}.json"
@@ -470,15 +529,20 @@ def main() -> None:
     run_parser.add_argument("--description", help="what changed in this version")
     run_parser.add_argument("--parallel", type=int, default=3, help="maps generated at the same time (default 3)")
     run_parser.add_argument("--only", nargs="*", help="run only these test case ids")
+    run_parser.add_argument("--no-images", action="store_true", help="draw the maps locally but do not upload them to Galtea")
     report_parser = commands.add_parser("report", help="print the scores of a version from the local results")
     report_parser.add_argument("--version", required=True)
     report_parser.add_argument("--against", help="another version to show the change against")
+    render_parser = commands.add_parser("render", help="draw results/<version>/<case>.png again from the saved results")
+    render_parser.add_argument("--version", required=True)
     args = parser.parse_args()
 
     if args.command == "setup":
         setup()
     elif args.command == "run":
-        run(args.version, args.description, args.parallel, args.only)
+        run(args.version, args.description, args.parallel, args.only, images=not args.no_images)
+    elif args.command == "render":
+        render(args.version)
     else:
         report(args.version, args.against)
 
