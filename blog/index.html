@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../resources/images/webicon.webp" />
+    <title>Blog · Guillem Poy</title>
+    <meta name="description" content="Experiments, niche solutions and findings by Guillem Poy, written as plain pages so people, search engines and language models can all read them." />
+    <link rel="canonical" href="https://triunitystudios.com/blog/" />
+    <link rel="alternate" type="application/atom+xml" title="Guillem Poy · Blog" href="feed.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Blog · Guillem Poy" />
+    <meta property="og:description" content="Experiments, niche solutions and findings, written as plain pages so people, search engines and language models can all read them." />
+    <meta property="og:url" content="https://triunitystudios.com/blog/" />
+
+    <link rel="preload" href="../resources/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../css/global/fonts.css" />
+
+    <!-- Reuse the site's design tokens and base typography so the blog always
+         matches the main portfolio. The blog's shared skeleton lives in blog.css. -->
+    <link rel="stylesheet" href="../css/global/variables.css" />
+    <link rel="stylesheet" href="../css/global/base.css" />
+    <link rel="stylesheet" href="blog.css" />
+  </head>
+
+  <body>
+    <div class="topbar">
+      <a class="back-link" href="../">← Guillem Poy</a>
+      <a class="feed-link" href="feed.xml">Feed (Atom)</a>
+    </div>
+
+    <header class="page-header">
+      <h1>Blog</h1>
+      <p class="subtitle">Experiments, niche solutions and findings. Every post is a plain page: no script is needed to read it, and each one looks the way its story asks.</p>
+    </header>
+
+    <!-- The list is written by `bun scripts/generateSeoBlocks.js` from the
+         posts' own <head> tags (root ADR 0015). Never hand-edit between the
+         markers. No JavaScript replaces it: this static list is the page. -->
+    <main class="post-list">
+      <!-- BEGIN GENERATED:BLOG-POSTS -->
+<article class="post-card">
+<time class="post-card-date" datetime="2026-09-20">20 September 2026</time>
+<h2 class="post-card-title"><a href="ai-world-gen-thousands-of-tiny-decisions/">AI World Gen: thousands of tiny decisions, and a loop that graded them</a></h2>
+<p class="post-card-summary">A map generator that asks a decision model one question per tile, about 3,000 times per test run for 25 cents, and the evaluation loop in Galtea that took it from a green blur to a village in eleven measured versions.</p>
+</article>
+<article class="post-card">
+<time class="post-card-date" datetime="2026-09-20">20 September 2026</time>
+<h2 class="post-card-title"><a href="why-a-blog-now/">Why a blog, now</a></h2>
+<p class="post-card-summary">For years, writing for the web meant writing for a ranking. Now language models read everything that is public, so a plain page about a small problem can become the answer someone gets. That is why this blog exists, and why its posts are plain HTML.</p>
+</article>
+<!-- END GENERATED:BLOG-POSTS -->
+    </main>
+
+    <footer class="page-footer">
+      <p>Part of <a href="../">Guillem Poy's portfolio</a>. Also see the <a href="../web-projects/">Playground</a>.</p>
+    </footer>
+  </body>
+</html>

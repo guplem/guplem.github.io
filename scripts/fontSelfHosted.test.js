@@ -8,6 +8,7 @@ import { describe, it, expect } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import path from "node:path";
+import { loadPosts } from "./blogPosts.js";
 
 // Resolve relative to this test file, not the working directory, so the test
 // passes no matter where `bun test` is invoked from.
@@ -19,10 +20,20 @@ const repoRoot = join(import.meta.dir, "..");
 // own directory as a site-absolute path (index.html and 404.html at the root,
 // the web-projects index one level down); it is the base a relative href
 // resolves against.
+// The blog index is one level down like the Playground; every post is two
+// levels down (blog/<slug>/index.html) and is found through the same reader the
+// generators use, so a new post is covered without a change here.
 const pages = [
   { file: "index.html", dir: "/", preloadHref: "resources/fonts/InterVariable.woff2", cssHref: "css/global/fonts.css" },
   { file: join("web-projects", "index.html"), dir: "/web-projects", preloadHref: "../resources/fonts/InterVariable.woff2", cssHref: "../css/global/fonts.css" },
   { file: "404.html", dir: "/", preloadHref: "/resources/fonts/InterVariable.woff2", cssHref: "/css/global/fonts.css" },
+  { file: join("blog", "index.html"), dir: "/blog", preloadHref: "../resources/fonts/InterVariable.woff2", cssHref: "../css/global/fonts.css" },
+  ...loadPosts(repoRoot).map((post) => ({
+    file: join("blog", post.slug, "index.html"),
+    dir: `/blog/${post.slug}`,
+    preloadHref: "../../resources/fonts/InterVariable.woff2",
+    cssHref: "../../css/global/fonts.css",
+  })),
 ];
 
 // The @font-face lives here; both the CSS src url and its base directory are

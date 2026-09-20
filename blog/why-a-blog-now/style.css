@@ -1,0 +1,222 @@
+/* "Why a blog, now": a letter on paper. Warm paper background, a serif set
+   from the system (no font download), a wide measure, a drop cap and one
+   inline diagram. Everything shared with the other posts is in ../blog.css. */
+
+.letter {
+  --paper: #f7f1e6;
+  --paper-deep: #efe5d3;
+  --ink: #26221c;
+  --ink-soft: #5a5348;
+  --rule: rgba(38, 34, 28, 0.18);
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, "Times New Roman", serif;
+  background: var(--paper);
+  background-image: linear-gradient(180deg, var(--paper-deep) 0, var(--paper) 220px);
+  color: var(--ink);
+}
+
+.letter .topbar {
+  max-width: 760px;
+}
+
+.post {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: var(--sp-xl) var(--sp-md) var(--sp-lg);
+  font-family: var(--serif);
+}
+
+.post-header {
+  padding-bottom: var(--sp-lg);
+  margin-bottom: var(--sp-lg);
+  border-bottom: 1px solid var(--rule);
+}
+
+.post-kicker {
+  font-family: var(--font);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.post h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: var(--sp-xs) 0 var(--sp-sm);
+}
+
+.post-standfirst {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.post .post-byline {
+  margin-top: var(--sp-md);
+  font-family: var(--font);
+  color: var(--ink-soft);
+}
+
+.post h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.6rem;
+  color: var(--ink);
+  margin: var(--sp-lg) 0 var(--sp-sm);
+}
+
+.post p {
+  font-size: 1.12rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.post p + p {
+  margin-top: 1em;
+}
+
+.post p a {
+  color: var(--accent-secondary);
+  background-image: linear-gradient(var(--accent), var(--accent));
+}
+
+.drop-cap::first-letter {
+  float: left;
+  font-size: 3.6em;
+  line-height: 0.8;
+  padding: 0.08em 0.1em 0 0;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* === The then/now diagram === */
+.then-now {
+  margin: var(--sp-xl) calc(-1 * var(--sp-sm)) var(--sp-lg);
+  padding: var(--sp-md) var(--sp-sm) var(--sp-sm);
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.then-now svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: var(--font);
+}
+
+.then-now figcaption {
+  margin-top: var(--sp-sm);
+  text-align: center;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.then-now .panel-title {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+
+.then-now .panel-sub,
+.then-now .caption {
+  font-size: 12px;
+  fill: var(--ink-soft);
+}
+
+.then-now .pages rect {
+  fill: #e7e0d2;
+  stroke: var(--rule);
+}
+
+.then-now .page-good {
+  fill: var(--accent) !important;
+  stroke: var(--accent) !important;
+}
+
+.then-now .funnel {
+  fill: #ddd4c2;
+  stroke: var(--rule);
+}
+
+.then-now .funnel-label {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.then-now .results rect {
+  fill: #cfc6b3;
+}
+
+.then-now .divider {
+  stroke: var(--rule);
+  stroke-dasharray: 4 6;
+}
+
+.then-now .model {
+  fill: var(--accent-secondary);
+}
+
+.then-now .model-label {
+  fill: white;
+}
+
+.then-now .threads path {
+  fill: none;
+  stroke: #b9ae97;
+  stroke-width: 1.5;
+}
+
+.then-now .thread-good {
+  stroke: var(--accent) !important;
+  stroke-width: 2.5 !important;
+}
+
+.then-now .questions circle {
+  fill: white;
+  stroke: #b9ae97;
+  stroke-width: 1.5;
+}
+
+.then-now .question-good {
+  fill: var(--accent) !important;
+  stroke: var(--accent) !important;
+}
+
+/* === Closing === */
+.post-footer {
+  margin-top: var(--sp-xl);
+  padding-top: var(--sp-md);
+  border-top: 1px solid var(--rule);
+}
+
+.post-footer p {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.letter .page-footer {
+  font-family: var(--font);
+  color: var(--ink-soft);
+}
+
+@media (max-width: 600px) {
+  .post-standfirst {
+    font-size: 1.1rem;
+  }
+  .post p {
+    font-size: 1.05rem;
+  }
+  .then-now {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

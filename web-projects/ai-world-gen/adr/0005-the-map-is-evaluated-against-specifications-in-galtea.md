@@ -57,7 +57,7 @@ and one Galtea version per iteration of the generator.**
 
 4. **Test cases use the shipped vocabularies and small grids.** The presets
    make the creative call unnecessary (ADR 0004), and 8 by 8 cells keep a full
-   run of 38 maps at about 3,000 decisions, a few cents and under ten minutes,
+   run of 38 maps at 3,008 decisions, about 25 cents and under ten minutes,
    so it can run before every pull request that touches the generation.
 
 5. **A metric added later gets its history.** `python evaluate.py rescore
@@ -104,7 +104,8 @@ the place the preset names. It is the only metric for "does this look like a
 village?", and it is asynchronous, paid, and model-dependent: claude-sonnet-5
 put its score inside the reason text and every evaluation failed; GPT-5.2
 answers in the expected shape. Its score is not in the local summary; read
-it in the dashboard.
+it in the dashboard, and run `rescore --judge` to add it to a version that
+was drawn without it (every version from v1 has it since 2026-09-20).
 
 **Rejected: compute the scores in Python.** The rules would then live in two
 languages, and the stretch goal of a live consistency score inside the page

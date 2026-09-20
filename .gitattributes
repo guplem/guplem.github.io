@@ -1,10 +1,12 @@
 # The SEO drift tests (scripts/*.test.js) compare these generated artifacts
 # against the generators' LF output; keep them LF on every platform so a fresh
 # Windows checkout (core.autocrlf=true) does not smudge them to CRLF and fail
-# the tests (root ADR 0014).
+# the tests (root ADR 0010).
 /sitemap.xml text eol=lf
 /index.html text eol=lf
 /web-projects/index.html text eol=lf
+/blog/index.html text eol=lf
+/blog/feed.xml text eol=lf
 
 # Font binaries: never treat as text (no EOL conversion, no diff/merge).
 *.woff2 binary

@@ -67,6 +67,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `data/AGENTS.md` | Portfolio data: schema, description style, skills/tags guidance, adding projects |
 | `js/layoutBuilder/AGENTS.md` | Layout modules: responsibilities, data flow, key patterns |
 | `js/planetSimulation/AGENTS.md` | Particle simulation: architecture, config, performance |
+| `blog/AGENTS.md` | Blog: the plain-HTML rule, the head-as-record rule, image reuse, per-post styling |
 | `web-projects/AGENTS.md` | Web projects: conventions, TDD with Bun, full checklist for adding a new web-project |
 | `web-projects/ai-world-gen/AGENTS.md` | ai-world-gen: module map, the two OpenRouter endpoints and their shapes, the per-cell state rules, the tileset gotchas |
 | `web-projects/ai-world-gen/README.md` | ai-world-gen: the concept, the phase roadmap with progress, and the open questions (the project's memory between sessions) |
@@ -131,6 +132,10 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 - `css/global/base.css` -- Base typography
 - `css/sections/` -- Per-section styles (hero, works, about, contact, additional)
 
+### Blog
+
+`blog/` holds long-form posts as plain HTML pages: the text is in the file, no script renders it, and each post owns its look on a thin shared skeleton (`blog/blog.css`). A post's `<head>` is its only metadata record; `scripts/blogPosts.js` reads it to write the index block, `blog/feed.xml` and the sitemap entries. See `blog/AGENTS.md` and ADR 0015. Whenever you add a post, use the `add-blog-post` skill.
+
 ### Web Projects
 
 `web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site -- except the `web-projects/index.html` directory index, which is data-driven and reuses the site's global CSS (see ADR 0008). See `web-projects/AGENTS.md` for detailed guidance when working there.
@@ -149,7 +154,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Masonry layout:** Work cards use JS-based column balancing (not CSS Grid). `displayFilteredWorks()` recalculates on resize (debounced 100ms).
 
-**Generated SEO artifacts (never hand-edit):** `sitemap.xml` and the `<!-- BEGIN GENERATED:<NAME> -->` ... `<!-- END GENERATED:<NAME> -->` blocks in `index.html` and `web-projects/index.html` are derived from `data/` by `bun scripts/generateSitemap.js` and `bun scripts/generateSeoBlocks.js` (see ADR 0010). After any edit to `data/info.json` or `data/projects/*.json`, run both scripts (automatic with the lefthook pre-commit hook); CI drift tests fail otherwise. The static head metadata in `index.html` (title/description) must stay identical to `web-title`/`web-description` in `data/info.json` (enforced by a drift test in `scripts/generateSeoBlocks.test.js`).
+**Generated SEO artifacts (never hand-edit):** `sitemap.xml`, `blog/feed.xml` and the `<!-- BEGIN GENERATED:<NAME> -->` ... `<!-- END GENERATED:<NAME> -->` blocks in `index.html`, `web-projects/index.html` and `blog/index.html` are derived from `data/` and from the blog posts' `<head>` tags by `bun scripts/generateSitemap.js`, `bun scripts/generateSeoBlocks.js` and `bun scripts/generateFeed.js` (see ADR 0010 and ADR 0015). After any edit to `data/info.json`, `data/projects/*.json` or a post's head, run the three scripts (automatic with the lefthook pre-commit hook); CI drift tests fail otherwise. The static head metadata in `index.html` (title/description) must stay identical to `web-title`/`web-description` in `data/info.json` (enforced by a drift test in `scripts/generateSeoBlocks.test.js`).
 
 **The deploy stamp (never hand-edit, and it is not generated from `data/`):** the `GENERATED:DEPLOY` block in a web-project's `index.html` holds the pull request number that published that file, written by `bun scripts/generateDeployStamp.js --pr N --date ISO`. It cannot be generated at commit time, because a commit does not know its own pull request number. **Stamp it in a second commit after you open the pull request.** The `test` job runs the script with `--check` on every pull request and fails when the number is not that pull request's, so an unstamped branch cannot merge. See ADR 0013 for why the number is embedded rather than fetched.
 
@@ -190,6 +195,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0012](adr/0012-red-green-tdd-for-testable-logic.md) | Red-green TDD mandatory for pure logic; DOM rendering exempt |
 | [0013](adr/0013-deployed-at-footer-stamped-into-the-page.md) | "Deployed at" footer stamped into the page before merge, never fetched |
 | [0014](adr/0014-three-state-work-filters.md) | Three-state work filter chips, with one button that teaches the third state |
+| [0015](adr/0015-blog-posts-are-plain-html-read-from-the-page.md) | Blog posts are plain HTML, and the post's own head is its only metadata record |
 
 ### Per-project ADRs
 

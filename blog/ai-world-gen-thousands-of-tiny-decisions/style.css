@@ -1,0 +1,560 @@
+/* "AI World Gen: thousands of tiny decisions": a map table at night. The maps
+   the post shows are dark pixel art with orange doors and green trees, so the
+   page takes their palette: a near-black ground with a faint tile grid, parchment
+   text, orange for the accents, monospace for the numbers. Everything shared
+   with the other posts is in ../blog.css. */
+
+.maptable {
+  --ground: #0f1115;
+  --ground-2: #171a21;
+  --tile-line: rgba(255, 255, 255, 0.045);
+  --parchment: #e8e4d8;
+  --parchment-soft: #a9a598;
+  --door: #e0782a;
+  --leaf: #37c24b;
+  --stone: #6c7480;
+  --panel: #1b1f27;
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+  background: var(--ground);
+  background-image:
+    linear-gradient(var(--tile-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--tile-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  color: var(--parchment);
+}
+
+.maptable .topbar {
+  max-width: 1040px;
+}
+
+.maptable .back-link,
+.maptable .feed-link {
+  color: var(--parchment-soft);
+}
+
+.maptable .back-link:hover,
+.maptable .feed-link:hover {
+  color: var(--door);
+}
+
+.post {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--sp-xl) var(--sp-md) var(--sp-lg);
+}
+
+.post-header {
+  padding-bottom: var(--sp-lg);
+  margin-bottom: var(--sp-lg);
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.post-kicker {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--leaf);
+}
+
+.post h1 {
+  color: var(--parchment);
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: var(--sp-xs) 0 var(--sp-sm);
+}
+
+.post-standfirst {
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: var(--parchment-soft);
+}
+
+.post .post-byline {
+  margin-top: var(--sp-md);
+  color: var(--parchment-soft);
+}
+
+.post h2 {
+  color: var(--door);
+  font-size: 1.5rem;
+  margin: var(--sp-xl) 0 var(--sp-sm);
+}
+
+.post p,
+.post dd {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--parchment);
+}
+
+.post p + p {
+  margin-top: 1em;
+}
+
+.post p a {
+  color: var(--leaf);
+  background-image: linear-gradient(var(--door), var(--door));
+}
+
+.post p a:hover {
+  color: var(--door);
+}
+
+.post strong {
+  color: var(--parchment);
+  font-weight: 700;
+}
+
+/* === Figures === */
+.post figure img {
+  image-rendering: pixelated;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  background: black;
+}
+
+.post figcaption {
+  margin-top: var(--sp-xs);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--parchment-soft);
+}
+
+.hero-figure {
+  margin: 0 auto var(--sp-lg);
+  max-width: 560px;
+}
+
+.hero-figure figcaption {
+  text-align: center;
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-md);
+  margin: var(--sp-lg) 0;
+}
+
+/* === Diagrams === */
+.diagram {
+  margin: var(--sp-lg) calc(-1 * var(--sp-sm));
+  padding: var(--sp-md) var(--sp-sm) var(--sp-sm);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+}
+
+.diagram svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: var(--font);
+}
+
+.diagram figcaption {
+  padding: 0 var(--sp-xs);
+}
+
+.diagram .box rect {
+  fill: var(--ground);
+  stroke: var(--panel-border);
+}
+
+.diagram .answer rect {
+  stroke: var(--door);
+}
+
+.diagram .box-title {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--parchment-soft);
+}
+
+.diagram .mono {
+  font-family: var(--mono);
+  font-size: 12px;
+  fill: var(--parchment);
+}
+
+.diagram .arrow line,
+.diagram .loop-arrows path {
+  stroke: var(--parchment-soft);
+  stroke-width: 2;
+  fill: none;
+}
+
+.diagram .arrow polygon {
+  fill: var(--parchment-soft);
+}
+
+.diagram .arrow-label {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--parchment);
+}
+
+.diagram .arrow-sub {
+  font-size: 11px;
+  fill: var(--parchment-soft);
+}
+
+.diagram .model-box rect {
+  fill: var(--door);
+}
+
+.diagram .model-name {
+  font-size: 22px;
+  font-weight: 700;
+  fill: var(--ground);
+}
+
+.diagram .model-sub {
+  font-family: var(--mono);
+  font-size: 12px;
+  fill: var(--ground);
+}
+
+.loop-diagram .orbit {
+  fill: none;
+  stroke: var(--tile-line);
+  stroke-width: 1;
+}
+
+.loop-diagram .step rect {
+  fill: var(--ground);
+  stroke: var(--leaf);
+}
+
+.loop-diagram .step-title {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--parchment);
+}
+
+.loop-diagram .step-sub {
+  font-size: 11px;
+  fill: var(--parchment-soft);
+}
+
+.loop-diagram .loop-arrows path {
+  stroke: var(--door);
+  marker-end: none;
+  stroke-dasharray: 6 5;
+}
+
+.loop-diagram .agent-title,
+.loop-diagram .human-title {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--door);
+}
+
+.loop-diagram .human-title {
+  fill: var(--leaf);
+}
+
+.loop-diagram .agent-sub,
+.loop-diagram .human-sub {
+  font-size: 12px;
+  fill: var(--parchment-soft);
+}
+
+/* === Small multiples === */
+.small-multiples {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-sm);
+  margin: var(--sp-md) calc(-1 * var(--sp-sm));
+}
+
+.mini {
+  width: 100%;
+  height: auto;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+}
+
+.mini .mini-title {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--parchment);
+}
+
+.mini .mini-delta {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: var(--door);
+}
+
+.mini .grid {
+  stroke: var(--tile-line);
+}
+
+.mini .axis {
+  stroke: var(--panel-border);
+}
+
+.mini .tick {
+  font-family: var(--mono);
+  font-size: 9px;
+  fill: var(--parchment-soft);
+}
+
+.mini .area {
+  fill: var(--door);
+  fill-opacity: 0.12;
+}
+
+.mini .line {
+  fill: none;
+  stroke: var(--door);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.mini circle {
+  fill: var(--door);
+}
+
+.mini-judge .area {
+  fill: var(--stone);
+}
+
+.mini-judge .line {
+  stroke: var(--stone);
+  stroke-dasharray: 4 3;
+}
+
+.mini-judge circle {
+  fill: var(--stone);
+}
+
+.mini-judge .mini-delta {
+  fill: var(--stone);
+}
+
+/* === Version log === */
+.version-log {
+  margin: var(--sp-md) 0;
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.version-log > div {
+  padding-left: var(--sp-md);
+  border-left: 2px solid var(--panel-border);
+}
+
+.version-log dt {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--leaf);
+  margin-bottom: 2px;
+}
+
+.version-log dd {
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+/* === Filmstrip === */
+.filmstrip {
+  margin: var(--sp-lg) calc(-1 * var(--sp-md));
+}
+
+.filmstrip-track {
+  display: flex;
+  gap: var(--sp-xs);
+  overflow-x: auto;
+  padding: 0 var(--sp-md) var(--sp-xs);
+  scroll-snap-type: x proximity;
+}
+
+.filmstrip-track figure {
+  flex: 0 0 132px;
+  scroll-snap-align: start;
+  margin: 0;
+}
+
+.filmstrip-track figcaption {
+  font-family: var(--mono);
+  text-align: center;
+  margin-top: 2px;
+}
+
+.filmstrip > figcaption {
+  padding: 0 var(--sp-md);
+}
+
+/* === Table === */
+.table-scroll {
+  overflow-x: auto;
+  margin: var(--sp-md) calc(-1 * var(--sp-sm));
+  padding: 0 var(--sp-sm);
+}
+
+.scores {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 640px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+
+.scores caption {
+  text-align: left;
+  color: var(--parchment-soft);
+  padding-bottom: var(--sp-xs);
+  font-family: var(--font);
+  font-size: 0.85rem;
+}
+
+.scores th,
+.scores td {
+  padding: 6px 8px;
+  text-align: right;
+  border-bottom: 1px solid var(--panel-border);
+  color: var(--parchment);
+  white-space: nowrap;
+}
+
+.scores thead th {
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--parchment-soft);
+  vertical-align: bottom;
+}
+
+.scores th[scope="row"] {
+  text-align: left;
+  color: var(--leaf);
+}
+
+.scores td.up {
+  color: var(--leaf);
+  font-weight: 700;
+}
+
+.scores td.down {
+  color: var(--door);
+  font-weight: 700;
+}
+
+.data-note {
+  font-size: 0.85rem !important;
+  color: var(--parchment-soft) !important;
+  margin-top: var(--sp-sm);
+}
+
+/* === Closing === */
+.post-footer {
+  margin-top: var(--sp-xl);
+  padding-top: var(--sp-md);
+  border-top: 1px solid var(--panel-border);
+}
+
+.post-footer p {
+  font-size: 0.9rem;
+  color: var(--parchment-soft);
+}
+
+.maptable .page-footer {
+  color: var(--parchment-soft);
+}
+
+.maptable .page-footer a {
+  color: var(--parchment);
+}
+
+.maptable .page-footer a:hover {
+  color: var(--door);
+}
+
+@media (max-width: 600px) {
+  .diagram,
+  .small-multiples,
+  .table-scroll {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* === Cost charts === */
+.chart {
+  margin: var(--sp-md) calc(-1 * var(--sp-sm));
+  padding: var(--sp-sm);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+}
+
+.chart svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: var(--font);
+}
+
+.chart figcaption {
+  padding: 0 var(--sp-xs);
+}
+
+.bars .chart-title {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--parchment);
+}
+
+.bars .bar-label {
+  font-size: 12px;
+  fill: var(--parchment);
+}
+
+.bars .bar-value {
+  font-family: var(--mono);
+  font-size: 12px;
+  fill: var(--parchment);
+}
+
+.bars .tick {
+  font-family: var(--mono);
+  font-size: 10px;
+  fill: var(--parchment-soft);
+}
+
+.bars .grid {
+  stroke: var(--tile-line);
+}
+
+.bars .bar {
+  rx: 3;
+}
+
+.bars .bar-jev {
+  fill: var(--door);
+}
+
+.bars .bar-cell {
+  fill: var(--stone);
+}
+
+.bars .bar-whole {
+  fill: var(--leaf);
+  fill-opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  .chart {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
