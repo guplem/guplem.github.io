@@ -26,7 +26,7 @@ project's own code, one judge metric for the question code cannot answer,
 and one Galtea version per iteration of the generator.**
 
 1. **The rules are code first.** `evaluation/mapMetrics.js` holds the seven
-   specifications and their 27 computed metrics as data and functions, tested
+   specifications and their 28 computed metrics as data and functions, tested
    like every pure module. A metric is a number from 0 to 1 computed from the
    finished grid, its vocabulary and, where there is one, its blueprint, or
    null when the map gives it nothing to judge. `evaluate.py` reads the names

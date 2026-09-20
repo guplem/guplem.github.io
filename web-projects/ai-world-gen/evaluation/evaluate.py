@@ -1,6 +1,6 @@
 """Evaluate AI World Gen against its specifications, in Galtea.
 
-Three commands, run from this folder or from anywhere:
+Five commands, run from this folder or from anywhere:
 
     python evaluate.py setup                  # create or find the Galtea product, specifications, metrics, datasets
     python evaluate.py run --version v2       # generate every test case, log it as a session, score it

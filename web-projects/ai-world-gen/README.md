@@ -117,14 +117,17 @@ Anything raised mid-build that is not ready to implement yet. Add to it; strike 
 
 ## Evaluation in Galtea
 
-The quality of the maps is measured, not eyeballed ([ADR 0005](adr/0005-the-map-is-evaluated-against-specifications-in-galtea.md)). Four specifications say what a good map does, each with a few deterministic metrics computed from the finished grid, and each with a dataset of five 8 × 8 seeds. The fourth also has a dataset of three 16 × 16 maps, because a room or a street needs more than 8 × 8 cells to exist:
+The quality of the maps is measured, not eyeballed ([ADR 0005](adr/0005-the-map-is-evaluated-against-specifications-in-galtea.md)). Seven specifications say what a good map does, each with a few deterministic metrics computed from the finished grid, and each with a dataset of five 8 × 8 seeds. The fourth also has a second dataset of three 16 × 16 maps, because a room or a street needs more than 8 × 8 cells to exist:
 
 | Specification | Metrics |
 |---|---|
 | Barriers form structures, not debris | share of barrier cells with a barrier neighbour; share in a group of 3 or more; barrier share in a healthy range |
 | Paths form continuous routes | share of path cells with a path neighbour; share in the largest path network; share with two or more path neighbours; path share in a healthy range |
 | Every walkable area is reachable, and the map is playable | share of walkable cells in the largest region; 1 / number of regions; walkable share in range; vocabulary coverage; share of cells the model answered |
-| A place reads as a place | share of doors set into a wall; share of barrier cells that are an outline rather than a filled block; whether one enclosed room exists; share of ground cells in a patch of their own type; interactable share in range; and one judge metric, "reads as the setting", that Galtea's evaluator (GPT-5.2) scores from the logged map |
+| A place reads as a place | share of doors set into a wall; share of barrier cells that are an outline rather than a filled block; whether one enclosed room exists; share of ground cells in a patch of their own type; interactable share in range |
+| The vocabulary's own rules hold | share of cells respecting a never-next rule, an only-next rule, an edge rule, a zone rule |
+| Routes lead to doors and off the map | share of doors passable on both open sides; share of doors with a route next to them; whether the main route reaches the map edge |
+| Landmarks are there, once, and nothing floods the map | share of unique types present; share of those present exactly once; no type covering more than half the map; interactable things standing next to plain ground; and one judge metric, "reads as the setting", that Galtea's evaluator (GPT-5.2) scores from the logged map |
 
 Every iteration of the generator is a version in [Galtea](https://galtea.ai): one session per test case, one inference result with the parameters and the map, one evaluation per metric. The rules live in `evaluation/mapMetrics.js` and are tested like the rest of the code. A metric added later gets its history with `rescore`, which computes the current metrics on the saved grids of an old version, with no model call, and sends the new scores to that version's sessions.
 
@@ -137,7 +140,7 @@ python evaluate.py report --version v2 --against v1     # after the next iterati
 python evaluate.py rescore --version v1                 # after a new metric: score the saved maps of v1 with it
 ```
 
-Every map is also drawn as a PNG with the page's own tiles, saved under `evaluation/results/vN/`, and attached to the Galtea output next to the ASCII view, so a result can be seen at a glance in the dashboard and compared across versions in the repository. The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`, and `GPT-5.2` as the judge), so runs stay comparable when OpenRouter adds newer ones. A full run is 23 maps and about 2,050 decisions: a few cents of Jev and about six minutes. Results are also written to `evaluation/results/vN.json`.
+Every map is also drawn as a PNG with the page's own tiles, saved under `evaluation/results/vN/`, and attached to the Galtea output next to the ASCII view, so a result can be seen at a glance in the dashboard and compared across versions in the repository. The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`, and `GPT-5.2` as the judge), so runs stay comparable when OpenRouter adds newer ones. A full run is 38 maps and about 3,000 decisions: a few cents of Jev and under ten minutes. Results are also written to `evaluation/results/vN.json`.
 
 ### Versions so far (2026-09-20)
 
