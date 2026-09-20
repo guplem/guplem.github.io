@@ -19,7 +19,7 @@ export const SCHEMA_VERSION = 1;
 export const DOCUMENT_PATH = "board.json";
 
 /** The record maps this build knows about. Adding one here is the whole change. */
-export const RECORD_MAPS = ["notes"];
+export const RECORD_MAPS = ["notes", "columns"];
 
 const RESERVED = new Set(["schemaVersion", "updatedAt"]);
 
@@ -83,6 +83,31 @@ export function writeNote(document, issueKey, body, now) {
     ...base,
     updatedAt: now,
     notes: { ...base.notes, [issueKey]: { body: String(body ?? ""), updatedAt: now } },
+  };
+}
+
+/**
+ * The column this item was moved to by hand, or an empty string when its column
+ * is left to the rules (ADR 0011).
+ */
+export function readColumn(document, itemKey) {
+  const record = isPlainObject(document) && isPlainObject(document.columns) ? document.columns[itemKey] : null;
+  return isPlainObject(record) && typeof record.columnId === "string" ? record.columnId : "";
+}
+
+/**
+ * The same document with one card moved. The document handed in is not changed.
+ *
+ * Moving a card back to automatic keeps the record, with an empty column, the
+ * same way a cleared note keeps its key: the other device has to be able to
+ * tell "moved back just now" from "never moved" (ADR 0002).
+ */
+export function writeColumn(document, itemKey, columnId, now) {
+  const base = migrate(document, now);
+  return {
+    ...base,
+    updatedAt: now,
+    columns: { ...base.columns, [itemKey]: { columnId: String(columnId ?? ""), updatedAt: now } },
   };
 }
 

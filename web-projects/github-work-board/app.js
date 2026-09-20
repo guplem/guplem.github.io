@@ -10,7 +10,16 @@
 // fine-grained token belongs to one owner and most people's work is spread
 // across their own account and one or more organisations (ADR 0007).
 
-import { DOCUMENT_PATH, emptyDocument, parseDocument, readNote, writeNote } from "./boardDocument.js";
+import {
+  DOCUMENT_PATH,
+  emptyDocument,
+  parseDocument,
+  readColumn,
+  readNote,
+  writeColumn,
+  writeNote,
+} from "./boardDocument.js";
+import { AUTOMATIC, COLUMNS, automaticColumn, groupIntoColumns, readColumnId } from "./columns.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
   fetchAssignedIssues,
@@ -59,6 +68,7 @@ import { DEFAULT_SORT_ID, SORT_OPTIONS, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
 import {
+  applyPullRequestState,
   groupByLinkedIssue,
   isBlocked,
   normalizeRelationships,
@@ -255,6 +265,8 @@ function buildWorkItemCard(item) {
     card.append(progress);
   }
 
+  card.append(buildMoveControl(item));
+
   const note = document.createElement("textarea");
   note.className = "input note";
   note.rows = 2;
@@ -329,9 +341,25 @@ const times = (count, make) => Array.from({ length: count }, make);
  */
 function renderLoading() {
   const last = readLastCounts(storage);
-  const issues = element("issues");
-  issues.setAttribute("aria-busy", "true");
-  issues.replaceChildren(...times(skeletonCount(last.items), buildSkeletonCard));
+  const columns = element("board-columns");
+  columns.setAttribute("aria-busy", "true");
+  columns.replaceChildren(
+    ...COLUMNS.map((column, index) => {
+      const section = document.createElement("section");
+      section.className = "column";
+      const head = document.createElement("div");
+      head.className = "column-head";
+      head.append(buildSkeletonBar("7rem", "skeleton-title"), buildSkeletonBar("1.5rem", "skeleton-pill"));
+      const list = document.createElement("ul");
+      list.className = "issues";
+      // Spread what was there last time across the columns, so the placeholder
+      // is the height of the board that is coming (ADR 0004).
+      const share = Math.max(1, Math.round(skeletonCount(last.items) / COLUMNS.length));
+      list.replaceChildren(...times(index === 0 ? share + 1 : share, buildSkeletonCard));
+      section.append(head, list);
+      return section;
+    }),
+  );
   element("board-counts").replaceChildren(buildSkeletonBar("9rem"));
   element("board-empty").hidden = true;
 
@@ -466,6 +494,52 @@ function buildTokenRow(entry, index) {
 /* Rendering                                                                  */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * The control that moves one card by hand.
+ *
+ * GitHub can say approved while a comment on the pull request asks for one more
+ * change. The reader knows which of those is true, so they can override any
+ * single card, and put it back on the rules afterwards (ADR 0011).
+ */
+function buildMoveControl(item) {
+  const row = document.createElement("p");
+  row.className = "issue-move";
+
+  const label = document.createElement("label");
+  label.className = "visually-hidden";
+  label.setAttribute("for", `move-${item.key}`);
+  label.textContent = `Column for ${item.title}`;
+
+  const chosen = readColumn(state.board, item.key);
+  const automatic = automaticColumn(item, readRelationship(state.links, item.key));
+  const select = document.createElement("select");
+  select.className = "select select-small";
+  select.id = `move-${item.key}`;
+
+  const follow = document.createElement("option");
+  follow.value = AUTOMATIC;
+  follow.textContent = `Automatic (${COLUMNS.find((one) => one.id === automatic)?.label ?? automatic})`;
+  select.append(follow);
+
+  for (const column of COLUMNS) {
+    const choice = document.createElement("option");
+    choice.value = column.id;
+    choice.textContent = column.label;
+    select.append(choice);
+  }
+  select.value = readColumnId(chosen) === AUTOMATIC ? AUTOMATIC : chosen;
+
+  select.addEventListener("change", () => {
+    const next = select.value === AUTOMATIC ? "" : select.value;
+    state.board = writeColumn(state.board, item.key, next, new Date().toISOString());
+    scheduleSave();
+    renderBoard();
+  });
+
+  row.append(label, select);
+  return row;
+}
+
 /** One line of links on a card: a label, then each linked item. */
 function buildLinkLine(label, links) {
   const line = document.createElement("p");
@@ -488,6 +562,52 @@ function buildLinkLine(label, links) {
   return line;
 }
 
+/** One card, with any pull request that closes it nested inside. */
+function buildGroupCard({ item, children }) {
+  const card = buildWorkItemCard(item);
+  if (children.length === 0) return card;
+  const nest = document.createElement("ul");
+  nest.className = "issues nested";
+  nest.replaceChildren(...children.map(buildWorkItemCard));
+  card.append(nest);
+  return card;
+}
+
+/** One column: its name, how much is in it, and the cards. */
+function buildColumn({ column, groups }) {
+  const section = document.createElement("section");
+  section.className = "column";
+  section.setAttribute("aria-label", column.label);
+
+  const head = document.createElement("div");
+  head.className = "column-head";
+
+  const name = document.createElement("h3");
+  name.className = "column-name";
+  name.textContent = column.label;
+  name.title = column.hint;
+
+  const count = document.createElement("span");
+  count.className = "badge column-count";
+  count.textContent = String(groups.length);
+  head.append(name, count);
+
+  const list = document.createElement("ul");
+  list.className = "issues";
+  list.replaceChildren(...groups.map(buildGroupCard));
+
+  if (groups.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "column-empty";
+    empty.textContent = "Nothing here";
+    section.append(head, empty);
+    return section;
+  }
+
+  section.append(head, list);
+  return section;
+}
+
 /**
  * Put the list on the screen in the chosen order.
  *
@@ -499,17 +619,11 @@ function renderBoard() {
   const visible = filterWorkItems(state.items, state);
   const ordered = sortWorkItems(visible, state.sortId, hasNote);
   const grouped = groupByLinkedIssue(ordered, state.links);
-  element("issues").replaceChildren(
-    ...grouped.map(({ item, children }) => {
-      const card = buildWorkItemCard(item);
-      if (children.length === 0) return card;
-      const nest = document.createElement("ul");
-      nest.className = "issues nested";
-      nest.replaceChildren(...children.map(buildWorkItemCard));
-      card.append(nest);
-      return card;
-    }),
-  );
+
+  const overrides = {};
+  for (const { item } of grouped) overrides[item.key] = readColumn(state.board, item.key);
+  const board = groupIntoColumns(grouped, state.links, overrides);
+  element("board-columns").replaceChildren(...board.map(buildColumn));
 
   const { issues, pullRequests } = countByKind(visible);
   const parts = [];
@@ -686,10 +800,10 @@ async function connectAll() {
 
   saveTokens(storage, state.tokens);
   // Merging here, not per token, is what removes an item two tokens both see.
-  state.items = normalizeWorkItems(everything);
+  state.items = applyPullRequestState(normalizeWorkItems(everything), links);
 
   state.loading = false;
-  element("issues").removeAttribute("aria-busy");
+  element("board-columns").removeAttribute("aria-busy");
   showChecks(rows);
   renderTokenList();
   renderTokenNotice();

@@ -16,6 +16,7 @@
 // cost the relationships of every other item.
 
 const EMPTY = Object.freeze({
+  self: null,
   parent: null,
   blockedBy: [],
   blocking: [],
@@ -42,6 +43,12 @@ function readLink(value) {
     // something is still open, so everything else settles to "closed".
     state: value.state === "OPEN" ? "open" : "closed",
     repository: typeof value.repository?.nameWithOwner === "string" ? value.repository.nameWithOwner : "",
+    // Only a pull request carries these. They are what decides a column
+    // (ADR 0011), and `reviewDecision` is GitHub's own verdict rather than
+    // anything this board works out from a list of reviews.
+    merged: value.merged === true,
+    reviewDecision: typeof value.reviewDecision === "string" ? value.reviewDecision : "",
+    reviewRequestCount: Number.isInteger(value.reviewRequests?.totalCount) ? value.reviewRequests.totalCount : 0,
   };
 }
 
@@ -63,6 +70,7 @@ export function normalizeRelationships(nodes) {
       blocking: readLinks(node.blocking),
       closedBy: readLinks(node.closedByPullRequestsReferences),
       closes: readLinks(node.closingIssuesReferences),
+      self: readLink({ ...node, id }),
       subIssues: {
         total: Number.isInteger(node.subIssuesSummary?.total) ? node.subIssuesSummary.total : 0,
         completed: Number.isInteger(node.subIssuesSummary?.completed) ? node.subIssuesSummary.completed : 0,
@@ -90,6 +98,29 @@ export function openBlockers(relationship) {
 
 export function isBlocked(relationship) {
   return openBlockers(relationship).length > 0;
+}
+
+/**
+ * The items again, with what GitHub knows about a pull request's review put on
+ * the pull request's own item.
+ *
+ * The issues endpoint does not carry a review verdict, so a pull request on the
+ * board would otherwise have no column of its own. The graph answer does carry
+ * it, keyed by the same node id, so it is copied across once and every later
+ * step reads one shape (ADR 0011).
+ */
+export function applyPullRequestState(items, byId) {
+  return (Array.isArray(items) ? items : []).map((item) => {
+    if (item?.kind !== "pull-request") return item;
+    const self = readRelationship(byId, item.key).self;
+    if (!self) return item;
+    return {
+      ...item,
+      merged: self.merged,
+      reviewDecision: self.reviewDecision,
+      reviewRequestCount: self.reviewRequestCount,
+    };
+  });
 }
 
 /**

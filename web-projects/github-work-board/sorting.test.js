@@ -73,6 +73,15 @@ describe("sortWorkItems", () => {
     expect(keys(sortWorkItems(list, "repository"))).toEqual(["a1", "a9", "b1", "b2"]);
   });
 
+  test("by label uses the first label it carries, and puts anything unlabelled last", () => {
+    const list = [
+      item({ key: "none", labels: [] }),
+      item({ key: "zeta", labels: [{ name: "zeta" }] }),
+      item({ key: "alpha", labels: [{ name: "needs-info" }, { name: "Alpha" }] }),
+    ];
+    expect(keys(sortWorkItems(list, "label"))).toEqual(["alpha", "zeta", "none"]);
+  });
+
   test("by title ignores case, so a lower-case title is not exiled to the end", () => {
     const list = [item({ key: "z", title: "zebra" }), item({ key: "a", title: "Apple" }), item({ key: "m", title: "mango" })];
     expect(keys(sortWorkItems(list, "title"))).toEqual(["a", "m", "z"]);

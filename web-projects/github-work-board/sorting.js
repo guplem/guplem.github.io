@@ -22,6 +22,7 @@ export const SORT_OPTIONS = [
   { id: "created-desc", label: "Newest first" },
   { id: "created-asc", label: "Oldest first" },
   { id: "noted-first", label: "Ones you noted first" },
+  { id: "label", label: "Label, A to Z" },
   { id: "repository", label: "Repository, then number" },
   { id: "title", label: "Title, A to Z" },
 ];
@@ -65,6 +66,21 @@ function comparatorFor(sortId, hasNote) {
       return (a, b) => {
         const where = String(a.repository).localeCompare(String(b.repository), undefined, { sensitivity: "base" });
         return where !== 0 ? where : Number(a.number) - Number(b.number);
+      };
+    // By the alphabetically first label it carries. Anything with no label at
+    // all goes last: it is not "before A", it is outside the ordering.
+    case "label":
+      return (a, b) => {
+        const first = (item) =>
+          (Array.isArray(item?.labels) ? item.labels.map((one) => one?.name ?? "") : [])
+            .filter(Boolean)
+            .sort((one, two) => one.localeCompare(two, undefined, { sensitivity: "base" }))[0] ?? "";
+        const left = first(a);
+        const right = first(b);
+        if (left === right) return 0;
+        if (left === "") return 1;
+        if (right === "") return -1;
+        return left.localeCompare(right, undefined, { sensitivity: "base" });
       };
     case "title":
       return (a, b) => String(a.title).localeCompare(String(b.title), undefined, { sensitivity: "base" });
