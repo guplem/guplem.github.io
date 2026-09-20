@@ -203,9 +203,27 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(quiet).toContain("animation: none");
   });
 
-  test("the small dropdown on a card answers hover and focus with the big one", () => {
-    expect(css).toContain(".select:hover");
-    expect(css).toContain(".select-small");
+  test("the card's own button and its menu answer hover, a press and a focus", () => {
+    expect(css).toContain(".icon-button:hover");
+    expect(css).toContain(".icon-button:active");
+    expect(css).toContain(".icon-button:focus-visible");
+    expect(css).toContain(".menu-item:hover");
+    expect(css).toContain(".menu-item:focus-visible");
+  });
+
+  // A menu inside a card would be clipped by the columns, which scroll
+  // sideways. Only the top layer escapes that (ADR 0012).
+  test("the card menu is a popover, so the scrolling columns cannot clip it", () => {
+    const page = read("index.html");
+    expect(page).toContain('id="card-menu"');
+    expect(page).toContain('popover="auto"');
+    expect(css).toContain(":popover-open");
+  });
+
+  // A finger has no hover, so a button that appears on hover would never appear
+  // at all on a phone.
+  test("the card's button is always there without a pointer", () => {
+    expect(css).toContain("(hover: none)");
   });
 
   test("the sort dropdown answers hover and focus", () => {

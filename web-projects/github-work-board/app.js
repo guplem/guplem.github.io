@@ -19,7 +19,7 @@ import {
   writeColumn,
   writeNote,
 } from "./boardDocument.js";
-import { AUTOMATIC, COLUMNS, automaticColumn, groupIntoColumns, readColumnId } from "./columns.js";
+import { AUTOMATIC, COLUMNS, groupIntoColumns, moveOptions } from "./columns.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
   fetchAssignedIssues,
@@ -95,6 +95,8 @@ const state = {
   saveTimer: null,
   items: [],
   links: {},
+  menuItem: null,
+  menuAnchor: null,
   sortId: DEFAULT_SORT_ID,
   view: DEFAULT_VIEW,
   kind: DEFAULT_KIND,
@@ -191,12 +193,47 @@ function buildCheckRow({ label, ok, detail }) {
   return row;
 }
 
-function buildWorkItemCard(item) {
+/**
+ * One card. A nested pull request gets no menu: it travels in its issue's
+ * column, because the pair is one piece of work (ADR 0010), so offering to move
+ * it on its own would offer something that cannot happen.
+ */
+function buildWorkItemCard(item, { withMenu = true } = {}) {
   const card = document.createElement("li");
   card.className = "issue";
 
   const heading = document.createElement("p");
   heading.className = "issue-where";
+
+  const more = document.createElement("button");
+  more.type = "button";
+  more.className = "icon-button";
+  more.setAttribute("aria-haspopup", "menu");
+  more.setAttribute("aria-expanded", "false");
+  more.setAttribute("aria-label", `Actions for ${item.repository} #${item.number}`);
+  const dots = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  dots.setAttribute("viewBox", "0 0 24 24");
+  dots.setAttribute("aria-hidden", "true");
+  dots.setAttribute("class", "icon");
+  for (const x of [5, 12, 19]) {
+    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("cx", String(x));
+    dot.setAttribute("cy", "12");
+    dot.setAttribute("r", "1.6");
+    dot.setAttribute("fill", "currentColor");
+    dot.setAttribute("stroke", "none");
+    dots.append(dot);
+  }
+  more.append(dots);
+  // The browser opens the menu, through `popovertarget`. Calling `showPopover`
+  // from a click handler instead means the same click reaches the page and the
+  // browser light-dismisses the menu it has just opened: it flashes and closes.
+  more.setAttribute("popovertarget", "card-menu");
+  more.addEventListener("click", () => {
+    state.menuItem = item;
+    state.menuAnchor = more;
+  });
+  if (withMenu) card.append(more);
 
   const kind = document.createElement("span");
   kind.className = item.kind === "pull-request" ? "badge badge-pull" : "badge badge-issue";
@@ -264,8 +301,6 @@ function buildWorkItemCard(item) {
     progress.append(label, value);
     card.append(progress);
   }
-
-  card.append(buildMoveControl(item));
 
   const note = document.createElement("textarea");
   note.className = "input note";
@@ -494,50 +529,74 @@ function buildTokenRow(entry, index) {
 /* Rendering                                                                  */
 /* -------------------------------------------------------------------------- */
 
+/* -------------------------------------------------------------------------- */
+/* The card menu                                                              */
+/* -------------------------------------------------------------------------- */
+
 /**
- * The control that moves one card by hand.
+ * Put a menu next to the thing that opened it, and keep it on the screen.
  *
- * GitHub can say approved while a comment on the pull request asks for one more
- * change. The reader knows which of those is true, so they can override any
- * single card, and put it back on the rules afterwards (ADR 0011).
+ * A popover lives in the browser's top layer, so nothing clips it, and nothing
+ * positions it either: it has to be placed by hand. The clamp is what stops a
+ * menu opened by the last card in the last column from hanging off the edge.
  */
-function buildMoveControl(item) {
-  const row = document.createElement("p");
-  row.className = "issue-move";
+function placeMenu(menu, anchor, { beside = false } = {}) {
+  const at = anchor.getBoundingClientRect();
+  const size = menu.getBoundingClientRect();
+  const gap = 4;
+  const left = beside ? at.right + gap : at.right - size.width;
+  const top = beside ? at.top : at.bottom + gap;
+  menu.style.left = `${Math.max(gap, Math.min(left, window.innerWidth - size.width - gap))}px`;
+  menu.style.top = `${Math.max(gap, Math.min(top, window.innerHeight - size.height - gap))}px`;
+}
 
-  const label = document.createElement("label");
-  label.className = "visually-hidden";
-  label.setAttribute("for", `move-${item.key}`);
-  label.textContent = `Column for ${item.title}`;
+/**
+ * Fill the list of columns for whichever card the menu is pointed at.
+ *
+ * One menu serves the whole board, rather than one menu per card: a board of
+ * forty cards would otherwise carry eighty menus nobody has opened (ADR 0012).
+ * It is filled before it is shown, so it has its size when it is placed.
+ */
+function fillMoveMenu() {
+  const item = state.menuItem;
+  const submenu = element("card-submenu");
+  if (!item) return submenu.replaceChildren();
+  const options = moveOptions(item, readRelationship(state.links, item.key), readColumn(state.board, item.key));
 
-  const chosen = readColumn(state.board, item.key);
-  const automatic = automaticColumn(item, readRelationship(state.links, item.key));
-  const select = document.createElement("select");
-  select.className = "select select-small";
-  select.id = `move-${item.key}`;
+  submenu.replaceChildren(
+    ...options.map((option) => {
+      const choice = document.createElement("button");
+      choice.type = "button";
+      choice.className = option.current ? "menu-item is-current" : "menu-item";
+      choice.setAttribute("role", "menuitemradio");
+      choice.setAttribute("aria-checked", option.current ? "true" : "false");
 
-  const follow = document.createElement("option");
-  follow.value = AUTOMATIC;
-  follow.textContent = `Automatic (${COLUMNS.find((one) => one.id === automatic)?.label ?? automatic})`;
-  select.append(follow);
+      const mark = document.createElement("span");
+      mark.className = "menu-mark";
+      mark.textContent = option.current ? "✓" : "";
+      const label = document.createElement("span");
+      label.textContent = option.label;
+      choice.append(mark, label);
 
-  for (const column of COLUMNS) {
-    const choice = document.createElement("option");
-    choice.value = column.id;
-    choice.textContent = column.label;
-    select.append(choice);
-  }
-  select.value = readColumnId(chosen) === AUTOMATIC ? AUTOMATIC : chosen;
+      choice.addEventListener("click", () => {
+        state.board = writeColumn(
+          state.board,
+          item.key,
+          option.id === AUTOMATIC ? "" : option.id,
+          new Date().toISOString(),
+        );
+        scheduleSave();
+        closeCardMenu();
+        renderBoard();
+      });
+      return choice;
+    }),
+  );
+}
 
-  select.addEventListener("change", () => {
-    const next = select.value === AUTOMATIC ? "" : select.value;
-    state.board = writeColumn(state.board, item.key, next, new Date().toISOString());
-    scheduleSave();
-    renderBoard();
-  });
-
-  row.append(label, select);
-  return row;
+function closeCardMenu() {
+  element("card-submenu").hidePopover();
+  element("card-menu").hidePopover();
 }
 
 /** One line of links on a card: a label, then each linked item. */
@@ -568,7 +627,7 @@ function buildGroupCard({ item, children }) {
   if (children.length === 0) return card;
   const nest = document.createElement("ul");
   nest.className = "issues nested";
-  nest.replaceChildren(...children.map(buildWorkItemCard));
+  nest.replaceChildren(...children.map((child) => buildWorkItemCard(child, { withMenu: false })));
   card.append(nest);
   return card;
 }
@@ -952,6 +1011,37 @@ function start() {
   );
   element("empty-open-settings").addEventListener("click", () => showView("settings"));
   element("clear-filters").addEventListener("click", clearFilters);
+
+  const menu = element("card-menu");
+  const submenu = element("card-submenu");
+  const move = element("menu-move");
+
+  // Tapped or hovered: both open the columns, because a menu that answers only
+  // one of those is broken on half the machines that open it. The tap goes
+  // through `popovertarget`; the hover has no click to dismiss it, so it can
+  // open the popover itself.
+  move.setAttribute("popovertarget", "card-submenu");
+  move.addEventListener("mouseenter", () => {
+    if (!submenu.matches(":popover-open")) submenu.showPopover();
+  });
+
+  menu.addEventListener("toggle", (event) => {
+    const open = event.newState === "open";
+    state.menuAnchor?.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) placeMenu(menu, state.menuAnchor);
+    else submenu.hidePopover();
+  });
+
+  // Filled before it is shown, so it has a size to be placed by; placed after,
+  // because only then does it have one.
+  submenu.addEventListener("beforetoggle", (event) => {
+    if (event.newState === "open") fillMoveMenu();
+  });
+  submenu.addEventListener("toggle", (event) => {
+    const open = event.newState === "open";
+    move.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) placeMenu(submenu, move, { beside: true });
+  });
   element("save-repo-name").addEventListener("click", () => {
     state.repoName = element("settings-repo-name").value.trim() || DEFAULT_DATA_REPO_NAME;
     element("settings-repo-name").value = state.repoName;

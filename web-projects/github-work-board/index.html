@@ -71,6 +71,20 @@
     </p>
   </template>
 
+  <!-- One menu for the whole board, pointed at whichever card opened it. A
+       menu inside a card would be clipped by the columns, which scroll
+       sideways; a popover is in the browser's top layer and is not (ADR 0012). -->
+  <div id="card-menu" class="menu" popover="auto" role="menu" aria-label="Card actions">
+    <button id="menu-move" type="button" class="menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="false">
+      <span>Move to</span>
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6" /></svg>
+    </button>
+    <!-- Inside the menu it belongs to, not beside it. Two auto popovers that
+         are not nested in the DOM are unrelated, so opening this one would
+         close the menu that opened it (ADR 0012). -->
+    <div id="card-submenu" class="menu" popover="auto" role="menu" aria-label="Move to column"></div>
+  </div>
+
   <div class="page">
     <header class="masthead">
       <div>

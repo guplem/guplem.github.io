@@ -80,10 +80,11 @@ rules for ever. "Automatic" is one click away and the control says what the
 rules would pick, which is the smallest honest fix; a rule that expired the
 override on its own would be guessing at intent.
 
-**Moving is a dropdown, not a drag.** Dragging is the gesture people expect from
-a kanban board, and it is a lot of code to do properly on touch as well as with
-a mouse. A dropdown works everywhere, needs no pointer, and reads to a screen
-reader. Dragging can be added later, over the same data.
+**Moving is a menu, not a drag.** Dragging is the gesture people expect from a
+kanban board, and it is a lot of code to do properly on touch as well as with a
+mouse. A menu works everywhere, needs no pointer, and reads to a screen reader.
+Dragging can be added later, over the same data. The menu itself started as a
+dropdown on every card and became a button that opens one; ADR 0012 holds why.
 
 **Rejected: a status field the reader maintains.** It is the second job
 described above. **Rejected: GitHub Projects v2 status.** It is the real answer
