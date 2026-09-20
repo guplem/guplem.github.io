@@ -36,6 +36,17 @@ const refusingStorage = {
   },
 };
 
+describe("the generation mode", () => {
+  test("defaults to a decision per cell and round-trips the whole-map choice", () => {
+    const storage = fakeStorage();
+    expect(readModelChoices(storage).generation).toBe("per-cell");
+    saveModelChoices(storage, { decisionModel: "a", narrativeModel: "b", generation: "whole-map" });
+    expect(readModelChoices(storage)).toEqual({ decisionModel: "a", narrativeModel: "b", generation: "whole-map" });
+    saveModelChoices(storage, { decisionModel: "a", narrativeModel: "b", generation: "nonsense" });
+    expect(readModelChoices(storage).generation).toBe("per-cell");
+  });
+});
+
 describe("the api key", () => {
   test("is saved trimmed and read back", () => {
     const storage = fakeStorage();
@@ -67,6 +78,7 @@ describe("the model choices", () => {
     expect(readModelChoices(fakeStorage())).toEqual({
       decisionModel: DEFAULT_DECISION_MODEL,
       narrativeModel: DEFAULT_NARRATIVE_MODEL,
+      generation: "per-cell",
     });
   });
 
@@ -76,6 +88,7 @@ describe("the model choices", () => {
     expect(readModelChoices(storage)).toEqual({
       decisionModel: "openai/gpt-5-nano",
       narrativeModel: DEFAULT_NARRATIVE_MODEL,
+      generation: "per-cell",
     });
   });
 

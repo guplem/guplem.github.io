@@ -120,8 +120,15 @@ stands, and the version table in the README says why that was given up.
 a parameter, `generateVocabulary` takes `generate`, and both are tested with a
 fake model. `openRouterClient.js` is the one untested file.
 
-**Rejected: the whole map in one call.** Nothing to watch, one failure loses
-all, and a language model doing a classifier's job. **Rejected: a language
+**Rejected, and measured: the whole map in one call.** Nothing to watch, one
+failure loses all, and a language model doing a classifier's job. It is kept
+as a second mode (`wholeMap.js`, the "How the map is filled" switch) so the
+rejection has a number: on the same 38 seeds, with the plan and every rule in
+its prompt, Claude Sonnet 5 closed a room on 47% of the maps (the loop: 92%),
+held the typed rules at 0.76 (0.99) and led routes to doors at 0.61 (0.82),
+while winning on landmarks (0.90 against 0.83) and on time (6 s against 90 s
+for a 16 by 16 map) at the same cost per run. Control cell by cell, not
+price, is what the loop buys. **Rejected: a language
 model per cell as the default.** It works, and it is kept as the stand-in, but
 it is slower, dearer, and turns a typed decision back into text parsing.
 **Rejected: no model per cell (procedural placement from the vocabulary's

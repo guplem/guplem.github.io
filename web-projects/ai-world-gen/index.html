@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="157" />
-  <meta name="deploy-date" content="2026-09-20T12:03:08.000Z" />
+  <meta name="deploy-pull-request" content="159" />
+  <meta name="deploy-date" content="2026-09-20T12:14:47.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -212,6 +212,18 @@
                   <label class="field-label" for="narrative-model">Narrative model (one call per world)</label>
                   <select id="narrative-model" class="select"></select>
                   <p class="field-help">Writes the vocabulary as strict JSON. <strong>Claude Sonnet</strong> is the default; any model that supports JSON output works.</p>
+                </div>
+                <div class="field">
+                  <label class="field-label" for="generation-mode">How the map is filled</label>
+                  <select id="generation-mode" class="select">
+                    <option value="per-cell">One decision per cell, with the decision model (default)</option>
+                    <option value="whole-map">The whole map in one call, with the narrative model</option>
+                  </select>
+                  <p class="field-help">
+                    Per cell, the map fills in live and every cell carries its probabilities. In one call, the narrative
+                    model writes the finished grid at once: fewer calls, no live drawing, and the map arrives whole or not
+                    at all. The evaluation in the README compares the two.
+                  </p>
                 </div>
                 <p id="models-status" class="status" role="status" aria-live="polite"></p>
               </li>

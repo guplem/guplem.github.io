@@ -46,6 +46,7 @@ import {
 import { TILE_SIZE, visualTagNames } from "./tileset.js";
 import { VISUAL_STYLES, readStyleId } from "./tileStyles.js";
 import { buildSearch, readStateFromSearch } from "./urlState.js";
+import { runWholeMapGeneration } from "./wholeMap.js";
 import {
   describeVocabularyText,
   formatVocabulary,
@@ -251,7 +252,11 @@ function renderSetupStatus() {
     box.state === "valid"
       ? `The vocabulary comes from the box: no creative call.`
       : `${modelName(state.models.narrativeModel)} writes the vocabulary.`;
-  setStatus("setup-status", `${modelName(state.models.decisionModel)} decides each cell${note}. ${vocabularyLine}`);
+  const fillLine =
+    state.models.generation === "whole-map"
+      ? `${modelName(state.models.narrativeModel)} draws the whole map in one call.`
+      : `${modelName(state.models.decisionModel)} decides each cell${note}.`;
+  setStatus("setup-status", `${fillLine} ${vocabularyLine}`);
 }
 
 /* The vocabulary box: a preset fills it, a person may edit it, and an empty box
@@ -357,12 +362,14 @@ function renderModelSelects() {
     narrative.append(option(state.models.narrativeModel, `${state.models.narrativeModel} (not in the list)`));
   }
   narrative.value = state.models.narrativeModel;
+  element("generation-mode").value = state.models.generation;
 }
 
 function readModelSelects() {
   state.models = {
     decisionModel: element("decision-model").value || state.models.decisionModel,
     narrativeModel: element("narrative-model").value || state.models.narrativeModel,
+    generation: element("generation-mode").value || state.models.generation,
   };
   saveModelChoices(storage, state.models);
 }
@@ -587,8 +594,8 @@ function afterGridChange() {
 /* -------------------------------------------------------------------------- */
 
 function makeGenerate() {
-  return ({ messages, jsonSchema }) =>
-    client.generate({ apiKey: state.apiKey, model: state.models.narrativeModel, messages, jsonSchema, maxTokens: 6000 });
+  return ({ messages, jsonSchema, ...options }) =>
+    client.generate({ apiKey: state.apiKey, model: state.models.narrativeModel, messages, jsonSchema, maxTokens: 6000, ...options });
 }
 
 function makeDecider() {
@@ -676,14 +683,62 @@ async function generateWorld() {
   renderWorldHeader();
   renderLegend();
 
-  const transport = transportFor(state.models.decisionModel, state.catalogue);
-  setStatus("map-status", `${modelName(state.models.decisionModel)} is deciding ${width * height} cells${transport === "chat" ? " (text model standing in)" : ""}…`);
   const runSeed = seedFromText(JSON.stringify(state.setting)) ^ Date.now();
-  const order = createOrder(readOrderId(state.order), { width, height, random: mulberry32(runSeed) });
   // The blueprint first: where the structures stand, before any cell is asked about (blueprint.js).
   state.plan = planStructures({ vocabulary: state.vocabulary, width, height, random: mulberry32(runSeed ^ 0x51ed270b) });
   if (state.plan.rooms.length > 0) log(`Plan: ${state.plan.rooms.map((room) => `${room.label} ${room.width}×${room.height} at (${room.x}, ${room.y})`).join(", ")}`);
-  const summary = await runGeneration({
+  const summary = state.models.generation === "whole-map" ? await generateWholeMap(width, height) : await generateCellByCell(width, height, runSeed);
+
+  state.running = false;
+  state.latest = null;
+  element("stop").hidden = true;
+  afterGridChange();
+  const average = Math.round(summary.averageMs);
+  if (summary.status === "done" && summary.mode === "whole-map") {
+    const tokens = summary.usage.promptTokens + summary.usage.completionTokens;
+    setStatus("map-status", `Done: ${summary.placedCount} cells in one answer, ${(summary.elapsedMs / 1000).toFixed(1)} s, ${summary.modelCalls} call${summary.modelCalls === 1 ? "" : "s"}, ${tokens.toLocaleString()} tokens.`, "ok");
+  } else if (summary.status === "done") {
+    setStatus("map-status", `Done: ${summary.placedCount} cells in ${(summary.elapsedMs / 1000).toFixed(1)} s, ${average} ms per decision${summary.fallbackCount > 0 ? `, ${summary.fallbackCount} fallback${summary.fallbackCount === 1 ? "" : "s"}` : ""}.`, summary.fallbackCount > 0 ? "warn" : "ok");
+  } else if (summary.status === "cancelled") {
+    setStatus("map-status", `Stopped after ${summary.placedCount} cells. Click a cell to inspect it, or generate again.`, "warn");
+  } else {
+    setStatus("map-status", `Stopped: ${describeFailure(summary.failure)}`, "error");
+    log(describeFailure(summary.failure), "error");
+  }
+}
+
+/** The whole map in one call to the narrative model (wholeMap.js). The grid is drawn when the answer lands. */
+async function generateWholeMap(width, height) {
+  setStatus("map-status", `${modelName(state.models.narrativeModel)} is drawing the whole ${width} × ${height} map in one call…`);
+  log(`Whole map: asking ${state.models.narrativeModel} for ${width * height} cells in one answer`);
+  const summary = await runWholeMapGeneration({
+    grid: state.grid,
+    vocabulary: state.vocabulary,
+    setting: state.setting,
+    plan: state.plan,
+    generate: makeGenerate(),
+    onAttempt: ({ attempt, errors }) => {
+      if (attempt > 1) {
+        setStatus("map-status", `The map had ${errors.length} problem${errors.length === 1 ? "" : "s"}; asking again (attempt ${attempt} of 3)…`, "warn");
+        log(`Whole map attempt ${attempt}: ${errors.slice(0, 3).join(" | ")}`, "warn");
+      }
+    },
+  });
+  if (summary.status === "done") {
+    log(`Whole map: ${summary.placedCount} cells in ${summary.elapsedMs} ms, ${summary.usage.promptTokens} prompt tokens, ${summary.usage.completionTokens} answer tokens`);
+    renderProgress(summary.placedCount, summary.placedCount);
+    redraw();
+    renderLegend();
+  }
+  return summary;
+}
+
+/** One decision per cell, in the chosen order, drawn live (generation.js). */
+async function generateCellByCell(width, height, runSeed) {
+  const transport = transportFor(state.models.decisionModel, state.catalogue);
+  setStatus("map-status", `${modelName(state.models.decisionModel)} is deciding ${width * height} cells${transport === "chat" ? " (text model standing in)" : ""}…`);
+  const order = createOrder(readOrderId(state.order), { width, height, random: mulberry32(runSeed) });
+  return runGeneration({
     grid: state.grid,
     vocabulary: state.vocabulary,
     setting: state.setting,
@@ -702,20 +757,6 @@ async function generateWorld() {
       if ((index + 1) % 8 === 0) renderLegend();
     },
   });
-
-  state.running = false;
-  state.latest = null;
-  element("stop").hidden = true;
-  afterGridChange();
-  const average = Math.round(summary.averageMs);
-  if (summary.status === "done") {
-    setStatus("map-status", `Done: ${summary.placedCount} cells in ${(summary.elapsedMs / 1000).toFixed(1)} s, ${average} ms per decision${summary.fallbackCount > 0 ? `, ${summary.fallbackCount} fallback${summary.fallbackCount === 1 ? "" : "s"}` : ""}.`, summary.fallbackCount > 0 ? "warn" : "ok");
-  } else if (summary.status === "cancelled") {
-    setStatus("map-status", `Stopped after ${summary.placedCount} cells. Click a cell to inspect it, or generate again.`, "warn");
-  } else {
-    setStatus("map-status", `Stopped: ${describeFailure(summary.failure)}`, "error");
-    log(describeFailure(summary.failure), "error");
-  }
 }
 
 async function regenerateCell() {
@@ -977,6 +1018,10 @@ function wireEvents() {
   element("forget-key").addEventListener("click", forgetKey);
   element("decision-model").addEventListener("change", readModelSelects);
   element("narrative-model").addEventListener("change", readModelSelects);
+  element("generation-mode").addEventListener("change", () => {
+    readModelSelects();
+    renderSetupStatus();
+  });
   element("ai-done").addEventListener("click", () => {
     readKeyField();
     showView("setup");
