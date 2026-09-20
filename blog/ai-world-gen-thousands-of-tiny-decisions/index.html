@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../resources/images/webicon.webp" />
+    <title>AI World Gen: thousands of tiny decisions, and a loop that graded them · Guillem Poy</title>
+    <!-- The generators read this head (scripts/blogPosts.js): og:title is the
+         post's title, description its summary, article:published_time its date.
+         Change them here and run the generators; nothing else lists this post. -->
+    <meta name="description" content="A map generator that asks a decision model one question per tile, about 3,000 times per test run for 25 cents, and the evaluation loop in Galtea that took it from a green blur to a village in eleven measured versions." />
+    <link rel="canonical" href="https://triunitystudios.com/blog/ai-world-gen-thousands-of-tiny-decisions/" />
+    <link rel="alternate" type="application/atom+xml" title="Guillem Poy · Blog" href="../feed.xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="AI World Gen: thousands of tiny decisions, and a loop that graded them" />
+    <meta property="og:description" content="A map generator that asks a decision model one question per tile, about 3,000 times per test run for 25 cents, and the evaluation loop that took it from a green blur to a village in eleven measured versions." />
+    <meta property="og:url" content="https://triunitystudios.com/blog/ai-world-gen-thousands-of-tiny-decisions/" />
+    <meta property="og:image" content="https://triunitystudios.com/web-projects/ai-world-gen/evaluation/results/v11/large-village-spiral.png" />
+    <meta property="article:published_time" content="2026-09-20T12:00:00Z" />
+    <meta property="article:author" content="Guillem Poy" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "AI World Gen: thousands of tiny decisions, and a loop that graded them",
+        "description": "A map generator that asks a decision model one question per tile, about 3,000 times per test run for 25 cents, and the evaluation loop in Galtea that took it from a green blur to a village in eleven measured versions.",
+        "image": "https://triunitystudios.com/web-projects/ai-world-gen/evaluation/results/v11/large-village-spiral.png",
+        "datePublished": "2026-09-20T12:00:00Z",
+        "author": { "@type": "Person", "name": "Guillem Poy", "url": "https://triunitystudios.com/" },
+        "mainEntityOfPage": "https://triunitystudios.com/blog/ai-world-gen-thousands-of-tiny-decisions/"
+      }
+    </script>
+
+    <link rel="preload" href="../../resources/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../css/global/fonts.css" />
+    <link rel="stylesheet" href="../../css/global/variables.css" />
+    <link rel="stylesheet" href="../../css/global/base.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="maptable">
+    <div class="topbar">
+      <a class="back-link" href="../">← Blog</a>
+      <a class="feed-link" href="../feed.xml">Feed (Atom)</a>
+    </div>
+
+    <article class="post">
+      <header class="post-header">
+        <p class="post-kicker">Post two · a project write-up</p>
+        <h1>AI World Gen: thousands of tiny decisions, and a loop that graded them</h1>
+        <p class="post-standfirst">A map generator that asks a model one question per tile. A new kind of model that answers in milliseconds for a fraction of a cent. And the evaluation loop that took it from a green blur to a village in eleven measured versions, most of them written by an agent.</p>
+        <p class="post-byline">
+          <a href="../../">Guillem Poy</a>
+          <time datetime="2026-09-20">20 September 2026</time>
+          <span>15 minute read</span>
+        </p>
+      </header>
+
+      <figure class="hero-figure">
+        <img src="../../web-projects/ai-world-gen/evaluation/results/v11/large-village-spiral.png" width="768" height="768" alt="A 16 by 16 pixel-art village: a stone cottage with an orange door in the top left, a wooden cottage with a door in the middle, trees along the top, a dirt path across the bottom, a villager and two haystacks." />
+        <figcaption>Version 11 drawing the "medieval village" preset on a 16 by 16 grid. Every tile was one question to a decision model. The stone cottage, the wooden cottage and their doors were placed by code first; the model chose everything else.</figcaption>
+      </figure>
+
+      <section>
+        <h2>A model that decides instead of writes</h2>
+        <p><a href="../../web-projects/ai-world-gen/">AI World Gen</a> started at the AI Hackathon Barcelona 2026. The idea: describe a place, and watch an AI build its map one tile at a time. The interesting question was never "can a model draw a map". It was: given what is around this tile, what goes here? That question is asked hundreds of times per map. Asking a chat model each time is slow, expensive, and turns a one-word answer into text you have to parse.</p>
+        <p>Jev, made by TypeSafe and served through OpenRouter's decisions endpoint, is a different kind of model. You send it a <em>state</em> (a JSON object describing the situation) and a <em>typed question</em>: pick one of these options, or place this on a scale. It answers with a choice, a confidence and a probability for every option. It does not write text at all. It is built for speed (TypeSafe quotes tens of milliseconds for the model itself) and it is priced at about $0.04 per million input tokens, roughly fifty times less than the chat models I would otherwise have used for the same call. The exact bill is a section of its own below.</p>
+
+        <figure class="diagram">
+          <svg viewBox="0 0 760 250" role="img" aria-labelledby="decision-title decision-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="decision-title">One decision: state in, typed answer out</title>
+            <desc id="decision-desc">A box on the left holds the state: the world, the cell and its part of the plan, the whole map as letters, the neighbours, counts and a balance sheet. An arrow carries it, with one question ("which type goes here? options: grass, path, oak, fence"), to a box marked Jev. An arrow leaves Jev to a box holding the answer: the choice "path", a confidence, and one probability per option.</desc>
+            <g class="box">
+              <rect x="10" y="30" width="230" height="190" rx="8" />
+              <text x="125" y="58" class="box-title" text-anchor="middle">state</text>
+              <text x="26" y="86" class="mono">world: medieval village</text>
+              <text x="26" y="106" class="mono">cell: (9, 12) · outside</text>
+              <text x="26" y="126" class="mono">map: 16×16 letters</text>
+              <text x="26" y="146" class="mono">neighbours: grass ×5, path ×2</text>
+              <text x="26" y="166" class="mono">balance: path 18% of 15%</text>
+              <text x="26" y="186" class="mono">missing: well, villager</text>
+              <text x="26" y="206" class="mono">suggested: path (door nearby)</text>
+            </g>
+            <g class="arrow">
+              <line x1="240" y1="125" x2="322" y2="125" />
+              <polygon points="322,119 334,125 322,131" />
+              <text x="287" y="112" class="arrow-label" text-anchor="middle">one question</text>
+              <text x="287" y="146" class="arrow-sub" text-anchor="middle">which type goes here?</text>
+              <text x="287" y="162" class="arrow-sub" text-anchor="middle">grass · path · oak · fence</text>
+            </g>
+            <g class="model-box">
+              <rect x="336" y="85" width="120" height="80" rx="40" />
+              <text x="396" y="118" class="model-name" text-anchor="middle">Jev</text>
+              <text x="396" y="140" class="model-sub" text-anchor="middle">one choice</text>
+            </g>
+            <g class="arrow">
+              <line x1="456" y1="125" x2="512" y2="125" />
+              <polygon points="512,119 524,125 512,131" />
+            </g>
+            <g class="box answer">
+              <rect x="526" y="30" width="224" height="190" rx="8" />
+              <text x="638" y="58" class="box-title" text-anchor="middle">answer</text>
+              <text x="542" y="90" class="mono">choice: path</text>
+              <text x="542" y="112" class="mono">confidence: 0.71</text>
+              <text x="542" y="140" class="mono">path   ████████░░ 0.71</text>
+              <text x="542" y="160" class="mono">grass  ██░░░░░░░░ 0.19</text>
+              <text x="542" y="180" class="mono">fence  █░░░░░░░░░ 0.07</text>
+              <text x="542" y="200" class="mono">oak    ░░░░░░░░░░ 0.03</text>
+            </g>
+          </svg>
+          <figcaption>One tile, one call. The state is a few hundred tokens; the answer is a choice with the probabilities behind it. The map samples from those probabilities, so a model that is 70% sure of "path" gives a map with some grass in it, not a solid path.</figcaption>
+        </figure>
+
+        <p>So the generator splits the work in two. One creative call goes to a language model, once per world: it invents the <em>vocabulary</em>, the six to twenty-four kinds of tile a "space station" or a "haunted mansion" is made of, with their rules. Then one decision goes to Jev, once per tile, with the vocabulary as the options and the map so far as the state. A preset world skips the creative call entirely, because the vocabulary ships with the page.</p>
+        <p>The numbers make the design possible. The test run I describe below draws 38 maps, 3,008 decisions in total. It costs about 24 cents and takes under ten minutes. A chat model in the same seat would cost dollars and take the better part of an hour, for an answer that has to be parsed back into one of the options. Cheap and fast is not a nicety here; it is what lets you run the whole thing before every change.</p>
+      </section>
+
+
+      <section class="costs">
+        <h2>What it costs, really</h2>
+        <p>Here is the bill. OpenRouter's usage page for the week in which all eleven versions were drawn, back-filled and re-drawn shows 39.2 thousand requests to Jev, 79.1 million tokens, and a spend of $3.11. That is 2,018 tokens per decision (the state with the whole map in it), $0.039 per million tokens, and <strong>$0.00008 per decision</strong>: about eight thousandths of a cent. A 16 by 16 map is 256 decisions, so $0.020. A full test run of 38 maps is 3,008 decisions, so $0.24. The language model, Claude Sonnet 5, was called 7 times that week to write vocabularies, and those 7 calls cost $0.33: one vocabulary costs about the same as 594 decisions.</p>
+        <figure class="chart">
+<svg viewBox="0 0 760 190" class="bars" role="img" aria-label="What one dollar buys: 12,605 Jev decisions, 13,749 per-cell calls to DeepSeek V4 Flash, 244 per-cell calls to Claude Sonnet 5, or 21 vocabularies from Claude Sonnet 5. Logarithmic scale." xmlns="http://www.w3.org/2000/svg">
+<text x="300" y="18" class="chart-title">What one dollar buys, logarithmic scale</text>
+<text x="290" y="55" class="bar-label" text-anchor="end">Jev decisions</text><rect x="300" y="40" width="366.6" height="20" class="bar bar-jev" /><text x="672.6" y="55" class="bar-value">12,605</text><text x="290" y="85" class="bar-label" text-anchor="end">Per-cell calls to DeepSeek V4 Flash</text><rect x="300" y="70" width="370.0" height="20" class="bar bar-cell" /><text x="676.0" y="85" class="bar-value">13,749</text><text x="290" y="115" class="bar-label" text-anchor="end">Per-cell calls to Claude Sonnet 5</text><rect x="300" y="100" width="213.4" height="20" class="bar bar-cell" /><text x="519.4" y="115" class="bar-value">244</text><text x="290" y="145" class="bar-label" text-anchor="end">Vocabularies from Claude Sonnet 5</text><rect x="300" y="130" width="118.6" height="20" class="bar bar-whole" /><text x="424.6" y="145" class="bar-value">21</text>
+</svg>
+          <figcaption>Prices from OpenRouter on 20 September 2026. The Jev figure is measured from the bill; the others are computed from the list price with the same 2,000-token state and a ten-token answer per call.</figcaption>
+        </figure>
+        <p>The fair comparison is not Jev against a chat model, it is three ways of drawing the same map. One: a decision per cell with Jev, which is what the generator does. Two: the same per-cell loop with a chat model, sending the same state and asking for one word back. Three: one chat call that writes the whole 16 by 16 grid as JSON, which is what most people would build first.</p>
+        <figure class="chart">
+<svg viewBox="0 0 760 310" class="bars" role="img" aria-label="Cost of drawing one 16 by 16 map: Jev per cell $0.020; a chat model per cell between $0.019 and $1.05; the whole map in one chat call between $0.0024 and $0.027. Logarithmic scale." xmlns="http://www.w3.org/2000/svg">
+<text x="300" y="18" class="chart-title">Cost of one 16 × 16 map (256 cells), logarithmic scale</text>
+<line x1="300.0" y1="34" x2="300.0" y2="282" class="grid" /><text x="300.0" y="298" class="tick" text-anchor="middle">$0.0010</text><line x1="433.3" y1="34" x2="433.3" y2="282" class="grid" /><text x="433.3" y="298" class="tick" text-anchor="middle">$0.010</text><line x1="566.6" y1="34" x2="566.6" y2="282" class="grid" /><text x="566.6" y="298" class="tick" text-anchor="middle">$0.10</text><line x1="699.9" y1="34" x2="699.9" y2="282" class="grid" /><text x="699.9" y="298" class="tick" text-anchor="middle">$1</text>
+<text x="290" y="55" class="bar-label" text-anchor="end">Jev, one decision per cell</text><rect x="300" y="40" width="174.3" height="20" class="bar bar-jev" /><text x="480.3" y="55" class="bar-value">$0.020</text><text x="290" y="85" class="bar-label" text-anchor="end">Claude Sonnet 5, one call per cell</text><rect x="300" y="70" width="402.7" height="20" class="bar bar-cell" /><text x="708.7" y="85" class="bar-value">$1.05</text><text x="290" y="115" class="bar-label" text-anchor="end">GPT-5.2, one call per cell</text><rect x="300" y="100" width="395.8" height="20" class="bar bar-cell" /><text x="701.8" y="115" class="bar-value">$0.93</text><text x="290" y="145" class="bar-label" text-anchor="end">DeepSeek V4 Pro, one call per cell</text><rect x="300" y="130" width="311.8" height="20" class="bar bar-cell" /><text x="617.8" y="145" class="bar-value">$0.22</text><text x="290" y="175" class="bar-label" text-anchor="end">DeepSeek V4 Flash, one call per cell</text><rect x="300" y="160" width="169.3" height="20" class="bar bar-cell" /><text x="475.3" y="175" class="bar-value">$0.019</text><text x="290" y="205" class="bar-label" text-anchor="end">Claude Sonnet 5, the whole map in one call</text><rect x="300" y="190" width="176.2" height="20" class="bar bar-whole" /><text x="482.2" y="205" class="bar-value">$0.021</text><text x="290" y="235" class="bar-label" text-anchor="end">GPT-5.2, the whole map in one call</text><rect x="300" y="220" width="190.3" height="20" class="bar bar-whole" /><text x="496.3" y="235" class="bar-value">$0.027</text><text x="290" y="265" class="bar-label" text-anchor="end">DeepSeek V4 Pro, the whole map in one call</text><rect x="300" y="250" width="50.8" height="20" class="bar bar-whole" /><text x="356.8" y="265" class="bar-value">$0.0024</text>
+</svg>
+          <figcaption>Per-cell with a frontier chat model is about fifty times the price of Jev. The whole map in one call is in the same range as Jev, and with the cheapest models it is cheaper.</figcaption>
+        </figure>
+        <p>Two things in that chart surprised me. The first is that the per-cell loop with a chat model is not absurd: with the cheapest models it costs about what Jev costs. Price alone does not justify a decision model. What does is everything around the price. Jev can only answer with one of the options you gave it, so there is nothing to parse and no invented tile type. It returns a probability for every option, which is what the inspector shows and what the sampling uses. And it is built to be fast: TypeSafe quotes tens of milliseconds for the model; the round trip from my laptop, through OpenRouter, measured about 0.35 seconds per decision in the evaluation runs, most of it network. A chat model answering a two-thousand-token prompt takes one to three seconds before it says its one word, so the same 256-cell map takes five to ten minutes instead of a minute and a half.</p>
+        <p>The second surprise is that the whole map in one call is cheap, too, and it sees everything at once, which is exactly what the per-cell model could not do until the blueprint gave it rooms. A chat model writing the grid in one go might well draw a better village. It might also return a 15 by 16 grid, or a tile type that does not exist, or a valid JSON document with a hole in the middle, and when it does, one failure loses the whole map. There is nothing to watch while it works, no probability behind any cell, and no way to ask again about one tile. The per-cell design is a bet that those properties are worth more than the model's view of the whole, and the blueprint is the admission that the view of the whole still had to come from somewhere. Code gives it for free.</p>
+        <p>The practical lesson is about the state. At $0.00008 per decision, the question "should I send the whole map in every call?" has an answer that costs nothing to try. The map sketch is about 300 tokens on a 16 by 16 grid, so sending it 256 times adds a few hundredths of a cent to the map. That is why version 5 could put the entire grid in every question and measure what it did, and why the state now carries a balance sheet, the missing landmarks and the excluded types. When each decision costs this little, the state is where you spend.</p>
+        <div class="table-scroll">
+          <table class="scores">
+            <caption>The assumptions behind the chart: OpenRouter list prices on 20 September 2026, per million tokens, and the cost of one 16 × 16 map each way</caption>
+            <thead><tr><th scope="col">Chat model</th><th scope="col">Input</th><th scope="col">Output</th><th scope="col">256 calls, one per cell</th><th scope="col">One call, whole grid</th></tr></thead>
+            <tbody>
+<tr><th scope="row">Claude Sonnet 5</th><td>$2.000</td><td>$10.000</td><td>$1.05</td><td>$0.021</td></tr>
+<tr><th scope="row">GPT-5.2</th><td>$1.750</td><td>$14.000</td><td>$0.93</td><td>$0.027</td></tr>
+<tr><th scope="row">DeepSeek V4 Pro</th><td>$0.422</td><td>$0.845</td><td>$0.22</td><td>$0.0024</td></tr>
+<tr><th scope="row">DeepSeek V4 Flash</th><td>$0.036</td><td>$0.073</td><td>$0.019</td><td>$0.0002</td></tr>
+<tr><th scope="row">Jev 1.13 (measured)</th><td>$0.039</td><td>–</td><td>$0.020</td><td>–</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="data-note">Per cell: a 2,000-token state and a 10-token answer, 256 times. Whole grid: a 2,500-token prompt (vocabulary, rules, instructions) and a 1,600-token JSON answer. Neither includes retries or reasoning tokens, which would raise the chat-model figures.</p>
+      </section>
+
+      <section>
+        <h2>Version one was a green blur</h2>
+        <div class="pair">
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v1/large-village-spiral.png" width="768" height="768" loading="lazy" alt="A 16 by 16 grid entirely of dark grass tiles, with one green tree near the top." />
+            <figcaption>v1, the same village seed. One tree, 255 grass.</figcaption>
+          </figure>
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v11/large-village-spiral.png" width="768" height="768" loading="lazy" alt="The same seed drawn by version 11: two cottages with doors, trees, a path, haystacks and a villager." />
+            <figcaption>v11, the same seed, 20 hours and ten versions later.</figcaption>
+          </figure>
+        </div>
+        <p>The first version worked, in the sense that every call succeeded and a map came out. It was also useless. Thirteen of the fifteen maps in the first test set used one tile type for more than 85% of the cells: a village that is all grass, a station that is all corridor. The reason is obvious once you see it. A model that decides one cell from its neighbours, and whose neighbours are all grass, picks grass. Every correct local decision adds up to a wrong map.</p>
+        <p>I could have looked at three maps, changed the prompt, looked at three more, and felt good. I have done that before and I know how it ends: the change that fixes the village breaks the station, and nobody notices for a week. So before touching the generator, I built a way to measure it.</p>
+      </section>
+
+      <section>
+        <h2>Measuring instead of looking</h2>
+        <p>The measurement lives in <a href="https://galtea.ai">Galtea</a>, an evaluation platform for AI products (where I work, so take this paragraph as a demonstration of the tool as much as a recommendation). The shape of it is simple. A <em>product</em> has <em>versions</em>. A version is judged against written <em>specifications</em>: sentences about what a good map is. Each specification has <em>metrics</em> that score a map from 0 to 1, and a <em>dataset</em> of test cases. A test case here is one seed: a preset, a grid size, a fill order and a random seed, so every version draws the same 38 worlds.</p>
+        <p>Almost every metric is plain code in the project, not a model. "Doors sit in walls" is a loop over the door tiles. "One walkable region" is a flood fill. "The route reaches the edge" is a search. The one thing code cannot answer, "does this look like a village?", goes to a judge model, GPT-5.2, which reads the map as text and scores it. The specifications grew as the failures showed up: three at the start (barriers form structures, paths form routes, everything walkable is reachable), a fourth after version 4 ("a place reads as a place": doors in walls, walls as outlines, an enclosed room, ground in patches), and three more after version 7 (the vocabulary's own rules hold, routes lead to doors and off the map, the landmarks are there once and nothing floods the map). By the end there were 28 computed metrics and one judge.</p>
+
+        <figure class="diagram loop-diagram">
+          <svg viewBox="0 0 760 420" role="img" aria-labelledby="loop-title loop-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="loop-title">The evaluation and improvement loop</title>
+            <desc id="loop-desc">Six boxes arranged in a circle, joined by arrows: change the generator; run the 38 test seeds; score every map with the 28 metrics and the judge; compare with the previous version in Galtea; read the failure modes in the pictures and the numbers; form a hypothesis, which leads back to the change. An agent sits inside the circle and turns it. Outside the circle a person sets the direction, adds specifications when a failure has no number, sets the budget, and decides when to stop.</desc>
+            <ellipse cx="380" cy="210" rx="300" ry="160" class="orbit" />
+            <g class="step">
+              <rect x="300" y="18" width="160" height="52" rx="10" />
+              <text x="380" y="40" class="step-title" text-anchor="middle">1 · Change</text>
+              <text x="380" y="58" class="step-sub" text-anchor="middle">state, sampling, rules, plan</text>
+            </g>
+            <g class="step">
+              <rect x="560" y="95" width="180" height="52" rx="10" />
+              <text x="650" y="117" class="step-title" text-anchor="middle">2 · Run 38 seeds</text>
+              <text x="650" y="135" class="step-sub" text-anchor="middle">~3,000 decisions, about 25 cents</text>
+            </g>
+            <g class="step">
+              <rect x="560" y="272" width="180" height="52" rx="10" />
+              <text x="650" y="294" class="step-title" text-anchor="middle">3 · Score</text>
+              <text x="650" y="312" class="step-sub" text-anchor="middle">28 metrics in code + 1 judge</text>
+            </g>
+            <g class="step">
+              <rect x="300" y="350" width="160" height="52" rx="10" />
+              <text x="380" y="372" class="step-title" text-anchor="middle">4 · Compare</text>
+              <text x="380" y="390" class="step-sub" text-anchor="middle">against the previous version</text>
+            </g>
+            <g class="step">
+              <rect x="20" y="272" width="180" height="52" rx="10" />
+              <text x="110" y="294" class="step-title" text-anchor="middle">5 · Read the failures</text>
+              <text x="110" y="312" class="step-sub" text-anchor="middle">the pictures and the numbers</text>
+            </g>
+            <g class="step">
+              <rect x="20" y="95" width="180" height="52" rx="10" />
+              <text x="110" y="117" class="step-title" text-anchor="middle">6 · Hypothesis</text>
+              <text x="110" y="135" class="step-sub" text-anchor="middle">one theory, one version</text>
+            </g>
+            <g class="loop-arrows">
+              <path d="M462 44 C540 55, 600 70, 640 92" />
+              <path d="M650 149 C660 190, 660 230, 650 270" />
+              <path d="M640 326 C600 350, 540 366, 462 376" />
+              <path d="M298 376 C220 366, 160 350, 120 326" />
+              <path d="M110 270 C100 230, 100 190, 110 149" />
+              <path d="M120 92 C160 70, 220 55, 298 44" />
+            </g>
+            <g class="agent">
+              <text x="380" y="190" class="agent-title" text-anchor="middle">an agent turns the loop</text>
+              <text x="380" y="214" class="agent-sub" text-anchor="middle">writes the change and its tests, commits,</text>
+              <text x="380" y="232" class="agent-sub" text-anchor="middle">runs the evaluation, writes down what it saw</text>
+            </g>
+            <g class="human">
+              <text x="380" y="300" class="human-title" text-anchor="middle">a person, outside the loop</text>
+              <text x="380" y="318" class="human-sub" text-anchor="middle">sets the direction · adds a specification when a</text>
+              <text x="380" y="334" class="human-sub" text-anchor="middle">failure has no number · sets the budget · says stop</text>
+            </g>
+          </svg>
+          <figcaption>Every version is one turn of this loop. The agent (Claude Code, in this case) runs steps 1 to 6 on its own; I read the pull requests, added specifications when I saw a failure the numbers missed, and decided when the loop had earned its rest.</figcaption>
+        </figure>
+      </section>
+
+      <section>
+        <h2>Eleven versions in twenty hours</h2>
+        <p>Version 1 was scored at 14:20 on 19 September. Version 11 at 09:49 the next morning. Each chart below is one specification, and each point is the mean score of that version over the same 38 seeds. The dotted grey chart is the judge. The numbers are in the table at the end.</p>
+
+        <div class="small-multiples">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Structures: from 0.18 to 0.98" xmlns="http://www.w3.org/2000/svg">
+<text x="28" y="14" class="mini-title">Structures</text>
+<text x="210" y="14" class="mini-delta" text-anchor="end">0.18 → 0.98</text>
+<line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
+<line x1="28" y1="108.0" x2="210" y2="108.0" class="axis" />
+<text x="24" y="30.0" class="tick" text-anchor="end">1</text>
+<text x="24" y="112.0" class="tick" text-anchor="end">0</text>
+<path d="M28.0,108.0 L28.0,93.2 L46.2,76.1 L64.4,52.6 L82.6,40.4 L100.8,31.8 L119.0,30.4 L137.2,30.4 L155.4,26.6 L173.6,27.6 L191.8,27.7 L210.0,27.5 L210.0,108.0 Z" class="area" />
+<polyline points="28.0,93.2 46.2,76.1 64.4,52.6 82.6,40.4 100.8,31.8 119.0,30.4 137.2,30.4 155.4,26.6 173.6,27.6 191.8,27.7 210.0,27.5" class="line" />
+<circle cx="28.0" cy="93.2" r="2.2" /><circle cx="46.2" cy="76.1" r="2.2" /><circle cx="64.4" cy="52.6" r="2.2" /><circle cx="82.6" cy="40.4" r="2.2" /><circle cx="100.8" cy="31.8" r="2.2" /><circle cx="119.0" cy="30.4" r="2.2" /><circle cx="137.2" cy="30.4" r="2.2" /><circle cx="155.4" cy="26.6" r="2.2" /><circle cx="173.6" cy="27.6" r="2.2" /><circle cx="191.8" cy="27.7" r="2.2" /><circle cx="210.0" cy="27.5" r="2.2" />
+<text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
+</svg>
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Paths: from 0.74 to 0.77" xmlns="http://www.w3.org/2000/svg">
+<text x="28" y="14" class="mini-title">Paths</text>
+<text x="210" y="14" class="mini-delta" text-anchor="end">0.74 → 0.77</text>
+<line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
+<line x1="28" y1="108.0" x2="210" y2="108.0" class="axis" />
+<text x="24" y="30.0" class="tick" text-anchor="end">1</text>
+<text x="24" y="112.0" class="tick" text-anchor="end">0</text>
+<path d="M28.0,108.0 L28.0,47.1 L46.2,64.9 L64.4,53.7 L82.6,42.4 L100.8,40.8 L119.0,41.9 L137.2,42.3 L155.4,46.5 L173.6,42.4 L191.8,44.3 L210.0,44.7 L210.0,108.0 Z" class="area" />
+<polyline points="28.0,47.1 46.2,64.9 64.4,53.7 82.6,42.4 100.8,40.8 119.0,41.9 137.2,42.3 155.4,46.5 173.6,42.4 191.8,44.3 210.0,44.7" class="line" />
+<circle cx="28.0" cy="47.1" r="2.2" /><circle cx="46.2" cy="64.9" r="2.2" /><circle cx="64.4" cy="53.7" r="2.2" /><circle cx="82.6" cy="42.4" r="2.2" /><circle cx="100.8" cy="40.8" r="2.2" /><circle cx="119.0" cy="41.9" r="2.2" /><circle cx="137.2" cy="42.3" r="2.2" /><circle cx="155.4" cy="46.5" r="2.2" /><circle cx="173.6" cy="42.4" r="2.2" /><circle cx="191.8" cy="44.3" r="2.2" /><circle cx="210.0" cy="44.7" r="2.2" />
+<text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
+</svg>
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Reachable: from 0.69 to 0.88" xmlns="http://www.w3.org/2000/svg">
+<text x="28" y="14" class="mini-title">Reachable</text>
+<text x="210" y="14" class="mini-delta" text-anchor="end">0.69 → 0.88</text>
+<line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
+<line x1="28" y1="108.0" x2="210" y2="108.0" class="axis" />
+<text x="24" y="30.0" class="tick" text-anchor="end">1</text>
+<text x="24" y="112.0" class="tick" text-anchor="end">0</text>
+<path d="M28.0,108.0 L28.0,51.7 L46.2,46.7 L64.4,40.4 L82.6,45.2 L100.8,41.5 L119.0,41.3 L137.2,40.6 L155.4,39.5 L173.6,36.9 L191.8,36.5 L210.0,35.7 L210.0,108.0 Z" class="area" />
+<polyline points="28.0,51.7 46.2,46.7 64.4,40.4 82.6,45.2 100.8,41.5 119.0,41.3 137.2,40.6 155.4,39.5 173.6,36.9 191.8,36.5 210.0,35.7" class="line" />
+<circle cx="28.0" cy="51.7" r="2.2" /><circle cx="46.2" cy="46.7" r="2.2" /><circle cx="64.4" cy="40.4" r="2.2" /><circle cx="82.6" cy="45.2" r="2.2" /><circle cx="100.8" cy="41.5" r="2.2" /><circle cx="119.0" cy="41.3" r="2.2" /><circle cx="137.2" cy="40.6" r="2.2" /><circle cx="155.4" cy="39.5" r="2.2" /><circle cx="173.6" cy="36.9" r="2.2" /><circle cx="191.8" cy="36.5" r="2.2" /><circle cx="210.0" cy="35.7" r="2.2" />
+<text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
+</svg>
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Reads as a place: from 0.48 to 0.88" xmlns="http://www.w3.org/2000/svg">
+<text x="28" y="14" class="mini-title">Reads as a place</text>
+<text x="210" y="14" class="mini-delta" text-anchor="end">0.48 → 0.88</text>
+<line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
+<line x1="28" y1="108.0" x2="210" y2="108.0" class="axis" />
+<text x="24" y="30.0" class="tick" text-anchor="end">1</text>
+<text x="24" y="112.0" class="tick" text-anchor="end">0</text>
+<path d="M28.0,108.0 L28.0,68.5 L46.2,72.8 L64.4,66.9 L82.6,67.2 L100.8,64.5 L119.0,65.8 L137.2,65.7 L155.4,35.4 L173.6,36.8 L191.8,36.2 L210.0,36.0 L210.0,108.0 Z" class="area" />
+<polyline points="28.0,68.5 46.2,72.8 64.4,66.9 82.6,67.2 100.8,64.5 119.0,65.8 137.2,65.7 155.4,35.4 173.6,36.8 191.8,36.2 210.0,36.0" class="line" />
+<circle cx="28.0" cy="68.5" r="2.2" /><circle cx="46.2" cy="72.8" r="2.2" /><circle cx="64.4" cy="66.9" r="2.2" /><circle cx="82.6" cy="67.2" r="2.2" /><circle cx="100.8" cy="64.5" r="2.2" /><circle cx="119.0" cy="65.8" r="2.2" /><circle cx="137.2" cy="65.7" r="2.2" /><circle cx="155.4" cy="35.4" r="2.2" /><circle cx="173.6" cy="36.8" r="2.2" /><circle cx="191.8" cy="36.2" r="2.2" /><circle cx="210.0" cy="36.0" r="2.2" />
+<text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
+</svg>
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Rules hold: from 0.83 to 0.99" xmlns="http://www.w3.org/2000/svg">
+<text x="28" y="14" class="mini-title">Rules hold</text>
+<text x="210" y="14" class="mini-delta" text-anchor="end">0.83 → 0.99</text>
+<line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
+<line x1="28" y1="108.0" x2="210" y2="108.0" class="axis" />
+<text x="24" y="30.0" class="tick" text-anchor="end">1</text>
+<text x="24" y="112.0" class="tick" text-anchor="end">0</text>
+<path d="M28.0,108.0 L28.0,39.7 L46.2,60.2 L64.4,67.5 L82.6,57.0 L100.8,67.5 L119.0,57.6 L137.2,27.2 L155.4,26.8 L173.6,27.3 L191.8,27.0 L210.0,26.6 L210.0,108.0 Z" class="area" />
+<polyline points="28.0,39.7 46.2,60.2 64.4,67.5 82.6,57.0 100.8,67.5 119.0,57.6 137.2,27.2 155.4,26.8 173.6,27.3 191.8,27.0 210.0,26.6" class="line" />
+<circle cx="28.0" cy="39.7" r="2.2" /><circle cx="46.2" cy="60.2" r="2.2" /><circle cx="64.4" cy="67.5" r="2.2" /><circle cx="82.6" cy="57.0" r="2.2" /><circle cx="100.8" cy="67.5" r="2.2" /><circle cx="119.0" cy="57.6" r="2.2" /><circle cx="137.2" cy="27.2" r="2.2" /><circle cx="155.4" cy="26.8" r="2.2" /><circle cx="173.6" cy="27.3" r="2.2" /><circle cx="191.8" cy="27.0" r="2.2" /><circle cx="210.0" cy="26.6" r="2.2" />
+<text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
+</svg>
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Routes to doors: from 1.00 to 0.82" xmlns="http://www.w3.org/2000/svg">
+<text x="28" y="14" class="mini-title">Routes to doors</text>
+<text x="210" y="14" class="mini-delta" text-anchor="end">1.00 → 0.82</text>
+<line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
+<line x1="28" y1="108.0" x2="210" y2="108.0" class="axis" />
+<text x="24" y="30.0" class="tick" text-anchor="end">1</text>
+<text x="24" y="112.0" class="tick" text-anchor="end">0</text>
+<path d="M28.0,108.0 L28.0,26.0 L46.2,44.7 L64.4,57.0 L82.6,54.0 L100.8,50.5 L119.0,59.0 L137.2,57.9 L155.4,44.1 L173.6,36.9 L191.8,37.5 L210.0,41.1 L210.0,108.0 Z" class="area" />
+<polyline points="28.0,26.0 46.2,44.7 64.4,57.0 82.6,54.0 100.8,50.5 119.0,59.0 137.2,57.9 155.4,44.1 173.6,36.9 191.8,37.5 210.0,41.1" class="line" />
+<circle cx="28.0" cy="26.0" r="2.2" /><circle cx="46.2" cy="44.7" r="2.2" /><circle cx="64.4" cy="57.0" r="2.2" /><circle cx="82.6" cy="54.0" r="2.2" /><circle cx="100.8" cy="50.5" r="2.2" /><circle cx="119.0" cy="59.0" r="2.2" /><circle cx="137.2" cy="57.9" r="2.2" /><circle cx="155.4" cy="44.1" r="2.2" /><circle cx="173.6" cy="36.9" r="2.2" /><circle cx="191.8" cy="37.5" r="2.2" /><circle cx="210.0" cy="41.1" r="2.2" />
+<text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
+</svg>
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Landmarks: from 0.07 to 0.83" xmlns="http://www.w3.org/2000/svg">
+<text x="28" y="14" class="mini-title">Landmarks</text>
+<text x="210" y="14" class="mini-delta" text-anchor="end">0.07 → 0.83</text>
+<line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
+<line x1="28" y1="108.0" x2="210" y2="108.0" class="axis" />
+<text x="24" y="30.0" class="tick" text-anchor="end">1</text>
+<text x="24" y="112.0" class="tick" text-anchor="end">0</text>
+<path d="M28.0,108.0 L28.0,102.4 L46.2,58.2 L64.4,42.9 L82.6,53.6 L100.8,46.1 L119.0,52.4 L137.2,43.7 L155.4,45.2 L173.6,39.2 L191.8,40.2 L210.0,39.7 L210.0,108.0 Z" class="area" />
+<polyline points="28.0,102.4 46.2,58.2 64.4,42.9 82.6,53.6 100.8,46.1 119.0,52.4 137.2,43.7 155.4,45.2 173.6,39.2 191.8,40.2 210.0,39.7" class="line" />
+<circle cx="28.0" cy="102.4" r="2.2" /><circle cx="46.2" cy="58.2" r="2.2" /><circle cx="64.4" cy="42.9" r="2.2" /><circle cx="82.6" cy="53.6" r="2.2" /><circle cx="100.8" cy="46.1" r="2.2" /><circle cx="119.0" cy="52.4" r="2.2" /><circle cx="137.2" cy="43.7" r="2.2" /><circle cx="155.4" cy="45.2" r="2.2" /><circle cx="173.6" cy="39.2" r="2.2" /><circle cx="191.8" cy="40.2" r="2.2" /><circle cx="210.0" cy="39.7" r="2.2" />
+<text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
+</svg>
+<svg viewBox="0 0 220 130" class="mini mini-judge" role="img" aria-label="Judge (GPT-5.2): from 0.09 to 0.69" xmlns="http://www.w3.org/2000/svg">
+<text x="28" y="14" class="mini-title">Judge (GPT-5.2)</text>
+<text x="210" y="14" class="mini-delta" text-anchor="end">0.09 → 0.69</text>
+<line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
+<line x1="28" y1="108.0" x2="210" y2="108.0" class="axis" />
+<text x="24" y="30.0" class="tick" text-anchor="end">1</text>
+<text x="24" y="112.0" class="tick" text-anchor="end">0</text>
+<path d="M28.0,108.0 L28.0,100.2 L46.2,88.4 L64.4,70.9 L82.6,68.7 L100.8,63.6 L119.0,68.6 L137.2,68.4 L155.4,54.7 L173.6,51.2 L191.8,49.9 L210.0,51.1 L210.0,108.0 Z" class="area" />
+<polyline points="28.0,100.2 46.2,88.4 64.4,70.9 82.6,68.7 100.8,63.6 119.0,68.6 137.2,68.4 155.4,54.7 173.6,51.2 191.8,49.9 210.0,51.1" class="line" />
+<circle cx="28.0" cy="100.2" r="2.2" /><circle cx="46.2" cy="88.4" r="2.2" /><circle cx="64.4" cy="70.9" r="2.2" /><circle cx="82.6" cy="68.7" r="2.2" /><circle cx="100.8" cy="63.6" r="2.2" /><circle cx="119.0" cy="68.6" r="2.2" /><circle cx="137.2" cy="68.4" r="2.2" /><circle cx="155.4" cy="54.7" r="2.2" /><circle cx="173.6" cy="51.2" r="2.2" /><circle cx="191.8" cy="49.9" r="2.2" /><circle cx="210.0" cy="51.1" r="2.2" />
+<text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
+</svg>
+        </div>
+
+        <p>The judge, which never saw a metric, agrees with the code: it moves from 0.09 on version 1 to 0.69 on version 11, and its two big steps land where the computed ones do, at the balance sheet (v2) and at the blueprint (v8). The story the charts tell, in order:</p>
+        <dl class="version-log">
+          <div><dt>v2 · confetti</dt><dd>A balance sheet in the state, so the model knows which types are under-used. Coverage of the vocabulary went from 0.15 to 0.91, and the model placed the needed types anywhere: single walls, single path cells, nothing joined up.</dd></div>
+          <div><dt>v3 · floods</dt><dd>Continuation hints: "this wall line reaches you, continue it". The model did, across the whole map. 58 corridor cells in one 8 by 8 station.</dd></div>
+          <div><dt>v4 · lines</dt><dd>Code judges the one suggested continuation: short lines, closable gaps, never an over-used type. Walls form lines and closed shapes. But 21 of 23 doors stood in open ground, and no map had a room you could enter.</dd></div>
+          <div><dt>v5 · the model reads the sketch, a little</dt><dd>The whole map goes into the state, one letter per cell. Coherence moved from 0.50 to 0.53. The 16 by 16 maps showed the limit: walls still came as solid slabs, because a model deciding one cell cannot see where a rectangle should end.</dd></div>
+          <div><dt>v6 · less noise</dt><dd>The sampling had been overriding the model's own choice on 27% of the cells. Raising the floor to a third of the best option cut that to 18%: ground in patches 0.25 to 0.52, and the rare types lost their chances (coverage 0.72 to 0.54).</dd></div>
+          <div><dt>v7 · the local rules hold, the rooms do not</dt><dd>Typed placement rules (never next to X, only next to Y, on this edge) enforced in code before the question is asked. "Rules hold" went from 0.61 to 0.98. Nothing else moved: "never next to" cannot say "in a wall".</dd></div>
+          <div><dt>v8 · rooms</dt><dd>The blueprint. Code places each structure as a rectangle with a door before any cell is asked about, and each cell is only offered the types of its part: wall, door, interior, outside. Doors in walls 0.15 to 0.96; an enclosed room on every map; "a place reads as a place" 0.52 to 0.89. The price: coverage down to 0.52.</dd></div>
+          <div><dt>v9 · the world remembers what it lacks</dt><dd>The state names the things the world still misses; a unique landmark is out once placed; a route is suggested outside a planned door. Landmarks single 0.68 to 1.00, doors with a route 0.56 to 0.88.</dd></div>
+          <div><dt>v10 · the cap that could not fire</dt><dd>A ground type past twice its target is no longer offered. It changed nothing, because the maps that flooded were the settings whose vocabulary made the route the only floor: a corridor was the station's ground.</dd></div>
+          <div><dt>v11 · a floor that is not a road</dt><dd>The station gets an open deck, the city block a plaza, and corridor and street become lines. The station's route share fell from 0.53 to 0.12 of the map. The corridors are now short stubs on the deck, which is the next problem.</dd></div>
+        </dl>
+
+        <figure class="filmstrip">
+          <div class="filmstrip-track">
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v1/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v1: an 8 by 8 haunted mansion that is almost entirely dark floor." /><figcaption>v1</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v2/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v2: scattered single wall tiles on dark floor." /><figcaption>v2</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v3/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v3: wall fragments, a candle, a door in open floor." /><figcaption>v3</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v4/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v4: wall lines and a block of cobwebs." /><figcaption>v4</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v5/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v5: a solid slab of wall tiles with windows." /><figcaption>v5</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v6/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v6: wall slabs with windows, no room inside." /><figcaption>v6</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v7/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v7: wall slabs again, with a door on the outside." /><figcaption>v7</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v8/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v8: two rectangular rooms with doors, a candle between them." /><figcaption>v8</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v9/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v9: two rooms with doors and a candle, a chest in one." /><figcaption>v9</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v10/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v10: two rooms with doors and a chest." /><figcaption>v10</figcaption></figure>
+            <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v11/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="v11: two rooms with doors, a candle, a chest and a ghost." /><figcaption>v11</figcaption></figure>
+          </div>
+          <figcaption>The same seed of the "haunted mansion" preset through all eleven versions: nothing, confetti, floods, slabs, and then, from v8, rooms.</figcaption>
+        </figure>
+      </section>
+
+      <section>
+        <h2>Regressions, and what the loop caught</h2>
+        <p>Three things I would not have learnt from looking at pictures.</p>
+        <p><strong>A new metric rewrites history.</strong> Version 1 scored 0.99 on "paths form routes", because a map that is all corridor has no isolated path cell. When the path-share metric arrived later and every old version was rescored, v1 fell to 0.74. A version table is only comparable if every row is scored with the same rules, so every new metric was run back over every old map, and every new test seed was drawn again with each old version's own code. Read the charts knowing that; the scores are today's rules applied to yesterday's maps.</p>
+        <p><strong>Every fix costs something, and the loop shows you the bill.</strong> The sampling floor in v6 made calmer maps and starved the rare types. The blueprint in v8 gave the map rooms and took a third of its vocabulary coverage. Version 11 fixed the flooded station and turned its corridors into stubs: path continuity fell from 0.73 to 0.58 in the same run that raised path share from 0.65 to 0.84. None of these were visible in the one map I would have looked at. All of them were visible in the mean over 38.</p>
+        <div class="pair">
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v10/large-station-frontier.png" width="768" height="768" loading="lazy" alt="v10 space station: a 16 by 16 grid where more than half the cells are corridor, with sealed sections of blue panels." />
+            <figcaption>v10 station: the corridor is the floor, so the cap on over-used types had nothing else to offer.</figcaption>
+          </figure>
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v11/large-station-frontier.png" width="768" height="768" loading="lazy" alt="v11 space station: an open deck with sealed sections and short corridor stubs." />
+            <figcaption>v11 station: an open deck as the ground, corridors as lines. Route share 0.53 to 0.12; continuity paid for it.</figcaption>
+          </figure>
+        </div>
+        <p><strong>A per-cell model cannot draw a rectangle.</strong> Seven versions tried to get rooms out of the prompt: more context, the whole map as text, softer sampling, typed rules. Doors stayed in fields. The eighth version stopped asking. Code places the buildings, the way a person drawing a map decides where the houses go before drawing the grass, and the model fills each part. That is the one change in the table that moved a specification by more than 0.3. The lesson generalises: give the model the decisions that are judgements (what stands in this room, who walks here) and give the code the decisions that are geometry.</p>
+      </section>
+
+      <section>
+        <h2>Running the loop with an agent</h2>
+        <p>Most of the eleven versions were written by an agent, Claude Code, working in a loop I set up and then mostly watched. One turn looked like this. Read the previous version's scores and the pictures where it lost. Write down one theory ("the model does not see enough of the map", "the sampling is adding noise", "the rules are prose, so they are advice"). Change the code with tests. Commit, so the version in Galtea records exactly what was measured. Run the 38 seeds. Compare. Write the result into the project's README, in one paragraph per version, so the next turn starts from the memory of this one.</p>
+        <p>My part was smaller and, I think, the part that mattered. I said which theory to test first. When I saw a failure the numbers missed, I asked for a specification for it, which is how four rules became seven. I set the budget: 8 by 8 grids for the bulk of the seeds, and only three 16 by 16 maps, because a room needs space to exist but a large map costs eight times a small one. And I said when to stop: when the agent could no longer name a change it was confident would move a number, the loop had done its work for now.</p>
+        <p>The agent also broke things. It once committed a version with a failing test, because a shell pipe hid the exit code. It once ran two evaluations against modules it was editing at the same time. Both were caught, one by the continuous integration check and one by the maps coming out wrong, and both became a written rule for the next turn. The loop is not a promise that every version is better. It is a promise that you will know.</p>
+      </section>
+
+      <section>
+        <h2>What is still wrong</h2>
+        <p>The corridors are stubs: a route between two doors is a shape, and shapes are the plan's job, so the next version should draw the paths the way it draws the rooms. Rooms are often empty, because the state says what the world lacks but not what a kitchen holds. Free-standing walls still split some maps in two. And rooms never share a wall, which real streets do all the time. Each of those has a number now, which is the point.</p>
+        <p>You can <a href="../../web-projects/ai-world-gen/">try the generator</a> with your own OpenRouter key, read the <a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/ai-world-gen">code and the roadmap</a>, or look at <a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/ai-world-gen/evaluation/results">every map of every version</a>, which are committed to the repository next to their scores.</p>
+      </section>
+
+      <section class="data">
+        <h2>The numbers</h2>
+        <p>Mean score per specification over the same 38 seeds, with every metric as it stands today. A cell is highlighted when it moved by 0.05 or more against the previous version. The judge column is GPT-5.2 answering "how much does this map read as the setting?" on every map, from 0 to 1.</p>
+        <div class="table-scroll">
+          <table class="scores">
+            <caption>AI World Gen, versions 1 to 11, mean score per specification (0 to 1)</caption>
+<thead><tr><th scope="col">Version</th><th scope="col">Barriers form structures</th><th scope="col">Paths form routes</th><th scope="col">Reachable and playable</th><th scope="col">A place reads as a place</th><th scope="col">The vocabulary's rules hold</th><th scope="col">Routes lead to doors</th><th scope="col">Landmarks and story</th><th scope="col">Judge</th></tr></thead>
+<tbody>
+<tr><th scope="row">v1</th><td>0.18</td><td>0.74</td><td>0.69</td><td>0.48</td><td>0.83</td><td>1.00</td><td>0.07</td><td>0.09</td></tr>
+<tr><th scope="row">v2</th><td class="up">0.39</td><td class="down">0.53</td><td class="up">0.75</td><td class="down">0.43</td><td class="down">0.58</td><td class="down">0.77</td><td class="up">0.61</td><td>0.24</td></tr>
+<tr><th scope="row">v3</th><td class="up">0.68</td><td class="up">0.66</td><td class="up">0.82</td><td class="up">0.50</td><td class="down">0.49</td><td class="down">0.62</td><td class="up">0.79</td><td>0.45</td></tr>
+<tr><th scope="row">v4</th><td class="up">0.82</td><td class="up">0.80</td><td class="down">0.77</td><td>0.50</td><td class="up">0.62</td><td>0.66</td><td class="down">0.66</td><td>0.48</td></tr>
+<tr><th scope="row">v5</th><td class="up">0.93</td><td>0.82</td><td>0.81</td><td>0.53</td><td class="down">0.49</td><td>0.70</td><td class="up">0.76</td><td>0.54</td></tr>
+<tr><th scope="row">v6</th><td>0.95</td><td>0.81</td><td>0.81</td><td>0.51</td><td class="up">0.61</td><td class="down">0.60</td><td class="down">0.68</td><td>0.48</td></tr>
+<tr><th scope="row">v7</th><td>0.95</td><td>0.80</td><td>0.82</td><td>0.52</td><td class="up">0.99</td><td>0.61</td><td class="up">0.78</td><td>0.48</td></tr>
+<tr><th scope="row">v8</th><td>0.99</td><td class="down">0.75</td><td>0.84</td><td class="up">0.89</td><td>0.99</td><td class="up">0.78</td><td>0.77</td><td>0.65</td></tr>
+<tr><th scope="row">v9</th><td>0.98</td><td class="up">0.80</td><td>0.87</td><td>0.87</td><td>0.98</td><td class="up">0.87</td><td class="up">0.84</td><td>0.69</td></tr>
+<tr><th scope="row">v10</th><td>0.98</td><td>0.78</td><td>0.87</td><td>0.88</td><td>0.99</td><td>0.86</td><td>0.83</td><td>0.71</td></tr>
+<tr><th scope="row">v11</th><td>0.98</td><td>0.77</td><td>0.88</td><td>0.88</td><td>0.99</td><td>0.82</td><td>0.83</td><td>0.69</td></tr>
+</tbody>
+          </table>
+        </div>
+        <p class="data-note">v1's routes score is a mean over few maps, because v1 drew almost no doors, so there was little to judge. The judge was run on the older versions after the fact, at the time of writing, so that this column is complete.</p>
+      </section>
+
+      <footer class="post-footer">
+        <p>Jev is a product of TypeSafe; OpenRouter serves it through their decisions endpoint. Galtea is my employer. Neither asked for this post, and both are named because they were the tools that made the work possible.</p>
+      </footer>
+    </article>
+
+    <footer class="page-footer">
+      <p>Part of <a href="../../">Guillem Poy's portfolio</a>. All posts: <a href="../">Blog</a>.</p>
+    </footer>
+  </body>
+</html>
