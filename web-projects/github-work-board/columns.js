@@ -98,6 +98,23 @@ export function columnFor(item, relationship, overrideId) {
 }
 
 /**
+ * What the "move to" menu offers for one card.
+ *
+ * The first entry hands the card back to the rules and says which column they
+ * would pick, so the reader can see what an override is overriding. Exactly one
+ * entry is marked as current.
+ */
+export function moveOptions(item, relationship, overrideId) {
+  const automatic = automaticColumn(item, relationship);
+  const chosen = readColumnId(overrideId);
+  const label = COLUMNS.find((column) => column.id === automatic)?.label ?? automatic;
+  return [
+    { id: AUTOMATIC, label: `Automatic (${label})`, current: chosen === AUTOMATIC },
+    ...COLUMNS.map((column) => ({ id: column.id, label: column.label, current: chosen === column.id })),
+  ];
+}
+
+/**
  * The whole board: every column, in order, with the groups that belong in it.
  *
  * Empty columns come back too. A column that disappears when nothing is in it

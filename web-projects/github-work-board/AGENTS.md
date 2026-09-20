@@ -136,6 +136,17 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   dead page: the module is refused and every button stops working.
   `invariants.test.js` parses every source file for exactly this reason. It has
   happened once (a duplicate `let`), and it cost a release (ADR 0003).
+- **The card menu is a `popover`, and it has to be.** `.columns` scrolls
+  sideways, so `overflow-x: auto` clips anything positioned inside a card. Only
+  the top layer escapes it (ADR 0012).
+- **Let `popovertarget` open a popover; never `showPopover()` from a click
+  handler.** The same click then reaches the page and the browser
+  light-dismisses the menu it just opened. It flashes and closes, and nothing
+  errors.
+- **A submenu must be nested inside its menu in the DOM.** Two auto popovers
+  that are not nested are unrelated, so opening the second closes the first.
+- **A nested pull request card carries no move menu.** It travels in its issue's
+  column, so the move would write to the document and change nothing on screen.
 - **A column is computed, never maintained.** The rules read what GitHub
   already knows, and the order of the checks in `automaticColumn` is the whole
   decision: merged beats everything, changes requested beats an approval. A
@@ -221,6 +232,7 @@ before calling it done.
 | [0009](adr/0009-filters-widen-within-a-kind-and-narrow-across-kinds.md) | Filters widen within one kind and narrow across kinds |
 | [0010](adr/0010-relationships-come-from-githubs-graph.md) | Relationships come from GitHub's graph, in one call per token |
 | [0011](adr/0011-columns-are-read-from-github-and-overridden-by-hand.md) | Columns are read from GitHub, and overridden by hand |
+| [0012](adr/0012-the-card-menu-lives-in-the-top-layer.md) | The card menu lives in the top layer, and one menu serves the board |
 
 ## What is not built yet
 

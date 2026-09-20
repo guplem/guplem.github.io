@@ -5,6 +5,7 @@ import {
   automaticColumn,
   columnFor,
   groupIntoColumns,
+  moveOptions,
   readColumnId,
 } from "./columns.js";
 
@@ -135,6 +136,35 @@ describe("columnFor", () => {
 
   test("a column that no longer exists falls back to the rule, not to nothing", () => {
     expect(columnFor(issue(), links(), "a-column-we-removed")).toBe("todo");
+  });
+});
+
+describe("moveOptions", () => {
+  const relationship = links([linkedPull({ reviewDecision: "APPROVED" })]);
+
+  test("offers automatic first, and says which column the rules would pick", () => {
+    const [first] = moveOptions(issue(), relationship, "");
+    expect(first.id).toBe(AUTOMATIC);
+    expect(first.label).toBe("Automatic (Ready to merge)");
+  });
+
+  test("offers every column after it", () => {
+    expect(moveOptions(issue(), relationship, "").slice(1).map((one) => one.id)).toEqual(
+      COLUMNS.map((one) => one.id),
+    );
+  });
+
+  // Exactly one entry is the current one, so a menu can show a mark beside it.
+  test("marks the one in force, and only that one", () => {
+    const onRules = moveOptions(issue(), relationship, "");
+    expect(onRules.filter((one) => one.current).map((one) => one.id)).toEqual([AUTOMATIC]);
+
+    const moved = moveOptions(issue(), relationship, "needs-changes");
+    expect(moved.filter((one) => one.current).map((one) => one.id)).toEqual(["needs-changes"]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(moveOptions(null, null, null).length).toBe(COLUMNS.length + 1);
   });
 });
 
