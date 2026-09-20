@@ -130,10 +130,16 @@
               <em>Vocabulary</em> box above.
             </p>
             <p>
+              <strong>A blueprint first.</strong> The vocabulary names the world's structures (a cottage: these walls
+              around this floor, with this door). Code draws each one as a rectangle with a door before any cell is
+              decided, the way a person draws the buildings first and fills them in after.
+            </p>
+            <p>
               <strong>Many fast decisions.</strong> Then, for every cell, a decision model (TypeSafe's Jev, by default)
-              is given the neighbouring cells and asked one typed question: which type goes here? It answers with a
-              choice and a probability per option, not with text. Cheap, fast, and exactly the kind of decision it is
-              built for.
+              is given the map so far, the part the cell plays (a wall, a door, the inside of a cottage, the open
+              ground) and the neighbouring cells, and asked one typed question: which type goes here? Only the types
+              whose rules allow the cell are offered. It answers with a choice and a probability per option, not with
+              text. Cheap, fast, and exactly the kind of decision it is built for.
             </p>
             <p>
               <strong>Plain code checks the result.</strong> When the map is full, a flood fill finds walkable cells that
