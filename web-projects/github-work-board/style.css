@@ -73,6 +73,15 @@
   box-sizing: border-box;
 }
 
+/* The browser hides `[hidden]` with a rule of its own, and any author rule that
+ * sets `display` beats it. This page sets `display` on buttons, filter groups
+ * and callouts, so without this line those elements ignore `hidden` and stay on
+ * screen with nothing to show for it. It has to be `!important` to win against
+ * the rule that set `display` in the first place. */
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   background: hsl(var(--background));
@@ -87,6 +96,12 @@ body {
   max-width: 44rem;
   margin: 0 auto;
   padding: 1rem 1.25rem 4rem;
+}
+
+/* Six columns need more than reading width. Only the board takes it: the setup
+ * screen and settings stay narrow, because prose does not read well wide. */
+.page:has(#board:not([hidden])) {
+  max-width: 100rem;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -246,11 +261,6 @@ a:hover {
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-/* An SVG is not an HTML element, so the browser's own `[hidden]` rule misses it. */
-svg[hidden] {
-  display: none;
 }
 
 .button:disabled,
@@ -825,6 +835,85 @@ textarea.input {
   }
   to {
     background-position: -200% 0;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Columns                                                                    */
+/* -------------------------------------------------------------------------- */
+
+/* The columns scroll sideways rather than squeezing: a card narrower than its
+ * title is not a card. On a narrow screen they stack instead, because sideways
+ * scrolling inside a page that already scrolls down is a trap. */
+.columns {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(17rem, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+  margin-top: 1rem;
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.column {
+  background: hsl(var(--muted) / 0.4);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 0.625rem;
+  min-width: 0;
+}
+
+.column-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.125rem 0.25rem 0.625rem;
+}
+
+.column-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.column-count {
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+  border-color: hsl(var(--border));
+  font-variant-numeric: tabular-nums;
+}
+
+.column-empty {
+  padding: 0.75rem 0.25rem;
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* A card inside a column is the same card, on the column's ground. */
+.column .issue {
+  background: hsl(var(--card));
+}
+
+.issue-move {
+  margin-top: 0.625rem;
+}
+
+.select-small {
+  height: 1.875rem;
+  padding: 0 1.75rem 0 0.5rem;
+  font-size: 0.75rem;
+  background-position: right 0.85rem center, right 0.55rem center;
+  width: 100%;
+}
+
+@media (max-width: 60rem) {
+  .columns {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    overflow-x: visible;
   }
 }
 

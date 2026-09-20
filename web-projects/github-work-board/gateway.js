@@ -73,6 +73,9 @@ export function fetchAssignedIssues(token) {
  * no relationship costs a call of its own. GraphQL takes at most 100 ids at a
  * time, and the caller sends one batch per token: a node id from one owner is
  * not readable by another owner's token (ADR 0010).
+ *
+ * `includeClosedPrs` must stay true. A merged pull request is a closed one, so
+ * leaving it out would hide exactly the work that belongs in "Done".
  */
 const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
   nodes(ids: $ids) {
@@ -82,12 +85,19 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       parent { id number title url repository { nameWithOwner } }
       blockedBy(first: 20) { nodes { id number title state url } }
       subIssuesSummary { total completed }
-      closedByPullRequestsReferences(first: 20, includeClosedPrs: false) {
-        nodes { id number title state url }
+      closedByPullRequestsReferences(first: 20, includeClosedPrs: true) {
+        nodes { id number title state url merged reviewDecision reviewRequests(first: 1) { totalCount } }
       }
     }
     ... on PullRequest {
       id
+      number
+      title
+      url
+      state
+      merged
+      reviewDecision
+      reviewRequests(first: 1) { totalCount }
       closingIssuesReferences(first: 20) { nodes { id number title state url } }
     }
   }

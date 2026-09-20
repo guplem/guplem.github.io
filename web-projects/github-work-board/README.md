@@ -8,6 +8,10 @@ to make here, and nothing is stored anywhere except GitHub.
 
 - **Every open issue and pull request assigned to you**, across every repository
   your token can read, in one list, each marked with what it is.
+- **A board that keeps itself up to date.** Six columns, from To do to Done,
+  and a card moves itself when a pull request appears, when a reviewer is asked,
+  when they answer, and when it merges. Move any card by hand when GitHub's
+  answer is not the truth, and hand it back to the rules with one click.
 - **The real links between your work.** A pull request appears inside the card
   of the issue it closes, an issue says what it is part of, and anything waiting
   on unfinished work is marked **Blocked**. All of it read from GitHub's own
