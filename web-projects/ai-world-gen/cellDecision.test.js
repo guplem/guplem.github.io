@@ -11,6 +11,7 @@ import {
   continuationHints,
   fallbackType,
   isRouteType,
+  mapSketch,
   readChatDecision,
   readDecisionAnswer,
   targetShare,
@@ -77,11 +78,35 @@ describe("buildCellDecision", () => {
     expect(state.continuations).toEqual({ lines: [], joins: [], suggested: null });
   });
 
+  test("the state carries the whole map as one letter per cell, with the cell to decide marked", () => {
+    const { state, questions } = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 2, y: 2 });
+    expect(state.map.rows).toEqual(["C....", "..B..", ".A?..", ".....", "....."]);
+    expect(state.map.legend).toEqual({ A: "grass", B: "wall", C: "door", ".": "undecided", "?": "this cell" });
+    expect(questions.type.instructions).toMatch(/state\.map/);
+  });
+
   test("a cell on the edge says which edges it touches", () => {
     const { state } = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 0, y: 4 });
     expect(state.cell.edges).toEqual(["south", "west"]);
     const corner = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 4, y: 0 });
     expect(corner.state.cell.edges).toEqual(["north", "east"]);
+  });
+});
+
+describe("mapSketch", () => {
+  test("gives every type one letter in vocabulary order, and reads rows from north to south", () => {
+    const grid = createGrid(3, 2);
+    setCell(grid, 0, 0, { typeId: "wall" });
+    setCell(grid, 2, 1, { typeId: "grass" });
+    const sketch = mapSketch(grid, vocabulary, 1, 1);
+    expect(sketch.rows).toEqual(["B..", ".?A"]);
+    expect(sketch.legend.A).toBe("grass");
+  });
+
+  test("a type the vocabulary does not know is drawn as unknown", () => {
+    const grid = createGrid(2, 1);
+    setCell(grid, 0, 0, { typeId: "lava" });
+    expect(mapSketch(grid, vocabulary, 1, 0).rows).toEqual(["!?"]);
   });
 });
 

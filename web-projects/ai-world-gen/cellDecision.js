@@ -6,13 +6,13 @@
 // Jev answers: a choice, its confidence, and a probability per option. No
 // prose, no parsing.
 //
-// The state sent with each question is small on purpose. It carries the eight
-// neighbouring cells, counts within a short radius, and counts for the whole
-// map so far. It also carries two things the code, not the model, works out:
-// a balance sheet of each type against its target share, and continuation
-// hints that name the one type worth continuing here, or none. It never
-// carries the grid itself: a 24 by 24 map would cost more tokens per cell
-// than the answer is worth, and the model does not need it.
+// The state sent with each question carries the eight neighbouring cells,
+// counts within a short radius, and counts for the whole map so far. It also
+// carries two things the code, not the model, works out: a balance sheet of
+// each type against its target share, and continuation hints that name the
+// one type worth continuing here, or none. Since v5 it also carries the whole
+// map as one letter per cell: a 24 by 24 sketch is under 300 tokens, and the
+// question v5 measures is whether the model reads it.
 //
 // A text model can answer the same question through `chat/completions` when
 // Jev is not available. That path is slower and dearer, and it exists so a
@@ -30,6 +30,8 @@ const SAMPLE_FLOOR = 0.08;
 
 const INSTRUCTIONS = [
   "Which element type belongs in this cell of the map?",
+  "state.map shows the whole map so far, one letter per cell (state.map.legend), rows from north to south; '?' is this cell.",
+  "Use it to see the shape each structure has and where this cell sits in it.",
   "Follow each type's placement rules and keep the cell consistent with its placed neighbours.",
   "When continuations.suggested names a type, that type continues or closes a structure here and fits best,",
   "unless its rules forbid it in this place.",
@@ -163,6 +165,41 @@ export function balanceSheet(vocabulary, counts, totalCells) {
   return { needed: gaps.slice(0, MAX_NEEDED).map((one) => one.id), overused, shares };
 }
 
+const SKETCH_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const SKETCH_UNDECIDED = ".";
+const SKETCH_THIS_CELL = "?";
+const SKETCH_UNKNOWN = "!";
+
+/**
+ * The whole map as text, one letter per cell, in the order of the vocabulary.
+ * Cheap enough to send with every decision (a 24 by 24 grid is 600 characters)
+ * and the only way the model can see a shape larger than its 8 neighbours.
+ */
+export function mapSketch(grid, vocabulary, x, y) {
+  const letterOf = {};
+  const legend = {};
+  vocabulary.elements.forEach((type, index) => {
+    const letter = SKETCH_LETTERS[index] ?? SKETCH_UNKNOWN;
+    letterOf[type.id] = letter;
+    legend[letter] = type.id;
+  });
+  legend[SKETCH_UNDECIDED] = "undecided";
+  legend[SKETCH_THIS_CELL] = "this cell";
+  const rows = [];
+  for (let row = 0; row < grid.height; row += 1) {
+    let text = "";
+    for (let column = 0; column < grid.width; column += 1) {
+      if (column === x && row === y) text += SKETCH_THIS_CELL;
+      else {
+        const cell = getCell(grid, column, row);
+        text += cell === null ? SKETCH_UNDECIDED : (letterOf[cell.typeId] ?? SKETCH_UNKNOWN);
+      }
+    }
+    rows.push(text);
+  }
+  return { rows, legend };
+}
+
 function edgesOf(grid, x, y) {
   const edges = [];
   if (y === 0) edges.push("north");
@@ -187,6 +224,7 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
       placedCells,
       totalCells: grid.width * grid.height,
     },
+    map: mapSketch(grid, vocabulary, x, y),
     neighbours: neighboursOf(grid, x, y).map((one) => ({ direction: one.direction, type: one.cell.typeId })),
     nearbyCounts: ringCounts(grid, x, y, NEARBY_RADIUS),
     mapCounts: placed,
