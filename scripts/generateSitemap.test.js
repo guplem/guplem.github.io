@@ -1,11 +1,12 @@
 // Unit tests for the sitemap builder, plus the drift guard: CI fails when the
-// portfolio data changes without regenerating sitemap.xml
+// portfolio data or the blog posts change without regenerating sitemap.xml
 // (fix: bun scripts/generateSitemap.js).
 
 import { describe, it, expect } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildSitemapXml } from "./generateSitemap.js";
+import { loadPosts } from "./blogPosts.js";
 import { loadWorks } from "./portfolioData.js";
 
 // Resolve relative to this test file, not the working directory, so the test
@@ -44,10 +45,27 @@ describe("buildSitemapXml", () => {
     links: [{ type: "github", url: "https://github.com/guplem/x/tree/main/web-projects/source-only" }],
   };
 
-  it("always lists the homepage and the web-projects index first", () => {
+  it("always lists the homepage and the web-projects index first, and the blog index last", () => {
     const xml = buildSitemapXml([]);
     const locs = xml.match(/<loc>[^<]*<\/loc>/g);
-    expect(locs).toEqual(["<loc>https://triunitystudios.com/</loc>", "<loc>https://triunitystudios.com/web-projects/</loc>"]);
+    expect(locs).toEqual([
+      "<loc>https://triunitystudios.com/</loc>",
+      "<loc>https://triunitystudios.com/web-projects/</loc>",
+      "<loc>https://triunitystudios.com/blog/</loc>",
+    ]);
+  });
+
+  it("lists every blog post after the blog index, newest first", () => {
+    const xml = buildSitemapXml([localProject], [
+      { slug: "older-post", published: "2026-09-20T10:00:00Z" },
+      { slug: "newer-post", published: "2026-09-20T12:00:00Z" },
+    ]);
+    const locs = xml.match(/<loc>[^<]*<\/loc>/g).slice(-3);
+    expect(locs).toEqual([
+      "<loc>https://triunitystudios.com/blog/</loc>",
+      "<loc>https://triunitystudios.com/blog/newer-post/</loc>",
+      "<loc>https://triunitystudios.com/blog/older-post/</loc>",
+    ]);
   });
 
   it("includes locally hosted web-projects, from relative and own-domain absolute links", () => {
@@ -76,6 +94,6 @@ describe("buildSitemapXml", () => {
 describe("sitemap.xml drift", () => {
   it("matches the committed sitemap.xml (fix: bun scripts/generateSitemap.js)", () => {
     const committed = normalizeEol(readFileSync(join(repoRoot, "sitemap.xml"), "utf8"));
-    expect(buildSitemapXml(loadWorks(repoRoot))).toBe(committed);
+    expect(buildSitemapXml(loadWorks(repoRoot), loadPosts(repoRoot))).toBe(committed);
   });
 });

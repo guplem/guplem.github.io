@@ -1,5 +1,5 @@
-// Generates the crawler-facing static HTML fallback blocks inside index.html
-// and web-projects/index.html, between `<!-- BEGIN GENERATED:<NAME> -->` /
+// Generates the crawler-facing static HTML blocks inside index.html,
+// web-projects/index.html and blog/index.html, between `<!-- BEGIN GENERATED:<NAME> -->` /
 // `<!-- END GENERATED:<NAME> -->` marker comments (root ADR 0010). The JSON in
 // data/ stays the single hand-edited source of truth; these blocks are a
 // derived mirror so crawlers see the content without executing JavaScript.
@@ -15,6 +15,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { markdownToPlainText, capitalizeFirstLetter } from "../js/utils/textCore.js";
 import { selectWebProjects, sortByDateDescending } from "../web-projects/discovery.js";
+import { loadPosts, sortByPublishedDescending } from "./blogPosts.js";
 import { loadInfo, loadWorks } from "./portfolioData.js";
 
 /**
@@ -223,6 +224,30 @@ export function buildWebProjectsIndexHtml(works) {
     .join("\n");
 }
 
+/**
+ * The blog index block: one <article> per post, newest first, read from the
+ * posts' own <head> tags (scripts/blogPosts.js; root ADR 0015). Unlike the
+ * other blocks, no JavaScript ever replaces it: the blog has no runtime, so
+ * this static list is the page.
+ * @param {Array<{slug: string, title: string, description: string, published: string}>} posts
+ * @returns {string}
+ */
+export function buildBlogIndexHtml(posts) {
+  return sortByPublishedDescending(posts)
+    .map((post) => {
+      const day = post.published.slice(0, 10);
+      const shown = new Date(post.published).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+      return [
+        `<article class="post-card">`,
+        `<time class="post-card-date" datetime="${day}">${shown}</time>`,
+        `<h2 class="post-card-title"><a href="${post.slug}/">${escapeHtml(post.title)}</a></h2>`,
+        `<p class="post-card-summary">${escapeHtml(post.description)}</p>`,
+        `</article>`,
+      ].join("\n");
+    })
+    .join("\n");
+}
+
 if (import.meta.main) {
   const repoRoot = join(import.meta.dir, "..");
   const info = loadInfo(repoRoot);
@@ -241,5 +266,8 @@ if (import.meta.main) {
   webProjectsIndexHtml = injectBlock(webProjectsIndexHtml, "WEB-PROJECTS", buildWebProjectsIndexHtml(works));
   writeFileSync(webProjectsIndexPath, webProjectsIndexHtml);
 
-  console.log("Static SEO blocks regenerated in index.html and web-projects/index.html");
+  const blogIndexPath = join(repoRoot, "blog", "index.html");
+  writeFileSync(blogIndexPath, injectBlock(readFileSync(blogIndexPath, "utf8"), "BLOG-POSTS", buildBlogIndexHtml(loadPosts(repoRoot))));
+
+  console.log("Static SEO blocks regenerated in index.html, web-projects/index.html and blog/index.html");
 }

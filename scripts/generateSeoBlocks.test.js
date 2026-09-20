@@ -1,5 +1,5 @@
 // Unit tests for the static SEO block builders, plus the drift guards: CI
-// fails when data/ changes without regenerating the committed HTML
+// fails when data/ or a blog post changes without regenerating the committed HTML
 // (fix: bun scripts/generateSeoBlocks.js).
 
 import { describe, it, expect } from "bun:test";
@@ -15,7 +15,9 @@ import {
   buildWorksHtml,
   buildWebProjectsIndexHtml,
   buildAdditionalSectionsHtml,
+  buildBlogIndexHtml,
 } from "./generateSeoBlocks.js";
+import { loadPosts } from "./blogPosts.js";
 import { loadInfo, loadWorks } from "./portfolioData.js";
 
 // Resolve relative to this test file, not the working directory, so the test
@@ -240,6 +242,42 @@ describe("static SEO blocks drift", () => {
   it("web-projects/index.html block matches the data (fix: bun scripts/generateSeoBlocks.js)", () => {
     const committed = normalizeEol(readFileSync(join(repoRoot, "web-projects", "index.html"), "utf8"));
     const regenerated = injectBlock(committed, "WEB-PROJECTS", buildWebProjectsIndexHtml(loadWorks(repoRoot)));
+    expect(regenerated).toBe(committed);
+  });
+});
+
+describe("buildBlogIndexHtml", () => {
+  const posts = [
+    { slug: "older-post", title: "Older & Wiser", description: 'The "first" post.', published: "2026-09-20T10:00:00Z" },
+    { slug: "newer-post", title: "Newer", description: "The second post.", published: "2026-09-20T12:00:00Z" },
+  ];
+
+  it("writes one card per post, newest first, linking the post folder", () => {
+    const html = buildBlogIndexHtml(posts);
+    expect(html.indexOf("newer-post/")).toBeLessThan(html.indexOf("older-post/"));
+    expect(html).toContain(`<h2 class="post-card-title"><a href="newer-post/">Newer</a></h2>`);
+    expect(html.match(/<article class="post-card">/g).length).toBe(2);
+  });
+
+  it("shows the date as a readable day and keeps the machine date on the time tag", () => {
+    expect(buildBlogIndexHtml(posts)).toContain(`<time class="post-card-date" datetime="2026-09-20">20 September 2026</time>`);
+  });
+
+  it("escapes titles and descriptions", () => {
+    const html = buildBlogIndexHtml(posts);
+    expect(html).toContain(">Older &amp; Wiser<");
+    expect(html).toContain(`<p class="post-card-summary">The &quot;first&quot; post.</p>`);
+  });
+
+  it("gives an empty blog an empty block", () => {
+    expect(buildBlogIndexHtml([])).toBe("");
+  });
+});
+
+describe("blog/index.html drift", () => {
+  it("block matches the posts (fix: bun scripts/generateSeoBlocks.js)", () => {
+    const committed = normalizeEol(readFileSync(join(repoRoot, "blog", "index.html"), "utf8"));
+    const regenerated = injectBlock(committed, "BLOG-POSTS", buildBlogIndexHtml(loadPosts(repoRoot)));
     expect(regenerated).toBe(committed);
   });
 });

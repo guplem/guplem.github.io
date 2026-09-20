@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GENERATED FILE - do not edit by hand. Regenerate with: bun scripts/generateFeed.js (root ADR 0015) -->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Guillem Poy · Blog</title>
+  <subtitle>Experiments, niche solutions and findings, written to be read by people and by the models that answer them.</subtitle>
+  <link href="https://triunitystudios.com/blog/feed.xml" rel="self" />
+  <link href="https://triunitystudios.com/blog/" />
+  <id>https://triunitystudios.com/blog/</id>
+  <updated>2026-09-20T10:00:00Z</updated>
+  <author><name>Guillem Poy</name></author>
+  <entry>
+    <title>Why a blog, now</title>
+    <link href="https://triunitystudios.com/blog/why-a-blog-now/" />
+    <id>https://triunitystudios.com/blog/why-a-blog-now/</id>
+    <published>2026-09-20T10:00:00Z</published>
+    <updated>2026-09-20T10:00:00Z</updated>
+    <summary>For years, writing for the web meant writing for a ranking. Now language models read everything that is public, so a plain page about a small problem can become the answer someone gets. That is why this blog exists, and why its posts are plain HTML.</summary>
+  </entry>
+</feed>

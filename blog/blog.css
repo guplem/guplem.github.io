@@ -1,0 +1,153 @@
+/* The shared skeleton of the blog: the top bar, the byline, the footer and the
+   index list. It is the thin layer that says "same site" on every post. Each
+   post owns its look in its own style.css, loaded after this file, and may
+   override anything here (blog/AGENTS.md). Design tokens (--accent, --bg-*,
+   spacing, radii) come from css/global/variables.css; base typography from
+   css/global/base.css. */
+
+/* === Top bar (same shape as the Playground's) === */
+.topbar {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: var(--sp-md) var(--sp-md) 0;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-sm);
+  flex-wrap: wrap;
+}
+
+.back-link,
+.feed-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.back-link:hover,
+.feed-link:hover {
+  color: var(--accent);
+}
+
+/* === Index page header === */
+.page-header {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--sp-xl) var(--sp-md) var(--sp-lg);
+  text-align: center;
+}
+
+.page-header h1 {
+  position: relative;
+  display: inline-block;
+  padding-bottom: var(--sp-sm);
+}
+
+.page-header h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+}
+
+.page-header .subtitle {
+  margin-top: var(--sp-sm);
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* === Index list === */
+.post-list {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--sp-md) var(--sp-2xl);
+  display: grid;
+  gap: var(--sp-md);
+}
+
+.post-card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--sp-md) var(--sp-lg);
+  position: relative;
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.post-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.post-card-date {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.post-card-title {
+  font-size: 1.3rem;
+  margin: var(--sp-xs) 0;
+}
+
+/* Make the whole card clickable through the title link, without nesting
+   anchors inside the summary. */
+.post-card-title a {
+  color: var(--text-primary);
+}
+
+.post-card-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.post-card:hover .post-card-title a {
+  color: var(--accent);
+}
+
+.post-card-summary {
+  font-size: 0.92rem;
+}
+
+/* === A post's byline and footer === */
+.post-byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 1em;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.post-byline a {
+  color: inherit;
+  font-weight: 600;
+}
+
+.post-byline a:hover {
+  color: var(--accent);
+}
+
+.page-footer {
+  text-align: center;
+  padding: var(--sp-lg) var(--sp-md) var(--sp-xl);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.page-footer p + p {
+  margin-top: var(--sp-xs);
+}
