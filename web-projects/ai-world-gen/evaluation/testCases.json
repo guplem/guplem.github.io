@@ -1,37 +1,218 @@
 {
-  "comment": "One dataset per specification, five test cases each. A test case is the seed of one generation: the preset (whose shipped vocabulary is used, so no creative call), the grid size, the generation order and the random seed for the order and the sampling. Ids are stable: Galtea test cases are matched by them.",
+  "comment": "One dataset per specification, five test cases each, plus one dataset of three 16 by 16 maps for the coherence specification, because a room, a street or a temple needs more than 8 by 8 cells to exist. A test case is the seed of one generation: the preset (whose shipped vocabulary is used, so no creative call), the grid size, the generation order and the random seed for the order and the sampling. Ids are stable: Galtea test cases are matched by them.",
   "datasets": [
     {
       "specificationId": "structures",
       "name": "Structures: walls belong to buildings",
       "cases": [
-        { "id": "structures-village-spiral", "preset": "medieval-village", "width": 8, "height": 8, "order": "spiral", "seed": 101 },
-        { "id": "structures-station-frontier", "preset": "space-station", "width": 8, "height": 8, "order": "frontier", "seed": 102 },
-        { "id": "structures-mansion-spiral", "preset": "haunted-mansion", "width": 8, "height": 8, "order": "spiral", "seed": 103 },
-        { "id": "structures-arctic-clustered", "preset": "arctic-base", "width": 8, "height": 8, "order": "clustered", "seed": 104 },
-        { "id": "structures-cyberpunk-branching", "preset": "cyberpunk-block", "width": 8, "height": 8, "order": "branching", "seed": 105 }
+        {
+          "id": "structures-village-spiral",
+          "preset": "medieval-village",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 101
+        },
+        {
+          "id": "structures-station-frontier",
+          "preset": "space-station",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 102
+        },
+        {
+          "id": "structures-mansion-spiral",
+          "preset": "haunted-mansion",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 103
+        },
+        {
+          "id": "structures-arctic-clustered",
+          "preset": "arctic-base",
+          "width": 8,
+          "height": 8,
+          "order": "clustered",
+          "seed": 104
+        },
+        {
+          "id": "structures-cyberpunk-branching",
+          "preset": "cyberpunk-block",
+          "width": 8,
+          "height": 8,
+          "order": "branching",
+          "seed": 105
+        }
       ]
     },
     {
       "specificationId": "paths",
       "name": "Paths: routes are continuous",
       "cases": [
-        { "id": "paths-village-frontier", "preset": "medieval-village", "width": 8, "height": 8, "order": "frontier", "seed": 201 },
-        { "id": "paths-cyberpunk-spiral", "preset": "cyberpunk-block", "width": 8, "height": 8, "order": "spiral", "seed": 202 },
-        { "id": "paths-market-clustered", "preset": "ghana-market", "width": 8, "height": 8, "order": "clustered", "seed": 203 },
-        { "id": "paths-station-branching", "preset": "space-station", "width": 8, "height": 8, "order": "branching", "seed": 204 },
-        { "id": "paths-jungle-frontier", "preset": "jungle-temple", "width": 8, "height": 8, "order": "frontier", "seed": 205 }
+        {
+          "id": "paths-village-frontier",
+          "preset": "medieval-village",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 201
+        },
+        {
+          "id": "paths-cyberpunk-spiral",
+          "preset": "cyberpunk-block",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 202
+        },
+        {
+          "id": "paths-market-clustered",
+          "preset": "ghana-market",
+          "width": 8,
+          "height": 8,
+          "order": "clustered",
+          "seed": 203
+        },
+        {
+          "id": "paths-station-branching",
+          "preset": "space-station",
+          "width": 8,
+          "height": 8,
+          "order": "branching",
+          "seed": 204
+        },
+        {
+          "id": "paths-jungle-frontier",
+          "preset": "jungle-temple",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 205
+        }
       ]
     },
     {
       "specificationId": "reachability",
       "name": "Reachability: one walkable world",
       "cases": [
-        { "id": "reach-mansion-random", "preset": "haunted-mansion", "width": 8, "height": 8, "order": "random", "seed": 301 },
-        { "id": "reach-station-spiral", "preset": "space-station", "width": 8, "height": 8, "order": "spiral", "seed": 302 },
-        { "id": "reach-desert-frontier", "preset": "desert-outpost", "width": 8, "height": 8, "order": "frontier", "seed": 303 },
-        { "id": "reach-jungle-clustered", "preset": "jungle-temple", "width": 8, "height": 8, "order": "clustered", "seed": 304 },
-        { "id": "reach-arctic-random", "preset": "arctic-base", "width": 8, "height": 8, "order": "random", "seed": 305 }
+        {
+          "id": "reach-mansion-random",
+          "preset": "haunted-mansion",
+          "width": 8,
+          "height": 8,
+          "order": "random",
+          "seed": 301
+        },
+        {
+          "id": "reach-station-spiral",
+          "preset": "space-station",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 302
+        },
+        {
+          "id": "reach-desert-frontier",
+          "preset": "desert-outpost",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 303
+        },
+        {
+          "id": "reach-jungle-clustered",
+          "preset": "jungle-temple",
+          "width": 8,
+          "height": 8,
+          "order": "clustered",
+          "seed": 304
+        },
+        {
+          "id": "reach-arctic-random",
+          "preset": "arctic-base",
+          "width": 8,
+          "height": 8,
+          "order": "random",
+          "seed": 305
+        }
+      ]
+    },
+    {
+      "specificationId": "coherence",
+      "name": "Coherence: a place reads as a place",
+      "cases": [
+        {
+          "id": "coherence-mansion-spiral",
+          "preset": "haunted-mansion",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 401
+        },
+        {
+          "id": "coherence-market-frontier",
+          "preset": "ghana-market",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 402
+        },
+        {
+          "id": "coherence-cyberpunk-clustered",
+          "preset": "cyberpunk-block",
+          "width": 8,
+          "height": 8,
+          "order": "clustered",
+          "seed": 403
+        },
+        {
+          "id": "coherence-desert-spiral",
+          "preset": "desert-outpost",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 404
+        },
+        {
+          "id": "coherence-arctic-frontier",
+          "preset": "arctic-base",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 405
+        }
+      ]
+    },
+    {
+      "specificationId": "coherence",
+      "name": "Coherence: large maps (16 by 16)",
+      "cases": [
+        {
+          "id": "large-village-spiral",
+          "preset": "medieval-village",
+          "width": 16,
+          "height": 16,
+          "order": "spiral",
+          "seed": 501
+        },
+        {
+          "id": "large-station-frontier",
+          "preset": "space-station",
+          "width": 16,
+          "height": 16,
+          "order": "frontier",
+          "seed": 502
+        },
+        {
+          "id": "large-mansion-clustered",
+          "preset": "haunted-mansion",
+          "width": 16,
+          "height": 16,
+          "order": "clustered",
+          "seed": 503
+        }
       ]
     }
   ]

@@ -1,8 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import { createGrid, setCell } from "../grid.js";
 import {
+  JUDGE_METRICS,
   METRICS,
   SPECIFICATIONS,
+  isDoorType,
   isPathType,
   metricsForSpecification,
   renderAscii,
@@ -35,8 +37,8 @@ function fill(rows, source = "model") {
 }
 
 describe("the specifications and their metrics", () => {
-  test("there are three specifications, each with at least two metrics, and every metric belongs to one", () => {
-    expect(SPECIFICATIONS.map((one) => one.id)).toEqual(["structures", "paths", "reachability"]);
+  test("there are four specifications, each with at least two metrics, and every metric belongs to one", () => {
+    expect(SPECIFICATIONS.map((one) => one.id)).toEqual(["structures", "paths", "reachability", "coherence"]);
     for (const spec of SPECIFICATIONS) {
       expect(spec.name.length).toBeGreaterThan(0);
       expect(spec.description.length).toBeGreaterThan(0);
@@ -48,6 +50,17 @@ describe("the specifications and their metrics", () => {
       expect(metric.description.length).toBeGreaterThan(0);
     }
     expect(new Set(METRICS.map((one) => one.name)).size).toBe(METRICS.length);
+  });
+
+  test("every judge metric belongs to a specification, has a prompt, and shares no name with a computed metric", () => {
+    expect(JUDGE_METRICS.length).toBeGreaterThan(0);
+    const computed = new Set(METRICS.map((one) => one.name));
+    for (const metric of JUDGE_METRICS) {
+      expect(SPECIFICATIONS.some((one) => one.id === metric.specificationId)).toBe(true);
+      expect(metric.name).toMatch(/^[a-z][a-z0-9-]*$/);
+      expect(metric.judgePrompt.length).toBeGreaterThan(100);
+      expect(computed.has(metric.name)).toBe(false);
+    }
   });
 });
 
@@ -160,6 +173,79 @@ describe("scoreMap: reachability and playability", () => {
         expect(value).toBeLessThanOrEqual(1);
       }
     }
+  });
+});
+
+describe("scoreMap: paths share", () => {
+  test("a map that is all path is not a route network, and a few path cells are", () => {
+    const flood = scoreMap(fill(["pppp", "pppp", "pppp", "pppp"]), vocabulary, { fallbackCount: 0 });
+    expect(flood["path-share-in-range"]).toBe(0);
+    const some = scoreMap(fill(["gggg", "pppp", "gggg", "gggg"]), vocabulary, { fallbackCount: 0 });
+    expect(some["path-share-in-range"]).toBe(1);
+    const none = scoreMap(fill(["gggg", "gggg"]), vocabulary, { fallbackCount: 0 });
+    expect(none["path-share-in-range"]).toBe(0);
+  });
+});
+
+describe("isDoorType", () => {
+  test("a door is known by its visual tag", () => {
+    expect(isDoorType(vocabulary.elements[4])).toBe(true);
+    expect(isDoorType({ ...vocabulary.elements[4], visualTag: "wood-door" })).toBe(true);
+    expect(isDoorType({ ...vocabulary.elements[4], visualTag: "arch" })).toBe(true);
+    expect(isDoorType(vocabulary.elements[0])).toBe(false);
+    expect(isDoorType(null)).toBe(false);
+  });
+});
+
+describe("scoreMap: coherence", () => {
+  test("a door between two walls is in a wall; a door in open grass is not; no door is nothing to judge", () => {
+    const inWall = scoreMap(fill(["gggg", "#d#g", "gggg"]), vocabulary, { fallbackCount: 0 });
+    expect(inWall["door-in-wall"]).toBe(1);
+    const vertical = scoreMap(fill(["g#g", "gdg", "g#g"]), vocabulary, { fallbackCount: 0 });
+    expect(vertical["door-in-wall"]).toBe(1);
+    const loose = scoreMap(fill(["gggg", "gdgg", "gg#g"]), vocabulary, { fallbackCount: 0 });
+    expect(loose["door-in-wall"]).toBe(0);
+    const half = scoreMap(fill(["gggg", "#dgd", "ggg#"]), vocabulary, { fallbackCount: 0 });
+    expect(half["door-in-wall"]).toBe(0);
+    expect(scoreMap(fill(["gggg", "g##g"]), vocabulary, { fallbackCount: 0 })["door-in-wall"]).toBeNull();
+  });
+
+  test("walls are outlines: a wall cell buried among walls on all four sides is a filled block", () => {
+    const ring = scoreMap(fill(["#####", "#ggg#", "#ggg#", "#####"]), vocabulary, { fallbackCount: 0 });
+    expect(ring["barrier-outline"]).toBe(1);
+    const block = scoreMap(fill(["ggggg", "g###g", "g###g", "g###g", "ggggg"]), vocabulary, { fallbackCount: 0 });
+    expect(block["barrier-outline"]).toBeCloseTo(8 / 9, 5);
+    expect(scoreMap(fill(["gggg"]), vocabulary, { fallbackCount: 0 })["barrier-outline"]).toBeNull();
+  });
+
+  test("an enclosed room exists when some floor cannot be reached from the map edge without a door", () => {
+    const closed = scoreMap(fill(["gggggg", "g####g", "g#gg#g", "g####g", "gggggg"]), vocabulary, { fallbackCount: 0 });
+    expect(closed["enclosed-room-exists"]).toBe(1);
+    const withDoor = scoreMap(fill(["gggggg", "g####g", "g#ggdg", "g####g", "gggggg"]), vocabulary, { fallbackCount: 0 });
+    expect(withDoor["enclosed-room-exists"]).toBe(1);
+    const gap = scoreMap(fill(["gggggg", "g####g", "g#gggg", "g####g", "gggggg"]), vocabulary, { fallbackCount: 0 });
+    expect(gap["enclosed-room-exists"]).toBe(0);
+    const solid = scoreMap(fill(["gggggg", "g####g", "g####g", "gggggg"]), vocabulary, { fallbackCount: 0 });
+    expect(solid["enclosed-room-exists"]).toBe(0);
+  });
+
+  test("ground comes in patches: a cell of a ground type wants two neighbours of its own type", () => {
+    const patch = scoreMap(fill(["ggg", "ggg", "ggg"]), vocabulary, { fallbackCount: 0 });
+    expect(patch["ground-in-patches"]).toBe(1);
+    const confetti = scoreMap(fill(["gcg", "cgc", "gcg"]), vocabulary, { fallbackCount: 0 });
+    expect(confetti["ground-in-patches"]).toBe(0);
+    const routesDoNotCount = scoreMap(fill(["ppp", "ppp", "ppp"]), vocabulary, { fallbackCount: 0 });
+    expect(routesDoNotCount["ground-in-patches"]).toBeNull();
+    expect(scoreMap(fill(["###"]), vocabulary, { fallbackCount: 0 })["ground-in-patches"]).toBeNull();
+  });
+
+  test("interactable things are sprinkled: none is empty, a heap is too many", () => {
+    const none = scoreMap(fill(["gggg", "gggg", "gggg", "gggg"]), vocabulary, { fallbackCount: 0 });
+    expect(none["interactable-share-in-range"]).toBe(0);
+    const one = scoreMap(fill(["gggg", "gdgg", "gggg", "gggg"]), vocabulary, { fallbackCount: 0 });
+    expect(one["interactable-share-in-range"]).toBe(1);
+    const heap = scoreMap(fill(["dddd", "dddd", "gggg", "gggg"]), vocabulary, { fallbackCount: 0 });
+    expect(heap["interactable-share-in-range"]).toBe(0);
   });
 });
 

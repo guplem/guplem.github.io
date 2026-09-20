@@ -7,21 +7,30 @@
     "path-not-isolated": "metric_tevuufe7qx3kkgi9b5p68y7a",
     "path-in-largest-network": "metric_xt325isab9ljf3phzywbiyej",
     "path-continuity": "metric_m5dqa46dk33awh74209t0pma",
+    "path-share-in-range": "metric_k8190d4hj9c45kn64jvxxmm0",
     "walkable-reachable-share": "metric_iofxamd2cm7ig314dzn7ximg",
     "single-walkable-region": "metric_jk8ia0spmottxwzecej2mg3c",
     "walkable-share-in-range": "metric_m0hqg5clj1dfdlzag1v98td8",
     "vocabulary-coverage": "metric_lmhrpfrw4ydz41xwnkw13skp",
-    "model-answered": "metric_wtrihqcmih3m83s9kxt4tc2w"
+    "model-answered": "metric_wtrihqcmih3m83s9kxt4tc2w",
+    "door-in-wall": "metric_m15vd2t0exnz901bp0xolq5w",
+    "barrier-outline": "metric_ks3znyhs474s4jrpe3dgtxsf",
+    "enclosed-room-exists": "metric_mzuf14rggxapjpvwl87zcdqb",
+    "ground-in-patches": "metric_lscc0ibxmc6381uhkvpex6kx",
+    "interactable-share-in-range": "metric_x1d3koafvlk2qnsc1k3p6ubo"
   },
   "specificationIds": {
     "structures": "specification_z2cysa3cgffur4vssnes5yub",
     "paths": "specification_erap0bvqvcqczy5irfoia9l4",
-    "reachability": "specification_xws7nggozthcw8mjrcpzbdb3"
+    "reachability": "specification_xws7nggozthcw8mjrcpzbdb3",
+    "coherence": "specification_j8bkxu0wnbp6trl6ky139yfq"
   },
   "testIds": {
-    "structures": "test_ykwwzvrdncdshurydhrqbh09",
-    "paths": "test_c9bne2a6owk2vs3315n9agvn",
-    "reachability": "test_dxveh09y24k5zvanvzvo48w0"
+    "Structures: walls belong to buildings": "test_ykwwzvrdncdshurydhrqbh09",
+    "Paths: routes are continuous": "test_c9bne2a6owk2vs3315n9agvn",
+    "Reachability: one walkable world": "test_dxveh09y24k5zvanvzvo48w0",
+    "Coherence: a place reads as a place": "test_qs1as09j3910htxs03try2wt",
+    "Coherence: large maps (16 by 16)": "test_pessn592q1u4lesme3j8ekun"
   },
   "testCaseIds": {
     "structures-village-spiral": "testCase_yd2wsrgi2pljvj5dlaik03sq",
@@ -38,6 +47,17 @@
     "reach-station-spiral": "testCase_ydmafnersffbjoqkkfpdamek",
     "reach-desert-frontier": "testCase_z50s6ok5tg2sqeo0xo6n01p8",
     "reach-jungle-clustered": "testCase_wmf5bgev7v174gcljuzpjg3j",
-    "reach-arctic-random": "testCase_ognky6u2vj276tf7982tu6iy"
+    "reach-arctic-random": "testCase_ognky6u2vj276tf7982tu6iy",
+    "coherence-mansion-spiral": "testCase_z6dhwr47bjfpx7i2k5ploi0v",
+    "coherence-market-frontier": "testCase_ysi47oh9rq38r3dud6i4dpfp",
+    "coherence-cyberpunk-clustered": "testCase_paiogpddcaoct11iyo2zber9",
+    "coherence-desert-spiral": "testCase_ojee785t6d8jueqj6p1j8ybz",
+    "coherence-arctic-frontier": "testCase_vgk2ollh9okds80vki5dttnb",
+    "large-village-spiral": "testCase_czu3ekejulsjszc4yzjun0tr",
+    "large-station-frontier": "testCase_yd9bcll9b16afs8lln7ylggh",
+    "large-mansion-clustered": "testCase_a6pz6myjncz7yriu7vbblovx"
+  },
+  "judgeMetricIds": {
+    "reads-as-the-setting": "metric_qeb2tmisux0vsn269kucoukx"
   }
 }
