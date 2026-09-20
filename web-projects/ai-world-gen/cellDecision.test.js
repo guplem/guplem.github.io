@@ -5,6 +5,7 @@ import {
   NEARBY_RADIUS,
   SAMPLE_FLOOR,
   TARGET_SHARES,
+  allowedTypes,
   balanceSheet,
   buildCellDecision,
   buildChatDecisionMessages,
@@ -20,14 +21,16 @@ import {
 import { createGrid, setCell } from "./grid.js";
 import { mulberry32 } from "./random.js";
 
+const open = { zone: "any", neverNext: [], onlyNext: [], edge: null };
 const vocabulary = {
   name: "Ashford",
   summary: "A village.",
   elements: [
-    { id: "grass", label: "Grass", description: "Open grass.", placementRules: "Most common, outdoors.", walkable: true, interactable: false, isBarrier: false, visualTag: "grass", instanceFields: [] },
-    { id: "wall", label: "Wall", description: "A stone wall.", placementRules: "Around houses.", walkable: false, interactable: false, isBarrier: true, visualTag: "stone-wall", instanceFields: [] },
-    { id: "door", label: "Door", description: "A door.", placementRules: "In a wall.", walkable: true, interactable: true, isBarrier: false, visualTag: "door", instanceFields: ["locked"] },
+    { id: "grass", label: "Grass", description: "Open grass.", placementRules: "Most common, outdoors.", walkable: true, interactable: false, isBarrier: false, visualTag: "grass", instanceFields: [], placement: open },
+    { id: "wall", label: "Wall", description: "A stone wall.", placementRules: "Around houses.", walkable: false, interactable: false, isBarrier: true, visualTag: "stone-wall", instanceFields: [], placement: open },
+    { id: "door", label: "Door", description: "A door.", placementRules: "In a wall.", walkable: true, interactable: true, isBarrier: false, visualTag: "door", instanceFields: ["locked"], placement: open },
   ],
+  structures: [],
 };
 const setting = { location: "A village", era: "1200", notes: "cosy" };
 
@@ -91,6 +94,69 @@ describe("buildCellDecision", () => {
     expect(state.cell.edges).toEqual(["south", "west"]);
     const corner = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 4, y: 0 });
     expect(corner.state.cell.edges).toEqual(["north", "east"]);
+  });
+});
+
+describe("allowedTypes", () => {
+  const ruled = {
+    ...vocabulary,
+    elements: [
+      { ...vocabulary.elements[0] },
+      { ...vocabulary.elements[1] },
+      { ...vocabulary.elements[2], placement: { zone: "any", neverNext: ["door"], onlyNext: ["wall"], edge: null } },
+      { id: "river", label: "River", description: "Water.", placementRules: "East edge.", walkable: false, interactable: false, isBarrier: true, visualTag: "water", instanceFields: [], placement: { zone: "outdoor", neverNext: [], onlyNext: [], edge: "east" } },
+      { id: "well", label: "Well", description: "A well.", placementRules: "On grass.", walkable: true, interactable: true, isBarrier: false, visualTag: "barrel", instanceFields: [], placement: { zone: "outdoor", neverNext: ["well"], onlyNext: ["grass"], edge: null } },
+    ],
+  };
+
+  test("an edge-only type is allowed on its edge and excluded elsewhere, with the reason", () => {
+    const grid = createGrid(4, 4);
+    expect(allowedTypes({ vocabulary: ruled, grid, x: 3, y: 1 }).allowed).toContain("river");
+    const inland = allowedTypes({ vocabulary: ruled, grid, x: 1, y: 1 });
+    expect(inland.allowed).not.toContain("river");
+    expect(inland.excluded.river).toMatch(/east edge/);
+  });
+
+  test("neverNext excludes a type when a 4-neighbour is in its list; onlyNext excludes it when neighbours exist and none is in its list", () => {
+    const grid = createGrid(4, 4);
+    setCell(grid, 1, 0, { typeId: "door" });
+    setCell(grid, 0, 1, { typeId: "grass" });
+    const result = allowedTypes({ vocabulary: ruled, grid, x: 1, y: 1 });
+    expect(result.allowed).not.toContain("door");
+    expect(result.excluded.door).toMatch(/next to door/);
+    expect(result.allowed).toContain("well");
+    expect(result.allowed).toContain("grass");
+
+    setCell(grid, 2, 1, { typeId: "wall" });
+    const walled = allowedTypes({ vocabulary: ruled, grid, x: 2, y: 2 });
+    expect(walled.allowed).not.toContain("well");
+    expect(walled.excluded.well).toMatch(/only next to grass/);
+    expect(walled.allowed).toContain("door");
+  });
+
+  test("with no decided 4-neighbour, onlyNext cannot be judged and the type stays allowed", () => {
+    const grid = createGrid(4, 4);
+    setCell(grid, 0, 0, { typeId: "wall" });
+    const result = allowedTypes({ vocabulary: ruled, grid, x: 2, y: 2 });
+    expect(result.allowed).toContain("well");
+    expect(result.allowed).toContain("door");
+  });
+
+  test("when every type would be excluded, all stay allowed rather than sending an empty question", () => {
+    const strict = { ...ruled, elements: ruled.elements.map((one) => ({ ...one, placement: { ...one.placement, edge: "north" } })) };
+    const result = allowedTypes({ vocabulary: strict, grid: createGrid(3, 3), x: 1, y: 2 });
+    expect(result.allowed.length).toBe(strict.elements.length);
+  });
+
+  test("the question offers only the allowed types, the state names the excluded ones, and a forbidden suggestion is dropped", () => {
+    const grid = createGrid(4, 4);
+    setCell(grid, 1, 0, { typeId: "river" });
+    setCell(grid, 1, 2, { typeId: "river" });
+    const decision = buildCellDecision({ vocabulary: ruled, setting, grid, x: 1, y: 1 });
+    expect(Object.keys(decision.questions.type.criteria)).not.toContain("river");
+    expect(decision.state.excluded.river).toMatch(/east edge/);
+    expect(decision.state.continuations.suggested).toBeNull();
+    expect(decision.questions.type.instructions).toMatch(/state\.excluded/);
   });
 });
 

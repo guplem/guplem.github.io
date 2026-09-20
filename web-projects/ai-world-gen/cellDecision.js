@@ -20,7 +20,7 @@
 
 import { DIRECTIONS, countByType, getCell, neighboursOf, ringCounts } from "./grid.js";
 import { describeSetting } from "./presets.js";
-import { extractJson, typeById } from "./vocabulary.js";
+import { OPEN_PLACEMENT, extractJson, typeById } from "./vocabulary.js";
 
 /** How far around a cell the counts look. Two steps: enough to see a room, not the map. */
 export const NEARBY_RADIUS = 2;
@@ -39,6 +39,7 @@ const INSTRUCTIONS = [
   "state.map shows the whole map so far, one letter per cell (state.map.legend), rows from north to south; '?' is this cell.",
   "Use it to see the shape each structure has and where this cell sits in it.",
   "Follow each type's placement rules and keep the cell consistent with its placed neighbours.",
+  "state.excluded lists the types whose hard rules forbid this cell, with the rule; they are not offered.",
   "When continuations.suggested names a type, that type continues or closes a structure here and fits best,",
   "unless its rules forbid it in this place.",
   "When continuations.suggested is null, no structure needs this cell: choose a type from balance.needed",
@@ -215,6 +216,34 @@ function edgesOf(grid, x, y) {
   return edges;
 }
 
+/**
+ * The types whose hard placement rules allow this cell, and why each other
+ * one is out (v7). The rules are the typed `placement` of each element:
+ * `edge`, `neverNext` and `onlyNext`. v4 placed 21 of 23 doors in open
+ * ground although every door's prose said "in a wall": prose rules are
+ * advice to the model, these are applied before it answers. `onlyNext` is
+ * judged only once a 4-neighbour is decided; with none there is nothing to
+ * judge. When every type would be out, all stay in: an empty question has no
+ * answer.
+ */
+export function allowedTypes({ vocabulary, grid, x, y }) {
+  const edges = edgesOf(grid, x, y);
+  const around = SIDES.map((side) => getCell(grid, x + side.dx, y + side.dy)?.typeId).filter(Boolean);
+  const allowed = [];
+  const excluded = {};
+  for (const type of vocabulary.elements) {
+    const rule = type.placement ?? OPEN_PLACEMENT;
+    const clash = rule.neverNext.find((id) => around.includes(id));
+    if (rule.edge && !edges.includes(rule.edge)) excluded[type.id] = `only on the ${rule.edge} edge`;
+    else if (clash) excluded[type.id] = `never next to ${clash}`;
+    else if (rule.onlyNext.length > 0 && around.length > 0 && !around.some((id) => rule.onlyNext.includes(id))) {
+      excluded[type.id] = `only next to ${rule.onlyNext.join(", ")}`;
+    } else allowed.push(type.id);
+  }
+  if (allowed.length === 0) return { allowed: vocabulary.elements.map((one) => one.id), excluded: {} };
+  return { allowed, excluded };
+}
+
 /** The state and the one question for a cell, in the shape the decisions endpoint takes. */
 export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
   const placed = countByType(grid);
@@ -236,11 +265,16 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
     mapCounts: placed,
     balance: null,
     continuations: null,
+    excluded: null,
   };
+  const rules = allowedTypes({ vocabulary, grid, x, y });
+  state.excluded = rules.excluded;
   state.balance = balanceSheet(vocabulary, placed, grid.width * grid.height);
   state.continuations = continuationHints(grid, vocabulary, x, y, state.balance);
+  if (state.continuations.suggested && !rules.allowed.includes(state.continuations.suggested.type)) state.continuations.suggested = null;
   const criteria = {};
   for (const type of vocabulary.elements) {
+    if (!rules.allowed.includes(type.id)) continue;
     const flags = [type.walkable ? "walkable" : "not walkable", type.isBarrier ? "barrier" : null, type.interactable ? "interactable" : null]
       .filter(Boolean)
       .join(", ");
