@@ -618,6 +618,7 @@ def checkout_version(commit: str) -> Path:
         bundle.extractall(target)
     archive.unlink()
     project = target / "web-projects" / "ai-world-gen"
+    (project / "evaluation").mkdir(exist_ok=True)  # v1 ran before this folder existed
     shutil.copy(HERE / "backfillRun.js", project / "evaluation" / "backfillRun.js")
     return project
 
