@@ -1,5 +1,18 @@
 import { describe, expect, test } from "bun:test";
-import { MESSAGES, escapeHtml, joinWithAnd, say, sayEmptyBoard } from "./messages.js";
+import { MESSAGES, escapeHtml, joinWithAnd, noteMenuLabel, say, sayEmptyBoard } from "./messages.js";
+
+describe("noteMenuLabel", () => {
+  test("offers to add the first note, and to edit one that is there", () => {
+    expect(noteMenuLabel("")).toBe("Add note");
+    expect(noteMenuLabel("   ")).toBe("Add note");
+    expect(noteMenuLabel("look at the rate limit")).toBe("Edit note");
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(noteMenuLabel(null)).toBe("Add note");
+    expect(noteMenuLabel(7)).toBe("Add note");
+  });
+});
 
 describe("joinWithAnd", () => {
   test("reads a list the way a person says it", () => {

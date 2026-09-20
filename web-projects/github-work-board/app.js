@@ -40,7 +40,7 @@ import {
   toggleInList,
 } from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
-import { escapeHtml, say, sayEmptyBoard } from "./messages.js";
+import { escapeHtml, noteMenuLabel, say, sayEmptyBoard } from "./messages.js";
 import {
   CONNECTION_CHECKS,
   REQUIRED_PERMISSIONS,
@@ -99,6 +99,9 @@ const state = {
   links: {},
   menuItem: null,
   menuAnchor: null,
+  // Cards whose note box is open although the note is still empty. Only for
+  // this visit: a box somebody opened and left empty is not worth saving.
+  notesOpen: new Set(),
   sortId: DEFAULT_SORT_ID,
   view: DEFAULT_VIEW,
   kind: DEFAULT_KIND,
@@ -304,16 +307,11 @@ function buildWorkItemCard(item, { withMenu = true } = {}) {
     card.append(progress);
   }
 
-  const note = document.createElement("textarea");
-  note.className = "input note";
-  note.rows = 2;
-  note.placeholder = "A note only you can see";
-  note.value = readNote(state.board, item.key);
-  note.addEventListener("input", () => {
-    state.board = writeNote(state.board, item.key, note.value, new Date().toISOString());
-    scheduleSave();
-  });
-  card.append(note);
+  // The box is not there until there is a note in it, or until the reader asks
+  // for one from the menu. An empty box on every card is forty invitations to
+  // write something nobody wanted to write (ADR 0014).
+  const written = readNote(state.board, item.key);
+  if (written !== "" || state.notesOpen.has(item.key)) card.append(buildNoteBox(item, written));
 
   return card;
 }
@@ -534,6 +532,22 @@ function buildTokenRow(entry, index) {
 /* -------------------------------------------------------------------------- */
 /* Rendering                                                                  */
 /* -------------------------------------------------------------------------- */
+
+/** The note box for one card, which exists only once there is a note or a request for one. */
+function buildNoteBox(item, written) {
+  const note = document.createElement("textarea");
+  note.className = "input note";
+  note.id = `note-${item.key}`;
+  note.rows = 2;
+  note.placeholder = "A note only you can see";
+  note.value = written;
+  note.setAttribute("aria-label", `Note on ${item.repository} #${item.number}`);
+  note.addEventListener("input", () => {
+    state.board = writeNote(state.board, item.key, note.value, new Date().toISOString());
+    scheduleSave();
+  });
+  return note;
+}
 
 /* -------------------------------------------------------------------------- */
 /* The card menu                                                              */
@@ -1054,8 +1068,21 @@ function start() {
     if (!submenu.matches(":popover-open")) submenu.showPopover();
   });
 
+  element("menu-note").addEventListener("click", () => {
+    const item = state.menuItem;
+    if (!item) return;
+    state.notesOpen.add(item.key);
+    closeCardMenu();
+    renderBoard();
+    // After the board is rebuilt, not before: the box did not exist until now.
+    element(`note-${item.key}`)?.focus();
+  });
+
   menu.addEventListener("toggle", (event) => {
     const open = event.newState === "open";
+    if (open && state.menuItem) {
+      element("menu-note").textContent = noteMenuLabel(readNote(state.board, state.menuItem.key));
+    }
     state.menuAnchor?.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) placeMenu(menu, state.menuAnchor);
     else submenu.hidePopover();
