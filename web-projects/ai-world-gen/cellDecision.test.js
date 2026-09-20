@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   CHAT_DECISION_SCHEMA,
+  HARD_CAP_FACTOR,
   MAX_CONTINUED_LINE,
   NEARBY_RADIUS,
   SAMPLE_FLOOR,
@@ -265,6 +266,40 @@ describe("the blueprint in the decision (v8)", () => {
     expect(approach.state.continuations.suggested).toEqual({ type: "path", reason: "leads to the door of the Cottage" });
     const elsewhere = buildCellDecision({ vocabulary: withPath, setting, grid, x: 6, y: 6, plan });
     expect(elsewhere.state.continuations.suggested).toBeNull();
+  });
+
+  test("a ground type far past its target is out while another ground type is allowed (v10)", () => {
+    const grounds = {
+      ...planned,
+      elements: [
+        type("grass", { placementRules: "The most common cell.", placement: { ...open, zone: "outdoor" } }),
+        type("path", { visualTag: "path", placementRules: "Common. Lines between houses.", placement: { ...open, zone: "outdoor" } }),
+        type("villager", { interactable: true, placementRules: "Rare.", placement: { ...open, zone: "any" } }),
+      ],
+      structures: [],
+    };
+    const grid = createGrid(10, 10);
+    for (let i = 0; i < 40; i += 1) setCell(grid, i % 10, Math.floor(i / 10), { typeId: "path" });
+    const capped = buildCellDecision({ vocabulary: grounds, setting, grid, x: 5, y: 8 });
+    expect(Object.keys(capped.questions.type.criteria)).toEqual(["grass", "villager"]);
+    expect(capped.state.excluded.path).toMatch(/40% of the map.*target 15%/);
+    expect(HARD_CAP_FACTOR).toBe(2);
+
+    // Just past the target is advice (balance.overused), not a cap.
+    const mild = createGrid(10, 10);
+    for (let i = 0; i < 20; i += 1) setCell(mild, i % 10, Math.floor(i / 10), { typeId: "path" });
+    const advised = buildCellDecision({ vocabulary: grounds, setting, grid: mild, x: 5, y: 8 });
+    expect(Object.keys(advised.questions.type.criteria)).toContain("path");
+    expect(advised.state.balance.overused).toContain("path");
+  });
+
+  test("the cap never empties the ground: the only ground type of a zone stays, however common", () => {
+    const grid = createGrid(7, 7);
+    for (let i = 0; i < 20; i += 1) setCell(grid, i % 7, Math.floor(i / 7), { typeId: "grass" });
+    const outside = buildCellDecision({ vocabulary: planned, setting, grid, x: 6, y: 6, plan });
+    expect(Object.keys(outside.questions.type.criteria)).toContain("grass");
+    const inside = buildCellDecision({ vocabulary: planned, setting, grid, x: 2, y: 2, plan });
+    expect(Object.keys(inside.questions.type.criteria)).toContain("cottage-floor");
   });
 
   test("describeZone reads as a phrase", () => {
