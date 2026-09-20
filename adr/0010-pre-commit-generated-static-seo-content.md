@@ -26,7 +26,7 @@ Both scripts export pure builders and write only under `import.meta.main`, so te
 
 **Enforcement is the CI drift test, not the hook.** `scripts/generateSitemap.test.js` and `scripts/generateSeoBlocks.test.js` assert the committed files exactly match freshly generated output; `bun test .` in CI (ADR 0009) fails on any drift, including commits made with `--no-verify` or without hooks installed. A root `lefthook.yml` pre-commit command is the local convenience: it regenerates and stages the artifacts whenever `data/` or `scripts/` files are staged. `lefthook` is a dev-only tool (like Bun, per the ADR 0009 carve-out), installed as a standalone binary (`winget install evilmartians.lefthook` / `brew install lefthook`, then `lefthook install`); there is no `package.json` to pin it, which is acceptable because nothing breaks when it is absent -- CI catches the drift.
 
-This ADR qualifies (does not supersede) ADR 0001, ADR 0002, and ADR 0008; each carries a note pointing here.
+This ADR qualifies (does not supersede) ADR 0001, ADR 0002, and ADR 0008; each carries a note pointing here. ADR 0015 extends the same pattern to the blog: a `GENERATED:BLOG-POSTS` block in `blog/index.html`, the Atom feed `blog/feed.xml` (`scripts/generateFeed.js`) and the blog URLs in the sitemap, all read from the posts' own `<head>` tags instead of `data/`.
 
 ## Consequences
 

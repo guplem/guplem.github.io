@@ -24,6 +24,7 @@ The markdown library was specifically chosen for performance. `marked` was selec
 - Pinned versions prevent surprise breakage from upstream updates.
 - The `esm.sh` CDN caches `marked` for returning visitors. Self-hosted fonts carry no such CDN dependency: they are served from the site's own origin, so they cannot fail from a third-party outage.
 - The pre-built bundle loads faster than importing the default entry point (which may trigger sub-dependency fetches).
+- The blog (ADR 0015) reuses the same self-hosted font on every post, so a crawler reading a post pays no third-party font request either.
 
 **Negative:**
 - Runtime dependency on the `esm.sh` CDN for `marked`. If `esm.sh` goes down, markdown rendering fails silently (descriptions render as raw markdown text). The self-hosted font has no such risk.

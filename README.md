@@ -8,6 +8,7 @@ Personal portfolio website hosted on GitHub Pages.
 
 - **Main site** (`index.html`) — Data-driven portfolio. Content is loaded from JSON files (`data/`) and rendered dynamically with vanilla JS.
 - **`web-projects/`** — Standalone mini-apps, separate from the main site.
+- **`blog/`** — Long-form posts as plain HTML pages, each with its own look. Listed at [triunitystudios.com/blog/](https://triunitystudios.com/blog/), with an Atom feed at `blog/feed.xml`.
 
 ## Local Development
 
@@ -23,11 +24,12 @@ python -m http.server 8000
 
 ### Generated files (SEO)
 
-`sitemap.xml` and the `GENERATED` comment-marked blocks inside `index.html` and `web-projects/index.html` are derived from the `data/` JSON so search engines can read the content without running JavaScript. Never edit them by hand. After changing `data/`, regenerate them with [Bun](https://bun.sh):
+`sitemap.xml`, `blog/feed.xml` and the `GENERATED` comment-marked blocks inside `index.html`, `web-projects/index.html` and `blog/index.html` are derived from the `data/` JSON and from the blog posts' own `<head>` tags, so search engines can read the content without running JavaScript. Never edit them by hand. After changing `data/` or a post, regenerate them with [Bun](https://bun.sh):
 
 ```bash
 bun scripts/generateSitemap.js
 bun scripts/generateSeoBlocks.js
+bun scripts/generateFeed.js
 ```
 
 To make this automatic on every commit, install [lefthook](https://github.com/evilmartians/lefthook) once (`winget install evilmartians.lefthook` on Windows, `brew install lefthook` on macOS) and run `lefthook install` in the repo. If you skip this, CI fails with a message telling you which script to run.
@@ -56,6 +58,13 @@ Self-contained mini-apps in `web-projects/`. Browse them all in the **Playground
 - **`street-name-history/`** — Search any street for all its names across languages, its former names, and its etymology (OpenStreetMap + Wikidata + OpenHistoricalMap)
 - **`prime-sieve-arcs/`** — The Sieve of Eratosthenes as an animation: every prime hops over its multiples in glowing arcs
 - **`whatsapp-no-contact/`** — Open a WhatsApp chat with any phone number without saving it as a contact: searchable country selector, number field, one button
+
+## Blog
+
+Posts live in `blog/<slug>/index.html` as plain HTML: the text is in the file, nothing is rendered by a script, and each post carries its own stylesheet. The list at [triunitystudios.com/blog/](https://triunitystudios.com/blog/) and the Atom feed are generated from each post's `<head>`.
+
+- **`why-a-blog-now/`** — Why writing for the open web makes sense again now that language models read it, and why these posts are plain HTML
+- **`ai-world-gen-thousands-of-tiny-decisions/`** — How the AI World Gen map generator asks a decision model (Jev) one question per tile, and the Galtea evaluation loop that took it through eleven measured versions, with charts and every version's maps
 
 ## Deployment
 

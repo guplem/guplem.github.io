@@ -33,4 +33,4 @@ This is the simplest approach that supports hosting multiple independent sub-pro
 - No TypeScript, no JSX, no CSS preprocessing.
 - Cannot use npm packages that require a bundler or Node.js APIs.
 
-> **Note (2026-07):** a commit-time generation step now exists: Bun scripts under `scripts/` regenerate committed SEO artifacts (`sitemap.xml` and static HTML fallback blocks), kept in sync by CI drift tests and, locally, an optional lefthook pre-commit hook. The deploy pipeline itself stays build-free, but "clone and serve" gains an optional tooling step for content edits. See ADR 0010.
+> **Note (2026-07):** a commit-time generation step now exists: Bun scripts under `scripts/` regenerate committed SEO artifacts (`sitemap.xml`, static HTML fallback blocks, and, since the blog, `blog/feed.xml` and the blog's post list), kept in sync by CI drift tests and, locally, an optional lefthook pre-commit hook. The deploy pipeline itself stays build-free, but "clone and serve" gains an optional tooling step for content edits. See ADR 0010 and ADR 0015.
