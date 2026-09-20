@@ -11,6 +11,7 @@
 // test case names a preset, whose shipped vocabulary is used (ADR 0004), or
 // gives its own setting, in which case the narrative model writes one.
 
+import { planStructures } from "../blueprint.js";
 import { createDecider, runGeneration } from "../generation.js";
 import { createGrid, gridToJSON } from "../grid.js";
 import { DEFAULT_DECISION_MODEL, DEFAULT_NARRATIVE_MODEL, transportFor } from "../models.js";
@@ -68,6 +69,7 @@ async function main() {
   }
 
   const grid = createGrid(width, height);
+  const plan = planStructures({ vocabulary, width, height, random: mulberry32(seed ^ 0x51ed270b) });
   const transport = transportFor(decisionModel, []);
   const decide = createDecider({ client, transport, apiKey, model: decisionModel, vocabulary });
   const total = width * height;
@@ -77,6 +79,7 @@ async function main() {
     setting,
     order: createOrder(order, { width, height, random: mulberry32(seed) }),
     decide,
+    plan,
     random: mulberry32(seed ^ 0x9e3779b9),
     onCell: ({ index, cell }) => {
       if ((index + 1) % 10 === 0 || index + 1 === total) {
@@ -93,6 +96,7 @@ async function main() {
       setting,
       models: { decision: decisionModel, transport, vocabulary: vocabularySource },
       vocabulary,
+      plan,
       grid: gridToJSON(grid),
       summary,
       scores,

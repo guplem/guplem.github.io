@@ -44,6 +44,7 @@ const RETRY_BASE_MS = 800;
  * @param {() => number} [options.now]
  * @param {number} [options.maxRetries]
  * @param {number} [options.spread] 0 places the most likely type, 1 samples the probabilities
+ * @param {object|null} [options.plan] the blueprint of the structures (`blueprint.js`); null means no structure
  */
 export async function runGeneration({
   grid,
@@ -51,6 +52,7 @@ export async function runGeneration({
   setting,
   order,
   decide,
+  plan = null,
   random = Math.random,
   onCell = () => {},
   isCancelled = () => false,
@@ -80,7 +82,7 @@ export async function runGeneration({
     if (next === null) return finish("done");
 
     const { x, y } = next;
-    const request = buildCellDecision({ vocabulary, setting, grid, x, y });
+    const request = buildCellDecision({ vocabulary, setting, grid, x, y, plan });
     let result = null;
     let failure = null;
     let attempts = 0;

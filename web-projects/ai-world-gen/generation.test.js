@@ -149,6 +149,17 @@ describe("runGeneration", () => {
     expect(walls).toBeLessThan(65);
   });
 
+  test("hands the plan to every decision", async () => {
+    const plan = { rooms: [{ structure: "house", label: "House", x: 0, y: 0, width: 3, height: 2, door: null }] };
+    const zones = [];
+    const decide = async (request) => {
+      zones.push(request.state.zone.part);
+      return answer("grass");
+    };
+    await run(decide, { plan });
+    expect(zones.filter((one) => one === "wall").length).toBe(6);
+  });
+
   test("reports the timing", async () => {
     const decide = async () => answer("grass");
     const { summary } = await run(decide, { now: (() => { let t = 0; return () => (t += 100); })() });

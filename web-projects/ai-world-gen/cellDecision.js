@@ -18,6 +18,7 @@
 // Jev is not available. That path is slower and dearer, and it exists so a
 // live demo does not die with a beta endpoint.
 
+import { structureOf, zoneAt } from "./blueprint.js";
 import { DIRECTIONS, countByType, getCell, neighboursOf, ringCounts } from "./grid.js";
 import { describeSetting } from "./presets.js";
 import { OPEN_PLACEMENT, extractJson, typeById } from "./vocabulary.js";
@@ -39,6 +40,8 @@ const INSTRUCTIONS = [
   "state.map shows the whole map so far, one letter per cell (state.map.legend), rows from north to south; '?' is this cell.",
   "Use it to see the shape each structure has and where this cell sits in it.",
   "Follow each type's placement rules and keep the cell consistent with its placed neighbours.",
+  "state.zone says which part of the plan this cell is: a wall, the door or the inside of a named structure, or outside every structure;",
+  "only the types that belong to that part are offered.",
   "state.excluded lists the types whose hard rules forbid this cell, with the rule; they are not offered.",
   "When continuations.suggested names a type, that type continues or closes a structure here and fits best,",
   "unless its rules forbid it in this place.",
@@ -244,8 +247,51 @@ export function allowedTypes({ vocabulary, grid, x, y }) {
   return { allowed, excluded };
 }
 
-/** The state and the one question for a cell, in the shape the decisions endpoint takes. */
-export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
+const isStructureWall = (vocabulary, id) => (vocabulary.structures ?? []).some((one) => one.wall === id);
+const isStructureDoor = (vocabulary, id) => (vocabulary.structures ?? []).some((one) => one.door === id);
+const isStructureFloor = (vocabulary, id) => (vocabulary.structures ?? []).some((one) => one.floor === id);
+
+/** One short phrase for a zone, for the state and the exclusion reasons. */
+export function describeZone(zone) {
+  if (!zone || zone.part === "outside") return "outside every structure";
+  if (zone.part === "wall") return `a wall of the ${zone.label}`;
+  if (zone.part === "door") return `the door of the ${zone.label}`;
+  return `inside the ${zone.label}`;
+}
+
+/**
+ * The types that belong to a cell's part of the plan (v8). A wall cell takes
+ * its structure's wall or anything that lives in a wall (a window, a sign); the
+ * door cell takes the door; an interior cell takes its structure's floor or
+ * anything indoor; the outside takes anything outdoor, and never a
+ * structure's wall or door, which only the plan places.
+ */
+export function zoneAllowedTypes({ vocabulary, zone }) {
+  const structure = structureOf(vocabulary, zone);
+  const zoneOf = (type) => type.placement?.zone ?? "any";
+  const loose = (type) => !isStructureWall(vocabulary, type.id) && !isStructureDoor(vocabulary, type.id);
+  const part = zone?.part ?? "outside";
+  if (part === "door" && structure?.door) return [structure.door];
+  if (part === "wall" || part === "door") {
+    const own = structure ? [structure.wall] : [];
+    return [...own, ...vocabulary.elements.filter((type) => zoneOf(type) === "wall" && loose(type)).map((type) => type.id)];
+  }
+  if (part === "interior") {
+    const own = structure ? [structure.floor] : [];
+    const inside = vocabulary.elements.filter((type) => ["indoor", "any"].includes(zoneOf(type)) && loose(type) && !isStructureFloor(vocabulary, type.id));
+    return [...own, ...inside.map((type) => type.id)];
+  }
+  return vocabulary.elements
+    .filter((type) => ["outdoor", "any"].includes(zoneOf(type)) && loose(type) && !(isStructureFloor(vocabulary, type.id) && zoneOf(type) === "indoor"))
+    .map((type) => type.id);
+}
+
+/**
+ * The state and the one question for a cell, in the shape the decisions
+ * endpoint takes. `plan` is the blueprint (`blueprint.js`); without one every
+ * cell is outside.
+ */
+export function buildCellDecision({ vocabulary, setting, grid, x, y, plan = null }) {
   const placed = countByType(grid);
   const placedCells = Object.values(placed).reduce((sum, count) => sum + count, 0);
   const state = {
@@ -263,18 +309,28 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
     neighbours: neighboursOf(grid, x, y).map((one) => ({ direction: one.direction, type: one.cell.typeId })),
     nearbyCounts: ringCounts(grid, x, y, NEARBY_RADIUS),
     mapCounts: placed,
+    zone: null,
     balance: null,
     continuations: null,
     excluded: null,
   };
+  const zone = zoneAt(plan, x, y);
+  state.zone = { part: zone.part, structure: zone.part === "outside" ? null : zone.label, description: describeZone(zone) };
+  const byZone = zoneAllowedTypes({ vocabulary, zone });
   const rules = allowedTypes({ vocabulary, grid, x, y });
-  state.excluded = rules.excluded;
+  let allowed = byZone.filter((id) => rules.allowed.includes(id));
+  if (allowed.length === 0) allowed = byZone.length > 0 ? byZone : vocabulary.elements.map((one) => one.id);
+  state.excluded = {};
+  for (const type of vocabulary.elements) {
+    if (allowed.includes(type.id)) continue;
+    state.excluded[type.id] = rules.excluded[type.id] ?? `this cell is ${describeZone(zone)}`;
+  }
   state.balance = balanceSheet(vocabulary, placed, grid.width * grid.height);
   state.continuations = continuationHints(grid, vocabulary, x, y, state.balance);
-  if (state.continuations.suggested && !rules.allowed.includes(state.continuations.suggested.type)) state.continuations.suggested = null;
+  if (state.continuations.suggested && !allowed.includes(state.continuations.suggested.type)) state.continuations.suggested = null;
   const criteria = {};
   for (const type of vocabulary.elements) {
-    if (!rules.allowed.includes(type.id)) continue;
+    if (!allowed.includes(type.id)) continue;
     const flags = [type.walkable ? "walkable" : "not walkable", type.isBarrier ? "barrier" : null, type.interactable ? "interactable" : null]
       .filter(Boolean)
       .join(", ");

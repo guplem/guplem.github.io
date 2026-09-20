@@ -11,6 +11,8 @@ import {
   buildChatDecisionMessages,
   chooseType,
   continuationHints,
+  describeZone,
+  zoneAllowedTypes,
   fallbackType,
   isRouteType,
   mapSketch,
@@ -157,6 +159,78 @@ describe("allowedTypes", () => {
     expect(decision.state.excluded.river).toMatch(/east edge/);
     expect(decision.state.continuations.suggested).toBeNull();
     expect(decision.questions.type.instructions).toMatch(/state\.excluded/);
+  });
+});
+
+describe("the blueprint in the decision (v8)", () => {
+  const type = (id, over) => ({ id, label: id, description: id, placementRules: id, walkable: true, interactable: false, isBarrier: false, visualTag: "floor", instanceFields: [], placement: { ...open }, ...over });
+  const planned = {
+    name: "Ashford",
+    summary: "A village.",
+    elements: [
+      type("grass", { placement: { ...open, zone: "outdoor" } }),
+      type("cottage-wall", { walkable: false, isBarrier: true, placement: { ...open, zone: "wall" } }),
+      type("cottage-floor", { placement: { ...open, zone: "indoor" } }),
+      type("cottage-door", { interactable: true, placement: { ...open, zone: "wall" } }),
+      type("window", { walkable: false, isBarrier: true, placement: { ...open, zone: "wall" } }),
+      type("chest", { interactable: true, placement: { ...open, zone: "indoor" } }),
+      type("villager", { interactable: true, placement: { ...open, zone: "any" } }),
+      type("oak", { walkable: false, isBarrier: true, placement: { ...open, zone: "outdoor" } }),
+      type("cellar-floor", { placement: { ...open, zone: "indoor" } }),
+    ],
+    structures: [
+      { id: "cottage", label: "Cottage", wall: "cottage-wall", floor: "cottage-floor", door: "cottage-door", minSize: 3, maxSize: 4, minCount: 1, maxCount: 1 },
+      { id: "cellar", label: "Cellar", wall: "cottage-wall", floor: "cellar-floor", door: null, minSize: 3, maxSize: 3, minCount: 0, maxCount: 1 },
+    ],
+  };
+  const plan = { rooms: [{ structure: "cottage", label: "Cottage", x: 1, y: 1, width: 4, height: 4, door: { x: 2, y: 4 } }] };
+
+  test("a wall cell takes the structure's wall or a thing that lives in walls; the door cell takes only the door", () => {
+    expect(zoneAllowedTypes({ vocabulary: planned, zone: { part: "wall", structure: "cottage", label: "Cottage" } })).toEqual(["cottage-wall", "window"]);
+    expect(zoneAllowedTypes({ vocabulary: planned, zone: { part: "door", structure: "cottage", label: "Cottage" } })).toEqual(["cottage-door"]);
+  });
+
+  test("an interior cell takes its own floor and indoor or free things, never another structure's floor", () => {
+    expect(zoneAllowedTypes({ vocabulary: planned, zone: { part: "interior", structure: "cottage", label: "Cottage" } })).toEqual(["cottage-floor", "chest", "villager"]);
+  });
+
+  test("the outside takes outdoor and free things, never a structure's wall, door or indoor floor", () => {
+    expect(zoneAllowedTypes({ vocabulary: planned, zone: { part: "outside" } })).toEqual(["grass", "villager", "oak"]);
+  });
+
+  test("without structures, every type but the wall-only ones is allowed outside", () => {
+    const free = { ...planned, structures: [] };
+    expect(zoneAllowedTypes({ vocabulary: free, zone: { part: "outside" } })).toEqual(["grass", "villager", "oak"]);
+  });
+
+  test("the decision offers the zone's types, names the zone in the state, and gives the others a reason", () => {
+    const grid = createGrid(7, 7);
+    const wall = buildCellDecision({ vocabulary: planned, setting, grid, x: 1, y: 1, plan });
+    expect(Object.keys(wall.questions.type.criteria)).toEqual(["cottage-wall", "window"]);
+    expect(wall.state.zone).toEqual({ part: "wall", structure: "Cottage", description: "a wall of the Cottage" });
+    expect(wall.state.excluded.grass).toBe("this cell is a wall of the Cottage");
+    const door = buildCellDecision({ vocabulary: planned, setting, grid, x: 2, y: 4, plan });
+    expect(Object.keys(door.questions.type.criteria)).toEqual(["cottage-door"]);
+    const inside = buildCellDecision({ vocabulary: planned, setting, grid, x: 2, y: 2, plan });
+    expect(Object.keys(inside.questions.type.criteria)).toEqual(["cottage-floor", "chest", "villager"]);
+    const outside = buildCellDecision({ vocabulary: planned, setting, grid, x: 6, y: 6, plan });
+    expect(outside.state.zone).toEqual({ part: "outside", structure: null, description: "outside every structure" });
+    expect(Object.keys(outside.questions.type.criteria)).toEqual(["grass", "villager", "oak"]);
+    expect(outside.questions.type.instructions).toMatch(/state\.zone/);
+  });
+
+  test("a hard rule still applies inside a zone, and a zone with every type ruled out falls back to the zone's types", () => {
+    const strict = { ...planned, elements: planned.elements.map((one) => (one.id === "chest" ? { ...one, placement: { ...one.placement, neverNext: ["chest"] } } : one)) };
+    const grid = createGrid(7, 7);
+    setCell(grid, 2, 3, { typeId: "chest" });
+    const inside = buildCellDecision({ vocabulary: strict, setting, grid, x: 2, y: 2, plan });
+    expect(Object.keys(inside.questions.type.criteria)).toEqual(["cottage-floor", "villager"]);
+    expect(inside.state.excluded.chest).toBe("never next to chest");
+  });
+
+  test("describeZone reads as a phrase", () => {
+    expect(describeZone({ part: "door", label: "Cottage" })).toBe("the door of the Cottage");
+    expect(describeZone(null)).toBe("outside every structure");
   });
 });
 
