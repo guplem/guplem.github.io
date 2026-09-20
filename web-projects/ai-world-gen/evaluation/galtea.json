@@ -7,21 +7,47 @@
     "path-not-isolated": "metric_tevuufe7qx3kkgi9b5p68y7a",
     "path-in-largest-network": "metric_xt325isab9ljf3phzywbiyej",
     "path-continuity": "metric_m5dqa46dk33awh74209t0pma",
+    "path-share-in-range": "metric_k8190d4hj9c45kn64jvxxmm0",
     "walkable-reachable-share": "metric_iofxamd2cm7ig314dzn7ximg",
     "single-walkable-region": "metric_jk8ia0spmottxwzecej2mg3c",
     "walkable-share-in-range": "metric_m0hqg5clj1dfdlzag1v98td8",
     "vocabulary-coverage": "metric_lmhrpfrw4ydz41xwnkw13skp",
-    "model-answered": "metric_wtrihqcmih3m83s9kxt4tc2w"
+    "model-answered": "metric_wtrihqcmih3m83s9kxt4tc2w",
+    "door-in-wall": "metric_m15vd2t0exnz901bp0xolq5w",
+    "barrier-outline": "metric_ks3znyhs474s4jrpe3dgtxsf",
+    "enclosed-room-exists": "metric_mzuf14rggxapjpvwl87zcdqb",
+    "ground-in-patches": "metric_lscc0ibxmc6381uhkvpex6kx",
+    "interactable-share-in-range": "metric_x1d3koafvlk2qnsc1k3p6ubo",
+    "never-next-respected": "metric_l6dfvlzasf45sg5tekh624ff",
+    "only-next-respected": "metric_icucecywasech6dudycwie7s",
+    "edge-respected": "metric_ylt3quzrsjvilkn9fq9wo8ym",
+    "zone-respected": "metric_ledt044mz5vde3337ndj5skr",
+    "door-passable": "metric_bbd2lo6yjs9tz1xgzk9cgy2c",
+    "door-near-route": "metric_tlp7g3ictoat38o5r4ntianc",
+    "route-reaches-edge": "metric_okeqctqsnlb8bm7wtrg2883o",
+    "landmarks-present": "metric_ncdkqjzkgnei9sl0sm3vzugy",
+    "landmarks-single": "metric_borvek2xf4tvp1swdolrq7gn",
+    "no-type-dominates": "metric_ncpdwmv8thmegz5mz44zwpon",
+    "things-approachable": "metric_qx7ix8m7lf66vrlcp306igjr"
   },
   "specificationIds": {
     "structures": "specification_z2cysa3cgffur4vssnes5yub",
     "paths": "specification_erap0bvqvcqczy5irfoia9l4",
-    "reachability": "specification_xws7nggozthcw8mjrcpzbdb3"
+    "reachability": "specification_xws7nggozthcw8mjrcpzbdb3",
+    "coherence": "specification_j8bkxu0wnbp6trl6ky139yfq",
+    "rules": "specification_ykqoqhdjcr6jqikfxrd3smn7",
+    "routes": "specification_ahq3259mc5qnhu3y6cwpzo81",
+    "story": "specification_jfzd00pb3lkh7rxgx1ebxa3p"
   },
   "testIds": {
-    "structures": "test_ykwwzvrdncdshurydhrqbh09",
-    "paths": "test_c9bne2a6owk2vs3315n9agvn",
-    "reachability": "test_dxveh09y24k5zvanvzvo48w0"
+    "Structures: walls belong to buildings": "test_ykwwzvrdncdshurydhrqbh09",
+    "Paths: routes are continuous": "test_c9bne2a6owk2vs3315n9agvn",
+    "Reachability: one walkable world": "test_dxveh09y24k5zvanvzvo48w0",
+    "Coherence: a place reads as a place": "test_qs1as09j3910htxs03try2wt",
+    "Coherence: large maps (16 by 16)": "test_pessn592q1u4lesme3j8ekun",
+    "Rules: the vocabulary's own rules hold": "test_uiemp7yatnoxkeikgphezfku",
+    "Routes: paths lead to doors and off the map": "test_yo4mn3fgxfwxs9yl1yyt3ie1",
+    "Story: landmarks are there, once, and nothing floods the map": "test_b0zqn2g8flhrmjajyvdipjhr"
   },
   "testCaseIds": {
     "structures-village-spiral": "testCase_yd2wsrgi2pljvj5dlaik03sq",
@@ -38,6 +64,32 @@
     "reach-station-spiral": "testCase_ydmafnersffbjoqkkfpdamek",
     "reach-desert-frontier": "testCase_z50s6ok5tg2sqeo0xo6n01p8",
     "reach-jungle-clustered": "testCase_wmf5bgev7v174gcljuzpjg3j",
-    "reach-arctic-random": "testCase_ognky6u2vj276tf7982tu6iy"
+    "reach-arctic-random": "testCase_ognky6u2vj276tf7982tu6iy",
+    "coherence-mansion-spiral": "testCase_z6dhwr47bjfpx7i2k5ploi0v",
+    "coherence-market-frontier": "testCase_ysi47oh9rq38r3dud6i4dpfp",
+    "coherence-cyberpunk-clustered": "testCase_paiogpddcaoct11iyo2zber9",
+    "coherence-desert-spiral": "testCase_ojee785t6d8jueqj6p1j8ybz",
+    "coherence-arctic-frontier": "testCase_vgk2ollh9okds80vki5dttnb",
+    "large-village-spiral": "testCase_czu3ekejulsjszc4yzjun0tr",
+    "large-station-frontier": "testCase_yd9bcll9b16afs8lln7ylggh",
+    "large-mansion-clustered": "testCase_a6pz6myjncz7yriu7vbblovx",
+    "rules-village-clustered": "testCase_ta73ou3mqamazcz7p1cittin",
+    "rules-station-random": "testCase_to31dqizs15plmgbchku81g8",
+    "rules-desert-branching": "testCase_dmzxy1pec16n2id3h5puw16v",
+    "rules-jungle-spiral": "testCase_lpr2j02902ir9pgbhw0zum9x",
+    "rules-market-frontier": "testCase_aat4hfs0rq71bbxg1krbgnb5",
+    "routes-village-spiral": "testCase_ycxc9ol531uqt9fl56mp158h",
+    "routes-cyberpunk-frontier": "testCase_gcl01nrsmkjg8erixe73595h",
+    "routes-arctic-spiral": "testCase_j4q9w60j69ovdghj5jvvgigc",
+    "routes-mansion-frontier": "testCase_znatqfcy3t9w325u6nfgyc08",
+    "routes-market-clustered": "testCase_s3kq06pxwbpidlh53jkl4jsf",
+    "story-village-frontier": "testCase_vkjhlomglmt8ru5mgf32przx",
+    "story-mansion-spiral": "testCase_sn475h3we1i3cbsq9iudkjpw",
+    "story-jungle-clustered": "testCase_qzm8quhfty13vscs164wp2c3",
+    "story-desert-frontier": "testCase_q0l620iwr0dcmwfmq4mblrjv",
+    "story-station-spiral": "testCase_kjjyco8v8pl77o0b8v78qil7"
+  },
+  "judgeMetricIds": {
+    "reads-as-the-setting": "metric_qeb2tmisux0vsn269kucoukx"
   }
 }

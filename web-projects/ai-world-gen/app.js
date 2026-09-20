@@ -8,6 +8,7 @@
 //     through `openRouterClient.js`.
 
 import { CAMERA_LIMITS, cellAtPoint, fitCamera, panBy, zoomAt } from "./camera.js";
+import { planStructures } from "./blueprint.js";
 import { buildCellDecision, chooseType } from "./cellDecision.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { escapeHtml, say } from "./deployText.js";
@@ -75,6 +76,7 @@ const state = {
   sheet: null,
   renderer: null,
   vocabulary: null,
+  plan: null,
   grid: null,
   camera: null,
   selected: null,
@@ -676,13 +678,18 @@ async function generateWorld() {
 
   const transport = transportFor(state.models.decisionModel, state.catalogue);
   setStatus("map-status", `${modelName(state.models.decisionModel)} is deciding ${width * height} cells${transport === "chat" ? " (text model standing in)" : ""}…`);
-  const order = createOrder(readOrderId(state.order), { width, height, random: mulberry32(seedFromText(JSON.stringify(state.setting)) ^ Date.now()) });
+  const runSeed = seedFromText(JSON.stringify(state.setting)) ^ Date.now();
+  const order = createOrder(readOrderId(state.order), { width, height, random: mulberry32(runSeed) });
+  // The blueprint first: where the structures stand, before any cell is asked about (blueprint.js).
+  state.plan = planStructures({ vocabulary: state.vocabulary, width, height, random: mulberry32(runSeed ^ 0x51ed270b) });
+  if (state.plan.rooms.length > 0) log(`Plan: ${state.plan.rooms.map((room) => `${room.label} ${room.width}×${room.height} at (${room.x}, ${room.y})`).join(", ")}`);
   const summary = await runGeneration({
     grid: state.grid,
     vocabulary: state.vocabulary,
     setting: state.setting,
     order,
     decide: makeDecider(),
+    plan: state.plan,
     isCancelled: () => state.cancelRequested,
     onCell: ({ x, y, cell, index, total }) => {
       state.latest = { x, y };
@@ -718,7 +725,7 @@ async function regenerateCell() {
   setCell(state.grid, x, y, null);
   element("regenerate-cell").disabled = true;
   setStatus("map-status", `Asking the model again about x ${x}, y ${y}…`);
-  const request = buildCellDecision({ vocabulary: state.vocabulary, setting: state.setting, grid: state.grid, x, y });
+  const request = buildCellDecision({ vocabulary: state.vocabulary, setting: state.setting, grid: state.grid, x, y, plan: state.plan });
   const result = await makeDecider()(request);
   element("regenerate-cell").disabled = false;
   if (!result.ok || !result.answer) {
@@ -761,6 +768,7 @@ function downloadMap() {
     setting: state.setting,
     order: state.order,
     vocabulary: state.vocabulary,
+    plan: state.plan,
     grid: gridToJSON(state.grid),
   };
   const blob = new Blob([JSON.stringify(document_, null, 2)], { type: "application/json" });
@@ -788,6 +796,7 @@ async function loadMapFile(file) {
   }
   state.vocabulary = vocabulary.vocabulary;
   state.grid = grid;
+  state.plan = Array.isArray(data.plan?.rooms) ? data.plan : null;
   state.setting = cleanSetting(data.setting);
   state.order = readOrderId(data.order);
   state.camera = null;

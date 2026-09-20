@@ -6,31 +6,44 @@
 // Jev answers: a choice, its confidence, and a probability per option. No
 // prose, no parsing.
 //
-// The state sent with each question is small on purpose. It carries the eight
-// neighbouring cells, counts within a short radius, and counts for the whole
-// map so far. It also carries two things the code, not the model, works out:
-// a balance sheet of each type against its target share, and continuation
-// hints that name the one type worth continuing here, or none. It never
-// carries the grid itself: a 24 by 24 map would cost more tokens per cell
-// than the answer is worth, and the model does not need it.
+// The state sent with each question carries the eight neighbouring cells,
+// counts within a short radius, and counts for the whole map so far. It also
+// carries two things the code, not the model, works out: a balance sheet of
+// each type against its target share, and continuation hints that name the
+// one type worth continuing here, or none. Since v5 it also carries the whole
+// map as one letter per cell: a 24 by 24 sketch is under 300 tokens, and the
+// question v5 measures is whether the model reads it.
 //
 // A text model can answer the same question through `chat/completions` when
 // Jev is not available. That path is slower and dearer, and it exists so a
 // live demo does not die with a beta endpoint.
 
+import { structureOf, zoneAt } from "./blueprint.js";
 import { DIRECTIONS, countByType, getCell, neighboursOf, ringCounts } from "./grid.js";
 import { describeSetting } from "./presets.js";
-import { extractJson, typeById } from "./vocabulary.js";
+import { OPEN_PLACEMENT, extractJson, typeById } from "./vocabulary.js";
 
 /** How far around a cell the counts look. Two steps: enough to see a room, not the map. */
 export const NEARBY_RADIUS = 2;
 
-/** Options with a probability below this share of the best one are never sampled. */
-const SAMPLE_FLOOR = 0.08;
+/**
+ * Options with a probability below this share of the best one are never
+ * sampled. v4 and v5 sampled anything above 8%, and the sample overrode the
+ * model's own choice on 27% to 29% of the cells: a wall where it was 60% sure
+ * of floor. A third keeps the variety where the model is torn and drops it
+ * where it is not.
+ */
+export const SAMPLE_FLOOR = 1 / 3;
 
 const INSTRUCTIONS = [
   "Which element type belongs in this cell of the map?",
+  "state.map shows the whole map so far, one letter per cell (state.map.legend), rows from north to south; '?' is this cell.",
+  "Use it to see the shape each structure has and where this cell sits in it.",
   "Follow each type's placement rules and keep the cell consistent with its placed neighbours.",
+  "state.zone says which part of the plan this cell is: a wall, the door or the inside of a named structure, or outside every structure;",
+  "only the types that belong to that part are offered.",
+  "state.excluded lists the types whose hard rules forbid this cell, with the rule; they are not offered.",
+  "state.missing lists the things this world still lacks that fit this cell; when it is not empty and the rules fit, choose one of them.",
   "When continuations.suggested names a type, that type continues or closes a structure here and fits best,",
   "unless its rules forbid it in this place.",
   "When continuations.suggested is null, no structure needs this cell: choose a type from balance.needed",
@@ -46,6 +59,11 @@ export function isRouteType(type) {
   if (!type) return false;
   if (ROUTE_TAGS.has(type.visualTag)) return true;
   return ROUTE_WORDS.test(`${type.id} ${type.label}`);
+}
+
+/** Whether a type's rules ask for one instance on the whole map ("exactly one per cottage" does not). Shared with the metrics. */
+export function isUniqueType(type) {
+  return Boolean(type && /\b(exactly|only) one\b(?! per\b)/i.test(type.placementRules ?? ""));
 }
 
 const SIDES = [
@@ -163,6 +181,41 @@ export function balanceSheet(vocabulary, counts, totalCells) {
   return { needed: gaps.slice(0, MAX_NEEDED).map((one) => one.id), overused, shares };
 }
 
+const SKETCH_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const SKETCH_UNDECIDED = ".";
+const SKETCH_THIS_CELL = "?";
+const SKETCH_UNKNOWN = "!";
+
+/**
+ * The whole map as text, one letter per cell, in the order of the vocabulary.
+ * Cheap enough to send with every decision (a 24 by 24 grid is 600 characters)
+ * and the only way the model can see a shape larger than its 8 neighbours.
+ */
+export function mapSketch(grid, vocabulary, x, y) {
+  const letterOf = {};
+  const legend = {};
+  vocabulary.elements.forEach((type, index) => {
+    const letter = SKETCH_LETTERS[index] ?? SKETCH_UNKNOWN;
+    letterOf[type.id] = letter;
+    legend[letter] = type.id;
+  });
+  legend[SKETCH_UNDECIDED] = "undecided";
+  legend[SKETCH_THIS_CELL] = "this cell";
+  const rows = [];
+  for (let row = 0; row < grid.height; row += 1) {
+    let text = "";
+    for (let column = 0; column < grid.width; column += 1) {
+      if (column === x && row === y) text += SKETCH_THIS_CELL;
+      else {
+        const cell = getCell(grid, column, row);
+        text += cell === null ? SKETCH_UNDECIDED : (letterOf[cell.typeId] ?? SKETCH_UNKNOWN);
+      }
+    }
+    rows.push(text);
+  }
+  return { rows, legend };
+}
+
 function edgesOf(grid, x, y) {
   const edges = [];
   if (y === 0) edges.push("north");
@@ -172,8 +225,79 @@ function edgesOf(grid, x, y) {
   return edges;
 }
 
-/** The state and the one question for a cell, in the shape the decisions endpoint takes. */
-export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
+/**
+ * The types whose hard placement rules allow this cell, and why each other
+ * one is out (v7). The rules are the typed `placement` of each element:
+ * `edge`, `neverNext` and `onlyNext`. v4 placed 21 of 23 doors in open
+ * ground although every door's prose said "in a wall": prose rules are
+ * advice to the model, these are applied before it answers. `onlyNext` is
+ * judged only once a 4-neighbour is decided; with none there is nothing to
+ * judge. When every type would be out, all stay in: an empty question has no
+ * answer.
+ */
+export function allowedTypes({ vocabulary, grid, x, y }) {
+  const edges = edgesOf(grid, x, y);
+  const around = SIDES.map((side) => getCell(grid, x + side.dx, y + side.dy)?.typeId).filter(Boolean);
+  const allowed = [];
+  const excluded = {};
+  for (const type of vocabulary.elements) {
+    const rule = type.placement ?? OPEN_PLACEMENT;
+    const clash = rule.neverNext.find((id) => around.includes(id));
+    if (rule.edge && !edges.includes(rule.edge)) excluded[type.id] = `only on the ${rule.edge} edge`;
+    else if (clash) excluded[type.id] = `never next to ${clash}`;
+    else if (rule.onlyNext.length > 0 && around.length > 0 && !around.some((id) => rule.onlyNext.includes(id))) {
+      excluded[type.id] = `only next to ${rule.onlyNext.join(", ")}`;
+    } else allowed.push(type.id);
+  }
+  if (allowed.length === 0) return { allowed: vocabulary.elements.map((one) => one.id), excluded: {} };
+  return { allowed, excluded };
+}
+
+const isStructureWall = (vocabulary, id) => (vocabulary.structures ?? []).some((one) => one.wall === id);
+const isStructureDoor = (vocabulary, id) => (vocabulary.structures ?? []).some((one) => one.door === id);
+const isStructureFloor = (vocabulary, id) => (vocabulary.structures ?? []).some((one) => one.floor === id);
+
+/** One short phrase for a zone, for the state and the exclusion reasons. */
+export function describeZone(zone) {
+  if (!zone || zone.part === "outside") return "outside every structure";
+  if (zone.part === "wall") return `a wall of the ${zone.label}`;
+  if (zone.part === "door") return `the door of the ${zone.label}`;
+  return `inside the ${zone.label}`;
+}
+
+/**
+ * The types that belong to a cell's part of the plan (v8). A wall cell takes
+ * its structure's wall or anything that lives in a wall (a window, a sign); the
+ * door cell takes the door; an interior cell takes its structure's floor or
+ * anything indoor; the outside takes anything outdoor, and never a
+ * structure's wall or door, which only the plan places.
+ */
+export function zoneAllowedTypes({ vocabulary, zone }) {
+  const structure = structureOf(vocabulary, zone);
+  const zoneOf = (type) => type.placement?.zone ?? "any";
+  const loose = (type) => !isStructureWall(vocabulary, type.id) && !isStructureDoor(vocabulary, type.id);
+  const part = zone?.part ?? "outside";
+  if (part === "door" && structure?.door) return [structure.door];
+  if (part === "wall" || part === "door") {
+    const own = structure ? [structure.wall] : [];
+    return [...own, ...vocabulary.elements.filter((type) => zoneOf(type) === "wall" && loose(type)).map((type) => type.id)];
+  }
+  if (part === "interior") {
+    const own = structure ? [structure.floor] : [];
+    const inside = vocabulary.elements.filter((type) => ["indoor", "any"].includes(zoneOf(type)) && loose(type) && !isStructureFloor(vocabulary, type.id));
+    return [...own, ...inside.map((type) => type.id)];
+  }
+  return vocabulary.elements
+    .filter((type) => ["outdoor", "any"].includes(zoneOf(type)) && loose(type) && !(isStructureFloor(vocabulary, type.id) && zoneOf(type) === "indoor"))
+    .map((type) => type.id);
+}
+
+/**
+ * The state and the one question for a cell, in the shape the decisions
+ * endpoint takes. `plan` is the blueprint (`blueprint.js`); without one every
+ * cell is outside.
+ */
+export function buildCellDecision({ vocabulary, setting, grid, x, y, plan = null }) {
   const placed = countByType(grid);
   const placedCells = Object.values(placed).reduce((sum, count) => sum + count, 0);
   const state = {
@@ -187,16 +311,48 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y }) {
       placedCells,
       totalCells: grid.width * grid.height,
     },
+    map: mapSketch(grid, vocabulary, x, y),
     neighbours: neighboursOf(grid, x, y).map((one) => ({ direction: one.direction, type: one.cell.typeId })),
     nearbyCounts: ringCounts(grid, x, y, NEARBY_RADIUS),
     mapCounts: placed,
+    zone: null,
     balance: null,
     continuations: null,
+    excluded: null,
+    missing: null,
   };
+  const zone = zoneAt(plan, x, y);
+  state.zone = { part: zone.part, structure: zone.part === "outside" ? null : zone.label, description: describeZone(zone) };
+  const byZone = zoneAllowedTypes({ vocabulary, zone });
+  const rules = allowedTypes({ vocabulary, grid, x, y });
+  let allowed = byZone.filter((id) => rules.allowed.includes(id));
+  if (allowed.length === 0) allowed = byZone.length > 0 ? byZone : vocabulary.elements.map((one) => one.id);
+  // A type the rules want exactly once is out once it is on the map (v9), unless it is all this cell can be.
+  const placedUnique = allowed.filter((id) => isUniqueType(typeById(vocabulary, id)) && (placed[id] ?? 0) >= 1);
+  if (placedUnique.length < allowed.length) allowed = allowed.filter((id) => !placedUnique.includes(id));
+  state.excluded = {};
+  for (const type of vocabulary.elements) {
+    if (allowed.includes(type.id)) continue;
+    state.excluded[type.id] =
+      rules.excluded[type.id] ?? (placedUnique.includes(type.id) ? "already on the map, and its rules say exactly one" : `this cell is ${describeZone(zone)}`);
+  }
+  // The things this world still lacks and this cell could hold: one nudge, gone as soon as each is placed.
+  state.missing = allowed.filter((id) => {
+    const type = typeById(vocabulary, id);
+    return (placed[id] ?? 0) === 0 && (type.interactable || isUniqueType(type));
+  });
   state.balance = balanceSheet(vocabulary, placed, grid.width * grid.height);
   state.continuations = continuationHints(grid, vocabulary, x, y, state.balance);
+  if (state.continuations.suggested && !allowed.includes(state.continuations.suggested.type)) state.continuations.suggested = null;
+  // Outside, next to a planned door: the route that leads to it (v9), so doors do not open onto nothing.
+  if (zone.part === "outside" && plan) {
+    const doorSide = SIDES.map((side) => zoneAt(plan, x + side.dx, y + side.dy)).find((one) => one.part === "door");
+    const route = allowed.map((id) => typeById(vocabulary, id)).find(isRouteType);
+    if (doorSide && route) state.continuations.suggested = { type: route.id, reason: `leads to the door of the ${doorSide.label}` };
+  }
   const criteria = {};
   for (const type of vocabulary.elements) {
+    if (!allowed.includes(type.id)) continue;
     const flags = [type.walkable ? "walkable" : "not walkable", type.isBarrier ? "barrier" : null, type.interactable ? "interactable" : null]
       .filter(Boolean)
       .join(", ");

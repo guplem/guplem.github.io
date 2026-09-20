@@ -26,6 +26,7 @@ const element = (over = {}) => ({
   isBarrier: false,
   visualTag: "grass",
   instanceFields: [],
+  placement: { zone: "outdoor", neverNext: [], onlyNext: [], edge: "none" },
   ...over,
 });
 
@@ -68,6 +69,7 @@ describe("the JSON schema", () => {
       "interactable",
       "isBarrier",
       "label",
+      "placement",
       "placementRules",
       "visualTag",
       "walkable",
@@ -75,6 +77,16 @@ describe("the JSON schema", () => {
     expect(item.additionalProperties).toBe(false);
     expect(item.required).toEqual(Object.keys(item.properties));
     expect(VOCABULARY_SCHEMA.additionalProperties).toBe(false);
+  });
+
+  test("placement is typed: a zone, two id lists and an edge; structures name a wall, a floor and a door", () => {
+    const placement = VOCABULARY_SCHEMA.properties.elements.items.properties.placement;
+    expect(placement.properties.zone.enum).toEqual(["indoor", "outdoor", "wall", "any"]);
+    expect(placement.properties.edge.enum).toEqual(["none", "north", "east", "south", "west"]);
+    expect(placement.required).toEqual(["zone", "neverNext", "onlyNext", "edge"]);
+    const structure = VOCABULARY_SCHEMA.properties.structures.items;
+    expect(Object.keys(structure.properties).sort()).toEqual(["door", "floor", "id", "label", "maxCount", "maxSize", "minCount", "minSize", "wall"]);
+    expect(VOCABULARY_SCHEMA.required).toEqual(["name", "summary", "elements", "structures"]);
   });
 });
 
@@ -99,6 +111,61 @@ describe("normaliseVocabulary", () => {
     expect(result.ok).toBe(true);
     expect(result.vocabulary.elements.length).toBe(6);
     expect(result.vocabulary.name).toBe("Ashford");
+    expect(result.vocabulary.structures).toEqual([]);
+  });
+
+  test("a vocabulary written before placement existed still passes, with an open placement", () => {
+    const raw = good();
+    for (const one of raw.elements) delete one.placement;
+    delete raw.structures;
+    const result = normaliseVocabulary(raw, tags);
+    expect(result.ok).toBe(true);
+    expect(result.vocabulary.elements[0].placement).toEqual({ zone: "any", neverNext: [], onlyNext: [], edge: null });
+    expect(result.vocabulary.structures).toEqual([]);
+  });
+
+  test("placement is checked: the zone and the edge are from the list, and the ids exist", () => {
+    const raw = good();
+    raw.elements[0].placement = { zone: "roof", neverNext: ["lava"], onlyNext: [], edge: "up" };
+    raw.elements[2].placement = { zone: "wall", neverNext: ["door"], onlyNext: ["wall"], edge: "east" };
+    const result = normaliseVocabulary(raw, tags);
+    expect(result.ok).toBe(false);
+    expect(result.errors.some((one) => one.includes("grass") && /zone/.test(one) && one.includes("roof"))).toBe(true);
+    expect(result.errors.some((one) => one.includes("grass") && /neverNext/.test(one) && one.includes("lava"))).toBe(true);
+    expect(result.errors.some((one) => one.includes("grass") && /edge/.test(one) && one.includes("up"))).toBe(true);
+    expect(result.errors.filter((one) => one.includes('"door"')).length).toBe(0);
+  });
+
+  test("a good placement is kept, with 'none' read as no edge", () => {
+    const raw = good();
+    raw.elements[2].placement = { zone: "wall", neverNext: ["door"], onlyNext: ["wall"], edge: "none" };
+    raw.elements[5].placement = { zone: "outdoor", neverNext: [], onlyNext: [], edge: "north" };
+    const result = normaliseVocabulary(raw, tags);
+    expect(result.ok).toBe(true);
+    expect(result.vocabulary.elements[2].placement).toEqual({ zone: "wall", neverNext: ["door"], onlyNext: ["wall"], edge: null });
+    expect(result.vocabulary.elements[5].placement.edge).toBe("north");
+  });
+
+  test("structures are checked: the wall is a barrier, the floor is walkable, the door exists or is null, sizes and counts are sane", () => {
+    const raw = good();
+    raw.structures = [
+      { id: "house", label: "House", wall: "wall", floor: "grass", door: "door", minSize: 3, maxSize: 4, minCount: 1, maxCount: 2 },
+      { id: "shed", label: "Shed", wall: "grass", floor: "wall", door: "gate", minSize: 2, maxSize: 9, minCount: 3, maxCount: 1 },
+    ];
+    const result = normaliseVocabulary(raw, tags);
+    expect(result.ok).toBe(false);
+    expect(result.errors.some((one) => one.includes("shed") && /wall/.test(one) && /barrier/.test(one))).toBe(true);
+    expect(result.errors.some((one) => one.includes("shed") && /floor/.test(one) && /walkable/.test(one))).toBe(true);
+    expect(result.errors.some((one) => one.includes("shed") && /door/.test(one) && one.includes("gate"))).toBe(true);
+    expect(result.errors.some((one) => one.includes("shed") && /minSize/.test(one))).toBe(true);
+    expect(result.errors.some((one) => one.includes("shed") && /maxSize/.test(one))).toBe(true);
+    expect(result.errors.some((one) => one.includes("shed") && /minCount/.test(one))).toBe(true);
+    expect(result.errors.filter((one) => one.includes("house")).length).toBe(0);
+
+    raw.structures = [{ id: "house", label: "House", wall: "wall", floor: "grass", door: null, minSize: 3, maxSize: 4, minCount: 1, maxCount: 2 }];
+    const sealed = normaliseVocabulary(raw, tags);
+    expect(sealed.ok).toBe(true);
+    expect(sealed.vocabulary.structures[0].door).toBeNull();
   });
 
   test("trims text, lower-cases ids and reads boolean-looking strings", () => {

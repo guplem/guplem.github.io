@@ -19,25 +19,66 @@
 
 import { describeSetting } from "./presets.js";
 
-export const VOCABULARY_LIMITS = { minTypes: 6, maxTypes: 24, maxInstanceFields: 8 };
+export const VOCABULARY_LIMITS = { minTypes: 6, maxTypes: 24, maxInstanceFields: 8, minStructureSize: 3, maxStructureSize: 8, maxStructureCount: 6 };
 
 const ID_PATTERN = /^[a-z][a-z0-9-]*$/;
+
+/** Where a type belongs, relative to the structures: inside one, outside all, in a wall, or anywhere. */
+export const ZONES = ["indoor", "outdoor", "wall", "any"];
+export const EDGES = ["north", "east", "south", "west"];
+
+/** The placement of a type that declares none: no hard rule at all. */
+export const OPEN_PLACEMENT = Object.freeze({ zone: "any", neverNext: [], onlyNext: [], edge: null });
+
+const PLACEMENT_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["zone", "neverNext", "onlyNext", "edge"],
+  properties: {
+    zone: { type: "string", enum: ZONES, description: "indoor: only inside a structure. outdoor: never inside one. wall: in a structure's wall (a door, a window, a sign). any: no rule." },
+    neverNext: { type: "array", items: { type: "string" }, description: "Type ids this type is never placed next to (the four neighbours). Name its own id to keep two apart." },
+    onlyNext: { type: "array", items: { type: "string" }, description: "When not empty, this type is placed only where one of these type ids is a neighbour. Empty means no rule." },
+    edge: { type: "string", enum: ["none", ...EDGES], description: "The one map edge this type is limited to, or none." },
+  },
+};
+
+const STRUCTURE_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["id", "label", "wall", "floor", "door", "minSize", "maxSize", "minCount", "maxCount"],
+  properties: {
+    id: { type: "string", description: "kebab-case, unique among structures, e.g. cottage" },
+    label: { type: "string", description: "The name a person sees, e.g. Cottage." },
+    wall: { type: "string", description: "The id of the barrier type that outlines it." },
+    floor: { type: "string", description: "The id of the walkable type that fills it." },
+    door: { type: ["string", "null"], description: "The id of the interactable type set into its wall, or null for a sealed structure." },
+    minSize: { type: "integer", description: `Smallest side in cells, walls included, at least ${VOCABULARY_LIMITS.minStructureSize}.` },
+    maxSize: { type: "integer", description: `Largest side in cells, walls included, at most ${VOCABULARY_LIMITS.maxStructureSize}.` },
+    minCount: { type: "integer", description: "How many of these a map holds at least (0 allowed)." },
+    maxCount: { type: "integer", description: `How many at most, up to ${VOCABULARY_LIMITS.maxStructureCount}.` },
+  },
+};
 
 /** The strict shape the model is asked to fill. `strict: true` models follow it to the letter. */
 export const VOCABULARY_SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["name", "summary", "elements"],
+  required: ["name", "summary", "elements", "structures"],
   properties: {
     name: { type: "string", description: "A short name for this world or place." },
     summary: { type: "string", description: "One or two sentences that set the scene." },
+    structures: {
+      type: "array",
+      description: "The buildings and rooms of this world: each names its wall, floor and door types and its size and count. Empty when the world has no enclosed place.",
+      items: STRUCTURE_SCHEMA,
+    },
     elements: {
       type: "array",
       description: `Between ${VOCABULARY_LIMITS.minTypes} and ${VOCABULARY_LIMITS.maxTypes} element types.`,
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "label", "description", "placementRules", "walkable", "interactable", "isBarrier", "visualTag", "instanceFields"],
+        required: ["id", "label", "description", "placementRules", "walkable", "interactable", "isBarrier", "visualTag", "instanceFields", "placement"],
         properties: {
           id: { type: "string", description: "kebab-case, unique, e.g. cargo-bay" },
           label: { type: "string", description: "The name a person sees." },
@@ -52,6 +93,7 @@ export const VOCABULARY_SCHEMA = {
             items: { type: "string" },
             description: "The properties a single instance will need later, e.g. [\"contents\", \"locked\"]. Empty for plain terrain.",
           },
+          placement: PLACEMENT_SCHEMA,
         },
       },
     },
@@ -61,6 +103,7 @@ export const VOCABULARY_SCHEMA = {
 const EXAMPLE = {
   name: "Kepler Relay",
   summary: "A cramped research station in orbit, where the crew keeps to the corridors and one section stays sealed.",
+  structures: [{ id: "lab", label: "Lab", wall: "bulkhead", floor: "corridor", door: "airlock", minSize: 3, maxSize: 5, minCount: 1, maxCount: 2 }],
   elements: [
     {
       id: "corridor",
@@ -72,6 +115,7 @@ const EXAMPLE = {
       isBarrier: false,
       visualTag: "metal-floor",
       instanceFields: [],
+      placement: { zone: "any", neverNext: [], onlyNext: [], edge: "none" },
     },
     {
       id: "bulkhead",
@@ -83,6 +127,19 @@ const EXAMPLE = {
       isBarrier: true,
       visualTag: "metal-wall",
       instanceFields: [],
+      placement: { zone: "wall", neverNext: [], onlyNext: [], edge: "none" },
+    },
+    {
+      id: "airlock",
+      label: "Airlock door",
+      description: "A pressure door set into a bulkhead.",
+      placementRules: "Uncommon. In a bulkhead, one per room, facing a corridor. Never two adjacent.",
+      walkable: true,
+      interactable: true,
+      isBarrier: false,
+      visualTag: "hatch",
+      instanceFields: ["locked", "pressureState"],
+      placement: { zone: "wall", neverNext: ["airlock"], onlyNext: [], edge: "none" },
     },
     {
       id: "crew-member",
@@ -94,6 +151,7 @@ const EXAMPLE = {
       isBarrier: false,
       visualTag: "crew",
       instanceFields: ["rank", "clearance", "mood"],
+      placement: { zone: "any", neverNext: ["crew-member"], onlyNext: [], edge: "none" },
     },
   ],
 };
@@ -108,9 +166,9 @@ export function buildVocabularyMessages(setting, visualTags) {
     "You design the vocabulary of a tile-based world for a map generator.",
     "You answer with one JSON object and nothing else: no prose, no code fences.",
     "",
-    "The object has: name (string), summary (string), elements (array).",
+    "The object has: name (string), summary (string), elements (array), structures (array).",
     `elements holds between ${VOCABULARY_LIMITS.minTypes} and ${VOCABULARY_LIMITS.maxTypes} element types.`,
-    "Each element has exactly these fields: id, label, description, placementRules, walkable, interactable, isBarrier, visualTag, instanceFields.",
+    "Each element has exactly these fields: id, label, description, placementRules, walkable, interactable, isBarrier, visualTag, instanceFields, placement.",
     "",
     "Rules:",
     "- id is kebab-case (lowercase letters, digits, hyphens) and unique.",
@@ -121,6 +179,8 @@ export function buildVocabularyMessages(setting, visualTags) {
     visualTags.join(", "),
     "- instanceFields lists the properties one instance of that type will need later, specific to this world (a chest: contents, locked; a station's crew member: rank, clearance). Plain terrain has an empty list.",
     `- At most ${VOCABULARY_LIMITS.maxInstanceFields} instanceFields per type.`,
+    "- placement is the part of the rules that code enforces: zone (indoor: only inside a structure; outdoor: never inside one; wall: set into a structure's wall, like a door or a window; any), neverNext (type ids it is never next to; name its own id to keep two apart), onlyNext (when not empty, it is placed only next to one of these ids), edge (the one map edge it is limited to, or none).",
+    "- structures lists the buildings and rooms: each names its wall type (a barrier with zone wall), its floor type (walkable, zone indoor or any), its door type (interactable, zone wall, or null for a sealed room), and its size and count. The code draws each structure's outline; the model fills it. A world with no enclosed place has an empty list.",
     "",
     "Example for a different setting (a space station), to show the shape only:",
     JSON.stringify(EXAMPLE),
@@ -175,6 +235,72 @@ function readBoolean(value) {
   return null;
 }
 
+const readList = (value) => (Array.isArray(value) ? value.map(readText).filter((one) => one !== "") : null);
+
+/** A type's placement, cleaned; an absent one is open. Ids are checked later, once every id is known. */
+function normalisePlacement(raw, where, errors) {
+  if (raw == null) return { ...OPEN_PLACEMENT, neverNext: [], onlyNext: [] };
+  if (typeof raw !== "object" || Array.isArray(raw)) {
+    errors.push(`${where}: placement must be an object with zone, neverNext, onlyNext and edge.`);
+    return { ...OPEN_PLACEMENT, neverNext: [], onlyNext: [] };
+  }
+  const zone = raw.zone == null ? "any" : readText(raw.zone).toLowerCase();
+  if (!ZONES.includes(zone)) errors.push(`${where}: placement.zone "${raw.zone}" is not one of ${ZONES.join(", ")}.`);
+  const neverNext = readList(raw.neverNext ?? []);
+  if (neverNext === null) errors.push(`${where}: placement.neverNext must be an array of type ids.`);
+  const onlyNext = readList(raw.onlyNext ?? []);
+  if (onlyNext === null) errors.push(`${where}: placement.onlyNext must be an array of type ids.`);
+  const edgeText = raw.edge == null ? "none" : readText(raw.edge).toLowerCase();
+  const edge = edgeText === "" || edgeText === "none" ? null : edgeText;
+  if (edge !== null && !EDGES.includes(edge)) errors.push(`${where}: placement.edge "${raw.edge}" is not one of none, ${EDGES.join(", ")}.`);
+  return { zone: ZONES.includes(zone) ? zone : "any", neverNext: neverNext ?? [], onlyNext: onlyNext ?? [], edge };
+}
+
+/** The placement ids of every element, checked against the ids that exist. */
+function checkPlacementIds(elements, errors) {
+  const ids = new Set(elements.map((one) => one.id));
+  for (const one of elements) {
+    for (const field of ["neverNext", "onlyNext"]) {
+      for (const id of one.placement[field]) {
+        if (!ids.has(id)) errors.push(`elements (id "${one.id}"): placement.${field} names "${id}", which is not an element id.`);
+      }
+    }
+  }
+}
+
+const readInteger = (value) => (Number.isInteger(Number(value)) && String(value).trim() !== "" ? Number(value) : null);
+
+/** One structure, checked against the elements it names. */
+function normaliseStructure(raw, index, elements, errors) {
+  const where = `structures[${index}]${raw && typeof raw === "object" && raw.id != null ? ` (id "${raw.id}")` : ""}`;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    errors.push(`${where}: must be an object.`);
+    return null;
+  }
+  const byId = (id) => elements.find((one) => one.id === id) ?? null;
+  const id = readText(raw.id).toLowerCase();
+  const label = readText(raw.label);
+  const wall = readText(raw.wall);
+  const floor = readText(raw.floor);
+  const door = raw.door == null || readText(raw.door) === "" ? null : readText(raw.door);
+  if (!ID_PATTERN.test(id)) errors.push(`${where}: id must be kebab-case.`);
+  if (label === "") errors.push(`${where}: label must be a non-empty string.`);
+  if (!byId(wall)?.isBarrier) errors.push(`${where}: wall "${wall}" must be the id of a barrier element.`);
+  const floorType = byId(floor);
+  if (!floorType || !floorType.walkable || floorType.isBarrier) errors.push(`${where}: floor "${floor}" must be the id of a walkable element.`);
+  if (door !== null && !byId(door)) errors.push(`${where}: door "${door}" must be an element id, or null for a sealed structure.`);
+  const { minStructureSize, maxStructureSize, maxStructureCount } = VOCABULARY_LIMITS;
+  const minSize = readInteger(raw.minSize);
+  const maxSize = readInteger(raw.maxSize);
+  const minCount = readInteger(raw.minCount);
+  const maxCount = readInteger(raw.maxCount);
+  if (minSize === null || minSize < minStructureSize || minSize > maxStructureSize) errors.push(`${where}: minSize must be a whole number from ${minStructureSize} to ${maxStructureSize}.`);
+  if (maxSize === null || maxSize > maxStructureSize || (minSize !== null && maxSize < minSize)) errors.push(`${where}: maxSize must be a whole number from minSize to ${maxStructureSize}.`);
+  if (minCount === null || minCount < 0 || minCount > maxStructureCount) errors.push(`${where}: minCount must be a whole number from 0 to ${maxStructureCount}.`);
+  if (maxCount === null || maxCount > maxStructureCount || (minCount !== null && maxCount < minCount)) errors.push(`${where}: maxCount must be a whole number from minCount to ${maxStructureCount}.`);
+  return { id, label, wall, floor, door, minSize, maxSize, minCount, maxCount };
+}
+
 function normaliseElement(raw, index, visualTags, errors) {
   const where = `elements[${index}]${raw && typeof raw === "object" && raw.id != null ? ` (id "${raw.id}")` : ""}`;
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
@@ -216,7 +342,9 @@ function normaliseElement(raw, index, visualTags, errors) {
     }
   }
 
-  return { id, label, description, placementRules, walkable, interactable, isBarrier, visualTag, instanceFields };
+  const placement = normalisePlacement(raw.placement, where, errors);
+
+  return { id, label, description, placementRules, walkable, interactable, isBarrier, visualTag, instanceFields, placement };
 }
 
 /**
@@ -255,9 +383,21 @@ export function normaliseVocabulary(raw, visualTags) {
   if (elements.length > 0 && !elements.some((one) => one.walkable === true && one.isBarrier !== true)) {
     errors.push("At least one type must be walkable and not a barrier, or nobody can move on the map.");
   }
+  checkPlacementIds(elements, errors);
+
+  let structures = [];
+  if (raw.structures != null) {
+    if (!Array.isArray(raw.structures)) errors.push("structures must be an array (empty when the world has no enclosed place).");
+    else structures = raw.structures.map((one, index) => normaliseStructure(one, index, elements, errors)).filter(Boolean);
+  }
+  const structureIds = new Set();
+  for (const one of structures) {
+    if (structureIds.has(one.id)) errors.push(`structure id "${one.id}" is used twice; every id must be unique.`);
+    structureIds.add(one.id);
+  }
 
   if (errors.length > 0) return { ok: false, errors };
-  return { ok: true, vocabulary: { name, summary, elements } };
+  return { ok: true, vocabulary: { name, summary, elements, structures } };
 }
 
 /** The text a model answered, read and checked. */

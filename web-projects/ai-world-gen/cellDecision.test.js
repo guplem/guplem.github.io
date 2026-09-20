@@ -3,14 +3,20 @@ import {
   CHAT_DECISION_SCHEMA,
   MAX_CONTINUED_LINE,
   NEARBY_RADIUS,
+  SAMPLE_FLOOR,
   TARGET_SHARES,
+  allowedTypes,
   balanceSheet,
   buildCellDecision,
   buildChatDecisionMessages,
   chooseType,
   continuationHints,
+  describeZone,
+  zoneAllowedTypes,
   fallbackType,
   isRouteType,
+  isUniqueType,
+  mapSketch,
   readChatDecision,
   readDecisionAnswer,
   targetShare,
@@ -18,14 +24,16 @@ import {
 import { createGrid, setCell } from "./grid.js";
 import { mulberry32 } from "./random.js";
 
+const open = { zone: "any", neverNext: [], onlyNext: [], edge: null };
 const vocabulary = {
   name: "Ashford",
   summary: "A village.",
   elements: [
-    { id: "grass", label: "Grass", description: "Open grass.", placementRules: "Most common, outdoors.", walkable: true, interactable: false, isBarrier: false, visualTag: "grass", instanceFields: [] },
-    { id: "wall", label: "Wall", description: "A stone wall.", placementRules: "Around houses.", walkable: false, interactable: false, isBarrier: true, visualTag: "stone-wall", instanceFields: [] },
-    { id: "door", label: "Door", description: "A door.", placementRules: "In a wall.", walkable: true, interactable: true, isBarrier: false, visualTag: "door", instanceFields: ["locked"] },
+    { id: "grass", label: "Grass", description: "Open grass.", placementRules: "Most common, outdoors.", walkable: true, interactable: false, isBarrier: false, visualTag: "grass", instanceFields: [], placement: open },
+    { id: "wall", label: "Wall", description: "A stone wall.", placementRules: "Around houses.", walkable: false, interactable: false, isBarrier: true, visualTag: "stone-wall", instanceFields: [], placement: open },
+    { id: "door", label: "Door", description: "A door.", placementRules: "In a wall.", walkable: true, interactable: true, isBarrier: false, visualTag: "door", instanceFields: ["locked"], placement: open },
   ],
+  structures: [],
 };
 const setting = { location: "A village", era: "1200", notes: "cosy" };
 
@@ -77,11 +85,208 @@ describe("buildCellDecision", () => {
     expect(state.continuations).toEqual({ lines: [], joins: [], suggested: null });
   });
 
+  test("the state carries the whole map as one letter per cell, with the cell to decide marked", () => {
+    const { state, questions } = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 2, y: 2 });
+    expect(state.map.rows).toEqual(["C....", "..B..", ".A?..", ".....", "....."]);
+    expect(state.map.legend).toEqual({ A: "grass", B: "wall", C: "door", ".": "undecided", "?": "this cell" });
+    expect(questions.type.instructions).toMatch(/state\.map/);
+  });
+
   test("a cell on the edge says which edges it touches", () => {
     const { state } = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 0, y: 4 });
     expect(state.cell.edges).toEqual(["south", "west"]);
     const corner = buildCellDecision({ vocabulary, setting, grid: sampleGrid(), x: 4, y: 0 });
     expect(corner.state.cell.edges).toEqual(["north", "east"]);
+  });
+});
+
+describe("allowedTypes", () => {
+  const ruled = {
+    ...vocabulary,
+    elements: [
+      { ...vocabulary.elements[0] },
+      { ...vocabulary.elements[1] },
+      { ...vocabulary.elements[2], placement: { zone: "any", neverNext: ["door"], onlyNext: ["wall"], edge: null } },
+      { id: "river", label: "River", description: "Water.", placementRules: "East edge.", walkable: false, interactable: false, isBarrier: true, visualTag: "water", instanceFields: [], placement: { zone: "outdoor", neverNext: [], onlyNext: [], edge: "east" } },
+      { id: "well", label: "Well", description: "A well.", placementRules: "On grass.", walkable: true, interactable: true, isBarrier: false, visualTag: "barrel", instanceFields: [], placement: { zone: "outdoor", neverNext: ["well"], onlyNext: ["grass"], edge: null } },
+    ],
+  };
+
+  test("an edge-only type is allowed on its edge and excluded elsewhere, with the reason", () => {
+    const grid = createGrid(4, 4);
+    expect(allowedTypes({ vocabulary: ruled, grid, x: 3, y: 1 }).allowed).toContain("river");
+    const inland = allowedTypes({ vocabulary: ruled, grid, x: 1, y: 1 });
+    expect(inland.allowed).not.toContain("river");
+    expect(inland.excluded.river).toMatch(/east edge/);
+  });
+
+  test("neverNext excludes a type when a 4-neighbour is in its list; onlyNext excludes it when neighbours exist and none is in its list", () => {
+    const grid = createGrid(4, 4);
+    setCell(grid, 1, 0, { typeId: "door" });
+    setCell(grid, 0, 1, { typeId: "grass" });
+    const result = allowedTypes({ vocabulary: ruled, grid, x: 1, y: 1 });
+    expect(result.allowed).not.toContain("door");
+    expect(result.excluded.door).toMatch(/next to door/);
+    expect(result.allowed).toContain("well");
+    expect(result.allowed).toContain("grass");
+
+    setCell(grid, 2, 1, { typeId: "wall" });
+    const walled = allowedTypes({ vocabulary: ruled, grid, x: 2, y: 2 });
+    expect(walled.allowed).not.toContain("well");
+    expect(walled.excluded.well).toMatch(/only next to grass/);
+    expect(walled.allowed).toContain("door");
+  });
+
+  test("with no decided 4-neighbour, onlyNext cannot be judged and the type stays allowed", () => {
+    const grid = createGrid(4, 4);
+    setCell(grid, 0, 0, { typeId: "wall" });
+    const result = allowedTypes({ vocabulary: ruled, grid, x: 2, y: 2 });
+    expect(result.allowed).toContain("well");
+    expect(result.allowed).toContain("door");
+  });
+
+  test("when every type would be excluded, all stay allowed rather than sending an empty question", () => {
+    const strict = { ...ruled, elements: ruled.elements.map((one) => ({ ...one, placement: { ...one.placement, edge: "north" } })) };
+    const result = allowedTypes({ vocabulary: strict, grid: createGrid(3, 3), x: 1, y: 2 });
+    expect(result.allowed.length).toBe(strict.elements.length);
+  });
+
+  test("the question offers only the allowed types, the state names the excluded ones, and a forbidden suggestion is dropped", () => {
+    const grid = createGrid(4, 4);
+    setCell(grid, 1, 0, { typeId: "river" });
+    setCell(grid, 1, 2, { typeId: "river" });
+    const decision = buildCellDecision({ vocabulary: ruled, setting, grid, x: 1, y: 1 });
+    expect(Object.keys(decision.questions.type.criteria)).not.toContain("river");
+    expect(decision.state.excluded.river).toMatch(/east edge/);
+    expect(decision.state.continuations.suggested).toBeNull();
+    expect(decision.questions.type.instructions).toMatch(/state\.excluded/);
+  });
+});
+
+describe("the blueprint in the decision (v8)", () => {
+  const type = (id, over) => ({ id, label: id, description: id, placementRules: id, walkable: true, interactable: false, isBarrier: false, visualTag: "floor", instanceFields: [], placement: { ...open }, ...over });
+  const planned = {
+    name: "Ashford",
+    summary: "A village.",
+    elements: [
+      type("grass", { placement: { ...open, zone: "outdoor" } }),
+      type("cottage-wall", { walkable: false, isBarrier: true, placement: { ...open, zone: "wall" } }),
+      type("cottage-floor", { placement: { ...open, zone: "indoor" } }),
+      type("cottage-door", { interactable: true, placement: { ...open, zone: "wall" } }),
+      type("window", { walkable: false, isBarrier: true, placement: { ...open, zone: "wall" } }),
+      type("chest", { interactable: true, placement: { ...open, zone: "indoor" } }),
+      type("villager", { interactable: true, placement: { ...open, zone: "any" } }),
+      type("oak", { walkable: false, isBarrier: true, placement: { ...open, zone: "outdoor" } }),
+      type("cellar-floor", { placement: { ...open, zone: "indoor" } }),
+    ],
+    structures: [
+      { id: "cottage", label: "Cottage", wall: "cottage-wall", floor: "cottage-floor", door: "cottage-door", minSize: 3, maxSize: 4, minCount: 1, maxCount: 1 },
+      { id: "cellar", label: "Cellar", wall: "cottage-wall", floor: "cellar-floor", door: null, minSize: 3, maxSize: 3, minCount: 0, maxCount: 1 },
+    ],
+  };
+  const plan = { rooms: [{ structure: "cottage", label: "Cottage", x: 1, y: 1, width: 4, height: 4, door: { x: 2, y: 4 } }] };
+
+  test("a wall cell takes the structure's wall or a thing that lives in walls; the door cell takes only the door", () => {
+    expect(zoneAllowedTypes({ vocabulary: planned, zone: { part: "wall", structure: "cottage", label: "Cottage" } })).toEqual(["cottage-wall", "window"]);
+    expect(zoneAllowedTypes({ vocabulary: planned, zone: { part: "door", structure: "cottage", label: "Cottage" } })).toEqual(["cottage-door"]);
+  });
+
+  test("an interior cell takes its own floor and indoor or free things, never another structure's floor", () => {
+    expect(zoneAllowedTypes({ vocabulary: planned, zone: { part: "interior", structure: "cottage", label: "Cottage" } })).toEqual(["cottage-floor", "chest", "villager"]);
+  });
+
+  test("the outside takes outdoor and free things, never a structure's wall, door or indoor floor", () => {
+    expect(zoneAllowedTypes({ vocabulary: planned, zone: { part: "outside" } })).toEqual(["grass", "villager", "oak"]);
+  });
+
+  test("without structures, every type but the wall-only ones is allowed outside", () => {
+    const free = { ...planned, structures: [] };
+    expect(zoneAllowedTypes({ vocabulary: free, zone: { part: "outside" } })).toEqual(["grass", "villager", "oak"]);
+  });
+
+  test("the decision offers the zone's types, names the zone in the state, and gives the others a reason", () => {
+    const grid = createGrid(7, 7);
+    const wall = buildCellDecision({ vocabulary: planned, setting, grid, x: 1, y: 1, plan });
+    expect(Object.keys(wall.questions.type.criteria)).toEqual(["cottage-wall", "window"]);
+    expect(wall.state.zone).toEqual({ part: "wall", structure: "Cottage", description: "a wall of the Cottage" });
+    expect(wall.state.excluded.grass).toBe("this cell is a wall of the Cottage");
+    const door = buildCellDecision({ vocabulary: planned, setting, grid, x: 2, y: 4, plan });
+    expect(Object.keys(door.questions.type.criteria)).toEqual(["cottage-door"]);
+    const inside = buildCellDecision({ vocabulary: planned, setting, grid, x: 2, y: 2, plan });
+    expect(Object.keys(inside.questions.type.criteria)).toEqual(["cottage-floor", "chest", "villager"]);
+    const outside = buildCellDecision({ vocabulary: planned, setting, grid, x: 6, y: 6, plan });
+    expect(outside.state.zone).toEqual({ part: "outside", structure: null, description: "outside every structure" });
+    expect(Object.keys(outside.questions.type.criteria)).toEqual(["grass", "villager", "oak"]);
+    expect(outside.questions.type.instructions).toMatch(/state\.zone/);
+  });
+
+  test("a hard rule still applies inside a zone, and a zone with every type ruled out falls back to the zone's types", () => {
+    const strict = { ...planned, elements: planned.elements.map((one) => (one.id === "chest" ? { ...one, placement: { ...one.placement, neverNext: ["chest"] } } : one)) };
+    const grid = createGrid(7, 7);
+    setCell(grid, 2, 3, { typeId: "chest" });
+    const inside = buildCellDecision({ vocabulary: strict, setting, grid, x: 2, y: 2, plan });
+    expect(Object.keys(inside.questions.type.criteria)).toEqual(["cottage-floor", "villager"]);
+    expect(inside.state.excluded.chest).toBe("never next to chest");
+  });
+
+  test("the state lists the things the world still lacks, and a unique type already placed is out (v9)", () => {
+    const withWell = {
+      ...planned,
+      elements: [...planned.elements, type("well", { interactable: true, placementRules: "Rare. Exactly one, on the green.", placement: { ...open, zone: "outdoor" } })],
+    };
+    const grid = createGrid(7, 7);
+    const before = buildCellDecision({ vocabulary: withWell, setting, grid, x: 6, y: 6, plan });
+    expect(before.state.missing).toEqual(["villager", "well"]);
+    expect(Object.keys(before.questions.type.criteria)).toContain("well");
+    expect(before.questions.type.instructions).toMatch(/state\.missing/);
+    setCell(grid, 0, 6, { typeId: "well" });
+    setCell(grid, 0, 0, { typeId: "villager" });
+    const after = buildCellDecision({ vocabulary: withWell, setting, grid, x: 6, y: 6, plan });
+    expect(after.state.missing).toEqual([]);
+    expect(Object.keys(after.questions.type.criteria)).not.toContain("well");
+    expect(after.state.excluded.well).toMatch(/already on the map/);
+    expect(Object.keys(after.questions.type.criteria)).toContain("villager");
+  });
+
+  test("a unique door of a structure with several copies is not unique on the map", () => {
+    expect(isUniqueType({ placementRules: "Uncommon. Exactly one per cottage, in a wall." })).toBe(false);
+    expect(isUniqueType({ placementRules: "Rare. Exactly one, on the green." })).toBe(true);
+    expect(isUniqueType({ placementRules: "Only one in the whole map." })).toBe(true);
+    expect(isUniqueType({ placementRules: "Common." })).toBe(false);
+  });
+
+  test("a cell outside, next to a planned door, is suggested the route type that leads to it (v9)", () => {
+    const withPath = {
+      ...planned,
+      elements: [...planned.elements, type("path", { visualTag: "path", placement: { ...open, zone: "outdoor" } })],
+    };
+    const grid = createGrid(7, 7);
+    const approach = buildCellDecision({ vocabulary: withPath, setting, grid, x: 2, y: 5, plan });
+    expect(approach.state.continuations.suggested).toEqual({ type: "path", reason: "leads to the door of the Cottage" });
+    const elsewhere = buildCellDecision({ vocabulary: withPath, setting, grid, x: 6, y: 6, plan });
+    expect(elsewhere.state.continuations.suggested).toBeNull();
+  });
+
+  test("describeZone reads as a phrase", () => {
+    expect(describeZone({ part: "door", label: "Cottage" })).toBe("the door of the Cottage");
+    expect(describeZone(null)).toBe("outside every structure");
+  });
+});
+
+describe("mapSketch", () => {
+  test("gives every type one letter in vocabulary order, and reads rows from north to south", () => {
+    const grid = createGrid(3, 2);
+    setCell(grid, 0, 0, { typeId: "wall" });
+    setCell(grid, 2, 1, { typeId: "grass" });
+    const sketch = mapSketch(grid, vocabulary, 1, 1);
+    expect(sketch.rows).toEqual(["B..", ".?A"]);
+    expect(sketch.legend.A).toBe("grass");
+  });
+
+  test("a type the vocabulary does not know is drawn as unknown", () => {
+    const grid = createGrid(2, 1);
+    setCell(grid, 0, 0, { typeId: "lava" });
+    expect(mapSketch(grid, vocabulary, 1, 0).rows).toEqual(["!?"]);
   });
 });
 
@@ -232,7 +437,7 @@ describe("readDecisionAnswer", () => {
 });
 
 describe("chooseType", () => {
-  const probabilities = { grass: 0.7, wall: 0.2, door: 0.1 };
+  const probabilities = { grass: 0.5, wall: 0.3, door: 0.2 };
 
   test("with spread 0 it is the top probability", () => {
     expect(chooseType({ choice: "wall", probabilities, spread: 0, random: () => 0.99 })).toBe("grass");
@@ -242,17 +447,19 @@ describe("chooseType", () => {
     const random = mulberry32(3);
     const counts = { grass: 0, wall: 0, door: 0 };
     for (let i = 0; i < 2000; i += 1) counts[chooseType({ choice: "grass", probabilities, spread: 1, random })] += 1;
-    expect(counts.grass).toBeGreaterThan(1200);
+    expect(counts.grass).toBeGreaterThan(850);
     expect(counts.wall).toBeGreaterThan(250);
     expect(counts.door).toBeGreaterThan(100);
   });
 
-  test("never picks an option far below the best one, so a 1% tail does not litter the map", () => {
-    const skewed = { grass: 0.95, wall: 0.04, door: 0.01 };
+  test("never picks an option below a third of the best one, so a doubtful tail does not litter the map", () => {
+    const skewed = { grass: 0.6, wall: 0.25, door: 0.15 };
     const random = mulberry32(5);
     const seen = new Set();
     for (let i = 0; i < 2000; i += 1) seen.add(chooseType({ choice: "grass", probabilities: skewed, spread: 1, random }));
+    expect(seen.has("wall")).toBe(true);
     expect(seen.has("door")).toBe(false);
+    expect(SAMPLE_FLOOR).toBe(1 / 3);
   });
 
   test("falls back to the model's own choice when there are no probabilities", () => {

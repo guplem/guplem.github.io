@@ -21,22 +21,29 @@ evaluation is part of the pitch, not only of the process.
 
 ## Decision
 
-**Three written specifications, each with deterministic metrics computed in
-this project's own code, and one Galtea version per iteration of the
-generator.**
+**Written specifications, each with deterministic metrics computed in this
+project's own code, one judge metric for the question code cannot answer,
+and one Galtea version per iteration of the generator.**
 
-1. **The rules are code first.** `evaluation/mapMetrics.js` holds the three
-   specifications and their eleven metrics as data and functions, tested like
-   every pure module. A metric is a number from 0 to 1 computed from the
-   finished grid and its vocabulary. `evaluate.py` reads the names from that
-   file, so a score in the Galtea dashboard traces back to one function.
+1. **The rules are code first.** `evaluation/mapMetrics.js` holds the seven
+   specifications and their 28 computed metrics as data and functions, tested
+   like every pure module. A metric is a number from 0 to 1 computed from the
+   finished grid, its vocabulary and, where there is one, its blueprint, or
+   null when the map gives it nothing to judge. `evaluate.py` reads the names
+   from that file, so a score in the Galtea dashboard traces back to one
+   function. One judge metric, `reads-as-the-setting`, is declared in the same
+   file with its prompt; Galtea's evaluator (GPT-5.2) scores it from the
+   logged map.
 
 2. **Galtea holds the product, the specifications, the datasets and the
    results.** `python evaluate.py setup` creates or finds them by name and
    writes their ids to `galtea.json`. Each specification is a Galtea
    specification linked to its metrics (source `self_hosted`, because this
-   code computes the score) and to one dataset of five test cases. A test case
-   is the seed of one generation: preset, size, order, random seed.
+   code computes the score; `partial_prompt` for the judge) and to one dataset
+   of five test cases. A test case is the seed of one generation: preset,
+   size, order, random seed. The coherence specification has a second dataset
+   of three 16 by 16 maps, because a room or a street needs more than 8 by 8
+   cells to exist.
 
 3. **One version per iteration, one session per test case.** `python
    evaluate.py run --version vN` generates every test case with the same
@@ -50,20 +57,37 @@ generator.**
 
 4. **Test cases use the shipped vocabularies and small grids.** The presets
    make the creative call unnecessary (ADR 0004), and 8 by 8 cells keep a full
-   run at 960 decisions, a few cents and a few minutes, so it can run before
-   every pull request that touches the generation.
+   run of 38 maps at about 3,000 decisions, a few cents and under ten minutes,
+   so it can run before every pull request that touches the generation.
 
-5. **The three rules to begin with**, chosen from what the first maps got
-   wrong: barriers form structures, not debris; paths form continuous routes;
-   every walkable area is reachable and the map is playable. More rules are
-   more entries in `SPECIFICATIONS` and `METRICS`, plus a dataset.
+5. **A metric added later gets its history.** `python evaluate.py rescore
+   --version vN` computes the current metrics on the saved grids of an old
+   version, with no model call, and sends the scores that version had not been
+   scored on to its sessions. Every metric can therefore be read from v1.
+
+6. **The rules, in the order they were needed.** Three to begin with, from
+   what the first maps got wrong: barriers form structures, not debris; paths
+   form continuous routes; every walkable area is reachable and the map is
+   playable. A fourth after v4, from what a person sees next to a hand-drawn
+   map: a place reads as a place (doors in walls, walls as outlines, an
+   enclosed room, ground in patches, things sprinkled). Three more after v7:
+   the vocabulary's own typed rules hold on the finished map (the
+   consistency checker the roadmap names); routes lead to doors and off the
+   map; the unique landmarks are there, once, and nothing floods the map. More
+   rules are more entries in `SPECIFICATIONS`, `METRICS` or `JUDGE_METRICS`,
+   plus a dataset, then `setup` and `rescore`.
 
 ## Consequences
 
 **Regressions have a number.** A change to the prompt is judged by the mean
-score per specification against the previous version, on the same fifteen
-seeds. The tests in this folder guard the metrics themselves; the metrics
-guard the maps.
+score per specification against the previous version, on the same 38 seeds.
+The tests in this folder guard the metrics themselves; the metrics guard the
+maps.
+
+**A new metric can rewrite the story of the old versions.** v1 scored 0.99
+on paths because a map that is all corridor has no isolated path cell; the
+path-share metric, added later and rescored, put it at 0.74. Read a version
+table with its date.
 
 **The metrics are proxies, and the model is not deterministic.** A wall with
 one neighbour is "not isolated" even when it is still nonsense, and two runs
@@ -74,10 +98,13 @@ you can see has no number.
 **Two keys are needed to run it.** OpenRouter for the generation and Galtea
 for the results. Neither is in the repository; `galtea.json` holds ids only.
 
-**Judged metrics come later.** Galtea can also score a map with a judge model
-reading the ASCII rendering against a specification. That is the natural
-next metric for the rules code cannot express ("does this look like a
-village?"), and the output already carries the text a judge would read.
+**The judge is one metric, and it is fragile.** `reads-as-the-setting` reads
+the ASCII map, the legend and the grid as JSON and scores how much the map is
+the place the preset names. It is the only metric for "does this look like a
+village?", and it is asynchronous, paid, and model-dependent: claude-sonnet-5
+put its score inside the reason text and every evaluation failed; GPT-5.2
+answers in the expected shape. Its score is not in the local summary; read
+it in the dashboard.
 
 **Rejected: compute the scores in Python.** The rules would then live in two
 languages, and the stretch goal of a live consistency score inside the page
