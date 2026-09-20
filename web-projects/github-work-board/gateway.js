@@ -127,6 +127,20 @@ export async function fetchRelationships(token, ids) {
 }
 
 /**
+ * Every open pull request waiting for a review from this token's owner.
+ *
+ * A review waiting on you is not assigned to you, so the issues endpoint never
+ * shows it. Search is the only endpoint that answers "waiting on me", and it
+ * answers in a slightly different shape: `workItems.js` reads both (ADR 0013).
+ */
+export function fetchReviewRequests(token) {
+  const query = encodeURIComponent("is:open is:pr review-requested:@me archived:false");
+  return call(token, `/search/issues?q=${query}&per_page=100&sort=updated&order=asc`, {
+    need: PERMISSIONS.pullRequestsRead,
+  });
+}
+
+/**
  * The board file, with the sha of the version read.
  *
  * A repository with no board file yet is not a failure: it answers
