@@ -213,6 +213,18 @@
                   <select id="narrative-model" class="select"></select>
                   <p class="field-help">Writes the vocabulary as strict JSON. <strong>Claude Sonnet</strong> is the default; any model that supports JSON output works.</p>
                 </div>
+                <div class="field">
+                  <label class="field-label" for="generation-mode">How the map is filled</label>
+                  <select id="generation-mode" class="select">
+                    <option value="per-cell">One decision per cell, with the decision model (default)</option>
+                    <option value="whole-map">The whole map in one call, with the narrative model</option>
+                  </select>
+                  <p class="field-help">
+                    Per cell, the map fills in live and every cell carries its probabilities. In one call, the narrative
+                    model writes the finished grid at once: fewer calls, no live drawing, and the map arrives whole or not
+                    at all. The evaluation in the README compares the two.
+                  </p>
+                </div>
                 <p id="models-status" class="status" role="status" aria-live="polite"></p>
               </li>
             </ol>

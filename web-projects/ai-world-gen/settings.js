@@ -13,6 +13,7 @@
 
 import { DEFAULT_DECISION_MODEL, DEFAULT_NARRATIVE_MODEL } from "./models.js";
 import { readStyleId } from "./tileStyles.js";
+import { readGenerationMode } from "./wholeMap.js";
 
 export const STORAGE_KEYS = {
   apiKey: "ai-world-gen.apiKey",
@@ -82,7 +83,11 @@ function cleanModelId(value, fallback) {
   return clean === "" ? fallback : clean;
 }
 
-/** Which model decides cells and which one writes the vocabulary. */
+/**
+ * Which model decides cells, which one writes the vocabulary, and how the
+ * grid is filled: a decision per cell (the default) or the whole map in one
+ * call to the narrative model (`wholeMap.js`).
+ */
 export function readModelChoices(storage) {
   const raw = readRaw(storage, STORAGE_KEYS.models);
   let stored = null;
@@ -96,6 +101,7 @@ export function readModelChoices(storage) {
   return {
     decisionModel: cleanModelId(stored?.decisionModel, DEFAULT_DECISION_MODEL),
     narrativeModel: cleanModelId(stored?.narrativeModel, DEFAULT_NARRATIVE_MODEL),
+    generation: readGenerationMode(stored?.generation),
   };
 }
 
@@ -128,6 +134,7 @@ export function saveModelChoices(storage, choices) {
     JSON.stringify({
       decisionModel: cleanModelId(choices?.decisionModel, DEFAULT_DECISION_MODEL),
       narrativeModel: cleanModelId(choices?.narrativeModel, DEFAULT_NARRATIVE_MODEL),
+      generation: readGenerationMode(choices?.generation),
     }),
   );
 }

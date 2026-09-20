@@ -43,12 +43,15 @@ async function call({ path, method = "GET", apiKey = "", body = null, timeoutMs 
   } catch {
     return { ok: false, status: 0, message: "The request never completed." };
   }
+  // The headers can arrive long before the body: a slow answer aborts here,
+  // inside json(), and must read as a failure, not as an empty success.
+  const payload = await response.json().catch(() => undefined);
   const elapsedMs = Math.round(performance.now() - started);
-  const payload = await response.json().catch(() => null);
   if (!response.ok) {
     const message = payload?.error?.message ?? payload?.message ?? response.statusText ?? "";
     return { ok: false, status: response.status, message: String(message), elapsedMs };
   }
+  if (payload === undefined) return { ok: false, status: 0, message: `The answer was cut off after ${Math.round(elapsedMs / 1000)} s, before it arrived in full.`, elapsedMs };
   return { ok: true, data: payload, elapsedMs };
 }
 
@@ -75,15 +78,19 @@ function readContent(payload) {
  * that shape; a model that rejects the format is asked once more without it,
  * and the caller's own validation catches whatever comes back.
  */
-export async function generate({ apiKey, model, messages, jsonSchema = null, maxTokens = 4000, temperature = 0.7 }) {
+export async function generate({ apiKey, model, messages, jsonSchema = null, maxTokens = 4000, temperature = 0.7, timeoutMs = TIMEOUT_MS, reasoning = null }) {
   const body = { model, messages, max_tokens: maxTokens, temperature };
+  // OpenRouter's unified reasoning control: `{enabled: false}` turns a model's
+  // thinking off, `{max_tokens: n}` caps it. Left alone, a reasoning model may
+  // spend the whole completion budget thinking and answer with nothing.
+  if (reasoning) body.reasoning = reasoning;
   if (jsonSchema) {
     body.response_format = { type: "json_schema", json_schema: { name: "answer", strict: true, schema: jsonSchema } };
   }
-  let result = await call({ path: "/api/v1/chat/completions", method: "POST", apiKey, body });
+  let result = await call({ path: "/api/v1/chat/completions", method: "POST", apiKey, body, timeoutMs });
   if (!result.ok && result.status === 400 && jsonSchema && /response_format|json|schema/i.test(result.message)) {
     delete body.response_format;
-    result = await call({ path: "/api/v1/chat/completions", method: "POST", apiKey, body });
+    result = await call({ path: "/api/v1/chat/completions", method: "POST", apiKey, body, timeoutMs });
   }
   if (!result.ok) return result;
   return { ok: true, text: readContent(result.data), elapsedMs: result.elapsedMs, usage: result.data?.usage ?? null };

@@ -199,7 +199,8 @@ const SKETCH_UNKNOWN = "!";
  * Cheap enough to send with every decision (a 24 by 24 grid is 600 characters)
  * and the only way the model can see a shape larger than its 8 neighbours.
  */
-export function mapSketch(grid, vocabulary, x, y) {
+/** One letter per type, in vocabulary order: the alphabet of `mapSketch` and of the whole-map answer (`wholeMap.js`). */
+export function sketchLegend(vocabulary) {
   const letterOf = {};
   const legend = {};
   vocabulary.elements.forEach((type, index) => {
@@ -207,6 +208,11 @@ export function mapSketch(grid, vocabulary, x, y) {
     letterOf[type.id] = letter;
     legend[letter] = type.id;
   });
+  return { letterOf, legend };
+}
+
+export function mapSketch(grid, vocabulary, x, y) {
+  const { letterOf, legend } = sketchLegend(vocabulary);
   legend[SKETCH_UNDECIDED] = "undecided";
   legend[SKETCH_THIS_CELL] = "this cell";
   const rows = [];
