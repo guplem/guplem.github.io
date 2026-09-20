@@ -86,7 +86,7 @@ Each phase is a complete, demoable state before the next one starts.
 - [x] **Phase 2 — Map personalisation.** Change a cell's type by hand, ask the model again about one cell, download and load the map as JSON. *(Landed with Phase 1 because the architecture made it cheap; the "goal placement" use of it waits for Phase 6.)*
 - [x] **Phase 2b — Styles and a free start.** Four switchable art styles, and a shipped, editable vocabulary for every preset so a preset world makes no creative call. *(Asked for after the first live runs showed the creative call was most of the cost.)*
 - [x] **Phase 2c — Measured quality.** Specifications with deterministic metrics, seeded test cases, and a Galtea product where every iteration of the generator is a version with its scores. The baseline is `v1`; there are seven specifications and 38 test cases now, three of them 16 × 16.
-- [x] **Phase 2d — Places, not tiles.** Nine measured versions (below): a typed `placement` per type and `structures` per world, a blueprint that draws each structure as a rectangle with a door before the model fills it, hard rules enforced before the model answers, and a state that names what the world still lacks. Coherence went from 0.46 to 0.89.
+- [x] **Phase 2d — Places, not tiles.** Nine measured versions (below): a typed `placement` per type and `structures` per world, a blueprint that draws each structure as a rectangle with a door before the model fills it, hard rules enforced before the model answers, and a state that names what the world still lacks. Coherence went from 0.50 to 0.89.
 - [ ] **Phase 3 — Interactive element detail generation.** A second pass over interactable cells that fills each type's self-declared `instanceFields`, typed values through `decide()` and flavour text through `generate()`, grounded in the setting.
 - [ ] **Phase 4 — Player + movement.** A player token, keyboard and click movement, optional fog of war.
 - [ ] **Phase 5 — Interaction narrative.** The player interacts with an object or a person; `generate()` writes dialogue or an outcome grounded in that cell's instance properties.
@@ -109,7 +109,8 @@ Anything raised mid-build that is not ready to implement yet. Add to it; strike 
 - ~~**Closed shapes need a door.**~~ Settled in v8: the blueprint gives every planned room one door in a wall that faces the middle of the map.
 - ~~**Sampling noise.**~~ Settled in v6: the floor is a third of the best option.
 - **Coverage is the price of the plan.** With the options narrowed to a cell's part, the rarer types come up less: coverage fell from 0.72 (v5) to 0.52 (v8). v9's `missing` list is the first answer; if it is not enough, a target count per type in the plan (the way structures have one) is the next.
-- **Paths still flood the outside.** With rooms fixed, the route type is what the model reaches for between them: path share in range 0.52 in v8, path continuity down. A hard cap on a heavily overused type (say twice its target, with another ground type allowed) is the next version to try, and the reference maps suggest roads should be one cell wide and few.
+- ~~**Paths still flood the outside.**~~ Settled in v11, once v10 showed the flood was a vocabulary problem: a route type that is also the only floor. The rule for a vocabulary is now: the most common cell is a ground, and a route is a line on it. The hard cap (v10) stays as a guard.
+- **Routes are stubs.** With the flood gone, the corridors are two or three cells that lead nowhere (path continuity 0.58, doors with a route 0.79 in v11). A route between two doors, or from a door to the map edge, is a shape, and the blueprint should draw it the way it draws the rooms: one-cell paths from door to door, then the model fills the rest. This is the next version.
 - **Empty rooms.** A planned interior is mostly floor: the model rarely puts the chest in the cottage or the console in the lab. A per-room "this room still lacks" hint (the indoor things not yet in this room) is the room-sized version of `missing`.
 - **Free-standing barriers split the map.** Trees, dunes and pipes are the barriers the blueprint does not place, and they are what still splits walkable regions (0.77 in v8). Either the plan places them too (as clusters with a declared count) or the reachability check repairs one cell.
 - **Structures could touch.** The blueprint keeps a one-cell gap between rectangles. The reference maps have rooms that share a wall (a dungeon, a mansion); a shared-wall mode per structure would give those settings their look.
@@ -138,27 +139,30 @@ python evaluate.py setup                                # once: the product, spe
 OPENROUTER_API_KEY=sk-or-... python evaluate.py run --version v1 --description "baseline"
 python evaluate.py report --version v2 --against v1     # after the next iteration
 python evaluate.py rescore --version v1                 # after a new metric: score the saved maps of v1 with it
+python evaluate.py backfill --version v1                # after a new dataset: draw its cases with v1's own code
 ```
 
 Every map is also drawn as a PNG with the page's own tiles, saved under `evaluation/results/vN/`, and attached to the Galtea output next to the ASCII view, so a result can be seen at a glance in the dashboard and compared across versions in the repository. The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`, and `GPT-5.2` as the judge), so runs stay comparable when OpenRouter adds newer ones. A full run is 38 maps and about 3,000 decisions: a few cents of Jev and under ten minutes. Results are also written to `evaluation/results/vN.json`.
 
 ### Versions so far (2026-09-20)
 
-Mean score per specification over the test cases, with every metric as it is today (older versions were rescored, so v1's paths score is no longer the 0.99 it first showed). Seven columns: structures, paths, reachable and playable, a place reads as a place, the vocabulary's rules hold, routes lead to doors, landmarks and story.
+Mean score per specification over the 38 test cases, with every metric as it is today (older versions were rescored, so v1's paths score is no longer the 0.99 it first showed). Seven columns: structures, paths, reachable and playable, a place reads as a place, the vocabulary's rules hold, routes lead to doors, landmarks and story.
 
 | Version | What changed | Struct. | Paths | Reach. | Place | Rules | Routes | Story |
 |---|---|---|---|---|---|---|---|---|
-| v1 | The generator as first shipped | 0.19 | 0.74 | 0.68 | 0.47 | 0.83 | (1.00) | 0.07 |
-| v2 | Balance sheet in the state; "prefer the ground type" line removed | 0.67 | 0.52 | 0.85 | 0.48 | 0.58 | 0.76 | 0.85 |
-| v3 | Continuation hints; instruction says "structures first, continue the line" | 0.60 | 0.79 | 0.74 | 0.47 | 0.49 | 0.60 | 0.57 |
-| v4 | Code judges the one suggested continuation (short lines, closable gaps, never an overused type) | 0.93 | 0.75 | 0.82 | 0.46 | 0.62 | 0.72 | 0.68 |
-| v5 | The whole map in the state, one letter per cell | 0.95 | 0.80 | 0.80 | 0.53 | 0.49 | 0.71 | 0.72 |
-| v6 | Sampling floor from 8% to a third of the best option | 0.95 | 0.79 | 0.81 | 0.52 | 0.61 | 0.63 | 0.71 |
-| v7 | Typed `placement` per type (zone, never next, only next, edge), enforced before the model answers | 0.95 | 0.79 | 0.81 | 0.51 | **0.98** | 0.57 | 0.74 |
-| v8 | The blueprint: code places each structure as a rectangle with a door; each cell is offered only its part's types | **1.00** | 0.75 | 0.84 | **0.89** | 0.99 | 0.80 | 0.74 |
-| v9 | The state names what the world still lacks; a unique type is out once placed; a route is suggested outside a planned door | 0.98 | **0.80** | **0.87** | 0.87 | 0.98 | **0.87** | **0.84** |
+| v1 | The generator as first shipped | 0.18 | 0.74 | 0.69 | 0.48 | 0.83 | (1.00) | 0.07 |
+| v2 | Balance sheet in the state; "prefer the ground type" line removed | 0.39 | 0.53 | 0.75 | 0.43 | 0.58 | 0.77 | 0.61 |
+| v3 | Continuation hints; instruction says "structures first, continue the line" | 0.68 | 0.66 | 0.82 | 0.50 | 0.49 | 0.62 | 0.79 |
+| v4 | Code judges the one suggested continuation (short lines, closable gaps, never an overused type) | 0.82 | 0.80 | 0.77 | 0.50 | 0.62 | 0.66 | 0.66 |
+| v5 | The whole map in the state, one letter per cell | 0.93 | **0.82** | 0.81 | 0.53 | 0.49 | 0.70 | 0.76 |
+| v6 | Sampling floor from 8% to a third of the best option | 0.95 | 0.81 | 0.81 | 0.51 | 0.61 | 0.60 | 0.68 |
+| v7 | Typed `placement` per type (zone, never next, only next, edge), enforced before the model answers | 0.95 | 0.80 | 0.82 | 0.52 | 0.99 | 0.61 | 0.78 |
+| v8 | The blueprint: code places each structure as a rectangle with a door; each cell is offered only its part's types | **0.99** | 0.75 | 0.84 | **0.89** | 0.99 | 0.78 | 0.77 |
+| v9 | The state names what the world still lacks; a unique type is out once placed; a route is suggested outside a planned door | 0.98 | 0.80 | 0.87 | 0.87 | 0.98 | 0.87 | **0.84** |
+| v10 | Hard cap: a ground type past twice its target is not offered while another ground is allowed | 0.98 | 0.78 | 0.87 | 0.88 | 0.99 | 0.86 | 0.83 |
+| v11 | The station and the city block get a ground that is not a route (open deck, plaza); corridor and street become lines | 0.98 | 0.77 | **0.88** | 0.88 | **0.99** | 0.82 | 0.83 |
 
-From v5 on there are 23 test cases (three of them 16 × 16), from v9 on 38. v1's routes score is in brackets because v1 drew almost no doors, so there was little to judge.
+Every version is scored on the same 38 seeds: the seeds a dataset added later were drawn afterwards with that version's own code (`evaluate.py backfill`), so a row is a mean over the same maps as every other row. v1's routes score is in brackets because v1 drew almost no doors, so there was little to judge.
 
 What each version actually drew:
 
@@ -166,11 +170,13 @@ What each version actually drew:
 - **v2: confetti.** The balance sheet fixed coverage (0.91) but the model placed the needed types anywhere: single walls, single path cells, nothing joined up.
 - **v3: floods.** Told to continue every line, the model did, across the map: 39 path cells in a village, 58 corridors in a station.
 - **v4: lines.** With the continuation judged by code, walls form lines and closed shapes and routes mostly join up. But 21 of 23 doors stood in open ground, walls came as filled blocks, and no map had a room you could enter.
-- **v5: the model reads the sketch, a little.** Showing the whole map moved doors in walls from 0.08 to 0.25 and coherence from 0.46 to 0.53. The 16 × 16 maps showed the limit: walls still come as solid slabs, because a model deciding one cell cannot see where a rectangle should end.
+- **v5: the model reads the sketch, a little.** Showing the whole map moved coherence from 0.50 to 0.53 and left doors in walls where they were (0.26 to 0.22): the gain the first 23 seeds showed on doors did not survive the same 38 seeds. The 16 × 16 maps showed the limit: walls still come as solid slabs, because a model deciding one cell cannot see where a rectangle should end.
 - **v6: less noise.** The sample had been overriding the model's own choice on 27% of the cells. At a third of the best option it overrides 18%: ground in patches 0.25 to 0.52, fewer split regions, and the rare types lost their chances (coverage 0.72 to 0.54).
 - **v7: the local rules hold, the rooms do not.** With the typed rules enforced, "rules hold" went from 0.61 to 0.98 and nothing else moved: "never next to X" cannot say "in a wall".
-- **v8: rooms.** The blueprint draws each structure first. Doors in walls 0.14 to 0.95, an enclosed room on every map, structures 1.00, one walkable region 0.56 to 0.77. The price: coverage 0.52, and the route type spread over the outside.
+- **v8: rooms.** The blueprint draws each structure first. Doors in walls 0.15 to 0.96, an enclosed room on every map, structures 1.00, one walkable region 0.56 to 0.77. The price: coverage 0.52, and the route type spread over the outside.
 - **v9: the world remembers what it lacks.** Landmarks single 0.68 to 1.00, doors with a route 0.56 to 0.88, coverage 0.52 to 0.73, interactable share 0.78 to 0.97. Doors passable fell to 0.82: the model now puts a console or a bed right behind the door.
+- **v10: the cap that could not fire.** A ground type past twice its target is no longer offered, but the maps that flooded were the settings whose vocabulary made the route the only floor (corridor in the station: 0.53 of the map; street in the block: 0.58), where nothing else may fill the cell. Route share of the map stayed at 0.24 overall.
+- **v11: a floor that is not a road.** The station gets an open deck and the block a concrete plaza; corridor and street become lines. Path share in range 0.65 to 0.84, the station's route share 0.53 to 0.12. The corridors are now short stubs on the deck (path continuity 0.73 to 0.58, doors with a route 0.90 to 0.79): a route between two doors is a shape, and shapes are the plan's job.
 
 Pictures of every map of every version are under `evaluation/results/vN/`.
 

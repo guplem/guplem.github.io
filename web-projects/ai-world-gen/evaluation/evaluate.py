@@ -7,6 +7,7 @@ Five commands, run from this folder or from anywhere:
     python evaluate.py report --version v2    # print the scores of a version, and the change since another
     python evaluate.py render --version v2    # draw results/v2/<case>.png again from the saved results
     python evaluate.py rescore --version v2   # score the saved maps again with the metrics as they are now, and send the new scores
+    python evaluate.py backfill --version v2  # generate the test cases v2 never ran, with v2's own code, and log them into v2
 
 Every map is also drawn as a PNG (`renderMap.py`), saved under `results/vN/`,
 uploaded to Galtea's storage and attached to the inference result's output as
@@ -40,6 +41,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -458,44 +460,13 @@ def run(version_name: str, description: str | None, parallel: int, only: list[st
 
     print("logging to Galtea ...")
     for case in cases:
-        result = results[case["id"]]
-        scores = {name: value for name, value in result["scores"].items() if value is not None}
-        session = galtea.sessions.get_or_create(
-            custom_id=f"{version_name}:{case['id']}",
-            version_id=version.id,
-            test_case_id=config["testCaseIds"][case["id"]],
-        )
-        text = result["ascii"] + "\n\n" + json.dumps(
-            {"summary": result["summary"], "scores": result["scores"], "vocabulary": result["vocabulary"]["name"], "grid": result["grid"]}
-        )
-        # The scored output is the text; the picture rides along as a file part, which the dashboard shows.
-        output = {"assistant_message": text, "content": [upload_image(pictures[case["id"]])]} if images else text
-        galtea.inference_results.create(
-            session_id=session.id,
-            input=json.dumps(case),
-            output=output,
-            latency=result["elapsedMs"],
-        )
-        galtea.evaluations.create(
-            session_id=session.id,
-            metrics=[{"id": config["metricIds"][name], "score": round(value, 4)} for name, value in scores.items()],
-        )
-        if judge_metric_names(config):
-            # No score: Galtea's evaluator reads the output and scores it, asynchronously.
-            galtea.evaluations.create(session_id=session.id, metrics=judge_metric_names(config))
-        finish_session(session.id)
+        log_case(galtea, config, version_name, version.id, case, results[case["id"]], pictures[case["id"]] if images else None, judge=True)
 
     summary = summarise(rules, results)
     # The committed file keeps what a reader compares: the map, its scores and the summary.
     # The per-cell probability tables stay in Galtea (in each inference result's output).
     for result in results.values():
-        result["grid"]["cells"] = [
-            None if cell is None else {key: value for key, value in cell.items() if key != "probabilities"}
-            for cell in result["grid"]["cells"]
-        ]
-        if result["models"]["vocabulary"].startswith("preset:"):
-            # A shipped vocabulary is in the repository already; keep its name and size only.
-            result["vocabulary"] = {"name": result["vocabulary"]["name"], "elements": len(result["vocabulary"]["elements"])}
+        slim_result(result)
     (RESULTS_DIR / f"{version_name}.json").write_text(
         json.dumps({"version": version_name, "versionId": version.id, "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                     "description": description, "models": {"decision": decision_model, "narrative": narrative_model},
@@ -504,6 +475,53 @@ def run(version_name: str, description: str | None, parallel: int, only: list[st
     )
     print_summary(rules, summary)
     print(f"done in {time.time() - started:.0f} s -> {RESULTS_DIR / f'{version_name}.json'}")
+
+
+def log_case(galtea, config: dict, version_name: str, version_id: str, case: dict, result: dict, picture: Path | None, judge: bool) -> None:
+    """One session, one inference result, one evaluation per metric, then the session is finished."""
+    scores = {name: value for name, value in result["scores"].items() if value is not None}
+    session = galtea.sessions.get_or_create(
+        custom_id=f"{version_name}:{case['id']}",
+        version_id=version_id,
+        test_case_id=config["testCaseIds"][case["id"]],
+    )
+    text = result["ascii"] + "\n\n" + json.dumps(
+        {"summary": result["summary"], "scores": result["scores"], "vocabulary": result["vocabulary"]["name"], "grid": result["grid"]}
+    )
+    # The scored output is the text; the picture rides along as a file part, which the dashboard shows.
+    output = {"assistant_message": text, "content": [upload_image(picture)]} if picture else text
+    galtea.inference_results.create(session_id=session.id, input=json.dumps(case), output=output, latency=result["elapsedMs"])
+    galtea.evaluations.create(
+        session_id=session.id,
+        metrics=[{"id": config["metricIds"][name], "score": round(value, 4)} for name, value in scores.items()],
+    )
+    if judge and judge_metric_names(config):
+        # No score: Galtea's evaluator reads the output and scores it, asynchronously.
+        galtea.evaluations.create(session_id=session.id, metrics=judge_metric_names(config))
+    finish_session(session.id)
+
+
+def slim_result(result: dict) -> None:
+    """Drop what the committed file does not need: probabilities, and a shipped vocabulary's text."""
+    result["grid"]["cells"] = [
+        None if cell is None else {key: value for key, value in cell.items() if key != "probabilities"}
+        for cell in result["grid"]["cells"]
+    ]
+    if result["models"]["vocabulary"].startswith("preset:") and isinstance(result["vocabulary"].get("elements"), list):
+        # A shipped vocabulary is in the repository already; keep its name and size only.
+        result["vocabulary"] = {"name": result["vocabulary"]["name"], "elements": len(result["vocabulary"]["elements"])}
+
+
+def score_results(results: dict[str, dict]) -> dict[str, dict]:
+    """Today's metrics and ASCII view for saved maps, through rescoreResults.js. Returns case id -> {scores, ascii}."""
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf8") as handle:
+        json.dump({"results": results}, handle)
+        path = handle.name
+    completed = subprocess.run([BUN, str(HERE / "rescoreResults.js"), path], capture_output=True, text=True, encoding="utf8", cwd=PROJECT)
+    os.unlink(path)
+    if completed.returncode != 0:
+        sys.exit(f"rescoreResults.js failed:\n{completed.stderr}")
+    return json.loads(completed.stdout)
 
 
 def summarise(rules: dict, results: dict[str, dict]) -> dict:
@@ -558,17 +576,12 @@ def rescore(version_name: str, push: bool, judge: bool = False) -> None:
     if not path.exists():
         sys.exit(f"No local results for {version_name}.")
     saved = json.loads(path.read_text(encoding="utf8"))
-    completed = subprocess.run(
-        [BUN, str(HERE / "rescoreResults.js"), str(path)], capture_output=True, text=True, encoding="utf8", cwd=PROJECT
-    )
-    if completed.returncode != 0:
-        sys.exit(f"rescoreResults.js failed:\n{completed.stderr}")
-    fresh: dict[str, dict] = json.loads(completed.stdout)
+    fresh = score_results(saved["results"])
 
     sent = 0
     for case_id, result in saved["results"].items():
         before = result["scores"]
-        after = fresh[case_id]
+        after = fresh[case_id]["scores"]
         new_metrics = {name: value for name, value in after.items() if name not in before and value is not None}
         result["scores"] = after
         if push and (new_metrics or judge) and case_id in config["testCaseIds"]:
@@ -589,6 +602,88 @@ def rescore(version_name: str, push: bool, judge: bool = False) -> None:
     path.write_text(json.dumps(saved, separators=(",", ":")) + "\n", encoding="utf8")
     print_summary(rules, saved["summary"])
     print(f"rescored {len(fresh)} maps" + (f", sent {sent} new scores to Galtea" if push else ""))
+
+
+def checkout_version(commit: str) -> Path:
+    """The project as it was at `commit`, in a temporary folder, with today's backfill runner copied in."""
+    target = Path(tempfile.mkdtemp(prefix=f"ai-world-gen-{commit}-"))
+    archive = target / "source.zip"
+    completed = subprocess.run(
+        ["git", "archive", "--format=zip", "-o", str(archive), commit, "web-projects/ai-world-gen"],
+        capture_output=True, text=True, cwd=PROJECT.parent.parent,  # the pathspec is relative to the repository root
+    )
+    if completed.returncode != 0:
+        sys.exit(f"git archive {commit} failed:\n{completed.stderr}")
+    with zipfile.ZipFile(archive) as bundle:
+        bundle.extractall(target)
+    archive.unlink()
+    project = target / "web-projects" / "ai-world-gen"
+    (project / "evaluation").mkdir(exist_ok=True)  # v1 ran before this folder existed
+    shutil.copy(HERE / "backfillRun.js", project / "evaluation" / "backfillRun.js")
+    return project
+
+
+def backfill(version_name: str, parallel: int, only: list[str] | None, images: bool = True) -> None:
+    """Generate the test cases a version never ran, with that version's own code, and log them into it.
+
+    A dataset added after a version ran leaves that version half evaluated in Galtea. The saved results
+    name the commit the version ran from; the project is checked out at that commit into a temporary
+    folder and `backfillRun.js` draws each missing map with the modules found there. Today's metrics
+    score the map (`rescoreResults.js`), the picture is drawn and uploaded, and the result is merged
+    into the saved file. No judge metric is asked for, so old versions stay comparable with each other."""
+    galtea = galtea_client()
+    config = read_config()
+    rules = read_rules()
+    path = RESULTS_DIR / f"{version_name}.json"
+    if not path.exists():
+        sys.exit(f"No local results for {version_name}.")
+    saved = json.loads(path.read_text(encoding="utf8"))
+    commit = saved["commit"].split()[-1]
+    cases = [case for dataset in read_cases()["datasets"] for case in dataset["cases"] if case["id"] not in saved["results"]]
+    if only:
+        cases = [case for case in cases if case["id"] in only]
+    if not cases:
+        print(f"{version_name}: nothing to backfill")
+        return
+    print(f"{version_name}: {len(cases)} cases to generate with the code of commit {commit}")
+    project = checkout_version(commit)
+
+    def one(case: dict) -> tuple[str, dict]:
+        print(f"  generating {case['id']} ...", flush=True)
+        completed = subprocess.run(
+            [BUN, str(project / "evaluation" / "backfillRun.js"), json.dumps(case)],
+            capture_output=True, text=True, encoding="utf8", cwd=project,
+        )
+        if completed.returncode != 0:
+            raise RuntimeError(f"{case['id']}: {completed.stderr.strip().splitlines()[-1] if completed.stderr else 'failed'}")
+        return case["id"], json.loads(completed.stdout)
+
+    fresh: dict[str, dict] = {}
+    started = time.time()
+    with ThreadPoolExecutor(max_workers=max(1, parallel)) as pool:
+        for case_id, result in pool.map(one, cases):
+            fresh[case_id] = result
+    scored = score_results(fresh)
+    for case_id, result in fresh.items():
+        result["scores"] = scored[case_id]["scores"]
+        result["ascii"] = scored[case_id]["ascii"]
+        shown = {name: value for name, value in result["scores"].items() if value is not None}
+        print(f"  {case_id}: {result['elapsedMs'] / 1000:.1f} s, " + ", ".join(f"{name}={value:.2f}" for name, value in shown.items()))
+    shutil.rmtree(project.parent.parent.parent, ignore_errors=True)
+
+    pictures = render_results(version_name, fresh) if images else {}
+    print("logging to Galtea ...")
+    for case in cases:
+        log_case(galtea, config, version_name, saved["versionId"], case, fresh[case["id"]], pictures.get(case["id"]), judge=False)
+
+    for result in fresh.values():
+        slim_result(result)
+    saved["results"].update(fresh)
+    saved["summary"] = summarise(rules, saved["results"])
+    saved["backfilledAt"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    path.write_text(json.dumps(saved, separators=(",", ":")) + "\n", encoding="utf8")
+    print_summary(rules, saved["summary"])
+    print(f"backfilled {len(fresh)} maps into {version_name} in {time.time() - started:.0f} s")
 
 
 def report(version_name: str, against: str | None) -> None:
@@ -629,6 +724,11 @@ def main() -> None:
     rescore_parser.add_argument("--version", required=True)
     rescore_parser.add_argument("--no-push", action="store_true", help="write the scores locally, send nothing to Galtea")
     rescore_parser.add_argument("--judge", action="store_true", help="also ask Galtea to run the judge metrics on every session of the version")
+    backfill_parser = commands.add_parser("backfill", help="generate the test cases a version never ran, with that version's code")
+    backfill_parser.add_argument("--version", required=True)
+    backfill_parser.add_argument("--parallel", type=int, default=3)
+    backfill_parser.add_argument("--only", nargs="*", help="run only these test case ids")
+    backfill_parser.add_argument("--no-images", action="store_true")
     args = parser.parse_args()
 
     if args.command == "setup":
@@ -639,6 +739,8 @@ def main() -> None:
         render(args.version)
     elif args.command == "rescore":
         rescore(args.version, push=not args.no_push, judge=args.judge)
+    elif args.command == "backfill":
+        backfill(args.version, args.parallel, args.only, images=not args.no_images)
     else:
         report(args.version, args.against)
 

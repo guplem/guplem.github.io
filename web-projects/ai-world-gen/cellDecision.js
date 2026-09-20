@@ -154,6 +154,14 @@ export function targetShare(placementRules) {
 
 /** A type is overused once its share passes its target by this factor. */
 const OVERUSE_FACTOR = 1.3;
+
+/**
+ * A ground or route type past this many times its target is no longer
+ * offered while another ground type is allowed in the cell (v10). "Overused"
+ * at 1.3 is advice the model reads; v9 still let the route type take 0.38 of
+ * the open ground on average, and 0.9 in a mansion where the carpet is a line.
+ */
+export const HARD_CAP_FACTOR = 2;
 const MIN_CELLS_FOR_OVERUSE = 3;
 const MAX_NEEDED = 5;
 
@@ -342,6 +350,20 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y, plan = null
     return (placed[id] ?? 0) === 0 && (type.interactable || isUniqueType(type));
   });
   state.balance = balanceSheet(vocabulary, placed, grid.width * grid.height);
+  // The hard cap: a ground type at twice its target makes way for the other ground types allowed here.
+  const isGround = (id) => {
+    const type = typeById(vocabulary, id);
+    return Boolean(type && type.walkable && !type.isBarrier && !type.interactable);
+  };
+  const capped = allowed.filter((id) => {
+    const { target, now } = state.balance.shares[id];
+    return isGround(id) && (placed[id] ?? 0) >= MIN_CELLS_FOR_OVERUSE && now > target * HARD_CAP_FACTOR;
+  });
+  if (capped.length > 0 && allowed.some((id) => isGround(id) && !capped.includes(id))) {
+    allowed = allowed.filter((id) => !capped.includes(id));
+    for (const id of capped) state.excluded[id] = `overused: ${state.balance.shares[id].now}% of the map, target ${state.balance.shares[id].target}%`;
+    state.missing = state.missing.filter((id) => allowed.includes(id));
+  }
   state.continuations = continuationHints(grid, vocabulary, x, y, state.balance);
   if (state.continuations.suggested && !allowed.includes(state.continuations.suggested.type)) state.continuations.suggested = null;
   // Outside, next to a planned door: the route that leads to it (v9), so doors do not open onto nothing.
