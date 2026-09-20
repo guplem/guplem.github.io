@@ -1,10 +1,13 @@
 // The rules a good map follows, and the numbers that say how well one does.
 //
-// Four specifications, each with a few deterministic metrics computed from
-// the finished grid and its vocabulary (ADR 0005). The fourth, coherence, was
-// added after v4 from what a person sees first when a generated map sits next
-// to a hand-drawn one: doors in walls, walls one cell thick around a room,
-// ground in patches, things sprinkled on it. Every metric is a number
+// Seven specifications, each with a few deterministic metrics computed from
+// the finished grid, its vocabulary and, where it exists, its blueprint (ADR
+// 0005). The first three came with v1. Coherence came after v4, from what a
+// person sees first next to a hand-drawn map: doors in walls, walls one cell
+// thick around a room, ground in patches, things sprinkled on it. Rules,
+// routes and story came after v7: whether the vocabulary's own typed rules
+// hold on the finished map, whether the paths lead to the doors and off the
+// map, and whether the unique landmarks are there once and nothing floods. Every metric is a number
 // from 0 (the rule is broken everywhere) to 1 (the rule holds everywhere), or
 // null when the map gives the metric nothing to judge (no barrier type, no
 // path type). A null is not sent to Galtea, so it neither helps nor hurts.
@@ -12,6 +15,7 @@
 // The same names are used here, in `evaluate.py` and in the Galtea product,
 // so a score in the dashboard can be traced back to one function below.
 
+import { zoneAt } from "../blueprint.js";
 import { isRouteType } from "../cellDecision.js";
 import { getCell } from "../grid.js";
 import { analyseReachability } from "../reachability.js";
@@ -50,6 +54,28 @@ export const SPECIFICATIONS = [
       "Walls are outlines one cell thick around an interior, not filled blocks. At least one room is enclosed. " +
       "Ground types spread in patches of several cells, not as confetti. Interactable things (people, objects, doors) are sprinkled over the map, neither absent nor heaped.",
   },
+  {
+    id: "rules",
+    name: "The vocabulary's own rules hold",
+    description:
+      "Every type declares typed placement rules: types it is never next to, types it is only next to, one map edge, and a zone (indoor, outdoor, in a wall). " +
+      "The finished map keeps every one of them: no two villagers side by side, no river inland, no chest outside a house, no window in open ground.",
+  },
+  {
+    id: "routes",
+    name: "Routes lead to doors and off the map",
+    description:
+      "A door is a passage: walkable ground on both of its open sides, so it leads from one place into another. " +
+      "A path, road or corridor comes up to the doors, and the main route reaches the edge of the map, because a place is connected to the world beyond it.",
+  },
+  {
+    id: "story",
+    name: "Landmarks are there, once, and nothing floods the map",
+    description:
+      "The elements the vocabulary marks as unique (the well, the altar, the shuttle, the gate) appear on the map, and appear once. " +
+      "No single type covers more than half the map. Every thing a player could use stands next to plain ground they can stand on. " +
+      "A judge model reads the whole and says whether it is the place the setting describes.",
+  },
 ];
 
 /** Every metric, with the specification it serves. Names are stable: they are the metric names in Galtea. */
@@ -71,6 +97,17 @@ export const METRICS = [
   { name: "enclosed-room-exists", specificationId: "coherence", description: "1 when at least one non-barrier cell cannot be reached from the map edge without crossing a barrier or a door, that is, the map holds one enclosed room." },
   { name: "ground-in-patches", specificationId: "coherence", description: "Share of ground cells (walkable, not interactable, not a route) with two or more 4-neighbours of their own type. Ground in patches scores 1; confetti scores 0." },
   { name: "interactable-share-in-range", specificationId: "coherence", description: "1 when interactable cells are 4% to 20% of the map, falling to 0 at 0% or 40%." },
+  { name: "never-next-respected", specificationId: "rules", description: "Share of cells whose type names neverNext types that have none of them as a 4-neighbour." },
+  { name: "only-next-respected", specificationId: "rules", description: "Share of cells whose type names onlyNext types, and that have a decided 4-neighbour, that have one of those types as a 4-neighbour." },
+  { name: "edge-respected", specificationId: "rules", description: "Share of cells whose type is limited to one map edge that stand on that edge." },
+  { name: "zone-respected", specificationId: "rules", description: "With a blueprint: share of cells whose type has a zone (indoor, outdoor, wall) that stand in that part of the plan. Null without a blueprint." },
+  { name: "door-passable", specificationId: "routes", description: "Share of door cells with walkable cells on both open sides (north and south, or east and west), so the door leads somewhere." },
+  { name: "door-near-route", specificationId: "routes", description: "Share of door cells with a path, road or corridor cell among their 8 neighbours. Null without a route type or a door." },
+  { name: "route-reaches-edge", specificationId: "routes", description: "1 when the largest route network touches the map edge, 0 when every route is landlocked. Null without a route cell." },
+  { name: "landmarks-present", specificationId: "story", description: "Share of the types whose rules say exactly one or only one that appear on the map at least once." },
+  { name: "landmarks-single", specificationId: "story", description: "Share of the unique types present that appear exactly once. Null when none is present." },
+  { name: "no-type-dominates", specificationId: "story", description: "1 while the most used type covers half the map or less, falling to 0 when it covers all of it." },
+  { name: "things-approachable", specificationId: "story", description: "Share of interactable cells (doors aside) with at least one plain walkable 4-neighbour: ground a player could stand on to use it." },
 ];
 
 /**
@@ -81,7 +118,7 @@ export const METRICS = [
 export const JUDGE_METRICS = [
   {
     name: "reads-as-the-setting",
-    specificationId: "coherence",
+    specificationId: "story",
     description: "A judge model reads the map (one character per cell, then the legend, then the grid as JSON) and the setting, and scores how much the map reads as that place: elements where such a place would have them, one coherent whole rather than scattered tiles.",
     judgePrompt: [
       "The input is the seed of a tile map: a setting preset, a grid size, a generation order and a random seed.",
@@ -231,14 +268,29 @@ function inRange(value, zeroLow, low, high, zeroHigh) {
 
 const share = (part, whole) => (whole === 0 ? null : part / whole);
 
+const UNIQUE_WORDS = /\bexactly one\b|\bonly one\b/i;
+
+/** Whether a type's rules ask for one instance on the whole map. */
+function isUniqueType(type) {
+  return Boolean(type && UNIQUE_WORDS.test(type.placementRules ?? ""));
+}
+
+const DIAGONALS = [
+  [-1, -1],
+  [1, -1],
+  [1, 1],
+  [-1, 1],
+];
+
 /**
  * Every metric for one finished map.
  * @param {import("../grid.js").Grid} grid
  * @param {object} vocabulary
  * @param {{fallbackCount: number}} run what the generation loop reported
+ * @param {object|null} [plan] the blueprint the map was drawn from, when there was one
  * @returns {Record<string, number|null>} metric name -> score, or null when there is nothing to judge
  */
-export function scoreMap(grid, vocabulary, run) {
+export function scoreMap(grid, vocabulary, run, plan = null) {
   const total = grid.width * grid.height;
   const decided = grid.cells.filter((cell) => cell !== null).length;
 
@@ -269,6 +321,47 @@ export function scoreMap(grid, vocabulary, run) {
   }).length;
   const interactables = grid.cells.filter((cell) => cell && typeById(vocabulary, cell.typeId)?.interactable).length;
 
+  // The vocabulary's own rules, checked on the finished map.
+  const decidedCells = [];
+  for (let y = 0; y < grid.height; y += 1) {
+    for (let x = 0; x < grid.width; x += 1) {
+      const cell = getCell(grid, x, y);
+      if (cell) decidedCells.push({ x, y, type: typeById(vocabulary, cell.typeId) });
+    }
+  }
+  const around4 = (x, y) => STEPS.map(([dx, dy]) => getCell(grid, x + dx, y + dy)?.typeId).filter(Boolean);
+  const onEdge = (x, y, edge) => (edge === "north" && y === 0) || (edge === "south" && y === grid.height - 1) || (edge === "west" && x === 0) || (edge === "east" && x === grid.width - 1);
+  const ruled = (field) => decidedCells.filter(({ type }) => type?.placement && type.placement[field] && type.placement[field].length > 0);
+  const neverCells = ruled("neverNext");
+  const neverKept = neverCells.filter(({ x, y, type }) => !around4(x, y).some((id) => type.placement.neverNext.includes(id))).length;
+  const onlyCells = ruled("onlyNext").filter(({ x, y }) => around4(x, y).length > 0);
+  const onlyKept = onlyCells.filter(({ x, y, type }) => around4(x, y).some((id) => type.placement.onlyNext.includes(id))).length;
+  const edgeCells = decidedCells.filter(({ type }) => type?.placement?.edge);
+  const edgeKept = edgeCells.filter(({ x, y, type }) => onEdge(x, y, type.placement.edge)).length;
+  const zoned = plan ? decidedCells.filter(({ type }) => ["indoor", "outdoor", "wall"].includes(type?.placement?.zone)) : [];
+  const zoneKept = zoned.filter(({ x, y, type }) => {
+    const part = zoneAt(plan, x, y).part;
+    const zone = type.placement.zone;
+    return (zone === "indoor" && part === "interior") || (zone === "outdoor" && part === "outside") || (zone === "wall" && (part === "wall" || part === "door"));
+  }).length;
+
+  // Routes lead somewhere.
+  const walkableAt = (x, y) => cellIs(grid, vocabulary, x, y, (type) => Boolean(type && type.walkable && !type.isBarrier));
+  const passableDoors = doors.cells.filter(({ x, y }) => (walkableAt(x, y - 1) && walkableAt(x, y + 1)) || (walkableAt(x - 1, y) && walkableAt(x + 1, y))).length;
+  const doorsNearRoute = doors.cells.filter(({ x, y }) => [...STEPS, ...DIAGONALS].some(([dx, dy]) => cellIs(grid, vocabulary, x + dx, y + dy, isPathType))).length;
+  const largestPathGroup = paths.sizes.indexOf(largestPath);
+  const routeAtEdge = paths.cells.some(({ x, y }) => paths.groupOf.get(`${x},${y}`) === largestPathGroup && (x === 0 || y === 0 || x === grid.width - 1 || y === grid.height - 1));
+
+  // Landmarks and story.
+  const counts = {};
+  for (const cell of grid.cells) if (cell) counts[cell.typeId] = (counts[cell.typeId] ?? 0) + 1;
+  const uniqueTypes = vocabulary.elements.filter(isUniqueType);
+  const uniquePresent = uniqueTypes.filter((type) => (counts[type.id] ?? 0) >= 1);
+  const uniqueSingle = uniquePresent.filter((type) => counts[type.id] === 1).length;
+  const largestShare = decided === 0 ? 0 : Math.max(0, ...Object.values(counts)) / decided;
+  const things = decidedCells.filter(({ type }) => type?.interactable && !isDoorType(type));
+  const approachable = things.filter(({ x, y }) => STEPS.some(([dx, dy]) => cellIs(grid, vocabulary, x + dx, y + dy, (type) => Boolean(type && type.walkable && !type.isBarrier && !type.interactable)))).length;
+
   return {
     "barrier-not-isolated": barriers.cells.length === 0 ? null : 1 - lonelyBarriers / barriers.cells.length,
     "barrier-in-structure": share(inStructure, barriers.cells.length),
@@ -287,6 +380,17 @@ export function scoreMap(grid, vocabulary, run) {
     "enclosed-room-exists": enclosedCells(grid, vocabulary) > 0 ? 1 : 0,
     "ground-in-patches": share(patched, grounds.cells.length),
     "interactable-share-in-range": inRange(interactables / total, 0, 0.04, 0.2, 0.4),
+    "never-next-respected": share(neverKept, neverCells.length),
+    "only-next-respected": share(onlyKept, onlyCells.length),
+    "edge-respected": share(edgeKept, edgeCells.length),
+    "zone-respected": plan ? share(zoneKept, zoned.length) : null,
+    "door-passable": share(passableDoors, doors.cells.length),
+    "door-near-route": !hasPathType ? null : share(doorsNearRoute, doors.cells.length),
+    "route-reaches-edge": paths.cells.length === 0 ? null : routeAtEdge ? 1 : 0,
+    "landmarks-present": share(uniquePresent.length, uniqueTypes.length),
+    "landmarks-single": share(uniqueSingle, uniquePresent.length),
+    "no-type-dominates": 1 - Math.max(0, largestShare - 0.5) / 0.5,
+    "things-approachable": share(approachable, things.length),
   };
 }
 

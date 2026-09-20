@@ -1,5 +1,5 @@
 {
-  "comment": "One dataset per specification, five test cases each, plus one dataset of three 16 by 16 maps for the coherence specification, because a room, a street or a temple needs more than 8 by 8 cells to exist. A test case is the seed of one generation: the preset (whose shipped vocabulary is used, so no creative call), the grid size, the generation order and the random seed for the order and the sampling. Ids are stable: Galtea test cases are matched by them.",
+  "comment": "One dataset per specification, five test cases each, plus one dataset of three 16 by 16 maps for the coherence specification, because a room, a street or a temple needs more than 8 by 8 cells to exist. A test case is the seed of one generation: the preset (whose shipped vocabulary is used, so no creative call), the grid size, the generation order and the random seed for the order, the blueprint and the sampling. Ids are stable: Galtea test cases are matched by them.",
   "datasets": [
     {
       "specificationId": "structures",
@@ -212,6 +212,144 @@
           "height": 16,
           "order": "clustered",
           "seed": 503
+        }
+      ]
+    },
+    {
+      "specificationId": "rules",
+      "name": "Rules: the vocabulary's own rules hold",
+      "cases": [
+        {
+          "id": "rules-village-clustered",
+          "preset": "medieval-village",
+          "width": 8,
+          "height": 8,
+          "order": "clustered",
+          "seed": 601
+        },
+        {
+          "id": "rules-station-random",
+          "preset": "space-station",
+          "width": 8,
+          "height": 8,
+          "order": "random",
+          "seed": 602
+        },
+        {
+          "id": "rules-desert-branching",
+          "preset": "desert-outpost",
+          "width": 8,
+          "height": 8,
+          "order": "branching",
+          "seed": 603
+        },
+        {
+          "id": "rules-jungle-spiral",
+          "preset": "jungle-temple",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 604
+        },
+        {
+          "id": "rules-market-frontier",
+          "preset": "ghana-market",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 605
+        }
+      ]
+    },
+    {
+      "specificationId": "routes",
+      "name": "Routes: paths lead to doors and off the map",
+      "cases": [
+        {
+          "id": "routes-village-spiral",
+          "preset": "medieval-village",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 701
+        },
+        {
+          "id": "routes-cyberpunk-frontier",
+          "preset": "cyberpunk-block",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 702
+        },
+        {
+          "id": "routes-arctic-spiral",
+          "preset": "arctic-base",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 703
+        },
+        {
+          "id": "routes-mansion-frontier",
+          "preset": "haunted-mansion",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 704
+        },
+        {
+          "id": "routes-market-clustered",
+          "preset": "ghana-market",
+          "width": 8,
+          "height": 8,
+          "order": "clustered",
+          "seed": 705
+        }
+      ]
+    },
+    {
+      "specificationId": "story",
+      "name": "Story: landmarks are there, once, and nothing floods the map",
+      "cases": [
+        {
+          "id": "story-village-frontier",
+          "preset": "medieval-village",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 801
+        },
+        {
+          "id": "story-mansion-spiral",
+          "preset": "haunted-mansion",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 802
+        },
+        {
+          "id": "story-jungle-clustered",
+          "preset": "jungle-temple",
+          "width": 8,
+          "height": 8,
+          "order": "clustered",
+          "seed": 803
+        },
+        {
+          "id": "story-desert-frontier",
+          "preset": "desert-outpost",
+          "width": 8,
+          "height": 8,
+          "order": "frontier",
+          "seed": 804
+        },
+        {
+          "id": "story-station-spiral",
+          "preset": "space-station",
+          "width": 8,
+          "height": 8,
+          "order": "spiral",
+          "seed": 805
         }
       ]
     }

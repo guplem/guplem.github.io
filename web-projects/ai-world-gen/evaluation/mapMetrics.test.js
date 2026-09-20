@@ -21,13 +21,15 @@ const vocabulary = {
     { id: "corridor", label: "Corridor", description: "", placementRules: "", walkable: true, interactable: false, isBarrier: false, visualTag: "metal-floor", instanceFields: [] },
     { id: "door", label: "Door", description: "", placementRules: "", walkable: true, interactable: true, isBarrier: false, visualTag: "door", instanceFields: ["locked"] },
     { id: "tree", label: "Tree", description: "", placementRules: "", walkable: false, interactable: false, isBarrier: true, visualTag: "tree", instanceFields: [] },
+    { id: "well", label: "Well", description: "", placementRules: "Rare. Exactly one, on grass.", walkable: true, interactable: true, isBarrier: false, visualTag: "barrel", instanceFields: [], placement: { zone: "outdoor", neverNext: ["well"], onlyNext: ["grass"], edge: null } },
+    { id: "river", label: "River", description: "", placementRules: "Common on the east edge.", walkable: false, interactable: false, isBarrier: true, visualTag: "water", instanceFields: [], placement: { zone: "outdoor", neverNext: [], onlyNext: [], edge: "east" } },
   ],
 };
 
-/** A grid from rows of letters: g grass, # wall, p path, d door, t tree, . undecided. */
+/** A grid from rows of letters: g grass, # wall, p path, d door, t tree, c corridor, w well, r river, . undecided. */
 function fill(rows, source = "model") {
   const grid = createGrid(rows[0].length, rows.length);
-  const byChar = { g: "grass", "#": "wall", p: "path", d: "door", t: "tree", c: "corridor" };
+  const byChar = { g: "grass", "#": "wall", p: "path", d: "door", t: "tree", c: "corridor", w: "well", r: "river" };
   rows.forEach((row, y) => {
     [...row].forEach((char, x) => {
       if (byChar[char]) setCell(grid, x, y, { typeId: byChar[char], source, confidence: 1, probabilities: {} });
@@ -37,8 +39,8 @@ function fill(rows, source = "model") {
 }
 
 describe("the specifications and their metrics", () => {
-  test("there are four specifications, each with at least two metrics, and every metric belongs to one", () => {
-    expect(SPECIFICATIONS.map((one) => one.id)).toEqual(["structures", "paths", "reachability", "coherence"]);
+  test("there are seven specifications, each with at least two metrics, and every metric belongs to one", () => {
+    expect(SPECIFICATIONS.map((one) => one.id)).toEqual(["structures", "paths", "reachability", "coherence", "rules", "routes", "story"]);
     for (const spec of SPECIFICATIONS) {
       expect(spec.name.length).toBeGreaterThan(0);
       expect(spec.description.length).toBeGreaterThan(0);
@@ -154,7 +156,7 @@ describe("scoreMap: reachability and playability", () => {
 
   test("vocabulary coverage is the share of types the map uses", () => {
     const two = scoreMap(fill(["gg#g", "gggg"]), vocabulary, { fallbackCount: 0 });
-    expect(two["vocabulary-coverage"]).toBeCloseTo(2 / 6, 5);
+    expect(two["vocabulary-coverage"]).toBeCloseTo(2 / vocabulary.elements.length, 5);
   });
 
   test("fallback cells count against the model", () => {
@@ -246,6 +248,83 @@ describe("scoreMap: coherence", () => {
     expect(one["interactable-share-in-range"]).toBe(1);
     const heap = scoreMap(fill(["dddd", "dddd", "gggg", "gggg"]), vocabulary, { fallbackCount: 0 });
     expect(heap["interactable-share-in-range"]).toBe(0);
+  });
+});
+
+describe("scoreMap: the vocabulary's own rules", () => {
+  test("never-next: a well next to a well breaks it; wells apart keep it; no ruled type is nothing to judge", () => {
+    expect(scoreMap(fill(["gwwg", "gggg"]), vocabulary, { fallbackCount: 0 })["never-next-respected"]).toBe(0);
+    expect(scoreMap(fill(["wggw", "gggg"]), vocabulary, { fallbackCount: 0 })["never-next-respected"]).toBe(1);
+    expect(scoreMap(fill(["gggg", "g##g"]), vocabulary, { fallbackCount: 0 })["never-next-respected"]).toBeNull();
+  });
+
+  test("only-next: a well with a grass neighbour keeps it; a well among walls breaks it", () => {
+    expect(scoreMap(fill(["gwgg", "gggg"]), vocabulary, { fallbackCount: 0 })["only-next-respected"]).toBe(1);
+    expect(scoreMap(fill(["#w##", "####"]), vocabulary, { fallbackCount: 0 })["only-next-respected"]).toBe(0);
+  });
+
+  test("edge: a river on the east edge keeps it, inland breaks it", () => {
+    expect(scoreMap(fill(["gggr", "gggr"]), vocabulary, { fallbackCount: 0 })["edge-respected"]).toBe(1);
+    expect(scoreMap(fill(["grgr", "gggg"]), vocabulary, { fallbackCount: 0 })["edge-respected"]).toBe(0.5);
+  });
+
+  test("zone: with a plan, an outdoor type inside a room breaks it; without a plan there is nothing to judge", () => {
+    const plan = { rooms: [{ structure: "house", label: "House", x: 0, y: 0, width: 3, height: 3, door: null }] };
+    const inside = fill(["###", "#w#", "###"]);
+    expect(scoreMap(inside, vocabulary, { fallbackCount: 0 }, plan)["zone-respected"]).toBe(0);
+    const outside = fill(["###g", "#g#g", "###w"]);
+    expect(scoreMap(outside, vocabulary, { fallbackCount: 0 }, plan)["zone-respected"]).toBe(1);
+    expect(scoreMap(outside, vocabulary, { fallbackCount: 0 })["zone-respected"]).toBeNull();
+  });
+});
+
+describe("scoreMap: routes lead somewhere", () => {
+  test("a door is passable when walkable cells stand on both its open sides", () => {
+    expect(scoreMap(fill(["g#g", "pdg", "g#g"]), vocabulary, { fallbackCount: 0 })["door-passable"]).toBe(1);
+    expect(scoreMap(fill(["g#g", "#dg", "g#g"]), vocabulary, { fallbackCount: 0 })["door-passable"]).toBe(0);
+    expect(scoreMap(fill(["#dg"]), vocabulary, { fallbackCount: 0 })["door-passable"]).toBe(0);
+    expect(scoreMap(fill(["ggg"]), vocabulary, { fallbackCount: 0 })["door-passable"]).toBeNull();
+  });
+
+  test("a door near a route has a path cell touching it, straight or diagonal", () => {
+    expect(scoreMap(fill(["g#g", "pdg", "g#g"]), vocabulary, { fallbackCount: 0 })["door-near-route"]).toBe(1);
+    expect(scoreMap(fill(["p#g", "gdg", "g#g"]), vocabulary, { fallbackCount: 0 })["door-near-route"]).toBe(1);
+    expect(scoreMap(fill(["g#g", "gdg", "g#p"]), vocabulary, { fallbackCount: 0 })["door-near-route"]).toBe(1);
+    expect(scoreMap(fill(["gg#g", "ggdg", "gg#g", "pggg"]), vocabulary, { fallbackCount: 0 })["door-near-route"]).toBe(0);
+    expect(scoreMap(fill(["g#g", "gdg"]), { ...vocabulary, elements: vocabulary.elements.filter((one) => one.id !== "path" && one.id !== "corridor") }, { fallbackCount: 0 })["door-near-route"]).toBeNull();
+  });
+
+  test("the largest route network reaches the map edge, or the road comes from nowhere", () => {
+    expect(scoreMap(fill(["gggg", "pppp", "gggg"]), vocabulary, { fallbackCount: 0 })["route-reaches-edge"]).toBe(1);
+    expect(scoreMap(fill(["gggg", "gppg", "gggg"]), vocabulary, { fallbackCount: 0 })["route-reaches-edge"]).toBe(0);
+    expect(scoreMap(fill(["gggg", "gggg"]), vocabulary, { fallbackCount: 0 })["route-reaches-edge"]).toBeNull();
+  });
+});
+
+describe("scoreMap: landmarks and story", () => {
+  test("a type whose rules say exactly one should be there once", () => {
+    expect(scoreMap(fill(["gggg", "gggg"]), vocabulary, { fallbackCount: 0 })["landmarks-present"]).toBe(0);
+    const one = scoreMap(fill(["gwgg", "gggg"]), vocabulary, { fallbackCount: 0 });
+    expect(one["landmarks-present"]).toBe(1);
+    expect(one["landmarks-single"]).toBe(1);
+    const two = scoreMap(fill(["gwgg", "gggw"]), vocabulary, { fallbackCount: 0 });
+    expect(two["landmarks-present"]).toBe(1);
+    expect(two["landmarks-single"]).toBe(0);
+    expect(scoreMap(fill(["gggg"]), vocabulary, { fallbackCount: 0 })["landmarks-single"]).toBeNull();
+    const noLandmark = { ...vocabulary, elements: vocabulary.elements.filter((one) => one.id !== "well") };
+    expect(scoreMap(fill(["gggg"]), noLandmark, { fallbackCount: 0 })["landmarks-present"]).toBeNull();
+  });
+
+  test("no type dominates: 1 up to half the map, 0 when one type is the whole map", () => {
+    expect(scoreMap(fill(["gg##", "gg##"]), vocabulary, { fallbackCount: 0 })["no-type-dominates"]).toBe(1);
+    expect(scoreMap(fill(["gggg", "gggg"]), vocabulary, { fallbackCount: 0 })["no-type-dominates"]).toBe(0);
+    expect(scoreMap(fill(["gggg", "gg##"]), vocabulary, { fallbackCount: 0 })["no-type-dominates"]).toBeCloseTo(0.5, 5);
+  });
+
+  test("a thing is approachable when a plain walkable cell touches it; a door is not a thing here", () => {
+    expect(scoreMap(fill(["gwg"]), vocabulary, { fallbackCount: 0 })["things-approachable"]).toBe(1);
+    expect(scoreMap(fill(["#w#", "###"]), vocabulary, { fallbackCount: 0 })["things-approachable"]).toBe(0);
+    expect(scoreMap(fill(["#d#", "ggg"]), vocabulary, { fallbackCount: 0 })["things-approachable"]).toBeNull();
   });
 });
 

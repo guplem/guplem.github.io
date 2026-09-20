@@ -89,7 +89,7 @@ async function main() {
   });
   if (summary.status === "failed") fail(`Generation stopped: ${describeFailure(summary.failure)}`);
 
-  const scores = scoreMap(grid, vocabulary, summary);
+  const scores = scoreMap(grid, vocabulary, summary, plan);
   process.stdout.write(
     JSON.stringify({
       input,

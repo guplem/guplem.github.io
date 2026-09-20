@@ -30,6 +30,6 @@ for (const [caseId, result] of Object.entries(saved.results)) {
     process.stderr.write(`${caseId}: no vocabulary for preset "${result.input.preset}"\n`);
     process.exit(1);
   }
-  scores[caseId] = scoreMap(gridFromJSON(result.grid), vocabulary, result.summary);
+  scores[caseId] = scoreMap(gridFromJSON(result.grid), vocabulary, result.summary, result.plan ?? null);
 }
 process.stdout.write(JSON.stringify(scores));
