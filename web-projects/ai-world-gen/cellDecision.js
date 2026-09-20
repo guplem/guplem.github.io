@@ -25,8 +25,14 @@ import { extractJson, typeById } from "./vocabulary.js";
 /** How far around a cell the counts look. Two steps: enough to see a room, not the map. */
 export const NEARBY_RADIUS = 2;
 
-/** Options with a probability below this share of the best one are never sampled. */
-const SAMPLE_FLOOR = 0.08;
+/**
+ * Options with a probability below this share of the best one are never
+ * sampled. v4 and v5 sampled anything above 8%, and the sample overrode the
+ * model's own choice on 27% to 29% of the cells: a wall where it was 60% sure
+ * of floor. A third keeps the variety where the model is torn and drops it
+ * where it is not.
+ */
+export const SAMPLE_FLOOR = 1 / 3;
 
 const INSTRUCTIONS = [
   "Which element type belongs in this cell of the map?",

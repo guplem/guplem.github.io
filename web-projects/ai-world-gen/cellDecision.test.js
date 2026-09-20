@@ -3,6 +3,7 @@ import {
   CHAT_DECISION_SCHEMA,
   MAX_CONTINUED_LINE,
   NEARBY_RADIUS,
+  SAMPLE_FLOOR,
   TARGET_SHARES,
   balanceSheet,
   buildCellDecision,
@@ -257,7 +258,7 @@ describe("readDecisionAnswer", () => {
 });
 
 describe("chooseType", () => {
-  const probabilities = { grass: 0.7, wall: 0.2, door: 0.1 };
+  const probabilities = { grass: 0.5, wall: 0.3, door: 0.2 };
 
   test("with spread 0 it is the top probability", () => {
     expect(chooseType({ choice: "wall", probabilities, spread: 0, random: () => 0.99 })).toBe("grass");
@@ -272,12 +273,14 @@ describe("chooseType", () => {
     expect(counts.door).toBeGreaterThan(100);
   });
 
-  test("never picks an option far below the best one, so a 1% tail does not litter the map", () => {
-    const skewed = { grass: 0.95, wall: 0.04, door: 0.01 };
+  test("never picks an option below a third of the best one, so a doubtful tail does not litter the map", () => {
+    const skewed = { grass: 0.6, wall: 0.25, door: 0.15 };
     const random = mulberry32(5);
     const seen = new Set();
     for (let i = 0; i < 2000; i += 1) seen.add(chooseType({ choice: "grass", probabilities: skewed, spread: 1, random }));
+    expect(seen.has("wall")).toBe(true);
     expect(seen.has("door")).toBe(false);
+    expect(SAMPLE_FLOOR).toBe(1 / 3);
   });
 
   test("falls back to the model's own choice when there are no probabilities", () => {
