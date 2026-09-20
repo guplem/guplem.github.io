@@ -11,6 +11,7 @@
     <title id="page-title">Guillem Poy · Software Engineer &amp; Game Developer</title>
     <meta id="page-description" name="description" content="Portfolio of Guillem Poy (Triunity Studios), software engineer and video game developer from Barcelona. Projects across web, mobile, games, and AI, including playable web experiments." />
     <link rel="canonical" href="https://triunitystudios.com/" />
+    <link rel="alternate" type="application/atom+xml" title="Guillem Poy · Blog" href="blog/feed.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Guillem Poy · Software Engineer &amp; Game Developer" />
     <meta property="og:description" content="Portfolio of Guillem Poy (Triunity Studios), software engineer and video game developer from Barcelona." />
@@ -55,6 +56,7 @@
         <div class="nav-links">
           <a href="#aboutMe">About</a>
           <a href="#myWork">Work</a>
+          <a href="blog/">Blog</a>
           <a href="#contact">Contact</a>
         </div>
       </div>
@@ -795,14 +797,21 @@
           </div>
         </div>
         <button id="worksExpandButton" class="works-expand-btn">Show More Projects</button>
-        <!-- Navigation affordance, like the top nav links: site chrome, not
-             portfolio content, so it stays in the HTML and not in
-             data/info.json. It points at web-projects/, the directory index of
-             the small projects that this site hosts itself. -->
-        <a class="works-playground" href="web-projects/">
-          <span class="works-playground-label">Visit the Playground <span class="works-playground-arrow" aria-hidden="true">→</span></span>
-          <span class="works-playground-hint">Small tools and games that live inside this site. Open any of them right now.</span>
-        </a>
+        <!-- Navigation affordances, like the top nav links: site chrome, not
+             portfolio content, so they stay in the HTML and not in
+             data/info.json. One points at web-projects/, the directory index of
+             the small projects that this site hosts itself; the other at blog/,
+             the list of posts. -->
+        <div class="works-doorways">
+          <a class="works-doorway" href="web-projects/">
+            <span class="works-doorway-label">Visit the Playground <span class="works-doorway-arrow" aria-hidden="true">→</span></span>
+            <span class="works-doorway-hint">Small tools and games that live inside this site. Open any of them right now.</span>
+          </a>
+          <a class="works-doorway" href="blog/">
+            <span class="works-doorway-label">Read the blog <span class="works-doorway-arrow" aria-hidden="true">→</span></span>
+            <span class="works-doorway-hint">Experiments, niche solutions and findings, as plain pages anyone can read.</span>
+          </a>
+        </div>
       </div>
     </section>
 

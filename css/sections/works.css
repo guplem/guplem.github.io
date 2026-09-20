@@ -289,38 +289,47 @@
 /* Link to the Playground (web-projects/), the index of the small projects that
    this site hosts itself. It closes the works section, under the expand
    button. */
-.works-playground {
+/* The doorways out of the works section: the Playground and the blog. Site
+   chrome, written in index.html, not portfolio data. */
+.works-doorways {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-sm);
+  margin-top: var(--sp-lg);
+}
+
+.works-doorway {
   display: block;
-  width: fit-content;
-  max-width: 100%;
-  margin: var(--sp-lg) auto 0;
+  flex: 1 1 260px;
+  max-width: 420px;
   padding: 10px var(--sp-md);
   text-align: center;
   border-radius: var(--radius-lg);
   transition: background var(--duration-fast) var(--ease-out);
 }
 
-.works-playground:hover {
+.works-doorway:hover {
   background: rgba(var(--accent-rgb), 0.06);
 }
 
-.works-playground-label {
+.works-doorway-label {
   display: block;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--accent);
 }
 
-.works-playground-arrow {
+.works-doorway-arrow {
   display: inline-block;
   transition: transform var(--duration-fast) var(--ease-out);
 }
 
-.works-playground:hover .works-playground-arrow {
+.works-doorway:hover .works-doorway-arrow {
   transform: translateX(4px);
 }
 
-.works-playground-hint {
+.works-doorway-hint {
   display: block;
   margin-top: 2px;
   font-size: 0.82rem;
