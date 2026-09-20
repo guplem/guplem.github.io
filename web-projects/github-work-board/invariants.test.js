@@ -72,6 +72,31 @@ describe("the stored document (ADR 0002)", () => {
   });
 });
 
+// The one failure that reaches the reader as a blank page.
+//
+// `app.js` and `gateway.js` have no unit tests by design: anything worth a test
+// belongs in a pure module. So nothing ever loaded them, a syntax error in
+// either passed every test, and the browser then refused the whole module and
+// left every button dead. A parse is not a test of behaviour; it is the floor
+// under one (ADR 0003).
+describe("every file the browser loads can be parsed", () => {
+  test("every source file parses", () => {
+    const transpiler = new Bun.Transpiler({ loader: "js" });
+    for (const name of sourceFiles) {
+      expect(`${name} parses`).toBe(
+        (() => {
+          try {
+            transpiler.scan(read(name));
+            return `${name} parses`;
+          } catch (error) {
+            return `${name} does NOT parse: ${error.message}`;
+          }
+        })(),
+      );
+    }
+  });
+});
+
 describe("the shape of the project (ADR 0001, ADR 0003)", () => {
   // One file touches the network. That is what makes every other module pure,
   // testable without a browser, and unable to leak the token by accident.

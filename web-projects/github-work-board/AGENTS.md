@@ -130,6 +130,11 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   come from `readLastCounts`, so the placeholder matches the last visit. This
   holds for any new list or panel added later, not only the ones built so far
   (ADR 0004).
+- **`app.js` and `gateway.js` have no unit tests, so nothing loads them.** A
+  syntax error in either passes the whole suite and leaves the browser with a
+  dead page: the module is refused and every button stops working.
+  `invariants.test.js` parses every source file for exactly this reason. It has
+  happened once (a duplicate `let`), and it cost a release (ADR 0003).
 - **Never read a relationship out of a description.** `Closes #123` in a
   pull request body is a guess: it misses links made through GitHub's sidebar,
   misses other spellings, and invents links from any sentence with a number in
@@ -180,6 +185,10 @@ have none by design: anything in them worth a test belongs in a pure module.
 ```bash
 cd web-projects/github-work-board && bun test
 ```
+
+A green suite does not prove the page loads: nothing here executes `app.js`.
+After a change to `app.js` or `gateway.js`, open the page and read the console
+before calling it done.
 
 ## Architecture Decision Records
 

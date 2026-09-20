@@ -618,7 +618,7 @@ async function inspectToken(entry) {
   // The relationships of this token's own items, with this token: a node id
   // from one owner is not readable by another owner's token (ADR 0010).
   const linked = await fetchRelationships(entry.token, items.map((item) => item.key));
-  const links = linked.ok ? normalizeRelationships(linked.data) : {};
+  links = linked.ok ? normalizeRelationships(linked.data) : {};
   rows.push({
     label: work.label,
     ok: true,
