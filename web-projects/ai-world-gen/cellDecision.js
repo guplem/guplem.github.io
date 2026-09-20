@@ -194,11 +194,6 @@ const SKETCH_UNDECIDED = ".";
 const SKETCH_THIS_CELL = "?";
 const SKETCH_UNKNOWN = "!";
 
-/**
- * The whole map as text, one letter per cell, in the order of the vocabulary.
- * Cheap enough to send with every decision (a 24 by 24 grid is 600 characters)
- * and the only way the model can see a shape larger than its 8 neighbours.
- */
 /** One letter per type, in vocabulary order: the alphabet of `mapSketch` and of the whole-map answer (`wholeMap.js`). */
 export function sketchLegend(vocabulary) {
   const letterOf = {};
@@ -211,6 +206,11 @@ export function sketchLegend(vocabulary) {
   return { letterOf, legend };
 }
 
+/**
+ * The whole map as text, one letter per cell, in the order of the vocabulary.
+ * Cheap enough to send with every decision (a 24 by 24 grid is 600 characters)
+ * and the only way the model can see a shape larger than its 8 neighbours.
+ */
 export function mapSketch(grid, vocabulary, x, y) {
   const { letterOf, legend } = sketchLegend(vocabulary);
   legend[SKETCH_UNDECIDED] = "undecided";

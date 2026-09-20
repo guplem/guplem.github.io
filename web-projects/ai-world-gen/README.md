@@ -19,6 +19,7 @@ This is the founding project of a side project started at the **AI Hackathon Bar
 - **Three screens in one page**: World (setting, grid size, generation order), AI Setup (key, models), Map (live generation, inspector).
 - **Vocabulary generation** by a text model (Claude Sonnet by default), asked for strict JSON, validated on receipt, and asked again with the errors when it is wrong (up to 3 attempts).
 - **Per-cell decisions** by a decision model (Jev by default), one typed question per cell with the neighbours as context. The answer is a choice plus a probability per option; the map samples from those probabilities, so a mildly sure model gives a varied map, not one solid colour.
+- **Or the whole map in one call.** A switch in AI Setup asks the narrative model for the finished grid at once instead of a decision per cell, with the same vocabulary, blueprint and rules in the prompt. It exists to be measured against the per-cell loop (see the evaluation below), and it is the faster, cheaper way to draw a small map when live drawing and per-cell probabilities do not matter.
 - **Five generation orders** behind one interface: centre-out spiral, pure random, clustered, tree/branching, frontier growth.
 - **Live rendering** with visible per-cell latency, a progress bar, and a decision log.
 - **Reachability check**: a flood fill over the walkable cells reports sealed-off regions when the map is complete, and each one is a click away.
@@ -61,6 +62,7 @@ For each cell the decision model receives a small state: the world's name and su
 | `blueprint.js` | Where the structures stand: seeded rectangles with a door, drawn from the vocabulary's `structures` before any cell is decided |
 | `cellDecision.js` | The per-cell state and question (the cell's part of the plan, the allowed types, the map sketch, the balance sheet, the hints), reading the answer, sampling a type, the chat stand-in, the fallback |
 | `generation.js` | The sequential loop with retries, fallbacks and stop conditions; `createDecider` picks the transport |
+| `wholeMap.js` | The whole map in one call: the prompt with the legend, the plan and the rules, reading the rows back, the ask-again loop |
 | `orderStrategies.js` | The five generation orders behind `nextCoordinate(placed)` |
 | `grid.js` | The grid, neighbours, counts, JSON in and out |
 | `reachability.js` | The flood fill |
@@ -140,6 +142,7 @@ OPENROUTER_API_KEY=sk-or-... python evaluate.py run --version v1 --description "
 python evaluate.py report --version v2 --against v1     # after the next iteration
 python evaluate.py rescore --version v1                 # after a new metric: score the saved maps of v1 with it
 python evaluate.py backfill --version v1                # after a new dataset: draw its cases with v1's own code
+AI_WORLD_GEN_GENERATION=whole-map python evaluate.py run --version v-llm   # the whole map in one call, for comparison
 ```
 
 Every map is also drawn as a PNG with the page's own tiles, saved under `evaluation/results/vN/`, and attached to the Galtea output next to the ASCII view, so a result can be seen at a glance in the dashboard and compared across versions in the repository. The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`, and `GPT-5.2` as the judge), so runs stay comparable when OpenRouter adds newer ones. A full run is 38 maps and 3,008 decisions: about 25 cents of Jev (measured: $0.00008 per decision, about 2,000 tokens each) and under ten minutes. Results are also written to `evaluation/results/vN.json`.
@@ -161,6 +164,7 @@ Mean score per specification over the 38 test cases, with every metric as it is 
 | v9 | The state names what the world still lacks; a unique type is out once placed; a route is suggested outside a planned door | 0.98 | 0.80 | 0.87 | 0.87 | 0.98 | 0.87 | **0.84** | 0.69 |
 | v10 | Hard cap: a ground type past twice its target is not offered while another ground is allowed | 0.98 | 0.78 | 0.87 | 0.88 | 0.99 | 0.86 | 0.83 | 0.71 |
 | v11 | The station and the city block get a ground that is not a route (open deck, plaza); corridor and street become lines | 0.98 | 0.77 | **0.88** | 0.88 | **0.99** | 0.82 | 0.83 | 0.69 |
+| v-llm | Not a version of the loop: the whole map in one call to Claude Sonnet 5 (thinking off), with v11's vocabulary, blueprint and rules in the prompt (`wholeMap.js`) | 0.94 | 0.75 | 0.85 | 0.74 | 0.76 | 0.61 | **0.90** | 0.65 |
 
 Every version is scored on the same 38 seeds: the seeds a dataset added later were drawn afterwards with that version's own code (`evaluate.py backfill`), so a row is a mean over the same maps as every other row. v1's routes score is in brackets because v1 drew almost no doors, so there was little to judge.
 
@@ -177,6 +181,8 @@ What each version actually drew:
 - **v9: the world remembers what it lacks.** Landmarks single 0.68 to 1.00, doors with a route 0.56 to 0.88, coverage 0.52 to 0.73, interactable share 0.78 to 0.97. Doors passable fell to 0.82: the model now puts a console or a bed right behind the door.
 - **v10: the cap that could not fire.** A ground type past twice its target is no longer offered, but the maps that flooded were the settings whose vocabulary made the route the only floor (corridor in the station: 0.53 of the map; street in the block: 0.58), where nothing else may fill the cell. Route share of the map stayed at 0.24 overall.
 - **v11: a floor that is not a road.** The station gets an open deck and the block a concrete plaza; corridor and street become lines. Path share in range 0.65 to 0.84, the station's route share 0.53 to 0.12. The corridors are now short stubs on the deck (path continuity 0.73 to 0.58, doors with a route 0.90 to 0.79): a route between two doors is a shape, and shapes are the plan's job.
+
+- **v-llm: the whole map in one call.** The measured alternative ADR 0002 had rejected on reasoning alone. With the same plan in its prompt, room by room, the text model still closed a room on only 47% of the maps (v11: 92%) and set 60% of its doors in a wall (87%); the typed rules held at 0.76 (0.99), because nothing stops a model writing 256 letters from breaking one. It won on landmarks (present 0.76 against 0.45), and it was fast: 3.7 s for an 8 × 8 map against 22, 6 s for 16 × 16 against 90. The run cost the same ($0.25 against $0.24); 8 of 38 maps needed a second answer. Left with thinking on, the model spent its whole 6,000-token budget reasoning and answered nothing.
 
 Pictures of every map of every version are under `evaluation/results/vN/`.
 

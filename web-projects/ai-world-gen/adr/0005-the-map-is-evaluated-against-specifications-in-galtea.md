@@ -45,7 +45,7 @@ and one Galtea version per iteration of the generator.**
    of three 16 by 16 maps, because a room or a street needs more than 8 by 8
    cells to exist.
 
-3. **One version per iteration, one session per test case.** `python
+3. **One version per run, one session per test case.** `python
    evaluate.py run --version vN` generates every test case with the same
    modules the page uses (`runTestCase.js`), then logs each map as one
    session with one inference result (input: the parameters; output: the map
@@ -54,6 +54,11 @@ and one Galtea version per iteration of the generator.**
    then finishes the session, because a map is one turn and a session left
    open reads as an unfinished conversation. The local results are written to
    `results/vN.json`, and `report` prints the change against another version.
+   A version usually marks one change to the per-cell loop, but it need not:
+   `AI_WORLD_GEN_GENERATION=whole-map` runs every case through the other
+   generation mode instead (ADR 0002), and that choice is written into the
+   version's own description, so a version such as `v-llm` reads as a
+   measured alternative, not a step in the loop's history.
 
 4. **Test cases use the shipped vocabularies and small grids.** The presets
    make the creative call unnecessary (ADR 0004), and 8 by 8 cells keep a full
