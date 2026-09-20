@@ -29,10 +29,16 @@ Six columns, in the order work travels:
 |---|---|
 | To do | Assigned, with no pull request |
 | Ongoing | A pull request exists, nobody asked to review it |
+| Needs changes | A reviewer asked for changes |
 | Awaiting review | A reviewer was asked, no verdict yet |
 | Ready to merge | Approved |
-| Needs changes | A reviewer asked for changes |
 | Done | The pull request is merged |
+
+**"Needs changes" sits beside "Ongoing" because it is the same activity.** A
+reviewer asking for changes sends the work back to being written, so the two
+columns somebody moves between all day are next to each other, and the three
+that mean "waiting on somebody else" run on from there. The order is only how
+the columns read: the ids are what `board.json` stores, and they never move.
 
 **The order of the checks is the decision**, because an item answers several at
 once. Merged wins over everything: it is over. Changes requested wins over an
