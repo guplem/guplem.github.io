@@ -12,6 +12,7 @@ import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
 import { SORT_OPTIONS } from "./sorting.js";
+import { COLUMN_IDS } from "./columns.js";
 import { KIND_FILTERS } from "./filters.js";
 import { normalizeWorkItem } from "./workItems.js";
 import { REQUIRED_PERMISSIONS } from "./permissions.js";
@@ -69,6 +70,31 @@ describe("the stored document (ADR 0002)", () => {
     const doc = migrate({ schemaVersion: 99, invented: { a: { updatedAt: "2026-01-01T00:00:00.000Z" } } }, "now");
     expect(doc.invented).toBeDefined();
     for (const map of RECORD_MAPS) expect(doc[map]).toBeDefined();
+  });
+});
+
+// The one failure that reaches the reader as a blank page.
+//
+// `app.js` and `gateway.js` have no unit tests by design: anything worth a test
+// belongs in a pure module. So nothing ever loaded them, a syntax error in
+// either passed every test, and the browser then refused the whole module and
+// left every button dead. A parse is not a test of behaviour; it is the floor
+// under one (ADR 0003).
+describe("every file the browser loads can be parsed", () => {
+  test("every source file parses", () => {
+    const transpiler = new Bun.Transpiler({ loader: "js" });
+    for (const name of sourceFiles) {
+      expect(`${name} parses`).toBe(
+        (() => {
+          try {
+            transpiler.scan(read(name));
+            return `${name} parses`;
+          } catch (error) {
+            return `${name} does NOT parse: ${error.message}`;
+          }
+        })(),
+      );
+    }
   });
 });
 
@@ -153,6 +179,14 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(read("index.html")).toContain('id="view-toggle"');
   });
 
+  // Without this one rule, every element the page hides with `hidden` and also
+  // gives a `display` to stays on screen: an empty filter row, a "clear the
+  // filters" button with no filters, a settings button inside settings. The
+  // author rule beats the browser's own, and nothing errors.
+  test("the hidden attribute actually hides", () => {
+    expect(css).toMatch(/\[hidden\]\s*\{[^}]*display:\s*none\s*!important/);
+  });
+
   test("a filter chip answers hover, a press and a keyboard focus", () => {
     expect(css).toContain(".chip:hover");
     expect(css).toContain(".chip:active");
@@ -167,6 +201,11 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     const quiet = css.slice(css.indexOf("prefers-reduced-motion"));
     expect(quiet).toContain(".skeleton");
     expect(quiet).toContain("animation: none");
+  });
+
+  test("the small dropdown on a card answers hover and focus with the big one", () => {
+    expect(css).toContain(".select:hover");
+    expect(css).toContain(".select-small");
   });
 
   test("the sort dropdown answers hover and focus", () => {
@@ -196,6 +235,7 @@ describe("a sort order named in a link keeps its name (ADR 0006)", () => {
     expect(SORT_OPTIONS.map((option) => option.id).sort()).toEqual([
       "created-asc",
       "created-desc",
+      "label",
       "noted-first",
       "repository",
       "title",
@@ -223,6 +263,25 @@ describe("a filter named in a link keeps its name (ADR 0009)", () => {
 // A permission list written twice is a permission list that drifts. The code
 // asks GitHub for the access; the page and the README only report what the code
 // asks for. ADR 0005.
+// A column id is written into board.json the moment a card is moved by hand,
+// so it is as permanent as a storage key (ADR 0011).
+describe("a column a card was moved to keeps its name (ADR 0011)", () => {
+  test("these are the columns, and an id is never renamed", () => {
+    expect(COLUMN_IDS).toEqual([
+      "todo",
+      "ongoing",
+      "awaiting-review",
+      "ready-to-merge",
+      "needs-changes",
+      "done",
+    ]);
+  });
+
+  test("the saved document carries a map for them", () => {
+    expect(RECORD_MAPS).toContain("columns");
+  });
+});
+
 describe("the permission list is written once (ADR 0005)", () => {
   test("the page does not spell out the permissions, it carries the slot the code fills", () => {
     const page = read("index.html");

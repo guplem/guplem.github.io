@@ -47,6 +47,7 @@ It is the short procedure for all of the above.
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
 | `relationships.js` | Yes | GitHub's own links between items, and nesting a pull request under its issue (ADR 0010) |
+| `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand (ADR 0011) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
@@ -58,7 +59,7 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `columns.groupIntoColumns` → elements.
 Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
@@ -130,6 +131,26 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   come from `readLastCounts`, so the placeholder matches the last visit. This
   holds for any new list or panel added later, not only the ones built so far
   (ADR 0004).
+- **`app.js` and `gateway.js` have no unit tests, so nothing loads them.** A
+  syntax error in either passes the whole suite and leaves the browser with a
+  dead page: the module is refused and every button stops working.
+  `invariants.test.js` parses every source file for exactly this reason. It has
+  happened once (a duplicate `let`), and it cost a release (ADR 0003).
+- **A column is computed, never maintained.** The rules read what GitHub
+  already knows, and the order of the checks in `automaticColumn` is the whole
+  decision: merged beats everything, changes requested beats an approval. A
+  pull request closed without merging counts for nothing (ADR 0011).
+- **`includeClosedPrs` must stay true in the relationship query.** A merged pull
+  request is a closed one, so leaving it out hides exactly the work that belongs
+  in "Done".
+- **A column id is written into `board.json`** the moment a card is moved by
+  hand, so it is as permanent as a storage key. The reader's move always beats
+  the rule, and "Automatic" hands it back.
+- **`[hidden]` needs the `!important` rule at the top of `style.css`.** The
+  browser hides `[hidden]` with a rule of its own, and any author rule setting
+  `display` beats it. This page sets `display` on buttons, filter groups and
+  callouts, so without that line they ignore `hidden` and sit on screen with
+  nothing in them, and nothing errors. A test pins the rule.
 - **Never read a relationship out of a description.** `Closes #123` in a
   pull request body is a guess: it misses links made through GitHub's sidebar,
   misses other spellings, and invents links from any sentence with a number in
@@ -181,6 +202,10 @@ have none by design: anything in them worth a test belongs in a pure module.
 cd web-projects/github-work-board && bun test
 ```
 
+A green suite does not prove the page loads: nothing here executes `app.js`.
+After a change to `app.js` or `gateway.js`, open the page and read the console
+before calling it done.
+
 ## Architecture Decision Records
 
 | ADR | Topic |
@@ -195,12 +220,13 @@ cd web-projects/github-work-board && bun test
 | [0008](adr/0008-settings-is-a-view-and-the-token-guide-is-written-once.md) | Settings is a view in the link, and the token guide is written once |
 | [0009](adr/0009-filters-widen-within-a-kind-and-narrow-across-kinds.md) | Filters widen within one kind and narrow across kinds |
 | [0010](adr/0010-relationships-come-from-githubs-graph.md) | Relationships come from GitHub's graph, in one call per token |
+| [0011](adr/0011-columns-are-read-from-github-and-overridden-by-hand.md) | Columns are read from GitHub, and overridden by hand |
 
 ## What is not built yet
 
 Connecting with several tokens, the one list of issues and pull requests,
 private notes, the seven orders, the filters and the settings screen are built.
-Still to come, roughly in this order: kanban columns with automatic moves,
-custom tags, and a "what's next" queue, which the blocked marking now makes
-answerable. Every new view state goes in the address bar
+Still to come, roughly in this order: dragging a card instead of choosing its
+column from a dropdown, custom tags, and a "what's next" queue, which the
+blocked marking and the columns now make answerable. Every new view state goes in the address bar
 beside `view`, `sort`, `kind`, `repo` and `label`, and the tokens never do.

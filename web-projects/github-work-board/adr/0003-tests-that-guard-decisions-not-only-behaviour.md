@@ -37,6 +37,11 @@ It is not a second copy of the unit tests. Each test pins one promise and names
 the ADR it comes from, so a failure reads as "you are undoing decision X", not
 "expected true to be false". It holds two kinds of check:
 
+0. **A parse.** Every source file is parsed, `app.js` and `gateway.js`
+   included. Those two have no unit tests by design, so nothing ever loaded
+   them, and a syntax error in either passed the whole suite and then left the
+   browser refusing the module and every button dead. This is not a test of
+   behaviour; it is the floor under one.
 1. **Value promises**, asserted through the normal exports: the exact storage
    keys, the exact document file name, that a note is keyed by the permanent
    GitHub node id, that `migrate` keeps maps it does not know.
@@ -58,6 +63,12 @@ bug, so the same break cannot return unnoticed.
 **A failing invariant test is a conversation, not a chore.** The comment at the
 top of the file says it: read the ADR the test names before changing the test. A
 decision can be changed on purpose. It must not be changed by accident.
+
+**The floor was missing for months.** The rule "anything worth a test belongs
+in a pure module" is right, and its shadow is that the two files it exempts are
+the two nothing ever loads. A syntax error there is invisible to a green suite
+and total for the reader: not a broken feature, a dead page. It happened once,
+and the parse check is the answer.
 
 **Some tests read source files as text.** That is fragile in the usual way: a
 comment that happens to contain `fetch(` fails the network check. The trade is
