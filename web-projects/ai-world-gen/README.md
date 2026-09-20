@@ -109,7 +109,8 @@ Anything raised mid-build that is not ready to implement yet. Add to it; strike 
 - ~~**Closed shapes need a door.**~~ Settled in v8: the blueprint gives every planned room one door in a wall that faces the middle of the map.
 - ~~**Sampling noise.**~~ Settled in v6: the floor is a third of the best option.
 - **Coverage is the price of the plan.** With the options narrowed to a cell's part, the rarer types come up less: coverage fell from 0.72 (v5) to 0.52 (v8). v9's `missing` list is the first answer; if it is not enough, a target count per type in the plan (the way structures have one) is the next.
-- **Paths still flood the outside.** With rooms fixed, the route type is what the model reaches for between them: path share in range 0.52 in v8, path continuity down. A hard cap on a heavily overused type (say twice its target, with another ground type allowed) is the next version to try, and the reference maps suggest roads should be one cell wide and few.
+- ~~**Paths still flood the outside.**~~ Settled in v11, once v10 showed the flood was a vocabulary problem: a route type that is also the only floor. The rule for a vocabulary is now: the most common cell is a ground, and a route is a line on it. The hard cap (v10) stays as a guard.
+- **Routes are stubs.** With the flood gone, the corridors are two or three cells that lead nowhere (path continuity 0.58, doors with a route 0.79 in v11). A route between two doors, or from a door to the map edge, is a shape, and the blueprint should draw it the way it draws the rooms: one-cell paths from door to door, then the model fills the rest. This is the next version.
 - **Empty rooms.** A planned interior is mostly floor: the model rarely puts the chest in the cottage or the console in the lab. A per-room "this room still lacks" hint (the indoor things not yet in this room) is the room-sized version of `missing`.
 - **Free-standing barriers split the map.** Trees, dunes and pipes are the barriers the blueprint does not place, and they are what still splits walkable regions (0.77 in v8). Either the plan places them too (as clusters with a declared count) or the reachability check repairs one cell.
 - **Structures could touch.** The blueprint keeps a one-cell gap between rectangles. The reference maps have rooms that share a wall (a dungeon, a mansion); a shared-wall mode per structure would give those settings their look.
@@ -156,7 +157,9 @@ Mean score per specification over the test cases, with every metric as it is tod
 | v6 | Sampling floor from 8% to a third of the best option | 0.95 | 0.79 | 0.81 | 0.52 | 0.61 | 0.63 | 0.71 |
 | v7 | Typed `placement` per type (zone, never next, only next, edge), enforced before the model answers | 0.95 | 0.79 | 0.81 | 0.51 | **0.98** | 0.57 | 0.74 |
 | v8 | The blueprint: code places each structure as a rectangle with a door; each cell is offered only its part's types | **1.00** | 0.75 | 0.84 | **0.89** | 0.99 | 0.80 | 0.74 |
-| v9 | The state names what the world still lacks; a unique type is out once placed; a route is suggested outside a planned door | 0.98 | **0.80** | **0.87** | 0.87 | 0.98 | **0.87** | **0.84** |
+| v9 | The state names what the world still lacks; a unique type is out once placed; a route is suggested outside a planned door | 0.98 | **0.80** | 0.87 | 0.87 | 0.98 | **0.87** | **0.84** |
+| v10 | Hard cap: a ground type past twice its target is not offered while another ground is allowed | 0.98 | 0.78 | 0.87 | 0.88 | 0.99 | 0.86 | 0.83 |
+| v11 | The station and the city block get a ground that is not a route (open deck, plaza); corridor and street become lines | 0.98 | 0.77 | **0.88** | 0.88 | 0.99 | 0.82 | 0.83 |
 
 From v5 on there are 23 test cases (three of them 16 × 16), from v9 on 38. v1's routes score is in brackets because v1 drew almost no doors, so there was little to judge.
 
@@ -171,6 +174,8 @@ What each version actually drew:
 - **v7: the local rules hold, the rooms do not.** With the typed rules enforced, "rules hold" went from 0.61 to 0.98 and nothing else moved: "never next to X" cannot say "in a wall".
 - **v8: rooms.** The blueprint draws each structure first. Doors in walls 0.14 to 0.95, an enclosed room on every map, structures 1.00, one walkable region 0.56 to 0.77. The price: coverage 0.52, and the route type spread over the outside.
 - **v9: the world remembers what it lacks.** Landmarks single 0.68 to 1.00, doors with a route 0.56 to 0.88, coverage 0.52 to 0.73, interactable share 0.78 to 0.97. Doors passable fell to 0.82: the model now puts a console or a bed right behind the door.
+- **v10: the cap that could not fire.** A ground type past twice its target is no longer offered, but the maps that flooded were the settings whose vocabulary made the route the only floor (corridor in the station: 0.53 of the map; street in the block: 0.58), where nothing else may fill the cell. Route share of the map stayed at 0.24 overall.
+- **v11: a floor that is not a road.** The station gets an open deck and the block a concrete plaza; corridor and street become lines. Path share in range 0.65 to 0.84, the station's route share 0.53 to 0.12. The corridors are now short stubs on the deck (path continuity 0.73 to 0.58, doors with a route 0.90 to 0.79): a route between two doors is a shape, and shapes are the plan's job.
 
 Pictures of every map of every version are under `evaluation/results/vN/`.
 
