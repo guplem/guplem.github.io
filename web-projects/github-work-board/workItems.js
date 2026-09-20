@@ -19,6 +19,20 @@ function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
+/**
+ * Which repository an item is in.
+ *
+ * The issues endpoint answers with a whole repository object. The search
+ * endpoint, which is what finds the reviews waiting on you, answers with an API
+ * address instead, and nothing else (ADR 0013). Both have to read the same.
+ */
+function readRepository(raw) {
+  if (typeof raw?.repository?.full_name === "string") return raw.repository.full_name;
+  const url = typeof raw?.repository_url === "string" ? raw.repository_url : "";
+  const after = url.split("/repos/")[1] ?? "";
+  return after.split("/").slice(0, 2).join("/");
+}
+
 function readLabel(value) {
   if (!isPlainObject(value) || typeof value.name !== "string") return null;
   return { name: value.name, color: typeof value.color === "string" ? value.color : "" };
@@ -36,7 +50,7 @@ export function normalizeWorkItem(raw) {
     isDraft: isPullRequest && raw.draft === true,
     number: Number.isInteger(raw.number) ? raw.number : 0,
     title: typeof raw.title === "string" ? raw.title : "",
-    repository: typeof raw.repository?.full_name === "string" ? raw.repository.full_name : "",
+    repository: readRepository(raw),
     url: typeof raw.html_url === "string" ? raw.html_url : "",
     state: raw.state === "closed" ? "closed" : "open",
     createdAt: typeof raw.created_at === "string" ? raw.created_at : "",
@@ -57,6 +71,18 @@ export function normalizeWorkItems(rawList) {
     items.push(item);
   }
   return items;
+}
+
+/**
+ * The items in `wanted` that are not already on the board.
+ *
+ * A pull request can be assigned to you and waiting for your review at once.
+ * Showing it in both places would put the same work on screen twice, and the
+ * board is the place that can move it, so the board keeps it.
+ */
+export function withoutItems(wanted, already) {
+  const taken = new Set((Array.isArray(already) ? already : []).map((item) => item?.key));
+  return (Array.isArray(wanted) ? wanted : []).filter((item) => !taken.has(item?.key));
 }
 
 /** How many of each kind the list holds, so the page can say what is on it. */

@@ -13,12 +13,21 @@
 /** What an item carries when its column is left to the rules. */
 export const AUTOMATIC = "automatic";
 
+/**
+ * The order here is the order on screen, and nothing else depends on it: the
+ * ids are what is written into `board.json`, and they never move.
+ *
+ * "Needs changes" sits beside "Ongoing" because it is the same activity. A
+ * reviewer asking for changes sends the work back to being written, so the two
+ * columns a person moves between all day are next to each other, and the three
+ * that mean "waiting on somebody else" run on from there.
+ */
 export const COLUMNS = [
   { id: "todo", label: "To do", hint: "Assigned to you, with no pull request yet" },
   { id: "ongoing", label: "Ongoing", hint: "A pull request exists, nobody has been asked to review it" },
+  { id: "needs-changes", label: "Needs changes", hint: "A reviewer asked for changes" },
   { id: "awaiting-review", label: "Awaiting review", hint: "A reviewer was asked, no verdict yet" },
   { id: "ready-to-merge", label: "Ready to merge", hint: "Approved" },
-  { id: "needs-changes", label: "Needs changes", hint: "A reviewer asked for changes" },
   { id: "done", label: "Done", hint: "The pull request is merged" },
 ];
 

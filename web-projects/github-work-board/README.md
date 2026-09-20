@@ -8,6 +8,9 @@ to make here, and nothing is stored anywhere except GitHub.
 
 - **Every open issue and pull request assigned to you**, across every repository
   your token can read, in one list, each marked with what it is.
+- **What is waiting on you, above everything else.** A row of the pull requests
+  where somebody asked for your review, longest-waiting first, because those
+  cost other people time rather than yours.
 - **A board that keeps itself up to date.** Six columns, from To do to Done,
   and a card moves itself when a pull request appears, when a reviewer is asked,
   when they answer, and when it merges. The button on a card opens a menu that
@@ -23,8 +26,9 @@ to make here, and nothing is stored anywhere except GitHub.
 - **Seven ways to sort it**: recently updated, least recently updated, newest,
   oldest, ones you noted first, by repository, or by title. The choice goes into
   the address bar, so a reload keeps it and a link carries it.
-- **A private note on any issue.** Notes are yours alone. They never appear on
-  GitHub's issue page, and nobody else sees them.
+- **A private note on any issue**, added from the card's own menu and shown only
+  where one exists. Notes are yours alone: they never appear on GitHub's issue
+  page, and nobody else sees them.
 - **Your notes sync themselves.** They live in a JSON file in a private
   repository you own, so the laptop and the phone show the same thing, and every
   change keeps a version in git history.

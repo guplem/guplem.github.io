@@ -28,15 +28,16 @@ const linkedPull = (over = {}) => ({
 const links = (closedBy = []) => ({ closedBy, closes: [], blockedBy: [], parent: null });
 
 describe("COLUMNS", () => {
-  // A column id is written into board.json the moment somebody moves a card by
-  // hand, so renaming one strands every card that was moved.
-  test("the ids are exactly these, and none is ever renamed", () => {
+  // The order on screen. "Needs changes" sits beside "Ongoing" because it is
+  // the same activity: a reviewer asking for changes sends the work back to
+  // being written.
+  test("they read left to right in the order work travels", () => {
     expect(COLUMNS.map((one) => one.id)).toEqual([
       "todo",
       "ongoing",
+      "needs-changes",
       "awaiting-review",
       "ready-to-merge",
-      "needs-changes",
       "done",
     ]);
   });

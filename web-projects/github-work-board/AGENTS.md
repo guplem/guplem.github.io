@@ -136,6 +136,17 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   dead page: the module is refused and every button stops working.
   `invariants.test.js` parses every source file for exactly this reason. It has
   happened once (a duplicate `let`), and it cost a release (ADR 0003).
+- **"Waiting on me" is a different question from "assigned to me", and only
+  search answers it.** `GET /issues` has no filter for it. Search also answers
+  in a different shape: `repository_url` instead of a `repository` object, which
+  is why `normalizeWorkItem` reads both (ADR 0013).
+- **The review row defaults to the oldest first**, while the board defaults to
+  the newest. A review waiting three weeks is the one to clear, and newest-first
+  buries it. `reviewSortId` holds that one rule.
+- **A note box exists only where a note does**, or where the reader asked for
+  one from the menu this visit. An empty box on every card is forty invitations
+  to write something nobody wanted to write, and it is the tallest thing on a
+  card (ADR 0014). Which empty boxes are open is held in memory, never saved.
 - **The card menu is a `popover`, and it has to be.** `.columns` scrolls
   sideways, so `overflow-x: auto` clips anything positioned inside a card. Only
   the top layer escapes it (ADR 0012).
@@ -233,6 +244,8 @@ before calling it done.
 | [0010](adr/0010-relationships-come-from-githubs-graph.md) | Relationships come from GitHub's graph, in one call per token |
 | [0011](adr/0011-columns-are-read-from-github-and-overridden-by-hand.md) | Columns are read from GitHub, and overridden by hand |
 | [0012](adr/0012-the-card-menu-lives-in-the-top-layer.md) | The card menu lives in the top layer, and one menu serves the board |
+| [0013](adr/0013-work-waiting-on-you-is-a-row-above-the-board.md) | Work waiting on you is a row above the board, not a column in it |
+| [0014](adr/0014-a-note-box-appears-only-when-there-is-a-note.md) | A note box appears only when there is a note |
 
 ## What is not built yet
 

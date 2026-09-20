@@ -24,6 +24,7 @@ import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
   fetchAssignedIssues,
   fetchRelationships,
+  fetchReviewRequests,
   fetchBoardFile,
   fetchRepository,
   fetchViewer,
@@ -39,7 +40,7 @@ import {
   toggleInList,
 } from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
-import { escapeHtml, say, sayEmptyBoard } from "./messages.js";
+import { escapeHtml, noteMenuLabel, say, sayEmptyBoard } from "./messages.js";
 import {
   CONNECTION_CHECKS,
   REQUIRED_PERMISSIONS,
@@ -64,7 +65,7 @@ import {
   updateToken,
 } from "./settings.js";
 import { skeletonCount } from "./skeletons.js";
-import { DEFAULT_SORT_ID, SORT_OPTIONS, sortWorkItems } from "./sorting.js";
+import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
 import {
@@ -76,7 +77,7 @@ import {
   readRelationship,
 } from "./relationships.js";
 import { describeTokenReach, suggestedTokenName } from "./tokenIdentity.js";
-import { countByKind, normalizeWorkItems, ownersOf } from "./workItems.js";
+import { countByKind, normalizeWorkItems, ownersOf, withoutItems } from "./workItems.js";
 
 const SAVE_DELAY_MS = 1200;
 const PROJECT_PATH = "web-projects/github-work-board";
@@ -94,9 +95,13 @@ const state = {
   remoteSha: null,
   saveTimer: null,
   items: [],
+  reviews: [],
   links: {},
   menuItem: null,
   menuAnchor: null,
+  // Cards whose note box is open although the note is still empty. Only for
+  // this visit: a box somebody opened and left empty is not worth saving.
+  notesOpen: new Set(),
   sortId: DEFAULT_SORT_ID,
   view: DEFAULT_VIEW,
   kind: DEFAULT_KIND,
@@ -302,16 +307,11 @@ function buildWorkItemCard(item, { withMenu = true } = {}) {
     card.append(progress);
   }
 
-  const note = document.createElement("textarea");
-  note.className = "input note";
-  note.rows = 2;
-  note.placeholder = "A note only you can see";
-  note.value = readNote(state.board, item.key);
-  note.addEventListener("input", () => {
-    state.board = writeNote(state.board, item.key, note.value, new Date().toISOString());
-    scheduleSave();
-  });
-  card.append(note);
+  // The box is not there until there is a note in it, or until the reader asks
+  // for one from the menu. An empty box on every card is forty invitations to
+  // write something nobody wanted to write (ADR 0014).
+  const written = readNote(state.board, item.key);
+  if (written !== "" || state.notesOpen.has(item.key)) card.append(buildNoteBox(item, written));
 
   return card;
 }
@@ -376,6 +376,10 @@ const times = (count, make) => Array.from({ length: count }, make);
  */
 function renderLoading() {
   const last = readLastCounts(storage);
+  element("reviews-empty").hidden = true;
+  element("reviews-count").replaceChildren(buildSkeletonBar("0.75rem"));
+  element("reviews-list").replaceChildren(...times(skeletonCount(last.reviews, 2), buildSkeletonCard));
+
   const columns = element("board-columns");
   columns.setAttribute("aria-busy", "true");
   columns.replaceChildren(
@@ -529,6 +533,22 @@ function buildTokenRow(entry, index) {
 /* Rendering                                                                  */
 /* -------------------------------------------------------------------------- */
 
+/** The note box for one card, which exists only once there is a note or a request for one. */
+function buildNoteBox(item, written) {
+  const note = document.createElement("textarea");
+  note.className = "input note";
+  note.id = `note-${item.key}`;
+  note.rows = 2;
+  note.placeholder = "A note only you can see";
+  note.value = written;
+  note.setAttribute("aria-label", `Note on ${item.repository} #${item.number}`);
+  note.addEventListener("input", () => {
+    state.board = writeNote(state.board, item.key, note.value, new Date().toISOString());
+    scheduleSave();
+  });
+  return note;
+}
+
 /* -------------------------------------------------------------------------- */
 /* The card menu                                                              */
 /* -------------------------------------------------------------------------- */
@@ -679,6 +699,15 @@ function renderBoard() {
   const ordered = sortWorkItems(visible, state.sortId, hasNote);
   const grouped = groupByLinkedIssue(ordered, state.links);
 
+  // The row above the columns. It follows the chosen order, and with no choice
+  // made it puts the longest-waiting first (ADR 0013).
+  const waiting = sortWorkItems(withoutItems(state.reviews, state.items), reviewSortId(state.sortId), hasNote);
+  element("reviews-count").textContent = String(waiting.length);
+  element("reviews-empty").hidden = waiting.length > 0;
+  element("reviews-list").replaceChildren(
+    ...waiting.map((item) => buildWorkItemCard(item, { withMenu: false })),
+  );
+
   const overrides = {};
   for (const { item } of grouped) overrides[item.key] = readColumn(state.board, item.key);
   const board = groupIntoColumns(grouped, state.links, overrides);
@@ -768,7 +797,7 @@ async function inspectToken(entry) {
   const viewer = await fetchViewer(entry.token);
   if (!viewer.ok) {
     rows.push({ label: identity.label, ok: false, detail: describeFailure({ ...viewer, need: identity.need }) });
-    return { entry: updated, raw: [], rows, links };
+    return { entry: updated, raw: [], rows, links, reviews: [] };
   }
   const login = viewer.data?.login ?? "";
   state.login = state.login ?? login;
@@ -777,7 +806,7 @@ async function inspectToken(entry) {
   const answer = await fetchAssignedIssues(entry.token);
   if (!answer.ok) {
     rows.push({ label: work.label, ok: false, detail: describeFailure({ ...answer, need: work.need }) });
-    return { entry: updated, raw: [], rows, links };
+    return { entry: updated, raw: [], rows, links, reviews: [] };
   }
   const raw = Array.isArray(answer.data) ? answer.data : [];
   const items = normalizeWorkItems(raw);
@@ -788,9 +817,18 @@ async function inspectToken(entry) {
   const owners = ownersOf(items.map((item) => item.repository));
   updated = { ...updated, owners, itemCount: items.length };
 
+  // Waiting on you is not assigned to you, so it takes its own question. A
+  // token that cannot answer it is not broken: the board simply shows nothing
+  // from it (ADR 0013).
+  const waiting = await fetchReviewRequests(entry.token);
+  const reviews = waiting.ok ? normalizeWorkItems(waiting.data?.items) : [];
+
   // The relationships of this token's own items, with this token: a node id
   // from one owner is not readable by another owner's token (ADR 0010).
-  const linked = await fetchRelationships(entry.token, items.map((item) => item.key));
+  const linked = await fetchRelationships(
+    entry.token,
+    [...items, ...reviews].map((item) => item.key),
+  );
   links = linked.ok ? normalizeRelationships(linked.data) : {};
   rows.push({
     label: work.label,
@@ -834,7 +872,7 @@ async function inspectToken(entry) {
   }
 
   if (updated.grantedPermissions === null) updated = { ...updated, grantedPermissions: permissionsFingerprint() };
-  return { entry: updated, raw, rows, links };
+  return { entry: updated, raw, rows, links, reviews };
 }
 
 /** Ask every saved token, merge what they return, and show the board. */
@@ -847,15 +885,18 @@ async function connectAll() {
 
   const rows = [];
   const everything = [];
+  const waiting = [];
   let links = {};
   for (const entry of state.tokens) {
     const result = await inspectToken(entry);
     state.tokens = updateToken(state.tokens, entry.id, result.entry);
     everything.push(...result.raw);
     rows.push(...result.rows);
+    waiting.push(...(result.reviews ?? []));
     links = { ...links, ...(result.links ?? {}) };
   }
   state.links = links;
+  state.reviews = waiting;
 
   saveTokens(storage, state.tokens);
   // Merging here, not per token, is what removes an item two tokens both see.
@@ -870,6 +911,7 @@ async function connectAll() {
   renderBoard();
   showView(state.view);
   saveLastCounts(storage, {
+    reviews: state.reviews.length,
     items: state.items.length,
     repositories: availableRepositories(state.items).length,
     labels: availableLabels(state.items).length,
@@ -932,6 +974,7 @@ function signOut() {
   clearTimeout(state.saveTimer);
   state.tokens = [];
   state.items = [];
+  state.reviews = [];
   state.links = {};
   state.login = null;
   state.board = emptyDocument(new Date().toISOString());
@@ -1025,8 +1068,21 @@ function start() {
     if (!submenu.matches(":popover-open")) submenu.showPopover();
   });
 
+  element("menu-note").addEventListener("click", () => {
+    const item = state.menuItem;
+    if (!item) return;
+    state.notesOpen.add(item.key);
+    closeCardMenu();
+    renderBoard();
+    // After the board is rebuilt, not before: the box did not exist until now.
+    element(`note-${item.key}`)?.focus();
+  });
+
   menu.addEventListener("toggle", (event) => {
     const open = event.newState === "open";
+    if (open && state.menuItem) {
+      element("menu-note").textContent = noteMenuLabel(readNote(state.board, state.menuItem.key));
+    }
     state.menuAnchor?.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) placeMenu(menu, state.menuAnchor);
     else submenu.hidePopover();
