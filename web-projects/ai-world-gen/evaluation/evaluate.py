@@ -562,13 +562,21 @@ def render(version_name: str) -> None:
     print(f"drew {len(pictures)} maps into {RESULTS_DIR / version_name}")
 
 
+def judge_metrics_missing(galtea, config: dict, session_id: str) -> list[str]:
+    """The judge metric names that have no evaluation on this session yet (the judge is scored async, so
+    a metric with a pending evaluation counts as present)."""
+    present = {getattr(one, "metric_type_id", None) or getattr(one, "metric_id", None) for one in galtea.evaluations.list(session_id=session_id)}
+    return [name for name, metric_id in config.get("judgeMetricIds", {}).items() if metric_id not in present]
+
+
 def rescore(version_name: str, push: bool, judge: bool = False) -> None:
     """Score a saved run again with the metrics as they are now, and send the scores that are new to Galtea.
 
     A metric added after a version ran has no history without this. The grids are in the saved file, so
     no map is generated; `rescoreResults.js` computes the scores and this writes them back and, for the
     metrics the version had not been scored on, creates the evaluations on the version's sessions. With
-    `judge`, it also asks Galtea to run every judge metric on every session of the version."""
+    `judge`, it also asks Galtea to run each judge metric on every session of the version that has no
+    evaluation for it yet, so a second run never judges a map twice."""
     galtea = galtea_client() if push else None
     config = read_config()
     rules = read_rules()
@@ -594,9 +602,11 @@ def rescore(version_name: str, push: bool, judge: bool = False) -> None:
                     metrics=[{"id": config["metricIds"][name], "score": round(value, 4)} for name, value in new_metrics.items()],
                 )
                 sent += len(new_metrics)
-            if judge and judge_metric_names(config):
-                galtea.evaluations.create(session_id=session.id, metrics=judge_metric_names(config))
-                sent += len(judge_metric_names(config))
+            if judge:
+                missing = judge_metrics_missing(galtea, config, session.id)
+                if missing:
+                    galtea.evaluations.create(session_id=session.id, metrics=missing)
+                    sent += len(missing)
     saved["summary"] = summarise(rules, saved["results"])
     saved["rescoredAt"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     path.write_text(json.dumps(saved, separators=(",", ":")) + "\n", encoding="utf8")

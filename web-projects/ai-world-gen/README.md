@@ -142,25 +142,25 @@ python evaluate.py rescore --version v1                 # after a new metric: sc
 python evaluate.py backfill --version v1                # after a new dataset: draw its cases with v1's own code
 ```
 
-Every map is also drawn as a PNG with the page's own tiles, saved under `evaluation/results/vN/`, and attached to the Galtea output next to the ASCII view, so a result can be seen at a glance in the dashboard and compared across versions in the repository. The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`, and `GPT-5.2` as the judge), so runs stay comparable when OpenRouter adds newer ones. A full run is 38 maps and about 3,000 decisions: a few cents of Jev and under ten minutes. Results are also written to `evaluation/results/vN.json`.
+Every map is also drawn as a PNG with the page's own tiles, saved under `evaluation/results/vN/`, and attached to the Galtea output next to the ASCII view, so a result can be seen at a glance in the dashboard and compared across versions in the repository. The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`, and `GPT-5.2` as the judge), so runs stay comparable when OpenRouter adds newer ones. A full run is 38 maps and 3,008 decisions: about 25 cents of Jev (measured: $0.00008 per decision, about 2,000 tokens each) and under ten minutes. Results are also written to `evaluation/results/vN.json`.
 
 ### Versions so far (2026-09-20)
 
-Mean score per specification over the 38 test cases, with every metric as it is today (older versions were rescored, so v1's paths score is no longer the 0.99 it first showed). Seven columns: structures, paths, reachable and playable, a place reads as a place, the vocabulary's rules hold, routes lead to doors, landmarks and story.
+Mean score per specification over the 38 test cases, with every metric as it is today (older versions were rescored, so v1's paths score is no longer the 0.99 it first showed). Seven computed columns: structures, paths, reachable and playable, a place reads as a place, the vocabulary's rules hold, routes lead to doors, landmarks and story. The last column is the judge metric `reads-as-the-setting` (GPT-5.2), read from Galtea; every version was judged on all 38 maps (`rescore --judge`).
 
-| Version | What changed | Struct. | Paths | Reach. | Place | Rules | Routes | Story |
-|---|---|---|---|---|---|---|---|---|
-| v1 | The generator as first shipped | 0.18 | 0.74 | 0.69 | 0.48 | 0.83 | (1.00) | 0.07 |
-| v2 | Balance sheet in the state; "prefer the ground type" line removed | 0.39 | 0.53 | 0.75 | 0.43 | 0.58 | 0.77 | 0.61 |
-| v3 | Continuation hints; instruction says "structures first, continue the line" | 0.68 | 0.66 | 0.82 | 0.50 | 0.49 | 0.62 | 0.79 |
-| v4 | Code judges the one suggested continuation (short lines, closable gaps, never an overused type) | 0.82 | 0.80 | 0.77 | 0.50 | 0.62 | 0.66 | 0.66 |
-| v5 | The whole map in the state, one letter per cell | 0.93 | **0.82** | 0.81 | 0.53 | 0.49 | 0.70 | 0.76 |
-| v6 | Sampling floor from 8% to a third of the best option | 0.95 | 0.81 | 0.81 | 0.51 | 0.61 | 0.60 | 0.68 |
-| v7 | Typed `placement` per type (zone, never next, only next, edge), enforced before the model answers | 0.95 | 0.80 | 0.82 | 0.52 | 0.99 | 0.61 | 0.78 |
-| v8 | The blueprint: code places each structure as a rectangle with a door; each cell is offered only its part's types | **0.99** | 0.75 | 0.84 | **0.89** | 0.99 | 0.78 | 0.77 |
-| v9 | The state names what the world still lacks; a unique type is out once placed; a route is suggested outside a planned door | 0.98 | 0.80 | 0.87 | 0.87 | 0.98 | 0.87 | **0.84** |
-| v10 | Hard cap: a ground type past twice its target is not offered while another ground is allowed | 0.98 | 0.78 | 0.87 | 0.88 | 0.99 | 0.86 | 0.83 |
-| v11 | The station and the city block get a ground that is not a route (open deck, plaza); corridor and street become lines | 0.98 | 0.77 | **0.88** | 0.88 | **0.99** | 0.82 | 0.83 |
+| Version | What changed | Struct. | Paths | Reach. | Place | Rules | Routes | Story | Judge |
+|---|---|---|---|---|---|---|---|---|---|
+| v1 | The generator as first shipped | 0.18 | 0.74 | 0.69 | 0.48 | 0.83 | (1.00) | 0.07 | 0.09 |
+| v2 | Balance sheet in the state; "prefer the ground type" line removed | 0.39 | 0.53 | 0.75 | 0.43 | 0.58 | 0.77 | 0.61 | 0.24 |
+| v3 | Continuation hints; instruction says "structures first, continue the line" | 0.68 | 0.66 | 0.82 | 0.50 | 0.49 | 0.62 | 0.79 | 0.45 |
+| v4 | Code judges the one suggested continuation (short lines, closable gaps, never an overused type) | 0.82 | 0.80 | 0.77 | 0.50 | 0.62 | 0.66 | 0.66 | 0.48 |
+| v5 | The whole map in the state, one letter per cell | 0.93 | **0.82** | 0.81 | 0.53 | 0.49 | 0.70 | 0.76 | 0.54 |
+| v6 | Sampling floor from 8% to a third of the best option | 0.95 | 0.81 | 0.81 | 0.51 | 0.61 | 0.60 | 0.68 | 0.48 |
+| v7 | Typed `placement` per type (zone, never next, only next, edge), enforced before the model answers | 0.95 | 0.80 | 0.82 | 0.52 | 0.99 | 0.61 | 0.78 | 0.48 |
+| v8 | The blueprint: code places each structure as a rectangle with a door; each cell is offered only its part's types | **0.99** | 0.75 | 0.84 | **0.89** | 0.99 | 0.78 | 0.77 | 0.65 |
+| v9 | The state names what the world still lacks; a unique type is out once placed; a route is suggested outside a planned door | 0.98 | 0.80 | 0.87 | 0.87 | 0.98 | 0.87 | **0.84** | 0.69 |
+| v10 | Hard cap: a ground type past twice its target is not offered while another ground is allowed | 0.98 | 0.78 | 0.87 | 0.88 | 0.99 | 0.86 | 0.83 | 0.71 |
+| v11 | The station and the city block get a ground that is not a route (open deck, plaza); corridor and street become lines | 0.98 | 0.77 | **0.88** | 0.88 | **0.99** | 0.82 | 0.83 | 0.69 |
 
 Every version is scored on the same 38 seeds: the seeds a dataset added later were drawn afterwards with that version's own code (`evaluate.py backfill`), so a row is a mean over the same maps as every other row. v1's routes score is in brackets because v1 drew almost no doors, so there was little to judge.
 
