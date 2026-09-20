@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { countByKind, normalizeWorkItem, normalizeWorkItems, ownersOf } from "./workItems.js";
+import { countByKind, normalizeWorkItem, normalizeWorkItems, ownersOf, withoutItems } from "./workItems.js";
 
 const RAW_ISSUE = {
   id: 2312,
@@ -93,6 +93,52 @@ describe("normalizeWorkItems", () => {
 
   test("keeps only the first of a repeated node id", () => {
     expect(normalizeWorkItems([RAW_ISSUE, { ...RAW_ISSUE, title: "a second copy" }]).length).toBe(1);
+  });
+});
+
+describe("the repository of a searched item", () => {
+  // The search endpoint answers with an API address and no repository object.
+  // Reading only `repository.full_name` leaves every review card unlabelled.
+  test("is read from the API address when there is no repository object", () => {
+    expect(
+      normalizeWorkItem({ node_id: "PR_x", repository_url: "https://api.github.com/repos/Galtea-AI/monorepo" })
+        .repository,
+    ).toBe("Galtea-AI/monorepo");
+  });
+
+  test("prefers the repository object when both are there", () => {
+    expect(
+      normalizeWorkItem({
+        node_id: "PR_x",
+        repository: { full_name: "me/real" },
+        repository_url: "https://api.github.com/repos/me/other",
+      }).repository,
+    ).toBe("me/real");
+  });
+
+  test("is empty rather than wrong when the address is not one", () => {
+    expect(normalizeWorkItem({ node_id: "PR_x", repository_url: "nonsense" }).repository).toBe("");
+    expect(normalizeWorkItem({ node_id: "PR_x", repository_url: 7 }).repository).toBe("");
+  });
+});
+
+describe("withoutItems", () => {
+  const a = { key: "a" };
+  const b = { key: "b" };
+
+  // A pull request can be assigned to you and waiting for your review at once.
+  // The board is the place that can move it, so the board keeps it.
+  test("drops what the board already holds", () => {
+    expect(withoutItems([a, b], [a]).map((one) => one.key)).toEqual(["b"]);
+  });
+
+  test("keeps everything when the board holds nothing", () => {
+    expect(withoutItems([a, b], []).map((one) => one.key)).toEqual(["a", "b"]);
+    expect(withoutItems([a, b], null).map((one) => one.key)).toEqual(["a", "b"]);
+  });
+
+  test("survives being handed nothing", () => {
+    expect(withoutItems(null, [a])).toEqual([]);
   });
 });
 

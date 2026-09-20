@@ -8,6 +8,9 @@ to make here, and nothing is stored anywhere except GitHub.
 
 - **Every open issue and pull request assigned to you**, across every repository
   your token can read, in one list, each marked with what it is.
+- **What is waiting on you, above everything else.** A row of the pull requests
+  where somebody asked for your review, longest-waiting first, because those
+  cost other people time rather than yours.
 - **A board that keeps itself up to date.** Six columns, from To do to Done,
   and a card moves itself when a pull request appears, when a reviewer is asked,
   when they answer, and when it merges. The button on a card opens a menu that

@@ -207,6 +207,17 @@
           </p>
         </div>
 
+        <!-- Above the columns, and outside them: this is work waiting on you,
+             not work assigned to you (ADR 0013). -->
+        <section id="reviews" class="reviews" aria-labelledby="reviews-heading">
+          <div class="column-head reviews-head">
+            <h3 class="column-name" id="reviews-heading">Pull requests waiting for your review</h3>
+            <span id="reviews-count" class="badge column-count">0</span>
+          </div>
+          <p id="reviews-empty" class="column-empty" hidden>Nothing is waiting for your review.</p>
+          <ul id="reviews-list" class="issues reviews-list"></ul>
+        </section>
+
         <!-- One column per state, built from COLUMNS (ADR 0011). -->
         <div id="board-columns" class="columns"></div>
       </section>

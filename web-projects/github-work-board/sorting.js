@@ -29,6 +29,19 @@ export const SORT_OPTIONS = [
 
 const KNOWN = new Set(SORT_OPTIONS.map((option) => option.id));
 
+/**
+ * The order for the row of reviews waiting on you.
+ *
+ * It follows whatever order the reader chose, like the rest of the board. With
+ * no choice made it shows the longest-waiting first, because a review that has
+ * been sitting for three weeks is the one to clear, and the board's own default
+ * (newest first) would bury it (ADR 0013).
+ */
+export function reviewSortId(sortId) {
+  const chosen = readSortId(sortId);
+  return chosen === DEFAULT_SORT_ID ? "updated-asc" : chosen;
+}
+
 /** One of the orders above, whatever was asked for. */
 export function readSortId(value) {
   return typeof value === "string" && KNOWN.has(value) ? value : DEFAULT_SORT_ID;

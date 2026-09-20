@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { DEFAULT_SORT_ID, SORT_OPTIONS, readSortId, sortWorkItems } from "./sorting.js";
+import { DEFAULT_SORT_ID, SORT_OPTIONS, readSortId, reviewSortId, sortWorkItems } from "./sorting.js";
 
 const item = (over) => ({
   key: "k",
@@ -40,6 +40,22 @@ describe("readSortId", () => {
     expect(readSortId(null)).toBe(DEFAULT_SORT_ID);
     expect(readSortId(undefined)).toBe(DEFAULT_SORT_ID);
     expect(readSortId(7)).toBe(DEFAULT_SORT_ID);
+  });
+});
+
+describe("reviewSortId", () => {
+  // The oldest review request is the one to clear, and the board's own default
+  // would bury it under everything touched today.
+  test("with no choice made, the longest-waiting comes first", () => {
+    expect(reviewSortId(DEFAULT_SORT_ID)).toBe("updated-asc");
+    expect(reviewSortId(null)).toBe("updated-asc");
+    expect(reviewSortId("nonsense")).toBe("updated-asc");
+  });
+
+  test("any order the reader chose is the order it uses", () => {
+    expect(reviewSortId("title")).toBe("title");
+    expect(reviewSortId("created-desc")).toBe("created-desc");
+    expect(reviewSortId("updated-asc")).toBe("updated-asc");
   });
 });
 
