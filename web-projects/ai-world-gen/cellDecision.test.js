@@ -15,6 +15,7 @@ import {
   zoneAllowedTypes,
   fallbackType,
   isRouteType,
+  isUniqueType,
   mapSketch,
   readChatDecision,
   readDecisionAnswer,
@@ -226,6 +227,44 @@ describe("the blueprint in the decision (v8)", () => {
     const inside = buildCellDecision({ vocabulary: strict, setting, grid, x: 2, y: 2, plan });
     expect(Object.keys(inside.questions.type.criteria)).toEqual(["cottage-floor", "villager"]);
     expect(inside.state.excluded.chest).toBe("never next to chest");
+  });
+
+  test("the state lists the things the world still lacks, and a unique type already placed is out (v9)", () => {
+    const withWell = {
+      ...planned,
+      elements: [...planned.elements, type("well", { interactable: true, placementRules: "Rare. Exactly one, on the green.", placement: { ...open, zone: "outdoor" } })],
+    };
+    const grid = createGrid(7, 7);
+    const before = buildCellDecision({ vocabulary: withWell, setting, grid, x: 6, y: 6, plan });
+    expect(before.state.missing).toEqual(["villager", "well"]);
+    expect(Object.keys(before.questions.type.criteria)).toContain("well");
+    expect(before.questions.type.instructions).toMatch(/state\.missing/);
+    setCell(grid, 0, 6, { typeId: "well" });
+    setCell(grid, 0, 0, { typeId: "villager" });
+    const after = buildCellDecision({ vocabulary: withWell, setting, grid, x: 6, y: 6, plan });
+    expect(after.state.missing).toEqual([]);
+    expect(Object.keys(after.questions.type.criteria)).not.toContain("well");
+    expect(after.state.excluded.well).toMatch(/already on the map/);
+    expect(Object.keys(after.questions.type.criteria)).toContain("villager");
+  });
+
+  test("a unique door of a structure with several copies is not unique on the map", () => {
+    expect(isUniqueType({ placementRules: "Uncommon. Exactly one per cottage, in a wall." })).toBe(false);
+    expect(isUniqueType({ placementRules: "Rare. Exactly one, on the green." })).toBe(true);
+    expect(isUniqueType({ placementRules: "Only one in the whole map." })).toBe(true);
+    expect(isUniqueType({ placementRules: "Common." })).toBe(false);
+  });
+
+  test("a cell outside, next to a planned door, is suggested the route type that leads to it (v9)", () => {
+    const withPath = {
+      ...planned,
+      elements: [...planned.elements, type("path", { visualTag: "path", placement: { ...open, zone: "outdoor" } })],
+    };
+    const grid = createGrid(7, 7);
+    const approach = buildCellDecision({ vocabulary: withPath, setting, grid, x: 2, y: 5, plan });
+    expect(approach.state.continuations.suggested).toEqual({ type: "path", reason: "leads to the door of the Cottage" });
+    const elsewhere = buildCellDecision({ vocabulary: withPath, setting, grid, x: 6, y: 6, plan });
+    expect(elsewhere.state.continuations.suggested).toBeNull();
   });
 
   test("describeZone reads as a phrase", () => {

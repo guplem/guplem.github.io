@@ -16,7 +16,7 @@
 // so a score in the dashboard can be traced back to one function below.
 
 import { zoneAt } from "../blueprint.js";
-import { isRouteType } from "../cellDecision.js";
+import { isRouteType, isUniqueType } from "../cellDecision.js";
 import { getCell } from "../grid.js";
 import { analyseReachability } from "../reachability.js";
 import { glyphFor } from "../tileStyles.js";
@@ -267,13 +267,6 @@ function inRange(value, zeroLow, low, high, zeroHigh) {
 }
 
 const share = (part, whole) => (whole === 0 ? null : part / whole);
-
-const UNIQUE_WORDS = /\bexactly one\b|\bonly one\b/i;
-
-/** Whether a type's rules ask for one instance on the whole map. */
-function isUniqueType(type) {
-  return Boolean(type && UNIQUE_WORDS.test(type.placementRules ?? ""));
-}
 
 const DIAGONALS = [
   [-1, -1],

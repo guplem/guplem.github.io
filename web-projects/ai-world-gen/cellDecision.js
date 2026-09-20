@@ -43,6 +43,7 @@ const INSTRUCTIONS = [
   "state.zone says which part of the plan this cell is: a wall, the door or the inside of a named structure, or outside every structure;",
   "only the types that belong to that part are offered.",
   "state.excluded lists the types whose hard rules forbid this cell, with the rule; they are not offered.",
+  "state.missing lists the things this world still lacks that fit this cell; when it is not empty and the rules fit, choose one of them.",
   "When continuations.suggested names a type, that type continues or closes a structure here and fits best,",
   "unless its rules forbid it in this place.",
   "When continuations.suggested is null, no structure needs this cell: choose a type from balance.needed",
@@ -58,6 +59,11 @@ export function isRouteType(type) {
   if (!type) return false;
   if (ROUTE_TAGS.has(type.visualTag)) return true;
   return ROUTE_WORDS.test(`${type.id} ${type.label}`);
+}
+
+/** Whether a type's rules ask for one instance on the whole map ("exactly one per cottage" does not). Shared with the metrics. */
+export function isUniqueType(type) {
+  return Boolean(type && /\b(exactly|only) one\b(?! per\b)/i.test(type.placementRules ?? ""));
 }
 
 const SIDES = [
@@ -313,6 +319,7 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y, plan = null
     balance: null,
     continuations: null,
     excluded: null,
+    missing: null,
   };
   const zone = zoneAt(plan, x, y);
   state.zone = { part: zone.part, structure: zone.part === "outside" ? null : zone.label, description: describeZone(zone) };
@@ -320,14 +327,29 @@ export function buildCellDecision({ vocabulary, setting, grid, x, y, plan = null
   const rules = allowedTypes({ vocabulary, grid, x, y });
   let allowed = byZone.filter((id) => rules.allowed.includes(id));
   if (allowed.length === 0) allowed = byZone.length > 0 ? byZone : vocabulary.elements.map((one) => one.id);
+  // A type the rules want exactly once is out once it is on the map (v9), unless it is all this cell can be.
+  const placedUnique = allowed.filter((id) => isUniqueType(typeById(vocabulary, id)) && (placed[id] ?? 0) >= 1);
+  if (placedUnique.length < allowed.length) allowed = allowed.filter((id) => !placedUnique.includes(id));
   state.excluded = {};
   for (const type of vocabulary.elements) {
     if (allowed.includes(type.id)) continue;
-    state.excluded[type.id] = rules.excluded[type.id] ?? `this cell is ${describeZone(zone)}`;
+    state.excluded[type.id] =
+      rules.excluded[type.id] ?? (placedUnique.includes(type.id) ? "already on the map, and its rules say exactly one" : `this cell is ${describeZone(zone)}`);
   }
+  // The things this world still lacks and this cell could hold: one nudge, gone as soon as each is placed.
+  state.missing = allowed.filter((id) => {
+    const type = typeById(vocabulary, id);
+    return (placed[id] ?? 0) === 0 && (type.interactable || isUniqueType(type));
+  });
   state.balance = balanceSheet(vocabulary, placed, grid.width * grid.height);
   state.continuations = continuationHints(grid, vocabulary, x, y, state.balance);
   if (state.continuations.suggested && !allowed.includes(state.continuations.suggested.type)) state.continuations.suggested = null;
+  // Outside, next to a planned door: the route that leads to it (v9), so doors do not open onto nothing.
+  if (zone.part === "outside" && plan) {
+    const doorSide = SIDES.map((side) => zoneAt(plan, x + side.dx, y + side.dy)).find((one) => one.part === "door");
+    const route = allowed.map((id) => typeById(vocabulary, id)).find(isRouteType);
+    if (doorSide && route) state.continuations.suggested = { type: route.id, reason: `leads to the door of the ${doorSide.label}` };
+  }
   const criteria = {};
   for (const type of vocabulary.elements) {
     if (!allowed.includes(type.id)) continue;
