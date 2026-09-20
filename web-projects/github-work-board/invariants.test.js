@@ -284,14 +284,17 @@ describe("a filter named in a link keeps its name (ADR 0009)", () => {
 // A column id is written into board.json the moment a card is moved by hand,
 // so it is as permanent as a storage key (ADR 0011).
 describe("a column a card was moved to keeps its name (ADR 0011)", () => {
-  test("these are the columns, and an id is never renamed", () => {
-    expect(COLUMN_IDS).toEqual([
-      "todo",
-      "ongoing",
+  // The set, not the order: the order is only how they read left to right, and
+  // moving one costs nothing. Renaming or dropping one strands every card that
+  // was moved into it by hand.
+  test("these are the columns, and an id is never renamed or dropped", () => {
+    expect([...COLUMN_IDS].sort()).toEqual([
       "awaiting-review",
-      "ready-to-merge",
-      "needs-changes",
       "done",
+      "needs-changes",
+      "ongoing",
+      "ready-to-merge",
+      "todo",
     ]);
   });
 
