@@ -66,6 +66,10 @@ cd web-projects/github-work-board && bun test
 Then the repository suite, the way CI runs it: delegate to the **validate**
 agent.
 
+**A green suite does not prove the page loads.** Nothing executes `app.js`. If
+you changed `app.js` or `gateway.js`, open the page and read the console before
+calling it done.
+
 **When a test in `invariants.test.js` fails, stop.** It names an ADR. Read that
 ADR and decide, in words, whether you are changing the decision on purpose. If
 yes, update the ADR in the same pull request. If no, fix your change, not the
