@@ -18,6 +18,17 @@ describe("the shipped vocabularies", () => {
       expect(result.ok).toBe(true);
     });
 
+    test(`${preset.id} declares a placement for every type and at least one structure with a door`, () => {
+      const vocabulary = PRESET_VOCABULARIES[preset.id];
+      for (const one of vocabulary.elements) expect(one.placement?.zone).toMatch(/^(indoor|outdoor|wall|any)$/);
+      expect(vocabulary.structures.length).toBeGreaterThan(0);
+      expect(vocabulary.structures.some((one) => one.door !== null)).toBe(true);
+      for (const structure of vocabulary.structures) {
+        expect(vocabulary.elements.find((one) => one.id === structure.wall)?.placement.zone).toBe("wall");
+        expect(vocabulary.elements.find((one) => one.id === structure.floor)?.placement.zone).not.toBe("wall");
+      }
+    });
+
     test(`${preset.id} has a common walkable ground, a barrier, and something interactable with instance fields`, () => {
       const { elements } = PRESET_VOCABULARIES[preset.id];
       expect(elements.some((one) => one.walkable && !one.isBarrier && !one.interactable)).toBe(true);
