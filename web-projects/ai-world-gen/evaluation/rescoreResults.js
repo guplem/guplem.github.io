@@ -5,8 +5,9 @@
 // A new metric needs a history, or the first version that carries it cannot
 // be compared with anything. The saved results hold every grid, so the metrics
 // can be computed again without a single model call. Prints one JSON object:
-// case id -> scores. `evaluate.py rescore` writes them back and sends the new
-// ones to Galtea.
+// case id -> {scores, ascii}.
+// `evaluate.py rescore` writes them back and sends the new ones to Galtea;
+// `evaluate.py backfill` scores a map an old version has just drawn.
 //
 // A preset's vocabulary is not in the file (the shipped one is in the
 // repository), so it is read from `presetVocabularies.js`.
@@ -14,7 +15,7 @@
 import { readFileSync } from "node:fs";
 import { gridFromJSON } from "../grid.js";
 import { presetVocabularyFor } from "../presetVocabularies.js";
-import { scoreMap } from "./mapMetrics.js";
+import { renderAscii, scoreMap } from "./mapMetrics.js";
 
 const path = process.argv[2];
 if (!path) {
@@ -30,6 +31,7 @@ for (const [caseId, result] of Object.entries(saved.results)) {
     process.stderr.write(`${caseId}: no vocabulary for preset "${result.input.preset}"\n`);
     process.exit(1);
   }
-  scores[caseId] = scoreMap(gridFromJSON(result.grid), vocabulary, result.summary, result.plan ?? null);
+  const grid = gridFromJSON(result.grid);
+  scores[caseId] = { scores: scoreMap(grid, vocabulary, result.summary, result.plan ?? null), ascii: renderAscii(grid, vocabulary) };
 }
 process.stdout.write(JSON.stringify(scores));
