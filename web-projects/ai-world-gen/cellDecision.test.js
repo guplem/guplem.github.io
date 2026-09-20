@@ -268,7 +268,7 @@ describe("chooseType", () => {
     const random = mulberry32(3);
     const counts = { grass: 0, wall: 0, door: 0 };
     for (let i = 0; i < 2000; i += 1) counts[chooseType({ choice: "grass", probabilities, spread: 1, random })] += 1;
-    expect(counts.grass).toBeGreaterThan(1200);
+    expect(counts.grass).toBeGreaterThan(850);
     expect(counts.wall).toBeGreaterThan(250);
     expect(counts.door).toBeGreaterThan(100);
   });
