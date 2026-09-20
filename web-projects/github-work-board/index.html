@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="156" />
-  <meta name="deploy-date" content="2026-09-20T11:56:26.000Z" />
+  <meta name="deploy-pull-request" content="157" />
+  <meta name="deploy-date" content="2026-09-20T12:03:08.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -75,6 +75,7 @@
        menu inside a card would be clipped by the columns, which scroll
        sideways; a popover is in the browser's top layer and is not (ADR 0012). -->
   <div id="card-menu" class="menu" popover="auto" role="menu" aria-label="Card actions">
+    <button id="menu-note" type="button" class="menu-item" role="menuitem">Add note</button>
     <button id="menu-move" type="button" class="menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="false">
       <span>Move to</span>
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6" /></svg>

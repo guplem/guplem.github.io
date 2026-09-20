@@ -26,8 +26,9 @@ to make here, and nothing is stored anywhere except GitHub.
 - **Seven ways to sort it**: recently updated, least recently updated, newest,
   oldest, ones you noted first, by repository, or by title. The choice goes into
   the address bar, so a reload keeps it and a link carries it.
-- **A private note on any issue.** Notes are yours alone. They never appear on
-  GitHub's issue page, and nobody else sees them.
+- **A private note on any issue**, added from the card's own menu and shown only
+  where one exists. Notes are yours alone: they never appear on GitHub's issue
+  page, and nobody else sees them.
 - **Your notes sync themselves.** They live in a JSON file in a private
   repository you own, so the laptop and the phone show the same thing, and every
   change keeps a version in git history.

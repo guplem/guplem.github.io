@@ -24,6 +24,14 @@ export function say(key, params = {}) {
   );
 }
 
+/**
+ * What the menu offers about a note: writing the first one is a different act
+ * from changing one that is already there.
+ */
+export function noteMenuLabel(noteText) {
+  return typeof noteText === "string" && noteText.trim() !== "" ? "Edit note" : "Add note";
+}
+
 /** A list of names as a person would read it out. */
 export function joinWithAnd(names) {
   const clean = (Array.isArray(names) ? names : []).filter((one) => typeof one === "string" && one !== "");
