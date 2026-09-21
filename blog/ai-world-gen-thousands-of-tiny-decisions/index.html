@@ -329,66 +329,79 @@
 
       <section class="costs">
         <h2 id="what-it-costs-really"><a class="heading-anchor" href="#what-it-costs-really">What it costs, and how that grows</a></h2>
-        <p>The bill for the whole project, from OpenRouter's usage page: <strong>$3.11</strong> for 39.2 thousand decisions, and <strong>$0.33</strong> for the 7 calls that wrote vocabularies. That is $0.039 per million tokens to Jev, about eight thousandths of a cent per decision, against $0.047 for one vocabulary. Every map in this post, every version, every rerun: three dollars and change.</p>
-        <p>The interesting number is not the total, though. It is how the price grows when the map does, because the two ways of drawing a map grow differently. Jev sends the state with every question, and the state holds the map, so a bigger map means more questions <em>and</em> a longer question. One call sends its prompt once and writes about one letter per cell, so a bigger map only means a longer answer.</p>
+        <p>The bill for the whole project, from OpenRouter's usage page: <strong>$3.11</strong> for 39.2 thousand decisions, and <strong>$0.33</strong> for the 7 calls that wrote vocabularies. One decision costs eight thousandths of a cent; one vocabulary costs $0.047. Every map in this post, every version, every rerun: three dollars and change.</p>
+        <p>The total is not the interesting number, though. This is: what does <em>one</em> map cost, and what happens when the map gets bigger? The two ways of drawing it answer differently.</p>
+        <ul class="two-ways">
+          <li><strong>Jev, a decision per cell.</strong> Every question carries the state, and the state holds the map. A bigger map means more questions, and each question is longer.</li>
+          <li><strong>An LLM, one call for the whole map.</strong> The prompt goes out once, and the model writes back about one letter per cell. A bigger map only means a longer answer.</li>
+        </ul>
         <figure class="chart">
-<svg viewBox="0 0 760 330" class="bars scaling" role="img" aria-labelledby="scaling-title scaling-desc" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 760 340" class="bars scaling" role="img" aria-labelledby="scaling-title scaling-desc" xmlns="http://www.w3.org/2000/svg">
 <title id="scaling-title">The cost of one map, by the size of the map</title>
-<desc id="scaling-desc">Two lines on a logarithmic scale, from an 8 by 8 map to a 64 by 64 map. A decision per cell with Jev starts at $0.005 and climbs steeply to $0.68, because the state is sent again with every question. The whole map in one call starts at $0.005 and climbs gently to $0.043, because the prompt is sent once and the answer is about one token per cell. The lines cross at about 9 by 9 tiles.</desc>
-<line x1="58" y1="262.0" x2="664" y2="262.0" class="grid" />
-<text x="50" y="266.0" class="tick" text-anchor="end">$0.005</text>
-<line x1="58" y1="232.2" x2="664" y2="232.2" class="grid" />
-<text x="50" y="236.2" class="tick" text-anchor="end">$0.01</text>
-<line x1="58" y1="162.9" x2="664" y2="162.9" class="grid" />
-<text x="50" y="166.9" class="tick" text-anchor="end">$0.05</text>
-<line x1="58" y1="133.1" x2="664" y2="133.1" class="grid" />
-<text x="50" y="137.1" class="tick" text-anchor="end">$0.10</text>
-<line x1="58" y1="63.8" x2="664" y2="63.8" class="grid" />
-<text x="50" y="67.8" class="tick" text-anchor="end">$0.50</text>
-<line x1="58" y1="34.0" x2="664" y2="34.0" class="grid" />
-<text x="50" y="38.0" class="tick" text-anchor="end">$1.00</text>
-<text x="58.0" y="306" class="tick" text-anchor="middle">8×8</text>
-<text x="285.2" y="306" class="tick" text-anchor="middle">16×16</text>
-<text x="436.8" y="306" class="tick" text-anchor="middle">24×24</text>
-<text x="512.5" y="306" class="tick" text-anchor="middle">32×32</text>
-<text x="588.2" y="306" class="tick" text-anchor="middle">48×48</text>
-<text x="664.0" y="306" class="tick" text-anchor="middle">64×64</text>
-<line x1="95.9" y1="34" x2="95.9" y2="284" class="meet" />
-<text x="101.9" y="46" class="tick">about 9 × 9: the two meet</text>
-<polyline points="58.0,263.8 133.8,237.8 209.5,221.5 285.2,195.4 361.0,174.8 436.8,157.5 512.5,129.1 588.2,85.1 664.0,50.3" class="line line-jev" />
-<circle cx="58.0" cy="263.8" r="3" class="dot dot-jev" />
-<circle cx="133.8" cy="237.8" r="3" class="dot dot-jev" />
-<circle cx="209.5" cy="221.5" r="3" class="dot dot-jev" />
-<circle cx="285.2" cy="195.4" r="3" class="dot dot-jev" />
-<circle cx="361.0" cy="174.8" r="3" class="dot dot-jev" />
-<circle cx="436.8" cy="157.5" r="3" class="dot dot-jev" />
-<circle cx="512.5" cy="129.1" r="3" class="dot dot-jev" />
-<circle cx="588.2" cy="85.1" r="3" class="dot dot-jev" />
-<circle cx="664.0" cy="50.3" r="3" class="dot dot-jev" />
-<text x="672" y="54.3" class="bar-value">$0.68</text>
-<polyline points="58.0,260.6 133.8,257.9 209.5,254.8 285.2,247.7 361.0,240.1 436.8,232.3 512.5,217.1 588.2,190.7 664.0,169.3" class="line line-whole" />
-<circle cx="58.0" cy="260.6" r="3" class="dot dot-whole" />
-<circle cx="133.8" cy="257.9" r="3" class="dot dot-whole" />
-<circle cx="209.5" cy="254.8" r="3" class="dot dot-whole" />
-<circle cx="285.2" cy="247.7" r="3" class="dot dot-whole" />
-<circle cx="361.0" cy="240.1" r="3" class="dot dot-whole" />
-<circle cx="436.8" cy="232.3" r="3" class="dot dot-whole" />
-<circle cx="512.5" cy="217.1" r="3" class="dot dot-whole" />
-<circle cx="588.2" cy="190.7" r="3" class="dot dot-whole" />
-<circle cx="664.0" cy="169.3" r="3" class="dot dot-whole" />
-<text x="672" y="173.3" class="bar-value">$0.043</text>
-<text x="660" y="38.3" class="bar-label" text-anchor="end">one decision per cell</text>
-<text x="660" y="157.3" class="bar-label" text-anchor="end">the whole map in one call</text>
-<text x="58" y="18" class="chart-title">What one map costs, by the size of the map</text>
+<desc id="scaling-desc">Two lines, from an 8 by 8 map to a 64 by 64 map. Jev, a decision per cell, starts at $0.005 and curves steeply upwards to $0.68. An LLM in one call starts at $0.005 and stays almost flat, reaching $0.043. The two cost the same at about 9 by 9 tiles; above that the single call is always cheaper.</desc>
+<text x="10" y="18" class="chart-title">What one map costs, by the size of the map</text>
+<line x1="62" y1="290.0" x2="734" y2="290.0" class="grid" />
+<text x="54" y="294.0" class="tick" text-anchor="end">$0.00</text>
+<line x1="62" y1="253.4" x2="734" y2="253.4" class="grid" />
+<text x="54" y="257.4" class="tick" text-anchor="end">$0.10</text>
+<line x1="62" y1="216.9" x2="734" y2="216.9" class="grid" />
+<text x="54" y="220.9" class="tick" text-anchor="end">$0.20</text>
+<line x1="62" y1="180.3" x2="734" y2="180.3" class="grid" />
+<text x="54" y="184.3" class="tick" text-anchor="end">$0.30</text>
+<line x1="62" y1="143.7" x2="734" y2="143.7" class="grid" />
+<text x="54" y="147.7" class="tick" text-anchor="end">$0.40</text>
+<line x1="62" y1="107.1" x2="734" y2="107.1" class="grid" />
+<text x="54" y="111.1" class="tick" text-anchor="end">$0.50</text>
+<line x1="62" y1="70.6" x2="734" y2="70.6" class="grid" />
+<text x="54" y="74.6" class="tick" text-anchor="end">$0.60</text>
+<line x1="62" y1="34.0" x2="734" y2="34.0" class="grid" />
+<text x="54" y="38.0" class="tick" text-anchor="end">$0.70</text>
+<text x="62.0" y="314" class="tick" text-anchor="middle">8×8</text>
+<text x="158.0" y="314" class="tick" text-anchor="middle">16×16</text>
+<text x="254.0" y="314" class="tick" text-anchor="middle">24×24</text>
+<text x="350.0" y="314" class="tick" text-anchor="middle">32×32</text>
+<text x="446.0" y="314" class="tick" text-anchor="middle">40×40</text>
+<text x="542.0" y="314" class="tick" text-anchor="middle">48×48</text>
+<text x="638.0" y="314" class="tick" text-anchor="middle">56×56</text>
+<text x="734.0" y="314" class="tick" text-anchor="middle">64×64</text>
+<text x="398" y="334" class="tick" text-anchor="middle">the size of the map</text>
+<polyline points="62.0,288.2 86.0,286.8 110.0,285.3 158.0,281.4 206.0,276.1 254.0,269.3 350.0,249.8 542.0,178.4 734.0,39.5" class="line line-jev" />
+<circle cx="62.0" cy="288.2" r="3.5" class="dot dot-jev" />
+<circle cx="86.0" cy="286.8" r="3.5" class="dot dot-jev" />
+<circle cx="110.0" cy="285.3" r="3.5" class="dot dot-jev" />
+<circle cx="158.0" cy="281.4" r="3.5" class="dot dot-jev" />
+<circle cx="206.0" cy="276.1" r="3.5" class="dot dot-jev" />
+<circle cx="254.0" cy="269.3" r="3.5" class="dot dot-jev" />
+<circle cx="350.0" cy="249.8" r="3.5" class="dot dot-jev" />
+<circle cx="542.0" cy="178.4" r="3.5" class="dot dot-jev" />
+<circle cx="734.0" cy="39.5" r="3.5" class="dot dot-jev" />
+<polyline points="62.0,288.1 86.0,288.0 110.0,287.8 158.0,287.5 206.0,287.0 254.0,286.4 350.0,284.8 542.0,280.4 734.0,274.3" class="line line-whole" />
+<circle cx="62.0" cy="288.1" r="3.5" class="dot dot-whole" />
+<circle cx="86.0" cy="288.0" r="3.5" class="dot dot-whole" />
+<circle cx="110.0" cy="287.8" r="3.5" class="dot dot-whole" />
+<circle cx="158.0" cy="287.5" r="3.5" class="dot dot-whole" />
+<circle cx="206.0" cy="287.0" r="3.5" class="dot dot-whole" />
+<circle cx="254.0" cy="286.4" r="3.5" class="dot dot-whole" />
+<circle cx="350.0" cy="284.8" r="3.5" class="dot dot-whole" />
+<circle cx="542.0" cy="280.4" r="3.5" class="dot dot-whole" />
+<circle cx="734.0" cy="274.3" r="3.5" class="dot dot-whole" />
+<circle cx="74.0" cy="288.2" r="5" class="meet-dot" />
+<line x1="78.0" y1="282.2" x2="122.0" y2="258.9" class="meet" />
+<text x="126.0" y="256.9" class="tick">both cost the same at about 9×9</text>
+<line x1="78" y1="50" x2="108" y2="50" class="line line-jev" />
+<text x="116" y="54" class="bar-label">Jev, a decision per cell</text>
+<line x1="78" y1="72" x2="108" y2="72" class="line line-whole" />
+<text x="116" y="76" class="bar-label">An LLM, one call for the whole map</text>
 </svg>
-          <figcaption>The state Jev reads was built with the real code at each size; its price comes from the project's bill. The one-call figures come from the tokens the model actually used on the run below: a prompt of about 2,182 tokens, and an answer of about one token per cell.</figcaption>
+          <figcaption>Both prices are measured. The state Jev reads was built with the real code at each size and priced from the project's bill; the single call is priced on the tokens the run below actually spent, in and out.</figcaption>
         </figure>
-        <p>They meet at about nine tiles by nine. Below that, a decision per cell is the cheaper way to draw a map; above it, the single call pulls away, and it never comes back: at 32 × 32 it is 8 times cheaper, at 64 × 64 16 times. Jev's own price, fifty times under a frontier chat model per token, is spent on repetition. The same per-cell loop run with Claude Sonnet 5 instead of Jev, one call per cell with the same state, would cost $1.22 for that 16 × 16 map: fifty times the decision model, for the same hundreds of one-word answers.</p>
-        <p>One number sits above both and does not move: the vocabulary, $0.047 for one creative call, is ten maps' worth of decisions at 8 × 8. For a single small map, the world costs more than the drawing of it.</p>
+        <p>The two cost the same at about nine tiles by nine. Under that size, a decision per cell is cheaper. Over it, the single call pulls ahead and never looks back: 8 times cheaper at 32 × 32, 16 times at 64 × 64.</p>
+        <p>Jev costs about fifty times less than a chat model per token, and the per-cell loop spends all of that on repetition. It is still the reason the loop is affordable at all: the same loop run with Claude Sonnet 5 instead of Jev would cost $1.22 for one 16 × 16 map.</p>
+        <p>Both ways pay for the vocabulary first, $0.047 for one creative call, once per world. For a small map, that is more than the drawing of it costs.</p>
         <div class="table-scroll">
           <table class="scores">
-            <caption>One map, drawn both ways</caption>
-            <thead><tr><th scope="col">Map</th><th scope="col">Cells</th><th scope="col">A decision per cell</th><th scope="col">One call</th></tr></thead>
+            <caption>One map, drawn both ways. The vocabulary is left out: both ways pay it.</caption>
+            <thead><tr><th scope="col">Map</th><th scope="col">Cells</th><th scope="col">Jev, a decision per cell</th><th scope="col">An LLM, one call</th></tr></thead>
             <tbody>
 <tr><th scope="row">8 × 8</th><td>64</td><td>$0.0048</td><td>$0.0052</td></tr>
 <tr><th scope="row">16 × 16</th><td>256</td><td>$0.024</td><td>$0.0070</td></tr>
@@ -397,7 +410,6 @@
             </tbody>
           </table>
         </div>
-        <p class="data-note">Both ways also pay $0.047 for the vocabulary, once per world, so the table leaves it out. A token is taken as two characters of state, the ratio this project's own bill implies; Claude Sonnet 5 is at its list price of $2 and $10 per million tokens, in and out.</p>
       </section>
 
       <section>
