@@ -10,7 +10,7 @@
 // The sheet's tiles are 12 pixels and drawn many times larger, so image
 // smoothing is off: a blurred 1-bit tile is mud.
 
-import { cellRect } from "./camera.js";
+import { cellRect, wholeGridImage } from "./camera.js";
 import { hashCoordinate } from "./random.js";
 import { TILE_SIZE, TILESET_FILE, tileFor } from "./tileset.js";
 import { DEFAULT_STYLE_ID, glyphFor } from "./tileStyles.js";
@@ -33,6 +33,12 @@ export function loadTilesheet() {
 /** The visual tag for a cell's type, or the fallback when the type is unknown. */
 function tagFor(vocabulary, cell) {
   return typeById(vocabulary, cell?.typeId)?.visualTag ?? "unknown";
+}
+
+/** An undecided cell: a dark checker square, so the shape of the map still reads. */
+function drawUndecided(context, x, y, rect) {
+  context.fillStyle = (x + y) % 2 === 0 ? "#17171b" : "#131316";
+  context.fillRect(rect.x, rect.y, rect.size, rect.size);
 }
 
 /**
@@ -117,8 +123,7 @@ export function createRenderer(canvas, sheet) {
         if (rect.x + rect.size < 0 || rect.y + rect.size < 0 || rect.x > canvas.clientWidth || rect.y > canvas.clientHeight) continue;
         const cell = grid.cells[y * grid.width + x];
         if (cell === null) {
-          context.fillStyle = (x + y) % 2 === 0 ? "#17171b" : "#131316";
-          context.fillRect(rect.x, rect.y, rect.size, rect.size);
+          drawUndecided(context, x, y, rect);
           continue;
         }
         drawTag(context, styleId, sheet, tagFor(vocabulary, cell), varySprites ? hashCoordinate(x, y) : 0, rect);
@@ -148,6 +153,53 @@ export function createRenderer(canvas, sheet) {
   }
 
   return { draw, resize };
+}
+
+/**
+ * How many image pixels one tile takes in a downloaded map. A multiple of the
+ * sheet's 12, so a sprite stays sharp, and large enough to read an emoji or a
+ * roguelike letter.
+ */
+export const EXPORT_PIXELS_PER_TILE = 48;
+
+/**
+ * The whole map as a PNG, in the style the reader has picked. The image is the
+ * grid edge to edge: no background around it, no selection frame, no latest
+ * frame and no corner marks. `createRenderer().draw` cannot do this, because
+ * its `resize()` reads `clientWidth`, which is 0 on a canvas outside the page.
+ * @param {HTMLImageElement} sheet the Urizen sheet
+ * @param {object} options
+ * @param {number} [options.pixelsPerTile] the size of one tile in the image
+ * @returns {Promise<Blob>} the PNG
+ */
+export function renderMapImage(
+  sheet,
+  { grid, vocabulary, styleId = DEFAULT_STYLE_ID, varySprites = true, pixelsPerTile = EXPORT_PIXELS_PER_TILE },
+) {
+  const { width, height, camera } = wholeGridImage(grid, TILE_SIZE, pixelsPerTile);
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+  context.imageSmoothingEnabled = false;
+  context.fillStyle = BACKGROUND;
+  context.fillRect(0, 0, width, height);
+
+  for (let y = 0; y < grid.height; y += 1) {
+    for (let x = 0; x < grid.width; x += 1) {
+      const rect = cellRect(camera, TILE_SIZE, x, y);
+      const cell = grid.cells[y * grid.width + x];
+      if (cell === null) drawUndecided(context, x, y, rect);
+      else drawTag(context, styleId, sheet, tagFor(vocabulary, cell), varySprites ? hashCoordinate(x, y) : 0, rect);
+    }
+  }
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error("This browser could not make the image."));
+    }, "image/png");
+  });
 }
 
 /** A small canvas showing one tag in one style, for legends and the inspector. */

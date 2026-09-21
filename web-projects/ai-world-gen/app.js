@@ -30,7 +30,7 @@ import {
 } from "./presets.js";
 import { mulberry32, seedFromText } from "./random.js";
 import { analyseReachability } from "./reachability.js";
-import { createRenderer, loadTilesheet, tileThumbnail } from "./render.js";
+import { createRenderer, loadTilesheet, renderMapImage, tileThumbnail } from "./render.js";
 import {
   browserStorage,
   forgetApiKey,
@@ -587,6 +587,7 @@ function afterGridChange() {
   renderInspector();
   redraw();
   element("download").hidden = !state.grid;
+  element("download-png").hidden = !state.grid;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -800,6 +801,22 @@ function changeCellType(typeId) {
 /* Saving and loading                                                         */
 /* -------------------------------------------------------------------------- */
 
+/** The file name both downloads use: the world's name, with one extension. */
+function mapFileName(extension) {
+  const slug = (state.vocabulary.name || "world").replace(/[^a-z0-9]+/gi, "-").toLowerCase();
+  return `${slug}.${extension}`;
+}
+
+/** Hand a blob to the browser as a download. The link never reaches the screen. */
+function saveBlob(blob, fileName) {
+  const url = URL.createObjectURL(blob);
+  const link = make("a", { attrs: { href: url, download: fileName } });
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 function downloadMap() {
   if (!state.grid || !state.vocabulary) return;
   const document_ = {
@@ -812,13 +829,27 @@ function downloadMap() {
     plan: state.plan,
     grid: gridToJSON(state.grid),
   };
-  const blob = new Blob([JSON.stringify(document_, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = make("a", { attrs: { href: url, download: `${(state.vocabulary.name || "world").replace(/[^a-z0-9]+/gi, "-").toLowerCase()}.json` } });
-  document.body.append(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  saveBlob(new Blob([JSON.stringify(document_, null, 2)], { type: "application/json" }), mapFileName("json"));
+}
+
+/**
+ * The picture, not the data: the whole grid at a fixed size, in the style and
+ * the sprite setting on screen. The camera, the frames and the corner marks
+ * stay out of it, so the file is the map and not a screenshot.
+ */
+async function downloadMapImage() {
+  if (!state.grid || !state.vocabulary || !state.sheet) return;
+  try {
+    const blob = await renderMapImage(state.sheet, {
+      grid: state.grid,
+      vocabulary: state.vocabulary,
+      styleId: state.styleId,
+      varySprites: state.varySprites,
+    });
+    saveBlob(blob, mapFileName("png"));
+  } catch (error) {
+    setStatus("map-status", error.message, "error");
+  }
 }
 
 async function loadMapFile(file) {
@@ -1035,6 +1066,7 @@ function wireEvents() {
     }, 500);
   });
   element("download").addEventListener("click", downloadMap);
+  element("download-png").addEventListener("click", downloadMapImage);
   element("regenerate-cell").addEventListener("click", regenerateCell);
   element("inspector-type").addEventListener("change", (event) => changeCellType(event.target.value));
 
