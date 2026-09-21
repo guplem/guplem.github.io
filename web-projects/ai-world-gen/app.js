@@ -51,6 +51,7 @@ import {
   describeVocabularyText,
   formatVocabulary,
   generateVocabulary,
+  mapFileName,
   normaliseVocabulary,
   typeById,
 } from "./vocabulary.js";
@@ -801,12 +802,6 @@ function changeCellType(typeId) {
 /* Saving and loading                                                         */
 /* -------------------------------------------------------------------------- */
 
-/** The file name both downloads use: the world's name, with one extension. */
-function mapFileName(extension) {
-  const slug = (state.vocabulary.name || "world").replace(/[^a-z0-9]+/gi, "-").toLowerCase();
-  return `${slug}.${extension}`;
-}
-
 /** Hand a blob to the browser as a download. The link never reaches the screen. */
 function saveBlob(blob, fileName) {
   const url = URL.createObjectURL(blob);
@@ -818,7 +813,10 @@ function saveBlob(blob, fileName) {
 }
 
 function downloadMap() {
-  if (!state.grid || !state.vocabulary) return;
+  if (!state.grid || !state.vocabulary) {
+    setStatus("map-status", "The vocabulary is not written yet, so there is nothing to save.", "error");
+    return;
+  }
   const document_ = {
     format: "ai-world-gen/map",
     version: 1,
@@ -829,7 +827,7 @@ function downloadMap() {
     plan: state.plan,
     grid: gridToJSON(state.grid),
   };
-  saveBlob(new Blob([JSON.stringify(document_, null, 2)], { type: "application/json" }), mapFileName("json"));
+  saveBlob(new Blob([JSON.stringify(document_, null, 2)], { type: "application/json" }), mapFileName(state.vocabulary.name, "json"));
 }
 
 /**
@@ -838,7 +836,15 @@ function downloadMap() {
  * stay out of it, so the file is the map and not a screenshot.
  */
 async function downloadMapImage() {
-  if (!state.grid || !state.vocabulary || !state.sheet) return;
+  if (!state.grid || !state.vocabulary) {
+    setStatus("map-status", "The vocabulary is not written yet, so there is nothing to save.", "error");
+    return;
+  }
+  // The other three styles draw from the glyph table, so they need no sheet.
+  if (state.styleId === "urizen" && !state.sheet) {
+    setStatus("map-status", "The tileset did not load, so the sprite picture cannot be drawn. Pick another style.", "error");
+    return;
+  }
   try {
     const blob = await renderMapImage(state.sheet, {
       grid: state.grid,
@@ -846,7 +852,7 @@ async function downloadMapImage() {
       styleId: state.styleId,
       varySprites: state.varySprites,
     });
-    saveBlob(blob, mapFileName("png"));
+    saveBlob(blob, mapFileName(state.vocabulary.name, "png"));
   } catch (error) {
     setStatus("map-status", error.message, "error");
   }

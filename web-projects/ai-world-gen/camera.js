@@ -4,6 +4,9 @@
 // A camera is `{offsetX, offsetY, scale}`: the screen position of the grid's
 // top-left corner, and how many screen pixels one sheet pixel takes. A tile is
 // `TILE_SIZE * scale` pixels on screen.
+//
+// The same arithmetic also gives the size of a picture of the whole grid, and
+// the camera that draws it, for a downloaded map that has no viewport.
 
 export const CAMERA_LIMITS = { minScale: 0.5, maxScale: 12 };
 
@@ -27,7 +30,6 @@ export function fitCamera(grid, tileSize, viewport) {
  * The size of an image that holds the whole grid, and the camera that draws it.
  * The image has no border and no viewport, so the camera sits at the origin and
  * the scale is not clamped. `fitCamera` clamps and centres; this one must not.
- * @param {number} pixelsPerTile how many image pixels one tile takes
  */
 export function wholeGridImage(grid, tileSize, pixelsPerTile) {
   return {

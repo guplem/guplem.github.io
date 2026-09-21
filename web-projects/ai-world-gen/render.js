@@ -20,6 +20,13 @@ const BACKGROUND = "#0b0b0d";
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace';
 const EMOJI = '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", sans-serif';
 
+/**
+ * How many image pixels one tile takes in a downloaded map. A multiple of the
+ * sheet's 12, so a sprite stays sharp, and large enough to read an emoji or a
+ * roguelike letter.
+ */
+export const DOWNLOAD_PIXELS_PER_TILE = 48;
+
 /** Load the sheet once. Resolves to the image, or rejects when the file is missing. */
 export function loadTilesheet() {
   return new Promise((resolve, reject) => {
@@ -156,31 +163,29 @@ export function createRenderer(canvas, sheet) {
 }
 
 /**
- * How many image pixels one tile takes in a downloaded map. A multiple of the
- * sheet's 12, so a sprite stays sharp, and large enough to read an emoji or a
- * roguelike letter.
- */
-export const EXPORT_PIXELS_PER_TILE = 48;
-
-/**
  * The whole map as a PNG, in the style the reader has picked. The image is the
  * grid edge to edge: no background around it, no selection frame, no latest
  * frame and no corner marks. `createRenderer().draw` cannot do this, because
  * its `resize()` reads `clientWidth`, which is 0 on a canvas outside the page.
  * @param {HTMLImageElement} sheet the Urizen sheet
  * @param {object} options
+ * @param {{width: number, height: number, cells: object[]}} options.grid the map to draw
+ * @param {object} options.vocabulary the vocabulary that names each cell's visual tag
+ * @param {string} [options.styleId] the art style on screen
+ * @param {boolean} [options.varySprites] draw a per-cell sprite variant
  * @param {number} [options.pixelsPerTile] the size of one tile in the image
  * @returns {Promise<Blob>} the PNG
  */
 export function renderMapImage(
   sheet,
-  { grid, vocabulary, styleId = DEFAULT_STYLE_ID, varySprites = true, pixelsPerTile = EXPORT_PIXELS_PER_TILE },
+  { grid, vocabulary, styleId = DEFAULT_STYLE_ID, varySprites = true, pixelsPerTile = DOWNLOAD_PIXELS_PER_TILE },
 ) {
   const { width, height, camera } = wholeGridImage(grid, TILE_SIZE, pixelsPerTile);
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
   const context = canvas.getContext("2d");
+  if (!context) throw new Error("This map is too large to save as an image.");
   context.imageSmoothingEnabled = false;
   context.fillStyle = BACKGROUND;
   context.fillRect(0, 0, width, height);
@@ -196,6 +201,10 @@ export function renderMapImage(
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
+      // Safari frees a canvas late, so a big map holds its memory until then. A
+      // canvas of no size drops it now; the blob already holds the picture.
+      canvas.width = 0;
+      canvas.height = 0;
       if (blob) resolve(blob);
       else reject(new Error("This browser could not make the image."));
     }, "image/png");
