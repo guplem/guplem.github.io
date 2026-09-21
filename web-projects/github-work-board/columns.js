@@ -25,7 +25,11 @@ export const AUTOMATIC = "automatic";
 export const COLUMNS = [
   { id: "todo", label: "To do", hint: "Assigned to you, with no pull request yet" },
   { id: "ongoing", label: "Ongoing", hint: "A pull request exists, nobody has been asked to review it" },
-  { id: "needs-changes", label: "Needs changes", hint: "A reviewer asked for changes" },
+  {
+    id: "needs-changes",
+    label: "Needs changes",
+    hint: "A reviewer asked for changes, and has not been asked to look again",
+  },
   { id: "awaiting-review", label: "Awaiting review", hint: "A reviewer was asked, no verdict yet" },
   { id: "ready-to-merge", label: "Ready to merge", hint: "Approved" },
   { id: "done", label: "Done", hint: "The pull request is merged" },
@@ -58,20 +62,22 @@ function pullRequestState(item, relationship) {
       merged: item.merged === true,
       reviewDecision: typeof item.reviewDecision === "string" ? item.reviewDecision : "",
       reviewRequestCount: Number.isFinite(item.reviewRequestCount) ? item.reviewRequestCount : 0,
+      askedAgain: item.askedAgain === true,
       exists: true,
     };
   }
 
   const linked = Array.isArray(relationship?.closedBy) ? relationship.closedBy : [];
   const merged = linked.find((one) => one.merged);
-  if (merged) return { merged: true, reviewDecision: "", reviewRequestCount: 0, exists: true };
+  if (merged) return { merged: true, reviewDecision: "", reviewRequestCount: 0, askedAgain: false, exists: true };
 
   const open = linked.find((one) => one.state === "open");
-  if (!open) return { merged: false, reviewDecision: "", reviewRequestCount: 0, exists: false };
+  if (!open) return { merged: false, reviewDecision: "", reviewRequestCount: 0, askedAgain: false, exists: false };
   return {
     merged: false,
     reviewDecision: typeof open.reviewDecision === "string" ? open.reviewDecision : "",
     reviewRequestCount: Number.isFinite(open.reviewRequestCount) ? open.reviewRequestCount : 0,
+    askedAgain: open.askedAgain === true,
     exists: true,
   };
 }
@@ -82,13 +88,18 @@ function pullRequestState(item, relationship) {
  * The order of the checks is the whole decision, because an item can answer
  * several of them at once. Merged beats everything: it is over. Changes
  * requested beats an approval, because one reviewer approving does not undo
- * another asking for work, and the work is what is left to do.
+ * another asking for work, and the work is what is left to do. Changes
+ * requested that have been answered is not changes requested at all: the
+ * reviewer was asked again, so the wait is theirs.
  */
 export function automaticColumn(item, relationship) {
   const pull = pullRequestState(isPlainObject(item) ? item : {}, relationship);
   if (pull.merged) return "done";
   if (!pull.exists) return "todo";
-  if (pull.reviewDecision === "CHANGES_REQUESTED") return "needs-changes";
+  // GitHub never clears this verdict, so it survives the author doing the work
+  // and asking the same reviewer to look again. `askedAgain` is the only thing
+  // that says the ball is back with the reviewer (ADR 0011).
+  if (pull.reviewDecision === "CHANGES_REQUESTED") return pull.askedAgain ? "awaiting-review" : "needs-changes";
   if (pull.reviewDecision === "APPROVED") return "ready-to-merge";
   if (pull.reviewRequestCount > 0 || pull.reviewDecision === "REVIEW_REQUIRED") return "awaiting-review";
   return "ongoing";

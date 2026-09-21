@@ -159,6 +159,13 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   that are not nested are unrelated, so opening the second closes the first.
 - **A nested pull request card carries no move menu.** It travels in its issue's
   column, so the move would write to the document and change nothing on screen.
+- **GitHub never clears `reviewDecision`.** A pull request that had changes
+  requested keeps that verdict after the author does the work and asks the same
+  reviewer to look again, and GitHub shows both at once: the red "Changes
+  requested" badge and "Awaiting requested review from <name>". So the verdict
+  alone cannot say whose turn it is. `askedToLookAgain` answers that, from
+  `latestOpinionatedReviews` set beside `reviewRequests`, and **every** reviewer
+  who asked for changes must be in the request list, not just one (ADR 0011).
 - **A column is computed, never maintained.** The rules read what GitHub
   already knows, and the order of the checks in `automaticColumn` is the whole
   decision: merged beats everything, changes requested beats an approval. A
@@ -166,6 +173,10 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
 - **`includeClosedPrs` must stay true in the relationship query.** A merged pull
   request is a closed one, so leaving it out hides exactly the work that belongs
   in "Done".
+- **`latestOpinionatedReviews` and `requestedReviewer` must stay in the
+  relationship query.** Trim either and `askedAgain` is false on every card:
+  nothing errors, every test that builds its own answer stays green, and
+  answered work sits in "Needs changes" for ever. A test pins both names.
 - **A column id is written into `board.json`** the moment a card is moved by
   hand, so it is as permanent as a storage key. The reader's move always beats
   the rule, and "Automatic" hands it back.

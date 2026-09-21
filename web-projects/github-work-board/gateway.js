@@ -76,6 +76,12 @@ export function fetchAssignedIssues(token) {
  *
  * `includeClosedPrs` must stay true. A merged pull request is a closed one, so
  * leaving it out would hide exactly the work that belongs in "Done".
+ *
+ * The reviews are asked for because GitHub never clears `reviewDecision`. Only
+ * the reviewers waited on right now, set beside the reviewers who asked for
+ * changes, say whose turn it is (ADR 0011). `latestOpinionatedReviews` answers
+ * one review per reviewer and leaves out plain comments, which carry no
+ * verdict.
  */
 const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
   nodes(ids: $ids) {
@@ -86,7 +92,11 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       blockedBy(first: 20) { nodes { id number title state url } }
       subIssuesSummary { total completed }
       closedByPullRequestsReferences(first: 20, includeClosedPrs: true) {
-        nodes { id number title state url merged reviewDecision reviewRequests(first: 1) { totalCount } }
+        nodes {
+          id number title state url merged reviewDecision
+          reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login } } } }
+          latestOpinionatedReviews(first: 20) { nodes { state author { login } } }
+        }
       }
     }
     ... on PullRequest {
@@ -97,7 +107,8 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       state
       merged
       reviewDecision
-      reviewRequests(first: 1) { totalCount }
+      reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login } } } }
+      latestOpinionatedReviews(first: 20) { nodes { state author { login } } }
       closingIssuesReferences(first: 20) { nodes { id number title state url } }
     }
   }
