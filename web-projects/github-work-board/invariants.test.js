@@ -185,14 +185,15 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(css).toContain(".input:focus");
   });
 
-  // The settings screen is taller than a window. The only way back to the board
-  // used to sit at the top of it, which put it out of reach the moment anybody
-  // scrolled, and left a reader with no way out (ADR 0008).
-  test("the header that holds the way between the screens does not scroll away", () => {
-    const masthead = css.slice(css.indexOf(".masthead {"), css.indexOf(".masthead.is-stuck"));
-    expect(masthead).toContain("position: sticky");
-    expect(masthead).toContain("top: 0");
-    expect(read("index.html")).toContain('id="view-toggle"');
+  // The header was sticky because the settings screen was taller than a window
+  // and the only way out sat at the top of it (ADR 0008). The token guide moved
+  // to its own screen (ADR 0018), settings shrank to about a screen, and the
+  // header scrolls with the page again (ADR 0023). What still has to hold: the
+  // one screen that is still long carries a way back at the end of it.
+  test("every screen carries a way back, and the long one carries it twice", () => {
+    const page = read("index.html");
+    expect(page).toContain('id="view-toggle"');
+    expect(page).toContain('id="cancel-add-token"');
   });
 
   // Without this one rule, every element the page hides with `hidden` and also

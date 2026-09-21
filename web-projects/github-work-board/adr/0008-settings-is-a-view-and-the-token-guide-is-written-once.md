@@ -30,15 +30,21 @@ and a bookmark works.
 Settings needs a token to manage, so before the first connection it is not
 reachable: the welcome screen is the settings screen at that point.
 
-**One control moves between the screens, and it does not scroll away.** The
-masthead button is the only way in and the only way out: it reads "Settings" on
-the board and "Back to the board" in settings, and the masthead is sticky.
+**One control moves between the screens.** The masthead button is the only way
+in and the only way out: it reads "Settings" on the board and "Back to the
+board" in settings.
 
-The first version put the way out at the top of the settings card. Settings is
+The first version put the way out at the top of the settings card. Settings was
 taller than a window (about 1900 pixels against 840), so scrolling even once put
 the only exit off the screen, with nothing below it to click. A reader who had
-scrolled had no way back at all. One toggle in a header that stays put cannot
-have that failure, and it removes the second button that said the same thing.
+scrolled had no way back at all. The answer then was one toggle in a header that
+stayed put, and it removed the second button that said the same thing.
+
+**The header no longer stays put.** The token guide moved to its own screen
+(ADR 0018) and settings shrank to about one screen with it, so the reason for
+the stickiness went with it. ADR 0023 measured that and took it out. What
+survives from this decision is the part that was never about scrolling: one
+control moves between the views, and no screen carries a second one.
 
 **The token guide is a `<template>` in the page, cloned into every slot.**
 `index.html` holds it once; `app.js` clones it into the welcome screen and into
@@ -64,10 +70,9 @@ meets it before they meet either place it appears.
 the clone, by class, which is why the permission list inside it carries a class
 and not an id.
 
-**A sticky header costs vertical room on every screen**, including the board,
-where nothing needed it. It is a small price for a control that is always
-reachable, and the line under it appears only once the page has scrolled, so a
-page at rest still looks flat.
+**A sticky header cost vertical room on every screen**, including the board,
+where nothing needed it. That was the price of a control always in reach, and
+it stopped being worth paying once settings fitted on a screen (ADR 0023).
 
 **Settings is not reachable before connecting.** Somebody who lands on
 `?view=settings` with no token saved gets the welcome screen instead. That is

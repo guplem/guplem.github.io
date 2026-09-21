@@ -136,26 +136,25 @@ p {
   margin: 0;
 }
 
-/* The header holds the only way between the board and the settings screen, and
- * the settings screen is taller than a window, so it stays put while the rest
- * scrolls under it. */
+/* The top of the page: the name of the tool, the order the board reads in,
+ * and the way to Settings. It scrolls away with everything else (ADR 0023). */
 .masthead {
-  position: sticky;
-  top: 0;
-  z-index: 10;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem 1rem;
   margin-bottom: 2rem;
   padding-block: 1rem;
-  background: hsl(var(--background));
-  border-bottom: 1px solid transparent;
 }
 
-/* The line appears only once something has scrolled behind the header. */
-.masthead.is-stuck {
-  border-bottom-color: hsl(var(--border));
+/* The controls stay together on a phone, and wrap under the name as one piece
+ * rather than one of them wrapping and the other not. */
+.masthead-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
 }
 
 .tagline,
@@ -664,15 +663,6 @@ textarea.input {
 /* -------------------------------------------------------------------------- */
 /* The board                                                                  */
 /* -------------------------------------------------------------------------- */
-
-.board-heading-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-  margin-bottom: 0.25rem;
-}
 
 .sort-control {
   display: flex;
@@ -1532,10 +1522,6 @@ textarea.input {
 
 #board > .section-heading:first-child {
   margin-top: 0;
-}
-
-.board-heading-row .section-heading {
-  margin-bottom: 0;
 }
 
 /* A heading with one control beside it. The row takes the heading's own top

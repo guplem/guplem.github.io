@@ -310,10 +310,16 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   and left the board stuck on "Reading GitHub..." with every test green. That
   is three times now that an `app.js` change was caught by opening the page
   and not by the suite.
-- **The masthead toggle is the only way between the views, and the
-  masthead is sticky.** Settings is more than twice the height of a window, so a
-  control that scrolls away leaves a reader with no way out. Do not add a second
-  exit inside a screen; keep the one in the header (ADR 0008).
+- **The masthead toggle is the only way between the views, and the masthead
+  scrolls with the page.** It was sticky while settings was about twice the
+  height of a window; the token guide moved out (ADR 0018), settings shrank to
+  about one screen, and the stickiness went with the reason for it (ADR 0023).
+  The add-token screen is the one still longer than a window, and it carries its
+  own Cancel at the end of the last step. Measure before adding a second exit or
+  putting the stickiness back: board 983, settings 1067, add a token 2110, in a
+  window of 898.
+- **The order lives in the masthead**, beside the way to Settings, and is
+  hidden on the screens it does not govern (ADR 0023).
 - **A placeholder mirrors the row it replaces, line for line.** A token row is
   two stacked lines and two buttons, so its placeholder is too. Two bars appended
   to a plain `div` render as one line with no gap, which is what the first
@@ -373,6 +379,7 @@ before calling it done.
 | [0020](adr/0020-a-review-card-says-which-stack-it-is-in.md) | A review card says which stack it is in, and where |
 | [0021](adr/0021-a-title-is-split-and-a-branch-is-one-tap-away.md) | A title is split from the change it announces, and a branch is one tap away |
 | [0022](adr/0022-a-note-belongs-to-the-work-not-to-the-card.md) | A note belongs to the work, not to the place the card sits |
+| [0023](adr/0023-the-order-goes-to-the-top-and-the-header-scrolls-away.md) | The order goes to the top, and the header scrolls away |
 
 ## What is not built yet
 

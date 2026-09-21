@@ -927,9 +927,6 @@ function showView(view) {
   const connected = state.tokens.length > 0;
   state.view = connected ? view : DEFAULT_VIEW;
 
-  // One control, in a header that never scrolls away. The settings screen is
-  // taller than a window, so an exit that sits at the top of it is an exit the
-  // reader cannot reach once they scroll (ADR 0008).
   // One control, and where it goes depends on where you are. Adding a token
   // was opened from Settings, so "back" from there means Settings (ADR 0018).
   const back = { board: null, settings: "board", "add-token": "settings" }[state.view] ?? null;
@@ -947,6 +944,7 @@ function showView(view) {
   state.viewToggleGoesTo = back ?? "settings";
   element("setup").hidden = connected;
   element("board").hidden = !connected || state.view !== "board";
+  element("sort-control").hidden = !connected || state.view !== "board";
   element("settings-view").hidden = state.view !== "settings";
   element("add-token-view").hidden = state.view !== "add-token";
   rememberUrl();
@@ -1331,13 +1329,6 @@ function start() {
     state.onWarningAccepted = null;
     run?.();
   });
-  // The header's line appears only once something has scrolled behind it, so a
-  // page that has not moved keeps a clean top edge.
-  const masthead = document.querySelector(".masthead");
-  const markStuck = () => masthead.classList.toggle("is-stuck", window.scrollY > 4);
-  markStuck();
-  window.addEventListener("scroll", markStuck, { passive: true });
-
   element("view-toggle").addEventListener("click", () => showView(state.viewToggleGoesTo ?? "settings"));
   element("empty-open-settings").addEventListener("click", () => showView("settings"));
   element("clear-filters").addEventListener("click", clearFilters);

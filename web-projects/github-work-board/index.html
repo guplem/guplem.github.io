@@ -127,14 +127,25 @@
       <div>
         <h1>Work board</h1>
       </div>
-      <!-- One control for both screens. The arrow appears only on the way back,
-           because only that direction is a return (ADR 0008). -->
-      <button id="view-toggle" type="button" class="button button-outline" hidden>
-        <svg id="view-toggle-arrow" class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
-          <path d="M19 12H5M12 19l-7-7 7-7" />
-        </svg>
-        <span id="view-toggle-label">Settings</span>
-      </button>
+      <div class="masthead-controls">
+        <!-- The order the board reads in, at the top of the page where it is
+             looked for (ADR 0023). It belongs to the board, so it is not on
+             the other screens. -->
+        <div class="sort-control" id="sort-control" hidden>
+          <label class="sort-label" for="sort">Sort by</label>
+          <!-- Filled from SORT_OPTIONS, so an order exists in one place (ADR 0006). -->
+          <select id="sort" class="select"></select>
+        </div>
+
+        <!-- One control for both screens. The arrow appears only on the way back,
+             because only that direction is a return (ADR 0008). -->
+        <button id="view-toggle" type="button" class="button button-outline" hidden>
+          <svg id="view-toggle-arrow" class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          <span id="view-toggle-label">Settings</span>
+        </button>
+      </div>
     </header>
 
     <main>
@@ -219,14 +230,7 @@
           <ul id="reviews-list" class="issues reviews-list"></ul>
         </section>
 
-        <div class="board-heading-row">
-          <h2 class="section-heading">Your issues and pull requests</h2>
-          <div class="sort-control">
-            <label class="sort-label" for="sort">Sort by</label>
-            <!-- Filled from SORT_OPTIONS, so an order exists in one place (ADR 0006). -->
-            <select id="sort" class="select"></select>
-          </div>
-        </div>
+        <h2 class="section-heading">Your issues and pull requests</h2>
 
         <!-- Chips built from what the list actually holds (ADR 0009). -->
         <div class="filters" id="board-filters">
