@@ -12,7 +12,7 @@
  */
 export function cardMenuRows(item, { canMove = false } = {}) {
   const kind = item && typeof item === "object" ? item.kind : null;
-  if (!item || typeof item !== "object") return { note: false, branch: false, move: false };
+  if (!item || typeof item !== "object") return { note: false, branch: false, move: false, priority: false };
 
   return {
     // Every card, wherever it is drawn. A note is filed under the item's node
@@ -25,5 +25,8 @@ export function cardMenuRows(item, { canMove = false } = {}) {
     // is ordered by how long something has waited, and a pull request nested in
     // its issue travels in that issue's column (ADR 0012).
     move: canMove === true,
+    // Every card, like the note above. The mark is filed under the item's node
+    // id, so it follows the work and not the place the card sits (ADR 0026).
+    priority: true,
   };
 }

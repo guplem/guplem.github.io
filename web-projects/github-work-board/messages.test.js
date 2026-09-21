@@ -4,6 +4,7 @@ import {
   escapeHtml,
   joinWithAnd,
   noteMenuLabel,
+  priorityMenuLabel,
   say,
   describeNotesSync,
   sayEmptyBoard,
@@ -180,5 +181,19 @@ describe("escapeHtml", () => {
     expect(escapeHtml(null)).toBe("");
     expect(escapeHtml(undefined)).toBe("");
     expect(escapeHtml(7)).toBe("7");
+  });
+});
+
+describe("priorityMenuLabel", () => {
+  // Each one names what the row does, not what the card is, because a menu row
+  // is a thing the reader presses.
+  test("offers to push a card down, and to bring it back", () => {
+    expect(priorityMenuLabel("normal")).toBe("Not a priority");
+    expect(priorityMenuLabel("low")).toBe("Make it a priority");
+  });
+
+  test("anything it does not know offers the mark", () => {
+    expect(priorityMenuLabel("")).toBe("Not a priority");
+    expect(priorityMenuLabel(null)).toBe("Not a priority");
   });
 });
