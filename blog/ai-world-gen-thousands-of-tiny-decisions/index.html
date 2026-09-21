@@ -414,6 +414,7 @@
 
       <section>
         <h2 id="version-one-was-a-green-blur"><a class="heading-anchor" href="#version-one-was-a-green-blur">Version one was a green blur</a></h2>
+        <p>The first version came out of an afternoon of vibe coding: describe a place, press the button, watch the tiles land one by one. It worked, in the sense that every call was answered and a map came out at the end. Then I looked at the map.</p>
         <div class="pair">
           <figure>
             <img src="../../web-projects/ai-world-gen/evaluation/results/v1/large-village-spiral.png" width="768" height="768" loading="lazy" alt="A 16 by 16 grid entirely of dark grass tiles, with one green tree near the top." />
@@ -424,70 +425,83 @@
             <figcaption>v11, the same seed, 20 hours and ten versions later.</figcaption>
           </figure>
         </div>
-        <p>The first version worked, in the sense that every call succeeded and a map came out. It was also useless. Thirteen of the fifteen maps in the first test set used one tile type for more than 85% of the cells: a village that is all grass, a station that is all corridor. The reason is obvious once you see it. A model that decides one cell from its neighbours, and whose neighbours are all grass, picks grass. Every correct local decision adds up to a wrong map.</p>
-        <p>I could have looked at three maps, changed the prompt, looked at three more, and felt good. I have done that before and I know how it ends: the change that fixes the village breaks the station, and nobody notices for a week. So before touching the generator, I built a way to measure it.</p>
+        <p>It was useless. Thirteen of the fifteen maps in the first test set used one tile type for more than 85% of the cells: a village that is all grass, a station that is all corridor.</p>
+        <p>The reason is obvious once you see it. A model that decides one cell from its neighbours, and whose neighbours are all grass, picks grass. Every correct local decision adds up to a wrong map.</p>
+        <p>I could have looked at three maps, changed the prompt, looked at three more, and felt good. I have done that before and I know how it ends: the change that fixes the village breaks the station. So before touching the generator, I built a way to measure it, and then a loop around that: change, measure, compare, change again, with every version scored on the same maps, so no improvement can quietly undo an older one.</p>
       </section>
 
       <section>
         <h2 id="measuring-instead-of-looking"><a class="heading-anchor" href="#measuring-instead-of-looking">Measuring instead of looking</a></h2>
-        <p>The measurement lives in <a href="https://galtea.ai">Galtea</a>, an evaluation platform for AI products (where I work, so take this paragraph as a demonstration of the tool as much as a recommendation). The shape of it is simple. A <em>product</em> has <em>versions</em>. A version is judged against written <em>specifications</em>: sentences about what a good map is. Each specification has <em>metrics</em> that score a map from 0 to 1, and a <em>dataset</em> of test cases. A test case here is one seed: a preset, a grid size, a fill order and a random seed, so every version draws the same 38 worlds.</p>
-        <p>Almost every metric is plain code in the project, not a model. "Doors sit in walls" is a loop over the door tiles. "One walkable region" is a flood fill. "The route reaches the edge" is a search. The one thing code cannot answer, "does this look like a village?", goes to a judge model, GPT-5.2, which reads the map as text and scores it. The specifications grew as the failures showed up: three at the start (barriers form structures, paths form routes, everything walkable is reachable), a fourth after version 4 ("a place reads as a place": doors in walls, walls as outlines, an enclosed room, ground in patches), and three more after version 7 (the vocabulary's own rules hold, routes lead to doors and off the map, the landmarks are there once and nothing floods the map). By the end there were 28 computed metrics and one judge.</p>
-
+        <p>The measurement lives in <a href="https://galtea.ai">Galtea</a>, an evaluation platform for AI products. I work there, so read this as a demonstration as much as a recommendation. Five words carry the whole thing, and they fit inside each other.</p>
+        <ul class="two-ways">
+          <li><strong>A specification</strong> is one sentence about what a good map does. “Every walkable area is reachable, and the map is playable.”</li>
+          <li><strong>A metric</strong> turns that sentence into a number from 0 to 1. Almost every one is plain code in this project: “doors sit in walls” is a loop over the door tiles, “one walkable region” is a flood fill.</li>
+          <li><strong>A test case</strong> is one seed: a preset, a grid size, a fill order and a random seed. The same 38 run against every version, so two versions are always compared on the same worlds.</li>
+          <li><strong>A version</strong> is one change to the generator. Run it over the test cases and each map becomes a <strong>session</strong>, kept with its scores.</li>
+          <li><strong>A judge</strong> answers the one question code cannot: does this look like a village? A model reads the finished map and scores it.</li>
+        </ul>
+        <figure class="diagram">
+<svg viewBox="0 0 760 244" class="concepts" role="img" aria-labelledby="concepts-title concepts-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="concepts-title">What one score is made of</title>
+<desc id="concepts-desc">A version, which is one change to the generator, and a test case, which is a preset, a size, an order and a seed, meet in a session: one map, kept with everything it scored. An arrow leads from the session to a specification, "a place reads as a place", which holds its metrics: doors in a wall 0.87, an enclosed room 0.92, ground in patches 0.65, and two more, all computed by code in the project.</desc>
+<text x="14" y="18" class="chart-title">What one score is made of</text>
+<rect x="14" y="36" width="200" height="66" rx="8" class="step-box" /><text x="114" y="58" class="step-title" text-anchor="middle">A version</text><text x="114" y="76" class="step-sub" text-anchor="middle">one change to the generator</text><text x="114" y="92" class="step-sub" text-anchor="middle">eleven so far</text>
+<rect x="14" y="150" width="200" height="66" rx="8" class="step-box" /><text x="114" y="172" class="step-title" text-anchor="middle">A test case</text><text x="114" y="190" class="step-sub" text-anchor="middle">preset, size, order, seed</text><text x="114" y="206" class="step-sub" text-anchor="middle">thirty-eight, always the same</text>
+<rect x="278" y="93" width="170" height="66" rx="8" class="step-box" /><text x="363" y="115" class="step-title" text-anchor="middle">A session</text><text x="363" y="133" class="step-sub" text-anchor="middle">one map, kept with</text><text x="363" y="149" class="step-sub" text-anchor="middle">everything it scored</text>
+<path d="M214 69 C246 69, 246 112, 274 112" class="flow" /><polygon points="274,107 284,112 274,117" class="head" />
+<path d="M214 183 C246 183, 246 140, 274 140" class="flow" /><polygon points="274,135 284,140 274,145" class="head" />
+<path d="M448 126 L502 126" class="flow" /><polygon points="502,121 512,126 502,131" class="head" />
+<rect x="512" y="30" width="234" height="200" rx="8" class="spec-box" />
+<text x="629" y="52" class="step-title" text-anchor="middle">A specification</text>
+<text x="629" y="70" class="step-sub" text-anchor="middle">“a place reads as a place”</text>
+<rect x="530" y="88" width="198" height="24" rx="4" class="metric-row" />
+<text x="540" y="104" class="step-sub">doors in a wall</text>
+<text x="718" y="104" class="metric-score" text-anchor="end">0.87</text>
+<rect x="530" y="118" width="198" height="24" rx="4" class="metric-row" />
+<text x="540" y="134" class="step-sub">an enclosed room</text>
+<text x="718" y="134" class="metric-score" text-anchor="end">0.92</text>
+<rect x="530" y="148" width="198" height="24" rx="4" class="metric-row" />
+<text x="540" y="164" class="step-sub">ground in patches</text>
+<text x="718" y="164" class="metric-score" text-anchor="end">0.65</text>
+<text x="629" y="200" class="step-sub" text-anchor="middle">and two more, all computed</text>
+<text x="629" y="218" class="step-sub" text-anchor="middle">by code in the project</text>
+</svg>
+          <figcaption>Eleven versions by thirty-eight test cases is 418 maps, each one scored by 28 metrics and the judge. The numbers here are version 11's own.</figcaption>
+        </figure>
+        <p>The specifications grew as the failures showed up. Three at the start: barriers form structures, paths form routes, everything walkable is reachable. A fourth after version 4, when the maps stopped being debris and started being wrong in a subtler way: a place reads as a place. Three more after version 7: the vocabulary's own rules hold, routes lead to doors and off the map, and the landmarks are there once without flooding the map.</p>
         <figure class="diagram loop-diagram">
-          <svg viewBox="0 0 760 420" role="img" aria-labelledby="loop-title loop-desc" xmlns="http://www.w3.org/2000/svg">
-            <title id="loop-title">The evaluation and improvement loop</title>
-            <desc id="loop-desc">Six boxes arranged in a circle, joined by arrows: change the generator; run the 38 test seeds; score every map with the 28 metrics and the judge; compare with the previous version in Galtea; read the failure modes in the pictures and the numbers; form a hypothesis, which leads back to the change. An agent sits inside the circle and turns it. Outside the circle a person sets the direction, adds specifications when a failure has no number, sets the budget, and decides when to stop.</desc>
-            <ellipse cx="380" cy="210" rx="300" ry="160" class="orbit" />
-            <g class="step">
-              <rect x="300" y="18" width="160" height="52" rx="10" />
-              <text x="380" y="40" class="step-title" text-anchor="middle">1 · Change</text>
-              <text x="380" y="58" class="step-sub" text-anchor="middle">state, sampling, rules, plan</text>
-            </g>
-            <g class="step">
-              <rect x="560" y="95" width="180" height="52" rx="10" />
-              <text x="650" y="117" class="step-title" text-anchor="middle">2 · Run 38 seeds</text>
-              <text x="650" y="135" class="step-sub" text-anchor="middle">3,008 decisions, about 24 cents</text>
-            </g>
-            <g class="step">
-              <rect x="560" y="272" width="180" height="52" rx="10" />
-              <text x="650" y="294" class="step-title" text-anchor="middle">3 · Score</text>
-              <text x="650" y="312" class="step-sub" text-anchor="middle">28 metrics in code + 1 judge</text>
-            </g>
-            <g class="step">
-              <rect x="300" y="350" width="160" height="52" rx="10" />
-              <text x="380" y="372" class="step-title" text-anchor="middle">4 · Compare</text>
-              <text x="380" y="390" class="step-sub" text-anchor="middle">against the previous version</text>
-            </g>
-            <g class="step">
-              <rect x="20" y="272" width="180" height="52" rx="10" />
-              <text x="110" y="294" class="step-title" text-anchor="middle">5 · Read the failures</text>
-              <text x="110" y="312" class="step-sub" text-anchor="middle">the pictures and the numbers</text>
-            </g>
-            <g class="step">
-              <rect x="20" y="95" width="180" height="52" rx="10" />
-              <text x="110" y="117" class="step-title" text-anchor="middle">6 · Hypothesis</text>
-              <text x="110" y="135" class="step-sub" text-anchor="middle">one theory, one version</text>
-            </g>
-            <g class="loop-arrows">
-              <path d="M462 44 C540 55, 600 70, 640 92" />
-              <path d="M650 149 C660 190, 660 230, 650 270" />
-              <path d="M640 326 C600 350, 540 366, 462 376" />
-              <path d="M298 376 C220 366, 160 350, 120 326" />
-              <path d="M110 270 C100 230, 100 190, 110 149" />
-              <path d="M120 92 C160 70, 220 55, 298 44" />
-            </g>
-            <g class="agent">
-              <text x="380" y="190" class="agent-title" text-anchor="middle">an agent turns the loop</text>
-              <text x="380" y="214" class="agent-sub" text-anchor="middle">writes the change and its tests, commits,</text>
-              <text x="380" y="232" class="agent-sub" text-anchor="middle">runs the evaluation, writes down what it saw</text>
-            </g>
-            <g class="human">
-              <text x="380" y="300" class="human-title" text-anchor="middle">a person, outside the loop</text>
-              <text x="380" y="318" class="human-sub" text-anchor="middle">sets the direction · adds a specification when a</text>
-              <text x="380" y="334" class="human-sub" text-anchor="middle">failure has no number · sets the budget · says stop</text>
-            </g>
-          </svg>
-          <figcaption>Every version is one turn of this loop. The agent (Claude Code, in this case) runs steps 1 to 6 on its own; I read the pull requests, added specifications when I saw a failure the numbers missed, and decided when the loop had earned its rest.</figcaption>
+<svg viewBox="0 0 760 420" role="img" aria-labelledby="loop-title loop-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="loop-title">The evaluation and improvement loop</title>
+<desc id="loop-desc">Six steps in a ring, each lighting up in its turn: change the generator with one idea; run every test case on the same seeds; score every map with the metrics and the judge; compare with the version before; read the failures in the maps and in the numbers; form the next hypothesis, which leads back to the change. Eleven turns of this loop took twenty hours.</desc>
+<rect x="295" y="13" width="170" height="62" rx="13" class="step-glow" style="animation-delay:0.00s" />
+<rect x="300" y="18" width="160" height="52" rx="10" class="step-box" />
+<text x="380" y="40" class="step-title" text-anchor="middle">1 · Change</text>
+<text x="380" y="58" class="step-sub" text-anchor="middle">one idea, in code</text>
+<rect x="555" y="90" width="190" height="62" rx="13" class="step-glow" style="animation-delay:1.40s" />
+<rect x="560" y="95" width="180" height="52" rx="10" class="step-box" />
+<text x="650" y="117" class="step-title" text-anchor="middle">2 · Run</text>
+<text x="650" y="135" class="step-sub" text-anchor="middle">every test case, same seeds</text>
+<rect x="555" y="267" width="190" height="62" rx="13" class="step-glow" style="animation-delay:2.80s" />
+<rect x="560" y="272" width="180" height="52" rx="10" class="step-box" />
+<text x="650" y="294" class="step-title" text-anchor="middle">3 · Score</text>
+<text x="650" y="312" class="step-sub" text-anchor="middle">metrics in code, one judge</text>
+<rect x="295" y="345" width="170" height="62" rx="13" class="step-glow" style="animation-delay:4.20s" />
+<rect x="300" y="350" width="160" height="52" rx="10" class="step-box" />
+<text x="380" y="372" class="step-title" text-anchor="middle">4 · Compare</text>
+<text x="380" y="390" class="step-sub" text-anchor="middle">against the version before</text>
+<rect x="15" y="267" width="190" height="62" rx="13" class="step-glow" style="animation-delay:5.60s" />
+<rect x="20" y="272" width="180" height="52" rx="10" class="step-box" />
+<text x="110" y="294" class="step-title" text-anchor="middle">5 · Read the failures</text>
+<text x="110" y="312" class="step-sub" text-anchor="middle">in the maps and in the numbers</text>
+<rect x="15" y="90" width="190" height="62" rx="13" class="step-glow" style="animation-delay:7.00s" />
+<rect x="20" y="95" width="180" height="52" rx="10" class="step-box" />
+<text x="110" y="117" class="step-title" text-anchor="middle">6 · Hypothesis</text>
+<text x="110" y="135" class="step-sub" text-anchor="middle">what to change next</text>
+<g class="loop-arrows"><path d="M462 44 C540 55, 600 70, 640 92" /><path d="M650 149 C660 190, 660 230, 650 270" /><path d="M640 326 C600 350, 540 366, 462 376" /><path d="M298 376 C220 366, 160 350, 120 326" /><path d="M110 270 C100 230, 100 190, 110 149" /><path d="M120 92 C160 70, 220 55, 298 44" /></g>
+<text x="380" y="200" class="agent-title" text-anchor="middle">Eleven turns,</text>
+<text x="380" y="226" class="agent-title" text-anchor="middle">twenty hours</text>
+</svg>
+          <figcaption>One turn of this loop is one version. The agent, Claude Code, runs the six steps on its own. I read the pull requests, added a specification when I saw a failure the numbers missed, and decided when the loop had earned its rest.</figcaption>
         </figure>
       </section>
 
