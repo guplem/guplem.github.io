@@ -1045,6 +1045,25 @@ textarea.input {
   color: hsl(var(--muted-foreground));
 }
 
+/**
+ * A card the reader pushed down.
+ *
+ * Fainter, and nothing else: it stays readable, clickable and openable, so the
+ * mark is a hint and never a wall (ADR 0026). The whole card fades, which is
+ * the same idiom the disabled button uses.
+ *
+ * No `.column` in front of it: the mark belongs to the work, so a marked card
+ * fades in the review row too, where there is no column.
+ */
+.issue[data-priority="low"] {
+  opacity: 0.55;
+}
+
+.issue[data-priority="low"]:hover,
+.issue[data-priority="low"]:focus-within {
+  opacity: 1;
+}
+
 /* A card inside a column is the same card, on the column's ground. */
 .column .issue {
   background: hsl(var(--card));

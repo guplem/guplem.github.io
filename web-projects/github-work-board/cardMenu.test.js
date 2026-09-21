@@ -27,11 +27,19 @@ describe("cardMenuRows", () => {
     expect(cardMenuRows(pull).move).toBe(false);
   });
 
+  // Like a note, the mark belongs to the work and not to the place the card
+  // sits, so every card can carry one: a column card, a review card, and a
+  // pull request nested in its issue (ADR 0022, ADR 0026).
+  test("any card can be pushed down the list, wherever it is drawn", () => {
+    expect(cardMenuRows(issue, { canMove: true }).priority).toBe(true);
+    expect(cardMenuRows(pull, { canMove: false }).priority).toBe(true);
+  });
+
   // The menu is one element serving the whole board (ADR 0012), so it is
   // pointed at whatever opened it. Nothing is a card with no rows at all.
   test("never throws, and offers nothing for what is not a card", () => {
-    expect(cardMenuRows(null, { canMove: true })).toEqual({ note: false, branch: false, move: false });
-    expect(cardMenuRows(7)).toEqual({ note: false, branch: false, move: false });
+    expect(cardMenuRows(null, { canMove: true })).toEqual({ note: false, branch: false, move: false, priority: false });
+    expect(cardMenuRows(7)).toEqual({ note: false, branch: false, move: false, priority: false });
     expect(cardMenuRows({ key: "x" }).note).toBe(true);
   });
 });

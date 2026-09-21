@@ -1,8 +1,8 @@
 // The board document: everything this page knows that GitHub does not.
 //
 // It holds one file, `board.json`, in a private repository the reader owns:
-// the notes, the cards moved by hand, the colour on each column and whether the
-// board is light or dark. Everything here is the reader's; nothing is GitHub's. Two rules keep it safe to
+// the notes, the cards moved by hand, the work pushed down the list, the colour
+// on each column and whether the board is light or dark. Everything here is the reader's; nothing is GitHub's. Two rules keep it safe to
 // change, and ADR 0002 explains why both are worth the cost:
 //
 // 1. Records are only ever added. A note the reader cleared keeps its key and
@@ -15,6 +15,7 @@
 // to merge two devices, so a record without it is dropped as unreadable.
 
 import { knownColour, knownTheme } from "./appearance.js";
+import { knownPriority } from "./priority.js";
 
 export const SCHEMA_VERSION = 1;
 
@@ -22,7 +23,7 @@ export const SCHEMA_VERSION = 1;
 export const DOCUMENT_PATH = "board.json";
 
 /** The record maps this build knows about. Adding one here is the whole change. */
-export const RECORD_MAPS = ["notes", "columns", "colours", "appearance"];
+export const RECORD_MAPS = ["notes", "columns", "colours", "appearance", "priorities"];
 
 const RESERVED = new Set(["schemaVersion", "updatedAt"]);
 
@@ -155,6 +156,27 @@ export function writeTheme(document, theme, now) {
     ...base,
     updatedAt: now,
     appearance: { ...base.appearance, theme: { theme: String(theme ?? ""), updatedAt: now } },
+  };
+}
+
+/**
+ * Whether the reader pushed this card down the list.
+ *
+ * The mark belongs to the work, so it is filed under the item's node id and
+ * follows the card wherever it is drawn (ADR 0022, ADR 0026).
+ */
+export function readPriority(document, issueKey) {
+  const record = isPlainObject(document) && isPlainObject(document.priorities) ? document.priorities[issueKey] : null;
+  return knownPriority(isPlainObject(record) ? record.priority : null);
+}
+
+/** The same document with one card marked. The document handed in is not changed. */
+export function writePriority(document, issueKey, priority, now) {
+  const base = migrate(document, now);
+  return {
+    ...base,
+    updatedAt: now,
+    priorities: { ...base.priorities, [issueKey]: { priority: String(priority ?? ""), updatedAt: now } },
   };
 }
 

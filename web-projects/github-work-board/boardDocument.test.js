@@ -11,7 +11,9 @@ import {
   writeNote,
   readColumnColour,
   writeColumnColour,
+  readPriority,
   readTheme,
+  writePriority,
   writeTheme,
 } from "./boardDocument.js";
 
@@ -173,5 +175,46 @@ describe("the theme", () => {
     const before = emptyDocument(now);
     writeTheme(before, "dark", now);
     expect(readTheme(before)).toBe("auto");
+  });
+});
+
+describe("a card pushed down", () => {
+  const now = "2026-09-21T10:00:00.000Z";
+
+  test("round-trips", () => {
+    expect(readPriority(writePriority(emptyDocument(now), "I_1", "low", now), "I_1")).toBe("low");
+  });
+
+  test("nothing marked is the ordinary priority", () => {
+    expect(readPriority(emptyDocument(now), "I_1")).toBe("normal");
+    expect(readPriority(null, "I_1")).toBe("normal");
+    expect(readPriority({ priorities: { I_1: { updatedAt: now } } }, "I_1")).toBe("normal");
+  });
+
+  test("a priority this build does not know is the ordinary one", () => {
+    expect(readPriority(writePriority(emptyDocument(now), "I_1", "urgent", now), "I_1")).toBe("normal");
+  });
+
+  // The mark belongs to the work, so it is filed under the item's node id and
+  // never under the column or the row the card happens to sit in (ADR 0022).
+  test("one card's mark says nothing about another's", () => {
+    const document = writePriority(emptyDocument(now), "I_1", "low", now);
+    expect(readPriority(document, "I_2")).toBe("normal");
+  });
+
+  // A record is only ever added, never removed: a key that disappears reads as
+  // "this device never saw it", and the older remote value comes back (ADR 0002).
+  test("taking the mark off keeps the record", () => {
+    const marked = writePriority(emptyDocument(now), "I_1", "low", now);
+    const later = "2026-09-21T11:00:00.000Z";
+    const cleared = writePriority(marked, "I_1", "normal", later);
+    expect(readPriority(cleared, "I_1")).toBe("normal");
+    expect(cleared.priorities.I_1.updatedAt).toBe(later);
+  });
+
+  test("the document handed in is never changed", () => {
+    const before = emptyDocument(now);
+    writePriority(before, "I_1", "low", now);
+    expect(readPriority(before, "I_1")).toBe("normal");
   });
 });
