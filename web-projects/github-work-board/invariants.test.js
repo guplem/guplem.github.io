@@ -383,6 +383,15 @@ describe("relationships come from GitHub's graph (ADR 0010)", () => {
       expect(query).toContain(field);
     }
   });
+
+  // Trim either of these from the query and `askedAgain` is false on every
+  // card. Nothing errors, every test that builds its own answer stays green,
+  // and answered work sits in "Needs changes" for ever (ADR 0011).
+  test("the query asks who is waited on and who asked for changes", () => {
+    const query = read("gateway.js");
+    expect(query).toContain("latestOpinionatedReviews");
+    expect(query).toContain("requestedReviewer");
+  });
 });
 
 describe("the page itself", () => {

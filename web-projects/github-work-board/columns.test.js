@@ -90,6 +90,21 @@ describe("automaticColumn", () => {
     expect(automaticColumn(issue(), links([linkedPull({ merged: true, state: "closed" })]))).toBe("done");
   });
 
+  // GitHub leaves the verdict at "changes requested" for ever: asking the same
+  // reviewer to look again does not clear it. So the verdict alone parks
+  // finished work in "Needs changes", which is the one place a person looks to
+  // find work that is theirs. `askedAgain` is what says the ball moved back.
+  test("changes requested, then the same reviewer asked again, is awaiting review", () => {
+    const answered = linkedPull({ reviewDecision: "CHANGES_REQUESTED", reviewRequestCount: 1, askedAgain: true });
+    expect(automaticColumn(issue(), links([answered]))).toBe("awaiting-review");
+    expect(automaticColumn(pull({ ...answered, key: "PR_1" }), null)).toBe("awaiting-review");
+  });
+
+  test("changes requested with nobody asked again stays in needs changes", () => {
+    const waiting = linkedPull({ reviewDecision: "CHANGES_REQUESTED", reviewRequestCount: 1, askedAgain: false });
+    expect(automaticColumn(issue(), links([waiting]))).toBe("needs-changes");
+  });
+
   // Somebody can approve and somebody else can ask for changes. The work to do
   // is the changes, so that is the column it belongs in.
   test("changes requested beats an approval, and merged beats everything", () => {

@@ -29,7 +29,7 @@ Six columns, in the order work travels:
 |---|---|
 | To do | Assigned, with no pull request |
 | Ongoing | A pull request exists, nobody asked to review it |
-| Needs changes | A reviewer asked for changes |
+| Needs changes | A reviewer asked for changes, and has not been asked to look again |
 | Awaiting review | A reviewer was asked, no verdict yet |
 | Ready to merge | Approved |
 | Done | The pull request is merged |
@@ -45,11 +45,30 @@ once. Merged wins over everything: it is over. Changes requested wins over an
 approval, because one reviewer approving does not undo another asking for work,
 and the work is what is left to do.
 
+**Changes requested that have been answered is not changes requested.** GitHub
+never clears `reviewDecision`. The author does the work, asks the same reviewer
+to look again, and GitHub still shows the red "Changes requested" badge, right
+beside "Awaiting requested review from <name>". Both are true, and only the
+second one says whose turn it is. So a pull request whose verdict is
+`CHANGES_REQUESTED` moves to "Awaiting review" once **every** reviewer who
+asked for changes sits in `reviewRequests` again.
+
+Every reviewer, not any one of them. Two reviewers asking for changes is two
+people to satisfy, and answering one of them while the other still waits would
+hide real work in the column nobody watches.
+
+This is what `askedToLookAgain` in `relationships.js` answers, from
+`latestOpinionatedReviews` (one review per reviewer, plain comments left out)
+set beside `reviewRequests`. A team can be asked to review and has no login, so
+it never satisfies the rule; neither does a review whose author is gone.
+
 Three things this rests on:
 
 - **`reviewDecision` is GitHub's own verdict**, not a verdict this board works
   out by reading a list of reviews. It already handles who reviewed last and
-  which reviews still count.
+  which reviews still count. The review list is read for one thing only, and it
+  is not the verdict: it is the name of the reviewer who gave it, so that name
+  can be looked for among the reviewers being waited on.
 - **A pull request closed without merging counts for nothing.** It is abandoned
   work, and reading it as progress would park an issue in a column it is not in.
 - **An issue's column comes from its linked pull request** (ADR 0010), so the
@@ -98,4 +117,10 @@ for somebody already living in a Project board, and it needs another permission,
 a chosen project, and a mapping from that project's columns to these; it is
 worth doing when somebody asks for it. **Rejected: computing the review verdict
 from the review list.** `reviewDecision` already does it, and doing it again
-would be a second, worse copy of GitHub's rules.
+would be a second, worse copy of GitHub's rules. That rejection stands, and the
+re-request rule above does not break it: the verdict still comes from
+`reviewDecision`, and the reviews are read only for the names attached to it.
+**Rejected: treating any pending review request as an answer to the changes.**
+A new reviewer asked while the first reviewer's changes are still outstanding
+is not the work being answered, and reading it as one empties "Needs changes"
+of work that really is waiting there.

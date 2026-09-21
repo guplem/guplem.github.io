@@ -29,6 +29,42 @@ function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
+/**
+ * Whether every reviewer who asked for changes has been asked to look again.
+ *
+ * GitHub never clears `reviewDecision`. A pull request that had changes
+ * requested keeps that verdict for ever, even after the author does the work
+ * and re-requests the review, and GitHub shows both at once: the red "Changes
+ * requested" badge, and "Awaiting requested review from <name>". So the
+ * verdict alone cannot say whose turn it is, and only this can.
+ *
+ * **Every** reviewer, not any one of them. Two reviewers asking for changes is
+ * two people to satisfy; answering one and calling the work reviewed would
+ * hide the other's changes.
+ *
+ * @param reviews `latestOpinionatedReviews.nodes`, one per reviewer
+ * @param requests `reviewRequests.nodes`, who is being waited on right now
+ */
+export function askedToLookAgain(reviews, requests) {
+  const waiting = new Set();
+  for (const request of Array.isArray(requests) ? requests : []) {
+    // A team has a name and no login, so it can never be the reviewer who
+    // asked for changes, and it never satisfies this rule.
+    const login = isPlainObject(request) ? request.requestedReviewer?.login : null;
+    if (typeof login === "string" && login !== "") waiting.add(login);
+  }
+
+  const asked = [];
+  for (const review of Array.isArray(reviews) ? reviews : []) {
+    if (!isPlainObject(review) || review.state !== "CHANGES_REQUESTED") continue;
+    const login = review.author?.login;
+    // A review whose author is gone cannot be matched, so it is never answered.
+    asked.push(typeof login === "string" && login !== "" ? login : "");
+  }
+
+  return asked.length > 0 && asked.every((login) => waiting.has(login));
+}
+
 /** One linked item, or null when the answer does not describe one. */
 function readLink(value) {
   if (!isPlainObject(value)) return null;
@@ -49,6 +85,7 @@ function readLink(value) {
     merged: value.merged === true,
     reviewDecision: typeof value.reviewDecision === "string" ? value.reviewDecision : "",
     reviewRequestCount: Number.isInteger(value.reviewRequests?.totalCount) ? value.reviewRequests.totalCount : 0,
+    askedAgain: askedToLookAgain(value.latestOpinionatedReviews?.nodes, value.reviewRequests?.nodes),
   };
 }
 
@@ -119,6 +156,7 @@ export function applyPullRequestState(items, byId) {
       merged: self.merged,
       reviewDecision: self.reviewDecision,
       reviewRequestCount: self.reviewRequestCount,
+      askedAgain: self.askedAgain,
     };
   });
 }

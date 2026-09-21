@@ -1,11 +1,59 @@
 import { describe, expect, test } from "bun:test";
 import {
+  askedToLookAgain,
   groupByLinkedIssue,
   isBlocked,
   normalizeRelationships,
   openBlockers,
   readRelationship,
 } from "./relationships.js";
+
+/** Reviews and review requests in the shape GraphQL answers with. */
+const reviews = (...pairs) => pairs.map(([login, state]) => ({ state, author: { login } }));
+const requested = (...logins) => logins.map((login) => ({ requestedReviewer: login ? { login } : {} }));
+
+describe("askedToLookAgain", () => {
+  // The case this exists for, taken from a real pull request: GitHub shows
+  // "Changes requested" and "Awaiting requested review from sergiromero-galtea"
+  // at the same time, because a re-request does not clear the old verdict.
+  test("the one reviewer who asked for changes was asked to look again", () => {
+    expect(askedToLookAgain(reviews(["sergiromero-galtea", "CHANGES_REQUESTED"]), requested("sergiromero-galtea"))).toBe(
+      true,
+    );
+  });
+
+  test("nobody asked for changes, so there is nothing to answer", () => {
+    expect(askedToLookAgain(reviews(["ana", "APPROVED"]), requested("ana"))).toBe(false);
+    expect(askedToLookAgain([], requested("ana"))).toBe(false);
+  });
+
+  test("a different reviewer was asked, so the changes are still outstanding", () => {
+    expect(askedToLookAgain(reviews(["ana", "CHANGES_REQUESTED"]), requested("bruno"))).toBe(false);
+    expect(askedToLookAgain(reviews(["ana", "CHANGES_REQUESTED"]), [])).toBe(false);
+  });
+
+  // Two reviewers asking for changes is two people to satisfy. Answering one
+  // of them and calling the work reviewed would hide the other's changes,
+  // which is exactly the mistake this rule is meant to stop.
+  test("every reviewer who asked for changes must be asked again, not just one", () => {
+    const both = reviews(["ana", "CHANGES_REQUESTED"], ["bruno", "CHANGES_REQUESTED"]);
+    expect(askedToLookAgain(both, requested("ana"))).toBe(false);
+    expect(askedToLookAgain(both, requested("ana", "bruno"))).toBe(true);
+  });
+
+  // A team has a name and no login, so it can never be the person who asked
+  // for changes. A review whose author is gone cannot be matched either.
+  test("a team asked to review answers nobody, and a review with no author counts for nothing", () => {
+    expect(askedToLookAgain(reviews(["ana", "CHANGES_REQUESTED"]), requested(null))).toBe(false);
+    expect(askedToLookAgain([{ state: "CHANGES_REQUESTED", author: null }], requested("ana"))).toBe(false);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(askedToLookAgain(null, null)).toBe(false);
+    expect(askedToLookAgain("reviews", 7)).toBe(false);
+    expect(askedToLookAgain([null, 7], [null, 7])).toBe(false);
+  });
+});
 
 /** The shape GitHub's GraphQL answer has, cut down to what the board reads. */
 const ANSWER = [
@@ -26,7 +74,20 @@ const ANSWER = [
     },
     subIssuesSummary: { total: 14, completed: 12 },
     closedByPullRequestsReferences: {
-      nodes: [{ id: "PR_a", number: 5093, title: "feat(api): upload a dataset", state: "OPEN", url: "u3" }],
+      nodes: [
+        {
+          id: "PR_a",
+          number: 5093,
+          title: "feat(api): upload a dataset",
+          state: "OPEN",
+          url: "u3",
+          reviewDecision: "CHANGES_REQUESTED",
+          reviewRequests: { totalCount: 1, nodes: [{ requestedReviewer: { login: "sergiromero-galtea" } }] },
+          latestOpinionatedReviews: {
+            nodes: [{ state: "CHANGES_REQUESTED", author: { login: "sergiromero-galtea" } }],
+          },
+        },
+      ],
     },
   },
   {
@@ -59,6 +120,16 @@ describe("normalizeRelationships", () => {
 
   test("reads how far a parent's children have got", () => {
     expect(readRelationship(byId, "I_child").subIssues).toEqual({ total: 14, completed: 12 });
+  });
+
+  // The whole column rule for a pull request rides on these four, so they are
+  // read off the linked pull request as well as off the pull request itself.
+  test("reads the review state of a linked pull request, re-request included", () => {
+    expect(readRelationship(byId, "I_child").closedBy[0]).toMatchObject({
+      reviewDecision: "CHANGES_REQUESTED",
+      reviewRequestCount: 1,
+      askedAgain: true,
+    });
   });
 
   // One unreadable node must not cost the relationships of every other item.
