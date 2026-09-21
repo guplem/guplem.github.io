@@ -88,11 +88,12 @@ For each step (or the single unit):
    > ## Scope
    > Implement only what the step describes. Do not touch code outside that scope.
 
-4. **Create the PR** (always label and self-assign). Write the PR description under the **Writing style** section of `AGENTS.md`: a reviewer skims it, so lead with what changed and why.
+4. **Create the PR as a draft** (always label and self-assign). PRs in this repo auto-merge the moment the `test` check passes, and that check takes about a minute, so a ready PR merges before the review cycle can land its fixes. The `--draft` flag holds it; Section 7 marks it ready at the end. Write the PR description under the **Writing style** section of `AGENTS.md`: a reviewer skims it, so lead with what changed and why.
 
 ```bash
 gh label create "waiting-for-human-check" --description "No human has verified this yet -- direct AI output" --color "D93F0B" 2>/dev/null || true
 gh pr create \
+  --draft \
   --base $PR_TARGET_BRANCH \
   --head <branch> \
   --title "<conventional-prefix>: <short title>" \
@@ -149,9 +150,9 @@ Use the **review-pr** skill in `--no-verdict` mode. That mode runs unattended (i
 
    Persist every such lesson only in these **shared, version-controlled files** that all coworkers and their agents read; never in your personal memory or the user's global config, which teammates never see. Ride these doc changes along in the same PR and list them in the PR summary.
 
-7. **Then finish:** delete the review file (and `.reviews/` if it is now empty) and tell the user.
+7. **Then finish:** delete the review file (and `.reviews/` if it is now empty), mark the PR ready with `gh pr ready <PR_NUMBER>`, and tell the user.
 
-**Do not merge the PR by hand.** PRs in this repo auto-merge, repo-wide: `auto-merge.yml` queues the PR for GitHub auto-merge, so it merges itself once the required `test` check passes. Just leave it green.
+**Do not merge the PR by hand.** PRs in this repo auto-merge, repo-wide: `auto-merge.yml` queues every non-draft PR for GitHub auto-merge, so it merges itself once the required `test` check passes. The draft flag from Section 6 is what keeps it open through the review cycle; `gh pr ready` hands it over.
 
 ## 8. Completion
 
