@@ -1,8 +1,9 @@
 # Work Board
 
-A personal board on top of your GitHub issues, with private notes that follow you
-between devices. It runs entirely in your browser: there is no server, no account
-to make here, and nothing is stored anywhere except GitHub.
+A personal board on top of your GitHub issues, with a private half (notes, moved
+cards, and how it looks) that follows you between devices. It runs entirely in
+your browser: there is no server, no account to make here, and nothing is stored
+anywhere except GitHub.
 
 ## Features
 
@@ -42,24 +43,28 @@ to make here, and nothing is stored anywhere except GitHub.
 - **Or sort it plainly**: recently updated, least recently updated, newest,
   oldest, ones you noted first, by label, by repository, or by title. The choice
   goes into the address bar, so a reload keeps it and a link carries it.
+- **Paint the columns, and choose light or dark.** A colour on each column
+  and on the review row, from a set of presets, and a theme that follows your
+  machine unless you say otherwise. Both are saved in your own repository, so
+  the board looks the same on every machine you open it on.
 - **A private note on anything on the board**, including a pull request
   waiting for your review and one nested inside its issue.
 - **A private note on any issue**, added from the card's own menu and shown only
   where one exists. Notes are yours alone: they never appear on GitHub's issue
   page, and nobody else sees them.
-- **Settings says whether your notes are getting through.** A badge beside
-  the notes repository reads **Saving** or **Not saving**, and when it is not,
+- **Settings says whether your board is getting through.** A badge beside
+  the board repository reads **Saving** or **Not saving**, and when it is not,
   it says what to fix. It answers when you open Settings and again after
   **Save and reconnect**.
-- **Your notes sync themselves.** They live in a JSON file in a private
+- **Your board saves itself.** It lives in a JSON file in a private
   repository you own, so the laptop and the phone show the same thing, and every
   change keeps a version in git history.
-- **Two devices can edit at once.** The merge runs note by note, so nothing you
-  wrote is overwritten by the other device.
+- **Two devices can edit at once.** The merge runs record by record, so nothing
+  you wrote is overwritten by the other device.
 - **Plain error messages.** When a call fails, the page names the permission to
   add instead of showing GitHub's own wording.
 - **A settings screen** for your tokens: what each one reaches, how to add
-  another, and which repository holds your notes.
+  another, and which repository holds the board.
 - **Your tokens back out again.** GitHub shows a token once and never again, so
   this browser holds the only copy. Settings can copy any token, show it, or
   copy every one of them as a single backup you keep in your password manager.
@@ -72,9 +77,9 @@ empty and the board suggests one from wherever the token finds work.
 
 ## Setting it up, once
 
-1. **Create a private repository for your notes.** Call it `work-board-data`,
-   and set **Visibility** to **Private**. It holds nothing but your notes: the
-   board writes one file into it.
+1. **Create a private repository for the board.** Call it `work-board-data`,
+   and set **Visibility** to **Private**. It holds nothing but your half of the
+   board: the board writes one file into it.
 
 2. **Create a fine-grained personal access token** at
    [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new).
@@ -101,8 +106,8 @@ empty and the board suggests one from wherever the token finds work.
    **Resource owner**, grant it the same permissions, and paste it there. An
    organisation owner may have to approve the token first.
 
-   Keep the notes repository on your personal token. An organisation's owners
-   can read its repositories, and these notes are meant for you alone.
+   Keep the board repository on your personal token. An organisation's owners
+   can read its repositories, and this half of the board is meant for you alone.
 
 If the board later needs access your token does not have, the page says so on
 load and names what to add. The permission list lives in the code, so the page

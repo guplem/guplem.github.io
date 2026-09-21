@@ -13,7 +13,7 @@ different places: the screen spends its room on things nobody is reading.
   whole screen, while the two lists on it, the reviews and the columns, had
   nothing above them to tell them apart.
 - Settings held the whole token guide inline, so the tokens, the backup, the
-  notes repository and the guide all competed in one card.
+  board repository and the guide all competed in one card.
 - The connection checks were one list at the bottom of Settings, merged from
   every token, so reading them meant working out which line belonged to which.
 
@@ -44,7 +44,7 @@ board. What stands from this decision is the two headings themselves.
 
 **Adding a token is its own screen**, `?view=add-token`, with the guide as four
 numbered steps. It was a block inside Settings, where it buried the tokens, the
-backup and the notes repository under a wall of instructions somebody reads
+backup and the board repository under a wall of instructions somebody reads
 twice a year. The guide itself is still written once, as the `token-guide`
 template cloned into both screens (ADR 0008). Nothing was dropped in the move;
 the steps around it were added.
@@ -71,7 +71,7 @@ action is to remove one. ADR 0001 called that button visible on purpose; that
 was written when the board held exactly one token and the button removed
 exactly that one.
 
-**The notes repository has a link out.** The board names the repository and
+**The board repository has a link out.** The board names the repository and
 never shows it, so a reader who wants to look had no way in.
 
 ## Consequences

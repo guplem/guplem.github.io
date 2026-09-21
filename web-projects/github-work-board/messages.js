@@ -49,18 +49,19 @@ export function summariseChecks(rows) {
 }
 
 /**
- * Whether the notes are reaching GitHub, said beside the repository they go to.
+ * Whether the board file is reaching GitHub, said beside the repository it goes to.
  *
- * The notes are the half of this board that belongs to the reader, and nothing
- * else on the screen says whether they are getting through: the board file is
- * read on connecting and written a second after a keystroke, both out of sight.
- * One token reaching the file is the whole answer, because exactly one can
- * (ADR 0007), and the detail is the sentence that names what to fix, so the
- * badge answers rather than sending the reader looking (ADR 0019).
+ * The board file holds the half of this board that belongs to the reader
+ * (notes, moved cards, and how it looks), and nothing else on the screen says
+ * whether it is getting through: the file is read on connecting and written a
+ * second after a keystroke or a click, both out of sight. One token reaching
+ * the file is the whole answer, because exactly one can (ADR 0007), and the
+ * detail is the sentence that names what to fix, so the badge answers rather
+ * than sending the reader looking (ADR 0019).
  *
  * A token that cannot reach the repository says nothing about it, on purpose:
  * an organisation's token is not broken for failing to hold somebody's private
- * notes (ADR 0007). So no answer at all, once every token has been asked,
+ * board (ADR 0007). So no answer at all, once every token has been asked,
  * means no token reached it, and that is the state worth shouting about.
  *
  * @param rows every connection check the board collected, from every token

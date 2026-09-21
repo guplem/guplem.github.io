@@ -6,7 +6,7 @@
 // token owned by your account cannot see an organisation's repositories at all,
 // whatever permissions it carries. So anybody whose work lives in an
 // organisation needs at least two: one for the organisation's issues, and one
-// for their own account, which is where the private notes repository lives.
+// for their own account, which is where the private board repository lives.
 // ADR 0007 tells the whole story.
 //
 // Every function takes the storage to use rather than reaching for

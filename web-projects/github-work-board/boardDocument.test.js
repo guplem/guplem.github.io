@@ -9,6 +9,10 @@ import {
   readNote,
   serializeDocument,
   writeNote,
+  readColumnColour,
+  writeColumnColour,
+  readTheme,
+  writeTheme,
 } from "./boardDocument.js";
 
 const NOW = "2026-09-17T10:00:00.000Z";
@@ -102,5 +106,72 @@ describe("serializeDocument and parseDocument", () => {
 describe("the document path", () => {
   test("is a fixed file name at the repository root", () => {
     expect(DOCUMENT_PATH).toBe("board.json");
+  });
+});
+
+describe("the colour on a column", () => {
+  const now = "2026-09-21T10:00:00.000Z";
+
+  // The review row is painted like a column and is not one, so its id sits in
+  // the same map beside them (ADR 0024).
+  test("round-trips, for a column and for the review row", () => {
+    let doc = writeColumnColour(emptyDocument(now), "todo", "blue", now);
+    doc = writeColumnColour(doc, "reviews", "amber", now);
+    expect(readColumnColour(doc, "todo")).toBe("blue");
+    expect(readColumnColour(doc, "reviews")).toBe("amber");
+  });
+
+  test("anything never painted is the default", () => {
+    expect(readColumnColour(emptyDocument(now), "todo")).toBe("default");
+    expect(readColumnColour(null, "todo")).toBe("default");
+    expect(readColumnColour({ colours: { todo: {} } }, "todo")).toBe("default");
+  });
+
+  // A colour a newer build knows and this one does not must not paint a column
+  // with nothing. It reads as the default and is left in the file untouched.
+  test("a colour this build does not know reads as the default", () => {
+    const doc = writeColumnColour(emptyDocument(now), "todo", "chartreuse", now);
+    expect(readColumnColour(doc, "todo")).toBe("default");
+  });
+
+  // Back to no colour keeps the record, like a cleared note and a card moved
+  // back to automatic: the other device has to tell "cleared just now" from
+  // "never set" (ADR 0002).
+  test("clearing a colour keeps the record", () => {
+    let doc = writeColumnColour(emptyDocument(now), "todo", "blue", now);
+    doc = writeColumnColour(doc, "todo", "default", "2026-09-21T11:00:00.000Z");
+    expect(readColumnColour(doc, "todo")).toBe("default");
+    expect(doc.colours.todo.updatedAt).toBe("2026-09-21T11:00:00.000Z");
+  });
+
+  test("the document handed in is never changed", () => {
+    const before = emptyDocument(now);
+    writeColumnColour(before, "todo", "blue", now);
+    expect(readColumnColour(before, "todo")).toBe("default");
+  });
+});
+
+describe("the theme", () => {
+  const now = "2026-09-21T10:00:00.000Z";
+
+  test("round-trips", () => {
+    expect(readTheme(writeTheme(emptyDocument(now), "dark", now))).toBe("dark");
+    expect(readTheme(writeTheme(emptyDocument(now), "light", now))).toBe("light");
+  });
+
+  test("nothing chosen follows the machine", () => {
+    expect(readTheme(emptyDocument(now))).toBe("auto");
+    expect(readTheme(null)).toBe("auto");
+    expect(readTheme({ appearance: { theme: { updatedAt: now } } })).toBe("auto");
+  });
+
+  test("a theme this build does not know follows the machine", () => {
+    expect(readTheme(writeTheme(emptyDocument(now), "solarized", now))).toBe("auto");
+  });
+
+  test("the document handed in is never changed", () => {
+    const before = emptyDocument(now);
+    writeTheme(before, "dark", now);
+    expect(readTheme(before)).toBe("auto");
   });
 });

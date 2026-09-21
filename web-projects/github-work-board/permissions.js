@@ -51,7 +51,7 @@ export const REQUIRED_PERMISSIONS = [
     id: "contents",
     name: "Contents",
     level: "Read and write",
-    why: "your notes file, in the private repository you own",
+    why: "your half of the board, in the private repository you own",
   },
 ];
 
