@@ -5,6 +5,7 @@
 
 import { describe, it, expect } from "bun:test";
 import { join } from "node:path";
+import { readFileSync } from "node:fs";
 import { loadPosts, readPostMetadata, sortByPublishedDescending } from "./blogPosts.js";
 
 // Resolve relative to this test file, not the working directory, so the test
@@ -77,4 +78,25 @@ describe("loadPosts (the committed posts)", () => {
     const dates = posts.map((post) => post.published);
     expect(dates).toEqual([...dates].sort().reverse());
   });
+});
+
+describe("section headings are anchors (the committed posts)", () => {
+  // A reader taps a heading and the address bar gains #the-section, the way
+  // Wikipedia links a section, with no script: the heading carries an id and
+  // wraps its text in a link to that id (blog/AGENTS.md, root ADR 0015).
+  for (const post of loadPosts(repoRoot)) {
+    it(`${post.slug}: every h2 to h4 has a unique kebab-case id and links to itself`, () => {
+      const html = readFileSync(join(repoRoot, "blog", post.slug, "index.html"), "utf8");
+      const headings = html.match(/<h[234][^>]*>[\s\S]*?<\/h[234]>/g) ?? [];
+      expect(headings.length).toBeGreaterThan(0);
+      const ids = new Set();
+      for (const heading of headings) {
+        const id = heading.match(/^<h[234][^>]*\sid="([^"]+)"/)?.[1];
+        expect(id, heading).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+        expect(ids.has(id), `duplicate id ${id}`).toBe(false);
+        ids.add(id);
+        expect(heading).toContain(`<a class="heading-anchor" href="#${id}">`);
+      }
+    });
+  }
 });
