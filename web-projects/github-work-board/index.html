@@ -77,6 +77,9 @@
        sideways; a popover is in the browser's top layer and is not (ADR 0012). -->
   <div id="card-menu" class="menu" popover="auto" role="menu" aria-label="Card actions">
     <button id="menu-note" type="button" class="menu-item" role="menuitem">Add note</button>
+    <!-- A pull request's branch, for checking it out. The one row a nested
+         pull request gets: its move would change nothing (ADR 0021). -->
+    <button id="menu-branch" type="button" class="menu-item" role="menuitem">Copy branch name</button>
     <button id="menu-move" type="button" class="menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="false">
       <span>Move to</span>
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6" /></svg>

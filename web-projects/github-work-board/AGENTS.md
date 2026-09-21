@@ -43,6 +43,7 @@ It is the short procedure for all of the above.
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
+| `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in (ADR 0016), and where each one sits in it (ADR 0020) |
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
@@ -178,8 +179,19 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   errors.
 - **A submenu must be nested inside its menu in the DOM.** Two auto popovers
   that are not nested are unrelated, so opening the second closes the first.
-- **A nested pull request card carries no move menu.** It travels in its issue's
-  column, so the move would write to the document and change nothing on screen.
+- **A word `titles.js` does not know is left in the title, word for word.** The
+  prefix is stripped only when the board recognises the type, so "Note: the rate
+  limit is 5000 an hour" keeps every word. Never guess a type from a title with
+  no colon: "Fix the thing" is a fix and "Fixture loading is slow" is not, and
+  nothing in the string tells them apart (ADR 0021).
+- **The card menu shows only the rows that mean something for the card that
+  opened it.** An issue has no branch to copy, and a nested pull request cannot
+  be moved. `state.menuCanMove` carries that from the card to the menu, because
+  one menu serves the whole board (ADR 0012).
+- **A nested pull request card carries a menu, with no move in it.** It travels
+  in its issue's column, so the move would write to the document and change
+  nothing on screen. Copying its branch does mean something, which is why it has
+  a menu at all (ADR 0021).
 - **GitHub never clears `reviewDecision`.** A pull request that had changes
   requested keeps that verdict after the author does the work and asks the same
   reviewer to look again, and GitHub shows both at once: the red "Changes
@@ -353,6 +365,7 @@ before calling it done.
 | [0018](adr/0018-five-columns-two-headings-and-a-screen-for-adding-a-token.md) | Five columns, two headings, and a screen for adding a token |
 | [0019](adr/0019-the-notes-say-whether-they-are-getting-through.md) | The notes say whether they are getting through |
 | [0020](adr/0020-a-review-card-says-which-stack-it-is-in.md) | A review card says which stack it is in, and where |
+| [0021](adr/0021-a-title-is-split-and-a-branch-is-one-tap-away.md) | A title is split from the change it announces, and a branch is one tap away |
 
 ## What is not built yet
 

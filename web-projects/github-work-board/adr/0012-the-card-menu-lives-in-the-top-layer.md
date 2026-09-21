@@ -33,10 +33,10 @@ Three things had to be right, and each was wrong first:
 2. **The submenu is nested inside the menu in the DOM.** Two auto popovers that
    are not nested are unrelated, so opening the second closes the first. As
    siblings, hovering "Move to" closed the menu it lives in.
-3. **A nested pull request gets no menu.** It travels in its issue's column,
-   because the pair is one piece of work (ADR 0010). Offering to move it alone
-   offers something that cannot happen: the move was written to the document and
-   nothing on screen changed.
+3. **A nested pull request keeps the menu, with no move in it.** It travels in
+   its issue's column, because the pair is one piece of work (ADR 0010), so a
+   move would write to the document and change nothing on screen. Copying its
+   branch does mean something, which is why the menu stays (ADR 0021).
 
 **The columns reach the real edge of the window.** The track is pulled out to the
 full width with negative margins and carries the page's gutter as its own
