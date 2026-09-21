@@ -53,7 +53,7 @@ Then run the **validate** agent. The drift tests, `scripts/blogPosts.test.js` an
 
 ## 6. Check it in the browser
 
-Serve the repository root (`preview_start`), open `blog/<slug>/` and `blog/`, and check the page at phone width and at desktop width. Read the console for errors. Confirm that the page shows the whole text with JavaScript disabled (there is none to disable; check that no content depends on a script).
+Serve the repository root (`preview_start`), open `blog/<slug>/` and `blog/`, and check the page at phone width and at desktop width. Read the console for errors. For every drawing, check in the page that each label has a colour, a size under 15 pixels and room inside its box: a class that is scoped to another figure leaves black 16-pixel text that a screenshot may hide. Confirm that the page shows the whole text with JavaScript disabled (there is none to disable; check that no content depends on a script).
 
 ## 7. Report
 
