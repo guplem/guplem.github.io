@@ -89,7 +89,8 @@
 }
 
 .post p,
-.post dd {
+.post dd,
+.post li {
   font-size: 1.05rem;
   line-height: 1.7;
   color: var(--parchment);
@@ -448,32 +449,20 @@
   fill: var(--stone);
 }
 
-/* === The scaling chart: two lines on a logarithmic scale === */
-.scaling .line {
-  fill: none;
-  stroke-width: 2.5;
-  stroke-linejoin: round;
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
 }
 
-.scaling .line-jev {
-  stroke: var(--door);
+.two-ways li::marker {
+  color: var(--door);
 }
 
-.scaling .line-whole {
-  stroke: var(--leaf);
-}
-
-.scaling .dot-jev {
-  fill: var(--door);
-}
-
-.scaling .dot-whole {
-  fill: var(--leaf);
-}
-
-.scaling .meet {
-  stroke: var(--parchment-soft);
-  stroke-dasharray: 3 4;
+.two-ways strong {
+  color: var(--door);
 }
 
 /* === The scaling chart: two lines on a logarithmic scale === */
@@ -504,60 +493,26 @@
   stroke-dasharray: 3 4;
 }
 
-/* === The scaling chart: two lines on a logarithmic scale === */
-.scaling .line {
+.scaling .meet-dot {
   fill: none;
-  stroke-width: 2.5;
-  stroke-linejoin: round;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
 }
 
-.scaling .line-jev {
-  stroke: var(--door);
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
 }
 
-.scaling .line-whole {
-  stroke: var(--leaf);
+.two-ways li::marker {
+  color: var(--door);
 }
 
-.scaling .dot-jev {
-  fill: var(--door);
-}
-
-.scaling .dot-whole {
-  fill: var(--leaf);
-}
-
-.scaling .meet {
-  stroke: var(--parchment-soft);
-  stroke-dasharray: 3 4;
-}
-
-/* === The scaling chart: two lines on a logarithmic scale === */
-.scaling .line {
-  fill: none;
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-}
-
-.scaling .line-jev {
-  stroke: var(--door);
-}
-
-.scaling .line-whole {
-  stroke: var(--leaf);
-}
-
-.scaling .dot-jev {
-  fill: var(--door);
-}
-
-.scaling .dot-whole {
-  fill: var(--leaf);
-}
-
-.scaling .meet {
-  stroke: var(--parchment-soft);
-  stroke-dasharray: 3 4;
+.two-ways strong {
+  color: var(--door);
 }
 
 /* === The scaling chart: two lines on a logarithmic scale === */
@@ -588,6 +543,28 @@
   stroke-dasharray: 3 4;
 }
 
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
 /* === The scaling chart: two lines on a logarithmic scale === */
 .scaling .line {
   fill: none;
@@ -614,6 +591,212 @@
 .scaling .meet {
   stroke: var(--parchment-soft);
   stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
 }
 
 /* === Version log === */
