@@ -58,6 +58,7 @@ describe("the stored document (ADR 0002)", () => {
       tokens: "github-work-board.tokens",
       dataRepo: "github-work-board.dataRepo",
       lastCounts: "github-work-board.lastCounts",
+      autoRefresh: "github-work-board.autoRefresh",
     });
   });
 
@@ -155,6 +156,27 @@ describe("the token never leaves the browser except toward GitHub (ADR 0001)", (
   test("gateway.js sends it to api.github.com and nowhere else", () => {
     const hosts = [...read("gateway.js").matchAll(/https?:\/\/([a-z0-9.-]+)/g)].map((match) => match[1]);
     expect([...new Set(hosts)]).toEqual(["api.github.com"]);
+  });
+});
+
+// Cheap to delete, and the damage is invisible: the board keeps working, every
+// test stays green, and the reader simply sees an answer that is up to a minute
+// old. That is the failure this project exists to prevent (ADR 0003).
+describe("the browser never answers for GitHub (ADR 0025)", () => {
+  // GitHub answers an authenticated call with `Cache-Control: max-age=60`. With
+  // no `cache` option the browser serves its own copy for that minute, so a
+  // board refreshing every 30 seconds shows the same answer twice.
+  test("every call asks GitHub, rather than reading the browser's own copy", () => {
+    const source = read("gateway.js");
+    expect(source).toMatch(/cache:\s*(CACHE_MODE|["']no-cache["'])/);
+    expect(source).toContain('"no-cache"');
+  });
+
+  // `no-store` would also be fresh, and would cost a full call every time.
+  // `no-cache` revalidates with the ETag the browser already holds, and a 304
+  // costs nothing against the rate limit. The difference is the whole point.
+  test("it revalidates rather than refusing to store", () => {
+    expect(read("gateway.js")).not.toMatch(/cache:\s*["']no-store["']/);
   });
 });
 

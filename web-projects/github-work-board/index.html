@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="179" />
-  <meta name="deploy-date" content="2026-09-21T17:59:19.000Z" />
+  <meta name="deploy-pull-request" content="180" />
+  <meta name="deploy-date" content="2026-09-21T18:02:04.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -135,6 +135,16 @@
           <label class="sort-label" for="sort">Sort by</label>
           <!-- Filled from SORT_OPTIONS, so an order exists in one place (ADR 0006). -->
           <select id="sort" class="select"></select>
+        </div>
+
+        <!-- How often the board asks GitHub again on its own. Beside the order,
+             for the same reason: it belongs to the board and it is looked for at
+             the top (ADR 0023). Off until the reader turns it on, because every
+             refresh spends their GitHub rate limit (ADR 0025). -->
+        <div class="sort-control" id="refresh-control" hidden>
+          <label class="sort-label" for="refresh">Refresh</label>
+          <!-- Filled from REFRESH_CHOICES, so a schedule exists in one place. -->
+          <select id="refresh" class="select"></select>
         </div>
 
         <!-- One control for both screens. The arrow appears only on the way back,

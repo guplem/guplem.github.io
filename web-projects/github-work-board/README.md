@@ -43,6 +43,12 @@ anywhere except GitHub.
 - **Or sort it plainly**: recently updated, least recently updated, newest,
   oldest, ones you noted first, by label, by repository, or by title. The choice
   goes into the address bar, so a reload keeps it and a link carries it.
+- **Keep it up to date on its own.** Turn on a refresh of every 30 seconds, one
+  minute or five minutes, and the board asks GitHub again by itself. It starts
+  off, because each refresh spends a little of your GitHub rate limit. It never
+  wipes the board to placeholders, never asks while the tab is out of sight, and
+  never interrupts a note you are typing. The choice stays in this browser: it is
+  about what this one device spends, so it is not saved to your repository.
 - **Paint the columns, and choose light or dark.** A colour on each column
   and on the review row, from a set of presets, and a theme that follows your
   machine unless you say otherwise. Both are saved in your own repository, so

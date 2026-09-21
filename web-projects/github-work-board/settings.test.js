@@ -7,11 +7,13 @@ import {
   boardWritingToken,
   browserStorage,
   forgetAllTokens,
+  readAutoRefresh,
   readDataRepo,
   readLastCounts,
   readTokens,
   removeToken,
   renameToken,
+  saveAutoRefresh,
   saveDataRepo,
   saveLastCounts,
   saveTokens,
@@ -269,5 +271,43 @@ describe("browserStorage", () => {
     expect(() => browserStorage()).not.toThrow();
     const found = browserStorage();
     expect(found === null || typeof found === "object").toBe(true);
+  });
+});
+
+describe("the auto refresh schedule", () => {
+  let storage;
+  beforeEach(() => {
+    storage = fakeStorage();
+  });
+
+  // How often this browser asks GitHub is about this device and the rate limit
+  // it spends, so it stays here and does not travel in the board file
+  // (ADR 0025).
+  test("round-trips", () => {
+    saveAutoRefresh(storage, "30s");
+    expect(readAutoRefresh(storage)).toBe("30s");
+  });
+
+  test("a browser that was never told asks for nothing", () => {
+    expect(readAutoRefresh(storage)).toBe("off");
+  });
+
+  // A schedule written by a newer build, or by hand, must never leave this
+  // browser asking GitHub on a cadence nobody chose.
+  test("a schedule this build does not know asks for nothing", () => {
+    storage.setItem(STORAGE_KEYS.autoRefresh, "every-second");
+    expect(readAutoRefresh(storage)).toBe("off");
+  });
+
+  test("signing out forgets it too", () => {
+    saveAutoRefresh(storage, "1m");
+    forgetAllTokens(storage);
+    expect(readAutoRefresh(storage)).toBe("off");
+    expect(storage.data.size).toBe(0);
+  });
+
+  test("a browser that refuses to store never breaks the page", () => {
+    expect(() => saveAutoRefresh(refusingStorage, "30s")).not.toThrow();
+    expect(readAutoRefresh(refusingStorage)).toBe("off");
   });
 });
