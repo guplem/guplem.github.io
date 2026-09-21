@@ -15,10 +15,21 @@ import {
   emptyDocument,
   parseDocument,
   readColumn,
+  readColumnColour,
   readNote,
+  readTheme,
   writeColumn,
+  writeColumnColour,
   writeNote,
+  writeTheme,
 } from "./boardDocument.js";
+import {
+  COLUMN_COLOURS,
+  DEFAULT_COLOUR,
+  REVIEW_ROW_ID,
+  THEMES,
+  colourableAreas,
+} from "./appearance.js";
 import { AUTOMATIC, COLUMNS, groupIntoColumns, moveOptions } from "./columns.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
@@ -490,6 +501,33 @@ function renderLoading() {
   renderNotesSync();
 }
 
+/**
+ * Paint the page from the document: the theme on the root, and a colour on the
+ * review row and on each column.
+ *
+ * Nothing carries `data-colour` until somebody picks one, so a board nobody has
+ * touched looks exactly as it did (ADR 0024).
+ */
+function paint(element_, areaId) {
+  if (!element_) return;
+  const colour = readColumnColour(state.board, areaId);
+  const chosen = COLUMN_COLOURS.find((one) => one.id === colour);
+  if (!chosen || chosen.id === DEFAULT_COLOUR) {
+    element_.removeAttribute("data-colour");
+    element_.style.removeProperty("--tint");
+    return;
+  }
+  element_.setAttribute("data-colour", chosen.id);
+  element_.style.setProperty("--tint", chosen.tint);
+}
+
+/** The theme the reader chose, on the root element where the tokens read it. */
+function paintTheme() {
+  const theme = readTheme(state.board);
+  if (theme === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", theme);
+}
+
 /** One filter chip. Pressed or not, and it says which through `aria-pressed`. */
 function buildChip(label, pressed, onToggle) {
   const chip = document.createElement("button");
@@ -812,6 +850,7 @@ function buildGroupCard({ item, children }) {
 function buildColumn({ column, groups }) {
   const section = document.createElement("section");
   section.className = "column";
+  section.dataset.columnId = column.id;
   section.setAttribute("aria-label", column.label);
 
   const head = document.createElement("div");
@@ -850,6 +889,7 @@ function buildColumn({ column, groups }) {
  * "ones you noted first" moves an item the moment the first character lands.
  */
 function renderBoard() {
+  paintTheme();
   const hasNote = (key) => readNote(state.board, key).trim() !== "";
   const visible = filterWorkItems(state.items, state);
   const ordered = sortWorkItems(visible, state.sortId, hasNote);
@@ -874,6 +914,10 @@ function renderBoard() {
   for (const { item } of grouped) overrides[item.key] = readColumn(state.board, item.key);
   const board = groupIntoColumns(grouped, state.links, overrides);
   element("board-columns").replaceChildren(...board.map(buildColumn));
+  paint(element("reviews"), REVIEW_ROW_ID);
+  for (const column of document.querySelectorAll("#board-columns .column")) {
+    paint(column, column.dataset.columnId);
+  }
 
   const { issues, pullRequests } = countByKind(visible);
   const parts = [];
@@ -897,6 +941,62 @@ function renderBoard() {
   element("clear-filters").hidden = !narrowed;
 }
 
+/**
+ * The appearance panel in Settings: the theme, and a colour for each part of
+ * the board. Both are written to the reader's own repository, so a choice made
+ * on one machine is there on the next (ADR 0024).
+ */
+function renderAppearance() {
+  const theme = readTheme(state.board);
+  element("theme-choices").replaceChildren(
+    ...THEMES.map((one) =>
+      buildChip(one.label, theme === one.id, () => {
+        state.board = writeTheme(state.board, one.id, new Date().toISOString());
+        scheduleSave();
+        paintTheme();
+        renderAppearance();
+      }),
+    ),
+  );
+
+  element("colour-areas").replaceChildren(
+    ...colourableAreas().map((area) => {
+      const row = document.createElement("li");
+      row.className = "colour-area";
+
+      const name = document.createElement("p");
+      name.className = "colour-area-name";
+      name.textContent = area.label;
+
+      const swatches = document.createElement("div");
+      swatches.className = "swatches";
+      swatches.setAttribute("role", "group");
+      swatches.setAttribute("aria-label", `Colour for ${area.label}`);
+      const chosen = readColumnColour(state.board, area.id);
+
+      for (const colour of COLUMN_COLOURS) {
+        const swatch = document.createElement("button");
+        swatch.type = "button";
+        swatch.className = colour.id === DEFAULT_COLOUR ? "swatch swatch-none" : "swatch";
+        swatch.setAttribute("aria-pressed", chosen === colour.id ? "true" : "false");
+        swatch.setAttribute("aria-label", colour.label);
+        swatch.title = colour.label;
+        if (colour.tint !== "") swatch.style.setProperty("--tint", colour.tint);
+        swatch.addEventListener("click", () => {
+          state.board = writeColumnColour(state.board, area.id, colour.id, new Date().toISOString());
+          scheduleSave();
+          renderAppearance();
+          renderBoard();
+        });
+        swatches.append(swatch);
+      }
+
+      row.append(name, swatches);
+      return row;
+    }),
+  );
+}
+
 /** Whether the notes are reaching GitHub, beside the repository they go to. */
 function renderNotesSync() {
   const rows = Object.values(state.checks).flat();
@@ -908,6 +1008,7 @@ function renderNotesSync() {
 }
 
 function renderTokenList() {
+  renderAppearance();
   element("tokens").replaceChildren(...state.tokens.map((entry, index) => buildTokenRow(entry, index)));
   element("settings-repo-name").value = state.repoName;
   renderNotesSync();
@@ -1048,7 +1149,7 @@ async function inspectToken(entry) {
         : `${counted.issues} issues and ${counted.pullRequests} pull requests, in ${owners.join(", ")}.`,
   });
 
-  // Only one token can reach the notes repository, and it is the one whose
+  // Only one token can reach the board repository, and it is the one whose
   // owner holds it. A token that cannot is not broken; it just is not that one.
   const repository = await fetchRepository(entry.token, { owner: login, repo: state.repoName });
   if (repository.ok) {
@@ -1131,7 +1232,7 @@ async function connectAll() {
     labels: availableLabels(state.items).length,
     tokens: state.tokens.length,
   });
-  setStatus(boardWritingToken(state.tokens) ? "Notes save by themselves." : "No token can write your notes file.");
+  setStatus(boardWritingToken(state.tokens) ? "Your board saves itself." : "No token can write your board file.");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1154,7 +1255,7 @@ function scheduleSave() {
 async function save(attempt = 0) {
   const writer = boardWritingToken(state.tokens);
   const repo = readDataRepo(storage);
-  if (!writer || !repo) return setStatus("No token can write your notes file.");
+  if (!writer || !repo) return setStatus("No token can write your board file.");
 
   const fresh = await fetchBoardFile(writer.token, repo);
   if (!fresh.ok) return setStatus(describeFailure(fresh));
@@ -1194,6 +1295,7 @@ function signOut() {
   state.login = null;
   state.board = emptyDocument(new Date().toISOString());
   element("token").value = "";
+  paintTheme();
   showView(DEFAULT_VIEW);
   renderTokenNotice();
 }

@@ -3,7 +3,7 @@
 // This is harder than it looks, and the board got it wrong twice.
 //
 // It first named a token by the owners it had found work in. That is a status,
-// not a name: a token holding only the notes repository found nothing, so it
+// not a name: a token holding only the board repository found nothing, so it
 // had no name at all.
 //
 // It then asked `GET /user/repos` and named the token by the owners of what
@@ -47,6 +47,6 @@ export function suggestedTokenName(entry, index = 0) {
 export function describeTokenReach({ token, itemCount = 0, canWriteBoard = false } = {}) {
   const count = Number.isFinite(itemCount) ? itemCount : 0;
   const found = count === 0 ? "no work found" : `${count} ${count === 1 ? "item" : "items"}`;
-  const does = canWriteBoard ? "reads your work and writes your notes" : "reads your work";
+  const does = canWriteBoard ? "reads your work and saves your board" : "reads your work";
   return [maskToken(token), found, does].filter((part) => part !== "").join(" · ");
 }

@@ -1,7 +1,8 @@
 // The board document: everything this page knows that GitHub does not.
 //
-// It holds one file, `board.json`, in a private repository the reader owns.
-// Notes today; tags, columns and queue order later. Two rules keep it safe to
+// It holds one file, `board.json`, in a private repository the reader owns:
+// the notes, the cards moved by hand, the colour on each column and whether the
+// board is light or dark. Everything here is the reader's; nothing is GitHub's. Two rules keep it safe to
 // change, and ADR 0002 explains why both are worth the cost:
 //
 // 1. Records are only ever added. A note the reader cleared keeps its key and
@@ -13,13 +14,15 @@
 // Every record, in every map, carries `updatedAt`. That is what `sync.js` uses
 // to merge two devices, so a record without it is dropped as unreadable.
 
+import { knownColour, knownTheme } from "./appearance.js";
+
 export const SCHEMA_VERSION = 1;
 
 /** The file this page keeps in the reader's data repository. */
 export const DOCUMENT_PATH = "board.json";
 
 /** The record maps this build knows about. Adding one here is the whole change. */
-export const RECORD_MAPS = ["notes", "columns"];
+export const RECORD_MAPS = ["notes", "columns", "colours", "appearance"];
 
 const RESERVED = new Set(["schemaVersion", "updatedAt"]);
 
@@ -108,6 +111,50 @@ export function writeColumn(document, itemKey, columnId, now) {
     ...base,
     updatedAt: now,
     columns: { ...base.columns, [itemKey]: { columnId: String(columnId ?? ""), updatedAt: now } },
+  };
+}
+
+/**
+ * The colour painted on one column, or on the review row, and "default" when
+ * nothing was chosen.
+ *
+ * A colour a newer build knows and this one does not reads as the default. It
+ * is left in the file untouched, because a build never deletes what it does not
+ * understand (ADR 0002).
+ */
+export function readColumnColour(document, areaId) {
+  const record = isPlainObject(document) && isPlainObject(document.colours) ? document.colours[areaId] : null;
+  return knownColour(isPlainObject(record) ? record.colourId : null);
+}
+
+/**
+ * The same document with one area painted. The document handed in is not changed.
+ *
+ * Choosing "None" again keeps the record, the same way a cleared note keeps its
+ * key: the other device has to tell "cleared just now" from "never set".
+ */
+export function writeColumnColour(document, areaId, colourId, now) {
+  const base = migrate(document, now);
+  return {
+    ...base,
+    updatedAt: now,
+    colours: { ...base.colours, [areaId]: { colourId: String(colourId ?? ""), updatedAt: now } },
+  };
+}
+
+/** Light, dark, or the machine's own setting when nothing was chosen. */
+export function readTheme(document) {
+  const record = isPlainObject(document) && isPlainObject(document.appearance) ? document.appearance.theme : null;
+  return knownTheme(isPlainObject(record) ? record.theme : null);
+}
+
+/** The same document with the theme chosen. The document handed in is not changed. */
+export function writeTheme(document, theme, now) {
+  const base = migrate(document, now);
+  return {
+    ...base,
+    updatedAt: now,
+    appearance: { ...base.appearance, theme: { theme: String(theme ?? ""), updatedAt: now } },
   };
 }
 

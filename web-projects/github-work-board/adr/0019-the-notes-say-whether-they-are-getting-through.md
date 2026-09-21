@@ -2,10 +2,10 @@
 
 ## Context
 
-The notes are the half of this board that belongs to the reader. Everything
-else on screen is GitHub's, and GitHub will still be there if this page breaks.
-The notes live in one file in one repository, and nothing on the screen said
-whether that file was reachable.
+The reader's half of the board (notes, moved cards, and how it looks) belongs
+to the reader alone. Everything else on screen is GitHub's, and GitHub will
+still be there if this page breaks. That half lives in one file in one
+repository, and nothing on the screen said whether that file was reachable.
 
 Both ends of it are out of sight. The file is read once, while connecting. It
 is written a second after a keystroke, by a timer, and the only sign is a line
@@ -15,13 +15,13 @@ typo in the repository name: all three look exactly like everything working.
 
 The answer already existed. Every token runs a board-file check on connecting,
 and after ADR 0018 that check sits folded inside the token it belongs to. That
-is the right home for "what did this token prove" and the wrong home for "are
-my notes safe": it asks the reader to know which token owns the notes
+is the right home for "what did this token prove" and the wrong home for "is
+my board safe": it asks the reader to know which token owns the board
 repository, unfold it, and read.
 
 ## Decision
 
-**A badge beside the "Notes repository" heading, with the reason under the
+**A badge beside the "Board repository" heading, with the reason under the
 box.** It answers on opening Settings and again after "Save and reconnect".
 
 Three states:

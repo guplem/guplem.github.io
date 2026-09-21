@@ -38,11 +38,12 @@ It is the short procedure for all of the above.
 
 | File | Pure? | Responsibility |
 |---|---|---|
-| `boardDocument.js` | Yes | The stored document: schema version, `migrate`, reading and writing one note |
+| `boardDocument.js` | Yes | The stored document: schema version, `migrate`, and one note, column, colour or theme at a time |
 | `sync.js` | Yes | Merging two copies of the document, and deciding create / update / skip (ADR 0002) |
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
+| `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in (ADR 0016), and where each one sits in it (ADR 0020) |
@@ -64,7 +65,7 @@ It is the short procedure for all of the above.
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
 Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
-Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
+Data flow, saving: a keystroke, a card moved, a colour or the theme → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
 
@@ -74,7 +75,7 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   merges the answers. Anyone working in an organisation needs at least two
   (ADR 0007).
 - **Exactly one token writes the notes file.** `boardWritingToken` picks it. A
-  save with any other token fails, because the notes repository belongs to one
+  save with any other token fails, because the board repository belongs to one
   owner.
 - **The token guide lives once, as the `<template id="token-guide">` in
   `index.html`**, and `app.js` clones it into every `.token-guide-slot` (the
@@ -137,6 +138,23 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
 - **This project takes no CDN import**, although root ADR 0005 would allow one. A
   third-party script on a page holding a credential can read that credential
   (ADR 0001).
+- **The repository holds the whole of the reader's half, not just notes.**
+  `board.json` carries the notes, the cards moved by hand, the colour on each
+  column and the theme (ADR 0024). The page calls it the **board
+  repository**; say "your half of the board", never "your notes", in anything
+  new.
+- **A new kind of stored thing is one entry in `RECORD_MAPS` and a read/write
+  pair.** That is what ADR 0002 built the document for, and it is why adding
+  colours and the theme touched no merge code at all.
+- **The dark tokens are written twice**, under
+  `@media (prefers-color-scheme: dark) :root:not([data-theme="light"])` and
+  under `:root[data-theme="dark"]`. CSS cannot share one block between two
+  selectors without repeating it. Keep the copies identical: an explicit
+  choice has to win in **both** directions, or picking light on a dark
+  machine does nothing (ADR 0024).
+- **Nothing carries `data-colour` until somebody picks a colour**, so an
+  untouched board looks exactly as it did. The default is the absence of the
+  rule, not a colour that happens to match.
 - **Colour tokens are bare HSL channels (`240 10% 3.9%`), never finished
   colours.** Every hover state is built by taking an alpha at the point of use,
   `hsl(var(--primary) / 0.88)`, which a hex value cannot do. Tidying the tokens
@@ -295,7 +313,7 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
 - **Every check row carries the `id` of the `CONNECTION_CHECKS` entry it
   answers.** The notes badge finds the board-file row by that id, never by
   matching its label, which is wording and changes (ADR 0019).
-- **A token that cannot reach the notes repository pushes no board-file
+- **A token that cannot reach the board repository pushes no board-file
   check at all**, on purpose: an organisation's token is not broken for
   failing to hold somebody's private notes (ADR 0007). So no row from any
   token means no token reached it, which is why `describeNotesSync` takes an
@@ -380,6 +398,7 @@ before calling it done.
 | [0021](adr/0021-a-title-is-split-and-a-branch-is-one-tap-away.md) | A title is split from the change it announces, and a branch is one tap away |
 | [0022](adr/0022-a-note-belongs-to-the-work-not-to-the-card.md) | A note belongs to the work, not to the place the card sits |
 | [0023](adr/0023-the-order-goes-to-the-top-and-the-header-scrolls-away.md) | The order goes to the top, and the header scrolls away |
+| [0024](adr/0024-how-the-board-looks-is-the-readers-and-travels-with-them.md) | How the board looks is the reader's, and travels with them |
 
 ## What is not built yet
 

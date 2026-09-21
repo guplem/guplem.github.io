@@ -18,9 +18,9 @@ So for anybody whose work lives in an organisation, one token can never be
 enough:
 
 - The **organisation's** token reaches the issues and pull requests.
-- The **personal** token reaches the private notes repository, which belongs to
-  the person, not the organisation. Putting the notes in the organisation would
-  make them readable by its owners, which is the one thing the notes must not be.
+- The **personal** token reaches the private board repository, which belongs to
+  the person, not the organisation. Putting it in the organisation would
+  make it readable by its owners, which is the one thing it must not be.
 
 The second failure was worse than the first. The board said "Nothing is assigned
 to you right now", which is a confident, plausible, wrong answer. Nothing on the
@@ -33,10 +33,10 @@ no route from the symptom to the cause.
 
 - `settings.js` stores a list. Each entry carries the token, a permanent `id`,
   the permission fingerprint it was approved against (ADR 0005), the repository
-  owners it turned out to reach, and whether it can write the notes file.
+  owners it turned out to reach, and whether it can write the board file.
 - **Every token is asked for the work assigned to you, and the answers are
   merged** by node id, so an item two tokens can both see appears once.
-- **Exactly one token writes the notes file**: the first whose owner holds that
+- **Exactly one token writes the board file**: the first whose owner holds that
   repository. `boardWritingToken` picks it, so a save never goes out with a token
   that was never going to be allowed.
 - The same token twice is refused. It would double every item on the board and
@@ -47,7 +47,7 @@ say which owner a token is scoped to, and two attempts to work it out both
 failed:
 
 1. Naming a token by the owners it had found **work** in. That is a status, not
-   a name: the token holding only the notes repository found nothing, so its row
+   a name: the token holding only the board repository found nothing, so its row
    read "No assigned work found" beside a row reading "Galtea-AI", and nothing
    said which token either row was.
 2. Naming it by the owners of `GET /user/repos`. That call lists what the
@@ -83,16 +83,16 @@ only on one button for all of them (ADR 0018).
 **The rate limit is per token**, so splitting across owners raises the ceiling
 rather than lowering it.
 
-**The notes repository is still personal.** The board does not offer to put it in
+**The board repository is still personal.** The board does not offer to put it in
 an organisation, because an organisation's owners can read its repositories, and
-"notes only you can see" would stop being true.
+"a board only you can see" would stop being true.
 
 **A name the reader typed can go stale**, which is the cost of letting them type
 it. It is the smaller cost: both derived answers produced a name that was either
 absent or confidently wrong, and a wrong name is worse than an old one.
 
-**Rejected: one token owned by the organisation, with the notes repository
-inside it.** One token, one setup, and the notes become readable by the
+**Rejected: one token owned by the organisation, with the board repository
+inside it.** One token, one setup, and the board becomes readable by the
 organisation. That trades away the feature. **Rejected: detecting the resource
 owner from the token itself.** GitHub does not expose it, and `GET /user/repos`
 answers a different question convincingly enough to be dangerous.
