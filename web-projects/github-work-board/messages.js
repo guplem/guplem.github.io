@@ -33,6 +33,16 @@ export function noteMenuLabel(noteText) {
 }
 
 /**
+ * What the menu offers about the reader's own ranking of a card.
+ *
+ * Each one names what the row does, not what the card is: a menu row is a
+ * thing the reader presses (ADR 0026).
+ */
+export function priorityMenuLabel(priority) {
+  return priority === "low" ? "Make it a priority" : "Not a priority";
+}
+
+/**
  * The one line on a folded token row.
  *
  * It has to answer "do I need to open this?" on its own. A reader who must

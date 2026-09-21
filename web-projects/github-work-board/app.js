@@ -17,10 +17,12 @@ import {
   readColumn,
   readColumnColour,
   readNote,
+  readPriority,
   readTheme,
   writeColumn,
   writeColumnColour,
   writeNote,
+  writePriority,
   writeTheme,
 } from "./boardDocument.js";
 import {
@@ -52,7 +54,15 @@ import {
   toggleInList,
 } from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
-import { describeNotesSync, escapeHtml, noteMenuLabel, say, sayEmptyBoard, summariseChecks } from "./messages.js";
+import {
+  describeNotesSync,
+  escapeHtml,
+  noteMenuLabel,
+  priorityMenuLabel,
+  say,
+  sayEmptyBoard,
+  summariseChecks,
+} from "./messages.js";
 import {
   CONNECTION_CHECKS,
   REQUIRED_PERMISSIONS,
@@ -83,6 +93,7 @@ import { skeletonCount } from "./skeletons.js";
 import { orderStacksForMerging, stackPositions } from "./stacks.js";
 import { cardMenuRows } from "./cardMenu.js";
 import { readTitle } from "./titles.js";
+import { LOW, NORMAL, sinkLowPriority } from "./priority.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
@@ -280,6 +291,9 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
 
   const card = document.createElement("li");
   card.className = "issue";
+  // Fainter wherever it is drawn, in every order. Only the smart order moves
+  // it as well (ADR 0026).
+  if (readPriority(state.board, item.key) === LOW) card.setAttribute("data-priority", LOW);
 
   const heading = document.createElement("p");
   heading.className = "issue-where";
@@ -902,6 +916,15 @@ function buildColumn({ column, groups }) {
   return section;
 }
 
+/** The cards the reader marked, out of the ones on the board right now. */
+function lowPriorityKeys(groups) {
+  const marked = new Set();
+  for (const { item } of groups) {
+    if (readPriority(state.board, item.key) === LOW) marked.add(item.key);
+  }
+  return marked;
+}
+
 /**
  * Put the list on the screen in the chosen order.
  *
@@ -918,7 +941,14 @@ function renderBoard() {
   // Only the smart order asks for it; every other order says what it does and
   // must keep doing exactly that (ADR 0016).
   const plain = groupByLinkedIssue(ordered, state.links);
-  const grouped = state.sortId === "smart" ? orderStacksForMerging(plain) : plain;
+  // The cards the reader pushed down go last, and take anything stacked on top
+  // of them along: those cannot merge first, so leaving them up would show work
+  // that reads as ready and is not (ADR 0016, ADR 0026). Like the stack pass,
+  // only the smart order does this.
+  const grouped =
+    state.sortId === "smart"
+      ? sinkLowPriority(orderStacksForMerging(plain), lowPriorityKeys(plain))
+      : plain;
 
   // The row above the columns. It follows the chosen order, and with no choice
   // made it puts the longest-waiting first (ADR 0013).
@@ -1584,6 +1614,16 @@ function start() {
     }
   });
 
+  element("menu-priority").addEventListener("click", () => {
+    const item = state.menuItem;
+    if (!item) return;
+    const now = readPriority(state.board, item.key);
+    state.board = writePriority(state.board, item.key, now === LOW ? NORMAL : LOW, new Date().toISOString());
+    scheduleSave();
+    closeCardMenu();
+    renderBoard();
+  });
+
   element("menu-note").addEventListener("click", () => {
     const item = state.menuItem;
     if (!item) return;
@@ -1598,9 +1638,11 @@ function start() {
     const open = event.newState === "open";
     if (open && state.menuItem) {
       element("menu-note").textContent = noteMenuLabel(readNote(state.board, state.menuItem.key));
+      element("menu-priority").textContent = priorityMenuLabel(readPriority(state.board, state.menuItem.key));
       const rows = cardMenuRows(state.menuItem, { canMove: state.menuCanMove });
       element("menu-note").hidden = !rows.note;
       element("menu-branch").hidden = !rows.branch;
+      element("menu-priority").hidden = !rows.priority;
       move.hidden = !rows.move;
     }
     state.menuAnchor?.setAttribute("aria-expanded", open ? "true" : "false");

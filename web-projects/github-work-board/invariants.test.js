@@ -306,6 +306,39 @@ describe("a sort order named in a link keeps its name (ADR 0006)", () => {
   });
 });
 
+// Both halves of this are one line each in `app.js`, and both fail silently:
+// widen the guard and an order named after a date stops giving a date order,
+// drop the pass and the mark quietly becomes decoration.
+describe("only the smart order moves a card the reader pushed down (ADR 0026)", () => {
+  const source = read("app.js");
+
+  test("the sink runs behind the same guard as the stack pass (ADR 0016)", () => {
+    const guarded = /state\.sortId === "smart"[\s\S]{0,240}sinkLowPriority/;
+    expect(source).toMatch(guarded);
+  });
+
+  // The bug this caught, in the pass that added the rule: a doc comment written
+  // between `.column` and `.issue[data-priority="low"]` collapsed to nothing, so
+  // the rule silently became `.column .issue[...]` and a marked review card
+  // never faded. Nothing failed, because CSS has no test (root ADR 0012).
+  test("the faint card fades outside a column too, so the review row fades", () => {
+    const selectors = [...read("style.css").matchAll(/([^{}]*data-priority[^{}]*)\{/g)].map((match) =>
+      match[1].replace(/\/\*[\s\S]*?\*\//g, "").trim(),
+    );
+    expect(selectors.length).toBeGreaterThan(0);
+    for (const selector of selectors) {
+      for (const one of selector.split(",")) expect(one.trim().startsWith(".issue")).toBe(true);
+    }
+  });
+
+  // Fainter is not an order, so it is the one half that every order gets.
+  test("the faint card is drawn whatever the order", () => {
+    expect(source).toMatch(/data-priority/);
+    const paints = source.slice(source.indexOf("card.className = \"issue\""), source.indexOf("data-priority") + 200);
+    expect(paints).not.toContain("sortId");
+  });
+});
+
 describe("a filter named in a link keeps its name (ADR 0009)", () => {
   // The chosen kind travels in the address bar, so a renamed id silently
   // breaks every link anybody saved.
