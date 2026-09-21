@@ -14,6 +14,10 @@ anywhere except GitHub.
   that matter. A title the board does not recognise keeps every word it has.
 - **Copy a branch name** from any pull request card, through the card menu,
   including one nested inside its issue.
+- **Point at a stacked pull request and the rest of its stack lights up**,
+  wherever those cards are on the screen, including in another column. The
+  keyboard does it too. Hovering the stack's number tells you which pull
+  request that number is, by title.
 - **A stacked pull request says so**, on the review row: `Stack #5073 · 2 of 3`
   names the stack by the pull request that merges first and says where this
   one sits. Reviewing a stack out of order is wasted work twice over.

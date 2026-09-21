@@ -144,6 +144,9 @@ const state = {
   items: [],
   reviews: [],
   links: {},
+  // Which stack each card on screen belongs to, keyed by item, valued by the
+  // key of the stack's bottom. Read while a card is built (ADR 0027).
+  stackRoots: {},
   menuItem: null,
   menuAnchor: null,
   // Cards whose note box is open although the note is still empty. Only for
@@ -294,6 +297,10 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   // Fainter wherever it is drawn, in every order. Only the smart order moves
   // it as well (ADR 0026).
   if (readPriority(state.board, item.key) === LOW) card.setAttribute("data-priority", LOW);
+  // Which stack this card belongs to, out of everything drawn right now. The
+  // hover lights up the rest of the stack by matching on it (ADR 0027).
+  const inStack = state.stackRoots[item.key];
+  if (inStack) card.setAttribute("data-stack", inStack);
 
   const heading = document.createElement("p");
   heading.className = "issue-where";
@@ -340,11 +347,24 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   if (stack) {
     const inStack = document.createElement("span");
     inStack.className = "badge badge-stack";
-    inStack.textContent = `Stack #${stack.stack} · ${stack.position} of ${stack.size}`;
-    inStack.title =
+
+    // The number is the bottom of the stack. On its own it says nothing about
+    // what that pull request is, so hovering it answers that and nothing else
+    // (ADR 0027).
+    const which = document.createElement("span");
+    which.className = "stack-number";
+    which.textContent = `Stack #${stack.stack}`;
+    which.title = stack.title === "" ? `Pull request #${stack.stack}` : `#${stack.stack} ${stack.title}`;
+
+    const where = document.createElement("span");
+    where.className = "stack-position";
+    where.textContent = `· ${stack.position} of ${stack.size}`;
+    where.title =
       stack.position === 1
         ? `The first of ${stack.size} stacked pull requests. Nothing is waiting on it.`
         : `Number ${stack.position} of ${stack.size} stacked pull requests. #${stack.stack} merges first.`;
+
+    inStack.append(which, where);
     heading.append(inStack);
   }
 
@@ -916,6 +936,22 @@ function buildColumn({ column, groups }) {
   return section;
 }
 
+/**
+ * Light up every card in one stack, and nothing else.
+ *
+ * A stack is scattered: its cards can sit in two columns, or in a column and
+ * the review row, and the order alone does not say which belong together. The
+ * pointer answers that, and so does the keyboard, because a card is reachable
+ * by tab and a reader who never uses a mouse asks the same question (ADR 0027).
+ *
+ * @param root the key of the stack's bottom, or "" to light nothing
+ */
+function lightStack(root) {
+  for (const card of document.querySelectorAll(".issue[data-stack]")) {
+    card.classList.toggle("stack-lit", root !== "" && card.dataset.stack === root);
+  }
+}
+
 /** The cards the reader marked, out of the ones on the board right now. */
 function lowPriorityKeys(groups) {
   const marked = new Set();
@@ -953,6 +989,16 @@ function renderBoard() {
   // The row above the columns. It follows the chosen order, and with no choice
   // made it puts the longest-waiting first (ADR 0013).
   const waiting = sortWorkItems(withoutItems(state.reviews, state.items), reviewSortId(state.sortId), hasNote);
+
+  // Over everything on screen, not one area: a stack can have a card in the
+  // review row and another in a column, and the reader can see both. The badge
+  // keeps its own count of the review row alone, which answers a different
+  // question: where this card sits among the ones you were asked to review
+  // (ADR 0020, ADR 0027).
+  const onScreen = [...waiting, ...grouped.flatMap((group) => [group.item, ...group.children])];
+  state.stackRoots = Object.fromEntries(
+    Object.entries(stackPositions(onScreen)).map(([key, at]) => [key, at.root]),
+  );
   element("reviews-count").textContent = String(waiting.length);
   element("reviews-empty").hidden = waiting.length > 0;
   const stacked = stackPositions(waiting);
@@ -1583,6 +1629,20 @@ function start() {
     state.onWarningAccepted = null;
     run?.();
   });
+  // One listener for the whole page rather than two on every card: the board is
+  // rebuilt on every render, and a card carrying its own listeners has to be
+  // given them again each time. `mouseover` bubbles, so moving onto anything
+  // that is not a stacked card clears the light by itself.
+  const followStack = (event) => {
+    const card = event.target instanceof Element ? event.target.closest(".issue[data-stack]") : null;
+    lightStack(card?.dataset.stack ?? "");
+  };
+  document.addEventListener("mouseover", followStack);
+  document.addEventListener("focusin", followStack);
+  // The pointer can leave through the edge of the window, which fires no
+  // `mouseover` on the way out.
+  document.documentElement.addEventListener("mouseleave", () => lightStack(""));
+
   element("view-toggle").addEventListener("click", () => showView(state.viewToggleGoesTo ?? "settings"));
   element("empty-open-settings").addEventListener("click", () => showView("settings"));
   element("clear-filters").addEventListener("click", clearFilters);

@@ -125,9 +125,14 @@ export function orderStacksForMerging(groups) {
  * first. Anything standing on its own is left out: a badge reading "1 of 1" on
  * every card is noise on every card.
  *
+ * Each answer also carries the bottom's `key` and `title` (ADR 0027). The key
+ * is what tells two stacks apart, because two repositories can both hold a
+ * pull request numbered 7 and the number cannot. The title is what the number
+ * on the badge means, which a number alone never says.
+ *
  * @param items work items, not groups
- * @returns `{[key]: {stack, position, size}}` for anything in a stack of two
- *   or more, where `position` counts from the bottom
+ * @returns `{[key]: {stack, root, title, position, size}}` for anything in a
+ *   stack of two or more, where `position` counts from the bottom
  */
 export function stackPositions(items) {
   const list = (Array.isArray(items) ? items : []).filter((one) => one && typeof one === "object");
@@ -162,7 +167,13 @@ export function stackPositions(items) {
     const root = rootOf.get(group);
     const size = sizeOf.get(root) ?? 1;
     if (size < 2) continue;
-    where[group.item.key] = { stack: root.item.number, position: depthOf.get(group) + 1, size };
+    where[group.item.key] = {
+      stack: root.item.number,
+      root: root.item.key,
+      title: typeof root.item.title === "string" ? root.item.title : "",
+      position: depthOf.get(group) + 1,
+      size,
+    };
   }
   return where;
 }

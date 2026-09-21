@@ -160,9 +160,9 @@ describe("stackPositions", () => {
       pull(5073, "plan-first", "main"),
       pull(5082, "mockups", "plan-first"),
     ]);
-    expect(at.PR_5073).toEqual({ stack: 5073, position: 1, size: 3 });
-    expect(at.PR_5082).toEqual({ stack: 5073, position: 2, size: 3 });
-    expect(at.PR_5083).toEqual({ stack: 5073, position: 3, size: 3 });
+    expect(at.PR_5073).toMatchObject({ stack: 5073, position: 1, size: 3 });
+    expect(at.PR_5082).toMatchObject({ stack: 5073, position: 2, size: 3 });
+    expect(at.PR_5083).toMatchObject({ stack: 5073, position: 3, size: 3 });
   });
 
   // A pull request standing on its own is not in a stack, and a badge saying
@@ -177,8 +177,8 @@ describe("stackPositions", () => {
   // row in front of them.
   test("counts only the pull requests it was given", () => {
     const at = stackPositions([pull(5082, "mockups", "plan-first"), pull(5083, "deep-plan", "mockups")]);
-    expect(at.PR_5082).toEqual({ stack: 5082, position: 1, size: 2 });
-    expect(at.PR_5083).toEqual({ stack: 5082, position: 2, size: 2 });
+    expect(at.PR_5082).toMatchObject({ stack: 5082, position: 1, size: 2 });
+    expect(at.PR_5083).toMatchObject({ stack: 5082, position: 2, size: 2 });
   });
 
   test("keeps two stacks apart", () => {
@@ -203,5 +203,39 @@ describe("stackPositions", () => {
     expect(stackPositions(null)).toEqual({});
     expect(stackPositions([null, 7])).toEqual({});
     expect(stackPositions([pull(1, "", ""), pull(2, "", "")])).toEqual({});
+  });
+});
+
+describe("stackPositions names the pull request the number belongs to (ADR 0027)", () => {
+  // The badge shows the bottom's number. A number alone says nothing about
+  // what that pull request is, and the reader would have to go and look.
+  test("carries the bottom's title, so the number can be explained", () => {
+    const at = stackPositions([
+      pull(5073, "plan-first", "main", { title: "feat(api): plan the upload first" }),
+      pull(5082, "mockups", "plan-first", { title: "feat(ui): the mockups" }),
+    ]);
+    expect(at.PR_5073.title).toBe("feat(api): plan the upload first");
+    expect(at.PR_5082.title).toBe("feat(api): plan the upload first");
+  });
+
+  // Two repositories can both hold a pull request numbered 7, so the number
+  // cannot say which cards belong together. The bottom's key can.
+  test("carries the bottom's key, which is what tells two stacks apart", () => {
+    const at = stackPositions([
+      pull(5073, "plan-first", "main"),
+      pull(5082, "mockups", "plan-first"),
+      pull(7, "other", "main", { repository: "me/elsewhere" }),
+      pull(8, "higher", "other", { repository: "me/elsewhere" }),
+    ]);
+    expect(at.PR_5073.root).toBe("PR_5073");
+    expect(at.PR_5082.root).toBe("PR_5073");
+    expect(at.PR_7.root).toBe("PR_7");
+    expect(at.PR_8.root).toBe("PR_7");
+    expect(at.PR_5082.root).not.toBe(at.PR_8.root);
+  });
+
+  test("a title nobody wrote is an empty one, never undefined", () => {
+    const at = stackPositions([pull(1, "a", "main"), pull(2, "b", "a")]);
+    expect(at.PR_2.title).toBe("");
   });
 });
