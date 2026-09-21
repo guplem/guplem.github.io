@@ -5,6 +5,39 @@
    spacing, radii) come from css/global/variables.css; base typography from
    css/global/base.css. */
 
+/* === The page keeps its scrollbar ===
+   css/global/base.css hides it: the portfolio is short sections and chrome,
+   and it scrolls itself. A post is long text, and a reader needs to see how
+   far through it they are, so the blog puts the scrollbar back. Each post
+   sets the two colours on :root, because the scrollbar belongs to the page
+   and cannot read a variable defined on the body. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb, rgba(20, 20, 34, 0.28)) var(--scroll-track, transparent);
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+  display: block;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scroll-track, transparent);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb, rgba(20, 20, 34, 0.28));
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover, var(--accent));
+  background-clip: padding-box;
+}
+
 /* === Top bar (same shape as the Playground's) === */
 .topbar {
   max-width: 1140px;

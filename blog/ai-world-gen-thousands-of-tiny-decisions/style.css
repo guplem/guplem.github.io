@@ -4,7 +4,9 @@
    text, orange for the accents, monospace for the numbers. Everything shared
    with the other posts is in ../blog.css. */
 
-.maptable {
+/* The palette sits on :root, not on the body, so the page's own scrollbar can
+   read it (blog.css). */
+:root {
   --ground: #0f1115;
   --ground-2: #171a21;
   --tile-line: rgba(255, 255, 255, 0.045);
@@ -16,6 +18,12 @@
   --panel: #1b1f27;
   --panel-border: rgba(255, 255, 255, 0.08);
   --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+  --scroll-track: #12141a;
+  --scroll-thumb: #3b424e;
+  --scroll-thumb-hover: var(--door);
+}
+
+.maptable {
   background: var(--ground);
   background-image:
     linear-gradient(var(--tile-line) 1px, transparent 1px),
