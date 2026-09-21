@@ -54,7 +54,7 @@ It is the short procedure for all of the above.
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The list of tokens and the data repository, through an injected storage (ADR 0007) |
-| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, and the folded-row summary |
+| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, and whether the notes are syncing (ADR 0019) |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `style.css` | - | The design system: colour roles, one radius, and the four parts every screen is built from (ADR 0004) |
 | `gateway.js` | No | The **only** file that calls the network |
@@ -266,6 +266,15 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
 - **A nested pull request card hides its repository behind a hover.** It sits
   inside the card of the issue that already names it. Only the nested card
   does: `buildWorkItemCard(item, { compact: true })` (ADR 0018).
+- **Every check row carries the `id` of the `CONNECTION_CHECKS` entry it
+  answers.** The notes badge finds the board-file row by that id, never by
+  matching its label, which is wording and changes (ADR 0019).
+- **A token that cannot reach the notes repository pushes no board-file
+  check at all**, on purpose: an organisation's token is not broken for
+  failing to hold somebody's private notes (ADR 0007). So no row from any
+  token means no token reached it, which is why `describeNotesSync` takes an
+  `asked` flag: without it, "nobody reached your notes" and "still asking"
+  are the same empty list.
 - **The connection checks live folded inside the token they are about**, not
   in one list. `summariseChecks` writes the shut line and names a single
   failure rather than counting it. A one-off message goes to a notice line in
@@ -334,6 +343,7 @@ before calling it done.
 | [0016](adr/0016-the-smart-order-puts-a-stack-in-merge-order.md) | The smart order is oldest first, with each stack in merge order |
 | [0017](adr/0017-done-is-today-and-the-board-asks-a-second-question.md) | "Done" is today, and it takes a second question |
 | [0018](adr/0018-five-columns-two-headings-and-a-screen-for-adding-a-token.md) | Five columns, two headings, and a screen for adding a token |
+| [0019](adr/0019-the-notes-say-whether-they-are-getting-through.md) | The notes say whether they are getting through |
 
 ## What is not built yet
 

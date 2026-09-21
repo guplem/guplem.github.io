@@ -37,6 +37,10 @@ to make here, and nothing is stored anywhere except GitHub.
 - **A private note on any issue**, added from the card's own menu and shown only
   where one exists. Notes are yours alone: they never appear on GitHub's issue
   page, and nobody else sees them.
+- **Settings says whether your notes are getting through.** A badge beside
+  the notes repository reads **Saving** or **Not saving**, and when it is not,
+  it says what to fix. It answers when you open Settings and again after
+  **Save and reconnect**.
 - **Your notes sync themselves.** They live in a JSON file in a private
   repository you own, so the laptop and the phone show the same thing, and every
   change keeps a version in git history.

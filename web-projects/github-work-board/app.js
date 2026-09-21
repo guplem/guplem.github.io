@@ -41,7 +41,7 @@ import {
   toggleInList,
 } from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
-import { escapeHtml, noteMenuLabel, say, sayEmptyBoard, summariseChecks } from "./messages.js";
+import { describeNotesSync, escapeHtml, noteMenuLabel, say, sayEmptyBoard, summariseChecks } from "./messages.js";
 import {
   CONNECTION_CHECKS,
   REQUIRED_PERMISSIONS,
@@ -435,6 +435,8 @@ function renderLoading() {
   element("tokens").replaceChildren(
     ...times(skeletonCount(last.tokens ?? state.tokens.length, 1), buildSkeletonTokenRow),
   );
+  state.checks = {};
+  renderNotesSync();
 }
 
 /** One filter chip. Pressed or not, and it says which through `aria-pressed`. */
@@ -843,9 +845,20 @@ function renderBoard() {
   element("clear-filters").hidden = !narrowed;
 }
 
+/** Whether the notes are reaching GitHub, beside the repository they go to. */
+function renderNotesSync() {
+  const rows = Object.values(state.checks).flat();
+  const sync = describeNotesSync(rows, { asked: !state.loading && state.tokens.length > 0 });
+  const badge = element("notes-sync");
+  badge.className = `badge ${{ ok: "badge-success", broken: "badge-destructive", checking: "badge-outline" }[sync.state]}`;
+  badge.textContent = sync.label;
+  element("notes-sync-detail").textContent = sync.detail;
+}
+
 function renderTokenList() {
   element("tokens").replaceChildren(...state.tokens.map((entry, index) => buildTokenRow(entry, index)));
   element("settings-repo-name").value = state.repoName;
+  renderNotesSync();
   const owner = state.login ?? "";
   element("open-notes-repo").href =
     owner === "" ? "https://github.com/new" : `https://github.com/${owner}/${state.repoName}`;
@@ -927,16 +940,16 @@ async function inspectToken(entry) {
 
   const viewer = await fetchViewer(entry.token);
   if (!viewer.ok) {
-    rows.push({ label: identity.label, ok: false, detail: describeFailure({ ...viewer, need: identity.need }) });
+    rows.push({ id: identity.id, label: identity.label, ok: false, detail: describeFailure({ ...viewer, need: identity.need }) });
     return { entry: updated, raw: [], rows, links, reviews: [] };
   }
   const login = viewer.data?.login ?? "";
   state.login = state.login ?? login;
-  rows.push({ label: identity.label, ok: true, detail: `Signed in as ${login}.` });
+  rows.push({ id: identity.id, label: identity.label, ok: true, detail: `Signed in as ${login}.` });
 
   const answer = await fetchAssignedIssues(entry.token);
   if (!answer.ok) {
-    rows.push({ label: work.label, ok: false, detail: describeFailure({ ...answer, need: work.need }) });
+    rows.push({ id: work.id, label: work.label, ok: false, detail: describeFailure({ ...answer, need: work.need }) });
     return { entry: updated, raw: [], rows, links, reviews: [] };
   }
   const raw = Array.isArray(answer.data) ? answer.data : [];
@@ -976,6 +989,7 @@ async function inspectToken(entry) {
   );
   links = linked.ok ? normalizeRelationships(linked.data) : {};
   rows.push({
+    id: work.id,
     label: work.label,
     ok: true,
     detail:
@@ -990,6 +1004,7 @@ async function inspectToken(entry) {
   if (repository.ok) {
     if (repository.data?.private === false) {
       rows.push({
+        id: board.id,
         label: board.label,
         ok: false,
         detail: `${login}/${state.repoName} is public. Your notes would be readable by anyone. Make it private first.`,
@@ -1004,6 +1019,7 @@ async function inspectToken(entry) {
           : parseDocument(file.data.text, new Date().toISOString());
         saveDataRepo(storage, { owner: login, repo: state.repoName });
         rows.push({
+          id: board.id,
           label: board.label,
           ok: true,
           detail: file.data.missing
@@ -1011,7 +1027,7 @@ async function inspectToken(entry) {
             : `Read ${DOCUMENT_PATH} from ${login}/${state.repoName}.`,
         });
       } else {
-        rows.push({ label: board.label, ok: false, detail: describeFailure({ ...file, need: board.need }) });
+        rows.push({ id: board.id, label: board.label, ok: false, detail: describeFailure({ ...file, need: board.need }) });
       }
     }
   }
