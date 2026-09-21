@@ -38,6 +38,10 @@ second. The tagline and "Assigned to you" are gone: the masthead already names
 the tool, and a heading that names the whole screen tells a reader nothing they
 did not know.
 
+**The sort control later moved out of this row.** ADR 0023 put it in the
+masthead instead, at the top of the page rather than in the middle of the
+board. What stands from this decision is the two headings themselves.
+
 **Adding a token is its own screen**, `?view=add-token`, with the guide as four
 numbered steps. It was a block inside Settings, where it buried the tokens, the
 backup and the notes repository under a wall of instructions somebody reads
