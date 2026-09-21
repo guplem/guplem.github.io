@@ -272,6 +272,111 @@
   fill: var(--parchment-soft);
 }
 
+/* === The fill loop: one cell at a time ===
+   The cells carry the real map of one test case and fill in the real order the
+   spiral asked about them: one CSS animation per cell, staggered by its place
+   in that order. The page needs no script to draw it. */
+.fill-loop .slot {
+  fill: var(--ground);
+  stroke: var(--tile-line);
+}
+
+.fill-loop .cell {
+  animation: cell-in 7.5s linear infinite backwards;
+}
+
+.fill-loop .pulse {
+  fill: var(--door);
+  opacity: 0;
+  animation: cell-pulse 7.5s linear infinite backwards;
+}
+
+@keyframes cell-in {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes cell-pulse {
+  0% {
+    opacity: 0;
+  }
+  1.2% {
+    opacity: 0.85;
+  }
+  5% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.fill-loop .panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--parchment);
+}
+
+.fill-loop .step-box {
+  fill: var(--ground);
+  stroke: var(--leaf);
+}
+
+.fill-loop .step-title {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--parchment);
+}
+
+.fill-loop .step-sub {
+  font-size: 11px;
+  fill: var(--parchment-soft);
+}
+
+.fill-loop .flow {
+  fill: none;
+  stroke: var(--door);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+  animation: flow 0.9s linear infinite;
+}
+
+.fill-loop .head {
+  fill: var(--door);
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+/* A reader who asks for less motion gets the finished map and a still loop.
+   css/global/base.css already cuts every animation short; these rules make the
+   end state the right one instead of a half-drawn map. */
+@media (prefers-reduced-motion: reduce) {
+  .fill-loop .cell {
+    animation: none;
+    opacity: 1;
+  }
+
+  .fill-loop .pulse {
+    animation: none;
+    opacity: 0;
+  }
+
+  .fill-loop .flow {
+    animation: none;
+  }
+}
+
 /* === Small multiples === */
 .small-multiples {
   display: grid;
