@@ -14,8 +14,9 @@ import { DEFAULT_DECISION_MODEL, DEFAULT_NARRATIVE_MODEL } from "./models.js";
 import { ORDER_STRATEGIES } from "./orderStrategies.js";
 import { PRESET_VOCABULARIES } from "./presetVocabularies.js";
 import { SETTING_PRESETS } from "./presets.js";
+import { DOWNLOAD_PIXELS_PER_TILE } from "./render.js";
 import { STORAGE_KEYS } from "./settings.js";
-import { VISUAL_TAGS, visualTagNames } from "./tileset.js";
+import { TILE_SIZE, VISUAL_TAGS, visualTagNames } from "./tileset.js";
 import { VISUAL_STYLES } from "./tileStyles.js";
 import { VIEWS } from "./urlState.js";
 import { VOCABULARY_SCHEMA, normaliseVocabulary } from "./vocabulary.js";
@@ -112,6 +113,10 @@ describe("the vocabulary names tags, never tiles (ADR 0003)", () => {
 
   test("the style ids are stored, so they never change", () => {
     expect(VISUAL_STYLES.map((one) => one.id)).toEqual(["urizen", "emoji", "roguelike", "blocks"]);
+  });
+
+  test("a downloaded tile is a whole number of sheet tiles, so a sprite stays sharp", () => {
+    expect(DOWNLOAD_PIXELS_PER_TILE % TILE_SIZE).toBe(0);
   });
 
   test("only render.js draws; no other module reads a glyph or a tile position", () => {

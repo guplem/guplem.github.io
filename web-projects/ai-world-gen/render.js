@@ -20,6 +20,13 @@ const BACKGROUND = "#0b0b0d";
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace';
 const EMOJI = '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", sans-serif';
 
+/**
+ * How many image pixels one tile takes in a downloaded map. A multiple of the
+ * sheet's 12, so a sprite stays sharp, and large enough to read an emoji or a
+ * roguelike letter.
+ */
+export const DOWNLOAD_PIXELS_PER_TILE = 48;
+
 /** Load the sheet once. Resolves to the image, or rejects when the file is missing. */
 export function loadTilesheet() {
   return new Promise((resolve, reject) => {
@@ -156,13 +163,6 @@ export function createRenderer(canvas, sheet) {
 }
 
 /**
- * How many image pixels one tile takes in a downloaded map. A multiple of the
- * sheet's 12, so a sprite stays sharp, and large enough to read an emoji or a
- * roguelike letter.
- */
-export const EXPORT_PIXELS_PER_TILE = 48;
-
-/**
  * The whole map as a PNG, in the style the reader has picked. The image is the
  * grid edge to edge: no background around it, no selection frame, no latest
  * frame and no corner marks. `createRenderer().draw` cannot do this, because
@@ -174,7 +174,7 @@ export const EXPORT_PIXELS_PER_TILE = 48;
  */
 export function renderMapImage(
   sheet,
-  { grid, vocabulary, styleId = DEFAULT_STYLE_ID, varySprites = true, pixelsPerTile = EXPORT_PIXELS_PER_TILE },
+  { grid, vocabulary, styleId = DEFAULT_STYLE_ID, varySprites = true, pixelsPerTile = DOWNLOAD_PIXELS_PER_TILE },
 ) {
   const { width, height, camera } = wholeGridImage(grid, TILE_SIZE, pixelsPerTile);
   const canvas = document.createElement("canvas");
