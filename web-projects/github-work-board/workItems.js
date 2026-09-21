@@ -53,6 +53,11 @@ export function normalizeWorkItem(raw) {
     repository: readRepository(raw),
     url: typeof raw.html_url === "string" ? raw.html_url : "",
     state: raw.state === "closed" ? "closed" : "open",
+    // When the work landed. REST carries `merged_at` inside `pull_request`,
+    // so the board can tell a merged pull request from an abandoned one
+    // without asking GraphQL (ADR 0017).
+    closedAt: typeof raw.closed_at === "string" ? raw.closed_at : "",
+    mergedAt: isPullRequest && typeof raw.pull_request?.merged_at === "string" ? raw.pull_request.merged_at : "",
     createdAt: typeof raw.created_at === "string" ? raw.created_at : "",
     updatedAt: typeof raw.updated_at === "string" ? raw.updated_at : "",
     labels: Array.isArray(raw.labels) ? raw.labels.map(readLabel).filter(Boolean) : [],
@@ -108,4 +113,45 @@ export function ownersOf(fullNames) {
     .map((name) => (typeof name === "string" && name.includes("/") ? name.split("/")[0] : ""))
     .filter((owner) => owner !== "");
   return [...new Set(owners)].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+}
+
+/**
+ * When this work was finished, or an empty string when it is not.
+ *
+ * A pull request is finished when it merged. One closed without merging is
+ * abandoned, not done, and showing it as done would report work that never
+ * shipped (ADR 0011 already says it counts for nothing).
+ */
+export function finishedAt(item) {
+  if (!isPlainObject(item)) return "";
+  if (item.kind === "pull-request") return typeof item.mergedAt === "string" ? item.mergedAt : "";
+  return item.state === "closed" && typeof item.closedAt === "string" ? item.closedAt : "";
+}
+
+/**
+ * The work finished at or after one moment.
+ *
+ * GitHub's `since` filters on when a thing was last touched, not on when it
+ * was finished, so the answer holds work closed months ago that somebody
+ * commented on this morning. This is the filter that makes "Done today" true.
+ */
+export function finishedSince(items, since) {
+  const from = Date.parse(typeof since === "string" ? since : "");
+  if (Number.isNaN(from)) return [];
+  return (Array.isArray(items) ? items : []).filter((item) => {
+    const when = Date.parse(finishedAt(item));
+    return !Number.isNaN(when) && when >= from;
+  });
+}
+
+/**
+ * Midnight at the start of the reader's day.
+ *
+ * Their own clock, not UTC: a board opened at half past midnight in Barcelona
+ * must not still be showing yesterday's work as today's.
+ */
+export function startOfToday(now = new Date()) {
+  const day = new Date(now);
+  day.setHours(0, 0, 0, 0);
+  return day.toISOString();
 }

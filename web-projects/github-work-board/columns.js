@@ -10,6 +10,8 @@
 // **A column id is written into `board.json`** the moment somebody moves a card
 // by hand, so an id is permanent, exactly like a sort id or a storage key.
 
+import { finishedAt } from "./workItems.js";
+
 /** What an item carries when its column is left to the rules. */
 export const AUTOMATIC = "automatic";
 
@@ -32,7 +34,7 @@ export const COLUMNS = [
   },
   { id: "awaiting-review", label: "Awaiting review", hint: "A reviewer was asked, no verdict yet" },
   { id: "ready-to-merge", label: "Ready to merge", hint: "Approved" },
-  { id: "done", label: "Done", hint: "The pull request is merged" },
+  { id: "done", label: "Done today", hint: "Merged or closed since midnight" },
 ];
 
 export const COLUMN_IDS = COLUMNS.map((column) => column.id);
@@ -93,7 +95,11 @@ function pullRequestState(item, relationship) {
  * reviewer was asked again, so the wait is theirs.
  */
 export function automaticColumn(item, relationship) {
-  const pull = pullRequestState(isPlainObject(item) ? item : {}, relationship);
+  const self = isPlainObject(item) ? item : {};
+  // Finished work is done, whatever else is true of it. A pull request closed
+  // without merging is not finished: `finishedAt` answers "" for it (ADR 0017).
+  if (finishedAt(self) !== "") return "done";
+  const pull = pullRequestState(self, relationship);
   if (pull.merged) return "done";
   if (!pull.exists) return "todo";
   // GitHub never clears this verdict, so it survives the author doing the work
@@ -159,6 +165,25 @@ export function groupIntoColumns(groups, relationships, overrides) {
     const relationship = isPlainObject(relationships) ? relationships[key] : null;
     const chosen = isPlainObject(overrides) ? overrides[key] : null;
     byId.get(columnFor(group?.item, relationship, chosen))?.groups.push(group);
+  }
+
+  // "Done today" is the one column that is a log rather than a queue, so it
+  // reads newest first whatever order the reader asked for: the useful end of
+  // a log is the thing that just landed. A card moved there by hand carries no
+  // moment, so it goes last rather than disappearing (ADR 0017).
+  const done = byId.get("done");
+  if (done) {
+    done.groups = done.groups
+      .map((group, index) => ({ group, index, when: Date.parse(finishedAt(group?.item)) }))
+      .sort((a, b) => {
+        const left = Number.isNaN(a.when) ? null : a.when;
+        const right = Number.isNaN(b.when) ? null : b.when;
+        if (left === right) return a.index - b.index;
+        if (left === null) return 1;
+        if (right === null) return -1;
+        return right - left;
+      })
+      .map((one) => one.group);
   }
   return board;
 }

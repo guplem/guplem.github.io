@@ -1,5 +1,14 @@
 import { describe, expect, test } from "bun:test";
-import { countByKind, normalizeWorkItem, normalizeWorkItems, ownersOf, withoutItems } from "./workItems.js";
+import {
+  countByKind,
+  finishedAt,
+  finishedSince,
+  normalizeWorkItem,
+  normalizeWorkItems,
+  ownersOf,
+  startOfToday,
+  withoutItems,
+} from "./workItems.js";
 
 const RAW_ISSUE = {
   id: 2312,
@@ -166,5 +175,97 @@ describe("ownersOf", () => {
   test("survives a name with no owner in it", () => {
     expect(ownersOf(["", "no-slash", "me/a"])).toEqual(["me"]);
     expect(ownersOf(null)).toEqual([]);
+  });
+});
+
+describe("finishedAt", () => {
+  // Work is finished when it landed, and only then. A pull request closed
+  // without merging is abandoned, not done: putting it in "Done today" would
+  // report work that never shipped (ADR 0011).
+  test("a merged pull request is finished, the moment it merged", () => {
+    const merged = normalizeWorkItem({
+      node_id: "PR_1",
+      number: 169,
+      pull_request: { merged_at: "2026-09-21T12:34:59Z" },
+      state: "closed",
+      closed_at: "2026-09-21T12:34:59Z",
+    });
+    expect(finishedAt(merged)).toBe("2026-09-21T12:34:59Z");
+  });
+
+  test("a pull request closed without merging is not finished", () => {
+    const abandoned = normalizeWorkItem({
+      node_id: "PR_2",
+      number: 170,
+      pull_request: { merged_at: null },
+      state: "closed",
+      closed_at: "2026-09-21T12:00:00Z",
+    });
+    expect(finishedAt(abandoned)).toBe("");
+  });
+
+  test("a closed issue is finished, an open one is not", () => {
+    const closed = normalizeWorkItem({ node_id: "I_1", number: 1, state: "closed", closed_at: "2026-09-21T08:00:00Z" });
+    const open = normalizeWorkItem({ node_id: "I_2", number: 2, state: "open" });
+    expect(finishedAt(closed)).toBe("2026-09-21T08:00:00Z");
+    expect(finishedAt(open)).toBe("");
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(finishedAt(null)).toBe("");
+    expect(finishedAt({ kind: "pull-request" })).toBe("");
+    expect(finishedAt(7)).toBe("");
+  });
+});
+
+describe("finishedSince", () => {
+  const merged = (number, when) =>
+    normalizeWorkItem({ node_id: `PR_${number}`, number, pull_request: { merged_at: when }, state: "closed" });
+
+  // GitHub's `since` filters on when a thing was last touched, not on when it
+  // was finished, so it answers with work closed months ago that somebody
+  // commented on this morning. This is the filter that makes the answer true.
+  test("keeps only what was finished at or after the moment asked for", () => {
+    const list = [merged(1, "2026-09-21T09:00:00Z"), merged(2, "2026-08-01T09:00:00Z")];
+    expect(finishedSince(list, "2026-09-21T00:00:00Z").map((one) => one.number)).toEqual([1]);
+  });
+
+  test("keeps something finished exactly on the boundary", () => {
+    expect(finishedSince([merged(1, "2026-09-21T00:00:00Z")], "2026-09-21T00:00:00Z")).toHaveLength(1);
+  });
+
+  test("drops anything unfinished, whatever its dates say", () => {
+    const abandoned = normalizeWorkItem({
+      node_id: "PR_9",
+      number: 9,
+      pull_request: { merged_at: null },
+      state: "closed",
+      closed_at: "2026-09-21T09:00:00Z",
+    });
+    expect(finishedSince([abandoned], "2026-09-21T00:00:00Z")).toEqual([]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(finishedSince(null, "2026-09-21T00:00:00Z")).toEqual([]);
+    expect(finishedSince([merged(1, "2026-09-21T09:00:00Z")], "not a date")).toEqual([]);
+  });
+});
+
+describe("startOfToday", () => {
+  // Today is the reader's today, in the clock on their wall, not UTC. A board
+  // opened at 00:30 in Barcelona must not still be showing yesterday.
+  test("is midnight of the day it is handed, in the reader's own clock", () => {
+    const middleOfDay = new Date(2026, 8, 21, 14, 30, 0);
+    const midnight = new Date(startOfToday(middleOfDay));
+    expect(midnight.getFullYear()).toBe(2026);
+    expect(midnight.getMonth()).toBe(8);
+    expect(midnight.getDate()).toBe(21);
+    expect(midnight.getHours()).toBe(0);
+    expect(midnight.getMinutes()).toBe(0);
+  });
+
+  test("is never after the moment it was asked about", () => {
+    const now = new Date(2026, 8, 21, 0, 0, 1);
+    expect(Date.parse(startOfToday(now))).toBeLessThanOrEqual(now.getTime());
   });
 });

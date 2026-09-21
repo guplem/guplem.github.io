@@ -96,6 +96,21 @@ describe("automaticColumn", () => {
     );
   });
 
+  // The board asks GitHub only for open work, so a merged pull request never
+  // arrived and "Done" was a column that could not fill. It is now fed by a
+  // second question, for what finished today (ADR 0017).
+  test("work that finished is done, whatever else is true of it", () => {
+    const merged = pull({ mergedAt: "2026-09-21T12:00:00Z", state: "closed" });
+    expect(automaticColumn(merged, null)).toBe("done");
+    const closedIssue = issue({ state: "closed", closedAt: "2026-09-21T08:00:00Z" });
+    expect(automaticColumn(closedIssue, links())).toBe("done");
+  });
+
+  // Abandoned work is not finished work. It must not be reported as shipped.
+  test("a pull request closed without merging is not done", () => {
+    expect(automaticColumn(pull({ state: "closed", mergedAt: "" }), null)).not.toBe("done");
+  });
+
   test("a merged pull request is done", () => {
     expect(automaticColumn(issue(), links([linkedPull({ merged: true, state: "closed" })]))).toBe("done");
   });
@@ -191,6 +206,43 @@ describe("moveOptions", () => {
 
   test("never throws, whatever it is handed", () => {
     expect(moveOptions(null, null, null).length).toBe(COLUMNS.length + 1);
+  });
+});
+
+describe("the done column reads newest first", () => {
+  // Every other column is a queue of work to pick up, so the reader's order
+  // decides it. "Done today" is a log of what landed, and the useful end of a
+  // log is the newest one (ADR 0017).
+  const done = (number, when) => ({
+    item: pull({ key: `PR_${number}`, number, state: "closed", mergedAt: when }),
+    children: [],
+  });
+
+  test("the latest thing to land is at the top, whatever order was asked for", () => {
+    const board = groupIntoColumns(
+      [done(1, "2026-09-21T08:00:00Z"), done(3, "2026-09-21T15:00:00Z"), done(2, "2026-09-21T11:00:00Z")],
+      {},
+      {},
+    );
+    const column = board.find((one) => one.column.id === "done");
+    expect(column.groups.map((g) => g.item.number)).toEqual([3, 2, 1]);
+  });
+
+  // A card moved to "Done" by hand has no moment attached. It must not fall
+  // out, and it must not push finished work down the list.
+  test("a card moved there by hand goes last, and never disappears", () => {
+    const byHand = { item: pull({ key: "PR_9", number: 9 }), children: [] };
+    const board = groupIntoColumns([byHand, done(1, "2026-09-21T08:00:00Z")], {}, { PR_9: "done" });
+    const column = board.find((one) => one.column.id === "done");
+    expect(column.groups.map((g) => g.item.number)).toEqual([1, 9]);
+  });
+
+  test("no other column is reordered", () => {
+    const first = { item: pull({ key: "PR_1", number: 1 }), children: [] };
+    const second = { item: pull({ key: "PR_2", number: 2 }), children: [] };
+    const board = groupIntoColumns([second, first], {}, {});
+    const ongoing = board.find((one) => one.column.id === "ongoing");
+    expect(ongoing.groups.map((g) => g.item.number)).toEqual([2, 1]);
   });
 });
 

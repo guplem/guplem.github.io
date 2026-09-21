@@ -32,7 +32,7 @@ Six columns, in the order work travels:
 | Needs changes | A reviewer asked for changes, and has not been asked to look again |
 | Awaiting review | A reviewer was asked by name, no verdict yet |
 | Ready to merge | Approved |
-| Done | The pull request is merged |
+| Done today | Finished since midnight (ADR 0017) |
 
 **"Needs changes" sits beside "Ongoing" because it is the same activity.** A
 reviewer asking for changes sends the work back to being written, so the two
@@ -41,9 +41,9 @@ that mean "waiting on somebody else" run on from there. The order is only how
 the columns read: the ids are what `board.json` stores, and they never move.
 
 **The order of the checks is the decision**, because an item answers several at
-once. Merged wins over everything: it is over. Changes requested wins over an
-approval, because one reviewer approving does not undo another asking for work,
-and the work is what is left to do.
+once. Finished work wins over everything: it is over (ADR 0017). Changes
+requested wins over an approval, because one reviewer approving does not undo
+another asking for work, and the work is what is left to do.
 
 **Changes requested that have been answered is not changes requested.** GitHub
 never clears `reviewDecision`. The author does the work, asks the same reviewer
