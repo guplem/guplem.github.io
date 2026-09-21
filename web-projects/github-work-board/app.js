@@ -65,6 +65,7 @@ import {
   updateToken,
 } from "./settings.js";
 import { skeletonCount } from "./skeletons.js";
+import { orderStacksForMerging } from "./stacks.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
@@ -775,7 +776,12 @@ function renderBoard() {
   const hasNote = (key) => readNote(state.board, key).trim() !== "";
   const visible = filterWorkItems(state.items, state);
   const ordered = sortWorkItems(visible, state.sortId, hasNote);
-  const grouped = groupByLinkedIssue(ordered, state.links);
+  // The stack pass runs on the grouped board, not on the items: a pull request
+  // travels inside the card of the issue it closes, so the card is what moves.
+  // Only the smart order asks for it; every other order says what it does and
+  // must keep doing exactly that (ADR 0016).
+  const plain = groupByLinkedIssue(ordered, state.links);
+  const grouped = state.sortId === "smart" ? orderStacksForMerging(plain) : plain;
 
   // The row above the columns. It follows the chosen order, and with no choice
   // made it puts the longest-waiting first (ADR 0013).

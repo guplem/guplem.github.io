@@ -256,6 +256,7 @@ describe("a sort order named in a link keeps its name (ADR 0006)", () => {
       "label",
       "noted-first",
       "repository",
+      "smart",
       "title",
       "updated-asc",
       "updated-desc",

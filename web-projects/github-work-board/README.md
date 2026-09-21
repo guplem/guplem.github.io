@@ -23,9 +23,14 @@ to make here, and nothing is stored anywhere except GitHub.
 - **Filter by kind, repository or label.** Two labels means either of them; a
   kind plus a repository means both. The filters go into the address bar too, so
   "everything tagged urgent in this repository" is a link.
-- **Seven ways to sort it**: recently updated, least recently updated, newest,
-  oldest, ones you noted first, by repository, or by title. The choice goes into
-  the address bar, so a reload keeps it and a link carries it.
+- **A smart order, which is what the board opens on.** Oldest first, so the
+  work that has waited longest is at the top, with one rule over it: a stack of
+  pull requests reads in the order it can merge. A stacked pull request targets
+  another one's branch, so the lower one has to merge first, and it is usually
+  the one that looks least recently touched.
+- **Or sort it plainly**: recently updated, least recently updated, newest,
+  oldest, ones you noted first, by label, by repository, or by title. The choice
+  goes into the address bar, so a reload keeps it and a link carries it.
 - **A private note on any issue**, added from the card's own menu and shown only
   where one exists. Notes are yours alone: they never appear on GitHub's issue
   page, and nobody else sees them.

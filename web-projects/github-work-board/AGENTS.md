@@ -43,6 +43,7 @@ It is the short procedure for all of the above.
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
+| `stacks.js` | Yes | Which pull request sits on which, and the order a stack merges in (ADR 0016) |
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
@@ -60,7 +61,7 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `columns.groupIntoColumns` → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` (smart order only) → `columns.groupIntoColumns` → elements.
 Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
@@ -99,6 +100,18 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
 - **Every sort comparison ends with a fallback to the item's key.** Two items
   updated in the same second must land the same way round every render, or the
   list appears to shuffle itself while somebody is reading it.
+- **A stack is read from `headRefName` and `baseRefName`, never from a
+  description.** A pull request sits on another when its base branch is that
+  one's head branch, in the same repository (ADR 0016). `blockedBy` does not
+  exist on a `PullRequest` in GraphQL, so it cannot answer this.
+- **The smart order is a comparator plus a pass**, and it is the only order
+  that is not a plain comparison. "Keep this group together, in this internal
+  order" cannot be written as a pairwise comparison, so `app.js` names
+  `smart` once, beside the grouping, and `sorting.js` names it again. A new
+  order needing the same treatment has to be added in both places (ADR 0016).
+- **The stack pass runs on groups, not on items.** A pull request travels
+  inside the card of the issue it closes, so the card is what moves. Reorder
+  the items and `groupByLinkedIssue` throws the work away.
 - **A sort id travels in the address bar, so it is permanent.** Renaming one
   silently breaks every link anybody saved; `invariants.test.js` pins the set.
   The same holds for the view names and the filter kind ids.
@@ -282,11 +295,12 @@ before calling it done.
 | [0013](adr/0013-work-waiting-on-you-is-a-row-above-the-board.md) | Work waiting on you is a row above the board, not a column in it |
 | [0014](adr/0014-a-note-box-appears-only-when-there-is-a-note.md) | A note box appears only when there is a note |
 | [0015](adr/0015-settings-hands-the-token-back.md) | Settings hands the token back, behind one warning |
+| [0016](adr/0016-the-smart-order-puts-a-stack-in-merge-order.md) | The smart order is oldest first, with each stack in merge order |
 
 ## What is not built yet
 
 Connecting with several tokens, the one list of issues and pull requests,
-private notes, the seven orders, the filters and the settings screen are built.
+private notes, sorting, the filters and the settings screen are built.
 Still to come, roughly in this order: dragging a card instead of choosing its
 column from a dropdown, custom tags, and a "what's next" queue, which the
 blocked marking and the columns now make answerable. Every new view state goes in the address bar

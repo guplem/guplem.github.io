@@ -43,6 +43,22 @@ describe("readSortId", () => {
   });
 });
 
+describe("the smart order", () => {
+  // It is the one order that is not only a comparison. The comparison part is
+  // "oldest first", and `columns.js` then keeps each stack in merge order on
+  // top of it. This half is what is testable here.
+  test("compares by least recently updated, like the order it is built on", () => {
+    const older = { key: "older", updatedAt: "2026-09-01T00:00:00Z" };
+    const newer = { key: "newer", updatedAt: "2026-09-20T00:00:00Z" };
+    expect(keys(sortWorkItems([newer, older], "smart"))).toEqual(["older", "newer"]);
+    expect(keys(sortWorkItems([newer, older], "smart"))).toEqual(keys(sortWorkItems([newer, older], "updated-asc")));
+  });
+
+  test("is what the board opens on", () => {
+    expect(DEFAULT_SORT_ID).toBe("smart");
+  });
+});
+
 describe("reviewSortId", () => {
   // The oldest review request is the one to clear, and the board's own default
   // would bury it under everything touched today.
@@ -124,7 +140,10 @@ describe("sortWorkItems", () => {
   });
 
   test("an order it does not know is the default order, not an empty list", () => {
-    expect(keys(sortWorkItems([older, newer], "by-vibes"))).toEqual(["newer", "older"]);
+    expect(keys(sortWorkItems([older, newer], "by-vibes"))).toEqual(
+      keys(sortWorkItems([older, newer], DEFAULT_SORT_ID)),
+    );
+    expect(sortWorkItems([older, newer], "by-vibes")).toHaveLength(2);
   });
 
   test("survives being handed something that is not a list", () => {
