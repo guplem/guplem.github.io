@@ -77,8 +77,8 @@ up front instead of letting the reader discover it as an empty list.
 
 **Every extra token is another call on load**, and another credential in this
 browser. The blast radius argument in ADR 0001 now applies once per token, which
-is a real increase and the reason the page keeps the "forget every token" button
-next to the list.
+is a real increase and the reason **Remove** sits on every row of the list, not
+only on one button for all of them (ADR 0018).
 
 **The rate limit is per token**, so splitting across owners raises the ceiling
 rather than lowering it.

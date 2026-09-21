@@ -1,5 +1,42 @@
 import { describe, expect, test } from "bun:test";
-import { MESSAGES, escapeHtml, joinWithAnd, noteMenuLabel, say, sayEmptyBoard } from "./messages.js";
+import {
+  MESSAGES,
+  escapeHtml,
+  joinWithAnd,
+  noteMenuLabel,
+  say,
+  sayEmptyBoard,
+  summariseChecks,
+} from "./messages.js";
+
+describe("summariseChecks", () => {
+  const ok = (label) => ({ label, ok: true, detail: "fine" });
+  const bad = (label) => ({ label, ok: false, detail: "not fine" });
+
+  // The line on the folded row. It has to answer "do I need to open this?"
+  // on its own, because a reader who has to unfold every token to find the
+  // broken one is not being helped by the folding.
+  test("says everything passed when everything did", () => {
+    expect(summariseChecks([ok("Sign in"), ok("Work"), ok("Notes")])).toBe("All 3 checks passed");
+  });
+
+  test("names the one that failed, because one is the common case", () => {
+    expect(summariseChecks([ok("Sign in"), ok("Work"), bad("Notes")])).toBe("Notes did not pass");
+  });
+
+  test("counts them when more than one failed", () => {
+    expect(summariseChecks([ok("Sign in"), bad("Work"), bad("Notes")])).toBe("2 of 3 checks did not pass");
+  });
+
+  test("says so when there is nothing to show", () => {
+    expect(summariseChecks([])).toBe("Not connected yet");
+    expect(summariseChecks(null)).toBe("Not connected yet");
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(typeof summariseChecks([null, 7, { ok: true }])).toBe("string");
+  });
+});
 
 describe("noteMenuLabel", () => {
   test("offers to add the first note, and to edit one that is there", () => {

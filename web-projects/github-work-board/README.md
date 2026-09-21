@@ -50,6 +50,12 @@ to make here, and nothing is stored anywhere except GitHub.
   this browser holds the only copy. Settings can copy any token, show it, or
   copy every one of them as a single backup you keep in your password manager.
 
+## Adding another token later
+
+**Settings -> Add token** opens a screen that walks through it in four steps,
+with the same guide as below. You can give the token a name there; leave it
+empty and the board suggests one from wherever the token finds work.
+
 ## Setting it up, once
 
 1. **Create a private repository for your notes.** Call it `work-board-data`,
@@ -74,12 +80,12 @@ to make here, and nothing is stored anywhere except GitHub.
 3. **Paste the token into the page** and press Connect. The page checks each
    permission and tells you exactly which one is missing if any call fails.
 
-4. **Work in an organisation? Add a second token** from **Settings**. A fine-grained token belongs
-   to one owner. A token owned by your account cannot see an organisation's
-   repositories, whatever permissions you give it. Create another token with the
-   organisation as the **Resource owner**, grant it the same permissions, and
-   paste it there. Settings repeats the whole guide, so you do not have to come
-   back here. An organisation owner may have to approve the token first.
+4. **Work in an organisation? Add a second token** through **Settings -> Add
+   token** (see above). A fine-grained token belongs to one owner. A token
+   owned by your account cannot see an organisation's repositories, whatever
+   permissions you give it. Create another token with the organisation as the
+   **Resource owner**, grant it the same permissions, and paste it there. An
+   organisation owner may have to approve the token first.
 
    Keep the notes repository on your personal token. An organisation's owners
    can read its repositories, and these notes are meant for you alone.
@@ -90,7 +96,8 @@ and this README cannot fall behind it.
 
 The token is kept in this browser and is sent only to GitHub. Anything else with
 access to this browser can read it, so keep the repository list short and keep
-the expiry date. "Sign out and forget the token" removes it.
+the expiry date. **Remove**, on the token's row in Settings, removes it; removing
+your last token signs you out.
 
 ## Moving to another browser or another computer
 
@@ -104,7 +111,8 @@ others. GitHub cannot show you a token a second time either.
 2. Keep that text in your password manager. It is a password: whoever holds it
    can do everything you granted those tokens.
 3. On the other browser, paste it into the token box, on the welcome screen or
-   in Settings. Every token comes back, with its name, and the board connects.
+   on the add-token screen (**Settings -> Add token**). Every token comes back,
+   with its name, and the board connects.
 
 To move a single token instead, press **Copy** on its row. The token is never
 printed on screen: it appears in the row only if your browser refuses the

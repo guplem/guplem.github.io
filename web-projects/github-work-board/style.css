@@ -572,6 +572,11 @@ textarea.input {
   margin-bottom: 1.25rem;
 }
 
+/* A neutral note. The two above are red, and a shortcut is not a warning. */
+.callout-note {
+  margin-bottom: 1.25rem;
+}
+
 .callout-inline {
   border-left-color: hsl(var(--destructive));
   background: hsl(var(--destructive) / 0.07);
@@ -943,7 +948,11 @@ textarea.input {
 .columns {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(17rem, 22rem);
+  /* Five columns fill the window exactly, so everything but "Done today" is
+   * on screen at once: 100% less the four gaps between them, split five ways.
+   * `max` keeps them usable on a phone, where a fifth of the screen is not a
+   * column at all, and the row scrolls sideways as before (ADR 0018). */
+  grid-auto-columns: max(17rem, calc((100% - 4 * 0.75rem) / 5));
   gap: 0.75rem;
   align-items: start;
   margin-top: 1rem;
@@ -1422,4 +1431,145 @@ textarea.input {
     animation: none;
     background: hsl(var(--muted));
   }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Section headings, the folded checks, and the link out                      */
+/* -------------------------------------------------------------------------- */
+
+/* The masthead names the tool. These name the two halves of the board, so a
+ * reader can tell at a glance which list is waiting on them (ADR 0018). */
+.section-heading {
+  margin: 1.75rem 0 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+#board > .section-heading:first-child {
+  margin-top: 0;
+}
+
+.board-heading-row .section-heading {
+  margin-bottom: 0;
+}
+
+/* A heading with one control beside it. The row takes the heading's own top
+ * margin, because a flex container does not inherit the margin of its child. */
+.subheading-row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 1.75rem;
+}
+
+.subheading-row .subheading {
+  margin: 0;
+}
+
+/* A link that is only an icon. It answers the pointer the way every other
+ * control here does: a hover, a press and a focus ring. */
+.icon-link {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) - 4px);
+  color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.icon-link:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.icon-link:active {
+  transform: translateY(1px);
+}
+
+.icon-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+}
+
+/* What a token proved, folded into its own row. Shut, it is one line that
+ * says whether anything needs attention (ADR 0018). */
+.token-checks {
+  flex: 1 1 100%;
+  border-top: 1px solid hsl(var(--border));
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+}
+
+.token-checks-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.25rem;
+  border-radius: calc(var(--radius) - 4px);
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Safari draws its own triangle through `::-webkit-details-marker`, and the
+ * rest through `list-style`. Both have to go, or there are two. */
+.token-checks-summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The triangle, drawn here so it can turn with the fold. */
+.token-checks-summary::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 0.3rem solid currentColor;
+  border-top: 0.3rem solid transparent;
+  border-bottom: 0.3rem solid transparent;
+  transition: transform 0.15s ease;
+}
+
+.token-checks[open] > .token-checks-summary::before {
+  transform: rotate(90deg);
+}
+
+.token-checks-summary:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.token-checks-summary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+}
+
+/* A token that needs attention says so while it is still shut. */
+.token-checks.has-trouble > .token-checks-summary {
+  color: hsl(var(--destructive));
+  font-weight: 500;
+}
+
+.token-checks .check {
+  padding: 0.5rem 0 0.5rem 0.25rem;
+}
+
+.token-checks .check:last-child {
+  padding-bottom: 0.25rem;
+}
+
+/* Text for a screen reader, and for nothing else. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

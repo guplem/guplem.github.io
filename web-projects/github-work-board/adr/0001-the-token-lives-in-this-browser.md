@@ -68,7 +68,12 @@ both are rules, not hopes:
 **The blast radius is the token's own scope.** A leaked fine-grained token can do
 what its permissions allow on the repositories it lists, until it expires. That
 is why the guide asks for an expiry date and a short repository list, and why
-"Sign out and forget the token" is a visible button rather than a settings page.
+every token in Settings carries **Remove**, one press away and with nothing to
+sit through. Removing the last one forgets everything this browser stored.
+There was once a single "Sign out and forget the token" button beside them; it
+went when the board grew a list of tokens, because a red button that wipes all
+of them sits badly under a list whose ordinary action is to remove one
+(ADR 0018).
 
 **Rejected: keep it in memory only.** Correct for a page opened rarely, wrong for
 one opened daily. Rejected: **IndexedDB**. It is not readable by less script than

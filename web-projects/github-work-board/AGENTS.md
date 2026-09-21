@@ -54,7 +54,7 @@ It is the short procedure for all of the above.
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The list of tokens and the data repository, through an injected storage (ADR 0007) |
-| `messages.js` | Yes | Every sentence the page says, and the one HTML escaper |
+| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, and the folded-row summary |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `style.css` | - | The design system: colour roles, one radius, and the four parts every screen is built from (ADR 0004) |
 | `gateway.js` | No | The **only** file that calls the network |
@@ -76,9 +76,9 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   owner.
 - **The token guide lives once, as the `<template id="token-guide">` in
   `index.html`**, and `app.js` clones it into every `.token-guide-slot` (the
-  welcome screen and Settings). Never copy that markup into a second place: a
-  test fails, and the two copies would drift the way the permission list once
-  did (ADR 0008).
+  welcome screen and the add-token screen). Never copy that markup into a
+  second place: a test fails, and the two copies would drift the way the
+  permission list once did (ADR 0008).
 - **A `<template>` is inert**, so nothing inside it is reachable by
   `getElementById`. Find things inside a clone by class instead, which is why
   the permission list inside the guide carries a class and no id.
@@ -251,11 +251,31 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   are stale the moment they are written down. **Never write a backup into
   `board.json`**: that puts a live credential in a GitHub repository and in
   its history. A test in `invariants.test.js` fails on it.
-- **One box takes a token or a backup**, on the welcome screen and in
-  Settings. Text starting with `{` is always read as a backup, never tried as
-  a token: a blob that was cut short must report itself, not come back as
-  GitHub's complaint about a bad credential.
-- **The masthead toggle is the only way between the board and Settings, and the
+- **One box takes a token or a backup**, on the welcome screen and on the
+  add-token screen. Text starting with `{` is always read as a backup, never
+  tried as a token: a blob that was cut short must report itself, not come
+  back as GitHub's complaint about a bad credential.
+- **There are three views, and one control moves between them.** Board,
+  Settings, and `add-token`; the toggle goes board -> settings -> board, and
+  add-token -> settings, because that is where it was opened from (ADR 0018).
+  A view name travels in the address bar, so it is as permanent as a sort id.
+- **Five columns fill the window on purpose.** `grid-auto-columns` is the
+  window less the four gaps, split five ways, so "Done today" is the one that
+  scrolls. The `max(17rem, ...)` half of it is what keeps a phone usable; drop
+  it and a column becomes 80 pixels wide (ADR 0018).
+- **A nested pull request card hides its repository behind a hover.** It sits
+  inside the card of the issue that already names it. Only the nested card
+  does: `buildWorkItemCard(item, { compact: true })` (ADR 0018).
+- **The connection checks live folded inside the token they are about**, not
+  in one list. `summariseChecks` writes the shut line and names a single
+  failure rather than counting it. A one-off message goes to a notice line in
+  the screen that raised it (`settings-notice`, `add-token-notice`).
+- **`renderLoading` must be changed whenever a list in Settings is.** It
+  wrote placeholders into the check list after that list was removed, threw,
+  and left the board stuck on "Reading GitHub..." with every test green. That
+  is three times now that an `app.js` change was caught by opening the page
+  and not by the suite.
+- **The masthead toggle is the only way between the views, and the
   masthead is sticky.** Settings is more than twice the height of a window, so a
   control that scrolls away leaves a reader with no way out. Do not add a second
   exit inside a screen; keep the one in the header (ADR 0008).
@@ -313,6 +333,7 @@ before calling it done.
 | [0015](adr/0015-settings-hands-the-token-back.md) | Settings hands the token back, behind one warning |
 | [0016](adr/0016-the-smart-order-puts-a-stack-in-merge-order.md) | The smart order is oldest first, with each stack in merge order |
 | [0017](adr/0017-done-is-today-and-the-board-asks-a-second-question.md) | "Done" is today, and it takes a second question |
+| [0018](adr/0018-five-columns-two-headings-and-a-screen-for-adding-a-token.md) | Five columns, two headings, and a screen for adding a token |
 
 ## What is not built yet
 

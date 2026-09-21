@@ -79,6 +79,25 @@ export function normalizeWorkItems(rawList) {
 }
 
 /**
+ * One item per key, keeping the first of any it has seen.
+ *
+ * Every token is asked on its own and the answers are merged, so two tokens
+ * that both reach one repository answer with the same work. The merge is the
+ * only place that can notice.
+ */
+export function uniqueByKey(items) {
+  const seen = new Set();
+  const kept = [];
+  for (const item of Array.isArray(items) ? items : []) {
+    const key = item && typeof item === "object" ? item.key : null;
+    if (typeof key !== "string" || key === "" || seen.has(key)) continue;
+    seen.add(key);
+    kept.push(item);
+  }
+  return kept;
+}
+
+/**
  * The items in `wanted` that are not already on the board.
  *
  * A pull request can be assigned to you and waiting for your review at once.
