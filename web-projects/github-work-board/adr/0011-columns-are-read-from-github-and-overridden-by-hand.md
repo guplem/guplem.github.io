@@ -30,7 +30,7 @@ Six columns, in the order work travels:
 | To do | Assigned, with no pull request |
 | Ongoing | A pull request exists, nobody asked to review it |
 | Needs changes | A reviewer asked for changes, and has not been asked to look again |
-| Awaiting review | A reviewer was asked, no verdict yet |
+| Awaiting review | A reviewer was asked by name, no verdict yet |
 | Ready to merge | Approved |
 | Done | The pull request is merged |
 
@@ -61,6 +61,14 @@ This is what `askedToLookAgain` in `relationships.js` answers, from
 `latestOpinionatedReviews` (one review per reviewer, plain comments left out)
 set beside `reviewRequests`. A team can be asked to review and has no login, so
 it never satisfies the rule; neither does a review whose author is gone.
+
+**Only a named reviewer counts as asked.** `reviewDecision` also answers
+`REVIEW_REQUIRED`, which reads like "a review is awaited" and is not: it is the
+branch rule saying the repository wants a review before a merge. Every open
+pull request in such a repository carries it, including one opened a minute ago
+that nobody has looked at. Reading it as a request filled "Awaiting review"
+with work that was still being written. `reviewRequests.totalCount` is the only
+thing that says a person was asked.
 
 Three things this rests on:
 
@@ -123,4 +131,6 @@ re-request rule above does not break it: the verdict still comes from
 **Rejected: treating any pending review request as an answer to the changes.**
 A new reviewer asked while the first reviewer's changes are still outstanding
 is not the work being answered, and reading it as one empties "Needs changes"
-of work that really is waiting there.
+of work that really is waiting there. **Rejected: reading `REVIEW_REQUIRED` as
+a review request.** It was in the first version of these rules and it was
+wrong: it is a fact about the repository, not about the pull request.

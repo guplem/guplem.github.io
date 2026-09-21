@@ -71,9 +71,19 @@ describe("automaticColumn", () => {
 
   test("a reviewer asked and no verdict yet is awaiting review", () => {
     expect(automaticColumn(issue(), links([linkedPull({ reviewRequestCount: 1 })]))).toBe("awaiting-review");
-    expect(automaticColumn(issue(), links([linkedPull({ reviewDecision: "REVIEW_REQUIRED" })]))).toBe(
-      "awaiting-review",
-    );
+  });
+
+  // REVIEW_REQUIRED is a fact about the repository, not about this pull
+  // request: the branch rule wants a review before a merge. Every open pull
+  // request in such a repository says it, including one nobody has looked at,
+  // so reading it as "a reviewer was asked" filled the column with fresh work.
+  test("a repository that requires a review has not thereby asked anybody", () => {
+    expect(automaticColumn(issue(), links([linkedPull({ reviewDecision: "REVIEW_REQUIRED" })]))).toBe("ongoing");
+  });
+
+  test("a repository that requires a review, with a reviewer asked, is awaiting review", () => {
+    const asked = linkedPull({ reviewDecision: "REVIEW_REQUIRED", reviewRequestCount: 1 });
+    expect(automaticColumn(issue(), links([asked]))).toBe("awaiting-review");
   });
 
   test("an approval is ready to merge", () => {

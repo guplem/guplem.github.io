@@ -101,7 +101,11 @@ export function automaticColumn(item, relationship) {
   // that says the ball is back with the reviewer (ADR 0011).
   if (pull.reviewDecision === "CHANGES_REQUESTED") return pull.askedAgain ? "awaiting-review" : "needs-changes";
   if (pull.reviewDecision === "APPROVED") return "ready-to-merge";
-  if (pull.reviewRequestCount > 0 || pull.reviewDecision === "REVIEW_REQUIRED") return "awaiting-review";
+  // Only somebody actually being asked counts. `REVIEW_REQUIRED` does not: it
+  // is the branch rule saying the repository wants a review before a merge, so
+  // every open pull request in such a repository carries it, including one
+  // nobody has looked at (ADR 0011).
+  if (pull.reviewRequestCount > 0) return "awaiting-review";
   return "ongoing";
 }
 
