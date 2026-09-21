@@ -818,7 +818,10 @@ function saveBlob(blob, fileName) {
 }
 
 function downloadMap() {
-  if (!state.grid || !state.vocabulary) return;
+  if (!state.grid || !state.vocabulary) {
+    setStatus("map-status", "The vocabulary is not written yet, so there is nothing to save.", "error");
+    return;
+  }
   const document_ = {
     format: "ai-world-gen/map",
     version: 1,
@@ -838,7 +841,15 @@ function downloadMap() {
  * stay out of it, so the file is the map and not a screenshot.
  */
 async function downloadMapImage() {
-  if (!state.grid || !state.vocabulary || !state.sheet) return;
+  if (!state.grid || !state.vocabulary) {
+    setStatus("map-status", "The vocabulary is not written yet, so there is nothing to save.", "error");
+    return;
+  }
+  // The other three styles draw from the glyph table, so they need no sheet.
+  if (state.styleId === "urizen" && !state.sheet) {
+    setStatus("map-status", "The tileset did not load, so the sprite picture cannot be drawn. Pick another style.", "error");
+    return;
+  }
   try {
     const blob = await renderMapImage(state.sheet, {
       grid: state.grid,
