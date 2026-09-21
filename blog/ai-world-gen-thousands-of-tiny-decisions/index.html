@@ -64,8 +64,8 @@
 
       <section>
         <h2 id="a-model-that-decides-instead-of-writes"><a class="heading-anchor" href="#a-model-that-decides-instead-of-writes">A model that decides instead of writes</a></h2>
-        <p><a href="../../web-projects/ai-world-gen/">AI World Gen</a> started at the AI Hackathon Barcelona 2026. The idea: describe a place, and watch an AI build its map one tile at a time. The interesting question was never "can a model draw a map". It was: given what is around this tile, what goes here? That question is asked hundreds of times per map. Asking a chat model each time is slow, expensive, and turns a one-word answer into text you have to parse.</p>
-        <p>Jev, made by TypeSafe and served through OpenRouter's decisions endpoint, is a different kind of model. You send it a <em>state</em> (a JSON object describing the situation) and a <em>typed question</em>: pick one of these options, or place this on a scale. It answers with a choice, a confidence and a probability for every option. It does not write text at all. It is built for speed (TypeSafe quotes tens of milliseconds for the model itself) and it is priced at about $0.04 per million input tokens, roughly fifty times less than the chat models I would otherwise have used for the same call. The exact bill is a section of its own below.</p>
+        <p><a href="../../web-projects/ai-world-gen/">AI World Gen</a> started at the AI Hackathon Barcelona 2026. The idea: describe a place, and watch an AI build its map one tile at a time. The interesting question was never "can a model draw a map". It was: given what is around this tile, what goes here? That question is asked hundreds of times per map.</p>
+        <p>Asking a chat model each time is slow, expensive, and turns a one-word answer into text you have to parse. <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">Jev</a>, made by TypeSafe, is a different kind of model. You send it a <em>state</em> (a JSON object describing the situation) and a <em>typed question</em>: pick one of these options. It answers with a probability for every option. It does not write text at all. It is built for speed (TypeSafe quotes tens of milliseconds for the model itself) and it is priced at about $0.04 per million input tokens, roughly fifty times less than the chat models I would otherwise have used for the same call. The exact bill is a section of its own below.</p>
 
         <figure class="diagram">
           <svg viewBox="0 0 760 250" role="img" aria-labelledby="decision-title decision-desc" xmlns="http://www.w3.org/2000/svg">
@@ -112,14 +112,223 @@
           <figcaption>One tile, one call. The state is a few hundred tokens; the answer is a choice with the probabilities behind it. The map samples from those probabilities, so a model that is 70% sure of "path" gives a map with some grass in it, not a solid path.</figcaption>
         </figure>
 
-        <p>So the generator splits the work in two. One creative call goes to a language model, once per world: it invents the <em>vocabulary</em>, the six to twenty-four kinds of tile a "space station" or a "haunted mansion" is made of, with their rules. Then one decision goes to Jev, once per tile, with the vocabulary as the options and the map so far as the state. A preset world skips the creative call entirely, because the vocabulary ships with the page.</p>
-        <p>The numbers make the design possible. The test run I describe below draws 38 maps, 3,008 decisions in total. It costs about 24 cents and takes under ten minutes. A chat model in the same seat would cost dollars and take the better part of an hour, for an answer that has to be parsed back into one of the options. Cheap and fast is not a nicety here; it is what lets you run the whole thing before every change.</p>
+        <p>So the generator splits the work in two. One creative call goes to a language model, once per world: it invents the <em>vocabulary</em>, the six to twenty-four kinds of tile the described map is made of, with their rules. Then one decision goes to Jev, once per tile, with the vocabulary as the options and the map so far as the state.</p>
+        <p>From there it is a loop, and the loop is the design. Code picks the next cell, builds the state around it, and asks Jev one question. The answer is written into the map, and that map is the state of the next question: the model deciding the fifty-seventh cell sees the fifty-six cells decided before it. When no cell is left, the map is finished.</p>
+
+        <figure class="diagram">
+<svg viewBox="0 0 760 320" class="fill-loop" role="img" aria-labelledby="loop-fill-title loop-fill-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="loop-fill-title">The generator fills a map one cell at a time</title>
+<desc id="loop-fill-desc">On the left, an 8 by 8 map draws itself cell by cell, starting at the middle and spiralling outwards: a village green, two cottages with doors, a dirt path, oaks, a river and a bridge. Each cell flashes as it is decided and then keeps its colour. On the right, three boxes in a loop: the map so far is the state, Jev answers for one cell, the answer is written into the map, and the loop starts again for the next cell until no cell is left.</desc>
+<text x="24" y="40" class="panel-title">The map, one cell at a time</text>
+<rect x="24" y="56" width="26" height="26" class="slot" />
+<rect x="51" y="56" width="26" height="26" class="slot" />
+<rect x="78" y="56" width="26" height="26" class="slot" />
+<rect x="105" y="56" width="26" height="26" class="slot" />
+<rect x="132" y="56" width="26" height="26" class="slot" />
+<rect x="159" y="56" width="26" height="26" class="slot" />
+<rect x="186" y="56" width="26" height="26" class="slot" />
+<rect x="213" y="56" width="26" height="26" class="slot" />
+<rect x="24" y="83" width="26" height="26" class="slot" />
+<rect x="51" y="83" width="26" height="26" class="slot" />
+<rect x="78" y="83" width="26" height="26" class="slot" />
+<rect x="105" y="83" width="26" height="26" class="slot" />
+<rect x="132" y="83" width="26" height="26" class="slot" />
+<rect x="159" y="83" width="26" height="26" class="slot" />
+<rect x="186" y="83" width="26" height="26" class="slot" />
+<rect x="213" y="83" width="26" height="26" class="slot" />
+<rect x="24" y="110" width="26" height="26" class="slot" />
+<rect x="51" y="110" width="26" height="26" class="slot" />
+<rect x="78" y="110" width="26" height="26" class="slot" />
+<rect x="105" y="110" width="26" height="26" class="slot" />
+<rect x="132" y="110" width="26" height="26" class="slot" />
+<rect x="159" y="110" width="26" height="26" class="slot" />
+<rect x="186" y="110" width="26" height="26" class="slot" />
+<rect x="213" y="110" width="26" height="26" class="slot" />
+<rect x="24" y="137" width="26" height="26" class="slot" />
+<rect x="51" y="137" width="26" height="26" class="slot" />
+<rect x="78" y="137" width="26" height="26" class="slot" />
+<rect x="105" y="137" width="26" height="26" class="slot" />
+<rect x="132" y="137" width="26" height="26" class="slot" />
+<rect x="159" y="137" width="26" height="26" class="slot" />
+<rect x="186" y="137" width="26" height="26" class="slot" />
+<rect x="213" y="137" width="26" height="26" class="slot" />
+<rect x="24" y="164" width="26" height="26" class="slot" />
+<rect x="51" y="164" width="26" height="26" class="slot" />
+<rect x="78" y="164" width="26" height="26" class="slot" />
+<rect x="105" y="164" width="26" height="26" class="slot" />
+<rect x="132" y="164" width="26" height="26" class="slot" />
+<rect x="159" y="164" width="26" height="26" class="slot" />
+<rect x="186" y="164" width="26" height="26" class="slot" />
+<rect x="213" y="164" width="26" height="26" class="slot" />
+<rect x="24" y="191" width="26" height="26" class="slot" />
+<rect x="51" y="191" width="26" height="26" class="slot" />
+<rect x="78" y="191" width="26" height="26" class="slot" />
+<rect x="105" y="191" width="26" height="26" class="slot" />
+<rect x="132" y="191" width="26" height="26" class="slot" />
+<rect x="159" y="191" width="26" height="26" class="slot" />
+<rect x="186" y="191" width="26" height="26" class="slot" />
+<rect x="213" y="191" width="26" height="26" class="slot" />
+<rect x="24" y="218" width="26" height="26" class="slot" />
+<rect x="51" y="218" width="26" height="26" class="slot" />
+<rect x="78" y="218" width="26" height="26" class="slot" />
+<rect x="105" y="218" width="26" height="26" class="slot" />
+<rect x="132" y="218" width="26" height="26" class="slot" />
+<rect x="159" y="218" width="26" height="26" class="slot" />
+<rect x="186" y="218" width="26" height="26" class="slot" />
+<rect x="213" y="218" width="26" height="26" class="slot" />
+<rect x="24" y="245" width="26" height="26" class="slot" />
+<rect x="51" y="245" width="26" height="26" class="slot" />
+<rect x="78" y="245" width="26" height="26" class="slot" />
+<rect x="105" y="245" width="26" height="26" class="slot" />
+<rect x="132" y="245" width="26" height="26" class="slot" />
+<rect x="159" y="245" width="26" height="26" class="slot" />
+<rect x="186" y="245" width="26" height="26" class="slot" />
+<rect x="213" y="245" width="26" height="26" class="slot" />
+<rect x="24" y="56" width="26" height="26" class="cell" fill="#2e7d32" style="animation-delay:2.16s"><title>Old oak</title></rect>
+<rect x="24" y="56" width="26" height="26" class="pulse" style="animation-delay:2.16s" />
+<rect x="51" y="56" width="26" height="26" class="cell" fill="#2e7d32" style="animation-delay:2.24s"><title>Old oak</title></rect>
+<rect x="51" y="56" width="26" height="26" class="pulse" style="animation-delay:2.24s" />
+<rect x="78" y="56" width="26" height="26" class="cell" fill="#2e7d32" style="animation-delay:2.32s"><title>Old oak</title></rect>
+<rect x="78" y="56" width="26" height="26" class="pulse" style="animation-delay:2.32s" />
+<rect x="105" y="56" width="26" height="26" class="cell" fill="#2e7d32" style="animation-delay:2.40s"><title>Old oak</title></rect>
+<rect x="105" y="56" width="26" height="26" class="pulse" style="animation-delay:2.40s" />
+<rect x="132" y="56" width="26" height="26" class="cell" fill="#c9a227" style="animation-delay:2.48s"><title>Barley field</title></rect>
+<rect x="132" y="56" width="26" height="26" class="pulse" style="animation-delay:2.48s" />
+<rect x="159" y="56" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:2.56s"><title>Village green</title></rect>
+<rect x="159" y="56" width="26" height="26" class="pulse" style="animation-delay:2.56s" />
+<rect x="186" y="56" width="26" height="26" class="cell" fill="#2e7d32" style="animation-delay:2.64s"><title>Old oak</title></rect>
+<rect x="186" y="56" width="26" height="26" class="pulse" style="animation-delay:2.64s" />
+<rect x="213" y="56" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:3.92s"><title>Village green</title></rect>
+<rect x="213" y="56" width="26" height="26" class="pulse" style="animation-delay:3.92s" />
+<rect x="24" y="83" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:2.08s"><title>Village green</title></rect>
+<rect x="24" y="83" width="26" height="26" class="pulse" style="animation-delay:2.08s" />
+<rect x="51" y="83" width="26" height="26" class="cell" fill="#e0c090" style="animation-delay:0.80s"><title>Villager</title></rect>
+<rect x="51" y="83" width="26" height="26" class="pulse" style="animation-delay:0.80s" />
+<rect x="78" y="83" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:0.88s"><title>Village green</title></rect>
+<rect x="78" y="83" width="26" height="26" class="pulse" style="animation-delay:0.88s" />
+<rect x="105" y="83" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:0.96s"><title>Village well</title></rect>
+<rect x="105" y="83" width="26" height="26" class="pulse" style="animation-delay:0.96s" />
+<rect x="132" y="83" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:1.04s"><title>Market stall</title></rect>
+<rect x="132" y="83" width="26" height="26" class="pulse" style="animation-delay:1.04s" />
+<rect x="159" y="83" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:1.12s"><title>Village green</title></rect>
+<rect x="159" y="83" width="26" height="26" class="pulse" style="animation-delay:1.12s" />
+<rect x="186" y="83" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:2.72s"><title>Village green</title></rect>
+<rect x="186" y="83" width="26" height="26" class="pulse" style="animation-delay:2.72s" />
+<rect x="213" y="83" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:4.00s"><title>Village green</title></rect>
+<rect x="213" y="83" width="26" height="26" class="pulse" style="animation-delay:4.00s" />
+<rect x="24" y="110" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:2.00s"><title>Cottage wall</title></rect>
+<rect x="24" y="110" width="26" height="26" class="pulse" style="animation-delay:2.00s" />
+<rect x="51" y="110" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:0.72s"><title>Cottage wall</title></rect>
+<rect x="51" y="110" width="26" height="26" class="pulse" style="animation-delay:0.72s" />
+<rect x="78" y="110" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:0.08s"><title>Cottage wall</title></rect>
+<rect x="78" y="110" width="26" height="26" class="pulse" style="animation-delay:0.08s" />
+<rect x="105" y="110" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:0.16s"><title>Village green</title></rect>
+<rect x="105" y="110" width="26" height="26" class="pulse" style="animation-delay:0.16s" />
+<rect x="132" y="110" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:0.24s"><title>Village green</title></rect>
+<rect x="132" y="110" width="26" height="26" class="pulse" style="animation-delay:0.24s" />
+<rect x="159" y="110" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:1.20s"><title>Village green</title></rect>
+<rect x="159" y="110" width="26" height="26" class="pulse" style="animation-delay:1.20s" />
+<rect x="186" y="110" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:2.80s"><title>Village green</title></rect>
+<rect x="186" y="110" width="26" height="26" class="pulse" style="animation-delay:2.80s" />
+<rect x="213" y="110" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:4.08s"><title>Village green</title></rect>
+<rect x="213" y="110" width="26" height="26" class="pulse" style="animation-delay:4.08s" />
+<rect x="24" y="137" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:3.84s"><title>Cottage wall</title></rect>
+<rect x="24" y="137" width="26" height="26" class="pulse" style="animation-delay:3.84s" />
+<rect x="51" y="137" width="26" height="26" class="cell" fill="#3a3a40" style="animation-delay:1.92s"><title>Cottage floor</title></rect>
+<rect x="51" y="137" width="26" height="26" class="pulse" style="animation-delay:1.92s" />
+<rect x="78" y="137" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:0.64s"><title>Cottage wall</title></rect>
+<rect x="78" y="137" width="26" height="26" class="pulse" style="animation-delay:0.64s" />
+<rect x="105" y="137" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:0.00s"><title>Village green</title></rect>
+<rect x="105" y="137" width="26" height="26" class="pulse" style="animation-delay:0.00s" />
+<rect x="132" y="137" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:0.32s"><title>Cottage wall</title></rect>
+<rect x="132" y="137" width="26" height="26" class="pulse" style="animation-delay:0.32s" />
+<rect x="159" y="137" width="26" height="26" class="cell" fill="#b8742a" style="animation-delay:1.28s"><title>Cottage door</title></rect>
+<rect x="159" y="137" width="26" height="26" class="pulse" style="animation-delay:1.28s" />
+<rect x="186" y="137" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:2.88s"><title>Cottage wall</title></rect>
+<rect x="186" y="137" width="26" height="26" class="pulse" style="animation-delay:2.88s" />
+<rect x="213" y="137" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:4.16s"><title>Village green</title></rect>
+<rect x="213" y="137" width="26" height="26" class="pulse" style="animation-delay:4.16s" />
+<rect x="24" y="164" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:3.76s"><title>Cottage wall</title></rect>
+<rect x="24" y="164" width="26" height="26" class="pulse" style="animation-delay:3.76s" />
+<rect x="51" y="164" width="26" height="26" class="cell" fill="#b8742a" style="animation-delay:1.84s"><title>Cottage door</title></rect>
+<rect x="51" y="164" width="26" height="26" class="pulse" style="animation-delay:1.84s" />
+<rect x="78" y="164" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:0.56s"><title>Cottage wall</title></rect>
+<rect x="78" y="164" width="26" height="26" class="pulse" style="animation-delay:0.56s" />
+<rect x="105" y="164" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:0.48s"><title>Village green</title></rect>
+<rect x="105" y="164" width="26" height="26" class="pulse" style="animation-delay:0.48s" />
+<rect x="132" y="164" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:0.40s"><title>Cottage wall</title></rect>
+<rect x="132" y="164" width="26" height="26" class="pulse" style="animation-delay:0.40s" />
+<rect x="159" y="164" width="26" height="26" class="cell" fill="#3a3a40" style="animation-delay:1.36s"><title>Cottage floor</title></rect>
+<rect x="159" y="164" width="26" height="26" class="pulse" style="animation-delay:1.36s" />
+<rect x="186" y="164" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:2.96s"><title>Cottage wall</title></rect>
+<rect x="186" y="164" width="26" height="26" class="pulse" style="animation-delay:2.96s" />
+<rect x="213" y="164" width="26" height="26" class="cell" fill="#2f6fd6" style="animation-delay:4.24s"><title>River</title></rect>
+<rect x="213" y="164" width="26" height="26" class="pulse" style="animation-delay:4.24s" />
+<rect x="24" y="191" width="26" height="26" class="cell" fill="#9c7a4e" style="animation-delay:3.68s"><title>Dirt path</title></rect>
+<rect x="24" y="191" width="26" height="26" class="pulse" style="animation-delay:3.68s" />
+<rect x="51" y="191" width="26" height="26" class="cell" fill="#9c7a4e" style="animation-delay:1.76s"><title>Dirt path</title></rect>
+<rect x="51" y="191" width="26" height="26" class="pulse" style="animation-delay:1.76s" />
+<rect x="78" y="191" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:1.68s"><title>Village green</title></rect>
+<rect x="78" y="191" width="26" height="26" class="pulse" style="animation-delay:1.68s" />
+<rect x="105" y="191" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:1.60s"><title>Village green</title></rect>
+<rect x="105" y="191" width="26" height="26" class="pulse" style="animation-delay:1.60s" />
+<rect x="132" y="191" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:1.52s"><title>Cottage wall</title></rect>
+<rect x="132" y="191" width="26" height="26" class="pulse" style="animation-delay:1.52s" />
+<rect x="159" y="191" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:1.44s"><title>Cottage wall</title></rect>
+<rect x="159" y="191" width="26" height="26" class="pulse" style="animation-delay:1.44s" />
+<rect x="186" y="191" width="26" height="26" class="cell" fill="#8a5a2a" style="animation-delay:3.04s"><title>Cottage wall</title></rect>
+<rect x="186" y="191" width="26" height="26" class="pulse" style="animation-delay:3.04s" />
+<rect x="213" y="191" width="26" height="26" class="cell" fill="#a07a4a" style="animation-delay:4.32s"><title>Wooden bridge</title></rect>
+<rect x="213" y="191" width="26" height="26" class="pulse" style="animation-delay:4.32s" />
+<rect x="24" y="218" width="26" height="26" class="cell" fill="#9c7a4e" style="animation-delay:3.60s"><title>Dirt path</title></rect>
+<rect x="24" y="218" width="26" height="26" class="pulse" style="animation-delay:3.60s" />
+<rect x="51" y="218" width="26" height="26" class="cell" fill="#9c7a4e" style="animation-delay:3.52s"><title>Dirt path</title></rect>
+<rect x="51" y="218" width="26" height="26" class="pulse" style="animation-delay:3.52s" />
+<rect x="78" y="218" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:3.44s"><title>Village green</title></rect>
+<rect x="78" y="218" width="26" height="26" class="pulse" style="animation-delay:3.44s" />
+<rect x="105" y="218" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:3.36s"><title>Village green</title></rect>
+<rect x="105" y="218" width="26" height="26" class="pulse" style="animation-delay:3.36s" />
+<rect x="132" y="218" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:3.28s"><title>Village green</title></rect>
+<rect x="132" y="218" width="26" height="26" class="pulse" style="animation-delay:3.28s" />
+<rect x="159" y="218" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:3.20s"><title>Village green</title></rect>
+<rect x="159" y="218" width="26" height="26" class="pulse" style="animation-delay:3.20s" />
+<rect x="186" y="218" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:3.12s"><title>Village green</title></rect>
+<rect x="186" y="218" width="26" height="26" class="pulse" style="animation-delay:3.12s" />
+<rect x="213" y="218" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:4.40s"><title>Village green</title></rect>
+<rect x="213" y="218" width="26" height="26" class="pulse" style="animation-delay:4.40s" />
+<rect x="24" y="245" width="26" height="26" class="cell" fill="#9c7a4e" style="animation-delay:5.04s"><title>Dirt path</title></rect>
+<rect x="24" y="245" width="26" height="26" class="pulse" style="animation-delay:5.04s" />
+<rect x="51" y="245" width="26" height="26" class="cell" fill="#9c7a4e" style="animation-delay:4.96s"><title>Dirt path</title></rect>
+<rect x="51" y="245" width="26" height="26" class="pulse" style="animation-delay:4.96s" />
+<rect x="78" y="245" width="26" height="26" class="cell" fill="#9c7a4e" style="animation-delay:4.88s"><title>Dirt path</title></rect>
+<rect x="78" y="245" width="26" height="26" class="pulse" style="animation-delay:4.88s" />
+<rect x="105" y="245" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:4.80s"><title>Village green</title></rect>
+<rect x="105" y="245" width="26" height="26" class="pulse" style="animation-delay:4.80s" />
+<rect x="132" y="245" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:4.72s"><title>Village green</title></rect>
+<rect x="132" y="245" width="26" height="26" class="pulse" style="animation-delay:4.72s" />
+<rect x="159" y="245" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:4.64s"><title>Village green</title></rect>
+<rect x="159" y="245" width="26" height="26" class="pulse" style="animation-delay:4.64s" />
+<rect x="186" y="245" width="26" height="26" class="cell" fill="#c9a227" style="animation-delay:4.56s"><title>Barley field</title></rect>
+<rect x="186" y="245" width="26" height="26" class="pulse" style="animation-delay:4.56s" />
+<rect x="213" y="245" width="26" height="26" class="cell" fill="#3f9b3f" style="animation-delay:4.48s"><title>Village green</title></rect>
+<rect x="213" y="245" width="26" height="26" class="pulse" style="animation-delay:4.48s" />
+<text x="24" y="294" class="step-sub">64 cells, 64 questions, about 19 seconds</text>
+<rect x="300" y="70" width="140" height="56" rx="8" class="step-box" /><text x="370" y="94" class="step-title" text-anchor="middle">The map so far</text><text x="370" y="112" class="step-sub" text-anchor="middle">is the state</text>
+<rect x="470" y="70" width="150" height="56" rx="8" class="step-box" /><text x="545" y="94" class="step-title" text-anchor="middle">Jev</text><text x="545" y="112" class="step-sub" text-anchor="middle">answers for one cell</text>
+<rect x="650" y="70" width="90" height="56" rx="8" class="step-box" /><text x="695" y="94" class="step-title" text-anchor="middle">Write it</text><text x="695" y="112" class="step-sub" text-anchor="middle">into the map</text>
+<path d="M440 98 L462 98" class="flow" /><polygon points="462,93 472,98 462,103" class="head" />
+<path d="M620 98 L642 98" class="flow" /><polygon points="642,93 652,98 642,103" class="head" />
+<path d="M695 126 L695 176 L370 176 L370 134" class="flow" /><polygon points="365,134 370,124 375,134" class="head" />
+<text x="532" y="196" class="step-sub" text-anchor="middle">and again for the next cell, until no cell is left</text>
+</svg>
+          <figcaption>The village of one real test case, redrawn in the order the generator asked about its cells: from the middle outwards. Each flash is one question to Jev, and each answer joins the state of the next one.</figcaption>
+        </figure>
       </section>
 
 
       <section class="costs">
         <h2 id="what-it-costs-really"><a class="heading-anchor" href="#what-it-costs-really">What it costs, really</a></h2>
-        <p>Here is the bill. OpenRouter's usage page for the week in which all eleven versions were drawn, back-filled and re-drawn shows 39.2 thousand requests to Jev, 79.1 million tokens, and a spend of $3.11. That is 2,018 tokens per decision (the state with the whole map in it), $0.039 per million tokens, and <strong>$0.00008 per decision</strong>: about eight thousandths of a cent. A 16 by 16 map is 256 decisions, so $0.020. A full test run of 38 maps is 3,008 decisions, so $0.24. The language model, Claude Sonnet 5, was called 7 times that week to write vocabularies, and those 7 calls cost $0.33: one vocabulary costs about the same as 594 decisions.</p>
+        <p>Here is the bill. OpenRouter's usage page for the week in which all eleven versions were drawn, back-filled and re-drawn shows 39.2 thousand requests to Jev, 79.1 million tokens, and a spend of $3.11. That is 2,018 tokens per decision (the state with the whole map in it), $0.039 per million tokens, and <strong>$0.00008 per decision</strong>: about eight thousandths of a cent. A 16 by 16 map is 256 decisions, so $0.020. A full test run of 38 maps is 3,008 decisions, so $0.24. The language model, Claude Sonnet 5, was called 7 times that week to write vocabularies, and those 7 calls cost $0.33: one vocabulary costs about the same as 594 decisions. That price is what makes the rest of this post possible: a full run of 38 maps takes under ten minutes, so it can run before every change instead of once at the end.</p>
         <figure class="chart">
 <svg viewBox="0 0 760 190" class="bars" role="img" aria-label="What one dollar buys: 12,605 Jev decisions, 13,749 per-cell calls to DeepSeek V4 Flash, 244 per-cell calls to Claude Sonnet 5, or 21 vocabularies from Claude Sonnet 5. Logarithmic scale." xmlns="http://www.w3.org/2000/svg">
 <text x="300" y="18" class="chart-title">What one dollar buys, logarithmic scale</text>
@@ -189,7 +398,7 @@
             <g class="step">
               <rect x="560" y="95" width="180" height="52" rx="10" />
               <text x="650" y="117" class="step-title" text-anchor="middle">2 · Run 38 seeds</text>
-              <text x="650" y="135" class="step-sub" text-anchor="middle">~3,000 decisions, about 25 cents</text>
+              <text x="650" y="135" class="step-sub" text-anchor="middle">3,008 decisions, about 24 cents</text>
             </g>
             <g class="step">
               <rect x="560" y="272" width="180" height="52" rx="10" />
