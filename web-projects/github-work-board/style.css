@@ -1317,6 +1317,80 @@ textarea.input {
   text-decoration-color: hsl(var(--foreground));
 }
 
+/* The kind of change a title announces, drawn from `titles.js` (ADR 0021).
+ * It sits on the title line and reads at a glance, which is the whole point:
+ * `fix(api):` written out is the same on a hundred cards. */
+.change-icon {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  stroke-width: 1.9;
+  vertical-align: -0.125em;
+  margin-right: 0.3125rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.change-feat {
+  color: hsl(142 60% 38%);
+}
+
+.change-fix {
+  color: hsl(0 72% 50%);
+}
+
+.change-docs {
+  color: hsl(215 60% 48%);
+}
+
+.change-refactor,
+.change-style {
+  color: hsl(262 55% 52%);
+}
+
+.change-perf {
+  color: hsl(38 90% 42%);
+}
+
+/* A breaking change is the one that has to interrupt a reader. */
+.change-icon.is-breaking {
+  color: hsl(var(--destructive));
+  stroke-width: 2.4;
+}
+
+@media (prefers-color-scheme: dark) {
+  .change-feat {
+    color: hsl(142 55% 58%);
+  }
+
+  .change-fix {
+    color: hsl(0 75% 68%);
+  }
+
+  .change-docs {
+    color: hsl(215 80% 70%);
+  }
+
+  .change-refactor,
+  .change-style {
+    color: hsl(262 70% 75%);
+  }
+
+  .change-perf {
+    color: hsl(38 90% 62%);
+  }
+}
+
+/* The part in brackets. Muted, because it says where the change is and the
+ * rest of the line says what it is. */
+.issue-scope {
+  margin-right: 0.375rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+}
+
+.issue-scope::after {
+  content: " ·";
+}
+
 .issue-labels {
   display: flex;
   flex-wrap: wrap;

@@ -67,6 +67,7 @@ import {
 } from "./settings.js";
 import { skeletonCount } from "./skeletons.js";
 import { orderStacksForMerging, stackPositions } from "./stacks.js";
+import { readTitle } from "./titles.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
@@ -219,12 +220,34 @@ function buildCheckRow({ label, ok, detail }) {
   return row;
 }
 
+/** The icon for one kind of change, drawn from its paths (ADR 0001). */
+function buildChangeIcon(type, breaking) {
+  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  drawing.setAttribute("viewBox", "0 0 24 24");
+  drawing.setAttribute("aria-hidden", "true");
+  drawing.setAttribute("focusable", "false");
+  drawing.setAttribute("class", `icon change-icon change-${type.id}${breaking ? " is-breaking" : ""}`);
+  for (const d of type.paths) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    line.setAttribute("d", d);
+    drawing.append(line);
+  }
+  const name = document.createElementNS("http://www.w3.org/2000/svg", "title");
+  name.textContent = breaking ? `${type.label}, and it breaks something` : type.label;
+  drawing.append(name);
+  return drawing;
+}
+
 /**
- * One card. A nested pull request gets no menu: it travels in its issue's
- * column, because the pair is one piece of work (ADR 0010), so offering to move
- * it on its own would offer something that cannot happen.
+ * One card. A nested pull request keeps the menu but not the move: it travels
+ * in its issue's column, because the pair is one piece of work (ADR 0010), so
+ * moving it on its own would do nothing, but copying its branch still does
+ * (ADR 0021).
  */
 function buildWorkItemCard(item, { withMenu = true, compact = false, stack = null } = {}) {
+  // A nested pull request still has a branch worth copying, even though a
+  // move would change nothing on screen (ADR 0012, ADR 0021).
+  const menu = withMenu || item.kind === "pull-request";
   const card = document.createElement("li");
   card.className = "issue";
 
@@ -258,8 +281,9 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   more.addEventListener("click", () => {
     state.menuItem = item;
     state.menuAnchor = more;
+    state.menuCanMove = withMenu;
   });
-  if (withMenu) card.append(more);
+  if (menu) card.append(more);
 
   const kind = document.createElement("span");
   kind.className = item.kind === "pull-request" ? "badge badge-pull" : "badge badge-issue";
@@ -302,12 +326,26 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   heading.append(where);
   card.append(heading);
 
+  // `fix(api):` is the same on hundreds of cards and the rest is the only part
+  // worth reading, so the prefix becomes an icon and a small word (ADR 0021).
+  const read = readTitle(item.title);
   const link = document.createElement("a");
   link.className = "issue-title";
   link.href = item.url;
   link.target = "_blank";
   link.rel = "noopener";
-  link.textContent = item.title;
+  // The whole title, for anybody who wants the words back.
+  link.title = item.title;
+  if (read.type) {
+    link.append(buildChangeIcon(read.type, read.breaking));
+    if (read.scope !== "") {
+      const scope = document.createElement("span");
+      scope.className = "issue-scope";
+      scope.textContent = read.scope;
+      link.append(scope);
+    }
+  }
+  link.append(document.createTextNode(read.description));
   card.append(link);
 
   if (item.labels.length > 0) {
@@ -1317,6 +1355,20 @@ function start() {
     if (!submenu.matches(":popover-open")) submenu.showPopover();
   });
 
+  element("menu-branch").addEventListener("click", async () => {
+    const item = state.menuItem;
+    const branch = typeof item?.headRefName === "string" ? item.headRefName : "";
+    closeCardMenu();
+    if (branch === "") return setStatus("This one has no branch.");
+    try {
+      await navigator.clipboard.writeText(branch);
+      setStatus(`Copied ${branch}.`);
+    } catch {
+      // Nowhere to put it but the status line, which is at least selectable.
+      setStatus(`This browser would not copy. The branch is ${branch}`);
+    }
+  });
+
   element("menu-note").addEventListener("click", () => {
     const item = state.menuItem;
     if (!item) return;
@@ -1331,6 +1383,11 @@ function start() {
     const open = event.newState === "open";
     if (open && state.menuItem) {
       element("menu-note").textContent = noteMenuLabel(readNote(state.board, state.menuItem.key));
+      // An issue has no branch, and a nested pull request cannot be moved:
+      // its column comes from the issue it travels in (ADR 0012, ADR 0021).
+      element("menu-branch").hidden = state.menuItem.kind !== "pull-request";
+      element("menu-note").hidden = state.menuCanMove !== true;
+      move.hidden = state.menuCanMove !== true;
     }
     state.menuAnchor?.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) placeMenu(menu, state.menuAnchor);
