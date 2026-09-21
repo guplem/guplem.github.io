@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { CAMERA_LIMITS, cellAtPoint, cellRect, fitCamera, panBy, zoomAt } from "./camera.js";
+import { CAMERA_LIMITS, cellAtPoint, cellRect, fitCamera, panBy, wholeGridImage, zoomAt } from "./camera.js";
 
 const grid = { width: 10, height: 5 };
 const viewport = { width: 800, height: 400 };
@@ -17,6 +17,25 @@ describe("fitCamera", () => {
   test("never goes above the top scale, so a tiny grid does not become a blur", () => {
     const camera = fitCamera({ width: 1, height: 1 }, 12, viewport);
     expect(camera.scale).toBeLessThanOrEqual(CAMERA_LIMITS.maxScale);
+  });
+});
+
+describe("wholeGridImage", () => {
+  test("holds every cell at the asked size, with no border", () => {
+    const { width, height, camera } = wholeGridImage(grid, 12, 48);
+    expect(width).toBe(10 * 48);
+    expect(height).toBe(5 * 48);
+    expect(camera.offsetX).toBe(0);
+    expect(camera.offsetY).toBe(0);
+    expect(cellRect(camera, 12, 0, 0)).toEqual({ x: 0, y: 0, size: 48 });
+    const last = cellRect(camera, 12, 9, 4);
+    expect(last.x + last.size).toBe(width);
+    expect(last.y + last.size).toBe(height);
+  });
+
+  test("does not clamp the scale, because an image has no viewport to fit", () => {
+    const pixelsPerTile = 12 * (CAMERA_LIMITS.maxScale + 4);
+    expect(wholeGridImage(grid, 12, pixelsPerTile).camera.scale).toBe(CAMERA_LIMITS.maxScale + 4);
   });
 });
 

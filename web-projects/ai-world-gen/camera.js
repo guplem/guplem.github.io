@@ -23,6 +23,20 @@ export function fitCamera(grid, tileSize, viewport) {
   };
 }
 
+/**
+ * The size of an image that holds the whole grid, and the camera that draws it.
+ * The image has no border and no viewport, so the camera sits at the origin and
+ * the scale is not clamped. `fitCamera` clamps and centres; this one must not.
+ * @param {number} pixelsPerTile how many image pixels one tile takes
+ */
+export function wholeGridImage(grid, tileSize, pixelsPerTile) {
+  return {
+    width: grid.width * pixelsPerTile,
+    height: grid.height * pixelsPerTile,
+    camera: { offsetX: 0, offsetY: 0, scale: pixelsPerTile / tileSize },
+  };
+}
+
 /** Where one cell is drawn, in screen pixels. */
 export function cellRect(camera, tileSize, x, y) {
   const size = tileSize * camera.scale;
