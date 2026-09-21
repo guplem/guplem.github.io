@@ -166,6 +166,12 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   alone cannot say whose turn it is. `askedToLookAgain` answers that, from
   `latestOpinionatedReviews` set beside `reviewRequests`, and **every** reviewer
   who asked for changes must be in the request list, not just one (ADR 0011).
+- **`REVIEW_REQUIRED` is not a review request.** It is the branch rule saying
+  the repository wants a review before a merge, so every open pull request in
+  such a repository answers it, including one nobody has looked at. Only
+  `reviewRequests.totalCount` says a person was asked. The first version of the
+  column rules read it the other way and "Awaiting review" collected every
+  fresh pull request (ADR 0011).
 - **A column is computed, never maintained.** The rules read what GitHub
   already knows, and the order of the checks in `automaticColumn` is the whole
   decision: merged beats everything, changes requested beats an approval. A
