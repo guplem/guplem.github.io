@@ -19,6 +19,22 @@ import { PERMISSIONS } from "./permissions.js";
 const API = "https://api.github.com";
 const TIMEOUT_MS = 15000;
 
+/**
+ * Ask GitHub every time, and let GitHub answer "nothing changed".
+ *
+ * GitHub answers an authenticated REST call with `Cache-Control: private,
+ * max-age=60`. Left alone, the browser serves its own copy for that whole
+ * minute, so a board set to refresh every 30 seconds would show the same answer
+ * twice and look broken (ADR 0025).
+ *
+ * `no-cache` is not `no-store`. The browser keeps the copy and asks GitHub
+ * whether it is still good, sending the `ETag` it already holds. GitHub answers
+ * `304 Not Modified` when nothing changed, the browser hands over the copy it
+ * had, and **a 304 costs nothing against the rate limit**. So this makes the
+ * board more correct and cheaper at the same time.
+ */
+const CACHE_MODE = "no-cache";
+
 async function call(token, path, { method = "GET", body = null, need = "" } = {}) {
   const headers = { Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -29,6 +45,7 @@ async function call(token, path, { method = "GET", body = null, need = "" } = {}
     response = await fetch(`${API}${path}`, {
       method,
       headers,
+      cache: CACHE_MODE,
       body: body ? JSON.stringify(body) : undefined,
       signal: AbortSignal.timeout ? AbortSignal.timeout(TIMEOUT_MS) : undefined,
     });

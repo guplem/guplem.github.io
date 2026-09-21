@@ -137,6 +137,16 @@
           <select id="sort" class="select"></select>
         </div>
 
+        <!-- How often the board asks GitHub again on its own. Beside the order,
+             for the same reason: it belongs to the board and it is looked for at
+             the top (ADR 0023). Off until the reader turns it on, because every
+             refresh spends their GitHub rate limit (ADR 0025). -->
+        <div class="sort-control" id="refresh-control" hidden>
+          <label class="sort-label" for="refresh">Refresh</label>
+          <!-- Filled from REFRESH_CHOICES, so a schedule exists in one place. -->
+          <select id="refresh" class="select"></select>
+        </div>
+
         <!-- One control for both screens. The arrow appears only on the way back,
              because only that direction is a return (ADR 0008). -->
         <button id="view-toggle" type="button" class="button button-outline" hidden>

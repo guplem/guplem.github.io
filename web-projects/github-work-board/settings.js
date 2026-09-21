@@ -15,13 +15,23 @@
 // the first write, so every read and every write is wrapped and a refused write
 // is simply forgotten.
 //
+// **How the board looks travels; what this device spends does not.** The theme
+// and the column colours live in the board file, because a reader wants the
+// same board on every machine (ADR 0024). The auto refresh schedule lives here
+// instead: it decides how much of the reader's GitHub rate limit this one
+// browser spends, and a laptop on a train can want a different answer from a
+// desk (ADR 0025).
+//
 // A token is a real credential, and keeping them here is a deliberate trade
 // with a real cost. ADR 0001 states the threat model.
+
+import { knownRefresh } from "./refresh.js";
 
 export const STORAGE_KEYS = {
   tokens: "github-work-board.tokens",
   dataRepo: "github-work-board.dataRepo",
   lastCounts: "github-work-board.lastCounts",
+  autoRefresh: "github-work-board.autoRefresh",
 };
 
 /** Where the one-token version kept things. Read once, then cleared. */
@@ -138,6 +148,22 @@ export function forgetAllTokens(storage) {
   removeRaw(storage, LEGACY_KEYS.grantedPermissions);
   removeRaw(storage, STORAGE_KEYS.dataRepo);
   removeRaw(storage, STORAGE_KEYS.lastCounts);
+  removeRaw(storage, STORAGE_KEYS.autoRefresh);
+}
+
+/**
+ * How often this browser asks GitHub again on its own.
+ *
+ * It stays in this browser rather than in the board file, because it decides
+ * what this one device spends of the reader's GitHub rate limit (ADR 0025).
+ * A schedule this build does not know asks for nothing.
+ */
+export function readAutoRefresh(storage) {
+  return knownRefresh(readRaw(storage, STORAGE_KEYS.autoRefresh));
+}
+
+export function saveAutoRefresh(storage, choice) {
+  writeRaw(storage, STORAGE_KEYS.autoRefresh, knownRefresh(choice));
 }
 
 /**

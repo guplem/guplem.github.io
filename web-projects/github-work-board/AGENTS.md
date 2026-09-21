@@ -44,6 +44,7 @@ It is the short procedure for all of the above.
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
+| `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in (ADR 0016), and where each one sits in it (ADR 0020) |
@@ -65,10 +66,34 @@ It is the short procedure for all of the above.
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
 Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
+Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025).
 Data flow, saving: a keystroke, a card moved, a colour or the theme → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
 
+- **`gateway.js` sends `cache: "no-cache"`, and removing it breaks the board
+  silently.** GitHub answers an authenticated call with `Cache-Control: private,
+  max-age=60`. Without that one option the browser answers from its own copy for
+  a minute, so the 30 second refresh shows the same answer twice and nothing
+  errors. `no-cache` is not `no-store`: the browser still revalidates with the
+  `ETag` that it holds, and a `304` costs nothing against the rate limit. So
+  this is the cheaper option as well as the correct one (ADR 0025).
+- **A harness tab is a hidden tab, so do not measure the refresh timer in one.**
+  Chrome throttles a long-lived `setInterval` in a background tab to about once
+  a minute, so the 30 second schedule looks like a 60 second one. Worse, an
+  override of `document.visibilityState` from the browser tools does **not**
+  reach the page: those tools run in an isolated world, and the page keeps
+  seeing `hidden`. To force the page's own view, inject a `<script>` element
+  with the override as its text, which runs in the page's world. Measure what
+  fires, not when.
+- **One refresh costs seven GitHub calls for each token**, and the tight budget
+  is `search` at 30 a minute, not `core` at 5000 an hour. A new call in the
+  connect path multiplies by the number of tokens and by the refresh rate. Do
+  that arithmetic in `refresh.test.js` before you add one.
+- **A refresh must stay skipped, never queued, while a save is in flight.** A
+  save re-reads the board file, merges it and writes it back (ADR 0002). A
+  refresh that lands in between replaces the document that the save works from,
+  and the reader loses the note that they just typed.
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and
@@ -399,6 +424,7 @@ before calling it done.
 | [0022](adr/0022-a-note-belongs-to-the-work-not-to-the-card.md) | A note belongs to the work, not to the place the card sits |
 | [0023](adr/0023-the-order-goes-to-the-top-and-the-header-scrolls-away.md) | The order goes to the top, and the header scrolls away |
 | [0024](adr/0024-how-the-board-looks-is-the-readers-and-travels-with-them.md) | How the board looks is the reader's, and travels with them |
+| [0025](adr/0025-the-board-asks-again-on-a-schedule-this-browser-keeps.md) | The board asks again on a schedule this browser keeps |
 
 ## What is not built yet
 

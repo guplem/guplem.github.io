@@ -60,17 +60,20 @@ import {
   permissionsFingerprint,
   tokenNeedsUpdate,
 } from "./permissions.js";
+import { DEFAULT_REFRESH, REFRESH_CHOICES, refreshDue } from "./refresh.js";
 import {
   DEFAULT_DATA_REPO_NAME,
   addToken,
   boardWritingToken,
   browserStorage,
   forgetAllTokens,
+  readAutoRefresh,
   readDataRepo,
   readLastCounts,
   readTokens,
   removeToken,
   renameToken,
+  saveAutoRefresh,
   saveDataRepo,
   saveLastCounts,
   saveTokens,
@@ -104,6 +107,15 @@ import {
 } from "./workItems.js";
 
 const SAVE_DELAY_MS = 1200;
+
+/**
+ * How often the board checks whether a refresh is due.
+ *
+ * It is not the refresh interval. The shortest schedule is 30 seconds, and a
+ * tab that comes back into view should not wait most of that before it catches
+ * up, so the board asks the question often and acts on it rarely (ADR 0025).
+ */
+const REFRESH_TICK_MS = 5000;
 const PROJECT_PATH = "web-projects/github-work-board";
 
 const storage = browserStorage();
@@ -136,12 +148,20 @@ const state = {
   warningRead: false,
   onWarningAccepted: null,
   sortId: DEFAULT_SORT_ID,
+  // How often this browser asks GitHub again, the timer that asks, and when the
+  // last answer arrived. The schedule stays in this browser, because it decides
+  // what this device spends of the reader's rate limit (ADR 0025).
+  refreshId: DEFAULT_REFRESH,
+  refreshTimer: null,
+  lastReadAt: null,
+  savePending: false,
   view: DEFAULT_VIEW,
   kind: DEFAULT_KIND,
   repositories: [],
   labels: [],
   loading: false,
 };
+
 
 /* -------------------------------------------------------------------------- */
 /* Small builders                                                             */
@@ -1046,6 +1066,7 @@ function showView(view) {
   element("setup").hidden = connected;
   element("board").hidden = !connected || state.view !== "board";
   element("sort-control").hidden = !connected || state.view !== "board";
+  element("refresh-control").hidden = !connected || state.view !== "board";
   element("settings-view").hidden = state.view !== "settings";
   element("add-token-view").hidden = state.view !== "add-token";
   rememberUrl();
@@ -1187,13 +1208,23 @@ async function inspectToken(entry) {
   return { entry: updated, raw: [...raw, ...finishedRaw], rows, links, reviews };
 }
 
-/** Ask every saved token, merge what they return, and show the board. */
-async function connectAll() {
+/**
+ * Ask every saved token, merge what they return, and show the board.
+ *
+ * A **quiet** read is the one the auto refresh makes. It draws no placeholders
+ * and skips the "Reading GitHub..." status line: the board already holds a
+ * good answer, and it is replaced in place by another good answer. The
+ * placeholder rule is about a list with nothing in it yet, which is not this
+ * case (ADR 0004, ADR 0025).
+ */
+async function connectAll({ quiet = false } = {}) {
   if (state.tokens.length === 0) return;
   state.loading = true;
-  setStatus("Reading GitHub...");
-  showView(state.view);
-  renderLoading();
+  if (!quiet) {
+    setStatus("Reading GitHub...");
+    showView(state.view);
+    renderLoading();
+  }
 
   const checks = {};
   const everything = [];
@@ -1218,6 +1249,7 @@ async function connectAll() {
   state.items = applyPullRequestState(normalizeWorkItems(everything), links);
 
   state.loading = false;
+  state.lastReadAt = Date.now();
   element("board-columns").removeAttribute("aria-busy");
   showNotice("settings-notice", "");
   renderTokenList();
@@ -1236,14 +1268,71 @@ async function connectAll() {
 }
 
 /* -------------------------------------------------------------------------- */
+/* Asking again                                                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Whether a refresh right now would interrupt the reader or race a save.
+ *
+ * A refresh rebuilds every card. A note box being typed into would lose what is
+ * in it, and an open menu would vanish under the pointer. A save is worse: it
+ * re-reads the board file, merges and writes, so a read landing in the middle
+ * of it would replace the document that save is working from (ADR 0002).
+ */
+function boardIsBusy() {
+  if (state.loading || state.savePending) return true;
+  if (element("card-menu")?.matches(":popover-open")) return true;
+  const focused = document.activeElement;
+  return focused instanceof HTMLTextAreaElement || focused instanceof HTMLInputElement;
+}
+
+/** Ask GitHub again, but only when the schedule says so and nothing is in the way. */
+function tickRefresh() {
+  const due = refreshDue({
+    choice: state.refreshId,
+    lastAt: state.lastReadAt,
+    now: Date.now(),
+    hidden: document.visibilityState === "hidden",
+    busy: boardIsBusy(),
+  });
+  if (due) connectAll({ quiet: true }).catch(() => {});
+}
+
+/**
+ * Start or stop the schedule the reader chose.
+ *
+ * One timer, always the same length, asking a question that is cheap to answer.
+ * Turning the schedule off stops it, so a board set to "Off" runs no timer at
+ * all.
+ */
+function applyAutoRefresh() {
+  clearInterval(state.refreshTimer);
+  state.refreshTimer = null;
+  if (state.refreshId === DEFAULT_REFRESH) return;
+  state.refreshTimer = setInterval(tickRefresh, REFRESH_TICK_MS);
+}
+
+/* -------------------------------------------------------------------------- */
 /* Saving                                                                     */
 /* -------------------------------------------------------------------------- */
 
 function scheduleSave() {
   setStatus("Saving...");
   clearTimeout(state.saveTimer);
+  // From here until the write settles, an auto refresh would replace the
+  // document this save is about to merge from (ADR 0002).
+  state.savePending = true;
   state.saveTimer = setTimeout(() => {
-    save().catch(() => setStatus("The save did not finish. It will try again on your next change."));
+    // The timer has fired, so nothing is waiting any more. A change made while
+    // this save is in flight arms a new one, and the line below then leaves
+    // `savePending` alone: the reader has work that has not reached GitHub yet,
+    // and a refresh would replace the document that holds it.
+    state.saveTimer = null;
+    save()
+      .catch(() => setStatus("The save did not finish. It will try again on your next change."))
+      .finally(() => {
+        if (state.saveTimer === null) state.savePending = false;
+      });
   }, SAVE_DELAY_MS);
 }
 
@@ -1287,6 +1376,13 @@ async function save(attempt = 0) {
 function signOut() {
   forgetAllTokens(storage);
   clearTimeout(state.saveTimer);
+  state.saveTimer = null;
+  state.savePending = false;
+  // Nothing to ask GitHub with, so nothing should be asking.
+  state.refreshId = DEFAULT_REFRESH;
+  state.lastReadAt = null;
+  applyAutoRefresh();
+  element("refresh").value = state.refreshId;
   state.tokens = [];
   state.revealed.clear();
   state.items = [];
@@ -1372,6 +1468,32 @@ function start() {
     state.sortId = sortField.value;
     rememberUrl();
     renderBoard();
+  });
+
+  // The schedule is not in the address bar, unlike the order. A link is shared,
+  // and how often somebody else's browser asks GitHub is not the sharer's to
+  // choose (ADR 0025).
+  const refreshField = element("refresh");
+  refreshField.replaceChildren(
+    ...REFRESH_CHOICES.map((choice) => {
+      const option = document.createElement("option");
+      option.value = choice.id;
+      option.textContent = choice.label;
+      return option;
+    }),
+  );
+  state.refreshId = readAutoRefresh(storage);
+  refreshField.value = state.refreshId;
+  refreshField.addEventListener("change", () => {
+    state.refreshId = refreshField.value;
+    saveAutoRefresh(storage, state.refreshId);
+    applyAutoRefresh();
+  });
+
+  // A tab that was hidden caught no tick, so it catches up the moment it is
+  // looked at again rather than up to a whole interval later.
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") tickRefresh();
   });
 
   const saved = readDataRepo(storage);
@@ -1513,6 +1635,7 @@ function start() {
   state.tokens = readTokens(storage);
   renderTokenNotice();
   showView(state.view);
+  applyAutoRefresh();
   if (state.tokens.length > 0) connectAll();
 }
 
