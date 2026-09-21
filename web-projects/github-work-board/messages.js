@@ -48,6 +48,42 @@ export function summariseChecks(rows) {
   return `${failed.length} of ${list.length} checks did not pass`;
 }
 
+/**
+ * Whether the notes are reaching GitHub, said beside the repository they go to.
+ *
+ * The notes are the half of this board that belongs to the reader, and nothing
+ * else on the screen says whether they are getting through: the board file is
+ * read on connecting and written a second after a keystroke, both out of sight.
+ * One token reaching the file is the whole answer, because exactly one can
+ * (ADR 0007), and the detail is the sentence that names what to fix, so the
+ * badge answers rather than sending the reader looking (ADR 0019).
+ *
+ * A token that cannot reach the repository says nothing about it, on purpose:
+ * an organisation's token is not broken for failing to hold somebody's private
+ * notes (ADR 0007). So no answer at all, once every token has been asked,
+ * means no token reached it, and that is the state worth shouting about.
+ *
+ * @param rows every connection check the board collected, from every token
+ * @param asked whether every token has answered yet
+ */
+export function describeNotesSync(rows, { asked = false } = {}) {
+  const board = (Array.isArray(rows) ? rows : []).filter((one) => one && typeof one === "object" && one.id === "board");
+  if (board.length === 0 && !asked) {
+    return { state: "checking", label: "Checking", detail: "The board is asking GitHub about this repository." };
+  }
+  if (board.length === 0) {
+    return {
+      state: "broken",
+      label: "Not saving",
+      detail:
+        "No token reached this repository. The token owned by the account that holds it needs Contents: Read and write, and the repository in its list.",
+    };
+  }
+  const reached = board.find((one) => one.ok === true);
+  if (reached) return { state: "ok", label: "Saving", detail: String(reached.detail ?? "") };
+  return { state: "broken", label: "Not saving", detail: String(board[0].detail ?? "") };
+}
+
 /** A list of names as a person would read it out. */
 export function joinWithAnd(names) {
   const clean = (Array.isArray(names) ? names : []).filter((one) => typeof one === "string" && one !== "");

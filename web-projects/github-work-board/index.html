@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="171" />
-  <meta name="deploy-date" content="2026-09-21T13:28:25.000Z" />
+  <meta name="deploy-pull-request" content="172" />
+  <meta name="deploy-date" content="2026-09-21T13:45:27.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -288,6 +288,10 @@
               <h3 class="subheading">Notes repository</h3>
               <!-- One tap to the repository itself. The board names it but never
                    shows it, and a reader who wants to look has no other way in. -->
+              <!-- Whether the notes are reaching GitHub. Nothing else on the
+                   screen says, and this is the reader's own half of the board
+                   (ADR 0019). -->
+              <span id="notes-sync" class="badge">Checking</span>
               <a id="open-notes-repo" class="icon-link" target="_blank" rel="noopener" title="Open this repository on GitHub">
                 <span class="visually-hidden">Open the notes repository on GitHub</span>
                 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -301,6 +305,7 @@
                 <input id="settings-repo-name" class="input" type="text" autocomplete="off" spellcheck="false" />
                 <button id="save-repo-name" type="button" class="button button-outline">Save and reconnect</button>
               </div>
+              <p id="notes-sync-detail" class="field-help"></p>
               <p class="field-help">Your notes live in one file, <code>board.json</code>, inside this repository.</p>
             </div>
 
