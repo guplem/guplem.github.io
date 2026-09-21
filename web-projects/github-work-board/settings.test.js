@@ -90,6 +90,15 @@ describe("the saved tokens", () => {
     });
   });
 
+  // Settings can show a token in full, on request, one token at a time
+  // (ADR 0015). That request lasts as long as the reader is looking at it and
+  // no longer: a board that opens with a credential already on screen is a
+  // board nobody can share a screen with.
+  test("a revealed token is never stored as revealed", () => {
+    saveTokens(storage, [{ ...entry(), revealed: true }]);
+    expect(readTokens(storage)[0]).not.toHaveProperty("revealed");
+  });
+
   // The board used to hold exactly one token. Somebody who connected before
   // this change must not have to set the whole thing up again.
   test("a token saved by the one-token version becomes the first entry", () => {

@@ -345,6 +345,26 @@ describe("the permission list is written once (ADR 0005)", () => {
   });
 });
 
+// Settings can hand a token back, because GitHub never will. That is a
+// deliberate trade and it rests on two things that a tidying pass would remove
+// without any test going red (ADR 0015).
+describe("handing a token back (ADR 0015)", () => {
+  test("the warning stands between the reader and a readable token", () => {
+    expect(read("index.html")).toContain('id="token-warning"');
+    expect(read("app.js")).toContain("askBeforeShowing");
+  });
+
+  // A token belongs in this browser and in a password manager. Writing one
+  // into `board.json` would put a live credential in a GitHub repository,
+  // where it is copied to every device and kept in the file's history.
+  test("a backup is never written to the notes file and never sent anywhere", () => {
+    expect(RECORD_MAPS).not.toContain("tokens");
+    for (const name of ["gateway.js", "boardDocument.js", "sync.js"]) {
+      expect(`${name} knows about backups: ${read(name).includes("Backup")}`).toBe(`${name} knows about backups: false`);
+    }
+  });
+});
+
 // GitHub's own links, not anything read out of a description. The moment this
 // is done by reading text, it is wrong for every issue whose description is
 // written differently (ADR 0010).

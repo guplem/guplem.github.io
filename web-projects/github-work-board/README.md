@@ -38,6 +38,9 @@ to make here, and nothing is stored anywhere except GitHub.
   add instead of showing GitHub's own wording.
 - **A settings screen** for your tokens: what each one reaches, how to add
   another, and which repository holds your notes.
+- **Your tokens back out again.** GitHub shows a token once and never again, so
+  this browser holds the only copy. Settings can copy any token, show it, or
+  copy every one of them as a single backup you keep in your password manager.
 
 ## Setting it up, once
 
@@ -47,13 +50,13 @@ to make here, and nothing is stored anywhere except GitHub.
 
 2. **Create a fine-grained personal access token** at
    [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new).
-   The form asks three things:
+   The form asks you for each of these:
 
    - **Repository access:** choose **Only select repositories**, then select
      **both** `work-board-data` *and* every repository whose issues you want on
      the board. Leaving `work-board-data` out is the mistake people make: the
      board can then read your issues and cannot save a single note.
-   - **Repository permissions:** set these three and leave the rest alone.
+   - **Repository permissions:** set each of these and leave the rest alone.
      - `Metadata` → Read-only
      - `Issues` → Read and write
      - `Pull requests` → Read-only
@@ -80,6 +83,24 @@ and this README cannot fall behind it.
 The token is kept in this browser and is sent only to GitHub. Anything else with
 access to this browser can read it, so keep the repository list short and keep
 the expiry date. "Sign out and forget the token" removes it.
+
+## Moving to another browser or another computer
+
+A different browser, a different computer and a different Chrome profile each
+keep their own storage, so none of them can see the tokens you added in the
+others. GitHub cannot show you a token a second time either.
+
+1. In **Settings**, press **Copy every token as a backup**. Read the warning
+   once and continue. You now hold one piece of text with every token and the
+   name you gave it.
+2. Keep that text in your password manager. It is a password: whoever holds it
+   can do everything you granted those tokens.
+3. On the other browser, paste it into the token box, on the welcome screen or
+   in Settings. Every token comes back, with its name, and the board connects.
+
+To move a single token instead, press **Copy** on its row. **Show** prints it in
+the row if you would rather not use the clipboard. One token is visible at a
+time, and nothing is remembered: leave Settings and it is hidden again.
 
 ## How to Run
 

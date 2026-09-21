@@ -46,6 +46,7 @@ It is the short procedure for all of the above.
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
+| `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
 | `relationships.js` | Yes | GitHub's own links between items, and nesting a pull request under its issue (ADR 0010) |
 | `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand (ADR 0011) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
@@ -191,12 +192,27 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   come back with overlapping owners and the same capped count. The reader names
   a token; the board only suggests a name from where it found work, and shows
   the token masked so a row can be matched against GitHub's own list (ADR 0007).
+- **Settings can show a token in full, and the board must never do it by
+  itself.** GitHub shows a token once, so this browser holds the only copy
+  (ADR 0015). Three rules hold: one token visible at a time, nothing about a
+  reveal is stored, and the warning dialog comes first. Showing the token is
+  no less safe than storing it (the same script can read either), but a token
+  on screen is a token in a screen share.
+- **A backup carries the token and the reader's name for it, nothing else.**
+  Owners, counts and `canWriteBoard` are facts the board discovered, and they
+  are stale the moment they are written down. **Never write a backup into
+  `board.json`**: that puts a live credential in a GitHub repository and in
+  its history. A test in `invariants.test.js` fails on it.
+- **One box takes a token or a backup**, on the welcome screen and in
+  Settings. Text starting with `{` is always read as a backup, never tried as
+  a token: a blob that was cut short must report itself, not come back as
+  GitHub's complaint about a bad credential.
 - **The masthead toggle is the only way between the board and Settings, and the
   masthead is sticky.** Settings is more than twice the height of a window, so a
   control that scrolls away leaves a reader with no way out. Do not add a second
   exit inside a screen; keep the one in the header (ADR 0008).
 - **A placeholder mirrors the row it replaces, line for line.** A token row is
-  two stacked lines and a button, so its placeholder is too. Two bars appended
+  two stacked lines and three buttons, so its placeholder is too. Two bars appended
   to a plain `div` render as one line with no gap, which is what the first
   version did: give the container `.token-lines` (ADR 0004).
 - **Build a screen from the four parts** (`.button` and its variants, `.input`,
@@ -246,6 +262,7 @@ before calling it done.
 | [0012](adr/0012-the-card-menu-lives-in-the-top-layer.md) | The card menu lives in the top layer, and one menu serves the board |
 | [0013](adr/0013-work-waiting-on-you-is-a-row-above-the-board.md) | Work waiting on you is a row above the board, not a column in it |
 | [0014](adr/0014-a-note-box-appears-only-when-there-is-a-note.md) | A note box appears only when there is a note |
+| [0015](adr/0015-settings-hands-the-token-back.md) | Settings hands the token back, behind one warning |
 
 ## What is not built yet
 
