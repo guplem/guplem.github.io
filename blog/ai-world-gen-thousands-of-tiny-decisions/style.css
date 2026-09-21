@@ -4,7 +4,9 @@
    text, orange for the accents, monospace for the numbers. Everything shared
    with the other posts is in ../blog.css. */
 
-.maptable {
+/* The palette sits on :root, not on the body, so the page's own scrollbar can
+   read it (blog.css). */
+:root {
   --ground: #0f1115;
   --ground-2: #171a21;
   --tile-line: rgba(255, 255, 255, 0.045);
@@ -16,6 +18,12 @@
   --panel: #1b1f27;
   --panel-border: rgba(255, 255, 255, 0.08);
   --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+  --scroll-track: #12141a;
+  --scroll-thumb: #3b424e;
+  --scroll-thumb-hover: var(--door);
+}
+
+.maptable {
   background: var(--ground);
   background-image:
     linear-gradient(var(--tile-line) 1px, transparent 1px),
@@ -89,7 +97,8 @@
 }
 
 .post p,
-.post dd {
+.post dd,
+.post li {
   font-size: 1.05rem;
   line-height: 1.7;
   color: var(--parchment);
@@ -274,43 +283,36 @@
 
 /* === The fill loop: one cell at a time ===
    The cells carry the real map of one test case and fill in the real order the
-   spiral asked about them: one CSS animation per cell, staggered by its place
-   in that order. The page needs no script to draw it. */
+   spiral asked about them. The figure writes one @keyframes per cell, so each
+   cell appears at its own moment and the whole map still clears at one shared
+   moment before the next pass. The page needs no script to draw it. */
 .fill-loop .slot {
   fill: var(--ground);
   stroke: var(--tile-line);
 }
 
 .fill-loop .cell {
-  animation: cell-in 7.5s linear infinite backwards;
+  /* The name of the rule comes from the figure itself: one per cell, in the
+     order the generator asked about them (root ADR 0015). */
+  animation-duration: 9s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 .fill-loop .pulse {
   fill: var(--door);
   opacity: 0;
-  animation: cell-pulse 7.5s linear infinite backwards;
-}
-
-@keyframes cell-in {
-  0% {
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-  }
+  animation: cell-pulse 9s linear infinite;
 }
 
 @keyframes cell-pulse {
   0% {
     opacity: 0;
   }
-  1.2% {
+  1% {
     opacity: 0.85;
   }
-  5% {
+  4% {
     opacity: 0;
   }
   100% {
@@ -362,9 +364,11 @@
    css/global/base.css already cuts every animation short; these rules make the
    end state the right one instead of a half-drawn map. */
 @media (prefers-reduced-motion: reduce) {
+  /* The animation name is set on each cell by the figure, so the reset needs
+     the same weight to win. */
   .fill-loop .cell {
-    animation: none;
-    opacity: 1;
+    animation: none !important;
+    opacity: 1 !important;
   }
 
   .fill-loop .pulse {
@@ -451,6 +455,356 @@
 
 .mini-judge .mini-delta {
   fill: var(--stone);
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
+}
+
+/* === The two ways, side by side === */
+.two-ways {
+  margin: var(--sp-md) 0;
+  padding-left: var(--sp-md);
+  display: grid;
+  gap: var(--sp-sm);
+}
+
+.two-ways li::marker {
+  color: var(--door);
+}
+
+.two-ways strong {
+  color: var(--door);
+}
+
+/* === The scaling chart: two lines on a logarithmic scale === */
+.scaling .line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.scaling .line-jev {
+  stroke: var(--door);
+}
+
+.scaling .line-whole {
+  stroke: var(--leaf);
+}
+
+.scaling .dot-jev {
+  fill: var(--door);
+}
+
+.scaling .dot-whole {
+  fill: var(--leaf);
+}
+
+.scaling .meet {
+  stroke: var(--parchment-soft);
+  stroke-dasharray: 3 4;
+}
+
+.scaling .meet-dot {
+  fill: none;
+  stroke: var(--parchment);
+  stroke-width: 1.5;
 }
 
 /* === Version log === */

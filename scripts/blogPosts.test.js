@@ -80,6 +80,20 @@ describe("loadPosts (the committed posts)", () => {
   });
 });
 
+describe("every post themes the page (the committed posts)", () => {
+  // The blog puts back the scrollbar that css/global/base.css hides, because a
+  // post is long text. The scrollbar belongs to the page, so its two colours
+  // have to sit on :root, not on the body class (blog/AGENTS.md).
+  for (const post of loadPosts(repoRoot)) {
+    it(`${post.slug}: sets the scrollbar colours on :root`, () => {
+      const css = readFileSync(join(repoRoot, "blog", post.slug, "style.css"), "utf8");
+      const root = css.match(/:root\s*\{[^}]*\}/)?.[0] ?? "";
+      expect(root).toContain("--scroll-track:");
+      expect(root).toContain("--scroll-thumb:");
+    });
+  }
+});
+
 describe("section headings are anchors (the committed posts)", () => {
   // A reader taps a heading and the address bar gains #the-section, the way
   // Wikipedia links a section, with no script: the heading carries an id and
