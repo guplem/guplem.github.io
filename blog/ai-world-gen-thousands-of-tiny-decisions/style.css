@@ -242,22 +242,6 @@
   stroke-width: 1;
 }
 
-.loop-diagram .step rect {
-  fill: var(--ground);
-  stroke: var(--leaf);
-}
-
-.loop-diagram .step-title {
-  font-size: 14px;
-  font-weight: 700;
-  fill: var(--parchment);
-}
-
-.loop-diagram .step-sub {
-  font-size: 11px;
-  fill: var(--parchment-soft);
-}
-
 .loop-diagram .loop-arrows path {
   stroke: var(--door);
   marker-end: none;
@@ -344,29 +328,34 @@
   }
 }
 
-.fill-loop .panel-title {
+/* === The parts every drawing is made of ===
+   A box with a title and a line under it, a heading, and an arrow that flows.
+   These live under .diagram, which wraps every figure, so a new drawing that
+   uses the names inherits them. Scoped to one figure, as they were, the next
+   drawing renders black boxes with 16-pixel black text. */
+.diagram .panel-title {
   font-size: 13px;
   font-weight: 600;
   fill: var(--parchment);
 }
 
-.fill-loop .step-box {
+.diagram .step-box {
   fill: var(--ground);
   stroke: var(--leaf);
 }
 
-.fill-loop .step-title {
+.diagram .step-title {
   font-size: 14px;
   font-weight: 700;
   fill: var(--parchment);
 }
 
-.fill-loop .step-sub {
+.diagram .step-sub {
   font-size: 11px;
   fill: var(--parchment-soft);
 }
 
-.fill-loop .flow {
+.diagram .flow {
   fill: none;
   stroke: var(--door);
   stroke-width: 2;
@@ -374,7 +363,7 @@
   animation: flow 0.9s linear infinite;
 }
 
-.fill-loop .head {
+.diagram .head {
   fill: var(--door);
 }
 
@@ -400,12 +389,8 @@
     opacity: 0;
   }
 
-  .fill-loop .flow {
-    animation: none;
-  }
-
-  .loop-diagram .loop-arrows path,
-  .concepts .flow {
+  .diagram .flow,
+  .loop-diagram .loop-arrows path {
     animation: none;
   }
 
