@@ -261,7 +261,31 @@
 .loop-diagram .loop-arrows path {
   stroke: var(--door);
   marker-end: none;
-  stroke-dasharray: 6 5;
+  stroke-dasharray: 6 6;
+  animation: flow 0.9s linear infinite;
+}
+
+/* Each step glows behind its box when its turn comes round. One shared rule
+   and a delay per step: the ring is a cycle, so nothing has to be cleared. */
+.loop-diagram .step-glow {
+  fill: var(--door);
+  opacity: 0;
+  animation: step-glow 8.4s linear infinite;
+}
+
+@keyframes step-glow {
+  0% {
+    opacity: 0;
+  }
+  3% {
+    opacity: 0.4;
+  }
+  14% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .loop-diagram .agent-title,
@@ -379,6 +403,32 @@
   .fill-loop .flow {
     animation: none;
   }
+
+  .loop-diagram .loop-arrows path,
+  .concepts .flow {
+    animation: none;
+  }
+
+  .loop-diagram .step-glow {
+    animation: none;
+    opacity: 0.15;
+  }
+}
+
+/* === What one score is made of === */
+.concepts .spec-box {
+  fill: var(--ground);
+  stroke: var(--door);
+}
+
+.concepts .metric-row {
+  fill: var(--panel);
+}
+
+.concepts .metric-score {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: var(--leaf);
 }
 
 /* === Small multiples === */
