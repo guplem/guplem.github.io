@@ -57,7 +57,9 @@ Options considered for the list of posts and the feed:
   `style.css` is loaded after it and is scoped by a class on `<body>`. The
   Inter font stays self-hosted on every post (ADR 0005), and
   `scripts/fontSelfHosted.test.js` covers every post through the same reader
-  the generators use.
+  the generators use. The blog also puts back the scrollbar that
+  `css/global/base.css` hides for the portfolio, themed by each post, because
+  a reader of long text needs to see how much of it is left.
 - **Every section heading is a link to itself.** Each `h2` to `h4` carries
   an id and wraps its text in an anchor to that id, so a tap puts the section
   in the address bar (as Wikipedia does) and a reader can share one section,

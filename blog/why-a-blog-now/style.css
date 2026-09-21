@@ -2,13 +2,21 @@
    from the system (no font download), a wide measure, a drop cap and one
    inline diagram. Everything shared with the other posts is in ../blog.css. */
 
-.letter {
+/* The palette sits on :root, not on the body, so the page's own scrollbar can
+   read it (blog.css). */
+:root {
   --paper: #f7f1e6;
   --paper-deep: #efe5d3;
   --ink: #26221c;
   --ink-soft: #5a5348;
   --rule: rgba(38, 34, 28, 0.18);
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, "Times New Roman", serif;
+  --scroll-track: var(--paper-deep);
+  --scroll-thumb: #c0b49b;
+  --scroll-thumb-hover: var(--accent);
+}
+
+.letter {
   background: var(--paper);
   /* One deeper band at the top, then plain paper. Without no-repeat the body's
      background tiles with the body's own height and paints a second band. */
