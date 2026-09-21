@@ -1343,7 +1343,41 @@ textarea.input {
 /* A pull request that is one of several stacked on each other. Its own
  * colour, because it says something about the shape of the work rather than
  * about the work itself (ADR 0020). */
+/**
+ * Every card in one stack, while the reader is on any of them.
+ *
+ * The stack's own amber, so the light and the badge that names the stack say
+ * the same thing in the same colour (ADR 0027). The outline only: the card
+ * keeps its ground, so a lit card in a coloured column still reads as being in
+ * that column.
+ */
+.issue.stack-lit {
+  border-color: hsl(38 92% 50% / 0.75);
+  box-shadow: 0 0 0 1px hsl(38 92% 50% / 0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .issue.stack-lit {
+    border-color: hsl(38 95% 62% / 0.75);
+    box-shadow: 0 0 0 1px hsl(38 95% 62% / 0.4);
+  }
+}
+
+:root[data-theme="dark"] .issue.stack-lit {
+  border-color: hsl(38 95% 62% / 0.75);
+  box-shadow: 0 0 0 1px hsl(38 95% 62% / 0.4);
+}
+
+/* The number names the bottom of the stack, and hovering it says which pull
+ * request that is, so it reads as a thing you can ask about. */
+.stack-number {
+  cursor: help;
+}
+
 .badge-stack {
+  /* The badge is two parts now, each with its own answer on hover, and a flex
+   * box eats the space between them (ADR 0027). */
+  gap: 0.25rem;
   background: hsl(38 92% 50% / 0.15);
   color: hsl(32 81% 36%);
   border-color: hsl(38 92% 50% / 0.35);
@@ -1351,9 +1385,13 @@ textarea.input {
 }
 
 @media (prefers-color-scheme: dark) {
-  .badge-stack {
+  :root:not([data-theme="light"]) .badge-stack {
     color: hsl(38 95% 70%);
   }
+}
+
+:root[data-theme="dark"] .badge-stack {
+  color: hsl(38 95% 70%);
 }
 
 .badge-pull {
@@ -1363,9 +1401,13 @@ textarea.input {
 }
 
 @media (prefers-color-scheme: dark) {
-  .badge-pull {
+  :root:not([data-theme="light"]) .badge-pull {
     color: hsl(262 70% 75%);
   }
+}
+
+:root[data-theme="dark"] .badge-pull {
+  color: hsl(262 70% 75%);
 }
 
 .issue-title {
@@ -1422,26 +1464,47 @@ textarea.input {
 }
 
 @media (prefers-color-scheme: dark) {
-  .change-feat {
+  :root:not([data-theme="light"]) .change-feat {
     color: hsl(142 55% 58%);
   }
 
-  .change-fix {
+  :root:not([data-theme="light"]) .change-fix {
     color: hsl(0 75% 68%);
   }
 
-  .change-docs {
+  :root:not([data-theme="light"]) .change-docs {
     color: hsl(215 80% 70%);
   }
 
-  .change-refactor,
-  .change-style {
+  :root:not([data-theme="light"]) .change-refactor,
+  :root:not([data-theme="light"]) .change-style {
     color: hsl(262 70% 75%);
   }
 
-  .change-perf {
+  :root:not([data-theme="light"]) .change-perf {
     color: hsl(38 90% 62%);
   }
+}
+
+:root[data-theme="dark"] .change-feat {
+  color: hsl(142 55% 58%);
+}
+
+:root[data-theme="dark"] .change-fix {
+  color: hsl(0 75% 68%);
+}
+
+:root[data-theme="dark"] .change-docs {
+  color: hsl(215 80% 70%);
+}
+
+:root[data-theme="dark"] .change-refactor,
+:root[data-theme="dark"] .change-style {
+  color: hsl(262 70% 75%);
+}
+
+:root[data-theme="dark"] .change-perf {
+  color: hsl(38 90% 62%);
 }
 
 /* The part in brackets. Muted, because it says where the change is and the

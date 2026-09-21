@@ -69,9 +69,12 @@ set".
 Every press schedules the same debounced save as a keystroke in a note, so
 trying six colours writes once at the end rather than six times.
 
-**The dark tokens are duplicated.** A change to one has to be made to the other,
-and nothing enforces it. The alternative is a build step, which this site does
-not have (root ADR 0002).
+**The dark tokens are duplicated.** A change to one has to be made to the other.
+The alternative is a build step, which this site does not have (root ADR 0002).
+Four component rules once kept only the media-query copy, so a reader who chose
+dark on a light machine saw light-coloured badges on a dark page. ADR 0027
+fixed the four and added an invariant that fails when a new rule repeats the
+mistake, though it checks the guard, not that the two copies still match.
 
 **Rejected: `localStorage`.** It is the one storage that cannot follow the
 reader, which is the whole point of the feature.

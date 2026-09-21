@@ -339,6 +339,33 @@ describe("only the smart order moves a card the reader pushed down (ADR 0026)", 
   });
 });
 
+// The reader can choose dark on a light machine (ADR 0024). A rule written
+// only inside the media query never reaches them, and the page stays half
+// light: the ground is dark and the badge on it keeps its light colour.
+// Nothing errors, and it is invisible unless somebody sets both the other way
+// round.
+describe("a dark rule reaches the reader who chose dark (ADR 0024)", () => {
+  test("every dark block also answers the explicit choice", () => {
+    const css = read("style.css");
+    const blocks = [...css.matchAll(/@media \(prefers-color-scheme: dark\)\s*\{/g)];
+    expect(blocks.length).toBeGreaterThan(0);
+    for (const block of blocks) {
+      // The first selector inside the block, which is what the guard sits on.
+      const after = css.slice(block.index + block[0].length, block.index + block[0].length + 160);
+      expect(after).toContain(':root:not([data-theme="light"])');
+    }
+  });
+
+  // Each of those has a twin outside the media query, or choosing dark on a
+  // dark machine would be the only way to see it.
+  test("the explicit choice is answered as often as the machine is asked", () => {
+    const css = read("style.css");
+    const asked = [...css.matchAll(/:root:not\(\[data-theme="light"\]\)/g)].length;
+    const chosen = [...css.matchAll(/:root\[data-theme="dark"\]/g)].length;
+    expect(chosen).toBeGreaterThanOrEqual(asked);
+  });
+});
+
 describe("a filter named in a link keeps its name (ADR 0009)", () => {
   // The chosen kind travels in the address bar, so a renamed id silently
   // breaks every link anybody saved.

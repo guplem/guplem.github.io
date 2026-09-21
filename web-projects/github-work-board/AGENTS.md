@@ -48,7 +48,7 @@ It is the short procedure for all of the above.
 | `priority.js` | Yes | The work the reader pushed down, and what sinks with it (ADR 0026) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
-| `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in (ADR 0016), and where each one sits in it (ADR 0020) |
+| `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
@@ -100,6 +100,9 @@ Data flow, saving: a keystroke, a card moved, a colour or the theme → the matc
   one cannot merge first, so leaving it up would show work that reads as ready
   and is not. Do not "fix" this into a single-card move: it recreates the exact
   failure ADR 0016 exists to prevent.
+- **`.badge` is `inline-flex`, so whitespace between two child elements
+  disappears.** A badge built from two spans needs a `gap`, not a space in the
+  text (ADR 0027).
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and
@@ -182,7 +185,9 @@ Data flow, saving: a keystroke, a card moved, a colour or the theme → the matc
   under `:root[data-theme="dark"]`. CSS cannot share one block between two
   selectors without repeating it. Keep the copies identical: an explicit
   choice has to win in **both** directions, or picking light on a dark
-  machine does nothing (ADR 0024).
+  machine does nothing (ADR 0024). Four blocks once missed the guard and left
+  light-coloured badges on a dark page; `invariants.test.js` now fails when a
+  new block forgets it (ADR 0027).
 - **Nothing carries `data-colour` until somebody picks a colour**, so an
   untouched board looks exactly as it did. The default is the absence of the
   rule, not a colour that happens to match.
@@ -432,6 +437,7 @@ before calling it done.
 | [0024](adr/0024-how-the-board-looks-is-the-readers-and-travels-with-them.md) | How the board looks is the reader's, and travels with them |
 | [0025](adr/0025-the-board-asks-again-on-a-schedule-this-browser-keeps.md) | The board asks again on a schedule this browser keeps |
 | [0026](adr/0026-work-the-reader-pushed-down-sinks-and-takes-its-stack-with-it.md) | Work the reader pushed down sinks, and takes what waits on it |
+| [0027](adr/0027-a-stack-lights-up-and-its-number-says-what-it-is.md) | A stack lights up, and its number says which pull request it is |
 
 ## What is not built yet
 

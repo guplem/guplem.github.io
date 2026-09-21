@@ -271,6 +271,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0024](web-projects/github-work-board/adr/0024-how-the-board-looks-is-the-readers-and-travels-with-them.md) | How the board looks is the reader's, and travels with them |
 | [github-work-board 0025](web-projects/github-work-board/adr/0025-the-board-asks-again-on-a-schedule-this-browser-keeps.md) | The board asks again on a schedule this browser keeps |
 | [github-work-board 0026](web-projects/github-work-board/adr/0026-work-the-reader-pushed-down-sinks-and-takes-its-stack-with-it.md) | Work the reader pushed down sinks, and takes what waits on it |
+| [github-work-board 0027](web-projects/github-work-board/adr/0027-a-stack-lights-up-and-its-number-says-what-it-is.md) | A stack lights up, and its number says which pull request it is |
 | [ai-world-gen 0001](web-projects/ai-world-gen/adr/0001-openrouter-is-the-one-gateway-and-the-key-lives-here.md) | OpenRouter is the one gateway (browser CORS verified), and the key lives in this browser |
 | [ai-world-gen 0002](web-projects/ai-world-gen/adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
 | [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |
