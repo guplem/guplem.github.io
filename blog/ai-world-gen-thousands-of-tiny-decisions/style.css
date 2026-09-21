@@ -24,6 +24,13 @@
   color: var(--parchment);
 }
 
+/* base.css selects with a faint orange wash and dark text, which is unreadable
+   on this dark ground. A post that changes its background sets its own. */
+.maptable ::selection {
+  background: var(--door);
+  color: var(--ground);
+}
+
 .maptable .topbar {
   max-width: 1040px;
 }
