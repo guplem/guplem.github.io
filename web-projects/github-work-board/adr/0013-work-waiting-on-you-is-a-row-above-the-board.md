@@ -34,8 +34,15 @@ repository on it.
 - **Anything already on the board is left out of the row.** A pull request can
   be assigned to you *and* waiting for your review; showing it twice would put
   the same work on screen twice, and the board is the half that can move it.
-- **The cards carry no note box and no move menu.** A note belongs on your own
-  work, and there is no column to move somebody else's pull request into.
+- **The cards carry no move menu.** There is no column to move somebody else's
+  pull request into: this row is ordered by how long a review has waited, and
+  nothing in it sits in a column.
+- **The cards take a note, like every other card.** They did not at first, on
+  the reasoning that a note belongs on your own work. That reasoning was wrong:
+  "ask about the migration before approving" is exactly the kind of thing worth
+  writing down, and it is worth writing down against the pull request it is
+  about. A note is filed under the item's node id, so it belongs to the work
+  rather than to the place the card is drawn (ADR 0022).
 
 **The order follows the reader's choice, and its default is the oldest first.**
 The rest of the board defaults to newest first, which is right for your own work

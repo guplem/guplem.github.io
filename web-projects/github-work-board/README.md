@@ -42,6 +42,8 @@ to make here, and nothing is stored anywhere except GitHub.
 - **Or sort it plainly**: recently updated, least recently updated, newest,
   oldest, ones you noted first, by label, by repository, or by title. The choice
   goes into the address bar, so a reload keeps it and a link carries it.
+- **A private note on anything on the board**, including a pull request
+  waiting for your review and one nested inside its issue.
 - **A private note on any issue**, added from the card's own menu and shown only
   where one exists. Notes are yours alone: they never appear on GitHub's issue
   page, and nobody else sees them.

@@ -927,12 +927,6 @@ textarea.input {
   padding-bottom: 0.25rem;
 }
 
-/* A review card carries no note box: it is somebody else's work, and the note
- * belongs on the thing you are doing. */
-.reviews-list .note {
-  display: none;
-}
-
 /* -------------------------------------------------------------------------- */
 /* Columns                                                                    */
 /* -------------------------------------------------------------------------- */

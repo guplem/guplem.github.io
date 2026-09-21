@@ -43,6 +43,7 @@ It is the short procedure for all of the above.
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
+| `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in (ADR 0016), and where each one sits in it (ADR 0020) |
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
@@ -184,10 +185,15 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   limit is 5000 an hour" keeps every word. Never guess a type from a title with
   no colon: "Fix the thing" is a fix and "Fixture loading is slow" is not, and
   nothing in the string tells them apart (ADR 0021).
-- **The card menu shows only the rows that mean something for the card that
-  opened it.** An issue has no branch to copy, and a nested pull request cannot
-  be moved. `state.menuCanMove` carries that from the card to the menu, because
-  one menu serves the whole board (ADR 0012).
+- **`cardMenu.cardMenuRows` decides which rows the menu offers, and nothing
+  else does.** Add note on every card, Copy branch name on a pull request, Move
+  to on a card that sits in a column. Those three answers were three conditions
+  written into `app.js` one at a time, and the newest of them quietly stopped a
+  note being addable anywhere but the columns (ADR 0022).
+- **A note is filed under the item's node id, so it belongs to the work and not
+  to the place the card is drawn.** A review card and a nested pull request take
+  one exactly like a column card does. Do not hide the box by where the card
+  sits; that rule existed, in CSS, and it was wrong (ADR 0022).
 - **A nested pull request card carries a menu, with no move in it.** It travels
   in its issue's column, so the move would write to the document and change
   nothing on screen. Copying its branch does mean something, which is why it has
@@ -366,6 +372,7 @@ before calling it done.
 | [0019](adr/0019-the-notes-say-whether-they-are-getting-through.md) | The notes say whether they are getting through |
 | [0020](adr/0020-a-review-card-says-which-stack-it-is-in.md) | A review card says which stack it is in, and where |
 | [0021](adr/0021-a-title-is-split-and-a-branch-is-one-tap-away.md) | A title is split from the change it announces, and a branch is one tap away |
+| [0022](adr/0022-a-note-belongs-to-the-work-not-to-the-card.md) | A note belongs to the work, not to the place the card sits |
 
 ## What is not built yet
 
