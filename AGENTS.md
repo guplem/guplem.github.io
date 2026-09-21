@@ -264,6 +264,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0017](web-projects/github-work-board/adr/0017-done-is-today-and-the-board-asks-a-second-question.md) | "Done" is today, and it takes a second question |
 | [github-work-board 0018](web-projects/github-work-board/adr/0018-five-columns-two-headings-and-a-screen-for-adding-a-token.md) | Five columns, two headings, and a screen for adding a token |
 | [github-work-board 0019](web-projects/github-work-board/adr/0019-the-notes-say-whether-they-are-getting-through.md) | The notes say whether they are getting through |
+| [github-work-board 0020](web-projects/github-work-board/adr/0020-a-review-card-says-which-stack-it-is-in.md) | A review card says which stack it is in, and where |
 | [ai-world-gen 0001](web-projects/ai-world-gen/adr/0001-openrouter-is-the-one-gateway-and-the-key-lives-here.md) | OpenRouter is the one gateway (browser CORS verified), and the key lives in this browser |
 | [ai-world-gen 0002](web-projects/ai-world-gen/adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
 | [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |

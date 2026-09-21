@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { orderStacksForMerging, stackedUnder } from "./stacks.js";
+import { orderStacksForMerging, stackPositions, stackedUnder } from "./stacks.js";
 
 /** A pull request as the board holds one, with the two branch names that make a stack. */
 const pull = (number, head, base, over = {}) => ({
@@ -147,5 +147,61 @@ describe("orderStacksForMerging", () => {
   test("a missing branch name links nothing", () => {
     const groups = [alone(pull(2, "", "")), alone(pull(1, "", ""))];
     expect(numbers(orderStacksForMerging(groups))).toEqual([2, 1]);
+  });
+});
+
+describe("stackPositions", () => {
+  // The row of pull requests waiting on your review is a flat row of cards
+  // from other people. Three of them are often one stack, and nothing on the
+  // card said so or said which one to read first (ADR 0020).
+  test("names the stack by its bottom, and says where each one sits", () => {
+    const at = stackPositions([
+      pull(5083, "deep-plan", "mockups"),
+      pull(5073, "plan-first", "main"),
+      pull(5082, "mockups", "plan-first"),
+    ]);
+    expect(at.PR_5073).toEqual({ stack: 5073, position: 1, size: 3 });
+    expect(at.PR_5082).toEqual({ stack: 5073, position: 2, size: 3 });
+    expect(at.PR_5083).toEqual({ stack: 5073, position: 3, size: 3 });
+  });
+
+  // A pull request standing on its own is not in a stack, and a badge saying
+  // "1 of 1" on every card would be noise on every card.
+  test("says nothing about a pull request that is in no stack", () => {
+    const at = stackPositions([pull(1, "a", "main"), pull(2, "b", "main")]);
+    expect(at).toEqual({});
+  });
+
+  // Only what the reader can see is counted. If somebody asked for a review on
+  // two of their three, the row holds two, and "1 of 2" is the truth about the
+  // row in front of them.
+  test("counts only the pull requests it was given", () => {
+    const at = stackPositions([pull(5082, "mockups", "plan-first"), pull(5083, "deep-plan", "mockups")]);
+    expect(at.PR_5082).toEqual({ stack: 5082, position: 1, size: 2 });
+    expect(at.PR_5083).toEqual({ stack: 5082, position: 2, size: 2 });
+  });
+
+  test("keeps two stacks apart", () => {
+    const at = stackPositions([
+      pull(10, "a-top", "a-bottom"),
+      pull(11, "a-bottom", "main"),
+      pull(20, "b-top", "b-bottom"),
+      pull(21, "b-bottom", "main"),
+    ]);
+    expect(at.PR_10.stack).toBe(11);
+    expect(at.PR_20.stack).toBe(21);
+    expect(at.PR_10.size).toBe(2);
+  });
+
+  // Branches in a repository can be retargeted into a ring. It must not hang.
+  test("a ring neither hangs nor answers nonsense", () => {
+    const at = stackPositions([pull(1, "a", "b"), pull(2, "b", "a")]);
+    expect(Object.keys(at).length).toBeLessThanOrEqual(2);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(stackPositions(null)).toEqual({});
+    expect(stackPositions([null, 7])).toEqual({});
+    expect(stackPositions([pull(1, "", ""), pull(2, "", "")])).toEqual({});
   });
 });

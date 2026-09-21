@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="172" />
-  <meta name="deploy-date" content="2026-09-21T13:45:27.000Z" />
+  <meta name="deploy-pull-request" content="173" />
+  <meta name="deploy-date" content="2026-09-21T14:00:12.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -24,6 +24,10 @@
        screen and the settings screen. app.js clones it into each slot and fills
        the permission list from permissions.js (ADR 0005, ADR 0008). -->
   <template id="token-guide">
+    <p class="step-action">
+      <a class="button button-outline" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Open GitHub's token form</a>
+    </p>
+
     <div class="action">
       <p class="action-label">Resource owner</p>
       <div class="action-body">
@@ -66,9 +70,6 @@
       </div>
     </div>
 
-    <p class="step-action">
-      <a class="button button-outline" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Open GitHub's token form</a>
-    </p>
   </template>
 
   <!-- One menu for the whole board, pointed at whichever card opened it. A

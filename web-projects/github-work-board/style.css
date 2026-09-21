@@ -1275,6 +1275,22 @@ textarea.input {
   border-color: hsl(var(--success) / 0.3);
 }
 
+/* A pull request that is one of several stacked on each other. Its own
+ * colour, because it says something about the shape of the work rather than
+ * about the work itself (ADR 0020). */
+.badge-stack {
+  background: hsl(38 92% 50% / 0.15);
+  color: hsl(32 81% 36%);
+  border-color: hsl(38 92% 50% / 0.35);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-color-scheme: dark) {
+  .badge-stack {
+    color: hsl(38 95% 70%);
+  }
+}
+
 .badge-pull {
   background: hsl(262 60% 50% / 0.15);
   color: hsl(262 60% 45%);

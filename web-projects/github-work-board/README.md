@@ -8,6 +8,9 @@ to make here, and nothing is stored anywhere except GitHub.
 
 - **Every open issue and pull request assigned to you**, across every repository
   your token can read, in one list, each marked with what it is.
+- **A stacked pull request says so**, on the review row: `Stack #5073 · 2 of 3`
+  names the stack by the pull request that merges first and says where this
+  one sits. Reviewing a stack out of order is wasted work twice over.
 - **What is waiting on you, above everything else.** A row of the pull requests
   where somebody asked for your review, longest-waiting first, because those
   cost other people time rather than yours.
