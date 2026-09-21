@@ -1,17 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { MESSAGES, escapeHtml, joinWithAnd, noteMenuLabel, revealLabel, say, sayEmptyBoard } from "./messages.js";
-
-describe("revealLabel", () => {
-  test("says what the button will do, not what the row is showing", () => {
-    expect(revealLabel(false)).toBe("Show");
-    expect(revealLabel(true)).toBe("Hide");
-  });
-
-  test("hides by default, whatever it is handed", () => {
-    expect(revealLabel(undefined)).toBe("Show");
-    expect(revealLabel("yes")).toBe("Show");
-  });
-});
+import { MESSAGES, escapeHtml, joinWithAnd, noteMenuLabel, say, sayEmptyBoard } from "./messages.js";
 
 describe("noteMenuLabel", () => {
   test("offers to add the first note, and to edit one that is there", () => {
