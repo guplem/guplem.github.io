@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="164" />
-  <meta name="deploy-date" content="2026-09-21T08:31:59.000Z" />
+  <meta name="deploy-pull-request" content="165" />
+  <meta name="deploy-date" content="2026-09-21T09:19:00.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -86,6 +86,38 @@
     <div id="card-submenu" class="menu" popover="auto" role="menu" aria-label="Move to column"></div>
   </div>
 
+  <!-- Shown once, before the first token leaves Settings as readable text. The
+       reader already owns the token and the browser already holds it, so this
+       asks nothing it could refuse; it names the risk the screen adds, which is
+       every other pair of eyes on it (ADR 0015). -->
+  <dialog id="token-warning" class="dialog" aria-labelledby="token-warning-heading">
+    <div class="card">
+      <div class="card-header">
+        <h2 id="token-warning-heading">This is the whole token</h2>
+      </div>
+      <div class="card-content">
+        <p class="field-help">
+          A token is a password. Whoever holds this one can do everything you granted it, on every repository you
+          listed, until the day it expires. GitHub shows a token once and never again, so this copy is the only one
+          left.
+        </p>
+        <ul class="warning-list">
+          <li>Keep it where you keep passwords. Never put it in a chat, an issue, or a screenshot.</li>
+          <li>Every app on this computer can read your clipboard, and Windows keeps a history of it.</li>
+          <li>
+            If it does get out, delete it at
+            <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">your tokens</a>
+            and the board will say which one stopped working.
+          </li>
+        </ul>
+        <p class="step-action">
+          <button id="token-warning-cancel" type="button" class="button button-outline">Cancel</button>
+          <button id="token-warning-go" type="button" class="button button-primary">I understand, continue</button>
+        </p>
+      </div>
+    </div>
+  </dialog>
+
   <div class="page">
     <header class="masthead">
       <div>
@@ -149,6 +181,10 @@
                 <label class="field-label" for="token">Token</label>
                 <input id="token" class="input" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..." />
                 <p class="field-help">GitHub shows it once, when you create it. Copy it before you leave that page.</p>
+                <p class="field-help">
+                  Set this board up before, in another browser? Paste the backup you copied from its Settings here
+                  instead, and skip every step above.
+                </p>
               </div>
               <div class="field">
                 <label class="field-label" for="repo-name">Name of the repository you created in step 1</label>
@@ -235,6 +271,14 @@
               Each token reaches one owner. What it reached the last time the board asked is shown beside it.
             </p>
             <ul id="tokens" class="tokens"></ul>
+            <p class="step-action">
+              <button id="copy-backup" type="button" class="button button-outline">Copy every token as a backup</button>
+            </p>
+            <p class="field-help">
+              A backup is one piece of text holding every token and the name you gave it. Keep it in your password
+              manager. To set this board up in another browser, on another computer, or in another Chrome profile,
+              paste that text into the box below.
+            </p>
 
             <h3 class="subheading">Add a token</h3>
             <p class="field-help">
@@ -245,7 +289,7 @@
             </p>
             <div class="token-guide-slot"></div>
             <div class="field">
-              <label class="field-label" for="another-token">Paste the new token</label>
+              <label class="field-label" for="another-token">Paste the new token, or a backup</label>
               <div class="field-row">
                 <input id="another-token" class="input" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..." />
                 <button id="add-token" type="button" class="button button-primary">Add</button>

@@ -735,7 +735,10 @@ textarea.input {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  /* Three buttons and a name box do not fit a phone on one line, so the
+   * buttons drop under the name rather than squeezing it. */
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
   padding: 0.6rem 0.75rem;
   border: 1px solid hsl(var(--border));
   border-radius: calc(var(--radius) - 2px);
@@ -760,6 +763,59 @@ textarea.input {
 .token-name {
   max-width: 18rem;
   font-weight: 600;
+}
+
+/* The buttons on a token row. They wrap under the two lines on a narrow
+ * screen rather than squeezing the name box out of readable width. */
+.token-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  flex: 0 0 auto;
+}
+
+/* A token shown in full, on request. Selectable in one gesture, because the
+ * reader who asked to see it usually wants to copy it by hand. */
+.token-revealed {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  word-break: break-all;
+  user-select: all;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 4px);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* -------------------------------------------------------------------------- */
+/* The warning before a token is shown                                        */
+/* -------------------------------------------------------------------------- */
+
+/* A dialog is the one part on this page that must be answered before anything
+ * else happens, so it is the only place a modal is right (ADR 0015). It holds
+ * a .card, so it inherits the look of every other panel. */
+.dialog {
+  max-width: 32rem;
+  width: calc(100% - 2rem);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: hsl(var(--foreground));
+}
+
+.dialog::backdrop {
+  background: hsl(var(--background) / 0.7);
+}
+
+.warning-list {
+  margin: 0.75rem 0 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
 }
 
 /* Settings holds several blocks in one card, so each needs air above it. */

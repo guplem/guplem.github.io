@@ -40,7 +40,7 @@ import {
   toggleInList,
 } from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
-import { escapeHtml, noteMenuLabel, say, sayEmptyBoard } from "./messages.js";
+import { escapeHtml, noteMenuLabel, revealLabel, say, sayEmptyBoard } from "./messages.js";
 import {
   CONNECTION_CHECKS,
   REQUIRED_PERMISSIONS,
@@ -76,6 +76,7 @@ import {
   openBlockers,
   readRelationship,
 } from "./relationships.js";
+import { encodeTokenBackup, looksLikeBackup, readTokenBackup } from "./tokenBackup.js";
 import { describeTokenReach, suggestedTokenName } from "./tokenIdentity.js";
 import { countByKind, normalizeWorkItems, ownersOf, withoutItems } from "./workItems.js";
 
@@ -102,6 +103,12 @@ const state = {
   // Cards whose note box is open although the note is still empty. Only for
   // this visit: a box somebody opened and left empty is not worth saving.
   notesOpen: new Set(),
+  // Tokens the reader asked to see in full, and whether they have read the
+  // warning. Both last for this visit only: a board that opens with a
+  // credential on screen is a board nobody can share a screen with (ADR 0015).
+  revealed: new Set(),
+  warningRead: false,
+  onWarningAccepted: null,
   sortId: DEFAULT_SORT_ID,
   view: DEFAULT_VIEW,
   kind: DEFAULT_KIND,
@@ -350,7 +357,14 @@ function buildSkeletonTokenRow() {
   const lines = document.createElement("div");
   lines.className = "token-lines";
   lines.append(buildSkeletonBar("11rem", "skeleton-input"), buildSkeletonBar("60%"));
-  row.append(lines, buildSkeletonBar("5.5rem", "skeleton-button"));
+  const actions = document.createElement("div");
+  actions.className = "token-actions";
+  actions.append(
+    buildSkeletonBar("3.5rem", "skeleton-button"),
+    buildSkeletonBar("3.5rem", "skeleton-button"),
+    buildSkeletonBar("5.5rem", "skeleton-button"),
+  );
+  row.append(lines, actions);
   return row;
 }
 
@@ -514,6 +528,39 @@ function buildTokenRow(entry, index) {
   detail.textContent = describeTokenReach(entry);
   reach.append(detail);
 
+  // GitHub shows a token once and never again, so this browser holds the only
+  // copy. Both buttons hand it back, and both go through the warning (ADR 0015).
+  const shown = state.revealed.has(entry.id);
+  if (shown) {
+    const full = document.createElement("code");
+    full.className = "token-revealed";
+    full.textContent = entry.token;
+    reach.append(full);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "token-actions";
+
+  const copy = document.createElement("button");
+  copy.type = "button";
+  copy.className = "button button-ghost";
+  copy.textContent = "Copy";
+  copy.addEventListener("click", () => {
+    askBeforeShowing(() => copyToClipboard(entry.token, copy, "Copy", () => revealToken(entry.id)));
+  });
+
+  const reveal = document.createElement("button");
+  reveal.type = "button";
+  reveal.className = "button button-ghost";
+  reveal.textContent = revealLabel(shown);
+  reveal.addEventListener("click", () => {
+    if (shown) {
+      state.revealed.delete(entry.id);
+      return renderTokenList();
+    }
+    askBeforeShowing(() => revealToken(entry.id));
+  });
+
   const drop = document.createElement("button");
   drop.type = "button";
   drop.className = "button button-danger";
@@ -525,8 +572,50 @@ function buildTokenRow(entry, index) {
     connectAll();
   });
 
-  row.append(reach, drop);
+  actions.append(copy, reveal, drop);
+  row.append(reach, actions);
   return row;
+}
+
+/** Put one token on screen, and take every other one back off it. */
+function revealToken(id) {
+  state.revealed = new Set([id]);
+  renderTokenList();
+}
+
+/**
+ * Run something that puts a token where it can be read, once the reader has
+ * seen the warning.
+ *
+ * The warning is read once a visit. Repeating it on every press would train the
+ * reader to click it away, which is the opposite of what a warning is for.
+ */
+function askBeforeShowing(run) {
+  if (state.warningRead) return run();
+  state.onWarningAccepted = run;
+  element("token-warning").showModal();
+}
+
+/**
+ * Put text on the clipboard and say so on the button that asked.
+ *
+ * A browser refuses the clipboard outside a secure page, and the reader must
+ * not be left thinking a copy happened. `whenRefused` is the way out that needs
+ * no clipboard: show the token so it can be selected by hand.
+ */
+async function copyToClipboard(text, button, label, whenRefused) {
+  try {
+    await navigator.clipboard.writeText(text);
+    button.textContent = "Copied";
+    setTimeout(() => {
+      button.textContent = label;
+    }, 1500);
+  } catch {
+    whenRefused();
+    showChecks([
+      { label: "Copying", ok: false, detail: "This browser refused the clipboard. Select the text and copy it." },
+    ]);
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -755,6 +844,11 @@ function showView(view) {
   // taller than a window, so an exit that sits at the top of it is an exit the
   // reader cannot reach once they scroll (ADR 0008).
   const leaving = state.view === "settings";
+  // A token shown in full stays shown only while the reader is looking at it.
+  if (!leaving && state.revealed.size > 0) {
+    state.revealed.clear();
+    renderTokenList();
+  }
   const toggle = element("view-toggle");
   toggle.hidden = !connected;
   element("view-toggle-label").textContent = leaving ? "Back to the board" : "Settings";
@@ -973,6 +1067,7 @@ function signOut() {
   forgetAllTokens(storage);
   clearTimeout(state.saveTimer);
   state.tokens = [];
+  state.revealed.clear();
   state.items = [];
   state.reviews = [];
   state.links = {};
@@ -988,10 +1083,40 @@ function connectPastedToken(field) {
   if (pasted === "") {
     return showChecks([{ label: "Paste a token", ok: false, detail: "The token box is empty." }]);
   }
+  // The same box takes a token or a whole backup. Text that was meant to be a
+  // backup is never tried as a token: GitHub's answer about a bad credential
+  // would hide the real problem, which is a blob that was cut short.
+  if (looksLikeBackup(pasted)) return restoreBackup(field, pasted);
+
   field.value = "";
   const grown = addToken(state.tokens, { id: newId(), token: pasted });
   if (grown.length === state.tokens.length) {
     return showChecks([{ label: "Already added", ok: false, detail: "The board is already using that token." }]);
+  }
+  state.tokens = grown;
+  saveTokens(storage, state.tokens);
+  connectAll();
+}
+
+/** Put back every token from a pasted backup, skipping the ones already here. */
+function restoreBackup(field, pasted) {
+  const backup = readTokenBackup(pasted);
+  if (!backup.ok) {
+    return showChecks([{ label: "Restoring a backup", ok: false, detail: backup.message }]);
+  }
+
+  let grown = state.tokens;
+  let added = 0;
+  for (const one of backup.tokens) {
+    const next = addToken(grown, { id: newId(), token: one.token, name: one.name });
+    if (next.length > grown.length) added += 1;
+    grown = next;
+  }
+  field.value = "";
+
+  if (added === 0) {
+    const detail = `The board is already using ${backup.tokens.length === 1 ? "that token" : "every token in it"}.`;
+    return showChecks([{ label: "Nothing to restore", ok: false, detail }]);
   }
   state.tokens = grown;
   saveTokens(storage, state.tokens);
@@ -1042,6 +1167,38 @@ function start() {
   element("connect").addEventListener("click", () => connectPastedToken(element("token")));
   element("add-token").addEventListener("click", () => connectPastedToken(element("another-token")));
   element("sign-out").addEventListener("click", signOut);
+
+  const backup = element("copy-backup");
+  backup.addEventListener("click", () => {
+    if (state.tokens.length === 0) {
+      return showChecks([{ label: "Nothing to back up", ok: false, detail: "No token is connected yet." }]);
+    }
+    askBeforeShowing(() =>
+      copyToClipboard(encodeTokenBackup(state.tokens), backup, "Copy every token as a backup", () =>
+        showChecks([
+          { label: "Copying", ok: false, detail: "This browser refused the clipboard. Show each token instead." },
+        ]),
+      ),
+    );
+  });
+
+  const warning = element("token-warning");
+  // Escape closes the dialog without the button being pressed, so the thing it
+  // was going to do must be dropped here too.
+  warning.addEventListener("cancel", () => {
+    state.onWarningAccepted = null;
+  });
+  element("token-warning-cancel").addEventListener("click", () => {
+    state.onWarningAccepted = null;
+    warning.close();
+  });
+  element("token-warning-go").addEventListener("click", () => {
+    state.warningRead = true;
+    warning.close();
+    const run = state.onWarningAccepted;
+    state.onWarningAccepted = null;
+    run?.();
+  });
   // The header's line appears only once something has scrolled behind it, so a
   // page that has not moved keeps a clean top edge.
   const masthead = document.querySelector(".masthead");

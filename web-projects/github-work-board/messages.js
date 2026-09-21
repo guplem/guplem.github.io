@@ -32,6 +32,16 @@ export function noteMenuLabel(noteText) {
   return typeof noteText === "string" && noteText.trim() !== "" ? "Edit note" : "Add note";
 }
 
+/**
+ * What the button that shows or hides a token says.
+ *
+ * It names what pressing it will do, not what the row shows now. Anything but
+ * a plain `true` reads as hidden, because the safe answer is the default one.
+ */
+export function revealLabel(revealed) {
+  return revealed === true ? "Hide" : "Show";
+}
+
 /** A list of names as a person would read it out. */
 export function joinWithAnd(names) {
   const clean = (Array.isArray(names) ? names : []).filter((one) => typeof one === "string" && one !== "");
