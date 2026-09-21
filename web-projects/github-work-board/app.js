@@ -67,6 +67,7 @@ import {
 } from "./settings.js";
 import { skeletonCount } from "./skeletons.js";
 import { orderStacksForMerging, stackPositions } from "./stacks.js";
+import { cardMenuRows } from "./cardMenu.js";
 import { readTitle } from "./titles.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
@@ -245,9 +246,7 @@ function buildChangeIcon(type, breaking) {
  * (ADR 0021).
  */
 function buildWorkItemCard(item, { withMenu = true, compact = false, stack = null } = {}) {
-  // A nested pull request still has a branch worth copying, even though a
-  // move would change nothing on screen (ADR 0012, ADR 0021).
-  const menu = withMenu || item.kind === "pull-request";
+
   const card = document.createElement("li");
   card.className = "issue";
 
@@ -281,9 +280,10 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   more.addEventListener("click", () => {
     state.menuItem = item;
     state.menuAnchor = more;
+    // Only a card in a column can be moved between columns (ADR 0022).
     state.menuCanMove = withMenu;
   });
-  if (menu) card.append(more);
+  card.append(more);
 
   const kind = document.createElement("span");
   kind.className = item.kind === "pull-request" ? "badge badge-pull" : "badge badge-issue";
@@ -1383,11 +1383,10 @@ function start() {
     const open = event.newState === "open";
     if (open && state.menuItem) {
       element("menu-note").textContent = noteMenuLabel(readNote(state.board, state.menuItem.key));
-      // An issue has no branch, and a nested pull request cannot be moved:
-      // its column comes from the issue it travels in (ADR 0012, ADR 0021).
-      element("menu-branch").hidden = state.menuItem.kind !== "pull-request";
-      element("menu-note").hidden = state.menuCanMove !== true;
-      move.hidden = state.menuCanMove !== true;
+      const rows = cardMenuRows(state.menuItem, { canMove: state.menuCanMove });
+      element("menu-note").hidden = !rows.note;
+      element("menu-branch").hidden = !rows.branch;
+      move.hidden = !rows.move;
     }
     state.menuAnchor?.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) placeMenu(menu, state.menuAnchor);

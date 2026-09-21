@@ -46,9 +46,10 @@ scrolls all the way over instead of stopping in dead space. Negative margins, no
 
 ## Consequences
 
-**The menu can grow.** Today it holds one row. Anything else a card should offer
-(open on GitHub, copy a link, hide it) is another row, and the columns stay one
-level down where they do not crowd it.
+**The menu can grow.** It already holds more than one row, and which ones a
+given card sees is decided by `cardMenuRows` (ADR 0022). Anything else a card
+should offer (open on GitHub, copy a link, hide it) is another row, and the
+columns stay one level down where they do not crowd it.
 
 **Every position is computed in JavaScript.** CSS anchor positioning would do
 this natively and is not in enough browsers yet. The cost is a `placeMenu` call
