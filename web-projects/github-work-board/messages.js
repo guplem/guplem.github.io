@@ -32,6 +32,22 @@ export function noteMenuLabel(noteText) {
   return typeof noteText === "string" && noteText.trim() !== "" ? "Edit note" : "Add note";
 }
 
+/**
+ * The one line on a folded token row.
+ *
+ * It has to answer "do I need to open this?" on its own. A reader who must
+ * unfold every token to find the broken one is not helped by the folding, so
+ * one failure is named rather than counted (ADR 0018).
+ */
+export function summariseChecks(rows) {
+  const list = (Array.isArray(rows) ? rows : []).filter((one) => one && typeof one === "object");
+  if (list.length === 0) return "Not connected yet";
+  const failed = list.filter((one) => one.ok !== true);
+  if (failed.length === 0) return `All ${list.length} checks passed`;
+  if (failed.length === 1) return `${failed[0].label ?? "One check"} did not pass`;
+  return `${failed.length} of ${list.length} checks did not pass`;
+}
+
 /** A list of names as a person would read it out. */
 export function joinWithAnd(names) {
   const clean = (Array.isArray(names) ? names : []).filter((one) => typeof one === "string" && one !== "");

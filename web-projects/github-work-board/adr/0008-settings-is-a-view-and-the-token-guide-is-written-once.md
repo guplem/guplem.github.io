@@ -42,9 +42,9 @@ have that failure, and it removes the second button that said the same thing.
 
 **The token guide is a `<template>` in the page, cloned into every slot.**
 `index.html` holds it once; `app.js` clones it into the welcome screen and into
-settings, filling the permission list inside each copy from
-`REQUIRED_PERMISSIONS`. `invariants.test.js` fails when the page holds more than
-one guide, or more than one permission list.
+the add-token screen (ADR 0018), filling the permission list inside each copy
+from `REQUIRED_PERMISSIONS`. `invariants.test.js` fails when the page holds more
+than one guide, or more than one permission list.
 
 The view names are permanent, like the sort ids: they travel in links.
 

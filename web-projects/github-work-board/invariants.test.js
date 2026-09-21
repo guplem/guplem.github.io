@@ -22,6 +22,22 @@ const FOLDER = import.meta.dir;
 const sourceFiles = readdirSync(FOLDER).filter((name) => name.endsWith(".js") && !name.endsWith(".test.js"));
 const read = (name) => readFileSync(join(FOLDER, name), "utf8");
 
+/** Each `@media (prefers-reduced-motion...)` block, by its own braces. */
+function reducedMotionBlocks(css) {
+  const blocks = [];
+  for (const match of css.matchAll(/@media[^{]*prefers-reduced-motion[^{]*\{/g)) {
+    let depth = 1;
+    let at = match.index + match[0].length;
+    while (at < css.length && depth > 0) {
+      if (css[at] === "{") depth += 1;
+      if (css[at] === "}") depth -= 1;
+      at += 1;
+    }
+    blocks.push(css.slice(match.index, at));
+  }
+  return blocks;
+}
+
 describe("the note key is permanent (ADR 0002)", () => {
   test("a note is keyed by the GitHub node id, never by repository and number", () => {
     const raw = { node_id: "I_permanent", number: 42, title: "t", html_url: "u" };
@@ -239,10 +255,13 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
   // Feedback is not decoration: a reader who asked for less motion still needs
   // to see which control is under the pointer, so only the movement goes.
   test("reduced motion drops the movement and keeps the colours", () => {
-    expect(css).toContain("prefers-reduced-motion");
-    const block = css.slice(css.indexOf("prefers-reduced-motion"));
-    expect(block).toContain("transition-duration");
-    expect(block).not.toContain(":hover");
+    const blocks = reducedMotionBlocks(css);
+    expect(blocks.length).toBeGreaterThan(0);
+    expect(blocks.some((block) => block.includes("transition-duration"))).toBe(true);
+    // Read the blocks themselves, not the rest of the file after them. The
+    // first version sliced to the end and failed on the next rule anybody
+    // appended, which says nothing about this decision.
+    for (const block of blocks) expect(block).not.toContain(":hover");
   });
 });
 

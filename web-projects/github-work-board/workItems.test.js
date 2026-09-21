@@ -6,6 +6,7 @@ import {
   normalizeWorkItem,
   normalizeWorkItems,
   ownersOf,
+  uniqueByKey,
   startOfToday,
   withoutItems,
 } from "./workItems.js";
@@ -128,6 +129,23 @@ describe("the repository of a searched item", () => {
   test("is empty rather than wrong when the address is not one", () => {
     expect(normalizeWorkItem({ node_id: "PR_x", repository_url: "nonsense" }).repository).toBe("");
     expect(normalizeWorkItem({ node_id: "PR_x", repository_url: 7 }).repository).toBe("");
+  });
+});
+
+describe("uniqueByKey", () => {
+  // Every token is asked on its own and the answers are merged. Two tokens
+  // that both reach one repository answer with the same work, and the merge
+  // is the only place that can notice.
+  test("keeps the first of anything seen twice", () => {
+    const one = { key: "PR_1", number: 1 };
+    const again = { key: "PR_1", number: 1 };
+    const other = { key: "PR_2", number: 2 };
+    expect(uniqueByKey([one, again, other])).toEqual([one, other]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(uniqueByKey(null)).toEqual([]);
+    expect(uniqueByKey([null, 7, { key: "a" }])).toEqual([{ key: "a" }]);
   });
 });
 

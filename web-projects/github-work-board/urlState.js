@@ -24,7 +24,10 @@ const REPOSITORY_PARAM = "repo";
 const LABEL_PARAM = "label";
 
 /** The screens this page has. Named in links, so a name is never changed. */
-export const VIEWS = ["board", "settings"];
+// A view name travels in the address bar, so it is permanent, exactly like
+// a sort id. "add-token" is its own screen because the guide it holds is
+// long enough to bury the rest of Settings (ADR 0018).
+export const VIEWS = ["board", "settings", "add-token"];
 export const DEFAULT_VIEW = "board";
 
 /** One of the views above, whatever was asked for. */

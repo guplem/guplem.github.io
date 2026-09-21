@@ -41,7 +41,7 @@ import {
   toggleInList,
 } from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
-import { escapeHtml, noteMenuLabel, say, sayEmptyBoard } from "./messages.js";
+import { escapeHtml, noteMenuLabel, say, sayEmptyBoard, summariseChecks } from "./messages.js";
 import {
   CONNECTION_CHECKS,
   REQUIRED_PERMISSIONS,
@@ -80,7 +80,15 @@ import {
 } from "./relationships.js";
 import { encodeTokenBackup, looksLikeBackup, readTokenBackup } from "./tokenBackup.js";
 import { describeTokenReach, suggestedTokenName } from "./tokenIdentity.js";
-import { countByKind, finishedSince, normalizeWorkItems, ownersOf, startOfToday, withoutItems } from "./workItems.js";
+import {
+  countByKind,
+  finishedSince,
+  normalizeWorkItems,
+  ownersOf,
+  startOfToday,
+  uniqueByKey,
+  withoutItems,
+} from "./workItems.js";
 
 const SAVE_DELAY_MS = 1200;
 const PROJECT_PATH = "web-projects/github-work-board";
@@ -105,6 +113,9 @@ const state = {
   // Cards whose note box is open although the note is still empty. Only for
   // this visit: a box somebody opened and left empty is not worth saving.
   notesOpen: new Set(),
+  // What the last connection proved about each token, keyed by its id. The
+  // checks live inside the token they are about, folded (ADR 0018).
+  checks: {},
   // Tokens the reader asked to see in full, and whether they have read the
   // warning. Both last for this visit only: a board that opens with a
   // credential on screen is a board nobody can share a screen with (ADR 0015).
@@ -152,8 +163,9 @@ function buildPermissionRow(permission) {
  * Put the "how to make a token" guide into every slot that asks for it.
  *
  * It is written once, as a `<template>` in the page, and shown on the welcome
- * screen and in Settings. Writing it twice is how the two copies drift, which is
- * the same failure ADR 0005 removed from the permission list itself.
+ * screen and on the add-token screen. Writing it twice is how the two copies
+ * drift, which is the same failure ADR 0005 removed from the permission list
+ * itself.
  */
 function fillTokenGuides() {
   const guide = element("token-guide");
@@ -212,7 +224,7 @@ function buildCheckRow({ label, ok, detail }) {
  * column, because the pair is one piece of work (ADR 0010), so offering to move
  * it on its own would offer something that cannot happen.
  */
-function buildWorkItemCard(item, { withMenu = true } = {}) {
+function buildWorkItemCard(item, { withMenu = true, compact = false } = {}) {
   const card = document.createElement("li");
   card.className = "issue";
 
@@ -268,8 +280,12 @@ function buildWorkItemCard(item, { withMenu = true } = {}) {
     heading.append(blocked);
   }
 
+  // A nested pull request is almost always in its issue's own repository, so
+  // the name is repetition taking the width the title needs. It stays one
+  // hover away (ADR 0018).
   const where = document.createElement("span");
-  where.textContent = `${item.repository} #${item.number}`;
+  where.textContent = compact ? `#${item.number}` : `${item.repository} #${item.number}`;
+  if (compact) where.title = item.repository;
   heading.append(where);
   card.append(heading);
 
@@ -363,17 +379,10 @@ function buildSkeletonTokenRow() {
   actions.className = "token-actions";
   actions.append(buildSkeletonBar("3.5rem", "skeleton-button"), buildSkeletonBar("5.5rem", "skeleton-button"));
   row.append(lines, actions);
-  return row;
-}
-
-/** A placeholder in the shape of a connection check: a badge, then two lines. */
-function buildSkeletonCheckRow() {
-  const row = document.createElement("li");
-  row.className = "check skeleton-card";
-  const lines = document.createElement("div");
-  lines.className = "token-lines";
-  lines.append(buildSkeletonBar("13rem", "skeleton-title"), buildSkeletonBar("80%"));
-  row.append(buildSkeletonBar("2.75rem", "skeleton-pill"), lines);
+  const fold = document.createElement("div");
+  fold.className = "token-checks";
+  fold.append(buildSkeletonBar("9rem"));
+  row.append(fold);
   return row;
 }
 
@@ -426,7 +435,6 @@ function renderLoading() {
   element("tokens").replaceChildren(
     ...times(skeletonCount(last.tokens ?? state.tokens.length, 1), buildSkeletonTokenRow),
   );
-  element("checks").replaceChildren(...times(CONNECTION_CHECKS.length, buildSkeletonCheckRow));
 }
 
 /** One filter chip. Pressed or not, and it says which through `aria-pressed`. */
@@ -560,6 +568,23 @@ function buildTokenRow(entry, index) {
 
   actions.append(copy, drop);
   row.append(reach, actions);
+
+  // What this token proved, folded. One line says whether anything needs
+  // attention, so nobody has to open every token to find the broken one
+  // (ADR 0018).
+  const proved = Array.isArray(state.checks[entry.id]) ? state.checks[entry.id] : [];
+  const fold = document.createElement("details");
+  fold.className = "token-checks";
+  const summary = document.createElement("summary");
+  summary.className = "token-checks-summary";
+  summary.textContent = summariseChecks(proved);
+  if (proved.some((one) => one?.ok !== true)) fold.classList.add("has-trouble");
+  const list = document.createElement("ul");
+  list.className = "checks";
+  list.replaceChildren(...proved.map(buildCheckRow));
+  fold.append(summary, list);
+  row.append(fold);
+
   return row;
 }
 
@@ -603,9 +628,7 @@ async function copyToClipboard(text, button, label, whenRefused) {
     }, 1500);
   } catch {
     whenRefused();
-    showChecks([
-      { label: "Copying", ok: false, detail: "This browser refused the clipboard. Select the text and copy it." },
-    ]);
+    showNotice("settings-notice", "This browser refused the clipboard. Select the text and copy it.");
   }
 }
 
@@ -727,7 +750,7 @@ function buildGroupCard({ item, children }) {
   if (children.length === 0) return card;
   const nest = document.createElement("ul");
   nest.className = "issues nested";
-  nest.replaceChildren(...children.map((child) => buildWorkItemCard(child, { withMenu: false })));
+  nest.replaceChildren(...children.map((child) => buildWorkItemCard(child, { withMenu: false, compact: true })));
   card.append(nest);
   return card;
 }
@@ -823,6 +846,9 @@ function renderBoard() {
 function renderTokenList() {
   element("tokens").replaceChildren(...state.tokens.map((entry, index) => buildTokenRow(entry, index)));
   element("settings-repo-name").value = state.repoName;
+  const owner = state.login ?? "";
+  element("open-notes-repo").href =
+    owner === "" ? "https://github.com/new" : `https://github.com/${owner}/${state.repoName}`;
 }
 
 /**
@@ -839,19 +865,25 @@ function showView(view) {
   // One control, in a header that never scrolls away. The settings screen is
   // taller than a window, so an exit that sits at the top of it is an exit the
   // reader cannot reach once they scroll (ADR 0008).
-  const leaving = state.view === "settings";
+  // One control, and where it goes depends on where you are. Adding a token
+  // was opened from Settings, so "back" from there means Settings (ADR 0018).
+  const back = { board: null, settings: "board", "add-token": "settings" }[state.view] ?? null;
+  const label = { settings: "Back to the board", "add-token": "Back to settings" }[state.view] ?? "Settings";
+
   // A token shown in full stays shown only while the reader is looking at it.
-  if (!leaving && state.revealed.size > 0) {
+  if (state.view !== "settings" && state.revealed.size > 0) {
     state.revealed.clear();
     renderTokenList();
   }
   const toggle = element("view-toggle");
   toggle.hidden = !connected;
-  element("view-toggle-label").textContent = leaving ? "Back to the board" : "Settings";
-  element("view-toggle-arrow").hidden = !leaving;
+  element("view-toggle-label").textContent = label;
+  element("view-toggle-arrow").hidden = back === null;
+  state.viewToggleGoesTo = back ?? "settings";
   element("setup").hidden = connected;
-  element("board").hidden = !connected || state.view === "settings";
+  element("board").hidden = !connected || state.view !== "board";
   element("settings-view").hidden = state.view !== "settings";
+  element("add-token-view").hidden = state.view !== "add-token";
   rememberUrl();
 }
 
@@ -865,8 +897,17 @@ function rememberUrl() {
 /* Connecting                                                                 */
 /* -------------------------------------------------------------------------- */
 
-function showChecks(rows) {
-  element("checks").replaceChildren(...rows.map(buildCheckRow));
+/**
+ * A one-off message in Settings, or on the add-token screen.
+ *
+ * The connection checks used to be one list at the bottom of Settings, shared
+ * by every token and by messages like this one. They now live folded inside
+ * the token they belong to (ADR 0018), so this is only for the answer to
+ * something the reader just pressed.
+ */
+function showNotice(where, text) {
+  const line = element(where);
+  if (line) line.textContent = text;
 }
 
 /**
@@ -987,7 +1028,7 @@ async function connectAll() {
   showView(state.view);
   renderLoading();
 
-  const rows = [];
+  const checks = {};
   const everything = [];
   const waiting = [];
   let links = {};
@@ -995,12 +1036,13 @@ async function connectAll() {
     const result = await inspectToken(entry);
     state.tokens = updateToken(state.tokens, entry.id, result.entry);
     everything.push(...result.raw);
-    rows.push(...result.rows);
+    checks[entry.id] = result.rows;
     waiting.push(...(result.reviews ?? []));
     links = { ...links, ...(result.links ?? {}) };
   }
+  state.checks = checks;
   state.links = links;
-  state.reviews = waiting;
+  state.reviews = uniqueByKey(waiting);
 
   saveTokens(storage, state.tokens);
   // Merging here, not per token, is what removes an item two tokens both see.
@@ -1008,7 +1050,7 @@ async function connectAll() {
 
   state.loading = false;
   element("board-columns").removeAttribute("aria-busy");
-  showChecks(rows);
+  showNotice("settings-notice", "");
   renderTokenList();
   renderTokenNotice();
   renderFilters();
@@ -1088,10 +1130,10 @@ function signOut() {
   renderTokenNotice();
 }
 
-function connectPastedToken(field) {
+function connectPastedToken(field, name = "") {
   const pasted = field.value.trim();
   if (pasted === "") {
-    return showChecks([{ label: "Paste a token", ok: false, detail: "The token box is empty." }]);
+    return showNotice("add-token-notice", "The token box is empty.");
   }
   // The same box takes a token or a whole backup. Text that was meant to be a
   // backup is never tried as a token: GitHub's answer about a bad credential
@@ -1099,12 +1141,13 @@ function connectPastedToken(field) {
   if (looksLikeBackup(pasted)) return restoreBackup(field, pasted);
 
   field.value = "";
-  const grown = addToken(state.tokens, { id: newId(), token: pasted });
+  const grown = addToken(state.tokens, { id: newId(), token: pasted, name });
   if (grown.length === state.tokens.length) {
-    return showChecks([{ label: "Already added", ok: false, detail: "The board is already using that token." }]);
+    return showNotice("add-token-notice", "The board is already using that token.");
   }
   state.tokens = grown;
   saveTokens(storage, state.tokens);
+  if (state.view === "add-token") showView("settings");
   connectAll();
 }
 
@@ -1112,7 +1155,7 @@ function connectPastedToken(field) {
 function restoreBackup(field, pasted) {
   const backup = readTokenBackup(pasted);
   if (!backup.ok) {
-    return showChecks([{ label: "Restoring a backup", ok: false, detail: backup.message }]);
+    return showNotice("add-token-notice", backup.message);
   }
 
   let grown = state.tokens;
@@ -1126,10 +1169,11 @@ function restoreBackup(field, pasted) {
 
   if (added === 0) {
     const detail = `The board is already using ${backup.tokens.length === 1 ? "that token" : "every token in it"}.`;
-    return showChecks([{ label: "Nothing to restore", ok: false, detail }]);
+    return showNotice("add-token-notice", detail);
   }
   state.tokens = grown;
   saveTokens(storage, state.tokens);
+  if (state.view === "add-token") showView("settings");
   connectAll();
 }
 
@@ -1175,19 +1219,27 @@ function start() {
   });
 
   element("connect").addEventListener("click", () => connectPastedToken(element("token")));
-  element("add-token").addEventListener("click", () => connectPastedToken(element("another-token")));
-  element("sign-out").addEventListener("click", signOut);
+  const openAddToken = () => {
+    element("another-token").value = "";
+    element("another-token-name").value = "";
+    showNotice("add-token-notice", "");
+    showView("add-token");
+    window.scrollTo({ top: 0 });
+  };
+  element("open-add-token").addEventListener("click", openAddToken);
+  element("cancel-add-token").addEventListener("click", () => showView("settings"));
+  element("add-token").addEventListener("click", () =>
+    connectPastedToken(element("another-token"), element("another-token-name").value),
+  );
 
   const backup = element("copy-backup");
   backup.addEventListener("click", () => {
     if (state.tokens.length === 0) {
-      return showChecks([{ label: "Nothing to back up", ok: false, detail: "No token is connected yet." }]);
+      return showNotice("settings-notice", "No token is connected yet.");
     }
     askBeforeShowing(() =>
       copyToClipboard(encodeTokenBackup(state.tokens), backup, "Copy every token as a backup", () =>
-        showChecks([
-          { label: "Copying", ok: false, detail: "This browser refused the clipboard. Show each token instead." },
-        ]),
+        showNotice("settings-notice", "This browser refused the clipboard. Copy each token from its own row."),
       ),
     );
   });
@@ -1216,9 +1268,7 @@ function start() {
   markStuck();
   window.addEventListener("scroll", markStuck, { passive: true });
 
-  element("view-toggle").addEventListener("click", () =>
-    showView(state.view === "settings" ? "board" : "settings"),
-  );
+  element("view-toggle").addEventListener("click", () => showView(state.viewToggleGoesTo ?? "settings"));
   element("empty-open-settings").addEventListener("click", () => showView("settings"));
   element("clear-filters").addEventListener("click", clearFilters);
 
@@ -1265,9 +1315,17 @@ function start() {
     move.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) placeMenu(submenu, move, { beside: true });
   });
+  const repoLink = () => {
+    const owner = state.login ?? "";
+    const link = element("open-notes-repo");
+    link.href = owner === "" ? "https://github.com/new" : `https://github.com/${owner}/${state.repoName}`;
+  };
+  repoLink();
+
   element("save-repo-name").addEventListener("click", () => {
     state.repoName = element("settings-repo-name").value.trim() || DEFAULT_DATA_REPO_NAME;
     element("settings-repo-name").value = state.repoName;
+    repoLink();
     connectAll();
   });
 

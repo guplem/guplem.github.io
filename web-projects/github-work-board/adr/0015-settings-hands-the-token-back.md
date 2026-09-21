@@ -45,8 +45,9 @@ are risks of the moment, not of the design.
   and kept in a history, and where to revoke the token. It is shown once because
   a warning on every press is a warning nobody reads.
 - **Copy every token as a backup** writes all of them as one piece of text. The
-  same box that takes a token also takes that text, on the welcome screen and in
-  Settings, so moving to another browser is one copy and one paste.
+  same box that takes a token also takes that text, on the welcome screen and
+  on the add-token screen, so moving to another browser is one copy and one
+  paste.
 
 **A backup carries only what the reader gave**: the token and the name they
 typed. Which owners a token reached, how much work it found and whether it can

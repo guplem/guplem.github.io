@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="170" />
-  <meta name="deploy-date" content="2026-09-21T12:51:58.000Z" />
+  <meta name="deploy-pull-request" content="171" />
+  <meta name="deploy-date" content="2026-09-21T13:28:25.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -122,7 +122,6 @@
     <header class="masthead">
       <div>
         <h1>Work board</h1>
-        <p class="tagline">Your GitHub issues and pull requests, with notes only you can see.</p>
       </div>
       <!-- One control for both screens. The arrow appears only on the way back,
            because only that direction is a return (ADR 0008). -->
@@ -146,7 +145,8 @@
         </p>
       </div>
 
-      <!-- First run. Hidden once a token is connected, shown again by "Sign out". -->
+      <!-- First run. Hidden once a token is connected, shown again once the
+           last token is removed. -->
       <section id="setup" class="card" aria-labelledby="setup-heading">
         <div class="card-header">
           <h2 id="setup-heading">Connect it, once</h2>
@@ -203,16 +203,29 @@
       </section>
 
       <section id="board" aria-labelledby="board-heading" hidden>
+        <!-- Above the columns, and outside them: this is work waiting on you,
+             not work assigned to you (ADR 0013). -->
+        <h2 id="board-heading" class="section-heading">Waiting for you</h2>
+        <section id="reviews" class="reviews" aria-labelledby="reviews-heading">
+          <div class="column-head reviews-head">
+            <h3 class="column-name" id="reviews-heading">Pull requests waiting for your review</h3>
+            <span id="reviews-count" class="badge column-count">0</span>
+          </div>
+          <p id="reviews-empty" class="column-empty" hidden>Nothing is waiting for your review.</p>
+          <ul id="reviews-list" class="issues reviews-list"></ul>
+        </section>
+
         <div class="board-heading-row">
-          <h2 id="board-heading">Assigned to you</h2>
+          <h2 class="section-heading">Your issues and pull requests</h2>
           <div class="sort-control">
             <label class="sort-label" for="sort">Sort by</label>
             <!-- Filled from SORT_OPTIONS, so an order exists in one place (ADR 0006). -->
             <select id="sort" class="select"></select>
           </div>
         </div>
+
         <!-- Chips built from what the list actually holds (ADR 0009). -->
-        <div class="filters">
+        <div class="filters" id="board-filters">
           <div class="filter-group">
             <p class="filter-label">Kind</p>
             <div class="chips" id="kind-filters" role="group" aria-label="Kind"></div>
@@ -244,17 +257,6 @@
           </p>
         </div>
 
-        <!-- Above the columns, and outside them: this is work waiting on you,
-             not work assigned to you (ADR 0013). -->
-        <section id="reviews" class="reviews" aria-labelledby="reviews-heading">
-          <div class="column-head reviews-head">
-            <h3 class="column-name" id="reviews-heading">Pull requests waiting for your review</h3>
-            <span id="reviews-count" class="badge column-count">0</span>
-          </div>
-          <p id="reviews-empty" class="column-empty" hidden>Nothing is waiting for your review.</p>
-          <ul id="reviews-list" class="issues reviews-list"></ul>
-        </section>
-
         <!-- One column per state, built from COLUMNS (ADR 0011). -->
         <div id="board-columns" class="columns"></div>
       </section>
@@ -271,32 +273,28 @@
               Each token reaches one owner. What it reached the last time the board asked is shown beside it.
             </p>
             <ul id="tokens" class="tokens"></ul>
+            <p id="settings-notice" class="status" role="status" aria-live="polite"></p>
             <p class="step-action">
+              <button id="open-add-token" type="button" class="button button-primary">Add token</button>
               <button id="copy-backup" type="button" class="button button-outline">Copy every token as a backup</button>
             </p>
             <p class="field-help">
               A backup is one piece of text holding every token and the name you gave it. Keep it in your password
               manager. To set this board up in another browser, on another computer, or in another Chrome profile,
-              paste that text into the box below.
+              press <strong>Add token</strong> there and paste that text instead of a token.
             </p>
 
-            <h3 class="subheading">Add a token</h3>
-            <p class="field-help">
-              Work in an organisation? Create a token with that organisation as the <strong>Resource
-              owner</strong>. An owner of the organisation may have to approve it before it works. Keep your
-              notes repository on a token owned by your own account: an organisation's owners can read its
-              repositories.
-            </p>
-            <div class="token-guide-slot"></div>
-            <div class="field">
-              <label class="field-label" for="another-token">Paste the new token, or a backup</label>
-              <div class="field-row">
-                <input id="another-token" class="input" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..." />
-                <button id="add-token" type="button" class="button button-primary">Add</button>
-              </div>
+            <div class="subheading-row">
+              <h3 class="subheading">Notes repository</h3>
+              <!-- One tap to the repository itself. The board names it but never
+                   shows it, and a reader who wants to look has no other way in. -->
+              <a id="open-notes-repo" class="icon-link" target="_blank" rel="noopener" title="Open this repository on GitHub">
+                <span class="visually-hidden">Open the notes repository on GitHub</span>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                </svg>
+              </a>
             </div>
-
-            <h3 class="subheading">Notes repository</h3>
             <div class="field">
               <label class="field-label" for="settings-repo-name">Repository name, on your own account</label>
               <div class="field-row">
@@ -306,12 +304,93 @@
               <p class="field-help">Your notes live in one file, <code>board.json</code>, inside this repository.</p>
             </div>
 
-            <h3 class="subheading">What the last connection proved</h3>
-            <ul id="checks" class="checks"></ul>
+          </div>
+        </div>
+      </section>
 
-            <p class="step-action">
-              <button id="sign-out" type="button" class="button button-danger">Sign out and forget every token</button>
+      <!-- Adding a token is its own screen. The guide is a walk-through with a
+           step per question GitHub asks, and inside Settings it buried
+           everything else (ADR 0018). The guide itself is still written once,
+           as the `token-guide` template (ADR 0008). -->
+      <section id="add-token-view" aria-labelledby="add-token-heading" hidden>
+        <div class="card">
+          <div class="card-header">
+            <h2 id="add-token-heading">Add a token</h2>
+            <p class="lead">
+              A token is how this page proves to GitHub that it may read your work. You make it yourself, it
+              stays in this browser, and it is sent to GitHub and nowhere else.
             </p>
+          </div>
+
+          <div class="card-content">
+            <div class="callout callout-note">
+              <p class="callout-title">Already have a backup?</p>
+              <p>
+                If you set this board up in another browser, you do not need a new token. Copy the backup from
+                that board's Settings and paste it into step 4 below. Every token comes back, with its name.
+              </p>
+            </div>
+
+            <ol class="steps">
+              <li>
+                <h3>Decide whose work this token is for</h3>
+                <p>
+                  A token reaches <strong>one owner</strong>: your own account, or one organisation. It can never
+                  see the other, whatever permissions you give it. So a person whose work lives in an
+                  organisation needs at least two tokens: one for the organisation, and one for their own
+                  account, which is where the notes repository lives.
+                </p>
+                <p class="callout callout-inline">
+                  <strong>Keep the notes repository on a token owned by your own account.</strong> An
+                  organisation's owners can read its repositories, and these notes are meant for you alone.
+                </p>
+              </li>
+
+              <li>
+                <h3>Fill in GitHub's form</h3>
+                <p>GitHub's form asks you four things. Here is the answer to each one.</p>
+                <div class="token-guide-slot"></div>
+                <p class="field-help">
+                  An organisation's owner may have to approve the token before it works. Until they do, the
+                  board sees nothing through it and says so.
+                </p>
+              </li>
+
+              <li>
+                <h3>Copy the token</h3>
+                <p>
+                  GitHub shows the token once, on the screen that creates it, and never again. Copy it before
+                  you leave that page. If you lose it, you cannot read it back anywhere: you have to make
+                  another one.
+                </p>
+              </li>
+
+              <li>
+                <h3>Paste it here</h3>
+                <div class="field">
+                  <label class="field-label" for="another-token">The token, or a backup</label>
+                  <input id="another-token" class="input" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..." />
+                </div>
+                <div class="field">
+                  <label class="field-label" for="another-token-name">A name for it, if you want one</label>
+                  <input id="another-token-name" class="input" type="text" autocomplete="off" spellcheck="false" placeholder="Work, or your organisation's name" />
+                  <p class="field-help">
+                    GitHub does not say which owner a token belongs to, so the board cannot name it for you. Leave
+                    this empty and it suggests a name from wherever the token finds work. You can rename it in
+                    Settings at any time.
+                  </p>
+                </div>
+                <p class="step-action">
+                  <button id="add-token" type="button" class="button button-primary">Add this token</button>
+                  <button id="cancel-add-token" type="button" class="button button-outline">Cancel</button>
+                </p>
+                <p id="add-token-notice" class="status" role="status" aria-live="polite"></p>
+                <p class="field-help">
+                  The token stays in this browser and is sent only to GitHub. Anything else with access to this
+                  browser can read it, so keep it scoped to the repositories you need and give it an expiry date.
+                </p>
+              </li>
+            </ol>
           </div>
         </div>
       </section>

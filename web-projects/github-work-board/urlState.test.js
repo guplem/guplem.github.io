@@ -11,6 +11,16 @@ const DEFAULTS = {
   labels: [],
 };
 
+describe("the add-token view", () => {
+  // Adding a token is its own screen, so the guide has room to be a
+  // numbered walk-through rather than a block inside Settings (ADR 0018).
+  // The name travels in the link like every other view.
+  test("is a view the link can name", () => {
+    expect(readStateFromSearch("?view=add-token").view).toBe("add-token");
+    expect(buildSearch({ ...DEFAULTS, view: "add-token" })).toBe("?view=add-token");
+  });
+});
+
 describe("readStateFromSearch", () => {
   test("reads the chosen order", () => {
     expect(readStateFromSearch("?sort=title")).toEqual({ ...DEFAULTS, sortId: "title" });
@@ -49,7 +59,7 @@ describe("readStateFromSearch", () => {
   });
 
   test("the views are exactly these", () => {
-    expect(VIEWS).toEqual(["board", "settings"]);
+    expect(VIEWS).toEqual(["board", "settings", "add-token"]);
     expect(VIEWS).toContain(DEFAULT_VIEW);
   });
 });
