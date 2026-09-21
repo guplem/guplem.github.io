@@ -64,7 +64,9 @@ Options considered for the list of posts and the feed:
   with no script. `scripts/blogPosts.test.js` checks every post.
 - **Charts and diagrams are inline SVG with the data in HTML** (a table or a
   paragraph), so a reader without the picture still has the numbers. They
-  are written once; a post is dated content.
+  are written once; a post is dated content. An animation is CSS inside that
+  SVG, never a script, and it ends on the finished picture when the reader
+  asks for less motion.
 - **Images are reused by relative path**, never copied into the blog. The
   AI World Gen post points at the maps committed under
   `web-projects/ai-world-gen/evaluation/results/`.
