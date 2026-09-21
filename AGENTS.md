@@ -260,6 +260,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0013](web-projects/github-work-board/adr/0013-work-waiting-on-you-is-a-row-above-the-board.md) | Work waiting on you is a row above the board, not a column in it |
 | [github-work-board 0014](web-projects/github-work-board/adr/0014-a-note-box-appears-only-when-there-is-a-note.md) | A note box appears only when there is a note |
 | [github-work-board 0015](web-projects/github-work-board/adr/0015-settings-hands-the-token-back.md) | Settings hands the token back, behind one warning |
+| [github-work-board 0016](web-projects/github-work-board/adr/0016-the-smart-order-puts-a-stack-in-merge-order.md) | The smart order is oldest first, with each stack in merge order |
 | [ai-world-gen 0001](web-projects/ai-world-gen/adr/0001-openrouter-is-the-one-gateway-and-the-key-lives-here.md) | OpenRouter is the one gateway (browser CORS verified), and the key lives in this browser |
 | [ai-world-gen 0002](web-projects/ai-world-gen/adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
 | [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |

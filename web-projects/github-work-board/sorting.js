@@ -14,9 +14,13 @@
 // pins the set. See ADR 0006.
 
 /** Newest activity first: what a person opening the board usually wants. */
-export const DEFAULT_SORT_ID = "updated-desc";
+// The order the board opens on. "Smart" is oldest first, which clears the
+// work that has waited longest, with one rule laid over it: a stack of pull
+// requests reads in the order it can merge (`stacks.js`, ADR 0016).
+export const DEFAULT_SORT_ID = "smart";
 
 export const SORT_OPTIONS = [
+  { id: "smart", label: "Smart (oldest, stacks in merge order)" },
   { id: "updated-desc", label: "Recently updated" },
   { id: "updated-asc", label: "Least recently updated" },
   { id: "created-desc", label: "Newest first" },
@@ -39,7 +43,9 @@ const KNOWN = new Set(SORT_OPTIONS.map((option) => option.id));
  */
 export function reviewSortId(sortId) {
   const chosen = readSortId(sortId);
-  return chosen === DEFAULT_SORT_ID ? "updated-asc" : chosen;
+  // The review row is a flat row, so it cannot show a stack as a stack. Smart
+  // therefore lands on the order it is built from.
+  return chosen === DEFAULT_SORT_ID || chosen === "smart" ? "updated-asc" : chosen;
 }
 
 /** One of the orders above, whatever was asked for. */
@@ -64,6 +70,11 @@ function byDate(left, right, newestFirst) {
 
 function comparatorFor(sortId, hasNote) {
   switch (sortId) {
+    // Smart compares exactly like "least recently updated". What makes it
+    // smart is not a comparison at all: it is the pass over the grouped board
+    // that keeps each stack in merge order, which no pairwise comparison can
+    // express (ADR 0016).
+    case "smart":
     case "updated-asc":
       return (a, b) => byDate(moment(a.updatedAt), moment(b.updatedAt), false);
     case "created-desc":
@@ -97,6 +108,7 @@ function comparatorFor(sortId, hasNote) {
       };
     case "title":
       return (a, b) => String(a.title).localeCompare(String(b.title), undefined, { sensitivity: "base" });
+    case "updated-desc":
     default:
       return (a, b) => byDate(moment(a.updatedAt), moment(b.updatedAt), true);
   }

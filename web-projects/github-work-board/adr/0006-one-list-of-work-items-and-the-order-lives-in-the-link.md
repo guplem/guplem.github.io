@@ -69,7 +69,7 @@ people are never involved, and a shared link carries it already. Adding it to
 **Rejected: a sort that lives in `localStorage`.** It survives a reload, and it
 cannot be shared or sent to yourself. Root ADR 0006 already settled this for
 view state. **Rejected: sorting server-side with the endpoint's own `sort`
-parameter.** It covers three of the seven orders, cannot see your notes at all,
+parameter.** It covers three of the orders, cannot see your notes at all,
 and would cost a network round trip per dropdown change. **Rejected: a separate
 list for pull requests.** Two lists means two places to look for "what am I
 meant to be doing", which is the thing this board exists to answer once.

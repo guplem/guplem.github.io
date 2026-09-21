@@ -77,6 +77,10 @@ export function fetchAssignedIssues(token) {
  * `includeClosedPrs` must stay true. A merged pull request is a closed one, so
  * leaving it out would hide exactly the work that belongs in "Done".
  *
+ * The two branch names are asked for because a stacked pull request is one
+ * whose `baseRefName` is another's `headRefName`. That is the only honest way
+ * to read a stack: a "depends on #4979" in a description is a guess (ADR 0016).
+ *
  * The reviews are asked for because GitHub never clears `reviewDecision`. Only
  * the reviewers waited on right now, set beside the reviewers who asked for
  * changes, say whose turn it is (ADR 0011). `latestOpinionatedReviews` answers
@@ -93,7 +97,8 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       subIssuesSummary { total completed }
       closedByPullRequestsReferences(first: 20, includeClosedPrs: true) {
         nodes {
-          id number title state url merged reviewDecision
+          id number title state url merged reviewDecision headRefName baseRefName
+          repository { nameWithOwner }
           reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login } } } }
           latestOpinionatedReviews(first: 20) { nodes { state author { login } } }
         }
@@ -107,6 +112,9 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       state
       merged
       reviewDecision
+      headRefName
+      baseRefName
+      repository { nameWithOwner }
       reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login } } } }
       latestOpinionatedReviews(first: 20) { nodes { state author { login } } }
       closingIssuesReferences(first: 20) { nodes { id number title state url } }

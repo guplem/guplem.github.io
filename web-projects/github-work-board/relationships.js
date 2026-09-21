@@ -85,6 +85,10 @@ function readLink(value) {
     merged: value.merged === true,
     reviewDecision: typeof value.reviewDecision === "string" ? value.reviewDecision : "",
     reviewRequestCount: Number.isInteger(value.reviewRequests?.totalCount) ? value.reviewRequests.totalCount : 0,
+    // The branch this pull request adds, and the one it targets. A stack is
+    // read from these and from nothing else (ADR 0016).
+    headRefName: typeof value.headRefName === "string" ? value.headRefName : "",
+    baseRefName: typeof value.baseRefName === "string" ? value.baseRefName : "",
     askedAgain: askedToLookAgain(value.latestOpinionatedReviews?.nodes, value.reviewRequests?.nodes),
   };
 }
@@ -156,6 +160,8 @@ export function applyPullRequestState(items, byId) {
       merged: self.merged,
       reviewDecision: self.reviewDecision,
       reviewRequestCount: self.reviewRequestCount,
+      headRefName: self.headRefName,
+      baseRefName: self.baseRefName,
       askedAgain: self.askedAgain,
     };
   });
