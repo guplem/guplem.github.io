@@ -288,26 +288,35 @@ describe("the auto refresh schedule", () => {
     expect(readAutoRefresh(storage)).toBe("30s");
   });
 
-  test("a browser that was never told asks for nothing", () => {
+  // A board left open goes stale, so it asks by itself until told not to
+  // (ADR 0025). "Off" is still one choice away, and is still stored here.
+  test("a browser that was never told gets the default schedule", () => {
+    expect(readAutoRefresh(storage)).toBe("1m");
+  });
+
+  test("off is stored like any other choice, and read back", () => {
+    saveAutoRefresh(storage, "off");
     expect(readAutoRefresh(storage)).toBe("off");
   });
 
   // A schedule written by a newer build, or by hand, must never leave this
-  // browser asking GitHub on a cadence nobody chose.
-  test("a schedule this build does not know asks for nothing", () => {
+  // browser asking GitHub on a cadence nobody chose. It is read as no choice at
+  // all, which is the default: reading it as "off" would quietly switch off a
+  // feature the reader had switched on.
+  test("a schedule this build does not know falls back to the default", () => {
     storage.setItem(STORAGE_KEYS.autoRefresh, "every-second");
-    expect(readAutoRefresh(storage)).toBe("off");
+    expect(readAutoRefresh(storage)).toBe("1m");
   });
 
   test("signing out forgets it too", () => {
-    saveAutoRefresh(storage, "1m");
+    saveAutoRefresh(storage, "5m");
     forgetAllTokens(storage);
-    expect(readAutoRefresh(storage)).toBe("off");
+    expect(readAutoRefresh(storage)).toBe("1m");
     expect(storage.data.size).toBe(0);
   });
 
   test("a browser that refuses to store never breaks the page", () => {
     expect(() => saveAutoRefresh(refusingStorage, "30s")).not.toThrow();
-    expect(readAutoRefresh(refusingStorage)).toBe("off");
+    expect(readAutoRefresh(refusingStorage)).toBe("1m");
   });
 });

@@ -20,11 +20,30 @@
 // **An id here is written into `board.json`** the moment somebody picks one, so
 // it is as permanent as a colour id or a storage key.
 
-export const DEFAULT_REFRESH = "off";
+/**
+ * The schedule that asks nothing.
+ *
+ * It is its own name, and never "whatever the default is". One line in
+ * `app.js` once read `state.refreshId === DEFAULT_REFRESH` to mean "off". The
+ * day the default stopped being "off", that line inverted, and the timer would
+ * have started on "off" and never on the default. Nothing would have failed.
+ */
+export const OFF = "off";
+
+/**
+ * How often the board asks when nobody has chosen.
+ *
+ * **A minute, not 30 seconds.** The board also asks the moment a hidden tab is
+ * looked at again, so the interval decides only how fresh the board stays while
+ * somebody watches it, and work does not move in 30 seconds. A minute halves
+ * what a board left open on a second screen all day spends, and 30 seconds is
+ * one choice away for anybody who wants it (ADR 0025).
+ */
+export const DEFAULT_REFRESH = "1m";
 
 /** How often the board asks again. The first one never asks. */
 export const REFRESH_CHOICES = [
-  { id: "off", label: "Off", seconds: 0 },
+  { id: OFF, label: "Off", seconds: 0 },
   { id: "30s", label: "Every 30 seconds", seconds: 30 },
   { id: "1m", label: "Every minute", seconds: 60 },
   { id: "5m", label: "Every 5 minutes", seconds: 300 },
@@ -41,8 +60,9 @@ const BY_ID = new Map(REFRESH_CHOICES.map((one) => [one.id, one]));
 /**
  * A schedule the board knows.
  *
- * Anything else asks for nothing. A newer build, or somebody editing the file
- * by hand, must never leave the board asking GitHub on a schedule nobody chose.
+ * Anything else falls back to the default, never to off. A newer build, or
+ * somebody editing the file by hand, must not read as the reader switching
+ * the feature off (ADR 0025).
  */
 export function knownRefresh(value) {
   return typeof value === "string" && BY_ID.has(value) ? value : DEFAULT_REFRESH;
@@ -56,6 +76,11 @@ export function refreshSeconds(choice) {
 /**
  * Whether the board should ask GitHub again now.
  *
+ * A call that says nothing about the schedule asks nothing. The default here
+ * is `OFF` and not `DEFAULT_REFRESH`, because "nobody told me" and "nobody has
+ * chosen yet" are different questions: the second one is the reader's, and it
+ * is answered in `settings.js` where their choice is read.
+ *
  * @param choice the reader's schedule
  * @param lastAt when the board last finished reading, in milliseconds, or null
  *   when it has not read yet
@@ -63,7 +88,7 @@ export function refreshSeconds(choice) {
  * @param hidden whether the tab is out of sight
  * @param busy whether the board is already reading, or a save is on its way
  */
-export function refreshDue({ choice = DEFAULT_REFRESH, lastAt = null, now = 0, hidden = false, busy = false } = {}) {
+export function refreshDue({ choice = OFF, lastAt = null, now = 0, hidden = false, busy = false } = {}) {
   const seconds = refreshSeconds(choice);
   if (seconds === 0) return false;
 

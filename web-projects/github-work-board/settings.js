@@ -156,7 +156,7 @@ export function forgetAllTokens(storage) {
  *
  * It stays in this browser rather than in the board file, because it decides
  * what this one device spends of the reader's GitHub rate limit (ADR 0025).
- * A schedule this build does not know asks for nothing.
+ * A schedule this build does not know falls back to the default.
  */
 export function readAutoRefresh(storage) {
   return knownRefresh(readRaw(storage, STORAGE_KEYS.autoRefresh));
