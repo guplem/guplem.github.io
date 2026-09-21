@@ -61,7 +61,7 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` → `workItems.normalizeWorkItems` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` (smart order only) → `columns.groupIntoColumns` → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
 Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
@@ -185,6 +185,22 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   `reviewRequests.totalCount` says a person was asked. The first version of the
   column rules read it the other way and "Awaiting review" collected every
   fresh pull request (ADR 0011).
+- **The board asks GitHub twice: once for open work, once for what closed
+  today.** `state=open` is why "Done" was empty for so long: a merged pull
+  request is closed, so it never arrived (ADR 0017). Keep the second call
+  narrow. Measured on the real account: 13 items close in a day, 43 in three
+  days, over 100 in a week, against about 16 open cards.
+- **`since` on `/issues` filters on when a thing was last touched, not on
+  when it closed.** The answer holds work closed months ago that somebody
+  commented on this morning, so `finishedSince` has to narrow it. Drop that
+  filter and "Done today" fills with last year's work.
+- **`finishedAt` is the one answer to "did this land?"** A pull request is
+  finished when it merged, an issue when it closed, and a pull request closed
+  without merging is never finished. REST carries `merged_at` inside
+  `pull_request`, so no GraphQL call is needed to tell them apart.
+- **"Done today" is the one column the reader's order does not decide.** It
+  is a log, not a queue, so it reads newest first; `groupIntoColumns` does
+  that one reorder and nothing else (ADR 0017).
 - **A column is computed, never maintained.** The rules read what GitHub
   already knows, and the order of the checks in `automaticColumn` is the whole
   decision: merged beats everything, changes requested beats an approval. A
@@ -296,6 +312,7 @@ before calling it done.
 | [0014](adr/0014-a-note-box-appears-only-when-there-is-a-note.md) | A note box appears only when there is a note |
 | [0015](adr/0015-settings-hands-the-token-back.md) | Settings hands the token back, behind one warning |
 | [0016](adr/0016-the-smart-order-puts-a-stack-in-merge-order.md) | The smart order is oldest first, with each stack in merge order |
+| [0017](adr/0017-done-is-today-and-the-board-asks-a-second-question.md) | "Done" is today, and it takes a second question |
 
 ## What is not built yet
 

@@ -11,8 +11,11 @@ to make here, and nothing is stored anywhere except GitHub.
 - **What is waiting on you, above everything else.** A row of the pull requests
   where somebody asked for your review, longest-waiting first, because those
   cost other people time rather than yours.
-- **A board that keeps itself up to date.** Six columns, from To do to Done,
-  and a card moves itself when a pull request appears, when a reviewer is asked,
+- **What you finished today**, in the last column: everything of yours that
+  merged or closed since midnight, newest first. A pull request closed without
+  merging never appears, because it did not ship.
+- **A board that keeps itself up to date.** Six columns, from To do to Done
+  today, and a card moves itself when a pull request appears, when a reviewer is asked,
   when they answer, and when it merges. The button on a card opens a menu that
   moves it by hand when GitHub's answer is not the truth, and hands it back to
   the rules with one click.

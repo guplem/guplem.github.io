@@ -66,6 +66,23 @@ export function fetchAssignedIssues(token) {
 }
 
 /**
+ * The work assigned to this token's owner that has already closed.
+ *
+ * The board otherwise asks only for open work, so a merged pull request never
+ * reached it and "Done" was a column that could not fill (ADR 0017).
+ *
+ * `since` filters on when a thing was last touched, not on when it closed, so
+ * this answer also holds work closed months ago that somebody commented on
+ * this morning. `workItems.finishedSince` is what narrows it to the truth.
+ */
+export function fetchFinishedWork(token, since) {
+  const from = encodeURIComponent(typeof since === "string" ? since : "");
+  return call(token, `/issues?filter=assigned&state=closed&since=${from}&sort=updated&per_page=100`, {
+    need: PERMISSIONS.issuesRead,
+  });
+}
+
+/**
  * Everything GitHub itself links to an item: its parent issue, what blocks it,
  * and the pull requests that would close it.
  *
@@ -75,7 +92,7 @@ export function fetchAssignedIssues(token) {
  * not readable by another owner's token (ADR 0010).
  *
  * `includeClosedPrs` must stay true. A merged pull request is a closed one, so
- * leaving it out would hide exactly the work that belongs in "Done".
+ * leaving it out would hide exactly the work that belongs in "Done today".
  *
  * The two branch names are asked for because a stacked pull request is one
  * whose `baseRefName` is another's `headRefName`. That is the only honest way

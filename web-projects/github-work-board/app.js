@@ -23,6 +23,7 @@ import { AUTOMATIC, COLUMNS, groupIntoColumns, moveOptions } from "./columns.js"
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
   fetchAssignedIssues,
+  fetchFinishedWork,
   fetchRelationships,
   fetchReviewRequests,
   fetchBoardFile,
@@ -79,7 +80,7 @@ import {
 } from "./relationships.js";
 import { encodeTokenBackup, looksLikeBackup, readTokenBackup } from "./tokenBackup.js";
 import { describeTokenReach, suggestedTokenName } from "./tokenIdentity.js";
-import { countByKind, normalizeWorkItems, ownersOf, withoutItems } from "./workItems.js";
+import { countByKind, finishedSince, normalizeWorkItems, ownersOf, startOfToday, withoutItems } from "./workItems.js";
 
 const SAVE_DELAY_MS = 1200;
 const PROJECT_PATH = "web-projects/github-work-board";
@@ -906,6 +907,20 @@ async function inspectToken(entry) {
   const owners = ownersOf(items.map((item) => item.repository));
   updated = { ...updated, owners, itemCount: items.length };
 
+  // What landed today. A second question, because the first one asks only for
+  // open work and a merged pull request is closed (ADR 0017). A token that
+  // cannot answer it costs the board nothing but an empty "Done today".
+  const since = startOfToday(new Date());
+  const closed = await fetchFinishedWork(entry.token, since);
+  const finished = closed.ok ? finishedSince(normalizeWorkItems(closed.data), since) : [];
+  // Back to the raw rows, so the one merge in `connectAll` still de-duplicates
+  // everything two tokens both see. The token's own name and count stay on its
+  // open work: what it finished is not a measure of what it reaches (ADR 0007).
+  const finishedKeys = new Set(finished.map((one) => one.key));
+  const finishedRaw = (Array.isArray(closed.data) ? closed.data : []).filter((one) =>
+    finishedKeys.has(one?.node_id),
+  );
+
   // Waiting on you is not assigned to you, so it takes its own question. A
   // token that cannot answer it is not broken: the board simply shows nothing
   // from it (ADR 0013).
@@ -916,7 +931,7 @@ async function inspectToken(entry) {
   // from one owner is not readable by another owner's token (ADR 0010).
   const linked = await fetchRelationships(
     entry.token,
-    [...items, ...reviews].map((item) => item.key),
+    [...items, ...finished, ...reviews].map((item) => item.key),
   );
   links = linked.ok ? normalizeRelationships(linked.data) : {};
   rows.push({
@@ -961,7 +976,7 @@ async function inspectToken(entry) {
   }
 
   if (updated.grantedPermissions === null) updated = { ...updated, grantedPermissions: permissionsFingerprint() };
-  return { entry: updated, raw, rows, links, reviews };
+  return { entry: updated, raw: [...raw, ...finishedRaw], rows, links, reviews };
 }
 
 /** Ask every saved token, merge what they return, and show the board. */
