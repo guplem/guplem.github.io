@@ -10,7 +10,10 @@
   --rule: rgba(38, 34, 28, 0.18);
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, "Times New Roman", serif;
   background: var(--paper);
+  /* One deeper band at the top, then plain paper. Without no-repeat the body's
+     background tiles with the body's own height and paints a second band. */
   background-image: linear-gradient(180deg, var(--paper-deep) 0, var(--paper) 220px);
+  background-repeat: no-repeat;
   color: var(--ink);
 }
 
