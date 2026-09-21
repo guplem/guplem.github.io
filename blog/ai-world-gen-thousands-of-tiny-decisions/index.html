@@ -63,7 +63,7 @@
       </figure>
 
       <section>
-        <h2>A model that decides instead of writes</h2>
+        <h2 id="a-model-that-decides-instead-of-writes"><a class="heading-anchor" href="#a-model-that-decides-instead-of-writes">A model that decides instead of writes</a></h2>
         <p><a href="../../web-projects/ai-world-gen/">AI World Gen</a> started at the AI Hackathon Barcelona 2026. The idea: describe a place, and watch an AI build its map one tile at a time. The interesting question was never "can a model draw a map". It was: given what is around this tile, what goes here? That question is asked hundreds of times per map. Asking a chat model each time is slow, expensive, and turns a one-word answer into text you have to parse.</p>
         <p>Jev, made by TypeSafe and served through OpenRouter's decisions endpoint, is a different kind of model. You send it a <em>state</em> (a JSON object describing the situation) and a <em>typed question</em>: pick one of these options, or place this on a scale. It answers with a choice, a confidence and a probability for every option. It does not write text at all. It is built for speed (TypeSafe quotes tens of milliseconds for the model itself) and it is priced at about $0.04 per million input tokens, roughly fifty times less than the chat models I would otherwise have used for the same call. The exact bill is a section of its own below.</p>
 
@@ -118,7 +118,7 @@
 
 
       <section class="costs">
-        <h2>What it costs, really</h2>
+        <h2 id="what-it-costs-really"><a class="heading-anchor" href="#what-it-costs-really">What it costs, really</a></h2>
         <p>Here is the bill. OpenRouter's usage page for the week in which all eleven versions were drawn, back-filled and re-drawn shows 39.2 thousand requests to Jev, 79.1 million tokens, and a spend of $3.11. That is 2,018 tokens per decision (the state with the whole map in it), $0.039 per million tokens, and <strong>$0.00008 per decision</strong>: about eight thousandths of a cent. A 16 by 16 map is 256 decisions, so $0.020. A full test run of 38 maps is 3,008 decisions, so $0.24. The language model, Claude Sonnet 5, was called 7 times that week to write vocabularies, and those 7 calls cost $0.33: one vocabulary costs about the same as 594 decisions.</p>
         <figure class="chart">
 <svg viewBox="0 0 760 190" class="bars" role="img" aria-label="What one dollar buys: 12,605 Jev decisions, 13,749 per-cell calls to DeepSeek V4 Flash, 244 per-cell calls to Claude Sonnet 5, or 21 vocabularies from Claude Sonnet 5. Logarithmic scale." xmlns="http://www.w3.org/2000/svg">
@@ -156,7 +156,7 @@
       </section>
 
       <section>
-        <h2>Version one was a green blur</h2>
+        <h2 id="version-one-was-a-green-blur"><a class="heading-anchor" href="#version-one-was-a-green-blur">Version one was a green blur</a></h2>
         <div class="pair">
           <figure>
             <img src="../../web-projects/ai-world-gen/evaluation/results/v1/large-village-spiral.png" width="768" height="768" loading="lazy" alt="A 16 by 16 grid entirely of dark grass tiles, with one green tree near the top." />
@@ -172,7 +172,7 @@
       </section>
 
       <section>
-        <h2>Measuring instead of looking</h2>
+        <h2 id="measuring-instead-of-looking"><a class="heading-anchor" href="#measuring-instead-of-looking">Measuring instead of looking</a></h2>
         <p>The measurement lives in <a href="https://galtea.ai">Galtea</a>, an evaluation platform for AI products (where I work, so take this paragraph as a demonstration of the tool as much as a recommendation). The shape of it is simple. A <em>product</em> has <em>versions</em>. A version is judged against written <em>specifications</em>: sentences about what a good map is. Each specification has <em>metrics</em> that score a map from 0 to 1, and a <em>dataset</em> of test cases. A test case here is one seed: a preset, a grid size, a fill order and a random seed, so every version draws the same 38 worlds.</p>
         <p>Almost every metric is plain code in the project, not a model. "Doors sit in walls" is a loop over the door tiles. "One walkable region" is a flood fill. "The route reaches the edge" is a search. The one thing code cannot answer, "does this look like a village?", goes to a judge model, GPT-5.2, which reads the map as text and scores it. The specifications grew as the failures showed up: three at the start (barriers form structures, paths form routes, everything walkable is reachable), a fourth after version 4 ("a place reads as a place": doors in walls, walls as outlines, an enclosed room, ground in patches), and three more after version 7 (the vocabulary's own rules hold, routes lead to doors and off the map, the landmarks are there once and nothing floods the map). By the end there were 28 computed metrics and one judge.</p>
 
@@ -235,7 +235,7 @@
       </section>
 
       <section>
-        <h2>Eleven versions in twenty hours</h2>
+        <h2 id="eleven-versions-in-twenty-hours"><a class="heading-anchor" href="#eleven-versions-in-twenty-hours">Eleven versions in twenty hours</a></h2>
         <p>Version 1 was scored at 14:20 on 19 September. Version 11 at 09:49 the next morning. Each chart below is one specification, and each point is the mean score of that version over the same 38 seeds. The dotted grey chart is the judge. The numbers are in the table at the end.</p>
 
         <div class="small-multiples">
@@ -370,7 +370,7 @@
       </section>
 
       <section>
-        <h2>Regressions, and what the loop caught</h2>
+        <h2 id="regressions-and-what-the-loop-caught"><a class="heading-anchor" href="#regressions-and-what-the-loop-caught">Regressions, and what the loop caught</a></h2>
         <p>Three things I would not have learnt from looking at pictures.</p>
         <p><strong>A new metric rewrites history.</strong> Version 1 scored 0.99 on "paths form routes", because a map that is all corridor has no isolated path cell. When the path-share metric arrived later and every old version was rescored, v1 fell to 0.74. A version table is only comparable if every row is scored with the same rules, so every new metric was run back over every old map, and every new test seed was drawn again with each old version's own code. Read the charts knowing that; the scores are today's rules applied to yesterday's maps.</p>
         <p><strong>Every fix costs something, and the loop shows you the bill.</strong> The sampling floor in v6 made calmer maps and starved the rare types. The blueprint in v8 gave the map rooms and took a third of its vocabulary coverage. Version 11 fixed the flooded station and turned its corridors into stubs: path continuity fell from 0.73 to 0.58 in the same run that raised path share from 0.65 to 0.84. None of these were visible in the one map I would have looked at. All of them were visible in the mean over 38.</p>
@@ -388,7 +388,7 @@
       </section>
 
       <section class="one-call">
-        <h2>The same maps, one call each</h2>
+        <h2 id="the-same-maps-one-call-each"><a class="heading-anchor" href="#the-same-maps-one-call-each">The same maps, one call each</a></h2>
         <p>The cost chart above said the whole map in one call was cheap. Cheap is not the same as good, so I built it as a second mode of the generator and ran it through the same evaluation, as version <code>v-llm</code>. Same 38 seeds, same shipped vocabularies, same blueprint. The prompt gives Claude Sonnet 5 what the per-cell loop gives Jev, written once: every type with its rules and its target share, each planned room with its coordinates and the types its walls, door and inside allow, and the rules a good map follows. The model answers with the grid as rows of letters; a wrong shape or an unknown letter goes back to it with the list of problems, three attempts at most.</p>
         <p>The first real call taught me something before it drew anything. Left with its default settings, the model spent its entire 6,000-token budget thinking about an 8 by 8 village and returned an empty string: 68 seconds, $0.064, nothing to parse. With thinking turned off, the same call took under four seconds and half a cent. Every number below is with thinking off.</p>
         <figure class="chart">
@@ -437,20 +437,20 @@
       </section>
 
       <section>
-        <h2>Running the loop with an agent</h2>
+        <h2 id="running-the-loop-with-an-agent"><a class="heading-anchor" href="#running-the-loop-with-an-agent">Running the loop with an agent</a></h2>
         <p>Most of the eleven versions were written by an agent, Claude Code, working in a loop I set up and then mostly watched. One turn looked like this. Read the previous version's scores and the pictures where it lost. Write down one theory ("the model does not see enough of the map", "the sampling is adding noise", "the rules are prose, so they are advice"). Change the code with tests. Commit, so the version in Galtea records exactly what was measured. Run the 38 seeds. Compare. Write the result into the project's README, in one paragraph per version, so the next turn starts from the memory of this one.</p>
         <p>My part was smaller and, I think, the part that mattered. I said which theory to test first. When I saw a failure the numbers missed, I asked for a specification for it, which is how four rules became seven. I set the budget: 8 by 8 grids for the bulk of the seeds, and only three 16 by 16 maps, because a room needs space to exist but a large map costs eight times a small one. And I said when to stop: when the agent could no longer name a change it was confident would move a number, the loop had done its work for now.</p>
         <p>The agent also broke things. It once committed a version with a failing test, because a shell pipe hid the exit code. It once ran two evaluations against modules it was editing at the same time. Both were caught, one by the continuous integration check and one by the maps coming out wrong, and both became a written rule for the next turn. The loop is not a promise that every version is better. It is a promise that you will know.</p>
       </section>
 
       <section>
-        <h2>What is still wrong</h2>
+        <h2 id="what-is-still-wrong"><a class="heading-anchor" href="#what-is-still-wrong">What is still wrong</a></h2>
         <p>The corridors are stubs: a route between two doors is a shape, and shapes are the plan's job, so the next version should draw the paths the way it draws the rooms. Rooms are often empty, because the state says what the world lacks but not what a kitchen holds. Free-standing walls still split some maps in two. And rooms never share a wall, which real streets do all the time. Each of those has a number now, which is the point.</p>
         <p>You can <a href="../../web-projects/ai-world-gen/">try the generator</a> with your own OpenRouter key, read the <a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/ai-world-gen">code and the roadmap</a>, or look at <a href="https://github.com/guplem/guplem.github.io/tree/main/web-projects/ai-world-gen/evaluation/results">every map of every version</a>, which are committed to the repository next to their scores.</p>
       </section>
 
       <section class="data">
-        <h2>The numbers</h2>
+        <h2 id="the-numbers"><a class="heading-anchor" href="#the-numbers">The numbers</a></h2>
         <p>Mean score per specification over the same 38 seeds, with every metric as it stands today. A cell is highlighted when it moved by 0.05 or more against the previous version. The judge column is GPT-5.2 answering "how much does this map read as the setting?" on every map, from 0 to 1.</p>
         <div class="table-scroll">
           <table class="scores">

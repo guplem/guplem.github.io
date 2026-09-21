@@ -58,6 +58,10 @@ Options considered for the list of posts and the feed:
   Inter font stays self-hosted on every post (ADR 0005), and
   `scripts/fontSelfHosted.test.js` covers every post through the same reader
   the generators use.
+- **Every section heading is a link to itself.** Each `h2` to `h4` carries
+  an id and wraps its text in an anchor to that id, so a tap puts the section
+  in the address bar (as Wikipedia does) and a reader can share one section,
+  with no script. `scripts/blogPosts.test.js` checks every post.
 - **Charts and diagrams are inline SVG with the data in HTML** (a table or a
   paragraph), so a reader without the picture still has the numbers. They
   are written once; a post is dated content.

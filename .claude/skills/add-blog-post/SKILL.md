@@ -35,13 +35,13 @@ The page is plain HTML: the whole text in the file, no script that renders conte
 - the `BlogPosting` JSON-LD block with the same headline, description, date and author
 - the font preload and `fonts.css` at `../../resources/fonts/InterVariable.woff2` and `../../css/global/fonts.css`, then `variables.css`, `base.css`, `../blog.css`, `style.css`
 
-Body: the `.topbar` with the back link to `../` and the feed link, an `<article class="post">` with `.post-header` (kicker, `<h1>`, standfirst, `.post-byline` with the author link, a `<time>` and the reading time), sections with `<h2>`, `<figure>` with `<figcaption>` for every picture, inline SVG with `<title>` and `<desc>` for every diagram, and the `.page-footer`.
+Body: every `h2` to `h4` as `<h2 id="kebab-case-of-the-text"><a class="heading-anchor" href="#kebab-case-of-the-text">Text</a></h2>` (the test in `scripts/blogPosts.test.js` checks this), the `.topbar` with the back link to `../` and the feed link, an `<article class="post">` with `.post-header` (kicker, `<h1>`, standfirst, `.post-byline` with the author link, a `<time>` and the reading time), sections with `<h2>`, `<figure>` with `<figcaption>` for every picture, inline SVG with `<title>` and `<desc>` for every diagram, and the `.page-footer`.
 
 Write the prose under the "Writing style" section of the root `AGENTS.md`, in the first person: it is the site owner's voice.
 
 ## 4. Write `blog/<slug>/style.css`
 
-Give the post a look that serves its story. Scope every rule under a class you put on `<body>` (`.letter`, `.maptable`, a new one for this post) so nothing leaks into another post. Keep the top bar, byline and footer from `blog.css` recognisable. Fonts come from the system or from the self-hosted Inter; never from a third-party host.
+Give the post a look that serves its story. Scope every rule under a class you put on `<body>` (`.letter`, `.maptable`, a new one for this post) so nothing leaks into another post. Keep the top bar, byline and footer from `blog.css` recognisable. Fonts come from the system or from the self-hosted Inter; never from a third-party host. When the post changes the page background, set `::selection` under the body class so selected text stays readable.
 
 ## 5. Register the post
 
