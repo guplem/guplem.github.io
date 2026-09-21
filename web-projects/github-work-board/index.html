@@ -24,6 +24,10 @@
        screen and the settings screen. app.js clones it into each slot and fills
        the permission list from permissions.js (ADR 0005, ADR 0008). -->
   <template id="token-guide">
+    <p class="step-action">
+      <a class="button button-outline" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Open GitHub's token form</a>
+    </p>
+
     <div class="action">
       <p class="action-label">Resource owner</p>
       <div class="action-body">
@@ -66,9 +70,6 @@
       </div>
     </div>
 
-    <p class="step-action">
-      <a class="button button-outline" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Open GitHub's token form</a>
-    </p>
   </template>
 
   <!-- One menu for the whole board, pointed at whichever card opened it. A

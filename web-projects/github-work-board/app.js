@@ -66,7 +66,7 @@ import {
   updateToken,
 } from "./settings.js";
 import { skeletonCount } from "./skeletons.js";
-import { orderStacksForMerging } from "./stacks.js";
+import { orderStacksForMerging, stackPositions } from "./stacks.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
@@ -224,7 +224,7 @@ function buildCheckRow({ label, ok, detail }) {
  * column, because the pair is one piece of work (ADR 0010), so offering to move
  * it on its own would offer something that cannot happen.
  */
-function buildWorkItemCard(item, { withMenu = true, compact = false } = {}) {
+function buildWorkItemCard(item, { withMenu = true, compact = false, stack = null } = {}) {
   const card = document.createElement("li");
   card.className = "issue";
 
@@ -265,6 +265,19 @@ function buildWorkItemCard(item, { withMenu = true, compact = false } = {}) {
   kind.className = item.kind === "pull-request" ? "badge badge-pull" : "badge badge-issue";
   kind.textContent = item.kind === "pull-request" ? "PR" : "Issue";
   heading.append(kind);
+
+  // Three cards from one person are often one stack, and the row of reviews
+  // gives no other sign of it or of which to read first (ADR 0020).
+  if (stack) {
+    const inStack = document.createElement("span");
+    inStack.className = "badge badge-stack";
+    inStack.textContent = `Stack #${stack.stack} · ${stack.position} of ${stack.size}`;
+    inStack.title =
+      stack.position === 1
+        ? `The first of ${stack.size} stacked pull requests. Nothing is waiting on it.`
+        : `Number ${stack.position} of ${stack.size} stacked pull requests. #${stack.stack} merges first.`;
+    heading.append(inStack);
+  }
 
   if (item.isDraft) {
     const draft = document.createElement("span");
@@ -814,8 +827,9 @@ function renderBoard() {
   const waiting = sortWorkItems(withoutItems(state.reviews, state.items), reviewSortId(state.sortId), hasNote);
   element("reviews-count").textContent = String(waiting.length);
   element("reviews-empty").hidden = waiting.length > 0;
+  const stacked = stackPositions(waiting);
   element("reviews-list").replaceChildren(
-    ...waiting.map((item) => buildWorkItemCard(item, { withMenu: false })),
+    ...waiting.map((item) => buildWorkItemCard(item, { withMenu: false, stack: stacked[item.key] ?? null })),
   );
 
   const overrides = {};
@@ -1058,7 +1072,9 @@ async function connectAll() {
   }
   state.checks = checks;
   state.links = links;
-  state.reviews = uniqueByKey(waiting);
+  // Through the same step as the board's own items: a review card needs the
+  // branch names to know it is one of a stack (ADR 0020).
+  state.reviews = applyPullRequestState(uniqueByKey(waiting), links);
 
   saveTokens(storage, state.tokens);
   // Merging here, not per token, is what removes an item two tokens both see.

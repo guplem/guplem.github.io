@@ -109,3 +109,60 @@ export function orderStacksForMerging(groups) {
 
   return ordered;
 }
+
+/**
+ * Where each pull request sits in its stack, for the ones handed in.
+ *
+ * The row of pull requests waiting on the reader's review is a flat row of
+ * cards from other people, and three of them are often one stack. Nothing on
+ * the card said so, or said which one to read first (ADR 0020).
+ *
+ * **Only what was handed in is counted.** Somebody who asked for a review on
+ * two of their three gets a row holding two, and "1 of 2" is the truth about
+ * the row in front of the reader.
+ *
+ * A stack is named by the number of its bottom, which is the one that merges
+ * first. Anything standing on its own is left out: a badge reading "1 of 1" on
+ * every card is noise on every card.
+ *
+ * @param items work items, not groups
+ * @returns `{[key]: {stack, position, size}}` for anything in a stack of two
+ *   or more, where `position` counts from the bottom
+ */
+export function stackPositions(items) {
+  const list = (Array.isArray(items) ? items : []).filter((one) => one && typeof one === "object");
+  const groups = list.map((item) => ({ item, children: [] }));
+  const parentOf = new Map(groups.map((group) => [group, stackedUnder(group, groups)]));
+
+  const rootOf = new Map();
+  const depthOf = new Map();
+  for (const group of groups) {
+    let at = group;
+    let depth = 0;
+    const seen = new Set([group]);
+    // Walk down to the bottom. The seen set breaks a ring of retargeted
+    // branches, which must never hang the page.
+    for (let below = parentOf.get(at); below && !seen.has(below); below = parentOf.get(at)) {
+      at = below;
+      seen.add(at);
+      depth += 1;
+    }
+    rootOf.set(group, at);
+    depthOf.set(group, depth);
+  }
+
+  const sizeOf = new Map();
+  for (const group of groups) {
+    const root = rootOf.get(group);
+    sizeOf.set(root, (sizeOf.get(root) ?? 0) + 1);
+  }
+
+  const where = {};
+  for (const group of groups) {
+    const root = rootOf.get(group);
+    const size = sizeOf.get(root) ?? 1;
+    if (size < 2) continue;
+    where[group.item.key] = { stack: root.item.number, position: depthOf.get(group) + 1, size };
+  }
+  return where;
+}

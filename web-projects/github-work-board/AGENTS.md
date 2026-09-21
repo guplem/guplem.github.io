@@ -43,7 +43,7 @@ It is the short procedure for all of the above.
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
-| `stacks.js` | Yes | Which pull request sits on which, and the order a stack merges in (ADR 0016) |
+| `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in (ADR 0016), and where each one sits in it (ADR 0020) |
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
@@ -154,6 +154,14 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   search answers it.** `GET /issues` has no filter for it. Search also answers
   in a different shape: `repository_url` instead of a `repository` object, which
   is why `normalizeWorkItem` reads both (ADR 0013).
+- **Every list of work items goes through `applyPullRequestState`.** The
+  review row did not, so its cards carried no branch names and could not
+  know they were stacked. It comes from a different endpoint in a different
+  shape (ADR 0013) and was the only list skipping that step (ADR 0020).
+- **`stackPositions` counts only the items it is handed.** On the review row
+  that is the point: "1 of 2" is the truth about the row in front of the
+  reader, and counting a third they were not asked to review would be a
+  badge about somebody else's screen (ADR 0020).
 - **The review row defaults to the oldest first**, while the board defaults to
   the newest. A review waiting three weeks is the one to clear, and newest-first
   buries it. `reviewSortId` holds that one rule.
@@ -344,6 +352,7 @@ before calling it done.
 | [0017](adr/0017-done-is-today-and-the-board-asks-a-second-question.md) | "Done" is today, and it takes a second question |
 | [0018](adr/0018-five-columns-two-headings-and-a-screen-for-adding-a-token.md) | Five columns, two headings, and a screen for adding a token |
 | [0019](adr/0019-the-notes-say-whether-they-are-getting-through.md) | The notes say whether they are getting through |
+| [0020](adr/0020-a-review-card-says-which-stack-it-is-in.md) | A review card says which stack it is in, and where |
 
 ## What is not built yet
 
