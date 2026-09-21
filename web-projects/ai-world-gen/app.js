@@ -51,6 +51,7 @@ import {
   describeVocabularyText,
   formatVocabulary,
   generateVocabulary,
+  mapFileName,
   normaliseVocabulary,
   typeById,
 } from "./vocabulary.js";
@@ -801,12 +802,6 @@ function changeCellType(typeId) {
 /* Saving and loading                                                         */
 /* -------------------------------------------------------------------------- */
 
-/** The file name both downloads use: the world's name, with one extension. */
-function mapFileName(extension) {
-  const slug = (state.vocabulary.name || "world").replace(/[^a-z0-9]+/gi, "-").toLowerCase();
-  return `${slug}.${extension}`;
-}
-
 /** Hand a blob to the browser as a download. The link never reaches the screen. */
 function saveBlob(blob, fileName) {
   const url = URL.createObjectURL(blob);
@@ -832,7 +827,7 @@ function downloadMap() {
     plan: state.plan,
     grid: gridToJSON(state.grid),
   };
-  saveBlob(new Blob([JSON.stringify(document_, null, 2)], { type: "application/json" }), mapFileName("json"));
+  saveBlob(new Blob([JSON.stringify(document_, null, 2)], { type: "application/json" }), mapFileName(state.vocabulary.name, "json"));
 }
 
 /**
@@ -857,7 +852,7 @@ async function downloadMapImage() {
       styleId: state.styleId,
       varySprites: state.varySprites,
     });
-    saveBlob(blob, mapFileName("png"));
+    saveBlob(blob, mapFileName(state.vocabulary.name, "png"));
   } catch (error) {
     setStatus("map-status", error.message, "error");
   }

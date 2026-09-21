@@ -436,6 +436,22 @@ export function formatVocabulary(vocabulary) {
   return JSON.stringify(vocabulary, null, 2);
 }
 
+/**
+ * The file name of a downloaded map: the world's name, with one extension.
+ * The name comes from a model, so it can hold any letter. Every character that
+ * a file name must not carry becomes a dash, and a name that gives no letter
+ * at all becomes "world".
+ * @param {string} [name] the world's name
+ * @param {string} extension the extension, with no dot
+ */
+export function mapFileName(name, extension) {
+  const slug = (name || "")
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+  return `${slug || "world"}.${extension}`;
+}
+
 export function typeById(vocabulary, id) {
   return vocabulary?.elements?.find((one) => one.id === id) ?? null;
 }

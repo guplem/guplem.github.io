@@ -10,6 +10,7 @@ import {
   generateVocabulary,
   normaliseVocabulary,
   parseVocabulary,
+  mapFileName,
   typeById,
 } from "./vocabulary.js";
 
@@ -255,6 +256,21 @@ describe("describeVocabularyText and formatVocabulary", () => {
     const text = formatVocabulary(vocabulary);
     expect(text).toContain("\n");
     expect(JSON.parse(text)).toEqual(vocabulary);
+  });
+});
+
+describe("mapFileName", () => {
+  test("turns a world name into a file name", () => {
+    expect(mapFileName("The Village!", "png")).toBe("the-village.png");
+  });
+
+  test("drops the letters it cannot write and leaves no dash at an edge", () => {
+    expect(mapFileName("Åland", "json")).toBe("land.json");
+  });
+
+  test("falls back to world when the name gives no letters", () => {
+    expect(mapFileName("!!!", "png")).toBe("world.png");
+    expect(mapFileName(undefined, "json")).toBe("world.json");
   });
 });
 
