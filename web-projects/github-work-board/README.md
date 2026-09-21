@@ -98,9 +98,10 @@ others. GitHub cannot show you a token a second time either.
 3. On the other browser, paste it into the token box, on the welcome screen or
    in Settings. Every token comes back, with its name, and the board connects.
 
-To move a single token instead, press **Copy** on its row. **Show** prints it in
-the row if you would rather not use the clipboard. One token is visible at a
-time, and nothing is remembered: leave Settings and it is hidden again.
+To move a single token instead, press **Copy** on its row. The token is never
+printed on screen: it appears in the row only if your browser refuses the
+clipboard, which happens when you open `index.html` as a file instead of
+serving it. Even then it is forgotten as soon as you leave Settings.
 
 ## How to Run
 

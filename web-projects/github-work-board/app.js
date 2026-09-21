@@ -40,7 +40,7 @@ import {
   toggleInList,
 } from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
-import { escapeHtml, noteMenuLabel, revealLabel, say, sayEmptyBoard } from "./messages.js";
+import { escapeHtml, noteMenuLabel, say, sayEmptyBoard } from "./messages.js";
 import {
   CONNECTION_CHECKS,
   REQUIRED_PERMISSIONS,
@@ -359,11 +359,7 @@ function buildSkeletonTokenRow() {
   lines.append(buildSkeletonBar("11rem", "skeleton-input"), buildSkeletonBar("60%"));
   const actions = document.createElement("div");
   actions.className = "token-actions";
-  actions.append(
-    buildSkeletonBar("3.5rem", "skeleton-button"),
-    buildSkeletonBar("3.5rem", "skeleton-button"),
-    buildSkeletonBar("5.5rem", "skeleton-button"),
-  );
+  actions.append(buildSkeletonBar("3.5rem", "skeleton-button"), buildSkeletonBar("5.5rem", "skeleton-button"));
   row.append(lines, actions);
   return row;
 }
@@ -529,9 +525,9 @@ function buildTokenRow(entry, index) {
   reach.append(detail);
 
   // GitHub shows a token once and never again, so this browser holds the only
-  // copy. Both buttons hand it back, and both go through the warning (ADR 0015).
-  const shown = state.revealed.has(entry.id);
-  if (shown) {
+  // copy, and Copy hands it back through the warning (ADR 0015). The token in
+  // full is never offered: it only appears when the clipboard was refused.
+  if (state.revealed.has(entry.id)) {
     const full = document.createElement("code");
     full.className = "token-revealed";
     full.textContent = entry.token;
@@ -549,18 +545,6 @@ function buildTokenRow(entry, index) {
     askBeforeShowing(() => copyToClipboard(entry.token, copy, "Copy", () => revealToken(entry.id)));
   });
 
-  const reveal = document.createElement("button");
-  reveal.type = "button";
-  reveal.className = "button button-ghost";
-  reveal.textContent = revealLabel(shown);
-  reveal.addEventListener("click", () => {
-    if (shown) {
-      state.revealed.delete(entry.id);
-      return renderTokenList();
-    }
-    askBeforeShowing(() => revealToken(entry.id));
-  });
-
   const drop = document.createElement("button");
   drop.type = "button";
   drop.className = "button button-danger";
@@ -572,12 +556,17 @@ function buildTokenRow(entry, index) {
     connectAll();
   });
 
-  actions.append(copy, reveal, drop);
+  actions.append(copy, drop);
   row.append(reach, actions);
   return row;
 }
 
-/** Put one token on screen, and take every other one back off it. */
+/**
+ * Put one token on screen, and take every other one back off it.
+ *
+ * Only a refused clipboard calls this. Nothing on the row offers it, because
+ * Copy is enough on a browser that has a clipboard.
+ */
 function revealToken(id) {
   state.revealed = new Set([id]);
   renderTokenList();

@@ -30,12 +30,16 @@ are risks of the moment, not of the design.
 
 **Settings hands the token back, one token at a time, behind one warning.**
 
-- Each row in Settings carries **Copy** and **Show**. Copy puts the token on the
-  clipboard and puts nothing on screen. Show prints it in the row, selectable in
-  one gesture, for the reader who would rather not use the clipboard.
-- **One token is visible at a time.** Showing a second hides the first, leaving
-  Settings hides it, and signing out hides it. Nothing about a reveal is stored,
-  so the board never opens with a credential already on screen.
+- Each row in Settings carries **Copy**. It puts the token on the clipboard and
+  puts nothing on screen, which is the whole point: the safest way to move a
+  credential is the one that never draws it.
+- **The token is never printed on request.** It appears in the row only when
+  the browser refused the clipboard, because then there is no other way to get
+  it out. Opening `index.html` as a `file://` page is that case: it has no
+  clipboard at all.
+- **One token is visible at a time**, and only ever through that fallback.
+  Leaving Settings hides it, and signing out hides it. Nothing about a reveal
+  is stored, so the board never opens with a credential already on screen.
 - **A warning dialog comes first**, once a visit. It says the token is a
   password, that the clipboard is shared with every application on the computer
   and kept in a history, and where to revoke the token. It is shown once because
@@ -61,10 +65,16 @@ would do without meaning any harm.
 **Losing the browser stops meaning losing the set-up**, which is the whole
 point. The recovery is: copy the backup, paste it into the next browser.
 
-**A screen share of Settings can leak a token.** That is the cost, and it is the
-reader's to manage. The one-at-a-time rule and the never-stored reveal keep the
-window as small as the feature allows, and the warning names the risk before it
-can happen.
+**A screen share of Settings leaks nothing by itself.** Copy draws nothing, so
+the only way a token reaches the screen is a browser with no clipboard. The
+clipboard carries the rest of the risk, and the warning names it before it can
+happen.
+
+**A reader who would rather not use the clipboard has no button for it.** They
+can still read the token out of the browser's own storage, which is where it
+lives. A button for it was built first and removed: Copy covers the real need,
+and a second control that prints a credential earns its place only when
+somebody asks for it.
 
 **A backup is a credential file.** Told to keep it in a password manager, and
 nothing in the page writes it to disk: it goes to the clipboard, and no further.
@@ -75,6 +85,9 @@ anything else happens. Any other question belongs on the page.
 
 **Rejected: no way out at all.** It is where the board started, and the cost is
 a token that cannot be recovered from a mistake anybody can make in a minute.
+**Rejected: a Show button beside Copy.** Built, used, and taken out. Copy
+answers the need without putting a credential on screen, and the fallback
+covers the browser that cannot copy.
 **Rejected: a warning on every press.** It trains the reader to click it away,
 and a warning that is clicked away protects nobody. **Rejected: copy with no
 warning.** Copying is the safer of the two, but the clipboard is shared and

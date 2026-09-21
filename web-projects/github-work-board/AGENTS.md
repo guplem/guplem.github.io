@@ -203,12 +203,14 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   come back with overlapping owners and the same capped count. The reader names
   a token; the board only suggests a name from where it found work, and shows
   the token masked so a row can be matched against GitHub's own list (ADR 0007).
-- **Settings can show a token in full, and the board must never do it by
-  itself.** GitHub shows a token once, so this browser holds the only copy
-  (ADR 0015). Three rules hold: one token visible at a time, nothing about a
-  reveal is stored, and the warning dialog comes first. Showing the token is
-  no less safe than storing it (the same script can read either), but a token
-  on screen is a token in a screen share.
+- **Settings copies a token and never prints one on request.** GitHub shows a
+  token once, so this browser holds the only copy (ADR 0015). `Copy` is the one
+  control, and the warning dialog comes first. The token reaches the screen
+  only through `revealToken`, which just one caller uses: the way out when the
+  browser refused the clipboard, as a `file://` page always does. Do not add a
+  button for it; one was built and taken out. Printing a token is no less safe
+  than storing it (the same script reads either), but a token on screen is a
+  token in a screen share.
 - **A backup carries the token and the reader's name for it, nothing else.**
   Owners, counts and `canWriteBoard` are facts the board discovered, and they
   are stale the moment they are written down. **Never write a backup into
@@ -223,7 +225,7 @@ Data flow, saving: a keystroke → `boardDocument.writeNote` → (1.2 s later) `
   control that scrolls away leaves a reader with no way out. Do not add a second
   exit inside a screen; keep the one in the header (ADR 0008).
 - **A placeholder mirrors the row it replaces, line for line.** A token row is
-  two stacked lines and three buttons, so its placeholder is too. Two bars appended
+  two stacked lines and two buttons, so its placeholder is too. Two bars appended
   to a plain `div` render as one line with no gap, which is what the first
   version did: give the container `.token-lines` (ADR 0004).
 - **Build a screen from the four parts** (`.button` and its variants, `.input`,
