@@ -843,56 +843,118 @@
 }
 
 /* === Version log === */
-.version-log {
+/* === The story, one row per version ===
+   The maps sit on the left, the text on the right. One scroll container holds
+   every row, so the rows move together: a sideways scroll keeps the seed still
+   and shows what each version made of it. The text is a frozen column, pinned
+   to the right edge, and the maps pass behind it. */
+.version-scroll {
   margin: var(--sp-md) 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  container-type: inline-size;
+  padding-bottom: 2px;
+}
+
+.version-scroll:focus-visible {
+  outline: 2px solid var(--leaf);
+  outline-offset: 3px;
+}
+
+.version-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
-  gap: var(--sp-sm);
+  gap: var(--sp-lg);
+  width: max-content;
 }
 
-.version-log > div {
-  padding-left: var(--sp-md);
-  border-left: 2px solid var(--panel-border);
+.version-log > li {
+  display: flex;
+  align-items: stretch;
+  gap: var(--sp-md);
 }
 
-.version-log dt {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  color: var(--leaf);
-  margin-bottom: 2px;
-}
-
-.version-log dd {
-  font-size: 0.98rem;
-  line-height: 1.6;
-}
-
-/* === Filmstrip === */
-.filmstrip {
-  margin: var(--sp-lg) calc(-1 * var(--sp-md));
-}
-
-.filmstrip-track {
+.version-maps {
   display: flex;
   gap: var(--sp-xs);
-  overflow-x: auto;
-  padding: 0 var(--sp-md) var(--sp-xs);
-  scroll-snap-type: x proximity;
 }
 
-.filmstrip-track figure {
-  flex: 0 0 132px;
+.version-maps > figure {
+  flex: 0 0 200px;
   scroll-snap-align: start;
   margin: 0;
 }
 
-.filmstrip-track figcaption {
-  font-family: var(--mono);
-  text-align: center;
-  margin-top: 2px;
+.version-maps img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  border: 1px solid var(--panel-border);
 }
 
-.filmstrip > figcaption {
-  padding: 0 var(--sp-md);
+.version-maps figcaption {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-align: center;
+  margin-top: 3px;
+  color: var(--parchment-soft);
+}
+
+/* The text holds still while the maps scroll behind it. cqi is the width of
+   the part of the scroller the reader sees, which is the only way to say "two
+   thirds of the screen" here: a percentage would be a share of the whole
+   scrolling width, which is 38 maps long. The rem line is the fallback for a
+   browser without container queries. */
+.post .version-note {
+  position: sticky;
+  right: 0;
+  flex: 0 0 auto;
+  width: 26rem;
+  width: 64cqi;
+  background: var(--ground);
+  border-left: 2px solid var(--panel-border);
+  padding-left: var(--sp-md);
+}
+
+.post .version-name {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--leaf);
+  margin: 0 0 2px;
+}
+
+.post .version-note p + p {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* On a phone the text goes above its maps, still pinned, because two thirds of
+   a phone is too narrow to read and too narrow to see a map in. */
+@media (max-width: 640px) {
+  .version-log > li {
+    display: grid;
+    gap: var(--sp-xs);
+    justify-items: start;
+  }
+
+  .version-maps > figure {
+    flex: 0 0 68cqi;
+  }
+
+  .post .version-note {
+    grid-row: 1;
+    left: 0;
+    right: auto;
+    width: 100cqi;
+    border-left: 0;
+    padding-left: 0;
+  }
+}
 }
 
 /* === Table === */
