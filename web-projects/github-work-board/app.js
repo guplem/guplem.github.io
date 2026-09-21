@@ -70,7 +70,7 @@ import {
   permissionsFingerprint,
   tokenNeedsUpdate,
 } from "./permissions.js";
-import { DEFAULT_REFRESH, REFRESH_CHOICES, refreshDue } from "./refresh.js";
+import { DEFAULT_REFRESH, OFF, REFRESH_CHOICES, refreshDue } from "./refresh.js";
 import {
   DEFAULT_DATA_REPO_NAME,
   addToken,
@@ -1341,6 +1341,9 @@ async function connectAll({ quiet = false } = {}) {
     tokens: state.tokens.length,
   });
   setStatus(boardWritingToken(state.tokens) ? "Your board saves itself." : "No token can write your board file.");
+  // Here rather than only at start-up: a token connected after a sign-out has
+  // to start the schedule again, and there was none to start before.
+  applyAutoRefresh();
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1384,7 +1387,11 @@ function tickRefresh() {
 function applyAutoRefresh() {
   clearInterval(state.refreshTimer);
   state.refreshTimer = null;
-  if (state.refreshId === DEFAULT_REFRESH) return;
+  // "Off", not "the default": those were the same string once, and they are
+  // not the same idea (ADR 0025).
+  if (state.refreshId === OFF) return;
+  // Nothing to ask with, and nothing to ask about.
+  if (state.tokens.length === 0) return;
   state.refreshTimer = setInterval(tickRefresh, REFRESH_TICK_MS);
 }
 
@@ -1454,7 +1461,8 @@ function signOut() {
   clearTimeout(state.saveTimer);
   state.saveTimer = null;
   state.savePending = false;
-  // Nothing to ask GitHub with, so nothing should be asking.
+  // Back to what a fresh browser gets. Nothing starts, because `applyAutoRefresh`
+  // runs no timer without a token.
   state.refreshId = DEFAULT_REFRESH;
   state.lastReadAt = null;
   applyAutoRefresh();

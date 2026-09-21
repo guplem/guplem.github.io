@@ -11,6 +11,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
+import { DEFAULT_REFRESH, OFF } from "./refresh.js";
 import { SORT_OPTIONS } from "./sorting.js";
 import { COLUMN_IDS } from "./columns.js";
 import { KIND_FILTERS } from "./filters.js";
@@ -363,6 +364,23 @@ describe("a dark rule reaches the reader who chose dark (ADR 0024)", () => {
     const asked = [...css.matchAll(/:root:not\(\[data-theme="light"\]\)/g)].length;
     const chosen = [...css.matchAll(/:root\[data-theme="dark"\]/g)].length;
     expect(chosen).toBeGreaterThanOrEqual(asked);
+  });
+});
+
+// This one really happened, and nothing caught it. `applyAutoRefresh` read
+// `state.refreshId === DEFAULT_REFRESH` to mean "off", which was true only
+// while the default was "off". The day the default became a real schedule, the
+// line inverted: no timer on the default, and a useless timer on "off". Every
+// test stayed green, because no test runs `app.js` (ADR 0025).
+describe("off is not whatever the default happens to be (ADR 0025)", () => {
+  test("the page asks whether the schedule is off, never whether it is the default", () => {
+    const source = read("app.js");
+    expect(source).not.toMatch(/refreshId\s*===\s*DEFAULT_REFRESH/);
+    expect(source).toMatch(/refreshId\s*===\s*OFF/);
+  });
+
+  test("the two are different values, so the mistake is visible", () => {
+    expect(OFF).not.toBe(DEFAULT_REFRESH);
   });
 });
 

@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   DEFAULT_REFRESH,
+  OFF,
   REFRESH_CHOICES,
   SEARCH_CALLS_PER_TOKEN,
   SEARCH_BUDGET_PER_MINUTE,
@@ -24,10 +25,31 @@ describe("REFRESH_CHOICES", () => {
     }
   });
 
-  // Asking costs the reader's rate limit, so the board asks only when told to.
-  test("the board asks for nothing until the reader turns it on", () => {
-    expect(DEFAULT_REFRESH).toBe("off");
-    expect(REFRESH_CHOICES[0].id).toBe(DEFAULT_REFRESH);
+  // A board left open goes stale, and the reader cannot tell a quiet day from a
+  // board that stopped asking. So it asks by itself, and it asks every minute
+  // rather than every 30 seconds: the board also asks the moment a hidden tab
+  // is looked at again, so the interval only decides how fresh the board stays
+  // while somebody watches it, and a minute is fresh enough for work that
+  // moves in hours (ADR 0025).
+  test("the board asks every minute unless the reader says otherwise", () => {
+    expect(DEFAULT_REFRESH).toBe("1m");
+  });
+
+  // "Off" and "the default" were the same string once, and one line in
+  // `app.js` read `state.refreshId === DEFAULT_REFRESH` to mean "off". The day
+  // the default stopped being "off" that line inverted: the timer would never
+  // start on the default and would start, uselessly, on "off". Nothing would
+  // have failed.
+  test("off is its own thing, and is not whatever the default happens to be", () => {
+    expect(OFF).toBe("off");
+    expect(OFF).not.toBe(DEFAULT_REFRESH);
+    expect(REFRESH_CHOICES[0].id).toBe(OFF);
+    expect(refreshSeconds(OFF)).toBe(0);
+  });
+
+  test("the default is a schedule the board actually knows", () => {
+    expect(REFRESH_CHOICES.map((one) => one.id)).toContain(DEFAULT_REFRESH);
+    expect(refreshSeconds(DEFAULT_REFRESH)).toBeGreaterThan(0);
   });
 
   // The tightest GitHub budget is the search one: 30 calls a minute, measured
@@ -63,9 +85,15 @@ describe("refreshSeconds", () => {
     expect(refreshSeconds("5m")).toBe(300);
   });
 
-  test("off waits forever, and so does anything it does not know", () => {
-    expect(refreshSeconds("off")).toBe(0);
-    expect(refreshSeconds("banana")).toBe(0);
+  test("off waits forever", () => {
+    expect(refreshSeconds(OFF)).toBe(0);
+  });
+
+  // A schedule this build cannot read is treated as no choice at all, which is
+  // the default. Reading it as "off" would quietly switch a feature off that
+  // the reader had switched on, which is the worse of the two mistakes.
+  test("a schedule it does not know is treated as no choice, so the default", () => {
+    expect(refreshSeconds("banana")).toBe(refreshSeconds(DEFAULT_REFRESH));
   });
 });
 
@@ -109,8 +137,26 @@ describe("refreshDue", () => {
     expect(refreshDue({ choice: "30s", lastAt: at(50), now: at(10) })).toBe(true);
   });
 
-  test("never throws, whatever it is handed", () => {
+  // A call that says nothing about the schedule must not start a call to
+  // GitHub, whatever the default schedule happens to be.
+  test("never throws, and asks nothing, whatever it is handed", () => {
     expect(refreshDue({})).toBe(false);
     expect(refreshDue()).toBe(false);
+  });
+});
+
+describe("what the default costs the reader (ADR 0025)", () => {
+  // Measured against the live API: 5000 REST calls an hour, and one refresh
+  // spends 5 of them for each token. A reader with three tokens who leaves the
+  // board open on a second screen all day is the case that decides this.
+  test("three tokens on the default stay well inside the hourly budget", () => {
+    const perHour = (3600 / refreshSeconds(DEFAULT_REFRESH)) * 5 * 3;
+    expect(perHour).toBeLessThanOrEqual(5000 * 0.2);
+  });
+
+  // The tight budget is per minute, not per hour.
+  test("the default leaves the per-minute search budget almost untouched", () => {
+    const perMinute = (60 / refreshSeconds(DEFAULT_REFRESH)) * SEARCH_CALLS_PER_TOKEN * 3;
+    expect(perMinute).toBeLessThanOrEqual(SEARCH_BUDGET_PER_MINUTE * 0.2);
   });
 });
