@@ -18,10 +18,14 @@
 // 4. Being written. It is moving, and nobody is waiting.
 // 5. Not started.
 // 6. Nothing known, because the board could not ask about this one (ADR 0010).
-// 7. Finished. The count above the list already says how many.
+// 7. Finished. The row of pills above the list already says how many.
+//
+// **The list itself is folded away until somebody asks for it.** A card carries
+// one pill per child instead, painted with the colour of the column that child
+// sits in, so a parent says how its work is going in one glance and takes one
+// line while it does (ADR 0032).
 
-/** How many children a card shows before the rest fold away. */
-export const CHILDREN_SHOWN = 5;
+import { stateLabel } from "./columns.js";
 
 /** Nearest the top wants a person most. Anything not named here sits at 5. */
 const ORDER = ["needs-changes", "ready-to-merge", "awaiting-review", "ongoing", "todo"];
@@ -52,4 +56,44 @@ export function orderChildren(rows) {
     .map((row, at) => ({ row, at, rank: rank(row.columnId) }))
     .sort((one, other) => (one.rank === other.rank ? one.at - other.at : one.rank - other.rank))
     .map((one) => one.row);
+}
+
+/**
+ * How many children are closed, out of how many there are.
+ *
+ * Both numbers come from GitHub's own summary, which counts every child,
+ * including the ones past the twenty the board asks about. "Closed" is closed
+ * for any reason: work that was finished and work that was dropped are both
+ * off the list of things left to do (ADR 0032).
+ *
+ * Nothing here invents a number. An answer that is not a pair of whole counts
+ * reads as nothing, and more done than there are reads as all of them, which a
+ * parent whose children were closed and then reopened can really answer with.
+ */
+export function childrenProgress(summary) {
+  const whole = (value) => (Number.isInteger(value) && value >= 0 ? value : 0);
+  const total = whole(summary?.total);
+  const done = Math.min(whole(summary?.completed), total);
+  return { done, total, label: `${done}/${total}` };
+}
+
+/**
+ * What one pill says when the reader hovers it.
+ *
+ * A pill is a few pixels wide and carries no words of its own, so this is the
+ * whole of what it stands for: which issue it is, and where that issue sits.
+ */
+export function childSummary(row) {
+  const child = row?.item;
+  if (!child || typeof child !== "object") return "";
+  const title = typeof child.title === "string" ? child.title : "";
+  const name = `#${child.number ?? ""} ${title}`.trim();
+  const where = row.columnId === "" ? "the board could not ask GitHub about this one" : stateLabel(row.columnId);
+  return where === "" ? name : `${name} - ${where}`;
+}
+
+/** The words on the press that opens and closes the list. */
+export function childrenToggleLabel(open, count) {
+  if (open) return "Hide the children";
+  return count === 1 ? "Show the one child" : `Show the ${count} children`;
 }

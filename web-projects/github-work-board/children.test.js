@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { CHILDREN_SHOWN, orderChildren } from "./children.js";
+import { childSummary, childrenProgress, childrenToggleLabel, orderChildren } from "./children.js";
 
 const row = (number, columnId) => ({ item: { key: `I_${number}`, number }, columnId });
 
@@ -47,11 +47,65 @@ describe("orderChildren", () => {
   });
 });
 
-describe("how many are shown", () => {
-  // Enough to read at a glance from a column, and few enough that a card with
-  // twenty children is still a card (ADR 0032).
-  test("a card shows a handful, and the rest are one press away", () => {
-    expect(CHILDREN_SHOWN).toBeGreaterThanOrEqual(3);
-    expect(CHILDREN_SHOWN).toBeLessThanOrEqual(6);
+// The row of pills is the picture and this is the number beside it: how many
+// children are closed, out of how many there are. GitHub's own summary answers
+// both, so it counts every child, including the ones past the twenty the board
+// asked about (ADR 0032).
+describe("childrenProgress", () => {
+  test("reads closed out of total, and says it as one short line", () => {
+    expect(childrenProgress({ completed: 3, total: 8 })).toEqual({ done: 3, total: 8, label: "3/8" });
+  });
+
+  test("none done and all done both read", () => {
+    expect(childrenProgress({ completed: 0, total: 4 }).label).toBe("0/4");
+    expect(childrenProgress({ completed: 4, total: 4 }).label).toBe("4/4");
+  });
+
+  // Nothing here may invent a number: a card would state it as fact.
+  test("anything that is not a pair of counts reads as nothing", () => {
+    expect(childrenProgress(null)).toEqual({ done: 0, total: 0, label: "0/0" });
+    expect(childrenProgress({ completed: "3", total: 8 }).done).toBe(0);
+    expect(childrenProgress({ completed: -2, total: 8 }).done).toBe(0);
+  });
+
+  // A parent whose children were closed and then reopened can answer with more
+  // done than there are. The card must not print "9/8".
+  test("more done than there are reads as all of them", () => {
+    expect(childrenProgress({ completed: 9, total: 8 }).label).toBe("8/8");
+  });
+});
+
+// A pill is a few pixels wide, so the words it stands for live in its tooltip.
+describe("childSummary", () => {
+  test("says which issue it is and where it sits", () => {
+    expect(childSummary({ item: { number: 12, title: "Upload a dataset" }, columnId: "ongoing" })).toBe(
+      "#12 Upload a dataset - Ongoing",
+    );
+  });
+
+  // The board asks about one batch of children, so a parent with a great many
+  // has children it knows nothing about. Saying nothing beats guessing "To do".
+  test("a child the board could not ask about says so", () => {
+    expect(childSummary({ item: { number: 4, title: "Later" }, columnId: "" })).toBe(
+      "#4 Later - the board could not ask GitHub about this one",
+    );
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(childSummary(null)).toBe("");
+    expect(childSummary({ item: { number: 7 }, columnId: "done" })).toBe("#7 - Done");
+  });
+});
+
+describe("childrenToggleLabel", () => {
+  // The list is folded away until somebody asks for it, because the pills
+  // already answer "how is this going" (ADR 0032).
+  test("says what the press does, and how many are in the list", () => {
+    expect(childrenToggleLabel(false, 8)).toBe("Show the 8 children");
+    expect(childrenToggleLabel(true, 8)).toBe("Hide the children");
+  });
+
+  test("one child is not called children", () => {
+    expect(childrenToggleLabel(false, 1)).toBe("Show the one child");
   });
 });
