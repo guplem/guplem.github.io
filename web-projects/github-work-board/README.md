@@ -36,6 +36,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
 - **What you finished today**, in the last column: everything of yours that
   merged or closed since midnight, newest first. A pull request closed without
   merging never appears, because it did not ship.
+- **That column can be asked about other days.** Press the calendar in its
+  heading and choose Today, Yesterday, the last 7 days, or any two dates. The
+  heading says which days it is showing, and the days are in the link, so
+  "what we finished yesterday" is one paste into the standup chat. It opens on
+  today again next time.
 - **A board that keeps itself up to date.** Six columns, from To do to Done
   today, and a card moves itself when a pull request appears, when a reviewer is asked,
   when they answer, and when it merges. The button on a card opens a menu that

@@ -14,6 +14,7 @@
 // `history.replaceState`, never `pushState`: narrowing a list is not a place the
 // back button should return to.
 
+import { DEFAULT_RANGE, isDefaultRange, readRange } from "./doneRange.js";
 import { DEFAULT_KIND, readKind } from "./filters.js";
 import { DEFAULT_SORT_ID, readSortId } from "./sorting.js";
 
@@ -26,6 +27,9 @@ const LABEL_PARAM = "label";
 // row of pull requests waiting on the reader, by whose work each one is.
 // `reviewer` narrows the reader's own board, by who is in the review
 // (ADR 0028). Both are permanent, because they travel in saved links.
+// Which days the last column is about. It travels so that "what did we finish
+// yesterday" is one link somebody can paste into the standup (ADR 0034).
+const DONE_PARAM = "done";
 const ASSIGNEE_PARAM = "assignee";
 const REVIEWER_PARAM = "reviewer";
 
@@ -56,11 +60,12 @@ export function readStateFromSearch(search) {
     labels: readList(params, LABEL_PARAM),
     assignees: readList(params, ASSIGNEE_PARAM),
     reviewers: readList(params, REVIEWER_PARAM),
+    doneRange: readRange(params.get(DONE_PARAM) ?? DEFAULT_RANGE),
   };
 }
 
 /** The search string for a view, or an empty string when nothing needs saying. */
-export function buildSearch({ sortId, view, kind, repositories, labels, assignees, reviewers } = {}) {
+export function buildSearch({ sortId, view, kind, repositories, labels, assignees, reviewers, doneRange } = {}) {
   const params = new URLSearchParams();
   const chosenView = readView(view);
   const chosenKind = readKind(kind);
@@ -82,6 +87,8 @@ export function buildSearch({ sortId, view, kind, repositories, labels, assignee
   for (const login of Array.isArray(reviewers) ? reviewers : []) {
     if (typeof login === "string" && login !== "") params.append(REVIEWER_PARAM, login);
   }
+
+  if (!isDefaultRange(doneRange)) params.append(DONE_PARAM, readRange(doneRange));
 
   const search = params.toString();
   return search === "" ? "" : `?${search}`;

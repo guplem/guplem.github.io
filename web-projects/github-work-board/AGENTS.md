@@ -47,6 +47,7 @@ It is the short procedure for all of the above.
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
 | `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
+| `doneRange.js` | Yes | Which days the last column is about: the presets, every midnight boundary in the reader's clock, the words in its heading, and the written form a link carries (ADR 0034) |
 | `children.js` | Yes | The order the children of an issue read in, the count of closed ones beside their pills, and the words on the press that opens the list (ADR 0032) |
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
 | `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, and filling one in (ADR 0031) |
@@ -74,7 +75,7 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
 Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025).
 Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
@@ -335,13 +336,18 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   days, over 100 in a week, against about 16 open cards.
 - **`since` on `/issues` filters on when a thing was last touched, not on
   when it closed.** The answer holds work closed months ago that somebody
-  commented on this morning, so `finishedSince` has to narrow it. Drop that
-  filter and "Done today" fills with last year's work.
+  commented on this morning, so `finishedBetween` has to narrow it at both
+  ends. Drop that filter and the last column fills with last year's work; drop
+  the far end and "Done yesterday" also shows today (ADR 0034).
+- **The last column is a range, and only `doneRange.js` says where a day
+  starts.** The range travels in the link, so its written forms are permanent,
+  exactly like a sort id. Changing it asks GitHub again, because the range is
+  the window in the call (ADR 0034).
 - **`finishedAt` is the one answer to "did this land?"** A pull request is
   finished when it merged, an issue when it closed, and a pull request closed
   without merging is never finished. REST carries `merged_at` inside
   `pull_request`, so no GraphQL call is needed to tell them apart.
-- **"Done today" is the one column the reader's order does not decide.** It
+- **The last column is the one the reader's order does not decide.** It
   is a log, not a queue, so it reads newest first; `groupIntoColumns` does
   that one reorder and nothing else (ADR 0017).
 - **A column is computed, never maintained.** The rules read what GitHub
@@ -512,6 +518,7 @@ before calling it done.
 | [0031](adr/0031-a-line-you-copy-from-a-card-is-written-by-the-reader.md) | A line you copy from a card is written by the reader |
 | [0032](adr/0032-the-children-read-by-what-wants-a-person.md) | The children are a row of pills, and the list is one press away |
 | [0033](adr/0033-the-board-draws-its-own-tooltip.md) | The board draws its own tooltip |
+| [0034](adr/0034-the-last-column-takes-a-range-of-days.md) | The last column takes a range of days, and the range is in the link |
 
 ## What is not built yet
 
