@@ -120,6 +120,9 @@ export function fetchFinishedWork(token, since) {
  * changes, say whose turn it is (ADR 0011). `latestOpinionatedReviews` answers
  * one review per reviewer and leaves out plain comments, which carry no
  * verdict.
+ *
+ * `name` and `avatarUrl` are asked for on both the requested reviewer and the
+ * review's author so a card can draw a face for each of them (ADR 0028).
  */
 const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
   nodes(ids: $ids) {
@@ -133,8 +136,8 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
         nodes {
           id number title state url merged reviewDecision headRefName baseRefName
           repository { nameWithOwner }
-          reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login } } } }
-          latestOpinionatedReviews(first: 20) { nodes { state author { login } } }
+          reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
+          latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
         }
       }
     }
@@ -149,8 +152,8 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       headRefName
       baseRefName
       repository { nameWithOwner }
-      reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login } } } }
-      latestOpinionatedReviews(first: 20) { nodes { state author { login } } }
+      reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
+      latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
       closingIssuesReferences(first: 20) { nodes { id number title state url } }
     }
   }

@@ -40,6 +40,12 @@ anywhere except GitHub.
   of the issue it closes, an issue says what it is part of, and anything waiting
   on unfinished work is marked **Blocked**. All of it read from GitHub's own
   relationships, never guessed from a description.
+- **See who each piece of work is with, and narrow to one person by tapping
+  their face.** A pull request waiting for your review shows whose work it is.
+  Your own pull requests show everybody in the review instead, with a ring
+  saying what each one is doing: asked for changes, has not reviewed yet, or
+  approved. That is two separate filters, one for each list, and a link carries
+  both.
 - **Filter by kind, repository or label.** Two labels means either of them; a
   kind plus a repository means both. The filters go into the address bar too, so
   "everything tagged urgent in this repository" is a link.

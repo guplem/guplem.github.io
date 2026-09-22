@@ -34,8 +34,10 @@ Four rules hold the decision up:
    `localStorage`, and the only one that knows the key. `invariants.test.js`
    fails when a second file learns either.
 2. **One file sends it.** `gateway.js` is the only module that calls the
-   network, and it sends the token to `api.github.com` and nowhere else. The
-   same test pins the host list.
+   network with the token, and it sends that token to `api.github.com` and
+   nowhere else. The same test pins the host list. `app.js` loads a face's
+   picture straight from `avatars.githubusercontent.com`, with no token
+   attached (ADR 0028); that call carries nothing this rule protects.
 3. **The token never reaches the address bar.** Root ADR 0006 already forbids
    sensitive values in URL state; here a test enforces it, because a URL is
    copied into chat messages and written to server logs.

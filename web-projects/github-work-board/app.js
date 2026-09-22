@@ -48,8 +48,11 @@ import {
   DEFAULT_KIND,
   KIND_FILTERS,
   activeFilterCount,
+  availableAssignees,
   availableLabels,
   availableRepositories,
+  availableReviewers,
+  filterByPerson,
   filterWorkItems,
   toggleInList,
 } from "./filters.js";
@@ -93,6 +96,7 @@ import { skeletonCount } from "./skeletons.js";
 import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
 import { cardMenuRows } from "./cardMenu.js";
 import { readTitle } from "./titles.js";
+import { initialsOf, personLabel } from "./people.js";
 import { LOW, NORMAL, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
@@ -173,6 +177,10 @@ const state = {
   kind: DEFAULT_KIND,
   repositories: [],
   labels: [],
+  // Two filters over two lists: the row of reviews narrows by whose work each
+  // pull request is, and the board narrows by who is in the review (ADR 0028).
+  assignees: [],
+  reviewers: [],
   loading: false,
 };
 
@@ -413,6 +421,27 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   link.append(document.createTextNode(read.description));
   card.append(link);
 
+  // Who this is about. On a review card that is whose work it is; on the
+  // reader's own card it is who is in the review, each face carrying what the
+  // board waits on them for (ADR 0028).
+  const faces = withMenu
+    ? buildFaces(item.reviewers, {
+        state: true,
+        chosen: state.reviewers,
+        onToggle: (login) => {
+          state.reviewers = toggleInList(state.reviewers, login);
+          afterFilterChange();
+        },
+      })
+    : buildFaces(item.assignees, {
+        chosen: state.assignees,
+        onToggle: (login) => {
+          state.assignees = toggleInList(state.assignees, login);
+          afterFilterChange();
+        },
+      });
+  if (faces) card.append(faces);
+
   if (item.labels.length > 0) {
     const labels = document.createElement("p");
     labels.className = "issue-labels";
@@ -582,6 +611,59 @@ function paintTheme() {
   else document.documentElement.setAttribute("data-theme", theme);
 }
 
+/**
+ * One person's face, which is also the button that narrows the list to them.
+ *
+ * The picture comes from GitHub and can fail to arrive: the circle carries the
+ * person's initials underneath, so a face that never loads still says who it is
+ * (ADR 0028).
+ *
+ * @param person `{login, name, avatarUrl}`
+ * @param state what the board is waiting on them for, or "" on a review card
+ * @param pressed whether the list is already narrowed to them
+ */
+function buildFace(person, state, pressed, onToggle) {
+  const face = document.createElement("button");
+  face.type = "button";
+  face.className = "avatar";
+  if (state !== "") face.setAttribute("data-review", state);
+  face.setAttribute("aria-pressed", pressed ? "true" : "false");
+  const says = personLabel(person, state);
+  face.title = says;
+  face.setAttribute("aria-label", `Show only ${says}`);
+
+  const initials = document.createElement("span");
+  initials.className = "avatar-initials";
+  initials.textContent = initialsOf(person);
+  face.append(initials);
+
+  if (person.avatarUrl !== "") {
+    const picture = document.createElement("img");
+    picture.className = "avatar-picture";
+    picture.src = person.avatarUrl;
+    picture.alt = "";
+    picture.loading = "lazy";
+    // Nothing to report and nothing the reader can do: the initials are
+    // already there, so the picture simply leaves.
+    picture.addEventListener("error", () => picture.remove());
+    face.append(picture);
+  }
+
+  face.addEventListener("click", onToggle);
+  return face;
+}
+
+/** The row of faces on a card, or nothing when there is nobody to draw. */
+function buildFaces(people, { state = false, chosen, onToggle }) {
+  if (!Array.isArray(people) || people.length === 0) return null;
+  const row = document.createElement("p");
+  row.className = "issue-people";
+  for (const person of people) {
+    row.append(buildFace(person, state ? (person.state ?? "") : "", chosen.includes(person.login), () => onToggle(person.login)));
+  }
+  return row;
+}
+
 /** One filter chip. Pressed or not, and it says which through `aria-pressed`. */
 function buildChip(label, pressed, onToggle) {
   const chip = document.createElement("button");
@@ -620,6 +702,30 @@ function renderFilters() {
     ),
   );
 
+  // Only offered when the list can actually use it, exactly like the
+  // repository chips (ADR 0009).
+  const reviewers = availableReviewers(state.items);
+  element("reviewer-group").hidden = reviewers.length < 2;
+  element("reviewer-filters").replaceChildren(
+    ...reviewers.map((person) =>
+      buildChip(person.name, state.reviewers.includes(person.login), () => {
+        state.reviewers = toggleInList(state.reviewers, person.login);
+        afterFilterChange();
+      }),
+    ),
+  );
+
+  const assignees = availableAssignees(withoutItems(state.reviews, state.items));
+  element("assignee-group").hidden = assignees.length < 2;
+  element("assignee-filters").replaceChildren(
+    ...assignees.map((person) =>
+      buildChip(person.name, state.assignees.includes(person.login), () => {
+        state.assignees = toggleInList(state.assignees, person.login);
+        afterFilterChange();
+      }),
+    ),
+  );
+
   const labels = availableLabels(state.items);
   element("label-group").hidden = labels.length === 0;
   element("label-filters").replaceChildren(
@@ -642,6 +748,8 @@ function clearFilters() {
   state.kind = DEFAULT_KIND;
   state.repositories = [];
   state.labels = [];
+  state.assignees = [];
+  state.reviewers = [];
   afterFilterChange();
 }
 
@@ -970,7 +1078,7 @@ function lowPriorityKeys(items) {
 function renderBoard() {
   paintTheme();
   const hasNote = (key) => readNote(state.board, key).trim() !== "";
-  const visible = filterWorkItems(state.items, state);
+  const visible = filterByPerson(filterWorkItems(state.items, state), state.reviewers, "reviewers");
   const ordered = sortWorkItems(visible, state.sortId, hasNote);
   // The stack pass runs on the grouped board, not on the items: a pull request
   // travels inside the card of the issue it closes, so the card is what moves.
@@ -988,7 +1096,11 @@ function renderBoard() {
 
   // The row above the columns. It follows the chosen order, and with no choice
   // made it puts the longest-waiting first (ADR 0013).
-  const queued = sortWorkItems(withoutItems(state.reviews, state.items), reviewSortId(state.sortId), hasNote);
+  const queued = sortWorkItems(
+    filterByPerson(withoutItems(state.reviews, state.items), state.assignees, "assignees"),
+    reviewSortId(state.sortId),
+    hasNote,
+  );
   // The row is ordered by the same rules as a column, in the same order: the
   // stacks first, then the cards the reader pushed down (ADR 0016, ADR 0026).
   // The row is flat and a column holds groups, which is the only difference.

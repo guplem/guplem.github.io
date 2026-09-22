@@ -3,8 +3,11 @@ import {
   DEFAULT_KIND,
   KIND_FILTERS,
   activeFilterCount,
+  availableAssignees,
   availableLabels,
   availableRepositories,
+  availableReviewers,
+  filterByPerson,
   filterWorkItems,
   readKind,
   toggleInList,
@@ -145,5 +148,104 @@ describe("activeFilterCount", () => {
     expect(activeFilterCount({ kind: "all", repositories: [], labels: [] })).toBe(0);
     expect(activeFilterCount({ kind: "issue" })).toBe(1);
     expect(activeFilterCount({ kind: "issue", repositories: ["a"], labels: ["b", "c"] })).toBe(4);
+  });
+});
+
+describe("by person", () => {
+  const withPeople = (key, field, logins) => ({
+    key,
+    kind: "pull-request",
+    [field]: logins.map((login) => ({ login, name: login, avatarUrl: "" })),
+  });
+  const keys = (list) => list.map((one) => one.key);
+
+  // Two lists, two questions. The review row asks whose work this is, so it
+  // narrows by assignee. The board asks who is in the review, so it narrows by
+  // reviewer (ADR 0028).
+  test("narrows a list to the work one person is on", () => {
+    const row = [
+      withPeople("a", "assignees", ["ana"]),
+      withPeople("b", "assignees", ["leo"]),
+      withPeople("c", "assignees", ["ana", "leo"]),
+    ];
+    expect(keys(filterByPerson(row, ["ana"], "assignees"))).toEqual(["a", "c"]);
+  });
+
+  // The rule every filter here follows: within one kind the values widen
+  // (ADR 0009). Two people means either of them, never both.
+  test("two people means either of them", () => {
+    const row = [
+      withPeople("a", "reviewers", ["ana"]),
+      withPeople("b", "reviewers", ["leo"]),
+      withPeople("c", "reviewers", ["sam"]),
+    ];
+    expect(keys(filterByPerson(row, ["ana", "leo"], "reviewers"))).toEqual(["a", "b"]);
+  });
+
+  test("nobody chosen hides nothing", () => {
+    const row = [withPeople("a", "assignees", ["ana"]), withPeople("b", "assignees", [])];
+    expect(keys(filterByPerson(row, [], "assignees"))).toEqual(["a", "b"]);
+  });
+
+  test("work with nobody on it is hidden once somebody is chosen", () => {
+    const row = [withPeople("a", "assignees", ["ana"]), withPeople("b", "assignees", [])];
+    expect(keys(filterByPerson(row, ["ana"], "assignees"))).toEqual(["a"]);
+  });
+
+  test("does not reorder or change the list it was given", () => {
+    const row = [withPeople("a", "assignees", ["ana"]), withPeople("b", "assignees", ["ana"])];
+    const out = filterByPerson(row, ["ana"], "assignees");
+    expect(out).not.toBe(row);
+    expect(keys(row)).toEqual(["a", "b"]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(filterByPerson(null, ["ana"], "assignees")).toEqual([]);
+    expect(filterByPerson([{ key: "a" }], ["ana"], "assignees")).toEqual([]);
+  });
+});
+
+describe("who a list can be narrowed by", () => {
+  const person = (login) => ({ login, name: login, avatarUrl: "" });
+
+  test("every assignee the row mentions, each once, in name order", () => {
+    const row = [
+      { assignees: [person("leo"), person("ana")] },
+      { assignees: [person("ana")] },
+      { assignees: [] },
+    ];
+    expect(availableAssignees(row).map((one) => one.login)).toEqual(["ana", "leo"]);
+  });
+
+  test("every reviewer the board mentions, each once", () => {
+    const board = [{ reviewers: [person("sam")] }, { reviewers: [person("sam"), person("ana")] }, {}];
+    expect(availableReviewers(board).map((one) => one.login)).toEqual(["ana", "sam"]);
+  });
+
+  // The chip needs a picture and a name, so the whole person comes back and
+  // not only the login.
+  test("each one comes back whole, so a face can be drawn", () => {
+    const row = [{ assignees: [{ login: "ana", name: "Ana Diaz", avatarUrl: "u" }] }];
+    expect(availableAssignees(row)).toEqual([{ login: "ana", name: "Ana Diaz", avatarUrl: "u" }]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(availableAssignees(null)).toEqual([]);
+    expect(availableReviewers([null, 7, {}])).toEqual([]);
+  });
+});
+
+describe("activeFilterCount counts the people too", () => {
+  // The "clear" button appears only when something is narrowing the list. A
+  // reader who narrowed by a face and nothing else still needs the way out.
+  test("a person chosen counts as a narrowing", () => {
+    expect(activeFilterCount({ assignees: ["ana"] })).toBe(1);
+    expect(activeFilterCount({ reviewers: ["ana", "leo"] })).toBe(2);
+    expect(activeFilterCount({ assignees: ["ana"], reviewers: ["leo"], labels: ["bug"] })).toBe(3);
+  });
+
+  test("nobody chosen narrows nothing", () => {
+    expect(activeFilterCount({})).toBe(0);
+    expect(activeFilterCount({ assignees: [], reviewers: [] })).toBe(0);
   });
 });

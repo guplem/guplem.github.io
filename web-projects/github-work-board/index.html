@@ -241,6 +241,14 @@
             <h3 class="column-name" id="reviews-heading">Pull requests waiting for your review</h3>
             <span id="reviews-count" class="badge column-count">0</span>
           </div>
+          <!-- The one filter this row has: whose work each pull request is
+               (ADR 0009, ADR 0028). It is hidden until two people appear. -->
+          <div class="filters reviews-filters" id="assignee-group" hidden>
+            <div class="filter-group">
+              <p class="filter-label">Assignee</p>
+              <div class="chips" id="assignee-filters" role="group" aria-label="Assignee"></div>
+            </div>
+          </div>
           <p id="reviews-empty" class="column-empty" hidden>Nothing is waiting for your review.</p>
           <ul id="reviews-list" class="issues reviews-list"></ul>
         </section>
@@ -257,7 +265,13 @@
             <p class="filter-label">Repository</p>
             <div class="chips" id="repository-filters" role="group" aria-label="Repository"></div>
           </div>
-          <div class="filter-group" id="label-group" hidden>
+          <!-- Who is in the review, on the reader's own work. Tapping a face on a
+                 card presses the same chip (ADR 0028). -->
+            <div class="filter-group" id="reviewer-group" hidden>
+              <p class="filter-label">Reviewer</p>
+              <div class="chips" id="reviewer-filters" role="group" aria-label="Reviewer"></div>
+            </div>
+            <div class="filter-group" id="label-group" hidden>
             <p class="filter-label">Label</p>
             <div class="chips" id="label-filters" role="group" aria-label="Label"></div>
           </div>

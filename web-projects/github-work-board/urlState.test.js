@@ -9,6 +9,8 @@ const DEFAULTS = {
   kind: DEFAULT_KIND,
   repositories: [],
   labels: [],
+  assignees: [],
+  reviewers: [],
 };
 
 describe("the add-token view", () => {
@@ -90,7 +92,15 @@ describe("buildSearch", () => {
   });
 
   test("round-trips a filtered board", () => {
-    const state = { sortId: "title", view: "board", kind: "issue", repositories: ["me/a"], labels: ["bug"] };
+    const state = {
+      sortId: "title",
+      view: "board",
+      kind: "issue",
+      repositories: ["me/a"],
+      labels: ["bug"],
+      assignees: ["ana"],
+      reviewers: ["leo"],
+    };
     expect(readStateFromSearch(buildSearch(state))).toEqual(state);
   });
 
@@ -106,5 +116,34 @@ describe("buildSearch", () => {
   // (root ADR 0006, ADR 0001).
   test("writes nothing it was not asked for", () => {
     expect(buildSearch({ sortId: "title", token: "github_pat_11SECRET" })).toBe("?sort=title");
+  });
+});
+
+describe("the two person filters travel in the link (ADR 0009, ADR 0028)", () => {
+  // Two filters over two different lists, so two names. A reader with both
+  // chosen has both in one link, and the code, not a guess, says which list
+  // each one narrows.
+  test("the assignee narrows the review row, the reviewer narrows the board", () => {
+    const search = buildSearch({ ...DEFAULTS, assignees: ["ana"], reviewers: ["leo"] });
+    expect(search).toContain("assignee=ana");
+    expect(search).toContain("reviewer=leo");
+  });
+
+  test("round-trips, one parameter per person", () => {
+    const read = readStateFromSearch("?assignee=ana&assignee=leo&reviewer=sam");
+    expect(read.assignees).toEqual(["ana", "leo"]);
+    expect(read.reviewers).toEqual(["sam"]);
+  });
+
+  test("nobody chosen says nothing", () => {
+    expect(buildSearch({ ...DEFAULTS, assignees: [], reviewers: [] })).toBe("");
+    expect(readStateFromSearch("").assignees).toEqual([]);
+    expect(readStateFromSearch("").reviewers).toEqual([]);
+  });
+
+  // A login cannot hold a comma today, and the board still never joins values
+  // into one parameter: the rule is the encoder's, not the value's (ADR 0009).
+  test("a person is encoded like every other value", () => {
+    expect(buildSearch({ ...DEFAULTS, assignees: ["a b"] })).toContain("assignee=a+b");
   });
 });

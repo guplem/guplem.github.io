@@ -15,6 +15,8 @@
 // This module reads that answer and never throws: one unreadable node must not
 // cost the relationships of every other item.
 
+import { reviewPeople } from "./people.js";
+
 const EMPTY = Object.freeze({
   self: null,
   parent: null,
@@ -90,6 +92,10 @@ function readLink(value) {
     headRefName: typeof value.headRefName === "string" ? value.headRefName : "",
     baseRefName: typeof value.baseRefName === "string" ? value.baseRefName : "",
     askedAgain: askedToLookAgain(value.latestOpinionatedReviews?.nodes, value.reviewRequests?.nodes),
+    // Everybody in the review, and what each of them is doing about it. The
+    // card draws them so the reader can see who is blocking it and who they
+    // can chase (ADR 0028).
+    reviewers: reviewPeople(value.reviewRequests, value.latestOpinionatedReviews),
   };
 }
 
@@ -163,6 +169,7 @@ export function applyPullRequestState(items, byId) {
       headRefName: self.headRefName,
       baseRefName: self.baseRefName,
       askedAgain: self.askedAgain,
+      reviewers: self.reviewers,
     };
   });
 }
