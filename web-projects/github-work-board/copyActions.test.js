@@ -154,6 +154,13 @@ describe("what the reader is offered", () => {
     }
   });
 
+  // The shortest line there is: one placeholder and nothing around it. Both
+  // other examples wrap words around a placeholder, so without this one a
+  // reader could read the boxes as asking for a sentence.
+  test("one example is a placeholder and nothing else", () => {
+    expect(EXAMPLE_ACTIONS.map((one) => one.template)).toContain("{URL}");
+  });
+
   // The examples are what an empty Settings shows, so a placeholder that is no
   // longer offered would be suggested to every new reader.
   test("each example uses only placeholders the board fills", () => {

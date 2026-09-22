@@ -24,9 +24,11 @@ filled in.**
 - **A line is a name and a template.** The name is what the menu row says. The
   template is plain text with placeholders in braces: `{N}`, `{URL}`,
   `{TITLE}`, `{REPO}`, `{BRANCH}`. `copyActions.js` holds the list and fills it.
-- **The board ships none.** Nobody's sentence is the right default. The empty
-  boxes carry two examples instead, and the list of placeholders sits under
-  them, so the reader can see what a line looks like before writing one.
+- **The board ships none.** Nobody's sentence is the right default. Settings
+  lists a few examples instead, until the reader writes their own, and the list
+  of placeholders sits under them. One example is a placeholder and nothing
+  else, `{URL}`, because the other two wrap words around a placeholder and on
+  their own they read as if a line has to be a sentence.
 - **A placeholder nobody offers is left exactly as it was typed.** `{AUTOR}`
   copies as `{AUTOR}`. Dropping it would hand back a sentence with a hole in it
   and nothing on screen would say why. The mistake travels to the clipboard,

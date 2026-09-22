@@ -379,7 +379,13 @@
             <div class="field">
               <!-- One row per line the reader wrote, filled by app.js. -->
               <ul id="copy-actions" class="copy-actions"></ul>
-              <p id="copy-actions-empty" class="field-help"></p>
+              <!-- Shown until the reader writes their own. The examples come
+                   from copyActions.js, so the page cannot suggest a
+                   placeholder the board does not fill (ADR 0031). -->
+              <div id="copy-actions-empty">
+                <p class="field-help">You have written none yet. For example:</p>
+                <ul id="copy-action-examples" class="example-list"></ul>
+              </div>
             </div>
 
             <div class="field">
