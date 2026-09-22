@@ -72,11 +72,17 @@ screen for a pad.
 
 ## Your save
 
-The game saves itself to your browser as you play. Nothing is sent anywhere.
+The game saves itself to your browser as you play.
 
 To carry a game to another device, open the menu, choose **Save**, then
 **Download a copy**. That gives you a `.json` file. On the other device, choose
 **Load a file** from the title screen or the save menu and pick it.
+
+Or set up **cloud storage** once, from the line under the game or from the
+Playground's Cloud storage page: one private GitHub repository you own, shared
+by every project on this site. The save then follows you on its own. The copy
+saved later wins, and a cloud copy is picked up at the title screen, never in
+the middle of a game. Nothing else is sent anywhere.
 
 The file is plain readable JSON, and a save keeps working when new areas are
 added later.

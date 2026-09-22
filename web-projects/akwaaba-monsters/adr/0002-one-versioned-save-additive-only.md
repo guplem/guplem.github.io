@@ -60,3 +60,5 @@ that says what to do, rather than being half-read.
 
 **Not decided here.** Save slots. There is one save plus the exported file. See
 `ROADMAP.md`.
+
+> **Note (2026-09):** the save also travels through the shared cloud storage (root ADR 0016), as one record `saves.main` of `triunity-studios-data/akwaaba-monsters/save.json`, wrapped by `cloudSave.js`. The three rules above are unchanged and now matter twice, because a bad migration would reach every device. Between devices the copy written later wins, by `savedAt`; a cloud copy is applied at the title screen only, never under a running game. This is the one playground project on the cloud tier: losing hours of progress hurts, which is the bar the tier asks for.

@@ -38,6 +38,7 @@ engine holds rules and no world; the content holds a world and no rules.
 | `species.js`, `moves.js`, `items.js`, `types.js` | The data tables |
 | `summary.js` | Every line of text the creature summary screen shows |
 | `save.js` | The save document, its checking, and its migration |
+| `cloudSave.js` | The save as one record of the shared cloud storage, and which of two copies is newer (root ADR 0016) |
 | `rng.js` | The seeded generator whose position the save keeps |
 | `ui.js` | Screen arithmetic: cursors, scrolling, bars, the camera, the page layout, which tile version a square gets |
 | `music.js` | The songs, the notation, and the creature cries |
