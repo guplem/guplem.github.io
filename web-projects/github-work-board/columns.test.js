@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import {
   AUTOMATIC,
   COLUMNS,
+  attentionFor,
   automaticColumn,
   columnFor,
   groupIntoColumns,
@@ -29,9 +30,8 @@ const linkedPull = (over = {}) => ({
 const links = (closedBy = []) => ({ closedBy, closes: [], blockedBy: [], parent: null });
 
 describe("COLUMNS", () => {
-  // The order on screen. "Needs changes" sits beside "Ongoing" because it is
-  // the same activity: a reviewer asking for changes sends the work back to
-  // being written.
+  // The order on screen. "Needs attention" sits beside "Ongoing" because it is
+  // the same activity: work that came back to the person who wrote it.
   test("they read left to right in the order work travels", () => {
     expect(COLUMNS.map((one) => one.id)).toEqual([
       "todo",
@@ -118,7 +118,7 @@ describe("automaticColumn", () => {
 
   // GitHub leaves the verdict at "changes requested" for ever: asking the same
   // reviewer to look again does not clear it. So the verdict alone parks
-  // finished work in "Needs changes", which is the one place a person looks to
+  // finished work in "Needs attention", which is the one place a person looks to
   // find work that is theirs. `askedAgain` is what says the ball moved back.
   test("changes requested, then the same reviewer asked again, is awaiting review", () => {
     const answered = linkedPull({ reviewDecision: "CHANGES_REQUESTED", reviewRequestCount: 1, askedAgain: true });
@@ -129,6 +129,44 @@ describe("automaticColumn", () => {
   test("changes requested with nobody asked again stays in needs changes", () => {
     const waiting = linkedPull({ reviewDecision: "CHANGES_REQUESTED", reviewRequestCount: 1, askedAgain: false });
     expect(automaticColumn(issue(), links([waiting]))).toBe("needs-changes");
+  });
+
+  // A conflict and a red check are the same sentence as changes requested:
+  // the work cannot go forward until its author does something. So they share
+  // one column, and the card says which of the three it is (ADR 0011).
+  test("a branch that no longer merges cleanly needs attention", () => {
+    const stuck = linkedPull({ mergeable: "CONFLICTING" });
+    expect(automaticColumn(issue(), links([stuck]))).toBe("needs-changes");
+    expect(automaticColumn(pull({ ...stuck, key: "PR_1" }), null)).toBe("needs-changes");
+  });
+
+  test("checks that came back red need attention", () => {
+    expect(automaticColumn(issue(), links([linkedPull({ checksState: "FAILURE" })]))).toBe("needs-changes");
+    expect(automaticColumn(issue(), links([linkedPull({ checksState: "ERROR" })]))).toBe("needs-changes");
+  });
+
+  // Most pull requests are pending for their first minutes, and GitHub works
+  // `mergeable` out only when asked, so its first answer is often UNKNOWN.
+  test("checks still running, and a conflict GitHub has not worked out, are not attention", () => {
+    expect(automaticColumn(issue(), links([linkedPull({ checksState: "PENDING", mergeable: "UNKNOWN" })]))).toBe(
+      "ongoing",
+    );
+  });
+
+  // The author has to act either way, so a red check beats the approval and
+  // beats the wait on a reviewer.
+  test("a conflict or a red check beats an approval and beats awaiting review", () => {
+    const approved = linkedPull({ reviewDecision: "APPROVED", checksState: "FAILURE" });
+    expect(automaticColumn(issue(), links([approved]))).toBe("needs-changes");
+    const waiting = linkedPull({ reviewDecision: "REVIEW_REQUIRED", reviewRequestCount: 1, mergeable: "CONFLICTING" });
+    expect(automaticColumn(issue(), links([waiting]))).toBe("needs-changes");
+  });
+
+  // Merged work is over, and a merged pull request keeps whatever verdict and
+  // whatever check state it had.
+  test("merged work is done even with a red check", () => {
+    const merged = linkedPull({ merged: true, state: "closed", checksState: "FAILURE" });
+    expect(automaticColumn(issue(), links([merged]))).toBe("done");
   });
 
   // Somebody can approve and somebody else can ask for changes. The work to do
@@ -282,11 +320,31 @@ describe("groupIntoColumns", () => {
 // A child listed on its parent's card is not a card on the board, so the one
 // column whose name says "today" would be a lie for work that closed last week
 // (ADR 0017).
+describe("attentionFor", () => {
+  // The card draws one pill per reason, so it needs the reasons and not only
+  // the column they add up to.
+  test("says why the card is in the column, in reading order", () => {
+    const bad = linkedPull({ mergeable: "CONFLICTING", checksState: "FAILURE", reviewDecision: "CHANGES_REQUESTED" });
+    expect(attentionFor(issue(), links([bad]))).toEqual(["conflicts", "checks-failed", "changes-requested"]);
+    expect(attentionFor(pull({ ...bad, key: "PR_1" }), null)).toEqual([
+      "conflicts",
+      "checks-failed",
+      "changes-requested",
+    ]);
+  });
+
+  test("work with no pull request, and finished work, have nothing in the way", () => {
+    expect(attentionFor(issue(), links([]))).toEqual([]);
+    const merged = linkedPull({ merged: true, state: "closed", checksState: "FAILURE" });
+    expect(attentionFor(issue(), links([merged]))).toEqual([]);
+  });
+});
+
 describe("stateLabel", () => {
   test("every column is called what the board calls it", () => {
     expect(stateLabel("ongoing")).toBe("Ongoing");
     expect(stateLabel("awaiting-review")).toBe("Awaiting review");
-    expect(stateLabel("needs-changes")).toBe("Needs changes");
+    expect(stateLabel("needs-changes")).toBe("Needs attention");
     expect(stateLabel("ready-to-merge")).toBe("Ready to merge");
     expect(stateLabel("todo")).toBe("To do");
   });

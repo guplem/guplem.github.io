@@ -22,7 +22,7 @@ there is nothing to come back for.
 board.** Each part answers two questions of its own, in Settings:
 
 - **Does it add to the number in the tab?** The parts that do by default are the
-  review row, "Ongoing", "Needs changes" and "Ready to merge": the work that is
+  review row, "Ongoing", "Needs attention" and "Ready to merge": the work that is
   moving and waiting on somebody. "To do" is not started, "Awaiting review" is
   waiting on a person who is not the reader, and "Done today" is a log
   (ADR 0017), so none of them start counted.

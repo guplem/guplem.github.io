@@ -1906,6 +1906,43 @@ textarea.input {
   font-weight: 600;
 }
 
+/* Why a card is in "Needs attention" (ADR 0011). Three reasons, one look: all
+ * three mean the same thing to the reader, that the work is back with them,
+ * and the icon and the word say which. Loud like "Blocked", because both are
+ * states that change what you do next. */
+.badge-attention {
+  background: hsl(var(--destructive) / 0.14);
+  color: hsl(var(--destructive));
+  border-color: hsl(var(--destructive) / 0.3);
+  font-weight: 600;
+  gap: 0.25rem;
+}
+
+/* Small enough to sit on the heading line beside "PR" and the repository. */
+.badge-attention .icon {
+  width: 0.8125rem;
+  height: 0.8125rem;
+  stroke-width: 2.2;
+}
+
+/* A conflict is the one of the three that nothing but a merge clears, so it
+ * carries the amber of a warning rather than the red of a verdict. */
+.attention-conflicts {
+  background: hsl(38 92% 50% / 0.16);
+  color: hsl(32 90% 34%);
+  border-color: hsl(38 92% 50% / 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .attention-conflicts {
+    color: hsl(38 95% 66%);
+  }
+}
+
+:root[data-theme="dark"] .attention-conflicts {
+  color: hsl(38 95% 66%);
+}
+
 /* -------------------------------------------------------------------------- */
 /* Footer                                                                     */
 /* -------------------------------------------------------------------------- */

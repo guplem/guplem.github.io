@@ -120,6 +120,14 @@ export function fetchFinishedWork(token, since) {
  * `name` and `avatarUrl` are asked for on both the requested reviewer and the
  * review's author so a card can draw a face for each of them (ADR 0028).
  *
+ * `mergeable` and the last commit's `statusCheckRollup` are asked for because
+ * a branch that conflicts and a check that went red both want the author, so
+ * both belong in "Needs attention" beside changes requested (ADR 0011). The
+ * rollup hangs off the commit, not off the pull request, which is why one
+ * commit comes back with each of them. GitHub works `mergeable` out only when
+ * somebody asks, so the first answer for a quiet pull request is `UNKNOWN` and
+ * the next refresh answers properly.
+ *
  * `subIssues` names the children, and `closedAt` with `state` is what says
  * whether a child is finished. Twenty of them, because the list itself is free:
  * it adds no nested connection, so 10 and 50 both cost the same 13 points. What
@@ -149,8 +157,9 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       }
       closedByPullRequestsReferences(first: 5, includeClosedPrs: true) {
         nodes {
-          id number title state url merged reviewDecision headRefName baseRefName
+          id number title state url merged reviewDecision mergeable headRefName baseRefName
           repository { nameWithOwner }
+          commits(last: 1) { nodes { commit { statusCheckRollup { state } } } }
           reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
           latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
         }
@@ -164,9 +173,11 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       state
       merged
       reviewDecision
+      mergeable
       headRefName
       baseRefName
       repository { nameWithOwner }
+      commits(last: 1) { nodes { commit { statusCheckRollup { state } } } }
       reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
       latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
       closingIssuesReferences(first: 20) { nodes { id number title state url } }

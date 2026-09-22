@@ -67,6 +67,20 @@ export function askedToLookAgain(reviews, requests) {
   return asked.length > 0 && asked.every((login) => waiting.has(login));
 }
 
+/**
+ * What the checks on a pull request's last commit add up to.
+ *
+ * GitHub rolls every check on a commit into one verdict, and it hangs off the
+ * commit rather than off the pull request, so the query asks for the last
+ * commit to reach it. A pull request with no checks at all has no rollup, and
+ * that reads as "" rather than as a pass (ADR 0011).
+ */
+function readChecksState(value) {
+  const commit = isPlainObject(value) ? value.commits?.nodes?.[0]?.commit : null;
+  const state = commit?.statusCheckRollup?.state;
+  return typeof state === "string" ? state : "";
+}
+
 /** One linked item, or null when the answer does not describe one. */
 function readLink(value) {
   if (!isPlainObject(value)) return null;
@@ -87,6 +101,12 @@ function readLink(value) {
     merged: value.merged === true,
     reviewDecision: typeof value.reviewDecision === "string" ? value.reviewDecision : "",
     reviewRequestCount: Number.isInteger(value.reviewRequests?.totalCount) ? value.reviewRequests.totalCount : 0,
+    // Whether the branch still merges cleanly, and how the checks on its last
+    // commit ended. Both put a card in "Needs attention" (ADR 0011). GitHub
+    // works `mergeable` out only when asked, so its first answer is often
+    // UNKNOWN, which claims nothing.
+    mergeable: typeof value.mergeable === "string" ? value.mergeable : "",
+    checksState: readChecksState(value),
     // The branch this pull request adds, and the one it targets. A stack is
     // read from these and from nothing else (ADR 0016).
     headRefName: typeof value.headRefName === "string" ? value.headRefName : "",
@@ -237,6 +257,8 @@ export function applyPullRequestState(items, byId) {
       ...item,
       merged: self.merged,
       reviewDecision: self.reviewDecision,
+      mergeable: self.mergeable,
+      checksState: self.checksState,
       reviewRequestCount: self.reviewRequestCount,
       headRefName: self.headRefName,
       baseRefName: self.baseRefName,

@@ -62,6 +62,7 @@ It is the short procedure for all of the above.
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
 | `relationships.js` | Yes | GitHub's own links between items, the children of an issue, and nesting a pull request under its issue (ADR 0010) |
 | `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, and what to call that column away from the board (ADR 0011) |
+| `attention.js` | Yes | The three reasons a pull request wants its author (conflicts, red checks, changes requested), with the words and the icon each pill draws (ADR 0011) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
@@ -345,15 +346,24 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   that one reorder and nothing else (ADR 0017).
 - **A column is computed, never maintained.** The rules read what GitHub
   already knows, and the order of the checks in `automaticColumn` is the whole
-  decision: merged beats everything, changes requested beats an approval. A
-  pull request closed without merging counts for nothing (ADR 0011).
+  decision: merged beats everything, and anything that wants the author beats
+  an approval. A pull request closed without merging counts for nothing
+  (ADR 0011).
+- **"Needs attention" keeps the id `needs-changes`.** The column grew from
+  reviews alone to everything that waits on the author, and only the label
+  changed: the id is written into `board.json` the moment a card is moved by
+  hand, so renaming it would strand every card already moved there (ADR 0011).
+- **`mergeable: "UNKNOWN"` is not "fine".** GitHub works that field out only
+  when somebody asks for it, so the first answer for a quiet pull request says
+  nothing. Only `CONFLICTING` is a conflict. In the same way, a pull request
+  with no checks has no `statusCheckRollup`, which is not a pass (ADR 0011).
 - **`includeClosedPrs` must stay true in the relationship query.** A merged pull
   request is a closed one, so leaving it out hides exactly the work that belongs
   in "Done".
 - **`latestOpinionatedReviews` and `requestedReviewer` must stay in the
   relationship query.** Trim either and `askedAgain` is false on every card:
   nothing errors, every test that builds its own answer stays green, and
-  answered work sits in "Needs changes" for ever. A test pins both names.
+  answered work sits in "Needs attention" for ever. A test pins both names.
 - **A column id is written into `board.json`** the moment a card is moved by
   hand, so it is as permanent as a storage key. The reader's move always beats
   the rule, and "Automatic" hands it back.

@@ -36,7 +36,7 @@ one string.
 nothing painted, on the grounds that the absence of a rule is honest. It is also
 six grey columns, and every reader painted the same six by hand before the board
 said anything at a glance. So each part now opens with a colour: violet on the
-review row, slate on "To do", blue on "Ongoing", rose on "Needs changes", green
+review row, slate on "To do", blue on "Ongoing", rose on "Needs attention", green
 on "Ready to merge". `appearance.DEFAULT_COLOURS` holds them.
 
 **"Awaiting review" and "Done today" open unpainted, on purpose.** They are the

@@ -87,6 +87,8 @@ const ANSWER = [
           state: "OPEN",
           url: "u3",
           reviewDecision: "CHANGES_REQUESTED",
+          mergeable: "CONFLICTING",
+          commits: { nodes: [{ commit: { statusCheckRollup: { state: "FAILURE" } } }] },
           reviewRequests: { totalCount: 1, nodes: [{ requestedReviewer: { login: "sergiromero-galtea" } }] },
           latestOpinionatedReviews: {
             nodes: [{ state: "CHANGES_REQUESTED", author: { login: "sergiromero-galtea" } }],
@@ -134,6 +136,15 @@ describe("normalizeRelationships", () => {
       reviewDecision: "CHANGES_REQUESTED",
       reviewRequestCount: 1,
       askedAgain: true,
+    });
+  });
+
+  // The same rule runs on the pull request linked from an issue, so the two
+  // fields that say "the author has work to do" are read there too (ADR 0011).
+  test("reads the merge state and the checks of a linked pull request", () => {
+    expect(readRelationship(byId, "I_child").closedBy[0]).toMatchObject({
+      mergeable: "CONFLICTING",
+      checksState: "FAILURE",
     });
   });
 
@@ -240,6 +251,29 @@ describe("the people in a pull request's review (ADR 0028)", () => {
     const links = normalizeRelationships(graph());
     const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);
     expect(item.reviewers).toEqual([]);
+  });
+
+  // A conflict and a red check put the card in "Needs attention", and the rule
+  // reads them off the item, so they have to be copied across like the rest
+  // (ADR 0011).
+  test("whether the branch merges, and how the checks ended, reach the card", () => {
+    const links = normalizeRelationships(
+      graph({
+        mergeable: "CONFLICTING",
+        commits: { nodes: [{ commit: { statusCheckRollup: { state: "FAILURE" } } }] },
+      }),
+    );
+    const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);
+    expect(item.mergeable).toBe("CONFLICTING");
+    expect(item.checksState).toBe("FAILURE");
+  });
+
+  // A pull request with no checks at all has no rollup. That is not a pass.
+  test("a pull request GitHub ran no check on reads as nothing, not as passing", () => {
+    const links = normalizeRelationships(graph({ commits: { nodes: [{ commit: { statusCheckRollup: null } }] } }));
+    const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);
+    expect(item.checksState).toBe("");
+    expect(item.mergeable).toBe("");
   });
 
   // An issue has no review, and the board must not invent one for it.
