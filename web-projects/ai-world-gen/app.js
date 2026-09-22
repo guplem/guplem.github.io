@@ -12,6 +12,7 @@ import { planStructures } from "./blueprint.js";
 import { buildCellDecision, chooseType } from "./cellDecision.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { escapeHtml, say } from "./deployText.js";
+import { createBatchDecider, runBatchedGeneration } from "./batchedDecisions.js";
 import { createDecider, runGeneration } from "./generation.js";
 import { countByType, createGrid, getCell, gridFromJSON, gridToJSON, setCell } from "./grid.js";
 import { formatPricePerMillion, readCatalogue, transportFor } from "./models.js";
@@ -256,7 +257,9 @@ function renderSetupStatus() {
   const fillLine =
     state.models.generation === "whole-map"
       ? `${modelName(state.models.narrativeModel)} draws the whole map in one call.`
-      : `${modelName(state.models.decisionModel)} decides each cell${note}.`;
+      : state.models.generation === "batched"
+        ? `${modelName(state.models.decisionModel)} decides every cell in one batched call.`
+        : `${modelName(state.models.decisionModel)} decides each cell${note}.`;
   setStatus("setup-status", `${fillLine} ${vocabularyLine}`);
 }
 
@@ -689,7 +692,12 @@ async function generateWorld() {
   // The blueprint first: where the structures stand, before any cell is asked about (blueprint.js).
   state.plan = planStructures({ vocabulary: state.vocabulary, width, height, random: mulberry32(runSeed ^ 0x51ed270b) });
   if (state.plan.rooms.length > 0) log(`Plan: ${state.plan.rooms.map((room) => `${room.label} ${room.width}×${room.height} at (${room.x}, ${room.y})`).join(", ")}`);
-  const summary = state.models.generation === "whole-map" ? await generateWholeMap(width, height) : await generateCellByCell(width, height, runSeed);
+  const summary =
+    state.models.generation === "whole-map"
+      ? await generateWholeMap(width, height)
+      : state.models.generation === "batched"
+        ? await generateBatched(width, height, runSeed)
+        : await generateCellByCell(width, height, runSeed);
 
   state.running = false;
   state.latest = null;
@@ -699,6 +707,13 @@ async function generateWorld() {
   if (summary.status === "done" && summary.mode === "whole-map") {
     const tokens = summary.usage.promptTokens + summary.usage.completionTokens;
     setStatus("map-status", `Done: ${summary.placedCount} cells in one answer, ${(summary.elapsedMs / 1000).toFixed(1)} s, ${summary.modelCalls} call${summary.modelCalls === 1 ? "" : "s"}, ${tokens.toLocaleString()} tokens.`, "ok");
+  } else if (summary.status === "done" && summary.mode === "batched") {
+    const tokens = summary.usage.promptTokens + summary.usage.completionTokens;
+    setStatus(
+      "map-status",
+      `Done: ${summary.decisionCount} decisions in ${summary.modelCalls} call${summary.modelCalls === 1 ? "" : "s"}, ${(summary.elapsedMs / 1000).toFixed(1)} s, ${tokens.toLocaleString()} tokens${summary.fallbackCount > 0 ? `, ${summary.fallbackCount} fallback${summary.fallbackCount === 1 ? "" : "s"}` : ""}.`,
+      summary.fallbackCount > 0 ? "warn" : "ok",
+    );
   } else if (summary.status === "done") {
     setStatus("map-status", `Done: ${summary.placedCount} cells in ${(summary.elapsedMs / 1000).toFixed(1)} s, ${average} ms per decision${summary.fallbackCount > 0 ? `, ${summary.fallbackCount} fallback${summary.fallbackCount === 1 ? "" : "s"}` : ""}.`, summary.fallbackCount > 0 ? "warn" : "ok");
   } else if (summary.status === "cancelled") {
@@ -733,6 +748,34 @@ async function generateWholeMap(width, height) {
     renderLegend();
   }
   return summary;
+}
+
+/**
+ * Every cell as its own typed question, batched into as few decisions calls
+ * as the endpoint takes (batchedDecisions.js). The cells of one batch cannot
+ * see each other, so the map arrives a batch at a time, not a cell at a time.
+ */
+async function generateBatched(width, height, runSeed) {
+  setStatus("map-status", `${modelName(state.models.decisionModel)} is deciding ${width * height} cells in one batched call…`);
+  log(`Batched: asking ${state.models.decisionModel} for ${width * height} cells as independent questions`);
+  const order = createOrder(readOrderId(state.order), { width, height, random: mulberry32(runSeed) });
+  return runBatchedGeneration({
+    grid: state.grid,
+    vocabulary: state.vocabulary,
+    setting: state.setting,
+    order,
+    decide: createBatchDecider({ client, apiKey: state.apiKey, model: state.models.decisionModel, vocabulary: state.vocabulary }),
+    plan: state.plan,
+    random: mulberry32(runSeed ^ 0x9e3779b9),
+    isCancelled: () => state.cancelRequested,
+    onBatch: ({ batch, cells, answered, placedCount, total }) => {
+      log(`Batch ${batch}: ${cells} questions, ${answered} answered`);
+      setStatus("map-status", `Batch ${batch} · ${placedCount} of ${total} cells`);
+      renderProgress(placedCount, total);
+      redraw();
+      renderLegend();
+    },
+  });
 }
 
 /** One decision per cell, in the chosen order, drawn live (generation.js). */

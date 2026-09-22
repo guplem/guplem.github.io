@@ -53,7 +53,7 @@
         <p class="post-byline">
           <a href="../../">Guillem Poy</a>
           <time datetime="2026-09-20">20 September 2026</time>
-          <span>18 minute read</span>
+          <span>27 minute read</span>
         </p>
       </header>
 
@@ -1232,10 +1232,112 @@
       </section>
 
       <section>
+        <h2 id="the-same-decisions-one-request"><a class="heading-anchor" href="#the-same-decisions-one-request">The same decisions, one request</a></h2>
+        <p>One call for the whole map is fast because it is one request, not because a language model is better at this job. It also throws the typed decision away, which is the part of the project I care about. There is a third way, and it had been sitting in the request shape the whole time. The decisions endpoint takes <code>questions</code> as a map of named questions, and nothing in it says that map holds one entry. So I kept every per-cell question exactly as it was, and sent them together. An 8 by 8 map stops being 64 requests and becomes one request carrying 64 questions.</p>
+        <p>This is an experiment, not a new default. I wanted to know three things: whether Jev would answer that many independent questions at once, what it would cost, and what it would do to the map.</p>
+        <ul class="two-ways">
+          <li><strong>Every question keeps what it had.</strong> The same code builds it. The world, the blueprint, the cell&rsquo;s part of the plan, the options narrowed to that part, the balance sheet, the whole map as one letter per cell: all of it is what the loop already sends Jev, cell by cell.</li>
+          <li><strong>No question can have the other cells of its own batch.</strong> They are answered in the same request, so they do not exist yet when the question is written. Every question in a batch reads the same map, and that map has a hole in it exactly where the batch is.</li>
+          <li><strong>So the rules that read neighbours go with them.</strong> &ldquo;Never next to another portrait&rdquo;, &ldquo;exactly one staircase&rdquo;, the cap on an over-used ground, the hint that continues a line four cells long: every one of those is worked out from the map as it stands when the batch is built. Inside a batch they are worked out from nothing.</li>
+        </ul>
+        <p>Two things the first requests taught me before they drew a single map. There is a ceiling: 128 cell questions, 60,023 input tokens, answered in 1.2 seconds; 160 questions, about 71,600 tokens, refused outright with <code>max_tokens_exceeded</code>. So the limit is around 65,536 input tokens, and it is a token limit, not a question limit. And most of those tokens were my own words repeated. The instruction that tells Jev how to choose is about 1,200 characters and it is the same sentence for every cell; sent once per question it was 23,000 of the 56,000 input tokens of an 8 by 8 request. Moving it into the shared state, the same words sent once, dropped that map to 39,000 tokens, which is how 64 questions came to fit in one request at all.</p>
+        <p>A 16 by 16 map does not fit: 256 questions is about 177,000 input tokens, so it takes four or five requests. Rather than pretend otherwise I let it take them, in the test case&rsquo;s own generation order, and let each later batch see what the earlier ones placed. That is the most information batching allows, and it means the three large maps are a partly batched, partly sequential hybrid. The 35 small maps are the clean case: 34 of them are one request each.</p>
+        <p>Then I ran the same evaluation on it, as version <code>v-batch</code>: same 38 seeds, same shipped vocabularies, same blueprint, same orders, same metrics, same judge. Jev answered every one of the 3,008 questions. Nothing fell back, and nothing came back malformed.</p>
+        <figure class="chart">
+<svg viewBox="0 0 760 300" class="bars" role="img" aria-label="Mean score per specification, v11 (one request per cell) against v-batch (every cell as a question in one batched request): Structures 0.98 vs 0.97; Paths 0.77 vs 0.47; Reachable 0.88 vs 0.87; Reads as a place 0.88 vs 0.91; Rules hold 0.99 vs 0.83; Routes to doors 0.82 vs 0.78; Landmarks 0.83 vs 0.66; Judge (GPT-5.2) 0.69 vs 0.57." xmlns="http://www.w3.org/2000/svg">
+<text x="34" y="18" class="chart-title">Mean score per specification over the same 38 seeds</text><line x1="34" y1="190.0" x2="750" y2="190.0" class="grid" /><text x="28" y="194.0" class="tick" text-anchor="end">0.25</text><line x1="34" y1="140.0" x2="750" y2="140.0" class="grid" /><text x="28" y="144.0" class="tick" text-anchor="end">0.5</text><line x1="34" y1="90.0" x2="750" y2="90.0" class="grid" /><text x="28" y="94.0" class="tick" text-anchor="end">0.75</text><line x1="34" y1="40.0" x2="750" y2="40.0" class="grid" /><text x="28" y="44.0" class="tick" text-anchor="end">1</text><rect x="47.4" y="44.0" width="28.6" height="196.0" class="bar bar-jev" /><text x="61.7" y="40.0" class="bar-value" text-anchor="middle">0.98</text><rect x="79.1" y="46.0" width="28.6" height="194.0" class="bar bar-batch" /><text x="93.4" y="42.0" class="bar-value" text-anchor="middle">0.97</text><text x="78.8" y="262" class="tick" text-anchor="middle">Structures</text><rect x="136.9" y="86.0" width="28.6" height="154.0" class="bar bar-jev" /><text x="151.2" y="82.0" class="bar-value" text-anchor="middle">0.77</text><rect x="168.6" y="146.0" width="28.6" height="94.0" class="bar bar-batch" /><text x="182.9" y="142.0" class="bar-value" text-anchor="middle">0.47</text><text x="168.3" y="262" class="tick" text-anchor="middle">Paths</text><rect x="226.4" y="64.0" width="28.6" height="176.0" class="bar bar-jev" /><text x="240.7" y="60.0" class="bar-value" text-anchor="middle">0.88</text><rect x="258.1" y="66.0" width="28.6" height="174.0" class="bar bar-batch" /><text x="272.4" y="62.0" class="bar-value" text-anchor="middle">0.87</text><text x="257.8" y="262" class="tick" text-anchor="middle">Reachable</text><rect x="315.9" y="64.0" width="28.6" height="176.0" class="bar bar-jev" /><text x="330.2" y="60.0" class="bar-value" text-anchor="middle">0.88</text><rect x="347.6" y="58.0" width="28.6" height="182.0" class="bar bar-batch" /><text x="361.9" y="54.0" class="bar-value" text-anchor="middle">0.91</text><text x="347.3" y="262" class="tick" text-anchor="middle">Reads as a place</text><rect x="405.4" y="42.0" width="28.6" height="198.0" class="bar bar-jev" /><text x="419.7" y="38.0" class="bar-value" text-anchor="middle">0.99</text><rect x="437.1" y="74.0" width="28.6" height="166.0" class="bar bar-batch" /><text x="451.4" y="70.0" class="bar-value" text-anchor="middle">0.83</text><text x="436.8" y="262" class="tick" text-anchor="middle">Rules hold</text><rect x="494.9" y="76.0" width="28.6" height="164.0" class="bar bar-jev" /><text x="509.2" y="72.0" class="bar-value" text-anchor="middle">0.82</text><rect x="526.6" y="84.0" width="28.6" height="156.0" class="bar bar-batch" /><text x="540.9" y="80.0" class="bar-value" text-anchor="middle">0.78</text><text x="526.3" y="262" class="tick" text-anchor="middle">Routes to doors</text><rect x="584.4" y="74.0" width="28.6" height="166.0" class="bar bar-jev" /><text x="598.7" y="70.0" class="bar-value" text-anchor="middle">0.83</text><rect x="616.1" y="108.0" width="28.6" height="132.0" class="bar bar-batch" /><text x="630.4" y="104.0" class="bar-value" text-anchor="middle">0.66</text><text x="615.8" y="262" class="tick" text-anchor="middle">Landmarks</text><rect x="673.9" y="102.0" width="28.6" height="138.0" class="bar bar-jev" /><text x="688.2" y="98.0" class="bar-value" text-anchor="middle">0.69</text><rect x="705.6" y="126.0" width="28.6" height="114.0" class="bar bar-batch" /><text x="719.9" y="122.0" class="bar-value" text-anchor="middle">0.57</text><text x="705.3" y="262" class="tick" text-anchor="middle">Judge (GPT-5.2)</text><rect x="34" y="276" width="12" height="12" class="bar bar-jev" /><text x="50" y="286" class="bar-label">v11: one request per cell (Jev)</text><rect x="294" y="276" width="12" height="12" class="bar bar-batch" /><text x="310" y="286" class="bar-label">v-batch: every cell as a question, batched (Jev)</text>
+</svg>
+          <figcaption>The same 38 seeds, the same questions, the same code building them. The only change is that the questions travel together. Structures, reachability and &ldquo;a place reads as a place&rdquo; hold; paths (0.77 to 0.47), the vocabulary&rsquo;s own rules (0.99 to 0.83) and landmarks (0.83 to 0.66) do not.</figcaption>
+        </figure>
+        <p>The map is where it is decided, and here it is one map, the same 16 by 16 mansion from the same seed, drawn both ways.</p>
+        <div class="pair">
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v11/large-mansion-clustered.png" width="768" height="768" loading="lazy" alt="v11, a decision per cell: a 16 by 16 haunted mansion with panelled rooms, a few ghosts, a piano and one staircase." />
+            <figcaption>v11, one request per cell: 256 requests, 113 seconds. One staircase, which is what its rules ask for.</figcaption>
+          </figure>
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/large-mansion-clustered.png" width="768" height="768" loading="lazy" alt="v-batch, every cell as a question: the same mansion, with staircase tiles spread in patches across the halls and the grounds outside." />
+            <figcaption>v-batch, the same seed: 5 requests, 4 seconds. Thirty-nine staircases, in patches, indoors and out.</figcaption>
+          </figure>
+        </div>
+        <p>Thirty-nine staircases is not a bug in the code, and it is not Jev misreading the question. Each of those cells was asked, on its own, &ldquo;this is an interior cell of a mansion, and the world has no staircase yet: what goes here?&rdquo;, and each one gave the same sensible answer. In the loop the second cell is never offered the staircase, because by then the first one has it. In a batch there is no first one. The same mechanism runs through every number that fell:</p>
+        <ul class="two-ways">
+          <li><strong>Cells contradict each other, and only each other.</strong> Across the run, 181 pairs of neighbours break a &ldquo;never next to&rdquo; rule, and all 181 are pairs decided in the same batch. The per-cell loop breaks 11 in the same 38 maps. The typed rule still works; there is simply nothing to apply it to yet.</li>
+          <li><strong>One-of-a-kind things arrive in crowds.</strong> Seven of the 38 maps hold a type whose rules say &ldquo;exactly one&rdquo; more than once, against none in the loop. &ldquo;Landmarks, once&rdquo; fell from 1.00 to 0.67.</li>
+          <li><strong>Lines stop being lines.</strong> A path continues because the cell before it was a path. With nothing before it, 0.92 of path cells touching another path becomes 0.46, continuity 0.58 becomes 0.26, and the share of maps whose main route reaches the edge 0.79 becomes 0.40.</li>
+          <li><strong>The map gets emptier.</strong> Identical states give similar answers, so the common type wins nearly everywhere: vocabulary coverage 0.77 to 0.43, landmarks present 0.45 to 0.25. The village below has its two cottages and their doors, and no villager, no well, no market stall and no path.</li>
+        </ul>
+        <p>What did not move is as interesting. Everything the code decides survived the change intact, because the code decides it per cell either way, before the model is asked: structures 0.98 to 0.97, cells in the right zone 1.00, doors set into a wall 0.87 up to 0.94, a room you can enter on 0.95 of maps. Two things even improved, for an unflattering reason: ground comes in patches 0.65 to 0.83, and one single walkable region 0.72 to 0.93. A map that repeats itself is a tidy map. It is tidy and it is empty.</p>
+        <div class="pair">
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v11/structures-village-spiral.png" width="768" height="768" loading="lazy" alt="v11, a decision per cell: an 8 by 8 village with two cottages, a dirt path, a villager, a well and a market stall." />
+            <figcaption>v11, the village: 64 requests, 21 seconds. A villager, a well, a stall and a path between the cottages.</figcaption>
+          </figure>
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/structures-village-spiral.png" width="768" height="768" loading="lazy" alt="v-batch, every cell as a question: the same village, two cottages and their doors on unbroken green and barley, with nobody in it." />
+            <figcaption>v-batch, the same seed: 1 request, 1 second. The cottages are right, and nothing else is there.</figcaption>
+          </figure>
+        </div>
+        <p>Now the part worth being careful about, because four different things get called &ldquo;cheaper&rdquo; and they are not the same thing.</p>
+        <div class="table-scroll">
+          <table class="scores">
+            <caption>The same 3,008 decisions, sent two ways</caption>
+<thead><tr><th scope="col">What the run did</th><th scope="col">v11, one request per cell</th><th scope="col">v-batch, batched</th></tr></thead>
+<tbody>
+<tr><th scope="row">Decisions</th><td>3,008</td><td>3,008</td></tr>
+<tr><th scope="row">Requests to Jev</th><td>3,008</td><td>49 answered, 1 refused for size</td></tr>
+<tr><th scope="row">Input tokens</th><td>about 6.0 million</td><td>2.04 million</td></tr>
+<tr><th scope="row">Cost of the 38 maps</th><td>$0.24</td><td>$0.086</td></tr>
+<tr><th scope="row">Time drawing the 38 maps</th><td>1,046 s</td><td>40 s</td></tr>
+<tr><th scope="row">One 8 &times; 8 map</th><td>64 requests, 22.2 s, $0.005</td><td>1 request, 0.85 s, $0.0018</td></tr>
+<tr><th scope="row">One 16 &times; 16 map</th><td>256 requests, 90.2 s, $0.024</td><td>4.3 requests, 3.4 s, $0.0072</td></tr>
+<tr><th scope="row">Fallback cells</th><td>0</td><td>0</td></tr>
+</tbody>
+          </table>
+        </div>
+        <p>Sixty-one times fewer requests buys 26 times less waiting and 2.8 times less money. The three numbers are different because they are three different things. Latency collapses because the round trips collapse: one wait instead of 64. Cost falls much less, because you pay for tokens, not for requests, and the tokens did not fall nearly as far: 6.0 million down to 2.04 million. The saving is real but it is narrow, and it is entirely the shared state. The world, the blueprint, the balance sheet and the map sketch used to be re-sent with every single cell; now they are sent once per batch. What each question still carries on its own, its cell and its own list of options with their rules, is most of the payload, and 64 of those cost 64 of those whether they travel together or apart.</p>
+        <p>So: yes, Jev will answer a map&rsquo;s worth of independent typed questions in one request, at a tenth of the latency and a third of the price, and it answers all of them. And on these 38 seeds, with this generator, the maps are worse in the specific way the design predicts: every judgement that needed a neighbour lost the neighbour. The judge, reading the finished maps, puts it at 0.57 against 0.69.</p>
+        <p>That is one experiment on one generator, and it is not a verdict on batching. What it does say is where the line falls. The blueprint is code, applied per cell, and it did not care at all. The rules that read the map are code too, but they can only read what is there, and in a batch nothing is. If I wanted batching to work here, the fix would not be a better prompt: it would be to move more of what the cells currently tell each other into the plan that is drawn before any of them are asked. Which is the same lesson version 8 taught, arriving from the other direction.</p>
+        <div class="table-scroll">
+          <table class="scores">
+            <caption>v11 against v-batch, mean score per specification over the same 38 seeds</caption>
+<thead><tr><th scope="col">Specification</th><th scope="col">v11, one request per cell</th><th scope="col">v-batch, batched</th><th scope="col">Change</th></tr></thead>
+<tbody>
+<tr><th scope="row">Structures</th><td>0.98</td><td>0.97</td><td>-0.01</td></tr>
+<tr><th scope="row">Paths</th><td>0.77</td><td>0.47</td><td class="down">-0.30</td></tr>
+<tr><th scope="row">Reachable</th><td>0.88</td><td>0.87</td><td>-0.01</td></tr>
+<tr><th scope="row">Reads as a place</th><td>0.88</td><td>0.91</td><td>+0.03</td></tr>
+<tr><th scope="row">Rules hold</th><td>0.99</td><td>0.83</td><td class="down">-0.16</td></tr>
+<tr><th scope="row">Routes to doors</th><td>0.82</td><td>0.78</td><td>-0.04</td></tr>
+<tr><th scope="row">Landmarks</th><td>0.83</td><td>0.66</td><td class="down">-0.17</td></tr>
+<tr><th scope="row">Judge (GPT-5.2)</th><td>0.69</td><td>0.57</td><td class="down">-0.12</td></tr>
+</tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
         <h2 id="running-the-loop-with-an-agent"><a class="heading-anchor" href="#running-the-loop-with-an-agent">Running the loop with an agent</a></h2>
         <p>Most of the eleven versions were written by an agent, Claude Code, working in a loop I set up and then mostly watched. One turn looked like this. Read the previous version's scores and the pictures where it lost. Write down one theory ("the model does not see enough of the map", "the sampling is adding noise", "the rules are prose, so they are advice"). Change the code with tests. Commit, so the version in Galtea records exactly what was measured. Run the 38 seeds. Compare. Write the result into the project's README, in one paragraph per version, so the next turn starts from the memory of this one.</p>
         <p>My part was smaller and, I think, the part that mattered. I said which theory to test first. When I saw a failure the numbers missed, I asked for a specification for it, which is how four rules became seven. I set the budget: 8 by 8 grids for the bulk of the seeds, and only three 16 by 16 maps, because a room needs space to exist but a large map costs eight times a small one. And I said when to stop: when the agent could no longer name a change it was confident would move a number, the loop had done its work for now.</p>
         <p>The agent also broke things. It once committed a version with a failing test, because a shell pipe hid the exit code. It once ran two evaluations against modules it was editing at the same time. Both were caught, one by the continuous integration check and one by the maps coming out wrong, and both became a written rule for the next turn. The loop is not a promise that every version is better. It is a promise that you will know.</p>
+      </section>
+
+      <section>
+        <h2 id="what-i-have-not-tried-decisions-that-branch"><a class="heading-anchor" href="#what-i-have-not-tried-decisions-that-branch">What I have not tried: decisions that branch</a></h2>
+        <p>Both ways of using Jev in this post are flat. The world has one layer of children, and every child is a cell:</p>
+        <p><strong>world &rarr; cell, cell, cell, cell, &hellip; 3,008 times.</strong></p>
+        <p>Every question is the same size and the same shape, and they either go one at a time or all at once. There is a third shape I have not built, where the decisions are a tree instead of a list, and each layer asks about what the layer above it decided:</p>
+        <p><strong>world &rarr; regions &rarr; structures &rarr; rooms &rarr; objects.</strong></p>
+        <ul class="two-ways">
+          <li><strong>Decide the broad areas first.</strong> This corner is the docks, that one is the old quarter, this strip between them is farmland. A handful of typed decisions for the whole map.</li>
+          <li><strong>Then, for each area, decide what stands in it.</strong> The docks get three warehouses and a crane; the old quarter gets a chapel and six houses. The question is asked once per area, and the options depend on which area it is.</li>
+          <li><strong>Then, for each structure, decide its inside.</strong> A warehouse is one long hall; a house is a kitchen and two rooms.</li>
+          <li><strong>Then, for each room, decide what is in it.</strong> Only here does the question get down to the size of a tile, and by then it is asked about a room that already knows what it is for.</li>
+        </ul>
+        <p>The point is not that there are fewer decisions. It is that the later ones depend on the earlier ones by construction, rather than by hoping the model reads a map sketch and works it out. A cell in the kitchen of a house in the old quarter is a much narrower question than a cell at (7, 12), and the narrowing was itself decided, not hard-coded. That is also what this project keeps discovering from the other direction: the blueprint in version 8 is exactly one layer of such a tree, written by hand in code, and it moved more numbers than any prompt change did.</p>
+        <p>It could suit a decision model particularly well, because each step is still a small typed choice with a handful of options, which is what these models are fast and cheap at, while the structure and the dependencies live in the shape of the tree rather than inside one long prompt. It may also fail for reasons I cannot see from here: an early wrong branch would take a whole district with it, and the flat design at least fails one cell at a time.</p>
+        <p><strong>I have not built it and I have not measured it.</strong> There are no numbers for it in this post, nothing in the version table, and nothing in Galtea. It is the next experiment I want to run, and until it has been through the same 38 seeds it is only a plausible-sounding idea, which this project has taught me to distrust.</p>
       </section>
 
       <section>

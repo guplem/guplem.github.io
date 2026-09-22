@@ -128,7 +128,25 @@ its prompt, Claude Sonnet 5 closed a room on 47% of the maps (the loop: 92%),
 held the typed rules at 0.76 (0.99) and led routes to doors at 0.61 (0.82),
 while winning on landmarks (0.90 against 0.83) and on time (6 s against 90 s
 for a 16 by 16 map) at the same cost per run. Control cell by cell, not
-price, is what the loop buys. **Rejected: a language
+price, is what the loop buys.
+
+**Kept as an experiment, and measured: every cell as one question in one
+request.** The decisions endpoint takes `questions` as a map, so a whole map
+of per-cell questions fits in one request (`batchedDecisions.js`, the same
+switch, `v-batch`). It works: Jev answered all 3,008 questions of the 38 seeds
+in 49 requests, with no fallback, for $0.086 against $0.24 and 40 s of drawing
+against 1,046 s. The maps are worse in exactly one way, and the way names the
+decision this ADR records. Everything the code settles per cell before the
+model is asked held (structures 0.97, zone 1.00, doors in walls 0.94, an
+enclosed room on 0.95 of maps); everything that reads the cells around it
+collapsed, because inside a batch there are none: 181 broken "never next to"
+pairs, all 181 between two cells of the same batch (the loop: 11), a type whose
+rules say "exactly one" placed more than once on 7 of 38 maps (the loop: 0,
+worst case 39 staircases in one mansion), path continuity 0.58 to 0.26,
+coverage 0.77 to 0.43, and the judge 0.69 to 0.57. Two scores rose because a
+map that repeats itself is tidy: ground in patches 0.65 to 0.83, one walkable
+region 0.72 to 0.93. The sequential loop is therefore not a habit: each
+decision is worth what the decided cells around it are worth. **Rejected: a language
 model per cell as the default.** It works, and it is kept as the stand-in, but
 it is slower, dearer, and turns a typed decision back into text parsing.
 **Rejected: no model per cell (procedural placement from the vocabulary's

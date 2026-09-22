@@ -6,14 +6,17 @@
 //
 // Optional environment: AI_WORLD_GEN_DECISION_MODEL and
 // AI_WORLD_GEN_NARRATIVE_MODEL override the defaults;
-// AI_WORLD_GEN_GENERATION=whole-map asks the narrative model for the whole
-// map in one call instead of a decision per cell (`wholeMap.js`). Progress
-// goes to stderr.
+// AI_WORLD_GEN_GENERATION picks how the grid is filled: `per-cell` (the
+// default), `whole-map` (one call to the narrative model, `wholeMap.js`) or
+// `batched` (every cell as its own typed question, in as few decisions
+// requests as the endpoint takes, `batchedDecisions.js`). Progress goes to
+// stderr.
 //
 // The only difference from the page is where the vocabulary comes from: a
 // test case names a preset, whose shipped vocabulary is used (ADR 0004), or
 // gives its own setting, in which case the narrative model writes one.
 
+import { createBatchDecider, runBatchedGeneration } from "../batchedDecisions.js";
 import { planStructures } from "../blueprint.js";
 import { createDecider, runGeneration } from "../generation.js";
 import { createGrid, gridToJSON } from "../grid.js";
@@ -89,6 +92,21 @@ async function main() {
       generate: generateWithNarrativeModel,
       onAttempt: ({ attempt, errors }) => {
         process.stderr.write(attempt === 1 ? `  asking ${narrativeModel} for the whole ${width} × ${height} map\n` : `  attempt ${attempt}: ${errors.slice(0, 2).join(" | ")}\n`);
+      },
+    });
+  } else if (generationMode === "batched") {
+    models = { decision: decisionModel, transport: "decisions", vocabulary: vocabularySource, generation: generationMode };
+    summary = await runBatchedGeneration({
+      grid,
+      vocabulary,
+      setting,
+      order: createOrder(order, { width, height, random: mulberry32(seed) }),
+      decide: createBatchDecider({ client, apiKey, model: decisionModel, vocabulary }),
+      plan,
+      random: mulberry32(seed ^ 0x9e3779b9),
+      onBatch: ({ batch, cells, answered, placedCount }) => {
+        process.stderr.write(`  batch ${batch}: ${cells} questions, ${answered} answered · ${placedCount}/${total} cells
+`);
       },
     });
   } else {

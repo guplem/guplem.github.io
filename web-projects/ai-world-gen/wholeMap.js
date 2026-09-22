@@ -20,8 +20,16 @@ import { getCell, setCell } from "./grid.js";
 import { describeSetting } from "./presets.js";
 import { extractJson } from "./vocabulary.js";
 
-/** How the page fills a grid: a decision per cell (Jev), or the whole map in one text-model call. */
-export const GENERATION_MODES = ["per-cell", "whole-map"];
+/**
+ * How the page fills a grid. Three ways, one switch:
+ *   - `per-cell`: one decision per cell, in order (`generation.js`, ADR 0002);
+ *   - `whole-map`: the finished grid in one text-model call (this file);
+ *   - `batched`: every cell as its own typed question in one decisions
+ *     request (`batchedDecisions.js`).
+ * The list lives here because `settings.js` reads it, and both alternatives
+ * are alternatives to the same loop.
+ */
+export const GENERATION_MODES = ["per-cell", "whole-map", "batched"];
 
 /** A stored or typed mode, or the default. */
 export function readGenerationMode(value) {
