@@ -890,17 +890,39 @@ async function copyToClipboard(text, button, label, whenRefused) {
 /* -------------------------------------------------------------------------- */
 
 /** The note box for one card, which exists only once there is a note or a request for one. */
+/**
+ * Make a note box exactly as tall as the note in it, and no taller.
+ *
+ * One line to start. Most notes are a few words, and an empty box three lines
+ * high costs more of a column than every note on the board put together.
+ *
+ * It measures, so the box has to be on the page already: a box that is not in
+ * the document has no height to read. `renderBoard` runs it over the board
+ * once the cards are in place, which is why this is not a `requestAnimationFrame`
+ * inside the builder. A hidden tab never runs those, so a board drawn in a tab
+ * the reader has not looked at yet would keep every note one line high and cut
+ * the rest off.
+ */
+function fitNote(note) {
+  note.style.height = "auto";
+  // The box is `border-box`, so its height has to carry the border as well, or
+  // the last line is short by two pixels and the box starts scrolling.
+  note.style.height = `${note.scrollHeight + (note.offsetHeight - note.clientHeight)}px`;
+}
+
 function buildNoteBox(item, written) {
   const note = document.createElement("textarea");
   note.className = "input note";
   note.id = `note-${item.key}`;
-  note.rows = 2;
+  note.rows = 1;
   note.placeholder = "A note only you can see";
   note.value = written;
   note.setAttribute("aria-label", `Note on ${item.repository} #${item.number}`);
+
   note.addEventListener("input", () => {
     state.board = writeNote(state.board, item.key, note.value, new Date().toISOString());
     scheduleSave();
+    fitNote(note);
   });
   return note;
 }
@@ -1129,6 +1151,8 @@ function renderBoard() {
   for (const { item } of grouped) overrides[item.key] = readColumn(state.board, item.key);
   const board = groupIntoColumns(grouped, state.links, overrides);
   element("board-columns").replaceChildren(...board.map(buildColumn));
+  // The cards are on the page now, so every note can be measured (ADR 0014).
+  for (const note of document.querySelectorAll(".issue .note")) fitNote(note);
   paint(element("reviews"), REVIEW_ROW_ID);
   for (const column of document.querySelectorAll("#board-columns .column")) {
     paint(column, column.dataset.columnId);
