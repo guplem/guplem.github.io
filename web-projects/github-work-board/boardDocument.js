@@ -17,6 +17,7 @@
 import { knownColour, knownTheme } from "./appearance.js";
 import { knownPriority } from "./priority.js";
 import { defaultCounting } from "./counting.js";
+import { orderCopyActions } from "./copyActions.js";
 
 export const SCHEMA_VERSION = 1;
 
@@ -24,7 +25,7 @@ export const SCHEMA_VERSION = 1;
 export const DOCUMENT_PATH = "board.json";
 
 /** The record maps this build knows about. Adding one here is the whole change. */
-export const RECORD_MAPS = ["notes", "columns", "colours", "appearance", "priorities", "counting"];
+export const RECORD_MAPS = ["notes", "columns", "colours", "appearance", "priorities", "counting", "copyActions"];
 
 const RESERVED = new Set(["schemaVersion", "updatedAt"]);
 
@@ -209,6 +210,54 @@ export function writeCounting(document, areaId, { counted, withLowPriority }, no
       [areaId]: { counted: counted === true, withLowPriority: withLowPriority === true, updatedAt: now },
     },
   };
+}
+
+/**
+ * The lines the reader copies from a card, oldest first (ADR 0031).
+ *
+ * One record per action, so two devices that each add one keep both. An action
+ * the reader removed keeps its key with an empty template, and `copyActions.js`
+ * is what leaves it out of the list.
+ */
+export function readCopyActions(document) {
+  return orderCopyActions(isPlainObject(document) ? document.copyActions : null);
+}
+
+/**
+ * The same document with one action written. The document handed in is not
+ * changed.
+ *
+ * `createdAt` is what the order reads, so an edit keeps the one the action was
+ * made under and only a new action sets it.
+ */
+export function writeCopyAction(document, id, { label, template, createdAt }, now) {
+  const base = migrate(document, now);
+  const before = isPlainObject(base.copyActions[id]) ? base.copyActions[id] : {};
+  return {
+    ...base,
+    updatedAt: now,
+    copyActions: {
+      ...base.copyActions,
+      [id]: {
+        label: String(label ?? ""),
+        template: String(template ?? ""),
+        createdAt: String(createdAt ?? before.createdAt ?? now),
+        updatedAt: now,
+      },
+    },
+  };
+}
+
+/**
+ * The same document with one action removed.
+ *
+ * The record stays, with nothing left to copy. A deleted key would come back
+ * from the other device on the next merge (ADR 0002).
+ */
+export function removeCopyAction(document, id, now) {
+  const base = migrate(document, now);
+  const before = isPlainObject(base.copyActions[id]) ? base.copyActions[id] : {};
+  return writeCopyAction(base, id, { label: before.label ?? "", template: "", createdAt: before.createdAt }, now);
 }
 
 /** The exact text stored in the repository. Two spaces and a final newline, so a human can read the diff. */

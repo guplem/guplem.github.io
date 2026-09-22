@@ -765,7 +765,10 @@ textarea.input {
   color: hsl(var(--foreground));
 }
 
-.tokens {
+/* The saved tokens, and the lines the reader copies from a card: two lists of
+ * the same shape, so Settings reads as one page rather than several. */
+.tokens,
+.copy-actions {
   list-style: none;
   margin: 0.5rem 0 0;
   padding: 0;
@@ -773,7 +776,8 @@ textarea.input {
   gap: 0.5rem;
 }
 
-.token-row {
+.token-row,
+.copy-action-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -788,13 +792,15 @@ textarea.input {
   transition: border-color 0.15s ease;
 }
 
-.token-row:hover {
+.token-row:hover,
+.copy-action-row:hover {
   border-color: hsl(var(--ring) / 0.3);
 }
 
 /* The two lines of a token row, and of a connection check. A grid rather than
  * two inline children, so the placeholder that mirrors them stacks too. */
-.token-lines {
+.token-lines,
+.copy-action-lines {
   display: grid;
   gap: 0.375rem;
   align-content: start;
@@ -802,14 +808,16 @@ textarea.input {
   flex: 1 1 auto;
 }
 
-.token-name {
+.token-name,
+.copy-action-name {
   max-width: 18rem;
   font-weight: 600;
 }
 
 /* The buttons on a token row. They wrap under the two lines on a narrow
  * screen rather than squeezing the name box out of readable width. */
-.token-actions {
+.token-actions,
+.copy-action-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
@@ -1200,6 +1208,17 @@ textarea.input {
 
 #card-submenu .menu-item {
   justify-content: flex-start;
+}
+
+/* A row the reader named themselves, so the text can be any length. The menu
+ * holds its width and the row ends in an ellipsis rather than growing to the
+ * width of a sentence (ADR 0031). */
+#menu-copies .menu-item {
+  display: block;
+  max-width: 18rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 60rem) {
@@ -1941,6 +1960,36 @@ textarea.input {
 /* -------------------------------------------------------------------------- */
 /* Choosing how the board looks                                               */
 /* -------------------------------------------------------------------------- */
+
+/* What a line can carry, one row each. The token is code the reader types, so
+ * it is set in the same face as the rest of the code on this page. */
+.placeholder-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.placeholder-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.placeholder-token {
+  flex: 0 0 auto;
+  padding: 0.0625rem 0.3125rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 4px);
+  background: hsl(var(--muted) / 0.6);
+  color: hsl(var(--foreground));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+}
 
 .colour-areas,
 .counting-areas {

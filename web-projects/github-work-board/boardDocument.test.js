@@ -11,9 +11,12 @@ import {
   writeNote,
   readColumnColour,
   writeColumnColour,
+  readCopyActions,
   readCounting,
   readPriority,
   readTheme,
+  removeCopyAction,
+  writeCopyAction,
   writeCounting,
   writePriority,
   writeTheme,
@@ -258,5 +261,55 @@ describe("what each part of the board counts", () => {
     const before = emptyDocument(now);
     writeCounting(before, "ongoing", { counted: false, withLowPriority: false }, now);
     expect(readCounting(before, "ongoing").counted).toBe(true);
+  });
+});
+
+describe("the lines the reader copies from a card (ADR 0031)", () => {
+  const now = "2026-09-22T10:00:00.000Z";
+  const later = "2026-09-22T11:00:00.000Z";
+
+  test("round-trips one action", () => {
+    const document = writeCopyAction(
+      emptyDocument(now),
+      "a1",
+      { label: "Implement", template: "/implement-issue #{N}", createdAt: now },
+      now,
+    );
+    expect(readCopyActions(document)).toEqual([
+      { id: "a1", label: "Implement", template: "/implement-issue #{N}", createdAt: now },
+    ]);
+  });
+
+  test("nobody starts with an action", () => {
+    expect(readCopyActions(emptyDocument(now))).toEqual([]);
+    expect(readCopyActions(null)).toEqual([]);
+  });
+
+  // A removed action keeps its key with an empty template, the same way a
+  // cleared note keeps its key. Dropping the key would let the other device
+  // bring the action back on the next merge (ADR 0002).
+  test("a removed action keeps its key, so the other device hears about it", () => {
+    const one = writeCopyAction(emptyDocument(now), "a1", { label: "Implement", template: "#{N}" }, now);
+    const gone = removeCopyAction(one, "a1", later);
+    expect(readCopyActions(gone)).toEqual([]);
+    expect(gone.copyActions.a1.template).toBe("");
+    expect(gone.copyActions.a1.updatedAt).toBe(later);
+  });
+
+  test("a removed action keeps the name it was made under, so the merge can read it", () => {
+    const one = writeCopyAction(emptyDocument(now), "a1", { label: "Implement", template: "#{N}", createdAt: now }, now);
+    expect(removeCopyAction(one, "a1", later).copyActions.a1.createdAt).toBe(now);
+  });
+
+  test("writing one action says nothing about another", () => {
+    const one = writeCopyAction(emptyDocument(now), "a1", { label: "One", template: "#{N}" }, now);
+    const two = writeCopyAction(one, "a2", { label: "Two", template: "{URL}" }, later);
+    expect(readCopyActions(two).map((action) => action.label)).toEqual(["One", "Two"]);
+  });
+
+  test("the document handed in is never changed", () => {
+    const before = emptyDocument(now);
+    writeCopyAction(before, "a1", { label: "One", template: "#{N}" }, now);
+    expect(readCopyActions(before)).toEqual([]);
   });
 });

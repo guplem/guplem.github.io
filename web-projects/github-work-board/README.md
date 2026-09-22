@@ -14,6 +14,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   that matter. A title the board does not recognise keeps every word it has.
 - **Copy a branch name** from any pull request card, through the card menu,
   including one nested inside its issue.
+- **Copy your own lines from a card.** Write a line once in Settings, for
+  example `/implement-issue #{N}`, and it becomes a row in every card's menu
+  that copies it with that card's own number in it. `{URL}`, `{TITLE}`,
+  `{REPO}` and `{BRANCH}` work the same way. A line that asks for a branch is
+  not offered on an issue, because an issue has none.
 - **Point at a stacked pull request and the rest of its stack lights up**,
   wherever those cards are on the screen, including in another column. The
   keyboard does it too. Hovering the stack's number tells you which pull

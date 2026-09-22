@@ -16,12 +16,15 @@ import {
   parseDocument,
   readColumn,
   readColumnColour,
+  readCopyActions,
   readCounting,
   readNote,
   readPriority,
   readTheme,
+  removeCopyAction,
   writeColumn,
   writeColumnColour,
+  writeCopyAction,
   writeCounting,
   writeNote,
   writePriority,
@@ -98,6 +101,7 @@ import {
 import { skeletonCount } from "./skeletons.js";
 import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
 import { cardMenuRows } from "./cardMenu.js";
+import { EXAMPLE_ACTIONS, PLACEHOLDERS, fillCopyTemplate } from "./copyActions.js";
 import { readTitle } from "./titles.js";
 import { initialsOf, personLabel } from "./people.js";
 import { LOW, NORMAL, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
@@ -947,6 +951,34 @@ function buildNoteBox(item, written) {
 /* -------------------------------------------------------------------------- */
 
 /**
+ * One row in the card menu for a line the reader wrote.
+ *
+ * The row is named by the reader and copies their own text, filled from this
+ * card. What it will copy is on the row as its tooltip, so the reader can tell
+ * two similar lines apart without pressing either (ADR 0031).
+ */
+function buildCopyMenuRow(action, item) {
+  const row = document.createElement("button");
+  row.type = "button";
+  row.className = "menu-item";
+  row.setAttribute("role", "menuitem");
+  row.textContent = action.label;
+  const filled = fillCopyTemplate(action.template, item);
+  row.title = filled;
+  row.addEventListener("click", async () => {
+    closeCardMenu();
+    try {
+      await navigator.clipboard.writeText(filled);
+      setStatus(`Copied ${filled}`);
+    } catch {
+      // Nowhere to put it but the status line, which is at least selectable.
+      setStatus(`This browser would not copy. The line is ${filled}`);
+    }
+  });
+  return row;
+}
+
+/**
  * Put a menu next to the thing that opened it, and keep it on the screen.
  *
  * A popover lives in the browser's top layer, so nothing clips it, and nothing
@@ -1295,8 +1327,100 @@ function renderCounting() {
   );
 }
 
+/**
+ * One line the reader wrote, editable where it is shown.
+ *
+ * Both boxes save as they are typed, like a note box, and the row is never
+ * rebuilt under the cursor: a list that redraws itself on every keystroke
+ * throws the reader out of the box they are in (ADR 0031).
+ */
+function buildCopyActionRow(action) {
+  const row = document.createElement("li");
+  row.className = "copy-action-row";
+
+  const save = (changes) => {
+    state.board = writeCopyAction(state.board, action.id, { ...action, ...changes }, new Date().toISOString());
+    scheduleSave();
+  };
+
+  const lines = document.createElement("div");
+  lines.className = "copy-action-lines";
+
+  const name = document.createElement("input");
+  name.className = "input copy-action-name";
+  name.type = "text";
+  name.value = action.label;
+  name.placeholder = EXAMPLE_ACTIONS[0].label;
+  name.setAttribute("aria-label", "Name of this line");
+  name.addEventListener("input", () => save({ label: name.value }));
+
+  const template = document.createElement("input");
+  template.className = "input";
+  template.type = "text";
+  template.spellcheck = false;
+  template.value = action.template;
+  template.placeholder = EXAMPLE_ACTIONS[0].template;
+  template.setAttribute("aria-label", "What this line copies");
+  template.addEventListener("input", () => save({ template: template.value }));
+
+  lines.append(name, template);
+
+  const buttons = document.createElement("div");
+  buttons.className = "copy-action-buttons";
+  const drop = document.createElement("button");
+  drop.type = "button";
+  drop.className = "button button-danger";
+  drop.textContent = "Remove";
+  drop.addEventListener("click", () => {
+    state.board = removeCopyAction(state.board, action.id, new Date().toISOString());
+    scheduleSave();
+    renderCopyActions();
+  });
+  buttons.append(drop);
+
+  row.append(lines, buttons);
+  return row;
+}
+
+/** The lines the reader wrote, in Settings. */
+function renderCopyActions() {
+  const actions = readCopyActions(state.board);
+  element("copy-actions-empty").hidden = actions.length > 0;
+  element("copy-actions").replaceChildren(...actions.map(buildCopyActionRow));
+}
+
+/**
+ * The examples in the empty boxes, and the list of placeholders under them.
+ *
+ * Nobody starts with a line, so the boxes have to say what one looks like, and
+ * both the examples and the placeholders come from `copyActions.js` so the page
+ * cannot offer something the board does not fill (ADR 0031).
+ */
+function renderCopyActionHelp() {
+  element("new-copy-action-name").placeholder = EXAMPLE_ACTIONS[0].label;
+  element("new-copy-action-template").placeholder = EXAMPLE_ACTIONS[0].template;
+  element("copy-actions-empty").textContent = `You have written none yet. For example: ${EXAMPLE_ACTIONS.map(
+    (one) => `"${one.label}", which copies ${one.template}`,
+  ).join("; or ")}.`;
+
+  element("copy-placeholders").replaceChildren(
+    ...PLACEHOLDERS.map((one) => {
+      const row = document.createElement("li");
+      row.className = "placeholder-row";
+      const token = document.createElement("code");
+      token.className = "placeholder-token";
+      token.textContent = one.token;
+      const says = document.createElement("span");
+      says.textContent = one.describe;
+      row.append(token, says);
+      return row;
+    }),
+  );
+}
+
 function renderAppearance() {
   renderCounting();
+  renderCopyActions();
   const theme = readTheme(state.board);
   element("theme-choices").replaceChildren(
     ...THEMES.map((one) =>
@@ -1938,6 +2062,23 @@ function start() {
     }
   });
 
+  renderCopyActionHelp();
+  element("add-copy-action").addEventListener("click", () => {
+    const name = element("new-copy-action-name");
+    const template = element("new-copy-action-template");
+    const line = template.value.trim();
+    if (line === "") {
+      return showNotice("settings-notice", "A line needs something to copy. Write it in the second box.");
+    }
+    const now = new Date().toISOString();
+    state.board = writeCopyAction(state.board, newId(), { label: name.value, template: line, createdAt: now }, now);
+    scheduleSave();
+    name.value = "";
+    template.value = "";
+    renderCopyActions();
+    name.focus();
+  });
+
   element("view-toggle").addEventListener("click", () => showView(state.viewToggleGoesTo ?? "settings"));
   element("empty-open-settings").addEventListener("click", () => showView("settings"));
   element("clear-filters").addEventListener("click", clearFilters);
@@ -1994,7 +2135,13 @@ function start() {
     if (open && state.menuItem) {
       element("menu-note").textContent = noteMenuLabel(readNote(state.board, state.menuItem.key));
       element("menu-priority").textContent = priorityMenuLabel(readPriority(state.board, state.menuItem.key));
-      const rows = cardMenuRows(state.menuItem, { canMove: state.menuCanMove });
+      const rows = cardMenuRows(state.menuItem, {
+        canMove: state.menuCanMove,
+        copyActions: readCopyActions(state.board),
+      });
+      element("menu-copies").replaceChildren(
+        ...rows.copies.map((action) => buildCopyMenuRow(action, state.menuItem)),
+      );
       element("menu-note").hidden = !rows.note;
       element("menu-branch").hidden = !rows.branch;
       element("menu-priority").hidden = !rows.priority;

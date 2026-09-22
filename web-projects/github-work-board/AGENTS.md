@@ -6,8 +6,9 @@
 
 A personal work board on top of GitHub issues. The page runs with no server: the
 reader pastes a fine-grained personal access token, and the browser calls
-`api.github.com` directly. Their private half (their notes, columns, colours, theme, marked priority and
-counting choices, now; tags and a "what's next" queue later) lives in one JSON
+`api.github.com` directly. Their private half (their notes, columns, colours, theme, marked priority,
+counting choices and the lines they copy from a card, now; tags and a "what's
+next" queue later) lives in one JSON
 file in a private repository they own, so the board follows them across
 devices.
 
@@ -39,7 +40,7 @@ It is the short procedure for all of the above.
 
 | File | Pure? | Responsibility |
 |---|---|---|
-| `boardDocument.js` | Yes | The stored document: schema version, `migrate`, and one note, column, colour, theme, priority or counting choice at a time |
+| `boardDocument.js` | Yes | The stored document: schema version, `migrate`, and one note, column, colour, theme, priority, counting choice or copy action at a time |
 | `sync.js` | Yes | Merging two copies of the document, and deciding create / update / skip (ADR 0002) |
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
@@ -47,9 +48,10 @@ It is the short procedure for all of the above.
 | `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
 | `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
+| `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, and filling one in (ADR 0031) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
 | `priority.js` | Yes | The work the reader pushed down, and what sinks with it, on the board and in the review row (ADR 0026) |
-| `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022) |
+| `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022, ADR 0031) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
 | `filters.js` | Yes | Narrowing by kind, repository, label and person, and what to offer (ADR 0009, ADR 0028) |
@@ -72,7 +74,7 @@ It is the short procedure for all of the above.
 Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
 Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025).
-Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority mark or a counting choice → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
+Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
 
@@ -279,9 +281,10 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   nothing in the string tells them apart (ADR 0021).
 - **`cardMenu.cardMenuRows` decides which rows the menu offers, and nothing
   else does.** Add note on every card, Copy branch name on a pull request, Move
-  to on a card that sits in a column. Those three answers were three conditions
-  written into `app.js` one at a time, and the newest of them quietly stopped a
-  note being addable anywhere but the columns (ADR 0022).
+  to on a card that sits in a column, and one row per line the reader wrote in
+  Settings that this card can fill (ADR 0031). The first three answers were
+  three conditions written into `app.js` one at a time, and the newest of them
+  quietly stopped a note being addable anywhere but the columns (ADR 0022).
 - **A note is filed under the item's node id, so it belongs to the work and not
   to the place the card is drawn.** A review card and a nested pull request take
   one exactly like a column card does. Do not hide the box by where the card
@@ -479,6 +482,7 @@ before calling it done.
 | [0028](adr/0028-a-card-shows-the-people-and-which-people-depends-on-the-list.md) | A card shows the people, and which people depends on the list |
 | [0029](adr/0029-a-button-that-asks-now-and-says-when-it-last-did.md) | A button that asks now, and says when it last did |
 | [0030](adr/0030-the-tab-carries-the-number-and-the-reader-decides-what-it-counts.md) | The tab carries the number, and the reader decides what it counts |
+| [0031](adr/0031-a-line-you-copy-from-a-card-is-written-by-the-reader.md) | A line you copy from a card is written by the reader |
 
 ## What is not built yet
 

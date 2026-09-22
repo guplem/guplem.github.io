@@ -80,6 +80,10 @@
     <!-- A pull request's branch, for checking it out. The one row a nested
          pull request gets: its move would change nothing (ADR 0021). -->
     <button id="menu-branch" type="button" class="menu-item" role="menuitem">Copy branch name</button>
+    <!-- The lines the reader wrote in Settings, one row each, filled from this
+         card. Built here rather than on every card, because one menu serves
+         the whole board (ADR 0012, ADR 0031). -->
+    <div id="menu-copies" role="none"></div>
     <!-- The reader's own ranking. It makes the card fainter everywhere, and in
          the smart order it sinks the card to the bottom of its list, taking
          anything stacked on top of it down as well (ADR 0026). -->
@@ -363,6 +367,37 @@
             <div class="field">
               <!-- One row per part of the board, from appearance.js, filled by app.js. -->
               <ul id="counting-areas" class="colour-areas counting-areas"></ul>
+            </div>
+
+            <h3 class="subheading">Lines you copy from a card</h3>
+            <p class="field-help">
+              Write a line once here, and copy it filled in from any card's menu. The board puts the
+              card's own number, link or title where you left a placeholder. Saved beside your notes,
+              so your lines are there on every machine you open the board on.
+            </p>
+
+            <div class="field">
+              <!-- One row per line the reader wrote, filled by app.js. -->
+              <ul id="copy-actions" class="copy-actions"></ul>
+              <p id="copy-actions-empty" class="field-help"></p>
+            </div>
+
+            <div class="field">
+              <p class="field-label" id="new-copy-action-label-text">A new line</p>
+              <div class="field-row">
+                <input id="new-copy-action-name" class="input copy-action-name" type="text" autocomplete="off"
+                  aria-label="Name of the new line" />
+                <input id="new-copy-action-template" class="input" type="text" autocomplete="off" spellcheck="false"
+                  aria-label="What the new line copies" />
+                <button id="add-copy-action" type="button" class="button button-outline">Add</button>
+              </div>
+              <p class="field-help">The name is what the card's menu shows. The line below it is what you get.</p>
+            </div>
+
+            <div class="field">
+              <p class="field-label">What you can put in a line</p>
+              <!-- Every placeholder the board fills, from copyActions.js. -->
+              <ul id="copy-placeholders" class="placeholder-list"></ul>
             </div>
 
             <div class="subheading-row">
