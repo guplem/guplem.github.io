@@ -14,9 +14,10 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="211" />
-  <meta name="deploy-date" content="2026-09-22T13:27:37.000Z" />
+  <meta name="deploy-pull-request" content="212" />
+  <meta name="deploy-date" content="2026-09-22T14:28:17.000Z" />
 <!-- END GENERATED:DEPLOY -->
+  <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -42,14 +43,9 @@
     <div class="action">
       <p class="action-label">Repository access</p>
       <div class="action-body">
-        <p>Choose <strong>Only select repositories</strong>, then select:</p>
-        <ul class="plain-list">
-          <li>every repository whose issues and pull requests you want on the board</li>
-          <li>and, on a token owned by your own account, your board repository as well</li>
-        </ul>
-        <p class="callout callout-inline">
-          <strong>This is the step people skip.</strong> If the board repository is not in that list, the
-          board can read your work and cannot save a single thing of yours.
+        <p>
+          Choose <strong>Only select repositories</strong>, then select every repository whose issues and pull
+          requests you want on the board.
         </p>
       </div>
     </div>
@@ -206,24 +202,13 @@
           <h2 id="setup-heading">Connect it, once</h2>
           <p class="lead">
             This page has no server. It talks to GitHub straight from your browser, with a token you make
-            yourself, and your half of the board lives in a private repository that you own.
+            yourself. Your half of the board, the notes and the colours, is saved in this browser, and in your
+            own private repository once you set up cloud storage in Settings.
           </p>
         </div>
 
         <div class="card-content">
           <ol class="steps">
-            <li>
-              <h3>Create a private repository for the board</h3>
-              <p>
-                One repository that holds nothing but your half of the board: your notes, the cards you
-                move by hand, and the colours you choose. The board writes a single file into it.
-                Call it <code>work-board-data</code>, and set <strong>Visibility</strong> to <strong>Private</strong>.
-              </p>
-              <p class="step-action">
-                <a class="button button-outline" id="create-repo-link" target="_blank" rel="noopener">Create work-board-data</a>
-              </p>
-            </li>
-
             <li>
               <h3>Create a fine-grained token</h3>
               <p>GitHub's form asks you four things. Here is the answer to each one.</p>
@@ -241,13 +226,9 @@
                   instead, and skip every step above.
                 </p>
               </div>
-              <div class="field">
-                <label class="field-label" for="repo-name">Name of the repository you created in step 1</label>
-                <div class="field-row">
-                  <input id="repo-name" class="input" type="text" autocomplete="off" spellcheck="false" value="work-board-data" />
-                  <button id="connect" type="button" class="button button-primary">Connect</button>
-                </div>
-              </div>
+              <p class="step-action">
+                <button id="connect" type="button" class="button button-primary">Connect</button>
+              </p>
               <p class="field-help">
                 The token stays in this browser and is sent only to GitHub. Anything else with access to this
                 browser can read it, so keep it scoped to the repositories you need and give it an expiry date.
@@ -414,33 +395,14 @@
               <ul id="copy-placeholders" class="placeholder-list"></ul>
             </div>
 
-            <div class="subheading-row">
-              <h3 class="subheading">Board repository</h3>
-              <!-- One tap to the repository itself. The board names it but never
-                   shows it, and a reader who wants to look has no other way in. -->
-              <!-- Whether the board file is reaching GitHub. Nothing else on the
-                   screen says, and this is the reader's own half of the board
-                   (ADR 0019). -->
-              <span id="notes-sync" class="badge">Checking</span>
-              <a id="open-notes-repo" class="icon-link" target="_blank" rel="noopener" data-tip="Open this repository on GitHub">
-                <span class="visually-hidden">Open the board repository on GitHub</span>
-                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                </svg>
-              </a>
-            </div>
-            <div class="field">
-              <label class="field-label" for="settings-repo-name">Repository name, on your own account</label>
-              <div class="field-row">
-                <input id="settings-repo-name" class="input" type="text" autocomplete="off" spellcheck="false" />
-                <button id="save-repo-name" type="button" class="button button-outline">Save and reconnect</button>
-              </div>
-              <p id="notes-sync-detail" class="field-help"></p>
-              <p class="field-help">
-                Your half of the board lives in one file, <code>board.json</code>, inside this repository: your
-                notes, the cards you moved by hand, and how it looks.
-              </p>
-            </div>
+            <h3 class="subheading">Where your half of the board is saved</h3>
+            <p class="field-help">
+              Your notes, the cards you moved by hand, and how the board looks are saved in this browser, and in
+              your cloud storage once it is set up. The same cloud storage serves every project on this site.
+            </p>
+            <!-- The shared settings component, full mode (root ADR 0016). It carries
+                 the badge that says whether saves get through (ADR 0019). -->
+            <div id="cloud-settings"></div>
 
           </div>
         </div>
@@ -475,12 +437,7 @@
                 <p>
                   A token reaches <strong>one owner</strong>: your own account, or one organisation. It can never
                   see the other, whatever permissions you give it. So a person whose work lives in an
-                  organisation needs at least two tokens: one for the organisation, and one for their own
-                  account, which is where the board repository lives.
-                </p>
-                <p class="callout callout-inline">
-                  <strong>Keep the board repository on a token owned by your own account.</strong> An
-                  organisation's owners can read its repositories, and these notes are meant for you alone.
+                  organisation and in their own account needs one token for each.
                 </p>
               </li>
 

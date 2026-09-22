@@ -59,7 +59,6 @@ describe("the stored document (ADR 0002)", () => {
   test("the storage keys are exactly these, because renaming one loses the saved value", () => {
     expect(STORAGE_KEYS).toEqual({
       tokens: "github-work-board.tokens",
-      dataRepo: "github-work-board.dataRepo",
       lastCounts: "github-work-board.lastCounts",
       autoRefresh: "github-work-board.autoRefresh",
     });
@@ -68,13 +67,20 @@ describe("the stored document (ADR 0002)", () => {
   // The one-token version of the board wrote these two, and `readTokens` still
   // reads them so that nobody has to set the board up again. Dropping the
   // migration strands every reader who connected before the change.
-  test("the keys the one-token version wrote are still read", () => {
+  // The board kept its own data repository before the shared cloud storage
+  // existed (root ADR 0016). `legacyStorage.js` reads it once and hands it to
+  // the shared setting, so nobody sets the board up again.
+  test("the keys the one-token version and the own-repository version wrote are still read", () => {
     expect(LEGACY_KEYS).toEqual({
       token: "github-work-board.token",
       grantedPermissions: "github-work-board.grantedPermissions",
+      dataRepo: "github-work-board.dataRepo",
     });
   });
 
+  // The file name is also the legacy path: the board read `board.json` from the
+  // root of its own repository before the shared folder existed, and the store
+  // still reads it from there once when the new path is missing.
   test("the file name in the data repository never changes", () => {
     expect(DOCUMENT_PATH).toBe("board.json");
   });
@@ -139,12 +145,23 @@ describe("the shape of the project (ADR 0001, ADR 0003)", () => {
   });
 
   // Root ADR 0002 and the web-projects rule: a project imports nothing from
-  // outside its own folder, and loads nothing from a CDN.
-  test("nothing is imported from outside this folder", () => {
+  // outside its own folder except the shared cloud storage (root ADR 0016),
+  // and loads nothing from a CDN.
+  test("nothing is imported from outside this folder, except cloud-storage", () => {
     for (const name of sourceFiles) {
-      expect(read(name)).not.toMatch(/from\s+["']\.\.\//);
+      const outside = [...read(name).matchAll(/from\s+["'](\.\.\/[^"']+)["']/g)].map((match) => match[1]);
+      for (const path of outside) expect(path).toMatch(/^\.\.\/cloud-storage\//);
       expect(read(name)).not.toMatch(/from\s+["']https?:/);
     }
+  });
+
+  // The board file goes through the shared store, which owns the mirror, the
+  // question and the save schedule (root ADR 0016). A second path to the
+  // Contents API here would be a second copy of exactly the code that must not
+  // drift, and would skip the mirror.
+  test("the board file is read and written only through the shared store", () => {
+    for (const name of sourceFiles) expect(read(name)).not.toMatch(/\/contents\//);
+    expect(read("app.js")).toMatch(/openStore\(/);
   });
 });
 
@@ -530,7 +547,7 @@ describe("handing a token back (ADR 0015)", () => {
   // where it is copied to every device and kept in the file's history.
   test("a backup is never written to the notes file and never sent anywhere", () => {
     expect(RECORD_MAPS).not.toContain("tokens");
-    for (const name of ["gateway.js", "boardDocument.js", "sync.js"]) {
+    for (const name of ["gateway.js", "boardDocument.js", "legacyStorage.js"]) {
       expect(`${name} knows about backups: ${read(name).includes("Backup")}`).toBe(`${name} knows about backups: false`);
     }
   });

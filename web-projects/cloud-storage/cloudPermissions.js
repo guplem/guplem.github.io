@@ -60,7 +60,8 @@ export function permissionsFingerprint(list = REQUIRED_PERMISSIONS) {
  */
 export function tokenNeedsUpdate(granted, current = permissionsFingerprint()) {
   if (typeof granted !== "string" || granted.trim() === "") return false;
-  return granted !== current;
+  const held = new Set(granted.split("|"));
+  return current.split("|").some((one) => !held.has(one));
 }
 
 /** The permissions a token does not already carry, so the prompt can name them. */

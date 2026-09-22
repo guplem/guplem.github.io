@@ -84,3 +84,5 @@ one opened daily. Rejected: **IndexedDB**. It is not readable by less script tha
 problem here). Rejected: **a server that holds the secret**. It is the only
 answer that removes the token from the browser, and it ends the no-server design
 this whole site rests on.
+
+> **Note (2026-09):** the token that writes the board file now belongs to the shared cloud storage (root ADR 0016), kept by `web-projects/cloud-storage/cloudSettings.js` under its own key and sent by `cloudGateway.js`. The board's own `settings.js` and `gateway.js` still hold and send the tokens that read work. The two rules above hold for both pairs of files, and the import of `../cloud-storage/` is the one exception to "nothing from outside this folder" that `invariants.test.js` allows.

@@ -84,3 +84,5 @@ stamps, and every shared part duplicated or extracted into a module that both
 load, for a screen that shows a list and a form. **Rejected: a dialog over the
 board.** The site has no dialog part (ADR 0004), the content is long enough to
 scroll, and a link to it is worth having.
+
+> **Note (2026-09):** the token guide in this page no longer mentions the board repository. The shared cloud storage panel carries its own guide, written once in `cloudSettingsPanel.js` and filled from its own permission list (root ADR 0016). Settings mounts that panel in full under "Where your half of the board is saved".

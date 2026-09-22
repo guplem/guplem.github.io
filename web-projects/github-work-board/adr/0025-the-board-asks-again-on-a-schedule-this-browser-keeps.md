@@ -12,15 +12,15 @@ guide:
 
 | Budget | Limit | What one refresh spends, per token |
 |---|---|---|
-| REST `core` | 5000 an hour | 5 calls: who you are, open work, work closed today, the board repository, the board file |
+| REST `core` | 5000 an hour | 3 calls: who you are, open work, work closed today |
 | REST `search` | 30 a **minute** | 1 call: the pull requests waiting for your review |
 | GraphQL | 5000 points an hour | 1 call, or 2: the links between items, then the children of any issue that has them |
 
 The board holds a list of tokens, not one (ADR 0007), and a refresh asks every
-one of them. So the cost is seven calls per token, per refresh, and eight when
+one of them. So the cost is five calls per token, per refresh, and six when
 something on the board has children.
 
-Two tokens on the shortest schedule spend 1200 of the 5000 core calls an hour,
+Two tokens on the shortest schedule spend 720 of the 5000 core calls an hour,
 and 4 of the 30 search calls a minute. The tight budget is `search`, because it
 is counted per minute and not per hour. It is what decides the shortest
 schedule the board offers, and `refresh.test.js` holds that arithmetic as a
@@ -140,3 +140,8 @@ this line.
 - The search budget is the ceiling. At 30 seconds a reader can hold ten tokens
   and stay inside it. A shorter schedule, or a token list far longer than
   anybody has, would need that arithmetic done again.
+
+> **Note (2026-09):** a refresh no longer checks the board repository or reads
+> the board file. The shared cloud storage owns that check and runs it on its
+> own schedule, not this one (root ADR 0016). The budget table and the
+> per-token totals above count only what a work token still asks for.

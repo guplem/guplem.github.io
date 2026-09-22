@@ -21,7 +21,6 @@ export const PERMISSIONS = {
   issuesRead: "Issues: read",
   issuesWrite: "Issues: write",
   pullRequestsRead: "Pull requests: read",
-  contentsWrite: "Contents: read and write",
 };
 
 /**
@@ -47,19 +46,15 @@ export const REQUIRED_PERMISSIONS = [
     level: "Read-only",
     why: "the board shows the pull requests assigned to you, beside your issues",
   },
-  {
-    id: "contents",
-    name: "Contents",
-    level: "Read and write",
-    why: "your half of the board, in the private repository you own",
-  },
 ];
+
+// Contents is not here any more. The board file is written by the shared cloud
+// storage, with its own token and its own permission list (root ADR 0016).
 
 /** The calls the setup panel makes, in order, to prove the token works. */
 export const CONNECTION_CHECKS = [
   { id: "identity", label: "Read your GitHub account", need: PERMISSIONS.metadata },
   { id: "issues", label: "Read the issues and pull requests assigned to you", need: PERMISSIONS.issuesRead },
-  { id: "board", label: "Read and write the board file", need: PERMISSIONS.contentsWrite },
 ];
 
 /** A stable short string for one set of permissions, ignoring the order and the wording. */
@@ -74,11 +69,15 @@ export function permissionsFingerprint(list = REQUIRED_PERMISSIONS) {
  * Whether the reader has to go back to GitHub and widen their token.
  *
  * A reader who has never connected gets `false`: they are in the setup guide
- * already, and telling them their token is out of date would be nonsense.
+ * already, and telling them their token is out of date would be nonsense. A
+ * token that carries more than the list asks for gets `false` too: the list
+ * shrank once, when Contents moved to cloud storage, and there was nothing to
+ * ask those readers to add.
  */
 export function tokenNeedsUpdate(granted, current = permissionsFingerprint()) {
   if (typeof granted !== "string" || granted.trim() === "") return false;
-  return granted !== current;
+  const held = new Set(granted.split("|"));
+  return current.split("|").some((one) => !held.has(one));
 }
 
 /** The permissions a token does not already carry, so the prompt can name them. */

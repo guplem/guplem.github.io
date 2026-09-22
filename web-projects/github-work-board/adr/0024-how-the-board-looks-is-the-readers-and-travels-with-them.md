@@ -96,3 +96,9 @@ against the text on it, in one theme and not the other. A preset is checked
 against both.
 **Rejected: colouring the cards rather than the column.** The column is the
 thing being told apart; the cards inside it are the work.
+
+> **Note (2026-09):** the repository holding `board.json` is no longer called
+> the board repository. The shared cloud storage panel calls it the data
+> repository, because it now holds every project's saved data, one folder
+> each (root ADR 0016). The colours and the theme still live in `board.json`,
+> unchanged.

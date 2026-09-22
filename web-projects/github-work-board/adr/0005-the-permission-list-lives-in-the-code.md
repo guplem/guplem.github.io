@@ -76,3 +76,5 @@ on purpose, and the test was updated in the same change.
 is a green test suite (root ADR 0009), and no test could see this. **Rejected:
 asking for every permission the board might ever want.** It is a real cost paid
 by the reader, in access they did not need to give, to save the author a step.
+
+> **Note (2026-09):** the list shrank once. `Contents` moved to the cloud storage's own permission list (`web-projects/cloud-storage/cloudPermissions.js`), because the board file is written by the cloud token, not by a work token (root ADR 0016). `tokenNeedsUpdate` therefore says "no" for a token that carries more than the list asks for: a token approved under the old list has nothing to add.

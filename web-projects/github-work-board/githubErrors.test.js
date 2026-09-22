@@ -35,8 +35,8 @@ describe("describeFailure", () => {
   });
 
   test("explains that a 404 can mean the token cannot see it", () => {
-    const sentence = describeFailure({ status: 404, message: "Not Found", need: PERMISSIONS.contentsWrite });
-    expect(sentence).toContain(PERMISSIONS.contentsWrite);
+    const sentence = describeFailure({ status: 404, message: "Not Found", need: PERMISSIONS.issuesRead });
+    expect(sentence).toContain(PERMISSIONS.issuesRead);
     expect(sentence.toLowerCase()).toContain("list");
   });
 

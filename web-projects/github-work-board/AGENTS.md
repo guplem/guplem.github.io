@@ -8,9 +8,10 @@ A personal work board on top of GitHub issues. The page runs with no server: the
 reader pastes a fine-grained personal access token, and the browser calls
 `api.github.com` directly. Their private half (their notes, columns, colours, theme, marked priority,
 counting choices and the lines they copy from a card, now; tags and a "what's
-next" queue later) lives in one JSON
-file in a private repository they own, so the board follows them across
-devices.
+next" queue later) lives in one JSON file, `board.json`, kept by the shared
+cloud storage (`web-projects/cloud-storage/`, root ADR 0016): mirrored in this
+browser, and saved to the private repository they own, so the board follows
+them across devices.
 
 **This project is held to a higher bar than the rest of the playground, on
 purpose.** It handles a real credential and it writes to somebody's repository.
@@ -40,9 +41,8 @@ It is the short procedure for all of the above.
 
 | File | Pure? | Responsibility |
 |---|---|---|
-| `boardDocument.js` | Yes | The stored document: schema version, `migrate`, and one note, column, colour, theme, priority, counting choice or copy action at a time |
-| `sync.js` | Yes | Merging two copies of the document, and deciding create / update / skip (ADR 0002) |
-| `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
+| `boardDocument.js` | Yes | What each record means to the board: one note, column, colour, theme, priority, counting choice or copy action at a time, over the shared envelope (`../cloud-storage/envelope.js`) |
+| `legacyStorage.js` | Yes | The one-time hand-over of the board's old data repository and its writing token to cloud storage (root ADR 0016) |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
@@ -65,7 +65,7 @@ It is the short procedure for all of the above.
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
-| `settings.js` | Yes | The list of tokens and the data repository, through an injected storage (ADR 0007) |
+| `settings.js` | Yes | The list of tokens, through an injected storage (ADR 0007) |
 | `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), and whether the notes are syncing (ADR 0019) |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `style.css` | - | The design system: colour roles, one radius, and the five parts every screen is built from (ADR 0004) |
@@ -76,7 +76,7 @@ It is the short procedure for all of the above.
 Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
 Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025).
-Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
+Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
 
 ## Non-obvious conventions and gotchas
 
@@ -95,7 +95,7 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   seeing `hidden`. To force the page's own view, inject a `<script>` element
   with the override as its text, which runs in the page's world. Measure what
   fires, not when.
-- **One refresh costs seven GitHub calls for each token, and eight when
+- **One refresh costs five GitHub calls for each token, and six when
   something on the board has children**, and the tight budget is `search` at 30
   a minute, not `core` at 5000 an hour. A new call in the connect path
   multiplies by the number of tokens and by the refresh rate. Do that
@@ -170,9 +170,6 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   carries. The board therefore holds a **list** of tokens, asks every one, and
   merges the answers. Anyone working in an organisation needs at least two
   (ADR 0007).
-- **Exactly one token writes the notes file.** `boardWritingToken` picks it. A
-  save with any other token fails, because the board repository belongs to one
-  owner.
 - **The token guide lives once, as the `<template id="token-guide">` in
   `index.html`**, and `app.js` clones it into every `.token-guide-slot` (the
   welcome screen and the add-token screen). Never copy that markup into a
@@ -185,12 +182,12 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   confident wrong answer when the truth is that no token reaches the
   organisation their work lives in. `sayEmptyBoard` always says how far the
   board can see.
-- **`btoa` is not enough.** The Contents API carries file content as base64, and
-  the browser's `btoa` throws on any character above 255. A note with an accent
-  or an emoji arrives on day one, so text goes through `TextEncoder` first.
-  Reading back, GitHub wraps the base64 in newlines every 60 characters and
-  `atob` refuses them, so `decodeBase64` strips whitespace first. Both halves are
-  pinned in `documentCodec.test.js`.
+- **The board file goes through the shared store, never through `gateway.js`.**
+  `app.js` opens `openStore` from `../cloud-storage/cloudStore.js` with
+  `legacyPath: "board.json"`, and every mutation ends in `scheduleSave()`, which
+  is `store.write(state.board)`. The store owns the local mirror, the question
+  when two copies meet, the save schedule and the sha dance (root ADR 0016).
+  `invariants.test.js` fails on any `/contents/` path in this folder.
 - **A note is keyed by the issue's `node_id`, never by `repo#number`.** An issue
   transferred to another repository keeps its node id and changes its number, so
   a note filed under the number would later attach itself to a different issue.
@@ -236,8 +233,9 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   (ADR 0001).
 - **The repository holds the whole of the reader's half, not just notes.**
   `board.json` carries the notes, the cards moved by hand, the colour on each
-  column and the theme (ADR 0024). The page calls it the **board
-  repository**; say "your half of the board", never "your notes", in anything
+  column and the theme (ADR 0024). The cloud storage panel calls it the **data
+  repository**, because it now holds every adopting project's data, not only
+  the board's; say "your half of the board", never "your notes", in anything
   new.
 - **A new kind of stored thing is one entry in `RECORD_MAPS` and a read/write
   pair.** That is what ADR 0002 built the document for, and it is why adding
@@ -391,7 +389,7 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   than storing it (the same script reads either), but a token on screen is a
   token in a screen share.
 - **A backup carries the token and the reader's name for it, nothing else.**
-  Owners, counts and `canWriteBoard` are facts the board discovered, and they
+  Owners and counts are facts the board discovered, and they
   are stale the moment they are written down. **Never write a backup into
   `board.json`**: that puts a live credential in a GitHub repository and in
   its history. A test in `invariants.test.js` fails on it.
@@ -411,14 +409,10 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   inside the card of the issue that already names it. Only the nested card
   does: `buildWorkItemCard(item, { compact: true })` (ADR 0018).
 - **Every check row carries the `id` of the `CONNECTION_CHECKS` entry it
-  answers.** The notes badge finds the board-file row by that id, never by
-  matching its label, which is wording and changes (ADR 0019).
-- **A token that cannot reach the board repository pushes no board-file
-  check at all**, on purpose: an organisation's token is not broken for
-  failing to hold somebody's private notes (ADR 0007). So no row from any
-  token means no token reached it, which is why `describeNotesSync` takes an
-  `asked` flag: without it, "nobody reached your notes" and "still asking"
-  are the same empty list.
+  answers**, never matched by its label, which is wording and changes.
+  `CONNECTION_CHECKS` here holds only `identity` and `issues`: the notes badge
+  is the shared cloud storage's own check now, driven by `cloudMessages.describeSync`
+  over the checks the store runs (ADR 0019, root ADR 0016).
 - **The connection checks live folded inside the token they are about**, not
   in one list. `summariseChecks` writes the shut line and names a single
   failure rather than counting it. A one-off message goes to a notice line in

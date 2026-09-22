@@ -2221,3 +2221,23 @@ textarea.input {
 .swatch[aria-pressed="true"] {
   box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--foreground));
 }
+
+/* The shared cloud storage panel inside Settings, in the board's own colours
+ * (root ADR 0016). The panel reads these properties and nothing else. */
+#cloud-settings {
+  --cs-foreground: hsl(var(--foreground));
+  --cs-muted-foreground: hsl(var(--muted-foreground));
+  --cs-background: hsl(var(--card));
+  --cs-border: hsl(var(--border));
+  --cs-primary: hsl(var(--primary));
+  --cs-primary-foreground: hsl(var(--primary-foreground));
+  --cs-success: hsl(var(--success));
+  --cs-destructive: hsl(var(--destructive));
+  --cs-radius-md: var(--radius);
+  margin-top: 0.75rem;
+}
+
+#cloud-settings .cs-heading h3 {
+  font-size: 1rem;
+  margin: 0;
+}

@@ -100,3 +100,5 @@ answers a different question convincingly enough to be dangerous.
 This decision first rejected asking the reader to name each token, on the
 grounds that the board could say what a token actually reached. The two attempts
 above are why that was reversed.
+
+> **Note (2026-09):** the board repository is no longer one of the board's tokens' jobs. The shared cloud storage holds one token for it (root ADR 0016), so `canWriteBoard` and `boardWritingToken` are gone from `settings.js`. A reader who set the board up before the change loses nothing: `legacyStorage.js` hands the token that wrote the board, and the old `dataRepo`, to cloud storage once. The token list here still reads work with one token per owner, exactly as above. A token row offers "Use for cloud storage" while none is set, so a person pastes a token once.

@@ -1,5 +1,7 @@
-// What this browser remembers: the tokens, and which repository holds the board
-// file. Nothing else, and nothing here is ever sent anywhere (root ADR 0007).
+// What this browser remembers: the tokens the board reads work with, how often
+// it asks again, and the last counts. Nothing else, and nothing here is ever
+// sent anywhere (root ADR 0007). Where the board file goes is not this file's
+// business any more: the shared cloud storage keeps that (root ADR 0016).
 //
 // **There is a list of tokens, not one token.** A fine-grained token belongs to
 // exactly one resource owner: your personal account, or one organisation. A
@@ -29,19 +31,20 @@ import { knownRefresh } from "./refresh.js";
 
 export const STORAGE_KEYS = {
   tokens: "github-work-board.tokens",
-  dataRepo: "github-work-board.dataRepo",
   lastCounts: "github-work-board.lastCounts",
   autoRefresh: "github-work-board.autoRefresh",
 };
 
-/** Where the one-token version kept things. Read once, then cleared. */
+/**
+ * Where earlier versions kept things. Read once, then cleared. The one-token
+ * version wrote the first two; the version with its own data repository wrote
+ * `dataRepo`, which `legacyStorage.js` hands to cloud storage (root ADR 0016).
+ */
 export const LEGACY_KEYS = {
   token: "github-work-board.token",
   grantedPermissions: "github-work-board.grantedPermissions",
+  dataRepo: "github-work-board.dataRepo",
 };
-
-/** What the setup guide suggests calling the private repository. */
-export const DEFAULT_DATA_REPO_NAME = "work-board-data";
 
 function readRaw(storage, key) {
   try {
@@ -94,7 +97,6 @@ function readEntry(value) {
     name: typeof value.name === "string" ? value.name.trim() : "",
     owners: Array.isArray(value.owners) ? value.owners.filter((one) => typeof one === "string") : [],
     itemCount: Number.isFinite(value.itemCount) ? value.itemCount : 0,
-    canWriteBoard: value.canWriteBoard === true,
   };
 }
 
@@ -128,7 +130,6 @@ export function readTokens(storage) {
       name: "",
       owners: [],
       itemCount: 0,
-      canWriteBoard: false,
     },
   ];
 }
@@ -146,7 +147,7 @@ export function forgetAllTokens(storage) {
   removeRaw(storage, STORAGE_KEYS.tokens);
   removeRaw(storage, LEGACY_KEYS.token);
   removeRaw(storage, LEGACY_KEYS.grantedPermissions);
-  removeRaw(storage, STORAGE_KEYS.dataRepo);
+  removeRaw(storage, LEGACY_KEYS.dataRepo);
   removeRaw(storage, STORAGE_KEYS.lastCounts);
   removeRaw(storage, STORAGE_KEYS.autoRefresh);
 }
@@ -237,19 +238,14 @@ export function renameToken(list, id, name) {
   return (Array.isArray(list) ? list : []).map((one) => (one.id === id ? { ...one, name: clean } : one));
 }
 
-/**
- * The token that reads and writes the notes file.
- *
- * The file lives in one repository, so exactly one token can reach it. Picking
- * another would fail every save with a permission error.
- */
-export function boardWritingToken(list) {
-  return (Array.isArray(list) ? list : []).find((one) => one.canWriteBoard) ?? null;
-}
 
-/** The chosen data repository, or null when none is chosen or what is stored is not one. */
-export function readDataRepo(storage) {
-  const raw = readRaw(storage, STORAGE_KEYS.dataRepo);
+/**
+ * The data repository the board kept before cloud storage, or null.
+ *
+ * Only `legacyStorage.js` reads it, once, to hand it over. Nothing writes it.
+ */
+export function readLegacyDataRepo(storage) {
+  const raw = readRaw(storage, LEGACY_KEYS.dataRepo);
   if (raw === null) return null;
   let stored = null;
   try {
@@ -261,12 +257,4 @@ export function readDataRepo(storage) {
   const owner = typeof stored.owner === "string" ? stored.owner.trim() : "";
   const repo = typeof stored.repo === "string" ? stored.repo.trim() : "";
   return owner !== "" && repo !== "" ? { owner, repo } : null;
-}
-
-/** Save the data repository. An incomplete one is not stored. */
-export function saveDataRepo(storage, value) {
-  const owner = typeof value?.owner === "string" ? value.owner.trim() : "";
-  const repo = typeof value?.repo === "string" ? value.repo.trim() : "";
-  if (owner === "" || repo === "") return;
-  writeRaw(storage, STORAGE_KEYS.dataRepo, JSON.stringify({ owner, repo }));
 }

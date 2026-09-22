@@ -97,3 +97,7 @@ every minute of the day. **Rejected: hiding the repository on every card.** On
 a card standing alone it is the only thing saying where the work is.
 **Rejected: keeping the guide in Settings behind a fold.** A fold is right for
 something read often and skipped sometimes; this is read twice and then never.
+
+> **Note (2026-09):** the "Board repository" heading and its link out are
+> gone from Settings. The shared cloud storage panel shows the data
+> repository instead, with its own "Open on GitHub" link (root ADR 0016).
