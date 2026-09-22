@@ -19,6 +19,7 @@ import { KIND_FILTERS } from "./filters.js";
 import { normalizeWorkItem } from "./workItems.js";
 import { REQUIRED_PERMISSIONS } from "./permissions.js";
 import { LEGACY_KEYS, STORAGE_KEYS } from "./settings.js";
+import { PLACEHOLDERS } from "./copyActions.js";
 
 const FOLDER = import.meta.dir;
 const sourceFiles = readdirSync(FOLDER).filter((name) => name.endsWith(".js") && !name.endsWith(".test.js"));
@@ -570,5 +571,27 @@ describe("the page itself", () => {
     expect(page).toContain("<!-- BEGIN GENERATED:DEPLOY -->");
     expect(page).toContain("<!-- END GENERATED:DEPLOY -->");
     expect(page).toContain('id="deploy-line"');
+  });
+});
+
+// A placeholder is written into board.json the moment the reader saves a line,
+// so renaming one silently empties that part of every line they already wrote
+// (ADR 0031). The same rule a column id lives under (ADR 0011).
+describe("a placeholder the reader typed keeps its name (ADR 0031)", () => {
+  test("these are the placeholders, and a name is never changed or dropped", () => {
+    expect(PLACEHOLDERS.map((one) => one.token)).toEqual(["{N}", "{URL}", "{TITLE}", "{REPO}", "{BRANCH}"]);
+  });
+
+  test("the saved document carries a map for the lines themselves", () => {
+    expect(RECORD_MAPS).toContain("copyActions");
+  });
+
+  // The rule that decides which line a card offers lives in `cardMenu.js`, with
+  // every other row. Three ad-hoc conditions in `app.js` is what ADR 0022 was
+  // written to stop, and a fourth would start it again.
+  test("app.js asks the menu module which lines a card offers", () => {
+    const page = read("app.js");
+    expect(page).toContain("cardMenuRows");
+    expect(page).not.toContain("canFillTemplate");
   });
 });
