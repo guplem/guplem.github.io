@@ -93,7 +93,7 @@ import { skeletonCount } from "./skeletons.js";
 import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
 import { cardMenuRows } from "./cardMenu.js";
 import { readTitle } from "./titles.js";
-import { LOW, NORMAL, sinkLowPriority } from "./priority.js";
+import { LOW, NORMAL, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
@@ -952,11 +952,11 @@ function lightStack(root) {
   }
 }
 
-/** The cards the reader marked, out of the ones on the board right now. */
-function lowPriorityKeys(groups) {
+/** The cards the reader marked, out of the ones on screen right now. */
+function lowPriorityKeys(items) {
   const marked = new Set();
-  for (const { item } of groups) {
-    if (readPriority(state.board, item.key) === LOW) marked.add(item.key);
+  for (const item of items) {
+    if (item && readPriority(state.board, item.key) === LOW) marked.add(item.key);
   }
   return marked;
 }
@@ -983,16 +983,19 @@ function renderBoard() {
   // only the smart order does this.
   const grouped =
     state.sortId === "smart"
-      ? sinkLowPriority(orderStacksForMerging(plain), lowPriorityKeys(plain))
+      ? sinkLowPriority(orderStacksForMerging(plain), lowPriorityKeys(plain.map((group) => group.item)))
       : plain;
 
   // The row above the columns. It follows the chosen order, and with no choice
   // made it puts the longest-waiting first (ADR 0013).
   const queued = sortWorkItems(withoutItems(state.reviews, state.items), reviewSortId(state.sortId), hasNote);
-  // The row holds stacks too, so the smart order reads them bottom first here
-  // as well. Without this the badge said "1 of 3" on a card sitting last
-  // (ADR 0016).
-  const waiting = state.sortId === "smart" ? orderItemsForMerging(queued) : queued;
+  // The row is ordered by the same rules as a column, in the same order: the
+  // stacks first, then the cards the reader pushed down (ADR 0016, ADR 0026).
+  // The row is flat and a column holds groups, which is the only difference.
+  const waiting =
+    state.sortId === "smart"
+      ? sinkLowPriorityItems(orderItemsForMerging(queued), lowPriorityKeys(queued))
+      : queued;
 
   // Over everything on screen, not one area: a stack can have a card in the
   // review row and another in a column, and the reader can see both. The badge

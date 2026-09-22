@@ -387,10 +387,19 @@ describe("off is not whatever the default happens to be (ADR 0025)", () => {
 // The row shipped without this, and it was invisible because the badge is
 // right: a card badged "1 of 3" sat last, and only somebody who read the badges
 // noticed the order disagreed with them (ADR 0016).
-describe("the review row reads its stacks bottom first too (ADR 0016)", () => {
+describe("the review row is ordered by the same rules as a column (ADR 0016, ADR 0026)", () => {
   test("the smart order runs the stack pass on the row, not only on the board", () => {
     const source = read("app.js");
-    expect(source).toMatch(/sortId === "smart"[\s\S]{0,120}orderItemsForMerging/);
+    expect(source).toMatch(/sortId === "smart"[\s\S]{0,160}orderItemsForMerging/);
+  });
+
+  // The row drifted away from the columns once already, one pass at a time.
+  // Both halves of the smart order run in both places, in the same order:
+  // the stacks first, then the cards the reader pushed down.
+  test("the row sinks what the reader pushed down, exactly as a column does", () => {
+    const source = read("app.js");
+    expect(source).toMatch(/sinkLowPriorityItems\(\s*orderItemsForMerging/);
+    expect(source).toMatch(/sinkLowPriority\(\s*orderStacksForMerging/);
   });
 
   // The comparator half of smart is still the date order the row is built

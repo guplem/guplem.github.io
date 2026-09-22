@@ -40,6 +40,25 @@ export function knownPriority(value) {
 }
 
 /**
+ * The same flat row, with the marked cards moved to the bottom.
+ *
+ * The row of pull requests waiting on the reader is flat, not the grouped
+ * board, and it follows the same rules: a flat item is a group with nothing
+ * nested in it, so this is the same pass (ADR 0026).
+ *
+ * @param items work items, not groups
+ * @param marked the keys the reader marked, as a Set or a list
+ * @returns a new array holding exactly the same items
+ */
+export function sinkLowPriorityItems(items, marked) {
+  const list = (Array.isArray(items) ? items : []).filter((one) => one && typeof one === "object");
+  return sinkLowPriority(
+    list.map((item) => ({ item, children: [] })),
+    marked,
+  ).map((group) => group.item);
+}
+
+/**
  * The same groups, with the marked ones moved to the bottom.
  *
  * The order handed in decides both halves: the reader asked for an order and
