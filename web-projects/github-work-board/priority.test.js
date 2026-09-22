@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { LOW, NORMAL, knownPriority, sinkLowPriority } from "./priority.js";
+import { LOW, NORMAL, knownPriority, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
 
 // A group is what the board draws: an item, and the pull requests nested in it.
 const group = (key, { repository = "me/repo", head = "", base = "", number = 1 } = {}) => ({
@@ -116,5 +116,52 @@ describe("sinkLowPriority never loses work", () => {
     expect(sinkLowPriority(null, null)).toEqual([]);
     expect(sinkLowPriority(undefined, new Set(["a"]))).toEqual([]);
     expect(() => sinkLowPriority([{}, { item: null }], new Set(["a"]))).not.toThrow();
+  });
+});
+
+describe("sinkLowPriorityItems", () => {
+  const item = (key, { head = "", base = "", repository = "me/repo" } = {}) => ({
+    key,
+    kind: "pull-request",
+    repository,
+    headRefName: head,
+    baseRefName: base,
+  });
+  const keys = (items) => items.map((one) => one.key);
+
+  // The row of pull requests waiting on the reader is flat, not the grouped
+  // board. It sorts by the same rules, so it sinks by them too (ADR 0026).
+  test("a marked card goes to the bottom of the row", () => {
+    const row = [item("a"), item("b"), item("c")];
+    expect(keys(sinkLowPriorityItems(row, new Set(["a"])))).toEqual(["b", "c", "a"]);
+  });
+
+  test("nothing marked, nothing moves", () => {
+    const row = [item("a"), item("b")];
+    expect(keys(sinkLowPriorityItems(row, new Set()))).toEqual(["a", "b"]);
+  });
+
+  // The same rule the board follows: what waits on a sunk card cannot be
+  // picked up either, so it goes down with it (ADR 0016).
+  test("a pull request stacked on a marked one sinks with it", () => {
+    const row = [
+      item("one", { head: "one", base: "main" }),
+      item("two", { head: "two", base: "one" }),
+      item("three", { head: "three", base: "two" }),
+      item("other"),
+    ];
+    expect(keys(sinkLowPriorityItems(row, new Set(["two"])))).toEqual(["one", "other", "two", "three"]);
+  });
+
+  test("never drops one, and never changes the row handed in", () => {
+    const row = [item("a"), item("b")];
+    const out = sinkLowPriorityItems(row, new Set(["a"]));
+    expect(out.length).toBe(2);
+    expect(keys(row)).toEqual(["a", "b"]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(sinkLowPriorityItems(null, null)).toEqual([]);
+    expect(sinkLowPriorityItems([], new Set(["a"]))).toEqual([]);
   });
 });

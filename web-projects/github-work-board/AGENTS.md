@@ -45,7 +45,7 @@ It is the short procedure for all of the above.
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
 | `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
-| `priority.js` | Yes | The work the reader pushed down, and what sinks with it (ADR 0026) |
+| `priority.js` | Yes | The work the reader pushed down, and what sinks with it, on the board and in the review row (ADR 0026) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
@@ -67,6 +67,7 @@ It is the short procedure for all of the above.
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
 Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
+Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025).
 Data flow, saving: a keystroke, a card moved, a colour or the theme → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
@@ -103,13 +104,14 @@ Data flow, saving: a keystroke, a card moved, a colour or the theme → the matc
 - **`.badge` is `inline-flex`, so whitespace between two child elements
   disappears.** A badge built from two spans needs a `gap`, not a space in the
   text (ADR 0027).
-- **The smart order is a comparator plus a pass, and the pass has to run in
-  two places.** `sorting.js` only compares. `app.js` runs the stack pass on the
-  board (`orderStacksForMerging`) **and** on the review row
-  (`orderItemsForMerging`). The row went out without the second one, and nothing
-  failed: the badge said "1 of 3" on a card sitting last, and only a reader who
-  compared the badges noticed (ADR 0016). Add a new order that needs the pass and
-  you have to add it in both places.
+- **The review row and the columns sort by one rule, and that rule lives in two
+  places in `app.js`.** `sorting.js` only compares. Both passes of the smart
+  order run twice: on the grouped board (`orderStacksForMerging`, then
+  `sinkLowPriority`) and on the flat review row (`orderItemsForMerging`, then
+  `sinkLowPriorityItems`), in that order. The row drifted away from the columns
+  once already, one pass at a time, and nothing failed either time: the badge
+  said "1 of 3" on a card sitting last, and a marked card stayed where it was.
+  Add anything to one side and add it to the other (ADR 0016, ADR 0026).
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and

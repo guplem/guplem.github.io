@@ -21,9 +21,9 @@ export function cardMenuRows(item, { canMove = false } = {}) {
     note: true,
     // An issue has no branch.
     branch: kind === "pull-request",
-    // A card outside the columns has no column to move between. The review row
-    // is ordered by how long something has waited, and a pull request nested in
-    // its issue travels in that issue's column (ADR 0012).
+    // A card outside the columns has no column to move between: the review
+    // row holds none, and a pull request nested in its issue travels in that
+    // issue's column (ADR 0012).
     move: canMove === true,
     // Every card, like the note above. The mark is filed under the item's node
     // id, so it follows the work and not the place the card sits (ADR 0026).

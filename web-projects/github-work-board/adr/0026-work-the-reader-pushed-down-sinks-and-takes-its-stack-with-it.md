@@ -79,14 +79,25 @@ them for.
   silently.** Widen the guard and an order named after a date stops giving one;
   drop the pass and the mark quietly becomes decoration. `invariants.test.js`
   pins both, naming this ADR.
-- **The review row fades but never sinks.** The row does run the smart order's
-  stack pass (ADR 0016), so "there is nothing to reorder there" is no longer the
-  reason. The reason is what the row is for: it reports how long other people
-  have waited on the reader. A stack's order is a fact about what can merge, and
-  it belongs there. The reader's own ranking is an opinion about their week, and
-  hiding somebody else's wait behind it would make the row answer a different
-  question than the one it asks. The fade still applies, because the mark belongs
-  to the work.
+- **The review row sinks and fades, exactly as a column does.** The row shipped
+  without the sink twice, each time for a reason that did not survive being
+  used. The first reason was that the row never ran the smart order at all,
+  which stopped being true when ADR 0016 put the stack pass on the row. The
+  second was that the row reports how long other people have waited, so the
+  reader's own ranking had no business moving their work.
+
+  That second one reads well and is wrong in practice. The row is the reader's
+  screen, not a report to anybody else, and a reader who says "not this week"
+  about a review means it in the row exactly as they mean it in a column. Two
+  lists that sort by different rules also make the rule impossible to learn: the
+  reader has to remember which half of the board obeys them.
+
+  **The rule is now one rule.** The row and every column run the same two passes
+  of the smart order, in the same order: the stacks first, then the cards the
+  reader pushed down. The row is flat and a column holds groups, and that is the
+  only difference between them. `invariants.test.js` pins both passes in both
+  places, because the row drifted away from the columns once already, one pass
+  at a time.
 - **A mark on a mid-stack pull request moves two cards.** That surprises until
   the reason is read, which is why it is written on the menu row's comment and
   here. The alternative, moving nothing at all, was rejected: it makes the menu
