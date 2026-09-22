@@ -43,9 +43,14 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   the rules with one click.
 - **An issue lists its children, and says where each one is.** A card with
   sub-issues shows them under "Children", each with the column it would sit in:
-  "Ongoing", "Awaiting review", "Done". A column you chose by hand wins there
-  too, so the list can never disagree with the card itself. A sub-issue on the
-  board says "Sub-issue of", with the issue it belongs to.
+  "Ongoing", "Awaiting review", "Done", painted with the colour you gave that
+  column. A column you chose by hand wins there too, so the list can never
+  disagree with the card itself. A sub-issue on the board says "Sub-issue of",
+  with the issue it belongs to.
+- **The children that want you come first.** The five nearest to needing a
+  person are on the card: changes asked for, then approved, then out for
+  review, then being written, then not started, with finished work last. "Show
+  all" opens the rest, and it stays open while you work.
 - **The real links between your work.** A pull request appears inside the card
   of the issue it closes, an issue says what it is part of, and anything waiting
   on unfinished work is marked **Blocked**. All of it read from GitHub's own

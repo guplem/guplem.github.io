@@ -1782,10 +1782,59 @@ textarea.input {
   flex: 0 0 auto;
 }
 
+/* The state a child is in, wearing the colour the reader gave that column, so
+ * the word and the place it names agree. An unpainted column leaves the badge
+ * exactly as it was (ADR 0024, ADR 0032). */
+.child-state[data-colour] {
+  background: hsl(var(--tint) / 0.16);
+  border-color: hsl(var(--tint) / 0.5);
+  color: hsl(var(--foreground));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .child-state[data-colour] {
+    background: hsl(var(--tint) / 0.22);
+    border-color: hsl(var(--tint) / 0.55);
+  }
+}
+
+:root[data-theme="dark"] .child-state[data-colour] {
+  background: hsl(var(--tint) / 0.22);
+  border-color: hsl(var(--tint) / 0.55);
+}
+
+/* What is under the list: the press that shows the rest, and the link to what
+ * GitHub did not answer with. One at each end, like a child row itself, so the
+ * two never read as one sentence. */
+.children-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.375rem;
+}
+
+/* The rest of the children, one press away. */
+.children-toggle {
+  height: auto;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.75rem;
+}
+
+/* Only what GitHub did not answer with, and it goes to the issue itself. */
 .children-more {
-  margin-top: 0.25rem;
+  display: inline-block;
   font-size: 0.75rem;
   color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  border-bottom: 1px solid hsl(var(--border));
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.children-more:hover {
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--foreground));
 }
 
 /* A pull request sits inside the card of the issue it closes, indented and

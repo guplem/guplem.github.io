@@ -126,7 +126,11 @@ export function fetchFinishedWork(token, since) {
  * review's author so a card can draw a face for each of them (ADR 0028).
  *
  * `subIssues` names the children, and `closedAt` with `state` is what says
- * whether a child is finished. Nothing else about a child is asked for here:
+ * whether a child is finished. Twenty of them, because the list itself is free:
+ * it adds no nested connection, so 10 and 50 both cost the same 13 points. What
+ * it does spend is room in the second pass below, which is one batch of 100
+ * ids, so twenty is five parents' worth of children before anybody loses a
+ * state. Nothing else about a child is asked for here:
  * the second pass below asks about the children themselves, with this same
  * query, so a child is read exactly like any other card.
  *
@@ -145,7 +149,7 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       parent { id number title url repository { nameWithOwner } }
       blockedBy(first: 20) { nodes { id number title state url } }
       subIssuesSummary { total completed }
-      subIssues(first: 10) {
+      subIssues(first: 20) {
         nodes { id number title url state closedAt repository { nameWithOwner } }
       }
       closedByPullRequestsReferences(first: 5, includeClosedPrs: true) {
