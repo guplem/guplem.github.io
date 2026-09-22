@@ -101,6 +101,7 @@ import {
 import { skeletonCount } from "./skeletons.js";
 import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
 import { cardMenuRows } from "./cardMenu.js";
+import { TOOLTIP_DELAY_MS, tipPlacement } from "./tooltip.js";
 import { CHILDREN_SHOWN, orderChildren } from "./children.js";
 import { EXAMPLE_ACTIONS, PLACEHOLDERS, fillCopyTemplate } from "./copyActions.js";
 import { readTitle } from "./titles.js";
@@ -387,15 +388,17 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     const which = document.createElement("span");
     which.className = "stack-number";
     which.textContent = `Stack #${stack.stack}`;
-    which.title = stack.title === "" ? `Pull request #${stack.stack}` : `#${stack.stack} ${stack.title}`;
+    explain(which, stack.title === "" ? `Pull request #${stack.stack}` : `#${stack.stack} ${stack.title}`);
 
     const where = document.createElement("span");
     where.className = "stack-position";
     where.textContent = `· ${stack.position} of ${stack.size}`;
-    where.title =
+    explain(
+      where,
       stack.position === 1
         ? `The first of ${stack.size} stacked pull requests. Nothing is waiting on it.`
-        : `Number ${stack.position} of ${stack.size} stacked pull requests. #${stack.stack} merges first.`;
+        : `Number ${stack.position} of ${stack.size} stacked pull requests. #${stack.stack} merges first.`,
+    );
 
     inStack.append(which, where);
     heading.append(inStack);
@@ -420,7 +423,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   // hover away (ADR 0018).
   const where = document.createElement("span");
   where.textContent = compact ? `#${item.number}` : `${item.repository} #${item.number}`;
-  if (compact) where.title = item.repository;
+  if (compact) explain(where, item.repository);
   heading.append(where);
   card.append(heading);
 
@@ -433,7 +436,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   link.target = "_blank";
   link.rel = "noopener";
   // The whole title, for anybody who wants the words back.
-  link.title = item.title;
+  explain(link, item.title);
   if (read.type) {
     link.append(buildChangeIcon(read.type, read.breaking));
     if (read.scope !== "") {
@@ -648,7 +651,7 @@ function buildFace(person, state, pressed, onToggle) {
   if (state !== "") face.setAttribute("data-review", state);
   face.setAttribute("aria-pressed", pressed ? "true" : "false");
   const says = personLabel(person, state);
-  face.title = says;
+  explain(face, says);
   face.setAttribute("aria-label", `Show only ${says}`);
 
   const initials = document.createElement("span");
@@ -947,6 +950,102 @@ function buildNoteBox(item, written) {
 }
 
 /* -------------------------------------------------------------------------- */
+/* The tooltip                                                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * What one thing explains when the pointer rests on it.
+ *
+ * Everything the board explains on hover goes through here, and nothing sets
+ * `title`. A `title` is the operating system's tooltip: it cannot be themed,
+ * it cannot be laid out, and it reads a breakdown of six lines as one cramped
+ * block (ADR 0033). `invariants.test.js` holds the page to it.
+ */
+function explain(target, words) {
+  if (typeof words === "string" && words.trim() !== "") target.setAttribute("data-tip", words);
+  else target.removeAttribute("data-tip");
+}
+
+/** The thing the tooltip is about right now, and the wait before it appears. */
+let tipFor = null;
+let tipTimer = 0;
+
+function hideTip() {
+  clearTimeout(tipTimer);
+  tipFor = null;
+  const tip = element("tooltip");
+  if (tip?.matches(":popover-open")) tip.hidePopover();
+}
+
+/**
+ * Show one, and put it where it fits.
+ *
+ * Filled and opened before it is placed, because an element with no size
+ * cannot be placed: `tipPlacement` reads the tooltip's own width and height.
+ */
+function showTip(target) {
+  const words = target.dataset.tip ?? "";
+  if (words === "") return;
+  const tip = element("tooltip");
+  tipFor = target;
+  tip.textContent = words;
+  tip.showPopover();
+  const at = tipPlacement(target.getBoundingClientRect(), tip.getBoundingClientRect(), {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  tip.style.left = `${at.left}px`;
+  tip.style.top = `${at.top}px`;
+  tip.setAttribute("data-side", at.side);
+}
+
+const tipTarget = (node) => (node instanceof Element ? node.closest("[data-tip]") : null);
+
+/**
+ * One set of listeners for the whole page.
+ *
+ * The board rebuilds every card each time it asks GitHub, so a listener per
+ * element would be a listener per card per minute. The page is asked instead,
+ * which also covers everything drawn after this runs.
+ */
+function wireTooltip() {
+  document.addEventListener("pointerover", (event) => {
+    // A finger has no hover. A tap would otherwise leave a tooltip behind it,
+    // which is what `title` gets right by doing nothing at all on touch.
+    if (event.pointerType !== "mouse") return;
+    const target = tipTarget(event.target);
+    if (!target || target === tipFor) return;
+    hideTip();
+    tipTimer = setTimeout(() => showTip(target), TOOLTIP_DELAY_MS);
+  });
+
+  document.addEventListener("pointerout", (event) => {
+    const from = tipTarget(event.target);
+    if (!from || tipTarget(event.relatedTarget) === from) return;
+    hideTip();
+  });
+
+  // A keyboard has no pointer to rest, so focus says it at once.
+  document.addEventListener("focusin", (event) => {
+    const target = tipTarget(event.target);
+    hideTip();
+    if (target) showTip(target);
+  });
+  document.addEventListener("focusout", hideTip);
+
+  // Escape closes it, the way it closes the menu. Scrolling and resizing move
+  // the thing it points at, and a tooltip beside nothing is worse than none.
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") hideTip();
+  });
+  document.addEventListener("click", hideTip);
+  window.addEventListener("resize", hideTip);
+  // Capturing, because the columns scroll and a scroll inside them does not
+  // reach the window.
+  window.addEventListener("scroll", hideTip, true);
+}
+
+/* -------------------------------------------------------------------------- */
 /* The card menu                                                              */
 /* -------------------------------------------------------------------------- */
 
@@ -964,7 +1063,7 @@ function buildCopyMenuRow(action, item) {
   row.setAttribute("role", "menuitem");
   row.textContent = action.label;
   const filled = fillCopyTemplate(action.template, item);
-  row.title = filled;
+  explain(row, filled);
   row.addEventListener("click", async () => {
     closeCardMenu();
     try {
@@ -1084,7 +1183,7 @@ function buildChildRow({ item: child, columnId }) {
   link.target = "_blank";
   link.rel = "noopener";
   link.textContent = `#${child.number} ${child.title}`;
-  link.title = child.title;
+  explain(link, child.title);
 
   row.append(link);
 
@@ -1209,7 +1308,7 @@ function buildColumn({ column, groups }, counted) {
   const name = document.createElement("h3");
   name.className = "column-name";
   name.textContent = column.label;
-  name.title = column.hint;
+  explain(name, column.hint);
 
   // The number the reader asked for, which is not always how many cards are
   // there: a part of the board can be set to leave out the work pushed down,
@@ -1218,7 +1317,7 @@ function buildColumn({ column, groups }, counted) {
   count.className = "badge column-count";
   count.textContent = String(counted?.count ?? groups.length);
   const left = describeExcluded(counted?.excluded ?? 0);
-  if (left !== "") count.title = left;
+  explain(count, left);
   head.append(name, count);
 
   const list = document.createElement("ul");
@@ -1272,7 +1371,7 @@ function showTotal(counts) {
   const badge = element("board-total");
   badge.textContent = counts.total > 0 ? `(${counts.total})` : "";
   badge.hidden = counts.total === 0;
-  badge.title = describeBreakdown(counts.parts);
+  explain(badge, describeBreakdown(counts.parts));
 }
 
 /** The cards the reader marked, out of the ones on screen right now. */
@@ -1292,6 +1391,9 @@ function lowPriorityKeys(items) {
  */
 function renderBoard() {
   paintTheme();
+  // Every card is about to be replaced, and a tooltip about an element that no
+  // longer exists would sit there pointing at nothing.
+  hideTip();
   const hasNote = (key) => readNote(state.board, key).trim() !== "";
   const visible = filterByPerson(filterWorkItems(state.items, state), state.reviewers, "reviewers");
   const ordered = sortWorkItems(visible, state.sortId, hasNote);
@@ -1363,8 +1465,7 @@ function renderBoard() {
   const reviewCount = element("reviews-count");
   reviewCount.textContent = String(countFor[REVIEW_ROW_ID]?.count ?? waiting.length);
   const leftOut = describeExcluded(countFor[REVIEW_ROW_ID]?.excluded ?? 0);
-  if (leftOut === "") reviewCount.removeAttribute("title");
-  else reviewCount.title = leftOut;
+  explain(reviewCount, leftOut);
 
   element("board-columns").replaceChildren(...board.map((one) => buildColumn(one, countFor[one.column.id])));
   showTotal(counts);
@@ -1578,7 +1679,7 @@ function renderAppearance() {
         swatch.className = colour.id === DEFAULT_COLOUR ? "swatch swatch-none" : "swatch";
         swatch.setAttribute("aria-pressed", chosen === colour.id ? "true" : "false");
         swatch.setAttribute("aria-label", colour.label);
-        swatch.title = colour.label;
+        explain(swatch, colour.label);
         if (colour.tint !== "") swatch.style.setProperty("--tint", colour.tint);
         swatch.addEventListener("click", () => {
           state.board = writeColumnColour(state.board, area.id, colour.id, new Date().toISOString());
@@ -2161,7 +2262,7 @@ function start() {
   // (ADR 0029).
   const refreshNow = element("refresh-now");
   const sayWhen = () => {
-    refreshNow.title = describeLastRefresh(state.lastReadAt, Date.now());
+    explain(refreshNow, describeLastRefresh(state.lastReadAt, Date.now()));
   };
   refreshNow.addEventListener("mouseenter", sayWhen);
   refreshNow.addEventListener("focus", sayWhen);
@@ -2208,6 +2309,8 @@ function start() {
   element("view-toggle").addEventListener("click", () => showView(state.viewToggleGoesTo ?? "settings"));
   element("empty-open-settings").addEventListener("click", () => showView("settings"));
   element("clear-filters").addEventListener("click", clearFilters);
+
+  wireTooltip();
 
   const menu = element("card-menu");
   const submenu = element("card-submenu");

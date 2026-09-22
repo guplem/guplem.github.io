@@ -277,6 +277,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0030](web-projects/github-work-board/adr/0030-the-tab-carries-the-number-and-the-reader-decides-what-it-counts.md) | The tab carries the number, and the reader decides what it counts |
 | [github-work-board 0031](web-projects/github-work-board/adr/0031-a-line-you-copy-from-a-card-is-written-by-the-reader.md) | A line you copy from a card is written by the reader |
 | [github-work-board 0032](web-projects/github-work-board/adr/0032-the-children-read-by-what-wants-a-person.md) | The children read by what wants a person, and the rest fold away |
+| [github-work-board 0033](web-projects/github-work-board/adr/0033-the-board-draws-its-own-tooltip.md) | The board draws its own tooltip |
 | [ai-world-gen 0001](web-projects/ai-world-gen/adr/0001-openrouter-is-the-one-gateway-and-the-key-lives-here.md) | OpenRouter is the one gateway (browser CORS verified), and the key lives in this browser |
 | [ai-world-gen 0002](web-projects/ai-world-gen/adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
 | [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |

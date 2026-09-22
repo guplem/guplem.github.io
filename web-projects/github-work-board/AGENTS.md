@@ -53,6 +53,7 @@ It is the short procedure for all of the above.
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
 | `priority.js` | Yes | The work the reader pushed down, and what sinks with it, on the board and in the review row (ADR 0026) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022, ADR 0031) |
+| `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
 | `filters.js` | Yes | Narrowing by kind, repository, label and person, and what to offer (ADR 0009, ADR 0028) |
@@ -67,7 +68,7 @@ It is the short procedure for all of the above.
 | `settings.js` | Yes | The list of tokens and the data repository, through an injected storage (ADR 0007) |
 | `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), and whether the notes are syncing (ADR 0019) |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
-| `style.css` | - | The design system: colour roles, one radius, and the four parts every screen is built from (ADR 0004) |
+| `style.css` | - | The design system: colour roles, one radius, and the five parts every screen is built from (ADR 0004) |
 | `gateway.js` | No | The **only** file that calls the network |
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
@@ -121,6 +122,12 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   one cannot merge first, so leaving it up would show work that reads as ready
   and is not. Do not "fix" this into a single-card move: it recreates the exact
   failure ADR 0016 exists to prevent.
+- **Nothing on this page sets `title`, and a new one would give the reader two
+  tooltips at once.** The board draws its own (ADR 0033): write one with
+  `explain(element, words)` in `app.js`, which sets `data-tip`. The system's
+  tooltip cannot be themed, placed or laid out, and it reads the breakdown
+  beside the title as a cramped block. `invariants.test.js` fails on any
+  `title` written by a module or left in `index.html`.
 - **`.badge` is `inline-flex`, so whitespace between two child elements
   disappears.** A badge built from two spans needs a `gap`, not a space in the
   text (ADR 0027).
@@ -435,10 +442,10 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   two stacked lines and two buttons, so its placeholder is too. Two bars appended
   to a plain `div` render as one line with no gap, which is what the first
   version did: give the container `.token-lines` (ADR 0004).
-- **Build a screen from the four parts** (`.button` and its variants, `.input`,
-  `.card`, `.badge`), and give any new interactive part a hover, a press and a
-  focus-visible state. `invariants.test.js` fails when a `.button-*` variant has
-  no `:hover`.
+- **Build a screen from the five parts** (`.button` and its variants, `.input`,
+  `.card`, `.badge`, `.tooltip`), and give any new interactive part a hover, a
+  press and a focus-visible state. `invariants.test.js` fails when a
+  `.button-*` variant has no `:hover`.
 - **A new GitHub call that needs new access means one edit: add an entry to
   `REQUIRED_PERMISSIONS` in `permissions.js`.** The setup guide, the README
   check and the prompt that tells existing readers to widen their token all
@@ -500,6 +507,7 @@ before calling it done.
 | [0030](adr/0030-the-tab-carries-the-number-and-the-reader-decides-what-it-counts.md) | The tab carries the number, and the reader decides what it counts |
 | [0031](adr/0031-a-line-you-copy-from-a-card-is-written-by-the-reader.md) | A line you copy from a card is written by the reader |
 | [0032](adr/0032-the-children-read-by-what-wants-a-person.md) | The children read by what wants a person, and the rest fold away |
+| [0033](adr/0033-the-board-draws-its-own-tooltip.md) | The board draws its own tooltip |
 
 ## What is not built yet
 

@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="208" />
-  <meta name="deploy-date" content="2026-09-22T11:38:32.000Z" />
+  <meta name="deploy-pull-request" content="209" />
+  <meta name="deploy-date" content="2026-09-22T12:05:31.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -75,6 +75,12 @@
   <!-- One menu for the whole board, pointed at whichever card opened it. A
        menu inside a card would be clipped by the columns, which scroll
        sideways; a popover is in the browser's top layer and is not (ADR 0012). -->
+  <!-- The board's own tooltip, one for the whole page. A `title` is the
+       operating system's and cannot be themed, laid out or given a line break
+       worth the name (ADR 0033). `manual` so that opening it never closes the
+       card menu, which is an auto popover. -->
+  <div id="tooltip" class="tooltip" popover="manual" role="tooltip"></div>
+
   <div id="card-menu" class="menu" popover="auto" role="menu" aria-label="Card actions">
     <button id="menu-note" type="button" class="menu-item" role="menuitem">Add note</button>
     <!-- A pull request's branch, for checking it out. The one row a nested
@@ -416,7 +422,7 @@
                    screen says, and this is the reader's own half of the board
                    (ADR 0019). -->
               <span id="notes-sync" class="badge">Checking</span>
-              <a id="open-notes-repo" class="icon-link" target="_blank" rel="noopener" title="Open this repository on GitHub">
+              <a id="open-notes-repo" class="icon-link" target="_blank" rel="noopener" data-tip="Open this repository on GitHub">
                 <span class="visually-hidden">Open the board repository on GitHub</span>
                 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
