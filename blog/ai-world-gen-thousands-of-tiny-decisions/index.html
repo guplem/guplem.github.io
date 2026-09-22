@@ -53,7 +53,7 @@
         <p class="post-byline">
           <a href="../../">Guillem Poy</a>
           <time datetime="2026-09-20">20 September 2026</time>
-          <span>27 minute read</span>
+          <span>29 minute read</span>
         </p>
       </header>
 
@@ -508,9 +508,10 @@
       <section>
         <h2 id="eleven-versions-in-twenty-hours"><a class="heading-anchor" href="#eleven-versions-in-twenty-hours">Eleven versions in twenty hours</a></h2>
         <p>Version 1 was scored at 14:20 on 19 September. Version 11 at 09:49 the next morning. Each chart below is one specification, and each point is the mean score of that version over the same 38 seeds. The dotted grey chart is the judge. The numbers are in the table at the end.</p>
+        <p>Two flat lines cross every chart, and they are not versions. They are two experiments I ran once each, after the eleven were done: the whole map in one call to a language model, and every cell of the map batched into a single request to Jev. Neither has iterations, so neither can be a line with points. They are drawn here so that the story below has somewhere to land, and <a href="#the-same-maps-one-call-each">they are explained after it</a>. Read the orange line first; the flat ones will make sense later.</p>
 
         <div class="small-multiples">
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Structures: from 0.18 to 0.98" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Structures: from 0.18 to 0.98, over the eleven versions. Two flat reference lines: the whole map in one call at 0.94, every cell batched into one request at 0.97." xmlns="http://www.w3.org/2000/svg">
 <text x="28" y="14" class="mini-title">Structures</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.18 → 0.98</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -518,11 +519,12 @@
 <text x="24" y="30.0" class="tick" text-anchor="end">1</text>
 <text x="24" y="112.0" class="tick" text-anchor="end">0</text>
 <path d="M28.0,108.0 L28.0,93.2 L46.2,76.1 L64.4,52.6 L82.6,40.4 L100.8,31.8 L119.0,30.4 L137.2,30.4 L155.4,26.6 L173.6,27.6 L191.8,27.7 L210.0,27.5 L210.0,108.0 Z" class="area" />
+<line x1="28" y1="30.9" x2="210" y2="30.9" class="reference reference-llm" /><line x1="28" y1="28.5" x2="210" y2="28.5" class="reference reference-batch" />
 <polyline points="28.0,93.2 46.2,76.1 64.4,52.6 82.6,40.4 100.8,31.8 119.0,30.4 137.2,30.4 155.4,26.6 173.6,27.6 191.8,27.7 210.0,27.5" class="line" />
 <circle cx="28.0" cy="93.2" r="2.2" /><circle cx="46.2" cy="76.1" r="2.2" /><circle cx="64.4" cy="52.6" r="2.2" /><circle cx="82.6" cy="40.4" r="2.2" /><circle cx="100.8" cy="31.8" r="2.2" /><circle cx="119.0" cy="30.4" r="2.2" /><circle cx="137.2" cy="30.4" r="2.2" /><circle cx="155.4" cy="26.6" r="2.2" /><circle cx="173.6" cy="27.6" r="2.2" /><circle cx="191.8" cy="27.7" r="2.2" /><circle cx="210.0" cy="27.5" r="2.2" />
 <text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Paths: from 0.74 to 0.77" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Paths: from 0.74 to 0.77, over the eleven versions. Two flat reference lines: the whole map in one call at 0.75, every cell batched into one request at 0.47." xmlns="http://www.w3.org/2000/svg">
 <text x="28" y="14" class="mini-title">Paths</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.74 → 0.77</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -530,11 +532,12 @@
 <text x="24" y="30.0" class="tick" text-anchor="end">1</text>
 <text x="24" y="112.0" class="tick" text-anchor="end">0</text>
 <path d="M28.0,108.0 L28.0,47.1 L46.2,64.9 L64.4,53.7 L82.6,42.4 L100.8,40.8 L119.0,41.9 L137.2,42.3 L155.4,46.5 L173.6,42.4 L191.8,44.3 L210.0,44.7 L210.0,108.0 Z" class="area" />
+<line x1="28" y1="46.5" x2="210" y2="46.5" class="reference reference-llm" /><line x1="28" y1="69.5" x2="210" y2="69.5" class="reference reference-batch" />
 <polyline points="28.0,47.1 46.2,64.9 64.4,53.7 82.6,42.4 100.8,40.8 119.0,41.9 137.2,42.3 155.4,46.5 173.6,42.4 191.8,44.3 210.0,44.7" class="line" />
 <circle cx="28.0" cy="47.1" r="2.2" /><circle cx="46.2" cy="64.9" r="2.2" /><circle cx="64.4" cy="53.7" r="2.2" /><circle cx="82.6" cy="42.4" r="2.2" /><circle cx="100.8" cy="40.8" r="2.2" /><circle cx="119.0" cy="41.9" r="2.2" /><circle cx="137.2" cy="42.3" r="2.2" /><circle cx="155.4" cy="46.5" r="2.2" /><circle cx="173.6" cy="42.4" r="2.2" /><circle cx="191.8" cy="44.3" r="2.2" /><circle cx="210.0" cy="44.7" r="2.2" />
 <text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Reachable: from 0.69 to 0.88" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Reachable: from 0.69 to 0.88, over the eleven versions. Two flat reference lines: the whole map in one call at 0.85, every cell batched into one request at 0.87." xmlns="http://www.w3.org/2000/svg">
 <text x="28" y="14" class="mini-title">Reachable</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.69 → 0.88</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -542,11 +545,12 @@
 <text x="24" y="30.0" class="tick" text-anchor="end">1</text>
 <text x="24" y="112.0" class="tick" text-anchor="end">0</text>
 <path d="M28.0,108.0 L28.0,51.7 L46.2,46.7 L64.4,40.4 L82.6,45.2 L100.8,41.5 L119.0,41.3 L137.2,40.6 L155.4,39.5 L173.6,36.9 L191.8,36.5 L210.0,35.7 L210.0,108.0 Z" class="area" />
+<line x1="28" y1="38.3" x2="210" y2="38.3" class="reference reference-llm" /><line x1="28" y1="36.7" x2="210" y2="36.7" class="reference reference-batch" />
 <polyline points="28.0,51.7 46.2,46.7 64.4,40.4 82.6,45.2 100.8,41.5 119.0,41.3 137.2,40.6 155.4,39.5 173.6,36.9 191.8,36.5 210.0,35.7" class="line" />
 <circle cx="28.0" cy="51.7" r="2.2" /><circle cx="46.2" cy="46.7" r="2.2" /><circle cx="64.4" cy="40.4" r="2.2" /><circle cx="82.6" cy="45.2" r="2.2" /><circle cx="100.8" cy="41.5" r="2.2" /><circle cx="119.0" cy="41.3" r="2.2" /><circle cx="137.2" cy="40.6" r="2.2" /><circle cx="155.4" cy="39.5" r="2.2" /><circle cx="173.6" cy="36.9" r="2.2" /><circle cx="191.8" cy="36.5" r="2.2" /><circle cx="210.0" cy="35.7" r="2.2" />
 <text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Reads as a place: from 0.48 to 0.88" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Reads as a place: from 0.48 to 0.88, over the eleven versions. Two flat reference lines: the whole map in one call at 0.74, every cell batched into one request at 0.91." xmlns="http://www.w3.org/2000/svg">
 <text x="28" y="14" class="mini-title">Reads as a place</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.48 → 0.88</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -554,11 +558,12 @@
 <text x="24" y="30.0" class="tick" text-anchor="end">1</text>
 <text x="24" y="112.0" class="tick" text-anchor="end">0</text>
 <path d="M28.0,108.0 L28.0,68.5 L46.2,72.8 L64.4,66.9 L82.6,67.2 L100.8,64.5 L119.0,65.8 L137.2,65.7 L155.4,35.4 L173.6,36.8 L191.8,36.2 L210.0,36.0 L210.0,108.0 Z" class="area" />
+<line x1="28" y1="47.3" x2="210" y2="47.3" class="reference reference-llm" /><line x1="28" y1="33.4" x2="210" y2="33.4" class="reference reference-batch" />
 <polyline points="28.0,68.5 46.2,72.8 64.4,66.9 82.6,67.2 100.8,64.5 119.0,65.8 137.2,65.7 155.4,35.4 173.6,36.8 191.8,36.2 210.0,36.0" class="line" />
 <circle cx="28.0" cy="68.5" r="2.2" /><circle cx="46.2" cy="72.8" r="2.2" /><circle cx="64.4" cy="66.9" r="2.2" /><circle cx="82.6" cy="67.2" r="2.2" /><circle cx="100.8" cy="64.5" r="2.2" /><circle cx="119.0" cy="65.8" r="2.2" /><circle cx="137.2" cy="65.7" r="2.2" /><circle cx="155.4" cy="35.4" r="2.2" /><circle cx="173.6" cy="36.8" r="2.2" /><circle cx="191.8" cy="36.2" r="2.2" /><circle cx="210.0" cy="36.0" r="2.2" />
 <text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Rules hold: from 0.83 to 0.99" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Rules hold: from 0.83 to 0.99, over the eleven versions. Two flat reference lines: the whole map in one call at 0.76, every cell batched into one request at 0.83." xmlns="http://www.w3.org/2000/svg">
 <text x="28" y="14" class="mini-title">Rules hold</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.83 → 0.99</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -566,11 +571,12 @@
 <text x="24" y="30.0" class="tick" text-anchor="end">1</text>
 <text x="24" y="112.0" class="tick" text-anchor="end">0</text>
 <path d="M28.0,108.0 L28.0,39.7 L46.2,60.2 L64.4,67.5 L82.6,57.0 L100.8,67.5 L119.0,57.6 L137.2,27.2 L155.4,26.8 L173.6,27.3 L191.8,27.0 L210.0,26.6 L210.0,108.0 Z" class="area" />
+<line x1="28" y1="45.7" x2="210" y2="45.7" class="reference reference-llm" /><line x1="28" y1="39.9" x2="210" y2="39.9" class="reference reference-batch" />
 <polyline points="28.0,39.7 46.2,60.2 64.4,67.5 82.6,57.0 100.8,67.5 119.0,57.6 137.2,27.2 155.4,26.8 173.6,27.3 191.8,27.0 210.0,26.6" class="line" />
 <circle cx="28.0" cy="39.7" r="2.2" /><circle cx="46.2" cy="60.2" r="2.2" /><circle cx="64.4" cy="67.5" r="2.2" /><circle cx="82.6" cy="57.0" r="2.2" /><circle cx="100.8" cy="67.5" r="2.2" /><circle cx="119.0" cy="57.6" r="2.2" /><circle cx="137.2" cy="27.2" r="2.2" /><circle cx="155.4" cy="26.8" r="2.2" /><circle cx="173.6" cy="27.3" r="2.2" /><circle cx="191.8" cy="27.0" r="2.2" /><circle cx="210.0" cy="26.6" r="2.2" />
 <text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Routes to doors: from 1.00 to 0.82" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Routes to doors: from 1.00 to 0.82, over the eleven versions. Two flat reference lines: the whole map in one call at 0.61, every cell batched into one request at 0.78." xmlns="http://www.w3.org/2000/svg">
 <text x="28" y="14" class="mini-title">Routes to doors</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">1.00 → 0.82</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -578,11 +584,12 @@
 <text x="24" y="30.0" class="tick" text-anchor="end">1</text>
 <text x="24" y="112.0" class="tick" text-anchor="end">0</text>
 <path d="M28.0,108.0 L28.0,26.0 L46.2,44.7 L64.4,57.0 L82.6,54.0 L100.8,50.5 L119.0,59.0 L137.2,57.9 L155.4,44.1 L173.6,36.9 L191.8,37.5 L210.0,41.1 L210.0,108.0 Z" class="area" />
+<line x1="28" y1="58.0" x2="210" y2="58.0" class="reference reference-llm" /><line x1="28" y1="44.0" x2="210" y2="44.0" class="reference reference-batch" />
 <polyline points="28.0,26.0 46.2,44.7 64.4,57.0 82.6,54.0 100.8,50.5 119.0,59.0 137.2,57.9 155.4,44.1 173.6,36.9 191.8,37.5 210.0,41.1" class="line" />
 <circle cx="28.0" cy="26.0" r="2.2" /><circle cx="46.2" cy="44.7" r="2.2" /><circle cx="64.4" cy="57.0" r="2.2" /><circle cx="82.6" cy="54.0" r="2.2" /><circle cx="100.8" cy="50.5" r="2.2" /><circle cx="119.0" cy="59.0" r="2.2" /><circle cx="137.2" cy="57.9" r="2.2" /><circle cx="155.4" cy="44.1" r="2.2" /><circle cx="173.6" cy="36.9" r="2.2" /><circle cx="191.8" cy="37.5" r="2.2" /><circle cx="210.0" cy="41.1" r="2.2" />
 <text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Landmarks: from 0.07 to 0.83" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Landmarks: from 0.07 to 0.83, over the eleven versions. Two flat reference lines: the whole map in one call at 0.90, every cell batched into one request at 0.66." xmlns="http://www.w3.org/2000/svg">
 <text x="28" y="14" class="mini-title">Landmarks</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.07 → 0.83</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -590,11 +597,12 @@
 <text x="24" y="30.0" class="tick" text-anchor="end">1</text>
 <text x="24" y="112.0" class="tick" text-anchor="end">0</text>
 <path d="M28.0,108.0 L28.0,102.4 L46.2,58.2 L64.4,42.9 L82.6,53.6 L100.8,46.1 L119.0,52.4 L137.2,43.7 L155.4,45.2 L173.6,39.2 L191.8,40.2 L210.0,39.7 L210.0,108.0 Z" class="area" />
+<line x1="28" y1="34.2" x2="210" y2="34.2" class="reference reference-llm" /><line x1="28" y1="53.9" x2="210" y2="53.9" class="reference reference-batch" />
 <polyline points="28.0,102.4 46.2,58.2 64.4,42.9 82.6,53.6 100.8,46.1 119.0,52.4 137.2,43.7 155.4,45.2 173.6,39.2 191.8,40.2 210.0,39.7" class="line" />
 <circle cx="28.0" cy="102.4" r="2.2" /><circle cx="46.2" cy="58.2" r="2.2" /><circle cx="64.4" cy="42.9" r="2.2" /><circle cx="82.6" cy="53.6" r="2.2" /><circle cx="100.8" cy="46.1" r="2.2" /><circle cx="119.0" cy="52.4" r="2.2" /><circle cx="137.2" cy="43.7" r="2.2" /><circle cx="155.4" cy="45.2" r="2.2" /><circle cx="173.6" cy="39.2" r="2.2" /><circle cx="191.8" cy="40.2" r="2.2" /><circle cx="210.0" cy="39.7" r="2.2" />
 <text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
 </svg>
-<svg viewBox="0 0 220 130" class="mini mini-judge" role="img" aria-label="Judge (GPT-5.2): from 0.09 to 0.69" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini mini-judge" role="img" aria-label="Judge (GPT-5.2): from 0.09 to 0.69, over the eleven versions. Two flat reference lines: the whole map in one call at 0.65, every cell batched into one request at 0.57." xmlns="http://www.w3.org/2000/svg">
 <text x="28" y="14" class="mini-title">Judge (GPT-5.2)</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.09 → 0.69</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -602,14 +610,20 @@
 <text x="24" y="30.0" class="tick" text-anchor="end">1</text>
 <text x="24" y="112.0" class="tick" text-anchor="end">0</text>
 <path d="M28.0,108.0 L28.0,100.2 L46.2,88.4 L64.4,70.9 L82.6,68.7 L100.8,63.6 L119.0,68.6 L137.2,68.4 L155.4,54.7 L173.6,51.2 L191.8,49.9 L210.0,51.1 L210.0,108.0 Z" class="area" />
+<line x1="28" y1="54.7" x2="210" y2="54.7" class="reference reference-llm" /><line x1="28" y1="61.3" x2="210" y2="61.3" class="reference reference-batch" />
 <polyline points="28.0,100.2 46.2,88.4 64.4,70.9 82.6,68.7 100.8,63.6 119.0,68.6 137.2,68.4 155.4,54.7 173.6,51.2 191.8,49.9 210.0,51.1" class="line" />
 <circle cx="28.0" cy="100.2" r="2.2" /><circle cx="46.2" cy="88.4" r="2.2" /><circle cx="64.4" cy="70.9" r="2.2" /><circle cx="82.6" cy="68.7" r="2.2" /><circle cx="100.8" cy="63.6" r="2.2" /><circle cx="119.0" cy="68.6" r="2.2" /><circle cx="137.2" cy="68.4" r="2.2" /><circle cx="155.4" cy="54.7" r="2.2" /><circle cx="173.6" cy="51.2" r="2.2" /><circle cx="191.8" cy="49.9" r="2.2" /><circle cx="210.0" cy="51.1" r="2.2" />
 <text x="28.0" y="124" class="tick" text-anchor="middle">v1</text><text x="100.8" y="124" class="tick" text-anchor="middle">v5</text><text x="155.4" y="124" class="tick" text-anchor="middle">v8</text><text x="210.0" y="124" class="tick" text-anchor="middle">v11</text>
 </svg>
+<div class="mini-legend">
+          <p><span class="key key-versions"></span><span><strong>v1 to v11</strong>, one change at a time</span></p>
+          <p><span class="key key-llm"></span><span><strong>v-llm</strong>, the whole map in one call</span></p>
+          <p><span class="key key-batch"></span><span><strong>v-batch</strong>, every cell in one request</span></p>
+        </div>
         </div>
 
-        <p>The judge, which never saw a metric, agrees with the code: it moves from 0.09 on version 1 to 0.69 on version 11, and its two big steps land where the computed ones do, at the balance sheet (v2) and at the blueprint (v8). The story the charts tell, in order. Beside each version are all 38 maps it drew. The rows scroll together, so one sideways scroll holds the same seed still and shows what every version made of it.</p>
-        <div class="version-scroll" tabindex="0" role="group" aria-label="Every map the eleven versions drew, 38 seeds. Scroll sideways to see the same seed drawn by each version.">
+        <p>The judge, which never saw a metric, agrees with the code: it moves from 0.09 on version 1 to 0.69 on version 11, and its two big steps land where the computed ones do, at the balance sheet (v2) and at the blueprint (v8). The story the charts tell, in order. Beside each version are all 38 maps it drew. The rows scroll together, so one sideways scroll holds the same seed still and shows what every version made of it. The eleven iterations come first; the two experiments close the list, marked as such, and their own sections come later.</p>
+        <div class="version-scroll" tabindex="0" role="group" aria-label="Every map the eleven versions drew, and the two experiments after them, 38 seeds each. Scroll sideways to see the same seed drawn by each one.">
           <ol class="version-log">
           <li>
             <div class="version-maps">
@@ -1117,6 +1131,100 @@
               <p>The station gets an open deck, the city block a plaza, and corridor and street become lines. The station's route share fell from 0.53 to 0.12 of the map. The corridors are now short stubs on the deck, which is the next problem.</p>
             </div>
           </li>
+          <li class="experiment">
+            <div class="version-maps">
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/rules-village-clustered.png" width="768" height="768" loading="lazy" alt="The whole map in one call, medieval village, clustered order, 8 by 8 cells." /><figcaption>rules-village-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/paths-village-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, medieval village, frontier order, 8 by 8 cells." /><figcaption>paths-village-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/story-village-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, medieval village, frontier order, 8 by 8 cells." /><figcaption>story-village-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/routes-village-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, medieval village, spiral order, 8 by 8 cells." /><figcaption>routes-village-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/structures-village-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, medieval village, spiral order, 8 by 8 cells." /><figcaption>structures-village-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/large-village-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, medieval village, spiral order, 16 by 16 cells." /><figcaption>large-village-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/paths-station-branching.png" width="768" height="768" loading="lazy" alt="The whole map in one call, space station, branching order, 8 by 8 cells." /><figcaption>paths-station-branching</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/structures-station-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, space station, frontier order, 8 by 8 cells." /><figcaption>structures-station-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/rules-station-random.png" width="768" height="768" loading="lazy" alt="The whole map in one call, space station, random order, 8 by 8 cells." /><figcaption>rules-station-random</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/reach-station-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, space station, spiral order, 8 by 8 cells." /><figcaption>reach-station-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/story-station-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, space station, spiral order, 8 by 8 cells." /><figcaption>story-station-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/large-station-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, space station, frontier order, 16 by 16 cells." /><figcaption>large-station-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/routes-mansion-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, haunted mansion, frontier order, 8 by 8 cells." /><figcaption>routes-mansion-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/reach-mansion-random.png" width="768" height="768" loading="lazy" alt="The whole map in one call, haunted mansion, random order, 8 by 8 cells." /><figcaption>reach-mansion-random</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, haunted mansion, spiral order, 8 by 8 cells." /><figcaption>coherence-mansion-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/story-mansion-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, haunted mansion, spiral order, 8 by 8 cells." /><figcaption>story-mansion-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/structures-mansion-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, haunted mansion, spiral order, 8 by 8 cells." /><figcaption>structures-mansion-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/large-mansion-clustered.png" width="768" height="768" loading="lazy" alt="The whole map in one call, haunted mansion, clustered order, 16 by 16 cells." /><figcaption>large-mansion-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/paths-market-clustered.png" width="768" height="768" loading="lazy" alt="The whole map in one call, market, clustered order, 8 by 8 cells." /><figcaption>paths-market-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/routes-market-clustered.png" width="768" height="768" loading="lazy" alt="The whole map in one call, market, clustered order, 8 by 8 cells." /><figcaption>routes-market-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/coherence-market-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, market, frontier order, 8 by 8 cells." /><figcaption>coherence-market-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/rules-market-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, market, frontier order, 8 by 8 cells." /><figcaption>rules-market-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/reach-jungle-clustered.png" width="768" height="768" loading="lazy" alt="The whole map in one call, jungle temple, clustered order, 8 by 8 cells." /><figcaption>reach-jungle-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/story-jungle-clustered.png" width="768" height="768" loading="lazy" alt="The whole map in one call, jungle temple, clustered order, 8 by 8 cells." /><figcaption>story-jungle-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/paths-jungle-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, jungle temple, frontier order, 8 by 8 cells." /><figcaption>paths-jungle-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/rules-jungle-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, jungle temple, spiral order, 8 by 8 cells." /><figcaption>rules-jungle-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/rules-desert-branching.png" width="768" height="768" loading="lazy" alt="The whole map in one call, desert outpost, branching order, 8 by 8 cells." /><figcaption>rules-desert-branching</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/reach-desert-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, desert outpost, frontier order, 8 by 8 cells." /><figcaption>reach-desert-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/story-desert-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, desert outpost, frontier order, 8 by 8 cells." /><figcaption>story-desert-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/coherence-desert-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, desert outpost, spiral order, 8 by 8 cells." /><figcaption>coherence-desert-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/structures-arctic-clustered.png" width="768" height="768" loading="lazy" alt="The whole map in one call, arctic base, clustered order, 8 by 8 cells." /><figcaption>structures-arctic-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/coherence-arctic-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, arctic base, frontier order, 8 by 8 cells." /><figcaption>coherence-arctic-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/reach-arctic-random.png" width="768" height="768" loading="lazy" alt="The whole map in one call, arctic base, random order, 8 by 8 cells." /><figcaption>reach-arctic-random</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/routes-arctic-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, arctic base, spiral order, 8 by 8 cells." /><figcaption>routes-arctic-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/structures-cyberpunk-branching.png" width="768" height="768" loading="lazy" alt="The whole map in one call, cyberpunk block, branching order, 8 by 8 cells." /><figcaption>structures-cyberpunk-branching</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/coherence-cyberpunk-clustered.png" width="768" height="768" loading="lazy" alt="The whole map in one call, cyberpunk block, clustered order, 8 by 8 cells." /><figcaption>coherence-cyberpunk-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/routes-cyberpunk-frontier.png" width="768" height="768" loading="lazy" alt="The whole map in one call, cyberpunk block, frontier order, 8 by 8 cells." /><figcaption>routes-cyberpunk-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-llm/paths-cyberpunk-spiral.png" width="768" height="768" loading="lazy" alt="The whole map in one call, cyberpunk block, spiral order, 8 by 8 cells." /><figcaption>paths-cyberpunk-spiral</figcaption></figure>
+            </div>
+            <div class="version-note">
+              <p class="version-tag">Not an iteration &middot; an experiment</p>
+              <p class="version-name">v-llm &middot; the whole map in one call</p>
+              <p>Not a version of the loop. The same 38 seeds, the same vocabularies and the same blueprint, drawn by Claude Sonnet 5 in one call each instead of a decision per cell. Six seconds for a 16 by 16 map against ninety, at the same price for the run. A room closes on 47% of these maps against 92%, and the typed rules hold at 0.76 against 0.99. <a href="#the-same-maps-one-call-each">The section below</a> has the numbers.</p>
+            </div>
+          </li>
+          <li class="experiment">
+            <div class="version-maps">
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/rules-village-clustered.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, medieval village, clustered order, 8 by 8 cells." /><figcaption>rules-village-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/paths-village-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, medieval village, frontier order, 8 by 8 cells." /><figcaption>paths-village-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/story-village-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, medieval village, frontier order, 8 by 8 cells." /><figcaption>story-village-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/routes-village-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, medieval village, spiral order, 8 by 8 cells." /><figcaption>routes-village-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/structures-village-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, medieval village, spiral order, 8 by 8 cells." /><figcaption>structures-village-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/large-village-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, medieval village, spiral order, 16 by 16 cells." /><figcaption>large-village-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/paths-station-branching.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, space station, branching order, 8 by 8 cells." /><figcaption>paths-station-branching</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/structures-station-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, space station, frontier order, 8 by 8 cells." /><figcaption>structures-station-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/rules-station-random.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, space station, random order, 8 by 8 cells." /><figcaption>rules-station-random</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/reach-station-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, space station, spiral order, 8 by 8 cells." /><figcaption>reach-station-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/story-station-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, space station, spiral order, 8 by 8 cells." /><figcaption>story-station-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/large-station-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, space station, frontier order, 16 by 16 cells." /><figcaption>large-station-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/routes-mansion-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, haunted mansion, frontier order, 8 by 8 cells." /><figcaption>routes-mansion-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/reach-mansion-random.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, haunted mansion, random order, 8 by 8 cells." /><figcaption>reach-mansion-random</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/coherence-mansion-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, haunted mansion, spiral order, 8 by 8 cells." /><figcaption>coherence-mansion-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/story-mansion-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, haunted mansion, spiral order, 8 by 8 cells." /><figcaption>story-mansion-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/structures-mansion-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, haunted mansion, spiral order, 8 by 8 cells." /><figcaption>structures-mansion-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/large-mansion-clustered.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, haunted mansion, clustered order, 16 by 16 cells." /><figcaption>large-mansion-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/paths-market-clustered.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, market, clustered order, 8 by 8 cells." /><figcaption>paths-market-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/routes-market-clustered.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, market, clustered order, 8 by 8 cells." /><figcaption>routes-market-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/coherence-market-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, market, frontier order, 8 by 8 cells." /><figcaption>coherence-market-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/rules-market-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, market, frontier order, 8 by 8 cells." /><figcaption>rules-market-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/reach-jungle-clustered.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, jungle temple, clustered order, 8 by 8 cells." /><figcaption>reach-jungle-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/story-jungle-clustered.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, jungle temple, clustered order, 8 by 8 cells." /><figcaption>story-jungle-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/paths-jungle-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, jungle temple, frontier order, 8 by 8 cells." /><figcaption>paths-jungle-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/rules-jungle-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, jungle temple, spiral order, 8 by 8 cells." /><figcaption>rules-jungle-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/rules-desert-branching.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, desert outpost, branching order, 8 by 8 cells." /><figcaption>rules-desert-branching</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/reach-desert-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, desert outpost, frontier order, 8 by 8 cells." /><figcaption>reach-desert-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/story-desert-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, desert outpost, frontier order, 8 by 8 cells." /><figcaption>story-desert-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/coherence-desert-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, desert outpost, spiral order, 8 by 8 cells." /><figcaption>coherence-desert-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/structures-arctic-clustered.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, arctic base, clustered order, 8 by 8 cells." /><figcaption>structures-arctic-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/coherence-arctic-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, arctic base, frontier order, 8 by 8 cells." /><figcaption>coherence-arctic-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/reach-arctic-random.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, arctic base, random order, 8 by 8 cells." /><figcaption>reach-arctic-random</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/routes-arctic-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, arctic base, spiral order, 8 by 8 cells." /><figcaption>routes-arctic-spiral</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/structures-cyberpunk-branching.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, cyberpunk block, branching order, 8 by 8 cells." /><figcaption>structures-cyberpunk-branching</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/coherence-cyberpunk-clustered.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, cyberpunk block, clustered order, 8 by 8 cells." /><figcaption>coherence-cyberpunk-clustered</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/routes-cyberpunk-frontier.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, cyberpunk block, frontier order, 8 by 8 cells." /><figcaption>routes-cyberpunk-frontier</figcaption></figure>
+              <figure><img src="../../web-projects/ai-world-gen/evaluation/results/v-batch/paths-cyberpunk-spiral.png" width="768" height="768" loading="lazy" alt="Every cell batched into one request, cyberpunk block, spiral order, 8 by 8 cells." /><figcaption>paths-cyberpunk-spiral</figcaption></figure>
+            </div>
+            <div class="version-note">
+              <p class="version-tag">Not an iteration &middot; an experiment</p>
+              <p class="version-name">v-batch &middot; every cell at once</p>
+              <p>Not a version of the loop either. Version 11&rsquo;s own per-cell questions, unchanged, sent together as one request per map. Sixty-one times fewer requests and a third of the price, and no cell can see the others of its batch: 181 broken &ldquo;never next to&rdquo; pairs, every one inside a batch, and a mansion with 39 staircases where the rules ask for one. <a href="#the-same-decisions-one-request">The section after it</a> has the numbers.</p>
+            </div>
+          </li>
           </ol>
         </div>
 
@@ -1184,7 +1292,8 @@
 
       <section class="one-call">
         <h2 id="the-same-maps-one-call-each"><a class="heading-anchor" href="#the-same-maps-one-call-each">The same maps, one call each</a></h2>
-        <p>The chart above said the whole map in one call gets cheaper the bigger the map is. Cheap is not the same as good, so I built it as a second mode of the generator and ran it through the same evaluation, as version <code>v-llm</code>. Same 38 seeds, same shipped vocabularies, same blueprint. The prompt gives Claude Sonnet 5 what the per-cell loop gives Jev, written once: every type with its rules and its target share, each planned room with its coordinates and the types its walls, door and inside allow, and the rules a good map follows. The model answers with the grid as rows of letters; a wrong shape or an unknown letter goes back to it with the list of problems, three attempts at most.</p>
+        <p>That is the loop, and that is where it stopped. Eleven versions, each one change, each one measured. What follows is not a twelfth: it is the two experiments whose flat lines have been crossing the charts all along, each run once on the same 38 seeds to answer a question the loop could not.</p>
+        <p>The first is the one the cost chart raised. It said the whole map in one call gets cheaper the bigger the map is. Cheap is not the same as good, so I built it as a second mode of the generator and ran it through the same evaluation, as version <code>v-llm</code>. Same 38 seeds, same shipped vocabularies, same blueprint. The prompt gives Claude Sonnet 5 what the per-cell loop gives Jev, written once: every type with its rules and its target share, each planned room with its coordinates and the types its walls, door and inside allow, and the rules a good map follows. The model answers with the grid as rows of letters; a wrong shape or an unknown letter goes back to it with the list of problems, three attempts at most.</p>
         <p>The first real call taught me something before it drew anything. Left with its default settings, the model spent its entire 6,000-token budget thinking about an 8 by 8 village and returned an empty string: 68 seconds, $0.064, nothing to parse. With thinking turned off, the same call took under four seconds and half a cent. Every number below is with thinking off.</p>
         <figure class="chart">
 <svg viewBox="0 0 760 300" class="bars" role="img" aria-label="Mean score per specification, v11 (a decision per cell) against v-llm (the whole map in one call): Structures 0.98 vs 0.94; Paths 0.77 vs 0.75; Reachable 0.88 vs 0.85; Reads as a place 0.88 vs 0.74; Rules hold 0.99 vs 0.76; Routes to doors 0.82 vs 0.61; Landmarks 0.83 vs 0.90; Judge (GPT-5.2) 0.69 vs 0.65." xmlns="http://www.w3.org/2000/svg">
