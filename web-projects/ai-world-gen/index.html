@@ -218,11 +218,13 @@
                   <select id="generation-mode" class="select">
                     <option value="per-cell">One decision per cell, with the decision model (default)</option>
                     <option value="whole-map">The whole map in one call, with the narrative model</option>
+                    <option value="batched">Every cell as its own question, batched into one decision call</option>
                   </select>
                   <p class="field-help">
                     Per cell, the map fills in live and every cell carries its probabilities. In one call, the narrative
                     model writes the finished grid at once: fewer calls, no live drawing, and the map arrives whole or not
-                    at all. The evaluation in the README compares the two.
+                    at all. Batched keeps the typed per-cell questions but sends them together, so the cells of one batch
+                    cannot see each other. The evaluation in the README compares the three.
                   </p>
                 </div>
                 <p id="models-status" class="status" role="status" aria-live="polite"></p>

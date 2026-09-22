@@ -17,9 +17,10 @@ function rowsOf(width, height, letter = grass) {
 }
 
 describe("readGenerationMode", () => {
-  test("knows the two modes and falls back to a decision per cell", () => {
-    expect(GENERATION_MODES).toEqual(["per-cell", "whole-map"]);
+  test("knows the three modes and falls back to a decision per cell", () => {
+    expect(GENERATION_MODES).toEqual(["per-cell", "whole-map", "batched"]);
     expect(readGenerationMode("whole-map")).toBe("whole-map");
+    expect(readGenerationMode("batched")).toBe("batched");
     expect(readGenerationMode("per-cell")).toBe("per-cell");
     expect(readGenerationMode("nonsense")).toBe("per-cell");
     expect(readGenerationMode(null)).toBe("per-cell");
