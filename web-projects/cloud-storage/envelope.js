@@ -164,3 +164,14 @@ export function defineDocument(recordMaps) {
     parse: (text, now) => parseDocument(text, maps, now),
   };
 }
+
+/** How many live records a document holds, across every map. Removed records do not count. */
+export function recordCount(document) {
+  let count = 0;
+  for (const name of recordMapsOf(document)) {
+    for (const record of Object.values(document[name])) {
+      if (cleanRecord(record) && record.removed !== true) count += 1;
+    }
+  }
+  return count;
+}

@@ -136,3 +136,39 @@ describe("browserStorage", () => {
     expect(value === null || typeof value === "object").toBe(true);
   });
 });
+
+describe("listMirrors", () => {
+  test("finds every local mirror by its key, and reads the document", () => {
+    const { listMirrors } = require("./cloudSettings.js");
+    const data = new Map([
+      ["triunity-studios-data.rps-mind-reader.history.json", JSON.stringify({ schemaVersion: 1, updatedAt: "t", rounds: {} })],
+      ["triunity-studios-data.mancala.record.json", JSON.stringify({ schemaVersion: 1, updatedAt: "t" })],
+      ["mancala.speed", "2"],
+      ["triunity-studios.cloud.token", "{}"],
+    ]);
+    const store = {
+      get length() {
+        return data.size;
+      },
+      key: (index) => [...data.keys()][index] ?? null,
+      getItem: (key) => (data.has(key) ? data.get(key) : null),
+    };
+    const found = listMirrors(store);
+    expect(found.map((one) => `${one.project}/${one.file}`).sort()).toEqual(["mancala/record.json", "rps-mind-reader/history.json"]);
+    expect(found.find((one) => one.project === "rps-mind-reader").document.rounds).toEqual({});
+  });
+
+  test("a storage that refuses, or has nothing, lists nothing", () => {
+    const { listMirrors } = require("./cloudSettings.js");
+    expect(listMirrors(null)).toEqual([]);
+    expect(listMirrors(refusingStorage)).toEqual([]);
+  });
+});
+
+describe("links", () => {
+  test("the page to create the repository names it and makes it private", () => {
+    const { newRepoUrl, repoUrl } = require("./cloudSettings.js");
+    expect(newRepoUrl("triunity-studios-data")).toBe("https://github.com/new?name=triunity-studios-data&visibility=private");
+    expect(repoUrl({ owner: "me", repo: "data" })).toBe("https://github.com/me/data");
+  });
+});

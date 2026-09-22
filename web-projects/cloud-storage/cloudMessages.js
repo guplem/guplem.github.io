@@ -87,3 +87,26 @@ export function describeSync(rows, { configured = false, asked = false } = {}) {
     detail: "The token did not reach the data folder. It needs Contents: Read and write, and the repository in its list.",
   };
 }
+
+/** The few fixed lines the Cloud storage page says, by key, for `deployStamp.js`. */
+export const MESSAGES = {
+  "ui.deployed": "Deployed {date} by pull request {pr}.",
+  "ui.deployedUnknown": "Not published yet. See the {history}.",
+  "ui.deployHistory": "history of this folder",
+};
+
+/** One line from `MESSAGES`, with its `{name}` slots filled. */
+export function say(key, params = {}) {
+  return (MESSAGES[key] ?? key).replace(/\{(\w+)\}/g, (match, name) => (name in params ? String(params[name]) : match));
+}
+
+/** Text made safe to place inside HTML. */
+export function escapeHtml(text) {
+  if (text === null || text === undefined) return "";
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}

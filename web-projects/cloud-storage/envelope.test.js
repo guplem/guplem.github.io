@@ -132,3 +132,15 @@ describe("defineDocument", () => {
     expect(shape.recordMaps).toEqual(MAPS);
   });
 });
+
+describe("recordCount", () => {
+  test("counts live records across every map, and not removed ones", () => {
+    const { recordCount } = require("./envelope.js");
+    let doc = writeRecord(emptyDocument(MAPS, T1), "saves", "a", { x: 1 }, T1);
+    doc = writeRecord(doc, "settings", "b", { x: 1 }, T1);
+    doc = writeRecord(doc, "saves", "c", { x: 1 }, T1);
+    doc = removeRecord(doc, "saves", "c", T2);
+    expect(recordCount(doc)).toBe(2);
+    expect(recordCount(null)).toBe(0);
+  });
+});
