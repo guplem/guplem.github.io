@@ -395,12 +395,22 @@ a:hover {
   box-shadow: 0 0 0 3px hsl(var(--ring) / 0.15);
 }
 
+/**
+ * One line high, and no higher than the note needs.
+ *
+ * Most notes are a few words. Three empty lines on every card cost more space
+ * than every note on the board puts together, and the board is read by
+ * scanning down a column. `app.js` grows the box to fit as the reader types,
+ * so a long note is never cut off, and there is nothing left to drag: the box
+ * is already the size of what is in it (ADR 0014).
+ */
 textarea.input {
   height: auto;
-  min-height: 4.5rem;
+  min-height: 0;
   padding: 0.5rem 0.75rem;
   line-height: 1.55;
-  resize: vertical;
+  resize: none;
+  overflow: hidden;
 }
 
 .field-row {

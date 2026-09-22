@@ -123,6 +123,10 @@ Data flow, saving: a keystroke, a card moved, a colour or the theme → the matc
   `assignee=` narrows the review row by whose work each pull request is.
   `reviewer=` narrows the board by who is in the review. A link can carry both.
   Do not merge them: they answer different questions (ADR 0028).
+- **`requestAnimationFrame` never runs in a hidden tab, so nothing that has to
+  measure the page may depend on it.** A board drawn in a background tab would
+  keep its measurements from before. The note boxes are sized from `renderBoard`
+  for exactly this reason (ADR 0014).
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and

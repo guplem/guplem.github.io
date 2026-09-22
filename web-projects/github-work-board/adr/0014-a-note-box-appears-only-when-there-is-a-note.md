@@ -37,6 +37,17 @@ about. The box is already in the right place.
 **A column shows more work per screen**, which is the point: the board is read
 far more often than it is written to.
 
+**The box that does appear is one line high, and grows to fit what is in it.**
+It opened three lines high, which cost more of a column than every note on the
+board put together, because most notes are a few words. `app.js` measures each
+box once the cards are on the page and again on every keystroke, so a long note
+is never cut off and a shortened one gives the space back.
+
+The measuring runs from `renderBoard`, not from a `requestAnimationFrame` inside
+the builder. A hidden tab never runs those, so a board drawn in a tab the reader
+opened in the background would hold every note at one line and cut the rest off
+until something else redrew it.
+
 **Adding a note costs one more click than it did.** That is the trade, and it is
 the right way round: reading happens on every visit, writing a note happens
 rarely.
