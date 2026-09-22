@@ -1961,9 +1961,11 @@ textarea.input {
 /* Choosing how the board looks                                               */
 /* -------------------------------------------------------------------------- */
 
-/* What a line can carry, one row each. The token is code the reader types, so
- * it is set in the same face as the rest of the code on this page. */
-.placeholder-list {
+/* What a line can carry, and the lines an empty Settings suggests: one row
+ * each. Both are code the reader types, so both are set in the same face as the
+ * rest of the code on this page. */
+.placeholder-list,
+.example-list {
   list-style: none;
   margin: 0.5rem 0 0;
   padding: 0;
@@ -1973,14 +1975,23 @@ textarea.input {
   color: hsl(var(--muted-foreground));
 }
 
-.placeholder-row {
+.placeholder-row,
+.example-row {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.5rem;
 }
 
-.placeholder-token {
+/* The name the reader would give the line, beside the line itself. */
+.example-name {
+  flex: 0 0 auto;
+  min-width: 9rem;
+  color: hsl(var(--foreground));
+}
+
+.placeholder-token,
+.example-line {
   flex: 0 0 auto;
   padding: 0.0625rem 0.3125rem;
   border: 1px solid hsl(var(--border));
@@ -1989,6 +2000,14 @@ textarea.input {
   color: hsl(var(--foreground));
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.75rem;
+}
+
+/* A whole line, which can be a sentence, so it wraps rather than pushing the
+ * card wider on a phone. */
+.example-line {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .colour-areas,

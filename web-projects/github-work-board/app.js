@@ -1399,9 +1399,21 @@ function renderCopyActions() {
 function renderCopyActionHelp() {
   element("new-copy-action-name").placeholder = EXAMPLE_ACTIONS[0].label;
   element("new-copy-action-template").placeholder = EXAMPLE_ACTIONS[0].template;
-  element("copy-actions-empty").textContent = `You have written none yet. For example: ${EXAMPLE_ACTIONS.map(
-    (one) => `"${one.label}", which copies ${one.template}`,
-  ).join("; or ")}.`;
+
+  element("copy-action-examples").replaceChildren(
+    ...EXAMPLE_ACTIONS.map((one) => {
+      const row = document.createElement("li");
+      row.className = "example-row";
+      const name = document.createElement("span");
+      name.className = "example-name";
+      name.textContent = one.label;
+      const line = document.createElement("code");
+      line.className = "example-line";
+      line.textContent = one.template;
+      row.append(name, line);
+      return row;
+    }),
+  );
 
   element("copy-placeholders").replaceChildren(
     ...PLACEHOLDERS.map((one) => {

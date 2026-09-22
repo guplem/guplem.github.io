@@ -36,13 +36,18 @@ export const PLACEHOLDERS = [
 /**
  * What an empty Settings suggests.
  *
- * Nobody starts with an action, so the boxes have to say what one looks like.
- * These are shown as the greyed-out example text in the two boxes, and written
- * out under them.
+ * Nobody starts with a line, so the boxes have to say what one looks like. The
+ * first is the greyed-out example text in the two boxes, and all of them are
+ * listed under the boxes until the reader writes their own.
+ *
+ * The last one is a placeholder and nothing else. The other two wrap words
+ * around a placeholder, and on their own they read as if a line has to be a
+ * sentence.
  */
 export const EXAMPLE_ACTIONS = [
   { label: "Implement this issue", template: "/implement-issue #{N}" },
   { label: "Ask for a review", template: "Please, whenever you can, take a look and review {URL}" },
+  { label: "Copy link", template: "{URL}" },
 ];
 
 /** Anything at all in braces, which is how a typo is found rather than filled. */

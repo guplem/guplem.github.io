@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="204" />
-  <meta name="deploy-date" content="2026-09-22T09:18:43.000Z" />
+  <meta name="deploy-pull-request" content="205" />
+  <meta name="deploy-date" content="2026-09-22T09:39:34.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -379,7 +379,13 @@
             <div class="field">
               <!-- One row per line the reader wrote, filled by app.js. -->
               <ul id="copy-actions" class="copy-actions"></ul>
-              <p id="copy-actions-empty" class="field-help"></p>
+              <!-- Shown until the reader writes their own. The examples come
+                   from copyActions.js, so the page cannot suggest a
+                   placeholder the board does not fill (ADR 0031). -->
+              <div id="copy-actions-empty">
+                <p class="field-help">You have written none yet. For example:</p>
+                <ul id="copy-action-examples" class="example-list"></ul>
+              </div>
             </div>
 
             <div class="field">
