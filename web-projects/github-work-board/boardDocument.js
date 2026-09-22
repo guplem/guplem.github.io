@@ -14,7 +14,7 @@
 // Every record, in every map, carries `updatedAt`. That is what `sync.js` uses
 // to merge two devices, so a record without it is dropped as unreadable.
 
-import { knownColour, knownTheme } from "./appearance.js";
+import { defaultColour, knownColour, knownTheme } from "./appearance.js";
 import { knownPriority } from "./priority.js";
 import { defaultCounting } from "./counting.js";
 import { orderCopyActions } from "./copyActions.js";
@@ -118,16 +118,21 @@ export function writeColumn(document, itemKey, columnId, now) {
 }
 
 /**
- * The colour painted on one column, or on the review row, and "default" when
- * nothing was chosen.
+ * The colour painted on one column, or on the review row.
  *
- * A colour a newer build knows and this one does not reads as the default. It
- * is left in the file untouched, because a build never deletes what it does not
+ * **A part nobody has painted wears the colour the board ships** for it
+ * (ADR 0024). A record means the reader chose, and their choice wins whatever
+ * it is: "None" is a choice like any other, and a column they cleared stays
+ * cleared.
+ *
+ * A colour a newer build knows and this one does not reads as "None". It is
+ * left in the file untouched, because a build never deletes what it does not
  * understand (ADR 0002).
  */
 export function readColumnColour(document, areaId) {
   const record = isPlainObject(document) && isPlainObject(document.colours) ? document.colours[areaId] : null;
-  return knownColour(isPlainObject(record) ? record.colourId : null);
+  if (!isPlainObject(record) || typeof record.colourId !== "string") return defaultColour(areaId);
+  return knownColour(record.colourId);
 }
 
 /**

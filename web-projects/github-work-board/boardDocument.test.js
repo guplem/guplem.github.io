@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { defaultColour } from "./appearance.js";
 import {
   DOCUMENT_PATH,
   RECORD_MAPS,
@@ -128,10 +129,13 @@ describe("the colour on a column", () => {
     expect(readColumnColour(doc, "reviews")).toBe("amber");
   });
 
-  test("anything never painted is the default", () => {
-    expect(readColumnColour(emptyDocument(now), "todo")).toBe("default");
-    expect(readColumnColour(null, "todo")).toBe("default");
-    expect(readColumnColour({ colours: { todo: {} } }, "todo")).toBe("default");
+  // A part nobody has painted wears the colour the board ships for it, and a
+  // record with nothing readable in it is not a choice anybody made (ADR 0024).
+  test("anything never painted wears the colour the board ships", () => {
+    expect(readColumnColour(emptyDocument(now), "todo")).toBe(defaultColour("todo"));
+    expect(readColumnColour(null, "todo")).toBe(defaultColour("todo"));
+    expect(readColumnColour({ colours: { todo: {} } }, "todo")).toBe(defaultColour("todo"));
+    expect(readColumnColour(emptyDocument(now), "awaiting-review")).toBe("default");
   });
 
   // A colour a newer build knows and this one does not must not paint a column
@@ -153,8 +157,8 @@ describe("the colour on a column", () => {
 
   test("the document handed in is never changed", () => {
     const before = emptyDocument(now);
-    writeColumnColour(before, "todo", "blue", now);
-    expect(readColumnColour(before, "todo")).toBe("default");
+    writeColumnColour(before, "todo", "rose", now);
+    expect(readColumnColour(before, "todo")).toBe(defaultColour("todo"));
   });
 });
 
@@ -311,5 +315,24 @@ describe("the lines the reader copies from a card (ADR 0031)", () => {
     const before = emptyDocument(now);
     writeCopyAction(before, "a1", { label: "One", template: "#{N}" }, now);
     expect(readCopyActions(before)).toEqual([]);
+  });
+});
+
+describe("the colour a part of the board opens with (ADR 0024)", () => {
+  const now = "2026-09-22T10:00:00.000Z";
+
+  test("a part nobody has painted wears the colour the board ships", () => {
+    expect(readColumnColour(emptyDocument(now), "ongoing")).toBe("blue");
+    expect(readColumnColour(null, "reviews")).toBe("violet");
+    expect(readColumnColour(emptyDocument(now), "done")).toBe("default");
+  });
+
+  // The reader's hand wins over what the board ships, and "None" is a choice
+  // like any other: a column they cleared stays cleared.
+  test("a colour the reader chose wins, and so does the None they chose", () => {
+    const painted = writeColumnColour(emptyDocument(now), "ongoing", "rose", now);
+    expect(readColumnColour(painted, "ongoing")).toBe("rose");
+    const cleared = writeColumnColour(emptyDocument(now), "ongoing", "default", now);
+    expect(readColumnColour(cleared, "ongoing")).toBe("default");
   });
 });

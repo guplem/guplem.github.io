@@ -243,9 +243,10 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   machine does nothing (ADR 0024). Four blocks once missed the guard and left
   light-coloured badges on a dark page; `invariants.test.js` now fails when a
   new block forgets it (ADR 0027).
-- **Nothing carries `data-colour` until somebody picks a colour**, so an
-  untouched board looks exactly as it did. The default is the absence of the
-  rule, not a colour that happens to match.
+- **`data-colour` is absent only when the answer is "None"**, never merely
+  because nobody has touched that part. Most parts open painted with
+  `appearance.DEFAULT_COLOURS`; a record always wins, and "None" is a choice
+  like any other (ADR 0024).
 - **Colour tokens are bare HSL channels (`240 10% 3.9%`), never finished
   colours.** Every hover state is built by taking an alpha at the point of use,
   `hsl(var(--primary) / 0.88)`, which a hex value cannot do. Tidying the tokens

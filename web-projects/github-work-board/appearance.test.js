@@ -6,6 +6,7 @@ import {
   REVIEW_ROW_ID,
   THEMES,
   colourableAreas,
+  defaultColour,
   knownColour,
   knownTheme,
 } from "./appearance.js";
@@ -91,5 +92,31 @@ describe("colourableAreas", () => {
 
   test("every area has something to call it on screen", () => {
     for (const area of colourableAreas()) expect(area.label.length).toBeGreaterThan(0);
+  });
+});
+
+// The board used to open with nothing painted, which made the columns one grey
+// row and left every reader to paint six of them by hand before the board said
+// anything at a glance (ADR 0024).
+describe("the colour each part opens with", () => {
+  test("the board opens painted, and the two quiet columns stay unpainted", () => {
+    expect(defaultColour(REVIEW_ROW_ID)).toBe("violet");
+    expect(defaultColour("todo")).toBe("slate");
+    expect(defaultColour("ongoing")).toBe("blue");
+    expect(defaultColour("needs-changes")).toBe("rose");
+    expect(defaultColour("ready-to-merge")).toBe("green");
+    expect(defaultColour("awaiting-review")).toBe(DEFAULT_COLOUR);
+    expect(defaultColour("done")).toBe(DEFAULT_COLOUR);
+  });
+
+  test("every part of the board has an answer, and it is a colour the board knows", () => {
+    for (const area of colourableAreas()) {
+      expect(COLUMN_COLOURS.map((one) => one.id)).toContain(defaultColour(area.id));
+    }
+  });
+
+  test("a part nobody has heard of is not painted", () => {
+    expect(defaultColour("made-up")).toBe(DEFAULT_COLOUR);
+    expect(defaultColour(null)).toBe(DEFAULT_COLOUR);
   });
 });

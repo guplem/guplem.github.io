@@ -16,6 +16,9 @@ import { COLUMNS } from "./columns.js";
 
 export const DEFAULT_COLOUR = "default";
 
+/** The review row is painted like a column, and it is not one, so it has an id of its own. */
+export const REVIEW_ROW_ID = "reviews";
+
 /** The colours a column can be painted. The first one paints nothing. */
 export const COLUMN_COLOURS = [
   { id: "default", label: "None", tint: "" },
@@ -28,6 +31,30 @@ export const COLUMN_COLOURS = [
   { id: "violet", label: "Violet", tint: "262 83% 58%" },
 ];
 
+/**
+ * The colour each part of the board opens with.
+ *
+ * The board used to open with nothing painted. That is honest and it is a grey
+ * row of six columns, and every reader painted the same six by hand before the
+ * board told them anything at a glance. These are the colours the board is
+ * used with, so they are what it opens with (ADR 0024).
+ *
+ * **Two are deliberately unpainted.** "Awaiting review" and "Done today" are
+ * the columns nobody has to act on: one is with somebody else and the other is
+ * over. Leaving them plain is what makes the painted ones mean something.
+ *
+ * The reader's own choice always wins, and "None" is a choice like any other.
+ */
+export const DEFAULT_COLOURS = {
+  [REVIEW_ROW_ID]: "violet",
+  todo: "slate",
+  ongoing: "blue",
+  "needs-changes": "rose",
+  "awaiting-review": DEFAULT_COLOUR,
+  "ready-to-merge": "green",
+  done: DEFAULT_COLOUR,
+};
+
 export const DEFAULT_THEME = "auto";
 
 /** Light, dark, or whatever the machine is set to. */
@@ -36,9 +63,6 @@ export const THEMES = [
   { id: "light", label: "Light" },
   { id: "dark", label: "Dark" },
 ];
-
-/** The review row is painted like a column, and it is not one, so it has an id of its own. */
-export const REVIEW_ROW_ID = "reviews";
 
 const KNOWN_COLOURS = new Set(COLUMN_COLOURS.map((one) => one.id));
 const KNOWN_THEMES = new Set(THEMES.map((one) => one.id));
@@ -51,6 +75,11 @@ const KNOWN_THEMES = new Set(THEMES.map((one) => one.id));
  */
 export function knownColour(value) {
   return typeof value === "string" && KNOWN_COLOURS.has(value) ? value : DEFAULT_COLOUR;
+}
+
+/** What one part of the board is painted before the reader says otherwise. */
+export function defaultColour(areaId) {
+  return knownColour(DEFAULT_COLOURS[areaId]);
 }
 
 /** A theme the board knows. Anything else follows the machine. */
