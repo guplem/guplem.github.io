@@ -12,7 +12,8 @@ abandoned: the board stops matching reality and then nobody trusts it.
 
 GitHub already knows the answer for most of the lifetime of a change. It knows
 whether a pull request exists, whether anybody was asked to review it, what they
-said, and whether it landed. All of that is the column.
+said, whether the branch still merges cleanly, how the checks ended, and whether
+it landed. All of that is the column.
 
 It does not know everything. A reviewer can approve and then ask for one more
 thing in a comment. GitHub says approved; the person doing the work knows
@@ -29,21 +30,46 @@ Six columns, in the order work travels:
 |---|---|
 | To do | Assigned, with no pull request |
 | Ongoing | A pull request exists, nobody asked to review it |
-| Needs changes | A reviewer asked for changes, and has not been asked to look again |
+| Needs attention | The branch conflicts, a check came back red, or a reviewer asked for changes and has not been asked to look again |
 | Awaiting review | A reviewer was asked by name, no verdict yet |
 | Ready to merge | Approved |
 | Done today | Finished since midnight (ADR 0017) |
 
-**"Needs changes" sits beside "Ongoing" because it is the same activity.** A
-reviewer asking for changes sends the work back to being written, so the two
-columns somebody moves between all day are next to each other, and the three
-that mean "waiting on somebody else" run on from there. The order is only how
-the columns read: the ids are what `board.json` stores, and they never move.
+**One column holds everything that wants the author** (added 2026-09). A
+reviewer asking for changes, a check that went red and a branch that no longer
+merges are one sentence: the work cannot go forward until the person who wrote
+it does something. Three columns for one sentence would split the same queue
+three ways, so there is one, and the card says which of the three it is with a
+pill: "Conflicts", "Checks failed", "Changes requested". `attention.js` holds
+the three reasons, their words and their icons; `attentionFor` in `columns.js`
+answers which of them a card carries.
+
+The column's id stays `needs-changes`, because an id is written into
+`board.json` the moment a card is moved by hand, and an id is never renamed.
+Only the label changed.
+
+**"Needs attention" sits beside "Ongoing" because it is the same activity.** In
+both, the work is with the person who wrote it, so the two columns somebody
+moves between all day are next to each other, and the three that mean "waiting
+on somebody else" run on from there. The order is only how the columns read:
+the ids are what `board.json` stores, and they never move.
 
 **The order of the checks is the decision**, because an item answers several at
-once. Finished work wins over everything: it is over (ADR 0017). Changes
-requested wins over an approval, because one reviewer approving does not undo
-another asking for work, and the work is what is left to do.
+once. Finished work wins over everything: it is over (ADR 0017). Anything that
+wants the author wins over an approval and over a wait on a reviewer, because
+one reviewer approving does not undo a conflict, a red check, or another
+reviewer asking for work, and that work is what is left to do.
+
+**A conflict and a red check are read from GitHub, never worked out here.**
+`mergeable` answers `CONFLICTING` when the branch and its target changed the
+same lines. GitHub works that field out only when somebody asks for it, so the
+first answer for a quiet pull request is `UNKNOWN`: that is "not worked out
+yet", not "fine", so the board claims nothing about it and the next refresh
+answers properly. The checks are `statusCheckRollup` on the last commit, which
+is GitHub's own one-word verdict over every check: `FAILURE` and `ERROR` want
+the author, `PENDING` and `EXPECTED` are still running and want nobody, and a
+pull request with no checks at all has no rollup, which is not a pass. Both
+fields cost one more nested connection in the relationship query (ADR 0010).
 
 **Changes requested that have been answered is not changes requested.** GitHub
 never clears `reviewDecision`. The author does the work, asks the same reviewer
@@ -107,7 +133,12 @@ inside a page that already scrolls down is a trap.
 list in `columns.js`, one function, and a test per rule. The reader's override
 is the escape hatch while a rule is still wrong.
 
-**A moved card can go stale.** Somebody who moves a card to "Needs changes" and
+**A card says why it is in the column, wherever it is drawn.** The pills are
+drawn from the rules, not from the column, so a card the reader moved somewhere
+by hand still says that its branch conflicts. Three reasons at once read as
+three pills, worst first.
+
+**A moved card can go stale.** Somebody who moves a card to "Needs attention" and
 then pushes the fix has to move it back, because their choice outranks the
 rules for ever. "Automatic" is one click away and the control says what the
 rules would pick, which is the smallest honest fix; a rule that expired the
@@ -130,7 +161,15 @@ re-request rule above does not break it: the verdict still comes from
 `reviewDecision`, and the reviews are read only for the names attached to it.
 **Rejected: treating any pending review request as an answer to the changes.**
 A new reviewer asked while the first reviewer's changes are still outstanding
-is not the work being answered, and reading it as one empties "Needs changes"
+is not the work being answered, and reading it as one empties "Needs attention"
 of work that really is waiting there. **Rejected: reading `REVIEW_REQUIRED` as
 a review request.** It was in the first version of these rules and it was
 wrong: it is a fact about the repository, not about the pull request.
+**Rejected: a column of its own for conflicts and one for red checks.** They
+are the same queue as changes requested, and a board of eight columns is a
+board nobody reads across. The pill carries the difference.
+**Rejected: reading `PENDING` checks as a reason to act.** Almost every pull
+request is pending for its first minutes, so the column would fill with work
+nobody has to touch. **Rejected: `mergeStateStatus`**, which also answers
+"blocked" and "behind". It needs a preview media type, and it mixes the branch
+rules with the merge itself; `mergeable` answers the one question asked here.

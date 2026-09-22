@@ -41,6 +41,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   when they answer, and when it merges. The button on a card opens a menu that
   moves it by hand when GitHub's answer is not the truth, and hands it back to
   the rules with one click.
+- **One column for everything waiting on you.** "Needs attention" holds the
+  work you cannot hand on: the branch conflicts, a check came back red, or a
+  reviewer asked for changes and is still waiting. Each card says which of the
+  three it is, with a pill you can hover for what to do about it. A card with
+  all three says all three.
 - **An issue lists its children, and says where each one is.** A card with
   sub-issues shows them under "Children", each with the column it would sit in:
   "Ongoing", "Awaiting review", "Done", painted with the colour you gave that

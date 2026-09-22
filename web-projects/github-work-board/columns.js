@@ -10,6 +10,7 @@
 // **A column id is written into `board.json`** the moment somebody moves a card
 // by hand, so an id is permanent, exactly like a sort id or a storage key.
 
+import { attentionReasons } from "./attention.js";
 import { finishedAt } from "./workItems.js";
 
 /** What an item carries when its column is left to the rules. */
@@ -19,18 +20,21 @@ export const AUTOMATIC = "automatic";
  * The order here is the order on screen, and nothing else depends on it: the
  * ids are what is written into `board.json`, and they never move.
  *
- * "Needs changes" sits beside "Ongoing" because it is the same activity. A
- * reviewer asking for changes sends the work back to being written, so the two
- * columns a person moves between all day are next to each other, and the three
- * that mean "waiting on somebody else" run on from there.
+ * "Needs attention" sits beside "Ongoing" because it is the same activity: in
+ * both the work is with the person who wrote it. So the two columns a person
+ * moves between all day are next to each other, and the three that mean
+ * "waiting on somebody else" run on from there.
  */
 export const COLUMNS = [
   { id: "todo", label: "To do", hint: "Assigned to you, with no pull request yet" },
   { id: "ongoing", label: "Ongoing", hint: "A pull request exists, nobody has been asked to review it" },
   {
+    // The id is `needs-changes` because it is written into `board.json`, and an
+    // id is never renamed. The column grew from reviews to everything that
+    // waits on the author, and the label says so.
     id: "needs-changes",
-    label: "Needs changes",
-    hint: "A reviewer asked for changes, and has not been asked to look again",
+    label: "Needs attention",
+    hint: "The branch conflicts, a check is red, or a reviewer asked for changes",
   },
   { id: "awaiting-review", label: "Awaiting review", hint: "A reviewer was asked, no verdict yet" },
   { id: "ready-to-merge", label: "Ready to merge", hint: "Approved" },
@@ -73,27 +77,39 @@ function isPlainObject(value) {
  * column it is not in.
  */
 function pullRequestState(item, relationship) {
-  if (item?.kind === "pull-request") {
-    return {
-      merged: item.merged === true,
-      reviewDecision: typeof item.reviewDecision === "string" ? item.reviewDecision : "",
-      reviewRequestCount: Number.isFinite(item.reviewRequestCount) ? item.reviewRequestCount : 0,
-      askedAgain: item.askedAgain === true,
-      exists: true,
-    };
-  }
+  if (item?.kind === "pull-request") return readState(item, item.merged === true);
 
   const linked = Array.isArray(relationship?.closedBy) ? relationship.closedBy : [];
   const merged = linked.find((one) => one.merged);
-  if (merged) return { merged: true, reviewDecision: "", reviewRequestCount: 0, askedAgain: false, exists: true };
+  if (merged) return NONE_MERGED;
 
   const open = linked.find((one) => one.state === "open");
-  if (!open) return { merged: false, reviewDecision: "", reviewRequestCount: 0, askedAgain: false, exists: false };
+  if (!open) return NONE;
+  return readState(open, false);
+}
+
+const NONE = {
+  merged: false,
+  reviewDecision: "",
+  reviewRequestCount: 0,
+  askedAgain: false,
+  mergeable: "",
+  checksState: "",
+  exists: false,
+};
+const NONE_MERGED = { ...NONE, merged: true, exists: true };
+
+/** The fields a column decision reads, taken off whichever pull request answers it. */
+function readState(source, merged) {
   return {
-    merged: false,
-    reviewDecision: typeof open.reviewDecision === "string" ? open.reviewDecision : "",
-    reviewRequestCount: Number.isFinite(open.reviewRequestCount) ? open.reviewRequestCount : 0,
-    askedAgain: open.askedAgain === true,
+    merged,
+    reviewDecision: typeof source.reviewDecision === "string" ? source.reviewDecision : "",
+    reviewRequestCount: Number.isFinite(source.reviewRequestCount) ? source.reviewRequestCount : 0,
+    askedAgain: source.askedAgain === true,
+    // What GitHub says about the merge and about the checks on the last commit.
+    // Both are what puts a card in "Needs attention" (ADR 0011).
+    mergeable: typeof source.mergeable === "string" ? source.mergeable : "",
+    checksState: typeof source.checksState === "string" ? source.checksState : "",
     exists: true,
   };
 }
@@ -102,9 +118,10 @@ function pullRequestState(item, relationship) {
  * The column the rules put this item in.
  *
  * The order of the checks is the whole decision, because an item can answer
- * several of them at once. Merged beats everything: it is over. Changes
- * requested beats an approval, because one reviewer approving does not undo
- * another asking for work, and the work is what is left to do. Changes
+ * several of them at once. Merged beats everything: it is over. Anything that
+ * wants the author beats an approval and beats a wait on a reviewer, because
+ * one reviewer approving does not undo a conflict, a red check, or another
+ * reviewer asking for work, and that work is what is left to do. Changes
  * requested that have been answered is not changes requested at all: the
  * reviewer was asked again, so the wait is theirs.
  */
@@ -116,10 +133,9 @@ export function automaticColumn(item, relationship) {
   const pull = pullRequestState(self, relationship);
   if (pull.merged) return "done";
   if (!pull.exists) return "todo";
-  // GitHub never clears this verdict, so it survives the author doing the work
-  // and asking the same reviewer to look again. `askedAgain` is the only thing
-  // that says the ball is back with the reviewer (ADR 0011).
-  if (pull.reviewDecision === "CHANGES_REQUESTED") return pull.askedAgain ? "awaiting-review" : "needs-changes";
+  // A conflict, a red check, or changes nobody has answered: all three want the
+  // person who wrote the work, so all three read as one column (ADR 0011).
+  if (attentionReasons(pull).length > 0) return "needs-changes";
   if (pull.reviewDecision === "APPROVED") return "ready-to-merge";
   // Only somebody actually being asked counts. `REVIEW_REQUIRED` does not: it
   // is the branch rule saying the repository wants a review before a merge, so
@@ -127,6 +143,21 @@ export function automaticColumn(item, relationship) {
   // nobody has looked at (ADR 0011).
   if (pull.reviewRequestCount > 0) return "awaiting-review";
   return "ongoing";
+}
+
+/**
+ * Why this item is in "Needs attention", as reason ids in reading order.
+ *
+ * Empty for work that is not held up, for work with no pull request, and for
+ * work that merged. The card draws one pill per reason, because a column with
+ * three ways into it has to say which one this card took (ADR 0011).
+ */
+export function attentionFor(item, relationship) {
+  const self = isPlainObject(item) ? item : {};
+  if (finishedAt(self) !== "") return [];
+  const pull = pullRequestState(self, relationship);
+  if (pull.merged || !pull.exists) return [];
+  return attentionReasons(pull);
 }
 
 /**
