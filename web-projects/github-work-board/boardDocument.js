@@ -16,6 +16,7 @@
 
 import { knownColour, knownTheme } from "./appearance.js";
 import { knownPriority } from "./priority.js";
+import { defaultCounting } from "./counting.js";
 
 export const SCHEMA_VERSION = 1;
 
@@ -23,7 +24,7 @@ export const SCHEMA_VERSION = 1;
 export const DOCUMENT_PATH = "board.json";
 
 /** The record maps this build knows about. Adding one here is the whole change. */
-export const RECORD_MAPS = ["notes", "columns", "colours", "appearance", "priorities"];
+export const RECORD_MAPS = ["notes", "columns", "colours", "appearance", "priorities", "counting"];
 
 const RESERVED = new Set(["schemaVersion", "updatedAt"]);
 
@@ -177,6 +178,36 @@ export function writePriority(document, issueKey, priority, now) {
     ...base,
     updatedAt: now,
     priorities: { ...base.priorities, [issueKey]: { priority: String(priority ?? ""), updatedAt: now } },
+  };
+}
+
+/**
+ * What one part of the board counts: whether it adds to the number in the tab,
+ * and whether its own count holds the work the reader pushed down (ADR 0030).
+ *
+ * Each answer falls back on its own, so a record written by a build that knew
+ * only one of them still says what it knows.
+ */
+export function readCounting(document, areaId) {
+  const record = isPlainObject(document) && isPlainObject(document.counting) ? document.counting[areaId] : null;
+  const fallback = defaultCounting(areaId);
+  if (!isPlainObject(record)) return fallback;
+  return {
+    counted: typeof record.counted === "boolean" ? record.counted : fallback.counted,
+    withLowPriority: typeof record.withLowPriority === "boolean" ? record.withLowPriority : fallback.withLowPriority,
+  };
+}
+
+/** The same document with one part of the board answering differently. */
+export function writeCounting(document, areaId, { counted, withLowPriority }, now) {
+  const base = migrate(document, now);
+  return {
+    ...base,
+    updatedAt: now,
+    counting: {
+      ...base.counting,
+      [areaId]: { counted: counted === true, withLowPriority: withLowPriority === true, updatedAt: now },
+    },
   };
 }
 

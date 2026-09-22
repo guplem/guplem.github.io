@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="201" />
-  <meta name="deploy-date" content="2026-09-22T08:14:10.000Z" />
+  <meta name="deploy-pull-request" content="202" />
+  <meta name="deploy-date" content="2026-09-22T08:35:03.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -129,7 +129,12 @@
   <div class="page">
     <header class="masthead">
       <div>
-        <h1>Work board</h1>
+        <h1>
+          Work board
+          <!-- The same number the browser tab carries. Resting on it says
+               where it comes from (ADR 0030). -->
+          <span id="board-total" class="board-total" hidden></span>
+        </h1>
       </div>
       <div class="masthead-controls">
         <!-- The order the board reads in, at the top of the page where it is
@@ -345,6 +350,19 @@
               <p class="field-label">Colour on each part of the board</p>
               <!-- One row per thing that can be painted, from appearance.js. -->
               <ul id="colour-areas" class="colour-areas"></ul>
+            </div>
+
+            <h3 class="subheading">What the tab name counts</h3>
+            <p class="field-help">
+              The browser tab is named "Work Board", with the number of things waiting on you in
+              brackets. Choose which parts of the board add up to it, and whether each part counts
+              the work you marked "not a priority". That second answer also changes the number on
+              that part's own badge.
+            </p>
+
+            <div class="field">
+              <!-- One row per part of the board, from appearance.js, filled by app.js. -->
+              <ul id="counting-areas" class="colour-areas counting-areas"></ul>
             </div>
 
             <div class="subheading-row">

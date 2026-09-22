@@ -6,9 +6,10 @@
 
 A personal work board on top of GitHub issues. The page runs with no server: the
 reader pastes a fine-grained personal access token, and the browser calls
-`api.github.com` directly. Their private half (notes now; tags, columns and a
-"what's next" queue later) lives in one JSON file in a private repository they
-own, so the board follows them across devices.
+`api.github.com` directly. Their private half (their notes, columns, colours, theme, marked priority and
+counting choices, now; tags and a "what's next" queue later) lives in one JSON
+file in a private repository they own, so the board follows them across
+devices.
 
 **This project is held to a higher bar than the rest of the playground, on
 purpose.** It handles a real credential and it writes to somebody's repository.
@@ -38,13 +39,14 @@ It is the short procedure for all of the above.
 
 | File | Pure? | Responsibility |
 |---|---|---|
-| `boardDocument.js` | Yes | The stored document: schema version, `migrate`, and one note, column, colour or theme at a time |
+| `boardDocument.js` | Yes | The stored document: schema version, `migrate`, and one note, column, colour, theme, priority or counting choice at a time |
 | `sync.js` | Yes | Merging two copies of the document, and deciding create / update / skip (ADR 0002) |
 | `documentCodec.js` | Yes | UTF-8 safe base64, both ways, for the Contents API |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
 | `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
+| `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
 | `priority.js` | Yes | The work the reader pushed down, and what sinks with it, on the board and in the review row (ADR 0026) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022) |
@@ -70,7 +72,7 @@ It is the short procedure for all of the above.
 Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
 Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025).
-Data flow, saving: a keystroke, a card moved, a colour or the theme → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
+Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority mark or a counting choice → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
 ## Non-obvious conventions and gotchas
 
@@ -132,6 +134,13 @@ Data flow, saving: a keystroke, a card moved, a colour or the theme → the matc
   shape is not a variant and must not be named like one: the refresh button's
   square shape is `.icon-only`, worn with `.button-outline`, which carries the
   hover (ADR 0029).
+- **Every number on the page comes from one `countBoard` pass.** The badge on a
+  column, the number beside the title and the name of the browser tab are the
+  same numbers, so they cannot disagree. Do not count a list again anywhere else
+  (ADR 0030).
+- **A count that leaves out the work pushed down must say so on the badge.**
+  That sentence is what keeps the mark from hiding work, which ADR 0026 forbids.
+  Remove it and the rule is broken, not bent.
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and
@@ -469,6 +478,7 @@ before calling it done.
 | [0027](adr/0027-a-stack-lights-up-and-its-number-says-what-it-is.md) | A stack lights up, and its number says which pull request it is |
 | [0028](adr/0028-a-card-shows-the-people-and-which-people-depends-on-the-list.md) | A card shows the people, and which people depends on the list |
 | [0029](adr/0029-a-button-that-asks-now-and-says-when-it-last-did.md) | A button that asks now, and says when it last did |
+| [0030](adr/0030-the-tab-carries-the-number-and-the-reader-decides-what-it-counts.md) | The tab carries the number, and the reader decides what it counts |
 
 ## What is not built yet
 

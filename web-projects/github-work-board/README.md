@@ -1,9 +1,9 @@
 # Work Board
 
-A personal board on top of your GitHub issues, with a private half (notes, moved
-cards, and how it looks) that follows you between devices. It runs entirely in
-your browser: there is no server, no account to make here, and nothing is stored
-anywhere except GitHub.
+A personal board on top of your GitHub issues, with a private half (notes,
+moved cards, how it looks, what you pushed down, and what it counts) that
+follows you between devices. It runs entirely in your browser: there is no
+server, no account to make here, and nothing is stored anywhere except GitHub.
 
 ## Features
 
@@ -63,6 +63,12 @@ anywhere except GitHub.
   pull request stacked on top of a card you pushed down goes with it, because
   it cannot merge until that one does. The mark is saved in your own
   repository, so it follows you between machines.
+- **The browser tab counts what is waiting on you.** It reads "Work Board (4)",
+  so you can see from another tab whether it is worth going back. In Settings
+  you choose which parts of the board add up to that number, and whether each
+  part counts the work you marked "not a priority". The same number sits beside
+  the board's name, and resting on it breaks the total down by part. A count
+  that leaves work out says so when you rest on its badge.
 - **Ask GitHub now, with the button beside the schedule.** Rest on it and it
   tells you when the board last heard anything, so you can tell a quiet morning
   from a board that stopped asking. It goes down until the answer is in, and for
