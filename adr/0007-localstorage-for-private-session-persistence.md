@@ -65,3 +65,5 @@ shareable setup *and* private device-local preferences) may combine them, as
 `taboo-game` already does (URL for shared inputs, `localStorage` for personal
 info) and as `whatsapp-no-contact` does (URL for the number being shared,
 `localStorage` for the private list of numbers this browser used).
+
+> **Note (2026-09):** localStorage is also the local mirror and the fallback of the shared cloud storage (ADR 0016). A project on the cloud tier always keeps a copy of each document here, under `triunity-studios-data.<project>.<file>`, and works from it alone when no token is configured.

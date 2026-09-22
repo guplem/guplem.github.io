@@ -72,6 +72,8 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/ai-world-gen/AGENTS.md` | ai-world-gen: module map, the two OpenRouter endpoints and their shapes, the per-cell state rules, the tileset gotchas |
 | `web-projects/ai-world-gen/README.md` | ai-world-gen: the concept, the phase roadmap with progress, and the open questions (the project's memory between sessions) |
 | `web-projects/github-work-board/AGENTS.md` | github-work-board: module map, the higher reliability bar and why, the GitHub API gotchas |
+| `web-projects/cloud-storage/AGENTS.md` | cloud-storage: the shared storage module map, its rules, the adoption checklist |
+| `web-projects/cloud-storage/PLAN.md` | cloud-storage: the phased plan for the standard, and which phase has landed |
 | `web-projects/github-work-board/.claude/skills/change-the-board/SKILL.md` | github-work-board: the procedure for any change in that folder |
 | `web-projects/rps-mind-reader/AGENTS.md` | rps-mind-reader: predictor architecture + contracts, R&D workflow, strategies tried/rejected |
 | `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frames as spec, the scanner and pen model, geometry gotchas |
@@ -138,7 +140,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 ### Web Projects
 
-`web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site -- except the `web-projects/index.html` directory index, which is data-driven and reuses the site's global CSS (see ADR 0008). See `web-projects/AGENTS.md` for detailed guidance when working there.
+`web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site -- with two exceptions: the `web-projects/index.html` directory index, which is data-driven and reuses the site's global CSS (see ADR 0008), and the shared `web-projects/cloud-storage/` module, which any project may import to keep its data in the reader's private GitHub repository (see ADR 0016). See `web-projects/AGENTS.md` for detailed guidance when working there.
 
 ## Key Patterns and Gotchas
 
@@ -196,6 +198,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0013](adr/0013-deployed-at-footer-stamped-into-the-page.md) | "Deployed at" footer stamped into the page before merge, never fetched |
 | [0014](adr/0014-three-state-work-filters.md) | Three-state work filter chips, with one button that teaches the third state |
 | [0015](adr/0015-blog-posts-are-plain-html-read-from-the-page.md) | Blog posts are plain HTML, and the post's own head is its only metadata record |
+| [0016](adr/0016-shared-cloud-storage-for-web-projects.md) | Shared cloud storage for web-projects: one token, one private repository, one folder per project, and a local mirror as the fallback |
 
 ### Per-project ADRs
 

@@ -1,21 +1,21 @@
 # web-projects/AGENTS.md
 
-> **SCOPE:** These rules apply when working on files under `web-projects/`. Each project inside is self-contained and independent from the main portfolio site -- except the `index.html` directory index (see "The Index Page" below).
+> **SCOPE:** These rules apply when working on files under `web-projects/`. Each project inside is self-contained and independent from the main portfolio site -- except the `index.html` directory index (see "The Index Page" below) and the shared `cloud-storage/` module (see "Storage" below).
 
 ## Overview
 
-Collection of small, standalone web projects -- games, tools, experiments, demos. Often AI-generated. Each is fully self-contained and independent from the main portfolio site, except the directory index (`index.html`) described below.
+Collection of small, standalone web projects -- games, tools, experiments, demos. Often AI-generated. Each is fully self-contained and independent from the main portfolio site, except the directory index (`index.html`) and the shared `cloud-storage/` module, both described below.
 
 ## Conventions
 
 - **One folder per project** -- all assets live inside the project folder
-- **Self-contained** -- own HTML, CSS, JS. No shared dependencies with the main site or other projects
+- **Self-contained** -- own HTML, CSS, JS. No shared dependencies with the main site or other projects. The one import allowed from outside a project's folder is `../cloud-storage/` (root ADR 0016)
 - **No build tools, no frameworks** -- vanilla HTML/CSS/JS preferred
 - **Works standalone** -- each project should work by opening its HTML file directly or via any HTTP server
 
 ## The Index Page (`index.html`)
 
-`web-projects/index.html` is the landing page for `https://triunitystudios.com/web-projects/`. Visitors see it as the **Playground**: that is the name in its `<h1>` and `<title>`, and the name the main page links to (the first `.works-doorway` link at the end of the works section in the root `index.html`). The folder, the URL and every path keep the `web-projects` name. Keep the two labels the same when you rename one. It is the **one deliberate exception** to the self-contained rule above: it is a portfolio-level directory index, so it reads the portfolio data (`../data/projects/*.json`) and reuses the site's global tokens (`../css/global/variables.css`, `../css/global/base.css`). See ADR 0008.
+`web-projects/index.html` is the landing page for `https://triunitystudios.com/web-projects/`. Visitors see it as the **Playground**: that is the name in its `<h1>` and `<title>`, and the name the main page links to (the first `.works-doorway` link at the end of the works section in the root `index.html`). The folder, the URL and every path keep the `web-projects` name. Keep the two labels the same when you rename one. It is one of the **two deliberate exceptions** to the self-contained rule above: it is a portfolio-level directory index, so it reads the portfolio data (`../data/projects/*.json`) and reuses the site's global tokens (`../css/global/variables.css`, `../css/global/base.css`). See ADR 0008.
 
 - **Never hardcode the project list.** It is derived live: a project is listed when it has a link that is **not** `type: "github"` whose URL (after stripping the `triunitystudios.com` origin) starts with `web-projects/`. Adding such a project to the portfolio data makes it appear here automatically.
 - The grid also carries a **generated static fallback block** between `GENERATED:WEB-PROJECTS` markers so crawlers see the list without JS (root ADR 0010). Never hand-edit it; regenerate with `bun scripts/generateSeoBlocks.js`. The static cards mirror the `app.js` card markup exactly; at load `app.js` **adopts** them when their text matches the live-derived cards (wiring search to them, no entrance-animation replay) and only swaps them when they drift.
@@ -86,8 +86,20 @@ Rules that matter:
 
 **When a third project adopts this, promote it** to a shared module under
 `web-projects/` and record the exception to the self-contained rule in an ADR,
-the way the directory index did. Two copies is cheaper than a new exception;
-four copies is not.
+the way the directory index and `cloud-storage/` did. Two copies is cheaper than
+a new exception; four copies is not.
+
+## Storage (`cloud-storage/`)
+
+A project's data falls into one of three tiers, chosen when the project is created (root ADR 0016):
+
+| Tier | When | What to use |
+|---|---|---|
+| **None** | Toys, demos, anything whose state fits the URL | URL state (root ADR 0006) |
+| **This device** | Preferences, small caches, secrets, binaries | `cloud-storage/localStore.js`, key `<slug>.<name>` |
+| **Cloud** (required when it applies) | Anything a person made and would miss on another device: saves, history, notes, lists | `cloud-storage/envelope.js` and the store, see `cloud-storage/AGENTS.md` |
+
+`web-projects/cloud-storage/` is the shared module and the second exception to the self-contained rule. Its `AGENTS.md` holds the module map and the adoption checklist; its `PLAN.md` holds the phased plan and which phase has landed. A page that imports it holds a token, so it loads no third-party code.
 
 ## Architecture Decision Records (ADRs)
 
