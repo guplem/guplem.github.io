@@ -38,8 +38,10 @@ To make this automatic on every commit, install [lefthook](https://github.com/ev
 
 Self-contained mini-apps in `web-projects/`. Browse them all in the **Playground** at [triunitystudios.com/web-projects/](https://triunitystudios.com/web-projects/), an index page that lists every project automatically from the portfolio data. "Playground" is the visitor-facing name of that page; the folder and the URL keep the `web-projects` name.
 
+Projects that keep something you made can save it to **one private GitHub repository you own**, shared by every project on the site, through the [Cloud storage](https://triunitystudios.com/web-projects/cloud-storage/) page linked at the bottom of the Playground. Without it, each project keeps its data in your browser only.
+
 - **`ai-world-gen/`** — Describe a place and watch an AI build its map one tile at a time: a language model invents the world's vocabulary, a fast decision model (Jev) places every cell from its neighbours; bring your own OpenRouter key
-- **`github-work-board/`** — A personal work board on your GitHub issues, with private notes only you can see; the notes live in a private repository you own, so they follow you between devices, and the page runs with no server
+- **`github-work-board/`** — A personal work board on your GitHub issues, with private notes only you can see; the notes are saved in your browser and, through the site's cloud storage, in a private repository you own, so they follow you between devices, and the page runs with no server
 - **`mancala/`** — Two mancala games on one board: Kalah, and Ba-awa, the Ghanaian four-seed game with relay sowing and pits won between rounds; six AI opponents ranked by a tournament the project runs itself
 - **`whatsapp-sticker-creator/`** — Turn a photo into a WhatsApp sticker: background removal you can paint over, framing, colour, captions and animated frames, all held to WhatsApp's own sticker rules; the animated WebP writer is its own, so nothing is fetched and nothing leaves the device
 - **`global-news-map/`** — A world map of the day's news, pinned where it happened, read from Wikipedia's Current Events portal; any past day, with the original sources on every story

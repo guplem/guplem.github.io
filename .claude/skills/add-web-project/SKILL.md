@@ -27,6 +27,17 @@ Options:
 
 Store as `PROJECT_SLUG` and `PROJECT_DESCRIPTION`.
 
+Then decide where the project's data lives (root ADR 0016 and the "Storage" section of `web-projects/AGENTS.md`). Work it out from the description first. Ask with `AskUserQuestion` only when the description leaves it open:
+
+> "Will this project keep anything a person makes and would miss on another device (a save, a history, notes, a list)?"
+
+Options:
+1. **Yes, it keeps things a person makes** - Storage tier **Cloud**. Required for this kind of data: the project saves through the shared `web-projects/cloud-storage/` module, to this browser and to the reader's private repository.
+2. **Only preferences or small caches** - Storage tier **This device**. `localStorage` through `cloud-storage/localStore.js`.
+3. **Nothing worth keeping** - Storage tier **None**. State that is worth sharing goes in the URL (root ADR 0006).
+
+Secrets, caches of remote data, multi-MB binaries and shareable state never go to the cloud, whatever the answer. Store as `STORAGE_TIER`.
+
 ## 2. Run Pattern Scout
 
 Delegate to the **pattern-scout** agent to find how existing web-projects are structured:
@@ -91,6 +102,11 @@ Create `web-projects/<PROJECT_SLUG>/` with:
    ```
    ```
 
+7. **Storage, by `STORAGE_TIER`.** Follow the adoption checklist in `web-projects/cloud-storage/AGENTS.md`.
+   - **None**: nothing.
+   - **This device**: import `readJson` / `writeJson` from `../cloud-storage/localStore.js`, and key every value `<PROJECT_SLUG>.<name>` with `projectKey`.
+   - **Cloud**: create `document.js` with `const shape = defineDocument([...maps])` from `../cloud-storage/envelope.js` and typed read and write helpers over `shape.read` / `shape.write`, plus `document.test.js` (red first). In `script.js`, call `openStore({ project: PROJECT_SLUG, file: "<name>.json", recordMaps, onChange, onStatus, onQuestion: askCopyQuestion })` from `../cloud-storage/cloudStore.js` at start-up and `store.write(...)` on every change. Link `../cloud-storage/cloudSettingsPanel.css` in `index.html` and mount `mountCloudSettings(host, { mode: "compact", pageHref: "../cloud-storage/", onConfigured: () => store.reconnect() })` where the project's settings are. The page then holds a token, so it loads no third-party script.
+
 **Do not implement features yet.** The scaffold is a starting point for TDD (test-driven development: write the tests first, then the code). Features come after tests.
 
 ## 5. Verify Tests Run
@@ -153,8 +169,12 @@ Present to the user:
 - web-projects/<PROJECT_SLUG>/style.css
 - web-projects/<PROJECT_SLUG>/script.js
 - web-projects/<PROJECT_SLUG>/script.test.js
+- web-projects/<PROJECT_SLUG>/document.js and document.test.js (cloud tier only)
 - web-projects/<PROJECT_SLUG>/README.md
 - data/projects/<PROJECT_SLUG>.json
+
+### Storage tier
+<STORAGE_TIER>, and why.
 
 ### Files updated
 - data/projects/index.json (manifest)
@@ -169,7 +189,8 @@ The project is scaffolded with TDD ready. Start by writing tests in
 ## Important Rules
 
 - **TDD first.** The scaffold includes a test file but no implementation. Features are built test-first after scaffolding.
-- **Self-contained.** No imports from outside the project folder.
+- **Self-contained.** No imports from outside the project folder, except `../cloud-storage/` (root ADR 0016).
+- **Storage tier is decided at creation.** Data a person makes goes to the cloud tier, not to localStorage alone.
 - **Reuse skills.** Always check existing tags before inventing new ones.
 - **Follow patterns.** The pattern-scout output is the baseline for structure and style.
 - **Documentation is part of the scaffold.** README, portfolio data, and AGENTS.md updates are not optional follow-ups.
