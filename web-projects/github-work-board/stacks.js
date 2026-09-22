@@ -111,6 +111,26 @@ export function orderStacksForMerging(groups) {
 }
 
 /**
+ * The same flat row, with every stack read bottom first.
+ *
+ * The board draws groups and orders those (`orderStacksForMerging`). The row of
+ * pull requests waiting on the reader is flat, and it holds stacks too. It
+ * showed them in whatever order they were last touched, so a card badged
+ * "1 of 3" could sit last, and the row told the reader one thing with the badge
+ * and the opposite with the order (ADR 0016).
+ *
+ * A flat item is a group with nothing nested in it, so this is the same pass.
+ *
+ * @param items work items, not groups
+ * @returns a new array holding exactly the same items
+ */
+export function orderItemsForMerging(items) {
+  const list = (Array.isArray(items) ? items : []).filter((one) => one && typeof one === "object");
+  const groups = list.map((item) => ({ item, children: [] }));
+  return orderStacksForMerging(groups).map((group) => group.item);
+}
+
+/**
  * Where each pull request sits in its stack, for the ones handed in.
  *
  * The row of pull requests waiting on the reader's review is a flat row of

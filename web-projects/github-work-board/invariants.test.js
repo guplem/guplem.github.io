@@ -12,7 +12,7 @@ import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
 import { DEFAULT_REFRESH, OFF } from "./refresh.js";
-import { SORT_OPTIONS } from "./sorting.js";
+import { SORT_OPTIONS, reviewSortId } from "./sorting.js";
 import { COLUMN_IDS } from "./columns.js";
 import { KIND_FILTERS } from "./filters.js";
 import { normalizeWorkItem } from "./workItems.js";
@@ -381,6 +381,22 @@ describe("off is not whatever the default happens to be (ADR 0025)", () => {
 
   test("the two are different values, so the mistake is visible", () => {
     expect(OFF).not.toBe(DEFAULT_REFRESH);
+  });
+});
+
+// The row shipped without this, and it was invisible because the badge is
+// right: a card badged "1 of 3" sat last, and only somebody who read the badges
+// noticed the order disagreed with them (ADR 0016).
+describe("the review row reads its stacks bottom first too (ADR 0016)", () => {
+  test("the smart order runs the stack pass on the row, not only on the board", () => {
+    const source = read("app.js");
+    expect(source).toMatch(/sortId === "smart"[\s\S]{0,120}orderItemsForMerging/);
+  });
+
+  // The comparator half of smart is still the date order the row is built
+  // from. Only the pass is new.
+  test("the row still compares by how long something has waited", () => {
+    expect(reviewSortId("smart")).toBe("updated-asc");
   });
 });
 
