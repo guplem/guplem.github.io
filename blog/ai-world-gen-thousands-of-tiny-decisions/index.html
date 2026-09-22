@@ -53,7 +53,7 @@
         <p class="post-byline">
           <a href="../../">Guillem Poy</a>
           <time datetime="2026-09-20">20 September 2026</time>
-          <span>17 minute read</span>
+          <span>18 minute read</span>
         </p>
       </header>
 
@@ -1123,10 +1123,52 @@
       </section>
 
       <section>
+        <h3 id="version-8-the-code-draws-the-rooms"><a class="heading-anchor" href="#version-8-the-code-draws-the-rooms">Version 8: the code draws the rooms</a></h3>
+        <p>Version 8 is worth its own stop, because it is the version that takes work away from the model.</p>
+        <p>Seven versions tried to get rooms out of the prompt: more context, the whole map written out as text, softer sampling, typed placement rules. Doors kept landing in open ground. A model that answers one cell at a time cannot draw a rectangle. It never sees the shape it is in the middle of, so it closes a wall line into a solid block, and it puts the door wherever the neighbours allow one.</p>
+        <p>So version 8 stops asking. Before the first cell is decided, code draws a plan of the map. The plan is geometry, and there is no model in it.</p>
+        <ul class="two-ways">
+          <li><strong>The vocabulary declares its structures.</strong> A cottage is a ring of cottage wall around cottage floor, with one cottage door.</li>
+          <li><strong>The code places each one as a rectangle</strong>, with a random size and count inside the limits the vocabulary declares, and empty cells between rectangles. Together they never take more than half the map.</li>
+          <li><strong>Each rectangle gets one door.</strong> It sits in a wall, never in a corner, on the side that faces the middle of the map, so the door opens onto the map and not off its edge.</li>
+          <li><strong>Every cell now knows its part:</strong> a wall, the door, the inside of a named structure, or outside every structure.</li>
+        </ul>
+        <p>The model still decides every cell, but the question is narrower. It is no longer &ldquo;what goes here&rdquo;, it is &ldquo;what goes in this wall&rdquo;, and the answer can be a window. An inside cell can be a floor or a chest. An outside cell can be anything that belongs outdoors. The plan is drawn from the seed of the test case, so the same test case gets the same plan every time.</p>
+        <p>Nothing else in the table moved a specification this far: doors in walls went from 0.15 to 0.96, every map got a room you can enter, and &ldquo;a place reads as a place&rdquo; went from 0.52 to 0.89. The price was the vocabulary. Coverage fell to 0.52, because a cell inside a room is never offered the types that belong outside it.</p>
+        <div class="pair">
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v7/coherence-desert-spiral.png" width="768" height="768" loading="lazy" alt="v7 desert outpost: mud walls across the top of the map, a gate standing in open sand, with tents, palms and market stalls scattered around." />
+            <figcaption>v7, the desert outpost: the gate stands in open sand, not in a wall. Doors in walls 0.00, and 15 types on the map.</figcaption>
+          </figure>
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v8/coherence-desert-spiral.png" width="768" height="768" loading="lazy" alt="v8 desert outpost: a walled compound with a gate in its east wall and a merchant inside, dunes and sand around it." />
+            <figcaption>v8, the same seed: code drew the compound and its gate before the first cell was asked. Doors in walls 1.00, and 7 types on the map.</figcaption>
+          </figure>
+        </div>
+        <p>The lesson carries past this project. Give the model the decisions that are judgements: what stands in this room, who walks here, what this place is for. Give the code the decisions that are geometry.</p>
+      </section>
+
+      <section>
         <h2 id="regressions-and-what-the-loop-caught"><a class="heading-anchor" href="#regressions-and-what-the-loop-caught">Regressions, and what the loop caught</a></h2>
-        <p>Three things I would not have learnt from looking at pictures.</p>
-        <p><strong>A new metric rewrites history.</strong> Version 1 scored 0.99 on "paths form routes", because a map that is all corridor has no isolated path cell. When the path-share metric arrived later and every old version was rescored, v1 fell to 0.74. A version table is only comparable if every row is scored with the same rules, so every new metric was run back over every old map, and every new test seed was drawn again with each old version's own code. Read the charts knowing that; the scores are today's rules applied to yesterday's maps.</p>
-        <p><strong>Every fix costs something, and the loop shows you the bill.</strong> The sampling floor in v6 made calmer maps and starved the rare types. The blueprint in v8 gave the map rooms and took a third of its vocabulary coverage. Version 11 fixed the flooded station and turned its corridors into stubs: path continuity fell from 0.73 to 0.58 in the same run that raised path share from 0.65 to 0.84. None of these were visible in the one map I would have looked at. All of them were visible in the mean over 38.</p>
+        <p>Two things I would not have learnt from looking at pictures.</p>
+        <p><strong>A new metric rewrites history.</strong> Version 1 scored 0.99 on &ldquo;paths form routes&rdquo;. That metric asks whether the path cells join up, and in a map that is all corridor they do: there is no lone path cell to find. A second metric arrived later and asked how much of the map the paths take. Version 1 fell to 0.74.</p>
+        <figure class="solo">
+          <img src="../../web-projects/ai-world-gen/evaluation/results/v1/paths-station-branching.png" width="768" height="768" loading="lazy" alt="v1 space station: an 8 by 8 grid where every cell but one is corridor." />
+          <figcaption>v1, the space station: 63 of the 64 cells are corridor, and the last one is a lab floor. Nothing here is a lone path cell, so the first path metric gave it full marks.</figcaption>
+        </figure>
+        <p>A version table is only comparable if every row is scored with the same rules. So every new metric was run back over every old map, and every new test seed was drawn again with the code of each old version. Read the charts knowing that: the scores are the rules of today applied to the maps of yesterday.</p>
+        <p><strong>A fix in one place lowers a score in another.</strong> Version 6 raised the sampling floor, so the generator takes the best answer of the model more often, and a long shot less often. Open ground stopped being speckled with odd single tiles, and ground in patches went from 0.25 to 0.52. The same change meant the rare types were almost never picked, and the share of the vocabulary that reaches the map fell from 0.72 to 0.54. One mansion seed carries both halves.</p>
+        <div class="pair">
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v5/reach-mansion-random.png" width="768" height="768" loading="lazy" alt="v5 haunted mansion: a hall where almost every cell holds something different, a piano, a ghost, a chest, bookshelves and portraits." />
+            <figcaption>v5, one mansion seed: 14 of the 15 types are on the map, and almost nothing is plain floor. Ground in patches 0.24.</figcaption>
+          </figure>
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v6/reach-mansion-random.png" width="768" height="768" loading="lazy" alt="v6 haunted mansion: the same hall, now mostly plain floor, with walls down the left side and boarded windows at the bottom." />
+            <figcaption>v6, the same seed: the floor is floor again, 0.85. Only 6 types appear, and the piano, the ghost and the chest are gone.</figcaption>
+          </figure>
+        </div>
+        <p>Version 11 made the same trade somewhere else. It gave the space station an open deck to stand on, which cut the corridor from half the map to a tenth of it. What is left of the corridors are short stubs, so path continuity fell from 0.73 to 0.58 in the run that raised path share from 0.65 to 0.84.</p>
         <div class="pair">
           <figure>
             <img src="../../web-projects/ai-world-gen/evaluation/results/v10/large-station-frontier.png" width="768" height="768" loading="lazy" alt="v10 space station: a 16 by 16 grid where more than half the cells are corridor, with sealed sections of blue panels." />
@@ -1137,7 +1179,7 @@
             <figcaption>v11 station: an open deck as the ground, corridors as lines. Route share 0.53 to 0.12; continuity paid for it.</figcaption>
           </figure>
         </div>
-        <p><strong>A per-cell model cannot draw a rectangle.</strong> Seven versions tried to get rooms out of the prompt: more context, the whole map as text, softer sampling, typed rules. Doors stayed in fields. The eighth version stopped asking. Code places the buildings, the way a person drawing a map decides where the houses go before drawing the grass, and the model fills each part. That is the one change in the table that moved a specification by more than 0.3. The lesson generalises: give the model the decisions that are judgements (what stands in this room, who walks here) and give the code the decisions that are geometry.</p>
+        <p>Neither of these was visible in the one map I would have looked at. Both were visible in the mean over 38.</p>
       </section>
 
       <section class="one-call">
