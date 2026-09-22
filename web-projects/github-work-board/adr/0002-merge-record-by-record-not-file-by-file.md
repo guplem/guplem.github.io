@@ -3,9 +3,10 @@
 ## Context
 
 The board keeps its private half (notes, the column a card is moved to, the
-colour on each part of the board, light or dark, and which cards the reader
-pushed down, now; tags and a "what's next" queue later) in one file,
-`board.json`, inside a private repository the reader owns.
+colour on each part of the board, light or dark, which cards the reader
+pushed down, and what each part of the board counts, now; tags and a "what's
+next" queue later) in one file, `board.json`, inside a private repository the
+reader owns.
 GitHub's Contents API stores that file and hands back a **sha**, a fingerprint of
 the version just read. A write must name the sha of the version it replaces.
 GitHub answers **409** when that sha is no longer current, which means somebody

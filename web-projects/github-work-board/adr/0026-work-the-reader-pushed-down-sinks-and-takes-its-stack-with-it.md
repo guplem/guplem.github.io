@@ -75,6 +75,15 @@ them for.
 - **A marked card is never hidden.** Faint and last is a hint. A filter that
   removed it would make the board lie about how much work there is, and the
   reader would have to remember what they hid.
+
+  **A count may leave it out, and then it has to say so.** Each part of the
+  board can be set to count only the work that is not pushed down (ADR 0030).
+  That is the nearest thing to hiding that this mark is allowed to do, and it is
+  allowed for two reasons: the reader asks for it, one part at a time, and the
+  number that skipped a card admits it on the spot, so resting on the badge
+  reads `2 cards marked "not a priority" are not counted`. The card itself stays
+  exactly where it was, faint and last. Take that sentence away and this rule is
+  broken, not bent.
 - **The two halves can be undone separately in the code, and both fail
   silently.** Widen the guard and an order named after a date stops giving one;
   drop the pass and the mark quietly becomes decoration. `invariants.test.js`

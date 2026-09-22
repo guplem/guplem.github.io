@@ -16,11 +16,13 @@ import {
   parseDocument,
   readColumn,
   readColumnColour,
+  readCounting,
   readNote,
   readPriority,
   readTheme,
   writeColumn,
   writeColumnColour,
+  writeCounting,
   writeNote,
   writePriority,
   writeTheme,
@@ -99,6 +101,7 @@ import { cardMenuRows } from "./cardMenu.js";
 import { readTitle } from "./titles.js";
 import { initialsOf, personLabel } from "./people.js";
 import { LOW, NORMAL, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
+import { countBoard, describeBreakdown, describeExcluded, tabTitle } from "./counting.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
@@ -1043,7 +1046,7 @@ function buildGroupCard({ item, children }) {
 }
 
 /** One column: its name, how much is in it, and the cards. */
-function buildColumn({ column, groups }) {
+function buildColumn({ column, groups }, counted) {
   const section = document.createElement("section");
   section.className = "column";
   section.dataset.columnId = column.id;
@@ -1057,9 +1060,14 @@ function buildColumn({ column, groups }) {
   name.textContent = column.label;
   name.title = column.hint;
 
+  // The number the reader asked for, which is not always how many cards are
+  // there: a part of the board can be set to leave out the work pushed down,
+  // and then it has to say so (ADR 0026, ADR 0030).
   const count = document.createElement("span");
   count.className = "badge column-count";
-  count.textContent = String(groups.length);
+  count.textContent = String(counted?.count ?? groups.length);
+  const left = describeExcluded(counted?.excluded ?? 0);
+  if (left !== "") count.title = left;
   head.append(name, count);
 
   const list = document.createElement("ul");
@@ -1092,6 +1100,28 @@ function lightStack(root) {
   for (const card of document.querySelectorAll(".issue[data-stack]")) {
     card.classList.toggle("stack-lit", root !== "" && card.dataset.stack === root);
   }
+}
+
+/** What each part of the board counts, as the reader set it (ADR 0030). */
+function countingSettings() {
+  const chosen = {};
+  for (const area of colourableAreas()) chosen[area.id] = readCounting(state.board, area.id);
+  return chosen;
+}
+
+/**
+ * The number on the page and the name of the browser tab.
+ *
+ * The tab is the point: a board sitting behind three other tabs is a board
+ * nobody looks at, and the number is what brings the reader back on purpose
+ * rather than on a hunch (ADR 0030).
+ */
+function showTotal(counts) {
+  document.title = tabTitle(counts.total);
+  const badge = element("board-total");
+  badge.textContent = counts.total > 0 ? `(${counts.total})` : "";
+  badge.hidden = counts.total === 0;
+  badge.title = describeBreakdown(counts.parts);
 }
 
 /** The cards the reader marked, out of the ones on screen right now. */
@@ -1152,7 +1182,6 @@ function renderBoard() {
   state.stackRoots = Object.fromEntries(
     Object.entries(stackPositions(onScreen)).map(([key, at]) => [key, at.root]),
   );
-  element("reviews-count").textContent = String(waiting.length);
   element("reviews-empty").hidden = waiting.length > 0;
   const stacked = stackPositions(waiting);
   element("reviews-list").replaceChildren(
@@ -1162,7 +1191,32 @@ function renderBoard() {
   const overrides = {};
   for (const { item } of grouped) overrides[item.key] = readColumn(state.board, item.key);
   const board = groupIntoColumns(grouped, state.links, overrides);
-  element("board-columns").replaceChildren(...board.map(buildColumn));
+
+  // Every number on the page comes from one pass, so the badge on a column, the
+  // number beside the title and the name of the browser tab can never disagree
+  // (ADR 0030). The work pushed down is read through the same set the fade and
+  // the sink use, never a second check of its own (ADR 0026).
+  // `colourableAreas` is the one list of the board's parts, so Settings and the
+  // counting can never drift apart on what the parts are.
+  const keysByArea = {
+    [REVIEW_ROW_ID]: waiting.map((item) => item.key),
+    ...Object.fromEntries(board.map(({ column, groups }) => [column.id, groups.map((group) => group.item.key)])),
+  };
+  const counts = countBoard(
+    colourableAreas().map((area) => ({ ...area, keys: keysByArea[area.id] ?? [] })),
+    lowPriorityKeys([...waiting, ...board.flatMap(({ groups }) => groups.map((group) => group.item))]),
+    countingSettings(),
+  );
+  const countFor = Object.fromEntries(counts.parts.map((part) => [part.id, part]));
+
+  const reviewCount = element("reviews-count");
+  reviewCount.textContent = String(countFor[REVIEW_ROW_ID]?.count ?? waiting.length);
+  const leftOut = describeExcluded(countFor[REVIEW_ROW_ID]?.excluded ?? 0);
+  if (leftOut === "") reviewCount.removeAttribute("title");
+  else reviewCount.title = leftOut;
+
+  element("board-columns").replaceChildren(...board.map((one) => buildColumn(one, countFor[one.column.id])));
+  showTotal(counts);
   // The cards are on the page now, so every note can be measured (ADR 0014).
   for (const note of document.querySelectorAll(".issue .note")) fitNote(note);
   paint(element("reviews"), REVIEW_ROW_ID);
@@ -1197,7 +1251,52 @@ function renderBoard() {
  * the board. Both are written to the reader's own repository, so a choice made
  * on one machine is there on the next (ADR 0024).
  */
+/**
+ * What each part of the board counts, in Settings.
+ *
+ * Two answers per part, both as pressed buttons rather than as checkboxes,
+ * because every two-state control on this page is a button that says so through
+ * `aria-pressed` (ADR 0004). A checkbox here would be the only one in the
+ * project.
+ */
+function renderCounting() {
+  element("counting-areas").replaceChildren(
+    ...colourableAreas().map((area) => {
+      const row = document.createElement("li");
+      row.className = "colour-area counting-area";
+
+      const name = document.createElement("p");
+      name.className = "colour-area-name";
+      name.textContent = area.label;
+
+      const chips = document.createElement("div");
+      chips.className = "chips";
+      chips.setAttribute("role", "group");
+      chips.setAttribute("aria-label", `What ${area.label} counts`);
+
+      const chosen = readCounting(state.board, area.id);
+      const set = (changes) => {
+        state.board = writeCounting(state.board, area.id, { ...chosen, ...changes }, new Date().toISOString());
+        scheduleSave();
+        renderCounting();
+        renderBoard();
+      };
+
+      chips.append(
+        buildChip("In the tab name", chosen.counted, () => set({ counted: !chosen.counted })),
+        buildChip('Count "not a priority"', chosen.withLowPriority, () =>
+          set({ withLowPriority: !chosen.withLowPriority }),
+        ),
+      );
+
+      row.append(name, chips);
+      return row;
+    }),
+  );
+}
+
 function renderAppearance() {
+  renderCounting();
   const theme = readTheme(state.board);
   element("theme-choices").replaceChildren(
     ...THEMES.map((one) =>

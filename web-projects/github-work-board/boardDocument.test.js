@@ -11,8 +11,10 @@ import {
   writeNote,
   readColumnColour,
   writeColumnColour,
+  readCounting,
   readPriority,
   readTheme,
+  writeCounting,
   writePriority,
   writeTheme,
 } from "./boardDocument.js";
@@ -216,5 +218,45 @@ describe("a card pushed down", () => {
     const before = emptyDocument(now);
     writePriority(before, "I_1", "low", now);
     expect(readPriority(before, "I_1")).toBe("normal");
+  });
+});
+
+describe("what each part of the board counts", () => {
+  const now = "2026-09-22T10:00:00.000Z";
+
+  test("round-trips both answers", () => {
+    const document = writeCounting(emptyDocument(now), "ongoing", { counted: false, withLowPriority: false }, now);
+    expect(readCounting(document, "ongoing")).toEqual({ counted: false, withLowPriority: false });
+  });
+
+  // Nothing chosen is the default, which counts the four areas where work is
+  // moving and leaves nothing out of a badge (ADR 0030).
+  test("nothing chosen is the default for that area", () => {
+    expect(readCounting(emptyDocument(now), "ongoing")).toEqual({ counted: true, withLowPriority: true });
+    expect(readCounting(emptyDocument(now), "todo")).toEqual({ counted: false, withLowPriority: true });
+    expect(readCounting(null, "reviews")).toEqual({ counted: true, withLowPriority: true });
+  });
+
+  // Half a record is what a newer build writing one more answer would leave
+  // behind. The half that is there is kept, and the rest is the default.
+  test("half a record keeps what it says and defaults the rest", () => {
+    const document = { counting: { todo: { counted: true, updatedAt: now } } };
+    expect(readCounting(document, "todo")).toEqual({ counted: true, withLowPriority: true });
+  });
+
+  test("anything that is not an answer is the default", () => {
+    const document = { counting: { todo: { counted: "yes", withLowPriority: 7, updatedAt: now } } };
+    expect(readCounting(document, "todo")).toEqual({ counted: false, withLowPriority: true });
+  });
+
+  test("one area's choice says nothing about another's", () => {
+    const document = writeCounting(emptyDocument(now), "ongoing", { counted: false, withLowPriority: false }, now);
+    expect(readCounting(document, "reviews")).toEqual({ counted: true, withLowPriority: true });
+  });
+
+  test("the document handed in is never changed", () => {
+    const before = emptyDocument(now);
+    writeCounting(before, "ongoing", { counted: false, withLowPriority: false }, now);
+    expect(readCounting(before, "ongoing").counted).toBe(true);
   });
 });

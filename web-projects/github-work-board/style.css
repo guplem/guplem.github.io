@@ -1378,6 +1378,16 @@ textarea.input {
   box-shadow: 0 0 0 1px hsl(38 95% 62% / 0.4);
 }
 
+/* The number beside the board's name, and the one in the browser tab. Quieter
+ * than the name, because it is a fact about the board and not part of what the
+ * board is called (ADR 0030). */
+.board-total {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+  cursor: help;
+}
+
 /**
  * A row of faces on a card: who this work is about.
  *
@@ -1925,7 +1935,8 @@ textarea.input {
 /* Choosing how the board looks                                               */
 /* -------------------------------------------------------------------------- */
 
-.colour-areas {
+.colour-areas,
+.counting-areas {
   list-style: none;
   margin: 0.5rem 0 0;
   padding: 0;
@@ -1933,7 +1944,11 @@ textarea.input {
   gap: 0.5rem;
 }
 
-.colour-area {
+/* One part of the board, with its controls beside its name. A counting row is
+ * the same shape as a colour row, so Settings reads as one list of parts rather
+ * than two. */
+.colour-area,
+.counting-area {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
