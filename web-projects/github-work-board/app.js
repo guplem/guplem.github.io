@@ -583,7 +583,6 @@ function renderLoading() {
       return section;
     }),
   );
-  element("board-counts").replaceChildren(buildSkeletonBar("9rem"));
   element("board-empty").hidden = true;
 
   element("repository-group").hidden = !(last.repositories > 1);
@@ -606,8 +605,10 @@ function renderLoading() {
  * Paint the page from the document: the theme on the root, and a colour on the
  * review row and on each column.
  *
- * Nothing carries `data-colour` until somebody picks one, so a board nobody has
- * touched looks exactly as it did (ADR 0024).
+ * A part with no record wears the colour the board ships for it; a record
+ * always wins, including one that says "None". `data-colour` is absent only
+ * when the answer is "None", never merely because nobody has touched that
+ * part yet (ADR 0024).
  */
 function paint(element_, areaId) {
   if (!element_) return;
@@ -1374,14 +1375,7 @@ function renderBoard() {
     paint(column, column.dataset.columnId);
   }
 
-  const { issues, pullRequests } = countByKind(visible);
-  const parts = [];
-  if (issues > 0) parts.push(`${issues} ${issues === 1 ? "issue" : "issues"}`);
-  if (pullRequests > 0) parts.push(`${pullRequests} ${pullRequests === 1 ? "pull request" : "pull requests"}`);
   const narrowed = activeFilterCount(state) > 0;
-  element("board-counts").textContent = narrowed
-    ? `${parts.join(" and ") || "Nothing"} · ${visible.length} of ${state.items.length}`
-    : parts.join(" and ");
 
   // An empty list has two very different causes, and the way out of each one is
   // different too: widen the filters, or add a token (ADR 0007, ADR 0009).
@@ -1848,7 +1842,9 @@ async function connectAll({ quiet = false } = {}) {
     labels: availableLabels(state.items).length,
     tokens: state.tokens.length,
   });
-  setStatus(boardWritingToken(state.tokens) ? "Your board saves itself." : "No token can write your board file.");
+  // Only when something is wrong. A board that saves itself is the ordinary
+  // case, and a line that says so on every read is a line nobody reads.
+  setStatus(boardWritingToken(state.tokens) ? "" : "No token can write your board file.");
   // Here rather than only at start-up: a token connected after a sign-out has
   // to start the schedule again, and there was none to start before.
   applyAutoRefresh();

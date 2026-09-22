@@ -41,10 +41,12 @@ second, whichever is later.** Both, not either:
   wondering whether it did anything, and inviting them to press it again is the
   opposite of what it is for.
 
-The icon turns while it is down, so the wait is visibly the board working rather
-than the button being broken. The turning stops for anybody who asked their
-machine for less motion, because the reduced-motion rule already covers every
-animation on the page.
+The icon turns and the button greys out while it is down, so the wait is
+visibly the board working rather than the button being broken. The half
+opacity every disabled button wears was almost nothing on a thin outline
+button, so the grey background carries the signal a plain press could not. The
+turning stops for anybody who asked their machine for less motion, because the
+reduced-motion rule already covers every animation on the page.
 
 **It is not a `.button-*` variant.** It carries no colour of its own and is worn
 with `.button-outline`, which has the hover state. `invariants.test.js` asks
