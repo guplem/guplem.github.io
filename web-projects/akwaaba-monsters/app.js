@@ -132,6 +132,9 @@ import { activeMonster, battleResult, createBattle, takeTurn, usableMoves } from
 import { applyBattleEvent, easeToward, snapshotBattle } from "./battlePlayback.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { escapeHtml, say as deploySay } from "./deployText.js";
+import { openStore } from "../cloud-storage/cloudStore.js";
+import { askCopyQuestion, mountCloudSettings } from "../cloud-storage/cloudSettingsPanel.js";
+import { RECORD_MAPS as CLOUD_MAPS, SAVE_FILE, documentWithSave, newerSave, saveInDocument } from "./cloudSave.js";
 
 /** How many frames one step across a tile takes. */
 const STEP_FRAMES = 9;
@@ -1903,6 +1906,7 @@ function openSaveMenu() {
   ask("Save your game?", ["Save", "Download a copy", "Load a file", "Cancel"], (choice) => {
     if (choice === 0) {
       const result = saveToStorage(localStorage, game.state);
+      if (result.ok) pushSaveToCloud();
       audio.playSound(result.ok ? "save" : "bump");
       say(result.ok ? "Your game was saved." : result.error);
     } else if (choice === 1) {
@@ -2149,7 +2153,63 @@ function autosave() {
   if (!game.state) return;
   game.state.rngState = game.rng.state;
   saveToStorage(localStorage, game.state);
+  pushSaveToCloud();
 }
+
+// ---------------------------------------------------------------------------
+// The cloud copy of the save
+// ---------------------------------------------------------------------------
+
+/**
+ * The save also travels through the shared cloud storage, so a game started
+ * on the phone carries on at the desk (root ADR 0016, `cloudSave.js`). The
+ * store keeps a local mirror and saves to the cloud a moment after the last
+ * change. A cloud copy that arrives while a game is running is left alone:
+ * it is applied at the title screen, and only when it was written later.
+ */
+let cloud = null;
+
+function pushSaveToCloud() {
+  if (!cloud || !game.state) return;
+  const stamped = loadFromStorage(localStorage) ?? game.state;
+  cloud.write(documentWithSave(cloud.document, stamped, new Date().toISOString()));
+}
+
+function takeCloudSave(document) {
+  const incoming = saveInDocument(document);
+  if (!incoming) return;
+  if (game.screen !== "title") return;
+  const local = loadFromStorage(localStorage);
+  if (newerSave(local, incoming) !== incoming) return;
+  saveToStorage(localStorage, incoming);
+}
+
+function openCloud() {
+  const status = document.getElementById("cloud-save-status");
+  cloud = openStore({
+    project: "akwaaba-monsters",
+    file: SAVE_FILE,
+    recordMaps: CLOUD_MAPS,
+    onChange: takeCloudSave,
+    onStatus: (sync) => {
+      if (status) status.textContent = sync.state === "broken" ? sync.detail : "";
+    },
+    onQuestion: askCopyQuestion,
+  });
+  // A player who saved before the cloud existed has a save here and none in
+  // the store. Seed the store from it, so the first connection can push it up
+  // or ask the question.
+  const local = loadFromStorage(localStorage);
+  if (local && !saveInDocument(cloud.document)) {
+    cloud.write(documentWithSave(cloud.document, local, new Date().toISOString()));
+  }
+  const host = document.getElementById("cloud-save");
+  if (host) {
+    mountCloudSettings(host, { mode: "compact", pageHref: "../cloud-storage/", onConfigured: () => cloud.reconnect() });
+  }
+}
+
+openCloud();
 
 // ---------------------------------------------------------------------------
 // Drawing

@@ -11,11 +11,11 @@ This file is the plan and the handover note (like
 below when it lands. Read it before you touch anything under
 `web-projects/cloud-storage/`.
 
-**Status:** phases 1, 2, 3 and 5 landed (the pure core, root ADR 0016, the
-gateway, the store, the settings panel, the Cloud storage page,
-github-work-board on the standard, and the rule for new projects in the
-`add-web-project` skill). Phase 4 is what remains: the other adopters,
-starting with rps-mind-reader.
+**Status:** every phase has landed. Phase 4 shrank on purpose: akwaaba-monsters
+is the only other adopter. The owner judged rps-mind-reader, mancala,
+unit-converter, whatsapp-no-contact and ai-world-gen not worth a token to the
+person using them, and that judgement is now the rule in §2.8 and root ADR 0016:
+cloud is the exception, asked for every new project.
 
 ---
 
@@ -39,7 +39,7 @@ edit is lost on reload.
 
 | Kind of data | Where found | Cloud? |
 |---|---|---|
-| User-created content, small JSON | akwaaba-monsters save (tens of KB), rps-mind-reader rounds (≤500), mancala record, unit-converter recents, whatsapp-no-contact recents | **Yes.** This is what the standard is for. |
+| User-created content, small JSON | akwaaba-monsters save (tens of KB), rps-mind-reader rounds (≤500), mancala record, unit-converter recents, whatsapp-no-contact recents | **Maybe.** This is what the standard is for, but cloud is the exception (§2.8): the owner later kept only akwaaba-monsters on it and left the rest on this device. |
 | Preferences | ai-world-gen models/style, mancala setup/speed, language pickers, akwaaba mute/haptics | **Optional.** Sync when a person would want them to follow. Language and mute stay per device. |
 | Secrets | ai-world-gen OpenRouter key, work-board tokens, github-stats-dashboard token (memory only) | **Never.** A secret never leaves this browser. |
 | Caches of remote data | unit-converter exchange rates | **Never.** Fetch again instead. |
@@ -213,18 +213,21 @@ global variables like the index does.
 ### 2.8 The rule for new projects (three tiers)
 
 Written into `web-projects/AGENTS.md`, and asked by the `add-web-project` skill
-as one question:
+as one question, every time, unless the answer is plain. Cloud is the exception:
+setting it up costs a token and a repository, once, and on a phone that is real
+work, so a small experiment stays on this device. It is for data whose loss
+hurts (hours of game progress, notes written over weeks) or a project whose
+point is to follow the person or keep a history.
 
 | Tier | When | What the scaffold does |
 |---|---|---|
 | **None** | Toys, demos, anything whose state fits the URL | Nothing. URL state per root ADR 0006. |
 | **This device** | Preferences, small caches, secrets, binaries | Import `localStore.js` from cloud-storage (the promoted wrapper). Key `<slug>.<name>`. |
-| **Cloud** (required when it applies) | Anything a person made and would miss on another device: saves, history, notes, lists | Import `cloudStore.js`, declare `RECORD_MAPS`, embed the compact panel in settings, add a migration test. |
+| **Cloud** | Data whose loss hurts, or a project whose point is to follow the person or keep a history | Import `cloudStore.js`, declare `RECORD_MAPS`, embed the compact panel in settings, add a migration test. |
 
-Cloud is required, not optional, whenever the data is user-created content. The
-skill asks the tier, then scaffolds `store.js` for tier 2 or `document.js` +
-`document.test.js` for tier 3 from a template kept in
-`web-projects/cloud-storage/templates/`.
+The skill asks the tier, then names the files each tier needs (the adoption
+checklist in `cloud-storage/AGENTS.md` is the reference; no templates folder,
+the snippets live in the skill).
 
 ---
 
@@ -283,13 +286,12 @@ loads).
    `../cloud-storage/`. Update board ADRs 0001, 0002, 0005, 0008, 0015, 0019
    in place, and its `AGENTS.md` module map. This PR closes the "edits lost
    without a token" gap.
-4. **Second adopter: rps-mind-reader.** One document, bounded list, has an
-   export already. Proves the API on a project with no settings screen (the
-   compact panel goes next to its export button). Then, one PR each:
-   akwaaba-monsters (save; mute and haptics stay local), mancala (record and
-   setup), unit-converter (recents; rates stay a local cache), whatsapp-no-contact
-   (recents), ai-world-gen (models and style; the API key stays local; check its
-   imports first).
+4. **Second adopter: akwaaba-monsters.** The save, as one record; mute and
+   haptics stay local. The compact panel sits under the game in the page's
+   footer, and a cloud copy is applied at the title screen only. **No other
+   adopter.** rps-mind-reader, mancala, unit-converter, whatsapp-no-contact and
+   ai-world-gen were considered and left on this device: their data is not
+   worth a token to the person who owns it.
 5. **The rule for new projects.** The three-tier table in `web-projects/AGENTS.md`,
    the tier question and templates in the `add-web-project` skill, the root
    `README.md` and `web-projects/index.html` mention of the Cloud storage page.
@@ -312,8 +314,9 @@ spread.
 - **Secrets and binaries never sync.** The OpenRouter key stays in this browser.
 - **Panel styling through custom properties**, not the site's global CSS,
   so it fits inside the shadcn-styled board and inside a plain project.
-- **Cloud is required for user-created content in new projects**, not optional.
-  Local-only is a fallback state, not a design choice, for that tier.
+- **Cloud is the exception for new projects, not the rule.** The owner is asked
+  every time (§2.8), and most user-created content turned out not to be worth
+  a token: only akwaaba-monsters took the cloud tier in the end.
 
 ---
 

@@ -27,13 +27,13 @@ Options:
 
 Store as `PROJECT_SLUG` and `PROJECT_DESCRIPTION`.
 
-Then decide where the project's data lives (root ADR 0016 and the "Storage" section of `web-projects/AGENTS.md`). Work it out from the description first. Ask with `AskUserQuestion` only when the description leaves it open:
+Then decide where the project's data lives (root ADR 0016 and the "Storage" section of `web-projects/AGENTS.md`). **Ask the user with `AskUserQuestion`**, every time, unless the description makes the answer plain (a toy with no state, or a project whose whole point is a history that follows the person):
 
-> "Will this project keep anything a person makes and would miss on another device (a save, a history, notes, a list)?"
+> "Where should this project keep its data? Cloud sync costs the person a GitHub token and a repository, once, and on a phone that is real work. It pays off only when losing the data would hurt, or when following you across devices is the point."
 
 Options:
-1. **Yes, it keeps things a person makes** - Storage tier **Cloud**. Required for this kind of data: the project saves through the shared `web-projects/cloud-storage/` module, to this browser and to the reader's private repository.
-2. **Only preferences or small caches** - Storage tier **This device**. `localStorage` through `cloud-storage/localStore.js`.
+1. **This device (Recommended for most projects)** - Storage tier **This device**. `localStorage` through `cloud-storage/localStore.js`. Right for preferences, recents, small histories, anything a person would not mind losing.
+2. **Cloud, it follows me across devices** - Storage tier **Cloud**. The project saves through the shared `web-projects/cloud-storage/` module, to this browser and to the reader's private repository. Right for hours of progress, notes written over weeks, or a history that is the feature.
 3. **Nothing worth keeping** - Storage tier **None**. State that is worth sharing goes in the URL (root ADR 0006).
 
 Secrets, caches of remote data, multi-MB binaries and shareable state never go to the cloud, whatever the answer. Store as `STORAGE_TIER`.
@@ -190,7 +190,7 @@ The project is scaffolded with TDD ready. Start by writing tests in
 
 - **TDD first.** The scaffold includes a test file but no implementation. Features are built test-first after scaffolding.
 - **Self-contained.** No imports from outside the project folder, except `../cloud-storage/` (root ADR 0016).
-- **Storage tier is decided at creation.** Data a person makes goes to the cloud tier, not to localStorage alone.
+- **Storage tier is decided at creation, with the user.** Cloud is the exception: only for data whose loss hurts or when following the person is the point.
 - **Reuse skills.** Always check existing tags before inventing new ones.
 - **Follow patterns.** The pattern-scout output is the baseline for structure and style.
 - **Documentation is part of the scaffold.** README, portfolio data, and AGENTS.md updates are not optional follow-ups.
