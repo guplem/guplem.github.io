@@ -20,6 +20,7 @@ This is the founding project of a side project started at the **AI Hackathon Bar
 - **Vocabulary generation** by a text model (Claude Sonnet by default), asked for strict JSON, validated on receipt, and asked again with the errors when it is wrong (up to 3 attempts).
 - **Per-cell decisions** by a decision model (Jev by default), one typed question per cell with the neighbours as context. The answer is a choice plus a probability per option; the map samples from those probabilities, so a mildly sure model gives a varied map, not one solid colour.
 - **Or the whole map in one call.** A switch in AI Setup asks the narrative model for the finished grid at once instead of a decision per cell, with the same vocabulary, blueprint and rules in the prompt. It exists to be measured against the per-cell loop (see the evaluation below), and it is the faster, cheaper way to draw a small map when live drawing and per-cell probabilities do not matter.
+- **Or every cell at once, still as typed decisions.** The third setting on the same switch keeps one typed question per cell and sends them together: an 8 × 8 map is 64 questions in one decisions request. The decision model answers each one on its own, so the cells of a batch cannot see each other. It is an experiment with numbers, not the default; the evaluation below says what it costs and what it does to the map.
 - **Five generation orders** behind one interface: centre-out spiral, pure random, clustered, tree/branching, frontier growth.
 - **Live rendering** with visible per-cell latency, a progress bar, and a decision log.
 - **Reachability check**: a flood fill over the walkable cells reports sealed-off regions when the map is complete, and each one is a click away.
@@ -64,6 +65,7 @@ For each cell the decision model receives a small state: the world's name and su
 | `cellDecision.js` | The per-cell state and question (the cell's part of the plan, the allowed types, the map sketch, the balance sheet, the hints), reading the answer, sampling a type, the chat stand-in, the fallback |
 | `generation.js` | The sequential loop with retries, fallbacks and stop conditions; `createDecider` picks the transport |
 | `wholeMap.js` | The whole map in one call: the prompt with the legend, the plan and the rules, reading the rows back, the ask-again loop |
+| `batchedDecisions.js` | Every cell as its own typed question in one decisions request: the shared state, the per-cell questions, the token budget that decides how many fit |
 | `orderStrategies.js` | The five generation orders behind `nextCoordinate(placed)` |
 | `grid.js` | The grid, neighbours, counts, JSON in and out |
 | `reachability.js` | The flood fill |
@@ -117,6 +119,8 @@ Anything raised mid-build that is not ready to implement yet. Add to it; strike 
 - **Empty rooms.** A planned interior is mostly floor: the model rarely puts the chest in the cottage or the console in the lab. A per-room "this room still lacks" hint (the indoor things not yet in this room) is the room-sized version of `missing`.
 - **Free-standing barriers split the map.** Trees, dunes and pipes are the barriers the blueprint does not place, and they are what still splits walkable regions (0.77 in v8). Either the plan places them too (as clusters with a declared count) or the reachability check repairs one cell.
 - **Structures could touch.** The blueprint keeps a one-cell gap between rectangles. The reference maps have rooms that share a wall (a dungeon, a mansion); a shared-wall mode per structure would give those settings their look.
+- **Decisions that branch.** Every decision this project makes is flat: one layer of children, all of them cells. A tree (areas, then the structures in each area, then the inside of each structure, then the things in each room) would make each later decision depend on a decided earlier one by construction, instead of hoping the model reads the map sketch. The blueprint is already one such layer, written by hand. **Not built and not measured**: there are no numbers for it, and `v-batch` is the reason it is worth trying, because it showed that a decision with no decided context around it answers the same thing every time.
+- **Batching is a latency win, not a cost win.** `v-batch` cut requests by 61 times, waiting by 26 and money by 2.8. The gap is the shared state, which used to travel with every cell and now travels once per batch; each question still carries its own cell and its own options, and that is most of the payload. A per-question option list that referred to a shared type table would be the next thing to try, and it would need re-measuring: shorter criteria may change the answers.
 - **Cost display**: OpenRouter returns token usage per call; summing it into "this world cost $0.03" would make the pitch concrete, and would show that a preset world costs cents.
 
 ## Evaluation in Galtea
@@ -144,6 +148,7 @@ python evaluate.py report --version v2 --against v1     # after the next iterati
 python evaluate.py rescore --version v1                 # after a new metric: score the saved maps of v1 with it
 python evaluate.py backfill --version v1                # after a new dataset: draw its cases with v1's own code
 AI_WORLD_GEN_GENERATION=whole-map python evaluate.py run --version v-llm   # the whole map in one call, for comparison
+AI_WORLD_GEN_GENERATION=batched python evaluate.py run --version v-batch  # every cell as a question in one call, for comparison
 ```
 
 Every map is also drawn as a PNG with the page's own tiles, saved under `evaluation/results/vN/`, and attached to the Galtea output next to the ASCII view, so a result can be seen at a glance in the dashboard and compared across versions in the repository. The keys live in `evaluation/.env` (copy `.env.example`; git-ignored). The models are pinned there (`typesafe/jev-1.13`, `anthropic/claude-sonnet-5`, and `GPT-5.2` as the judge), so runs stay comparable when OpenRouter adds newer ones. A full run is 38 maps and 3,008 decisions: about 25 cents of Jev (measured: $0.00008 per decision, about 2,000 tokens each) and under ten minutes. Results are also written to `evaluation/results/vN.json`.
@@ -166,6 +171,7 @@ Mean score per specification over the 38 test cases, with every metric as it is 
 | v10 | Hard cap: a ground type past twice its target is not offered while another ground is allowed | 0.98 | 0.78 | 0.87 | 0.88 | 0.99 | 0.86 | 0.83 | 0.71 |
 | v11 | The station and the city block get a ground that is not a route (open deck, plaza); corridor and street become lines | 0.98 | 0.77 | **0.88** | 0.88 | **0.99** | 0.82 | 0.83 | 0.69 |
 | v-llm | Not a version of the loop: the whole map in one call to Claude Sonnet 5 (thinking off), with v11's vocabulary, blueprint and rules in the prompt (`wholeMap.js`) | 0.94 | 0.75 | 0.85 | 0.74 | 0.76 | 0.61 | **0.90** | 0.65 |
+| v-batch | Not a version of the loop: v11's own per-cell questions, sent together as one decisions request per map (`batchedDecisions.js`) | 0.97 | 0.47 | 0.87 | 0.91 | 0.83 | 0.78 | 0.66 | 0.57 |
 
 Every version is scored on the same 38 seeds: the seeds a dataset added later were drawn afterwards with that version's own code (`evaluate.py backfill`), so a row is a mean over the same maps as every other row. v1's routes score is in brackets because v1 drew almost no doors, so there was little to judge.
 
@@ -184,6 +190,8 @@ What each version actually drew:
 - **v11: a floor that is not a road.** The station gets an open deck and the block a concrete plaza; corridor and street become lines. Path share in range 0.65 to 0.84, the station's route share 0.53 to 0.12. The corridors are now short stubs on the deck (path continuity 0.73 to 0.58, doors with a route 0.90 to 0.79): a route between two doors is a shape, and shapes are the plan's job.
 
 - **v-llm: the whole map in one call.** The measured alternative ADR 0002 had rejected on reasoning alone. With the same plan in its prompt, room by room, the text model still closed a room on only 47% of the maps (v11: 92%) and set 60% of its doors in a wall (87%); the typed rules held at 0.76 (0.99), because nothing stops a model writing 256 letters from breaking one. It won on landmarks (present 0.76 against 0.45), and it was fast: 3.7 s for an 8 × 8 map against 22, 6 s for 16 × 16 against 90. The run cost the same ($0.25 against $0.24); 8 of 38 maps needed a second answer. Left with thinking on, the model spent its whole 6,000-token budget reasoning and answered nothing.
+
+- **v-batch: the same decisions, sent together.** Jev answers a whole map of independent typed questions in one request: 3,008 decisions in 49 answered requests (one more was refused for its size), $0.086 against $0.24, and 40 s of drawing against 1,046 s. An 8 x 8 map is one request, 0.85 s and $0.0018; a 16 x 16 map does not fit and takes 4 or 5. Nothing fell back. What the code decides survived (structures 0.97, zone 1.00, doors in walls 0.87 to 0.94, an enclosed room on 0.95 of maps) and what needed a neighbour did not: 181 broken "never next to" pairs, every one of them between two cells of the same batch (v11: 11); a type whose rules say "exactly one" more than once on 7 of 38 maps (v11: 0), worst a mansion with 39 staircases; path continuity 0.58 to 0.26; coverage 0.77 to 0.43. Two scores rose because the maps repeat themselves: ground in patches 0.65 to 0.83, one walkable region 0.72 to 0.93. The judge reads it at 0.57 against 0.69.
 
 Pictures of every map of every version are under `evaluation/results/vN/`.
 

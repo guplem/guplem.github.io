@@ -1122,7 +1122,7 @@
   fill: var(--door);
 }
 
-.bars .bar-cell {
+.bars .bar-batch {
   fill: var(--stone);
 }
 
