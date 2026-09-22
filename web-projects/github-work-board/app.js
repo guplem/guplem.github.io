@@ -106,7 +106,7 @@ import { skeletonCount } from "./skeletons.js";
 import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
 import { cardMenuRows } from "./cardMenu.js";
 import { TOOLTIP_DELAY_MS, tipPlacement } from "./tooltip.js";
-import { CHILDREN_SHOWN, orderChildren } from "./children.js";
+import { childSummary, childrenProgress, childrenToggleLabel, orderChildren } from "./children.js";
 import { EXAMPLE_ACTIONS, PLACEHOLDERS, fillCopyTemplate } from "./copyActions.js";
 import { readTitle } from "./titles.js";
 import { initialsOf, personLabel } from "./people.js";
@@ -666,6 +666,19 @@ function paint(element_, areaId) {
   }
   element_.setAttribute("data-colour", chosen.id);
   element_.style.setProperty("--tint", chosen.tint);
+}
+
+/** The arrow on the press that opens a list: pointing down when it is open. */
+function buildChevron(open) {
+  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  drawing.setAttribute("viewBox", "0 0 24 24");
+  drawing.setAttribute("aria-hidden", "true");
+  drawing.setAttribute("focusable", "false");
+  drawing.setAttribute("class", `icon chevron${open ? " is-open" : ""}`);
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  line.setAttribute("d", "M9 6l6 6-6 6");
+  drawing.append(line);
+  return drawing;
 }
 
 /** The theme the reader chose, on the root element where the tokens read it. */
@@ -1284,59 +1297,89 @@ function childRows(children) {
 }
 
 /**
- * The children of an issue, under the count of how many are done.
+ * One pill: one child, painted with the colour of the column it sits in.
  *
- * The count alone said how much was left and nothing about what it was. The
- * list is the answer to "what is my team actually doing", which is the question
- * a parent issue exists to ask.
+ * The pill carries no words, so it is a link to the issue and its whole
+ * meaning is in the tooltip. A child the board could not ask GitHub about is
+ * left unpainted rather than read as "To do" (ADR 0010, ADR 0032).
+ */
+function buildChildPill(row) {
+  const pill = document.createElement("a");
+  pill.className = "child-pill";
+  pill.href = row.item.url;
+  pill.target = "_blank";
+  pill.rel = "noopener";
+  pill.setAttribute("aria-label", childSummary(row));
+  if (row.columnId !== "") {
+    pill.setAttribute("data-column", row.columnId);
+    paint(pill, row.columnId);
+  }
+  explain(pill, childSummary(row));
+  return pill;
+}
+
+/**
+ * The children of an issue: one pill each, the count beside them, and the list
+ * one press below.
  *
- * A card shows the five that want a person most and folds the rest away, so a
- * parent with twenty children is still a card (ADR 0032). What GitHub did not
- * answer with is a link to the issue itself, because "and 7 more" with nowhere
- * to go is worse than not saying it.
+ * The card used to say "3 of 8 done" and list five children. The number said
+ * how much was left and nothing about what it was, and the list took five rows
+ * of a card that sits in a column beside five others. The pills answer "how is
+ * this going" in one line, each painted with the colour of the column that
+ * child is in, and the list is there for anybody who asks (ADR 0032).
+ *
+ * What GitHub did not answer with is a link to the issue itself, because
+ * "and 7 more" with nowhere to go is worse than not saying it.
  */
 function buildChildren(item, subIssues) {
   const box = document.createElement("div");
   box.className = "issue-children";
 
+  const rows = childRows(subIssues.children);
+  const progress = childrenProgress(subIssues);
+
   const heading = document.createElement("p");
-  heading.className = "issue-links";
+  heading.className = "issue-links children-head";
   const label = document.createElement("span");
   label.className = "link-label";
   label.textContent = "Children";
+
+  const pills = document.createElement("span");
+  pills.className = "child-pills";
+  pills.replaceChildren(...rows.map(buildChildPill));
+
   const value = document.createElement("span");
-  value.textContent = `${subIssues.completed} of ${subIssues.total} done`;
-  heading.append(label, value);
+  value.className = "children-count";
+  value.textContent = progress.label;
+  explain(value, `${progress.done} of ${progress.total} closed`);
+
+  heading.append(label, pills, value);
   box.append(heading);
 
-  const rows = childRows(subIssues.children);
   const open = state.childrenOpen.has(item.key);
   if (rows.length > 0) {
-    const list = document.createElement("ul");
-    list.className = "children";
-    list.replaceChildren(...(open ? rows : rows.slice(0, CHILDREN_SHOWN)).map(buildChildRow));
-    box.append(list);
-  }
-
-  const foot = document.createElement("p");
-  foot.className = "children-foot";
-
-  const folded = rows.length - CHILDREN_SHOWN;
-  if (folded > 0) {
     const toggle = document.createElement("button");
     toggle.type = "button";
     toggle.className = "button button-ghost children-toggle";
-    toggle.textContent = open ? "Show fewer" : `Show all ${rows.length}`;
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    toggle.append(buildChevron(open), document.createTextNode(childrenToggleLabel(open, rows.length)));
     toggle.addEventListener("click", () => {
       if (open) state.childrenOpen.delete(item.key);
       else state.childrenOpen.add(item.key);
       renderBoard();
     });
-    foot.append(toggle);
+    box.append(toggle);
   }
 
-  // Only what GitHub did not answer with at all. The folded ones are one press
-  // away and are not "more on GitHub".
+  if (open && rows.length > 0) {
+    const list = document.createElement("ul");
+    list.className = "children";
+    list.replaceChildren(...rows.map(buildChildRow));
+    box.append(list);
+  }
+
+  // Only what GitHub did not answer with at all. The children in the list are
+  // one press away and are not "more on GitHub".
   const missing = subIssues.total - subIssues.children.length;
   if (missing > 0) {
     const more = document.createElement("a");
@@ -1345,10 +1388,9 @@ function buildChildren(item, subIssues) {
     more.target = "_blank";
     more.rel = "noopener";
     more.textContent = `and ${missing} more on GitHub`;
-    foot.append(more);
+    box.append(more);
   }
 
-  if (foot.childElementCount > 0) box.append(foot);
   return box;
 }
 
