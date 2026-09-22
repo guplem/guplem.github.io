@@ -15,6 +15,7 @@
 import { DOCUMENT_PATH } from "./boardDocument.js";
 import { decodeBase64, encodeBase64 } from "./documentCodec.js";
 import { PERMISSIONS } from "./permissions.js";
+import { childIssueIds } from "./relationships.js";
 
 const API = "https://api.github.com";
 const TIMEOUT_MS = 15000;
@@ -123,6 +124,18 @@ export function fetchFinishedWork(token, since) {
  *
  * `name` and `avatarUrl` are asked for on both the requested reviewer and the
  * review's author so a card can draw a face for each of them (ADR 0028).
+ *
+ * `subIssues` names the children, and `closedAt` with `state` is what says
+ * whether a child is finished. Nothing else about a child is asked for here:
+ * the second pass below asks about the children themselves, with this same
+ * query, so a child is read exactly like any other card.
+ *
+ * **Five pull requests that would close an issue, not twenty.** GraphQL is
+ * charged by how much a query could return, and that one number decided most
+ * of the bill: a full batch of 100 items cost 42 points at twenty and costs 12
+ * at five, measured with `rateLimit(dryRun: true)`. Nothing reads past the
+ * merged one or the first open one (`columns.pullRequestState`), and the room
+ * that made is what pays for the second pass below (ADR 0025).
  */
 const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
   nodes(ids: $ids) {
@@ -132,7 +145,10 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       parent { id number title url repository { nameWithOwner } }
       blockedBy(first: 20) { nodes { id number title state url } }
       subIssuesSummary { total completed }
-      closedByPullRequestsReferences(first: 20, includeClosedPrs: true) {
+      subIssues(first: 10) {
+        nodes { id number title url state closedAt repository { nameWithOwner } }
+      }
+      closedByPullRequestsReferences(first: 5, includeClosedPrs: true) {
         nodes {
           id number title state url merged reviewDecision headRefName baseRefName
           repository { nameWithOwner }
@@ -162,24 +178,49 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
 /** How many ids GraphQL accepts in one `nodes` call. */
 export const RELATIONSHIP_BATCH = 100;
 
-export async function fetchRelationships(token, ids) {
-  const wanted = Array.isArray(ids) ? ids.filter((id) => typeof id === "string" && id !== "") : [];
-  if (wanted.length === 0) return { ok: true, data: [] };
-
+async function askAbout(token, ids) {
   const found = [];
-  for (let start = 0; start < wanted.length; start += RELATIONSHIP_BATCH) {
-    const batch = wanted.slice(start, start + RELATIONSHIP_BATCH);
+  for (let start = 0; start < ids.length; start += RELATIONSHIP_BATCH) {
+    const batch = ids.slice(start, start + RELATIONSHIP_BATCH);
     const answer = await call(token, "/graphql", {
       method: "POST",
       need: PERMISSIONS.issuesRead,
       body: { query: RELATIONSHIPS_QUERY, variables: { ids: batch } },
     });
-    if (!answer.ok) return answer;
+    if (!answer.ok) return { ok: false, answer, found };
     // GraphQL answers 200 with an `errors` array when part of a query fails.
     // A partial answer is still worth keeping: the board shows what it got.
     found.push(...(Array.isArray(answer.data?.data?.nodes) ? answer.data.data.nodes : []));
   }
-  return { ok: true, data: found };
+  return { ok: true, found };
+}
+
+export async function fetchRelationships(token, ids) {
+  const wanted = Array.isArray(ids) ? ids.filter((id) => typeof id === "string" && id !== "") : [];
+  if (wanted.length === 0) return { ok: true, data: [] };
+
+  const first = await askAbout(token, wanted);
+  if (!first.ok) return first.answer;
+
+  // A child is not on the board and its id is not known until the answer above
+  // arrives, so it takes a second pass. The same query, so a child is read
+  // exactly like any other card, and only when a card on the board has children
+  // at all (ADR 0010).
+  const asked = new Set(wanted);
+  // One batch, never more. A board of a hundred parents with ten children each
+  // would otherwise spend ten more calls on work that is only mentioned on a
+  // card. A child nobody asked about has no answer here, and `app.js` says
+  // nothing about its column rather than guessing one (ADR 0025).
+  const children = childIssueIds(first.found)
+    .filter((id) => !asked.has(id))
+    .slice(0, RELATIONSHIP_BATCH);
+  if (children.length === 0) return { ok: true, data: first.found };
+
+  // A failed second pass costs the children's columns and nothing else, so the
+  // board keeps the answer it already has rather than reporting an error over
+  // work that is only mentioned on a card.
+  const second = await askAbout(token, children);
+  return { ok: true, data: [...first.found, ...second.found] };
 }
 
 /**

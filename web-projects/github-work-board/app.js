@@ -37,7 +37,7 @@ import {
   THEMES,
   colourableAreas,
 } from "./appearance.js";
-import { AUTOMATIC, COLUMNS, groupIntoColumns, moveOptions } from "./columns.js";
+import { AUTOMATIC, COLUMNS, columnFor, groupIntoColumns, moveOptions, stateLabel } from "./columns.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
   fetchAssignedIssues,
@@ -113,6 +113,7 @@ import {
   applyPullRequestState,
   groupByLinkedIssue,
   isBlocked,
+  knowsAbout,
   normalizeRelationships,
   openBlockers,
   readRelationship,
@@ -475,8 +476,11 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
 
   const relationship = readRelationship(state.links, item.key);
 
+  // "Sub-issue of", not "Part of": the card has to say what the relationship is
+  // as well as which issue it is with, because the reader meets this card in a
+  // column, away from its parent (ADR 0010).
   if (relationship.parent) {
-    card.append(buildLinkLine("Part of", [relationship.parent]));
+    card.append(buildLinkLine("Sub-issue of", [relationship.parent]));
   }
 
   const blockers = openBlockers(relationship);
@@ -484,17 +488,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     card.append(buildLinkLine("Blocked by", blockers));
   }
 
-  if (relationship.subIssues.total > 0) {
-    const progress = document.createElement("p");
-    progress.className = "issue-links";
-    const label = document.createElement("span");
-    label.className = "link-label";
-    label.textContent = "Children";
-    const value = document.createElement("span");
-    value.textContent = `${relationship.subIssues.completed} of ${relationship.subIssues.total} done`;
-    progress.append(label, value);
-    card.append(progress);
-  }
+  if (relationship.subIssues.total > 0) card.append(buildChildren(relationship.subIssues));
 
   // The box is not there until there is a note in it, or until the reader asks
   // for one from the menu. An empty box on every card is forty invitations to
@@ -1064,6 +1058,82 @@ function buildLinkLine(label, links) {
     line.append(anchor);
   }
   return line;
+}
+
+/**
+ * One child of an issue: the issue itself, and the column it is in.
+ *
+ * The column is the same answer the board would give the child if it were a
+ * card: the rule reads GitHub, and a column the reader chose by hand wins over
+ * the rule, so the parent's list can never disagree with the child's own card
+ * (ADR 0011).
+ */
+function buildChildRow(child) {
+  const row = document.createElement("li");
+  row.className = "child";
+
+  const link = document.createElement("a");
+  link.className = "issue-link child-title";
+  link.href = child.url;
+  link.target = "_blank";
+  link.rel = "noopener";
+  link.textContent = `#${child.number} ${child.title}`;
+  link.title = child.title;
+
+  row.append(link);
+
+  // Only a child the board actually asked GitHub about gets a state. It asks
+  // about one batch of children, so a board with a great many says nothing
+  // about the last of them rather than reading them all as "To do" (ADR 0010).
+  if (knowsAbout(state.links, child.key)) {
+    const where = columnFor(child, readRelationship(state.links, child.key), readColumn(state.board, child.key));
+    const badge = document.createElement("span");
+    badge.className = "badge badge-outline child-state";
+    badge.textContent = stateLabel(where);
+    row.append(badge);
+  }
+  return row;
+}
+
+/**
+ * The children of an issue, under the count of how many are done.
+ *
+ * The count alone said how much was left and nothing about what it was. The
+ * list is the answer to "what is my team actually doing", which is the question
+ * a parent issue exists to ask.
+ *
+ * GitHub is asked for the first few children only, so a parent with more says
+ * how many are not on the card.
+ */
+function buildChildren(subIssues) {
+  const box = document.createElement("div");
+  box.className = "issue-children";
+
+  const heading = document.createElement("p");
+  heading.className = "issue-links";
+  const label = document.createElement("span");
+  label.className = "link-label";
+  label.textContent = "Children";
+  const value = document.createElement("span");
+  value.textContent = `${subIssues.completed} of ${subIssues.total} done`;
+  heading.append(label, value);
+  box.append(heading);
+
+  if (subIssues.children.length > 0) {
+    const list = document.createElement("ul");
+    list.className = "children";
+    list.replaceChildren(...subIssues.children.map(buildChildRow));
+    box.append(list);
+  }
+
+  const missing = subIssues.total - subIssues.children.length;
+  if (missing > 0) {
+    const more = document.createElement("p");
+    more.className = "children-more";
+    more.textContent = `and ${missing} more on GitHub`;
+    box.append(more);
+  }
+  return box;
 }
 
 /** One card, with any pull request that closes it nested inside. */

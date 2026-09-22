@@ -39,6 +39,20 @@ export const COLUMNS = [
 
 export const COLUMN_IDS = COLUMNS.map((column) => column.id);
 
+/**
+ * What to call a column when the work is only mentioned on a card, rather than
+ * sitting in that column itself.
+ *
+ * One label changes. The board's last column holds what finished today,
+ * because that is all the board ever asks GitHub for (ADR 0017). A child
+ * listed on its parent's card was never filtered that way, so "Done today"
+ * would be a claim about a date nobody checked.
+ */
+export function stateLabel(columnId) {
+  if (columnId === "done") return "Done";
+  return COLUMNS.find((column) => column.id === columnId)?.label ?? "";
+}
+
 const KNOWN = new Set(COLUMN_IDS);
 
 /** A column the board knows, or `AUTOMATIC` for anything else. */
