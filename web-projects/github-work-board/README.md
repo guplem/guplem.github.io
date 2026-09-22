@@ -46,12 +46,15 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   reviewer asked for changes and is still waiting. Each card says which of the
   three it is, with a pill you can hover for what to do about it. A card with
   all three says all three.
-- **An issue lists its children, and says where each one is.** A card with
-  sub-issues shows them under "Children", each with the column it would sit in:
-  "Ongoing", "Awaiting review", "Done", painted with the colour you gave that
-  column. A column you chose by hand wins there too, so the list can never
-  disagree with the card itself. A sub-issue on the board says "Sub-issue of",
-  with the issue it belongs to.
+- **An issue draws its children as a row of pills.** A card with sub-issues
+  shows one small pill per child under "Children", each painted with the colour
+  of the column that child sits in, and the count of how many are closed beside
+  them. Hover a pill to see which issue it is and where it sits, or press it to
+  open it. One press below, the whole list unfolds, each child with its column:
+  "Ongoing", "Awaiting review", "Done". A column you chose by hand wins there
+  too, so neither the pills nor the list can disagree with the child's own
+  card. A sub-issue on the board says "Sub-issue of", with the issue it belongs
+  to.
 - **The children that want you come first.** The five nearest to needing a
   person are on the card: changes asked for, then approved, then out for
   review, then being written, then not started, with finished work last. "Show

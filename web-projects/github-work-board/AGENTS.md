@@ -47,7 +47,7 @@ It is the short procedure for all of the above.
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
 | `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
-| `children.js` | Yes | The order the children of an issue read in, and how many a card shows (ADR 0032) |
+| `children.js` | Yes | The order the children of an issue read in, the count of closed ones beside their pills, and the words on the press that opens the list (ADR 0032) |
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
 | `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, and filling one in (ADR 0031) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
@@ -510,7 +510,7 @@ before calling it done.
 | [0029](adr/0029-a-button-that-asks-now-and-says-when-it-last-did.md) | A button that asks now, and says when it last did |
 | [0030](adr/0030-the-tab-carries-the-number-and-the-reader-decides-what-it-counts.md) | The tab carries the number, and the reader decides what it counts |
 | [0031](adr/0031-a-line-you-copy-from-a-card-is-written-by-the-reader.md) | A line you copy from a card is written by the reader |
-| [0032](adr/0032-the-children-read-by-what-wants-a-person.md) | The children read by what wants a person, and the rest fold away |
+| [0032](adr/0032-the-children-read-by-what-wants-a-person.md) | The children are a row of pills, and the list is one press away |
 | [0033](adr/0033-the-board-draws-its-own-tooltip.md) | The board draws its own tooltip |
 
 ## What is not built yet
