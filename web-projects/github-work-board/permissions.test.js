@@ -9,6 +9,14 @@ import {
 } from "./permissions.js";
 
 describe("REQUIRED_PERMISSIONS", () => {
+  // The board file moved to the shared cloud storage (root ADR 0016), which
+  // asks for Contents on its own token. A token that only reads work no
+  // longer needs it.
+  test("asks for what reading work needs, and not for Contents", () => {
+    expect(REQUIRED_PERMISSIONS.map((one) => one.id)).toEqual(["metadata", "issues", "pull-requests"]);
+    expect(CONNECTION_CHECKS.map((one) => one.id)).toEqual(["identity", "issues"]);
+  });
+
   test("every entry carries what the setup guide has to show", () => {
     expect(REQUIRED_PERMISSIONS.length).toBeGreaterThan(0);
     for (const permission of REQUIRED_PERMISSIONS) {
@@ -66,6 +74,13 @@ describe("tokenNeedsUpdate", () => {
 
   test("says yes when the list has moved on", () => {
     expect(tokenNeedsUpdate("metadata:read-only")).toBe(true);
+  });
+
+  // The list shrank once, when Contents moved to cloud storage. A token that
+  // carries more than the list asks for is not out of date: there is nothing
+  // to add, so there is nothing to ask the reader to do.
+  test("says no when the token carries more than the list asks for", () => {
+    expect(tokenNeedsUpdate(`${permissionsFingerprint()}|contents:read and write`)).toBe(false);
   });
 
   // A reader who has never connected is in the setup guide already. Telling

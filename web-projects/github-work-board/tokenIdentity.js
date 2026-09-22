@@ -44,9 +44,8 @@ export function suggestedTokenName(entry, index = 0) {
  * Finding nothing is a fact, not a fault. The token holding the notes
  * repository usually has no work assigned in it at all.
  */
-export function describeTokenReach({ token, itemCount = 0, canWriteBoard = false } = {}) {
+export function describeTokenReach({ token, itemCount = 0 } = {}) {
   const count = Number.isFinite(itemCount) ? itemCount : 0;
   const found = count === 0 ? "no work found" : `${count} ${count === 1 ? "item" : "items"}`;
-  const does = canWriteBoard ? "reads your work and saves your board" : "reads your work";
-  return [maskToken(token), found, does].filter((part) => part !== "").join(" · ");
+  return [maskToken(token), found, "reads your work"].filter((part) => part !== "").join(" · ");
 }

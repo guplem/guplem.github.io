@@ -38,21 +38,17 @@ describe("suggestedTokenName", () => {
 
 describe("describeTokenReach", () => {
   test("says what it found and what it does", () => {
-    expect(describeTokenReach({ token: "github_pat_aohu", itemCount: 18, canWriteBoard: true })).toBe(
-      `${MASK}aohu · 18 items · reads your work and saves your board`,
-    );
+    expect(describeTokenReach({ token: "github_pat_aohu", itemCount: 18 })).toBe(`${MASK}aohu · 18 items · reads your work`);
   });
 
   test("counts one item in the singular", () => {
     expect(describeTokenReach({ token: "xxxxaohu", itemCount: 1 })).toContain("1 item ·");
   });
 
-  // An empty token is not broken. It may simply be the one that holds the notes
-  // repository, so the sentence has to read as a fact and not as a fault.
+  // An empty token is not broken. An organisation's token before its owner
+  // approves it finds nothing, so the sentence reads as a fact, not a fault.
   test("says plainly when it found nothing", () => {
-    const sentence = describeTokenReach({ token: "xxxxaohu", itemCount: 0, canWriteBoard: true });
-    expect(sentence).toContain("no work found");
-    expect(sentence).toContain("saves your board");
+    expect(describeTokenReach({ token: "xxxxaohu", itemCount: 0 })).toContain("no work found");
   });
 
   test("never throws, whatever it is handed", () => {

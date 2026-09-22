@@ -4,7 +4,9 @@
 // Two rules hold here and `invariants.test.js` guards both:
 //   - Nothing reaches the screen through `innerHTML` except the deploy line,
 //     which carries its own escaper. Titles come from other people.
-//   - Storage is only ever touched through `settings.js`.
+//   - Storage is only ever touched through `settings.js`. The board file goes
+//     through the shared cloud storage's store, which owns the local mirror,
+//     the save schedule and the question when two copies meet (root ADR 0016).
 //
 // The board reads from every saved token and merges the answers, because a
 // fine-grained token belongs to one owner and most people's work is spread
@@ -12,8 +14,8 @@
 
 import {
   DOCUMENT_PATH,
-  emptyDocument,
-  parseDocument,
+  PROJECT,
+  RECORD_MAPS,
   readColumn,
   readColumnColour,
   readCopyActions,
@@ -44,10 +46,7 @@ import {
   fetchFinishedWork,
   fetchRelationships,
   fetchReviewRequests,
-  fetchBoardFile,
-  fetchRepository,
   fetchViewer,
-  saveBoardFile,
 } from "./gateway.js";
 import {
   DEFAULT_KIND,
@@ -64,7 +63,6 @@ import {
 import { describeFailure } from "./githubErrors.js";
 import {
   describeLastRefresh,
-  describeNotesSync,
   escapeHtml,
   noteMenuLabel,
   priorityMenuLabel,
@@ -81,23 +79,28 @@ import {
 } from "./permissions.js";
 import { DEFAULT_REFRESH, OFF, REFRESH_CHOICES, refreshDue } from "./refresh.js";
 import {
-  DEFAULT_DATA_REPO_NAME,
   addToken,
-  boardWritingToken,
   browserStorage,
   forgetAllTokens,
   readAutoRefresh,
-  readDataRepo,
   readLastCounts,
   readTokens,
   removeToken,
   renameToken,
   saveAutoRefresh,
-  saveDataRepo,
   saveLastCounts,
   saveTokens,
   updateToken,
 } from "./settings.js";
+import { adoptLegacyStorage } from "./legacyStorage.js";
+import { openStore } from "../cloud-storage/cloudStore.js";
+import { askCopyQuestion, mountCloudSettings } from "../cloud-storage/cloudSettingsPanel.js";
+import {
+  DEFAULT_REPO_NAME as CLOUD_REPO_NAME,
+  readToken as readCloudToken,
+  saveRepo as saveCloudRepo,
+  saveToken as saveCloudToken,
+} from "../cloud-storage/cloudSettings.js";
 import { skeletonCount } from "./skeletons.js";
 import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
 import { cardMenuRows } from "./cardMenu.js";
@@ -109,7 +112,6 @@ import { initialsOf, personLabel } from "./people.js";
 import { LOW, NORMAL, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
 import { countBoard, describeBreakdown, describeExcluded, tabTitle } from "./counting.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
-import { planSave, planText } from "./sync.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
 import {
   applyPullRequestState,
@@ -132,7 +134,6 @@ import {
   withoutItems,
 } from "./workItems.js";
 
-const SAVE_DELAY_MS = 1200;
 
 /**
  * How often the board checks whether a refresh is due.
@@ -159,14 +160,21 @@ const storage = browserStorage();
 const element = (id) => document.getElementById(id);
 const newId = () => (globalThis.crypto?.randomUUID ? crypto.randomUUID() : `t${Date.now()}${Math.random()}`);
 
+/**
+ * The board's half of the data, opened in `start()`. It hands the document
+ * over, keeps the local mirror, and saves to cloud storage a second after the
+ * last change (root ADR 0016). `state.board` is always its current document.
+ */
+let store = null;
+
+/** The cloud storage panel inside Settings, mounted in `start()`. */
+let cloudPanel = null;
+
 /** Everything the page holds between events. The board document is the only part written back. */
 const state = {
   tokens: [],
   login: null,
-  repoName: DEFAULT_DATA_REPO_NAME,
-  board: emptyDocument(new Date().toISOString()),
-  remoteSha: null,
-  saveTimer: null,
+  board: null,
   items: [],
   reviews: [],
   links: {},
@@ -198,7 +206,6 @@ const state = {
   refreshId: DEFAULT_REFRESH,
   refreshTimer: null,
   lastReadAt: null,
-  savePending: false,
   view: DEFAULT_VIEW,
   kind: DEFAULT_KIND,
   repositories: [],
@@ -601,7 +608,6 @@ function renderLoading() {
     ...times(skeletonCount(last.tokens ?? state.tokens.length, 1), buildSkeletonTokenRow),
   );
   state.checks = {};
-  renderNotesSync();
 }
 
 /**
@@ -840,6 +846,32 @@ function buildTokenRow(entry, index) {
     if (state.tokens.length === 0) return signOut();
     connectAll();
   });
+
+  // A token the board already holds is usually the one that should write the
+  // board file too. One press hands it to cloud storage, with the default
+  // repository name, instead of asking the reader to paste it twice.
+  if (!readCloudToken(storage)) {
+    const use = document.createElement("button");
+    use.type = "button";
+    use.className = "button button-ghost";
+    use.textContent = "Use for cloud storage";
+    explain(use, `Save your half of the board with this token, in a private repository named ${CLOUD_REPO_NAME} on its account.`);
+    use.addEventListener("click", async () => {
+      use.disabled = true;
+      const viewer = await fetchViewer(entry.token);
+      const login = viewer.ok ? String(viewer.data?.login ?? "") : "";
+      if (login === "") {
+        use.disabled = false;
+        return showNotice("settings-notice", describeFailure(viewer));
+      }
+      saveCloudToken(storage, { token: entry.token, name: entry.name, login, grantedPermissions: null });
+      saveCloudRepo(storage, { owner: login, repo: CLOUD_REPO_NAME });
+      cloudPanel?.refresh();
+      store.reconnect();
+      renderTokenList();
+    });
+    actions.append(use);
+  }
 
   actions.append(copy, drop);
   row.append(reach, actions);
@@ -1696,24 +1728,9 @@ function renderAppearance() {
   );
 }
 
-/** Whether the notes are reaching GitHub, beside the repository they go to. */
-function renderNotesSync() {
-  const rows = Object.values(state.checks).flat();
-  const sync = describeNotesSync(rows, { asked: !state.loading && state.tokens.length > 0 });
-  const badge = element("notes-sync");
-  badge.className = `badge ${{ ok: "badge-success", broken: "badge-destructive", checking: "badge-outline" }[sync.state]}`;
-  badge.textContent = sync.label;
-  element("notes-sync-detail").textContent = sync.detail;
-}
-
 function renderTokenList() {
   renderAppearance();
   element("tokens").replaceChildren(...state.tokens.map((entry, index) => buildTokenRow(entry, index)));
-  element("settings-repo-name").value = state.repoName;
-  renderNotesSync();
-  const owner = state.login ?? "";
-  element("open-notes-repo").href =
-    owner === "" ? "https://github.com/new" : `https://github.com/${owner}/${state.repoName}`;
 }
 
 /**
@@ -1724,6 +1741,9 @@ function renderTokenList() {
  * first connection the welcome screen is the only screen there is.
  */
 function showView(view) {
+  // Settings carries the cloud storage panel, and the local mirror and the
+  // cloud copy can both have changed since it was drawn (root ADR 0016).
+  if (view === "settings") cloudPanel?.refresh();
   const connected = state.tokens.length > 0;
   state.view = connected ? view : DEFAULT_VIEW;
 
@@ -1785,8 +1805,8 @@ function showNotice(where, text) {
  */
 async function inspectToken(entry) {
   const rows = [];
-  const [identity, work, board] = CONNECTION_CHECKS;
-  let updated = { ...entry, owners: [], itemCount: 0, canWriteBoard: false };
+  const [identity, work] = CONNECTION_CHECKS;
+  let updated = { ...entry, owners: [], itemCount: 0 };
   let links = {};
 
   const viewer = await fetchViewer(entry.token);
@@ -1849,40 +1869,6 @@ async function inspectToken(entry) {
         : `${counted.issues} issues and ${counted.pullRequests} pull requests, in ${owners.join(", ")}.`,
   });
 
-  // Only one token can reach the board repository, and it is the one whose
-  // owner holds it. A token that cannot is not broken; it just is not that one.
-  const repository = await fetchRepository(entry.token, { owner: login, repo: state.repoName });
-  if (repository.ok) {
-    if (repository.data?.private === false) {
-      rows.push({
-        id: board.id,
-        label: board.label,
-        ok: false,
-        detail: `${login}/${state.repoName} is public. Your notes would be readable by anyone. Make it private first.`,
-      });
-    } else {
-      const file = await fetchBoardFile(entry.token, { owner: login, repo: state.repoName });
-      if (file.ok) {
-        updated = { ...updated, canWriteBoard: true, grantedPermissions: permissionsFingerprint() };
-        state.remoteSha = file.data.sha;
-        state.board = file.data.missing
-          ? emptyDocument(new Date().toISOString())
-          : parseDocument(file.data.text, new Date().toISOString());
-        saveDataRepo(storage, { owner: login, repo: state.repoName });
-        rows.push({
-          id: board.id,
-          label: board.label,
-          ok: true,
-          detail: file.data.missing
-            ? `${login}/${state.repoName} is ready. ${DOCUMENT_PATH} is written on your first note.`
-            : `Read ${DOCUMENT_PATH} from ${login}/${state.repoName}.`,
-        });
-      } else {
-        rows.push({ id: board.id, label: board.label, ok: false, detail: describeFailure({ ...file, need: board.need }) });
-      }
-    }
-  }
-
   if (updated.grantedPermissions === null) updated = { ...updated, grantedPermissions: permissionsFingerprint() };
   return { entry: updated, raw: [...raw, ...finishedRaw], rows, links, reviews };
 }
@@ -1944,8 +1930,9 @@ async function connectAll({ quiet = false } = {}) {
     tokens: state.tokens.length,
   });
   // Only when something is wrong. A board that saves itself is the ordinary
-  // case, and a line that says so on every read is a line nobody reads.
-  setStatus(boardWritingToken(state.tokens) ? "" : "No token can write your board file.");
+  // case, and a line that says so on every read is a line nobody reads. The
+  // store says so itself when a save does not get through.
+  setStatus("");
   // Here rather than only at start-up: a token connected after a sign-out has
   // to start the schedule again, and there was none to start before.
   applyAutoRefresh();
@@ -1964,7 +1951,7 @@ async function connectAll({ quiet = false } = {}) {
  * of it would replace the document that save is working from (ADR 0002).
  */
 function boardIsBusy() {
-  if (state.loading || state.savePending) return true;
+  if (state.loading || store?.busy) return true;
   if (element("card-menu")?.matches(":popover-open")) return true;
   const focused = document.activeElement;
   return focused instanceof HTMLTextAreaElement || focused instanceof HTMLInputElement;
@@ -2004,57 +1991,13 @@ function applyAutoRefresh() {
 /* Saving                                                                     */
 /* -------------------------------------------------------------------------- */
 
-function scheduleSave() {
-  setStatus("Saving...");
-  clearTimeout(state.saveTimer);
-  // From here until the write settles, an auto refresh would replace the
-  // document this save is about to merge from (ADR 0002).
-  state.savePending = true;
-  state.saveTimer = setTimeout(() => {
-    // The timer has fired, so nothing is waiting any more. A change made while
-    // this save is in flight arms a new one, and the line below then leaves
-    // `savePending` alone: the reader has work that has not reached GitHub yet,
-    // and a refresh would replace the document that holds it.
-    state.saveTimer = null;
-    save()
-      .catch(() => setStatus("The save did not finish. It will try again on your next change."))
-      .finally(() => {
-        if (state.saveTimer === null) state.savePending = false;
-      });
-  }, SAVE_DELAY_MS);
-}
-
 /**
- * Save the notes, re-reading first so another device's work is merged rather
- * than overwritten. A 409 means someone saved between the read and the write,
- * so the whole thing runs once more against the newer file (ADR 0002).
+ * Hand the document to the store. It writes the local mirror at once and the
+ * cloud copy a second after the last change, re-reading first so another
+ * device's work is merged rather than overwritten (root ADR 0016, ADR 0002).
  */
-async function save(attempt = 0) {
-  const writer = boardWritingToken(state.tokens);
-  const repo = readDataRepo(storage);
-  if (!writer || !repo) return setStatus("No token can write your board file.");
-
-  const fresh = await fetchBoardFile(writer.token, repo);
-  if (!fresh.ok) return setStatus(describeFailure(fresh));
-  const now = new Date().toISOString();
-  const remote = fresh.data.missing ? null : parseDocument(fresh.data.text, now);
-
-  const plan = planSave({ local: state.board, remote, remoteSha: fresh.data.sha, now });
-  state.board = plan.document;
-  if (plan.action === "skip") return setStatus("Saved.");
-
-  const written = await saveBoardFile(writer.token, {
-    ...repo,
-    text: planText(plan),
-    sha: plan.sha,
-    message: `Update board notes (${now})`,
-  });
-  if (written.ok) {
-    state.remoteSha = written.data?.content?.sha ?? null;
-    return setStatus("Saved.");
-  }
-  if (written.status === 409 && attempt === 0) return save(attempt + 1);
-  setStatus(describeFailure(written));
+function scheduleSave() {
+  store.write(state.board);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2063,9 +2006,6 @@ async function save(attempt = 0) {
 
 function signOut() {
   forgetAllTokens(storage);
-  clearTimeout(state.saveTimer);
-  state.saveTimer = null;
-  state.savePending = false;
   // Back to what a fresh browser gets. Nothing starts, because `applyAutoRefresh`
   // runs no timer without a token.
   state.refreshId = DEFAULT_REFRESH;
@@ -2078,7 +2018,6 @@ function signOut() {
   state.reviews = [];
   state.links = {};
   state.login = null;
-  state.board = emptyDocument(new Date().toISOString());
   element("token").value = "";
   paintTheme();
   showView(DEFAULT_VIEW);
@@ -2183,20 +2122,6 @@ function start() {
   // looked at again rather than up to a whole interval later.
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") tickRefresh();
-  });
-
-  const saved = readDataRepo(storage);
-  const repoField = element("repo-name");
-  repoField.value = saved?.repo ?? DEFAULT_DATA_REPO_NAME;
-  state.repoName = repoField.value;
-  const createLink = () => {
-    element("create-repo-link").href =
-      `https://github.com/new?name=${encodeURIComponent(state.repoName)}&visibility=private`;
-  };
-  createLink();
-  repoField.addEventListener("input", () => {
-    state.repoName = repoField.value.trim() || DEFAULT_DATA_REPO_NAME;
-    createLink();
   });
 
   element("connect").addEventListener("click", () => connectPastedToken(element("token")));
@@ -2391,18 +2316,40 @@ function start() {
     move.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) placeMenu(submenu, move, { beside: true });
   });
-  const repoLink = () => {
-    const owner = state.login ?? "";
-    const link = element("open-notes-repo");
-    link.href = owner === "" ? "https://github.com/new" : `https://github.com/${owner}/${state.repoName}`;
-  };
-  repoLink();
-
-  element("save-repo-name").addEventListener("click", () => {
-    state.repoName = element("settings-repo-name").value.trim() || DEFAULT_DATA_REPO_NAME;
-    element("settings-repo-name").value = state.repoName;
-    repoLink();
-    connectAll();
+  // The board's half of the data. `adoptLegacyStorage` runs first so a reader
+  // who set the board up before cloud storage existed carries on with the
+  // same token and repository (root ADR 0016). The store reads `board.json`
+  // from the root of that repository once, when the new path is missing.
+  adoptLegacyStorage(storage);
+  store = openStore({
+    project: PROJECT,
+    file: DOCUMENT_PATH,
+    recordMaps: RECORD_MAPS,
+    legacyPath: DOCUMENT_PATH,
+    storage,
+    onChange: (document) => {
+      state.board = document;
+      paintTheme();
+      renderAppearance();
+      if (!state.loading) renderBoard();
+    },
+    onStatus: (sync) => {
+      // The panel in Settings carries the badge. The board itself speaks only
+      // when a save is not getting through (ADR 0019).
+      setStatus(sync.state === "broken" ? sync.detail : "");
+    },
+    onQuestion: askCopyQuestion,
+  });
+  state.board = store.document;
+  paintTheme();
+  cloudPanel = mountCloudSettings(element("cloud-settings"), {
+    mode: "full",
+    storage,
+    pageHref: "../cloud-storage/",
+    onConfigured: () => {
+      store.reconnect();
+      renderTokenList();
+    },
   });
 
   state.tokens = readTokens(storage);

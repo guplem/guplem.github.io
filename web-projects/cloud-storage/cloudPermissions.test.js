@@ -54,6 +54,10 @@ describe("tokenNeedsUpdate", () => {
     expect(tokenNeedsUpdate("metadata:read-only")).toBe(true);
   });
 
+  test("a token that carries more than the list asks for is not out of date", () => {
+    expect(tokenNeedsUpdate(`${permissionsFingerprint()}|issues:read-only`)).toBe(false);
+  });
+
   test("newPermissionsSince names what to add", () => {
     expect(newPermissionsSince("metadata:read-only").map((one) => one.id)).toEqual(["contents"]);
     expect(newPermissionsSince(permissionsFingerprint())).toEqual([]);

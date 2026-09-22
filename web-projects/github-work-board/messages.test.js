@@ -7,59 +7,9 @@ import {
   noteMenuLabel,
   priorityMenuLabel,
   say,
-  describeNotesSync,
   sayEmptyBoard,
   summariseChecks,
 } from "./messages.js";
-
-describe("describeNotesSync", () => {
-  const board = (ok, detail) => ({ id: "board", label: "Read and write the board file", ok, detail });
-  const other = (ok) => ({ id: "issues", label: "Read the issues", ok, detail: "whatever" });
-
-  // The notes are the half of this board that is the reader's own, and
-  // nothing else on the screen says whether they are reaching GitHub. The
-  // answer belongs beside the repository they go to (ADR 0019).
-  test("says it is saving, and where, when a token reached the file", () => {
-    const answer = describeNotesSync([other(true), board(true, "Read board.json from guplem/work-board-data.")]);
-    expect(answer.state).toBe("ok");
-    expect(answer.detail).toContain("guplem/work-board-data");
-  });
-
-  // The detail carries the sentence that names the missing permission, so
-  // the badge is the whole answer and not a prompt to go looking.
-  test("carries the reason when no token reached the file", () => {
-    const answer = describeNotesSync([board(false, "Add Contents: Read and write to this token.")]);
-    expect(answer.state).toBe("broken");
-    expect(answer.detail).toContain("Contents");
-  });
-
-  // One token writes the notes and the others cannot, which is the normal
-  // shape of a board with an organisation on it (ADR 0007). One success is
-  // the whole answer.
-  test("one token reaching the file is enough, whatever the others say", () => {
-    expect(describeNotesSync([board(false, "no"), board(true, "yes")]).state).toBe("ok");
-  });
-
-  test("says it is still asking when nothing has answered yet", () => {
-    expect(describeNotesSync([other(true)]).state).toBe("checking");
-    expect(describeNotesSync([]).state).toBe("checking");
-  });
-
-  // A token that cannot reach the repository says nothing about it, on
-  // purpose: an organisation's token is not broken for failing to hold
-  // somebody's private notes (ADR 0007). So silence from every token, once
-  // they have all answered, is the loudest answer there is.
-  test("no answer at all, once every token has answered, is not saving", () => {
-    const answer = describeNotesSync([other(true)], { asked: true });
-    expect(answer.state).toBe("broken");
-    expect(answer.detail).toContain("Contents");
-  });
-
-  test("never throws, whatever it is handed", () => {
-    expect(describeNotesSync(null).state).toBe("checking");
-    expect(typeof describeNotesSync([null, 7]).label).toBe("string");
-  });
-});
 
 describe("summariseChecks", () => {
   const ok = (label) => ({ label, ok: true, detail: "fine" });

@@ -1,20 +1,16 @@
 import { beforeEach, describe, expect, test } from "bun:test";
 import {
-  DEFAULT_DATA_REPO_NAME,
   LEGACY_KEYS,
   STORAGE_KEYS,
   addToken,
-  boardWritingToken,
   browserStorage,
   forgetAllTokens,
   readAutoRefresh,
-  readDataRepo,
   readLastCounts,
   readTokens,
   removeToken,
   renameToken,
   saveAutoRefresh,
-  saveDataRepo,
   saveLastCounts,
   saveTokens,
   updateToken,
@@ -50,7 +46,6 @@ const entry = (over = {}) => ({
   name: "",
   owners: [],
   itemCount: 0,
-  canWriteBoard: false,
   ...over,
 });
 
@@ -88,7 +83,6 @@ describe("the saved tokens", () => {
       name: "",
       owners: [],
       itemCount: 0,
-      canWriteBoard: false,
     });
   });
 
@@ -170,9 +164,9 @@ describe("removeToken and updateToken", () => {
 
   test("updateToken changes one entry and leaves the others untouched", () => {
     const list = [entry(), entry({ id: "t2", token: "b" })];
-    const after = updateToken(list, "t2", { owners: ["Galtea-AI"], canWriteBoard: true });
+    const after = updateToken(list, "t2", { owners: ["Galtea-AI"], itemCount: 4 });
     expect(after[1].owners).toEqual(["Galtea-AI"]);
-    expect(after[1].canWriteBoard).toBe(true);
+    expect(after[1].itemCount).toBe(4);
     expect(after[0].owners).toEqual([]);
     expect(list[1].owners).toEqual([]);
   });
@@ -197,44 +191,6 @@ describe("renameToken", () => {
   // which is what a reader who clears the box expects.
   test("an empty name is stored as empty, not refused", () => {
     expect(renameToken([entry({ name: "Work" })], "t1", "   ")[0].name).toBe("");
-  });
-});
-
-describe("boardWritingToken", () => {
-  // The notes file lives in one repository, so exactly one token can write it.
-  // Picking the wrong one means every save fails with a permission error.
-  test("is the first token that reached the notes repository", () => {
-    const list = [entry({ id: "a" }), entry({ id: "b", token: "b", canWriteBoard: true })];
-    expect(boardWritingToken(list).id).toBe("b");
-  });
-
-  test("is null when no token can write the notes file", () => {
-    expect(boardWritingToken([entry()])).toBeNull();
-    expect(boardWritingToken([])).toBeNull();
-    expect(boardWritingToken(null)).toBeNull();
-  });
-});
-
-describe("the data repository", () => {
-  test("round-trips owner and name", () => {
-    saveDataRepo(storage, { owner: "guplem", repo: "work-board-data" });
-    expect(readDataRepo(storage)).toEqual({ owner: "guplem", repo: "work-board-data" });
-  });
-
-  test("reads as null when what is stored is not a repository", () => {
-    for (const junk of ["{}", "null", "[]", "not json", '{"owner":"guplem"}', '{"owner":"","repo":"x"}']) {
-      storage.setItem(STORAGE_KEYS.dataRepo, junk);
-      expect(readDataRepo(storage)).toBeNull();
-    }
-  });
-
-  test("refuses to store an incomplete repository", () => {
-    saveDataRepo(storage, { owner: "guplem" });
-    expect(readDataRepo(storage)).toBeNull();
-  });
-
-  test("suggests a name when the reader has not chosen one", () => {
-    expect(DEFAULT_DATA_REPO_NAME).toBe("work-board-data");
   });
 });
 
@@ -318,5 +274,26 @@ describe("the auto refresh schedule", () => {
   test("a browser that refuses to store never breaks the page", () => {
     expect(() => saveAutoRefresh(refusingStorage, "30s")).not.toThrow();
     expect(readAutoRefresh(refusingStorage)).toBe("1m");
+  });
+});
+
+describe("the legacy data repository", () => {
+  const { readLegacyDataRepo } = require("./settings.js");
+
+  test("is read from the key the board wrote before cloud storage existed", () => {
+    storage.setItem(LEGACY_KEYS.dataRepo, JSON.stringify({ owner: "guplem", repo: "work-board-data" }));
+    expect(readLegacyDataRepo(storage)).toEqual({ owner: "guplem", repo: "work-board-data" });
+  });
+
+  test("reads as null when there is none or it is not a repository", () => {
+    expect(readLegacyDataRepo(storage)).toBeNull();
+    storage.setItem(LEGACY_KEYS.dataRepo, '{"owner":"guplem"}');
+    expect(readLegacyDataRepo(storage)).toBeNull();
+  });
+
+  test("forgetting every token forgets it too", () => {
+    storage.setItem(LEGACY_KEYS.dataRepo, JSON.stringify({ owner: "guplem", repo: "work-board-data" }));
+    forgetAllTokens(storage);
+    expect(readLegacyDataRepo(storage)).toBeNull();
   });
 });

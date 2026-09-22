@@ -9,7 +9,7 @@
 //
 // | Budget | Limit | What one refresh spends, per token |
 // |---|---|---|
-// | REST `core` | 5000 an hour | 5 calls: who you are, open work, work closed today, the board repository, the board file |
+// | REST `core` | 5000 an hour | 3 calls: who you are, open work, work closed today |
 // | REST `search` | 30 a **minute** | 1 call: the pull requests waiting for your review |
 // | GraphQL | 5000 points an hour | 1 or 2 calls: the links between items, then the children of any issue that has them |
 //

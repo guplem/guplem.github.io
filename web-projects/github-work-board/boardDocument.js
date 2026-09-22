@@ -1,6 +1,6 @@
 // The board document: everything this page knows that GitHub does not.
 //
-// It holds one file, `board.json`, in a private repository the reader owns:
+// It holds one file, `board.json`, in the reader's cloud storage (root ADR 0016):
 // the notes, the cards moved by hand, the work pushed down the list, the colour
 // on each column and whether the board is light or dark. Everything here is the reader's; nothing is GitHub's. Two rules keep it safe to
 // change, and ADR 0002 explains why both are worth the cost:
@@ -11,40 +11,36 @@
 //    must not wipe a map a newer build wrote, so `migrate` copies unknown maps
 //    through untouched.
 //
-// Every record, in every map, carries `updatedAt`. That is what `sync.js` uses
-// to merge two devices, so a record without it is dropped as unreadable.
+// Every record, in every map, carries `updatedAt`. That is what the shared
+// merge uses to put two devices together, so a record without it is dropped as
+// unreadable. The shape itself, the merge and the file are the shared cloud
+// storage's (`../cloud-storage/envelope.js`); this file knows only what each
+// record means to the board.
 
+import { defineDocument } from "../cloud-storage/envelope.js";
 import { defaultColour, knownColour, knownTheme } from "./appearance.js";
 import { knownPriority } from "./priority.js";
 import { defaultCounting } from "./counting.js";
 import { orderCopyActions } from "./copyActions.js";
 
-export const SCHEMA_VERSION = 1;
-
-/** The file this page keeps in the reader's data repository. */
+/** The project's folder in the cloud storage, and the file inside it. */
+export const PROJECT = "github-work-board";
 export const DOCUMENT_PATH = "board.json";
 
 /** The record maps this build knows about. Adding one here is the whole change. */
 export const RECORD_MAPS = ["notes", "columns", "colours", "appearance", "priorities", "counting", "copyActions"];
 
-const RESERVED = new Set(["schemaVersion", "updatedAt"]);
+const shape = defineDocument(RECORD_MAPS);
+
+export { SCHEMA_VERSION } from "../cloud-storage/envelope.js";
 
 function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-/** One stored record, or null when what is stored is not one. */
-function readRecord(value) {
-  if (!isPlainObject(value)) return null;
-  if (typeof value.updatedAt !== "string" || value.updatedAt === "") return null;
-  return { ...value };
-}
-
 /** A document with nothing in it yet. */
 export function emptyDocument(now) {
-  const document = { schemaVersion: SCHEMA_VERSION, updatedAt: now };
-  for (const name of RECORD_MAPS) document[name] = {};
-  return document;
+  return shape.empty(now);
 }
 
 /**
@@ -52,25 +48,7 @@ export function emptyDocument(now) {
  * throws is one the reader cannot recover from, and their notes are inside it.
  */
 export function migrate(value, now) {
-  const source = isPlainObject(value) ? value : {};
-  const document = {
-    schemaVersion: SCHEMA_VERSION,
-    updatedAt: typeof source.updatedAt === "string" ? source.updatedAt : now,
-  };
-  const names = new Set([
-    ...RECORD_MAPS,
-    ...Object.keys(source).filter((key) => !RESERVED.has(key) && isPlainObject(source[key])),
-  ]);
-  for (const name of names) {
-    const raw = isPlainObject(source[name]) ? source[name] : {};
-    const map = {};
-    for (const [key, record] of Object.entries(raw)) {
-      const clean = readRecord(record);
-      if (clean) map[key] = clean;
-    }
-    document[name] = map;
-  }
-  return document;
+  return shape.migrate(value, now);
 }
 
 /** The note filed against one issue, or an empty string when there is none. */
@@ -267,14 +245,10 @@ export function removeCopyAction(document, id, now) {
 
 /** The exact text stored in the repository. Two spaces and a final newline, so a human can read the diff. */
 export function serializeDocument(document) {
-  return `${JSON.stringify(document, null, 2)}\n`;
+  return shape.serialize(document);
 }
 
 /** The text back into a document. A file somebody broke by hand opens as an empty one. */
 export function parseDocument(text, now) {
-  try {
-    return migrate(JSON.parse(String(text)), now);
-  } catch {
-    return emptyDocument(now);
-  }
+  return shape.parse(text, now);
 }

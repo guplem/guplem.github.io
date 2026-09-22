@@ -14,7 +14,7 @@ describe("encodeTokenBackup", () => {
   // that shows last month's facts is worse than one that shows none.
   test("carries nothing the board discovered by itself", () => {
     const text = encodeTokenBackup([
-      { id: "a", token: "github_pat_one", name: "mine", owners: ["guplem"], itemCount: 19, canWriteBoard: true },
+      { id: "a", token: "github_pat_one", name: "mine", owners: ["guplem"], itemCount: 19 },
     ]);
     expect(text).not.toContain("guplem");
     expect(text).not.toContain("19");
