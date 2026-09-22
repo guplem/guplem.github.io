@@ -45,11 +45,12 @@ It is the short procedure for all of the above.
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
 | `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
+| `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
 | `priority.js` | Yes | The work the reader pushed down, and what sinks with it, on the board and in the review row (ADR 0026) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
-| `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
+| `filters.js` | Yes | Narrowing by kind, repository, label and person, and what to offer (ADR 0009, ADR 0028) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
@@ -66,8 +67,8 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
-Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → cards.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
+Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025).
 Data flow, saving: a keystroke, a card moved, a colour or the theme → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
 
@@ -112,6 +113,16 @@ Data flow, saving: a keystroke, a card moved, a colour or the theme → the matc
   once already, one pass at a time, and nothing failed either time: the badge
   said "1 of 3" on a card sitting last, and a marked card stayed where it was.
   Add anything to one side and add it to the other (ADR 0016, ADR 0026).
+- **"Who is reviewing this" is never `reviewRequests` alone.** GitHub drops a
+  reviewer from that list the moment they submit a review, so a pull request
+  held up by one `CHANGES_REQUESTED` review has an empty request list. Read
+  `reviewRequests` and `latestOpinionatedReviews` together, which is what
+  `people.reviewPeople` does (ADR 0028). The same trap already caught
+  `askedToLookAgain` once (ADR 0011).
+- **There are two person filters, and they narrow two different lists.**
+  `assignee=` narrows the review row by whose work each pull request is.
+  `reviewer=` narrows the board by who is in the review. A link can carry both.
+  Do not merge them: they answer different questions (ADR 0028).
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and
@@ -447,6 +458,7 @@ before calling it done.
 | [0025](adr/0025-the-board-asks-again-on-a-schedule-this-browser-keeps.md) | The board asks again on a schedule this browser keeps |
 | [0026](adr/0026-work-the-reader-pushed-down-sinks-and-takes-its-stack-with-it.md) | Work the reader pushed down sinks, and takes what waits on it |
 | [0027](adr/0027-a-stack-lights-up-and-its-number-says-what-it-is.md) | A stack lights up, and its number says which pull request it is |
+| [0028](adr/0028-a-card-shows-the-people-and-which-people-depends-on-the-list.md) | A card shows the people, and which people depends on the list |
 
 ## What is not built yet
 
@@ -455,4 +467,4 @@ private notes, sorting, the filters and the settings screen are built.
 Still to come, roughly in this order: dragging a card instead of choosing its
 column from a dropdown, custom tags, and a "what's next" queue, which the
 blocked marking and the columns now make answerable. Every new view state goes in the address bar
-beside `view`, `sort`, `kind`, `repo` and `label`, and the tokens never do.
+beside `view`, `sort`, `kind`, `repo`, `label`, `assignee` and `reviewer`, and the tokens never do.

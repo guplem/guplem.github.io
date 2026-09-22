@@ -1368,6 +1368,109 @@ textarea.input {
   box-shadow: 0 0 0 1px hsl(38 95% 62% / 0.4);
 }
 
+/**
+ * A row of faces on a card: who this work is about.
+ *
+ * The faces are buttons, because tapping one narrows the list to that person
+ * (ADR 0028). They answer the pointer and the keyboard like every other part
+ * here (ADR 0004).
+ */
+.issue-people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0.5rem 0 0;
+}
+
+.avatar {
+  position: relative;
+  width: 1.375rem;
+  height: 1.375rem;
+  padding: 0;
+  border: 1px solid hsl(var(--border));
+  border-radius: 50%;
+  background: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.avatar:hover {
+  border-color: hsl(var(--primary));
+  transform: translateY(-1px);
+}
+
+.avatar:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.avatar:active {
+  transform: translateY(0);
+}
+
+/* The list is narrowed to this person, so the face says so on every card. */
+.avatar[aria-pressed="true"] {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.35);
+}
+
+/* Under the picture, and all that is left when the picture does not arrive. */
+.avatar-initials {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.avatar-picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/**
+ * What the board is waiting on this person for, as a ring round their face.
+ *
+ * The same three answers the column rules use (ADR 0011): somebody who asked
+ * for changes blocks the reader, somebody asked has not answered, and an
+ * approval is done. Colour is never the only carrier: the face also says it in
+ * words on hover and to a screen reader.
+ */
+.avatar[data-review="changes-requested"] {
+  border-color: hsl(var(--destructive));
+}
+
+.avatar[data-review="asked"] {
+  border-color: hsl(38 92% 50%);
+}
+
+.avatar[data-review="approved"] {
+  border-color: hsl(142 71% 40%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .avatar[data-review="approved"] {
+    border-color: hsl(142 55% 55%);
+  }
+}
+
+:root[data-theme="dark"] .avatar[data-review="approved"] {
+  border-color: hsl(142 55% 55%);
+}
+
+/* The filter row above the review cards, which the board's own filters sit
+ * outside of. */
+.reviews-filters {
+  margin: 0 0 0.75rem;
+}
+
 /* The number names the bottom of the stack, and hovering it says which pull
  * request that is, so it reads as a thing you can ask about. */
 .stack-number {

@@ -287,3 +287,32 @@ describe("startOfToday", () => {
     expect(Date.parse(startOfToday(now))).toBeLessThanOrEqual(now.getTime());
   });
 });
+
+describe("who a work item belongs to", () => {
+  // The row of pull requests waiting on the reader shows whose work each one
+  // is, so the reader knows who to ask about it (ADR 0028). REST carries this
+  // on the item itself, so no second call is needed.
+  test("keeps every assignee, with a picture", () => {
+    const item = normalizeWorkItem({
+      node_id: "P_1",
+      assignees: [
+        { login: "ana", avatar_url: "https://avatars.githubusercontent.com/ana" },
+        { login: "leo", avatar_url: "" },
+      ],
+    });
+    expect(item.assignees).toEqual([
+      { login: "ana", name: "ana", avatarUrl: "https://avatars.githubusercontent.com/ana" },
+      { login: "leo", name: "leo", avatarUrl: "" },
+    ]);
+  });
+
+  test("nobody assigned is an empty list, never undefined", () => {
+    expect(normalizeWorkItem({ node_id: "P_1" }).assignees).toEqual([]);
+    expect(normalizeWorkItem({ node_id: "P_1", assignees: "ana" }).assignees).toEqual([]);
+  });
+
+  test("anything in the list that is not a person is dropped", () => {
+    const item = normalizeWorkItem({ node_id: "P_1", assignees: [{ login: "ana" }, {}, null, 7] });
+    expect(item.assignees.map((one) => one.login)).toEqual(["ana"]);
+  });
+});

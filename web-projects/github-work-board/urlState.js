@@ -22,6 +22,12 @@ const VIEW_PARAM = "view";
 const KIND_PARAM = "kind";
 const REPOSITORY_PARAM = "repo";
 const LABEL_PARAM = "label";
+// Two filters over two different lists, so two names. `assignee` narrows the
+// row of pull requests waiting on the reader, by whose work each one is.
+// `reviewer` narrows the reader's own board, by who is in the review
+// (ADR 0028). Both are permanent, because they travel in saved links.
+const ASSIGNEE_PARAM = "assignee";
+const REVIEWER_PARAM = "reviewer";
 
 /** The screens this page has. Named in links, so a name is never changed. */
 // A view name travels in the address bar, so it is permanent, exactly like
@@ -48,11 +54,13 @@ export function readStateFromSearch(search) {
     kind: readKind(params.get(KIND_PARAM)),
     repositories: readList(params, REPOSITORY_PARAM),
     labels: readList(params, LABEL_PARAM),
+    assignees: readList(params, ASSIGNEE_PARAM),
+    reviewers: readList(params, REVIEWER_PARAM),
   };
 }
 
 /** The search string for a view, or an empty string when nothing needs saying. */
-export function buildSearch({ sortId, view, kind, repositories, labels } = {}) {
+export function buildSearch({ sortId, view, kind, repositories, labels, assignees, reviewers } = {}) {
   const params = new URLSearchParams();
   const chosenView = readView(view);
   const chosenKind = readKind(kind);
@@ -66,6 +74,13 @@ export function buildSearch({ sortId, view, kind, repositories, labels } = {}) {
   }
   for (const name of Array.isArray(labels) ? labels : []) {
     if (typeof name === "string" && name !== "") params.append(LABEL_PARAM, name);
+  }
+
+  for (const login of Array.isArray(assignees) ? assignees : []) {
+    if (typeof login === "string" && login !== "") params.append(ASSIGNEE_PARAM, login);
+  }
+  for (const login of Array.isArray(reviewers) ? reviewers : []) {
+    if (typeof login === "string" && login !== "") params.append(REVIEWER_PARAM, login);
   }
 
   const search = params.toString();

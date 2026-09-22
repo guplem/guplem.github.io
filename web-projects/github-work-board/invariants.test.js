@@ -13,6 +13,7 @@ import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
 import { DEFAULT_REFRESH, OFF } from "./refresh.js";
 import { SORT_OPTIONS, reviewSortId } from "./sorting.js";
+import { buildSearch, readStateFromSearch } from "./urlState.js";
 import { COLUMN_IDS } from "./columns.js";
 import { KIND_FILTERS } from "./filters.js";
 import { normalizeWorkItem } from "./workItems.js";
@@ -406,6 +407,29 @@ describe("the review row is ordered by the same rules as a column (ADR 0016, ADR
   // from. Only the pass is new.
   test("the row still compares by how long something has waited", () => {
     expect(reviewSortId("smart")).toBe("updated-asc");
+  });
+});
+
+// Two filters over two different lists, sharing one address bar. A reader
+// seeing `?assignee=octocat&reviewer=octocat` must be able to learn from the
+// code, not from guesswork, that these narrow two different lists (ADR 0028).
+describe("the two person filters keep their names (ADR 0009, ADR 0028)", () => {
+  test("assignee narrows the review row, reviewer narrows the board", () => {
+    const search = buildSearch({ assignees: ["octocat"], reviewers: ["hubot"] });
+    expect(search).toContain("assignee=octocat");
+    expect(search).toContain("reviewer=hubot");
+    expect(readStateFromSearch(search).assignees).toEqual(["octocat"]);
+    expect(readStateFromSearch(search).reviewers).toEqual(["hubot"]);
+  });
+
+  // One parameter per person, never a comma-joined value (ADR 0009).
+  test("each person is their own parameter", () => {
+    expect(buildSearch({ reviewers: ["a", "b"] })).toBe("?reviewer=a&reviewer=b");
+  });
+
+  test("the two names are not each other, and not one of the older five", () => {
+    const names = ["view", "sort", "kind", "repo", "label", "assignee", "reviewer"];
+    expect(new Set(names).size).toBe(names.length);
   });
 });
 

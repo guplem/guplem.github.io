@@ -49,6 +49,17 @@ board shows one or the other, never both.
 
 ## Consequences
 
+**The review row has a filter of its own, and only one.** Every filter here was
+built for the board, and the row above it was never narrowed by anything: it is
+short, and it answers "what is waiting on me", which a filter can only spoil.
+That changed when the cards started showing people (ADR 0028). The row now has
+one filter, by the assignee of each pull request, and it is separate from the
+board's filters in every way: its own name in the link (`assignee=`, against the
+board's `reviewer=`), its own chips above the row, and no effect on the columns.
+The two rules above still hold inside it, because they are about one filter over
+one list: two people chosen widen the row, and the row is narrowed by nothing
+else.
+
 **A filtered board is shareable and survives a reload.** "Everything tagged
 `urgent` in this repository" is a link, which is the main thing `localStorage`
 could not have given.

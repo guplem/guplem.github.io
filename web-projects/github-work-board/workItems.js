@@ -15,6 +15,8 @@
 // note filed under the number would attach itself to something else. ADR 0002
 // holds that rule; `invariants.test.js` guards it.
 
+import { readPerson } from "./people.js";
+
 function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
@@ -61,6 +63,9 @@ export function normalizeWorkItem(raw) {
     createdAt: typeof raw.created_at === "string" ? raw.created_at : "",
     updatedAt: typeof raw.updated_at === "string" ? raw.updated_at : "",
     labels: Array.isArray(raw.labels) ? raw.labels.map(readLabel).filter(Boolean) : [],
+    // Whose work this is. A review card shows it, so the reader knows who to
+    // ask about the pull request they are being asked to read (ADR 0028).
+    assignees: Array.isArray(raw.assignees) ? raw.assignees.map(readPerson).filter(Boolean) : [],
   };
 }
 

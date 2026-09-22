@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import {
+  applyPullRequestState,
   askedToLookAgain,
   groupByLinkedIssue,
   isBlocked,
@@ -199,5 +200,47 @@ describe("groupByLinkedIssue", () => {
   test("survives being handed something that is not a list", () => {
     expect(groupByLinkedIssue(null, byId)).toEqual([]);
     expect(groupByLinkedIssue([issue], null)).toEqual([{ item: issue, children: [] }]);
+  });
+});
+
+describe("the people in a pull request's review (ADR 0028)", () => {
+  const graph = (over) => [
+    {
+      __typename: "PullRequest",
+      id: "PR_1",
+      number: 1,
+      state: "OPEN",
+      repository: { nameWithOwner: "me/repo" },
+      reviewRequests: { totalCount: 0, nodes: [] },
+      latestOpinionatedReviews: { nodes: [] },
+      closingIssuesReferences: { nodes: [] },
+      ...over,
+    },
+  ];
+
+  test("the reviewers reach the card, with their state", () => {
+    const links = normalizeRelationships(
+      graph({
+        reviewRequests: { totalCount: 1, nodes: [{ requestedReviewer: { login: "ana", avatarUrl: "a" } }] },
+        latestOpinionatedReviews: { nodes: [{ state: "CHANGES_REQUESTED", author: { login: "ivan", avatarUrl: "i" } }] },
+      }),
+    );
+    const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);
+    expect(item.reviewers.map((one) => [one.login, one.state])).toEqual([
+      ["ivan", "changes-requested"],
+      ["ana", "asked"],
+    ]);
+  });
+
+  test("nobody in the review is an empty list, never undefined", () => {
+    const links = normalizeRelationships(graph());
+    const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);
+    expect(item.reviewers).toEqual([]);
+  });
+
+  // An issue has no review, and the board must not invent one for it.
+  test("an issue is left alone", () => {
+    const [item] = applyPullRequestState([{ key: "I_1", kind: "issue" }], {});
+    expect(item.reviewers).toBe(undefined);
   });
 });
