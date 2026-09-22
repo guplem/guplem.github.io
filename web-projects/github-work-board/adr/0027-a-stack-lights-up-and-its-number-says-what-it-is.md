@@ -20,9 +20,15 @@ requests", which the badge already says in writing.
 ## Decision
 
 **Point at a card in a stack, and every card of that stack lights up.** The
-outline turns the stack's own amber, the same colour the badge uses, so the
-light and the badge say the same thing in the same colour. Only the outline
-changes: the card keeps its background, so a lit card in a coloured column
+card takes the stack's own amber, the same colour the badge uses, so the light
+and the badge say the same thing in the same colour.
+
+**An outline, and a wash of the same amber.** The outline alone shipped first
+and was too quiet to find at a glance, which is the whole job: the reader is
+looking for the other cards, not at the one under the pointer. The wash is a
+layer over the card's own background and never a background of its own
+(`background-image` paints on top of `background-color`), so the card keeps its
+ground. A lit card still reads as a card, and one in a coloured column
 (ADR 0024) still reads as being in that column.
 
 **The keyboard does it too.** A card is reachable by tab, and a reader who never

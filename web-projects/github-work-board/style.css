@@ -1357,24 +1357,31 @@ textarea.input {
  * Every card in one stack, while the reader is on any of them.
  *
  * The stack's own amber, so the light and the badge that names the stack say
- * the same thing in the same colour (ADR 0027). The outline only: the card
- * keeps its ground, so a lit card in a coloured column still reads as being in
- * that column.
+ * the same thing in the same colour (ADR 0027). An outline alone was too quiet
+ * to find at a glance, so the card is washed with the same amber as well.
+ *
+ * **The wash is a layer over the card's own background, not a background of its
+ * own.** `background-image` paints on top of `background-color`, so the card
+ * keeps its ground: a lit card still reads as a card, and one in a coloured
+ * column still reads as being in that column (ADR 0024).
  */
 .issue.stack-lit {
-  border-color: hsl(38 92% 50% / 0.75);
+  background-image: linear-gradient(hsl(38 92% 50% / 0.12), hsl(38 92% 50% / 0.12));
+  border-color: hsl(38 92% 45% / 0.85);
   box-shadow: 0 0 0 1px hsl(38 92% 50% / 0.45);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .issue.stack-lit {
-    border-color: hsl(38 95% 62% / 0.75);
+    background-image: linear-gradient(hsl(38 95% 62% / 0.14), hsl(38 95% 62% / 0.14));
+    border-color: hsl(38 95% 62% / 0.8);
     box-shadow: 0 0 0 1px hsl(38 95% 62% / 0.4);
   }
 }
 
 :root[data-theme="dark"] .issue.stack-lit {
-  border-color: hsl(38 95% 62% / 0.75);
+  background-image: linear-gradient(hsl(38 95% 62% / 0.14), hsl(38 95% 62% / 0.14));
+  border-color: hsl(38 95% 62% / 0.8);
   box-shadow: 0 0 0 1px hsl(38 95% 62% / 0.4);
 }
 
