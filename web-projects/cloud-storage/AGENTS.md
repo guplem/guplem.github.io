@@ -21,7 +21,7 @@ The shared module every web-project uses to keep data in one private GitHub repo
 | `exportBundle.js` | The export file: `encodeBundle`, `readBundle` (every document through `migrate`), `bundleFileName` |
 | `cloudGateway.js` | The only file that calls `fetch`: `fetchViewer`, `fetchRepository`, `fetchFolder`, `fetchFile`, `saveFile`. Uniform `{ok, data}` / `{ok: false, status, message, need}`, never throws |
 | `cloudStore.js` | Glue a project opens: `openStore({project, file, recordMaps, legacyPath, onChange, onStatus, onQuestion})` → `{document, write, saveNow, reconnect, configured, busy}`. Also `cloudConfiguration` and `runConnectionChecks` |
-| `cloudSettingsPanel.js` + `.css` | The settings component: `mountCloudSettings(host, {mode: "full" \| "compact", pageHref, onConfigured})` and `askCopyQuestion(question)`, the dialog a store's `onQuestion` shows. Styled through `--cs-*` custom properties |
+| `cloudSettingsPanel.js` + `.css` | The settings component: `mountCloudSettings(host, {mode: "full" \| "compact", heading, pageHref, onConfigured})` (`heading: null` when the host names the section itself) and `askCopyQuestion(question)`, the dialog a store's `onQuestion` shows. Styled through `--cs-*` custom properties |
 | `index.html`, `app.js`, `style.css` | The Cloud storage page, linked from the Playground footer. Reuses the site's global CSS like the index does |
 | `deployStamp.js` | The "deployed at" line, copied from the board (root ADR 0013) |
 | `invariants.test.js` | The promises above, as tests |

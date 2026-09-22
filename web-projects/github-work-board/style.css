@@ -869,7 +869,21 @@ textarea.input {
 }
 
 /* Settings holds several blocks in one card, so each needs air above it. */
-#settings-view .subheading:first-of-type {
+.settings-title {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* The first field in a card sits right under the header's lead. */
+#settings-view .card-content > .field:first-child {
   margin-top: 0;
 }
 
@@ -2237,7 +2251,8 @@ textarea.input {
   margin-top: 0.75rem;
 }
 
-#cloud-settings .cs-heading h3 {
-  font-size: 1rem;
-  margin: 0;
+/* The card header already names the section, so the panel draws no title of
+ * its own here: only the badge and its one-line detail. */
+#cloud-settings {
+  margin-top: 0;
 }

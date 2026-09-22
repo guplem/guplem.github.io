@@ -101,3 +101,5 @@ something read often and skipped sometimes; this is read twice and then never.
 > **Note (2026-09):** the "Board repository" heading and its link out are
 > gone from Settings. The shared cloud storage panel shows the data
 > repository instead, with its own "Open on GitHub" link (root ADR 0016).
+
+> **Note (2026-09):** Settings is now a stack of cards, one per subject, in this order: the tokens that read your work, cloud storage (where your half of the board is saved, with the one storage token), how the board looks, what the tab name counts, and the lines you copy from a card. Two kinds of token share the page, so each lives in its own card with a lead that says what it does, and the storage token is called that everywhere (root ADR 0016).

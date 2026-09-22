@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="212" />
-  <meta name="deploy-date" content="2026-09-22T14:28:17.000Z" />
+  <meta name="deploy-pull-request" content="213" />
+  <meta name="deploy-date" content="2026-09-22T14:50:03.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -306,17 +306,23 @@
         <div id="board-columns" class="columns"></div>
       </section>
 
+      <!-- Settings is a stack of cards, one per subject, so the two kinds of
+           token cannot be confused: the tokens that read work live in one
+           card, and the one token that saves the board lives in the cloud
+           storage card (ADR 0018, root ADR 0016). -->
       <section id="settings-view" aria-labelledby="settings-heading" hidden>
+        <h2 id="settings-heading" class="settings-title">Settings</h2>
+
         <div class="card">
           <div class="card-header">
-            <h2 id="settings-heading">Settings</h2>
-          </div>
-
-          <div class="card-content">
-            <h3 class="subheading">Tokens in use</h3>
-            <p class="field-help">
-              Each token reaches one owner. What it reached the last time the board asked is shown beside it.
+            <h3 class="card-title">Tokens that read your work</h3>
+            <p class="lead">
+              These tokens fetch your issues and pull requests. Each one reaches one owner, your account or one
+              organisation, and what it reached the last time the board asked is shown beside it. They save
+              nothing: saving is the next card's job.
             </p>
+          </div>
+          <div class="card-content">
             <ul id="tokens" class="tokens"></ul>
             <p id="settings-notice" class="status" role="status" aria-live="polite"></p>
             <p class="step-action">
@@ -328,12 +334,31 @@
               manager. To set this board up in another browser, on another computer, or in another Chrome profile,
               press <strong>Add token</strong> there and paste that text instead of a token.
             </p>
+          </div>
+        </div>
 
-            <h3 class="subheading">How it looks</h3>
-            <p class="field-help">
-              Saved beside your notes, so the board looks the same on every machine you open it on.
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Cloud storage: where your half of the board is saved</h3>
+            <p class="lead">
+              Your notes, the cards you moved by hand, and how the board looks are saved in this browser, and in
+              your own private repository once cloud storage is set up. One storage token does the saving, and the
+              same cloud storage serves every project on this site.
             </p>
+          </div>
+          <div class="card-content">
+            <!-- The shared settings component, full mode (root ADR 0016). It carries
+                 the badge that says whether saves get through (ADR 0019). -->
+            <div id="cloud-settings"></div>
+          </div>
+        </div>
 
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">How the board looks</h3>
+            <p class="lead">Saved beside your notes, so the board looks the same on every machine you open it on.</p>
+          </div>
+          <div class="card-content">
             <div class="field">
               <p class="field-label" id="theme-label">Theme</p>
               <div class="chips" id="theme-choices" role="group" aria-labelledby="theme-label"></div>
@@ -344,27 +369,37 @@
               <!-- One row per thing that can be painted, from appearance.js. -->
               <ul id="colour-areas" class="colour-areas"></ul>
             </div>
+          </div>
+        </div>
 
-            <h3 class="subheading">What the tab name counts</h3>
-            <p class="field-help">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">What the tab name counts</h3>
+            <p class="lead">
               The browser tab is named "Work Board", with the number of things waiting on you in
               brackets. Choose which parts of the board add up to it, and whether each part counts
               the work you marked "not a priority". That second answer also changes the number on
               that part's own badge.
             </p>
-
+          </div>
+          <div class="card-content">
             <div class="field">
               <!-- One row per part of the board, from appearance.js, filled by app.js. -->
               <ul id="counting-areas" class="colour-areas counting-areas"></ul>
             </div>
+          </div>
+        </div>
 
-            <h3 class="subheading">Lines you copy from a card</h3>
-            <p class="field-help">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Lines you copy from a card</h3>
+            <p class="lead">
               Write a line once here, and copy it filled in from any card's menu. The board puts the
               card's own number, link or title where you left a placeholder. Saved beside your notes,
               so your lines are there on every machine you open the board on.
             </p>
-
+          </div>
+          <div class="card-content">
             <div class="field">
               <!-- One row per line the reader wrote, filled by app.js. -->
               <ul id="copy-actions" class="copy-actions"></ul>
@@ -394,16 +429,6 @@
               <!-- Every placeholder the board fills, from copyActions.js. -->
               <ul id="copy-placeholders" class="placeholder-list"></ul>
             </div>
-
-            <h3 class="subheading">Where your half of the board is saved</h3>
-            <p class="field-help">
-              Your notes, the cards you moved by hand, and how the board looks are saved in this browser, and in
-              your cloud storage once it is set up. The same cloud storage serves every project on this site.
-            </p>
-            <!-- The shared settings component, full mode (root ADR 0016). It carries
-                 the badge that says whether saves get through (ADR 0019). -->
-            <div id="cloud-settings"></div>
-
           </div>
         </div>
       </section>
