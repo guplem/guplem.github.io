@@ -91,7 +91,7 @@ a new exception; four copies is not.
 
 ## Storage (`cloud-storage/`)
 
-A project's data falls into one of three tiers, chosen when the project is created (root ADR 0016):
+A project's data falls into one of three tiers, chosen when the project is created. The `/add-web-project` skill asks which, and scaffolds the tier's files (root ADR 0016):
 
 | Tier | When | What to use |
 |---|---|---|
