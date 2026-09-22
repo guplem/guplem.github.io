@@ -90,7 +90,7 @@ import {
   updateToken,
 } from "./settings.js";
 import { skeletonCount } from "./skeletons.js";
-import { orderStacksForMerging, stackPositions } from "./stacks.js";
+import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
 import { cardMenuRows } from "./cardMenu.js";
 import { readTitle } from "./titles.js";
 import { LOW, NORMAL, sinkLowPriority } from "./priority.js";
@@ -988,7 +988,11 @@ function renderBoard() {
 
   // The row above the columns. It follows the chosen order, and with no choice
   // made it puts the longest-waiting first (ADR 0013).
-  const waiting = sortWorkItems(withoutItems(state.reviews, state.items), reviewSortId(state.sortId), hasNote);
+  const queued = sortWorkItems(withoutItems(state.reviews, state.items), reviewSortId(state.sortId), hasNote);
+  // The row holds stacks too, so the smart order reads them bottom first here
+  // as well. Without this the badge said "1 of 3" on a card sitting last
+  // (ADR 0016).
+  const waiting = state.sortId === "smart" ? orderItemsForMerging(queued) : queued;
 
   // Over everything on screen, not one area: a stack can have a card in the
   // review row and another in a column, and the reader can see both. The badge

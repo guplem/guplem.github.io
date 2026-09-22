@@ -48,7 +48,7 @@ It is the short procedure for all of the above.
 | `priority.js` | Yes | The work the reader pushed down, and what sinks with it (ADR 0026) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
-| `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
+| `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
 | `filters.js` | Yes | Narrowing by kind, repository and label, and what to offer (ADR 0009) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
@@ -103,6 +103,13 @@ Data flow, saving: a keystroke, a card moved, a colour or the theme → the matc
 - **`.badge` is `inline-flex`, so whitespace between two child elements
   disappears.** A badge built from two spans needs a `gap`, not a space in the
   text (ADR 0027).
+- **The smart order is a comparator plus a pass, and the pass has to run in
+  two places.** `sorting.js` only compares. `app.js` runs the stack pass on the
+  board (`orderStacksForMerging`) **and** on the review row
+  (`orderItemsForMerging`). The row went out without the second one, and nothing
+  failed: the badge said "1 of 3" on a card sitting last, and only a reader who
+  compared the badges noticed (ADR 0016). Add a new order that needs the pass and
+  you have to add it in both places.
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and

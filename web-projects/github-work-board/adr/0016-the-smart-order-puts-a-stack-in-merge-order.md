@@ -86,9 +86,17 @@ not expressible that way, so the smart order is a comparator plus a pass. That
 is why `app.js` names `smart` once, and why a new order that needs the same
 treatment has to be added in both places.
 
-**The review row cannot show a stack.** It is one flat row of pull requests
-waiting on the reader, so `reviewSortId` maps smart to the order it is built
-from, `updated-asc`.
+**The review row reads its stacks bottom first too.** It is one flat row of
+pull requests waiting on the reader, and a flat item is a group with nothing
+nested in it, so the same pass runs on it (`orderItemsForMerging`).
+`reviewSortId` still maps smart to `updated-asc`, because that is the
+comparator half of smart; the pass is the rest of it.
+
+The row shipped without the pass, and the fault was reported from a real board:
+five cards badged "2 of 2", "1 of 2", "2 of 3", "3 of 3", "1 of 3", in that
+order. The badge told the reader which to read first and the order told them
+the opposite. Nothing was broken enough to notice unless somebody read the
+badges.
 
 **A ring of branches is survivable.** Retargeting can in principle make a cycle.
 The pass breaks it and emits every group exactly once, because a reorder that

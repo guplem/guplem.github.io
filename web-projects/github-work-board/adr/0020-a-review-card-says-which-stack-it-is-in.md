@@ -13,8 +13,10 @@ commits of everything below it, so it reads as a much bigger change than it is,
 and a comment on the bottom can invalidate the review of the top.
 
 The board's own cards do not have this problem: the smart order already reads a
-stack bottom-first (ADR 0016), and a column shows that order. The review row is
-sorted by age, and a stack is not an age.
+stack bottom-first (ADR 0016), and a column shows that order. The review row was
+sorted by age alone, and a stack is not an age. (The row now reads its stacks in
+merge order too, under the smart order. The badge stayed, because the order
+alone never says how many there are or which one this is.)
 
 ## Decision
 
@@ -53,8 +55,15 @@ already carry a stack's order there, and the badge would repeat it on every
 card. It is worth adding the day somebody reads a column without the smart
 order on.
 
-**Rejected: sorting the review row so a stack reads bottom-first.** The row is
-sorted by how long something has waited, which is the question that row answers.
-The badge says the order without taking the sort away. **Rejected: naming the
+**Rejected at first, and then done: sorting the review row so a stack reads
+bottom-first.** The reasoning here was that the row answers one question, how
+long something has waited, and that the badge could say the merge order without
+taking that sort away. It does not work. The badge and the order then give the
+reader two different answers at the same time, and the order is the louder one.
+
+The smart order also says what it does in its own name, "Smart (oldest, stacks
+in merge order)", and the row was not doing the second half. ADR 0016 now runs
+the stack pass on the row as well. Every other order still gives the row a pure
+date order, so nobody who asked for a date order lost one. **Rejected: naming the
 stack by its branch.** A branch name is long, and the bottom's number is
 already a link the reader can follow.

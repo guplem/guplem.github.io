@@ -43,8 +43,9 @@ const KNOWN = new Set(SORT_OPTIONS.map((option) => option.id));
  */
 export function reviewSortId(sortId) {
   const chosen = readSortId(sortId);
-  // The review row is a flat row, so it cannot show a stack as a stack. Smart
-  // therefore lands on the order it is built from.
+  // Smart is a comparator plus a pass (ADR 0016). This is the comparator half,
+  // which is the same one `updated-asc` uses. The pass runs on the row in
+  // `app.js`, so the row reads its stacks bottom first too.
   return chosen === DEFAULT_SORT_ID || chosen === "smart" ? "updated-asc" : chosen;
 }
 

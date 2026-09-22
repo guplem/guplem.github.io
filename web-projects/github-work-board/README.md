@@ -18,6 +18,9 @@ anywhere except GitHub.
   wherever those cards are on the screen, including in another column. The
   keyboard does it too. Hovering the stack's number tells you which pull
   request that number is, by title.
+- **The review row reads a stack in merge order too**, under the smart order,
+  so the one to review first comes first. Every other order gives the row a
+  plain date order.
 - **A stacked pull request says so**, on the review row: `Stack #5073 · 2 of 3`
   names the stack by the pull request that merges first and says where this
   one sits. Reviewing a stack out of order is wasted work twice over.

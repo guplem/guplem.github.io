@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { orderStacksForMerging, stackPositions, stackedUnder } from "./stacks.js";
+import { orderItemsForMerging, orderStacksForMerging, stackPositions, stackedUnder } from "./stacks.js";
 
 /** A pull request as the board holds one, with the two branch names that make a stack. */
 const pull = (number, head, base, over = {}) => ({
@@ -237,5 +237,63 @@ describe("stackPositions names the pull request the number belongs to (ADR 0027)
   test("a title nobody wrote is an empty one, never undefined", () => {
     const at = stackPositions([pull(1, "a", "main"), pull(2, "b", "a")]);
     expect(at.PR_2.title).toBe("");
+  });
+});
+
+describe("orderItemsForMerging", () => {
+  const numbers = (items) => items.map((one) => one.number);
+
+  // The row of pull requests waiting on the reader is a flat row, not the
+  // grouped board. It still holds stacks, and it showed them in the wrong
+  // order: the badge said "1 of 3" on a card sitting last (ADR 0016).
+  test("a flat row reads its stack bottom first", () => {
+    const row = [
+      pull(5082, "mockups", "plan-first"),
+      pull(5083, "deep-plan", "mockups"),
+      pull(5073, "plan-first", "main"),
+    ];
+    expect(numbers(orderItemsForMerging(row))).toEqual([5073, 5082, 5083]);
+  });
+
+  // The same rule the board follows: a stack sits where its bottom sat, because
+  // the stack is only as old as the pull request that can merge next.
+  test("a stack sits where its bottom sat", () => {
+    const row = [
+      pull(5099, "extra", "skills"),
+      pull(5086, "skills", "main"),
+      pull(5082, "mockups", "plan-first"),
+      pull(5083, "deep-plan", "mockups"),
+      pull(5073, "plan-first", "main"),
+    ];
+    expect(numbers(orderItemsForMerging(row))).toEqual([5086, 5099, 5073, 5082, 5083]);
+  });
+
+  test("a pull request in no stack does not move", () => {
+    const row = [pull(1, "a", "main"), pull(2, "b", "main"), pull(3, "c", "main")];
+    expect(numbers(orderItemsForMerging(row))).toEqual([1, 2, 3]);
+  });
+
+  test("an issue in the row is left where it is", () => {
+    const row = [issue(7), pull(1, "a", "main")];
+    expect(numbers(orderItemsForMerging(row))).toEqual([7, 1]);
+  });
+
+  // A reorder that drops a card loses work with nothing on screen to say so.
+  test("never drops one, even with a ring of retargeted branches", () => {
+    const ring = [pull(1, "a", "b"), pull(2, "b", "a"), pull(3, "c", "main")];
+    const out = orderItemsForMerging(ring);
+    expect(out.length).toBe(3);
+    expect(new Set(numbers(out))).toEqual(new Set([1, 2, 3]));
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(orderItemsForMerging(null)).toEqual([]);
+    expect(orderItemsForMerging([])).toEqual([]);
+  });
+
+  test("the row handed in is never changed", () => {
+    const row = [pull(2, "b", "a"), pull(1, "a", "main")];
+    orderItemsForMerging(row);
+    expect(numbers(row)).toEqual([2, 1]);
   });
 });

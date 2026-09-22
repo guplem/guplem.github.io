@@ -79,9 +79,13 @@ them for.
   silently.** Widen the guard and an order named after a date stops giving one;
   drop the pass and the mark quietly becomes decoration. `invariants.test.js`
   pins both, naming this ADR.
-- **The review row fades but never sinks.** It is one flat row sorted by how
-  long something has waited and never runs the smart order at all (ADR 0020), so
-  there is no sink to do there. The fade still applies, because the mark belongs
+- **The review row fades but never sinks.** The row does run the smart order's
+  stack pass (ADR 0016), so "there is nothing to reorder there" is no longer the
+  reason. The reason is what the row is for: it reports how long other people
+  have waited on the reader. A stack's order is a fact about what can merge, and
+  it belongs there. The reader's own ranking is an opinion about their week, and
+  hiding somebody else's wait behind it would make the row answer a different
+  question than the one it asks. The fade still applies, because the mark belongs
   to the work.
 - **A mark on a mid-stack pull request moves two cards.** That surprises until
   the reason is read, which is why it is written on the menu row's comment and
