@@ -3,6 +3,7 @@ import {
   MESSAGES,
   escapeHtml,
   joinWithAnd,
+  describeLastRefresh,
   noteMenuLabel,
   priorityMenuLabel,
   say,
@@ -195,5 +196,47 @@ describe("priorityMenuLabel", () => {
   test("anything it does not know offers the mark", () => {
     expect(priorityMenuLabel("")).toBe("Not a priority");
     expect(priorityMenuLabel(null)).toBe("Not a priority");
+  });
+});
+
+describe("describeLastRefresh", () => {
+  const at = (ms) => 1_000_000 + ms;
+  const now = at(0);
+
+  // The button says when the board last heard from GitHub, so the reader can
+  // tell a quiet morning from a board that stopped asking (ADR 0029).
+  test("says how long ago in the largest whole unit", () => {
+    expect(describeLastRefresh(at(-3_000), now)).toBe("Refreshed just now");
+    expect(describeLastRefresh(at(-34_000), now)).toBe("Refreshed 34 seconds ago");
+    expect(describeLastRefresh(at(-60_000), now)).toBe("Refreshed 1 minute ago");
+    expect(describeLastRefresh(at(-5 * 60_000), now)).toBe("Refreshed 5 minutes ago");
+    expect(describeLastRefresh(at(-60 * 60_000), now)).toBe("Refreshed 1 hour ago");
+    expect(describeLastRefresh(at(-3 * 60 * 60_000), now)).toBe("Refreshed 3 hours ago");
+    expect(describeLastRefresh(at(-26 * 60 * 60_000), now)).toBe("Refreshed 1 day ago");
+  });
+
+  // "1 seconds ago" reads as a machine wrote it.
+  test("one of anything is not plural", () => {
+    expect(describeLastRefresh(at(-1 * 60_000), now)).toBe("Refreshed 1 minute ago");
+    expect(describeLastRefresh(at(-2 * 60_000), now)).toBe("Refreshed 2 minutes ago");
+  });
+
+  // Under ten seconds, a number is noise: the reader pressed it a moment ago
+  // and knows that.
+  test("the first few seconds are just now", () => {
+    expect(describeLastRefresh(at(-1), now)).toBe("Refreshed just now");
+    expect(describeLastRefresh(at(-9_000), now)).toBe("Refreshed just now");
+    expect(describeLastRefresh(at(-10_000), now)).toBe("Refreshed 10 seconds ago");
+  });
+
+  test("a board that has not read yet says so", () => {
+    expect(describeLastRefresh(null, now)).toBe("Not refreshed yet");
+    expect(describeLastRefresh(undefined, now)).toBe("Not refreshed yet");
+    expect(describeLastRefresh("soon", now)).toBe("Not refreshed yet");
+  });
+
+  // A machine whose clock moved backwards must not say "refreshed in 4 hours".
+  test("a clock that went backwards reads as just now", () => {
+    expect(describeLastRefresh(at(5_000), now)).toBe("Refreshed just now");
   });
 });

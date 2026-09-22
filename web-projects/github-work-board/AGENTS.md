@@ -60,7 +60,7 @@ It is the short procedure for all of the above.
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The list of tokens and the data repository, through an injected storage (ADR 0007) |
-| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, and whether the notes are syncing (ADR 0019) |
+| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), and whether the notes are syncing (ADR 0019) |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `style.css` | - | The design system: colour roles, one radius, and the four parts every screen is built from (ADR 0004) |
 | `gateway.js` | No | The **only** file that calls the network |
@@ -127,6 +127,11 @@ Data flow, saving: a keystroke, a card moved, a colour or the theme → the matc
   measure the page may depend on it.** A board drawn in a background tab would
   keep its measurements from before. The note boxes are sized from `renderBoard`
   for exactly this reason (ADR 0014).
+- **A `.button-*` class is a variant and must have a `:hover`**, which
+  `invariants.test.js` checks by name. A class that only changes a button's
+  shape is not a variant and must not be named like one: the refresh button's
+  square shape is `.icon-only`, worn with `.button-outline`, which carries the
+  hover (ADR 0029).
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and
@@ -463,6 +468,7 @@ before calling it done.
 | [0026](adr/0026-work-the-reader-pushed-down-sinks-and-takes-its-stack-with-it.md) | Work the reader pushed down sinks, and takes what waits on it |
 | [0027](adr/0027-a-stack-lights-up-and-its-number-says-what-it-is.md) | A stack lights up, and its number says which pull request it is |
 | [0028](adr/0028-a-card-shows-the-people-and-which-people-depends-on-the-list.md) | A card shows the people, and which people depends on the list |
+| [0029](adr/0029-a-button-that-asks-now-and-says-when-it-last-did.md) | A button that asks now, and says when it last did |
 
 ## What is not built yet
 

@@ -63,6 +63,10 @@ anywhere except GitHub.
   pull request stacked on top of a card you pushed down goes with it, because
   it cannot merge until that one does. The mark is saved in your own
   repository, so it follows you between machines.
+- **Ask GitHub now, with the button beside the schedule.** Rest on it and it
+  tells you when the board last heard anything, so you can tell a quiet morning
+  from a board that stopped asking. It goes down until the answer is in, and for
+  at least a second, so one press is one read.
 - **It asks GitHub again by itself.** Every minute, and you can set that to 30
   seconds, five minutes, or off. It never wipes the board to placeholders,
   never asks while the tab is out of sight, and never interrupts a note you are
