@@ -306,6 +306,7 @@ Whenever you create a GitHub issue, use the `create-issue` skill. Whenever you i
 
 ## Git Workflow
 
+- **Ship the work without a second question.** When the owner asks for a change, deliver it the whole way: commit, push, open the pull request, stamp it, and let it merge. Do not stop to ask for permission between those steps. Stop only when a check fails, or when a step needs a decision that the owner alone can make.
 - Branch from `main`, PR back to `main` (merging deploys the live site via GitHub Pages). **Never push to `main`.** Whenever you create a branch, use the `create-branch` skill.
 - Conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`. Whenever you commit, use the `write-commit` skill.
 - CI runs `bun test .` on every PR; the `test` check is required on `main`, so a PR with failing tests cannot merge.
