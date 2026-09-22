@@ -9,9 +9,9 @@
 //
 // A project uses it like this:
 //
-//   const store = openStore({ project: "rps-mind-reader", file: "history.json",
-//     recordMaps: ["rounds"], onChange: render, onStatus: showBadge, onQuestion: askCopyQuestion });
-//   store.write(shape.write(store.document, "rounds", id, fields, now));
+//   const store = openStore({ project: "akwaaba-monsters", file: "save.json",
+//     recordMaps: ["saves"], onChange: render, onStatus: showBadge, onQuestion: askCopyQuestion });
+//   store.write(shape.write(store.document, "saves", id, fields, now));
 //
 // `onChange` fires when the document changes under the project: after the
 // cloud copy is merged in on open, after a save merges in what another device
@@ -20,7 +20,7 @@
 // answer(id)}` and must show it; `cloudSettingsPanel.askCopyQuestion` does.
 
 import { DATA_FOLDER, browserStorage, documentPath, isReconciled, markReconciled, mirrorKey, readRepo, readToken, saveToken } from "./cloudSettings.js";
-import { MAX_DOCUMENT_BYTES, documentBytes, migrate, parseDocument, serializeDocument } from "./envelope.js";
+import { MAX_DOCUMENT_BYTES, documentBytes, hasRecords, migrate, parseDocument } from "./envelope.js";
 import { fetchFile, fetchFolder, fetchRepository, fetchViewer, saveFile } from "./cloudGateway.js";
 import { CONNECTION_CHECKS, permissionsFingerprint } from "./cloudPermissions.js";
 import { describeFailure, describeSync } from "./cloudMessages.js";
@@ -251,11 +251,13 @@ export function openStore({
       return;
     }
     // synced, none, same, cloud-only: the merge is the whole answer, and a
-    // merge with nothing new on this side is a skip.
+    // merge with nothing new on this side is a skip. A document with no
+    // records is not written either: an empty file in the repository would be
+    // a commit that says nothing.
     const plan = planSave({ local: state.document, remote: cloud, remoteSha: fresh.data.sha, now: now() });
     replace(plan.document);
     status();
-    if (plan.action !== "skip") save();
+    if (plan.action !== "skip" && (cloud || hasRecords(plan.document))) save();
   }
 
   connect();

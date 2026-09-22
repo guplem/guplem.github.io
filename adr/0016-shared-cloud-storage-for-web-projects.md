@@ -71,9 +71,14 @@ from `../cloud-storage/` and from nothing else outside its own folder.
   link (ADR 0006). A document is refused above 900 KB, under GitHub's 1 MB
   content limit.
 - **Three tiers for a project's data**, and the tier is chosen when the project
-  is created: none (URL state), this device (`localStore.js`, the promoted
-  wrapper), cloud (`cloudStore.js`). Cloud is required, not optional, for data a
-  person made and would miss on another device.
+  is created, with the user of the session: none (URL state), this device
+  (`localStore.js`, the promoted wrapper), cloud (`cloudStore.js`). **Cloud is
+  the exception.** It is for data whose loss hurts (hours of game progress,
+  notes written over weeks) or for a project whose point is to follow the
+  person across devices or to keep a history. Setting it up costs the person a
+  token and a repository, once, and on a phone that is real work, so a small
+  experiment stays on this device. The question is asked for every new project
+  unless the answer is plain.
 - **The shared module is held to the board's bar.** `invariants.test.js` in the
   folder pins: only `cloudGateway.js` calls `fetch`; only `cloudSettings.js`
   names `localStorage`; the exact keys and folder name; no import from outside
@@ -113,8 +118,12 @@ not drift, and a person would set the same token up once per project.
 - A token in localStorage is now read by more pages. The threat model of
   github-work-board ADR 0001 applies to each of them, and each must keep to the
   two rules above.
-- One more hop for a new project: choose a tier, declare record maps, embed the
-  panel.
+- One more hop for a new project: choose a tier, and for the cloud tier declare
+  record maps and embed the panel.
+- Only two projects are on the cloud tier, the work board and akwaaba-monsters.
+  The others were considered and left on this device on purpose: a round
+  history, a record against the computer, recent conversions, recent numbers
+  and generation settings are not worth a token to the person who owns them.
 
 ## Scope
 

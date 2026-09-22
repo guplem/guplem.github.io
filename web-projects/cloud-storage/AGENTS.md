@@ -38,7 +38,7 @@ The shared module every web-project uses to keep data in one private GitHub repo
 
 ## Adopting the standard in a project (the checklist)
 
-1. Decide the tier (root ADR 0016): none, this device, or cloud. Cloud is required for data a person made and would miss on another device. Secrets, caches, binaries and URL state never sync.
+1. Decide the tier with the user of the session (root ADR 0016): none, this device, or cloud. Cloud is the exception: for data whose loss hurts, or when following the person across devices is the point. A token and a repository are a real cost, more so on a phone. Secrets, caches, binaries and URL state never sync.
 2. For tier 2, import `localStore.js` and use `projectKey(slug, name)` as the key.
 3. For tier 3, write `document.js` in the project: `const shape = defineDocument([...maps])` plus typed read and write helpers over `shape.read` / `shape.write`, with a test. Then `openStore` at start-up with `onQuestion: askCopyQuestion`, `store.write` on every change, re-render in `onChange`, and mount the compact panel in the project's settings with `onConfigured: () => store.reconnect()`. Link `cloudSettingsPanel.css` from the page and set the `--cs-*` properties on the host if the page has its own palette.
 4. Check the page imports no third-party code and writes nothing remote with `innerHTML`. A page that holds a token must own every line it runs.
