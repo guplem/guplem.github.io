@@ -32,9 +32,22 @@ the outline at another. That is only possible because every colour token here is
 channels rather than a finished colour (ADR 0004), and it is why a preset is
 one string.
 
-**Nothing carries `data-colour` until somebody picks one.** A board nobody has
-touched looks exactly as it did, and the default is not a colour that happens to
-match: it is the absence of the rule.
+**The board opens painted, and the reader's hand always wins.** It shipped with
+nothing painted, on the grounds that the absence of a rule is honest. It is also
+six grey columns, and every reader painted the same six by hand before the board
+said anything at a glance. So each part now opens with a colour: violet on the
+review row, slate on "To do", blue on "Ongoing", rose on "Needs changes", green
+on "Ready to merge". `appearance.DEFAULT_COLOURS` holds them.
+
+**"Awaiting review" and "Done today" open unpainted, on purpose.** They are the
+two nobody has to act on: one is with somebody else, the other is over. Leaving
+them plain is what makes the painted ones mean something.
+
+**A record means the reader chose, and "None" is a choice like any other.** A
+part with a record wears what the record says, so a column somebody cleared
+stays cleared and never goes back to the shipped colour. A part with no record
+wears the shipped colour. Nothing carries `data-colour` when the answer is
+"None", so a column read as unpainted still has no rule on it at all.
 
 **The review row is painted like a column and is not one**, so it has an id of
 its own, `reviews`, stored in the same map beside the column ids. A test pins
@@ -47,7 +60,7 @@ CSS has no way to say "these rules, under either of two selectors" without
 repeating them. Keep the two copies identical: an explicit choice has to win in
 **both** directions, or choosing light on a dark machine does nothing.
 
-**Automatic is the default**, and it stores nothing until the reader chooses.
+**Automatic is the theme's default**, and it stores nothing until the reader chooses.
 
 ## Consequences
 
