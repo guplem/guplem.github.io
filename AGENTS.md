@@ -254,7 +254,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0007](web-projects/github-work-board/adr/0007-one-token-per-owner-and-an-empty-board-explains-itself.md) | One token per owner, and an empty board that explains itself |
 | [github-work-board 0008](web-projects/github-work-board/adr/0008-settings-is-a-view-and-the-token-guide-is-written-once.md) | Settings is a view in the link, and the token guide is written once |
 | [github-work-board 0009](web-projects/github-work-board/adr/0009-filters-widen-within-a-kind-and-narrow-across-kinds.md) | Filters widen within one kind and narrow across kinds |
-| [github-work-board 0010](web-projects/github-work-board/adr/0010-relationships-come-from-githubs-graph.md) | Relationships come from GitHub's graph, in one call per token |
+| [github-work-board 0010](web-projects/github-work-board/adr/0010-relationships-come-from-githubs-graph.md) | Relationships come from GitHub's graph, batched per token |
 | [github-work-board 0011](web-projects/github-work-board/adr/0011-columns-are-read-from-github-and-overridden-by-hand.md) | Columns are read from GitHub, and overridden by hand |
 | [github-work-board 0012](web-projects/github-work-board/adr/0012-the-card-menu-lives-in-the-top-layer.md) | The card menu lives in the top layer, and one menu serves the board |
 | [github-work-board 0013](web-projects/github-work-board/adr/0013-work-waiting-on-you-is-a-row-above-the-board.md) | Work waiting on you is a row above the board, not a column in it |

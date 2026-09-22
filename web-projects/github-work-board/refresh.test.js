@@ -3,6 +3,8 @@ import {
   DEFAULT_REFRESH,
   OFF,
   REFRESH_CHOICES,
+  GRAPHQL_BUDGET_PER_HOUR,
+  GRAPHQL_POINTS_PER_TOKEN,
   SEARCH_CALLS_PER_TOKEN,
   SEARCH_BUDGET_PER_MINUTE,
   knownRefresh,
@@ -152,6 +154,20 @@ describe("what the default costs the reader (ADR 0025)", () => {
   test("three tokens on the default stay well inside the hourly budget", () => {
     const perHour = (3600 / refreshSeconds(DEFAULT_REFRESH)) * 5 * 3;
     expect(perHour).toBeLessThanOrEqual(5000 * 0.2);
+  });
+
+  // GraphQL is charged by how much a query could return. The board asks for the
+  // links, and then once more for the children of any issue that has them, so
+  // the arithmetic has to hold for both calls at the largest batch there is.
+  test("the biggest board on the shortest schedule stays inside the GraphQL budget", () => {
+    const shortest = Math.min(...REFRESH_CHOICES.filter((one) => one.seconds > 0).map((one) => one.seconds));
+    const perHour = (3600 / shortest) * GRAPHQL_POINTS_PER_TOKEN;
+    expect(perHour).toBeLessThanOrEqual(GRAPHQL_BUDGET_PER_HOUR);
+  });
+
+  test("the default costs a third of the GraphQL budget at its very worst", () => {
+    const perHour = (3600 / refreshSeconds(DEFAULT_REFRESH)) * GRAPHQL_POINTS_PER_TOKEN;
+    expect(perHour).toBeLessThanOrEqual(GRAPHQL_BUDGET_PER_HOUR * 0.35);
   });
 
   // The tight budget is per minute, not per hour.

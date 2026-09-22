@@ -11,11 +11,16 @@
 // |---|---|---|
 // | REST `core` | 5000 an hour | 5 calls: who you are, open work, work closed today, the board repository, the board file |
 // | REST `search` | 30 a **minute** | 1 call: the pull requests waiting for your review |
-// | GraphQL | 5000 points an hour | 1 call: the links between items |
+// | GraphQL | 5000 points an hour | 1 or 2 calls: the links between items, then the children of any issue that has them |
 //
 // The search budget is the tight one, because it is per minute and not per
 // hour. It is what sets the shortest interval this module offers, and
 // `refresh.test.js` holds that arithmetic as a test.
+//
+// **GraphQL is charged by size, not by call.** Its budget is points, and the
+// points come from how much a query could return rather than from how much it
+// did. Both numbers below were measured with `rateLimit(dryRun: true)` on the
+// board's own query, at the largest batch it ever sends.
 //
 // **An id here is written into `board.json`** the moment somebody picks one, so
 // it is as permanent as a colour id or a storage key.
@@ -54,6 +59,19 @@ export const SEARCH_BUDGET_PER_MINUTE = 30;
 
 /** One refresh asks each token for the pull requests waiting on the reader, once. */
 export const SEARCH_CALLS_PER_TOKEN = 1;
+
+/** GitHub answers 5000 GraphQL points an hour, for each token. Measured, not guessed. */
+export const GRAPHQL_BUDGET_PER_HOUR = 5000;
+
+/**
+ * What one refresh spends of it, for one token, on the largest board there is.
+ *
+ * 13 points for a full batch of 100 items, and at most one more batch of the
+ * same size for their children, so 26 is the worst a refresh can cost. The
+ * board asks about one batch of children and no more, which is what keeps this
+ * number a number rather than "however many children the reader has".
+ */
+export const GRAPHQL_POINTS_PER_TOKEN = 26;
 
 const BY_ID = new Map(REFRESH_CHOICES.map((one) => [one.id, one]));
 

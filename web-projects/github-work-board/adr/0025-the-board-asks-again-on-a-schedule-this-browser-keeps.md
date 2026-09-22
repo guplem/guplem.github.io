@@ -14,16 +14,36 @@ guide:
 |---|---|---|
 | REST `core` | 5000 an hour | 5 calls: who you are, open work, work closed today, the board repository, the board file |
 | REST `search` | 30 a **minute** | 1 call: the pull requests waiting for your review |
-| GraphQL | 5000 points an hour | 1 call: the links between items |
+| GraphQL | 5000 points an hour | 1 call, or 2: the links between items, then the children of any issue that has them |
 
 The board holds a list of tokens, not one (ADR 0007), and a refresh asks every
-one of them. So the cost is seven calls per token, per refresh.
+one of them. So the cost is seven calls per token, per refresh, and eight when
+something on the board has children.
 
 Two tokens on the shortest schedule spend 1200 of the 5000 core calls an hour,
-4 of the 30 search calls a minute, and 240 of the 5000 GraphQL points an hour.
-The tight budget is `search`, because it is counted per minute and not per
-hour. It is what decides the shortest schedule the board offers, and
-`refresh.test.js` holds that arithmetic as a test.
+and 4 of the 30 search calls a minute. The tight budget is `search`, because it
+is counted per minute and not per hour. It is what decides the shortest
+schedule the board offers, and `refresh.test.js` holds that arithmetic as a
+test.
+
+**GraphQL is charged differently: by size, not by call.** Its points come from
+how much a query could return, so its bill is set by the `first:` numbers in
+the query rather than by how often the board asks. Both numbers here were
+measured with `rateLimit(dryRun: true)` on the board's own query, at the
+largest batch it ever sends, which is 100 items:
+
+| The call | Points |
+|---|---|
+| The links, asking for 20 closing pull requests each | 42 |
+| The links, asking for 5 | 12 |
+| The links, asking for 5, plus the children's names | 13 |
+| The second call, about the children, one batch at most | 13 |
+
+So a refresh costs at most 26 points for a token, and the shortest schedule
+spends 3120 of the 5000 points an hour. The first row is what the query used to
+cost: cutting the closing pull requests from twenty to five is what paid for
+the children, and nothing reads past the merged one or the first open one
+(ADR 0010). `refresh.test.js` holds this arithmetic as a test too.
 
 ## Decision
 

@@ -41,6 +41,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   when they answer, and when it merges. The button on a card opens a menu that
   moves it by hand when GitHub's answer is not the truth, and hands it back to
   the rules with one click.
+- **An issue lists its children, and says where each one is.** A card with
+  sub-issues shows them under "Children", each with the column it would sit in:
+  "Ongoing", "Awaiting review", "Done". A column you chose by hand wins there
+  too, so the list can never disagree with the card itself. A sub-issue on the
+  board says "Sub-issue of", with the issue it belongs to.
 - **The real links between your work.** A pull request appears inside the card
   of the issue it closes, an issue says what it is part of, and anything waiting
   on unfinished work is marked **Blocked**. All of it read from GitHub's own

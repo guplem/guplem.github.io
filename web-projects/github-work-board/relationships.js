@@ -24,7 +24,7 @@ const EMPTY = Object.freeze({
   blocking: [],
   closedBy: [],
   closes: [],
-  subIssues: { total: 0, completed: 0 },
+  subIssues: { total: 0, completed: 0, children: [] },
 });
 
 function isPlainObject(value) {
@@ -99,6 +99,61 @@ function readLink(value) {
   };
 }
 
+/**
+ * One child issue, as a work item rather than as a link.
+ *
+ * A parent's card lists its children and says which column each one is in, and
+ * that column is worked out by the rule every other card uses. The rule reads a
+ * work item: it asks for `kind`, and for `closedAt` to tell finished work from
+ * open work (ADR 0011, ADR 0017). A link, the shape `parent` and `blockedBy`
+ * come in, carries neither, so a child is read into the shape the rule expects.
+ *
+ * Sub-issues are issues, so `kind` is never anything else.
+ */
+export function readChildIssue(value) {
+  if (!isPlainObject(value)) return null;
+  const id = typeof value.id === "string" && value.id !== "" ? value.id : null;
+  if (!id) return null;
+  return {
+    key: id,
+    kind: "issue",
+    number: Number.isInteger(value.number) ? value.number : 0,
+    title: typeof value.title === "string" ? value.title : "",
+    url: typeof value.url === "string" ? value.url : "",
+    repository: typeof value.repository?.nameWithOwner === "string" ? value.repository.nameWithOwner : "",
+    state: value.state === "OPEN" ? "open" : "closed",
+    closedAt: typeof value.closedAt === "string" ? value.closedAt : "",
+    mergedAt: "",
+    labels: [],
+    assignees: [],
+  };
+}
+
+function readChildren(connection) {
+  const nodes = isPlainObject(connection) && Array.isArray(connection.nodes) ? connection.nodes : [];
+  return nodes.map(readChildIssue).filter(Boolean);
+}
+
+/**
+ * Every child in one graph answer, once each.
+ *
+ * The board asks GitHub again about these, in the same pass, so a child is read
+ * exactly like any other card: the pull requests that would close it, and
+ * whether the reviewer who asked for changes has been asked to look again. The
+ * ids are not known until the first answer arrives, which is why it takes a
+ * second batch and not a second query shape (ADR 0010).
+ */
+export function childIssueIds(nodes) {
+  const ids = [];
+  for (const node of Array.isArray(nodes) ? nodes : []) {
+    if (!isPlainObject(node)) continue;
+    for (const child of readChildren(node.subIssues)) {
+      if (!ids.includes(child.key)) ids.push(child.key);
+    }
+  }
+  return ids;
+}
+
 function readLinks(connection) {
   const nodes = isPlainObject(connection) && Array.isArray(connection.nodes) ? connection.nodes : [];
   return nodes.map(readLink).filter(Boolean);
@@ -121,6 +176,9 @@ export function normalizeRelationships(nodes) {
       subIssues: {
         total: Number.isInteger(node.subIssuesSummary?.total) ? node.subIssuesSummary.total : 0,
         completed: Number.isInteger(node.subIssuesSummary?.completed) ? node.subIssuesSummary.completed : 0,
+        // The summary counts every child; this holds the ones GitHub was asked
+        // for, so a parent with more children than that still says how many.
+        children: readChildren(node.subIssues),
       },
     };
   }
@@ -128,6 +186,20 @@ export function normalizeRelationships(nodes) {
 }
 
 /** What is known about one item. An item nobody asked about reads as empty, never as missing. */
+/**
+ * Whether the board asked GitHub about this item at all.
+ *
+ * Not the same question as "what does it link to": an item nobody asked about
+ * and an item with no links both read as empty. A child listed on its parent's
+ * card is the case that needs the difference, because the board asks about at
+ * most one batch of children and a failed second pass asks about none. Without
+ * this, every child the board knows nothing about would read as work with no
+ * pull request, which is a state, and a wrong one (ADR 0010).
+ */
+export function knowsAbout(byId, key) {
+  return isPlainObject(byId) && Object.hasOwn(byId, key);
+}
+
 export function readRelationship(byId, key) {
   return (isPlainObject(byId) ? byId[key] : null) ?? EMPTY;
 }

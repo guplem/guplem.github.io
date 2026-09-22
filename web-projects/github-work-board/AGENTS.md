@@ -58,8 +58,8 @@ It is the short procedure for all of the above.
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
-| `relationships.js` | Yes | GitHub's own links between items, and nesting a pull request under its issue (ADR 0010) |
-| `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand (ADR 0011) |
+| `relationships.js` | Yes | GitHub's own links between items, the children of an issue, and nesting a pull request under its issue (ADR 0010) |
+| `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, and what to call that column away from the board (ADR 0011) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
@@ -71,7 +71,7 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed since midnight, ADR 0017) → `workItems.normalizeWorkItems` and `workItems.finishedSince` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging` and `priority.sinkLowPriority` (smart order only) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
 Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025).
 Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → (1.2 s later) `gateway.fetchBoardFile` → `sync.planSave` → `gateway.saveBoardFile`.
@@ -93,10 +93,24 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   seeing `hidden`. To force the page's own view, inject a `<script>` element
   with the override as its text, which runs in the page's world. Measure what
   fires, not when.
-- **One refresh costs seven GitHub calls for each token**, and the tight budget
-  is `search` at 30 a minute, not `core` at 5000 an hour. A new call in the
-  connect path multiplies by the number of tokens and by the refresh rate. Do
-  that arithmetic in `refresh.test.js` before you add one.
+- **One refresh costs seven GitHub calls for each token, and eight when
+  something on the board has children**, and the tight budget is `search` at 30
+  a minute, not `core` at 5000 an hour. A new call in the connect path
+  multiplies by the number of tokens and by the refresh rate. Do that
+  arithmetic in `refresh.test.js` before you add one.
+- **GraphQL is charged by the size of the query, not by the call.** The points
+  come from the `first:` numbers, so raising one raises what every refresh
+  costs and nothing on the page changes. `closedByPullRequestsReferences(first:
+  5)` is measured, not chosen: at twenty it cost 42 points a call and at five it
+  costs 12, which is what pays for the second call about the children. Measure
+  a change with `rateLimit(dryRun: true)` before you make it, and keep
+  `GRAPHQL_POINTS_PER_TOKEN` in `refresh.js` true (ADR 0010, ADR 0025).
+- **"Nobody asked" and "nothing to say" read the same, and one of them must not
+  become a state.** An item the board never asked GitHub about has no
+  relationship record, which is exactly what an item with no pull request looks
+  like, so it would read as "To do". The children listed on a card are the case
+  that hits this, because the board asks about one batch of them and no more:
+  `relationships.knowsAbout` is what tells the two apart (ADR 0010).
 - **A refresh must stay skipped, never queued, while a save is in flight.** A
   save re-reads the board file, merges it and writes it back (ADR 0002). A
   refresh that lands in between replaces the document that the save works from,
@@ -347,8 +361,8 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   it. Ask GraphQL for `parent`, `blockedBy` and `closedByPullRequestsReferences`
   instead. A test fails on `closes #` appearing in any module (ADR 0010).
 - **Relationships are fetched with the token that returned those items**, in one
-  batched GraphQL call, and are never saved to `board.json`: they are GitHub's
-  data, not the reader's.
+  batched GraphQL call, or two when a child needs asking about, and are never
+  saved to `board.json`: they are GitHub's data, not the reader's.
 - **Only an open blocker blocks.** A closed one is history, and counting it
   would leave half the board marked "Blocked" for ever.
 - **GraphQL answers 200 with an `errors` array** when part of a query fails,
@@ -461,7 +475,7 @@ before calling it done.
 | [0007](adr/0007-one-token-per-owner-and-an-empty-board-explains-itself.md) | One token per owner, and an empty board that explains itself |
 | [0008](adr/0008-settings-is-a-view-and-the-token-guide-is-written-once.md) | Settings is a view in the link, and the token guide is written once |
 | [0009](adr/0009-filters-widen-within-a-kind-and-narrow-across-kinds.md) | Filters widen within one kind and narrow across kinds |
-| [0010](adr/0010-relationships-come-from-githubs-graph.md) | Relationships come from GitHub's graph, in one call per token |
+| [0010](adr/0010-relationships-come-from-githubs-graph.md) | Relationships come from GitHub's graph, batched per token |
 | [0011](adr/0011-columns-are-read-from-github-and-overridden-by-hand.md) | Columns are read from GitHub, and overridden by hand |
 | [0012](adr/0012-the-card-menu-lives-in-the-top-layer.md) | The card menu lives in the top layer, and one menu serves the board |
 | [0013](adr/0013-work-waiting-on-you-is-a-row-above-the-board.md) | Work waiting on you is a row above the board, not a column in it |

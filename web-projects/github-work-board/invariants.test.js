@@ -595,3 +595,33 @@ describe("a placeholder the reader typed keeps its name (ADR 0031)", () => {
     expect(page).not.toContain("canFillTemplate");
   });
 });
+
+// A card lists its children and says which column each one is in. Three things
+// make that true, and each of them is one edit away from being quietly untrue.
+describe("a child on its parent's card (ADR 0010, ADR 0011)", () => {
+  // The reader can move any card by hand, and their hand wins over the rule.
+  // A badge built from `automaticColumn` would say one thing on the parent and
+  // the card itself would sit somewhere else.
+  test("the page asks for a column with the reader's own choice, never for the rule alone", () => {
+    const page = read("app.js");
+    expect(page).toContain("columnFor");
+    expect(`app.js works out a column by itself: ${page.includes("automaticColumn")}`).toBe(
+      "app.js works out a column by itself: false",
+    );
+  });
+
+  // "Nobody asked" reads exactly like "no pull request", and one of those is a
+  // state the board must not show.
+  test("a state is only shown for a child the board asked GitHub about", () => {
+    expect(read("app.js")).toContain("knowsAbout(state.links, child.key)");
+  });
+
+  // The GraphQL budget is points, and the points come from these two numbers.
+  // Raising either one raises what every refresh costs, and nothing else on
+  // the page would change (ADR 0025).
+  test("the query stays the size the measured budget was measured at", () => {
+    const query = read("gateway.js");
+    expect(query).toContain("closedByPullRequestsReferences(first: 5, includeClosedPrs: true)");
+    expect(query).toContain("subIssues(first: 10)");
+  });
+});

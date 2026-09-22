@@ -1739,6 +1739,55 @@ textarea.input {
   border-bottom-color: hsl(var(--foreground));
 }
 
+/* The children of an issue, under the count of how many are done. One row per
+ * child: the issue on the left, the column it is in on the right, so the
+ * column labels line up and read as one list (ADR 0011). */
+.issue-children {
+  margin-top: 0.375rem;
+}
+
+.issue-children .issue-links {
+  margin-top: 0;
+}
+
+.children {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+
+/* `min-width: 0` is what keeps a long child title from making the card wider
+ * than its column: a row in a grid is as wide as its content until it is told
+ * otherwise, and the title below does not wrap. */
+.child {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+  font-size: 0.8125rem;
+}
+
+/* One line each, so ten children stay a list rather than a wall of text. */
+.child-title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.child-state {
+  flex: 0 0 auto;
+}
+
+.children-more {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
 /* A pull request sits inside the card of the issue it closes, indented and
  * joined to it by a line, so the pair reads as one piece of work (ADR 0010). */
 .issues.nested {

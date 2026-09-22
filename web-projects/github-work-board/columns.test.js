@@ -7,6 +7,7 @@ import {
   groupIntoColumns,
   moveOptions,
   readColumnId,
+  stateLabel,
 } from "./columns.js";
 
 const issue = (over = {}) => ({ key: "I_1", kind: "issue", number: 1, ...over });
@@ -275,5 +276,27 @@ describe("groupIntoColumns", () => {
 
   test("survives being handed nothing", () => {
     expect(groupIntoColumns(null, null, null).map((one) => one.column.id)).toEqual(COLUMNS.map((one) => one.id));
+  });
+});
+
+// A child listed on its parent's card is not a card on the board, so the one
+// column whose name says "today" would be a lie for work that closed last week
+// (ADR 0017).
+describe("stateLabel", () => {
+  test("every column is called what the board calls it", () => {
+    expect(stateLabel("ongoing")).toBe("Ongoing");
+    expect(stateLabel("awaiting-review")).toBe("Awaiting review");
+    expect(stateLabel("needs-changes")).toBe("Needs changes");
+    expect(stateLabel("ready-to-merge")).toBe("Ready to merge");
+    expect(stateLabel("todo")).toBe("To do");
+  });
+
+  test("finished work is done, with no claim about when", () => {
+    expect(stateLabel("done")).toBe("Done");
+  });
+
+  test("a column nobody knows has no name", () => {
+    expect(stateLabel("made-up")).toBe("");
+    expect(stateLabel(null)).toBe("");
   });
 });

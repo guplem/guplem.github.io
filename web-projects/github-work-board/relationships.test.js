@@ -1,11 +1,15 @@
 import { describe, expect, test } from "bun:test";
+import { automaticColumn } from "./columns.js";
 import {
   applyPullRequestState,
   askedToLookAgain,
+  childIssueIds,
   groupByLinkedIssue,
   isBlocked,
+  knowsAbout,
   normalizeRelationships,
   openBlockers,
+  readChildIssue,
   readRelationship,
 } from "./relationships.js";
 
@@ -120,7 +124,7 @@ describe("normalizeRelationships", () => {
   });
 
   test("reads how far a parent's children have got", () => {
-    expect(readRelationship(byId, "I_child").subIssues).toEqual({ total: 14, completed: 12 });
+    expect(readRelationship(byId, "I_child").subIssues).toMatchObject({ total: 14, completed: 12 });
   });
 
   // The whole column rule for a pull request rides on these four, so they are
@@ -242,5 +246,126 @@ describe("the people in a pull request's review (ADR 0028)", () => {
   test("an issue is left alone", () => {
     const [item] = applyPullRequestState([{ key: "I_1", kind: "issue" }], {});
     expect(item.reviewers).toBe(undefined);
+  });
+});
+
+// A card that has children lists them, and each one carries the column it
+// would sit in. That column is worked out by the same rule every card uses, so
+// a child has to arrive in the shape that rule reads (ADR 0010, ADR 0011).
+describe("the children of an issue", () => {
+  const WITH_CHILDREN = [
+    {
+      __typename: "Issue",
+      id: "I_parent",
+      subIssuesSummary: { total: 3, completed: 1 },
+      subIssues: {
+        totalCount: 3,
+        nodes: [
+          {
+            id: "I_one",
+            number: 11,
+            title: "Read the file",
+            url: "https://github.com/me/work/issues/11",
+            state: "CLOSED",
+            closedAt: "2026-09-22T08:00:00Z",
+            repository: { nameWithOwner: "me/work" },
+          },
+          {
+            id: "I_two",
+            number: 12,
+            title: "Write the file",
+            url: "https://github.com/me/work/issues/12",
+            state: "OPEN",
+            closedAt: null,
+            repository: { nameWithOwner: "me/work" },
+          },
+        ],
+      },
+    },
+  ];
+
+  const byId = normalizeRelationships(WITH_CHILDREN);
+
+  test("every child GitHub answered with is on the parent", () => {
+    expect(readRelationship(byId, "I_parent").subIssues.children.map((one) => one.number)).toEqual([11, 12]);
+  });
+
+  // The summary is the count of every child; the list is only the ones asked
+  // for. A parent with more children than the query asks for still says how
+  // many there are.
+  test("the count comes from the summary, not from the length of the list", () => {
+    expect(readRelationship(byId, "I_parent").subIssues).toMatchObject({ total: 3, completed: 1 });
+    expect(readRelationship(byId, "I_parent").subIssues.children.length).toBe(2);
+  });
+
+  test("a card with no children says so, and never answers undefined", () => {
+    expect(readRelationship(byId, "I_nobody").subIssues).toEqual({ total: 0, completed: 0, children: [] });
+  });
+
+  // The shape the column rule reads. A child arriving as a link, the shape the
+  // parent and the blockers use, would have no `kind` and no `closedAt`, and
+  // every closed child would read as unfinished.
+  test("a child is a work item, so the column rule can read it", () => {
+    const [closed, open] = readRelationship(byId, "I_parent").subIssues.children;
+    expect(closed).toMatchObject({
+      key: "I_one",
+      kind: "issue",
+      number: 11,
+      title: "Read the file",
+      url: "https://github.com/me/work/issues/11",
+      repository: "me/work",
+      state: "closed",
+      closedAt: "2026-09-22T08:00:00Z",
+    });
+    expect(open).toMatchObject({ key: "I_two", state: "open", closedAt: "" });
+  });
+
+  test("the column rule answers for a child", () => {
+    const [closed, open] = readRelationship(byId, "I_parent").subIssues.children;
+    expect(automaticColumn(closed, null)).toBe("done");
+    expect(automaticColumn(open, null)).toBe("todo");
+  });
+
+  test("never throws, whatever GitHub answers", () => {
+    expect(readChildIssue(null)).toBe(null);
+    expect(readChildIssue({ number: 7 })).toBe(null);
+    expect(normalizeRelationships([{ __typename: "Issue", id: "I_x", subIssues: { nodes: [7, null] } }])).toMatchObject({
+      I_x: { subIssues: { children: [] } },
+    });
+  });
+});
+
+// The board asks again about the children it has just heard of, so a child
+// gets the same reading as any other card: the pull requests that would close
+// it, and whether their reviewers have been asked to look again (ADR 0010).
+describe("childIssueIds", () => {
+  test("names every child in the answer, once each", () => {
+    const nodes = [
+      { __typename: "Issue", id: "I_a", subIssues: { nodes: [{ id: "I_one" }, { id: "I_two" }] } },
+      { __typename: "Issue", id: "I_b", subIssues: { nodes: [{ id: "I_two" }] } },
+      { __typename: "Issue", id: "I_c" },
+    ];
+    expect(childIssueIds(nodes)).toEqual(["I_one", "I_two"]);
+  });
+
+  test("never throws, whatever GitHub answers", () => {
+    expect(childIssueIds(null)).toEqual([]);
+    expect(childIssueIds([null, 7, { subIssues: { nodes: [{}, { id: "" }] } }])).toEqual([]);
+  });
+});
+
+// "Nobody asked" and "nothing to say" are different answers, and only one of
+// them may become a state on the screen (ADR 0010).
+describe("knowsAbout", () => {
+  const byId = normalizeRelationships([{ __typename: "Issue", id: "I_asked" }]);
+
+  test("says whether GitHub was asked about this item", () => {
+    expect(knowsAbout(byId, "I_asked")).toBe(true);
+    expect(knowsAbout(byId, "I_never")).toBe(false);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(knowsAbout(null, "I_asked")).toBe(false);
+    expect(knowsAbout(byId, undefined)).toBe(false);
   });
 });
