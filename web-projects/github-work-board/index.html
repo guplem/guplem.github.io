@@ -149,6 +149,16 @@
           <label class="sort-label" for="refresh">Refresh</label>
           <!-- Filled from REFRESH_CHOICES, so a schedule exists in one place. -->
           <select id="refresh" class="select"></select>
+          <!-- Ask GitHub right now, whatever the schedule says. It reports how
+               long ago the board last heard anything, and it refuses to be
+               pressed again until the answer is in (ADR 0029). -->
+          <button id="refresh-now" type="button" class="button button-outline icon-only">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+              <path d="M21 3v6h-6" />
+            </svg>
+            <span class="visually-hidden">Refresh now</span>
+          </button>
         </div>
 
         <!-- One control for both screens. The arrow appears only on the way back,

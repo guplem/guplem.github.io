@@ -24,6 +24,40 @@ export function say(key, params = {}) {
   );
 }
 
+// How long ago, in the units a person would say it in.
+const SINCE = [
+  { unit: "day", ms: 24 * 60 * 60_000 },
+  { unit: "hour", ms: 60 * 60_000 },
+  { unit: "minute", ms: 60_000 },
+  { unit: "second", ms: 1000 },
+];
+
+/** Under this, a number is noise: the reader pressed it a moment ago. */
+const JUST_NOW_MS = 10_000;
+
+/**
+ * When the board last heard from GitHub, for the refresh button to say.
+ *
+ * The board asks again on its own (ADR 0025), so the reader cannot tell a quiet
+ * morning from a board that stopped asking. This is the sentence that tells
+ * them (ADR 0029).
+ *
+ * @param lastAt when the last read finished, in milliseconds, or null
+ * @param now the moment to measure against, in milliseconds
+ */
+export function describeLastRefresh(lastAt, now) {
+  if (typeof lastAt !== "number" || !Number.isFinite(lastAt)) return "Not refreshed yet";
+  // A clock that moved backwards must never say "refreshed in four hours".
+  const waited = Math.max(0, now - lastAt);
+  if (waited < JUST_NOW_MS) return "Refreshed just now";
+
+  for (const { unit, ms } of SINCE) {
+    const count = Math.floor(waited / ms);
+    if (count >= 1) return `Refreshed ${count} ${unit}${count === 1 ? "" : "s"} ago`;
+  }
+  return "Refreshed just now";
+}
+
 /**
  * What the menu offers about a note: writing the first one is a different act
  * from changing one that is already there.

@@ -58,6 +58,7 @@ import {
 } from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
 import {
+  describeLastRefresh,
   describeNotesSync,
   escapeHtml,
   noteMenuLabel,
@@ -131,6 +132,17 @@ const SAVE_DELAY_MS = 1200;
  * up, so the board asks the question often and acts on it rarely (ADR 0025).
  */
 const REFRESH_TICK_MS = 5000;
+
+/**
+ * How long the refresh button stays down after it is pressed.
+ *
+ * It is not a delay before asking: the asking starts at once. It is the
+ * shortest time the button can come back up, so a press that GitHub answers in
+ * 80 milliseconds still reads as something that happened, and so the button
+ * cannot be pressed ten times in a second and spend the rate limit ten times
+ * (ADR 0029).
+ */
+const MANUAL_REFRESH_REST_MS = 1000;
 const PROJECT_PATH = "web-projects/github-work-board";
 
 const storage = browserStorage();
@@ -1793,6 +1805,39 @@ function start() {
   // The pointer can leave through the edge of the window, which fires no
   // `mouseover` on the way out.
   document.documentElement.addEventListener("mouseleave", () => lightStack(""));
+
+  // Ask now, whatever the schedule says. The button reports when the board last
+  // heard anything, and it is read at the moment the reader asks rather than
+  // written once: a label that says "just now" for an hour is worse than none
+  // (ADR 0029).
+  const refreshNow = element("refresh-now");
+  const sayWhen = () => {
+    refreshNow.title = describeLastRefresh(state.lastReadAt, Date.now());
+  };
+  refreshNow.addEventListener("mouseenter", sayWhen);
+  refreshNow.addEventListener("focus", sayWhen);
+  sayWhen();
+
+  refreshNow.addEventListener("click", async () => {
+    // Nothing to ask with, or the board is already asking: a second read
+    // running beside the first spends the rate limit twice and answers the
+    // same question (ADR 0029).
+    if (refreshNow.disabled || state.loading || state.tokens.length === 0) return;
+    refreshNow.disabled = true;
+    refreshNow.setAttribute("aria-busy", "true");
+    try {
+      // Both, not either: the answer has to be in, and the button has to have
+      // been down long enough for the press to have read as one.
+      await Promise.all([
+        connectAll({ quiet: true }).catch(() => {}),
+        new Promise((resume) => setTimeout(resume, MANUAL_REFRESH_REST_MS)),
+      ]);
+    } finally {
+      refreshNow.disabled = false;
+      refreshNow.removeAttribute("aria-busy");
+      sayWhen();
+    }
+  });
 
   element("view-toggle").addEventListener("click", () => showView(state.viewToggleGoesTo ?? "settings"));
   element("empty-open-settings").addEventListener("click", () => showView("settings"));

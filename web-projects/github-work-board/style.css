@@ -1481,6 +1481,35 @@ textarea.input {
   margin: 0 0 0.75rem;
 }
 
+/**
+ * A button that is only an icon.
+ *
+ * The same height as the controls beside it, square, and the name it goes by
+ * lives in a `visually-hidden` span rather than in the picture, so a reader
+ * using a screen reader is told what it does (ADR 0004).
+ *
+ * It is not a `.button-*` variant and is not named like one: it carries no
+ * colour of its own and is worn with one that does, so the hover comes from
+ * that variant. `invariants.test.js` asks every `.button-*` for a hover state,
+ * and it is right to: a variant with none reads as a dead control.
+ */
+.icon-only {
+  width: 2.25rem;
+  padding: 0;
+}
+
+/* Asking is under way, or the answer has only just arrived. A button that can
+ * be pressed twice in a second spends the rate limit twice (ADR 0029). */
+.icon-only[aria-busy="true"] .icon {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* The number names the bottom of the stack, and hovering it says which pull
  * request that is, so it reads as a thing you can ask about. */
 .stack-number {
@@ -1709,15 +1738,6 @@ textarea.input {
   gap: 0.375rem;
   font-size: 0.8125rem;
   color: hsl(var(--muted-foreground));
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
 }
 
 @media (max-width: 30rem) {
