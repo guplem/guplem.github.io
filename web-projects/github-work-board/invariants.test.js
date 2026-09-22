@@ -13,6 +13,7 @@ import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
 import { DEFAULT_REFRESH, OFF } from "./refresh.js";
 import { SORT_OPTIONS, reviewSortId } from "./sorting.js";
+import { DEFAULT_RANGE, RANGE_PRESETS, readRange } from "./doneRange.js";
 import { buildSearch, readStateFromSearch } from "./urlState.js";
 import { COLUMN_IDS } from "./columns.js";
 import { KIND_FILTERS } from "./filters.js";
@@ -323,6 +324,29 @@ describe("a sort order named in a link keeps its name (ADR 0006)", () => {
       "updated-asc",
       "updated-desc",
     ]);
+  });
+});
+
+describe("a range of days named in a link keeps its name (ADR 0034)", () => {
+  // The days the last column is about travel in the address bar, so a renamed
+  // preset silently breaks every "what did we finish yesterday" link anybody
+  // saved, and a changed written form breaks the ones holding two dates.
+  test("these are the presets, and an id is never renamed", () => {
+    expect(RANGE_PRESETS.map((one) => one.id)).toEqual(["today", "yesterday", "last-7-days"]);
+    expect(DEFAULT_RANGE).toBe("today");
+  });
+
+  test("two days are written one way, and only that way is read back", () => {
+    expect(readRange("2026-09-15..2026-09-19")).toBe("2026-09-15..2026-09-19");
+    expect(readRange("15/09/2026-19/09/2026")).toBe(DEFAULT_RANGE);
+  });
+
+  // The column asks GitHub for a different window, so the range has to reach
+  // the call. Read the board file alone and this looks like a redraw.
+  test("changing the range asks GitHub again", () => {
+    const source = read("app.js");
+    expect(source).toContain("rangeBounds(state.doneRange");
+    expect(source).toMatch(/function chooseDoneRange[\s\S]*connectAll\(\{ quiet: true \}\)/);
   });
 });
 

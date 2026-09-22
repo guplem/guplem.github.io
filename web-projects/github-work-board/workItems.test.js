@@ -2,12 +2,11 @@ import { describe, expect, test } from "bun:test";
 import {
   countByKind,
   finishedAt,
-  finishedSince,
+  finishedBetween,
   normalizeWorkItem,
   normalizeWorkItems,
   ownersOf,
   uniqueByKey,
-  startOfToday,
   withoutItems,
 } from "./workItems.js";
 
@@ -236,20 +235,31 @@ describe("finishedAt", () => {
   });
 });
 
-describe("finishedSince", () => {
+describe("finishedBetween", () => {
   const merged = (number, when) =>
     normalizeWorkItem({ node_id: `PR_${number}`, number, pull_request: { merged_at: when }, state: "closed" });
 
   // GitHub's `since` filters on when a thing was last touched, not on when it
   // was finished, so it answers with work closed months ago that somebody
   // commented on this morning. This is the filter that makes the answer true.
-  test("keeps only what was finished at or after the moment asked for", () => {
+  test("keeps only what was finished inside the range asked for", () => {
     const list = [merged(1, "2026-09-21T09:00:00Z"), merged(2, "2026-08-01T09:00:00Z")];
-    expect(finishedSince(list, "2026-09-21T00:00:00Z").map((one) => one.number)).toEqual([1]);
+    expect(finishedBetween(list, "2026-09-21T00:00:00Z", "2026-09-22T00:00:00Z").map((one) => one.number)).toEqual([1]);
   });
 
-  test("keeps something finished exactly on the boundary", () => {
-    expect(finishedSince([merged(1, "2026-09-21T00:00:00Z")], "2026-09-21T00:00:00Z")).toHaveLength(1);
+  // The start counts and the end does not, so the moment one day's range stops
+  // is the moment the next day's starts and nothing is in both (ADR 0034).
+  test("the start is inside the range and the end is not", () => {
+    const at = (when) => finishedBetween([merged(1, when)], "2026-09-21T00:00:00Z", "2026-09-22T00:00:00Z");
+    expect(at("2026-09-21T00:00:00Z")).toHaveLength(1);
+    expect(at("2026-09-22T00:00:00Z")).toHaveLength(0);
+  });
+
+  // The column can be asked about a day that has already gone by, so work
+  // finished after the range is as wrong as work finished before it.
+  test("drops work finished after the range, not only before it", () => {
+    const list = [merged(1, "2026-09-19T09:00:00Z"), merged(2, "2026-09-25T09:00:00Z")];
+    expect(finishedBetween(list, "2026-09-18T00:00:00Z", "2026-09-20T00:00:00Z").map((one) => one.number)).toEqual([1]);
   });
 
   test("drops anything unfinished, whatever its dates say", () => {
@@ -260,31 +270,12 @@ describe("finishedSince", () => {
       state: "closed",
       closed_at: "2026-09-21T09:00:00Z",
     });
-    expect(finishedSince([abandoned], "2026-09-21T00:00:00Z")).toEqual([]);
+    expect(finishedBetween([abandoned], "2026-09-21T00:00:00Z", "2026-09-22T00:00:00Z")).toEqual([]);
   });
 
   test("never throws, whatever it is handed", () => {
-    expect(finishedSince(null, "2026-09-21T00:00:00Z")).toEqual([]);
-    expect(finishedSince([merged(1, "2026-09-21T09:00:00Z")], "not a date")).toEqual([]);
-  });
-});
-
-describe("startOfToday", () => {
-  // Today is the reader's today, in the clock on their wall, not UTC. A board
-  // opened at 00:30 in Barcelona must not still be showing yesterday.
-  test("is midnight of the day it is handed, in the reader's own clock", () => {
-    const middleOfDay = new Date(2026, 8, 21, 14, 30, 0);
-    const midnight = new Date(startOfToday(middleOfDay));
-    expect(midnight.getFullYear()).toBe(2026);
-    expect(midnight.getMonth()).toBe(8);
-    expect(midnight.getDate()).toBe(21);
-    expect(midnight.getHours()).toBe(0);
-    expect(midnight.getMinutes()).toBe(0);
-  });
-
-  test("is never after the moment it was asked about", () => {
-    const now = new Date(2026, 8, 21, 0, 0, 1);
-    expect(Date.parse(startOfToday(now))).toBeLessThanOrEqual(now.getTime());
+    expect(finishedBetween(null, "2026-09-21T00:00:00Z", "2026-09-22T00:00:00Z")).toEqual([]);
+    expect(finishedBetween([merged(1, "2026-09-21T09:00:00Z")], "not a date", "also not")).toEqual([]);
   });
 });
 

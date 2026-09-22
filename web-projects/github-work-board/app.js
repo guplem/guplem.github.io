@@ -40,6 +40,16 @@ import {
   colourableAreas,
 } from "./appearance.js";
 import { attentionReason } from "./attention.js";
+import {
+  DEFAULT_RANGE,
+  RANGE_PRESETS,
+  rangeBounds,
+  rangeDates,
+  rangeFromDates,
+  rangeHint,
+  rangeLabel,
+  readRange,
+} from "./doneRange.js";
 import { AUTOMATIC, COLUMNS, attentionFor, columnFor, groupIntoColumns, moveOptions, stateLabel } from "./columns.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
@@ -127,10 +137,9 @@ import { encodeTokenBackup, looksLikeBackup, readTokenBackup } from "./tokenBack
 import { describeTokenReach, suggestedTokenName } from "./tokenIdentity.js";
 import {
   countByKind,
-  finishedSince,
+  finishedBetween,
   normalizeWorkItems,
   ownersOf,
-  startOfToday,
   uniqueByKey,
   withoutItems,
 } from "./workItems.js";
@@ -201,6 +210,10 @@ const state = {
   warningRead: false,
   onWarningAccepted: null,
   sortId: DEFAULT_SORT_ID,
+  // Which days the last column is about, and whether its picker is open. The
+  // range travels in the link; the open picker lasts for this visit (ADR 0034).
+  doneRange: DEFAULT_RANGE,
+  donePickerOpen: false,
   // How often this browser asks GitHub again, the timer that asks, and when the
   // last answer arrived. The schedule stays in this browser, because it decides
   // what this device spends of the reader's rate limit (ADR 0025).
@@ -1405,6 +1418,114 @@ function buildGroupCard({ item, children }) {
   return card;
 }
 
+/**
+ * The days the last column is about, and the control that changes them.
+ *
+ * A standup asks "what did you finish yesterday", and on a Monday it asks
+ * about last week, so the column takes a range rather than only today. Three
+ * presets are the words people use out loud; the two date boxes are the
+ * calendar for everything else, and a browser draws them itself (ADR 0034).
+ */
+function buildDoneRange() {
+  const open = state.donePickerOpen;
+  const toggle = document.createElement("button");
+  toggle.type = "button";
+  // Not the card's own `icon-button`: that one is positioned in the corner of
+  // the card it belongs to, and this one sits in a row of headings.
+  toggle.className = "done-range-toggle";
+  toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  toggle.append(buildCalendarIcon());
+  explain(toggle, "Choose which days this column is about");
+  toggle.addEventListener("click", () => {
+    state.donePickerOpen = !state.donePickerOpen;
+    renderBoard();
+  });
+
+  // The panel sits under the whole heading rather than under the press, so it
+  // takes the width of the column and nothing has to be positioned by hand.
+  if (!open) return { toggle, panel: null };
+
+  const panel = document.createElement("div");
+  panel.className = "done-range-panel";
+
+  const presets = document.createElement("div");
+  presets.className = "chips";
+  presets.setAttribute("role", "group");
+  presets.setAttribute("aria-label", "Which days this column is about");
+  for (const preset of RANGE_PRESETS) {
+    presets.append(
+      buildChip(preset.label, state.doneRange === preset.id, () => {
+        chooseDoneRange(preset.id);
+      }),
+    );
+  }
+  panel.append(presets);
+
+  // The browser draws the calendar, in the reader's own language and with
+  // their own first day of the week. Nothing here has to.
+  const dates = rangeDates(state.doneRange, new Date());
+  const row = document.createElement("div");
+  row.className = "field-row done-range-dates";
+  const from = document.createElement("input");
+  from.type = "date";
+  from.className = "input";
+  from.value = dates.from;
+  from.setAttribute("aria-label", "First day");
+  const to = document.createElement("input");
+  to.type = "date";
+  to.className = "input";
+  to.value = dates.to;
+  to.setAttribute("aria-label", "Last day");
+  const apply = document.createElement("button");
+  apply.type = "button";
+  apply.className = "button button-outline";
+  apply.textContent = "Show";
+  apply.addEventListener("click", () => {
+    chooseDoneRange(rangeFromDates(from.value, to.value));
+  });
+  row.append(from, to, apply);
+  panel.append(row);
+
+  return { toggle, panel };
+}
+
+/** The calendar on the press that opens the picker. */
+function buildCalendarIcon() {
+  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  drawing.setAttribute("viewBox", "0 0 24 24");
+  drawing.setAttribute("aria-hidden", "true");
+  drawing.setAttribute("focusable", "false");
+  drawing.setAttribute("class", "icon");
+  for (const d of ["M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z", "M3 10h18", "M8 3v4", "M16 3v4"]) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    line.setAttribute("d", d);
+    drawing.append(line);
+  }
+  return drawing;
+}
+
+/**
+ * Show a different set of days in the last column.
+ *
+ * The range decides what the board asks GitHub for, so it takes a read rather
+ * than only a redraw. The read is quiet: the board already holds a good answer
+ * for every other column, and replacing a good answer with placeholders would
+ * make a change of days look like a reload (ADR 0029).
+ */
+function chooseDoneRange(range) {
+  const chosen = readRange(range);
+  if (chosen === state.doneRange) {
+    state.donePickerOpen = false;
+    renderBoard();
+    return;
+  }
+  state.doneRange = chosen;
+  state.donePickerOpen = false;
+  rememberUrl();
+  renderBoard();
+  connectAll({ quiet: true }).catch(() => {});
+}
+
 /** One column: its name, how much is in it, and the cards. */
 function buildColumn({ column, groups }, counted) {
   const section = document.createElement("section");
@@ -1415,10 +1536,14 @@ function buildColumn({ column, groups }, counted) {
   const head = document.createElement("div");
   head.className = "column-head";
 
+  // The last column says which days it is about, because the reader can move
+  // it off today and a heading that still said "Done today" would be a lie
+  // (ADR 0034).
+  const isDone = column.id === "done";
   const name = document.createElement("h3");
   name.className = "column-name";
-  name.textContent = column.label;
-  explain(name, column.hint);
+  name.textContent = isDone ? rangeLabel(state.doneRange, new Date()) : column.label;
+  explain(name, isDone ? rangeHint(state.doneRange, new Date()) : column.hint);
 
   // The number the reader asked for, which is not always how many cards are
   // there: a part of the board can be set to leave out the work pushed down,
@@ -1429,20 +1554,25 @@ function buildColumn({ column, groups }, counted) {
   const left = describeExcluded(counted?.excluded ?? 0);
   explain(count, left);
   head.append(name, count);
+  const picker = isDone ? buildDoneRange() : null;
+  if (picker) head.append(picker.toggle);
 
   const list = document.createElement("ul");
   list.className = "issues";
   list.replaceChildren(...groups.map(buildGroupCard));
 
+  section.append(head);
+  if (picker?.panel) section.append(picker.panel);
+
   if (groups.length === 0) {
     const empty = document.createElement("p");
     empty.className = "column-empty";
     empty.textContent = "Nothing here";
-    section.append(head, empty);
+    section.append(empty);
     return section;
   }
 
-  section.append(head, list);
+  section.append(list);
   return section;
 }
 
@@ -1910,12 +2040,14 @@ async function inspectToken(entry) {
   const owners = ownersOf(items.map((item) => item.repository));
   updated = { ...updated, owners, itemCount: items.length };
 
-  // What landed today. A second question, because the first one asks only for
-  // open work and a merged pull request is closed (ADR 0017). A token that
-  // cannot answer it costs the board nothing but an empty "Done today".
-  const since = startOfToday(new Date());
+  // What landed in the days the last column is about. A second question,
+  // because the first one asks only for open work and a merged pull request is
+  // closed (ADR 0017). A token that cannot answer it costs the board nothing
+  // but an empty last column. The range is the reader's, and defaults to today
+  // (ADR 0034).
+  const { from: since, to: until } = rangeBounds(state.doneRange, new Date());
   const closed = await fetchFinishedWork(entry.token, since);
-  const finished = closed.ok ? finishedSince(normalizeWorkItems(closed.data), since) : [];
+  const finished = closed.ok ? finishedBetween(normalizeWorkItems(closed.data), since, until) : [];
   // Back to the raw rows, so the one merge in `connectAll` still de-duplicates
   // everything two tokens both see. The token's own name and count stay on its
   // open work: what it finished is not a measure of what it reaches (ADR 0007).
@@ -2159,6 +2291,7 @@ function start() {
   state.kind = asked.kind;
   state.repositories = asked.repositories;
   state.labels = asked.labels;
+  state.doneRange = asked.doneRange;
   renderFilters();
   const sortField = element("sort");
   sortField.replaceChildren(

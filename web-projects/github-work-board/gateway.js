@@ -78,6 +78,10 @@ export function fetchAssignedIssues(token) {
   });
 }
 
+/** How many closed items one page holds, and how many pages the board will ask for. */
+export const FINISHED_PAGE_SIZE = 100;
+export const FINISHED_MAX_PAGES = 5;
+
 /**
  * The work assigned to this token's owner that has already closed.
  *
@@ -86,13 +90,33 @@ export function fetchAssignedIssues(token) {
  *
  * `since` filters on when a thing was last touched, not on when it closed, so
  * this answer also holds work closed months ago that somebody commented on
- * this morning. `workItems.finishedSince` is what narrows it to the truth.
+ * this morning. `workItems.finishedBetween` is what narrows it to the truth.
+ *
+ * **It follows the pages.** One day of finished work fits in one page and the
+ * loop stops after it, but the last column can be asked about a whole week,
+ * which was measured at more than a hundred items on a real account. Without
+ * this, a week would quietly under-report (ADR 0034). Five pages is the stop:
+ * a reader asking about a range that big is past what a board can show anyway,
+ * and an unbounded loop on somebody's rate limit is not a thing to ship.
+ *
+ * A page that fails after the first one keeps what already arrived: a partial
+ * answer to "what finished last week" beats no answer at all.
  */
-export function fetchFinishedWork(token, since) {
+export async function fetchFinishedWork(token, since) {
   const from = encodeURIComponent(typeof since === "string" ? since : "");
-  return call(token, `/issues?filter=assigned&state=closed&since=${from}&sort=updated&per_page=100`, {
-    need: PERMISSIONS.issuesRead,
-  });
+  const all = [];
+  for (let page = 1; page <= FINISHED_MAX_PAGES; page += 1) {
+    const answer = await call(
+      token,
+      `/issues?filter=assigned&state=closed&since=${from}&sort=updated&per_page=${FINISHED_PAGE_SIZE}&page=${page}`,
+      { need: PERMISSIONS.issuesRead },
+    );
+    if (!answer.ok) return page === 1 ? answer : { ok: true, data: all };
+    const rows = Array.isArray(answer.data) ? answer.data : [];
+    all.push(...rows);
+    if (rows.length < FINISHED_PAGE_SIZE) break;
+  }
+  return { ok: true, data: all };
 }
 
 /**

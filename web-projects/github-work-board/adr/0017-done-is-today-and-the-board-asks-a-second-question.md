@@ -30,6 +30,13 @@ decided the window, not taste.
 
 **Keep the column, name it "Done today", and ask a second question to fill it.**
 
+> **Note (2026-09):** the column now takes a range of days, chosen on the
+> column itself and carried in the link, because a standup asks about
+> yesterday and not about today. Today is still the default and every rule
+> below still holds; where this page says "midnight" or "today", read "the
+> start of the chosen range", which `doneRange.js` works out in the same
+> clock. ADR 0034 holds that decision.
+
 - `fetchFinishedWork(token, since)` asks
   `GET /issues?filter=assigned&state=closed&since=<midnight>`, once per token,
   beside the question the board already asks.
@@ -37,8 +44,8 @@ decided the window, not taste.
   midnight in Barcelona must not still be showing yesterday's work as today's.
 - **`since` is not enough on its own.** It filters on when a thing was last
   touched, not on when it closed, so the answer holds work closed months ago
-  that somebody commented on this morning. `finishedSince` narrows it to the
-  truth.
+  that somebody commented on this morning. `finishedBetween` narrows it to the
+  truth, at both ends.
 - **Only finished work counts.** A pull request closed without merging is
   abandoned, not done, and reporting it as done would claim work that never
   shipped. ADR 0011 already said a closed unmerged pull request counts for
@@ -63,14 +70,14 @@ kind of empty from the one this fixes. It fills as the day goes, and it says
 what it means. The old column was empty at four in the afternoon after a day of
 merging, which is the one that could only be read as broken.
 
-**The window is one constant.** Somebody who wants two days changes
-`startOfToday`. The measurement above is why it is not a week.
+**The window was one constant, and is now the reader's** (2026-09, ADR 0034).
+The measurement above is why a week is not the *default*, and it is why the
+call had to learn to follow pages before a week could be asked for at all.
 
-**A day with a lot of merging can outgrow one page.** The call takes
-`per_page=100`, and the board does not follow the next page. On the numbers
-above that is about eight ordinary days of work in one day, so it is a real
-limit and not a near one. If it is ever hit, the column under-reports; it never
-shows anything untrue.
+**A day with a lot of merging can outgrow one page**, and a week of it can
+outgrow five. The call takes `per_page=100` and now follows up to five pages,
+stopping at the first short one (2026-09, ADR 0034). Past five hundred finished
+items the column under-reports; it never shows anything untrue.
 
 **Rejected: removing the column.** It is the cheapest fix and it throws away the
 end of the board. A work board with no "finished" is a board that never closes

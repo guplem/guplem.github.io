@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { DEFAULT_RANGE } from "./doneRange.js";
 import { DEFAULT_KIND } from "./filters.js";
 import { DEFAULT_SORT_ID } from "./sorting.js";
 import { DEFAULT_VIEW, VIEWS, buildSearch, readStateFromSearch } from "./urlState.js";
@@ -11,6 +12,7 @@ const DEFAULTS = {
   labels: [],
   assignees: [],
   reviewers: [],
+  doneRange: DEFAULT_RANGE,
 };
 
 describe("the add-token view", () => {
@@ -100,6 +102,7 @@ describe("buildSearch", () => {
       labels: ["bug"],
       assignees: ["ana"],
       reviewers: ["leo"],
+      doneRange: "2026-09-15..2026-09-19",
     };
     expect(readStateFromSearch(buildSearch(state))).toEqual(state);
   });
@@ -145,5 +148,23 @@ describe("the two person filters travel in the link (ADR 0009, ADR 0028)", () =>
   // into one parameter: the rule is the encoder's, not the value's (ADR 0009).
   test("a person is encoded like every other value", () => {
     expect(buildSearch({ ...DEFAULTS, assignees: ["a b"] })).toContain("assignee=a+b");
+  });
+});
+
+// The days the last column is about travel in the link, so a "what did we do
+// yesterday" board is one paste in the standup chat (ADR 0034).
+describe("the range of the Done column", () => {
+  test("a range that is not today is written, and today is left out", () => {
+    expect(buildSearch({ doneRange: "yesterday" })).toBe("?done=yesterday");
+    expect(buildSearch({ doneRange: "2026-09-15..2026-09-19" })).toBe("?done=2026-09-15..2026-09-19");
+    expect(buildSearch({ doneRange: "today" })).toBe("");
+    expect(buildSearch({})).toBe("");
+  });
+
+  test("the link is read back, and anything unreadable is today", () => {
+    expect(readStateFromSearch("?done=last-7-days").doneRange).toBe("last-7-days");
+    expect(readStateFromSearch("?done=2026-09-19").doneRange).toBe("2026-09-19..2026-09-19");
+    expect(readStateFromSearch("?done=whenever").doneRange).toBe("today");
+    expect(readStateFromSearch("").doneRange).toBe("today");
   });
 });

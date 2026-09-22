@@ -153,29 +153,25 @@ export function finishedAt(item) {
 }
 
 /**
- * The work finished at or after one moment.
+ * The work finished inside one range: at or after `since`, and before `until`.
  *
  * GitHub's `since` filters on when a thing was last touched, not on when it
  * was finished, so the answer holds work closed months ago that somebody
- * commented on this morning. This is the filter that makes "Done today" true.
+ * commented on this morning. This is the filter that makes the last column
+ * true, whichever days it is asked about (ADR 0017, ADR 0034).
+ *
+ * The start counts and the end does not, so one day's range stops exactly
+ * where the next day's starts and nothing sits in both.
  */
-export function finishedSince(items, since) {
+export function finishedBetween(items, since, until) {
   const from = Date.parse(typeof since === "string" ? since : "");
-  if (Number.isNaN(from)) return [];
+  const to = Date.parse(typeof until === "string" ? until : "");
+  if (Number.isNaN(from) || Number.isNaN(to)) return [];
   return (Array.isArray(items) ? items : []).filter((item) => {
     const when = Date.parse(finishedAt(item));
-    return !Number.isNaN(when) && when >= from;
+    return !Number.isNaN(when) && when >= from && when < to;
   });
 }
 
-/**
- * Midnight at the start of the reader's day.
- *
- * Their own clock, not UTC: a board opened at half past midnight in Barcelona
- * must not still be showing yesterday's work as today's.
- */
-export function startOfToday(now = new Date()) {
-  const day = new Date(now);
-  day.setHours(0, 0, 0, 0);
-  return day.toISOString();
-}
+// Where a day starts and stops is `doneRange.js`, which owns every boundary
+// the last column is measured by, in the reader's own clock (ADR 0034).

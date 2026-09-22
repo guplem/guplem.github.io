@@ -33,7 +33,7 @@ Six columns, in the order work travels:
 | Needs attention | The branch conflicts, a check came back red, or a reviewer asked for changes and has not been asked to look again |
 | Awaiting review | A reviewer was asked by name, no verdict yet |
 | Ready to merge | Approved |
-| Done today | Finished since midnight (ADR 0017) |
+| Done today | Finished inside the chosen range, since midnight by default (ADR 0017, ADR 0034) |
 
 **One column holds everything that wants the author** (added 2026-09). A
 reviewer asking for changes, a check that went red and a branch that no longer
