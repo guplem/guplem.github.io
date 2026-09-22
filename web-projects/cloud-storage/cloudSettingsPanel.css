@@ -1,0 +1,333 @@
+/* The cloud storage settings panel, in any page that mounts it.
+ *
+ * Every colour and size comes from a `--cs-*` custom property with a neutral
+ * default, so the panel takes the host page's look when the host sets them
+ * and still reads well when it sets nothing. The work board maps its own
+ * tokens onto these; the Cloud storage page maps the site's. */
+
+.cs-panel {
+  --cs-fg: var(--cs-foreground, #1a1a24);
+  --cs-muted: var(--cs-muted-foreground, #6b6b80);
+  --cs-bg: var(--cs-background, #ffffff);
+  --cs-line: var(--cs-border, #d9dbe3);
+  --cs-accent: var(--cs-primary, #1f5fbf);
+  --cs-accent-fg: var(--cs-primary-foreground, #ffffff);
+  --cs-ok: var(--cs-success, #1e7d4a);
+  --cs-bad: var(--cs-destructive, #b3261e);
+  --cs-radius: var(--cs-radius-md, 10px);
+  color: var(--cs-fg);
+  font: inherit;
+  line-height: 1.5;
+}
+
+.cs-panel * {
+  box-sizing: border-box;
+}
+
+.cs-panel p,
+.cs-panel ul,
+.cs-panel h3,
+.cs-panel h4 {
+  margin: 0;
+}
+
+.cs-panel > * + * {
+  margin-top: 1.25rem;
+}
+
+.cs-section > * + * {
+  margin-top: 0.6rem;
+}
+
+.cs-heading {
+  font-size: 1.05rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.cs-help {
+  color: var(--cs-muted);
+  font-size: 0.9rem;
+}
+
+.cs-badge {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--cs-line);
+  color: var(--cs-muted);
+  background: transparent;
+}
+
+.cs-badge[data-state="ok"] {
+  color: var(--cs-ok);
+  border-color: color-mix(in srgb, var(--cs-ok) 40%, transparent);
+  background: color-mix(in srgb, var(--cs-ok) 10%, transparent);
+}
+
+.cs-badge[data-state="broken"] {
+  color: var(--cs-bad);
+  border-color: color-mix(in srgb, var(--cs-bad) 40%, transparent);
+  background: color-mix(in srgb, var(--cs-bad) 10%, transparent);
+}
+
+.cs-badge[data-state="checking"] {
+  color: var(--cs-accent);
+  border-color: color-mix(in srgb, var(--cs-accent) 40%, transparent);
+}
+
+.cs-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.cs-input {
+  flex: 1 1 12rem;
+  min-width: 0;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--cs-line);
+  border-radius: var(--cs-radius);
+  background: var(--cs-bg);
+  color: var(--cs-fg);
+  font: inherit;
+}
+
+.cs-input:focus-visible {
+  outline: 2px solid var(--cs-accent);
+  outline-offset: 1px;
+}
+
+.cs-button {
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--cs-radius);
+  border: 1px solid var(--cs-line);
+  background: var(--cs-bg);
+  color: var(--cs-fg);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 100ms ease;
+}
+
+.cs-button:hover {
+  background: color-mix(in srgb, var(--cs-fg) 6%, var(--cs-bg));
+}
+
+.cs-button:active {
+  transform: translateY(1px);
+}
+
+.cs-button:focus-visible {
+  outline: 2px solid var(--cs-accent);
+  outline-offset: 2px;
+}
+
+.cs-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.cs-button-primary {
+  background: var(--cs-accent);
+  border-color: var(--cs-accent);
+  color: var(--cs-accent-fg);
+}
+
+.cs-button-primary:hover {
+  background: color-mix(in srgb, var(--cs-accent) 88%, black);
+}
+
+.cs-button-danger {
+  color: var(--cs-bad);
+  border-color: color-mix(in srgb, var(--cs-bad) 45%, transparent);
+}
+
+.cs-button-danger:hover {
+  background: color-mix(in srgb, var(--cs-bad) 8%, transparent);
+}
+
+.cs-button-small {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.85rem;
+}
+
+.cs-steps {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cs-step {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--cs-line);
+  border-radius: var(--cs-radius);
+}
+
+.cs-step-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.cs-step-body > * + * {
+  margin-top: 0.4rem;
+}
+
+.cs-list {
+  padding-left: 1.2rem;
+}
+
+.cs-list li + li {
+  margin-top: 0.25rem;
+}
+
+.cs-callout {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--cs-radius);
+  background: color-mix(in srgb, var(--cs-accent) 8%, transparent);
+  font-size: 0.9rem;
+}
+
+.cs-checks {
+  list-style: none;
+  padding: 0;
+  border: 1px solid var(--cs-line);
+  border-radius: var(--cs-radius);
+}
+
+.cs-check {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  align-items: flex-start;
+}
+
+.cs-check + .cs-check {
+  border-top: 1px solid var(--cs-line);
+}
+
+.cs-check .cs-badge {
+  flex: none;
+  margin-top: 0.15rem;
+}
+
+.cs-check-label {
+  font-weight: 500;
+}
+
+.cs-check-detail {
+  color: var(--cs-muted);
+  font-size: 0.9rem;
+}
+
+.cs-check[data-ok="false"] .cs-check-detail {
+  color: var(--cs-fg);
+}
+
+.cs-table-wrap {
+  overflow-x: auto;
+}
+
+.cs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.cs-table th,
+.cs-table td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--cs-line);
+  vertical-align: top;
+}
+
+.cs-table th {
+  font-weight: 600;
+  color: var(--cs-muted);
+  font-size: 0.8rem;
+}
+
+.cs-copy-state {
+  font-weight: 500;
+}
+
+.cs-status {
+  min-height: 1.4em;
+  font-size: 0.9rem;
+  color: var(--cs-muted);
+}
+
+.cs-compact {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+
+.cs-dialog {
+  border: 1px solid var(--cs-line);
+  border-radius: var(--cs-radius);
+  background: var(--cs-bg);
+  color: var(--cs-fg);
+  padding: 1.25rem;
+  max-width: min(32rem, calc(100vw - 2rem));
+  font: inherit;
+}
+
+.cs-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.cs-dialog h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.cs-dialog > * + * {
+  margin-top: 0.75rem;
+}
+
+.cs-answers {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.cs-answer {
+  text-align: left;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.cs-answer small {
+  color: var(--cs-muted);
+  font-weight: 400;
+}
+
+.cs-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .cs-step {
+    grid-template-columns: 1fr;
+  }
+}

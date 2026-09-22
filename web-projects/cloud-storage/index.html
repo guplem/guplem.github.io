@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../resources/images/webicon.webp" />
+    <title>Cloud storage · Playground</title>
+    <meta name="description" content="Where the projects on this site keep your data: one private GitHub repository you own, or this browser alone." />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://triunitystudios.com/web-projects/cloud-storage/" />
+
+    <link rel="preload" href="../../resources/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../css/global/fonts.css" />
+
+    <!-- The site's design tokens and base typography, like the Playground index.
+         This page is part of the Playground, not one of its projects (root ADR 0016). -->
+    <link rel="stylesheet" href="../../css/global/variables.css" />
+    <link rel="stylesheet" href="../../css/global/base.css" />
+    <link rel="stylesheet" href="cloudSettingsPanel.css" />
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Written by `bun scripts/generateDeployStamp.js` and checked on every pull request (root ADR 0013). -->
+    <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="211" />
+  <meta name="deploy-date" content="2026-09-22T13:27:37.000Z" />
+<!-- END GENERATED:DEPLOY -->
+  </head>
+
+  <body>
+    <div class="topbar">
+      <a class="back-link" href="../">← Playground</a>
+    </div>
+
+    <header class="page-header">
+      <h1>Cloud storage</h1>
+      <p class="subtitle">
+        Where the projects on this site keep your data. One private GitHub repository you own, or this browser alone.
+      </p>
+    </header>
+
+    <main>
+      <section id="cloud-settings" class="card" aria-label="Cloud storage settings"></section>
+
+      <section class="card explain" aria-labelledby="how-heading">
+        <h2 id="how-heading">How it works</h2>
+        <p>
+          A project that keeps something you made, a game save, a history, a list, saves it in this browser first.
+          When a token and a repository are set up here, it also saves it to that repository, in a folder named
+          <code>triunity-studios-data</code>, one sub-folder per project. Open the same project on another device
+          with the same token, and your data is there.
+        </p>
+        <p>
+          Two devices editing at once do not overwrite each other: every record carries the time it was written, and
+          the newer one wins, record by record. The first time a device finds data both here and in the cloud, it asks
+          you which to keep. Merge keeps both.
+        </p>
+        <p>
+          Nothing here has a server. The token stays in this browser and is sent to <code>api.github.com</code> and
+          nowhere else. Forgetting the token leaves every local copy where it is.
+        </p>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p id="deploy-line"></p>
+      <p>Part of <a href="../">the Playground</a>.</p>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+/* The Cloud storage page. Layout only; the panel's own look is in
+ * cloudSettingsPanel.css, and this page maps the site's tokens onto it. */
+
+body {
+  margin: 0;
+  background: var(--bg-light);
+  color: var(--text-body);
+  font-family: var(--font);
+  line-height: var(--leading-normal);
+}
+
+.topbar {
+  padding: var(--sp-sm) var(--sp-md);
+}
+
+.back-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+.page-header {
+  text-align: center;
+  padding: var(--sp-md) var(--sp-md) var(--sp-lg);
+}
+
+.page-header h1 {
+  margin: 0 0 var(--sp-xs);
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin: 0 auto;
+  max-width: 40rem;
+  color: var(--text-muted);
+}
+
+main {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 0 var(--sp-md) var(--sp-lg);
+  display: grid;
+  gap: var(--sp-md);
+}
+
+.card {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--sp-md);
+  --cs-foreground: var(--text-primary);
+  --cs-muted-foreground: var(--text-muted);
+  --cs-background: var(--bg-white);
+  --cs-border: #d4d8e2;
+  --cs-primary: var(--accent-secondary);
+  --cs-primary-foreground: #ffffff;
+  --cs-radius-md: var(--radius-sm);
+}
+
+.explain h2 {
+  margin: 0 0 var(--sp-xs);
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.explain p + p {
+  margin-top: var(--sp-xs);
+}
+
+.explain code {
+  font-size: 0.9em;
+  background: var(--bg-light);
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+}
+
+.page-footer {
+  text-align: center;
+  padding: var(--sp-lg) var(--sp-md) var(--sp-xl);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.page-footer p {
+  margin: 0.25rem 0;
+}

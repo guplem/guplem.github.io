@@ -136,3 +136,39 @@ export function isReconciled(storage, project, file) {
 export function markReconciled(storage, project, file, now) {
   writeJson(storage, STORAGE_KEYS.reconciled, { ...readFlags(storage), [`${project}/${file}`]: String(now) });
 }
+
+/**
+ * Every local mirror this browser holds, read by its key.
+ *
+ * The settings page has no list of projects: a project that adopts the standard
+ * registers nowhere. So the page reads the storage keys that start with the
+ * folder name, which is the one thing every mirror key shares.
+ */
+export function listMirrors(storage) {
+  const found = [];
+  try {
+    const prefix = `${DATA_FOLDER}.`;
+    for (let index = 0; index < (storage?.length ?? 0); index += 1) {
+      const key = storage.key(index);
+      if (typeof key !== "string" || !key.startsWith(prefix)) continue;
+      const rest = key.slice(prefix.length);
+      const dot = rest.indexOf(".");
+      if (dot <= 0) continue;
+      const document = readJson(storage, key, null);
+      if (document) found.push({ project: rest.slice(0, dot), file: rest.slice(dot + 1), document });
+    }
+  } catch {
+    return [];
+  }
+  return found;
+}
+
+/** GitHub's own form for a new private repository, with the name filled in. */
+export function newRepoUrl(name) {
+  return `https://github.com/new?name=${encodeURIComponent(name)}&visibility=private`;
+}
+
+/** The repository on GitHub. */
+export function repoUrl({ owner, repo }) {
+  return `https://github.com/${owner}/${repo}`;
+}
