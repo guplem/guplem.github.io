@@ -101,6 +101,7 @@ import {
 import { skeletonCount } from "./skeletons.js";
 import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
 import { cardMenuRows } from "./cardMenu.js";
+import { CHILDREN_SHOWN, orderChildren } from "./children.js";
 import { EXAMPLE_ACTIONS, PLACEHOLDERS, fillCopyTemplate } from "./copyActions.js";
 import { readTitle } from "./titles.js";
 import { initialsOf, personLabel } from "./people.js";
@@ -176,6 +177,10 @@ const state = {
   // Cards whose note box is open although the note is still empty. Only for
   // this visit: a box somebody opened and left empty is not worth saving.
   notesOpen: new Set(),
+  // Parents whose whole list of children is open. Only for this visit, and the
+  // list is rebuilt on every refresh, so it has to outlive the elements it
+  // belongs to (ADR 0032).
+  childrenOpen: new Set(),
   // What the last connection proved about each token, keyed by its id. The
   // checks live inside the token they are about, folded (ADR 0018).
   checks: {},
@@ -488,7 +493,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     card.append(buildLinkLine("Blocked by", blockers));
   }
 
-  if (relationship.subIssues.total > 0) card.append(buildChildren(relationship.subIssues));
+  if (relationship.subIssues.total > 0) card.append(buildChildren(item, relationship.subIssues));
 
   // The box is not there until there is a note in it, or until the reader asks
   // for one from the menu. An empty box on every card is forty invitations to
@@ -1068,7 +1073,7 @@ function buildLinkLine(label, links) {
  * the rule, so the parent's list can never disagree with the child's own card
  * (ADR 0011).
  */
-function buildChildRow(child) {
+function buildChildRow({ item: child, columnId }) {
   const row = document.createElement("li");
   row.className = "child";
 
@@ -1085,14 +1090,29 @@ function buildChildRow(child) {
   // Only a child the board actually asked GitHub about gets a state. It asks
   // about one batch of children, so a board with a great many says nothing
   // about the last of them rather than reading them all as "To do" (ADR 0010).
-  if (knowsAbout(state.links, child.key)) {
-    const where = columnFor(child, readRelationship(state.links, child.key), readColumn(state.board, child.key));
+  if (columnId !== "") {
     const badge = document.createElement("span");
     badge.className = "badge badge-outline child-state";
-    badge.textContent = stateLabel(where);
+    badge.textContent = stateLabel(columnId);
+    // The colour the reader painted that column, so the state on a child reads
+    // as the place it would sit rather than as a word to be looked up
+    // (ADR 0024, ADR 0032).
+    paint(badge, columnId);
     row.append(badge);
   }
   return row;
+}
+
+/** The column each child is in, or "" when the board never asked about it. */
+function childRows(children) {
+  return orderChildren(
+    children.map((child) => ({
+      item: child,
+      columnId: knowsAbout(state.links, child.key)
+        ? columnFor(child, readRelationship(state.links, child.key), readColumn(state.board, child.key))
+        : "",
+    })),
+  );
 }
 
 /**
@@ -1102,10 +1122,12 @@ function buildChildRow(child) {
  * list is the answer to "what is my team actually doing", which is the question
  * a parent issue exists to ask.
  *
- * GitHub is asked for the first few children only, so a parent with more says
- * how many are not on the card.
+ * A card shows the five that want a person most and folds the rest away, so a
+ * parent with twenty children is still a card (ADR 0032). What GitHub did not
+ * answer with is a link to the issue itself, because "and 7 more" with nowhere
+ * to go is worse than not saying it.
  */
-function buildChildren(subIssues) {
+function buildChildren(item, subIssues) {
   const box = document.createElement("div");
   box.className = "issue-children";
 
@@ -1119,20 +1141,46 @@ function buildChildren(subIssues) {
   heading.append(label, value);
   box.append(heading);
 
-  if (subIssues.children.length > 0) {
+  const rows = childRows(subIssues.children);
+  const open = state.childrenOpen.has(item.key);
+  if (rows.length > 0) {
     const list = document.createElement("ul");
     list.className = "children";
-    list.replaceChildren(...subIssues.children.map(buildChildRow));
+    list.replaceChildren(...(open ? rows : rows.slice(0, CHILDREN_SHOWN)).map(buildChildRow));
     box.append(list);
   }
 
+  const foot = document.createElement("p");
+  foot.className = "children-foot";
+
+  const folded = rows.length - CHILDREN_SHOWN;
+  if (folded > 0) {
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "button button-ghost children-toggle";
+    toggle.textContent = open ? "Show fewer" : `Show all ${rows.length}`;
+    toggle.addEventListener("click", () => {
+      if (open) state.childrenOpen.delete(item.key);
+      else state.childrenOpen.add(item.key);
+      renderBoard();
+    });
+    foot.append(toggle);
+  }
+
+  // Only what GitHub did not answer with at all. The folded ones are one press
+  // away and are not "more on GitHub".
   const missing = subIssues.total - subIssues.children.length;
   if (missing > 0) {
-    const more = document.createElement("p");
+    const more = document.createElement("a");
     more.className = "children-more";
+    more.href = item.url;
+    more.target = "_blank";
+    more.rel = "noopener";
     more.textContent = `and ${missing} more on GitHub`;
-    box.append(more);
+    foot.append(more);
   }
+
+  if (foot.childElementCount > 0) box.append(foot);
   return box;
 }
 

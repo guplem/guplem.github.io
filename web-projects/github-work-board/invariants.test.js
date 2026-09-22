@@ -622,6 +622,6 @@ describe("a child on its parent's card (ADR 0010, ADR 0011)", () => {
   test("the query stays the size the measured budget was measured at", () => {
     const query = read("gateway.js");
     expect(query).toContain("closedByPullRequestsReferences(first: 5, includeClosedPrs: true)");
-    expect(query).toContain("subIssues(first: 10)");
+    expect(query).toContain("subIssues(first: 20)");
   });
 });
