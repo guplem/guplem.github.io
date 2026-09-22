@@ -72,3 +72,5 @@ reader to know which token owns the repository before they can read it.
 **Rejected: writing a new sentence for each failure.** `githubErrors.js`
 already turns a failed call into a sentence naming the permission to add, and a
 second wording would drift from it.
+
+> **Note (2026-09):** the badge now lives in the shared cloud storage panel that Settings mounts, driven by `cloudMessages.describeSync` over the three checks the store runs (identity, repository, folder). The board itself speaks only when a save is not getting through: the store's `onStatus` puts that sentence in the board's status line. "This device only" is a state the badge shows, not a fault (root ADR 0016).

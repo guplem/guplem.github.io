@@ -44,7 +44,9 @@ case exists when the reason is not obvious from the name.
 - **One file calls the network** (`gateway.js`). **One file touches storage**
   (`settings.js`). **Nothing reaches the screen through `innerHTML`** except the
   deploy line.
-- No import from outside this folder, and no CDN import (ADR 0001).
+- No import from outside this folder except `../cloud-storage/`, and no CDN
+  import (ADR 0001, root ADR 0016). The board file goes through that folder's
+  store, never through `gateway.js`.
 
 ## 3b. If the change calls GitHub for something new
 

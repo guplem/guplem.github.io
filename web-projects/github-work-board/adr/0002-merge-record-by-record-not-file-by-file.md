@@ -73,3 +73,5 @@ It needs a common ancestor, which nothing here stores, and it can produce a file
 that is not valid JSON. **Rejected: one file per issue.** It removes the contest
 almost entirely, and it costs one API call per issue to read a board, which the
 rate limit and the page load both refuse.
+
+> **Note (2026-09):** the merge described here moved, unchanged, to `web-projects/cloud-storage/merge.js`, and the save (re-read, merge, write with the sha, one retry on 409) is run by `cloudStore.js` (root ADR 0016). `board.json` now lives at `triunity-studios-data/github-work-board/board.json` in the reader's data repository; the store reads the old root `board.json` once when the new path is missing. `boardDocument.js` keeps only what each record means to the board.

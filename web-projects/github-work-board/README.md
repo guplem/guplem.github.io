@@ -103,10 +103,10 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
 - **A private note on any issue**, added from the card's own menu and shown only
   where one exists. Notes are yours alone: they never appear on GitHub's issue
   page, and nobody else sees them.
-- **Settings says whether your board is getting through.** A badge beside
-  the board repository reads **Saving** or **Not saving**, and when it is not,
-  it says what to fix. It answers when you open Settings and again after
-  **Save and reconnect**.
+- **Settings says whether your board is getting through.** The cloud storage
+  panel shows **Saving** or **Not saving**, and when it is not, it says what
+  to fix. It answers when you open Settings and again after **Save and
+  reconnect**.
 - **Your board saves itself.** It lives in a JSON file in a private
   repository you own, so the laptop and the phone show the same thing, and every
   change keeps a version in git history.
@@ -120,6 +120,16 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   this browser holds the only copy. Settings can copy any token, show it, or
   copy every one of them as a single backup you keep in your password manager.
 
+## Where your notes are saved
+
+Your notes, the cards you moved by hand and how the board looks are saved in
+this browser. To keep them across devices, open **Settings** and set up
+**Cloud storage**: one private GitHub repository you own, shared by every
+project on this site. Press **Use for cloud storage** beside a token, or paste
+one there. If you set the board up before cloud storage existed, the board
+hands your old repository and token over on its own, and reads your old
+`board.json` once.
+
 ## Adding another token later
 
 **Settings -> Add token** opens a screen that walks through it in four steps,
@@ -128,37 +138,31 @@ empty and the board suggests one from wherever the token finds work.
 
 ## Setting it up, once
 
-1. **Create a private repository for the board.** Call it `work-board-data`,
-   and set **Visibility** to **Private**. It holds nothing but your half of the
-   board: the board writes one file into it.
-
-2. **Create a fine-grained personal access token** at
+1. **Create a fine-grained personal access token** at
    [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new).
    The form asks you for each of these:
 
    - **Repository access:** choose **Only select repositories**, then select
-     **both** `work-board-data` *and* every repository whose issues you want on
-     the board. Leaving `work-board-data` out is the mistake people make: the
-     board can then read your issues and cannot save a single note.
+     every repository whose issues you want on the board.
    - **Repository permissions:** set each of these and leave the rest alone.
      - `Metadata` → Read-only
      - `Issues` → Read and write
      - `Pull requests` → Read-only
-     - `Contents` → Read and write
    - **Expiration:** pick a date. 90 days is a good default.
 
-3. **Paste the token into the page** and press Connect. The page checks each
+2. **Paste the token into the page** and press Connect. The page checks each
    permission and tells you exactly which one is missing if any call fails.
 
-4. **Work in an organisation? Add a second token** through **Settings -> Add
+3. **Work in an organisation? Add a second token** through **Settings -> Add
    token** (see above). A fine-grained token belongs to one owner. A token
    owned by your account cannot see an organisation's repositories, whatever
    permissions you give it. Create another token with the organisation as the
    **Resource owner**, grant it the same permissions, and paste it there. An
    organisation owner may have to approve the token first.
 
-   Keep the board repository on your personal token. An organisation's owners
-   can read its repositories, and this half of the board is meant for you alone.
+   Keep cloud storage on your personal token, in **Settings**, never on the
+   organisation's. An organisation's owners can read its repositories, and
+   this half of the board is meant for you alone.
 
 If the board later needs access your token does not have, the page says so on
 load and names what to add. The permission list lives in the code, so the page

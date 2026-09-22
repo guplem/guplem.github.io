@@ -11,9 +11,10 @@ This file is the plan and the handover note (like
 below when it lands. Read it before you touch anything under
 `web-projects/cloud-storage/`.
 
-**Status:** phases 1 and 2 landed (the pure core, root ADR 0016, the gateway,
-the store, the settings panel and the Cloud storage page linked from the
-Playground footer). Phase 3 is next: move github-work-board onto the standard.
+**Status:** phases 1 to 3 landed (the pure core, root ADR 0016, the gateway,
+the store, the settings panel, the Cloud storage page, and github-work-board
+on the standard). Phase 4 is next: the other adopters, starting with
+rps-mind-reader. Phase 5, the rule for new projects, can merge any time.
 
 ---
 

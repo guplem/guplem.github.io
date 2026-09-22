@@ -95,3 +95,5 @@ warning.** Copying is the safer of the two, but the clipboard is shared and
 remembered, and that is not common knowledge. **Rejected: a backup file the page
 downloads.** A credential on disk outlives the reason it was written; the
 clipboard does not, and a password manager is the right home.
+
+> **Note (2026-09):** the cloud storage token is handed back the same way, by the shared panel: a Copy behind one warning per visit, never printed on request, never inside a synced document or an export file (root ADR 0016, `web-projects/cloud-storage/invariants.test.js`).

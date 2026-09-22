@@ -47,9 +47,9 @@ the ADR it comes from, so a failure reads as "you are undoing decision X", not
    GitHub node id, that `migrate` keeps maps it does not know.
 2. **Shape promises**, asserted by reading this folder's own source text: only
    `gateway.js` calls the network, only `settings.js` names `localStorage`, the
-   token key appears in one file, nothing is imported from outside the folder or
-   from a CDN, and `gateway.js` sends requests to `api.github.com` and nowhere
-   else.
+   token key appears in one file, nothing is imported from outside the folder
+   except the shared cloud storage (root ADR 0016), nothing loads from a CDN,
+   and `gateway.js` sends requests to `api.github.com` and nowhere else.
 
 The second kind is unusual and is the point. A rule that only lives in prose is a
 rule that holds until the next fast pass.
