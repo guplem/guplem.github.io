@@ -854,7 +854,7 @@ function buildTokenRow(entry, index) {
     const use = document.createElement("button");
     use.type = "button";
     use.className = "button button-ghost";
-    use.textContent = "Use for cloud storage";
+    use.textContent = "Use as storage token";
     explain(use, `Save your half of the board with this token, in a private repository named ${CLOUD_REPO_NAME} on its account.`);
     use.addEventListener("click", async () => {
       use.disabled = true;
@@ -2344,6 +2344,7 @@ function start() {
   paintTheme();
   cloudPanel = mountCloudSettings(element("cloud-settings"), {
     mode: "full",
+    heading: null,
     storage,
     pageHref: "../cloud-storage/",
     onConfigured: () => {

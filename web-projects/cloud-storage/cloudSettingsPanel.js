@@ -234,17 +234,22 @@ export function askCopyQuestion({ project, file, local, cloud, answer }) {
  * Mount the settings into a host element.
  *
  * @param mode "full" or "compact"
+ * @param heading the title over the panel in full mode, or null when the host
+ *   page names the section itself and only the badge is wanted
  * @param pageHref where the full page is, for the compact mode's link
  * @param onConfigured called after the token or the repository changed, so a
  *   project can `store.reconnect()`
  * @returns {{refresh: () => Promise<void>}}
  */
-export function mountCloudSettings(host, { mode = "full", storage = browserStorage(), pageHref = "../cloud-storage/", onConfigured = () => {} } = {}) {
+export function mountCloudSettings(
+  host,
+  { mode = "full", heading = "Cloud storage", storage = browserStorage(), pageHref = "../cloud-storage/", onConfigured = () => {} } = {},
+) {
   host.classList.add("cs-panel");
   const state = { rows: [], login: "", asked: false, checking: null };
 
   if (mode === "compact") return mountCompact(host, { storage, pageHref, state });
-  return mountFull(host, { storage, state, onConfigured });
+  return mountFull(host, { storage, state, heading, onConfigured });
 }
 
 async function runChecks(storage, state) {
@@ -286,19 +291,22 @@ function mountCompact(host, { storage, pageHref, state }) {
   return { refresh };
 }
 
-function mountFull(host, { storage, state, onConfigured }) {
+function mountFull(host, { storage, state, heading: title, onConfigured }) {
   const now = isoNow;
 
   // --- The badge ---
   const heading = el("div", "cs-heading");
   const mark = badge(describeSync([], { configured: Boolean(cloudConfiguration(storage)), asked: false }));
-  heading.append(el("h3", "", "Cloud storage"), mark);
+  if (title) heading.append(el("h3", "", title), mark);
+  else heading.append(el("span", "cs-help", "Status"), mark);
   const detail = el("p", "cs-help", "");
-  const intro = el(
-    "p",
-    "cs-help",
-    `Every project on this site that keeps your data can save it to one private GitHub repository you own, in a folder named ${DATA_FOLDER}, one sub-folder per project. Without it, each project keeps its data in this browser only.`,
-  );
+  const intro = title
+    ? el(
+        "p",
+        "cs-help",
+        `Every project on this site that keeps your data can save it to one private GitHub repository you own, in a folder named ${DATA_FOLDER}, one sub-folder per project. Without it, each project keeps its data in this browser only.`,
+      )
+    : el("p", "cs-help", `Saved in a folder named ${DATA_FOLDER} in your data repository, one sub-folder per project.`);
 
   // --- The token ---
   const tokenSection = el("section", "cs-section");
@@ -382,10 +390,10 @@ function mountFull(host, { storage, state, onConfigured }) {
   /* ---- Token section, drawn from the saved state ---- */
   function renderToken() {
     const token = readToken(storage);
-    tokenSection.replaceChildren(el("h4", "", "Token"));
+    tokenSection.replaceChildren(el("h4", "", "Storage token"));
     if (!token) {
       tokenSection.append(
-        el("p", "cs-help", "A fine-grained personal access token from GitHub. It is kept in this browser and sent to api.github.com and nowhere else."),
+        el("p", "cs-help", "One fine-grained personal access token from GitHub, used only to save your data. It is kept in this browser and sent to api.github.com and nowhere else."),
         buildTokenGuide(repoInput.value.trim() || DEFAULT_REPO_NAME),
       );
       const row = el("div", "cs-row");
@@ -419,7 +427,7 @@ function mountFull(host, { storage, state, onConfigured }) {
     }
 
     const who = el("p", "", "");
-    who.append(document.createTextNode(token.login ? `Signed in as ${token.login}. ` : "Saved. "), el("span", "cs-help", "The token is kept in this browser and sent to api.github.com and nowhere else."));
+    who.append(document.createTextNode(token.login ? `Signed in as ${token.login}. ` : "Saved. "), el("span", "cs-help", "This token only saves your data. It is kept in this browser and sent to api.github.com and nowhere else."));
     tokenSection.append(who);
 
     if (tokenNeedsUpdate(token.grantedPermissions)) {
