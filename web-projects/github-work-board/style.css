@@ -1151,6 +1151,33 @@ textarea.input {
 
 /* A popover is in the browser's top layer, so the scrolling columns cannot clip
  * it. Nothing places it, either: `app.js` sets the position. */
+/* The board's own tooltip, in the top layer so the scrolling columns cannot
+ * clip it. Dark on light and light on dark, like the one shadcn draws, so it
+ * never reads as another card (ADR 0004, ADR 0033).
+ *
+ * `white-space: pre-line` is the point of drawing it at all: the breakdown
+ * behind the number beside the title is one line per part of the board. */
+.tooltip {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  max-width: 20rem;
+  padding: 0.3125rem 0.5rem;
+  border: 0;
+  border-radius: calc(var(--radius) - 4px);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: var(--shadow-md);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.tooltip:not(:popover-open) {
+  display: none;
+}
+
 .menu {
   position: fixed;
   inset: auto;

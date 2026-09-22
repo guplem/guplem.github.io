@@ -625,3 +625,28 @@ describe("a child on its parent's card (ADR 0010, ADR 0011)", () => {
     expect(query).toContain("subIssues(first: 20)");
   });
 });
+
+// The board draws its own tooltip, and a `title` attribute would quietly bring
+// the operating system's back beside it (ADR 0033).
+describe("one tooltip, and it is the board's (ADR 0033)", () => {
+  test("no module writes a title attribute, and the tab keeps its own", () => {
+    for (const name of sourceFiles) {
+      const source = read(name);
+      const written = [...source.matchAll(/(\w+)\.title\s*=(?!=)/g)].map((found) => found[1]);
+      expect(`${name} writes title on: ${written.filter((one) => one !== "document").join(", ")}`).toBe(
+        `${name} writes title on: `,
+      );
+    }
+    expect(read("app.js")).toContain("document.title = tabTitle");
+  });
+
+  test("the page carries no title attribute either", () => {
+    expect(read("index.html")).not.toMatch(/\stitle="/);
+  });
+
+  // In the top layer, like the card menu, or the columns would clip it as they
+  // scroll (ADR 0012).
+  test("the tooltip is a popover, and a manual one so it never closes the menu", () => {
+    expect(read("index.html")).toMatch(/id="tooltip"[^>]*popover="manual"/);
+  });
+});

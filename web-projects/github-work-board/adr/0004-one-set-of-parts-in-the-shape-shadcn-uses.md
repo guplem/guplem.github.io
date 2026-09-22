@@ -27,10 +27,15 @@ components.
    redefines the same roles under `prefers-color-scheme` and changes no rule.
 2. **One radius token and one shadow scale**, so every corner and every lift on
    the page came from the same decision.
-3. **Four parts, and every screen is built from them**: `.button` with variants
+3. **Five parts, and every screen is built from them**: `.button` with variants
    (`primary`, `outline`, `secondary`, `ghost`, `danger`), `.input`, `.card` with
-   a header and a content area, and `.badge` with variants. A new screen composes
-   these. It does not invent a fifth part without a reason.
+   a header and a content area, `.badge` with variants, and `.tooltip`. A new
+   screen composes these. It does not invent a sixth part without a reason.
+
+   The tooltip is the one part added since, and the reason is written down: a
+   `title` is the operating system's, so it cannot be themed, laid out, or
+   given a line break worth the name, and one of the board's tooltips is a
+   breakdown with a line per part of the board (ADR 0033).
 
 **Nothing appears out of nothing after a pause.** Every list the board is about
 to fill draws a placeholder first, in the shape of what is coming and in as
