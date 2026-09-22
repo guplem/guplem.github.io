@@ -574,11 +574,20 @@ describe("relationships come from GitHub's graph (ADR 0010)", () => {
 
   // Trim either of these from the query and `askedAgain` is false on every
   // card. Nothing errors, every test that builds its own answer stays green,
-  // and answered work sits in "Needs changes" for ever (ADR 0011).
+  // and answered work sits in "Needs attention" for ever (ADR 0011).
   test("the query asks who is waited on and who asked for changes", () => {
     const query = read("gateway.js");
     expect(query).toContain("latestOpinionatedReviews");
     expect(query).toContain("requestedReviewer");
+  });
+
+  // Trim either of these and "Needs attention" quietly shrinks back to reviews
+  // alone: a branch that conflicts and a red check read as nothing, and every
+  // test that builds its own answer stays green (ADR 0011).
+  test("the query asks whether the branch merges and how the checks ended", () => {
+    const query = read("gateway.js");
+    expect(query).toContain("mergeable");
+    expect(query).toContain("statusCheckRollup");
   });
 });
 

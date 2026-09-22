@@ -12,7 +12,7 @@ people", and nobody to go and ask about it.
 
 **On the reader's own pull request:** who is this waiting on? A pull request
 sits in "Awaiting review" for days and the card never said who to chase. Worse,
-one sitting in "Needs changes" never said who had asked for the changes, so the
+one sitting in "Needs attention" never said who had asked for the changes, so the
 reader had to open it to find out whose comments to answer.
 
 ## Decision
@@ -37,7 +37,7 @@ together, in `people.js`.
 **Somebody asked to look again counts as asked, not as blocking.** They gave a
 verdict and were then asked a second time, so the board is waiting on them. This
 is the same reading that puts the pull request in "Awaiting review" rather than
-"Needs changes" (ADR 0011), and the two must not disagree.
+"Needs attention" (ADR 0011), and the two must not disagree.
 
 **The faces read in the order the reader acts on them:** who blocks them, then
 who they can chase, then what is already done.

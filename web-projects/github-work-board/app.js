@@ -39,7 +39,8 @@ import {
   THEMES,
   colourableAreas,
 } from "./appearance.js";
-import { AUTOMATIC, COLUMNS, columnFor, groupIntoColumns, moveOptions, stateLabel } from "./columns.js";
+import { attentionReason } from "./attention.js";
+import { AUTOMATIC, COLUMNS, attentionFor, columnFor, groupIntoColumns, moveOptions, stateLabel } from "./columns.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
   fetchAssignedIssues,
@@ -326,6 +327,33 @@ function buildChangeIcon(type, breaking) {
 }
 
 /**
+ * One pill saying why a card wants its author: a conflict, a red check, or
+ * changes a reviewer asked for.
+ *
+ * "Needs attention" is one column with three ways into it, so the card has to
+ * say which one it took. Hovering the pill says what to do about it (ADR 0011).
+ */
+function buildAttentionPill(reason) {
+  const pill = document.createElement("span");
+  pill.className = `badge badge-attention attention-${reason.id}`;
+
+  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  drawing.setAttribute("viewBox", "0 0 24 24");
+  drawing.setAttribute("aria-hidden", "true");
+  drawing.setAttribute("focusable", "false");
+  drawing.setAttribute("class", "icon");
+  for (const d of reason.paths) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    line.setAttribute("d", d);
+    drawing.append(line);
+  }
+
+  pill.append(drawing, document.createTextNode(reason.label));
+  explain(pill, reason.detail);
+  return pill;
+}
+
+/**
  * One card. A nested pull request keeps the menu but not the move: it travels
  * in its issue's column, because the pair is one piece of work (ADR 0010), so
  * moving it on its own would do nothing, but copying its branch still does
@@ -423,6 +451,14 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     blocked.className = "badge badge-blocked";
     blocked.textContent = "Blocked";
     heading.append(blocked);
+  }
+
+  // Why this work is with the person who wrote it. Drawn on every card that
+  // has a reason, not only on the ones sitting in "Needs attention": a card
+  // the reader moved somewhere by hand still conflicts (ADR 0011).
+  for (const id of attentionFor(item, readRelationship(state.links, item.key))) {
+    const reason = attentionReason(id);
+    if (reason) heading.append(buildAttentionPill(reason));
   }
 
   // A nested pull request is almost always in its issue's own repository, so
