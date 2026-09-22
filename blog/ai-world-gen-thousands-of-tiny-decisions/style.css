@@ -15,6 +15,9 @@
   --door: #e0782a;
   --leaf: #37c24b;
   --stone: #6c7480;
+  /* The two experiments that are not iterations: one colour each, the same
+     in the small charts and in the bar charts that compare them. */
+  --sky: #58a6ff;
   --panel: #1b1f27;
   --panel-border: rgba(255, 255, 255, 0.08);
   --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
@@ -491,6 +494,22 @@
   fill: var(--door);
 }
 
+/* A run with no iterations cannot be a line with points, so it is one flat
+   line across the chart. Dashed, so it never reads as a measured trajectory. */
+.mini .reference {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-dasharray: 5 3;
+}
+
+.mini .reference-llm {
+  stroke: var(--leaf);
+}
+
+.mini .reference-batch {
+  stroke: var(--sky);
+}
+
 .mini-judge .area {
   fill: var(--stone);
 }
@@ -507,6 +526,56 @@
 .mini-judge .mini-delta {
   fill: var(--stone);
 }
+
+/* The ninth cell of the grid: eight charts and this. */
+.mini-legend {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+}
+
+.mini-legend p {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--parchment-soft);
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.mini-legend .key {
+  height: 0;
+  margin-top: 0.45em;
+  border-top-width: 2px;
+  border-top-style: solid;
+}
+
+.mini-legend .key-versions {
+  border-color: var(--door);
+}
+
+.mini-legend .key-llm {
+  border-top-style: dashed;
+  border-color: var(--leaf);
+}
+
+.mini-legend .key-batch {
+  border-top-style: dashed;
+  border-color: var(--sky);
+}
+
+.mini-legend strong {
+  color: var(--parchment);
+  font-weight: 600;
+}
+
 
 /* === The two ways, side by side === */
 .two-ways {
@@ -936,6 +1005,23 @@
   padding-left: var(--sp-md);
 }
 
+.post .version-log > li.experiment .version-note {
+  border-left-color: var(--sky);
+}
+
+.post .version-log > li.experiment .version-name {
+  color: var(--sky);
+}
+
+.post .version-tag {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--parchment-soft);
+  margin: 0 0 2px;
+}
+
 .post .version-name {
   font-family: var(--mono);
   font-size: 0.85rem;
@@ -1123,7 +1209,7 @@
 }
 
 .bars .bar-batch {
-  fill: var(--stone);
+  fill: var(--sky);
 }
 
 .bars .bar-whole {
