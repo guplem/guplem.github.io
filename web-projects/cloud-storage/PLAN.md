@@ -11,8 +11,9 @@ This file is the plan and the handover note (like
 below when it lands. Read it before you touch anything under
 `web-projects/cloud-storage/`.
 
-**Status:** phase 1 landed (the pure core, root ADR 0016, the docs). Phase 2 is
-next: gateway, store, panel and the Cloud storage page.
+**Status:** phases 1 and 2 landed (the pure core, root ADR 0016, the gateway,
+the store, the settings panel and the Cloud storage page linked from the
+Playground footer). Phase 3 is next: move github-work-board onto the standard.
 
 ---
 
