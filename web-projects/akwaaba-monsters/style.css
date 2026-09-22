@@ -505,3 +505,38 @@ body[data-layout="overlay"] .page-footer {
     transform: none;
   }
 }
+
+/* --- The cloud save line and the shared panel's dialogs ------------------- */
+/* The panel reads these; the dialogs it opens sit on body, so they are on
+ * :root rather than on the host (root ADR 0016). */
+:root {
+  --cs-foreground: var(--ink);
+  --cs-muted-foreground: #6b5a44;
+  --cs-background: var(--paper);
+  --cs-border: var(--sand);
+  --cs-primary: var(--accent);
+  --cs-primary-foreground: var(--paper);
+  --cs-radius-md: 6px;
+}
+
+.cloud-save {
+  margin: 0.75rem 0 0.25rem;
+  color: var(--paper);
+}
+
+.cloud-save .cs-help {
+  color: var(--sand);
+}
+
+.cloud-save a {
+  color: var(--gold);
+}
+
+.cloud-save-status {
+  color: var(--accent);
+  margin: 0;
+}
+
+.cloud-save-status:empty {
+  display: none;
+}
