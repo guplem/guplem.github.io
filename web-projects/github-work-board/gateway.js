@@ -152,9 +152,23 @@ export async function fetchFinishedWork(token, since) {
  * somebody asks, so the first answer for a quiet pull request is `UNKNOWN` and
  * the next refresh answers properly.
  *
+ * **The checks inside that rollup are asked for on the pull request and not on
+ * the pull requests an issue closes.** The card draws a dot for the rollup and
+ * says how many checks passed, failed and are still running (ADR 0037), and
+ * those numbers need the checks themselves. Every card that draws the dot is a
+ * `PullRequest` node, so the branch above needs nothing.
+ *
+ * That is the whole of the bill. Measured with `rateLimit(dryRun: true)` on a
+ * full batch of 100: the query costs 18 points without the checks, 18 with
+ * them here, and 23 with them on both branches, where they multiply by the five
+ * linked pull requests. The `first:` number costs nothing either way, so 50 is
+ * chosen for the size of the answer that comes back rather than for the bill:
+ * no name and no address is asked for, only what each check says, and 50 checks
+ * on one commit is already a large repository.
+ *
  * `subIssues` names the children, and `closedAt` with `state` is what says
  * whether a child is finished. Twenty of them, because the list itself is free:
- * it adds no nested connection, so 10 and 50 both cost the same 13 points. What
+ * it adds no nested connection, so 10 and 50 both cost the same 18 points. What
  * it does spend is room in the second pass below, which is one batch of 100
  * ids, so twenty is five parents' worth of children before anybody loses a
  * state. Nothing else about a child is asked for here:
@@ -201,7 +215,7 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       headRefName
       baseRefName
       repository { nameWithOwner }
-      commits(last: 1) { nodes { commit { statusCheckRollup { state } } } }
+      commits(last: 1) { nodes { commit { statusCheckRollup { state contexts(first: 50) { totalCount nodes { __typename ... on CheckRun { status conclusion } ... on StatusContext { state } } } } } } }
       reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
       latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
       closingIssuesReferences(first: 20) { nodes { id number title state url } }

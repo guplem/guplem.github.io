@@ -36,14 +36,19 @@ largest batch it ever sends, which is 100 items:
 |---|---|
 | The links, asking for 20 closing pull requests each | 42 |
 | The links, asking for 5 | 12 |
-| The links, asking for 5, plus the children's names | 13 |
-| The second call, about the children, one batch at most | 13 |
+| The links, as the query stands today, re-measured on 2026-09-23 | 18 |
+| The second call, about the children, one batch at most | 18 |
 
-So a refresh costs at most 26 points for a token, and the shortest schedule
-spends 3120 of the 5000 points an hour. The first row is what the query used to
+So a refresh costs at most 36 points for a token, and the shortest schedule
+spends 4320 of the 5000 points an hour. The first row is what the query used to
 cost: cutting the closing pull requests from twenty to five is what paid for
 the children, and nothing reads past the merged one or the first open one
 (ADR 0010). `refresh.test.js` holds this arithmetic as a test too.
+
+**Measure the cost again whenever the query grows a field.** The third row read
+13 for a year, because fields were added and nobody asked GitHub again. The
+cost comes from the query alone, so `rateLimit(dryRun: true)` answers it
+without a real board and without a real token's data.
 
 ## Decision
 

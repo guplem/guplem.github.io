@@ -58,6 +58,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   reviewer asked for changes and is still waiting. Each card says which of the
   three it is, with a pill you can hover for what to do about it. A card with
   all three says all three.
+- **A dot beside the PR badge says how the checks on a pull request are
+  going.** Green when every check passed, red when one came back red, grey
+  while they are still running. Rest on it for the breakdown: how many
+  passed, failed, or are still running. A pull request nothing ran on draws
+  no dot at all.
 - **An issue draws its children as a row of pills.** A card with sub-issues
   shows one small pill per child under "Children", each painted with the colour
   of the column that child sits in, and the count of how many are closed beside

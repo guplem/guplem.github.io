@@ -15,6 +15,7 @@
 // This module reads that answer and never throws: one unreadable node must not
 // cost the relationships of every other item.
 
+import { readCheckSummary } from "./checks.js";
 import { reviewPeople } from "./people.js";
 
 const EMPTY = Object.freeze({
@@ -75,9 +76,13 @@ export function askedToLookAgain(reviews, requests) {
  * commit to reach it. A pull request with no checks at all has no rollup, and
  * that reads as "" rather than as a pass (ADR 0011).
  */
-function readChecksState(value) {
+function checkRollup(value) {
   const commit = isPlainObject(value) ? value.commits?.nodes?.[0]?.commit : null;
-  const state = commit?.statusCheckRollup?.state;
+  return commit?.statusCheckRollup ?? null;
+}
+
+function readChecksState(value) {
+  const state = checkRollup(value)?.state;
   return typeof state === "string" ? state : "";
 }
 
@@ -107,6 +112,9 @@ function readLink(value) {
     // UNKNOWN, which claims nothing.
     mergeable: typeof value.mergeable === "string" ? value.mergeable : "",
     checksState: readChecksState(value),
+    // The same checks, counted: the dot on the card takes its colour from the
+    // verdict above and its numbers from here (ADR 0037).
+    checks: readCheckSummary(checkRollup(value)),
     // The branch this pull request adds, and the one it targets. A stack is
     // read from these and from nothing else (ADR 0016).
     headRefName: typeof value.headRefName === "string" ? value.headRefName : "",
@@ -289,6 +297,7 @@ export function applyPullRequestState(items, byId) {
       reviewDecision: self.reviewDecision,
       mergeable: self.mergeable,
       checksState: self.checksState,
+      checks: self.checks,
       reviewRequestCount: self.reviewRequestCount,
       headRefName: self.headRefName,
       baseRefName: self.baseRefName,

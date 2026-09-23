@@ -66,12 +66,17 @@ export const GRAPHQL_BUDGET_PER_HOUR = 5000;
 /**
  * What one refresh spends of it, for one token, on the largest board there is.
  *
- * 13 points for a full batch of 100 items, and at most one more batch of the
- * same size for their children, so 26 is the worst a refresh can cost. The
+ * 18 points for a full batch of 100 items, and at most one more batch of the
+ * same size for their children, so 36 is the worst a refresh can cost. The
  * board asks about one batch of children and no more, which is what keeps this
  * number a number rather than "however many children the reader has".
+ *
+ * **Measure this again whenever the query grows a field.** It read 13 when it
+ * was first written and measured 18 on 2026-09-23, because the query grew and
+ * nobody asked it again. The cost is worked out from the query alone, so
+ * `rateLimit(dryRun: true)` answers it without a real board (ADR 0010).
  */
-export const GRAPHQL_POINTS_PER_TOKEN = 26;
+export const GRAPHQL_POINTS_PER_TOKEN = 36;
 
 const BY_ID = new Map(REFRESH_CHOICES.map((one) => [one.id, one]));
 

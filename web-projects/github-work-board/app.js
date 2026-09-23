@@ -40,6 +40,7 @@ import {
   colourableAreas,
 } from "./appearance.js";
 import { attentionReason } from "./attention.js";
+import { describeChecks } from "./checks.js";
 import {
   DEFAULT_RANGE,
   RANGE_PRESETS,
@@ -457,6 +458,11 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   kind.textContent = item.kind === "pull-request" ? "PR" : "Issue";
   heading.append(kind);
 
+  // How the checks on the last commit are going, beside the kind, because it
+  // is a thing only a pull request has (ADR 0037).
+  const checks = buildChecksDot(item.checks);
+  if (checks) heading.append(checks);
+
   // Three cards from one person are often one stack, and the row of reviews
   // gives no other sign of it or of which to read first (ADR 0020).
   if (stack) {
@@ -776,6 +782,28 @@ function buildFace(person, state, pressed, onToggle) {
 
   face.addEventListener("click", onToggle);
   return face;
+}
+
+/**
+ * One dot for the checks on a pull request's last commit, or nothing.
+ *
+ * Green, red or grey is the whole of it at a glance, and resting on it gives
+ * the breakdown in words. The words are also on the dot for a screen reader,
+ * because a colour is not an answer for everybody (ADR 0004, ADR 0037). A pull
+ * request nothing ran on draws no dot: no checks is not a pass.
+ */
+function buildChecksDot(summary) {
+  const says = describeChecks(summary);
+  if (says === "") return null;
+  const dot = document.createElement("span");
+  dot.className = "check-dot";
+  dot.setAttribute("data-checks", summary.verdict);
+  explain(dot, says);
+  const words = document.createElement("span");
+  words.className = "visually-hidden";
+  words.textContent = says;
+  dot.append(words);
+  return dot;
 }
 
 /** The row of faces on a card, or nothing when there is nobody to draw. */
