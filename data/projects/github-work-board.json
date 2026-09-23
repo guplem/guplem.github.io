@@ -3,6 +3,8 @@
   "types": ["Web"],
   "date": "2026",
   "title": "Work Board",
+  "image": "resources/images/projects/githubWorkBoard.webp",
+  "imageAlt": "Work board with example data: a row of pull requests waiting for your review above five columns, from To do to Ready to merge, with labels, reviewers, stacked pull requests and a private note",
   "description": [
     "*Work Board* is a **personal board built on GitHub issues**. It runs with no server: you paste a fine-grained token and the page talks to GitHub straight from the browser.",
     "The notes you write are **private and yours**. They live in a JSON file in a private repository you own, so the board follows you from laptop to phone and every change keeps a history.",
