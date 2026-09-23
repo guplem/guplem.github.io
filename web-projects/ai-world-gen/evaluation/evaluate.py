@@ -638,6 +638,15 @@ def checkout_version(commit: str) -> Path:
     return project
 
 
+def remove_checkout(project: Path) -> None:
+    """Delete the temporary folder `checkout_version` made. `project` is <folder>/web-projects/ai-world-gen, so the
+    folder is two levels up; one more is the system's temporary directory, which is why the name is checked first."""
+    folder = project.parent.parent
+    if not folder.name.startswith("ai-world-gen-") or project.relative_to(folder) != Path("web-projects", "ai-world-gen"):
+        sys.exit(f"Refusing to delete {folder}: it is not a checkout made by checkout_version.")
+    shutil.rmtree(folder, ignore_errors=True)
+
+
 def backfill(version_name: str, parallel: int, only: list[str] | None, images: bool = True) -> None:
     """Generate the test cases a version never ran, with that version's own code, and log them into it.
 
@@ -684,7 +693,7 @@ def backfill(version_name: str, parallel: int, only: list[str] | None, images: b
         result["ascii"] = scored[case_id]["ascii"]
         shown = {name: value for name, value in result["scores"].items() if value is not None}
         print(f"  {case_id}: {result['elapsedMs'] / 1000:.1f} s, " + ", ".join(f"{name}={value:.2f}" for name, value in shown.items()))
-    shutil.rmtree(project.parent.parent.parent, ignore_errors=True)
+    remove_checkout(project)
 
     pictures = render_results(version_name, fresh) if images else {}
     print("logging to Galtea ...")
