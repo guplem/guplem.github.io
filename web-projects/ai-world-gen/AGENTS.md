@@ -17,8 +17,10 @@ A map generator with two kinds of model and one blueprint. A text model writes a
 | `blueprint.js` | Yes | `planStructures` (seeded rectangles with a door, from the vocabulary's `structures`), `zoneAt` (a cell's part: wall, door, interior, outside), `structureOf` |
 | `cellDecision.js` | Yes | `buildCellDecision` (state + one choice question), `zoneAllowedTypes` and `allowedTypes` (the types the plan and the hard rules allow), `balanceSheet`, `continuationHints` (the code-judged suggestion), `mapSketch`, `isRouteType`, `isUniqueType`, `readDecisionAnswer`, `chooseType` (sampling), the chat stand-in, `fallbackType` |
 | `generation.js` | Yes | `runGeneration` (sequential loop, retries, fallbacks, stop rules) with an injected `decide`; `createDecider` builds one from the client and the transport |
-| `wholeMap.js` | Yes | The second way to fill a grid: `runWholeMapGeneration` asks the narrative model for the finished map as rows of sketch letters, with the blueprint and every rule in the prompt; `GENERATION_MODES` and `readGenerationMode` for all three modes, `WHOLE_MAP_REQUEST` |
-| `batchedDecisions.js` | Yes | The third way to fill a grid: `runBatchedGeneration` sends one typed question per cell in one decisions request; `buildBatch`, `planBatch` (the token budget), `readBatchAnswers`, `createBatchDecider`, `HOW_TO_CHOOSE` |
+| `wholeMap.js` | Yes | The second way to fill a grid: v11's prompt. `runWholeMapGeneration` asks the narrative model for the finished map as rows of sketch letters, with the blueprint and every rule (`WHOLE_MAP_RULES`) in the prompt; `GENERATION_MODES` and `readGenerationMode` for all three modes |
+| `wholeMapLoop.js` | Yes | The whole-map half no version changes: `writeWholeMapMessages`, `legendLines`, `describePlanWith`, `readWholeMapRows`, `runWholeMapLoop`, `WHOLE_MAP_REQUEST`. Imports only what v1 had, because the evaluation copies it into old checkouts |
+| `batchedDecisions.js` | Yes | The third way to fill a grid: v11's batch. `runBatchedGeneration` sends one typed question per cell in one decisions request; `buildBatch`, `planBatch` (the token budget), `HOW_TO_CHOOSE` |
+| `batchLoop.js` | Yes | The batch half no version changes: `runBatchLoop` (handed `planCells` and `buildRequest`), the question keys, `estimateTokens`, `isTooManyTokens`, `readBatchAnswers`, `createBatchDecider`. Imports only what v1 had, for the same reason |
 | `orderStrategies.js` | Yes | Five orders behind `nextCoordinate(placed: Set<string>)` |
 | `grid.js` | Yes | The grid (mutated in place), neighbours, ring counts, JSON in and out |
 | `reachability.js` | Yes | Four-way flood fill over walkable cells; `ok` is false on more than one region |
@@ -36,8 +38,10 @@ A map generator with two kinds of model and one blueprint. A text model writes a
 | `evaluation/mapMetrics.js` | Yes | The seven specifications, their computed metrics and the judge metric, `scoreMap(grid, vocabulary, run, plan)`, `isDoorType`, `renderAscii` (ADR 0005) |
 | `evaluation/runTestCase.js` | No | Bun command line: one test case in, one planned, generated and scored map out, with the real client |
 | `evaluation/rescoreResults.js` | Yes | Bun command line: the saved maps of a version scored again with the metrics as they are now |
-| `evaluation/evaluate.py` | No | The Galtea side: `setup`, `run --version vN`, `report`, `render`, `rescore`, `backfill`. Reads the rule names from `mapMetrics.js`; uploads each map's PNG and attaches it to the output; asks Galtea for the judge metric |
+| `evaluation/evaluate.py` | No | The Galtea side: `setup`, `run --version vN` (`--code-of vM` for a variant with vM's code), `report`, `render`, `rescore`, `backfill`. Reads the rule names from `mapMetrics.js`; uploads each map's PNG and attaches it to the output; asks Galtea for the judge metric |
 | `evaluation/backfillRun.js` | No | Bun command line copied into a checkout of an old commit by `backfill`: one test case drawn with that commit's modules, no scores |
+| `evaluation/pastVersionVariants.js` | Yes | The two variants with an older version's knowledge: `buildPastBatch` (the version's own questions, what they share sent once), `buildPastWholeMapMessages` (v11's prompt with only the rules the version had; `wholeMapRulesFor`) |
+| `evaluation/variantRun.js` | No | Bun command line copied into a checkout of an old commit by `run --code-of`: one test case drawn by a variant with that commit's modules and today's client, no scores |
 | `evaluation/renderMap.py` | Yes | A grid to a PNG with the page's tiles, first variant only; reads the manifest from `tileset.js` through Bun. Tested by `renderMap_test.py` (`python -m unittest`) |
 | `evaluation/testCases.json` | Yes (data) | Seven datasets of five 8 × 8 seeds and one of three 16 × 16 seeds, matched to Galtea test cases by their `id` |
 | `evaluation/galtea.json` | Yes (data) | The Galtea ids `setup` created or found. Committed; no secrets |
