@@ -197,6 +197,16 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
 - **A count that leaves out the work pushed down must say so on the badge.**
   That sentence is what keeps the mark from hiding work, which ADR 0026 forbids.
   Remove it and the rule is broken, not bent.
+- **Never judge a token by what it was granted, only by what it just did.** The
+  board kept a fingerprint of the permission list beside each token and compared
+  it later. Nothing on GitHub writes to this browser, so a reader who widened
+  their token was told for ever that it was behind, and a reader who narrowed
+  one was told nothing. It is gone: `CONNECTION_CHECKS` has one entry per
+  permission, each filled from a call the ordinary read already makes, and
+  Settings says green, red or "not checked yet" for each (ADR 0005).
+- **A permission with nothing to prove it cannot exist.** A test pairs every
+  `REQUIRED_PERMISSIONS` entry with a `CONNECTION_CHECKS` entry, so a new
+  permission means a new row in Settings too.
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and

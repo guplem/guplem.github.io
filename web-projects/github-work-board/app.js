@@ -93,13 +93,7 @@ import {
   sayEmptyBoard,
   summariseChecks,
 } from "./messages.js";
-import {
-  CONNECTION_CHECKS,
-  REQUIRED_PERMISSIONS,
-  newPermissionsSince,
-  permissionsFingerprint,
-  tokenNeedsUpdate,
-} from "./permissions.js";
+import { CONNECTION_CHECKS, PERMISSIONS, REQUIRED_PERMISSIONS } from "./permissions.js";
 import { DEFAULT_REFRESH, OFF, REFRESH_CHOICES, refreshDue } from "./refresh.js";
 import {
   addToken,
@@ -302,34 +296,15 @@ function fillTokenGuides() {
   }
 }
 
-/**
- * Tell the reader a token is behind what the board now asks for, and name
- * exactly what to add (ADR 0005).
- */
-function renderTokenNotice() {
-  const behind = state.tokens.filter((entry) => tokenNeedsUpdate(entry.grantedPermissions));
-  const notice = element("token-outdated");
-  if (behind.length === 0) {
-    notice.hidden = true;
-    return;
-  }
-  const missing = newPermissionsSince(behind[0].grantedPermissions);
-  element("token-outdated-list").replaceChildren(
-    ...missing.map((permission) => {
-      const row = document.createElement("li");
-      row.textContent = `${permission.name} → ${permission.level}, for ${permission.why}`;
-      return row;
-    }),
-  );
-  notice.hidden = false;
-}
-
 function buildCheckRow({ label, ok, detail }) {
   const row = document.createElement("li");
-  row.className = ok ? "check ok" : "check failed";
+  // Three answers, not two: a check the board had nothing to run against is
+  // neither a pass nor a failure, and saying either would be a guess (ADR 0005).
+  row.className = ok === true ? "check ok" : ok === false ? "check failed" : "check unchecked";
   const mark = document.createElement("span");
-  mark.className = ok ? "badge badge-success" : "badge badge-destructive";
-  mark.textContent = ok ? "Done" : "Fix";
+  mark.className =
+    ok === true ? "badge badge-success" : ok === false ? "badge badge-destructive" : "badge badge-outline";
+  mark.textContent = ok === true ? "Done" : ok === false ? "Fix" : "Not yet";
   const body = document.createElement("div");
   const name = document.createElement("p");
   name.className = "check-label";
@@ -995,7 +970,7 @@ function buildTokenRow(entry, index) {
         use.disabled = false;
         return showNotice("settings-notice", describeFailure(viewer));
       }
-      saveCloudToken(storage, { token: entry.token, name: entry.name, login, grantedPermissions: null });
+      saveCloudToken(storage, { token: entry.token, name: entry.name, login });
       saveCloudRepo(storage, { owner: login, repo: CLOUD_REPO_NAME });
       cloudPanel?.refresh();
       store.reconnect();
@@ -2170,7 +2145,7 @@ function showNotice(where, text) {
  */
 async function inspectToken(entry) {
   const rows = [];
-  const [identity, work] = CONNECTION_CHECKS;
+  const [identity, work, reviewCheck, checksCheck] = CONNECTION_CHECKS;
   let updated = { ...entry, owners: [], itemCount: 0 };
   let links = {};
 
@@ -2226,7 +2201,7 @@ async function inspectToken(entry) {
     [...items, ...finished, ...reviews].map((item) => item.key),
   );
   links = linked.ok ? normalizeRelationships(linked.data) : {};
-  await readChecks(entry.token, links);
+  const checked = await readChecks(entry.token, links);
   links = applyCheckSummaries(links, state.checksBySha);
   rows.push({
     id: work.id,
@@ -2238,7 +2213,31 @@ async function inspectToken(entry) {
         : `${counted.issues} issues and ${counted.pullRequests} pull requests, in ${owners.join(", ")}.`,
   });
 
-  if (updated.grantedPermissions === null) updated = { ...updated, grantedPermissions: permissionsFingerprint() };
+  // What the reader has to see about the other two calls this read made. Both
+  // are answered by the call itself, never by what the token was granted the
+  // day it was made (ADR 0005).
+  rows.push({
+    id: reviewCheck.id,
+    label: reviewCheck.label,
+    ok: waiting.ok,
+    detail: waiting.ok
+      ? `${reviews.length} waiting for your review.`
+      : describeFailure({ ...waiting, need: reviewCheck.need }),
+  });
+  rows.push({
+    id: checksCheck.id,
+    label: checksCheck.label,
+    // Nothing to ask about is not a pass: this token may have reached no pull
+    // request with a commit on it at all.
+    ok: checked.asked === 0 ? null : checked.failed < checked.asked,
+    detail:
+      checked.asked === 0
+        ? "No pull request to read the checks of, so nothing was asked."
+        : checked.failed === 0
+          ? `Read the checks on ${checked.asked} ${checked.asked === 1 ? "commit" : "commits"}.`
+          : checked.detail,
+  });
+
   return { entry: updated, raw: [...raw, ...finishedRaw], rows, links, reviews };
 }
 
@@ -2258,6 +2257,8 @@ async function inspectToken(entry) {
  */
 async function readChecks(token, links) {
   const wanted = new Map();
+  let failed = 0;
+  let detail = "";
   for (const one of Object.values(links)) {
     for (const link of [one.self, ...(Array.isArray(one.closedBy) ? one.closedBy : [])]) {
       if (!link?.headSha || link.repository === "") continue;
@@ -2269,7 +2270,13 @@ async function readChecks(token, links) {
   await Promise.all(
     [...wanted].map(async ([sha, repository]) => {
       const answer = await fetchWorkflowRuns(token, repository, sha);
-      if (!answer.ok) return;
+      if (!answer.ok) {
+        failed += 1;
+        // The first refusal, in the reader's words. They are all the same
+        // refusal when a permission is the cause, which is the usual cause.
+        if (detail === "") detail = describeFailure({ ...answer, need: PERMISSIONS.actionsRead });
+        return;
+      }
       // How many times this commit has been asked about, carried on the answer:
       // a commit nothing runs on is left alone after a few tries, and that
       // count is the only way to know when to stop (`needsAsking`).
@@ -2277,6 +2284,8 @@ async function readChecks(token, links) {
       state.checksBySha.set(sha, { ...readWorkflowRuns(answer.data?.workflow_runs), asks });
     }),
   );
+
+  return { asked: wanted.size, failed, detail };
 }
 
 /**
@@ -2328,8 +2337,7 @@ async function connectAll({ quiet = false } = {}) {
     element("board-columns").removeAttribute("aria-busy");
     showNotice("settings-notice", "");
     renderTokenList();
-    renderTokenNotice();
-    renderFilters();
+      renderFilters();
     renderBoard();
     showView(state.view);
     saveLastCounts(storage, {
@@ -2457,7 +2465,6 @@ function signOut() {
   element("token").value = "";
   paintTheme();
   showView(DEFAULT_VIEW);
-  renderTokenNotice();
 }
 
 function connectPastedToken(field, name = "") {
@@ -2802,7 +2809,6 @@ function start() {
 
   showBootStep("board");
   state.tokens = readTokens(storage);
-  renderTokenNotice();
   showView(state.view);
   applyAutoRefresh();
   if (state.tokens.length > 0) connectAll();

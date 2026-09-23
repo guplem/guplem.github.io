@@ -29,7 +29,7 @@ export function adoptLegacyStorage(storage) {
   if (readToken(storage) || readRepo(storage)) return false;
   const writer = (Array.isArray(entries) ? entries : []).find((one) => one && one.canWriteBoard === true && typeof one.token === "string");
   if (!writer) return false;
-  saveToken(storage, { token: writer.token, name: writer.name ?? "", login: repo.owner, grantedPermissions: null });
+  saveToken(storage, { token: writer.token, name: writer.name ?? "", login: repo.owner });
   saveRepo(storage, repo);
   return true;
 }

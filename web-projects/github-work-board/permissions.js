@@ -6,14 +6,16 @@
 // access it needs, and the guide keeps telling new readers to create a token
 // that cannot do the job. ADR 0005.
 //
-// A token is approved against the list as it stood on the day the reader made
-// it. When the list grows, `permissionsFingerprint` changes, and the page asks
-// the reader to add the new permission and reconnect. That is why the
-// fingerprint ignores the wording of `why` and follows `id` and `level` only:
-// rewriting a sentence must not tell everybody their token is out of date.
+// **A token is judged by what it just did, never by what it was granted on the
+// day it was made.** The board used to keep a fingerprint of the list as it
+// stood when the reader added the token, and compare it later. It said nothing
+// about the token itself: a reader who widened their token on GitHub was still
+// told it was behind, for ever, because nothing on GitHub changes what this
+// browser wrote down. Every permission is proved by a call the board makes on
+// its ordinary read, and Settings shows the answer (ADR 0005).
 //
 // **Adding a call that needs new access means adding it here, and nowhere
-// else.** The guide, the fingerprint and the reader's prompt all follow.
+// else.** The guide, the checks and what Settings says all follow.
 
 /** The permission each call needs, as `githubErrors.js` names it to the reader. */
 export const PERMISSIONS = {
@@ -58,37 +60,33 @@ export const REQUIRED_PERMISSIONS = [
 // Contents is not here any more. The board file is written by the shared cloud
 // storage, with its own token and its own permission list (root ADR 0016).
 
-/** The calls the setup panel makes, in order, to prove the token works. */
-export const CONNECTION_CHECKS = [
-  { id: "identity", label: "Read your GitHub account", need: PERMISSIONS.metadata },
-  { id: "issues", label: "Read the issues and pull requests assigned to you", need: PERMISSIONS.issuesRead },
-];
-
-/** A stable short string for one set of permissions, ignoring the order and the wording. */
-export function permissionsFingerprint(list = REQUIRED_PERMISSIONS) {
-  return list
-    .map((permission) => `${permission.id}:${String(permission.level).toLowerCase()}`)
-    .sort()
-    .join("|");
-}
-
 /**
- * Whether the reader has to go back to GitHub and widen their token.
+ * What the board does with a token on an ordinary read, in order, one for each
+ * permission the reader was asked to grant.
  *
- * A reader who has never connected gets `false`: they are in the setup guide
- * already, and telling them their token is out of date would be nonsense. A
- * token that carries more than the list asks for gets `false` too: the list
- * shrank once, when Contents moved to cloud storage, and there was nothing to
- * ask those readers to add.
+ * `permission` names the entry in `REQUIRED_PERMISSIONS` this call proves, so
+ * Settings can say green or red for every line of the setup guide. A test keeps
+ * the two lists in step: a permission nothing proves would sit in Settings with
+ * no answer beside it.
  */
-export function tokenNeedsUpdate(granted, current = permissionsFingerprint()) {
-  if (typeof granted !== "string" || granted.trim() === "") return false;
-  const held = new Set(granted.split("|"));
-  return current.split("|").some((one) => !held.has(one));
-}
-
-/** The permissions a token does not already carry, so the prompt can name them. */
-export function newPermissionsSince(granted, list = REQUIRED_PERMISSIONS) {
-  const known = new Set(String(granted ?? "").split("|"));
-  return list.filter((permission) => !known.has(`${permission.id}:${String(permission.level).toLowerCase()}`));
-}
+export const CONNECTION_CHECKS = [
+  { id: "identity", label: "Read your GitHub account", need: PERMISSIONS.metadata, permission: "metadata" },
+  {
+    id: "issues",
+    label: "Read the issues and pull requests assigned to you",
+    need: PERMISSIONS.issuesRead,
+    permission: "issues",
+  },
+  {
+    id: "reviews",
+    label: "Read the pull requests waiting for your review",
+    need: PERMISSIONS.pullRequestsRead,
+    permission: "pull-requests",
+  },
+  {
+    id: "checks",
+    label: "Read how the checks on a pull request are going",
+    need: PERMISSIONS.actionsRead,
+    permission: "actions",
+  },
+];

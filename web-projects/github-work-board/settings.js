@@ -93,7 +93,6 @@ function readEntry(value) {
   return {
     id,
     token,
-    grantedPermissions: typeof value.grantedPermissions === "string" ? value.grantedPermissions : null,
     name: typeof value.name === "string" ? value.name.trim() : "",
     owners: Array.isArray(value.owners) ? value.owners.filter((one) => typeof one === "string") : [],
     itemCount: Number.isFinite(value.itemCount) ? value.itemCount : 0,
@@ -126,7 +125,6 @@ export function readTokens(storage) {
     {
       id: "legacy",
       token: clean,
-      grantedPermissions: readRaw(storage, LEGACY_KEYS.grantedPermissions),
       name: "",
       owners: [],
       itemCount: 0,

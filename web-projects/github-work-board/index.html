@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="234" />
-  <meta name="deploy-date" content="2026-09-23T12:18:14.000Z" />
+  <meta name="deploy-pull-request" content="235" />
+  <meta name="deploy-date" content="2026-09-23T12:38:15.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -210,17 +210,6 @@
           </div>
         </div>
       </section>
-
-      <!-- Shown when the board has grown to need access a saved token was never
-           granted. Filled by app.js from permissions.js (ADR 0005). -->
-      <div id="token-outdated" class="callout callout-warning" hidden>
-        <p class="callout-title">A token needs more access than it has</p>
-        <p>The board has grown since you made it. Add the following to that token, then connect again.</p>
-        <ul id="token-outdated-list" class="callout-list"></ul>
-        <p>
-          <a class="button button-primary" href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">Open your tokens</a>
-        </p>
-      </div>
 
       <!-- First run. Hidden once a token is connected, shown again once the
            last token is removed. -->

@@ -221,3 +221,28 @@ describe("the start-up screen says what it is doing (ADR 0036)", () => {
     expect(bootStepProgress("nonsense")).toBe(filled[0]);
   });
 });
+
+describe("summariseChecks with a check nothing could prove", () => {
+  const ok = { label: "One", ok: true };
+  const bad = { label: "Two", ok: false };
+  // A check the board had nothing to run against is not a pass and not a
+  // failure: the reader has no pull request with checks on it yet, so the board
+  // cannot honestly say either (ADR 0005).
+  const unknown = { label: "Three", ok: null };
+
+  test("a check nothing proved is counted apart from the passes", () => {
+    expect(summariseChecks([ok, ok, unknown])).toBe("2 checks passed, 1 not checked yet");
+  });
+
+  test("one failure is still named, whatever else is unknown", () => {
+    expect(summariseChecks([ok, bad, unknown])).toBe("Two did not pass");
+  });
+
+  test("all passed still reads as all passed", () => {
+    expect(summariseChecks([ok, ok])).toBe("All 2 checks passed");
+  });
+
+  test("nothing checked at all says so", () => {
+    expect(summariseChecks([unknown, unknown])).toBe("2 checks not checked yet");
+  });
+});
