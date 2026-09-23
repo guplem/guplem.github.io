@@ -42,3 +42,32 @@ export function describeFailure(failure) {
   if (status === 422) return `GitHub rejected the request: ${message || "it did not say why."}`;
   return `GitHub answered ${status}. ${message || "It gave no reason."}`;
 }
+
+/**
+ * A failed check in Settings, as a sentence that says exactly what to tick.
+ *
+ * GitHub answers a missing permission with 403 and "Resource not accessible by
+ * personal access token". The reader is then looking at a form with dozens of
+ * permissions on it, so the row names the one to add and its level, spelled the
+ * way that form spells them, and says what stops working without it (ADR 0005).
+ *
+ * Everything that is not a missing permission keeps its own advice: a dead
+ * token, a rate limit and a lost connection are all answered by
+ * `describeFailure`, and none of them is fixed by editing a permission.
+ *
+ * @param failure `{ status, message }` from the call that failed
+ * @param permission the `REQUIRED_PERMISSIONS` entry the call proves, or null
+ */
+export function describeMissingPermission(failure, permission) {
+  const status = Number(failure?.status) || 0;
+  const message = typeof failure?.message === "string" ? failure.message : "";
+  const named = permission ? `${permission.name} → ${permission.level}` : "";
+
+  if (status === 403 && !/rate limit/i.test(message) && named !== "") {
+    return `Add "${named}" to this token on GitHub, then check again. ${permission.without}`;
+  }
+  if (status === 404 && named !== "") {
+    return `GitHub cannot see it. Check that this token's repository list covers the work you want, and that "${named}" is granted. ${permission.without}`;
+  }
+  return describeFailure({ ...failure, need: named });
+}

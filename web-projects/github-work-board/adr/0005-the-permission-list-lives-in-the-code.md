@@ -39,13 +39,27 @@ nobody is looking at.
   say anything.
 - **Every permission is proved by a call, and Settings says green or red for
   each one.** `CONNECTION_CHECKS` holds one entry per permission, naming the
-  call that proves it and the permission it belongs to. The board fills those
-  rows from the calls it makes on an ordinary read, so the rows cost nothing
-  extra and describe the token as it is right now. A test keeps the two lists in
-  step, so a permission nothing proves cannot exist.
-- **A check has three answers, not two.** Passed, failed, and nothing to check
-  with. A token that reached no pull request cannot prove it can read the
-  checks, and saying "passed" there would be a guess.
+  call that proves it and the permission it belongs to. A test keeps the two
+  lists in step, so a permission nothing proves cannot exist.
+- **Settings proves them all, on purpose, every time it is opened.** The
+  ordinary read fills the same rows for free, but it can only report on what it
+  happened to need: a token whose work carries no pull request never tries the
+  checks, so that row would sit unanswered for ever. A permission nobody tries
+  is one the reader meets the day it matters. It costs one call per permission,
+  paid when a person asks, never on a refresh. A button on the same screen runs
+  them again, for somebody who has just fixed a token in another tab.
+- **A permission with nowhere to be tried is tried somewhere else.** The checks
+  need a repository, and a token with no work assigned has none on the board. So
+  the pass asks GitHub for any one repository the token reaches and tries it
+  there. A token that reaches no repository at all is broken, and the row says
+  exactly that.
+- **A failed row names the permission and its level, spelled as GitHub's own
+  form spells them, and says what stops working.** "Resource not accessible by
+  personal access token" is what GitHub answers, and the reader is looking at a
+  form with dozens of permissions on it. `Add "Actions → Read-only" to this
+  token on GitHub, then check again. Without it, the board cannot say how the
+  checks on a pull request are going.` Every entry carries that `without`
+  sentence, and a test requires it.
 
 **So: adding a call that needs new access means adding one entry to
 `REQUIRED_PERMISSIONS`, and one to `CONNECTION_CHECKS`.** The guide, the README

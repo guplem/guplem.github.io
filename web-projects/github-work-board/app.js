@@ -66,6 +66,7 @@ import {
   fetchFinishedWork,
   fetchRelationships,
   fetchReviewRequests,
+  fetchFirstRepository,
   fetchViewer,
   fetchWorkflowRuns,
 } from "./gateway.js";
@@ -81,7 +82,7 @@ import {
   filterWorkItems,
   toggleInList,
 } from "./filters.js";
-import { describeFailure } from "./githubErrors.js";
+import { describeFailure, describeMissingPermission } from "./githubErrors.js";
 import {
   bootStepProgress,
   bootStepWords,
@@ -93,7 +94,7 @@ import {
   sayEmptyBoard,
   summariseChecks,
 } from "./messages.js";
-import { CONNECTION_CHECKS, PERMISSIONS, REQUIRED_PERMISSIONS } from "./permissions.js";
+import { CONNECTION_CHECKS, PERMISSIONS, REQUIRED_PERMISSIONS, permissionFor } from "./permissions.js";
 import { DEFAULT_REFRESH, OFF, REFRESH_CHOICES, refreshDue } from "./refresh.js";
 import {
   addToken,
@@ -231,6 +232,8 @@ const state = {
   // commit that has finished stays finished, so the board asks once and reads
   // its own answer on every refresh after that (ADR 0037).
   checksBySha: new Map(),
+  // Settings is proving every permission on every token right now (ADR 0005).
+  checking: false,
   refreshId: DEFAULT_REFRESH,
   refreshTimer: null,
   lastReadAt: null,
@@ -298,13 +301,14 @@ function fillTokenGuides() {
 
 function buildCheckRow({ label, ok, detail }) {
   const row = document.createElement("li");
-  // Three answers, not two: a check the board had nothing to run against is
-  // neither a pass nor a failure, and saying either would be a guess (ADR 0005).
+  // Three answers: it worked, it did not, or the board is asking right now.
+  // Nothing stays unanswered, because Settings proves every permission
+  // (ADR 0005).
   row.className = ok === true ? "check ok" : ok === false ? "check failed" : "check unchecked";
   const mark = document.createElement("span");
   mark.className =
     ok === true ? "badge badge-success" : ok === false ? "badge badge-destructive" : "badge badge-outline";
-  mark.textContent = ok === true ? "Done" : ok === false ? "Fix" : "Not yet";
+  mark.textContent = ok === true ? "Done" : ok === false ? "Fix" : "Asking";
   const body = document.createElement("div");
   const name = document.createElement("p");
   name.className = "check-label";
@@ -2108,7 +2112,12 @@ function showView(view) {
   finishBoot();
   // Settings carries the cloud storage panel, and the local mirror and the
   // cloud copy can both have changed since it was drawn (root ADR 0016).
-  if (view === "settings") cloudPanel?.refresh();
+  if (view === "settings") {
+    cloudPanel?.refresh();
+    // Every permission, proved now. The reader opened Settings because they
+    // want to know, and the answers cost one call each (ADR 0005).
+    checkEveryToken().catch(() => {});
+  }
   const connected = state.tokens.length > 0;
   state.view = connected ? view : DEFAULT_VIEW;
 
@@ -2264,6 +2273,94 @@ async function inspectToken(entry) {
   });
 
   return { entry: updated, raw: [...raw, ...finishedRaw], rows, links, reviews };
+}
+
+/**
+ * Prove every permission on one token, one call each, and say what failed.
+ *
+ * Settings runs this, not the board. The ordinary read fills the same rows for
+ * free, but it can only report on what it happened to need: a token whose work
+ * carries no pull request never tries the checks, so that row would sit
+ * unanswered for ever. A permission nobody tries is a permission the reader
+ * finds out about the day it matters (ADR 0005).
+ *
+ * It costs one call per permission, and it runs when a person opens Settings or
+ * presses the button there, never on a refresh.
+ */
+async function checkToken(entry) {
+  const [identity, work, reviews, checks] = CONNECTION_CHECKS;
+  const said = (check, answer, detail) => ({
+    id: check.id,
+    label: check.label,
+    ok: answer.ok,
+    detail: answer.ok ? detail : describeMissingPermission(answer, permissionFor(check.permission)),
+  });
+
+  const who = await fetchViewer(entry.token);
+  const rows = [said(identity, who, `Signed in as ${who.data?.login ?? "you"}.`)];
+
+  const [assigned, waiting, repository] = await Promise.all([
+    fetchAssignedIssues(entry.token),
+    fetchReviewRequests(entry.token),
+    fetchFirstRepository(entry.token),
+  ]);
+
+  const mine = assigned.ok ? normalizeWorkItems(assigned.data) : [];
+  const counted = countByKind(mine);
+  rows.push(
+    said(
+      work,
+      assigned,
+      mine.length === 0
+        ? "This token reached no repository with work assigned to you."
+        : `${counted.issues} issues and ${counted.pullRequests} pull requests, in ${ownersOf(mine.map((item) => item.repository)).join(", ")}.`,
+    ),
+  );
+  rows.push(said(reviews, waiting, `${waiting.data?.items?.length ?? 0} waiting for your review.`));
+
+  // The checks need somewhere to be read. Any repository this token reaches
+  // answers that, so the row is proved even for a token with no work on it.
+  const first = Array.isArray(repository.data) ? repository.data[0]?.full_name : null;
+  if (!repository.ok) rows.push(said(checks, repository, ""));
+  else if (!first) {
+    rows.push({
+      id: checks.id,
+      label: checks.label,
+      ok: false,
+      detail: "This token reaches no repository at all, so nothing can be read with it. Check its repository list.",
+    });
+  } else {
+    const runs = await fetchWorkflowRuns(entry.token, first);
+    rows.push(said(checks, runs, `Read the workflow runs in ${first}.`));
+  }
+  return rows;
+}
+
+/**
+ * Run those checks for every saved token, and draw the answers as they arrive.
+ */
+async function checkEveryToken() {
+  const button = element("recheck-tokens");
+  if (button) button.disabled = true;
+  state.checking = true;
+  // Every row says "Asking" first, so a reader watching the screen sees the
+  // answers land rather than a list that sits still and then jumps.
+  for (const entry of state.tokens) {
+    state.checks[entry.id] = CONNECTION_CHECKS.map((check) => ({ id: check.id, label: check.label, ok: null, detail: "" }));
+  }
+  renderTokenList();
+  try {
+    await Promise.all(
+      state.tokens.map(async (entry) => {
+        state.checks[entry.id] = await checkToken(entry);
+        renderTokenList();
+      }),
+    );
+  } finally {
+    state.checking = false;
+    if (button) button.disabled = false;
+    renderTokenList();
+  }
 }
 
 /**
@@ -2694,6 +2791,10 @@ function start() {
   });
 
   renderCopyActionHelp();
+  element("recheck-tokens").addEventListener("click", () => {
+    checkEveryToken().catch(() => {});
+  });
+
   element("add-copy-action").addEventListener("click", () => {
     const name = element("new-copy-action-name");
     const template = element("new-copy-action-template");

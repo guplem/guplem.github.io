@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="236" />
-  <meta name="deploy-date" content="2026-09-23T12:47:21.000Z" />
+  <meta name="deploy-pull-request" content="237" />
+  <meta name="deploy-date" content="2026-09-23T13:01:14.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -210,6 +210,21 @@
           </div>
         </div>
       </section>
+      <!-- The one script on this page that is not a module, and the one line of
+           logic in this file. `app.js` cannot report a failure to load itself:
+           a module that does not resolve never runs a line, so the `try` around
+           its start is never reached and the screen above sits there for ever.
+           This says so instead (ADR 0036). -->
+      <script>
+        setTimeout(function () {
+          var boot = document.getElementById("boot");
+          var step = document.getElementById("boot-step");
+          if (!boot || boot.hidden || !step) return;
+          step.textContent = "The board's code did not load. Reload the page, and check your connection.";
+          var bar = document.getElementById("boot-bar");
+          if (bar) bar.hidden = true;
+        }, 10000);
+      </script>
 
       <!-- First run. Hidden once a token is connected, shown again once the
            last token is removed. -->
@@ -334,8 +349,8 @@
             <h3 class="card-title">Tokens that read your work</h3>
             <p class="lead">
               These tokens fetch your issues and pull requests. Each one reaches one owner, your account or one
-              organisation, and what it reached the last time the board asked is shown beside it. They save
-              nothing: saving is the next card's job.
+              organisation. Opening this screen tries every permission the board needs on every token, and each one
+              says what it could do and what to add if it could not. They save nothing: saving is the next card's job.
             </p>
           </div>
           <div class="card-content">
@@ -343,6 +358,10 @@
             <p id="settings-notice" class="status" role="status" aria-live="polite"></p>
             <p class="step-action">
               <button id="open-add-token" type="button" class="button button-primary">Add token</button>
+              <!-- Every permission is tried again, one call each. Opening this
+                   screen does it too; this is for after you fix a token on
+                   GitHub without leaving the page (ADR 0005). -->
+              <button id="recheck-tokens" type="button" class="button button-outline">Check every permission again</button>
               <button id="copy-backup" type="button" class="button button-outline">Copy every token as a backup</button>
             </p>
             <p class="field-help">

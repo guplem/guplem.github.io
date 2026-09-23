@@ -213,7 +213,17 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   Settings says green, red or "not checked yet" for each (ADR 0005).
 - **A permission with nothing to prove it cannot exist.** A test pairs every
   `REQUIRED_PERMISSIONS` entry with a `CONNECTION_CHECKS` entry, so a new
-  permission means a new row in Settings too.
+  permission means a new row in Settings too, and a `without` sentence saying
+  what stops working when it is missing.
+- **Settings runs every check itself (`checkToken`), and the board's read fills
+  the same rows for free.** The read can only report on what it needed, so the
+  Settings pass is what makes a row that is never exercised impossible. It costs
+  one call per permission and runs only when a person opens Settings or presses
+  the button there (ADR 0005).
+- **A module that fails to load leaves the page on the start-up screen for
+  ever.** Nothing in `app.js` runs, so the `try` around `start()` never sees it.
+  The one inline script in `index.html` is the watchdog that says so after ten
+  seconds. Do not delete it as "the page has no inline scripts" (ADR 0036).
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and
