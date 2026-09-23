@@ -52,7 +52,7 @@ It is the short procedure for all of the above.
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
 | `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, and filling one in (ADR 0031) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
-| `priority.js` | Yes | The work the reader pushed down, and what sinks with it, on the board and in the review row (ADR 0026) |
+| `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, and the cards whose checks came back red (ADR 0026) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022, ADR 0031) |
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
@@ -134,6 +134,10 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
 - **`.badge` is `inline-flex`, so whitespace between two child elements
   disappears.** A badge built from two spans needs a `gap`, not a space in the
   text (ADR 0027).
+- **A red check does not move a card out of "Awaiting review" any more.** It
+  climbs to the top of its column instead, in the smart order, and the card's
+  own "Checks failed" pill is what says why (ADR 0011, ADR 0026). A change that
+  "restores" the old column rule hides work in the column nobody watches.
 - **The review row and the columns sort by one rule, and that rule lives in two
   places in `app.js`.** `sorting.js` only compares. Both passes of the smart
   order run twice: on the grouped board (`orderStacksForMerging`, then
@@ -141,7 +145,10 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   `sinkLowPriorityItems`), in that order. The row drifted away from the columns
   once already, one pass at a time, and nothing failed either time: the badge
   said "1 of 3" on a card sitting last, and a marked card stayed where it was.
-  Add anything to one side and add it to the other (ADR 0016, ADR 0026).
+  Add anything to one side and add it to the other (ADR 0016, ADR 0026). The one
+  deliberate exception is the red-check raise, which the board does and the row
+  does not, and `invariants.test.js` states that in a test so it never reads as
+  an oversight.
 - **"Who is reviewing this" is never `reviewRequests` alone.** GitHub drops a
   reviewer from that list the moment they submit a review, so a pull request
   held up by one `CHANGES_REQUESTED` review has an empty request list. Read

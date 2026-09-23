@@ -10,7 +10,7 @@
 // **A column id is written into `board.json`** the moment somebody moves a card
 // by hand, so an id is permanent, exactly like a sort id or a storage key.
 
-import { attentionReasons } from "./attention.js";
+import { CHECKS_FAILED, attentionReasons } from "./attention.js";
 import { pullRequestFor } from "./relationships.js";
 import { finishedAt } from "./workItems.js";
 
@@ -108,13 +108,23 @@ function readState(source, merged) {
 /**
  * The column the rules put this item in.
  *
- * The order of the checks is the whole decision, because an item can answer
- * several of them at once. Merged beats everything: it is over. Anything that
- * wants the author beats an approval and beats a wait on a reviewer, because
- * one reviewer approving does not undo a conflict, a red check, or another
- * reviewer asking for work, and that work is what is left to do. Changes
- * requested that have been answered is not changes requested at all: the
- * reviewer was asked again, so the wait is theirs.
+ * The order of the rules is the whole decision, because an item can answer
+ * several of them at once.
+ *
+ * 1. **Merged beats everything**: it is over.
+ * 2. **A conflict, or changes nobody has answered**, beats the rest. The merge
+ *    itself cannot happen, or a reviewer has asked for work: no other person's
+ *    move changes either, so the card is with its author. Changes requested
+ *    that have been answered is not changes requested at all: the reviewer was
+ *    asked again, so the wait is theirs.
+ * 3. **A reviewer who has been asked beats a red check.** Both are real, and
+ *    the column answers the more useful question: what is this waiting on? The
+ *    card draws its "Checks failed" pill wherever it sits, so the red check is
+ *    never hidden, and in the smart order it climbs to the top of the column
+ *    (ADR 0011, ADR 0026).
+ * 4. **A red check with nobody waited on** is the author's move, approval or
+ *    no approval, so an approved pull request with a red check is not ready to
+ *    merge.
  */
 export function automaticColumn(item, relationship) {
   const self = isPlainObject(item) ? item : {};
@@ -124,15 +134,19 @@ export function automaticColumn(item, relationship) {
   const pull = pullRequestState(self, relationship);
   if (pull.merged) return "done";
   if (!pull.exists) return "todo";
-  // A conflict, a red check, or changes nobody has answered: all three want the
-  // person who wrote the work, so all three read as one column (ADR 0011).
-  if (attentionReasons(pull).length > 0) return "needs-changes";
-  if (pull.reviewDecision === "APPROVED") return "ready-to-merge";
+  const reasons = attentionReasons(pull);
+  // A conflict, or changes nobody has answered. Both want the person who wrote
+  // the work, and no review moves either of them (ADR 0011).
+  if (reasons.some((id) => id !== CHECKS_FAILED)) return "needs-changes";
   // Only somebody actually being asked counts. `REVIEW_REQUIRED` does not: it
   // is the branch rule saying the repository wants a review before a merge, so
   // every open pull request in such a repository carries it, including one
   // nobody has looked at (ADR 0011).
   if (pull.reviewRequestCount > 0) return "awaiting-review";
+  // A red check, and nobody else to wait for. That is the author's move, and it
+  // beats an approval: approved work with a red check cannot merge.
+  if (reasons.length > 0) return "needs-changes";
+  if (pull.reviewDecision === "APPROVED") return "ready-to-merge";
   return "ongoing";
 }
 

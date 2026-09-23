@@ -30,8 +30,8 @@ Six columns, in the order work travels:
 |---|---|
 | To do | Assigned, with no pull request |
 | Ongoing | A pull request exists, nobody asked to review it |
-| Needs attention | The branch conflicts, a check came back red, or a reviewer asked for changes and has not been asked to look again |
-| Awaiting review | A reviewer was asked by name, no verdict yet |
+| Needs attention | The branch conflicts, a reviewer asked for changes and has not been asked to look again, or a check came back red with nobody else waited on |
+| Awaiting review | A reviewer was asked by name, no verdict yet, red checks or not |
 | Ready to merge | Approved |
 | Done today | Finished inside the chosen range, since midnight by default (ADR 0017, ADR 0034) |
 
@@ -54,22 +54,31 @@ moves between all day are next to each other, and the three that mean "waiting
 on somebody else" run on from there. The order is only how the columns read:
 the ids are what `board.json` stores, and they never move.
 
-**The order of the checks is the decision**, because an item answers several at
-once. Finished work wins over everything: it is over (ADR 0017). Anything that
-wants the author wins over an approval and over a wait on a reviewer, because
-one reviewer approving does not undo a conflict, a red check, or another
-reviewer asking for work, and that work is what is left to do.
+**The order of the rules is the decision**, because an item answers several at
+once. Finished work wins over everything: it is over (ADR 0017). Then a conflict
+and changes requested, because no other person's move changes either: the merge
+cannot happen, or a reviewer has asked for work.
+
+**Then a reviewer who has been asked, and only then a red check.** Both are
+true at once often enough to matter, and the column answers the more useful
+question: what is this waiting on? The author can push a fix while the review
+runs, and the review is the longer wait. The card draws its "Checks failed"
+pill wherever it sits, so nothing is hidden by this, and in the smart order a
+card with a red check climbs to the top of its column (ADR 0026), which is
+where the reader meets it first.
+
+**A red check with nobody waited on still wants the author**, and it beats an
+approval: approved work that does not build is not ready to merge.
 
 **A conflict and a red check are read from GitHub, never worked out here.**
 `mergeable` answers `CONFLICTING` when the branch and its target changed the
 same lines. GitHub works that field out only when somebody asks for it, so the
 first answer for a quiet pull request is `UNKNOWN`: that is "not worked out
 yet", not "fine", so the board claims nothing about it and the next refresh
-answers properly. The checks are `statusCheckRollup` on the last commit, which
-is GitHub's own one-word verdict over every check: `FAILURE` and `ERROR` want
-the author, `PENDING` and `EXPECTED` are still running and want nobody, and a
-pull request with no checks at all has no rollup, which is not a pass. Both
-fields cost one more nested connection in the relationship query (ADR 0010).
+answers properly. The checks are the workflow runs on the last commit,
+counted into one verdict by `checks.js`, because GitHub's own rollup needs a
+permission a fine-grained token cannot carry (ADR 0037). Runs still going want
+nobody, and a commit nothing ran on is not a pass.
 
 **Changes requested that have been answered is not changes requested.** GitHub
 never clears `reviewDecision`. The author does the work, asks the same reviewer

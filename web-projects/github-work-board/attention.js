@@ -44,6 +44,16 @@ export const ATTENTION_REASONS = [
 
 export const ATTENTION_IDS = ATTENTION_REASONS.map((one) => one.id);
 
+/**
+ * The one reason that does not decide a column on its own.
+ *
+ * A red check is the author's move, and so is a conflict and so are changes
+ * requested. But a reviewer who has been asked is somebody else's move, and
+ * that is the more useful thing for a column to say. The card still draws the
+ * pill wherever it sits, so nothing is hidden (ADR 0011).
+ */
+export const CHECKS_FAILED = "checks-failed";
+
 const BY_ID = new Map(ATTENTION_REASONS.map((one) => [one.id, one]));
 
 /** One reason, or null when the id is not one this board draws. */

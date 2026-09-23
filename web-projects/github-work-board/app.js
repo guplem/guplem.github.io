@@ -39,7 +39,7 @@ import {
   THEMES,
   colourableAreas,
 } from "./appearance.js";
-import { attentionReason } from "./attention.js";
+import { CHECKS_FAILED, attentionReason } from "./attention.js";
 import { describeChecks, needsAsking, readWorkflowRuns } from "./checks.js";
 import {
   DEFAULT_RANGE,
@@ -126,7 +126,7 @@ import { childSummary, childrenProgress, childrenToggleLabel, orderChildren } fr
 import { EXAMPLE_ACTIONS, PLACEHOLDERS, fillCopyTemplate } from "./copyActions.js";
 import { readTitle } from "./titles.js";
 import { initialsOf, personLabel } from "./people.js";
-import { LOW, NORMAL, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
+import { LOW, NORMAL, raiseFailedChecks, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
 import { countBoard, describeBreakdown, describeExcluded, tabTitle } from "./counting.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
@@ -1715,6 +1715,23 @@ function lowPriorityKeys(items) {
 }
 
 /**
+ * The cards whose checks came back red.
+ *
+ * Read through `attentionFor`, which is what draws the pill, so the card that
+ * climbs is always a card wearing "Checks failed". A second rule of its own
+ * could disagree with the pill, and the reader would see a card at the top with
+ * nothing on it to say why (ADR 0011).
+ */
+function failedCheckKeys(items) {
+  const red = new Set();
+  for (const item of items) {
+    if (!item) continue;
+    if (attentionFor(item, readRelationship(state.links, item.key)).includes(CHECKS_FAILED)) red.add(item.key);
+  }
+  return red;
+}
+
+/**
  * Put the list on the screen in the chosen order.
  *
  * Called on load, when the order changes, and after a note is written, because
@@ -1737,9 +1754,17 @@ function renderBoard() {
   // of them along: those cannot merge first, so leaving them up would show work
   // that reads as ready and is not (ADR 0016, ADR 0026). Like the stack pass,
   // only the smart order does this.
+  // Then the cards with a red check climb to the top of their column. A red
+  // check no longer moves a card out of the column it belongs in (ADR 0011), so
+  // this is what keeps it from being lost in the middle of one. The sink runs
+  // last: a card the reader pushed down stays down, because their hand beats
+  // the rule (ADR 0026).
   const grouped =
     state.sortId === "smart"
-      ? sinkLowPriority(orderStacksForMerging(plain), lowPriorityKeys(plain.map((group) => group.item)))
+      ? sinkLowPriority(
+          raiseFailedChecks(orderStacksForMerging(plain), failedCheckKeys(plain.map((group) => group.item))),
+          lowPriorityKeys(plain.map((group) => group.item)),
+        )
       : plain;
 
   // The row above the columns. It follows the chosen order, and with no choice

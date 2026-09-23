@@ -1,5 +1,12 @@
 import { describe, expect, test } from "bun:test";
-import { LOW, NORMAL, knownPriority, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
+import {
+  LOW,
+  NORMAL,
+  knownPriority,
+  raiseFailedChecks,
+  sinkLowPriority,
+  sinkLowPriorityItems,
+} from "./priority.js";
 
 // A group is what the board draws: an item, and the pull requests nested in it.
 const group = (key, { repository = "me/repo", head = "", base = "", number = 1 } = {}) => ({
@@ -165,3 +172,52 @@ describe("sinkLowPriorityItems", () => {
     expect(sinkLowPriorityItems([], new Set(["a"]))).toEqual([]);
   });
 });
+
+describe("raiseFailedChecks", () => {
+  // A red check no longer moves a card out of its column when somebody is
+  // waited on (ADR 0011). It climbs to the top of the column instead, so the
+  // work that needs a push is the first thing read there (ADR 0026).
+  test("a card with a red check goes to the top", () => {
+    const list = [group("a"), group("b"), group("c")];
+    expect(keys(raiseFailedChecks(list, new Set(["c"])))).toEqual(["c", "a", "b"]);
+  });
+
+  test("nothing red, nothing moves", () => {
+    const list = [group("a"), group("b")];
+    expect(keys(raiseFailedChecks(list, new Set()))).toEqual(["a", "b"]);
+    expect(keys(raiseFailedChecks(list, null))).toEqual(["a", "b"]);
+  });
+
+  test("the order the reader chose still holds inside each half", () => {
+    const list = [group("a"), group("b"), group("c"), group("d")];
+    expect(keys(raiseFailedChecks(list, new Set(["b", "d"])))).toEqual(["b", "d", "a", "c"]);
+  });
+});
+
+describe("raiseFailedChecks and a stack", () => {
+  // main <- one <- two <- three, handed in already in merge order.
+  const stack = () => [
+    group("one", { head: "one", base: "main", number: 1 }),
+    group("two", { head: "two", base: "one", number: 2 }),
+    group("three", { head: "three", base: "two", number: 3 }),
+  ];
+
+  // The whole stack travels, because nothing in it can merge before the one
+  // below it. Raising a middle card over its own base would show work that
+  // reads as ready and is not, which is the exact failure ADR 0016 forbids.
+  test("a red check anywhere in a stack raises the whole stack, in merge order", () => {
+    for (const red of ["one", "two", "three"]) {
+      const order = keys(raiseFailedChecks([group("other"), ...stack()], new Set([red])));
+      expect(order).toEqual(["one", "two", "three", "other"]);
+    }
+  });
+
+  test("a ring of retargeted branches never hangs", () => {
+    const ring = [
+      group("x", { head: "x", base: "y", number: 1 }),
+      group("y", { head: "y", base: "x", number: 2 }),
+    ];
+    expect(keys(raiseFailedChecks(ring, new Set(["x"])))).toHaveLength(2);
+  });
+});
+
