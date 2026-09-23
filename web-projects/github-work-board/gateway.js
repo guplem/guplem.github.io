@@ -80,10 +80,25 @@ export function fetchViewer(token) {
  * repeats inside every run, which is most of the answer's size and none of its
  * use here.
  */
-export function fetchWorkflowRuns(token, repository, sha) {
+export function fetchWorkflowRuns(token, repository, sha = "") {
   const where = String(repository).split("/").map(encodeURIComponent).join("/");
-  const ask = `head_sha=${encodeURIComponent(sha)}&per_page=${CHECKS_READ}&exclude_pull_requests=true`;
-  return call(token, `/repos/${where}/actions/runs?${ask}`, { need: PERMISSIONS.actionsRead });
+  // No commit means "any run in this repository", which is what Settings asks
+  // to prove the token may read them at all (ADR 0005).
+  const only = sha === "" ? "per_page=1" : `head_sha=${encodeURIComponent(sha)}&per_page=${CHECKS_READ}`;
+  return call(token, `/repos/${where}/actions/runs?${only}&exclude_pull_requests=true`, {
+    need: PERMISSIONS.actionsRead,
+  });
+}
+
+/**
+ * One repository this token can reach, whichever GitHub names first.
+ *
+ * Settings needs somewhere to try a repository permission, and a token that has
+ * returned no work still reaches repositories. A token that reaches none is
+ * broken in a way the row can say plainly.
+ */
+export function fetchFirstRepository(token) {
+  return call(token, "/user/repos?per_page=1&sort=pushed", { need: PERMISSIONS.metadata });
 }
 
 /**

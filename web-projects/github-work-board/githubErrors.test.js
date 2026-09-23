@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { describeFailure } from "./githubErrors.js";
+import { describeFailure, describeMissingPermission } from "./githubErrors.js";
 import { PERMISSIONS } from "./permissions.js";
 
 describe("describeFailure", () => {
@@ -61,5 +61,45 @@ describe("describeFailure", () => {
       expect(typeof describeFailure(junk)).toBe("string");
       expect(describeFailure(junk).length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("describeMissingPermission", () => {
+  const actions = { id: "actions", name: "Actions", level: "Read-only", why: "x", without: "Without it, the board cannot read the checks." };
+
+  // GitHub says "Resource not accessible by personal access token" and names
+  // neither the permission nor the level. The reader is looking at a form with
+  // forty permissions on it, so the row has to name the exact one and its
+  // exact level, spelled the way that form spells it (ADR 0005).
+  test("a refusal names the permission, the level, and what is lost", () => {
+    const said = describeMissingPermission({ status: 403, message: "Resource not accessible" }, actions);
+    expect(said).toContain("Actions");
+    expect(said).toContain("Read-only");
+    expect(said).toContain("Without it, the board cannot read the checks.");
+  });
+
+  // A rate limit is a 403 too, and the advice is the opposite: wait, do not go
+  // and change the token.
+  test("a rate limit is not a missing permission", () => {
+    const said = describeMissingPermission({ status: 403, message: "API rate limit exceeded" }, actions);
+    expect(said).not.toContain("Read-only");
+    expect(said).toContain("Wait");
+  });
+
+  test("a dead token, or no network, says that instead", () => {
+    expect(describeMissingPermission({ status: 401 }, actions)).toContain("rejected the token");
+    expect(describeMissingPermission({ status: 0 }, actions)).toContain("did not reach GitHub");
+  });
+
+  // A 404 on a fine-grained token is usually the repository list, not the
+  // permission, and both are worth saying.
+  test("a 404 names the repository list and the permission", () => {
+    const said = describeMissingPermission({ status: 404 }, actions);
+    expect(said).toContain("repository list");
+    expect(said).toContain("Actions");
+  });
+
+  test("no permission to name still answers", () => {
+    expect(describeMissingPermission({ status: 403 }, null).length).toBeGreaterThan(0);
   });
 });

@@ -36,26 +36,37 @@ export const REQUIRED_PERMISSIONS = [
     name: "Metadata",
     level: "Read-only",
     why: "GitHub asks for it on every fine-grained token",
+    without: "Without it, the token cannot read anything at all.",
   },
   {
     id: "issues",
     name: "Issues",
     level: "Read and write",
     why: "the board reads the issues assigned to you",
+    without: "Without it, the board cannot show the issues assigned to you.",
   },
   {
     id: "pull-requests",
     name: "Pull requests",
     level: "Read-only",
     why: "the board shows the pull requests assigned to you, beside your issues",
+    without: "Without it, the board cannot show your pull requests or the ones waiting for your review.",
   },
   {
     id: "actions",
     name: "Actions",
     level: "Read-only",
     why: "the board says how the checks on a pull request are going, and this is the only door GitHub opens to a fine-grained token",
+    without: "Without it, the board cannot say how the checks on a pull request are going.",
   },
 ];
+
+const BY_ID = new Map(REQUIRED_PERMISSIONS.map((one) => [one.id, one]));
+
+/** One permission by its id, or null. The id comes from a check that proves it. */
+export function permissionFor(id) {
+  return BY_ID.get(id) ?? null;
+}
 
 // Contents is not here any more. The board file is written by the shared cloud
 // storage, with its own token and its own permission list (root ADR 0016).

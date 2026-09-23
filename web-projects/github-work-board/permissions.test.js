@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { CONNECTION_CHECKS, PERMISSIONS, REQUIRED_PERMISSIONS } from "./permissions.js";
+import { CONNECTION_CHECKS, PERMISSIONS, REQUIRED_PERMISSIONS, permissionFor } from "./permissions.js";
 
 describe("REQUIRED_PERMISSIONS", () => {
   // The board file moved to the shared cloud storage (root ADR 0016), which
@@ -17,6 +17,9 @@ describe("REQUIRED_PERMISSIONS", () => {
       expect(permission.name.length).toBeGreaterThan(0);
       expect(permission.level).toMatch(/^(Read-only|Read and write)$/);
       expect(permission.why.length).toBeGreaterThan(0);
+      // What the reader loses without it, as a whole sentence. A reader looking
+      // at a red row needs to know what stops working, not only what to tick.
+      expect(permission.without).toMatch(/^Without it, .*\.$/);
     }
   });
 
@@ -44,5 +47,18 @@ describe("REQUIRED_PERMISSIONS", () => {
       expect(check.label.length).toBeGreaterThan(0);
       expect(REQUIRED_PERMISSIONS.map((one) => one.id)).toContain(check.permission);
     }
+  });
+});
+
+describe("permissionFor", () => {
+  test("finds the permission a check proves", () => {
+    for (const check of CONNECTION_CHECKS) {
+      expect(permissionFor(check.permission)?.id).toBe(check.permission);
+    }
+  });
+
+  test("an id nobody knows has no permission, and never throws", () => {
+    expect(permissionFor("nonsense")).toBe(null);
+    expect(permissionFor(undefined)).toBe(null);
   });
 });

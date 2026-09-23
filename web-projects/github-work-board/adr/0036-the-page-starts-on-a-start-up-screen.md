@@ -54,6 +54,13 @@ leave the reader looking at a bar for good. A `start()` that throws says so in
 the same line, because the page cannot recover and a frozen bar explains
 nothing.
 
+**One watchdog, and it is the only script in `index.html`.** `app.js` cannot
+report a failure to load itself: a module that does not resolve never runs a
+line, so the `try` around `start()` is never reached and the screen sits there
+for ever saying "Loading the board's code". A ten second timer in the page says
+so instead. It was written after exactly that happened in a browser holding one
+stale module.
+
 **It hands over to the screen, not to the answer.** The reader with a token gets
 the board with its placeholders and its turning refresh button (ADR 0004,
 ADR 0029) while GitHub is asked; the reader without one gets the welcome screen.
