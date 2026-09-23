@@ -84,7 +84,7 @@ const NONE = {
   reviewRequestCount: 0,
   askedAgain: false,
   mergeable: "",
-  checksState: "",
+  checks: null,
   exists: false,
 };
 const NONE_MERGED = { ...NONE, merged: true, exists: true };
@@ -96,10 +96,11 @@ function readState(source, merged) {
     reviewDecision: typeof source.reviewDecision === "string" ? source.reviewDecision : "",
     reviewRequestCount: Number.isFinite(source.reviewRequestCount) ? source.reviewRequestCount : 0,
     askedAgain: source.askedAgain === true,
-    // What GitHub says about the merge and about the checks on the last commit.
-    // Both are what puts a card in "Needs attention" (ADR 0011).
+    // What GitHub says about the merge, and what the board worked out about the
+    // checks on the last commit. Both put a card in "Needs attention"
+    // (ADR 0011, ADR 0037).
     mergeable: typeof source.mergeable === "string" ? source.mergeable : "",
-    checksState: typeof source.checksState === "string" ? source.checksState : "",
+    checks: source.checks ?? null,
     exists: true,
   };
 }

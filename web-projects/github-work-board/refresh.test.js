@@ -156,6 +156,17 @@ describe("what the default costs the reader (ADR 0025)", () => {
     expect(perHour).toBeLessThanOrEqual(5000 * 0.2);
   });
 
+  // The checks cost one call for each commit the board has no final answer for
+  // (ADR 0037). Steady state is nearly nothing, because a commit that finished
+  // stays finished. This is the worst case that is not made up: twenty pull
+  // requests, every one of them building, on the shortest schedule.
+  test("twenty pull requests all building stay inside the REST budget", () => {
+    const shortest = Math.min(...REFRESH_CHOICES.filter((one) => one.seconds > 0).map((one) => one.seconds));
+    const refreshesPerHour = 3600 / shortest;
+    const perHour = refreshesPerHour * (5 + 20);
+    expect(perHour).toBeLessThanOrEqual(5000);
+  });
+
   // GraphQL is charged by how much a query could return. The board asks for the
   // links, and then once more for the children of any issue that has them, so
   // the arithmetic has to hold for both calls at the largest batch there is.

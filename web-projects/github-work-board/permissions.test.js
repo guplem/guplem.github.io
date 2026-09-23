@@ -13,7 +13,7 @@ describe("REQUIRED_PERMISSIONS", () => {
   // asks for Contents on its own token. A token that only reads work no
   // longer needs it.
   test("asks for what reading work needs, and not for Contents", () => {
-    expect(REQUIRED_PERMISSIONS.map((one) => one.id)).toEqual(["metadata", "issues", "pull-requests"]);
+    expect(REQUIRED_PERMISSIONS.map((one) => one.id)).toEqual(["metadata", "issues", "pull-requests", "actions"]);
     expect(CONNECTION_CHECKS.map((one) => one.id)).toEqual(["identity", "issues"]);
   });
 

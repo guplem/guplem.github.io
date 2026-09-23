@@ -141,14 +141,13 @@ describe("automaticColumn", () => {
   });
 
   test("checks that came back red need attention", () => {
-    expect(automaticColumn(issue(), links([linkedPull({ checksState: "FAILURE" })]))).toBe("needs-changes");
-    expect(automaticColumn(issue(), links([linkedPull({ checksState: "ERROR" })]))).toBe("needs-changes");
+    expect(automaticColumn(issue(), links([linkedPull({ checks: { verdict: "failed" } })]))).toBe("needs-changes");
   });
 
   // Most pull requests are pending for their first minutes, and GitHub works
   // `mergeable` out only when asked, so its first answer is often UNKNOWN.
   test("checks still running, and a conflict GitHub has not worked out, are not attention", () => {
-    expect(automaticColumn(issue(), links([linkedPull({ checksState: "PENDING", mergeable: "UNKNOWN" })]))).toBe(
+    expect(automaticColumn(issue(), links([linkedPull({ checks: { verdict: "ongoing" }, mergeable: "UNKNOWN" })]))).toBe(
       "ongoing",
     );
   });
@@ -156,7 +155,7 @@ describe("automaticColumn", () => {
   // The author has to act either way, so a red check beats the approval and
   // beats the wait on a reviewer.
   test("a conflict or a red check beats an approval and beats awaiting review", () => {
-    const approved = linkedPull({ reviewDecision: "APPROVED", checksState: "FAILURE" });
+    const approved = linkedPull({ reviewDecision: "APPROVED", checks: { verdict: "failed" } });
     expect(automaticColumn(issue(), links([approved]))).toBe("needs-changes");
     const waiting = linkedPull({ reviewDecision: "REVIEW_REQUIRED", reviewRequestCount: 1, mergeable: "CONFLICTING" });
     expect(automaticColumn(issue(), links([waiting]))).toBe("needs-changes");
@@ -165,7 +164,7 @@ describe("automaticColumn", () => {
   // Merged work is over, and a merged pull request keeps whatever verdict and
   // whatever check state it had.
   test("merged work is done even with a red check", () => {
-    const merged = linkedPull({ merged: true, state: "closed", checksState: "FAILURE" });
+    const merged = linkedPull({ merged: true, state: "closed", checks: { verdict: "failed" } });
     expect(automaticColumn(issue(), links([merged]))).toBe("done");
   });
 
@@ -324,7 +323,7 @@ describe("attentionFor", () => {
   // The card draws one pill per reason, so it needs the reasons and not only
   // the column they add up to.
   test("says why the card is in the column, in reading order", () => {
-    const bad = linkedPull({ mergeable: "CONFLICTING", checksState: "FAILURE", reviewDecision: "CHANGES_REQUESTED" });
+    const bad = linkedPull({ mergeable: "CONFLICTING", checks: { verdict: "failed" }, reviewDecision: "CHANGES_REQUESTED" });
     expect(attentionFor(issue(), links([bad]))).toEqual(["conflicts", "checks-failed", "changes-requested"]);
     expect(attentionFor(pull({ ...bad, key: "PR_1" }), null)).toEqual([
       "conflicts",
@@ -335,7 +334,7 @@ describe("attentionFor", () => {
 
   test("work with no pull request, and finished work, have nothing in the way", () => {
     expect(attentionFor(issue(), links([]))).toEqual([]);
-    const merged = linkedPull({ merged: true, state: "closed", checksState: "FAILURE" });
+    const merged = linkedPull({ merged: true, state: "closed", checks: { verdict: "failed" } });
     expect(attentionFor(issue(), links([merged]))).toEqual([]);
   });
 });

@@ -1,4 +1,4 @@
-# ADR 0037: A dot says how the checks are going, and the rollup gives it its colour
+# ADR 0037: A dot says how the checks are going, read from the Actions API
 
 ## Context
 
@@ -7,54 +7,71 @@ one of the three ways into "Needs attention" (ADR 0011). It said nothing about
 the other two cases, which are most of the time a reader looks:
 
 - **Still running.** The reader has just pushed and wants to know whether to
-  wait. The card looks exactly like a card whose checks all passed.
-- **All green.** "Ready to merge" is about the review, not about the checks, so a
-  card could sit there with the checks still running.
+  wait. The card looked exactly like a card whose checks all passed.
+- **All green.** "Ready to merge" is about the review, not about the checks.
 
-And a red card said only "Checks failed", never how many, or whether the rest
-had even finished.
+**And the reason that did exist had never once fired.** It read
+`statusCheckRollup`, GitHub's own one-field verdict for a commit. That field
+needs the Checks permission, and **GitHub offers no Checks permission on a
+fine-grained token**, which is the only kind this board asks for (ADR 0001).
+GitHub answers the field with null. No error reaches the page, nothing turns
+red, and the feature simply never happens. It was shipped, reviewed and lived
+in the code for months without working.
+
+The same gap breaks `gh pr view` and `gh pr checks` for anybody holding a
+fine-grained token, and GitHub has said the permission may come back one day.
 
 ## Decision
 
-**One dot on every pull request card, beside the "PR" badge.** Green every check
-passed, red one came back red, grey they are still running. A pull request
-nothing ran on draws no dot at all, because no checks is not a pass.
+**One dot on every pull request card, beside the "PR" badge.** Green every run
+passed, red one came back red, grey they are still running. A commit nothing has
+run on draws no dot, because nothing ran is not a pass. Resting on it gives the
+breakdown in words, worst first: "Checks: 2 failed, 1 still running, 5 passed."
+The same sentence is on the dot for a screen reader, because a colour is not an
+answer for everybody (ADR 0004).
 
-**The colour is GitHub's rollup. The numbers are the board's count.** GitHub
-rolls every check on the last commit into one verdict, and that verdict is what
-paints the dot. The breakdown in the tooltip is counted here, from the first 50
-checks. They are two different questions, and the split is deliberate: a sum
-done here could read green on a pull request GitHub calls red, because the board
-reads 50 checks and GitHub rolls up all of them. The colour never lies, and the
-numbers say when they describe only part of a longer list.
+**The checks are read from the Actions API**, `GET /repos/{owner}/{repo}/actions/
+runs?head_sha=<commit>`, which a fine-grained token reads with "Actions:
+read". That permission is now in `REQUIRED_PERMISSIONS`, so the setup guide, the
+fingerprint and the "your token needs more access" notice all carry it without
+anything else being written by hand (ADR 0005).
 
-**Resting on the dot gives the breakdown in words**, worst first: "Checks: 2
-failed, 1 still running, 5 passed." The same sentence is on the dot for a screen
-reader, because a colour is not an answer for everybody (ADR 0004). A card whose
-checks the board could not count still says what the verdict is.
+**The verdict is the board's own, worked out from every run on the commit.** The
+board sees all of them here, which is what makes a sum an honest answer: one red
+run is a red dot however many passed. The same verdict is what puts a card in
+"Needs attention", so the dot and the column can never disagree.
 
-**A skipped or neutral check counts as a pass**, which is how GitHub's own
-rollup counts it. Numbers that argue with the colour beside them are worse than
-no numbers.
+**The board asks about a commit once and keeps the answer.** A run that has
+finished stays finished, and the commit id changes the moment anybody pushes, so
+a finished answer is good for as long as it exists. Only two answers are asked
+again: runs still going, and a commit nothing has run on yet, because a workflow
+can still start on one opened a second ago. `needsAsking` in `checks.js` is that
+rule.
 
-**The checks are asked for on the pull request, and not on the pull requests an
-issue closes.** Every card that draws a dot is a `PullRequest` node, so the
-other branch needs nothing. This is the whole of the cost decision, and it was
-measured, not guessed.
+**"Nothing ran" is asked about five times and then left alone.** A repository
+with no workflows answers it every time, and asking again on every refresh, for
+every pull request in it, is the exact cost this rule exists to avoid. Five is
+about five minutes on the default schedule.
+
+**The calls for one token go together, not one after another.** They are
+independent, and a board of twenty pull requests would otherwise take twenty
+round trips before it drew anything.
 
 ## Consequences
 
-- **The feature costs nothing.** Measured with `rateLimit(dryRun: true)` on a
-  full batch of 100 items: 18 points before, 18 with the checks asked for on the
-  pull request, 23 with them on both branches, where they multiply by the five
-  linked pull requests each issue carries. `invariants.test.js` fails if a second
-  branch ever asks for them.
-- **The `first:` number costs nothing either**, so 50 is chosen for the size of
-  the answer that comes back rather than for the bill. No check's name and no
-  address is asked for, only what each one says.
-- **The measurement also found a stale number.** `GRAPHQL_POINTS_PER_TOKEN` read
-  26 and measures 36: the query had grown and nobody had asked GitHub again. It
-  is corrected, and ADR 0025 now says to measure it again whenever the query
-  grows a field.
-- **An issue card draws no dot**, even when the board reads its column from a
-  pull request. The dot is about one commit, and an issue has none.
+- **The board sees GitHub Actions runs, and not a check posted by another
+  service.** A repository whose CI is CircleCI or Jenkins gets no dot. That is
+  the price of the only door GitHub opens to a fine-grained token, and it is
+  better than a field that answers null for everybody.
+- **A workflow run is coarser than a check run.** One run holds many jobs, so a
+  repository with one workflow and ten jobs shows one dot and "1 passed" rather
+  than ten. For "can I merge this yet" that reads better, not worse.
+- **This is the one part of a refresh that grows with the board**: one call per
+  pull request on the first read, and after that only the ones still building.
+  `refresh.test.js` holds the worst case, twenty pull requests all building on
+  the 30 second schedule, at 3000 of the 5000 REST calls an hour.
+- **Every reader has to widen their token once.** The page tells them exactly
+  what to add, which is what ADR 0005 built that flow for.
+- **`invariants.test.js` fails if the query ever asks for `statusCheckRollup`
+  again.** It is the obvious field, it looks like a simplification, and it
+  cannot work here.

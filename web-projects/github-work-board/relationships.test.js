@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { automaticColumn } from "./columns.js";
 import {
+  applyCheckSummaries,
   applyPullRequestState,
   pullRequestFor,
   askedToLookAgain,
@@ -89,7 +90,7 @@ const ANSWER = [
           url: "u3",
           reviewDecision: "CHANGES_REQUESTED",
           mergeable: "CONFLICTING",
-          commits: { nodes: [{ commit: { statusCheckRollup: { state: "FAILURE" } } }] },
+          commits: { nodes: [{ commit: { oid: "sha_1" } }] },
           reviewRequests: { totalCount: 1, nodes: [{ requestedReviewer: { login: "sergiromero-galtea" } }] },
           latestOpinionatedReviews: {
             nodes: [{ state: "CHANGES_REQUESTED", author: { login: "sergiromero-galtea" } }],
@@ -140,13 +141,24 @@ describe("normalizeRelationships", () => {
     });
   });
 
-  // The same rule runs on the pull request linked from an issue, so the two
-  // fields that say "the author has work to do" are read there too (ADR 0011).
-  test("reads the merge state and the checks of a linked pull request", () => {
+  // The same rule runs on the pull request linked from an issue, so what says
+  // "the author has work to do" is read there too (ADR 0011). The checks are
+  // filed under the commit they ran on, and the board asks about that commit
+  // separately (ADR 0037).
+  test("reads the merge state and the last commit of a linked pull request", () => {
     expect(readRelationship(byId, "I_child").closedBy[0]).toMatchObject({
       mergeable: "CONFLICTING",
-      checksState: "FAILURE",
+      headSha: "sha_1",
+      checks: null,
     });
+  });
+
+  // The column rule asks an issue about the pull request that closes it, so the
+  // answer has to reach that link too, not only the pull request's own card
+  // (ADR 0011, ADR 0037).
+  test("a commit's answer reaches the pull request an issue closes with", () => {
+    const answered = applyCheckSummaries(byId, new Map([["sha_1", { verdict: "failed" }]]));
+    expect(readRelationship(answered, "I_child").closedBy[0].checks).toEqual({ verdict: "failed" });
   });
 
   // One unreadable node must not cost the relationships of every other item.
@@ -257,24 +269,44 @@ describe("the people in a pull request's review (ADR 0028)", () => {
   // A conflict and a red check put the card in "Needs attention", and the rule
   // reads them off the item, so they have to be copied across like the rest
   // (ADR 0011).
-  test("whether the branch merges, and how the checks ended, reach the card", () => {
+  test("whether the branch merges, and the commit the checks ran on, reach the card", () => {
     const links = normalizeRelationships(
       graph({
         mergeable: "CONFLICTING",
-        commits: { nodes: [{ commit: { statusCheckRollup: { state: "FAILURE" } } }] },
+        commits: { nodes: [{ commit: { oid: "sha_1" } }] },
       }),
     );
     const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);
     expect(item.mergeable).toBe("CONFLICTING");
-    expect(item.checksState).toBe("FAILURE");
+    expect(item.headSha).toBe("sha_1");
   });
 
-  // A pull request with no checks at all has no rollup. That is not a pass.
-  test("a pull request GitHub ran no check on reads as nothing, not as passing", () => {
-    const links = normalizeRelationships(graph({ commits: { nodes: [{ commit: { statusCheckRollup: null } }] } }));
+  // An answer GitHub has not been asked for yet is null, and null is not "no
+  // checks": the card draws no dot either way, and the rules claim nothing
+  // (ADR 0037).
+  test("a pull request the board has not asked about carries no verdict", () => {
+    const links = normalizeRelationships(graph({ commits: { nodes: [{ commit: {} }] } }));
     const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);
-    expect(item.checksState).toBe("");
+    expect(item.checks).toBe(null);
+    expect(item.headSha).toBe("");
     expect(item.mergeable).toBe("");
+  });
+
+  // What the board asked GitHub about each commit, handed back to every link
+  // that names that commit: the card reads it off the pull request, and the
+  // column rule reads it off the pull request an issue closes (ADR 0037).
+  test("a commit's answer reaches the pull request that sits on it", () => {
+    const links = normalizeRelationships(graph({ commits: { nodes: [{ commit: { oid: "sha_1" } }] } }));
+    const answered = applyCheckSummaries(links, new Map([["sha_1", { verdict: "failed" }]]));
+    const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], answered);
+    expect(item.checks).toEqual({ verdict: "failed" });
+  });
+
+  test("a commit nobody answered about is left alone", () => {
+    const links = normalizeRelationships(graph({ commits: { nodes: [{ commit: { oid: "sha_1" } }] } }));
+    const answered = applyCheckSummaries(links, new Map());
+    const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], answered);
+    expect(item.checks).toBe(null);
   });
 
   // An issue carries no review of its own, so it borrows the one from the pull

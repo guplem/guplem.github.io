@@ -21,6 +21,7 @@ export const PERMISSIONS = {
   issuesRead: "Issues: read",
   issuesWrite: "Issues: write",
   pullRequestsRead: "Pull requests: read",
+  actionsRead: "Actions: read",
 };
 
 /**
@@ -45,6 +46,12 @@ export const REQUIRED_PERMISSIONS = [
     name: "Pull requests",
     level: "Read-only",
     why: "the board shows the pull requests assigned to you, beside your issues",
+  },
+  {
+    id: "actions",
+    name: "Actions",
+    level: "Read-only",
+    why: "the board says how the checks on a pull request are going, and this is the only door GitHub opens to a fine-grained token",
   },
 ];
 

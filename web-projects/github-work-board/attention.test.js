@@ -13,7 +13,7 @@ import {
 const pull = (over = {}) => ({
   merged: false,
   mergeable: "MERGEABLE",
-  checksState: "SUCCESS",
+  checks: { verdict: "passed" },
   reviewDecision: "",
   reviewRequestCount: 0,
   askedAgain: false,
@@ -58,18 +58,18 @@ describe("hasConflicts", () => {
 });
 
 describe("checksFailed", () => {
-  test("a check that failed and one that could not run both count", () => {
-    expect(checksFailed(pull({ checksState: "FAILURE" }))).toBe(true);
-    expect(checksFailed(pull({ checksState: "ERROR" }))).toBe(true);
+  test("a red verdict is the reason, and it is the one the dot draws", () => {
+    expect(checksFailed(pull({ checks: { verdict: "failed" } }))).toBe(true);
   });
 
   // A check still running is not a reason to act, and most pull requests are
-  // pending for the first minutes of their life.
-  test("running, passing and no checks at all are not a reason", () => {
-    expect(checksFailed(pull({ checksState: "PENDING" }))).toBe(false);
-    expect(checksFailed(pull({ checksState: "EXPECTED" }))).toBe(false);
-    expect(checksFailed(pull({ checksState: "SUCCESS" }))).toBe(false);
-    expect(checksFailed(pull({ checksState: "" }))).toBe(false);
+  // building for the first minutes of their life. A commit the board has not
+  // asked about yet is not a reason either: it claims nothing (ADR 0037).
+  test("running, passing, nothing run and nothing asked are not a reason", () => {
+    expect(checksFailed(pull({ checks: { verdict: "ongoing" } }))).toBe(false);
+    expect(checksFailed(pull({ checks: { verdict: "passed" } }))).toBe(false);
+    expect(checksFailed(pull({ checks: { verdict: "" } }))).toBe(false);
+    expect(checksFailed(pull({ checks: null }))).toBe(false);
     expect(checksFailed(null)).toBe(false);
   });
 });
@@ -93,13 +93,13 @@ describe("attentionReasons", () => {
   });
 
   test("all three at once, in reading order", () => {
-    const bad = pull({ mergeable: "CONFLICTING", checksState: "FAILURE", reviewDecision: "CHANGES_REQUESTED" });
+    const bad = pull({ mergeable: "CONFLICTING", checks: { verdict: "failed" }, reviewDecision: "CHANGES_REQUESTED" });
     expect(attentionReasons(bad)).toEqual(["conflicts", "checks-failed", "changes-requested"]);
   });
 
   // The card draws a pill per reason, so it has to carry the words with it.
   test("the pills carry the label and the detail", () => {
-    const pills = attentionPills(pull({ checksState: "FAILURE" }));
+    const pills = attentionPills(pull({ checks: { verdict: "failed" } }));
     expect(pills.map((one) => one.id)).toEqual(["checks-failed"]);
     expect(pills[0].label).toBe("Checks failed");
   });

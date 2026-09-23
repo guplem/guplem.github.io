@@ -405,14 +405,19 @@ describe("what the board waits on a person for is readable (ADR 0028)", () => {
   });
 });
 
-describe("the checks breakdown is asked for once (ADR 0037)", () => {
-  // The cost of this one connection is where the whole decision sits. On the
-  // pull request it is free; inside `closedByPullRequestsReferences` it
-  // multiplies by the five linked pull requests and costs five points a batch,
-  // on every refresh, for a dot no card draws from there.
-  test("only the pull request itself is asked what its checks say", () => {
-    const asked = read("gateway.js").match(/contexts\(first:/g) ?? [];
-    expect(asked).toHaveLength(1);
+describe("the checks are read where a fine-grained token can read them (ADR 0037)", () => {
+  // `statusCheckRollup` is the obvious field and it answers null here, with no
+  // error a reader would ever see: it needs the Checks permission, and GitHub
+  // offers no such permission on a fine-grained token, which is the only kind
+  // this board asks for. A later pass that "simplifies" the Actions call back
+  // into the query would put a dot on the page that can never light up.
+  test("the query never asks for GitHub's own rollup", () => {
+    expect(read("gateway.js")).not.toContain("statusCheckRollup {");
+  });
+
+  test("the checks come from the Actions API, and the token asks for it", () => {
+    expect(read("gateway.js")).toContain("/actions/runs?");
+    expect(REQUIRED_PERMISSIONS.map((one) => one.name)).toContain("Actions");
   });
 });
 

@@ -15,7 +15,6 @@
 // This module reads that answer and never throws: one unreadable node must not
 // cost the relationships of every other item.
 
-import { readCheckSummary } from "./checks.js";
 import { reviewPeople } from "./people.js";
 
 const EMPTY = Object.freeze({
@@ -76,14 +75,10 @@ export function askedToLookAgain(reviews, requests) {
  * commit to reach it. A pull request with no checks at all has no rollup, and
  * that reads as "" rather than as a pass (ADR 0011).
  */
-function checkRollup(value) {
+function readHeadSha(value) {
   const commit = isPlainObject(value) ? value.commits?.nodes?.[0]?.commit : null;
-  return commit?.statusCheckRollup ?? null;
-}
-
-function readChecksState(value) {
-  const state = checkRollup(value)?.state;
-  return typeof state === "string" ? state : "";
+  const oid = commit?.oid;
+  return typeof oid === "string" ? oid : "";
 }
 
 /** One linked item, or null when the answer does not describe one. */
@@ -106,15 +101,17 @@ function readLink(value) {
     merged: value.merged === true,
     reviewDecision: typeof value.reviewDecision === "string" ? value.reviewDecision : "",
     reviewRequestCount: Number.isInteger(value.reviewRequests?.totalCount) ? value.reviewRequests.totalCount : 0,
-    // Whether the branch still merges cleanly, and how the checks on its last
-    // commit ended. Both put a card in "Needs attention" (ADR 0011). GitHub
-    // works `mergeable` out only when asked, so its first answer is often
-    // UNKNOWN, which claims nothing.
+    // Whether the branch still merges cleanly. A branch that conflicts puts a
+    // card in "Needs attention" (ADR 0011), beside a red check. GitHub works
+    // `mergeable` out only when asked, so its first answer is often UNKNOWN,
+    // which claims nothing.
     mergeable: typeof value.mergeable === "string" ? value.mergeable : "",
-    checksState: readChecksState(value),
-    // The same checks, counted: the dot on the card takes its colour from the
-    // verdict above and its numbers from here (ADR 0037).
-    checks: readCheckSummary(checkRollup(value)),
+    // The commit the checks ran on. It is the key the board keeps their answer
+    // under, and it changes the moment anybody pushes (ADR 0037).
+    headSha: readHeadSha(value),
+    // Filled in by `applyCheckSummaries` once GitHub has answered about that
+    // commit. Nothing yet is not "no checks": it is "the board has not asked".
+    checks: null,
     // The branch this pull request adds, and the one it targets. A stack is
     // read from these and from nothing else (ADR 0016).
     headRefName: typeof value.headRefName === "string" ? value.headRefName : "",
@@ -296,7 +293,7 @@ export function applyPullRequestState(items, byId) {
       merged: self.merged,
       reviewDecision: self.reviewDecision,
       mergeable: self.mergeable,
-      checksState: self.checksState,
+      headSha: self.headSha,
       checks: self.checks,
       reviewRequestCount: self.reviewRequestCount,
       headRefName: self.headRefName,
@@ -305,6 +302,36 @@ export function applyPullRequestState(items, byId) {
       reviewers: self.reviewers,
     };
   });
+}
+
+/**
+ * Write what GitHub said about each commit onto every link that names it.
+ *
+ * The board asks about a commit once and keeps the answer (`needsAsking` in
+ * `checks.js`), so the answers arrive as a map from commit id to summary. Both
+ * the pull request itself and the pull requests an issue closes carry a commit
+ * id, and a rule reads whichever of the two answers the card: the column rule
+ * asks an issue about the pull request that closes it (ADR 0011, ADR 0037).
+ *
+ * @param byId the lookup `normalizeRelationships` built
+ * @param bySha commit id to summary, as `checks.js` counts one
+ * @returns a new lookup; the one handed in is not touched
+ */
+export function applyCheckSummaries(byId, bySha) {
+  const found = (link) => {
+    if (!link || typeof link !== "object") return link;
+    const summary = bySha instanceof Map ? bySha.get(link.headSha) : null;
+    return summary ? { ...link, checks: summary } : link;
+  };
+  const out = {};
+  for (const [id, one] of Object.entries(byId && typeof byId === "object" ? byId : {})) {
+    out[id] = {
+      ...one,
+      self: found(one.self),
+      closedBy: Array.isArray(one.closedBy) ? one.closedBy.map(found) : one.closedBy,
+    };
+  }
+  return out;
 }
 
 /**
