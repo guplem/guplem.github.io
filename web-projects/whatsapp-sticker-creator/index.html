@@ -20,8 +20,8 @@
     <!-- Which pull request published this file. Never hand-edit: written by
          `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
     <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="226" />
-  <meta name="deploy-date" content="2026-09-23T07:27:32.000Z" />
+  <meta name="deploy-pull-request" content="227" />
+  <meta name="deploy-date" content="2026-09-23T09:05:12.000Z" />
 <!-- END GENERATED:DEPLOY -->
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -44,7 +44,47 @@
             <button type="button" class="button primary" id="pick-button"></button>
             <p class="hint" id="pick-hint"></p>
           </div>
-          <input type="file" id="file-input" accept="image/*" multiple hidden />
+          <input type="file" id="file-input" accept="image/*,video/*" multiple hidden />
+        </section>
+
+        <!-- 1b. Cut a piece out of a video -->
+        <section class="panel" id="video-panel" aria-labelledby="video-heading" hidden>
+          <h2 id="video-heading"></h2>
+          <p class="hint" id="video-hint"></p>
+          <video id="video-preview" class="video-preview" playsinline muted controls></video>
+
+          <label class="field">
+            <span class="field-label"
+              ><span id="video-start-label"></span>
+              <output id="video-start-out"></output
+            ></span>
+            <input type="range" id="video-start" min="0" max="1000" step="10" value="0" />
+          </label>
+          <button type="button" class="button ghost small" id="video-start-here"></button>
+
+          <label class="field">
+            <span class="field-label"
+              ><span id="video-length-label"></span>
+              <output id="video-length-out"></output
+            ></span>
+            <input type="range" id="video-length" min="200" max="10000" step="100" value="3000" />
+          </label>
+
+          <label class="field">
+            <span class="field-label"
+              ><span id="video-fps-label"></span>
+              <output id="video-fps-out"></output
+            ></span>
+            <input type="range" id="video-fps" min="4" max="24" step="1" value="12" />
+          </label>
+
+          <p class="count" id="video-summary"></p>
+          <p class="hint" id="video-capped" hidden></p>
+          <div class="row">
+            <button type="button" class="button primary" id="video-confirm"></button>
+            <button type="button" class="button ghost small" id="video-cancel"></button>
+          </div>
+          <p class="status" id="video-progress" aria-live="polite" hidden></p>
         </section>
 
         <!-- 2. Make the sticker -->
@@ -205,7 +245,7 @@
           <div class="tool" id="tool-frames" role="tabpanel" hidden>
             <button type="button" class="button primary" id="frames-add"></button>
             <p class="hint" id="frames-add-hint"></p>
-            <input type="file" id="frames-file" accept="image/*" multiple hidden />
+            <input type="file" id="frames-file" accept="image/*,video/*" multiple hidden />
 
             <p class="count" id="frames-count"></p>
             <div class="strip" id="frames-strip"></div>

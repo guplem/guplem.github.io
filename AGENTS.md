@@ -248,6 +248,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [whatsapp-sticker-creator 0003](web-projects/whatsapp-sticker-creator/adr/0003-follow-the-validator-whatsapp-ships-not-only-its-written-guide.md) | Follow the validator WhatsApp ships, not only its written guide |
 | [whatsapp-sticker-creator 0004](web-projects/whatsapp-sticker-creator/adr/0004-keep-the-pack-in-indexeddb-not-localstorage.md) | Keep the pack in IndexedDB, not localStorage |
 | [whatsapp-sticker-creator 0005](web-projects/whatsapp-sticker-creator/adr/0005-hand-over-the-files-because-a-web-page-cannot-install-a-pack.md) | Hand over the files, because a web page cannot install a pack |
+| [whatsapp-sticker-creator 0006](web-projects/whatsapp-sticker-creator/adr/0006-sample-a-video-into-frames-and-lower-the-rate-not-the-length.md) | Sample a video into frames, and lower the rate, not the length |
 | [github-work-board 0001](web-projects/github-work-board/adr/0001-the-token-lives-in-this-browser.md) | The token lives in this browser, and the page says so |
 | [github-work-board 0002](web-projects/github-work-board/adr/0002-merge-record-by-record-not-file-by-file.md) | Merge record by record, and let the remote side win a tie |
 | [github-work-board 0003](web-projects/github-work-board/adr/0003-tests-that-guard-decisions-not-only-behaviour.md) | Tests that guard decisions, not only behaviour |
