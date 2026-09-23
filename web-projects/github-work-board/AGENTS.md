@@ -160,6 +160,13 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   shape is not a variant and must not be named like one: the refresh button's
   square shape is `.icon-only`, worn with `.button-outline`, which carries the
   hover (ADR 0029).
+- **One function says whether the board is reading: `renderRefreshBusy` in
+  `app.js`.** The refresh button turns and goes down for every read, the
+  scheduled one included, because a scheduled read draws no placeholders and no
+  status line (ADR 0025, ADR 0029). Never set `disabled` or `aria-busy` on that
+  button anywhere else: the press and the schedule would each write it, and the
+  one that loses leaves the button down for good. `invariants.test.js` fails on
+  a second writer.
 - **Every number on the page comes from one `countBoard` pass.** The badge on a
   column, the number beside the title and the name of the browser tab are the
   same numbers, so they cannot disagree. Do not count a list again anywhere else

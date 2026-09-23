@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="228" />
-  <meta name="deploy-date" content="2026-09-23T09:29:29.000Z" />
+  <meta name="deploy-pull-request" content="229" />
+  <meta name="deploy-date" content="2026-09-23T09:50:38.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -161,8 +161,9 @@
           <!-- Filled from REFRESH_CHOICES, so a schedule exists in one place. -->
           <select id="refresh" class="select"></select>
           <!-- Ask GitHub right now, whatever the schedule says. It reports how
-               long ago the board last heard anything, and it refuses to be
-               pressed again until the answer is in (ADR 0029). -->
+               long ago the board last heard anything. It turns and goes down
+               for every read, the scheduled one included, and refuses a press
+               until that answer is in (ADR 0029). -->
           <button id="refresh-now" type="button" class="button button-outline icon-only">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M21 12a9 9 0 1 1-2.64-6.36" />

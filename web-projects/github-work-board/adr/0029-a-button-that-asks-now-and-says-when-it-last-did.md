@@ -30,8 +30,17 @@ anything under ten seconds is "just now", because a number of seconds is noise
 to somebody who pressed the button a moment ago. `describeLastRefresh` in
 `messages.js` holds it and is tested, including the clock that moves backwards.
 
-**It goes down when pressed and comes back up when the answer is in, or after a
-second, whichever is later.** Both, not either:
+**It goes down for every read, whoever started it.** The reader's press, the
+schedule (ADR 0025) and a tab coming back into view all turn the icon and hold
+the button down until the answer is in. A scheduled read draws no placeholders
+and writes no status line, so without this the board reads as idle while it is
+asking, and a press in that window spends the rate limit on a second read of
+the same thing. One function in `app.js`, `renderRefreshBusy`, writes that
+state from one place: a press and a schedule that each set the button
+themselves drift apart, and the one that loses leaves it down for good.
+
+**A press also holds it down for a second, and comes back up when the answer is
+in or after that second, whichever is later.** Both, not either:
 
 - **Until the answer is in**, because the board cannot honestly say it has
   refreshed while it is still asking, and a second press would ask everything a
@@ -62,8 +71,12 @@ named `.icon-only` rather than dodged around.
 - **The sentence is the only place the board says when it last read.** It is not
   on the page, because a clock that is always on screen is a thing to watch, and
   the board is for work.
-- **A press while a scheduled refresh is already running is refused.** The
-  button is not down for those, because a quiet refresh is meant to go unnoticed
-  (ADR 0025), so the press is turned away by the same check that would have
-  stopped a second read. It is a window of well under a second, and the cost of
-  the alternative is a second full read of everything.
+- **A press while a scheduled refresh is already running is refused, and the
+  button says so rather than looking broken.** It is down and turning for the
+  whole of that read, so the refusal is visible before the press instead of
+  after it. This is the one thing a scheduled read is not silent about
+  (ADR 0025): everything else about it stays quiet.
+- **The button is the board's only "reading now" sign, so it must always come
+  back up.** `connectAll` gives it back in a `finally`, which means a read that
+  fails halfway leaves a working button rather than a board that can never ask
+  again.

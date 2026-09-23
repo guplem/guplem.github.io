@@ -87,6 +87,11 @@ case: the board already holds a good answer, and it is replaced in place by
 another good answer. Wiping five columns to placeholders every 30 seconds
 would be the opposite of what the rule is for.
 
+**Quiet is not invisible: the refresh button turns while it reads.** It is one
+icon in one corner, it holds the reader's own press off a read that is already
+running, and it is what tells a board that is asking apart from a board that
+has stopped (ADR 0029).
+
 **A refresh is skipped rather than queued** when it would interrupt the reader
 or race a save. Four cases: the tab is out of sight, the board is already
 reading, a note box or a menu is open under the reader's hands, or a save is on

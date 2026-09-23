@@ -231,6 +231,10 @@ const state = {
   refreshId: DEFAULT_REFRESH,
   refreshTimer: null,
   lastReadAt: null,
+  // The button stays down for a moment after a press it has already answered,
+  // so a read GitHub finished in 80 milliseconds still reads as something that
+  // happened (ADR 0029).
+  refreshResting: false,
   view: DEFAULT_VIEW,
   kind: DEFAULT_KIND,
   repositories: [],
@@ -2178,62 +2182,92 @@ async function inspectToken(entry) {
 async function connectAll({ quiet = false } = {}) {
   if (state.tokens.length === 0) return;
   state.loading = true;
-  if (!quiet) {
-    setStatus("Reading GitHub...");
+  // The one thing a quiet read does show. Everything below runs inside a
+  // `try`, so a read that fails halfway still gives the button back.
+  renderRefreshBusy();
+  try {
+    if (!quiet) {
+      setStatus("Reading GitHub...");
+      showView(state.view);
+      renderLoading();
+    }
+
+    const checks = {};
+    const everything = [];
+    const waiting = [];
+    let links = {};
+    for (const entry of state.tokens) {
+      const result = await inspectToken(entry);
+      state.tokens = updateToken(state.tokens, entry.id, result.entry);
+      everything.push(...result.raw);
+      checks[entry.id] = result.rows;
+      waiting.push(...(result.reviews ?? []));
+      links = { ...links, ...(result.links ?? {}) };
+    }
+    state.checks = checks;
+    state.links = links;
+    // Through the same step as the board's own items: a review card needs the
+    // branch names to know it is one of a stack (ADR 0020).
+    state.reviews = applyPullRequestState(uniqueByKey(waiting), links);
+
+    saveTokens(storage, state.tokens);
+    // Merging here, not per token, is what removes an item two tokens both see.
+    state.items = applyPullRequestState(normalizeWorkItems(everything), links);
+
+    state.loading = false;
+    state.lastReadAt = Date.now();
+    element("board-columns").removeAttribute("aria-busy");
+    showNotice("settings-notice", "");
+    renderTokenList();
+    renderTokenNotice();
+    renderFilters();
+    renderBoard();
     showView(state.view);
-    renderLoading();
+    saveLastCounts(storage, {
+      reviews: state.reviews.length,
+      items: state.items.length,
+      repositories: availableRepositories(state.items).length,
+      labels: availableLabels(state.items).length,
+      tokens: state.tokens.length,
+    });
+    // Only when something is wrong. A board that saves itself is the ordinary
+    // case, and a line that says so on every read is a line nobody reads. The
+    // store says so itself when a save does not get through.
+    setStatus("");
+    // Here rather than only at start-up: a token connected after a sign-out has
+    // to start the schedule again, and there was none to start before.
+    applyAutoRefresh();
+  } finally {
+    state.loading = false;
+    renderRefreshBusy();
   }
-
-  const checks = {};
-  const everything = [];
-  const waiting = [];
-  let links = {};
-  for (const entry of state.tokens) {
-    const result = await inspectToken(entry);
-    state.tokens = updateToken(state.tokens, entry.id, result.entry);
-    everything.push(...result.raw);
-    checks[entry.id] = result.rows;
-    waiting.push(...(result.reviews ?? []));
-    links = { ...links, ...(result.links ?? {}) };
-  }
-  state.checks = checks;
-  state.links = links;
-  // Through the same step as the board's own items: a review card needs the
-  // branch names to know it is one of a stack (ADR 0020).
-  state.reviews = applyPullRequestState(uniqueByKey(waiting), links);
-
-  saveTokens(storage, state.tokens);
-  // Merging here, not per token, is what removes an item two tokens both see.
-  state.items = applyPullRequestState(normalizeWorkItems(everything), links);
-
-  state.loading = false;
-  state.lastReadAt = Date.now();
-  element("board-columns").removeAttribute("aria-busy");
-  showNotice("settings-notice", "");
-  renderTokenList();
-  renderTokenNotice();
-  renderFilters();
-  renderBoard();
-  showView(state.view);
-  saveLastCounts(storage, {
-    reviews: state.reviews.length,
-    items: state.items.length,
-    repositories: availableRepositories(state.items).length,
-    labels: availableLabels(state.items).length,
-    tokens: state.tokens.length,
-  });
-  // Only when something is wrong. A board that saves itself is the ordinary
-  // case, and a line that says so on every read is a line nobody reads. The
-  // store says so itself when a save does not get through.
-  setStatus("");
-  // Here rather than only at start-up: a token connected after a sign-out has
-  // to start the schedule again, and there was none to start before.
-  applyAutoRefresh();
 }
 
 /* -------------------------------------------------------------------------- */
 /* Asking again                                                               */
 /* -------------------------------------------------------------------------- */
+
+/**
+ * Say on the refresh button whether the board is reading GitHub.
+ *
+ * Every read turns the icon and holds the button down, whoever started it: the
+ * reader's press, the schedule, or a tab that came back into view. A scheduled
+ * read draws no placeholders and writes no status line (ADR 0025), so this one
+ * button is the whole of what the board says while it asks. The same state
+ * refuses a press, so a second read never runs beside the one already going
+ * (ADR 0029).
+ *
+ * One function writes this. A press and a schedule that each set the button
+ * themselves drift apart, and the one that loses leaves it down for good.
+ */
+function renderRefreshBusy() {
+  const button = element("refresh-now");
+  if (!button) return;
+  const busy = state.loading || state.refreshResting;
+  button.disabled = busy;
+  if (busy) button.setAttribute("aria-busy", "true");
+  else button.removeAttribute("aria-busy");
+}
 
 /**
  * Whether a refresh right now would interrupt the reader or race a save.
@@ -2501,8 +2535,8 @@ function start() {
     // running beside the first spends the rate limit twice and answers the
     // same question (ADR 0029).
     if (refreshNow.disabled || state.loading || state.tokens.length === 0) return;
-    refreshNow.disabled = true;
-    refreshNow.setAttribute("aria-busy", "true");
+    state.refreshResting = true;
+    renderRefreshBusy();
     try {
       // Both, not either: the answer has to be in, and the button has to have
       // been down long enough for the press to have read as one.
@@ -2511,8 +2545,8 @@ function start() {
         new Promise((resume) => setTimeout(resume, MANUAL_REFRESH_REST_MS)),
       ]);
     } finally {
-      refreshNow.disabled = false;
-      refreshNow.removeAttribute("aria-busy");
+      state.refreshResting = false;
+      renderRefreshBusy();
       sayWhen();
     }
   });
