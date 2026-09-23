@@ -3,6 +3,8 @@
   "types": ["Web", "Videogame"],
   "date": "2026",
   "title": "Mancala",
+  "image": "resources/images/projects/mancala.webp",
+  "imageAlt": "Kalah game in progress between a red computer player and a blue human player: two rows of six pits with white seeds and a count on each pit, and a store at each end",
   "description": [
     "*Mancala* is a **two-game board game for the browser**: Kalah, the version most people know, and **Ba-awa**, the game played in Ghana, where one move crosses the board many times and the winner takes pits off the loser between rounds.",
     "I set the rules from how Ba-awa is really played, and the bar for the feel: every seed flies from the place it was drawn in to the place its new pit draws it in, so nothing jumps. **Hold a pit** and the board marks where its last seed would land.",
