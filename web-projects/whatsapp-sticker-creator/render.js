@@ -436,25 +436,17 @@ export async function openVideo(file) {
   video.play().then(() => video.pause()).catch(() => {});
 
   try {
-    await new Promise((resolve, reject) => {
-      // Already loaded: the play above can beat the listener below to it.
-      if (video.readyState >= 1) {
-        resolve();
-        return;
+    // A hidden tab may never load the video however it is asked, so a wait
+    // that runs out while the tab is hidden waits for the reader to come back
+    // and asks again, rather than reporting a file that is perfectly fine.
+    while ((await waitForMetadata(video)) === "timeout") {
+      if (document.visibilityState !== "hidden") {
+        throw new Error("This video took too long to open.");
       }
-      const stopWaiting = setTimeout(
-        () => reject(new Error("This video took too long to open.")),
-        VIDEO_OPEN_TIMEOUT_MS,
-      );
-      video.onloadedmetadata = () => {
-        clearTimeout(stopWaiting);
-        resolve();
-      };
-      video.onerror = () => {
-        clearTimeout(stopWaiting);
-        reject(new Error("This video could not be opened."));
-      };
-    });
+      await waitUntilVisible();
+      video.load();
+      video.play().then(() => video.pause()).catch(() => {});
+    }
   } catch (failure) {
     URL.revokeObjectURL(url);
     throw failure;
@@ -467,6 +459,51 @@ export async function openVideo(file) {
     width: video.videoWidth,
     height: video.videoHeight,
   };
+}
+
+
+/**
+ * Wait until a video says how big and how long it is.
+ *
+ * @param {HTMLVideoElement} video
+ * @returns {Promise<"ready"|"timeout">} Resolves "timeout" when nothing
+ *   happened in time, so the caller can decide whether to wait longer.
+ * @throws When the browser reports it cannot read the file.
+ */
+function waitForMetadata(video) {
+  return new Promise((resolve, reject) => {
+    // Already loaded: the play in `openVideo` can beat this listener to it.
+    if (video.readyState >= 1) {
+      resolve("ready");
+      return;
+    }
+    const stopWaiting = setTimeout(() => {
+      video.onloadedmetadata = null;
+      video.onerror = null;
+      resolve("timeout");
+    }, VIDEO_OPEN_TIMEOUT_MS);
+    video.onloadedmetadata = () => {
+      clearTimeout(stopWaiting);
+      resolve("ready");
+    };
+    video.onerror = () => {
+      clearTimeout(stopWaiting);
+      reject(new Error("This video could not be opened."));
+    };
+  });
+}
+
+/** Wait until the reader is looking at this page again. */
+function waitUntilVisible() {
+  if (document.visibilityState !== "hidden") return Promise.resolve();
+  return new Promise((resolve) => {
+    const check = () => {
+      if (document.visibilityState === "hidden") return;
+      document.removeEventListener("visibilitychange", check);
+      resolve();
+    };
+    document.addEventListener("visibilitychange", check);
+  });
 }
 
 /** Let go of a video opened by `openVideo`. */

@@ -55,6 +55,7 @@ export const MESSAGES = {
   "step.details": { en: "3. Tag it", es: "3. Etiquétalo" },
   "step.check": { en: "4. Check it", es: "4. Compruébalo" },
   "step.pack": { en: "5. Build a pack", es: "5. Crea un paquete" },
+  "step.install": { en: "6. Put it on WhatsApp", es: "6. Ponlo en WhatsApp" },
 
   // Picking a picture.
   "pick.button": { en: "Choose a picture or a video", es: "Elegir una imagen o un vídeo" },
@@ -313,17 +314,39 @@ export const MESSAGES = {
   "export.wastickers": { en: "Save the pack for a phone", es: "Guardar el paquete para el móvil" },
   "export.contents": { en: "Save the pack for developers", es: "Guardar el paquete para desarrolladores" },
   "export.wastickersHint": {
-    en: "A .wastickers file. Open it with a sticker app on your phone to add the pack to WhatsApp.",
-    es: "Un archivo .wastickers. Ábrelo con una app de stickers en tu móvil para añadir el paquete a WhatsApp.",
+    en: "A .wastickers file, for the phone. Step 6 below says what to do with it.",
+    es: "Un archivo .wastickers, para el móvil. El paso 6 de abajo dice qué hacer con él.",
   },
   "export.contentsHint": {
     en: "A zip with contents.json, ready for WhatsApp's own sample app.",
     es: "Un zip con contents.json, listo para la app de ejemplo de WhatsApp.",
   },
-  "export.howTo": { en: "How to get a pack into WhatsApp", es: "Cómo llevar un paquete a WhatsApp" },
-  "export.howToBody": {
-    en: "WhatsApp only reads packs from an installed app, so a web page cannot add one directly. Save the .wastickers file, then open it with a sticker app on your phone. A single sticker can also be sent straight into a chat as an image.",
-    es: "WhatsApp solo lee paquetes desde una app instalada, así que una página web no puede añadirlo directamente. Guarda el archivo .wastickers y ábrelo con una app de stickers en tu móvil. Un sticker suelto también se puede enviar a un chat como imagen.",
+  // The last step, which happens on the phone.
+  "install.lead": {
+    en: "WhatsApp takes a pack only from an app installed on the phone, so this page cannot add one. One free app does this last step for you.",
+    es: "WhatsApp solo acepta un paquete desde una app instalada en el móvil, así que esta página no puede añadirlo. Una app gratuita hace este último paso por ti.",
+  },
+  "install.save": {
+    en: "Press \"{button}\" above. Your browser saves a .wastickers file.",
+    es: "Pulsa \"{button}\" arriba. Tu navegador guarda un archivo .wastickers.",
+  },
+  "install.app": {
+    en: "Install one of these apps on your phone:",
+    es: "Instala una de estas apps en tu móvil:",
+  },
+  "install.android": { en: "Sticker Maker (Android)", es: "Sticker Maker (Android)" },
+  "install.ios": { en: "Sticker Maker Studio (iPhone)", es: "Sticker Maker Studio (iPhone)" },
+  "install.open": {
+    en: "Send the file to your phone, open it with that app, and press the button that adds the pack to WhatsApp.",
+    es: "Envía el archivo a tu móvil, ábrelo con esa app y pulsa el botón que añade el paquete a WhatsApp.",
+  },
+  "install.minimum": {
+    en: "A pack needs at least {min} stickers. WhatsApp refuses a smaller one.",
+    es: "Un paquete necesita al menos {min} stickers. WhatsApp rechaza uno más pequeño.",
+  },
+  "install.single": {
+    en: "For one sticker only, press \"{button}\" and send that file into a chat. It plays there, but it does not stay in your sticker tray.",
+    es: "Para un solo sticker, pulsa \"{button}\" y envía ese archivo a un chat. Se reproduce allí, pero no se queda en tu bandeja de stickers.",
   },
 
   // Things that go wrong.

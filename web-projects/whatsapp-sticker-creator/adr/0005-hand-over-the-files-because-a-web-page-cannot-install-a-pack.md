@@ -40,10 +40,17 @@ serving the pack it already cached.
 be sent into a chat as an image. That is not the same as installing it, and the
 tool does not pretend it is.
 
-**The page explains the step it cannot take, rather than hiding it.** A short
-note under the export buttons says WhatsApp only reads packs from an installed
-app, and what to do about it. A tool that ended with a download and no
-explanation would leave every person wondering what they had done wrong.
+**The page explains the step it cannot take, rather than hiding it.** "6. Put it
+on WhatsApp" is a step of the flow, next to the other five, not a note folded
+away under the export buttons. It says why this page cannot add the pack, then
+gives three numbered steps and links the two apps that do the last one: Sticker
+Maker on Android, Sticker Maker Studio on iPhone. It also names the rule that
+stops most people, which is that a pack needs at least three stickers. A tool
+that ended with a download and no explanation would leave every person
+wondering what they had done wrong.
+
+The app names are the one part of this page that can go stale, because they are
+other people's products. Check both links when you touch this area.
 
 **Both archives are written by `zip.js`, with the files stored rather than
 compressed.** Method 0. A sticker is a WebP and a tray icon is a PNG, and both

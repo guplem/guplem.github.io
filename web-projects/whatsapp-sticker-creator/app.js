@@ -164,7 +164,9 @@ for (const id of [
   "pack-publisher", "pack-publisher-label", "pack-identifier", "pack-identifier-label",
   "pack-identifier-hint", "pack-count", "pack-kind", "pack-empty", "pack-grid",
   "export-sticker", "export-wastickers", "export-contents",
-  "export-wastickers-hint", "export-contents-hint", "howto-summary", "howto-body", "pack-clear",
+  "export-wastickers-hint", "export-contents-hint", "pack-clear",
+  "install-panel", "install-heading", "install-lead", "install-save", "install-app",
+  "install-android", "install-ios", "install-open", "install-minimum", "install-single",
   "privacy", "deploy-line", "back-link",
 ]) {
   dom[id] = document.getElementById(id);
@@ -321,7 +323,7 @@ function showEditor() {
   state.activeFrame = state.frames.length - 1;
   dom["pick-panel"].hidden = true;
   dom["video-panel"].hidden = true;
-  for (const id of ["editor-panel", "details-panel", "check-panel", "pack-panel"]) {
+  for (const id of ["editor-panel", "details-panel", "check-panel", "pack-panel", "install-panel"]) {
     dom[id].hidden = false;
   }
 }
@@ -1722,8 +1724,12 @@ function applyLanguage() {
     "export-contents": "export.contents",
     "export-wastickers-hint": "export.wastickersHint",
     "export-contents-hint": "export.contentsHint",
-    "howto-summary": "export.howTo",
-    "howto-body": "export.howToBody",
+    "install-heading": "step.install",
+    "install-lead": "install.lead",
+    "install-app": "install.app",
+    "install-android": "install.android",
+    "install-ios": "install.ios",
+    "install-open": "install.open",
     "pack-clear": "packUi.clear",
     privacy: "ui.privacy",
     "back-link": "ui.back",
@@ -1731,6 +1737,11 @@ function applyLanguage() {
   for (const [id, key] of Object.entries(text)) {
     if (dom[id]) dom[id].textContent = say(key);
   }
+  // The three sentences that quote a button's own words, so the page never
+  // tells a person to press something that is written differently above.
+  dom["install-save"].textContent = say("install.save", { button: say("export.wastickers") });
+  dom["install-single"].textContent = say("install.single", { button: say("export.sticker") });
+  dom["install-minimum"].textContent = say("install.minimum", { min: MIN_STICKERS });
   dom["frames-play"].textContent = say(playTimer ? "frames.pause" : "frames.play");
   if (state.video) renderVideoPanel();
   document.title = `${say("ui.title")} · Guillem Poy`;

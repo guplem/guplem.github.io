@@ -372,12 +372,40 @@
           <p class="hint" id="export-wastickers-hint"></p>
           <p class="hint" id="export-contents-hint"></p>
 
-          <details class="rules">
-            <summary id="howto-summary"></summary>
-            <p id="howto-body"></p>
-          </details>
-
           <button type="button" class="button ghost small danger" id="pack-clear"></button>
+        </section>
+
+        <!-- 6. Put the pack on the phone -->
+        <section class="panel" id="install-panel" aria-labelledby="install-heading" hidden>
+          <h2 id="install-heading"></h2>
+          <p id="install-lead"></p>
+
+          <ol class="steps">
+            <li id="install-save"></li>
+            <li>
+              <span id="install-app"></span>
+              <span class="row store-links">
+                <a
+                  class="button small"
+                  id="install-android"
+                  href="https://play.google.com/store/apps/details?id=com.marsvard.stickermakerforwhatsapp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                ></a>
+                <a
+                  class="button small"
+                  id="install-ios"
+                  href="https://apps.apple.com/app/id1443326857"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                ></a>
+              </span>
+            </li>
+            <li id="install-open"></li>
+          </ol>
+
+          <p class="hint" id="install-minimum"></p>
+          <p class="hint" id="install-single"></p>
         </section>
       </main>
 

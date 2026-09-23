@@ -356,6 +356,31 @@ h2 {
   justify-content: center;
 }
 
+/* The last step: a numbered list, and the two app links inside it. */
+
+.steps {
+  margin: 0.75rem 0;
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.steps li {
+  padding-left: 0.2rem;
+}
+
+.store-links {
+  margin-top: 0.4rem;
+}
+
+.store-links .button {
+  text-decoration: none;
+  display: inline-block;
+}
+
 /* The video a person cuts a sticker out of. */
 
 .video-preview {
