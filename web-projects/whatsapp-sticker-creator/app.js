@@ -16,6 +16,7 @@
 //   geometry.js     where the picture sits on the 512 pixel canvas
 //   textLayout.js   where each line of a caption goes
 //   frames.js       the animation's frame list and its timing
+//   video.js        which moments of a video become frames
 //   pack.js         the pack, and the two archive layouts
 //   webp/           writing an animated WebP
 //   zip.js          writing an archive
@@ -38,6 +39,7 @@ import { DROP, KEEP, combineMask, contentBounds, createMask, paintCircle, touche
 import {
   MAX_ACCESSIBILITY_ANIMATED,
   MAX_ACCESSIBILITY_STATIC,
+  MAX_ANIMATION_MS,
   MAX_EMOJIS,
   MAX_STICKERS,
   MIN_STICKERS,
@@ -61,12 +63,21 @@ import { deserialisePack, serialisePack } from "./save.js";
 import { flipX, rotateQuarter } from "./orient.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
+  DEFAULT_VIDEO_FPS,
+  defaultClip,
+  isVideoFile,
+  planVideoFrames,
+} from "./video.js";
+import {
+  closeVideo,
   createSurface,
   developFrame,
   downloadFile,
   drawSticker,
   encodeCanvas,
+  grabVideoFrames,
   loadPicture,
+  openVideo,
   makeTrayIcon,
   supportsWebp,
   surfaceFromPixels,
@@ -103,6 +114,12 @@ const EMOJI_SUGGESTIONS = [
   "👍", "👏", "🙏", "💪", "🔥", "💕", "🎉", "✨", "☕", "🍕",
 ];
 
+/**
+ * The frame count above which a sticker's 500KB starts to show. At 40 frames
+ * each one gets about 12KB, which a 512 by 512 picture already feels.
+ */
+const HEAVY_FRAME_COUNT = 40;
+
 /** How many mask steps to keep for undo. Each one is a copy of the mask. */
 const HISTORY_LIMIT = 12;
 
@@ -110,6 +127,10 @@ const dom = {};
 for (const id of [
   "title", "tagline", "lang-picker", "banner",
   "pick-panel", "pick-heading", "dropzone", "pick-drop", "pick-button", "pick-hint", "file-input",
+  "video-panel", "video-heading", "video-hint", "video-preview", "video-start",
+  "video-start-label", "video-start-out", "video-start-here", "video-length",
+  "video-length-label", "video-length-out", "video-fps", "video-fps-label", "video-fps-out",
+  "video-summary", "video-capped", "video-confirm", "video-cancel", "video-progress",
   "editor-panel", "edit-heading", "canvas-wrap", "preview", "overlay", "status", "pick-another",
   "tool-tabs",
   // One panel per entry in TOOLS. `selectTool` shows one and hides the rest.
@@ -155,6 +176,8 @@ let say = sayIn(lang);
 const state = {
   frames: [],
   activeFrame: 0,
+  // The video the video panel is showing, while it is showing one.
+  video: null,
   texts: [],
   selectedText: null,
   pingPong: false,
@@ -217,7 +240,7 @@ function makeFrame({ rgba, width, height }) {
 }
 
 /**
- * Bring pictures in.
+ * Bring files in, whatever kind they are.
  *
  * The two ways in mean different things, and mixing them up is a surprise
  * nobody would want. "Choose a picture" starts a new sticker, so it replaces
@@ -225,30 +248,41 @@ function makeFrame({ rgba, width, height }) {
  * single input that always appended would quietly turn a second sticker into
  * a two frame animation of the first.
  *
+ * A video never becomes a frame straight away. It goes to the video panel
+ * first, because a video is longer than a sticker and the person has to say
+ * which piece of it they want.
+ *
  * @param {FileList | File[]} files
  * @param {object} [options]
- * @param {boolean} [options.replace] True to start again from these pictures.
+ * @param {boolean} [options.replace] True to start again from these files.
+ */
+async function addFiles(files, { replace = false } = {}) {
+  const chosen = [...files];
+  const video = chosen.find((file) => isVideoFile(file));
+  // A video wins over pictures dropped with it. Mixing a clip and a photo into
+  // one animation is not what anyone means by dropping both.
+  if (video) {
+    await openVideoPanel(video, { replace });
+    return;
+  }
+  await addPictures(chosen, { replace });
+}
+
+/**
+ * Bring pictures in, one frame each.
+ *
+ * @param {File[]} files
+ * @param {object} [options]
+ * @param {boolean} [options.replace]
  */
 async function addPictures(files, { replace = false } = {}) {
-  const pictures = [...files].filter((file) => file.type.startsWith("image/"));
+  const pictures = files.filter((file) => file.type.startsWith("image/"));
   if (pictures.length === 0) {
     showBanner(say("error.notImage"));
     return;
   }
   hideBanner();
-  if (replace) {
-    state.frames = [];
-    state.texts = [];
-    state.editingStickerId = null;
-    state.built = null;
-    // The tags describe this sticker, and WhatsApp uses them to help people
-    // find it. Carrying them over would quietly give every sticker in a pack
-    // the same ones, which is the opposite of what they are for.
-    state.emojis = [];
-    state.accessibilityText = "";
-    dom["emoji-input"].value = "";
-    dom["a11y-input"].value = "";
-  }
+  if (replace) startNewSticker();
 
   for (const file of pictures) {
     if (state.frames.length >= MAX_FRAMES) break;
@@ -260,15 +294,193 @@ async function addPictures(files, { replace = false } = {}) {
       return;
     }
   }
-  state.activeFrame = state.frames.length - 1;
-  dom["pick-panel"].hidden = true;
-  for (const id of ["editor-panel", "details-panel", "check-panel", "pack-panel"]) {
-    dom[id].hidden = false;
-  }
+  showEditor();
   // A new picture is a good moment to guess the background, because that is
   // what almost every person wants next.
   runAutoCutout();
   renderAll();
+}
+
+/** Throw away the sticker being edited, so a new one starts clean. */
+function startNewSticker() {
+  state.frames = [];
+  state.texts = [];
+  state.editingStickerId = null;
+  state.built = null;
+  // The tags describe this sticker, and WhatsApp uses them to help people
+  // find it. Carrying them over would quietly give every sticker in a pack
+  // the same ones, which is the opposite of what they are for.
+  state.emojis = [];
+  state.accessibilityText = "";
+  dom["emoji-input"].value = "";
+  dom["a11y-input"].value = "";
+}
+
+/** Show the editor and the steps after it, on the last frame added. */
+function showEditor() {
+  state.activeFrame = state.frames.length - 1;
+  dom["pick-panel"].hidden = true;
+  dom["video-panel"].hidden = true;
+  for (const id of ["editor-panel", "details-panel", "check-panel", "pack-panel"]) {
+    dom[id].hidden = false;
+  }
+}
+
+/* ------------------------------------------------------------------ video */
+
+/**
+ * Open a video and ask which piece of it to use.
+ *
+ * Nothing is sampled here. The person watches the video, picks a start, a
+ * length and a rate, and only then does `takeVideoFrames` read the pictures,
+ * because reading them is slow and every change of a slider would repeat it.
+ *
+ * @param {File} file
+ * @param {object} options
+ * @param {boolean} options.replace True when this starts a new sticker.
+ */
+async function openVideoPanel(file, { replace }) {
+  closeVideoPanel();
+  hideBanner();
+  let handle;
+  try {
+    handle = await openVideo(file);
+  } catch {
+    showBanner(say("error.videoFailed"));
+    return;
+  }
+  if (!Number.isFinite(handle.durationMs) || handle.durationMs <= 0) {
+    closeVideo(handle);
+    showBanner(say("error.videoFailed"));
+    return;
+  }
+
+  state.video = { handle, replace };
+  const clip = defaultClip(handle.durationMs);
+  dom["video-start"].max = String(Math.round(handle.durationMs));
+  dom["video-start"].value = String(clip.startMs);
+  dom["video-length"].max = String(Math.round(Math.min(MAX_ANIMATION_MS, handle.durationMs)));
+  dom["video-length"].value = String(Math.round(clip.lengthMs));
+  dom["video-fps"].value = String(DEFAULT_VIDEO_FPS);
+
+  // The panel shows the very element the frames are grabbed from, so the
+  // moment a person scrubs to is the moment they get.
+  handle.video.id = "video-preview";
+  handle.video.className = "video-preview";
+  handle.video.controls = true;
+  dom["video-preview"].replaceWith(handle.video);
+  dom["video-preview"] = handle.video;
+
+  dom["pick-panel"].hidden = true;
+  dom["video-panel"].hidden = false;
+  dom["video-progress"].hidden = true;
+  renderVideoPanel();
+  dom["video-panel"].scrollIntoView({ block: "start" });
+}
+
+/** How many frames this clip may take: all of them, or what is left. */
+function videoFrameBudget() {
+  if (!state.video || state.video.replace) return MAX_FRAMES;
+  return Math.max(2, MAX_FRAMES - state.frames.length);
+}
+
+/** The plan the panel's controls describe right now. */
+function videoPlan() {
+  if (!state.video) return null;
+  return planVideoFrames({
+    durationMs: state.video.handle.durationMs,
+    startMs: Number(dom["video-start"].value),
+    lengthMs: Number(dom["video-length"].value),
+    fps: Number(dom["video-fps"].value),
+    maxFrames: videoFrameBudget(),
+  });
+}
+
+/** Say what the controls add up to: how many frames, and how long. */
+function renderVideoPanel() {
+  const plan = videoPlan();
+  if (!plan) return;
+  dom["video-start-out"].textContent = say("video.seconds", {
+    seconds: (plan.startMs / 1000).toFixed(1),
+  });
+  dom["video-length-out"].textContent = say("video.seconds", {
+    seconds: (plan.lengthMs / 1000).toFixed(1),
+  });
+  dom["video-fps-out"].textContent = say("video.fpsValue", { fps: dom["video-fps"].value });
+  dom["video-summary"].textContent = say("video.summary", {
+    frames: plan.timesMs.length,
+    seconds: ((plan.frameDurationMs * plan.timesMs.length) / 1000).toFixed(1),
+  });
+  // Two warnings share one line, because only one of them can be the reason a
+  // sticker comes out blurry: too many frames asked for, or a lot of frames.
+  const heavy = plan.timesMs.length > HEAVY_FRAME_COUNT;
+  dom["video-capped"].hidden = !plan.capped && !heavy;
+  dom["video-capped"].textContent = plan.capped
+    ? say("video.capped", { max: videoFrameBudget(), fps: Math.round(1000 / plan.frameDurationMs) })
+    : say("video.heavy");
+  dom["video-confirm"].textContent = say(
+    state.video.replace ? "video.confirm" : "video.confirmAdd",
+  );
+}
+
+/** Read the chosen moments and turn each one into a frame. */
+async function takeVideoFrames() {
+  const plan = videoPlan();
+  if (!plan) return;
+  const { handle, replace } = state.video;
+  dom["video-confirm"].disabled = true;
+  dom["video-cancel"].disabled = true;
+  dom["video-progress"].hidden = false;
+  dom["video-progress"].textContent = say("video.progress", { done: 0, total: plan.timesMs.length });
+
+  let pictures;
+  try {
+    pictures = await grabVideoFrames(handle.video, plan.timesMs, (done, total) => {
+      dom["video-progress"].textContent = say("video.progress", { done, total });
+    });
+  } catch {
+    dom["video-confirm"].disabled = false;
+    dom["video-cancel"].disabled = false;
+    dom["video-progress"].hidden = true;
+    showBanner(say("error.videoFailed"));
+    return;
+  }
+
+  if (replace) startNewSticker();
+  for (const picture of pictures) {
+    if (state.frames.length >= MAX_FRAMES) break;
+    state.frames = addFrame(state.frames, {
+      ...makeFrame(picture),
+      // A video frame fills the square. The whole picture with a margin would
+      // letterbox a portrait clip, and a clip is rarely square.
+      fit: "fill",
+      durationMs: plan.frameDurationMs,
+    });
+  }
+
+  closeVideoPanel();
+  dom["video-confirm"].disabled = false;
+  dom["video-cancel"].disabled = false;
+  showEditor();
+  // The first frame is the one the sticker rests on, so the editor opens there.
+  state.activeFrame = 0;
+  selectTool("frames");
+  renderAll();
+}
+
+/** Let the video go, and put the panel away. */
+function closeVideoPanel() {
+  if (state.video) closeVideo(state.video.handle);
+  state.video = null;
+  dom["video-panel"].hidden = true;
+  dom["video-progress"].hidden = true;
+}
+
+/** Give up on the video and go back where the person came from. */
+function cancelVideoPanel() {
+  const hadNothing = state.frames.length === 0;
+  closeVideoPanel();
+  if (hadNothing) dom["pick-panel"].hidden = false;
 }
 
 /* --------------------------------------------------------------- placement */
@@ -1375,6 +1587,7 @@ function hideBanner() {
 }
 
 function resetToPick() {
+  closeVideoPanel();
   state.frames = [];
   state.built = null;
   dom["pick-panel"].hidden = false;
@@ -1438,6 +1651,13 @@ function applyLanguage() {
     "pick-drop": "pick.drop",
     "pick-button": "pick.button",
     "pick-hint": "pick.hint",
+    "video-heading": "step.video",
+    "video-hint": "video.hint",
+    "video-start-label": "video.start",
+    "video-start-here": "video.startHere",
+    "video-length-label": "video.length",
+    "video-fps-label": "video.fps",
+    "video-cancel": "video.cancel",
     "edit-heading": "step.edit",
     "pick-another": "pick.another",
     "cutout-auto": "cutout.auto",
@@ -1512,6 +1732,7 @@ function applyLanguage() {
     if (dom[id]) dom[id].textContent = say(key);
   }
   dom["frames-play"].textContent = say(playTimer ? "frames.pause" : "frames.play");
+  if (state.video) renderVideoPanel();
   document.title = `${say("ui.title")} · Guillem Poy`;
 
   // The lists that are built rather than written.
@@ -1632,15 +1853,33 @@ function wireEvents() {
   });
   dom["file-input"].addEventListener("change", () => {
     // Step one starts a new sticker, so it replaces what was open.
-    addPictures(dom["file-input"].files, { replace: true });
+    addFiles(dom["file-input"].files, { replace: true });
     dom["file-input"].value = "";
   });
   dom["frames-add"].addEventListener("click", () => dom["frames-file"].click());
   dom["frames-file"].addEventListener("change", () => {
     // The animate tool adds to the sticker being built.
-    addPictures(dom["frames-file"].files);
+    addFiles(dom["frames-file"].files);
     dom["frames-file"].value = "";
   });
+
+  for (const id of ["video-start", "video-length", "video-fps"]) {
+    dom[id].addEventListener("input", () => {
+      renderVideoPanel();
+      // Moving the start moves the picture too, so a person sees where the
+      // sticker begins instead of reading a number.
+      if (id === "video-start" && state.video) {
+        state.video.handle.video.currentTime = Number(dom["video-start"].value) / 1000;
+      }
+    });
+  }
+  dom["video-start-here"].addEventListener("click", () => {
+    if (!state.video) return;
+    dom["video-start"].value = String(Math.round(state.video.handle.video.currentTime * 1000));
+    renderVideoPanel();
+  });
+  dom["video-confirm"].addEventListener("click", takeVideoFrames);
+  dom["video-cancel"].addEventListener("click", cancelVideoPanel);
 
   for (const type of ["dragenter", "dragover"]) {
     dom.dropzone.addEventListener(type, (event) => {
@@ -1653,12 +1892,12 @@ function wireEvents() {
   }
   dom.dropzone.addEventListener("drop", (event) => {
     event.preventDefault();
-    if (event.dataTransfer?.files?.length) addPictures(event.dataTransfer.files);
+    if (event.dataTransfer?.files?.length) addFiles(event.dataTransfer.files);
   });
   // Pasting a picture is the fastest way in on a desktop.
   window.addEventListener("paste", (event) => {
     const files = [...(event.clipboardData?.files ?? [])];
-    if (files.length > 0) addPictures(files);
+    if (files.length > 0) addFiles(files);
   });
 
   dom["canvas-wrap"].addEventListener("pointerdown", onStageDown);

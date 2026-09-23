@@ -57,16 +57,48 @@ export const MESSAGES = {
   "step.pack": { en: "5. Build a pack", es: "5. Crea un paquete" },
 
   // Picking a picture.
-  "pick.button": { en: "Choose a picture", es: "Elegir una imagen" },
+  "pick.button": { en: "Choose a picture or a video", es: "Elegir una imagen o un vídeo" },
   "pick.drop": {
-    en: "Drop a picture here, paste one, or choose a file.",
-    es: "Suelta una imagen aquí, pégala o elige un archivo.",
+    en: "Drop a picture or a video here, paste one, or choose a file.",
+    es: "Suelta una imagen o un vídeo aquí, pégalo o elige un archivo.",
   },
   "pick.hint": {
-    en: "A picture with the subject well away from the edges works best.",
-    es: "Funciona mejor una imagen con el motivo lejos de los bordes.",
+    en: "A picture with the subject well away from the edges works best. A video becomes an animated sticker.",
+    es: "Funciona mejor una imagen con el motivo lejos de los bordes. Un vídeo se convierte en un sticker animado.",
   },
   "pick.another": { en: "Use another picture", es: "Usar otra imagen" },
+
+  // Cutting a clip out of a video.
+  "step.video": { en: "Choose the part of the video", es: "Elige la parte del vídeo" },
+  "video.hint": {
+    en: "Play the video, stop where the sticker should start, and set how long it runs. A sticker plays at most 10 seconds and holds at most 60 pictures.",
+    es: "Reproduce el vídeo, párate donde debe empezar el sticker y elige cuánto dura. Un sticker dura 10 segundos como máximo y contiene 60 imágenes como máximo.",
+  },
+  "video.start": { en: "Start at", es: "Empezar en" },
+  "video.startHere": { en: "Start where the video is paused", es: "Empezar donde está parado el vídeo" },
+  "video.length": { en: "Length", es: "Duración" },
+  "video.fps": { en: "Pictures a second", es: "Imágenes por segundo" },
+  "video.seconds": { en: "{seconds} s", es: "{seconds} s" },
+  "video.fpsValue": { en: "{fps}/s", es: "{fps}/s" },
+  "video.summary": {
+    en: "{frames} frames, {seconds} s at real speed.",
+    es: "{frames} fotogramas, {seconds} s a velocidad real.",
+  },
+  "video.capped": {
+    en: "There is room for {max} more frames, so this clip is sampled at about {fps} pictures a second instead.",
+    es: "Caben {max} fotogramas más, así que este clip se toma a unas {fps} imágenes por segundo.",
+  },
+  "video.heavy": {
+    en: "Many frames share the 500KB a sticker may weigh. Shorten the clip or lower the rate if the sticker comes out blurry.",
+    es: "Muchos fotogramas comparten los 500KB que puede pesar un sticker. Acorta el clip o baja la tasa si el sticker sale borroso.",
+  },
+  "video.confirm": { en: "Make the sticker", es: "Crear el sticker" },
+  "video.confirmAdd": { en: "Add these frames", es: "Añadir estos fotogramas" },
+  "video.cancel": { en: "Cancel", es: "Cancelar" },
+  "video.progress": {
+    en: "Reading picture {done} of {total}…",
+    es: "Leyendo la imagen {done} de {total}…",
+  },
 
   // Tools.
   "tool.cutout": { en: "Cut out", es: "Recortar" },
@@ -181,8 +213,8 @@ export const MESSAGES = {
   // Animation.
   "frames.add": { en: "Add a frame", es: "Añadir un fotograma" },
   "frames.addHint": {
-    en: "Every frame is edited on its own. Add pictures to build the animation.",
-    es: "Cada fotograma se edita por separado. Añade imágenes para crear la animación.",
+    en: "Every frame is edited on its own. Add pictures to build the animation, or a video to add many frames at once.",
+    es: "Cada fotograma se edita por separado. Añade imágenes para crear la animación, o un vídeo para añadir muchos fotogramas de una vez.",
   },
   "frames.remove": { en: "Remove this frame", es: "Quitar este fotograma" },
   "frames.duplicate": { en: "Copy this frame", es: "Copiar este fotograma" },
@@ -295,7 +327,14 @@ export const MESSAGES = {
   },
 
   // Things that go wrong.
-  "error.notImage": { en: "That file is not a picture.", es: "Ese archivo no es una imagen." },
+  "error.notImage": {
+    en: "That file is not a picture or a video.",
+    es: "Ese archivo no es una imagen ni un vídeo.",
+  },
+  "error.videoFailed": {
+    en: "That video could not be read. Try another one, or a different format.",
+    es: "No se pudo leer ese vídeo. Prueba con otro o con otro formato.",
+  },
   "error.decodeFailed": {
     en: "That picture could not be opened. Try another one.",
     es: "No se pudo abrir esa imagen. Prueba con otra.",

@@ -4,8 +4,9 @@
 // and it stays thin on purpose. Every decision it needs has already been made
 // somewhere that is covered by tests: `geometry.js` says where the picture
 // goes, `filters.js` says what to do to its colours, `mask.js` and `compose.js`
-// shape the cut-out, `textLayout.js` says where each line of a caption sits.
-// This file only calls `drawImage`, `fillText`, `getImageData` and `toBlob`.
+// shape the cut-out, `textLayout.js` says where each line of a caption sits,
+// and `video.js` says which moments of a video to grab. This file only calls
+// `drawImage`, `fillText`, `getImageData`, `toBlob` and `currentTime`.
 //
 // The pipeline for one frame, in order, and the order matters:
 //
@@ -393,4 +394,144 @@ async function decodeToBitmap(file) {
   } finally {
     URL.revokeObjectURL(url);
   }
+}
+
+/* ------------------------------------------------------------------ video */
+
+/**
+ * How long to wait for a video to say how long it is. A browser that cannot
+ * read the file sometimes reports nothing at all rather than an error, and the
+ * page has to say so instead of waiting forever.
+ */
+const VIDEO_OPEN_TIMEOUT_MS = 20000;
+
+/**
+ * Open a video file so it can be watched and sampled.
+ *
+ * The element it hands back is the same one the page shows and the one the
+ * frames are grabbed from, so what a person scrubs to is exactly what they
+ * get. The caller must call `closeVideo` when it is done, or the object URL
+ * holds the whole file in memory.
+ *
+ * @param {File | Blob} file
+ * @returns {Promise<{ video: HTMLVideoElement, url: string, durationMs: number, width: number, height: number }>}
+ * @throws When this browser cannot open the video.
+ */
+export async function openVideo(file) {
+  const url = URL.createObjectURL(file);
+  const video = document.createElement("video");
+  // Muted and inline, because a phone browser refuses to play or seek a video
+  // with sound without a tap, and this one is never listened to.
+  video.muted = true;
+  video.defaultMuted = true;
+  video.playsInline = true;
+  video.preload = "auto";
+  // Reading the pixels back is only allowed for a source of our own origin. A
+  // blob URL is, but saying so keeps the canvas clean under every browser.
+  video.crossOrigin = "anonymous";
+  video.src = url;
+  // A browser puts off loading a video the reader cannot see, and a tab in the
+  // background never reaches `loadedmetadata` on its own. A muted play starts
+  // the load, and the video is stopped again as soon as it begins.
+  video.play().then(() => video.pause()).catch(() => {});
+
+  try {
+    await new Promise((resolve, reject) => {
+      // Already loaded: the play above can beat the listener below to it.
+      if (video.readyState >= 1) {
+        resolve();
+        return;
+      }
+      const stopWaiting = setTimeout(
+        () => reject(new Error("This video took too long to open.")),
+        VIDEO_OPEN_TIMEOUT_MS,
+      );
+      video.onloadedmetadata = () => {
+        clearTimeout(stopWaiting);
+        resolve();
+      };
+      video.onerror = () => {
+        clearTimeout(stopWaiting);
+        reject(new Error("This video could not be opened."));
+      };
+    });
+  } catch (failure) {
+    URL.revokeObjectURL(url);
+    throw failure;
+  }
+
+  return {
+    video,
+    url,
+    durationMs: Number.isFinite(video.duration) ? video.duration * 1000 : Number.NaN,
+    width: video.videoWidth,
+    height: video.videoHeight,
+  };
+}
+
+/** Let go of a video opened by `openVideo`. */
+export function closeVideo(handle) {
+  if (!handle) return;
+  handle.video.removeAttribute("src");
+  handle.video.load();
+  URL.revokeObjectURL(handle.url);
+}
+
+/**
+ * Grab the given moments of a video as pictures, in the shape `loadPicture`
+ * returns so a frame cannot tell where it came from.
+ *
+ * Seeking is the slow part and the browser does it one moment at a time, so
+ * `onProgress` is called after each one and the page can say how far it is.
+ *
+ * @param {HTMLVideoElement} video From `openVideo`.
+ * @param {number[]} timesMs The moments to grab, from `planVideoFrames`.
+ * @param {(done: number, total: number) => void} [onProgress]
+ * @returns {Promise<{ canvas: HTMLCanvasElement, rgba: Uint8ClampedArray, width: number, height: number }[]>}
+ */
+export async function grabVideoFrames(video, timesMs, onProgress) {
+  const scale = Math.min(1, WORK_MAX / Math.max(video.videoWidth, video.videoHeight));
+  const width = Math.max(1, Math.round(video.videoWidth * scale));
+  const height = Math.max(1, Math.round(video.videoHeight * scale));
+
+  const pictures = [];
+  for (const [index, timeMs] of timesMs.entries()) {
+    await seekTo(video, timeMs / 1000);
+    const { canvas, ctx } = createSurface(width, height);
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(video, 0, 0, width, height);
+    pictures.push({
+      canvas,
+      rgba: ctx.getImageData(0, 0, width, height).data,
+      width,
+      height,
+    });
+    onProgress?.(index + 1, timesMs.length);
+  }
+  return pictures;
+}
+
+/** Move a video to one moment and wait until the picture there is ready. */
+function seekTo(video, seconds) {
+  return new Promise((resolve, reject) => {
+    // A browser fires no `seeked` event when the video is already at the time
+    // asked for, which would stall the whole grab on a repeated moment.
+    if (Math.abs(video.currentTime - seconds) < 1e-3 && video.readyState >= 2) {
+      resolve();
+      return;
+    }
+    const done = () => {
+      video.removeEventListener("seeked", done);
+      video.removeEventListener("error", failed);
+      resolve();
+    };
+    const failed = () => {
+      video.removeEventListener("seeked", done);
+      video.removeEventListener("error", failed);
+      reject(new Error("This video could not be read."));
+    };
+    video.addEventListener("seeked", done);
+    video.addEventListener("error", failed);
+    video.currentTime = seconds;
+  });
 }

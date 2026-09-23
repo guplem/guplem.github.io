@@ -4,10 +4,10 @@
 
 ## What this project is
 
-A browser tool that turns a photograph into a WhatsApp sticker: it removes the
-background, frames the picture, adjusts colour, adds captions, merges pictures
-into an animation, and exports a sticker pack. It fetches nothing and stores
-nothing off the device.
+A browser tool that turns a photograph or a video into a WhatsApp sticker: it
+removes the background, frames the picture, adjusts colour, adds captions,
+merges pictures into an animation, cuts a clip out of a video, and exports a
+sticker pack. It fetches nothing and stores nothing off the device.
 
 The whole project answers to one file. `spec.js` holds WhatsApp's rules, and a
 sticker that leaves here clean installs in WhatsApp. Read ADR 0003 before you
@@ -31,6 +31,7 @@ worth testing belongs in a pure module.
 | `textLayout.js` | yes | Caption layout: wrapping, line boxes, background boxes, the seven styles |
 | `orient.js` | yes | Flip and quarter-turn, for a picture and its mask together |
 | `frames.js` | yes | The animation's frame list and its timing |
+| `video.js` | yes | Which moments of a video become frames, and how long each shows |
 | `pack.js` | yes | The pack model, and the two export layouts |
 | `zip.js` | yes | A store-only ZIP writer, and CRC-32 |
 | `encode.js` | yes | The quality search that hits WhatsApp's size ceiling |
@@ -88,6 +89,23 @@ person cut out a subject and then re-frame it without losing the cut. Every
 brush coordinate therefore goes through `toSourcePoint`, and the brush radius is
 divided by the placement scale or a zoomed-in brush paints a giant patch.
 
+**A video lowers its frame rate, never its length.** A sticker holds 60 frames,
+so a clip that asks for more is sampled wider rather than cut short: a person
+who chose three seconds gets three seconds. `video.js` decides every moment to
+grab and `render.js` grabs it, which is what lets the arithmetic be tested with
+no video at all. Read ADR 0006.
+
+**A video needs a muted `play()` before it will load.** A browser puts off
+loading a video in a tab nobody is looking at, so `loadedmetadata` never
+arrives and the page waits forever. `openVideo` calls `play()` and pauses
+again, which starts the load, and it also gives up after 20 seconds. Both
+guards are there because a hidden tab hit this during the first browser test.
+
+**Frames from a video arrive with no cut-out and with `fit: "fill"`.** Running
+the background search on 36 frames would take a long time and would cut each
+frame differently, which flickers. A clip is also almost never square, so
+"fill" crops it rather than letterboxing it.
+
 **A frame carries its own picture, cut-out, colour and framing. Captions belong
 to the sticker.** So one frame of an animation can be fixed without touching the
 others, and a caption shows on every frame, which is what a caption on an
@@ -106,6 +124,11 @@ change, and a test checks each one.
 sticker and replaces what is open; "Add a frame" appends. A single input that
 always appended would quietly turn a second sticker into a two frame animation
 of the first. That bug shipped once and a browser test caught it.
+
+**`min-width: 0` on `.tool` and on the tools column is load-bearing.** A flex or
+grid item keeps the width of its contents unless it is told it may be narrower.
+The frame strip of a video sticker is 36 pictures wide, so without those two
+rules the strip widens the whole page instead of scrolling inside itself.
 
 **`[hidden] { display: none !important }` in `style.css` is load-bearing.** The
 `hidden` attribute is `display: none` in the browser's own stylesheet, and any
@@ -157,6 +180,7 @@ corner, inside the size limit, is the thing this project promises.
 | [0003](adr/0003-follow-the-validator-whatsapp-ships-not-only-its-written-guide.md) | Follow the validator WhatsApp ships, not only its written guide |
 | [0004](adr/0004-keep-the-pack-in-indexeddb-not-localstorage.md) | Keep the pack in IndexedDB, not localStorage |
 | [0005](adr/0005-hand-over-the-files-because-a-web-page-cannot-install-a-pack.md) | Hand over the files, because a web page cannot install a pack |
+| [0006](adr/0006-sample-a-video-into-frames-and-lower-the-rate-not-the-length.md) | Sample a video into frames, and lower the rate, not the length |
 
 Root ADRs that apply: 0002 (no build system), 0007 (the reasoning behind
 device-only persistence), 0012 (red-green TDD), 0013 (the deploy stamp).

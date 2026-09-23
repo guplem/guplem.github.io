@@ -1,8 +1,9 @@
 # Sticker Studio for WhatsApp
 
-Turn a photo into a WhatsApp sticker, in the browser. It removes the background,
-frames the picture, adjusts colour, adds captions, merges pictures into an
-animation, and holds everything to WhatsApp's own sticker rules.
+Turn a photo or a video into a WhatsApp sticker, in the browser. It removes the
+background, frames the picture, adjusts colour, adds captions, merges pictures
+into an animation, cuts a clip out of a video, and holds everything to
+WhatsApp's own sticker rules.
 
 Your pictures never leave your device. The page makes no network requests at all.
 
@@ -21,6 +22,11 @@ Your pictures never leave your device. The page makes no network requests at all
 - **Captions, in seven styles.** Plain, outlined, shadowed, highlighted, marker,
   card and night. Drag them on the sticker, and set size, tilt, alignment and
   colours. Several captions at once.
+- **Animated stickers from a video.** Drop in an `.mp4`, `.mov` or `.webm`, play
+  it, and choose where the sticker starts, how long it runs and how many
+  pictures a second it takes. The clip plays at real speed. WhatsApp calls these
+  animated stickers; the file is an animated WebP, which is what WhatsApp uses
+  instead of a GIF.
 - **Animation.** Add up to 60 frames, each edited on its own, with its own time
   on screen. Set one speed for all of them, play it back and forth, and preview
   it. The result is a single animated WebP file.
@@ -76,3 +82,4 @@ The decisions with trade-offs are written down in [`adr/`](adr/):
 | [0003](adr/0003-follow-the-validator-whatsapp-ships-not-only-its-written-guide.md) | Follow the validator WhatsApp ships, not only its written guide |
 | [0004](adr/0004-keep-the-pack-in-indexeddb-not-localstorage.md) | Keep the pack in IndexedDB, not localStorage |
 | [0005](adr/0005-hand-over-the-files-because-a-web-page-cannot-install-a-pack.md) | Hand over the files, because a web page cannot install a pack |
+| [0006](adr/0006-sample-a-video-into-frames-and-lower-the-rate-not-the-length.md) | Sample a video into frames, and lower the rate, not the length |
