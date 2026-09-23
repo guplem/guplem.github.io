@@ -88,6 +88,13 @@ it is, and the name is on the face for a pointer and for a screen reader. The
 review state is a coloured ring **and** words in the same label, because colour
 alone is not an answer for everybody.
 
+**The ring is three pixels, and the face keeps its size.** At one pixel the
+reader had to rest the pointer on every face to tell an approval from a review
+still waiting, which is the question the row exists to answer at a glance. The
+border sits inside the box, so a ringed face draws a wider box and the picture
+inside it stays the size a plain face draws. `invariants.test.js` holds both
+numbers.
+
 ## Consequences
 
 - **The page now loads images from `avatars.githubusercontent.com`.** It is the

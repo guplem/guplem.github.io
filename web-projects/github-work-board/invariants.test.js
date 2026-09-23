@@ -374,6 +374,37 @@ describe("the page shows nothing it has not decided (ADR 0036)", () => {
   });
 });
 
+describe("what the board waits on a person for is readable (ADR 0028)", () => {
+  const css = read("style.css");
+
+  /** The value of one property inside one rule, by the rule's own braces. */
+  const propertyOf = (rule, property) => {
+    const at = css.indexOf(`${rule} {`);
+    if (at < 0) return "";
+    const body = css.slice(at, css.indexOf("}", at));
+    return new RegExp(`${property}:\s*([^;]+);`).exec(body)?.[1]?.trim() ?? "";
+  };
+
+  // The ring is the whole signal. At one pixel the reader could not tell an
+  // approval from a review still waiting without resting on every face.
+  test("the review ring is thicker than a plain face's edge", () => {
+    const plain = Number.parseFloat(propertyOf(".avatar", "border"));
+    const ring = Number.parseFloat(propertyOf(".avatar[data-review]", "border-width"));
+    expect(ring).toBeGreaterThanOrEqual(3);
+    expect(ring).toBeGreaterThan(plain);
+  });
+
+  // A thicker ring eats into the picture, because the border is inside the
+  // box. The box grows by the same amount, so every face stays one size.
+  test("a ringed face is as big a face as a plain one", () => {
+    const plainBox = Number.parseFloat(propertyOf(".avatar", "width"));
+    const plainEdge = Number.parseFloat(propertyOf(".avatar", "border")) / 16;
+    const ringedBox = Number.parseFloat(propertyOf(".avatar[data-review]", "width"));
+    const ringEdge = Number.parseFloat(propertyOf(".avatar[data-review]", "border-width")) / 16;
+    expect(ringedBox - 2 * ringEdge).toBeCloseTo(plainBox - 2 * plainEdge, 5);
+  });
+});
+
 describe("a sort order named in a link keeps its name (ADR 0006)", () => {
   // The chosen order travels in the address bar, so a renamed id silently
   // breaks every link anybody saved or shared.
