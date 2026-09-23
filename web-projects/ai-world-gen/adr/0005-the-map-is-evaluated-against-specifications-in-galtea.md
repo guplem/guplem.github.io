@@ -57,7 +57,7 @@ and one Galtea version per iteration of the generator.**
    A version usually marks one change to the per-cell loop, but it need not:
    `AI_WORLD_GEN_GENERATION=whole-map` runs every case through the other
    generation mode instead (ADR 0002), and that choice is written into the
-   version's own description, so a version such as `v-llm` reads as a
+   version's own description, so a version such as `v11-llm` reads as a
    measured alternative, not a step in the loop's history.
 
 4. **Test cases use the shipped vocabularies and small grids.** The presets

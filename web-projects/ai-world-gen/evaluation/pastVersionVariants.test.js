@@ -37,7 +37,7 @@ describe("versionNumber", () => {
   });
 
   test("refuses a name that is not a loop version", () => {
-    expect(() => versionNumber("v-llm")).toThrow();
+    expect(() => versionNumber("v11-llm")).toThrow();
     expect(() => versionNumber("v4-batch")).toThrow();
   });
 });

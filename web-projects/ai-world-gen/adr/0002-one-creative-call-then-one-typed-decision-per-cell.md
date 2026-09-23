@@ -133,7 +133,7 @@ price, is what the loop buys.
 **Kept as an experiment, and measured: every cell as one question in one
 request.** The decisions endpoint takes `questions` as a map, so a whole map
 of per-cell questions fits in one request (`batchedDecisions.js`, the same
-switch, `v-batch`). It works: Jev answered all 3,008 questions of the 38 seeds
+switch, `v11-batch`). It works: Jev answered all 3,008 questions of the 38 seeds
 in 49 requests, with no fallback, for $0.086 against $0.24 and 40 s of drawing
 against 1,046 s. The maps are worse in exactly one way, and the way names the
 decision this ADR records. Everything the code settles per cell before the
