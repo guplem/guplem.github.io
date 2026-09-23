@@ -592,12 +592,24 @@ describe("the review row is ordered by the same rules as a column (ADR 0016, ADR
   });
 
   // The row drifted away from the columns once already, one pass at a time.
-  // Both halves of the smart order run in both places, in the same order:
+  // The two passes that belong to both run in both places, in the same order:
   // the stacks first, then the cards the reader pushed down.
   test("the row sinks what the reader pushed down, exactly as a column does", () => {
     const source = read("app.js");
     expect(source).toMatch(/sinkLowPriorityItems\(\s*orderItemsForMerging/);
-    expect(source).toMatch(/sinkLowPriority\(\s*orderStacksForMerging/);
+    expect(source).toMatch(/sinkLowPriority\([\s\S]{0,120}orderStacksForMerging/);
+  });
+
+  // One pass belongs to the board alone, on purpose. A red check raises a card
+  // to the top of its column, because the column no longer moves it out
+  // (ADR 0011). The row answers a different question, "what am I being asked to
+  // read", and a broken pull request is not the one to read first. So the row
+  // does not raise, and this test says so rather than leaving the next reader
+  // to guess whether it was forgotten (ADR 0026).
+  test("the row does not raise red checks, and that is deliberate", () => {
+    const source = read("app.js");
+    expect(source.match(/raiseFailedChecks\(/g) ?? []).toHaveLength(1);
+    expect(source).toMatch(/raiseFailedChecks\([\s\S]{0,60}orderStacksForMerging/);
   });
 
   // The comparator half of smart is still the date order the row is built

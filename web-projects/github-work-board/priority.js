@@ -1,4 +1,4 @@
-// The work the reader has pushed down, and what sinks with it.
+// What moves up and down a list, and what travels with it.
 //
 // A card marked "not a priority" is drawn fainter wherever it appears, and in
 // the smart order it sinks to the bottom of its list (ADR 0026). Every other
@@ -22,6 +22,30 @@
 // card, so it is as permanent as a colour id or a storage key.
 
 import { stackedUnder } from "./stacks.js";
+
+/**
+ * The stack each group belongs to, named by the group at the bottom of it.
+ *
+ * A group with nothing under it is its own bottom, so every group has an
+ * answer and a group on its own is a stack of one. The seen set breaks a ring
+ * of retargeted branches, which must never hang the page.
+ */
+function bottomOf(list) {
+  const under = new Map(list.map((group) => [group, stackedUnder(group, list)]));
+  const found = new Map();
+  for (const group of list) {
+    let at = group;
+    const seen = new Set([at]);
+    while (true) {
+      const below = under.get(at);
+      if (!below || seen.has(below)) break;
+      seen.add(below);
+      at = below;
+    }
+    found.set(group, at);
+  }
+  return found;
+}
 
 /** Pushed down by the reader. */
 export const LOW = "low";
@@ -95,4 +119,35 @@ export function sinkLowPriority(groups, marked) {
 
   const sunk = new Set(list.filter(sinks));
   return [...list.filter((group) => !sunk.has(group)), ...list.filter((group) => sunk.has(group))];
+}
+
+/**
+ * The same groups, with the ones whose checks came back red moved to the top.
+ *
+ * A red check no longer moves a card out of the column it belongs in: a
+ * reviewer who has been asked is the more useful thing for a column to say
+ * (ADR 0011). So the check has to be visible some other way inside that column,
+ * and this is it: the work that needs a push is the first thing read there.
+ *
+ * **A red check raises the whole stack it is in, in merge order.** Nothing in a
+ * stack can merge before the one below it (ADR 0016), so raising a middle card
+ * over its own base would show work that reads as ready and is not. That is the
+ * exact failure the sink below avoids by taking a whole top of a stack with it.
+ *
+ * This runs before the sink, so a card the reader pushed down stays down: their
+ * hand beats the rule (ADR 0026).
+ *
+ * @param groups `{item, children}` pairs, already in the reader's chosen order
+ * @param red the keys whose checks came back red, as a Set or a list
+ * @returns a new array holding exactly the same groups
+ */
+export function raiseFailedChecks(groups, red) {
+  const list = (Array.isArray(groups) ? groups : []).filter((one) => one && typeof one === "object");
+  const keys = red instanceof Set ? red : new Set(Array.isArray(red) ? red : []);
+  if (keys.size === 0) return [...list];
+
+  const bottom = bottomOf(list);
+  const raised = new Set(list.filter((group) => keys.has(group?.item?.key)).map((group) => bottom.get(group)));
+  const rises = (group) => raised.has(bottom.get(group));
+  return [...list.filter(rises), ...list.filter((group) => !rises(group))];
 }

@@ -140,8 +140,32 @@ describe("automaticColumn", () => {
     expect(automaticColumn(pull({ ...stuck, key: "PR_1" }), null)).toBe("needs-changes");
   });
 
-  test("checks that came back red need attention", () => {
+  // Nobody else has a move to make on it, so the red check is the whole answer.
+  test("checks that came back red need attention when nobody is waited on", () => {
     expect(automaticColumn(issue(), links([linkedPull({ checks: { verdict: "failed" } })]))).toBe("needs-changes");
+  });
+
+  // The reviewer's move outranks the author's here. The card still draws its
+  // "Checks failed" pill wherever it sits, so nothing is hidden by this, and
+  // the column answers the more useful question: what is this waiting on?
+  // (ADR 0011)
+  test("a reviewer who has been asked beats a red check", () => {
+    const waiting = linkedPull({ reviewRequestCount: 1, checks: { verdict: "failed" } });
+    expect(automaticColumn(issue(), links([waiting]))).toBe("awaiting-review");
+  });
+
+  // A conflict is not the same: the merge itself cannot happen, so no review
+  // moves it forward.
+  test("a conflict still beats a reviewer who has been asked", () => {
+    const stuck = linkedPull({ reviewRequestCount: 1, mergeable: "CONFLICTING" });
+    expect(automaticColumn(issue(), links([stuck]))).toBe("needs-changes");
+  });
+
+  // The reviewer asked for work and has not been asked to look again, so the
+  // move is the author's whatever else is true.
+  test("changes requested still beats a reviewer who has been asked", () => {
+    const asked = linkedPull({ reviewDecision: "CHANGES_REQUESTED", reviewRequestCount: 1 });
+    expect(automaticColumn(issue(), links([asked]))).toBe("needs-changes");
   });
 
   // Most pull requests are pending for their first minutes, and GitHub works
@@ -152,13 +176,11 @@ describe("automaticColumn", () => {
     );
   });
 
-  // The author has to act either way, so a red check beats the approval and
-  // beats the wait on a reviewer.
-  test("a conflict or a red check beats an approval and beats awaiting review", () => {
+  // An approved pull request with a red check waits on nobody but its author,
+  // so it is not ready to merge.
+  test("a red check beats an approval", () => {
     const approved = linkedPull({ reviewDecision: "APPROVED", checks: { verdict: "failed" } });
     expect(automaticColumn(issue(), links([approved]))).toBe("needs-changes");
-    const waiting = linkedPull({ reviewDecision: "REVIEW_REQUIRED", reviewRequestCount: 1, mergeable: "CONFLICTING" });
-    expect(automaticColumn(issue(), links([waiting]))).toBe("needs-changes");
   });
 
   // Merged work is over, and a merged pull request keeps whatever verdict and
