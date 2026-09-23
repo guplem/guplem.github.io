@@ -240,17 +240,47 @@ export function isBlocked(relationship) {
 }
 
 /**
+ * The pull request an item's column and its review are read from, or null when
+ * there is none.
+ *
+ * For a pull request, itself. For an issue, the pull requests GitHub says would
+ * close it: the merged one if there is one, and otherwise the open one. A pull
+ * request that was closed without merging is abandoned work and counts for
+ * nothing: reading it as progress would park the issue in a column it is not in
+ * (ADR 0011).
+ *
+ * One rule, asked twice: `columns.js` asks it for the column, and the card asks
+ * it for the people, because the people a card draws are the people in that
+ * pull request's review (ADR 0028). Two rules would let the two disagree.
+ */
+export function pullRequestFor(item, relationship) {
+  if (item?.kind === "pull-request") return item;
+  const linked = Array.isArray(relationship?.closedBy) ? relationship.closedBy : [];
+  return linked.find((one) => one.merged) ?? linked.find((one) => one.state === "open") ?? null;
+}
+
+/**
  * The items again, with what GitHub knows about a pull request's review put on
- * the pull request's own item.
+ * the item the board draws.
  *
  * The issues endpoint does not carry a review verdict, so a pull request on the
  * board would otherwise have no column of its own. The graph answer does carry
  * it, keyed by the same node id, so it is copied across once and every later
  * step reads one shape (ADR 0011).
+ *
+ * **An issue gets the review of the pull request that decides its column**, and
+ * nothing else from it. On the board the question a face answers is "who am I
+ * waiting for", and for an issue the answer is in that pull request, not in its
+ * assignees. Putting the list on the item is what keeps the face, the filter
+ * chips and the filter itself reading the same people (ADR 0028).
  */
 export function applyPullRequestState(items, byId) {
   return (Array.isArray(items) ? items : []).map((item) => {
-    if (item?.kind !== "pull-request") return item;
+    if (item?.kind !== "pull-request") {
+      if (item?.kind !== "issue") return item;
+      const pull = pullRequestFor(item, readRelationship(byId, item.key));
+      return { ...item, reviewers: pull?.reviewers ?? [] };
+    }
     const self = readRelationship(byId, item.key).self;
     if (!self) return item;
     return {

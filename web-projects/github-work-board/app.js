@@ -50,7 +50,15 @@ import {
   rangeLabel,
   readRange,
 } from "./doneRange.js";
-import { AUTOMATIC, COLUMNS, attentionFor, columnFor, groupIntoColumns, moveOptions, stateLabel } from "./columns.js";
+import {
+  AUTOMATIC,
+  COLUMNS,
+  attentionFor,
+  columnFor,
+  groupIntoColumns,
+  moveOptions,
+  stateLabel,
+} from "./columns.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
   fetchAssignedIssues,
@@ -371,11 +379,24 @@ function buildAttentionPill(reason) {
  * in its issue's column, because the pair is one piece of work (ADR 0010), so
  * moving it on its own would do nothing, but copying its branch still does
  * (ADR 0021).
+ *
+ * `people` says whose faces the card draws, which depends on the list the card
+ * is in and not on whether it can be moved (ADR 0028):
+ *
+ *   - `reviewers`: everybody in the review, for a card on the board. "Who am I
+ *     waiting for."
+ *   - `assignees`: whose work this is, for a card in the review row. "Who is
+ *     asking me."
+ *   - `none`: for an issue whose pull request is nested under it, because that
+ *     card draws the same faces one line below.
  */
-function buildWorkItemCard(item, { withMenu = true, compact = false, stack = null } = {}) {
+function buildWorkItemCard(item, { withMenu = true, compact = false, stack = null, people = "reviewers" } = {}) {
 
   const card = document.createElement("li");
   card.className = "issue";
+  // What GitHub links to this item. The card asks it three times over: what
+  // blocks it, what holds it up, and who is in its review.
+  const relationship = readRelationship(state.links, item.key);
   // Fainter wherever it is drawn, in every order. Only the smart order moves
   // it as well (ADR 0026).
   if (readPriority(state.board, item.key) === LOW) card.setAttribute("data-priority", LOW);
@@ -459,7 +480,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     heading.append(draft);
   }
 
-  if (isBlocked(readRelationship(state.links, item.key))) {
+  if (isBlocked(relationship)) {
     const blocked = document.createElement("span");
     blocked.className = "badge badge-blocked";
     blocked.textContent = "Blocked";
@@ -469,7 +490,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   // Why this work is with the person who wrote it. Drawn on every card that
   // has a reason, not only on the ones sitting in "Needs attention": a card
   // the reader moved somewhere by hand still conflicts (ADR 0011).
-  for (const id of attentionFor(item, readRelationship(state.links, item.key))) {
+  for (const id of attentionFor(item, relationship)) {
     const reason = attentionReason(id);
     if (reason) heading.append(buildAttentionPill(reason));
   }
@@ -505,25 +526,29 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   link.append(document.createTextNode(read.description));
   card.append(link);
 
-  // Who this is about. On a review card that is whose work it is; on the
-  // reader's own card it is who is in the review, each face carrying what the
-  // board waits on them for (ADR 0028).
-  const faces = withMenu
-    ? buildFaces(item.reviewers, {
-        state: true,
-        chosen: state.reviewers,
-        onToggle: (login) => {
-          state.reviewers = toggleInList(state.reviewers, login);
-          afterFilterChange();
-        },
-      })
-    : buildFaces(item.assignees, {
-        chosen: state.assignees,
-        onToggle: (login) => {
-          state.assignees = toggleInList(state.assignees, login);
-          afterFilterChange();
-        },
-      });
+  // Who this is about. In the review row that is whose work it is; on the
+  // board it is who is in the review, each face carrying what the board waits
+  // on them for (ADR 0028). An issue carries the review of the pull request its
+  // column is read from, put there by `applyPullRequestState`.
+  const faces =
+    people === "assignees"
+      ? buildFaces(item.assignees, {
+          chosen: state.assignees,
+          onToggle: (login) => {
+            state.assignees = toggleInList(state.assignees, login);
+            afterFilterChange();
+          },
+        })
+      : people === "reviewers"
+        ? buildFaces(item.reviewers, {
+            state: true,
+            chosen: state.reviewers,
+            onToggle: (login) => {
+              state.reviewers = toggleInList(state.reviewers, login);
+              afterFilterChange();
+            },
+          })
+        : null;
   if (faces) card.append(faces);
 
   if (item.labels.length > 0) {
@@ -537,8 +562,6 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     }
     card.append(labels);
   }
-
-  const relationship = readRelationship(state.links, item.key);
 
   // "Sub-issue of", not "Part of": the card has to say what the relationship is
   // as well as which issue it is with, because the reader meets this card in a
@@ -1409,11 +1432,15 @@ function buildChildren(item, subIssues) {
 
 /** One card, with any pull request that closes it nested inside. */
 function buildGroupCard({ item, children }) {
-  const card = buildWorkItemCard(item);
+  // The nested pull request draws the review, so the issue above it must not
+  // draw the same faces again (ADR 0028).
+  const card = buildWorkItemCard(item, { people: children.length > 0 ? "none" : "reviewers" });
   if (children.length === 0) return card;
   const nest = document.createElement("ul");
   nest.className = "issues nested";
-  nest.replaceChildren(...children.map((child) => buildWorkItemCard(child, { withMenu: false, compact: true })));
+  nest.replaceChildren(
+    ...children.map((child) => buildWorkItemCard(child, { withMenu: false, compact: true, people: "reviewers" })),
+  );
   card.append(nest);
   return card;
 }
@@ -1678,7 +1705,9 @@ function renderBoard() {
   element("reviews-empty").hidden = waiting.length > 0;
   const stacked = stackPositions(waiting);
   element("reviews-list").replaceChildren(
-    ...waiting.map((item) => buildWorkItemCard(item, { withMenu: false, stack: stacked[item.key] ?? null })),
+    ...waiting.map((item) =>
+      buildWorkItemCard(item, { withMenu: false, stack: stacked[item.key] ?? null, people: "assignees" }),
+    ),
   );
 
   const overrides = {};

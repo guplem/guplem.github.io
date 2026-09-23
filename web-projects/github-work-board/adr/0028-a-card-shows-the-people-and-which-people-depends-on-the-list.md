@@ -20,10 +20,31 @@ reader had to open it to find out whose comments to answer.
 **A card shows the people it is about, as small round faces, and which people
 depends on which list the card is in.**
 
-- **A review card shows the pull request's assignees.** Whose work this is.
-- **The reader's own card shows everybody in the review**, each face carrying
+- **A card in the review row shows the pull request's assignees.** Whose work
+  this is, so the reader can see who is asking them.
+- **A card on the board shows everybody in the review**, each face carrying
   what the board is waiting on them for: they asked for changes, they were asked
-  and have not answered, or they approved.
+  and have not answered, or they approved. So the reader can see who they are
+  waiting for.
+
+**Which list the card is in, not whether it can be moved** (added 2026-09). The
+first build asked "does this card carry the move menu", and those are not the
+same question: a pull request nested under its issue carries no move menu,
+because the pair travels as one piece of work (ADR 0010), and it sat on the
+board showing its assignee. On a board of your own work that face is you, on
+every card, which answers nothing. The card now takes what to draw as its own
+answer, and the review row is the one place that asks for assignees.
+
+**An issue borrows the review of the pull request that decides its column.** An
+issue has no reviewers of its own, so a card for one said nothing about who it
+was waiting for, while its column was already being read from that pull
+request (ADR 0011). `relationships.pullRequestFor` is the one rule for which
+pull request that is, asked once for the column and once for the people, so the
+two can never disagree. The list is put on the item itself, which is what keeps
+the face, the filter chips and the filter reading the same people.
+
+**An issue with its pull request nested under it draws no faces.** The card one
+line below draws them, and the pair is one piece of work.
 
 **The second list is not "the pending review requests", and that distinction is
 the whole feature.** GitHub drops somebody from `reviewRequests` the moment they
@@ -86,3 +107,10 @@ alone is not an answer for everybody.
 - **A face is one more thing on an already busy card.** It sits on its own row
   under the title, and a card with nobody on it draws nothing, so a board with no
   reviewers anywhere looks exactly as it did.
+- **The reviewer chips now hold people no pull request on the board names**
+  (2026-09). They are read from the items, and an issue now carries the review
+  of a pull request that can be somebody else's and off the board entirely.
+  That is the point: the person to chase about your issue is in that review.
+- **Rejected: showing the assignees on a board card when nobody is in the
+  review.** On a board of your own work the assignee is you, so the face would
+  be noise on exactly the cards that have nothing to say.

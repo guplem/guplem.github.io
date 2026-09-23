@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { automaticColumn } from "./columns.js";
 import {
   applyPullRequestState,
+  pullRequestFor,
   askedToLookAgain,
   childIssueIds,
   groupByLinkedIssue,
@@ -276,10 +277,18 @@ describe("the people in a pull request's review (ADR 0028)", () => {
     expect(item.mergeable).toBe("");
   });
 
-  // An issue has no review, and the board must not invent one for it.
-  test("an issue is left alone", () => {
-    const [item] = applyPullRequestState([{ key: "I_1", kind: "issue" }], {});
-    expect(item.reviewers).toBe(undefined);
+  // An issue carries no review of its own, so it borrows the one from the pull
+  // request that decides its column: on the board a face answers "who am I
+  // waiting for" (ADR 0028). An issue with no pull request has nobody, and an
+  // empty list is never undefined, so every later step reads one shape.
+  test("an issue gets the review of the pull request that decides its column", () => {
+    const [alone] = applyPullRequestState([{ key: "I_1", kind: "issue" }], {});
+    expect(alone.reviewers).toEqual([]);
+
+    const people = [{ login: "ana", name: "Ana", avatarUrl: "", state: "asked" }];
+    const links = { I_1: { closedBy: [{ id: "PR_1", state: "open", merged: false, reviewers: people }] } };
+    const [withPull] = applyPullRequestState([{ key: "I_1", kind: "issue" }], links);
+    expect(withPull.reviewers).toEqual(people);
   });
 });
 
@@ -401,5 +410,51 @@ describe("knowsAbout", () => {
   test("never throws, whatever it is handed", () => {
     expect(knowsAbout(null, "I_asked")).toBe(false);
     expect(knowsAbout(byId, undefined)).toBe(false);
+  });
+});
+
+const issueItem = (over = {}) => ({ key: "I_1", kind: "issue", number: 1, ...over });
+const prItem = (over = {}) => ({ key: "PR_1", kind: "pull-request", number: 2, ...over });
+const linked = (over = {}) => ({
+  id: "PR_1",
+  number: 2,
+  title: "the work",
+  url: "u",
+  state: "open",
+  merged: false,
+  reviewDecision: "",
+  reviewRequestCount: 0,
+  reviewers: [],
+  ...over,
+});
+const rel = (closedBy = []) => ({ closedBy, closes: [], blockedBy: [], parent: null });
+
+// A card in a column says who the board is waiting on, and for an issue that
+// is whoever is in the review of the pull request that decides its column
+// (ADR 0028, ADR 0011).
+describe("pullRequestFor", () => {
+  test("a pull request is its own", () => {
+    const self = prItem();
+    expect(pullRequestFor(self, null)).toBe(self);
+  });
+
+  test("an issue answers with the pull request its column is read from", () => {
+    const open = linked({ id: "PR_open" });
+    expect(pullRequestFor(issueItem(), rel([open]))).toBe(open);
+  });
+
+  // The same order the column rule reads in: a merged one is the answer, and
+  // a closed unmerged one is abandoned work that counts for nothing.
+  test("a merged pull request wins, and an abandoned one counts for nothing", () => {
+    const merged = linked({ id: "PR_merged", merged: true, state: "closed" });
+    const open = linked({ id: "PR_open" });
+    expect(pullRequestFor(issueItem(), rel([open, merged]))).toBe(merged);
+    const abandoned = linked({ id: "PR_dead", state: "closed", merged: false });
+    expect(pullRequestFor(issueItem(), rel([abandoned]))).toBeNull();
+  });
+
+  test("work with no pull request answers with nothing", () => {
+    expect(pullRequestFor(issueItem(), rel([]))).toBeNull();
+    expect(pullRequestFor(null, null)).toBeNull();
   });
 });

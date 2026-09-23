@@ -69,11 +69,13 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   on unfinished work is marked **Blocked**. All of it read from GitHub's own
   relationships, never guessed from a description.
 - **See who each piece of work is with, and narrow to one person by tapping
-  their face.** A pull request waiting for your review shows whose work it is.
-  Your own pull requests show everybody in the review instead, with a ring
-  saying what each one is doing: asked for changes, has not reviewed yet, or
-  approved. That is two separate filters, one for each list, and a link carries
-  both.
+  their face.** A pull request waiting for your review shows whose work it is,
+  so you can see who is asking you. Every card on your own board shows
+  everybody in the review instead, so you can see who you are waiting for, with
+  a ring saying what each one is doing: asked for changes, has not reviewed
+  yet, or approved. An issue shows the review of the pull request that would
+  close it, because that is where the answer is. That is two separate filters,
+  one for each list, and a link carries both.
 - **Filter by kind, repository or label.** Two labels means either of them; a
   kind plus a repository means both. The filters go into the address bar too, so
   "everything tagged urgent in this repository" is a link.

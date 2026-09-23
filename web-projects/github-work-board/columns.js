@@ -11,6 +11,7 @@
 // by hand, so an id is permanent, exactly like a sort id or a storage key.
 
 import { attentionReasons } from "./attention.js";
+import { pullRequestFor } from "./relationships.js";
 import { finishedAt } from "./workItems.js";
 
 /** What an item carries when its column is left to the rules. */
@@ -68,24 +69,13 @@ function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-/**
- * The state of the pull request this item's column depends on.
- *
- * For a pull request, itself. For an issue, the pull requests GitHub says would
- * close it. A pull request that was closed without merging is abandoned work
- * and counts for nothing: reading it as progress would park the issue in a
- * column it is not in.
- */
+/** The state of the pull request this item's column depends on. */
 function pullRequestState(item, relationship) {
+  const pull = pullRequestFor(item, relationship);
+  if (!pull) return NONE;
   if (item?.kind === "pull-request") return readState(item, item.merged === true);
-
-  const linked = Array.isArray(relationship?.closedBy) ? relationship.closedBy : [];
-  const merged = linked.find((one) => one.merged);
-  if (merged) return NONE_MERGED;
-
-  const open = linked.find((one) => one.state === "open");
-  if (!open) return NONE;
-  return readState(open, false);
+  if (pull.merged) return NONE_MERGED;
+  return readState(pull, false);
 }
 
 const NONE = {
