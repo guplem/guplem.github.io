@@ -397,6 +397,9 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
 
   const card = document.createElement("li");
   card.className = "issue";
+  // Which item this card is. Anything that names an item elsewhere on the
+  // board points at it with this key, and the card lights up (ADR 0035).
+  card.dataset.key = item.key;
   // What GitHub links to this item. The card asks it three times over: what
   // blocks it, what holds it up, and who is in its review.
   const relationship = readRelationship(state.links, item.key);
@@ -1280,6 +1283,9 @@ function buildLinkLine(label, links) {
     anchor.rel = "noopener";
     anchor.className = "issue-link";
     anchor.textContent = `#${link.number} ${link.title}`;
+    // Point at the card this line names, so hovering the line finds it
+    // (ADR 0035).
+    anchor.dataset.pointsAt = link.id;
     line.append(anchor);
   }
   return line;
@@ -1299,6 +1305,7 @@ function buildChildRow({ item: child, columnId }) {
 
   const link = document.createElement("a");
   link.className = "issue-link child-title";
+  link.dataset.pointsAt = child.key;
   link.href = child.url;
   link.target = "_blank";
   link.rel = "noopener";
@@ -1345,6 +1352,7 @@ function childRows(children) {
 function buildChildPill(row) {
   const pill = document.createElement("a");
   pill.className = "child-pill";
+  pill.dataset.pointsAt = row.item.key;
   pill.href = row.item.url;
   pill.target = "_blank";
   pill.rel = "noopener";
@@ -1641,6 +1649,22 @@ function buildColumn({ column, groups }, counted) {
 function lightStack(root) {
   for (const card of document.querySelectorAll(".issue[data-stack]")) {
     card.classList.toggle("stack-lit", root !== "" && card.dataset.stack === root);
+  }
+}
+
+/**
+ * Light up the one card a line or a pill points at.
+ *
+ * A parent's card names its children, and a card names what blocks it and what
+ * it is part of. Every one of those is somewhere else on the board, and finding
+ * it meant reading the number off every card. Pointing at the reference now
+ * lights the card it means (ADR 0035).
+ *
+ * @param key the item the reference names, or "" to light nothing
+ */
+function lightItem(key) {
+  for (const card of document.querySelectorAll(".issue[data-key]")) {
+    card.classList.toggle("item-lit", key !== "" && card.dataset.key === key);
   }
 }
 
@@ -2441,15 +2465,24 @@ function start() {
   // rebuilt on every render, and a card carrying its own listeners has to be
   // given them again each time. `mouseover` bubbles, so moving onto anything
   // that is not a stacked card clears the light by itself.
-  const followStack = (event) => {
-    const card = event.target instanceof Element ? event.target.closest(".issue[data-stack]") : null;
+  const follow = (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const card = target?.closest(".issue[data-stack]") ?? null;
     lightStack(card?.dataset.stack ?? "");
+    // A reference to another item wins over the stack the card it sits in
+    // belongs to: the reader is pointing at the reference, not at the card
+    // (ADR 0027, ADR 0035).
+    const reference = target?.closest("[data-points-at]") ?? null;
+    lightItem(reference?.dataset.pointsAt ?? "");
   };
-  document.addEventListener("mouseover", followStack);
-  document.addEventListener("focusin", followStack);
+  document.addEventListener("mouseover", follow);
+  document.addEventListener("focusin", follow);
   // The pointer can leave through the edge of the window, which fires no
   // `mouseover` on the way out.
-  document.documentElement.addEventListener("mouseleave", () => lightStack(""));
+  document.documentElement.addEventListener("mouseleave", () => {
+    lightStack("");
+    lightItem("");
+  });
 
   // Ask now, whatever the schedule says. The button reports when the board last
   // heard anything, and it is read at the moment the reader asks rather than

@@ -19,6 +19,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   that copies it with that card's own number in it. `{URL}`, `{TITLE}`,
   `{REPO}` and `{BRANCH}` work the same way. A line that asks for a branch is
   not offered on an issue, because an issue has none.
+- **Point at anything that names other work and that card lights up.** A child's
+  pill, a child in the list, "Blocked by", "Sub-issue of": the card it means is
+  washed violet wherever it sits on the board, so you find it with a glance
+  instead of reading numbers. Nothing lights when that work is not on your
+  board, and the tooltip still says what it is.
 - **Point at a stacked pull request and the rest of its stack lights up**,
   wherever those cards are on the screen, including in another column. The
   keyboard does it too. Hovering the stack's number tells you which pull

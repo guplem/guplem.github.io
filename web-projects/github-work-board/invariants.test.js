@@ -327,6 +327,32 @@ describe("a sort order named in a link keeps its name (ADR 0006)", () => {
   });
 });
 
+// A line that names another item and the card it names are drawn in different
+// places, by different functions, and nothing but this test ties the two
+// attributes together. Rename either and the light goes out in silence
+// (ADR 0035).
+describe("a reference points at a card, and the card answers (ADR 0035)", () => {
+  const source = read("app.js");
+
+  test("the card carries its key, and a reference carries the key it points at", () => {
+    expect(source).toContain("card.dataset.key = item.key");
+    expect(source).toContain("dataset.pointsAt");
+    expect(source).toContain('.issue[data-key]');
+  });
+
+  test("the pills, the children and every link line point at something", () => {
+    expect(source).toMatch(/function buildChildPill[\s\S]*pill\.dataset\.pointsAt/);
+    expect(source).toMatch(/function buildChildRow[\s\S]*dataset\.pointsAt/);
+    expect(source).toMatch(/function buildLinkLine[\s\S]*anchor\.dataset\.pointsAt/);
+  });
+
+  // The light is drawn by a rule in the style sheet, so a class nobody styles
+  // is a light nobody sees.
+  test("the style sheet draws the card it points at", () => {
+    expect(read("style.css")).toContain(".issue.item-lit");
+  });
+});
+
 // The badge and the light answer two questions about the same chain, and the
 // board drew only the light: a stacked pull request in a column said nothing
 // about which stack it was in, while the same pull request in the review row
