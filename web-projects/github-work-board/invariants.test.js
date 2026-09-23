@@ -390,7 +390,7 @@ describe("what the board waits on a person for is readable (ADR 0028)", () => {
   test("the review ring is thicker than a plain face's edge", () => {
     const plain = Number.parseFloat(propertyOf(".avatar", "border"));
     const ring = Number.parseFloat(propertyOf(".avatar[data-review]", "border-width"));
-    expect(ring).toBeGreaterThanOrEqual(3);
+    expect(ring).toBeGreaterThanOrEqual(2);
     expect(ring).toBeGreaterThan(plain);
   });
 
