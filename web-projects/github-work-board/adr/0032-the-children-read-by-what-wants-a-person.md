@@ -66,7 +66,7 @@ done", said how much was left and nothing about what it was (2026-09).
 ## Consequences
 
 **The board asks GitHub for twenty children, not ten.** The list itself is free:
-it adds no nested connection to the query, so ten and fifty both cost 13 points,
+it adds no nested connection to the query, so ten and fifty both cost 18 points,
 measured with `rateLimit(dryRun: true)`. What it spends is room in the second
 pass, which is one batch of 100 ids, so twenty is five parents' worth of
 children before anybody's child loses its state (ADR 0010, ADR 0025).

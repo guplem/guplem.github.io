@@ -1481,6 +1481,31 @@ textarea.input {
   color: hsl(var(--muted-foreground));
 }
 
+/**
+ * How the checks on a pull request's last commit are going.
+ *
+ * Three colours and nothing else, because the card has no room for a fourth
+ * badge and the answer is one of three. Green passed, red failed, grey still
+ * running. The sentence behind it carries the numbers, on the pointer and for
+ * a screen reader, so colour is never the only carrier (ADR 0037).
+ */
+.check-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: hsl(var(--muted-foreground));
+  cursor: help;
+}
+
+.check-dot[data-checks="passed"] {
+  background: hsl(var(--success));
+}
+
+.check-dot[data-checks="failed"] {
+  background: hsl(var(--destructive));
+}
+
 /* An issue and a pull request sit in the same list, so the kind has to be
  * readable at a glance and not only from the word in the badge. */
 .badge-issue {

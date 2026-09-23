@@ -405,6 +405,17 @@ describe("what the board waits on a person for is readable (ADR 0028)", () => {
   });
 });
 
+describe("the checks breakdown is asked for once (ADR 0037)", () => {
+  // The cost of this one connection is where the whole decision sits. On the
+  // pull request it is free; inside `closedByPullRequestsReferences` it
+  // multiplies by the five linked pull requests and costs five points a batch,
+  // on every refresh, for a dot no card draws from there.
+  test("only the pull request itself is asked what its checks say", () => {
+    const asked = read("gateway.js").match(/contexts\(first:/g) ?? [];
+    expect(asked).toHaveLength(1);
+  });
+});
+
 describe("a sort order named in a link keeps its name (ADR 0006)", () => {
   // The chosen order travels in the address bar, so a renamed id silently
   // breaks every link anybody saved or shared.
