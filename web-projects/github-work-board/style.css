@@ -892,6 +892,30 @@ textarea.input {
 }
 
 /* -------------------------------------------------------------------------- */
+/* The start-up screen                                                        */
+/* -------------------------------------------------------------------------- */
+
+/* What the reader sees between the first paint and the board deciding which
+ * screen they are on. It wears the same card as the screen it hands over to,
+ * so the swap moves nothing but the words (ADR 0036). */
+.boot-bar {
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: hsl(var(--muted));
+  overflow: hidden;
+}
+
+/* It fills step by step rather than sliding on its own: a bar that moves
+ * without being told anything says nothing about how far along the page is. */
+.boot-bar-fill {
+  height: 100%;
+  width: 33%;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  transition: width 0.2s ease;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Placeholders                                                               */
 /* -------------------------------------------------------------------------- */
 

@@ -12,6 +12,7 @@ import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
 import { DEFAULT_REFRESH, OFF } from "./refresh.js";
+import { BOOT_STEPS } from "./messages.js";
 import { SORT_OPTIONS, reviewSortId } from "./sorting.js";
 import { DEFAULT_RANGE, RANGE_PRESETS, readRange } from "./doneRange.js";
 import { buildSearch, readStateFromSearch } from "./urlState.js";
@@ -343,6 +344,33 @@ describe("the board says it is reading, whoever asked (ADR 0029)", () => {
     expect(/refreshNow\.(set|remove)Attribute\(/.test(app)).toBe(false);
     expect(/refreshNow\.disabled\s*=/.test(app)).toBe(false);
     expect(functionBody(app, "function renderRefreshBusy(")).toContain("aria-busy");
+  });
+});
+
+describe("the page shows nothing it has not decided (ADR 0036)", () => {
+  const html = read("index.html");
+
+  // The browser paints this file before it runs a line of the board's code, so
+  // whatever is visible in it is what a reader sees first. The setup screen was
+  // visible, and it flashed at every reader who already has a token.
+  test("every screen starts hidden, and the start-up screen is the one that shows", () => {
+    for (const id of ["setup", "board", "settings-view", "add-token-view"]) {
+      expect(new RegExp(`<section id="${id}"[^>]*\\shidden`).test(html)).toBe(true);
+    }
+    expect(/<section id="boot"[^>]*\shidden/.test(html)).toBe(false);
+  });
+
+  // The first step is the one nothing can set, because the code that would set
+  // it is what the reader is waiting for. So it is written in the HTML, and
+  // this keeps the two copies the same word.
+  test("the first step is written in the page with the same words as the module", () => {
+    expect(html).toContain(BOOT_STEPS[0].words);
+  });
+
+  test("the start-up screen goes away in one place, so it cannot be left up", () => {
+    const app = read("app.js");
+    expect(functionBody(app, "function finishBoot(")).toContain("hidden");
+    expect(functionBody(app, "function showView(")).toContain("finishBoot()");
   });
 });
 

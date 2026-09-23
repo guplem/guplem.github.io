@@ -24,6 +24,38 @@ export function say(key, params = {}) {
   );
 }
 
+/**
+ * The start-up screen's steps, in the order they happen.
+ *
+ * The browser paints `index.html` before it runs a line of the board's own
+ * code, so the first step is written into that file and the rest are set from
+ * `app.js` as each one starts. The words live here all the same, so the two
+ * copies of the first one cannot drift (ADR 0036).
+ */
+export const BOOT_STEPS = [
+  { id: "code", words: "Loading the board's code" },
+  { id: "saved", words: "Reading what this browser saved" },
+  { id: "board", words: "Opening your board" },
+];
+
+const BOOT_BY_ID = new Map(BOOT_STEPS.map((step) => [step.id, step]));
+
+/** What the start-up screen says it is doing. A step nobody knows says the first one. */
+export function bootStepWords(id) {
+  return (BOOT_BY_ID.get(id) ?? BOOT_STEPS[0]).words;
+}
+
+/**
+ * How full the start-up bar is, in whole percent.
+ *
+ * Never zero: a bar with nothing in it reads as a page that has not started,
+ * which is the opposite of what this screen is for.
+ */
+export function bootStepProgress(id) {
+  const at = BOOT_STEPS.findIndex((step) => step.id === id);
+  return Math.round(((at < 0 ? 0 : at) + 1) * (100 / BOOT_STEPS.length));
+}
+
 // How long ago, in the units a person would say it in.
 const SINCE = [
   { unit: "day", ms: 24 * 60 * 60_000 },

@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="229" />
-  <meta name="deploy-date" content="2026-09-23T09:50:38.000Z" />
+  <meta name="deploy-pull-request" content="230" />
+  <meta name="deploy-date" content="2026-09-23T10:05:19.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -185,6 +185,32 @@
     </header>
 
     <main>
+      <!-- What the reader sees first, because the browser paints this file
+           before it runs a line of the board's code. Every other screen below
+           starts hidden, so nothing the board has not decided is ever on the
+           screen, and `app.js` says which step it is on as it goes. The first
+           step is written here and nowhere else can write it: the code that
+           would is the thing being waited for (ADR 0036). -->
+      <section id="boot" class="card" aria-labelledby="boot-heading">
+        <div class="card-header">
+          <h2 id="boot-heading">Starting the board</h2>
+          <p class="lead" id="boot-step" aria-live="polite">Loading the board's code</p>
+        </div>
+        <div class="card-content">
+          <div
+            id="boot-bar"
+            class="boot-bar"
+            role="progressbar"
+            aria-labelledby="boot-heading"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="33"
+          >
+            <div id="boot-bar-fill" class="boot-bar-fill"></div>
+          </div>
+        </div>
+      </section>
+
       <!-- Shown when the board has grown to need access a saved token was never
            granted. Filled by app.js from permissions.js (ADR 0005). -->
       <div id="token-outdated" class="callout callout-warning" hidden>
@@ -198,7 +224,7 @@
 
       <!-- First run. Hidden once a token is connected, shown again once the
            last token is removed. -->
-      <section id="setup" class="card" aria-labelledby="setup-heading">
+      <section id="setup" class="card" aria-labelledby="setup-heading" hidden>
         <div class="card-header">
           <h2 id="setup-heading">Connect it, once</h2>
           <p class="lead">
