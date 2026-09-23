@@ -61,7 +61,7 @@ It is the short procedure for all of the above.
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
-| `relationships.js` | Yes | GitHub's own links between items, the children of an issue, and nesting a pull request under its issue (ADR 0010) |
+| `relationships.js` | Yes | GitHub's own links between items, the children of an issue, which linked pull request an item is read from, and nesting a pull request under its issue (ADR 0010, ADR 0028) |
 | `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, and what to call that column away from the board (ADR 0011) |
 | `attention.js` | Yes | The three reasons a pull request wants its author (conflicts, red checks, changes requested), with the words and the icon each pill draws (ADR 0011) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
