@@ -40,7 +40,7 @@ import {
   colourableAreas,
 } from "./appearance.js";
 import { attentionReason } from "./attention.js";
-import { describeChecks } from "./checks.js";
+import { describeChecks, needsAsking, readWorkflowRuns } from "./checks.js";
 import {
   DEFAULT_RANGE,
   RANGE_PRESETS,
@@ -67,6 +67,7 @@ import {
   fetchRelationships,
   fetchReviewRequests,
   fetchViewer,
+  fetchWorkflowRuns,
 } from "./gateway.js";
 import {
   DEFAULT_KIND,
@@ -136,6 +137,7 @@ import { countBoard, describeBreakdown, describeExcluded, tabTitle } from "./cou
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
 import {
+  applyCheckSummaries,
   applyPullRequestState,
   groupByLinkedIssue,
   isBlocked,
@@ -231,6 +233,10 @@ const state = {
   // How often this browser asks GitHub again, the timer that asks, and when the
   // last answer arrived. The schedule stays in this browser, because it decides
   // what this device spends of the reader's rate limit (ADR 0025).
+  // What GitHub said about the checks on one commit, kept by commit id. A
+  // commit that has finished stays finished, so the board asks once and reads
+  // its own answer on every refresh after that (ADR 0037).
+  checksBySha: new Map(),
   refreshId: DEFAULT_REFRESH,
   refreshTimer: null,
   lastReadAt: null,
@@ -2220,6 +2226,8 @@ async function inspectToken(entry) {
     [...items, ...finished, ...reviews].map((item) => item.key),
   );
   links = linked.ok ? normalizeRelationships(linked.data) : {};
+  await readChecks(entry.token, links);
+  links = applyCheckSummaries(links, state.checksBySha);
   rows.push({
     id: work.id,
     label: work.label,
@@ -2232,6 +2240,43 @@ async function inspectToken(entry) {
 
   if (updated.grantedPermissions === null) updated = { ...updated, grantedPermissions: permissionsFingerprint() };
   return { entry: updated, raw: [...raw, ...finishedRaw], rows, links, reviews };
+}
+
+/**
+ * Ask GitHub how the checks are going, for every commit this answer names.
+ *
+ * One call for each commit the board has no final answer for, and none at all
+ * for the ones it has: a run that finished stays finished, and the commit id
+ * changes the moment anybody pushes (ADR 0037). So the first read costs about
+ * one call per pull request, and every refresh after it costs one call per pull
+ * request that is still building.
+ *
+ * The calls go together rather than one after another: they are independent,
+ * and a board of twenty pull requests would otherwise take twenty round trips
+ * before it drew. A token that cannot answer costs the board nothing but a
+ * missing dot, the way a missing review request does (ADR 0013).
+ */
+async function readChecks(token, links) {
+  const wanted = new Map();
+  for (const one of Object.values(links)) {
+    for (const link of [one.self, ...(Array.isArray(one.closedBy) ? one.closedBy : [])]) {
+      if (!link?.headSha || link.repository === "") continue;
+      if (!needsAsking(state.checksBySha.get(link.headSha))) continue;
+      wanted.set(link.headSha, link.repository);
+    }
+  }
+
+  await Promise.all(
+    [...wanted].map(async ([sha, repository]) => {
+      const answer = await fetchWorkflowRuns(token, repository, sha);
+      if (!answer.ok) return;
+      // How many times this commit has been asked about, carried on the answer:
+      // a commit nothing runs on is left alone after a few tries, and that
+      // count is the only way to know when to stop (`needsAsking`).
+      const asks = (state.checksBySha.get(sha)?.asks ?? 0) + 1;
+      state.checksBySha.set(sha, { ...readWorkflowRuns(answer.data?.workflow_runs), asks });
+    }),
+  );
 }
 
 /**

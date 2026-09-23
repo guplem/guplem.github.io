@@ -63,7 +63,7 @@ It is the short procedure for all of the above.
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
 | `relationships.js` | Yes | GitHub's own links between items, the children of an issue, which linked pull request an item is read from, and nesting a pull request under its issue (ADR 0010, ADR 0028) |
 | `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, and what to call that column away from the board (ADR 0011) |
-| `checks.js` | Yes | How the checks on the last commit went: GitHub's verdict in the board's words, the breakdown behind the dot, and the sentence it says (ADR 0037) |
+| `checks.js` | Yes | How the checks on the last commit are going: the workflow runs counted into one verdict, when to ask GitHub again, and the sentence behind the dot (ADR 0037) |
 | `attention.js` | Yes | The three reasons a pull request wants its author (conflicts, red checks, changes requested), with the words and the icon each pill draws (ADR 0011) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
@@ -175,14 +175,17 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   button anywhere else: the press and the schedule would each write it, and the
   one that loses leaves the button down for good. `invariants.test.js` fails on
   a second writer.
-- **The checks dot takes its colour from GitHub's rollup and its numbers from
-  the board's own count, and those must stay apart.** The board reads the first
-  50 checks; GitHub rolls up every one of them. A colour worked out from the
-  count could read green on a pull request GitHub calls red (ADR 0037).
-- **Ask for the checks on the `PullRequest` branch only.** Inside
-  `closedByPullRequestsReferences` the same connection multiplies by five and
-  costs five points a batch for a dot no card draws from there. Measured, and
-  `invariants.test.js` fails on a second one.
+- **`statusCheckRollup` answers null here, and nothing tells you.** It needs the
+  Checks permission, and GitHub offers no Checks permission on a fine-grained
+  token, which is the only kind this board asks for. The field is not an error,
+  it is simply empty, so a feature built on it looks finished and never runs.
+  One did, for months. The checks come from the Actions API instead
+  (`fetchWorkflowRuns`), and `invariants.test.js` fails if the query asks for the
+  rollup again (ADR 0037).
+- **A commit's checks are asked about once and kept, keyed by the commit id.**
+  A run that finished stays finished, and the id changes the moment anybody
+  pushes. `needsAsking` holds that rule, and it is what keeps this from being one
+  call per pull request on every refresh (ADR 0037).
 - **Re-measure `GRAPHQL_POINTS_PER_TOKEN` whenever the query grows a field.** It
   read 26 for a year and measured 36 on 2026-09-23, because fields were added
   and nobody asked GitHub again. `rateLimit(dryRun: true)` answers it from the
@@ -558,7 +561,7 @@ before calling it done.
 | [0034](adr/0034-the-last-column-takes-a-range-of-days.md) | The last column takes a range of days, and the range is in the link |
 | [0035](adr/0035-a-reference-lights-the-card-it-names.md) | A reference lights the card it names |
 | [0036](adr/0036-the-page-starts-on-a-start-up-screen.md) | The page starts on a start-up screen, and every other screen starts hidden |
-| [0037](adr/0037-a-dot-says-how-the-checks-are-going.md) | A dot says how the checks are going, and the rollup gives it its colour |
+| [0037](adr/0037-a-dot-says-how-the-checks-are-going.md) | A dot says how the checks are going, read from the Actions API |
 
 ## What is not built yet
 

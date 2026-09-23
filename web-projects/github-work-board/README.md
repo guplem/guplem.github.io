@@ -59,10 +59,12 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   three it is, with a pill you can hover for what to do about it. A card with
   all three says all three.
 - **A dot beside the PR badge says how the checks on a pull request are
-  going.** Green when every check passed, red when one came back red, grey
+  going.** Green when every run passed, red when one came back red, grey
   while they are still running. Rest on it for the breakdown: how many
-  passed, failed, or are still running. A pull request nothing ran on draws
-  no dot at all.
+  passed, failed, or are still running. A commit nothing has run on draws no
+  dot at all. It reads GitHub Actions runs, which is the only way a
+  fine-grained token can see checks, so a repository whose CI lives somewhere
+  else shows no dot.
 - **An issue draws its children as a row of pills.** A card with sub-issues
   shows one small pill per child under "Children", each painted with the colour
   of the column that child sits in, and the count of how many are closed beside
@@ -175,6 +177,7 @@ empty and the board suggests one from wherever the token finds work.
      - `Metadata` → Read-only
      - `Issues` → Read and write
      - `Pull requests` → Read-only
+     - `Actions` → Read-only
    - **Expiration:** pick a date. 90 days is a good default.
 
 2. **Paste the token into the page** and press Connect. The page checks each

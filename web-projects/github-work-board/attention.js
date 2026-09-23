@@ -66,14 +66,13 @@ export function hasConflicts(pull) {
 /**
  * Whether the checks on the last commit came back red.
  *
- * GitHub rolls every check on a commit into one verdict. `FAILURE` is a check
- * that failed and `ERROR` is one that could not run, and both mean the same
- * thing to the author. `PENDING` and `EXPECTED` are checks still running, so
- * they are not a reason to act, and a pull request with no checks at all
- * answers with nothing.
+ * The verdict is the one `checks.js` works out from the workflow runs on that
+ * commit, because GitHub's own rollup needs a permission a fine-grained token
+ * cannot carry (ADR 0037). Runs still going are not a reason to act, and a
+ * commit the board has not asked about answers nothing at all.
  */
 export function checksFailed(pull) {
-  return pull?.checksState === "FAILURE" || pull?.checksState === "ERROR";
+  return pull?.checks?.verdict === "failed";
 }
 
 /**

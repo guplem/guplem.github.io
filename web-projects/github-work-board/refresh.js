@@ -10,8 +10,15 @@
 // | Budget | Limit | What one refresh spends, per token |
 // |---|---|---|
 // | REST `core` | 5000 an hour | 3 calls: who you are, open work, work closed today |
+// | REST `core` | the same | 1 call for each commit the board has no final answer about its checks yet (ADR 0037) |
 // | REST `search` | 30 a **minute** | 1 call: the pull requests waiting for your review |
 // | GraphQL | 5000 points an hour | 1 or 2 calls: the links between items, then the children of any issue that has them |
+//
+// **The checks row is the only one that grows with the board.** It is one call
+// per pull request on the first read, and after that only the ones still
+// building, because a commit that finished stays finished and its id changes
+// the moment anybody pushes. `refresh.test.js` holds the worst case, which is a
+// board where every pull request is building at once.
 //
 // The search budget is the tight one, because it is per minute and not per
 // hour. It is what sets the shortest interval this module offers, and

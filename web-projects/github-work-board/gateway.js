@@ -13,6 +13,7 @@
 // `need` is the permission the call required, so the reader can be told which
 // one to add. `status: 0` means the request never reached GitHub at all.
 
+import { CHECKS_READ } from "./checks.js";
 import { PERMISSIONS } from "./permissions.js";
 import { childIssueIds } from "./relationships.js";
 
@@ -66,6 +67,24 @@ export function fetchViewer(token) {
   return call(token, "/user", { need: PERMISSIONS.metadata });
 }
 
+
+/**
+ * The workflow runs on one commit.
+ *
+ * This is how the board reads the checks, because `statusCheckRollup` needs a
+ * permission a fine-grained token cannot carry (ADR 0037). It answers the runs
+ * of GitHub Actions, and not a check posted by another service, which is the
+ * price of the only door that opens.
+ *
+ * `exclude_pull_requests` drops the pull request objects GitHub otherwise
+ * repeats inside every run, which is most of the answer's size and none of its
+ * use here.
+ */
+export function fetchWorkflowRuns(token, repository, sha) {
+  const where = String(repository).split("/").map(encodeURIComponent).join("/");
+  const ask = `head_sha=${encodeURIComponent(sha)}&per_page=${CHECKS_READ}&exclude_pull_requests=true`;
+  return call(token, `/repos/${where}/actions/runs?${ask}`, { need: PERMISSIONS.actionsRead });
+}
 
 /**
  * Every open issue assigned to the token's owner, across every repository the
@@ -144,27 +163,18 @@ export async function fetchFinishedWork(token, since) {
  * `name` and `avatarUrl` are asked for on both the requested reviewer and the
  * review's author so a card can draw a face for each of them (ADR 0028).
  *
- * `mergeable` and the last commit's `statusCheckRollup` are asked for because
- * a branch that conflicts and a check that went red both want the author, so
- * both belong in "Needs attention" beside changes requested (ADR 0011). The
- * rollup hangs off the commit, not off the pull request, which is why one
- * commit comes back with each of them. GitHub works `mergeable` out only when
- * somebody asks, so the first answer for a quiet pull request is `UNKNOWN` and
- * the next refresh answers properly.
+ * `mergeable` is asked for because a branch that conflicts wants the author, so
+ * it belongs in "Needs attention" beside changes requested (ADR 0011). GitHub
+ * works it out only when somebody asks, so the first answer for a quiet pull
+ * request is `UNKNOWN` and the next refresh answers properly.
  *
- * **The checks inside that rollup are asked for on the pull request and not on
- * the pull requests an issue closes.** The card draws a dot for the rollup and
- * says how many checks passed, failed and are still running (ADR 0037), and
- * those numbers need the checks themselves. Every card that draws the dot is a
- * `PullRequest` node, so the branch above needs nothing.
- *
- * That is the whole of the bill. Measured with `rateLimit(dryRun: true)` on a
- * full batch of 100: the query costs 18 points without the checks, 18 with
- * them here, and 23 with them on both branches, where they multiply by the five
- * linked pull requests. The `first:` number costs nothing either way, so 50 is
- * chosen for the size of the answer that comes back rather than for the bill:
- * no name and no address is asked for, only what each check says, and 50 checks
- * on one commit is already a large repository.
+ * **The last commit is asked for its id, and never for its
+ * `statusCheckRollup`.** The rollup is the obvious way to read the checks, and
+ * it is unreadable here: it needs the Checks permission, and GitHub offers no
+ * such permission on a fine-grained token, which is the only kind this board
+ * asks for. It answers null, with no error the reader would ever see. The board
+ * reads the workflow runs on that commit id instead, through `fetchWorkflowRuns`
+ * below (ADR 0037).
  *
  * `subIssues` names the children, and `closedAt` with `state` is what says
  * whether a child is finished. Twenty of them, because the list itself is free:
@@ -197,7 +207,7 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
         nodes {
           id number title state url merged reviewDecision mergeable headRefName baseRefName
           repository { nameWithOwner }
-          commits(last: 1) { nodes { commit { statusCheckRollup { state } } } }
+          commits(last: 1) { nodes { commit { oid } } }
           reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
           latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
         }
@@ -215,7 +225,7 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       headRefName
       baseRefName
       repository { nameWithOwner }
-      commits(last: 1) { nodes { commit { statusCheckRollup { state contexts(first: 50) { totalCount nodes { __typename ... on CheckRun { status conclusion } ... on StatusContext { state } } } } } } }
+      commits(last: 1) { nodes { commit { oid } } }
       reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
       latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
       closingIssuesReferences(first: 20) { nodes { id number title state url } }

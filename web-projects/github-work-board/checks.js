@@ -1,76 +1,92 @@
-// How the checks on a pull request's last commit ended, as a dot and a sentence.
+// How the checks on a pull request's last commit are going, as a dot and a
+// sentence.
 //
-// GitHub runs checks on the last commit of a branch and rolls them all into one
-// verdict. "Needs attention" already reads that verdict (ADR 0011), but a card
-// never said which way the checks went while they were still running, or how
-// many of them there were.
+// **GitHub's own rollup is out of reach here.** `statusCheckRollup` needs the
+// Checks permission, and GitHub does not offer that permission on a
+// fine-grained token, which is the only kind this board asks for (ADR 0001).
+// The board reads the Actions API instead: the workflow runs on the pull
+// request's last commit, which a fine-grained token reads with "Actions: read"
+// (ADR 0037).
 //
-// **The colour is GitHub's rollup. The numbers are the board's count.** Those
-// are two different questions, and mixing them is how the dot would come to
-// argue with itself: the board reads the first `CHECKS_READ` checks and GitHub
-// rolls up every one of them, so a sum done here could read green on a pull
-// request GitHub calls red (ADR 0037).
+// So the verdict is worked out here, from every run on that commit. The board
+// sees all of them, which is what makes a sum an honest answer.
 
-/** How many checks the board asks GitHub for on one commit. */
-export const CHECKS_READ = 50;
-
-/** GitHub's rollup, in the board's own words. Anything else is no answer at all. */
-const VERDICTS = new Map([
-  ["SUCCESS", "passed"],
-  ["FAILURE", "failed"],
-  ["ERROR", "failed"],
-  ["PENDING", "ongoing"],
-  ["EXPECTED", "ongoing"],
-]);
+/** How many runs the board asks GitHub for on one commit. GitHub's own largest page. */
+export const CHECKS_READ = 100;
 
 /**
- * What one check says, in the same three words.
- *
- * A check run that has not reached `COMPLETED` is still running, whatever it
- * says it will conclude. A completed one is read from its conclusion, where
- * `NEUTRAL` and `SKIPPED` are passes because GitHub's own rollup counts them as
- * passes: numbers that argue with the colour beside them are worse than no
- * numbers. An older commit status, which is not a check run, carries the same
- * five states the rollup does.
+ * A run that has ended well. Anything else that has ended is a failure, which
+ * is how GitHub's own rollup reads it: cancelled and timed out stop the work
+ * just as surely as a red test.
  */
-const CONCLUSIONS = new Map([
-  ["SUCCESS", "passed"],
-  ["NEUTRAL", "passed"],
-  ["SKIPPED", "passed"],
-]);
+const PASSING = new Set(["success", "neutral", "skipped"]);
 
-function readOne(node) {
-  if (!node || typeof node !== "object") return "";
-  if (node.__typename === "CheckRun") {
-    if (node.status !== "COMPLETED") return "ongoing";
-    return CONCLUSIONS.get(node.conclusion) ?? "failed";
-  }
-  return VERDICTS.get(node.state) ?? "";
+/**
+ * What one workflow run says.
+ *
+ * A run that has not reached `completed` is still running, whatever it will
+ * conclude. `waiting`, `requested`, `queued` and `pending` are all that.
+ */
+function readRun(run) {
+  if (!run || typeof run !== "object") return "";
+  if (run.status !== "completed") return "ongoing";
+  return PASSING.has(run.conclusion) ? "passed" : "failed";
 }
 
 /**
- * The checks on one commit: GitHub's verdict, and how the ones the board read
- * ended.
+ * Every workflow run on one commit, counted, with the verdict the dot takes its
+ * colour from.
  *
- * @param rollup the `statusCheckRollup` GitHub answered with, or nothing
- * @returns `{verdict, passed, failed, ongoing, counted, total}`, where `verdict`
- *   is "" for a pull request nothing ran on. Nothing ran is not a pass.
+ * Worst first: one red run is a red dot however many passed, because the work
+ * cannot go forward. Then anything still running. A commit nothing has run on
+ * has no verdict at all, and draws no dot: nothing ran is not a pass.
  */
-export function readCheckSummary(rollup) {
+export function readWorkflowRuns(runs) {
   const summary = { verdict: "", passed: 0, failed: 0, ongoing: 0, counted: 0, total: 0 };
-  if (!rollup || typeof rollup !== "object") return summary;
-  summary.verdict = VERDICTS.get(rollup.state) ?? "";
-
-  const nodes = Array.isArray(rollup.contexts?.nodes) ? rollup.contexts.nodes : [];
-  for (const node of nodes) {
-    const one = readOne(node);
+  for (const run of Array.isArray(runs) ? runs : []) {
+    const one = readRun(run);
     if (one === "") continue;
     summary[one] += 1;
     summary.counted += 1;
   }
-  const total = rollup.contexts?.totalCount;
-  summary.total = Number.isInteger(total) ? total : summary.counted;
+  summary.total = summary.counted;
+  if (summary.failed > 0) summary.verdict = "failed";
+  else if (summary.ongoing > 0) summary.verdict = "ongoing";
+  else if (summary.passed > 0) summary.verdict = "passed";
   return summary;
+}
+
+/**
+ * How many times the board asks about a commit nothing has run on.
+ *
+ * A repository with no workflows answers "nothing ran" every single time, and
+ * asking it again on every refresh, for every pull request in it, is exactly
+ * the cost the rule below exists to avoid. Five is about five minutes on the
+ * default schedule, which is long enough for a workflow that was going to
+ * start to have started.
+ */
+export const MOST_ASKS = 5;
+
+/**
+ * Whether the board has to ask GitHub about this commit again.
+ *
+ * A commit the board has a final answer for is not asked about twice: a run
+ * that has finished stays finished, and the commit id changes the moment
+ * anybody pushes. That is what keeps this feature at about one call per pull
+ * request in total rather than one on every refresh (ADR 0037).
+ *
+ * Runs still going are asked about until they end. A commit nothing has run on
+ * is asked about a few more times and then left alone: a workflow can still
+ * start on a pull request opened a second ago, but not for ever.
+ *
+ * @param summary what the board already holds for that commit, with `asks`
+ *   counting how many times it has asked
+ */
+export function needsAsking(summary) {
+  const verdict = summary?.verdict;
+  if (verdict === "passed" || verdict === "failed") return false;
+  if (verdict === "ongoing") return true;
+  return (summary?.asks ?? 0) < MOST_ASKS;
 }
 
 /** Worst first, which is the order every other list of reasons on a card reads in. */

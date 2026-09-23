@@ -1,82 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { CHECKS_READ, describeChecks, readCheckSummary } from "./checks.js";
-
-const run = (status, conclusion) => ({ __typename: "CheckRun", status, conclusion });
-const context = (state) => ({ __typename: "StatusContext", state });
-const rollup = (state, nodes, totalCount = nodes.length) => ({
-  state,
-  contexts: { totalCount, nodes },
-});
-
-describe("readCheckSummary", () => {
-  // The colour of the dot is GitHub's own verdict, never a sum the board does
-  // itself: the board reads the first 50 checks and GitHub rolls up all of
-  // them, so a sum could say green on a pull request GitHub calls red.
-  test("the verdict is GitHub's rollup, in the board's own words", () => {
-    expect(readCheckSummary(rollup("SUCCESS", [])).verdict).toBe("passed");
-    expect(readCheckSummary(rollup("FAILURE", [])).verdict).toBe("failed");
-    expect(readCheckSummary(rollup("ERROR", [])).verdict).toBe("failed");
-    expect(readCheckSummary(rollup("PENDING", [])).verdict).toBe("ongoing");
-    expect(readCheckSummary(rollup("EXPECTED", [])).verdict).toBe("ongoing");
-  });
-
-  // No rollup means no checks ran at all, which is not a pass. The card draws
-  // nothing rather than a green dot nobody earned.
-  test("a pull request with no checks has no verdict", () => {
-    expect(readCheckSummary(null).verdict).toBe("");
-    expect(readCheckSummary({}).verdict).toBe("");
-    expect(readCheckSummary(rollup("SOMETHING_NEW", [])).verdict).toBe("");
-  });
-
-  test("a check that has not finished is still running, whatever it will conclude", () => {
-    const summary = readCheckSummary(
-      rollup("PENDING", [run("QUEUED", null), run("IN_PROGRESS", null), run("WAITING", "SUCCESS")]),
-    );
-    expect(summary.ongoing).toBe(3);
-    expect(summary.passed).toBe(0);
-    expect(summary.failed).toBe(0);
-  });
-
-  // GitHub's own rollup counts a skipped or neutral check as a pass, so the
-  // breakdown must too, or the numbers argue with the colour beside them.
-  test("skipped and neutral are passes, the way GitHub rolls them up", () => {
-    const summary = readCheckSummary(
-      rollup("SUCCESS", [
-        run("COMPLETED", "SUCCESS"),
-        run("COMPLETED", "NEUTRAL"),
-        run("COMPLETED", "SKIPPED"),
-      ]),
-    );
-    expect(summary.passed).toBe(3);
-    expect(summary.failed).toBe(0);
-  });
-
-  test("every way a check can end badly counts as failed", () => {
-    for (const ending of ["FAILURE", "TIMED_OUT", "ACTION_REQUIRED", "STARTUP_FAILURE", "CANCELLED", "STALE"]) {
-      expect(readCheckSummary(rollup("FAILURE", [run("COMPLETED", ending)])).failed).toBe(1);
-    }
-  });
-
-  test("an older status, which is not a check run, is counted the same way", () => {
-    const summary = readCheckSummary(
-      rollup("FAILURE", [context("SUCCESS"), context("FAILURE"), context("ERROR"), context("PENDING"), context("EXPECTED")]),
-    );
-    expect(summary).toMatchObject({ passed: 1, failed: 2, ongoing: 2, counted: 5 });
-  });
-
-  // The board asks for 50 checks and a pull request may have more. The numbers
-  // then describe the 50 it read, and the card says so rather than claiming the
-  // rest.
-  test("it says how many it counted and how many there are", () => {
-    const summary = readCheckSummary(rollup("FAILURE", [run("COMPLETED", "FAILURE")], 73));
-    expect(summary.counted).toBe(1);
-    expect(summary.total).toBe(73);
-  });
-
-  test("the board reads a fixed number of checks, and one place says which", () => {
-    expect(CHECKS_READ).toBeGreaterThanOrEqual(20);
-  });
-});
+import { MOST_ASKS, describeChecks, needsAsking, readWorkflowRuns } from "./checks.js";
 
 describe("describeChecks", () => {
   // Worst first, which is the order every other list of reasons on a card
@@ -118,5 +41,79 @@ describe("describeChecks", () => {
 
   test("a card with no checks says nothing", () => {
     expect(describeChecks({ verdict: "", failed: 0, passed: 0, ongoing: 0, counted: 0, total: 0 })).toBe("");
+  });
+});
+
+describe("readWorkflowRuns", () => {
+  const started = (status) => ({ status, conclusion: null });
+  const ended = (conclusion) => ({ status: "completed", conclusion });
+
+  // A fine-grained token cannot read GitHub's own rollup at all, so the board
+  // asks the Actions API instead and works the verdict out itself. It sees
+  // every run on the commit, so the sum is the whole answer here (ADR 0037).
+  test("one red run makes the verdict red, however many passed", () => {
+    const summary = readWorkflowRuns([ended("success"), ended("failure"), started("in_progress")]);
+    expect(summary).toMatchObject({ verdict: "failed", passed: 1, failed: 1, ongoing: 1, counted: 3, total: 3 });
+  });
+
+  test("nothing red and something running is still running", () => {
+    expect(readWorkflowRuns([ended("success"), started("queued")]).verdict).toBe("ongoing");
+  });
+
+  test("everything finished and nothing red has passed", () => {
+    expect(readWorkflowRuns([ended("success"), ended("skipped")]).verdict).toBe("passed");
+  });
+
+  // Nothing ran is not a pass, and the card draws no dot for it.
+  test("a commit nothing ran on has no verdict", () => {
+    expect(readWorkflowRuns([]).verdict).toBe("");
+    expect(readWorkflowRuns(null).verdict).toBe("");
+  });
+
+  // The REST answer spells the same words in lower case, and carries a run
+  // that was asked for but has not started.
+  test("it reads the words the Actions API uses", () => {
+    expect(readWorkflowRuns([started("waiting"), started("requested"), started("pending")]).ongoing).toBe(3);
+    expect(readWorkflowRuns([ended("timed_out")]).failed).toBe(1);
+    expect(readWorkflowRuns([ended("neutral")]).passed).toBe(1);
+  });
+});
+
+describe("needsAsking", () => {
+  // The board remembers a commit's checks and does not ask again, because a
+  // commit that is finished stays finished. Asking again for every pull request
+  // on every refresh is what this saves (ADR 0037).
+  test("a commit the board has never asked about is asked about", () => {
+    expect(needsAsking(undefined)).toBe(true);
+    expect(needsAsking(null)).toBe(true);
+  });
+
+  test("a commit whose runs are still going is asked again", () => {
+    expect(needsAsking({ verdict: "ongoing" })).toBe(true);
+  });
+
+  test("a commit that finished is never asked about again", () => {
+    expect(needsAsking({ verdict: "passed" })).toBe(false);
+    expect(needsAsking({ verdict: "failed" })).toBe(false);
+  });
+
+  // Nothing ran on it yet, and a workflow can still start: a pull request
+  // opened a second ago has no runs, and it would keep "no dot" for ever.
+  test("a commit nothing has run on yet is asked again", () => {
+    expect(needsAsking({ verdict: "", asks: 1 })).toBe(true);
+  });
+
+  // But not for ever. A repository with no workflows at all answers "nothing
+  // ran" every time, and that would be one call for each of its pull requests
+  // on every single refresh, which is the cost this whole rule exists to avoid.
+  test("a commit nothing has run on stops being asked about", () => {
+    expect(needsAsking({ verdict: "", asks: MOST_ASKS - 1 })).toBe(true);
+    expect(needsAsking({ verdict: "", asks: MOST_ASKS })).toBe(false);
+    expect(needsAsking({ verdict: "", asks: MOST_ASKS + 1 })).toBe(false);
+  });
+
+  // Runs that are going will end, so that answer is asked about until it does.
+  test("runs still going are asked about however long they take", () => {
+    expect(needsAsking({ verdict: "ongoing", asks: 500 })).toBe(true);
   });
 });
