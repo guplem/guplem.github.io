@@ -44,14 +44,14 @@ not a stacked card clears the light by itself.
 repositories can both hold a pull request numbered 7. The number is for reading;
 the node id is for matching.
 
-**The light is computed over everything on screen. The badge still counts the
-review row alone.** These answer two different questions and are allowed to
-differ:
+**The light is computed over everything on screen. The badge counts only the
+list its card is in** (the review row, or the board), never the whole screen
+(ADR 0020). These answer two different questions and are allowed to differ:
 
-- The badge answers "where does this card sit among the pull requests **you were
-  asked to review**". ADR 0020 decided that on purpose: somebody who asked for a
+- The badge answers "where does this card sit among the pull requests **this
+  list holds**". ADR 0020 decided that on purpose: somebody who asked for a
   review on two of their three gets a row of two, and "1 of 2" is the truth about
-  the row in front of the reader.
+  the row in front of the reader, not about the board.
 - The light answers "what else **on this screen** is in this chain", which is a
   question about the screen, so it is computed over the screen.
 

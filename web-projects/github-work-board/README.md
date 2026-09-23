@@ -27,9 +27,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   order it reads a stack in merge order, so the one to review first comes
   first, and it pushes down anything you marked "not a priority". Every other
   order gives the row a plain date order, like the columns.
-- **A stacked pull request says so**, on the review row: `Stack #5073 · 2 of 3`
-  names the stack by the pull request that merges first and says where this
-  one sits. Reviewing a stack out of order is wasted work twice over.
+- **A stacked pull request says so**, in the columns and on the review row
+  alike: `Stack #5073 · 2 of 3` names the stack by the pull request that merges
+  first and says where this one sits. Reviewing or merging a stack out of order
+  is wasted work twice over. Each list counts itself, so a badge is always the
+  truth about the list you are reading.
 - **What is waiting on you, above everything else.** A row of the pull requests
   where somebody asked for your review, longest-waiting first, because those
   cost other people time rather than yours.

@@ -199,6 +199,9 @@ const state = {
   // Which stack each card on screen belongs to, keyed by item, valued by the
   // key of the stack's bottom. Read while a card is built (ADR 0027).
   stackRoots: {},
+  // Where each card on the board sits in its stack, keyed by item. The review
+  // row works this out for itself, over its own cards (ADR 0020, ADR 0027).
+  stackBadges: {},
   menuItem: null,
   menuAnchor: null,
   // Cards whose note box is open although the note is still empty. Only for
@@ -1434,12 +1437,34 @@ function buildChildren(item, subIssues) {
 function buildGroupCard({ item, children }) {
   // The nested pull request draws the review, so the issue above it must not
   // draw the same faces again (ADR 0028).
-  const card = buildWorkItemCard(item, { people: children.length > 0 ? "none" : "reviewers" });
+  //
+  // The badge goes on whichever card is the pull request, which is the same
+  // card the stack lights up: an issue is never in a stack, because a stack is
+  // read from branch names and an issue has none (ADR 0020, ADR 0027).
+  const card = buildWorkItemCard(item, {
+    people: children.length > 0 ? "none" : "reviewers",
+    stack: state.stackBadges[item.key] ?? null,
+  });
   if (children.length === 0) return card;
+
+  // An issue is never in a stack itself, but the card the reader is pointing at
+  // in a column is this one, so it lights up with the pull request inside it.
+  // Without this, hovering a stack lit a small box inside a card instead of the
+  // card (ADR 0027).
+  const lit = children.map((child) => state.stackRoots[child.key]).find(Boolean);
+  if (lit && !card.hasAttribute("data-stack")) card.setAttribute("data-stack", lit);
+
   const nest = document.createElement("ul");
   nest.className = "issues nested";
   nest.replaceChildren(
-    ...children.map((child) => buildWorkItemCard(child, { withMenu: false, compact: true, people: "reviewers" })),
+    ...children.map((child) =>
+      buildWorkItemCard(child, {
+        withMenu: false,
+        compact: true,
+        people: "reviewers",
+        stack: state.stackBadges[child.key] ?? null,
+      }),
+    ),
   );
   card.append(nest);
   return card;
@@ -1698,10 +1723,15 @@ function renderBoard() {
   // keeps its own count of the review row alone, which answers a different
   // question: where this card sits among the ones you were asked to review
   // (ADR 0020, ADR 0027).
-  const onScreen = [...waiting, ...grouped.flatMap((group) => [group.item, ...group.children])];
+  const onBoard = grouped.flatMap((group) => [group.item, ...group.children]);
+  const onScreen = [...waiting, ...onBoard];
   state.stackRoots = Object.fromEntries(
     Object.entries(stackPositions(onScreen)).map(([key, at]) => [key, at.root]),
   );
+  // The badge on a card in a column counts the board, the way the badge in the
+  // review row counts the review row: each one is the truth about the list the
+  // reader is looking at (ADR 0020).
+  state.stackBadges = stackPositions(onBoard);
   element("reviews-empty").hidden = waiting.length > 0;
   const stacked = stackPositions(waiting);
   element("reviews-list").replaceChildren(

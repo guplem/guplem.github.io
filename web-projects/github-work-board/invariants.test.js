@@ -327,6 +327,23 @@ describe("a sort order named in a link keeps its name (ADR 0006)", () => {
   });
 });
 
+// The badge and the light answer two questions about the same chain, and the
+// board drew only the light: a stacked pull request in a column said nothing
+// about which stack it was in, while the same pull request in the review row
+// said it plainly (ADR 0020, ADR 0027).
+describe("a card in a column says which stack it is in (ADR 0020)", () => {
+  const source = read("app.js");
+
+  test("the board works out its own badges, over the board", () => {
+    expect(source).toContain("state.stackBadges = stackPositions(onBoard)");
+  });
+
+  test("a card in a column and a card nested in one both carry the badge", () => {
+    expect(source).toMatch(/function buildGroupCard[\s\S]*stack: state\.stackBadges\[item\.key\]/);
+    expect(source).toMatch(/function buildGroupCard[\s\S]*stack: state\.stackBadges\[child\.key\]/);
+  });
+});
+
 describe("a range of days named in a link keeps its name (ADR 0034)", () => {
   // The days the last column is about travel in the address bar, so a renamed
   // preset silently breaks every "what did we finish yesterday" link anybody

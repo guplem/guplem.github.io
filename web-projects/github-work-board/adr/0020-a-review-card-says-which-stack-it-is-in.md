@@ -1,4 +1,4 @@
-# ADR 0020: A review card says which stack it is in, and where
+# ADR 0020: A card says which stack it is in, and where
 
 ## Context
 
@@ -12,23 +12,42 @@ Reviewing a stack out of order is wasted work twice over: the top carries the
 commits of everything below it, so it reads as a much bigger change than it is,
 and a comment on the bottom can invalidate the review of the top.
 
-The board's own cards do not have this problem: the smart order already reads a
-stack bottom-first (ADR 0016), and a column shows that order. The review row was
-sorted by age alone, and a stack is not an age. (The row now reads its stacks in
-merge order too, under the smart order. The badge stayed, because the order
-alone never says how many there are or which one this is.)
+The board's own cards were thought not to have this problem: the smart order
+already reads a stack bottom-first (ADR 0016), and a column shows that order.
+The review row was sorted by age alone, and a stack is not an age. (The row now
+reads its stacks in merge order too, under the smart order. The badge stayed,
+because the order alone never says how many there are or which one this is.)
+
+**That was wrong, and the board wore it for months** (2026-09). An order is not
+a statement: a column holds cards in several states, the reader scrolls one
+column and not the board, and a stack's cards can sit in two different columns
+because the column comes from each pull request's own state. So the same pull
+request said "Stack #5073 - 2 of 3" in the review row and said nothing in a
+column.
 
 ## Decision
 
-**A badge on the card: `Stack #5073 · 2 of 3`.** It names the stack by the
-number of its bottom, which is the one that merges first, and says where this
-one sits counting from that bottom.
+**A badge on the card: `Stack #5073 · 2 of 3`, in the review row and in
+the columns alike.** It names the stack by the number of its bottom, which is
+the one that merges first, and says where this one sits counting from that
+bottom.
 
-- **Only what the reader was given is counted.** `stackPositions` reads the row
+- **Only what the reader was given is counted.** `stackPositions` reads the list
   it is handed and nothing else. Somebody who asked for a review on two of
   their three produces a row holding two, and "1 of 2" is the truth about the
   row in front of the reader. Counting a third they cannot see would be a badge
   about somebody else's screen.
+- **Each list counts itself**, so the board works its badges out over the
+  board and the review row over the row. Two lists, two truths, and each badge
+  is the truth about the list it sits in. The light is the one that is computed
+  over the whole screen, because it answers a question about the screen
+  (ADR 0027).
+- **The badge goes on the pull request's own card, wherever that card is.** A
+  pull request nested under the issue it closes carries it there, because that
+  is the card the stack is about. The issue above it lights up with the stack
+  even so: in a column the card the reader points at is the outer one, and
+  lighting a small box inside a card instead of the card answers nothing
+  (ADR 0027).
 - **A pull request standing on its own gets no badge.** "1 of 1" on every card
   is noise on every card.
 - **The stack is read from the branches**, like everywhere else: a pull request
