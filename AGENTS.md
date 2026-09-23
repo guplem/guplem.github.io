@@ -267,7 +267,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0017](web-projects/github-work-board/adr/0017-done-is-today-and-the-board-asks-a-second-question.md) | "Done" is today, and it takes a second question |
 | [github-work-board 0018](web-projects/github-work-board/adr/0018-five-columns-two-headings-and-a-screen-for-adding-a-token.md) | Five columns, two headings, and a screen for adding a token |
 | [github-work-board 0019](web-projects/github-work-board/adr/0019-the-notes-say-whether-they-are-getting-through.md) | The notes say whether they are getting through |
-| [github-work-board 0020](web-projects/github-work-board/adr/0020-a-review-card-says-which-stack-it-is-in.md) | A review card says which stack it is in, and where |
+| [github-work-board 0020](web-projects/github-work-board/adr/0020-a-review-card-says-which-stack-it-is-in.md) | A card says which stack it is in, and where |
 | [github-work-board 0021](web-projects/github-work-board/adr/0021-a-title-is-split-and-a-branch-is-one-tap-away.md) | A title is split from the change it announces, and a branch is one tap away |
 | [github-work-board 0022](web-projects/github-work-board/adr/0022-a-note-belongs-to-the-work-not-to-the-card.md) | A note belongs to the work, not to the place the card sits |
 | [github-work-board 0023](web-projects/github-work-board/adr/0023-the-order-goes-to-the-top-and-the-header-scrolls-away.md) | The order goes to the top, and the header scrolls away |

@@ -277,10 +277,16 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   review row did not, so its cards carried no branch names and could not
   know they were stacked. It comes from a different endpoint in a different
   shape (ADR 0013) and was the only list skipping that step (ADR 0020).
-- **`stackPositions` counts only the items it is handed.** On the review row
-  that is the point: "1 of 2" is the truth about the row in front of the
-  reader, and counting a third they were not asked to review would be a
-  badge about somebody else's screen (ADR 0020).
+- **`stackPositions` counts only the items it is handed, and each list counts
+  itself.** The board works its badges out over the board (`state.stackBadges`)
+  and the review row over the row: "1 of 2" is the truth about the row in front
+  of the reader, and counting a third they were not asked to review would be a
+  badge about somebody else's screen. The light is the one pass over the whole
+  screen, because it answers a question about the screen (ADR 0020, ADR 0027).
+- **A stack badge goes on the pull request's own card, and the light goes on
+  the card the reader points at.** A pull request nested under its issue carries
+  the badge there; the issue card around it takes the light, because in a column
+  that outer card is the one under the pointer (ADR 0020, ADR 0027).
 - **The review row defaults to the oldest first**, while the board defaults to
   the newest. A review waiting three weeks is the one to clear, and newest-first
   buries it. `reviewSortId` holds that one rule.
@@ -504,7 +510,7 @@ before calling it done.
 | [0017](adr/0017-done-is-today-and-the-board-asks-a-second-question.md) | "Done" is today, and it takes a second question |
 | [0018](adr/0018-five-columns-two-headings-and-a-screen-for-adding-a-token.md) | Five columns, two headings, and a screen for adding a token |
 | [0019](adr/0019-the-notes-say-whether-they-are-getting-through.md) | The notes say whether they are getting through |
-| [0020](adr/0020-a-review-card-says-which-stack-it-is-in.md) | A review card says which stack it is in, and where |
+| [0020](adr/0020-a-review-card-says-which-stack-it-is-in.md) | A card says which stack it is in, and where |
 | [0021](adr/0021-a-title-is-split-and-a-branch-is-one-tap-away.md) | A title is split from the change it announces, and a branch is one tap away |
 | [0022](adr/0022-a-note-belongs-to-the-work-not-to-the-card.md) | A note belongs to the work, not to the place the card sits |
 | [0023](adr/0023-the-order-goes-to-the-top-and-the-header-scrolls-away.md) | The order goes to the top, and the header scrolls away |
