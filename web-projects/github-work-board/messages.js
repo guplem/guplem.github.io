@@ -118,10 +118,19 @@ export function priorityMenuLabel(priority) {
 export function summariseChecks(rows) {
   const list = (Array.isArray(rows) ? rows : []).filter((one) => one && typeof one === "object");
   if (list.length === 0) return "Not connected yet";
-  const failed = list.filter((one) => one.ok !== true);
-  if (failed.length === 0) return `All ${list.length} checks passed`;
+
+  // A check the board had nothing to run against is neither: the reader may
+  // simply have no pull request with checks on it yet. Counting it as a pass
+  // would say a token works when nothing has tried it (ADR 0005).
+  const failed = list.filter((one) => one.ok === false);
+  const unknown = list.filter((one) => one.ok !== true && one.ok !== false);
   if (failed.length === 1) return `${failed[0].label ?? "One check"} did not pass`;
-  return `${failed.length} of ${list.length} checks did not pass`;
+  if (failed.length > 1) return `${failed.length} of ${list.length} checks did not pass`;
+
+  const passed = list.length - unknown.length;
+  if (unknown.length === 0) return `All ${list.length} checks passed`;
+  if (passed === 0) return `${unknown.length} checks not checked yet`;
+  return `${passed} checks passed, ${unknown.length} not checked yet`;
 }
 
 

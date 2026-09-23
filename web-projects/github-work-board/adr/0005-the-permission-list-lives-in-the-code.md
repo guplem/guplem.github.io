@@ -37,18 +37,20 @@ nobody is looking at.
 - **The README is checked against the same list.** A test fails when a required
   permission is missing from it, because the README is read before the page can
   say anything.
-- **A token is stamped with what it was approved against.** On a successful
-  connect, `permissionsFingerprint()` is saved next to the token. On load, a
-  saved fingerprint that no longer matches raises a notice that names the exact
-  permissions to add and links to the reader's tokens.
-
-The fingerprint follows `id` and `level` only. Rewriting the reason a permission
-exists must not tell every reader their token is out of date.
+- **Every permission is proved by a call, and Settings says green or red for
+  each one.** `CONNECTION_CHECKS` holds one entry per permission, naming the
+  call that proves it and the permission it belongs to. The board fills those
+  rows from the calls it makes on an ordinary read, so the rows cost nothing
+  extra and describe the token as it is right now. A test keeps the two lists in
+  step, so a permission nothing proves cannot exist.
+- **A check has three answers, not two.** Passed, failed, and nothing to check
+  with. A token that reached no pull request cannot prove it can read the
+  checks, and saying "passed" there would be a guess.
 
 **So: adding a call that needs new access means adding one entry to
-`REQUIRED_PERMISSIONS`.** The guide, the README check, the fingerprint and every
-existing reader's prompt all follow from that one edit. This is written into
-`AGENTS.md` and into the `change-the-board` skill as a required step.
+`REQUIRED_PERMISSIONS`, and one to `CONNECTION_CHECKS`.** The guide, the README
+check and what Settings says all follow. This is written into `AGENTS.md` and
+into the `change-the-board` skill as a required step.
 
 ## Consequences
 
@@ -57,19 +59,19 @@ Pull requests now, so you need not edit the token later") disappears, because
 widening later costs the reader one prompt they cannot miss. The board therefore
 asks only for what it uses today.
 
-**A reader who never returns to the page is never told.** The notice appears on
-load, so somebody who stops using the board and comes back in a year meets it
-then, which is the right moment anyway.
+**There is no banner across the board, on purpose.** A reader who suspects a
+problem opens Settings, and Settings answers it line by line. The board itself
+stays about work.
 
-**The fingerprint is a claim about the past, not a check on the token.** It
-records what the board asked for when the reader last connected successfully. It
-cannot detect a token the reader narrowed afterwards on GitHub. That case still
-surfaces the old way, as a failed call naming the missing permission
-(`githubErrors.js`), which is the safety net underneath this.
-
-**One more storage key.** `invariants.test.js` pins the exact set, so adding it
-failed that test first. That is the guard working as designed: the key was added
-on purpose, and the test was updated in the same change.
+**Rejected, and removed: stamping the token with what it was approved
+against.** The board used to save a fingerprint of the list beside each token on
+a successful connect, and raise a notice when the list later grew. It was a
+claim about the past, not a check on the token, and it was wrong in both
+directions: it could not see a token narrowed afterwards on GitHub, and it kept
+telling a reader who had just widened their token that the token was behind,
+because nothing on GitHub writes to this browser. Only re-adding the token
+cleared it. The real calls answer the same question truthfully and cost
+nothing.
 
 **Rejected: generating the HTML at build time.** There is no build step (root ADR
 0002). **Rejected: leaving the guide by hand and trusting a review.** The review
@@ -77,4 +79,4 @@ is a green test suite (root ADR 0009), and no test could see this. **Rejected:
 asking for every permission the board might ever want.** It is a real cost paid
 by the reader, in access they did not need to give, to save the author a step.
 
-> **Note (2026-09):** the list shrank once. `Contents` moved to the cloud storage's own permission list (`web-projects/cloud-storage/cloudPermissions.js`), because the board file is written by the cloud token, not by a work token (root ADR 0016). `tokenNeedsUpdate` therefore says "no" for a token that carries more than the list asks for: a token approved under the old list has nothing to add.
+> **Note (2026-09):** the list shrank once. `Contents` moved to the cloud storage's own permission list (`web-projects/cloud-storage/cloudPermissions.js`), because the board file is written by the cloud token, not by a work token (root ADR 0016). A shrinking list needs no notice now: every row in Settings is a call, and a call that no longer happens is a row that no longer exists.

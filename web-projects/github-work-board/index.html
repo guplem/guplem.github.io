@@ -211,17 +211,6 @@
         </div>
       </section>
 
-      <!-- Shown when the board has grown to need access a saved token was never
-           granted. Filled by app.js from permissions.js (ADR 0005). -->
-      <div id="token-outdated" class="callout callout-warning" hidden>
-        <p class="callout-title">A token needs more access than it has</p>
-        <p>The board has grown since you made it. Add the following to that token, then connect again.</p>
-        <ul id="token-outdated-list" class="callout-list"></ul>
-        <p>
-          <a class="button button-primary" href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">Open your tokens</a>
-        </p>
-      </div>
-
       <!-- First run. Hidden once a token is connected, shown again once the
            last token is removed. -->
       <section id="setup" class="card" aria-labelledby="setup-heading" hidden>

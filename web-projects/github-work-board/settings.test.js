@@ -42,7 +42,6 @@ const refusingStorage = {
 const entry = (over = {}) => ({
   id: "t1",
   token: "github_pat_11ABCDEF",
-  grantedPermissions: null,
   name: "",
   owners: [],
   itemCount: 0,
@@ -79,8 +78,7 @@ describe("the saved tokens", () => {
     expect(readTokens(storage)[0]).toEqual({
       id: "t1",
       token: "github_pat_11ABCDEF",
-      grantedPermissions: null,
-      name: "",
+          name: "",
       owners: [],
       itemCount: 0,
     });
@@ -99,11 +97,11 @@ describe("the saved tokens", () => {
   // this change must not have to set the whole thing up again.
   test("a token saved by the one-token version becomes the first entry", () => {
     storage.setItem(LEGACY_KEYS.token, "github_pat_OLD");
-    storage.setItem(LEGACY_KEYS.grantedPermissions, "issues:read and write");
+
     const tokens = readTokens(storage);
     expect(tokens.length).toBe(1);
     expect(tokens[0].token).toBe("github_pat_OLD");
-    expect(tokens[0].grantedPermissions).toBe("issues:read and write");
+
     expect(tokens[0].id.length).toBeGreaterThan(0);
   });
 

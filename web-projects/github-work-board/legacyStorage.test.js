@@ -24,7 +24,7 @@ const refusingStorage = {
   },
 };
 
-const WRITER = { id: "b", token: "github_pat_writes", name: "Mine", owners: ["guplem"], canWriteBoard: true, grantedPermissions: "x" };
+const WRITER = { id: "b", token: "github_pat_writes", name: "Mine", owners: ["guplem"], canWriteBoard: true };
 const READER = { id: "a", token: "github_pat_reads", name: "Work", owners: ["Galtea-AI"], canWriteBoard: false };
 
 let storage;
