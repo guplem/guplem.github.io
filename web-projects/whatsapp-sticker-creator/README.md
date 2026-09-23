@@ -44,8 +44,12 @@ Your pictures never leave your device. The page makes no network requests at all
 WhatsApp only reads sticker packs from an installed app, so no web page can add
 one directly. This tool gives you the files:
 
-- **`.wastickers`** — save it on your phone and open it with a sticker app to add
-  the pack to WhatsApp. This is the route to use on a phone.
+- **`.wastickers`** — the route to use on a phone. Save the file, then open it
+  with a sticker app that adds the pack to WhatsApp:
+  [Sticker Maker](https://play.google.com/store/apps/details?id=com.marsvard.stickermakerforwhatsapp)
+  on Android, or
+  [Sticker Maker Studio](https://apps.apple.com/app/id1443326857) on iPhone. Step
+  6 of the page says the same thing, with the links.
 - **`.zip` with `contents.json`** — the folder layout for WhatsApp's own sample
   app, if you are building a sticker app yourself.
 - **A single `.webp`** — one 512 by 512 sticker, which you can also send into a
