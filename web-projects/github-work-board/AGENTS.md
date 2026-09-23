@@ -283,6 +283,10 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   of the reader, and counting a third they were not asked to review would be a
   badge about somebody else's screen. The light is the one pass over the whole
   screen, because it answers a question about the screen (ADR 0020, ADR 0027).
+- **A reference to another item carries `data-points-at`, and a card carries
+  `data-key`.** One listener ties them together and lights the card a pill, a
+  child's row or a link line names. Both names are set in one file and read in
+  another, so a test pins them (ADR 0035).
 - **A stack badge goes on the pull request's own card, and the light goes on
   the card the reader points at.** A pull request nested under its issue carries
   the badge there; the issue card around it takes the light, because in a column
@@ -525,6 +529,7 @@ before calling it done.
 | [0032](adr/0032-the-children-read-by-what-wants-a-person.md) | The children are a row of pills, and the list is one press away |
 | [0033](adr/0033-the-board-draws-its-own-tooltip.md) | The board draws its own tooltip |
 | [0034](adr/0034-the-last-column-takes-a-range-of-days.md) | The last column takes a range of days, and the range is in the link |
+| [0035](adr/0035-a-reference-lights-the-card-it-names.md) | A reference lights the card it names |
 
 ## What is not built yet
 

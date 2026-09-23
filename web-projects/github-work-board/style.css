@@ -1500,6 +1500,35 @@ textarea.input {
   box-shadow: 0 0 0 1px hsl(38 95% 62% / 0.4);
 }
 
+/* The card a line or a pill points at, while the reader is pointing at that
+ * reference (ADR 0035). Violet, not the stack's amber: this says "that one is
+ * here", and the stack says "these belong together". Built the same way, so a
+ * lit card keeps its own ground and its column's colour (ADR 0024, ADR 0027). */
+.issue.item-lit {
+  background-image: linear-gradient(hsl(262 83% 58% / 0.12), hsl(262 83% 58% / 0.12));
+  border-color: hsl(262 83% 52% / 0.85);
+  box-shadow: 0 0 0 1px hsl(262 83% 58% / 0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .issue.item-lit {
+    background-image: linear-gradient(hsl(262 90% 72% / 0.16), hsl(262 90% 72% / 0.16));
+    border-color: hsl(262 90% 72% / 0.8);
+    box-shadow: 0 0 0 1px hsl(262 90% 72% / 0.4);
+  }
+}
+
+:root[data-theme="dark"] .issue.item-lit {
+  background-image: linear-gradient(hsl(262 90% 72% / 0.16), hsl(262 90% 72% / 0.16));
+  border-color: hsl(262 90% 72% / 0.8);
+  box-shadow: 0 0 0 1px hsl(262 90% 72% / 0.4);
+}
+
+/* A reference that leads somewhere says so under the pointer. */
+[data-points-at]:hover {
+  cursor: pointer;
+}
+
 /* The number beside the board's name, and the one in the browser tab. Quieter
  * than the name, because it is a fact about the board and not part of what the
  * board is called (ADR 0030). */
