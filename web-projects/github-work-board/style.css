@@ -1638,6 +1638,16 @@ textarea.input {
  * approval is done. Colour is never the only carrier: the face also says it in
  * words on hover and to a screen reader.
  */
+/* Three pixels, not one. The ring is the whole signal, and at one pixel the
+ * reader had to rest on every face to tell an approval from a review still
+ * waiting. The border sits inside the box, so the box grows by the same four
+ * pixels and the face itself stays the size it was. */
+.avatar[data-review] {
+  width: 1.625rem;
+  height: 1.625rem;
+  border-width: 3px;
+}
+
 .avatar[data-review="changes-requested"] {
   border-color: hsl(var(--destructive));
 }
