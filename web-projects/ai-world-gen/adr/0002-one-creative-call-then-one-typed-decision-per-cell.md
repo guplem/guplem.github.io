@@ -146,7 +146,19 @@ worst case 39 staircases in one mansion), path continuity 0.58 to 0.26,
 coverage 0.77 to 0.43, and the judge 0.69 to 0.57. Two scores rose because a
 map that repeats itself is tidy: ground in patches 0.65 to 0.83, one walkable
 region 0.72 to 0.93. The sequential loop is therefore not a habit: each
-decision is worth what the decided cells around it are worth. **Rejected: a language
+decision is worth what the decided cells around it are worth.
+
+**Both experiments, measured at five stages of the loop.** Each ran again with
+the code of v1, v4, v7 and v8, knowing only what that version gave Jev
+(`evaluate.py run --code-of`, `evaluation/pastVersionVariants.js`). The one
+call was about as good at v1 as at v11 (judge 0.68 and 0.65, where the loop
+went from 0.09 to 0.69), and only rules about where things go moved it: the
+typed rules at v7, the plan at v8. The batch rose at one version only, v8
+(judge 0.20, 0.32 and 0.25 before it, 0.57 from it on), because every fix of
+v2 to v7 reads the cells decided before. So what the loop's versions added is
+control applied per cell, which neither shortcut can use except as code.
+
+**Rejected: a language
 model per cell as the default.** It works, and it is kept as the stand-in, but
 it is slower, dearer, and turns a typed decision back into text parsing.
 **Rejected: no model per cell (procedural placement from the vocabulary's
