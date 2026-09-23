@@ -494,20 +494,29 @@
   fill: var(--door);
 }
 
-/* A run with no iterations cannot be a line with points, so it is one flat
-   line across the chart. Dashed, so it never reads as a measured trajectory. */
-.mini .reference {
+/* A shortcut is not an iteration: each point is one of five runs, drawn with
+   the code of v1, v4, v7, v8 and v11. Dashed, with its own marker, so it never
+   reads as the loop's own line. */
+.mini .variant {
   fill: none;
   stroke-width: 1.5;
   stroke-dasharray: 5 3;
 }
 
-.mini .reference-llm {
+.mini .variant-llm {
   stroke: var(--leaf);
 }
 
-.mini .reference-batch {
+.mini .variant-batch {
   stroke: var(--sky);
+}
+
+.mini .mark-llm {
+  fill: var(--leaf);
+}
+
+.mini .mark-batch {
+  fill: var(--sky);
 }
 
 .mini-judge .area {
@@ -1102,6 +1111,24 @@
 .scores th[scope="row"] {
   text-align: left;
   color: var(--leaf);
+}
+
+/* The table of the shortcuts: each version's three runs, coloured like their lines in the charts. */
+.scores tr.run-loop th[scope="row"] {
+  color: var(--door);
+}
+
+.scores tr.run-llm th[scope="row"] {
+  color: var(--leaf);
+}
+
+.scores tr.run-batch th[scope="row"] {
+  color: var(--sky);
+}
+
+.scores tr.run-loop th,
+.scores tr.run-loop td {
+  border-top: 2px solid var(--panel-border);
 }
 
 .scores td.up {
