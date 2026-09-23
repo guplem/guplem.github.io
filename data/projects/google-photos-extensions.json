@@ -1,0 +1,18 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Google Photos Extensions",
+  "image": "resources/images/projects/google-photos-extensions.webp",
+  "imageAlt": "Before and after diagram from Instant Swap for Google Photos: without the extension two photos overlap during the slide, with it one clean photo shows",
+  "description": [
+    "*Instant Swap for Google Photos* is a **Chrome extension, published on the Chrome Web Store**. It removes the slide between photos, so the arrow keys flip cleanly between two photos to compare them. I use it every day.",
+    "It is part of a **family of extensions** for what Google Photos cannot do in bulk: [Location Check](https://github.com/guplem/google-photos-location-check) marks photos with no location, [auto Save Check](https://github.com/guplem/google-photos-auto-save-check) marks unsaved shared-album photos, and [auto Fav](https://github.com/guplem/google-photos-auto-fav) and [auto Date](https://github.com/guplem/google-photos-auto-date) apply favourites and date fixes from a file.",
+    "They read the page the way a person does, with **no Google API**, and nothing leaves the browser."
+  ],
+  "skills": ["Vibe Coded", "UI/UX", "Automation"],
+  "links": [
+    { "url": "https://chromewebstore.google.com/detail/instant-swap-for-google-p/dlcjmnoahhicmaeajgdjlbepdnomjmdm" },
+    { "type": "github", "url": "https://github.com/guplem/google-photos-instant-swap" }
+  ]
+}
