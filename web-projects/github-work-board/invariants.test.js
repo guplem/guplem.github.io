@@ -26,6 +26,24 @@ const FOLDER = import.meta.dir;
 const sourceFiles = readdirSync(FOLDER).filter((name) => name.endsWith(".js") && !name.endsWith(".test.js"));
 const read = (name) => readFileSync(join(FOLDER, name), "utf8");
 
+/** The body of a named function in a source file, by its own braces. */
+function functionBody(source, opener) {
+  const start = source.indexOf(opener);
+  if (start < 0) return "";
+  // The first brace after the parameter list, so a destructured parameter is
+  // not mistaken for the body.
+  const head = /\)\s*\{/.exec(source.slice(start));
+  if (!head) return "";
+  let at = start + head.index + head[0].length;
+  let depth = 1;
+  while (at < source.length && depth > 0) {
+    if (source[at] === "{") depth += 1;
+    if (source[at] === "}") depth -= 1;
+    at += 1;
+  }
+  return source.slice(start, at);
+}
+
 /** Each `@media (prefers-reduced-motion...)` block, by its own braces. */
 function reducedMotionBlocks(css) {
   const blocks = [];
@@ -306,6 +324,25 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     // first version sliced to the end and failed on the next rule anybody
     // appended, which says nothing about this decision.
     for (const block of blocks) expect(block).not.toContain(":hover");
+  });
+});
+
+describe("the board says it is reading, whoever asked (ADR 0029)", () => {
+  const app = read("app.js");
+
+  // The scheduled read is the one nobody started, so it is the one that needs
+  // saying. It draws no placeholders and no status line (ADR 0025), so the
+  // button is the only place the board can say it is asking.
+  test("every read turns the button, not only the pressed one", () => {
+    expect(functionBody(app, "async function connectAll(")).toContain("renderRefreshBusy()");
+  });
+
+  // Two places writing the same state is how the press and the schedule drift
+  // apart: one of them ends up leaving the button down, or up, on its own.
+  test("one function owns whether the button is down", () => {
+    expect(/refreshNow\.(set|remove)Attribute\(/.test(app)).toBe(false);
+    expect(/refreshNow\.disabled\s*=/.test(app)).toBe(false);
+    expect(functionBody(app, "function renderRefreshBusy(")).toContain("aria-busy");
   });
 });
 
