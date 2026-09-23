@@ -9,6 +9,9 @@ import {
   say,
   sayEmptyBoard,
   summariseChecks,
+  BOOT_STEPS,
+  bootStepProgress,
+  bootStepWords,
 } from "./messages.js";
 
 describe("summariseChecks", () => {
@@ -188,5 +191,33 @@ describe("describeLastRefresh", () => {
   // A machine whose clock moved backwards must not say "refreshed in 4 hours".
   test("a clock that went backwards reads as just now", () => {
     expect(describeLastRefresh(at(5_000), now)).toBe("Refreshed just now");
+  });
+});
+
+describe("the start-up screen says what it is doing (ADR 0036)", () => {
+  // The page paints before it runs a line of its own code, so the first step is
+  // written in `index.html` and the rest are set from here. The words live in
+  // one place all the same.
+  test("these are the steps, in the order they happen", () => {
+    expect(BOOT_STEPS.map((one) => one.id)).toEqual(["code", "saved", "board"]);
+    for (const step of BOOT_STEPS) expect(step.words.length).toBeGreaterThan(0);
+  });
+
+  test("each step says what is happening, and never nothing", () => {
+    expect(bootStepWords("code")).toBe(BOOT_STEPS[0].words);
+    expect(bootStepWords("board")).toBe(BOOT_STEPS[2].words);
+    // A step nobody knows must not leave the line blank: a blank line and a
+    // broken feature look the same.
+    expect(bootStepWords("nonsense")).toBe(BOOT_STEPS[0].words);
+  });
+
+  // The bar only ever goes forward, and it is never empty: a bar at zero reads
+  // as a page that has not started.
+  test("the bar fills step by step, and ends full", () => {
+    const filled = BOOT_STEPS.map((one) => bootStepProgress(one.id));
+    expect(filled[0]).toBeGreaterThan(0);
+    expect(filled).toEqual([...filled].sort((a, b) => a - b));
+    expect(filled.at(-1)).toBe(100);
+    expect(bootStepProgress("nonsense")).toBe(filled[0]);
   });
 });

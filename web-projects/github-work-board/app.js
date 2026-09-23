@@ -81,6 +81,8 @@ import {
 } from "./filters.js";
 import { describeFailure } from "./githubErrors.js";
 import {
+  bootStepProgress,
+  bootStepWords,
   describeLastRefresh,
   escapeHtml,
   noteMenuLabel,
@@ -2029,6 +2031,37 @@ function renderTokenList() {
 }
 
 /**
+ * Say which start-up step the page is on, and fill the bar that far.
+ *
+ * The browser paints `index.html` before it runs a line of this file, so the
+ * reader is already looking at the start-up screen by the time anything here
+ * runs. These calls only move it forward (ADR 0036).
+ */
+function showBootStep(id) {
+  const line = element("boot-step");
+  const bar = element("boot-bar");
+  const fill = element("boot-bar-fill");
+  if (!line || !bar || !fill) return;
+  const percent = bootStepProgress(id);
+  line.textContent = bootStepWords(id);
+  fill.style.width = `${percent}%`;
+  bar.setAttribute("aria-valuenow", String(percent));
+}
+
+/**
+ * Take the start-up screen away, because the screen it was waiting for is ready.
+ *
+ * One place does this, and it is `showView`: the start-up screen is up until
+ * the board knows which screen the reader is on, and every way of knowing that
+ * ends in a `showView` call. A second place that hid it would hide it early,
+ * and a path that forgot to would leave the reader looking at a bar for good.
+ */
+function finishBoot() {
+  const boot = element("boot");
+  if (boot) boot.hidden = true;
+}
+
+/**
  * Show one screen.
  *
  * Which screen is open lives in the address bar (root ADR 0006), so a reload
@@ -2036,6 +2069,9 @@ function renderTokenList() {
  * first connection the welcome screen is the only screen there is.
  */
 function showView(view) {
+  // The board has decided something, so the start-up screen has nothing left
+  // to say.
+  finishBoot();
   // Settings carries the cloud storage panel, and the local mirror and the
   // cloud copy can both have changed since it was drawn (root ADR 0016).
   if (view === "settings") cloudPanel?.refresh();
@@ -2399,6 +2435,7 @@ function restoreBackup(field, pasted) {
 }
 
 function start() {
+  showBootStep("saved");
   renderDeployLine(element("deploy-line"), readStamp(document), "en", say, escapeHtml, PROJECT_PATH);
   fillTokenGuides();
 
@@ -2690,6 +2727,7 @@ function start() {
     },
   });
 
+  showBootStep("board");
   state.tokens = readTokens(storage);
   renderTokenNotice();
   showView(state.view);
@@ -2697,4 +2735,12 @@ function start() {
   if (state.tokens.length > 0) connectAll();
 }
 
-start();
+// A start that fails must not leave the reader looking at a bar that never
+// fills. The page cannot recover from this, so it says so where the step was.
+try {
+  start();
+} catch (failure) {
+  element("boot-step").textContent = "The board could not start. Reload the page.";
+  element("boot-bar").hidden = true;
+  throw failure;
+}

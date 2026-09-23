@@ -160,6 +160,13 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   shape is not a variant and must not be named like one: the refresh button's
   square shape is `.icon-only`, worn with `.button-outline`, which carries the
   hover (ADR 0029).
+- **Every screen in `index.html` starts `hidden`, except the start-up screen.**
+  The browser paints that file before it runs a line of the board's code, so
+  whatever is visible in it is what a reader sees first. The welcome screen was
+  visible, and it flashed at every reader who already had a token. `app.js`
+  moves the start-up steps along, and `finishBoot` in `showView` is the one
+  place that takes the screen away (ADR 0036). `invariants.test.js` fails on a
+  screen that starts visible.
 - **One function says whether the board is reading: `renderRefreshBusy` in
   `app.js`.** The refresh button turns and goes down for every read, the
   scheduled one included, because a scheduled read draws no placeholders and no
@@ -537,6 +544,7 @@ before calling it done.
 | [0033](adr/0033-the-board-draws-its-own-tooltip.md) | The board draws its own tooltip |
 | [0034](adr/0034-the-last-column-takes-a-range-of-days.md) | The last column takes a range of days, and the range is in the link |
 | [0035](adr/0035-a-reference-lights-the-card-it-names.md) | A reference lights the card it names |
+| [0036](adr/0036-the-page-starts-on-a-start-up-screen.md) | The page starts on a start-up screen, and every other screen starts hidden |
 
 ## What is not built yet
 
