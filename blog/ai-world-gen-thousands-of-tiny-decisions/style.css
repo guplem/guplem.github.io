@@ -1202,29 +1202,29 @@
   margin: 0;
 }
 
-.shortcut-notes {
+.run-notes {
   margin-top: var(--sp-xs);
 }
 
-.shortcut-notes summary {
+.run-notes summary {
   font-family: var(--mono);
   font-size: 0.75rem;
   color: var(--sky);
   cursor: pointer;
 }
 
-.post .shortcut-notes p {
+.post .run-notes p {
   font-size: 0.82rem;
   line-height: 1.5;
   color: var(--parchment-soft);
   margin: var(--sp-xs) 0 0;
 }
 
-.post .shortcut-notes .note-llm strong {
+.post .run-notes .note-llm strong {
   color: var(--leaf);
 }
 
-.post .shortcut-notes .note-batch strong {
+.post .run-notes .note-batch strong {
   color: var(--sky);
 }
 
