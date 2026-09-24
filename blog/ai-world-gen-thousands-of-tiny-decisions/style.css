@@ -1006,79 +1006,16 @@
 }
 
 /* === Version log === */
-/* === The story, one row per version ===
-   The maps sit on the left, the text on the right. One scroll container holds
-   every row, so the rows move together: a sideways scroll keeps the seed still
-   and shows what each version made of it. The text is a frozen column, pinned
-   to the right edge, and the maps pass behind it. */
-.version-scroll {
-  margin: var(--sp-md) 0;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  container-type: inline-size;
-  padding-bottom: 2px;
-}
-
-.version-scroll:focus-visible {
-  outline: 2px solid var(--leaf);
-  outline-offset: 3px;
-}
-
+/* === The story, one note per version === */
 .version-log {
   list-style: none;
-  margin: 0;
+  margin: var(--sp-md) 0;
   padding: 0;
   display: grid;
-  gap: var(--sp-lg);
-  width: max-content;
-}
-
-.version-log > li {
-  display: flex;
-  align-items: stretch;
   gap: var(--sp-md);
 }
 
-.version-maps {
-  display: flex;
-  gap: var(--sp-xs);
-}
-
-.version-maps > figure {
-  flex: 0 0 200px;
-  scroll-snap-align: start;
-  margin: 0;
-}
-
-.version-maps img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 4px;
-  border: 1px solid var(--panel-border);
-}
-
-.version-maps figcaption {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  text-align: center;
-  margin-top: 3px;
-  color: var(--parchment-soft);
-}
-
-/* The text holds still while the maps scroll behind it. cqi is the width of
-   the part of the scroller the reader sees, which is the only way to say "two
-   thirds of the screen" here: a percentage would be a share of the whole
-   scrolling width, which is 38 maps long. The rem line is the fallback for a
-   browser without container queries. */
 .post .version-note {
-  position: sticky;
-  right: 0;
-  flex: 0 0 auto;
-  width: 26rem;
-  width: 64cqi;
-  background: var(--ground);
   border-left: 2px solid var(--panel-border);
   padding-left: var(--sp-md);
 }
@@ -1113,28 +1050,206 @@
   margin: 0;
 }
 
-/* On a phone the text goes above its maps, still pinned, because two thirds of
-   a phone is too narrow to read and too narrow to see a map in. */
-@media (max-width: 640px) {
-  .version-log > li {
-    display: grid;
-    gap: var(--sp-xs);
-    justify-items: start;
-  }
-
-  .version-maps > figure {
-    flex: 0 0 68cqi;
-  }
-
-  .post .version-note {
-    grid-row: 1;
-    left: 0;
-    right: auto;
-    width: 100cqi;
-    border-left: 0;
-    padding-left: 0;
-  }
+/* === Every map, one seed per page ===
+   A hidden radio per seed; "previous" and "next" are labels for the radios on
+   either side, so the paging is CSS and every picture stays in the HTML. A
+   hidden page's lazy images do not load until it is shown. */
+/* Capped, so the eleven rows of one seed stay close to one screen tall. */
+.seed-table {
+  margin: var(--sp-md) auto;
+  max-width: 640px;
 }
+
+.seed-radio {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.seed-page {
+  display: none;
+}
+
+#seed-01:checked ~ .seed-pages #seed-page-01,
+#seed-02:checked ~ .seed-pages #seed-page-02,
+#seed-03:checked ~ .seed-pages #seed-page-03,
+#seed-04:checked ~ .seed-pages #seed-page-04,
+#seed-05:checked ~ .seed-pages #seed-page-05,
+#seed-06:checked ~ .seed-pages #seed-page-06,
+#seed-07:checked ~ .seed-pages #seed-page-07,
+#seed-08:checked ~ .seed-pages #seed-page-08,
+#seed-09:checked ~ .seed-pages #seed-page-09,
+#seed-10:checked ~ .seed-pages #seed-page-10,
+#seed-11:checked ~ .seed-pages #seed-page-11,
+#seed-12:checked ~ .seed-pages #seed-page-12,
+#seed-13:checked ~ .seed-pages #seed-page-13,
+#seed-14:checked ~ .seed-pages #seed-page-14,
+#seed-15:checked ~ .seed-pages #seed-page-15,
+#seed-16:checked ~ .seed-pages #seed-page-16,
+#seed-17:checked ~ .seed-pages #seed-page-17,
+#seed-18:checked ~ .seed-pages #seed-page-18,
+#seed-19:checked ~ .seed-pages #seed-page-19,
+#seed-20:checked ~ .seed-pages #seed-page-20,
+#seed-21:checked ~ .seed-pages #seed-page-21,
+#seed-22:checked ~ .seed-pages #seed-page-22,
+#seed-23:checked ~ .seed-pages #seed-page-23,
+#seed-24:checked ~ .seed-pages #seed-page-24,
+#seed-25:checked ~ .seed-pages #seed-page-25,
+#seed-26:checked ~ .seed-pages #seed-page-26,
+#seed-27:checked ~ .seed-pages #seed-page-27,
+#seed-28:checked ~ .seed-pages #seed-page-28,
+#seed-29:checked ~ .seed-pages #seed-page-29,
+#seed-30:checked ~ .seed-pages #seed-page-30,
+#seed-31:checked ~ .seed-pages #seed-page-31,
+#seed-32:checked ~ .seed-pages #seed-page-32,
+#seed-33:checked ~ .seed-pages #seed-page-33,
+#seed-34:checked ~ .seed-pages #seed-page-34,
+#seed-35:checked ~ .seed-pages #seed-page-35,
+#seed-36:checked ~ .seed-pages #seed-page-36,
+#seed-37:checked ~ .seed-pages #seed-page-37,
+#seed-38:checked ~ .seed-pages #seed-page-38 {
+  display: block;
+}
+
+.seed-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-sm);
+}
+
+.seed-nav-bottom {
+  margin: var(--sp-sm) 0 0;
+}
+
+.seed-step {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--parchment);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.seed-step:hover {
+  border-color: var(--door);
+  color: var(--door);
+}
+
+/* The radios keep the keyboard: arrow keys move between seeds. */
+.seed-radio:focus-visible ~ .seed-pages .seed-nav {
+  outline: 2px solid var(--leaf);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.post .seed-name {
+  margin: 0;
+  text-align: center;
+  display: grid;
+  line-height: 1.3;
+}
+
+.post .seed-name strong {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--parchment);
+}
+
+.post .seed-name span {
+  font-size: 0.8rem;
+  color: var(--parchment-soft);
+}
+
+.seed-grid {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 6px;
+  margin: 0 -6px;
+  width: calc(100% + 12px);
+}
+
+.seed-grid col:first-child,
+.seed-grid th:first-child {
+  width: 22%;
+}
+
+.seed-grid thead th {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--parchment-soft);
+  text-align: center;
+}
+
+.seed-grid thead th:nth-child(2) {
+  color: var(--door);
+}
+
+.seed-grid thead th:nth-child(3) {
+  color: var(--leaf);
+}
+
+.seed-grid thead th:nth-child(4) {
+  color: var(--sky);
+}
+
+.seed-grid tbody th {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--parchment-soft);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.seed-grid td {
+  padding: 0;
+  vertical-align: middle;
+}
+
+.seed-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid var(--panel-border);
+}
+
+.seed-grid a:hover img {
+  border-color: var(--door);
+}
+
+.seed-grid .seed-empty {
+  aspect-ratio: 1;
+  border: 1px dashed var(--panel-border);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.seed-grid .seed-empty span {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--stone);
+}
+
+@media (max-width: 640px) {
+  .seed-grid tbody th {
+    font-size: 0.68rem;
+  }
+
+  .seed-step {
+    padding: 6px 8px;
+  }
 }
 
 /* === Table === */
