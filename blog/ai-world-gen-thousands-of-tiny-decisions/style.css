@@ -519,23 +519,6 @@
   fill: var(--sky);
 }
 
-.mini-judge .area {
-  fill: var(--stone);
-}
-
-.mini-judge .line {
-  stroke: var(--stone);
-  stroke-dasharray: 4 3;
-}
-
-.mini-judge circle {
-  fill: var(--stone);
-}
-
-.mini-judge .mini-delta {
-  fill: var(--stone);
-}
-
 /* A stretch of a chart where the measure did not exist yet: blank, one faint
    label, and a question mark whose box says why. Pure CSS, like the columns. */
 .mini .mini-gap {
@@ -611,10 +594,6 @@
   fill: var(--door);
 }
 
-.mini-judge .col-dot-loop {
-  fill: var(--stone);
-}
-
 .mini .col-dot-llm {
   fill: var(--leaf);
 }
@@ -640,10 +619,6 @@
 
 .mini .tip-loop {
   fill: var(--door);
-}
-
-.mini-judge .tip-loop {
-  fill: var(--parchment-soft);
 }
 
 .mini .tip-llm {
