@@ -6,15 +6,20 @@
   right: 0;
   z-index: 100;
   transform: translateY(-100%);
-  opacity: 0;
-  transition: transform var(--duration-normal) var(--ease-out),
-              opacity var(--duration-normal) var(--ease-out);
+  transition: transform var(--duration-normal) var(--ease-out);
 }
 
 /* focus-within keeps the nav on screen while a keyboard user tabs through it. */
 #siteNav.visible,
 #siteNav:focus-within {
   transform: translateY(0);
+}
+
+/* The fade lives on .nav-inner, never on #siteNav: opacity below 1 on an
+   ancestor stops backdrop-filter from seeing the page behind, so the frost
+   would snap on only at the end of the fade. */
+#siteNav.visible .nav-inner,
+#siteNav:focus-within .nav-inner {
   opacity: 1;
 }
 
@@ -33,6 +38,8 @@
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-md);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 .nav-logo {
