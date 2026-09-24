@@ -9,6 +9,9 @@
     "A flood fill catches sealed-off rooms, an inspector shows every cell's probabilities, and the logic is **covered by tests written before the code**."
   ],
   "skills": ["Vibe Coded", "AI Integration", "API Integration", "Architecture", "UI/UX"],
+  "image": "resources/images/projects/aiWorldGen.webp",
+  "imageStretched": true,
+  "imageAlt": "A generated pixel-art village map with houses, trees, fields and paths",
   "links": [
     { "url": "web-projects/ai-world-gen/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/ai-world-gen" }
