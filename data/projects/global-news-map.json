@@ -9,6 +9,9 @@
     "The map is **drawn from coastline data the page carries itself**, with no tile server, so it needs no API key and no account. The projection, parsing and ranking are **covered by tests written before the code**."
   ],
   "skills": ["Vibe Coded", "Architecture", "API Integration", "Data Visualization"],
+  "image": "resources/images/projects/globalNewsMap.webp",
+  "imageStretched": true,
+  "imageAlt": "A world map with orange pins marking where the day's news stories happened",
   "links": [
     { "url": "web-projects/global-news-map/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/global-news-map" }
