@@ -39,14 +39,62 @@
   color: var(--text-primary);
   letter-spacing: -0.03em;
   padding: 0 var(--sp-sm);
+  flex-shrink: 0;
 }
 
 .nav-logo:hover { color: var(--accent); }
 
+/* On narrow screens the whole menu (logo and links) scrolls sideways, and
+   each edge fades out while there is hidden content beyond it. The scroller
+   is a wrapper so the mask does not also fade the pill background of
+   .nav-inner. A scroll-driven animation sets the fade widths; without
+   support (or without overflow) they stay 0. */
+@property --nav-fade-left {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --nav-fade-right {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.nav-scroller {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right,
+    transparent, #000 var(--nav-fade-left),
+    #000 calc(100% - var(--nav-fade-right)), transparent);
+  mask-image: linear-gradient(to right,
+    transparent, #000 var(--nav-fade-left),
+    #000 calc(100% - var(--nav-fade-right)), transparent);
+  animation: nav-scroller-edge-fade linear both;
+  animation-timeline: scroll(self inline);
+}
+
+.nav-scroller::-webkit-scrollbar { display: none; }
+
+@keyframes nav-scroller-edge-fade {
+  0%   { --nav-fade-left: 0px;  --nav-fade-right: 32px; }
+  15%  { --nav-fade-left: 32px; }
+  85%  { --nav-fade-right: 32px; }
+  100% { --nav-fade-left: 32px; --nav-fade-right: 0px; }
+}
+
 .nav-links {
   display: flex;
   gap: var(--sp-xs);
+  flex-shrink: 0;
 }
+
+.nav-links a { white-space: nowrap; }
 
 .nav-links a {
   color: var(--text-muted);
