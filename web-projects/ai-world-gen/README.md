@@ -163,12 +163,12 @@ Mean score per specification over the 38 test cases, with every metric as it is 
 
 | Version | What changed | Struct. | Paths | Reach. | Place | Rules | Routes | Story | Judge |
 |---|---|---|---|---|---|---|---|---|---|
-| v1 | The generator as first shipped | 0.18 | 0.74 | 0.69 | 0.48 | 0.83 | (1.00) | 0.07 | 0.09 |
-| v2 | Balance sheet in the state; "prefer the ground type" line removed | 0.39 | 0.53 | 0.75 | 0.43 | 0.58 | 0.77 | 0.61 | 0.24 |
-| v3 | Continuation hints; instruction says "structures first, continue the line" | 0.68 | 0.66 | 0.82 | 0.50 | 0.49 | 0.62 | 0.79 | 0.45 |
-| v4 | Code judges the one suggested continuation (short lines, closable gaps, never an overused type) | 0.82 | 0.80 | 0.77 | 0.50 | 0.62 | 0.66 | 0.66 | 0.48 |
-| v5 | The whole map in the state, one letter per cell | 0.93 | **0.82** | 0.81 | 0.53 | 0.49 | 0.70 | 0.76 | 0.54 |
-| v6 | Sampling floor from 8% to a third of the best option | 0.95 | 0.81 | 0.81 | 0.51 | 0.61 | 0.60 | 0.68 | 0.48 |
+| v1 | The generator as first shipped | 0.18 | 0.74 | 0.69 | 0.48 | n/a | (1.00) | 0.07 | 0.09 |
+| v2 | Balance sheet in the state; "prefer the ground type" line removed | 0.39 | 0.53 | 0.75 | 0.43 | n/a | 0.77 | 0.61 | 0.24 |
+| v3 | Continuation hints; instruction says "structures first, continue the line" | 0.68 | 0.66 | 0.82 | 0.50 | n/a | 0.62 | 0.79 | 0.45 |
+| v4 | Code judges the one suggested continuation (short lines, closable gaps, never an overused type) | 0.82 | 0.80 | 0.77 | 0.50 | n/a | 0.66 | 0.66 | 0.48 |
+| v5 | The whole map in the state, one letter per cell | 0.93 | **0.82** | 0.81 | 0.53 | n/a | 0.70 | 0.76 | 0.54 |
+| v6 | Sampling floor from 8% to a third of the best option | 0.95 | 0.81 | 0.81 | 0.51 | n/a | 0.60 | 0.68 | 0.48 |
 | v7 | Typed `placement` per type (zone, never next, only next, edge), enforced before the model answers | 0.95 | 0.80 | 0.82 | 0.52 | 0.99 | 0.61 | 0.78 | 0.48 |
 | v8 | The blueprint: code places each structure as a rectangle with a door; each cell is offered only its part's types | **0.99** | 0.75 | 0.84 | **0.89** | 0.99 | 0.78 | 0.77 | 0.65 |
 | v9 | The state names what the world still lacks; a unique type is out once placed; a route is suggested outside a planned door | 0.98 | 0.80 | 0.87 | 0.87 | 0.98 | 0.87 | **0.84** | 0.69 |
@@ -185,7 +185,7 @@ Mean score per specification over the 38 test cases, with every metric as it is 
 | v8-batch | Not a version of the loop: v8's own per-cell questions, sent together (`--code-of v8`) | 0.98 | 0.66 | 0.85 | 0.87 | 0.99 | 0.82 | 0.71 | 0.57 |
 | v11-batch | Not a version of the loop: v11's own per-cell questions, sent together as one decisions request per map (`batchedDecisions.js`) | 0.97 | 0.47 | 0.87 | 0.91 | 0.83 | 0.78 | 0.66 | 0.57 |
 
-Every version is scored on the same 38 seeds: the seeds a dataset added later were drawn afterwards with that version's own code (`evaluate.py backfill`), so a row is a mean over the same maps as every other row. v1's routes score is in brackets because v1 drew almost no doors, so there was little to judge.
+Every version is scored on the same 38 seeds: the seeds a dataset added later were drawn afterwards with that version's own code (`evaluate.py backfill`), so a row is a mean over the same maps as every other row. v1's routes score is in brackets because v1 drew almost no doors, so there was little to judge. "Rules" is n/a before v7: the typed rules it checks came with v7, and the older numbers were a later rescore of 5 to 23 maps against rules those versions never had.
 
 What each version actually drew:
 
@@ -195,7 +195,7 @@ What each version actually drew:
 - **v4: lines.** With the continuation judged by code, walls form lines and closed shapes and routes mostly join up. But 21 of 23 doors stood in open ground, walls came as filled blocks, and no map had a room you could enter.
 - **v5: the model reads the sketch, a little.** Showing the whole map moved coherence from 0.50 to 0.53 and left doors in walls where they were (0.26 to 0.22): the gain the first 23 seeds showed on doors did not survive the same 38 seeds. The 16 × 16 maps showed the limit: walls still come as solid slabs, because a model deciding one cell cannot see where a rectangle should end.
 - **v6: less noise.** The sample had been overriding the model's own choice on 27% of the cells. At a third of the best option it overrides 18%: ground in patches 0.25 to 0.52, fewer split regions, and the rare types lost their chances (coverage 0.72 to 0.54).
-- **v7: the local rules hold, the rooms do not.** With the typed rules enforced, "rules hold" went from 0.61 to 0.98 and nothing else moved: "never next to X" cannot say "in a wall".
+- **v7: the local rules hold, the rooms do not.** With the typed rules enforced, "rules hold" is measured for the first time and starts at 0.99, and nothing else moved: "never next to X" cannot say "in a wall".
 - **v8: rooms.** The blueprint draws each structure first. Doors in walls 0.15 to 0.96, an enclosed room on every map, structures 1.00, one walkable region 0.56 to 0.77. The price: coverage 0.52, and the route type spread over the outside.
 - **v9: the world remembers what it lacks.** Landmarks single 0.68 to 1.00, doors with a route 0.56 to 0.88, coverage 0.52 to 0.73, interactable share 0.78 to 0.97. Doors passable fell to 0.82: the model now puts a console or a bed right behind the door.
 - **v10: the cap that could not fire.** A ground type past twice its target is no longer offered, but the maps that flooded were the settings whose vocabulary made the route the only floor (corridor in the station: 0.53 of the map; street in the block: 0.58), where nothing else may fill the cell. Route share of the map stayed at 0.24 overall.

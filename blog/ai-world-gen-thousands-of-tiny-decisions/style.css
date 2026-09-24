@@ -536,6 +536,46 @@
   fill: var(--stone);
 }
 
+/* A stretch of a chart where the measure did not exist yet: blank, one faint
+   label, and a question mark whose box says why. Pure CSS, like the columns. */
+.mini .mini-gap {
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.mini .why-mark {
+  fill: var(--panel);
+  stroke: var(--parchment-soft);
+  stroke-width: 1;
+}
+
+.mini .why:hover .why-mark {
+  stroke: var(--parchment);
+}
+
+.mini .why-q {
+  font-family: var(--mono);
+  font-size: 7.5px;
+  font-weight: 700;
+  fill: var(--parchment-soft);
+  pointer-events: none;
+}
+
+.mini .why-tip {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mini .why:hover .why-tip {
+  opacity: 1;
+}
+
+.mini .why-text {
+  font-family: var(--mono);
+  font-size: 7.5px;
+  fill: var(--parchment);
+}
+
 /* One column per version, drawn over the chart. Hovering it shows a guide,
    that version's points made larger, and a box with the values. Pure CSS, so
    the values are in the page with no script. */
