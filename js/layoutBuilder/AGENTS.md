@@ -12,12 +12,13 @@ This directory handles all dynamic content rendering: fetching JSON data, buildi
 | `sectionFiller.js` | Generic section rendering: `fillWithData()` (JSON field to DOM element), `displayAdditionalSections()`, `displayContactInfo()` |
 | `workCards.js` | Work card creation and masonry layout. `displayFilteredWorks()` builds the card grid. `getFilteredWorks()` applies current filter state. Card images/titles are real `<a href>` anchors to the primary link (crawler-followable, issue #37), not click handlers. |
 | `workFilters.js` | Filter state (`includedWorkTypes`, `excludedWorkTypes`, `includedWorkSkills`, `excludedWorkSkills` arrays; `workSearchQuery` string via `getWorkSearchQuery`/`setWorkSearchQuery`), filter button creation (`fillWithGroupedButtons`), chip painting (`paintTagFilterButton`, `syncFilterControls`), click handlers, the skill-exclusion button, the clear-filters button, collapsible sections |
-| `structure.js` | Window resize handler (debounced 100ms). Triggers `displayFilteredWorks()` and canvas `init()` on width change. Also manages sticky nav visibility via IntersectionObserver. |
+| `structure.js` | Window resize handler (debounced 100ms). Triggers `displayFilteredWorks()` and canvas `init()` on width change. Also wires the top nav: it toggles `#siteNav.visible` from scroll direction and mouse position, with the rules in `navReveal.js`. |
+| `navReveal.js` | Pure, Bun-tested nav rules: scrolling down reveals the nav, scrolling up hides it (with a 16px threshold against jitter), and a mouse near the top edge shows it. On every section, not only past the hero. |
 
 ## Data Flow
 
 1. `dataFiller.js` runs on module load. It calls `fillWithData()` for static sections and `fillWithGroupedButtons()` for filter buttons
-2. `structure.js` fires `displayFilteredWorks()` on `DOMContentLoaded` and on resize, also toggles `#siteNav.visible` when scrolling past the hero
+2. `structure.js` fires `displayFilteredWorks()` on `DOMContentLoaded` and on resize, also toggles `#siteNav.visible` on scroll and on mouse moves near the top edge
 3. Filter clicks (`workFilters.js`) move one tag to its next state, repaint every control with `syncFilterControls()`, then call `displayFilteredWorks()`; typing in the `#myWorkSearch` box updates `workSearchQuery` (debounced) and re-renders the same way
 4. `displayFilteredWorks()` reads all works via `fetchAllWorks()`, applies filters (`workMatchesTagFilters` for the type and skill chips, AND `workMatchesText` for the free-text search), sorts by date, and distributes cards across masonry columns
 

@@ -11,7 +11,9 @@
               opacity var(--duration-normal) var(--ease-out);
 }
 
-#siteNav.visible {
+/* focus-within keeps the nav on screen while a keyboard user tabs through it. */
+#siteNav.visible,
+#siteNav:focus-within {
   transform: translateY(0);
   opacity: 1;
 }
