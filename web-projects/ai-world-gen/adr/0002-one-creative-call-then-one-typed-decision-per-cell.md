@@ -156,7 +156,7 @@ went from 0.09 to 0.69), and only rules about where things go moved it: the
 typed rules at v7, the plan at v8. The batch rose at one version only, v8
 (judge 0.20, 0.32 and 0.25 before it, 0.57 from it on), because every fix of
 v2 to v7 reads the cells decided before. So what the loop's versions added is
-control applied per cell, which neither shortcut can use except as code.
+control applied per cell, which neither experiment can use except as code.
 
 **Rejected: a language
 model per cell as the default.** It works, and it is kept as the stand-in, but
