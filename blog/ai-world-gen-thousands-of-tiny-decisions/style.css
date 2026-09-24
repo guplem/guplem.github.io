@@ -129,6 +129,23 @@
   color: var(--door);
 }
 
+/* base.css gives the growing underline to `p a` only, so a link in a list
+   (the short version at the top) takes the same look here. */
+.post li a {
+  color: var(--leaf);
+  background-image: linear-gradient(var(--door), var(--door));
+  background-size: 0% 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--duration-normal) var(--ease-out), color var(--duration-fast) var(--ease-out);
+  padding-bottom: 1px;
+}
+
+.post li a:hover {
+  color: var(--door);
+  background-size: 100% 1.5px;
+}
+
 .post strong {
   color: var(--parchment);
   font-weight: 700;
