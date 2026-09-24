@@ -1005,119 +1005,123 @@
   stroke-width: 1.5;
 }
 
-/* === Version log === */
-/* === The story, one note per version === */
-.version-log {
-  list-style: none;
-  margin: var(--sp-md) 0;
-  padding: 0;
-  display: grid;
-  gap: var(--sp-md);
-}
-
-.post .version-note {
-  border-left: 2px solid var(--panel-border);
-  padding-left: var(--sp-md);
-}
-
-.post .version-log > li.experiment .version-note {
-  border-left-color: var(--sky);
-}
-
-.post .version-log > li.experiment .version-name {
-  color: var(--sky);
-}
-
-.post .version-tag {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--parchment-soft);
-  margin: 0 0 2px;
-}
-
-.post .version-name {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  color: var(--leaf);
-  margin: 0 0 2px;
-}
-
-.post .version-note p + p {
-  font-size: 0.98rem;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* === Every map, one seed per page ===
-   A hidden radio per seed; "previous" and "next" are labels for the radios on
-   either side, so the paging is CSS and every picture stays in the HTML. A
-   hidden page's lazy images do not load until it is shown. */
-/* Capped, so the eleven rows of one seed stay close to one screen tall. */
+/* === The story and every map, in one table ===
+   One row per version: its note, then the loop's map and the two shortcuts'.
+   Each map cell holds that run's 38 maps. A hidden radio per seed decides which
+   one is shown, and "previous" and "next" are labels for the radios on either
+   side. So the paging is CSS, every word and picture is in the HTML, and a
+   hidden map's lazy image does not load until it is shown. */
 .seed-table {
-  margin: var(--sp-md) auto;
-  max-width: 640px;
+  margin: var(--sp-md) 0;
 }
 
+/* Fixed to the viewport, top left: a label moves focus to its radio, and the
+   browser scrolls a focused element into view. Pinned here, the radio is always
+   in view already, so "previous" and "next" never move the page. */
 .seed-radio {
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   opacity: 0;
   width: 1px;
   height: 1px;
   pointer-events: none;
 }
 
-.seed-page {
+.seed-map,
+.seed-nav-item {
   display: none;
 }
 
-#seed-01:checked ~ .seed-pages #seed-page-01,
-#seed-02:checked ~ .seed-pages #seed-page-02,
-#seed-03:checked ~ .seed-pages #seed-page-03,
-#seed-04:checked ~ .seed-pages #seed-page-04,
-#seed-05:checked ~ .seed-pages #seed-page-05,
-#seed-06:checked ~ .seed-pages #seed-page-06,
-#seed-07:checked ~ .seed-pages #seed-page-07,
-#seed-08:checked ~ .seed-pages #seed-page-08,
-#seed-09:checked ~ .seed-pages #seed-page-09,
-#seed-10:checked ~ .seed-pages #seed-page-10,
-#seed-11:checked ~ .seed-pages #seed-page-11,
-#seed-12:checked ~ .seed-pages #seed-page-12,
-#seed-13:checked ~ .seed-pages #seed-page-13,
-#seed-14:checked ~ .seed-pages #seed-page-14,
-#seed-15:checked ~ .seed-pages #seed-page-15,
-#seed-16:checked ~ .seed-pages #seed-page-16,
-#seed-17:checked ~ .seed-pages #seed-page-17,
-#seed-18:checked ~ .seed-pages #seed-page-18,
-#seed-19:checked ~ .seed-pages #seed-page-19,
-#seed-20:checked ~ .seed-pages #seed-page-20,
-#seed-21:checked ~ .seed-pages #seed-page-21,
-#seed-22:checked ~ .seed-pages #seed-page-22,
-#seed-23:checked ~ .seed-pages #seed-page-23,
-#seed-24:checked ~ .seed-pages #seed-page-24,
-#seed-25:checked ~ .seed-pages #seed-page-25,
-#seed-26:checked ~ .seed-pages #seed-page-26,
-#seed-27:checked ~ .seed-pages #seed-page-27,
-#seed-28:checked ~ .seed-pages #seed-page-28,
-#seed-29:checked ~ .seed-pages #seed-page-29,
-#seed-30:checked ~ .seed-pages #seed-page-30,
-#seed-31:checked ~ .seed-pages #seed-page-31,
-#seed-32:checked ~ .seed-pages #seed-page-32,
-#seed-33:checked ~ .seed-pages #seed-page-33,
-#seed-34:checked ~ .seed-pages #seed-page-34,
-#seed-35:checked ~ .seed-pages #seed-page-35,
-#seed-36:checked ~ .seed-pages #seed-page-36,
-#seed-37:checked ~ .seed-pages #seed-page-37,
-#seed-38:checked ~ .seed-pages #seed-page-38 {
+#seed-01:checked ~ .seed-grid .s01,
+#seed-02:checked ~ .seed-grid .s02,
+#seed-03:checked ~ .seed-grid .s03,
+#seed-04:checked ~ .seed-grid .s04,
+#seed-05:checked ~ .seed-grid .s05,
+#seed-06:checked ~ .seed-grid .s06,
+#seed-07:checked ~ .seed-grid .s07,
+#seed-08:checked ~ .seed-grid .s08,
+#seed-09:checked ~ .seed-grid .s09,
+#seed-10:checked ~ .seed-grid .s10,
+#seed-11:checked ~ .seed-grid .s11,
+#seed-12:checked ~ .seed-grid .s12,
+#seed-13:checked ~ .seed-grid .s13,
+#seed-14:checked ~ .seed-grid .s14,
+#seed-15:checked ~ .seed-grid .s15,
+#seed-16:checked ~ .seed-grid .s16,
+#seed-17:checked ~ .seed-grid .s17,
+#seed-18:checked ~ .seed-grid .s18,
+#seed-19:checked ~ .seed-grid .s19,
+#seed-20:checked ~ .seed-grid .s20,
+#seed-21:checked ~ .seed-grid .s21,
+#seed-22:checked ~ .seed-grid .s22,
+#seed-23:checked ~ .seed-grid .s23,
+#seed-24:checked ~ .seed-grid .s24,
+#seed-25:checked ~ .seed-grid .s25,
+#seed-26:checked ~ .seed-grid .s26,
+#seed-27:checked ~ .seed-grid .s27,
+#seed-28:checked ~ .seed-grid .s28,
+#seed-29:checked ~ .seed-grid .s29,
+#seed-30:checked ~ .seed-grid .s30,
+#seed-31:checked ~ .seed-grid .s31,
+#seed-32:checked ~ .seed-grid .s32,
+#seed-33:checked ~ .seed-grid .s33,
+#seed-34:checked ~ .seed-grid .s34,
+#seed-35:checked ~ .seed-grid .s35,
+#seed-36:checked ~ .seed-grid .s36,
+#seed-37:checked ~ .seed-grid .s37,
+#seed-38:checked ~ .seed-grid .s38 {
   display: block;
 }
 
-.seed-nav {
+#seed-01:checked ~ .seed-nav .s01,
+#seed-02:checked ~ .seed-nav .s02,
+#seed-03:checked ~ .seed-nav .s03,
+#seed-04:checked ~ .seed-nav .s04,
+#seed-05:checked ~ .seed-nav .s05,
+#seed-06:checked ~ .seed-nav .s06,
+#seed-07:checked ~ .seed-nav .s07,
+#seed-08:checked ~ .seed-nav .s08,
+#seed-09:checked ~ .seed-nav .s09,
+#seed-10:checked ~ .seed-nav .s10,
+#seed-11:checked ~ .seed-nav .s11,
+#seed-12:checked ~ .seed-nav .s12,
+#seed-13:checked ~ .seed-nav .s13,
+#seed-14:checked ~ .seed-nav .s14,
+#seed-15:checked ~ .seed-nav .s15,
+#seed-16:checked ~ .seed-nav .s16,
+#seed-17:checked ~ .seed-nav .s17,
+#seed-18:checked ~ .seed-nav .s18,
+#seed-19:checked ~ .seed-nav .s19,
+#seed-20:checked ~ .seed-nav .s20,
+#seed-21:checked ~ .seed-nav .s21,
+#seed-22:checked ~ .seed-nav .s22,
+#seed-23:checked ~ .seed-nav .s23,
+#seed-24:checked ~ .seed-nav .s24,
+#seed-25:checked ~ .seed-nav .s25,
+#seed-26:checked ~ .seed-nav .s26,
+#seed-27:checked ~ .seed-nav .s27,
+#seed-28:checked ~ .seed-nav .s28,
+#seed-29:checked ~ .seed-nav .s29,
+#seed-30:checked ~ .seed-nav .s30,
+#seed-31:checked ~ .seed-nav .s31,
+#seed-32:checked ~ .seed-nav .s32,
+#seed-33:checked ~ .seed-nav .s33,
+#seed-34:checked ~ .seed-nav .s34,
+#seed-35:checked ~ .seed-nav .s35,
+#seed-36:checked ~ .seed-nav .s36,
+#seed-37:checked ~ .seed-nav .s37,
+#seed-38:checked ~ .seed-nav .s38 {
   display: flex;
+}
+
+.seed-nav-item {
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-sm);
+}
+
+.seed-nav {
   margin-bottom: var(--sp-sm);
 }
 
@@ -1144,7 +1148,7 @@
 }
 
 /* The radios keep the keyboard: arrow keys move between seeds. */
-.seed-radio:focus-visible ~ .seed-pages .seed-nav {
+.seed-radio:focus-visible ~ .seed-nav {
   outline: 2px solid var(--leaf);
   outline-offset: 4px;
   border-radius: var(--radius-sm);
@@ -1169,17 +1173,11 @@
 }
 
 .seed-grid {
-  width: 100%;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 6px;
   margin: 0 -6px;
   width: calc(100% + 12px);
-}
-
-.seed-grid col:first-child,
-.seed-grid th:first-child {
-  width: 22%;
 }
 
 .seed-grid thead th {
@@ -1188,6 +1186,11 @@
   font-weight: 600;
   color: var(--parchment-soft);
   text-align: center;
+}
+
+.seed-grid thead th:first-child {
+  width: 43%;
+  text-align: left;
 }
 
 .seed-grid thead th:nth-child(2) {
@@ -1203,18 +1206,56 @@
 }
 
 .seed-grid tbody th {
+  font-weight: 400;
+  text-align: left;
+  vertical-align: top;
+  border-left: 2px solid var(--panel-border);
+  padding: 0 var(--sp-xs) 0 var(--sp-sm);
+}
+
+.post .seed-grid .version-name {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--leaf);
+  margin: 0 0 2px;
+}
+
+.post .seed-grid .version-text {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--parchment);
+  margin: 0;
+}
+
+.shortcut-notes {
+  margin-top: var(--sp-xs);
+}
+
+.shortcut-notes summary {
   font-family: var(--mono);
   font-size: 0.75rem;
-  font-weight: 400;
-  line-height: 1.35;
+  color: var(--sky);
+  cursor: pointer;
+}
+
+.post .shortcut-notes p {
+  font-size: 0.82rem;
+  line-height: 1.5;
   color: var(--parchment-soft);
-  text-align: left;
-  vertical-align: middle;
+  margin: var(--sp-xs) 0 0;
+}
+
+.post .shortcut-notes .note-llm strong {
+  color: var(--leaf);
+}
+
+.post .shortcut-notes .note-batch strong {
+  color: var(--sky);
 }
 
 .seed-grid td {
   padding: 0;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .seed-grid img {
@@ -1230,10 +1271,10 @@
 }
 
 .seed-grid .seed-empty {
-  aspect-ratio: 1;
   border: 1px dashed var(--panel-border);
   border-radius: 4px;
   text-align: center;
+  vertical-align: middle;
 }
 
 .seed-grid .seed-empty span {
@@ -1242,9 +1283,35 @@
   color: var(--stone);
 }
 
+/* On a phone four columns do not fit: each row puts its note on top, full
+   width, and its three maps under it. */
 @media (max-width: 640px) {
+  .seed-grid thead {
+    display: none;
+  }
+
+  .seed-grid,
+  .seed-grid tbody {
+    display: block;
+    width: 100%;
+    margin: 0;
+  }
+
+  .seed-grid tr {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: var(--sp-md);
+  }
+
   .seed-grid tbody th {
-    font-size: 0.68rem;
+    grid-column: 1 / -1;
+  }
+
+  .seed-grid .seed-empty {
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
   }
 
   .seed-step {
