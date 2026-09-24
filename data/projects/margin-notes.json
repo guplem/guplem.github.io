@@ -1,0 +1,18 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Margin Notes",
+  "image": "resources/images/projects/margin-notes.webp",
+  "imageAlt": "Margin Notes store graphic: select text, right-click or press Alt+Shift+N, then write a labelled note in a small window",
+  "description": [
+    "*Margin Notes* is a **Chrome extension, published on the Chrome Web Store**. Select text on any page, local file, or PDF, right-click or press a shortcut, and add a note labelled Question, Correction, or Rephrasing.",
+    "I designed it to proofread content and share feedback. Each page gets its own folder, and its notes export as **Markdown** in one click, ready for a colleague or an **LLM**.",
+    "The whole extension weighs **28 KB**, and nothing leaves the browser."
+  ],
+  "skills": ["Vibe Coded", "UI/UX"],
+  "links": [
+    { "url": "https://chromewebstore.google.com/detail/inlfhheelfembhnmegepaofeodbfamai" },
+    { "type": "github", "url": "https://github.com/guplem/margin-notes" }
+  ]
+}
