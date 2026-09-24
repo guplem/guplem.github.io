@@ -1,6 +1,7 @@
 {
   "title": "My Work",
   "projects": [
+    "margin-notes.json",
     "google-photos-extensions.json",
     "ai-world-gen.json",
     "github-work-board.json",
