@@ -65,8 +65,8 @@
         "properties": {
           "type": {
             "type": "string",
-            "description": "Link icon type. Must match a filename in resources/images/icons/{type}.webp. Common values: \"github\", \"google-play\". Omit for a generic link icon.",
-            "examples": ["github", "google-play"]
+            "description": "Link icon type. Must match a filename in resources/images/icons/{type}.webp. Common values: \"github\", \"google-play\", \"blog\" (a post on this site's blog about the project). Omit for a generic link icon.",
+            "examples": ["github", "google-play", "blog"]
           },
           "url": {
             "type": "string",

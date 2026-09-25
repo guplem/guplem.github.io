@@ -90,6 +90,12 @@
   color: var(--parchment-soft);
 }
 
+/* The project the post is about, one tap from the title. */
+.post .post-project {
+  margin-top: var(--sp-sm);
+  font-weight: 600;
+}
+
 .post .post-byline {
   margin-top: var(--sp-md);
   color: var(--parchment-soft);

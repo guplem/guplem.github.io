@@ -14,6 +14,7 @@
   "imageAlt": "A generated pixel-art village map with houses, trees, fields and paths",
   "links": [
     { "url": "web-projects/ai-world-gen/" },
+    { "type": "blog", "url": "blog/ai-world-gen-thousands-of-tiny-decisions/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/ai-world-gen" }
   ]
 }
