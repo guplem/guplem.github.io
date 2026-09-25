@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="A wildfire-watch map for Catalonia: hotspots sized by fire radiative power, satellite cross-checks, wind, fire-weather danger, towns at risk and a wind-shaped spread forecast. Demo data." />
+  <title>Wildfire Watch · Fires, Wind and Risk on One Map · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/wildfire-watch/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23d62828'/%3E%3Cpath d='M16 5c1 5 7 7 7 14a7 7 0 0 1-14 0c0-4 2-6 3-8 1 3 2 4 3 4-1-4 0-7 1-10z' fill='%23fff'/%3E%3C/svg%3E" />
+  <!-- Which pull request published this file. Never hand-edit: written by
+       `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
+  <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="0" />
+  <meta name="deploy-date" content="1970-01-01T00:00:00.000Z" />
+  <!-- END GENERATED:DEPLOY -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <h1>Wildfire Watch</h1>
+        <span class="demo-badge" title="Every fire and weather reading on this page is invented">Demo data</span>
+      </div>
+      <div class="layers" role="group" aria-label="Map layers">
+        <button type="button" class="pill" data-layer="fires" data-color="red" aria-pressed="true">Fires</button>
+        <button type="button" class="pill" data-layer="mtg" data-color="green" aria-pressed="false">MTG cross-check</button>
+        <button type="button" class="pill" data-layer="wind" data-color="blue" aria-pressed="false">Weather (wind)</button>
+        <button type="button" class="pill" data-layer="context" data-color="gray" aria-pressed="false">Context (towns &amp; parks)</button>
+        <button type="button" class="pill" data-layer="spread" data-color="orange" aria-pressed="false">Spread (history &amp; forecast)</button>
+      </div>
+      <div class="header-actions">
+        <button type="button" id="sources-open" class="ghost">ⓘ Data sources</button>
+        <button type="button" id="theme-toggle" class="ghost" aria-label="Switch theme">◐</button>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <form id="search" class="search" role="search">
+        <input id="search-input" type="search" placeholder="Search a town" aria-label="Search a town" autocomplete="off" />
+        <button type="submit">Go</button>
+        <span id="search-note" class="note" role="status"></span>
+      </form>
+      <button type="button" id="locate">Use my location</button>
+      <div class="timeline" role="group" aria-label="Timeline">
+        <button type="button" data-step="-3" class="past">-3h</button>
+        <button type="button" data-step="-1" class="past">-1h</button>
+        <button type="button" data-step="0" class="now" aria-pressed="true">Now</button>
+        <button type="button" data-step="6" class="future">+6h</button>
+        <button type="button" data-step="12" class="future">+12h</button>
+        <button type="button" data-step="24" class="future">+24h</button>
+      </div>
+      <span id="timeline-note" class="note"></span>
+    </div>
+
+    <div class="main">
+      <div id="map" class="map" aria-label="Wildfire map"></div>
+
+      <aside class="sidebar">
+        <section id="nearest-panel" class="panel" hidden>
+          <div class="panel-head">
+            <h2>Nearest to you</h2>
+            <button type="button" id="nearest-close" class="close" aria-label="Dismiss">×</button>
+          </div>
+          <p id="nearest-body"></p>
+        </section>
+
+        <section id="alerts-panel" class="panel alerts" hidden>
+          <h2>Impact alerts</h2>
+          <p class="hint">Fires within 10 km of a town.</p>
+          <ul id="alerts-list" class="row-list"></ul>
+        </section>
+
+        <section class="panel">
+          <h2>Legend</h2>
+          <div id="legend"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Selected fire</h2>
+          <div id="detail"><p class="hint">Click a hotspot on the map or in the table.</p></div>
+        </section>
+
+        <section class="panel">
+          <h2>Active fires</h2>
+          <table class="fires-table">
+            <thead><tr><th>Location</th><th>Conf.</th><th>FRP</th><th>Age</th><th>MTG</th></tr></thead>
+            <tbody id="fires-body"></tbody>
+          </table>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <p class="sources-static">Sources: Deepfire hotspots · EUMETSAT MTG · Google WeatherNext · ELMFIRE simulation · Catalan GIS (protected areas, population). <strong>Demo:</strong> fires and weather are simulated, not real. In an emergency, call 112.</p>
+      <p id="freshness" class="freshness"></p>
+      <p id="deploy-line" class="deploy-line"></p>
+      <p><a href="../">All web projects</a></p>
+    </footer>
+  </div>
+
+  <dialog id="sources-dialog" class="dialog">
+    <form method="dialog">
+      <h2>Data sources</h2>
+      <p class="warning"><strong>This is a demo.</strong> Every fire, detection and weather reading is invented. The towns and protected areas are real places with rough outlines. Do not use this page to make safety decisions.</p>
+      <dl>
+        <dt>Deepfire</dt>
+        <dd>The base hotspot layer. Near real-time, one point per detection. Circle size is fire radiative power (FRP, in megawatts); colour is detection confidence.</dd>
+        <dt>MTG (Meteosat Third Generation), every 10 minutes</dt>
+        <dd>Cross-checks Deepfire. A green ring means MTG saw the same fire; a dashed marker is a detection MTG made that Deepfire has not confirmed. Its 10-minute series is what makes the past steps of the timeline possible: they are estimates rebuilt from that series, not live readings.</dd>
+        <dt>Google WeatherNext</dt>
+        <dd>Wind arrows, the fire-weather danger level (from wind, temperature and humidity), and the direction the forecast spread leans in.</dd>
+        <dt>ELMFIRE</dt>
+        <dd>A computed simulation, not a feed. The forecast outline is stretched along the wind; the dashed outline around it is the uncertainty. It is always labelled with the time of the model run.</dd>
+        <dt>Catalan GIS (static)</dt>
+        <dd>Protected natural areas and population centres. They power the impact alerts and the nearest-town facts. Never real-time.</dd>
+        <dt>Pyronear (not used)</dt>
+        <dd>Left out on purpose. The public dataset is training imagery, not a live feed. It would add value only with a live camera network, which this page does not assume.</dd>
+        <dt>Base map</dt>
+        <dd>© OpenStreetMap contributors, drawn with Leaflet.</dd>
+      </dl>
+      <button type="submit">Close</button>
+    </form>
+  </dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
