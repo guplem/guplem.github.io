@@ -142,64 +142,9 @@
   fill: var(--ink-soft);
 }
 
-.then-now .pages rect {
-  fill: #e7e0d2;
-  stroke: var(--rule);
-}
-
-.then-now .page-good {
-  fill: var(--accent) !important;
-  stroke: var(--accent) !important;
-}
-
-.then-now .funnel {
-  fill: #ddd4c2;
-  stroke: var(--rule);
-}
-
-.then-now .funnel-label {
-  font-size: 12px;
-  font-weight: 600;
-  fill: var(--ink);
-}
-
-.then-now .results rect {
-  fill: #cfc6b3;
-}
-
 .then-now .divider {
   stroke: var(--rule);
   stroke-dasharray: 4 6;
-}
-
-.then-now .model {
-  fill: var(--accent-secondary);
-}
-
-.then-now .model-label {
-  fill: white;
-}
-
-.then-now .threads path {
-  fill: none;
-  stroke: #b9ae97;
-  stroke-width: 1.5;
-}
-
-.then-now .thread-good {
-  stroke: var(--accent) !important;
-  stroke-width: 2.5 !important;
-}
-
-.then-now .questions circle {
-  fill: white;
-  stroke: #b9ae97;
-  stroke-width: 1.5;
-}
-
-.then-now .question-good {
-  fill: var(--accent) !important;
-  stroke: var(--accent) !important;
 }
 
 /* === Lists and the short version === */
@@ -359,55 +304,182 @@
   }
 }
 
-/* === The then/now diagram, animated ===
-   One 9 s cycle. Then: the honest page falls into the funnel and fades
-   (5-34%), while the ten winners appear (22-26%). Now: a thread draws from
-   each page to its question (42-52%, one after another), the honest one last.
-   Everything clears at the end of the cycle. */
-.then-now .page-falling {
+/* === The then/now diagram: a results page, then a model's answer ===
+   One 10 s cycle. Then: the ten links appear one by one (0-20%), and the
+   honest fix appears faded far below them (26-30%). Now: the question
+   arrives (34%), the model reads six pages in turn (38-52%) and the honest one
+   stays lit, a thread draws to the citation (54-60%), the answer's lines appear
+   (58-70%), and the citation chip lands (72%). Everything clears at the end. */
+.then-now .window {
+  fill: white;
+  stroke: var(--rule);
+}
+
+.then-now .window-dot {
+  fill: var(--rule);
+}
+
+.then-now .search-box {
+  fill: var(--paper);
+  stroke: var(--rule);
+}
+
+.then-now .search-text {
+  font-size: 11px;
+  fill: var(--ink-soft);
+}
+
+.then-now .rank {
+  font-size: 10px;
+  fill: var(--ink-soft);
+}
+
+.then-now .result-title {
+  fill: var(--accent-secondary);
+  opacity: 0.75;
+}
+
+.then-now .result-url {
+  fill: #b9ae97;
+}
+
+.then-now .honest-bar {
   fill: var(--accent);
+}
+
+.then-now .rank-honest,
+.then-now .honest-label {
+  font-size: 11px;
+  fill: var(--accent);
+  font-weight: 600;
+}
+
+.then-now .bubble-user {
+  fill: var(--accent-secondary);
+}
+
+.then-now .bubble-text {
+  font-size: 12px;
+  fill: white;
+}
+
+.then-now .source {
+  fill: #e7e0d2;
+  stroke: var(--rule);
+}
+
+.then-now .citation-thread {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.then-now .bubble-answer {
+  fill: var(--paper-deep);
+}
+
+.then-now .answer-lines rect {
+  fill: #cfc6b3;
+}
+
+.then-now .citation-chip {
+  fill: white;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.then-now .citation-text {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--accent);
+}
+
+.then-now .result {
   opacity: 0;
-  animation: page-falls 9s ease-in infinite;
+  animation: then-appears 10s linear infinite;
 }
 
-@keyframes page-falls {
-  0%, 5% { opacity: 0; transform: translate(0, 0); }
-  8% { opacity: 1; transform: translate(0, 0); }
-  28% { opacity: 1; transform: translate(26px, 78px); }
-  34%, 100% { opacity: 0; transform: translate(26px, 78px); }
-}
+.then-now .result:nth-child(2) { animation-delay: 0.12s; }
+.then-now .result:nth-child(3) { animation-delay: 0.24s; }
+.then-now .result:nth-child(4) { animation-delay: 0.36s; }
+.then-now .result:nth-child(5) { animation-delay: 0.48s; }
+.then-now .result:nth-child(6) { animation-delay: 0.6s; }
+.then-now .result:nth-child(7) { animation-delay: 0.72s; }
+.then-now .result:nth-child(8) { animation-delay: 0.84s; }
+.then-now .result:nth-child(9) { animation-delay: 0.96s; }
+.then-now .result:nth-child(10) { animation-delay: 1.08s; }
 
-.then-now .results rect {
-  opacity: 0;
-  animation: result-appears 9s linear infinite;
-}
-
-.then-now .results rect:nth-child(2) { animation-delay: 0.3s; }
-.then-now .results rect:nth-child(3) { animation-delay: 0.6s; }
-.then-now .results rect:nth-child(4) { animation-delay: 0.9s; }
-
-@keyframes result-appears {
-  0%, 22% { opacity: 0; }
-  26%, 92% { opacity: 1; }
+@keyframes then-appears {
+  0%, 2% { opacity: 0; }
+  5%, 93% { opacity: 1; }
   98%, 100% { opacity: 0; }
 }
 
-.then-now .threads path {
-  stroke-dasharray: 110;
-  stroke-dashoffset: 110;
-  animation: thread-draws 9s ease-out infinite;
+.then-now .honest-result {
+  opacity: 0;
+  animation: honest-appears 10s linear infinite;
 }
 
-.then-now .threads path:nth-child(2) { animation-delay: 0.35s; }
-.then-now .threads path:nth-child(4) { animation-delay: 0.7s; }
-.then-now .threads path:nth-child(5) { animation-delay: 1.05s; }
-.then-now .threads path:nth-child(6) { animation-delay: 1.4s; }
-.then-now .threads path:nth-child(3) { animation-delay: 1.9s; }
+@keyframes honest-appears {
+  0%, 26% { opacity: 0; }
+  30%, 93% { opacity: 0.55; }
+  98%, 100% { opacity: 0; }
+}
 
-@keyframes thread-draws {
-  0%, 42% { stroke-dashoffset: 110; }
-  52%, 92% { stroke-dashoffset: 0; }
-  98%, 100% { stroke-dashoffset: 110; }
+/* Each step appears at its own moment and holds until the whole picture
+   clears at 93-98%. One keyframe rule per step, all on the same 10 s clock
+   with no delay, so the steps cannot drift apart. */
+.then-now .question { opacity: 0; animation: shows-at-34 10s linear infinite; }
+.then-now .answer-lines rect:nth-child(1) { opacity: 0; animation: shows-at-58 10s linear infinite; }
+.then-now .answer-lines rect:nth-child(2) { opacity: 0; animation: shows-at-61 10s linear infinite; }
+.then-now .answer-lines rect:nth-child(3) { opacity: 0; animation: shows-at-64 10s linear infinite; }
+.then-now .answer-lines rect:nth-child(4) { opacity: 0; animation: shows-at-67 10s linear infinite; }
+.then-now .citation { opacity: 0; animation: shows-at-72 10s linear infinite; }
+
+@keyframes shows-at-34 { 0%, 34% { opacity: 0; } 37%, 93% { opacity: 1; } 98%, 100% { opacity: 0; } }
+@keyframes shows-at-58 { 0%, 58% { opacity: 0; } 60%, 93% { opacity: 1; } 98%, 100% { opacity: 0; } }
+@keyframes shows-at-61 { 0%, 61% { opacity: 0; } 63%, 93% { opacity: 1; } 98%, 100% { opacity: 0; } }
+@keyframes shows-at-64 { 0%, 64% { opacity: 0; } 66%, 93% { opacity: 1; } 98%, 100% { opacity: 0; } }
+@keyframes shows-at-67 { 0%, 67% { opacity: 0; } 69%, 93% { opacity: 1; } 98%, 100% { opacity: 0; } }
+@keyframes shows-at-72 { 0%, 72% { opacity: 0; } 75%, 93% { opacity: 1; } 98%, 100% { opacity: 0; } }
+
+.then-now .source {
+  animation: source-read 10s linear infinite;
+}
+
+.then-now .source:nth-child(1) { animation-delay: 3.8s; }
+.then-now .source:nth-child(2) { animation-delay: 4.05s; }
+.then-now .source:nth-child(4) { animation-delay: 4.3s; }
+.then-now .source:nth-child(5) { animation-delay: 4.55s; }
+.then-now .source:nth-child(6) { animation-delay: 4.8s; }
+
+@keyframes source-read {
+  0% { fill: #e7e0d2; }
+  3% { fill: #c9bfa9; }
+  8%, 100% { fill: #e7e0d2; }
+}
+
+.then-now .source-honest {
+  animation: source-honest 10s linear infinite;
+}
+
+@keyframes source-honest {
+  0%, 50% { fill: #e7e0d2; stroke: var(--rule); }
+  53%, 93% { fill: var(--accent); stroke: var(--accent); }
+  98%, 100% { fill: #e7e0d2; stroke: var(--rule); }
+}
+
+.then-now .citation-thread {
+  stroke-dashoffset: 0;
+  opacity: 0;
+  animation: thread-shows 10s linear infinite;
+}
+
+@keyframes thread-shows {
+  0%, 54% { opacity: 0; }
+  60%, 93% { opacity: 1; }
+  98%, 100% { opacity: 0; }
 }
 
 /* === One post, three readers ===
@@ -509,25 +581,81 @@
   66%, 100% { offset-distance: 100%; opacity: 0; }
 }
 
+.readers .switch-label {
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+
+.readers .switch-note {
+  font-size: 13px;
+  fill: var(--ink-soft);
+}
+
+.readers .switch-track {
+  animation: switch-track 6s steps(1) infinite;
+}
+
+.readers .switch-knob {
+  fill: white;
+  stroke: var(--rule);
+  animation: switch-knob 6s ease-in-out infinite;
+}
+
+/* The switch flips every 3 s; nothing else in the drawing reacts to it. */
+@keyframes switch-track {
+  0%, 49.9% { fill: var(--accent-secondary); }
+  50%, 100% { fill: #cfc6b3; }
+}
+
+@keyframes switch-knob {
+  0%, 45% { transform: translate(26px, 0); }
+  50%, 95% { transform: translate(0, 0); }
+  100% { transform: translate(26px, 0); }
+}
+
 .after-readers {
   margin-top: var(--sp-md);
 }
 
-/* A reader who asks for less motion gets the finished pictures: no falling
-   page, every result and thread drawn, no moving dots. */
+/* A reader who asks for less motion gets the finished pictures: every link,
+   the honest fix, the answer and its citation shown; no moving dots. */
 @media (prefers-reduced-motion: reduce) {
-  .then-now .page-falling,
   .readers .packet {
     animation: none;
     opacity: 0;
   }
 
-  .then-now .results rect,
-  .then-now .threads path,
-  .readers .part {
+  .then-now .result,
+  .then-now .question,
+  .then-now .answer-lines rect,
+  .then-now .citation,
+  .then-now .citation-thread,
+  .then-now .source,
+  .readers .part,
+  .readers .switch-track,
+  .readers .switch-knob {
     animation: none;
     opacity: 1;
-    stroke-dashoffset: 0;
+  }
+
+  .then-now .honest-result {
+    animation: none;
+    opacity: 0.55;
+  }
+
+  .then-now .source-honest {
+    animation: none;
+    fill: var(--accent);
+    stroke: var(--accent);
+  }
+
+  .readers .switch-track {
+    fill: var(--accent-secondary);
+  }
+
+  .readers .switch-knob {
+    transform: translate(26px, 0);
   }
 }
 

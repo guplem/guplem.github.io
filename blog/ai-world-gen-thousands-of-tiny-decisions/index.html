@@ -533,11 +533,11 @@
 
       <section>
         <h2 id="how-the-generator-evolved"><a class="heading-anchor" href="#how-the-generator-evolved">How the generator evolved</a></h2>
-        <p>Each chart below is one specification. Each point is the mean score of one version over the same 38 seeds. The exact numbers are in <a href="#the-numbers">the table at the end</a>.</p>
+        <p>Each chart below is one specification. Each point is the mean score of one version over the same 38 seeds. The exact numbers are in the folded table under the charts.</p>
         <p>The solid orange line is <span class="m-cell">cell by cell</span>, and it is the main story. The two dashed lines are the two other ways to fill the map, which I tried after the last version. <span class="m-llm">LLM</span> (green squares): a language model draws the whole map in one answer. <span class="m-batch">Batched</span> (blue diamonds): Jev gets the questions for all the cells in one request. I ran both with the code of five versions (v1, v4, v7, v8 and v11). So each dashed point shows what that method did with what <span class="m-cell">cell by cell</span> knew at that version. <a href="#the-same-maps-one-call-each">Their own sections</a> come later. Hover a version to read its values.</p>
 
         <div class="small-multiples">
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Structures: cell by cell goes from 0.18 to 0.98 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.92, 0.91, 0.92, 0.94, 0.94. Dashed, batched, with the same five: 0.58, 0.78, 0.64, 0.98, 0.97." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-labelledby="chart-1-title chart-1-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-1-title">Structures, by version: cell by cell, LLM and batched</title><desc id="chart-1-desc">Structures: cell by cell goes from 0.18 to 0.98 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.92, 0.91, 0.92, 0.94, 0.94. Dashed, batched, with the same five: 0.58, 0.78, 0.64, 0.98, 0.97.</desc>
 <text x="28" y="14" class="mini-title">Structures</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.18 → 0.98</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -563,7 +563,7 @@
 <g class="col"><rect x="200.9" y="20" width="18.2" height="92" class="col-hit" /><line x1="210.0" y1="24" x2="210.0" y2="108" class="col-guide" /><circle cx="210.0" cy="27.6" r="3.6" class="col-dot col-dot-loop" /><rect x="206.8" y="27.6" width="6.4" height="6.4" class="col-dot col-dot-llm" /><polygon points="210.0,24.0 214.2,28.2 210.0,32.4 205.8,28.2" class="col-dot col-dot-batch" /><g class="col-tip"><rect x="120.0" y="63.0" width="84" height="42.0" rx="3" class="tip-box" /><text x="124.0" y="74.0" class="tip-head">v11</text><text x="124.0" y="83.0" class="tip-loop">cell by cell</text><text x="200.0" y="83.0" class="tip-loop" text-anchor="end">0.98</text><text x="124.0" y="92.0" class="tip-llm">LLM</text><text x="200.0" y="92.0" class="tip-llm" text-anchor="end">0.94</text><text x="124.0" y="101.0" class="tip-batch">batched</text><text x="200.0" y="101.0" class="tip-batch" text-anchor="end">0.97</text></g></g>
 </g>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Paths: cell by cell goes from 0.74 to 0.77 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.75, 0.79, 0.76, 0.76, 0.75. Dashed, batched, with the same five: 0.61, 0.55, 0.57, 0.66, 0.47." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-labelledby="chart-2-title chart-2-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-2-title">Paths, by version: cell by cell, LLM and batched</title><desc id="chart-2-desc">Paths: cell by cell goes from 0.74 to 0.77 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.75, 0.79, 0.76, 0.76, 0.75. Dashed, batched, with the same five: 0.61, 0.55, 0.57, 0.66, 0.47.</desc>
 <text x="28" y="14" class="mini-title">Paths</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.74 → 0.77</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -589,7 +589,7 @@
 <g class="col"><rect x="200.9" y="20" width="18.2" height="92" class="col-hit" /><line x1="210.0" y1="24" x2="210.0" y2="108" class="col-guide" /><circle cx="210.0" cy="44.9" r="3.6" class="col-dot col-dot-loop" /><rect x="206.8" y="42.9" width="6.4" height="6.4" class="col-dot col-dot-llm" /><polygon points="210.0,65.6 214.2,69.8 210.0,74.0 205.8,69.8" class="col-dot col-dot-batch" /><g class="col-tip"><rect x="120.0" y="24.0" width="84" height="42.0" rx="3" class="tip-box" /><text x="124.0" y="35.0" class="tip-head">v11</text><text x="124.0" y="44.0" class="tip-loop">cell by cell</text><text x="200.0" y="44.0" class="tip-loop" text-anchor="end">0.77</text><text x="124.0" y="53.0" class="tip-llm">LLM</text><text x="200.0" y="53.0" class="tip-llm" text-anchor="end">0.75</text><text x="124.0" y="62.0" class="tip-batch">batched</text><text x="200.0" y="62.0" class="tip-batch" text-anchor="end">0.47</text></g></g>
 </g>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Reachable: cell by cell goes from 0.69 to 0.88 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.87, 0.89, 0.90, 0.82, 0.85. Dashed, batched, with the same five: 0.79, 0.79, 0.80, 0.85, 0.87." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-labelledby="chart-3-title chart-3-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-3-title">Reachable, by version: cell by cell, LLM and batched</title><desc id="chart-3-desc">Reachable: cell by cell goes from 0.69 to 0.88 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.87, 0.89, 0.90, 0.82, 0.85. Dashed, batched, with the same five: 0.79, 0.79, 0.80, 0.85, 0.87.</desc>
 <text x="28" y="14" class="mini-title">Reachable</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.69 → 0.88</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -615,7 +615,7 @@
 <g class="col"><rect x="200.9" y="20" width="18.2" height="92" class="col-hit" /><line x1="210.0" y1="24" x2="210.0" y2="108" class="col-guide" /><circle cx="210.0" cy="35.8" r="3.6" class="col-dot col-dot-loop" /><rect x="206.8" y="35.4" width="6.4" height="6.4" class="col-dot col-dot-llm" /><polygon points="210.0,32.5 214.2,36.7 210.0,40.9 205.8,36.7" class="col-dot col-dot-batch" /><g class="col-tip"><rect x="120.0" y="63.0" width="84" height="42.0" rx="3" class="tip-box" /><text x="124.0" y="74.0" class="tip-head">v11</text><text x="124.0" y="83.0" class="tip-loop">cell by cell</text><text x="200.0" y="83.0" class="tip-loop" text-anchor="end">0.88</text><text x="124.0" y="92.0" class="tip-llm">LLM</text><text x="200.0" y="92.0" class="tip-llm" text-anchor="end">0.85</text><text x="124.0" y="101.0" class="tip-batch">batched</text><text x="200.0" y="101.0" class="tip-batch" text-anchor="end">0.87</text></g></g>
 </g>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Reads as a place: cell by cell goes from 0.48 to 0.88 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.65, 0.66, 0.62, 0.78, 0.74. Dashed, batched, with the same five: 0.45, 0.38, 0.39, 0.87, 0.91." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-labelledby="chart-4-title chart-4-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-4-title">Reads as a place, by version: cell by cell, LLM and batched</title><desc id="chart-4-desc">Reads as a place: cell by cell goes from 0.48 to 0.88 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.65, 0.66, 0.62, 0.78, 0.74. Dashed, batched, with the same five: 0.45, 0.38, 0.39, 0.87, 0.91.</desc>
 <text x="28" y="14" class="mini-title">Reads as a place</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.48 → 0.88</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -641,7 +641,7 @@
 <g class="col"><rect x="200.9" y="20" width="18.2" height="92" class="col-hit" /><line x1="210.0" y1="24" x2="210.0" y2="108" class="col-guide" /><circle cx="210.0" cy="35.8" r="3.6" class="col-dot col-dot-loop" /><rect x="206.8" y="44.5" width="6.4" height="6.4" class="col-dot col-dot-llm" /><polygon points="210.0,29.4 214.2,33.6 210.0,37.8 205.8,33.6" class="col-dot col-dot-batch" /><g class="col-tip"><rect x="120.0" y="63.0" width="84" height="42.0" rx="3" class="tip-box" /><text x="124.0" y="74.0" class="tip-head">v11</text><text x="124.0" y="83.0" class="tip-loop">cell by cell</text><text x="200.0" y="83.0" class="tip-loop" text-anchor="end">0.88</text><text x="124.0" y="92.0" class="tip-llm">LLM</text><text x="200.0" y="92.0" class="tip-llm" text-anchor="end">0.74</text><text x="124.0" y="101.0" class="tip-batch">batched</text><text x="200.0" y="101.0" class="tip-batch" text-anchor="end">0.91</text></g></g>
 </g>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Rules hold: the typed rules it checks start at v7, so there is no score before it; cell by cell holds 0.98 to 0.99 from v7 to v11. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: no score, no score, 0.80, 0.76, 0.76. Dashed, batched, with the same five: no score, no score, 0.94, 0.99, 0.83." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-labelledby="chart-5-title chart-5-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-5-title">Rules hold, by version: cell by cell, LLM and batched</title><desc id="chart-5-desc">Rules hold: the typed rules it checks start at v7, so there is no score before it; cell by cell holds 0.98 to 0.99 from v7 to v11. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: no score, no score, 0.80, 0.76, 0.76. Dashed, batched, with the same five: no score, no score, 0.94, 0.99, 0.83.</desc>
 <text x="28" y="14" class="mini-title">Rules hold</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">v7 → v11: 0.99</text>
 <text x="73.5" y="70" class="tick mini-gap" text-anchor="middle">no data</text>
@@ -663,7 +663,7 @@
 </g>
 <g class="why"><title>Why v1 to v6 have no data: typed rules came with v7, so before it there was nothing for this score to check.</title><circle cx="94" cy="10.5" r="5" class="why-mark" /><text x="94" y="13.3" class="why-q" text-anchor="middle">?</text><g class="why-tip"><rect x="28" y="19" width="140" height="30" rx="3" class="tip-box" /><text x="33" y="30" class="why-text">Typed rules came with v7.</text><text x="33" y="41" class="why-text">Before it, nothing to check.</text></g></g>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Routes to doors: cell by cell goes from 1.00 to 0.82 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.54, 0.51, 0.65, 0.65, 0.61. Dashed, batched, with the same five: 1.00, 0.79, 0.64, 0.82, 0.78." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-labelledby="chart-6-title chart-6-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-6-title">Routes to doors, by version: cell by cell, LLM and batched</title><desc id="chart-6-desc">Routes to doors: cell by cell goes from 1.00 to 0.82 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.54, 0.51, 0.65, 0.65, 0.61. Dashed, batched, with the same five: 1.00, 0.79, 0.64, 0.82, 0.78.</desc>
 <text x="28" y="14" class="mini-title">Routes to doors</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">1.00 → 0.82</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -689,7 +689,7 @@
 <g class="col"><rect x="200.9" y="20" width="18.2" height="92" class="col-hit" /><line x1="210.0" y1="24" x2="210.0" y2="108" class="col-guide" /><circle cx="210.0" cy="40.8" r="3.6" class="col-dot col-dot-loop" /><rect x="206.8" y="54.4" width="6.4" height="6.4" class="col-dot col-dot-llm" /><polygon points="210.0,40.2 214.2,44.4 210.0,48.6 205.8,44.4" class="col-dot col-dot-batch" /><g class="col-tip"><rect x="120.0" y="63.0" width="84" height="42.0" rx="3" class="tip-box" /><text x="124.0" y="74.0" class="tip-head">v11</text><text x="124.0" y="83.0" class="tip-loop">cell by cell</text><text x="200.0" y="83.0" class="tip-loop" text-anchor="end">0.82</text><text x="124.0" y="92.0" class="tip-llm">LLM</text><text x="200.0" y="92.0" class="tip-llm" text-anchor="end">0.61</text><text x="124.0" y="101.0" class="tip-batch">batched</text><text x="200.0" y="101.0" class="tip-batch" text-anchor="end">0.78</text></g></g>
 </g>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Landmarks: cell by cell goes from 0.07 to 0.83 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.91, 0.93, 0.90, 0.84, 0.90. Dashed, batched, with the same five: 0.21, 0.70, 0.47, 0.71, 0.66." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-labelledby="chart-7-title chart-7-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-7-title">Landmarks, by version: cell by cell, LLM and batched</title><desc id="chart-7-desc">Landmarks: cell by cell goes from 0.07 to 0.83 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.91, 0.93, 0.90, 0.84, 0.90. Dashed, batched, with the same five: 0.21, 0.70, 0.47, 0.71, 0.66.</desc>
 <text x="28" y="14" class="mini-title">Landmarks</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.07 → 0.83</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -715,7 +715,7 @@
 <g class="col"><rect x="200.9" y="20" width="18.2" height="92" class="col-hit" /><line x1="210.0" y1="24" x2="210.0" y2="108" class="col-guide" /><circle cx="210.0" cy="39.9" r="3.6" class="col-dot col-dot-loop" /><rect x="206.8" y="31.1" width="6.4" height="6.4" class="col-dot col-dot-llm" /><polygon points="210.0,50.1 214.2,54.3 210.0,58.5 205.8,54.3" class="col-dot col-dot-batch" /><g class="col-tip"><rect x="120.0" y="63.0" width="84" height="42.0" rx="3" class="tip-box" /><text x="124.0" y="74.0" class="tip-head">v11</text><text x="124.0" y="83.0" class="tip-loop">cell by cell</text><text x="200.0" y="83.0" class="tip-loop" text-anchor="end">0.83</text><text x="124.0" y="92.0" class="tip-llm">LLM</text><text x="200.0" y="92.0" class="tip-llm" text-anchor="end">0.90</text><text x="124.0" y="101.0" class="tip-batch">batched</text><text x="200.0" y="101.0" class="tip-batch" text-anchor="end">0.66</text></g></g>
 </g>
 </svg>
-<svg viewBox="0 0 220 130" class="mini" role="img" aria-label="Judge (GPT-5.2): cell by cell goes from 0.09 to 0.69 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.68, 0.68, 0.68, 0.65, 0.65. Dashed, batched, with the same five: 0.20, 0.32, 0.25, 0.57, 0.57." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 220 130" class="mini" role="img" aria-labelledby="chart-8-title chart-8-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-8-title">Judge (GPT-5.2), by version: cell by cell, LLM and batched</title><desc id="chart-8-desc">Judge (GPT-5.2): cell by cell goes from 0.09 to 0.69 over the eleven versions. Dashed, LLM, with the code of v1, v4, v7, v8 and v11: 0.68, 0.68, 0.68, 0.65, 0.65. Dashed, batched, with the same five: 0.20, 0.32, 0.25, 0.57, 0.57.</desc>
 <text x="28" y="14" class="mini-title">Judge (GPT-5.2)</text>
 <text x="210" y="14" class="mini-delta" text-anchor="end">0.09 → 0.69</text>
 <line x1="28" y1="87.5" x2="210" y2="87.5" class="grid" /><line x1="28" y1="67.0" x2="210" y2="67.0" class="grid" /><line x1="28" y1="46.5" x2="210" y2="46.5" class="grid" />
@@ -742,6 +742,38 @@
 </g>
 </svg>
         </div>
+        <details class="numbers-fold">
+          <summary>The numbers behind the charts</summary>
+          <div class="table-scroll">
+          <table class="scores">
+            <caption>Mean score per specification over the same 38 test cases, for every run. A dash is a version with no typed rules to check.</caption>
+<thead><tr><th scope="col">Run</th><th scope="col">Structures</th><th scope="col">Paths</th><th scope="col">Reachable</th><th scope="col">Reads as a place</th><th scope="col">Rules hold</th><th scope="col">Routes to doors</th><th scope="col">Landmarks</th><th scope="col">Judge (GPT-5.2)</th></tr></thead>
+<tbody>
+<tr class="run-loop"><th scope="row">v1, <span class="m-cell">cell by cell</span></th><td>0.18</td><td>0.74</td><td>0.69</td><td>0.48</td><td>&ndash;</td><td>1.00</td><td>0.07</td><td>0.09</td></tr>
+<tr class="run-loop"><th scope="row">v2, <span class="m-cell">cell by cell</span></th><td>0.39</td><td>0.53</td><td>0.75</td><td>0.43</td><td>&ndash;</td><td>0.77</td><td>0.61</td><td>0.24</td></tr>
+<tr class="run-loop"><th scope="row">v3, <span class="m-cell">cell by cell</span></th><td>0.68</td><td>0.66</td><td>0.82</td><td>0.50</td><td>&ndash;</td><td>0.62</td><td>0.79</td><td>0.45</td></tr>
+<tr class="run-loop"><th scope="row">v4, <span class="m-cell">cell by cell</span></th><td>0.82</td><td>0.80</td><td>0.77</td><td>0.50</td><td>&ndash;</td><td>0.66</td><td>0.66</td><td>0.48</td></tr>
+<tr class="run-loop"><th scope="row">v5, <span class="m-cell">cell by cell</span></th><td>0.93</td><td>0.82</td><td>0.81</td><td>0.53</td><td>&ndash;</td><td>0.70</td><td>0.76</td><td>0.54</td></tr>
+<tr class="run-loop"><th scope="row">v6, <span class="m-cell">cell by cell</span></th><td>0.95</td><td>0.81</td><td>0.81</td><td>0.51</td><td>&ndash;</td><td>0.60</td><td>0.68</td><td>0.48</td></tr>
+<tr class="run-loop"><th scope="row">v7, <span class="m-cell">cell by cell</span></th><td>0.95</td><td>0.80</td><td>0.82</td><td>0.52</td><td>0.99</td><td>0.61</td><td>0.78</td><td>0.48</td></tr>
+<tr class="run-loop"><th scope="row">v8, <span class="m-cell">cell by cell</span></th><td>0.99</td><td>0.75</td><td>0.84</td><td>0.89</td><td>0.99</td><td>0.78</td><td>0.77</td><td>0.65</td></tr>
+<tr class="run-loop"><th scope="row">v9, <span class="m-cell">cell by cell</span></th><td>0.98</td><td>0.80</td><td>0.87</td><td>0.87</td><td>0.98</td><td>0.87</td><td>0.84</td><td>0.69</td></tr>
+<tr class="run-loop"><th scope="row">v10, <span class="m-cell">cell by cell</span></th><td>0.98</td><td>0.78</td><td>0.87</td><td>0.88</td><td>0.99</td><td>0.86</td><td>0.83</td><td>0.71</td></tr>
+<tr class="run-loop"><th scope="row">v11, <span class="m-cell">cell by cell</span></th><td>0.98</td><td>0.77</td><td>0.88</td><td>0.88</td><td>0.99</td><td>0.82</td><td>0.83</td><td>0.69</td></tr>
+<tr class="run-llm"><th scope="row">v1-llm, <span class="m-llm">LLM</span></th><td>0.92</td><td>0.75</td><td>0.87</td><td>0.65</td><td>&ndash;</td><td>0.54</td><td>0.91</td><td>0.68</td></tr>
+<tr class="run-llm"><th scope="row">v4-llm, <span class="m-llm">LLM</span></th><td>0.91</td><td>0.79</td><td>0.89</td><td>0.66</td><td>&ndash;</td><td>0.51</td><td>0.93</td><td>0.68</td></tr>
+<tr class="run-llm"><th scope="row">v7-llm, <span class="m-llm">LLM</span></th><td>0.92</td><td>0.76</td><td>0.90</td><td>0.62</td><td>0.80</td><td>0.65</td><td>0.90</td><td>0.68</td></tr>
+<tr class="run-llm"><th scope="row">v8-llm, <span class="m-llm">LLM</span></th><td>0.94</td><td>0.76</td><td>0.82</td><td>0.78</td><td>0.76</td><td>0.65</td><td>0.84</td><td>0.65</td></tr>
+<tr class="run-llm"><th scope="row">v11-llm, <span class="m-llm">LLM</span></th><td>0.94</td><td>0.75</td><td>0.85</td><td>0.74</td><td>0.76</td><td>0.61</td><td>0.90</td><td>0.65</td></tr>
+<tr class="run-batch"><th scope="row">v1-batch, <span class="m-batch">batched</span></th><td>0.58</td><td>0.61</td><td>0.79</td><td>0.45</td><td>&ndash;</td><td>1.00</td><td>0.21</td><td>0.20</td></tr>
+<tr class="run-batch"><th scope="row">v4-batch, <span class="m-batch">batched</span></th><td>0.78</td><td>0.55</td><td>0.79</td><td>0.38</td><td>&ndash;</td><td>0.79</td><td>0.70</td><td>0.32</td></tr>
+<tr class="run-batch"><th scope="row">v7-batch, <span class="m-batch">batched</span></th><td>0.64</td><td>0.57</td><td>0.80</td><td>0.39</td><td>0.94</td><td>0.64</td><td>0.47</td><td>0.25</td></tr>
+<tr class="run-batch"><th scope="row">v8-batch, <span class="m-batch">batched</span></th><td>0.98</td><td>0.66</td><td>0.85</td><td>0.87</td><td>0.99</td><td>0.82</td><td>0.71</td><td>0.57</td></tr>
+<tr class="run-batch"><th scope="row">v11-batch, <span class="m-batch">batched</span></th><td>0.97</td><td>0.47</td><td>0.87</td><td>0.91</td><td>0.83</td><td>0.78</td><td>0.66</td><td>0.57</td></tr>
+</tbody>
+          </table>
+          </div>
+        </details>
 
         <p>The judge never sees the metrics, but it agrees with them. Its score goes from 0.09 at version 1 to 0.69 at version 11. It rises most at the same versions where the metrics rise most: versions 2 and 3 (0.09 to 0.45), and version 8, when code started to draw the rooms (0.48 to 0.65).</p>
         <p>The table below shows one version per row: what changed, and the maps it drew. It shows one test case at a time; use the buttons to move to the next one. Under each version where <span class="m-llm">LLM</span> and <span class="m-batch">batched</span> ran, a folded note describes those runs. <a href="#the-shortcuts-at-every-stage"><span class="m-llm">LLM</span> and <span class="m-batch">batched</span>, at every stage</a> has their numbers.</p>
@@ -950,39 +982,12 @@
         <p>The first question: can one answer from a language model replace many small decisions from Jev? In the <span class="m-llm">LLM</span> method, Claude Sonnet 5 draws the whole map in one answer. Its prompt holds everything that <span class="m-cell">cell by cell</span> gives Jev: the tile types and their rules, the rooms of the blueprint, and the rules of a good map. The model answers with one letter per cell. If the answer has the wrong shape, the generator tries again, up to three attempts in all. I ran it on the same 38 test cases, as <code>v11-llm</code>.</p>
         <p>One tip before the results: turn the model&rsquo;s thinking off. With thinking on, the first call spent 68 seconds and $0.064 on an 8 by 8 village, and returned nothing.</p>
         <figure class="chart">
-<svg viewBox="0 0 760 300" class="bars" role="img" aria-label="Mean score per specification, v11 (cell by cell) against v11-llm (LLM): Structures 0.98 vs 0.94; Paths 0.77 vs 0.75; Reachable 0.88 vs 0.85; Reads as a place 0.88 vs 0.74; Rules hold 0.99 vs 0.76; Routes to doors 0.82 vs 0.61; Landmarks 0.83 vs 0.90; Judge (GPT-5.2) 0.69 vs 0.65." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 760 300" class="bars" role="img" aria-labelledby="chart-9-title chart-9-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-9-title">Mean score per specification: v11 cell by cell against the v11 LLM run</title><desc id="chart-9-desc">Mean score per specification, v11 (cell by cell) against v11-llm (LLM): Structures 0.98 vs 0.94; Paths 0.77 vs 0.75; Reachable 0.88 vs 0.85; Reads as a place 0.88 vs 0.74; Rules hold 0.99 vs 0.76; Routes to doors 0.82 vs 0.61; Landmarks 0.83 vs 0.90; Judge (GPT-5.2) 0.69 vs 0.65.</desc>
 <text x="34" y="18" class="chart-title">Mean score per specification over the same 38 seeds</text>
 <line x1="34" y1="190.0" x2="750" y2="190.0" class="grid" /><text x="28" y="194.0" class="tick" text-anchor="end">0.25</text><line x1="34" y1="140.0" x2="750" y2="140.0" class="grid" /><text x="28" y="144.0" class="tick" text-anchor="end">0.5</text><line x1="34" y1="90.0" x2="750" y2="90.0" class="grid" /><text x="28" y="94.0" class="tick" text-anchor="end">0.75</text><line x1="34" y1="40.0" x2="750" y2="40.0" class="grid" /><text x="28" y="44.0" class="tick" text-anchor="end">1</text><rect x="47.4" y="43.7" width="28.6" height="196.3" class="bar bar-jev" /><text x="61.7" y="39.7" class="bar-value" text-anchor="middle">0.98</text><rect x="79.1" y="51.6" width="28.6" height="188.4" class="bar bar-whole" /><text x="93.4" y="47.6" class="bar-value" text-anchor="middle">0.94</text><text x="78.8" y="262" class="tick" text-anchor="middle">Structures</text><rect x="136.9" y="85.6" width="28.6" height="154.4" class="bar bar-jev" /><text x="151.2" y="81.6" class="bar-value" text-anchor="middle">0.77</text><rect x="168.6" y="89.1" width="28.6" height="150.9" class="bar bar-whole" /><text x="182.9" y="85.1" class="bar-value" text-anchor="middle">0.75</text><text x="168.2" y="262" class="tick" text-anchor="middle">Paths</text><rect x="226.4" y="63.7" width="28.6" height="176.3" class="bar bar-jev" /><text x="240.7" y="59.7" class="bar-value" text-anchor="middle">0.88</text><rect x="258.1" y="70.8" width="28.6" height="169.2" class="bar bar-whole" /><text x="272.4" y="66.8" class="bar-value" text-anchor="middle">0.85</text><text x="257.8" y="262" class="tick" text-anchor="middle">Reachable</text><rect x="315.9" y="64.4" width="28.6" height="175.6" class="bar bar-jev" /><text x="330.2" y="60.4" class="bar-value" text-anchor="middle">0.88</text><rect x="347.6" y="92.8" width="28.6" height="147.2" class="bar bar-whole" /><text x="361.9" y="88.8" class="bar-value" text-anchor="middle">0.74</text><text x="347.2" y="262" class="tick" text-anchor="middle">Reads as a place</text><rect x="405.4" y="41.4" width="28.6" height="198.6" class="bar bar-jev" /><text x="419.7" y="37.4" class="bar-value" text-anchor="middle">0.99</text><rect x="437.1" y="87.1" width="28.6" height="152.9" class="bar bar-whole" /><text x="451.4" y="83.1" class="bar-value" text-anchor="middle">0.76</text><text x="436.8" y="262" class="tick" text-anchor="middle">Rules hold</text><rect x="494.9" y="76.8" width="28.6" height="163.2" class="bar bar-jev" /><text x="509.2" y="72.8" class="bar-value" text-anchor="middle">0.82</text><rect x="526.6" y="117.2" width="28.6" height="122.8" class="bar bar-whole" /><text x="540.9" y="113.2" class="bar-value" text-anchor="middle">0.61</text><text x="526.2" y="262" class="tick" text-anchor="middle">Routes to doors</text><rect x="584.4" y="73.3" width="28.6" height="166.7" class="bar bar-jev" /><text x="598.7" y="69.3" class="bar-value" text-anchor="middle">0.83</text><rect x="616.1" y="60.1" width="28.6" height="179.9" class="bar bar-whole" /><text x="630.4" y="56.1" class="bar-value" text-anchor="middle">0.90</text><text x="615.8" y="262" class="tick" text-anchor="middle">Landmarks</text><rect x="673.9" y="101.2" width="28.6" height="138.8" class="bar bar-jev" /><text x="688.2" y="97.2" class="bar-value" text-anchor="middle">0.69</text><rect x="705.6" y="109.3" width="28.6" height="130.7" class="bar bar-whole" /><text x="719.9" y="105.3" class="bar-value" text-anchor="middle">0.65</text><text x="705.2" y="262" class="tick" text-anchor="middle">Judge (GPT-5.2)</text><rect x="34" y="276" width="12" height="12" class="bar bar-jev" /><text x="50" y="286" class="bar-label">v11: cell by cell (Jev)</text><rect x="294" y="276" width="12" height="12" class="bar bar-whole" /><text x="310" y="286" class="bar-label">v11-llm: LLM (Claude Sonnet 5)</text>
 </svg>
-          <figcaption>The mean score per specification over the same 38 test cases: <span class="m-cell">cell by cell</span> against <span class="m-llm">LLM</span>. The folded table at the end of this section has the same numbers.</figcaption>
+          <figcaption>The mean score per specification over the same 38 test cases: <span class="m-cell">cell by cell</span> against <span class="m-llm">LLM</span>. The folded table below has the same numbers.</figcaption>
         </figure>
-        <div class="pair">
-          <figure>
-            <img src="../../web-projects/ai-world-gen/evaluation/results/v11/large-village-spiral.png" width="768" height="768" loading="lazy" alt="v11, cell by cell: the 16 by 16 village with two cottages, a path along the bottom and trees at the top." />
-            <figcaption>v11, <span class="m-cell">cell by cell</span>: 256 decisions, 78 seconds, $0.023.</figcaption>
-          </figure>
-          <figure>
-            <img src="../../web-projects/ai-world-gen/evaluation/results/v11-llm/large-village-spiral.png" width="768" height="768" loading="lazy" alt="v11-llm, LLM: the same seed with cottages, fields, a river along the east edge, trees and paths." />
-            <figcaption>v11-llm, <span class="m-llm">LLM</span>: 5 seconds, $0.007.</figcaption>
-          </figure>
-        </div>
-        <figure class="chart">
-<svg viewBox="0 0 760 360" class="bars" role="img" aria-label="Cost and time per map: 8 × 8 map, cost: cell by cell $0.005, LLM $0.006; 16 × 16 map, cost: cell by cell $0.023, LLM $0.010; 8 × 8 map, time: cell by cell 22 s, LLM 4 s; 16 × 16 map, time: cell by cell 90 s, LLM 6 s; 38-map run, cost: cell by cell $0.26, LLM $0.25." xmlns="http://www.w3.org/2000/svg">
-<text x="170" y="18" class="chart-title">Cost and time per map (means over the run)</text>
-<text x="160" y="60" class="bar-label" text-anchor="end">8 × 8 map, cost</text><rect x="170" y="34" width="348.4" height="20" class="bar bar-jev" /><text x="524.4" y="49" class="bar-value">$0.005 cell by cell</text><rect x="170" y="60" width="400.0" height="20" class="bar bar-whole" /><text x="576.0" y="75" class="bar-value">$0.006 LLM</text><text x="160" y="120" class="bar-label" text-anchor="end">16 × 16 map, cost</text><rect x="170" y="94" width="400.0" height="20" class="bar bar-jev" /><text x="576.0" y="109" class="bar-value">$0.023 cell by cell</text><rect x="170" y="120" width="173.9" height="20" class="bar bar-whole" /><text x="349.9" y="135" class="bar-value">$0.010 LLM</text><text x="160" y="180" class="bar-label" text-anchor="end">8 × 8 map, time</text><rect x="170" y="154" width="400.0" height="20" class="bar bar-jev" /><text x="576.0" y="169" class="bar-value">22 s cell by cell</text><rect x="170" y="180" width="66.9" height="20" class="bar bar-whole" /><text x="242.9" y="195" class="bar-value">4 s LLM</text><text x="160" y="240" class="bar-label" text-anchor="end">16 × 16 map, time</text><rect x="170" y="214" width="400.0" height="20" class="bar bar-jev" /><text x="576.0" y="229" class="bar-value">90 s cell by cell</text><rect x="170" y="240" width="26.8" height="20" class="bar bar-whole" /><text x="202.8" y="255" class="bar-value">6 s LLM</text><text x="160" y="300" class="bar-label" text-anchor="end">38-map run, cost</text><rect x="170" y="274" width="400.0" height="20" class="bar bar-jev" /><text x="576.0" y="289" class="bar-value">$0.26 cell by cell</text><rect x="170" y="300" width="384.6" height="20" class="bar bar-whole" /><text x="560.6" y="315" class="bar-value">$0.25 LLM</text>
-</svg>
-          <figcaption>The times and the <span class="m-llm">LLM</span> costs are measured. The <span class="m-cell">cell by cell</span> costs are estimates from rebuilt requests, as in the cost section.</figcaption>
-        </figure>
-        <p>What the results show:</p>
-        <ul class="two-ways">
-          <li><strong>Maps: worse where structure matters.</strong> Only 47% of its maps have a closed room (a room with a wall all around it), against 92% for <span class="m-cell">cell by cell</span>. Only 60% of its doors are in a wall, against 87%. When the model writes 256 letters in one answer, it makes small slips: a wall one column off, a door in the grass. <span class="m-cell">Cell by cell</span> cannot slip like this, because code applies the blueprint to every cell.</li>
-          <li><strong>Rules: broken more often</strong> (0.76 against 0.99). Jev is almost never offered a tile that a rule forbids. A language model can write any letter.</li>
-          <li><strong>Landmarks: better</strong> (0.90 against 0.83). A model that sees the whole map places the one well and the one gate.</li>
-          <li><strong>The judge: a tie.</strong> It gives 0.65 against 0.69, a gap smaller than the noise between two runs (0.05).</li>
-          <li><strong>Time: much faster.</strong> A 16 by 16 map takes 6 seconds instead of 90, because 256 requests become one.</li>
-          <li><strong>Money: the same.</strong> The whole run cost $0.25 with the <span class="m-llm">LLM</span> and about $0.26 with <span class="m-cell">cell by cell</span>.</li>
-        </ul>
-        <p>So which one should you use? Use the <span class="m-llm">LLM</span> for a quick map with every landmark in place; it is now an option in the generator&rsquo;s AI Setup. Use <span class="m-cell">cell by cell</span> for rooms that close, doors in walls and rules that never break, and to watch the map fill. The <span class="m-llm">LLM</span> got most of this right on its first try, while <span class="m-cell">cell by cell</span> needed many rounds of tuning and a blueprint drawn by code. Price is not the difference, because both cost the same. The difference is control over each cell.</p>
         <details class="numbers-fold">
           <summary>The numbers behind the chart</summary>
           <div class="table-scroll">
@@ -1002,6 +1007,49 @@
           </table>
           </div>
         </details>
+        <div class="pair">
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v11/large-village-spiral.png" width="768" height="768" loading="lazy" alt="v11, cell by cell: the 16 by 16 village with two cottages, a path along the bottom and trees at the top." />
+            <figcaption>v11, <span class="m-cell">cell by cell</span>: 256 decisions, 78 seconds, $0.023.</figcaption>
+          </figure>
+          <figure>
+            <img src="../../web-projects/ai-world-gen/evaluation/results/v11-llm/large-village-spiral.png" width="768" height="768" loading="lazy" alt="v11-llm, LLM: the same seed with cottages, fields, a river along the east edge, trees and paths." />
+            <figcaption>v11-llm, <span class="m-llm">LLM</span>: 5 seconds, $0.007.</figcaption>
+          </figure>
+        </div>
+        <figure class="chart">
+<svg viewBox="0 0 760 360" class="bars" role="img" aria-labelledby="chart-10-title chart-10-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-10-title">Cost and time per map: cell by cell against the LLM</title><desc id="chart-10-desc">Cost and time per map: 8 × 8 map, cost: cell by cell $0.005, LLM $0.006; 16 × 16 map, cost: cell by cell $0.023, LLM $0.010; 8 × 8 map, time: cell by cell 22 s, LLM 4 s; 16 × 16 map, time: cell by cell 90 s, LLM 6 s; 38-map run, cost: cell by cell $0.26, LLM $0.25.</desc>
+<text x="170" y="18" class="chart-title">Cost and time per map (means over the run)</text>
+<text x="160" y="60" class="bar-label" text-anchor="end">8 × 8 map, cost</text><rect x="170" y="34" width="348.4" height="20" class="bar bar-jev" /><text x="524.4" y="49" class="bar-value">$0.005 cell by cell</text><rect x="170" y="60" width="400.0" height="20" class="bar bar-whole" /><text x="576.0" y="75" class="bar-value">$0.006 LLM</text><text x="160" y="120" class="bar-label" text-anchor="end">16 × 16 map, cost</text><rect x="170" y="94" width="400.0" height="20" class="bar bar-jev" /><text x="576.0" y="109" class="bar-value">$0.023 cell by cell</text><rect x="170" y="120" width="173.9" height="20" class="bar bar-whole" /><text x="349.9" y="135" class="bar-value">$0.010 LLM</text><text x="160" y="180" class="bar-label" text-anchor="end">8 × 8 map, time</text><rect x="170" y="154" width="400.0" height="20" class="bar bar-jev" /><text x="576.0" y="169" class="bar-value">22 s cell by cell</text><rect x="170" y="180" width="66.9" height="20" class="bar bar-whole" /><text x="242.9" y="195" class="bar-value">4 s LLM</text><text x="160" y="240" class="bar-label" text-anchor="end">16 × 16 map, time</text><rect x="170" y="214" width="400.0" height="20" class="bar bar-jev" /><text x="576.0" y="229" class="bar-value">90 s cell by cell</text><rect x="170" y="240" width="26.8" height="20" class="bar bar-whole" /><text x="202.8" y="255" class="bar-value">6 s LLM</text><text x="160" y="300" class="bar-label" text-anchor="end">38-map run, cost</text><rect x="170" y="274" width="400.0" height="20" class="bar bar-jev" /><text x="576.0" y="289" class="bar-value">$0.26 cell by cell</text><rect x="170" y="300" width="384.6" height="20" class="bar bar-whole" /><text x="560.6" y="315" class="bar-value">$0.25 LLM</text>
+</svg>
+          <figcaption>The times and the <span class="m-llm">LLM</span> costs are measured. The <span class="m-cell">cell by cell</span> costs are estimates from rebuilt requests, as in the cost section.</figcaption>
+        </figure>
+        <details class="numbers-fold">
+          <summary>The numbers behind the chart</summary>
+          <div class="table-scroll">
+          <table class="scores">
+            <caption>Cost and time per map, means over the run; cell-by-cell costs are estimates</caption>
+<thead><tr><th scope="col">What</th><th scope="col"><span class="m-cell">cell by cell</span></th><th scope="col"><span class="m-llm">LLM</span></th></tr></thead>
+<tbody>
+<tr><th scope="row">8 × 8 map, cost</th><td>$0.005</td><td>$0.006</td></tr>
+<tr><th scope="row">16 × 16 map, cost</th><td>$0.023</td><td>$0.010</td></tr>
+<tr><th scope="row">8 × 8 map, time</th><td>22 s</td><td>4 s</td></tr>
+<tr><th scope="row">16 × 16 map, time</th><td>90 s</td><td>6 s</td></tr>
+<tr><th scope="row">38-map run, cost</th><td>about $0.26</td><td>$0.25</td></tr>
+</tbody>
+          </table>
+          </div>
+        </details>
+        <p>What the results show:</p>
+        <ul class="two-ways">
+          <li><strong>Maps: worse where structure matters.</strong> Only 47% of its maps have a closed room (a room with a wall all around it), against 92% for <span class="m-cell">cell by cell</span>. Only 60% of its doors are in a wall, against 87%. When the model writes 256 letters in one answer, it makes small slips: a wall one column off, a door in the grass. <span class="m-cell">Cell by cell</span> cannot slip like this, because code applies the blueprint to every cell.</li>
+          <li><strong>Rules: broken more often</strong> (0.76 against 0.99). Jev is almost never offered a tile that a rule forbids. A language model can write any letter.</li>
+          <li><strong>Landmarks: better</strong> (0.90 against 0.83). A model that sees the whole map places the one well and the one gate.</li>
+          <li><strong>The judge: a tie.</strong> It gives 0.65 against 0.69, a gap smaller than the noise between two runs (0.05).</li>
+          <li><strong>Time: much faster.</strong> A 16 by 16 map takes 6 seconds instead of 90, because 256 requests become one.</li>
+          <li><strong>Money: the same.</strong> The whole run cost $0.25 with the <span class="m-llm">LLM</span> and about $0.26 with <span class="m-cell">cell by cell</span>.</li>
+        </ul>
+        <p>So which one should you use? Use the <span class="m-llm">LLM</span> for a quick map with every landmark in place; it is now an option in the generator&rsquo;s AI Setup. Use <span class="m-cell">cell by cell</span> for rooms that close, doors in walls and rules that never break, and to watch the map fill. The <span class="m-llm">LLM</span> got most of this right on its first try, while <span class="m-cell">cell by cell</span> needed many rounds of tuning and a blueprint drawn by code. Price is not the difference, because both cost the same. The difference is control over each cell.</p>
       </section>
 
       <section>
@@ -1011,11 +1059,30 @@
         <p>One request holds at most about 65,000 tokens. To fit a whole 8 by 8 map, I moved the instruction that is the same for every cell into the shared part of the request, so it is sent only once. A 16 by 16 map still needs four or five requests, sent one after another.</p>
         <p>I ran it on the same 38 test cases, as <code>v11-batch</code>. Jev answered all 3,008 questions, and none came back broken.</p>
         <figure class="chart">
-<svg viewBox="0 0 760 300" class="bars" role="img" aria-label="Mean score per specification, v11 (cell by cell) against v11-batch (batched): Structures 0.98 vs 0.97; Paths 0.77 vs 0.47; Reachable 0.88 vs 0.87; Reads as a place 0.88 vs 0.91; Rules hold 0.99 vs 0.83; Routes to doors 0.82 vs 0.78; Landmarks 0.83 vs 0.66; Judge (GPT-5.2) 0.69 vs 0.57." xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 760 300" class="bars" role="img" aria-labelledby="chart-11-title chart-11-desc" xmlns="http://www.w3.org/2000/svg"><title id="chart-11-title">Mean score per specification: v11 cell by cell against the v11 batched run</title><desc id="chart-11-desc">Mean score per specification, v11 (cell by cell) against v11-batch (batched): Structures 0.98 vs 0.97; Paths 0.77 vs 0.47; Reachable 0.88 vs 0.87; Reads as a place 0.88 vs 0.91; Rules hold 0.99 vs 0.83; Routes to doors 0.82 vs 0.78; Landmarks 0.83 vs 0.66; Judge (GPT-5.2) 0.69 vs 0.57.</desc>
 <text x="34" y="18" class="chart-title">Mean score per specification over the same 38 seeds</text><line x1="34" y1="190.0" x2="750" y2="190.0" class="grid" /><text x="28" y="194.0" class="tick" text-anchor="end">0.25</text><line x1="34" y1="140.0" x2="750" y2="140.0" class="grid" /><text x="28" y="144.0" class="tick" text-anchor="end">0.5</text><line x1="34" y1="90.0" x2="750" y2="90.0" class="grid" /><text x="28" y="94.0" class="tick" text-anchor="end">0.75</text><line x1="34" y1="40.0" x2="750" y2="40.0" class="grid" /><text x="28" y="44.0" class="tick" text-anchor="end">1</text><rect x="47.4" y="44.0" width="28.6" height="196.0" class="bar bar-jev" /><text x="61.7" y="40.0" class="bar-value" text-anchor="middle">0.98</text><rect x="79.1" y="46.0" width="28.6" height="194.0" class="bar bar-batch" /><text x="93.4" y="42.0" class="bar-value" text-anchor="middle">0.97</text><text x="78.8" y="262" class="tick" text-anchor="middle">Structures</text><rect x="136.9" y="86.0" width="28.6" height="154.0" class="bar bar-jev" /><text x="151.2" y="82.0" class="bar-value" text-anchor="middle">0.77</text><rect x="168.6" y="146.0" width="28.6" height="94.0" class="bar bar-batch" /><text x="182.9" y="142.0" class="bar-value" text-anchor="middle">0.47</text><text x="168.3" y="262" class="tick" text-anchor="middle">Paths</text><rect x="226.4" y="64.0" width="28.6" height="176.0" class="bar bar-jev" /><text x="240.7" y="60.0" class="bar-value" text-anchor="middle">0.88</text><rect x="258.1" y="66.0" width="28.6" height="174.0" class="bar bar-batch" /><text x="272.4" y="62.0" class="bar-value" text-anchor="middle">0.87</text><text x="257.8" y="262" class="tick" text-anchor="middle">Reachable</text><rect x="315.9" y="64.0" width="28.6" height="176.0" class="bar bar-jev" /><text x="330.2" y="60.0" class="bar-value" text-anchor="middle">0.88</text><rect x="347.6" y="58.0" width="28.6" height="182.0" class="bar bar-batch" /><text x="361.9" y="54.0" class="bar-value" text-anchor="middle">0.91</text><text x="347.3" y="262" class="tick" text-anchor="middle">Reads as a place</text><rect x="405.4" y="42.0" width="28.6" height="198.0" class="bar bar-jev" /><text x="419.7" y="38.0" class="bar-value" text-anchor="middle">0.99</text><rect x="437.1" y="74.0" width="28.6" height="166.0" class="bar bar-batch" /><text x="451.4" y="70.0" class="bar-value" text-anchor="middle">0.83</text><text x="436.8" y="262" class="tick" text-anchor="middle">Rules hold</text><rect x="494.9" y="76.0" width="28.6" height="164.0" class="bar bar-jev" /><text x="509.2" y="72.0" class="bar-value" text-anchor="middle">0.82</text><rect x="526.6" y="84.0" width="28.6" height="156.0" class="bar bar-batch" /><text x="540.9" y="80.0" class="bar-value" text-anchor="middle">0.78</text><text x="526.3" y="262" class="tick" text-anchor="middle">Routes to doors</text><rect x="584.4" y="74.0" width="28.6" height="166.0" class="bar bar-jev" /><text x="598.7" y="70.0" class="bar-value" text-anchor="middle">0.83</text><rect x="616.1" y="108.0" width="28.6" height="132.0" class="bar bar-batch" /><text x="630.4" y="104.0" class="bar-value" text-anchor="middle">0.66</text><text x="615.8" y="262" class="tick" text-anchor="middle">Landmarks</text><rect x="673.9" y="102.0" width="28.6" height="138.0" class="bar bar-jev" /><text x="688.2" y="98.0" class="bar-value" text-anchor="middle">0.69</text><rect x="705.6" y="126.0" width="28.6" height="114.0" class="bar bar-batch" /><text x="719.9" y="122.0" class="bar-value" text-anchor="middle">0.57</text><text x="705.3" y="262" class="tick" text-anchor="middle">Judge (GPT-5.2)</text><rect x="34" y="276" width="12" height="12" class="bar bar-jev" /><text x="50" y="286" class="bar-label">v11: cell by cell (Jev)</text><rect x="294" y="276" width="12" height="12" class="bar bar-batch" /><text x="310" y="286" class="bar-label">v11-batch: batched (Jev)</text>
 </svg>
-          <figcaption>The mean score per specification over the same 38 test cases: <span class="m-cell">cell by cell</span> against <span class="m-batch">batched</span>. The folded table at the end of this section has the same numbers.</figcaption>
+          <figcaption>The mean score per specification over the same 38 test cases: <span class="m-cell">cell by cell</span> against <span class="m-batch">batched</span>. The folded table below has the same numbers.</figcaption>
         </figure>
+        <details class="numbers-fold">
+          <summary>The numbers behind the chart</summary>
+          <div class="table-scroll">
+          <table class="scores">
+            <caption>v11 against v11-batch, mean score per specification over the same 38 seeds</caption>
+<thead><tr><th scope="col">Specification</th><th scope="col">v11, <span class="m-cell">cell by cell</span></th><th scope="col">v11-batch, <span class="m-batch">batched</span></th><th scope="col">Change</th></tr></thead>
+<tbody>
+<tr><th scope="row">Structures</th><td>0.98</td><td>0.97</td><td>-0.01</td></tr>
+<tr><th scope="row">Paths</th><td>0.77</td><td>0.47</td><td class="down">-0.30</td></tr>
+<tr><th scope="row">Reachable</th><td>0.88</td><td>0.87</td><td>-0.01</td></tr>
+<tr><th scope="row">Reads as a place</th><td>0.88</td><td>0.91</td><td>+0.03</td></tr>
+<tr><th scope="row">Rules hold</th><td>0.99</td><td>0.83</td><td class="down">-0.16</td></tr>
+<tr><th scope="row">Routes to doors</th><td>0.82</td><td>0.78</td><td>-0.04</td></tr>
+<tr><th scope="row">Landmarks</th><td>0.83</td><td>0.66</td><td class="down">-0.17</td></tr>
+<tr><th scope="row">Judge (GPT-5.2)</th><td>0.69</td><td>0.57</td><td class="down">-0.12</td></tr>
+</tbody>
+          </table>
+        </div>
+        </details>
         <p>The effect is clearest on one map: the same 16 by 16 mansion, from the same test case, drawn both ways.</p>
         <div class="pair">
           <figure>
@@ -1071,25 +1138,6 @@
         </details>
         <p>So Jev answers a whole map of typed questions in one request, much faster and cheaper. But the maps get worse in exactly the way the design predicts: every decision that needed a neighbour lost it. The judge gives 0.57, against 0.69 for <span class="m-cell">cell by cell</span>.</p>
         <p>A better prompt would not fix this. To make <span class="m-batch">batched</span> work here, the fix would be to move more of what cells now learn from their neighbours into the blueprint, which is drawn before any cell is asked. That is the lesson of version 8 again.</p>
-        <details class="numbers-fold">
-          <summary>The numbers behind the chart</summary>
-          <div class="table-scroll">
-          <table class="scores">
-            <caption>v11 against v11-batch, mean score per specification over the same 38 seeds</caption>
-<thead><tr><th scope="col">Specification</th><th scope="col">v11, <span class="m-cell">cell by cell</span></th><th scope="col">v11-batch, <span class="m-batch">batched</span></th><th scope="col">Change</th></tr></thead>
-<tbody>
-<tr><th scope="row">Structures</th><td>0.98</td><td>0.97</td><td>-0.01</td></tr>
-<tr><th scope="row">Paths</th><td>0.77</td><td>0.47</td><td class="down">-0.30</td></tr>
-<tr><th scope="row">Reachable</th><td>0.88</td><td>0.87</td><td>-0.01</td></tr>
-<tr><th scope="row">Reads as a place</th><td>0.88</td><td>0.91</td><td>+0.03</td></tr>
-<tr><th scope="row">Rules hold</th><td>0.99</td><td>0.83</td><td class="down">-0.16</td></tr>
-<tr><th scope="row">Routes to doors</th><td>0.82</td><td>0.78</td><td>-0.04</td></tr>
-<tr><th scope="row">Landmarks</th><td>0.83</td><td>0.66</td><td class="down">-0.17</td></tr>
-<tr><th scope="row">Judge (GPT-5.2)</th><td>0.69</td><td>0.57</td><td class="down">-0.12</td></tr>
-</tbody>
-          </table>
-        </div>
-        </details>
       </section>
 
       <section>
