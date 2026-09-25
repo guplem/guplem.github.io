@@ -387,33 +387,27 @@
 
       <section class="costs">
         <h2 id="what-it-costs-really"><a class="heading-anchor" href="#what-it-costs-really">What it costs, and how that grows</a></h2>
-        <p>The bill for the whole project comes from the usage page of OpenRouter, the service that sells access to Jev and to the other models. It was <strong>$3.11</strong> for 39.2 thousand Jev decisions, and <strong>$0.33</strong> for the 7 language-model calls that wrote vocabularies. So one decision costs eight thousandths of a cent, and one vocabulary costs $0.047. Every map in this post, in every version and every rerun, cost $3.44 in total.</p>
-        <p>Two other questions matter more than the total: what does one map cost, and how does that cost change when the map gets bigger? There are two ways to draw a map, and their costs grow differently.</p>
+        <p>The bill for the whole project comes from the usage page of OpenRouter, the service that sells access to Jev and to the other models. It is <strong>$5.72</strong> in total. Jev cost <strong>$3.85</strong>: $3.11 for the 39.2 thousand decisions of the loop, $0.51 for the five batched runs in this post, and $0.23 for a repeat run and tests. Claude Sonnet 5 cost <strong>$1.84</strong>: $1.24 for the five one-call runs, $0.33 for the 7 calls that wrote vocabularies, and $0.27 for tests. The last $0.03 was two calls to a third model, DeepSeek V4 Pro. So one decision in the loop costs eight thousandths of a cent, and one vocabulary costs $0.047.</p>
+        <p>Two other questions matter more than the total: what does one map cost, and how does that cost change when the map gets bigger? This post draws a map in three ways, and their costs grow differently.</p>
         <ul class="two-ways">
-          <li><strong>Jev, a decision per cell.</strong> Each question sends the state again, and the state includes the whole map. So a bigger map means more questions, and each question is longer.</li>
-          <li><strong>A language model, one call for the whole map.</strong> The prompt is sent once, and the model answers with about one letter per cell. So a bigger map only means a longer answer.</li>
+          <li><strong>The loop: Jev, one question per cell.</strong> Each question sends the state again, and the state includes the whole map. So a bigger map means more questions, and each question is longer.</li>
+          <li><strong>Batched: Jev, every cell in one request.</strong> The state that all cells share (the world, the blueprint, the map) is sent once per request, and each cell adds only its own part. But one request holds at most about 65,000 tokens. So a bigger map needs more requests, and each request sends the shared state again.</li>
+          <li><strong>One call: a language model draws the whole map.</strong> The prompt is sent once, and the model answers with about one letter per cell. So a bigger map only means a longer answer.</li>
         </ul>
         <figure class="chart">
 <svg viewBox="0 0 760 340" class="bars scaling" role="img" aria-labelledby="scaling-title scaling-desc" xmlns="http://www.w3.org/2000/svg">
-<title id="scaling-title">The cost of one map, by the size of the map</title>
-<desc id="scaling-desc">Two lines, from an 8 by 8 map to a 64 by 64 map. Jev, a decision per cell, starts at $0.005 and curves steeply upwards to $0.68. An LLM in one call starts at $0.005 and stays almost flat, reaching $0.043. The two cost the same at about 9 by 9 tiles; above that the single call is always cheaper.</desc>
+<title id="scaling-title">The cost of one map, by the size of the map, three ways</title>
+<desc id="scaling-desc">Three lines on a logarithmic scale, from an 8 by 8 map to a 64 by 64 map. The loop, Jev with one question per cell, starts at $0.005 and rises steeply to $0.68. Batched, Jev with every cell in one request, starts at $0.0016 and rises to $0.13. One call, a language model that draws the whole map, starts at $0.005 and stays almost flat, reaching $0.042. The loop and one call cost about the same at 8 by 8. Batched and one call cost about the same at 16 by 16. Above that, one call is the cheapest.</desc>
 <text x="10" y="18" class="chart-title">What one map costs, by the size of the map</text>
+<text x="750" y="18" class="tick" text-anchor="end">logarithmic scale: each step up is 10 times more</text>
 <line x1="62" y1="290.0" x2="734" y2="290.0" class="grid" />
-<text x="54" y="294.0" class="tick" text-anchor="end">$0.00</text>
-<line x1="62" y1="253.4" x2="734" y2="253.4" class="grid" />
-<text x="54" y="257.4" class="tick" text-anchor="end">$0.10</text>
-<line x1="62" y1="216.9" x2="734" y2="216.9" class="grid" />
-<text x="54" y="220.9" class="tick" text-anchor="end">$0.20</text>
-<line x1="62" y1="180.3" x2="734" y2="180.3" class="grid" />
-<text x="54" y="184.3" class="tick" text-anchor="end">$0.30</text>
-<line x1="62" y1="143.7" x2="734" y2="143.7" class="grid" />
-<text x="54" y="147.7" class="tick" text-anchor="end">$0.40</text>
-<line x1="62" y1="107.1" x2="734" y2="107.1" class="grid" />
-<text x="54" y="111.1" class="tick" text-anchor="end">$0.50</text>
-<line x1="62" y1="70.6" x2="734" y2="70.6" class="grid" />
-<text x="54" y="74.6" class="tick" text-anchor="end">$0.60</text>
+<text x="54" y="294.0" class="tick" text-anchor="end">$0.001</text>
+<line x1="62" y1="204.7" x2="734" y2="204.7" class="grid" />
+<text x="54" y="208.7" class="tick" text-anchor="end">$0.01</text>
+<line x1="62" y1="119.3" x2="734" y2="119.3" class="grid" />
+<text x="54" y="123.3" class="tick" text-anchor="end">$0.10</text>
 <line x1="62" y1="34.0" x2="734" y2="34.0" class="grid" />
-<text x="54" y="38.0" class="tick" text-anchor="end">$0.70</text>
+<text x="54" y="38.0" class="tick" text-anchor="end">$1.00</text>
 <text x="62.0" y="314" class="tick" text-anchor="middle">8×8</text>
 <text x="158.0" y="314" class="tick" text-anchor="middle">16×16</text>
 <text x="254.0" y="314" class="tick" text-anchor="middle">24×24</text>
@@ -423,48 +417,64 @@
 <text x="638.0" y="314" class="tick" text-anchor="middle">56×56</text>
 <text x="734.0" y="314" class="tick" text-anchor="middle">64×64</text>
 <text x="398" y="334" class="tick" text-anchor="middle">the size of the map</text>
-<polyline points="62.0,288.2 86.0,286.8 110.0,285.3 158.0,281.4 206.0,276.1 254.0,269.3 350.0,249.8 542.0,178.4 734.0,39.5" class="line line-jev" />
-<circle cx="62.0" cy="288.2" r="3.5" class="dot dot-jev" />
-<circle cx="86.0" cy="286.8" r="3.5" class="dot dot-jev" />
-<circle cx="110.0" cy="285.3" r="3.5" class="dot dot-jev" />
-<circle cx="158.0" cy="281.4" r="3.5" class="dot dot-jev" />
-<circle cx="206.0" cy="276.1" r="3.5" class="dot dot-jev" />
-<circle cx="254.0" cy="269.3" r="3.5" class="dot dot-jev" />
-<circle cx="350.0" cy="249.8" r="3.5" class="dot dot-jev" />
-<circle cx="542.0" cy="178.4" r="3.5" class="dot dot-jev" />
-<circle cx="734.0" cy="39.5" r="3.5" class="dot dot-jev" />
-<polyline points="62.0,288.1 86.0,288.0 110.0,287.8 158.0,287.5 206.0,287.0 254.0,286.4 350.0,284.8 542.0,280.4 734.0,274.3" class="line line-whole" />
-<circle cx="62.0" cy="288.1" r="3.5" class="dot dot-whole" />
-<circle cx="86.0" cy="288.0" r="3.5" class="dot dot-whole" />
-<circle cx="110.0" cy="287.8" r="3.5" class="dot dot-whole" />
-<circle cx="158.0" cy="287.5" r="3.5" class="dot dot-whole" />
-<circle cx="206.0" cy="287.0" r="3.5" class="dot dot-whole" />
-<circle cx="254.0" cy="286.4" r="3.5" class="dot dot-whole" />
-<circle cx="350.0" cy="284.8" r="3.5" class="dot dot-whole" />
-<circle cx="542.0" cy="280.4" r="3.5" class="dot dot-whole" />
-<circle cx="734.0" cy="274.3" r="3.5" class="dot dot-whole" />
-<circle cx="74.0" cy="288.2" r="5" class="meet-dot" />
-<line x1="78.0" y1="282.2" x2="122.0" y2="258.9" class="meet" />
-<text x="126.0" y="256.9" class="tick">both cost the same at about 9×9</text>
+<polyline points="62.0,227.6 86.0,209.7 110.0,195.4 158.0,173.1 206.0,155.1 254.0,140.2 350.0,115.7 542.0,78.0 734.0,48.3" class="line line-jev" />
+<circle cx="62.0" cy="227.6" r="3.5" class="dot dot-jev" />
+<circle cx="86.0" cy="209.7" r="3.5" class="dot dot-jev" />
+<circle cx="110.0" cy="195.4" r="3.5" class="dot dot-jev" />
+<circle cx="158.0" cy="173.1" r="3.5" class="dot dot-jev" />
+<circle cx="206.0" cy="155.1" r="3.5" class="dot dot-jev" />
+<circle cx="254.0" cy="140.2" r="3.5" class="dot dot-jev" />
+<circle cx="350.0" cy="115.7" r="3.5" class="dot dot-jev" />
+<circle cx="542.0" cy="78.0" r="3.5" class="dot dot-jev" />
+<circle cx="734.0" cy="48.3" r="3.5" class="dot dot-jev" />
+<polyline points="62.0,271.8 86.0,251.7 110.0,238.3 158.0,215.9 206.0,198.7 254.0,184.9 350.0,163.0 542.0,132.4 734.0,110.5" class="line line-batch" />
+<circle cx="62.0" cy="271.8" r="3.5" class="dot dot-batch" />
+<circle cx="86.0" cy="251.7" r="3.5" class="dot dot-batch" />
+<circle cx="110.0" cy="238.3" r="3.5" class="dot dot-batch" />
+<circle cx="158.0" cy="215.9" r="3.5" class="dot dot-batch" />
+<circle cx="206.0" cy="198.7" r="3.5" class="dot dot-batch" />
+<circle cx="254.0" cy="184.9" r="3.5" class="dot dot-batch" />
+<circle cx="350.0" cy="163.0" r="3.5" class="dot dot-batch" />
+<circle cx="542.0" cy="132.4" r="3.5" class="dot dot-batch" />
+<circle cx="734.0" cy="110.5" r="3.5" class="dot dot-batch" />
+<polyline points="62.0,229.3 86.0,227.0 110.0,224.3 158.0,218.3 206.0,211.8 254.0,205.2 350.0,192.2 542.0,169.6 734.0,151.3" class="line line-whole" />
+<circle cx="62.0" cy="229.3" r="3.5" class="dot dot-whole" />
+<circle cx="86.0" cy="227.0" r="3.5" class="dot dot-whole" />
+<circle cx="110.0" cy="224.3" r="3.5" class="dot dot-whole" />
+<circle cx="158.0" cy="218.3" r="3.5" class="dot dot-whole" />
+<circle cx="206.0" cy="211.8" r="3.5" class="dot dot-whole" />
+<circle cx="254.0" cy="205.2" r="3.5" class="dot dot-whole" />
+<circle cx="350.0" cy="192.2" r="3.5" class="dot dot-whole" />
+<circle cx="542.0" cy="169.6" r="3.5" class="dot dot-whole" />
+<circle cx="734.0" cy="151.3" r="3.5" class="dot dot-whole" />
+<circle cx="62.0" cy="229.3" r="6" class="meet-dot" />
+<line x1="67.0" y1="232.3" x2="330" y2="248" class="meet" />
+<text x="336" y="252" class="tick">the loop and one call cost the same at about 8×8</text>
+<circle cx="151.0" cy="219.2" r="6" class="meet-dot" />
+<line x1="156.0" y1="223.2" x2="330" y2="270" class="meet" />
+<text x="336" y="274" class="tick">batched and one call cost the same at about 16×16</text>
 <line x1="78" y1="50" x2="108" y2="50" class="line line-jev" />
-<text x="116" y="54" class="bar-label">Jev, a decision per cell</text>
-<line x1="78" y1="72" x2="108" y2="72" class="line line-whole" />
-<text x="116" y="76" class="bar-label">An LLM, one call for the whole map</text>
+<text x="116" y="54" class="bar-label">The loop: Jev, one question per cell</text>
+<line x1="78" y1="72" x2="108" y2="72" class="line line-batch" />
+<text x="116" y="76" class="bar-label">Batched: Jev, every cell in one request</text>
+<line x1="78" y1="94" x2="108" y2="94" class="line line-whole" />
+<text x="116" y="98" class="bar-label">One call: a language model draws the whole map</text>
 </svg>
-          <figcaption>Both prices are measured. For Jev, I built the state with the real code at each size and priced it from the project's bill. For the single call, I used the tokens that the run below really spent, in and out.</figcaption>
+          <figcaption>Only the 8 × 8 and 16 × 16 maps were drawn for real, and there all three prices match the runs. For the larger sizes, I built every request that each way would send, with the real code and without calling a model, and priced its tokens. For Jev, the tokens per character come from real requests in the OpenRouter logs. One call is priced for one attempt; in the real runs, retries added 20% to 50%.</figcaption>
         </figure>
-        <p>At about 9 by 9 tiles, the two ways cost the same. Below that size, a decision per cell is cheaper. Above it, one call is cheaper, and the difference grows with the map: one call is 8 times cheaper at 32 × 32, and 16 times cheaper at 64 × 64.</p>
+        <p>The loop and one call cost about the same at 8 by 8. Above that size, one call is cheaper, and the difference grows with the map: one call is 8 times cheaper at 32 × 32, and 16 times cheaper at 64 × 64.</p>
+        <p>Batched costs three to five times less than the loop at every size, because it sends the shared state once per request instead of once per cell. Up to about 16 by 16, it is the cheapest of the three ways. Above that, it grows faster than one call. Each cell&rsquo;s question still carries its own list of options with their rules, about 600 to 750 tokens per cell, while one call writes about one token per cell. So at 64 × 64, a batched map costs $0.13 (in 59 requests), against $0.042 for one call.</p>
         <p>Jev is fifty times cheaper per token, but the loop sends the map again with every question, so it spends most of that saving on repetition. Still, Jev's price is what makes the loop possible at all. The same loop with Claude Sonnet 5 instead of Jev would cost $1.22 for one 16 × 16 map.</p>
-        <p>Both ways also pay $0.047 once, at the start, for the vocabulary. For a small map, that is more than the drawing itself costs.</p>
+        <p>All three ways also pay $0.047 once, at the start, for the vocabulary. For a small map, that is more than the drawing itself costs.</p>
         <div class="table-scroll">
           <table class="scores">
-            <caption>One map, drawn both ways. The vocabulary is left out: both ways pay it.</caption>
-            <thead><tr><th scope="col">Map</th><th scope="col">Cells</th><th scope="col">Jev, a decision per cell</th><th scope="col">An LLM, one call</th></tr></thead>
+            <caption>One map, drawn three ways. The vocabulary is left out: every way pays it.</caption>
+            <thead><tr><th scope="col">Map</th><th scope="col">Cells</th><th scope="col">The loop</th><th scope="col">Batched</th><th scope="col">One call</th></tr></thead>
             <tbody>
-<tr><th scope="row">8 × 8</th><td>64</td><td>$0.0048</td><td>$0.0052</td></tr>
-<tr><th scope="row">16 × 16</th><td>256</td><td>$0.024</td><td>$0.0070</td></tr>
-<tr><th scope="row">32 × 32</th><td>1,024</td><td>$0.11</td><td>$0.014</td></tr>
-<tr><th scope="row">64 × 64</th><td>4,096</td><td>$0.68</td><td>$0.043</td></tr>
+<tr><th scope="row">8 × 8</th><td>64</td><td>$0.0054</td><td>$0.0016</td><td>$0.0051</td></tr>
+<tr><th scope="row">16 × 16</th><td>256</td><td>$0.023</td><td>$0.0074</td><td>$0.0069</td></tr>
+<tr><th scope="row">32 × 32</th><td>1,024</td><td>$0.11</td><td>$0.031</td><td>$0.014</td></tr>
+<tr><th scope="row">64 × 64</th><td>4,096</td><td>$0.68</td><td>$0.13</td><td>$0.042</td></tr>
             </tbody>
           </table>
         </div>
@@ -991,7 +1001,7 @@
         <div class="pair">
           <figure>
             <img src="../../web-projects/ai-world-gen/evaluation/results/v11/large-village-spiral.png" width="768" height="768" loading="lazy" alt="v11, a decision per cell: the 16 by 16 village with two cottages, a path along the bottom and trees at the top." />
-            <figcaption>v11, 256 decisions, 90 seconds, $0.024.</figcaption>
+            <figcaption>v11, 256 decisions, 90 seconds, $0.023.</figcaption>
           </figure>
           <figure>
             <img src="../../web-projects/ai-world-gen/evaluation/results/v11-llm/large-village-spiral.png" width="768" height="768" loading="lazy" alt="v11-llm, the whole map in one call: the same seed with cottages, fields, a river along the east edge, trees and paths." />
@@ -999,16 +1009,16 @@
           </figure>
         </div>
         <figure class="chart">
-<svg viewBox="0 0 760 360" class="bars" role="img" aria-label="Cost and time per map, measured: 8 × 8 map, cost: Jev $0.005, one call $0.006; 16 × 16 map, cost: Jev $0.024, one call $0.010; 8 × 8 map, time: Jev 22 s, one call 4 s; 16 × 16 map, time: Jev 90 s, one call 6 s; 38-map run, cost: Jev $0.24, one call $0.25." xmlns="http://www.w3.org/2000/svg">
-<text x="170" y="18" class="chart-title">Measured cost and time per map (means over the run)</text>
-<text x="160" y="60" class="bar-label" text-anchor="end">8 × 8 map, cost</text><rect x="170" y="34" width="373.6" height="20" class="bar bar-jev" /><text x="549.6" y="49" class="bar-value">$0.005 Jev</text><rect x="170" y="60" width="480.0" height="20" class="bar bar-whole" /><text x="656.0" y="75" class="bar-value">$0.006 one call</text><text x="160" y="120" class="bar-label" text-anchor="end">16 × 16 map, cost</text><rect x="170" y="94" width="480.0" height="20" class="bar bar-jev" /><text x="656.0" y="109" class="bar-value">$0.024 Jev</text><rect x="170" y="120" width="212.1" height="20" class="bar bar-whole" /><text x="388.1" y="135" class="bar-value">$0.010 one call</text><text x="160" y="180" class="bar-label" text-anchor="end">8 × 8 map, time</text><rect x="170" y="154" width="480.0" height="20" class="bar bar-jev" /><text x="656.0" y="169" class="bar-value">22 s Jev</text><rect x="170" y="180" width="80.3" height="20" class="bar bar-whole" /><text x="256.3" y="195" class="bar-value">4 s one call</text><text x="160" y="240" class="bar-label" text-anchor="end">16 × 16 map, time</text><rect x="170" y="214" width="480.0" height="20" class="bar bar-jev" /><text x="656.0" y="229" class="bar-value">90 s Jev</text><rect x="170" y="240" width="32.2" height="20" class="bar bar-whole" /><text x="208.2" y="255" class="bar-value">6 s one call</text><text x="160" y="300" class="bar-label" text-anchor="end">38-map run, cost</text><rect x="170" y="274" width="463.6" height="20" class="bar bar-jev" /><text x="639.6" y="289" class="bar-value">$0.24 Jev</text><rect x="170" y="300" width="480.0" height="20" class="bar bar-whole" /><text x="656.0" y="315" class="bar-value">$0.25 one call</text>
+<svg viewBox="0 0 760 360" class="bars" role="img" aria-label="Cost and time per map: 8 × 8 map, cost: Jev $0.005, one call $0.006; 16 × 16 map, cost: Jev $0.023, one call $0.010; 8 × 8 map, time: Jev 22 s, one call 4 s; 16 × 16 map, time: Jev 90 s, one call 6 s; 38-map run, cost: Jev $0.24, one call $0.25." xmlns="http://www.w3.org/2000/svg">
+<text x="170" y="18" class="chart-title">Cost and time per map (means over the run)</text>
+<text x="160" y="60" class="bar-label" text-anchor="end">8 × 8 map, cost</text><rect x="170" y="34" width="373.6" height="20" class="bar bar-jev" /><text x="549.6" y="49" class="bar-value">$0.005 Jev</text><rect x="170" y="60" width="480.0" height="20" class="bar bar-whole" /><text x="656.0" y="75" class="bar-value">$0.006 one call</text><text x="160" y="120" class="bar-label" text-anchor="end">16 × 16 map, cost</text><rect x="170" y="94" width="480.0" height="20" class="bar bar-jev" /><text x="656.0" y="109" class="bar-value">$0.023 Jev</text><rect x="170" y="120" width="208.7" height="20" class="bar bar-whole" /><text x="384.7" y="135" class="bar-value">$0.010 one call</text><text x="160" y="180" class="bar-label" text-anchor="end">8 × 8 map, time</text><rect x="170" y="154" width="480.0" height="20" class="bar bar-jev" /><text x="656.0" y="169" class="bar-value">22 s Jev</text><rect x="170" y="180" width="80.3" height="20" class="bar bar-whole" /><text x="256.3" y="195" class="bar-value">4 s one call</text><text x="160" y="240" class="bar-label" text-anchor="end">16 × 16 map, time</text><rect x="170" y="214" width="480.0" height="20" class="bar bar-jev" /><text x="656.0" y="229" class="bar-value">90 s Jev</text><rect x="170" y="240" width="32.2" height="20" class="bar bar-whole" /><text x="208.2" y="255" class="bar-value">6 s one call</text><text x="160" y="300" class="bar-label" text-anchor="end">38-map run, cost</text><rect x="170" y="274" width="463.6" height="20" class="bar bar-jev" /><text x="639.6" y="289" class="bar-value">$0.24 Jev</text><rect x="170" y="300" width="480.0" height="20" class="bar bar-whole" /><text x="656.0" y="315" class="bar-value">$0.25 one call</text>
 </svg>
-          <figcaption>Measured, not estimated. The Jev figures come from the project's bill and the state at each size, as the cost section works them out, with the v11 run's own timings. The one-call figures come from the tokens and the timing that OpenRouter returned for every v11-llm call.</figcaption>
+          <figcaption>The times are measured, and so are the one-call costs: OpenRouter returned the tokens and the time of every v11-llm call. The Jev costs are estimates, because the loop runs did not save their token counts. I rebuilt every request with the real code and priced its tokens, as in the cost section.</figcaption>
         </figure>
         <p>On the map itself, one call loses, and it loses where I least expected. The prompt gives it the blueprint room by room, with coordinates. Still, only 47% of its maps have a closed room (a room with a wall all around it), against 92% for the loop. And only 60% of its doors are in a wall, against 87%. The model writes 256 letters in one answer, and it makes small mistakes along the way: a wall one column off, a door in the grass, a room that never closes. The loop cannot make these mistakes, because code applies the blueprint to each cell before Jev is asked. The typed rules show the same difference, 0.76 against 0.99. Jev is never offered a type that a rule forbids. A language model can write any letter, and it breaks a few rules on every map. Routes to doors fell the most, from 0.82 to 0.61, because more of its doors open onto nothing.</p>
         <p>One call won on one specification, landmarks and story (0.83 to 0.90). A model that sees the whole map at once places the one well and the one gate. The loop still forgets them on about half the maps: the &ldquo;landmarks present&rdquo; metric is 0.45 for the loop and 0.76 for one call.</p>
         <p>The judge, which reads the finished maps, gives 0.65 to one call and 0.69 to the loop. That gap of 0.04 is smaller than the 0.05 that I treat as noise (see <a href="#the-shortcuts-at-every-stage">One call and batched, at every stage</a>). So the judge cannot tell the two apart. The loop&rsquo;s clear lead is in the rules, the doors and the rooms, and code enforces all three for each cell.</p>
-        <p>On time, one call wins clearly. An 8 by 8 map takes 3.7 seconds instead of 22, and a 16 by 16 map takes 6 seconds instead of 90, because 256 requests become one. On money, the two are about equal: the whole run cost $0.25 with one call and $0.24 with Jev. The small map is cheaper with Jev ($0.005 against $0.006), because a 2,000-token prompt costs more than 64 small decisions. The large map is cheaper with one call ($0.010 against $0.024), because the prompt stays the same size while the number of decisions grows. In the whole run, 46 calls replaced 3,008 decisions. Eight of the 38 maps needed a second attempt, because the first answer had the wrong number of rows or letters.</p>
+        <p>On time, one call wins clearly. An 8 by 8 map takes 3.7 seconds instead of 22, and a 16 by 16 map takes 6 seconds instead of 90, because 256 requests become one. On money, the two are about equal: the whole run cost $0.25 with one call and $0.24 with Jev. The small map is cheaper with Jev ($0.005 against $0.006), because a 2,000-token prompt costs more than 64 small decisions. The large map is cheaper with one call ($0.010 against $0.023), because the prompt stays the same size while the number of decisions grows. In the whole run, 46 calls replaced 3,008 decisions. Eight of the 38 maps needed a second attempt, because the first answer had the wrong number of rows or letters.</p>
         <p>So which one should you use? For a small map that must be ready fast, with a story that uses every landmark, one call is the better tool, and it is now an option in the generator&rsquo;s AI Setup. The loop is better when you need rooms that close, doors in walls, and rules that never break. It also lets the reader watch the map fill, and it can ask again about one tile. But the loop needed eleven versions and a blueprint drawn by code to get there, and one call did most of it on the first try, with no tuning. Price was never the reason for the per-cell design, because the two cost the same. The reason is control over each cell, and Jev&rsquo;s low price is what makes that control affordable.</p>
         <div class="table-scroll">
           <table class="scores">
@@ -1087,7 +1097,7 @@
 <tr><th scope="row">Cost of the 38 maps</th><td>$0.24</td><td>$0.086</td></tr>
 <tr><th scope="row">Time drawing the 38 maps</th><td>1,046 s</td><td>40 s</td></tr>
 <tr><th scope="row">One 8 &times; 8 map</th><td>64 requests, 22.2 s, $0.005</td><td>1 request, 0.85 s, $0.0018</td></tr>
-<tr><th scope="row">One 16 &times; 16 map</th><td>256 requests, 90.2 s, $0.024</td><td>4.3 requests, 3.4 s, $0.0072</td></tr>
+<tr><th scope="row">One 16 &times; 16 map</th><td>256 requests, 90.2 s, $0.023</td><td>4.3 requests, 3.4 s, $0.0072</td></tr>
 <tr><th scope="row">Fallback cells</th><td>0</td><td>0</td></tr>
 </tbody>
           </table>
