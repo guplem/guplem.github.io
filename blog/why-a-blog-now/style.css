@@ -202,6 +202,335 @@
   stroke: var(--accent) !important;
 }
 
+/* === Lists and the short version === */
+.post ul,
+.post ol {
+  margin: var(--sp-sm) 0;
+  padding-left: 1.4em;
+}
+
+.post li {
+  font-size: 1.12rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.post li + li {
+  margin-top: 0.35em;
+}
+
+.post li::marker {
+  color: var(--accent);
+}
+
+.post li strong {
+  font-weight: 700;
+}
+
+.post li a {
+  color: var(--accent-secondary);
+}
+
+.post .short-version-lead {
+  margin-top: var(--sp-md);
+  font-family: var(--font);
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.post .short-version {
+  padding: var(--sp-sm) var(--sp-md) var(--sp-sm) calc(var(--sp-md) + 1em);
+  background: var(--paper-deep);
+  border-radius: var(--radius-md);
+}
+
+.post .short-version li {
+  font-size: 1.02rem;
+}
+
+/* === Contents ===
+   One list, two layouts. In the text column it is a folded box: a details
+   element, so it works with no script. From 1280px it sits fixed in the top
+   left corner, and the script at the end of the page opens it and marks the
+   section being read (aria-current). A small button jumps back to the box on
+   a narrow screen. */
+@media (prefers-reduced-motion: no-preference) {
+  html:has(body.letter) {
+    scroll-behavior: smooth;
+  }
+}
+
+.post h2[id] {
+  scroll-margin-top: var(--sp-md);
+}
+
+.toc {
+  margin: var(--sp-md) 0 var(--sp-lg);
+  padding: var(--sp-sm) var(--sp-md);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  font-family: var(--font);
+}
+
+.toc summary {
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.post .toc ol {
+  margin: var(--sp-xs) 0 0;
+}
+
+.post .toc li {
+  font-family: var(--font);
+  font-size: 0.95rem;
+}
+
+.post .toc a {
+  color: var(--ink);
+  background-image: none;
+}
+
+.post .toc a:hover,
+.post .toc a[aria-current="location"] {
+  color: var(--accent);
+}
+
+.letter .toc-jump {
+  position: fixed;
+  right: var(--sp-md);
+  bottom: var(--sp-md);
+  z-index: 5;
+  padding: 6px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 1280px) {
+  .toc {
+    position: fixed;
+    top: var(--sp-md);
+    left: var(--sp-md);
+    width: 190px;
+    max-height: calc(100vh - 2 * var(--sp-md));
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .post .toc ol {
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .post .toc li {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .post .toc li + li {
+    margin-top: 2px;
+  }
+
+  .post .toc a {
+    display: block;
+    padding: 3px 0 3px 10px;
+    border-left: 2px solid var(--rule);
+    color: var(--ink-soft);
+  }
+
+  .post .toc a[aria-current="location"] {
+    border-left-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .letter .toc-jump {
+    display: none;
+  }
+}
+
+/* === The then/now diagram, animated ===
+   One 9 s cycle. Then: the honest page falls into the funnel and fades
+   (5-34%), while the ten winners appear (22-26%). Now: a thread draws from
+   each page to its question (42-52%, one after another), the honest one last.
+   Everything clears at the end of the cycle. */
+.then-now .page-falling {
+  fill: var(--accent);
+  opacity: 0;
+  animation: page-falls 9s ease-in infinite;
+}
+
+@keyframes page-falls {
+  0%, 5% { opacity: 0; transform: translate(0, 0); }
+  8% { opacity: 1; transform: translate(0, 0); }
+  28% { opacity: 1; transform: translate(26px, 78px); }
+  34%, 100% { opacity: 0; transform: translate(26px, 78px); }
+}
+
+.then-now .results rect {
+  opacity: 0;
+  animation: result-appears 9s linear infinite;
+}
+
+.then-now .results rect:nth-child(2) { animation-delay: 0.3s; }
+.then-now .results rect:nth-child(3) { animation-delay: 0.6s; }
+.then-now .results rect:nth-child(4) { animation-delay: 0.9s; }
+
+@keyframes result-appears {
+  0%, 22% { opacity: 0; }
+  26%, 92% { opacity: 1; }
+  98%, 100% { opacity: 0; }
+}
+
+.then-now .threads path {
+  stroke-dasharray: 110;
+  stroke-dashoffset: 110;
+  animation: thread-draws 9s ease-out infinite;
+}
+
+.then-now .threads path:nth-child(2) { animation-delay: 0.35s; }
+.then-now .threads path:nth-child(4) { animation-delay: 0.7s; }
+.then-now .threads path:nth-child(5) { animation-delay: 1.05s; }
+.then-now .threads path:nth-child(6) { animation-delay: 1.4s; }
+.then-now .threads path:nth-child(3) { animation-delay: 1.9s; }
+
+@keyframes thread-draws {
+  0%, 42% { stroke-dashoffset: 110; }
+  52%, 92% { stroke-dashoffset: 0; }
+  98%, 100% { stroke-dashoffset: 110; }
+}
+
+/* === One post, three readers ===
+   One 6 s cycle: the four parts of the page light up in turn, and a dot
+   carries the post to each reader. */
+.readers {
+  margin: var(--sp-lg) calc(-1 * var(--sp-sm));
+  padding: var(--sp-md) var(--sp-sm) var(--sp-sm);
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.readers svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: var(--font);
+}
+
+.readers figcaption {
+  margin-top: var(--sp-sm);
+  text-align: center;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.readers .page {
+  fill: var(--paper);
+  stroke: var(--rule);
+}
+
+.readers .box-title,
+.readers .reader-title {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+
+.readers .part {
+  fill: var(--paper-deep);
+  stroke: var(--rule);
+  animation: part-lights 6s linear infinite;
+}
+
+.readers .part-2 { animation-delay: 0.6s; }
+.readers .part-3 { animation-delay: 1.2s; }
+.readers .part-4 { animation-delay: 1.8s; }
+
+@keyframes part-lights {
+  0%, 100% { fill: var(--paper-deep); stroke: var(--rule); }
+  8%, 18% { fill: #f6dcc6; stroke: var(--accent); }
+  26% { fill: var(--paper-deep); stroke: var(--rule); }
+}
+
+.readers .part-label {
+  font-size: 13px;
+  fill: var(--ink);
+}
+
+.readers .reader-sub {
+  font-size: 13px;
+  fill: var(--ink-soft);
+}
+
+.readers .wire {
+  fill: none;
+  stroke: #b9ae97;
+  stroke-width: 2;
+}
+
+.readers .head {
+  fill: #b9ae97;
+}
+
+.readers .reader {
+  fill: white;
+  stroke: var(--accent-secondary);
+  stroke-width: 1.5;
+}
+
+.readers .packet {
+  fill: var(--accent);
+  offset-rotate: 0deg;
+  offset-distance: 0%;
+  opacity: 0;
+  animation: packet-travels 6s ease-in-out infinite;
+}
+
+.readers .packet-2 { animation-delay: 0.25s; }
+.readers .packet-3 { animation-delay: 0.5s; }
+
+@keyframes packet-travels {
+  0%, 30% { offset-distance: 0%; opacity: 0; }
+  34% { opacity: 1; }
+  62% { offset-distance: 100%; opacity: 1; }
+  66%, 100% { offset-distance: 100%; opacity: 0; }
+}
+
+.after-readers {
+  margin-top: var(--sp-md);
+}
+
+/* A reader who asks for less motion gets the finished pictures: no falling
+   page, every result and thread drawn, no moving dots. */
+@media (prefers-reduced-motion: reduce) {
+  .then-now .page-falling,
+  .readers .packet {
+    animation: none;
+    opacity: 0;
+  }
+
+  .then-now .results rect,
+  .then-now .threads path,
+  .readers .part {
+    animation: none;
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
 /* === Closing === */
 .post-footer {
   margin-top: var(--sp-xl);
@@ -220,6 +549,10 @@
 }
 
 @media (max-width: 600px) {
+  .readers {
+    margin-left: 0;
+    margin-right: 0;
+  }
   .post-standfirst {
     font-size: 1.1rem;
   }
