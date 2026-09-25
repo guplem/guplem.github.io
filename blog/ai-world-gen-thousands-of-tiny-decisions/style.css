@@ -1465,3 +1465,18 @@
   text-transform: uppercase;
   color: var(--parchment-soft);
 }
+
+/* The steps of one loop turn, set like a code block so they read as a
+   procedure. The lines wrap on a narrow screen instead of scrolling. */
+.post pre.loop-steps {
+  margin: var(--sp-md) 0;
+  padding: var(--sp-sm) var(--sp-md);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--parchment);
+  white-space: pre-wrap;
+}

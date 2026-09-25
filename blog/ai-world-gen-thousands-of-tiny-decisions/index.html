@@ -83,7 +83,7 @@
             <li><a href="#the-same-decisions-one-request">The same decisions, <span class="m-batch">batched</span></a></li>
             <li><a href="#the-shortcuts-at-every-stage"><span class="m-llm">LLM</span> and <span class="m-batch">batched</span>, at every stage</a></li>
             <li><a href="#running-the-loop-with-an-agent">Running the loop with an agent</a></li>
-            <li><a href="#what-i-have-not-tried-decisions-that-branch">What I have not tried: decisions that branch</a></li>
+            <li><a href="#what-i-have-not-tried-decisions-that-branch">What I have not tried</a></li>
             <li><a href="#what-is-still-wrong">What is still wrong</a></li>
             <li><a href="#the-numbers">The numbers</a></li>
           </ol>
@@ -1213,13 +1213,35 @@
 
       <section>
         <h2 id="running-the-loop-with-an-agent"><a class="heading-anchor" href="#running-the-loop-with-an-agent">Running the loop with an agent</a></h2>
-        <p>Most of the versions were written by an agent, Claude Code, in a loop that I set up and then mostly watched. One turn went like this. Read the last version's scores and the maps where it lost. Write down one theory (&ldquo;the model does not see enough of the map&rdquo;, &ldquo;the sampling adds noise&rdquo;, &ldquo;the rules are prose, so the model treats them as advice&rdquo;). Change the code, with tests. Commit, so the version in Galtea records exactly what was measured. Run the 38 seeds. Compare. Write the result into the project's README, one paragraph per version, so the next turn starts with the memory of this one.</p>
-        <p>My part was smaller, and I think it was the part that mattered. I chose which theory to test first. When I saw a failure that the numbers missed, I asked for a specification for it, and that is how three specifications became seven. I set the budget: 8 by 8 grids for most seeds, and only three 16 by 16 maps, because a room needs space, but a large map costs five times a small one. And I said when to stop: when the agent could no longer name a change that it was sure would move a number, the loop had done its work, for now.</p>
-        <p>The agent also broke things. Once, it committed a version with a failing test, because a shell pipe hid the exit code. Once, it ran two evaluations while it was editing the modules that they used. The continuous integration check caught the first, and the wrong maps showed the second. Each one became a written rule for the next turn. The loop does not promise that every version is better. It promises that you will know.</p>
+        <p>Most of the versions were written by an agent, Claude Code, in a loop that I set up and then mostly watched. One turn went like this:</p>
+        <pre class="loop-steps" aria-label="One turn of the loop"><code>1. Read the last version's scores, and the maps where it lost.
+2. Write down one theory, such as:
+   - "the model does not see enough of the map"
+   - "the sampling adds noise"
+   - "the rules are prose, so the model treats them as advice"
+3. Change the code, with tests.
+4. Commit, so the version in Galtea records exactly what was measured.
+5. Run the 38 test cases.
+6. Compare with the last version.
+7. Write the result into the project's README, one paragraph per
+   version, so the next turn starts with the memory of this one.</code></pre>
+        <p>My part was smaller, and I think it was the part that mattered:</p>
+        <ul class="two-ways">
+          <li><strong>I chose which theory to test first.</strong></li>
+          <li><strong>I added specifications.</strong> When I saw a failure that the numbers missed, I asked for a specification for it. That is how three specifications became seven.</li>
+          <li><strong>I set the budget.</strong> 8 by 8 grids for most test cases, and only three 16 by 16 maps, because a room needs space, but a large map costs five times a small one.</li>
+          <li><strong>I said when to stop:</strong> when the agent could no longer name a change that it was sure would move a number, the loop had done its work, for now.</li>
+        </ul>
+        <p>The agent also broke things:</p>
+        <ul class="two-ways">
+          <li><strong>It committed a version with a failing test,</strong> because a shell pipe hid the exit code. The continuous integration check caught it.</li>
+          <li><strong>It ran two evaluations while it was editing the modules that they used.</strong> The wrong maps showed it.</li>
+        </ul>
+        <p>Each one became a written rule for the next turn. The loop does not promise that every version is better. It promises that you will know.</p>
       </section>
 
       <section>
-        <h2 id="what-i-have-not-tried-decisions-that-branch"><a class="heading-anchor" href="#what-i-have-not-tried-decisions-that-branch">What I have not tried: decisions that branch</a></h2>
+        <h2 id="what-i-have-not-tried-decisions-that-branch"><a class="heading-anchor" href="#what-i-have-not-tried-decisions-that-branch">What I have not tried</a></h2>
         <p>Both ways of using Jev in this post, <span class="m-cell">cell by cell</span> and <span class="m-batch">batched</span>, are flat. There is one level of decisions, and every decision is about one cell:</p>
         <p><strong>world &rarr; cell, cell, cell, cell, &hellip; 3,008 times.</strong></p>
         <p>Every question has the same size and the same shape, and they go either one at a time or all at once. There is a third shape that I have not built. In it, the decisions form a tree instead of a list, and each layer asks about what the layer above it decided:</p>
@@ -1233,6 +1255,7 @@
         <p>The point is not fewer decisions. The point is that later decisions depend on earlier ones by design, instead of hoping that the model reads a map sketch and works it out. A cell in the kitchen of a house in the old quarter is a much narrower question than a cell at (7, 12). And the model decided that narrowing itself; nobody hard-coded it. This project keeps pointing the same way: the blueprint in version 8 is one layer of such a tree, written by hand in code, and it moved more numbers than any prompt change.</p>
         <p>It could suit a decision model well. Each step is still a small typed choice with a few options, which is what these models are fast and cheap at. The structure and the dependencies live in the shape of the tree, not inside one long prompt. It may also fail for reasons that I cannot see yet. One wrong early branch would ruin a whole district, while the flat design fails one cell at a time.</p>
         <p><strong>I have not built it, and I have not measured it.</strong> There are no numbers for it in this post, in the version table, or in Galtea. It is the next experiment I want to run. Until it goes through the same 38 seeds, it is only an idea that sounds good, and this project taught me not to trust those.</p>
+        <p><strong>I have not compared the fill orders either.</strong> <span class="m-cell">Cell by cell</span> can visit the cells in five orders: a spiral from the centre, frontier growth, clustered patches, a branching walk, or pure random. Every version ran all five, because each test case uses one: 12 spiral, 12 frontier, 8 clustered, 3 branching and 3 random. But each order ran on different places, so the scores cannot tell the orders apart. A fair comparison would draw the same places in every order.</p>
       </section>
 
       <section>
