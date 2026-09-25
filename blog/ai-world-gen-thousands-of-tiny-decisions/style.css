@@ -359,33 +359,15 @@
 
 .fill-loop .cell {
   /* The name of the rule comes from the figure itself: one per cell, in the
-     order the generator asked about them (root ADR 0015). A cell appears at
-     once and never changes until the map clears: a fade made the cells behind
-     the current one look as if the model changed them. */
+     order the generator asked about them (root ADR 0015). The same rule draws
+     the orange outline while the cell is decided, then the tile, which never
+     changes until the map clears. Outline and tile share one animation: two
+     animations per cell (one delayed) drifted apart in real browsers, and the
+     outline fell behind the tiles. */
+  stroke-width: 2;
   animation-duration: 12.26s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-}
-
-/* The outline marks the one cell being decided. It stays for exactly one step
-   (0.14 s, 1.14% of the cycle) and moves on, so two outlines never show. */
-.fill-loop .pulse {
-  fill: none;
-  stroke: var(--door);
-  stroke-width: 3;
-  opacity: 0;
-  animation: cell-pulse 12.26s linear infinite;
-}
-
-@keyframes cell-pulse {
-  0%,
-  1.13% {
-    opacity: 1;
-  }
-  1.14%,
-  100% {
-    opacity: 0;
-  }
 }
 
 /* === One decision: the state and the question go in, the answer comes out ===
@@ -530,11 +512,6 @@
   .fill-loop .cell {
     animation: none !important;
     opacity: 1 !important;
-  }
-
-  .fill-loop .pulse {
-    animation: none;
-    opacity: 0;
   }
 
   /* The decision drawing ends on the answer: no dots, full bars. */
@@ -1239,6 +1216,11 @@
 }
 
 .maptable .page-footer {
+  color: var(--parchment-soft);
+}
+
+/* base.css colours every p, which beats the colour the footer passes down. */
+.maptable .page-footer p {
   color: var(--parchment-soft);
 }
 
