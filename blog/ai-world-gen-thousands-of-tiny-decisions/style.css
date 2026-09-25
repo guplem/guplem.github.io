@@ -42,8 +42,10 @@
   color: var(--ground);
 }
 
+/* As wide as the text column, so the top left corner stays free for the
+   contents list on a wide screen. */
 .maptable .topbar {
-  max-width: 1040px;
+  max-width: 760px;
 }
 
 .maptable .back-link,
@@ -1395,14 +1397,16 @@
   color: var(--door);
 }
 
-/* The text column is 760px wide; from 1280px the left margin holds the list. */
+/* The text column is 760px wide; from 1280px the list sits in the top left
+   corner of the screen, away from the text, with dimmed links so that only
+   the orange current section draws the eye. */
 @media (min-width: 1280px) {
   .toc {
     position: fixed;
-    top: var(--sp-xl);
-    left: max(var(--sp-md), calc(50% - 380px - 250px));
-    width: 220px;
-    max-height: calc(100vh - 2 * var(--sp-xl));
+    top: var(--sp-md);
+    left: var(--sp-md);
+    width: 190px;
+    max-height: calc(100vh - 2 * var(--sp-md));
     overflow-y: auto;
     margin: 0;
     padding: 0;
@@ -1429,6 +1433,11 @@
     display: block;
     padding: 3px 0 3px 10px;
     border-left: 2px solid var(--panel-border);
+    color: var(--parchment-soft);
+  }
+
+  .post .toc a:hover {
+    color: var(--door);
   }
 
   .post .toc a[aria-current="location"] {
