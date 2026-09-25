@@ -1,4 +1,4 @@
-/* "AI World Gen: thousands of tiny decisions": a map table at night. The maps
+/* "AI World Gen: thousands of decisions": a map table at night. The maps
    the post shows are dark pixel art with orange doors and green trees, so the
    page takes their palette: a near-black ground with a faint tile grid, parchment
    text, orange for the accents, monospace for the numbers. Everything shared
@@ -337,31 +337,121 @@
 
 .fill-loop .cell {
   /* The name of the rule comes from the figure itself: one per cell, in the
-     order the generator asked about them (root ADR 0015). */
-  animation-duration: 9s;
+     order the generator asked about them (root ADR 0015). A cell appears at
+     once and never changes until the map clears: a fade made the cells behind
+     the current one look as if the model changed them. */
+  animation-duration: 12.26s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
 
+/* The outline marks the one cell being decided. It stays for exactly one step
+   (0.14 s, 1.14% of the cycle) and moves on, so two outlines never show. */
 .fill-loop .pulse {
-  fill: var(--door);
+  fill: none;
+  stroke: var(--door);
+  stroke-width: 3;
   opacity: 0;
-  animation: cell-pulse 9s linear infinite;
+  animation: cell-pulse 12.26s linear infinite;
 }
 
 @keyframes cell-pulse {
-  0% {
-    opacity: 0;
+  0%,
+  1.13% {
+    opacity: 1;
   }
-  1% {
-    opacity: 0.85;
-  }
-  4% {
-    opacity: 0;
-  }
+  1.14%,
   100% {
     opacity: 0;
   }
+}
+
+/* === One decision: the state and the question go in, the answer comes out ===
+   One 6 s cycle: two dots carry the state and the question to Jev (0-15%), Jev
+   lights up (15-35%), a dot carries the answer out (35-48%), and the answer
+   and its bars appear (48-60%) and hold until the cycle starts again. */
+.decision .packet {
+  fill: var(--door);
+  opacity: 0;
+  animation: 6s linear infinite;
+}
+
+.decision .packet-state {
+  animation-name: packet-state;
+}
+
+.decision .packet-question {
+  animation-name: packet-question;
+}
+
+.decision .packet-answer {
+  animation-name: packet-answer;
+}
+
+@keyframes packet-state {
+  0% { opacity: 0; transform: translate(0, 0); }
+  2% { opacity: 1; transform: translate(0, 0); }
+  15% { opacity: 1; transform: translate(54px, 0); }
+  16%, 100% { opacity: 0; transform: translate(54px, 0); }
+}
+
+@keyframes packet-question {
+  0% { opacity: 0; transform: translate(0, 0); }
+  2% { opacity: 1; transform: translate(0, 0); }
+  15% { opacity: 1; transform: translate(0, 28px); }
+  16%, 100% { opacity: 0; transform: translate(0, 28px); }
+}
+
+@keyframes packet-answer {
+  0%, 34% { opacity: 0; transform: translate(0, 0); }
+  35% { opacity: 1; transform: translate(0, 0); }
+  48% { opacity: 1; transform: translate(68px, 0); }
+  49%, 100% { opacity: 0; transform: translate(68px, 0); }
+}
+
+.decision .decision-glow {
+  fill: none;
+  stroke: var(--door);
+  stroke-width: 3;
+  opacity: 0;
+  animation: decision-glow 6s linear infinite;
+}
+
+@keyframes decision-glow {
+  0%, 15% { opacity: 0; }
+  20%, 30% { opacity: 0.7; }
+  35%, 100% { opacity: 0; }
+}
+
+/* Under .answer, so these beat the shared `.diagram .box rect` fill and the
+   `.diagram .answer rect` outline. */
+.decision .answer .bar-track {
+  fill: var(--panel);
+  stroke: none;
+}
+
+.decision .answer .bar-fill {
+  fill: var(--door);
+  stroke: none;
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: bar-grow 6s linear infinite;
+}
+
+.decision .answer-reveal {
+  animation: answer-reveal 6s linear infinite;
+}
+
+@keyframes bar-grow {
+  0%, 48% { transform: scaleX(0); }
+  60%, 94% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+
+@keyframes answer-reveal {
+  0%, 48% { opacity: 0; }
+  52%, 94% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 /* === The parts every drawing is made of ===
@@ -423,6 +513,20 @@
   .fill-loop .pulse {
     animation: none;
     opacity: 0;
+  }
+
+  /* The decision drawing ends on the answer: no dots, full bars. */
+  .decision .packet,
+  .decision .decision-glow {
+    animation: none;
+    opacity: 0;
+  }
+
+  .decision .answer .bar-fill,
+  .decision .answer-reveal {
+    animation: none;
+    transform: none;
+    opacity: 1;
   }
 
   .diagram .flow,
