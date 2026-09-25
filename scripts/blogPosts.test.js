@@ -114,3 +114,21 @@ describe("section headings are anchors (the committed posts)", () => {
     });
   }
 });
+
+describe("a contents list names every section (the committed posts)", () => {
+  // A post may carry a hand-written contents list (`<details class="toc">`).
+  // A section added later and left out of it is invisible from the list, so
+  // every h2 must have its link there, and every link must reach a heading.
+  for (const post of loadPosts(repoRoot)) {
+    const html = readFileSync(join(repoRoot, "blog", post.slug, "index.html"), "utf8");
+    const contents = html.match(/<details class="toc"[\s\S]*?<\/details>/)?.[0];
+    if (!contents) continue;
+    it(`${post.slug}: the contents list links every h2, and each link reaches a heading`, () => {
+      const sectionIds = [...html.matchAll(/<h2[^>]*\sid="([^"]+)"/g)].map((match) => match[1]);
+      const headingIds = new Set([...html.matchAll(/<h[234][^>]*\sid="([^"]+)"/g)].map((match) => match[1]));
+      const linked = [...contents.matchAll(/href="#([^"]+)"/g)].map((match) => match[1]);
+      for (const id of sectionIds) expect(linked, `the contents list misses #${id}`).toContain(id);
+      for (const id of linked) expect(headingIds.has(id), `the contents list links #${id}, which is no heading`).toBe(true);
+    });
+  }
+});
