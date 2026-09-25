@@ -63,10 +63,10 @@ Projects that keep something you made can save it to **one private GitHub reposi
 
 ## Blog
 
-Posts live in `blog/<slug>/index.html` as plain HTML: the text is in the file, nothing is rendered by a script, and each post carries its own stylesheet. The list at [triunitystudios.com/blog/](https://triunitystudios.com/blog/) and the Atom feed are generated from each post's `<head>`.
+Posts live in `blog/<slug>/index.html` as plain HTML: the text is in the file, nothing is rendered by a script, and each post carries its own stylesheet. Every fact, including the numbers behind each chart, is readable text, because the posts are written to be read by search engines and language models as much as by people. The list at [triunitystudios.com/blog/](https://triunitystudios.com/blog/) and the Atom feed are generated from each post's `<head>`.
 
-- **`why-a-blog-now/`** — Why writing for the open web makes sense again now that language models read it, and why these posts are plain HTML
-- **`ai-world-gen-thousands-of-tiny-decisions/`** — How the AI World Gen map generator asks a decision model (Jev) one question per tile, and the Galtea evaluation loop that took it through eleven measured versions, with charts and every version's maps
+- **`why-a-blog-now/`** — Why writing for the open web makes sense again now that language models read it, and why these posts are plain HTML. The reference for the usual shape and length of a post
+- **`ai-world-gen-thousands-of-tiny-decisions/`** — How the AI World Gen map generator asks a decision model (Jev) one question per tile, compared with two faster methods, and the Galtea evaluation loop that measured every change, with charts and every version's maps. The reference for charts and data
 
 ## Deployment
 
