@@ -67,7 +67,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `data/AGENTS.md` | Portfolio data: schema, description style, skills/tags guidance, adding projects |
 | `js/layoutBuilder/AGENTS.md` | Layout modules: responsibilities, data flow, key patterns |
 | `js/planetSimulation/AGENTS.md` | Particle simulation: architecture, config, performance |
-| `blog/AGENTS.md` | Blog: the plain-HTML rule, the head-as-record rule, image reuse, per-post styling |
+| `blog/AGENTS.md` | Blog: the plain-HTML rule, the reference posts, the owner's content and fact-check rules, the head-as-record rule, per-post styling |
 | `web-projects/AGENTS.md` | Web projects: conventions, TDD with Bun, full checklist for adding a new web-project |
 | `web-projects/ai-world-gen/AGENTS.md` | ai-world-gen: module map, the two OpenRouter endpoints and their shapes, the per-cell state rules, the tileset gotchas |
 | `web-projects/ai-world-gen/README.md` | ai-world-gen: the concept, the phase roadmap with progress, and the open questions (the project's memory between sessions) |
@@ -136,7 +136,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 ### Blog
 
-`blog/` holds long-form posts as plain HTML pages: the text is in the file, no script renders it, and each post owns its look on a thin shared skeleton (`blog/blog.css`). A post's `<head>` is its only metadata record; `scripts/blogPosts.js` reads it to write the index block, `blog/feed.xml` and the sitemap entries. See `blog/AGENTS.md` and ADR 0015. Whenever you add a post, use the `add-blog-post` skill.
+`blog/` holds long-form posts as plain HTML pages: the text is in the file, no script renders it, and each post owns its look on a thin shared skeleton (`blog/blog.css`). A post is written for crawlers and language models, so every fact in it (chart numbers and picture descriptions included) is text in the file. A post's `<head>` is its only metadata record; `scripts/blogPosts.js` reads it to write the index block, `blog/feed.xml` and the sitemap entries. See `blog/AGENTS.md` and ADR 0015. Whenever you add or rework a post, use the `add-blog-post` skill.
 
 ### Web Projects
 
