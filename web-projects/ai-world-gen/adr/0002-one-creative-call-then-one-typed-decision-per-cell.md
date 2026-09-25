@@ -108,8 +108,8 @@ unsure.
 model reads; the typed `placement` is enforced before it answers, and the
 "rules hold" specification (ADR 0005) checks the finished map against the same
 fields. The model followed simple prose ("never next to another villager", 0
-of 20 broken in v4) and not spatial prose ("in a wall", 21 of 23 doors in
-open ground), which is why the spatial part moved to the blueprint.
+of 20 broken in v4) and not spatial prose ("in a wall", three doors in four
+in open ground), which is why the spatial part moved to the blueprint.
 
 **The plan decides the shape, the model decides the content.** A wall cell
 can still be a window, an interior cell a chest or a ghost, the outside
@@ -139,8 +139,8 @@ against 1,046 s. The maps are worse in exactly one way, and the way names the
 decision this ADR records. Everything the code settles per cell before the
 model is asked held (structures 0.97, zone 1.00, doors in walls 0.94, an
 enclosed room on 0.95 of maps); everything that reads the cells around it
-collapsed, because inside a batch there are none: 181 broken "never next to"
-pairs, all 181 between two cells of the same batch (the loop: 11), a type whose
+collapsed, because inside a batch there are none: 163 broken "never next to"
+pairs, all 163 between two cells of the same batch (the loop: 13), a type whose
 rules say "exactly one" placed more than once on 7 of 38 maps (the loop: 0,
 worst case 39 staircases in one mansion), path continuity 0.58 to 0.26,
 coverage 0.77 to 0.43, and the judge 0.69 to 0.57. Two scores rose because a

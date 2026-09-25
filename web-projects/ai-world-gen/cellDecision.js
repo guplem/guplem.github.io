@@ -242,8 +242,8 @@ function edgesOf(grid, x, y) {
 /**
  * The types whose hard placement rules allow this cell, and why each other
  * one is out (v7). The rules are the typed `placement` of each element:
- * `edge`, `neverNext` and `onlyNext`. v4 placed 21 of 23 doors in open
- * ground although every door's prose said "in a wall": prose rules are
+ * `edge`, `neverNext` and `onlyNext`. v4 placed three doors in four in
+ * open ground although every door's prose said "in a wall": prose rules are
  * advice to the model, these are applied before it answers. `onlyNext` is
  * judged only once a 4-neighbour is decided; with none there is nothing to
  * judge. When every type would be out, all stay in: an empty question has no

@@ -73,9 +73,9 @@ Do **not** fetch "the newest N issues": `gh issue list --limit N` returns only t
    | Code path | Label |
    |---|---|
    | `web-projects/` (a standalone mini-app) | `web-project` |
-   | `data/` (portfolio JSON, `data/projects/*.json`, `data/schemas/`) | `data` |
-   | `js/planetSimulation/` (the particle background) | `simulation` |
-   | Root site: `index.html`, `css/`, `js/layoutBuilder/`, `js/utils/` | `portfolio` |
+   | Documentation only: `AGENTS.md`, `README.md`, `adr/`, `.claude/` | `documentation` |
+
+   Any other path gets no area label. Use only labels that `gh label list` shows, and never create an area label: `gh issue create` fails on a label that does not exist.
 
 2. **Never assign priority labels.** Priority is a human decision made when triaging, not something the agent infers.
 3. Store the proposed labels as `PROPOSED_LABELS` and present them with the draft in Step 8. Do not ask about labels separately.
