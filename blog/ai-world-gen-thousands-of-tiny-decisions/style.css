@@ -1311,3 +1311,131 @@
     margin-right: 0;
   }
 }
+
+/* === Contents ===
+   One list, two layouts. In the text column it is a folded box: a details
+   element, so it works with no script. On a screen wide enough for a margin, it
+   sits fixed on the left, and the script at the end of the page opens it and
+   marks the section being read (aria-current). A small button jumps back to
+   the box on a narrow screen, where the page is long to scroll back up. */
+@media (prefers-reduced-motion: no-preference) {
+  html:has(body.maptable) {
+    scroll-behavior: smooth;
+  }
+}
+
+.post h2[id],
+.post h3[id] {
+  scroll-margin-top: var(--sp-md);
+}
+
+.toc {
+  margin: var(--sp-lg) 0;
+  padding: var(--sp-sm) var(--sp-md);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+}
+
+.toc summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--parchment-soft);
+}
+
+.toc ol {
+  margin: var(--sp-sm) 0 0;
+  padding-left: 1.6em;
+  display: grid;
+  gap: 4px;
+}
+
+.toc ol ol {
+  margin-top: 4px;
+  padding-left: 0.9em;
+  list-style: none;
+}
+
+.post .toc li {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--parchment-soft);
+}
+
+/* Calmer than a link in the text: no green, no growing underline. */
+.post .toc a {
+  color: var(--parchment);
+  background-image: none;
+}
+
+.post .toc a:hover,
+.post .toc a[aria-current="location"] {
+  color: var(--door);
+}
+
+.maptable .toc-jump {
+  position: fixed;
+  right: var(--sp-md);
+  bottom: var(--sp-md);
+  z-index: 5;
+  padding: 6px 14px;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--parchment);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.maptable .toc-jump:hover {
+  color: var(--door);
+}
+
+/* The text column is 760px wide; from 1280px the left margin holds the list. */
+@media (min-width: 1280px) {
+  .toc {
+    position: fixed;
+    top: var(--sp-xl);
+    left: max(var(--sp-md), calc(50% - 380px - 250px));
+    width: 220px;
+    max-height: calc(100vh - 2 * var(--sp-xl));
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+  }
+
+  .toc ol {
+    padding-left: 0;
+    list-style: none;
+    gap: 2px;
+  }
+
+  .toc ol ol {
+    padding-left: 12px;
+  }
+
+  .post .toc li {
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+
+  .post .toc a {
+    display: block;
+    padding: 3px 0 3px 10px;
+    border-left: 2px solid var(--panel-border);
+  }
+
+  .post .toc a[aria-current="location"] {
+    border-left-color: var(--door);
+  }
+
+  .maptable .toc-jump {
+    display: none;
+  }
+}
