@@ -71,6 +71,7 @@ See `schemas/project.schema.json` for the full typed schema. Key points:
 - `description` is an array of markdown strings: each element becomes a paragraph
 - `types` and `skills` must use consistent naming across projects (check existing files for spelling)
 - `links[].type` maps to an icon file at `resources/images/icons/{type}.webp`
+- A project with a post on the blog links it as `{ "type": "blog", "url": "blog/<slug>/" }`, right after its main link, and the post links back to the project with a `post-project` line under its subtitle
 
 ## Gotchas
 
