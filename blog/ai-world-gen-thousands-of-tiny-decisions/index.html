@@ -1129,6 +1129,85 @@
           <li><strong><span class="m-batch">Batched</span> jumped at one version.</strong> The judge gives it 0.20 to 0.32 before version 8, then 0.57. The fixes of versions 2 to 7 all read cells that are already filled, and in a batch those cells are empty. The blueprint is code applied to each cell, so a batch gets all of it.</li>
           <li><strong>At version 1, <span class="m-batch">batched</span> beat <span class="m-cell">cell by cell</span></strong> (0.20 against 0.09). <span class="m-cell">Cell by cell</span> failed there because each cell copied its neighbours, and in a batch there are none to copy. It was still not a good map.</li>
         </ul>
+        <figure class="chart">
+<svg viewBox="0 0 760 350" class="bars scaling" role="img" aria-labelledby="time-score-title time-score-desc" xmlns="http://www.w3.org/2000/svg">
+<title id="time-score-title">The judge's score against the time to draw one map, one point per run</title>
+<desc id="time-score-desc">One point per run: the mean time to draw one map against the judge's score. Cell by cell, versions 1 to 11, stays at 24 to 28 seconds a map while its score climbs from 0.09 to 0.71. The LLM, run with the code of five versions, sits at 4 to 6 seconds and scores 0.65 to 0.68 from its first run. Batched, with the same five, is the fastest at 0.9 to 1.7 seconds, and scores 0.20 to 0.57.</desc>
+<text x="10" y="18" class="chart-title">The judge&rsquo;s score against the time per map</text>
+<text x="750" y="18" class="tick" text-anchor="end">logarithmic time scale</text>
+<line x1="70" y1="300.0" x2="720" y2="300.0" class="grid" />
+<text x="62" y="304.0" class="tick" text-anchor="end">0.0</text>
+<line x1="70" y1="235.0" x2="720" y2="235.0" class="grid" />
+<text x="62" y="239.0" class="tick" text-anchor="end">0.2</text>
+<line x1="70" y1="170.0" x2="720" y2="170.0" class="grid" />
+<text x="62" y="174.0" class="tick" text-anchor="end">0.4</text>
+<line x1="70" y1="105.0" x2="720" y2="105.0" class="grid" />
+<text x="62" y="109.0" class="tick" text-anchor="end">0.6</text>
+<line x1="70" y1="40.0" x2="720" y2="40.0" class="grid" />
+<text x="62" y="44.0" class="tick" text-anchor="end">0.8</text>
+<text x="70.0" y="318" class="tick" text-anchor="middle">0.5 s</text>
+<text x="167.8" y="318" class="tick" text-anchor="middle">1 s</text>
+<text x="265.7" y="318" class="tick" text-anchor="middle">2 s</text>
+<text x="395.0" y="318" class="tick" text-anchor="middle">5 s</text>
+<text x="492.8" y="318" class="tick" text-anchor="middle">10 s</text>
+<text x="590.7" y="318" class="tick" text-anchor="middle">20 s</text>
+<text x="720.0" y="318" class="tick" text-anchor="middle">50 s</text>
+<text x="395" y="340" class="tick" text-anchor="middle">seconds to draw one map (mean over the 38 test cases)</text>
+<polyline points="634.0,270.8 631.9,222.0 634.0,153.8 629.5,144.0 633.6,124.5 632.1,144.0 621.8,144.0 619.8,88.8 614.9,75.8 624.4,69.2 635.7,75.8" class="line line-jev" />
+<polyline points="426.3,79.0 403.0,79.0 392.5,79.0 410.6,88.8 359.6,88.8" class="line line-whole" />
+<polyline points="213.6,235.0 244.7,196.0 221.3,218.8 156.7,114.8 175.8,114.8" class="line line-batch" />
+<circle cx="634.0" cy="270.8" r="4" class="dot dot-jev"><title>v1: 27.2 s per map, judge 0.09</title></circle><circle cx="631.9" cy="222.0" r="4" class="dot dot-jev"><title>v2: 26.8 s per map, judge 0.24</title></circle><circle cx="634.0" cy="153.8" r="4" class="dot dot-jev"><title>v3: 27.2 s per map, judge 0.45</title></circle><circle cx="629.5" cy="144.0" r="4" class="dot dot-jev"><title>v4: 26.3 s per map, judge 0.48</title></circle><circle cx="633.6" cy="124.5" r="4" class="dot dot-jev"><title>v5: 27.1 s per map, judge 0.54</title></circle><circle cx="632.1" cy="144.0" r="4" class="dot dot-jev"><title>v6: 26.8 s per map, judge 0.48</title></circle><circle cx="621.8" cy="144.0" r="4" class="dot dot-jev"><title>v7: 24.9 s per map, judge 0.48</title></circle><circle cx="619.8" cy="88.8" r="4" class="dot dot-jev"><title>v8: 24.6 s per map, judge 0.65</title></circle><circle cx="614.9" cy="75.8" r="4" class="dot dot-jev"><title>v9: 23.7 s per map, judge 0.69</title></circle><circle cx="624.4" cy="69.2" r="4" class="dot dot-jev"><title>v10: 25.4 s per map, judge 0.71</title></circle><circle cx="635.7" cy="75.8" r="4" class="dot dot-jev"><title>v11: 27.5 s per map, judge 0.69</title></circle>
+<rect x="422.3" y="75.0" width="8" height="8" class="dot dot-whole"><title>v1-llm: 6.2 s per map, judge 0.68</title></rect><rect x="399.0" y="75.0" width="8" height="8" class="dot dot-whole"><title>v4-llm: 5.3 s per map, judge 0.68</title></rect><rect x="388.5" y="75.0" width="8" height="8" class="dot dot-whole"><title>v7-llm: 4.9 s per map, judge 0.68</title></rect><rect x="406.6" y="84.8" width="8" height="8" class="dot dot-whole"><title>v8-llm: 5.6 s per map, judge 0.65</title></rect><rect x="355.6" y="84.8" width="8" height="8" class="dot dot-whole"><title>v11-llm: 3.9 s per map, judge 0.65</title></rect>
+<polygon points="213.6,230.0 218.6,235.0 213.6,240.0 208.6,235.0" class="dot dot-batch"><title>v1-batch: 1.4 s per map, judge 0.20</title></polygon><polygon points="244.7,191.0 249.7,196.0 244.7,201.0 239.7,196.0" class="dot dot-batch"><title>v4-batch: 1.7 s per map, judge 0.32</title></polygon><polygon points="221.3,213.8 226.3,218.8 221.3,223.8 216.3,218.8" class="dot dot-batch"><title>v7-batch: 1.5 s per map, judge 0.25</title></polygon><polygon points="156.7,109.8 161.7,114.8 156.7,119.8 151.7,114.8" class="dot dot-batch"><title>v8-batch: 0.9 s per map, judge 0.57</title></polygon><polygon points="175.8,109.8 180.8,114.8 175.8,119.8 170.8,114.8" class="dot dot-batch"><title>v11-batch: 1.1 s per map, judge 0.57</title></polygon>
+<text x="646.0" y="274.8" class="tick" text-anchor="start">v1</text>
+<text x="641.5" y="148.0" class="tick" text-anchor="start">v4</text>
+<text x="631.8" y="92.8" class="tick" text-anchor="start">v8</text>
+<text x="636.4" y="65.2" class="tick" text-anchor="start">v10</text>
+<text x="434.3" y="71.0" class="tick" text-anchor="start">v1</text>
+<text x="349.6" y="92.8" class="tick" text-anchor="end">v11</text>
+<text x="223.6" y="239.0" class="tick" text-anchor="start">v1</text>
+<text x="160.7" y="102.8" class="tick" text-anchor="middle">v8, v11</text>
+<line x1="400" y1="200" x2="430" y2="200" class="line line-jev" /><circle cx="415" cy="200" r="4" class="dot dot-jev" />
+<text x="438" y="204" class="bar-label">Cell by cell, v1 to v11</text>
+<line x1="400" y1="222" x2="430" y2="222" class="line line-whole" /><rect x="411" y="218" width="8" height="8" class="dot dot-whole" />
+<text x="438" y="226" class="bar-label">LLM, five versions</text>
+<line x1="400" y1="244" x2="430" y2="244" class="line line-batch" /><polygon points="415,239 420,244 415,249 410,244" class="dot dot-batch" />
+<text x="438" y="248" class="bar-label">Batched, five versions</text>
+</svg>
+          <figcaption>Each point is one run. <span class="m-cell">Cell by cell</span> stays at about 25 seconds a map at every version, and its score climbs version by version. The <span class="m-llm">LLM</span> takes about 5 seconds and is near the top from its first run. <span class="m-batch">Batched</span> is the fastest, at about 1 second, and the lowest. All times are measured. Cost is left out: the <span class="m-cell">cell by cell</span> runs did not save their token counts, and <a href="#what-it-costs-really">the cost section</a> already compares the three.</figcaption>
+        </figure>
+        <details class="numbers-fold">
+          <summary>The numbers behind the chart</summary>
+          <div class="table-scroll">
+          <table class="scores">
+            <caption>Time per map and judge score, for every run</caption>
+<thead><tr><th scope="col">Run</th><th scope="col">Seconds per map</th><th scope="col">Judge (GPT-5.2)</th></tr></thead>
+<tbody>
+<tr class="run-loop"><th scope="row">v1, <span class="m-cell">cell by cell</span></th><td>27.2 s</td><td>0.09</td></tr>
+<tr class="run-loop"><th scope="row">v2, <span class="m-cell">cell by cell</span></th><td>26.8 s</td><td>0.24</td></tr>
+<tr class="run-loop"><th scope="row">v3, <span class="m-cell">cell by cell</span></th><td>27.2 s</td><td>0.45</td></tr>
+<tr class="run-loop"><th scope="row">v4, <span class="m-cell">cell by cell</span></th><td>26.3 s</td><td>0.48</td></tr>
+<tr class="run-loop"><th scope="row">v5, <span class="m-cell">cell by cell</span></th><td>27.1 s</td><td>0.54</td></tr>
+<tr class="run-loop"><th scope="row">v6, <span class="m-cell">cell by cell</span></th><td>26.8 s</td><td>0.48</td></tr>
+<tr class="run-loop"><th scope="row">v7, <span class="m-cell">cell by cell</span></th><td>24.9 s</td><td>0.48</td></tr>
+<tr class="run-loop"><th scope="row">v8, <span class="m-cell">cell by cell</span></th><td>24.6 s</td><td>0.65</td></tr>
+<tr class="run-loop"><th scope="row">v9, <span class="m-cell">cell by cell</span></th><td>23.7 s</td><td>0.69</td></tr>
+<tr class="run-loop"><th scope="row">v10, <span class="m-cell">cell by cell</span></th><td>25.4 s</td><td>0.71</td></tr>
+<tr class="run-loop"><th scope="row">v11, <span class="m-cell">cell by cell</span></th><td>27.5 s</td><td>0.69</td></tr>
+<tr class="run-llm"><th scope="row">v1-llm, <span class="m-llm">LLM</span></th><td>6.2 s</td><td>0.68</td></tr>
+<tr class="run-llm"><th scope="row">v4-llm, <span class="m-llm">LLM</span></th><td>5.3 s</td><td>0.68</td></tr>
+<tr class="run-llm"><th scope="row">v7-llm, <span class="m-llm">LLM</span></th><td>4.9 s</td><td>0.68</td></tr>
+<tr class="run-llm"><th scope="row">v8-llm, <span class="m-llm">LLM</span></th><td>5.6 s</td><td>0.65</td></tr>
+<tr class="run-llm"><th scope="row">v11-llm, <span class="m-llm">LLM</span></th><td>3.9 s</td><td>0.65</td></tr>
+<tr class="run-batch"><th scope="row">v1-batch, <span class="m-batch">batched</span></th><td>1.4 s</td><td>0.20</td></tr>
+<tr class="run-batch"><th scope="row">v4-batch, <span class="m-batch">batched</span></th><td>1.7 s</td><td>0.32</td></tr>
+<tr class="run-batch"><th scope="row">v7-batch, <span class="m-batch">batched</span></th><td>1.5 s</td><td>0.25</td></tr>
+<tr class="run-batch"><th scope="row">v8-batch, <span class="m-batch">batched</span></th><td>0.9 s</td><td>0.57</td></tr>
+<tr class="run-batch"><th scope="row">v11-batch, <span class="m-batch">batched</span></th><td>1.1 s</td><td>0.57</td></tr>
+</tbody>
+          </table>
+          </div>
+        </details>
         <p>For the per-cell design, the honest lesson is this. Many small decisions that do not see each other are harder to get right than one decision about the whole map. They need more help from code, and much more tuning. What <span class="m-cell">cell by cell</span> gets in return is control: code can check and limit every single cell. These are five runs of each, on one generator, so read them as measurements, not laws.</p>
       </section>
 
