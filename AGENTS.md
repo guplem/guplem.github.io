@@ -78,6 +78,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/rps-mind-reader/AGENTS.md` | rps-mind-reader: predictor architecture + contracts, R&D workflow, strategies tried/rejected |
 | `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frames as spec, the scanner and pen model, geometry gotchas |
 | `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
+| `web-projects/wildfire-watch/AGENTS.md` | wildfire-watch: module map, the demo-label rule, the wind-direction and map-pane gotchas, how to go live |
 | `web-projects/unit-converter/AGENTS.md` | unit-converter: module map, the one-input-box contract, unit-catalogue and number-parsing gotchas |
 | `web-projects/mancala/AGENTS.md` | mancala: the engine contract both rule sets answer, how to add a third, the Ba-awa traps |
 | `web-projects/global-news-map/AGENTS.md` | global-news-map: module map, the CORS and UTC gotchas, how a story gets its pin |
@@ -286,6 +287,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0035](web-projects/github-work-board/adr/0035-a-reference-lights-the-card-it-names.md) | A reference lights the card it names |
 | [github-work-board 0036](web-projects/github-work-board/adr/0036-the-page-starts-on-a-start-up-screen.md) | The page starts on a start-up screen, and every other screen starts hidden |
 | [github-work-board 0037](web-projects/github-work-board/adr/0037-a-dot-says-how-the-checks-are-going.md) | A dot says how the checks are going, read from the Actions API |
+| [wildfire-watch 0001](web-projects/wildfire-watch/adr/0001-demo-data-behind-the-real-data-shapes.md) | Ship demo data first, in the shapes the real sources will fill, and label it |
 | [ai-world-gen 0001](web-projects/ai-world-gen/adr/0001-openrouter-is-the-one-gateway-and-the-key-lives-here.md) | OpenRouter is the one gateway (browser CORS verified), and the key lives in this browser |
 | [ai-world-gen 0002](web-projects/ai-world-gen/adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
 | [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |
