@@ -14,7 +14,7 @@
     <id>https://triunitystudios.com/blog/ai-world-gen-thousands-of-tiny-decisions/</id>
     <published>2026-09-20T12:00:00Z</published>
     <updated>2026-09-20T12:00:00Z</updated>
-    <summary>A map generator that asks a decision model one question per tile, about 3,000 times per test run for 25 cents, and the evaluation loop in Galtea that took it from a green blur to a village in eleven measured versions.</summary>
+    <summary>A map generator that asks a decision model one question per tile, about 3,000 times per test run for 25 cents, and the evaluation loop in Galtea that took it from a green blur to a village, one measured change at a time.</summary>
   </entry>
   <entry>
     <title>Why a blog, now</title>
