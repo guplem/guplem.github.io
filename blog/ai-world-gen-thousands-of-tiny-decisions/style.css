@@ -1439,3 +1439,18 @@
     display: none;
   }
 }
+
+/* A table that repeats the chart above it, folded so it does not weigh on the
+   text. It stays in the HTML for readers and crawlers without the picture. */
+.numbers-fold {
+  margin: var(--sp-md) 0;
+}
+
+.numbers-fold summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--parchment-soft);
+}
