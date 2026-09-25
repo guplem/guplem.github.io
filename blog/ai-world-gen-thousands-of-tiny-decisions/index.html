@@ -69,6 +69,28 @@
         <li><strong>An <span class="m-llm">LLM</span> was good with no tuning at all.</strong> In the <a href="#the-same-maps-one-call-each"><span class="m-llm">LLM</span> method</a>, a language model draws the whole map in one answer. It scored 0.68 with only what version 1 knew. At version 11, it trails <span class="m-cell">cell by cell</span> by 0.04 (0.65 against 0.69), a gap inside the noise. It is also up to 15 times faster, at the same price. <span class="m-cell">Cell by cell</span> keeps a clear lead only on the rules that code enforces for each cell (0.99 against 0.76). <a href="#the-same-decisions-one-request"><span class="m-batch">Batched</span></a>, where Jev gets the questions for all the cells in one request, did worst: each cell is decided without knowing what its neighbours got, so the map contradicts itself (0.57).</li>
       </ul>
 
+      <details class="toc" id="contents">
+        <summary>Contents</summary>
+        <nav aria-label="Contents">
+          <ol>
+            <li><a href="#a-model-that-decides-instead-of-writes">A model that decides instead of writes</a></li>
+            <li><a href="#what-it-costs-really">What it costs, and how that grows</a></li>
+            <li><a href="#version-one-was-a-green-blur">Version one was a green blur</a></li>
+            <li><a href="#measuring-instead-of-looking">Measuring instead of looking</a></li>
+            <li><a href="#how-the-generator-evolved">How the generator evolved</a><ol><li><a href="#version-8-the-code-draws-the-rooms">Version 8: the code draws the rooms</a></li></ol></li>
+            <li><a href="#regressions-and-what-the-loop-caught">Regressions, and what the loop caught</a></li>
+            <li><a href="#the-same-maps-one-call-each">The same maps, drawn by an <span class="m-llm">LLM</span></a></li>
+            <li><a href="#the-same-decisions-one-request">The same decisions, <span class="m-batch">batched</span></a></li>
+            <li><a href="#the-shortcuts-at-every-stage"><span class="m-llm">LLM</span> and <span class="m-batch">batched</span>, at every stage</a></li>
+            <li><a href="#running-the-loop-with-an-agent">Running the loop with an agent</a></li>
+            <li><a href="#what-i-have-not-tried-decisions-that-branch">What I have not tried: decisions that branch</a></li>
+            <li><a href="#what-is-still-wrong">What is still wrong</a></li>
+            <li><a href="#the-numbers">The numbers</a></li>
+          </ol>
+        </nav>
+      </details>
+      <a class="toc-jump" href="#contents">&uarr; Contents</a>
+
       <section>
         <h2 id="a-model-that-decides-instead-of-writes"><a class="heading-anchor" href="#a-model-that-decides-instead-of-writes">A model that decides instead of writes</a></h2>
         <p><a href="../../web-projects/ai-world-gen/">AI World Gen</a> started as a way to test <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">Jev</a>, a new kind of model made by TypeSafe. I wanted answers to three questions. How much of the context can it take into account? How much does it really cost? And can you tune its prompt, the way you tune the prompt of a large language model (LLM)?</p>
@@ -1163,5 +1185,34 @@
     <footer class="page-footer">
       <p>Part of <a href="../../">Guillem Poy's portfolio</a>. All posts: <a href="../">Blog</a>.</p>
     </footer>
+    <script>
+      // Contents: an extra, never content. Without it, the list is a folded box of plain links.
+      // With it, the list opens in the left margin of a wide screen, and the section being read is marked.
+      (() => {
+        const contents = document.getElementById("contents");
+        if (!contents) return;
+        const wideScreen = window.matchMedia("(min-width: 1280px)");
+        const openOnWideScreen = () => { if (wideScreen.matches) contents.open = true; };
+        openOnWideScreen();
+        wideScreen.addEventListener("change", openOnWideScreen);
+        window.addEventListener("hashchange", () => { if (location.hash === "#contents") contents.open = true; });
+        const linkById = new Map([...contents.querySelectorAll('a[href^="#"]')].map((link) => [link.getAttribute("href").slice(1), link]));
+        const headings = [...linkById.keys()].map((id) => document.getElementById(id)).filter(Boolean);
+        let markPending = false;
+        const markCurrentSection = () => {
+          markPending = false;
+          let current = null;
+          for (const heading of headings) if (heading.getBoundingClientRect().top <= window.innerHeight * 0.3) current = heading;
+          for (const [id, link] of linkById) {
+            if (current && id === current.id) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          }
+        };
+        window.addEventListener("scroll", () => {
+          if (!markPending) { markPending = true; requestAnimationFrame(markCurrentSection); }
+        }, { passive: true });
+        markCurrentSection();
+      })();
+    </script>
   </body>
 </html>
