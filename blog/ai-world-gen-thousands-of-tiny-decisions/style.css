@@ -146,6 +146,28 @@
   background-size: 100% 1.5px;
 }
 
+/* The three methods carry their chart colour as an underline, every time the
+   text names one, so a reader can match the text to the charts. */
+.post .m-cell,
+.post .m-batch,
+.post .m-llm {
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.post .m-cell {
+  text-decoration-color: var(--door);
+}
+
+.post .m-batch {
+  text-decoration-color: var(--sky);
+}
+
+.post .m-llm {
+  text-decoration-color: var(--leaf);
+}
+
 .post strong {
   color: var(--parchment);
   font-weight: 700;
@@ -780,10 +802,12 @@
 
 .scaling .line-whole {
   stroke: var(--leaf);
+  stroke-dasharray: 6 4;
 }
 
 .scaling .line-batch {
   stroke: var(--sky);
+  stroke-dasharray: 6 4;
 }
 
 .scaling .dot-batch {
