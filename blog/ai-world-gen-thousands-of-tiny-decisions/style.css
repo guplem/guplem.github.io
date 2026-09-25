@@ -107,13 +107,14 @@
   margin: var(--sp-xl) 0 var(--sp-sm);
 }
 
-/* A subsection inside a section. base.css paints an h3 in the site accent,
-   which is not this post's palette, so it takes the parchment and sits one
-   step under the orange h2. */
+/* A subsection inside a section: the orange of the h2, one step smaller, with
+   an orange bar on its left so it reads as a heading and not as big text. */
 .post h3 {
-  color: var(--parchment);
+  color: var(--door);
   font-size: 1.2rem;
   margin: var(--sp-lg) 0 var(--sp-xs);
+  padding-left: 12px;
+  border-left: 3px solid var(--door);
 }
 
 .post p,
@@ -156,25 +157,28 @@
   background-size: 100% 1.5px;
 }
 
-/* The three methods carry their chart colour as an underline, every time the
-   text names one, so a reader can match the text to the charts. */
+/* The three methods carry their chart colour as an underline when the reader
+   points at a name, so the text can be matched to the charts without the
+   underlines crowding every line. */
 .post .m-cell,
 .post .m-batch,
 .post .m-llm {
   text-decoration-line: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out);
 }
 
-.post .m-cell {
+.post .m-cell:hover {
   text-decoration-color: var(--door);
 }
 
-.post .m-batch {
+.post .m-batch:hover {
   text-decoration-color: var(--sky);
 }
 
-.post .m-llm {
+.post .m-llm:hover {
   text-decoration-color: var(--leaf);
 }
 
