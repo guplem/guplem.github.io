@@ -11,7 +11,7 @@
   "skills": ["Vibe Coded", "API Integration", "Data Visualization", "Automation", "Architecture"],
   "image": "resources/images/projects/wildfireWatch.webp",
   "imageStretched": true,
-  "imageAlt": "A map of Catalonia with a fire near Berga and its forecast spread stretched along the wind",
+  "imageAlt": "Headline \"See where a fire goes next\" above the Wildfire Watch map, with a fire near Berga, its wind-stretched forecast spread, and the town alerts",
   "links": [
     { "url": "web-projects/wildfire-watch/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/wildfire-watch" }
