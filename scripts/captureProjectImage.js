@@ -14,7 +14,7 @@
 // Why a script and not the agent's browser pane: a pane screenshot reaches the
 // agent as an image, never as a file on disk, so it cannot become the image.
 
-import { existsSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, normalize } from "node:path";
 
@@ -140,8 +140,10 @@ async function capture(options) {
   if (!browserPath) throw new Error("No Chrome or Edge found; set CHROME_PATH");
   const server = serveRepository();
   const debugPort = 9300 + Math.floor(Math.random() * 500);
+  // One profile per run, so several captures can run at the same time.
+  const profileDirectory = mkdtempSync(join(tmpdir(), "capture-project-image-"));
   const browser = Bun.spawn(
-    [browserPath, "--headless=new", `--remote-debugging-port=${debugPort}`, `--user-data-dir=${join(tmpdir(), "capture-project-image-profile")}`, "--hide-scrollbars"],
+    [browserPath, "--headless=new", `--remote-debugging-port=${debugPort}`, `--user-data-dir=${profileDirectory}`, "--hide-scrollbars"],
     { stdout: "ignore", stderr: "ignore" },
   );
   try {
@@ -168,6 +170,14 @@ async function capture(options) {
   } finally {
     browser.kill();
     server.stop(true);
+    await browser.exited;
+    // Chrome's helper processes can hold the profile for a moment after the
+    // kill, so a failed delete leaves a temp folder behind, never a failed run.
+    try {
+      rmSync(profileDirectory, { recursive: true, force: true, maxRetries: 10, retryDelay: 300 });
+    } catch {
+      console.warn(`Could not delete ${profileDirectory}; delete it later.`);
+    }
   }
 }
 

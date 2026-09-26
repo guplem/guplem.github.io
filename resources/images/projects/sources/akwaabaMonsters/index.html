@@ -1,0 +1,149 @@
+<!doctype html>
+<!--
+  Source of the portfolio image resources/images/projects/akwaabaMonsters.webp.
+  The two screens are drawn by the game's own renderer (web-projects/akwaaba-monsters/render.js)
+  from the game's own maps and creature art, so no screenshot file is needed: the title screen
+  and the name box stand between a page load and a battle, and the capture script cannot type.
+  Re-render it with:
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/akwaabaMonsters/ --out resources/images/projects/akwaabaMonsters.webp --width 1280 --height 800 --quality 80
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Akwaaba Monsters portfolio image</title>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("../../../../fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: #f4ead2;
+        background:
+          radial-gradient(circle at 88% 6%, rgba(247, 217, 140, 0.3), transparent 38%),
+          radial-gradient(circle at 4% 100%, rgba(224, 98, 43, 0.28), transparent 44%),
+          #2a1a0e;
+      }
+      .caption {
+        position: absolute;
+        left: 56px;
+        right: 56px;
+        top: 50px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #d8c9a6;
+      }
+      .brand::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #e0622b;
+        box-shadow: 0 0 0 5px rgba(224, 98, 43, 0.3);
+      }
+      h1 {
+        margin-top: 18px;
+        font-size: 60px;
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+      .accent {
+        color: #f7d98c;
+      }
+      .sub {
+        margin-top: 14px;
+        font-size: 23px;
+        color: #d8c9a6;
+      }
+      /* The two screens overlap and run off the bottom edge, like the
+         wildfireWatch frame, so they can be large at card width. */
+      .bezel {
+        position: absolute;
+        padding: 14px 14px 80px;
+        border-radius: 18px 18px 0 0;
+        background: #3b2614;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.55),
+          0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+      .bezel.field {
+        left: 40px;
+        top: 244px;
+      }
+      .bezel.battle {
+        right: 40px;
+        top: 298px;
+        z-index: 1;
+        box-shadow:
+          -24px 0 60px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+      canvas {
+        display: block;
+        width: 720px;
+        height: 480px;
+        border-radius: 6px;
+        image-rendering: pixelated;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="caption">
+      <div class="brand">Akwaaba Monsters · a handheld-style RPG</div>
+      <h1>Catch monsters <span class="accent">across Ghana.</span></h1>
+      <p class="sub">Every creature, tile and note is generated in the browser. No image files.</p>
+    </div>
+    <div class="bezel field"><canvas id="field"></canvas></div>
+    <div class="bezel battle"><canvas id="battle"></canvas></div>
+    <script type="module">
+      import { Renderer, SCREEN_W, SCREEN_H, TILE } from "../../../../../web-projects/akwaaba-monsters/render.js";
+      import { getMap, spawnCharacters } from "../../../../../web-projects/akwaaba-monsters/areas/index.js";
+      import { cameraFor } from "../../../../../web-projects/akwaaba-monsters/ui.js";
+
+      // A wild battle, drawn the way drawBattle in app.js draws the action menu.
+      const battle = new Renderer(document.getElementById("battle"));
+      battle.battleBackdrop("wild");
+      battle.creatureShadow(158, 18, 1);
+      battle.creature("polete", 158, 18, {});
+      battle.creatureShadow(30, 54, 1.2);
+      battle.creature("hinoko", 30, 54, { scale: 1.2, flip: true });
+      battle.statusPanel({ x: 8, y: 8, name: "Polete", level: 4, hp: 9, maxHp: 17 });
+      battle.statusPanel({ x: 132, y: 62, name: "Hinoko", level: 6, hp: 21, maxHp: 24, showExp: true, expShare: 0.6 });
+      battle.message("What will\nHinoko do?", { width: 124 });
+      battle.actionMenu(["Fight", "Bag", "Team", "Run"], 0);
+
+      // Aduma village, where the trip starts.
+      const field = new Renderer(document.getElementById("field"));
+      const map = getMap("village");
+      const player = { x: 10, y: 7, dir: "down", px: 10 * TILE, py: 7 * TILE, sprite: "playerBoy", frame: 0 };
+      const characters = spawnCharacters(map).map((npc) => ({ ...npc, px: npc.x * TILE, py: npc.y * TILE }));
+      const camera = cameraFor({
+        centreX: player.px + TILE / 2,
+        centreY: player.py + TILE / 2,
+        viewW: SCREEN_W,
+        viewH: SCREEN_H,
+        mapW: map.width * TILE,
+        mapH: map.height * TILE,
+      });
+      field.drawMap(map, camera, characters, player);
+    </script>
+  </body>
+</html>

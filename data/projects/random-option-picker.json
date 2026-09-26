@@ -9,6 +9,9 @@
     "All state lives in URL query params, so any draw is reproducible and shareable as a plain link."
   ],
   "skills": ["Vibe Coded"],
+  "image": "resources/images/projects/randomOptionPicker.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Same link, same pick.\" beside the Random Option Picker, with two reels showing Pizza and Tacos drawn from a list of six dishes with the seed friday",
   "links": [
     {
       "url": "web-projects/random-option-picker/"

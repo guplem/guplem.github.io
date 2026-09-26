@@ -1,0 +1,104 @@
+<!doctype html>
+<!--
+  Source of the portfolio image resources/images/projects/unitConverter.webp.
+  Re-render it with:
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/unitConverter/ --out resources/images/projects/unitConverter.webp --width 1280 --height 800 --quality 80
+  screenshot.webp comes from the page itself, with the query in the URL so the answers stay the same:
+    bun scripts/captureProjectImage.js --page "web-projects/unit-converter/?q=100%20km" --out resources/images/projects/sources/unitConverter/screenshot.webp --width 920 --height 700 --wait 3000 --quality 85
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Unit Converter portfolio image</title>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("../../../../fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: #141422;
+        background:
+          radial-gradient(circle at 92% 6%, rgba(220, 90, 0, 0.2), transparent 42%),
+          radial-gradient(circle at 4% 100%, rgba(67, 28, 93, 0.14), transparent 44%),
+          #eef0f5;
+      }
+      .caption {
+        position: absolute;
+        left: 110px;
+        right: 110px;
+        top: 52px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #6b6b80;
+      }
+      .brand::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #dc5a00;
+        box-shadow: 0 0 0 5px rgba(220, 90, 0, 0.22);
+      }
+      h1 {
+        margin-top: 18px;
+        font-size: 64px;
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+      .accent {
+        color: #dc5a00;
+      }
+      .sub {
+        margin-top: 14px;
+        font-size: 24px;
+        color: #4a4a5e;
+      }
+      .shot {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 1000px;
+        height: 560px;
+        transform: translateX(-50%);
+        overflow: hidden;
+        border-radius: 14px 14px 0 0;
+        background: #eef0f5;
+        box-shadow:
+          0 30px 80px rgba(20, 20, 34, 0.22),
+          0 0 0 1px rgba(20, 20, 34, 0.1);
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+        margin-top: -152px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="caption">
+      <div class="brand">Unit Converter</div>
+      <h1>Type it once. <span class="accent">See every unit.</span></h1>
+      <p class="sub">One box reads 100 km, 5'10" or 100 USD. No category to pick, no dropdowns.</p>
+    </div>
+    <div class="shot"><img src="screenshot.webp" alt="" /></div>
+  </body>
+</html>

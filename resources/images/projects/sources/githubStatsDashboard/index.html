@@ -1,0 +1,107 @@
+<!doctype html>
+<!--
+  Source of the portfolio image resources/images/projects/githubStatsDashboard.webp.
+  Re-render it with:
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/githubStatsDashboard/ --out resources/images/projects/githubStatsDashboard.webp --width 1280 --height 800 --quality 80
+  screenshot.webp comes from mock.html, a seeded copy of the stats view that uses the project's own style.css
+  (the live page needs a typed username and GitHub API calls, which the capture script cannot give it):
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/githubStatsDashboard/mock.html --out resources/images/projects/sources/githubStatsDashboard/screenshot.webp --width 1010 --height 700 --wait 1000 --quality 85
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>GitHub Stats Dashboard portfolio image</title>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("../../../../fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: #e0e6f0;
+        background:
+          radial-gradient(circle at 90% 8%, rgba(188, 140, 255, 0.26), transparent 40%),
+          radial-gradient(circle at 6% 100%, rgba(88, 166, 255, 0.22), transparent 42%),
+          #0a0e1a;
+      }
+      .caption {
+        position: absolute;
+        left: 110px;
+        right: 110px;
+        top: 52px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #8892a8;
+      }
+      .brand::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #58a6ff;
+        box-shadow: 0 0 0 5px rgba(88, 166, 255, 0.3);
+      }
+      h1 {
+        margin-top: 18px;
+        font-size: 58px;
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+      .accent {
+        background: linear-gradient(135deg, #58a6ff, #bc8cff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .sub {
+        margin-top: 14px;
+        font-size: 22px;
+        color: #8892a8;
+      }
+      .shot {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 1060px;
+        height: 560px;
+        transform: translateX(-50%);
+        overflow: hidden;
+        border-radius: 14px 14px 0 0;
+        background: #0a0e1a;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="caption">
+      <div class="brand">GitHub Stats Dashboard</div>
+      <h1>Any repo's health, <span class="accent">at a glance.</span></h1>
+      <p class="sub">Stars, merge rates, commit pace and contributors, straight from the GitHub API.</p>
+    </div>
+    <div class="shot"><img src="screenshot.webp" alt="" /></div>
+  </body>
+</html>

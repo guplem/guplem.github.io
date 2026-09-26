@@ -9,6 +9,9 @@
     "The number rules are **covered by tests written before the code**: 227 dial codes, the E.164 length limit, and the trunk zero that Italy keeps. Nothing leaves the browser."
   ],
   "skills": ["Vibe Coded", "UI/UX"],
+  "image": "resources/images/projects/whatsappNoContact.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Message any number, save no contact\" with three numbered steps, next to the tool's form filled with +34 600 000 000 and a chat with that unsaved number",
   "links": [
     {
       "url": "web-projects/whatsapp-no-contact/"

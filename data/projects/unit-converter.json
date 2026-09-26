@@ -9,6 +9,9 @@
     "It covers **17 kinds of measurement and 59 currencies**, with **live exchange rates** and an offline copy when they fail. The conversions are **covered by tests written before the code**."
   ],
   "skills": ["Vibe Coded", "UI/UX", "Architecture", "API Integration"],
+  "image": "resources/images/projects/unitConverter.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Type it once. See every unit.\" above the converter with 100 km typed in the box and its answers in miles, metres, feet, yards, centimetres, inches, millimetres and nautical miles",
   "links": [
     { "url": "web-projects/unit-converter/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/unit-converter" }

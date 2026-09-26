@@ -9,6 +9,9 @@
     "Designed as a foundation for future project management features including **PICK chart visualizations** and advanced repository analytics. Fully responsive and self-contained with no external dependencies."
   ],
   "skills": ["Vibe Coded"],
+  "image": "resources/images/projects/githubStatsDashboard.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Any repo's health, at a glance\" above the dashboard's stats view for a sample repository, with star, pull request, commit pace and age cards, the pull request merge rate, and a weekly bar chart",
   "links": [
     { "url": "web-projects/github-stats-dashboard/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/github-stats-dashboard" }
