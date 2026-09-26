@@ -129,6 +129,8 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 
 **Use the `/add-web-project` command.** It automates the full scaffolding checklist. This command must be used whenever creating a new web-project.
 
+**Every web-project in the portfolio has a listing image**, added in the same pull request as its data file. Capture it with `bun scripts/captureProjectImage.js`, because a browser pane screenshot never reaches the disk. Step 6c of the `add-web-project` skill holds the procedure.
+
 ## Existing Projects
 
 - **wildfire-watch** -- A wildfire map for Catalonia, built to judge risk: Deepfire hotspots sized by fire radiative power, an MTG satellite cross-check, a blended wind field, towns and protected areas, and a timeline that shows the past size (estimated from the MTG series) and a wind-stretched forecast spread with an uncertainty band. Impact alerts name every fire within 10 km of a town. Runs on labelled demo data behind the shapes real sources will fill; Leaflet with OpenStreetMap tiles (TDD-covered pure modules, see wildfire-watch ADR 0001 and root ADR 0007 and 0013)
