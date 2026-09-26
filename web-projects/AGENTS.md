@@ -129,6 +129,8 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 
 **Use the `/add-web-project` command.** It automates the full scaffolding checklist. This command must be used whenever creating a new web-project.
 
+**Every web-project in the portfolio has a listing image**, added in the same pull request as its data file. Capture it with `bun scripts/captureProjectImage.js`, because a browser pane screenshot never reaches the disk. Step 6c of the `add-web-project` skill holds the procedure.
+
 ## Existing Projects
 
 - **wildfire-watch** -- A wildfire map for Europe, built to judge risk, in two modes. Live mode (the default): NASA FIRMS hotspots from four satellites joined into fires and cross-checked between satellites, Open-Meteo wind and forecast, the EFFIS Fire Weather Index and burnt areas, EEA Natura 2000 sites and GeoNames towns, all keyless. A scheduled Action (`.github/workflows/wildfire-feed.yml`) copies the FIRMS files to the `wildfire-feed` branch, because they send no CORS header. Demo mode (`?mode=demo`) shows the original Deepfire/MTG/WeatherNext/ELMFIRE design on invented data. Impact alerts, a timeline of real past pixels and a rough wind-shaped future, and a hotspot caveat on every fire; Leaflet with OpenStreetMap tiles (TDD-covered pure modules, see wildfire-watch ADR 0001-0003 and root ADR 0006, 0007 and 0013)

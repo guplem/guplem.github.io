@@ -9,6 +9,9 @@
     "A demo mode shows the original design on invented data. The clustering, alerts, danger score and spread shape are **pure modules covered by tests written before the code**."
   ],
   "skills": ["Vibe Coded", "API Integration", "Data Visualization", "Automation", "Architecture"],
+  "image": "resources/images/projects/wildfireWatch.webp",
+  "imageStretched": true,
+  "imageAlt": "A map of Catalonia with a fire near Berga and its forecast spread stretched along the wind",
   "links": [
     { "url": "web-projects/wildfire-watch/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/wildfire-watch" }
