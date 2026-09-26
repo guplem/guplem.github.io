@@ -1,0 +1,72 @@
+name: Wildfire feed
+
+# Copies the NASA FIRMS active-fire files for Europe into one JSON feed for
+# web-projects/wildfire-watch. FIRMS files need no key but send no CORS header,
+# so the page cannot read them itself. This job publishes the feed to the
+# `wildfire-feed` branch, which the page reads from raw.githubusercontent.com.
+# The branch holds one commit, replaced on every run, so it never grows.
+# See web-projects/wildfire-watch/adr/0002-copy-the-fire-files-with-a-scheduled-action.md.
+on:
+  schedule:
+    - cron: "11,41 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "web-projects/wildfire-watch/makeFeed.js"
+      - "web-projects/wildfire-watch/feed.js"
+      - "web-projects/wildfire-watch/firms.js"
+      - ".github/workflows/wildfire-feed.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wildfire-feed
+  cancel-in-progress: false
+
+jobs:
+  feed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: web-projects/wildfire-watch
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+
+      # GeoNames towns with 1,000 or more people (CC BY 4.0). They change
+      # slowly, so the job keeps a copy for a week.
+      - name: Name this week
+        id: week
+        run: echo "week=$(date -u +%G-%V)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the GeoNames towns
+        id: geonames
+        uses: actions/cache@v4
+        with:
+          path: cities1000.txt
+          key: geonames-cities1000-${{ steps.week.outputs.week }}
+
+      - name: Download the GeoNames towns
+        if: steps.geonames.outputs.cache-hit != 'true'
+        run: |
+          curl -fsSL -o cities1000.zip https://download.geonames.org/export/dump/cities1000.zip
+          unzip -o cities1000.zip cities1000.txt
+
+      - name: Build the feed
+        run: |
+          mkdir -p out
+          bun web-projects/wildfire-watch/makeFeed.js --geonames cities1000.txt --out out/fires.json
+
+      - name: Publish the feed
+        run: |
+          cd out
+          git init -q -b wildfire-feed
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fires.json
+          git commit -q -m "Wildfire feed $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" wildfire-feed

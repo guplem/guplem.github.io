@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light dark" />
-  <meta name="description" content="A wildfire-watch map for Catalonia: hotspots sized by fire radiative power, satellite cross-checks, wind, fire-weather danger, towns at risk and a wind-shaped spread forecast. Demo data." />
-  <title>Wildfire Watch · Fires, Wind and Risk on One Map · Guillem Poy</title>
+  <meta name="description" content="A live wildfire map for Europe: NASA FIRMS satellite hotspots cross-checked between satellites, Open-Meteo wind, the EFFIS fire danger forecast, burnt areas, towns at risk and protected sites. A demo mode shows the full design on invented data." />
+  <title>Wildfire Watch · Live Fires, Wind and Risk on One Map · Guillem Poy</title>
   <link rel="canonical" href="https://triunitystudios.com/web-projects/wildfire-watch/" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23d62828'/%3E%3Cpath d='M16 5c1 5 7 7 7 14a7 7 0 0 1-14 0c0-4 2-6 3-8 1 3 2 4 3 4-1-4 0-7 1-10z' fill='%23fff'/%3E%3C/svg%3E" />
   <!-- Which pull request published this file. Never hand-edit: written by
@@ -17,18 +17,28 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-mode="real">
   <div class="app">
     <header class="header">
       <div class="brand">
         <h1>Wildfire Watch</h1>
-        <span class="demo-badge" title="Every fire and weather reading on this page is invented">Demo data</span>
+        <div class="mode-switch" role="group" aria-label="Data">
+          <a id="mode-real" class="mode" href="./" data-mode-link="real">Live data</a>
+          <a id="mode-demo" class="mode" href="./?mode=demo" data-mode-link="demo">Demo</a>
+        </div>
       </div>
       <div class="layers" role="group" aria-label="Map layers">
-        <button type="button" class="pill" data-layer="fires" data-color="red" aria-pressed="true">Fires</button>
-        <button type="button" class="pill" data-layer="mtg" data-color="green" aria-pressed="false">MTG cross-check</button>
+        <button type="button" class="pill" data-layer="fires" data-color="red" aria-pressed="true">
+          <span data-only="demo">Fires</span><span data-only="real">Fires (NASA FIRMS)</span>
+        </button>
+        <button type="button" class="pill" data-layer="mtg" data-color="green" aria-pressed="false">
+          <span data-only="demo">MTG cross-check</span><span data-only="real">Satellite cross-check</span>
+        </button>
         <button type="button" class="pill" data-layer="wind" data-color="blue" aria-pressed="false">Weather (wind)</button>
-        <button type="button" class="pill" data-layer="context" data-color="gray" aria-pressed="false">Context (towns &amp; parks)</button>
+        <button type="button" class="pill" data-layer="danger" data-color="purple" aria-pressed="false" data-only="real">Fire danger (EFFIS)</button>
+        <button type="button" class="pill" data-layer="context" data-color="gray" aria-pressed="false">
+          <span data-only="demo">Context (towns &amp; parks)</span><span data-only="real">Context (towns &amp; burnt areas)</span>
+        </button>
         <button type="button" class="pill" data-layer="spread" data-color="orange" aria-pressed="false">Spread (history &amp; forecast)</button>
       </div>
       <div class="header-actions">
@@ -45,8 +55,8 @@
       </form>
       <button type="button" id="locate">Use my location</button>
       <div class="timeline" role="group" aria-label="Timeline">
-        <button type="button" data-step="-3" class="past">-3h</button>
-        <button type="button" data-step="-1" class="past">-1h</button>
+        <button type="button" data-past="0" class="past"></button>
+        <button type="button" data-past="1" class="past"></button>
         <button type="button" data-step="0" class="now" aria-pressed="true">Now</button>
         <button type="button" data-step="6" class="future">+6h</button>
         <button type="button" data-step="12" class="future">+12h</button>
@@ -59,6 +69,10 @@
       <div id="map" class="map" aria-label="Wildfire map"></div>
 
       <aside class="sidebar">
+        <section id="status-panel" class="panel status" hidden>
+          <p id="status-body"></p>
+        </section>
+
         <section id="nearest-panel" class="panel" hidden>
           <div class="panel-head">
             <h2>Nearest to you</h2>
@@ -69,13 +83,8 @@
 
         <section id="alerts-panel" class="panel alerts" hidden>
           <h2>Impact alerts</h2>
-          <p class="hint">Fires within 10 km of a town.</p>
+          <p class="hint" id="alerts-hint">Fires within 10 km of a town.</p>
           <ul id="alerts-list" class="row-list"></ul>
-        </section>
-
-        <section class="panel">
-          <h2>Legend</h2>
-          <div id="legend"></div>
         </section>
 
         <section class="panel">
@@ -85,16 +94,24 @@
 
         <section class="panel">
           <h2>Active fires</h2>
+          <p class="hint" data-only="real">Seen in the past 24 hours, in this map view, strongest first.</p>
           <table class="fires-table">
-            <thead><tr><th>Location</th><th>Conf.</th><th>FRP</th><th>Age</th><th>MTG</th></tr></thead>
+            <thead><tr><th>Location</th><th>Conf.</th><th>FRP</th><th id="age-head">Age</th><th id="cross-head">MTG</th></tr></thead>
             <tbody id="fires-body"></tbody>
           </table>
+          <p id="fires-more" class="hint"></p>
+        </section>
+
+        <section class="panel">
+          <h2>Legend</h2>
+          <div id="legend"></div>
         </section>
       </aside>
     </div>
 
     <footer class="footer">
-      <p class="sources-static">Sources: Deepfire hotspots · EUMETSAT MTG · Google WeatherNext · ELMFIRE simulation · Catalan GIS (protected areas, population). <strong>Demo:</strong> fires and weather are simulated, not real. In an emergency, call 112.</p>
+      <p class="sources-static" data-only="demo">Sources: Deepfire hotspots · EUMETSAT MTG · Google WeatherNext · ELMFIRE simulation · Catalan GIS (protected areas, population). <strong>Demo:</strong> fires and weather are invented, not real. In an emergency, call 112.</p>
+      <p class="sources-static" data-only="real">Sources: <a href="https://firms.modaps.eosdis.nasa.gov/">NASA FIRMS</a> · <a href="https://open-meteo.com/">Open-Meteo</a> (CC BY 4.0) · <a href="https://effis.jrc.ec.europa.eu/">EFFIS / Copernicus EMS</a> · <a href="https://www.eea.europa.eu/">EEA Natura 2000</a> · <a href="https://www.geonames.org/">GeoNames</a> (CC BY 4.0). <strong>Not an official warning service.</strong> Follow your local emergency service. In an emergency, call 112.</p>
       <p id="freshness" class="freshness"></p>
       <p id="deploy-line" class="deploy-line"></p>
       <p><a href="../">All web projects</a></p>
@@ -104,23 +121,51 @@
   <dialog id="sources-dialog" class="dialog">
     <form method="dialog">
       <h2>Data sources</h2>
-      <p class="warning"><strong>This is a demo.</strong> Every fire, detection and weather reading is invented. The towns and protected areas are real places with rough outlines. Do not use this page to make safety decisions.</p>
-      <dl>
-        <dt>Deepfire</dt>
-        <dd>The base hotspot layer. Near real-time, one point per detection. Circle size is fire radiative power (FRP, in megawatts); colour is detection confidence.</dd>
-        <dt>MTG (Meteosat Third Generation), every 10 minutes</dt>
-        <dd>Cross-checks Deepfire. A green ring means MTG saw the same fire; a dashed marker is a detection MTG made that Deepfire has not confirmed. Its 10-minute series is what makes the past steps of the timeline possible: they are estimates rebuilt from that series, not live readings.</dd>
-        <dt>Google WeatherNext</dt>
-        <dd>Wind arrows, the fire-weather danger level (from wind, temperature and humidity), and the direction the forecast spread leans in.</dd>
-        <dt>ELMFIRE</dt>
-        <dd>A computed simulation, not a feed. The forecast outline is stretched along the wind; the dashed outline around it is the uncertainty. It is always labelled with the time of the model run.</dd>
-        <dt>Catalan GIS (static)</dt>
-        <dd>Protected natural areas and population centres. They power the impact alerts and the nearest-town facts. Never real-time.</dd>
-        <dt>Pyronear (not used)</dt>
-        <dd>Left out on purpose. The public dataset is training imagery, not a live feed. It would add value only with a live camera network, which this page does not assume.</dd>
-        <dt>Base map</dt>
-        <dd>© OpenStreetMap contributors, drawn with Leaflet.</dd>
-      </dl>
+
+      <div data-only="real">
+        <p class="warning"><strong>Live data, not an official warning.</strong> Satellites see heat, not fire. A hotspot can be a wildfire, a farm burn, a factory, a gas flare or a volcano. A small or cloud-covered fire can be missed. Follow your local emergency service. In an emergency, call 112.</p>
+        <dl>
+          <dt>NASA FIRMS (fires)</dt>
+          <dd>Hotspots from four polar-orbiting satellites over Europe: Suomi NPP, NOAA-20 and NOAA-21 (VIIRS, 375 m pixels) and Terra and Aqua (MODIS, 1 km pixels). Each passes a place about twice a day, so a fire can be a few hours old before it appears. The page joins hot pixels that touch into one fire. Circle size is the fire radiative power (FRP) of the fire's latest pass; colour is detection confidence. Fires last seen 24 to 48 hours ago are faded.</dd>
+          <dd>The FIRMS files need no key, but a web page cannot read them directly. A job on this site's GitHub copies them every 30 minutes. The footer shows both the newest satellite pass and the age of the copy.</dd>
+          <dt>Satellite cross-check</dt>
+          <dd>A green ring means two or more different satellites saw the fire. One satellite alone is more often a false alarm.</dd>
+          <dt>Open-Meteo (weather)</dt>
+          <dd>Current wind, temperature and humidity at each fire, the wind arrows, and the hourly forecast that sets the spread direction. Free, no key.</dd>
+          <dt>EFFIS (fire danger and burnt areas)</dt>
+          <dd>The European Forest Fire Information System. The fire danger layer is its Fire Weather Index forecast for today, the official European fire-danger scale. The context layer shows the areas it mapped as burnt this season.</dd>
+          <dt>The page's own danger badge</dt>
+          <dd>A simple score from the wind, heat and dryness at the fire. It is not the official index. Use the EFFIS layer for that.</dd>
+          <dt>Spread</dt>
+          <dd>Past steps show the satellite pixels seen up to that time: real detections, not an estimate. Future steps are a rough shape stretched along the forecast wind. They are <strong>not a fire-behaviour model</strong> and ignore terrain, fuel and fire fighting. The dashed outline is the uncertainty.</dd>
+          <dt>EEA Natura 2000 (protected sites)</dt>
+          <dd>When you select a fire, the page asks for the protected sites within 20 km and says whether the fire is inside one.</dd>
+          <dt>GeoNames (towns)</dt>
+          <dd>Places with 1,000 or more people, with their population. They name the fires and power the impact alerts.</dd>
+          <dt>Not used</dt>
+          <dd>MTG (the geostationary Meteosat satellites) sees Europe every 10 minutes, but its fire product needs an EUMETSAT account and a server, so it is not used. Pyronear is left out: its public dataset is training imagery, not a live feed.</dd>
+        </dl>
+      </div>
+
+      <div data-only="demo">
+        <p class="warning"><strong>This is a demo.</strong> Every fire, detection and weather reading is invented. The towns and protected areas are real places with rough outlines. Do not use this mode to make safety decisions. Switch to "Live data" for real fires.</p>
+        <dl>
+          <dt>Deepfire</dt>
+          <dd>The base hotspot layer. Near real-time, one point per detection. Circle size is fire radiative power (FRP, in megawatts); colour is detection confidence.</dd>
+          <dt>MTG (Meteosat Third Generation), every 10 minutes</dt>
+          <dd>Cross-checks Deepfire. A green ring means MTG saw the same fire; a dashed marker is a detection MTG made that Deepfire has not confirmed. Its 10-minute series is what makes the past steps of the timeline possible: they are estimates rebuilt from that series, not live readings.</dd>
+          <dt>Google WeatherNext</dt>
+          <dd>Wind arrows, the fire-weather danger level (from wind, temperature and humidity), and the direction the forecast spread leans in.</dd>
+          <dt>ELMFIRE</dt>
+          <dd>A computed simulation, not a feed. The forecast outline is stretched along the wind; the dashed outline around it is the uncertainty. It is always labelled with the time of the model run.</dd>
+          <dt>Catalan GIS (static)</dt>
+          <dd>Protected natural areas and population centres. They power the impact alerts and the nearest-town facts. Never real-time.</dd>
+          <dt>Pyronear (not used)</dt>
+          <dd>Left out on purpose. The public dataset is training imagery, not a live feed. It would add value only with a live camera network, which this page does not assume.</dd>
+        </dl>
+      </div>
+
+      <p class="hint">Base map © OpenStreetMap contributors, drawn with Leaflet.</p>
       <button type="submit">Close</button>
     </form>
   </dialog>

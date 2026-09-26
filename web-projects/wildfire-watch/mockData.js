@@ -1,6 +1,6 @@
-// Demo data. Every fire, detection and weather reading here is invented; the
-// towns and protected areas are real places with rough outlines. The page says
-// so in its banner. See ADR 0001 for why the first version ships mock data.
+// Demo mode data (`?mode=demo`). Every fire, detection and weather reading here
+// is invented; the towns and protected areas are real places with rough
+// outlines. The mode switch and the demo texts say so. See ADR 0001.
 
 import { idw } from "./geo.js";
 

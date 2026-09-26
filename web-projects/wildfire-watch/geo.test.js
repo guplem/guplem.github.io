@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { distanceKm, destination, pointInPolygon, distanceToPolygonKm, nearest, idw } from "./geo.js";
+import { distanceKm, destination, pointInPolygon, distanceToPolygonKm, nearest, idw, nearestIndex } from "./geo.js";
 
 describe("distanceKm", () => {
   test("is zero for the same point", () => {
@@ -73,5 +73,19 @@ describe("idw", () => {
       { lat: 41, lon: 3, value: 30 },
     ];
     expect(idw({ lat: 41, lon: 2 }, samples, (s) => s.value)).toBeCloseTo(20, 1);
+  });
+});
+
+describe("nearestIndex", () => {
+  const items = [];
+  for (let i = 0; i < 400; i++) items.push({ id: i, lat: 40 + (i % 20) * 0.13, lon: (i / 20) * 0.17 });
+  const find = nearestIndex(items);
+  test("finds the same item as a full search", () => {
+    for (const p of [{ lat: 41.03, lon: 1.11 }, { lat: 42.4, lon: 3.1 }, { lat: 40, lon: 0 }]) {
+      expect(find(p, 50)?.item.id).toBe(nearest(p, items).item.id);
+    }
+  });
+  test("returns null when nothing is within the limit", () => {
+    expect(find({ lat: 60, lon: 20 }, 10)).toBeNull();
   });
 });

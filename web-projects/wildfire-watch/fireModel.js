@@ -13,9 +13,9 @@ export function confidenceColor(level) {
   return CONFIDENCE_COLORS[level] ?? CONFIDENCE_COLORS.low;
 }
 
-/** Marker radius in pixels: the area grows with fire radiative power (MW). */
+/** Marker radius in pixels: the area grows with fire radiative power (MW), up to a cap. */
 export function frpToPixels(frp) {
-  return 6 + Math.sqrt(Math.max(0, frp)) * 1.6;
+  return Math.min(24, 6 + Math.sqrt(Math.max(0, frp)) * 1.6);
 }
 
 /** Wind speed bands (km/h) and their colours, calm to gale. */
@@ -55,9 +55,12 @@ export function downwindBearing(windFrom) {
   return (windFrom + 180) % 360;
 }
 
-/** Estimated burning radius now, from fire radiative power. */
+/**
+ * Burning radius now. A real fire carries the radius measured from its
+ * satellite pixels; a demo fire gets an estimate from its radiative power.
+ */
 export function currentRadiusKm(fire) {
-  return Math.sqrt(fire.frp) * 0.12;
+  return fire.radiusKm ?? Math.sqrt(fire.frp) * 0.12;
 }
 
 /**
@@ -75,11 +78,12 @@ export function pastRadiusKm(fire, hoursAgo) {
 /**
  * The forecast outline after `hours`: an ellipse whose long axis follows the
  * wind. The head runs downwind, the back creeps upwind, the flanks spread
- * slower as the wind gets stronger.
+ * slower as the wind gets stronger. `weather` defaults to the fire's current
+ * reading; real mode passes the forecast mean for the window.
  */
-export function spreadEllipse(fire, hours) {
-  const { windFrom, windKmh } = fire.weather;
-  const danger = fireDanger(fire.weather).score;
+export function spreadEllipse(fire, hours, weather = fire.weather) {
+  const { windFrom, windKmh } = weather;
+  const danger = fireDanger(weather).score;
   const rate = (0.1 + 0.03 * windKmh) * (0.6 + danger / 100) * Math.pow(Math.max(fire.frp, 1) / 50, 0.3);
   const start = currentRadiusKm(fire);
   const head = start + rate * hours;

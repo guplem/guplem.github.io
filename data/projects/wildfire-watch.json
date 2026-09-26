@@ -4,11 +4,11 @@
   "date": "2026",
   "title": "Wildfire Watch",
   "description": [
-    "*Wildfire Watch* is a **wildfire map for Catalonia built to judge risk**, not only to show where fires are. It runs on demo data for now.",
-    "Each hotspot is sized by its radiative power and checked against a second satellite. A timeline shows the past size and a **forecast spread stretched along the wind**, and alerts name every town within 10 km of a fire.",
-    "The danger score, spread shape and alerts are **pure modules covered by tests written before the code**, so real data sources can replace the demo without touching the map."
+    "*Wildfire Watch* is a **live wildfire map for Europe built to judge risk**, not only to show where fires are. NASA satellite hotspots, wind, the official EFFIS fire danger forecast, burnt areas and the towns near each fire share one map.",
+    "Every source is **free and needs no key**. The NASA fire files cannot be read by a web page, so a scheduled GitHub Action copies them every 30 minutes. Hot pixels from four satellites are joined into fires, and a fire seen by two satellites is marked as cross-checked.",
+    "A demo mode shows the original design on invented data. The clustering, alerts, danger score and spread shape are **pure modules covered by tests written before the code**."
   ],
-  "skills": ["Vibe Coded", "UI/UX", "Data Visualization", "Architecture"],
+  "skills": ["Vibe Coded", "API Integration", "Data Visualization", "Automation", "Architecture"],
   "links": [
     { "url": "web-projects/wildfire-watch/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/wildfire-watch" }
