@@ -31,6 +31,8 @@ button, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
 a { color: var(--blue); }
 [hidden] { display: none !important; }
+/* Each mode shows only its own labels and texts. */
+body[data-mode="real"] [data-only="demo"], body[data-mode="demo"] [data-only="real"] { display: none !important; }
 
 .app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
 
@@ -40,7 +42,10 @@ a { color: var(--blue); }
 }
 .brand { display: flex; align-items: center; gap: 8px; }
 .brand h1 { font-size: 18px; margin: 0; }
-.demo-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: #fde7c4; color: #7a4300; }
+.mode-switch { display: inline-flex; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; font-size: 12px; font-weight: 600; }
+.mode { padding: 3px 10px; color: var(--muted); text-decoration: none; }
+.mode[aria-current="page"][data-mode-link="real"] { background: var(--green); color: #fff; }
+.mode[aria-current="page"][data-mode-link="demo"] { background: #fde7c4; color: #7a4300; }
 .layers { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
 .header-actions { display: flex; gap: 6px; }
 
@@ -53,6 +58,7 @@ a { color: var(--blue); }
 .pill[data-color="green"] { --c: var(--green); }
 .pill[data-color="blue"] { --c: var(--blue); }
 .pill[data-color="orange"] { --c: var(--orange); }
+.pill[data-color="purple"] { --c: #7b3fa0; }
 .pill[aria-pressed="true"] { background: var(--c); color: #fff; }
 
 .ghost, .toolbar button, .dialog button {
@@ -86,6 +92,12 @@ a { color: var(--blue); }
 .close { border: 0; background: none; font-size: 18px; line-height: 1; color: var(--muted); }
 .hint { color: var(--muted); font-size: 12px; margin: 0 0 6px; }
 .alerts { border-color: var(--red); }
+.status { border-color: var(--orange); background: color-mix(in srgb, var(--orange) 10%, var(--panel)); }
+.status.error { border-color: var(--red); background: color-mix(in srgb, var(--red) 10%, var(--panel)); }
+.status p { margin: 0; }
+.caveat { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
+.links { font-size: 12px; margin: 8px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+.legend-img { max-width: 100%; display: block; margin: 2px 0; background: #fff; border-radius: 4px; }
 
 .row-list { list-style: none; margin: 0; padding: 0; }
 .row-list button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 6px 4px; border-radius: 6px; }

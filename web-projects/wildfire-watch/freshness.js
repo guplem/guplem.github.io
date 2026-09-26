@@ -27,3 +27,18 @@ export function freshnessLine(now, updated, timeZone) {
     `ELMFIRE: model run ${clockTime(updated.elmfire, timeZone)}`,
   ];
 }
+
+/**
+ * Real mode. The FIRMS age is the newest satellite pass, which is what the
+ * reader cares about; the copy's age says whether the feed itself is stuck.
+ * @param {{newestPass:number, feedBuilt:number, weather:number|null, fwiDay:string}} at
+ */
+export function realFreshnessLine(now, at) {
+  return [
+    at.newestPass
+      ? `NASA FIRMS: newest satellite pass ${formatAge(now - at.newestPass)} ago (copy refreshed ${formatAge(now - at.feedBuilt)} ago)`
+      : "NASA FIRMS: not loaded",
+    at.weather ? `Open-Meteo: updated ${formatAge(now - at.weather)} ago` : "Open-Meteo: not loaded yet",
+    `EFFIS fire danger: forecast for ${at.fwiDay}`,
+  ];
+}

@@ -78,7 +78,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/rps-mind-reader/AGENTS.md` | rps-mind-reader: predictor architecture + contracts, R&D workflow, strategies tried/rejected |
 | `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frames as spec, the scanner and pen model, geometry gotchas |
 | `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
-| `web-projects/wildfire-watch/AGENTS.md` | wildfire-watch: module map, the demo-label rule, the wind-direction and map-pane gotchas, how to go live |
+| `web-projects/wildfire-watch/AGENTS.md` | wildfire-watch: the two modes, module map, the feed pipeline, the never-fake-fires rules, the wind-direction and map-pane gotchas |
 | `web-projects/unit-converter/AGENTS.md` | unit-converter: module map, the one-input-box contract, unit-catalogue and number-parsing gotchas |
 | `web-projects/mancala/AGENTS.md` | mancala: the engine contract both rule sets answer, how to add a third, the Ba-awa traps |
 | `web-projects/global-news-map/AGENTS.md` | global-news-map: module map, the CORS and UTC gotchas, how a story gets its pin |
@@ -160,6 +160,8 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 **Generated SEO artifacts (never hand-edit):** `sitemap.xml`, `blog/feed.xml` and the `<!-- BEGIN GENERATED:<NAME> -->` ... `<!-- END GENERATED:<NAME> -->` blocks in `index.html`, `web-projects/index.html` and `blog/index.html` are derived from `data/` and from the blog posts' `<head>` tags by `bun scripts/generateSitemap.js`, `bun scripts/generateSeoBlocks.js` and `bun scripts/generateFeed.js` (see ADR 0010 and ADR 0015). After any edit to `data/info.json`, `data/projects/*.json` or a post's head, run the three scripts (automatic with the lefthook pre-commit hook); CI drift tests fail otherwise. The static head metadata in `index.html` (title/description) must stay identical to `web-title`/`web-description` in `data/info.json` (enforced by a drift test in `scripts/generateSeoBlocks.test.js`).
 
 **The deploy stamp (never hand-edit, and it is not generated from `data/`):** the `GENERATED:DEPLOY` block in a web-project's `index.html` holds the pull request number that published that file, written by `bun scripts/generateDeployStamp.js --pr N --date ISO`. It cannot be generated at commit time, because a commit does not know its own pull request number. **Stamp it in a second commit after you open the pull request.** The `test` job runs the script with `--check` on every pull request and fails when the number is not that pull request's, so an unstamped branch cannot merge. See ADR 0013 for why the number is embedded rather than fetched.
+
+**Scheduled data job:** `.github/workflows/wildfire-feed.yml` runs every 30 minutes and force-pushes the `wildfire-feed` branch, which holds only the wildfire-watch fire feed. Never merge, protect or delete that branch. See `web-projects/wildfire-watch/AGENTS.md` and wildfire-watch ADR 0002.
 
 **Adding a new project:** For web-projects, use the `/add-web-project` command -- it automates the full scaffolding checklist. For other projects, see `data/AGENTS.md` for the data-only steps.
 
@@ -287,7 +289,9 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0035](web-projects/github-work-board/adr/0035-a-reference-lights-the-card-it-names.md) | A reference lights the card it names |
 | [github-work-board 0036](web-projects/github-work-board/adr/0036-the-page-starts-on-a-start-up-screen.md) | The page starts on a start-up screen, and every other screen starts hidden |
 | [github-work-board 0037](web-projects/github-work-board/adr/0037-a-dot-says-how-the-checks-are-going.md) | A dot says how the checks are going, read from the Actions API |
-| [wildfire-watch 0001](web-projects/wildfire-watch/adr/0001-demo-data-behind-the-real-data-shapes.md) | Ship demo data first, in the shapes the real sources will fill, and label it |
+| [wildfire-watch 0001](web-projects/wildfire-watch/adr/0001-demo-data-behind-the-real-data-shapes.md) | Keep a demo mode on invented data, in the same shapes as the live data |
+| [wildfire-watch 0002](web-projects/wildfire-watch/adr/0002-copy-the-fire-files-with-a-scheduled-action.md) | Copy the fire files with a scheduled GitHub Action, and read the copy |
+| [wildfire-watch 0003](web-projects/wildfire-watch/adr/0003-live-mode-reads-keyless-sources-and-names-each-one.md) | The live mode reads only keyless sources, and each layer names its source |
 | [ai-world-gen 0001](web-projects/ai-world-gen/adr/0001-openrouter-is-the-one-gateway-and-the-key-lives-here.md) | OpenRouter is the one gateway (browser CORS verified), and the key lives in this browser |
 | [ai-world-gen 0002](web-projects/ai-world-gen/adr/0002-one-creative-call-then-one-typed-decision-per-cell.md) | One creative call writes the vocabulary; one typed decision per cell places it |
 | [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |

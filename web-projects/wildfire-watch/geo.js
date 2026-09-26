@@ -80,3 +80,36 @@ export function idw(p, samples, pick, power = 2) {
   }
   return den ? num / den : 0;
 }
+
+/**
+ * A nearest-item lookup over a grid of `cellKm` cells, for lists too long to
+ * scan once per query (thousands of towns against thousands of fires).
+ * @returns {(p, maxKm) => ({item, km}|null)}
+ */
+export function nearestIndex(items, cellKm = 10) {
+  const cell = cellKm / 111;
+  const grid = new Map();
+  const key = (a, b) => `${a}:${b}`;
+  for (const item of items) {
+    const k = key(Math.floor(item.lat / cell), Math.floor(item.lon / cell));
+    if (!grid.has(k)) grid.set(k, []);
+    grid.get(k).push(item);
+  }
+  return (p, maxKm) => {
+    const a = Math.floor(p.lat / cell);
+    const b = Math.floor(p.lon / cell);
+    const rows = Math.ceil(maxKm / cellKm) + 1;
+    // A degree of longitude is shorter than a degree of latitude, so search wider across.
+    const cols = Math.ceil(rows / Math.max(0.1, Math.cos(rad(p.lat))));
+    let best = null;
+    for (let da = -rows; da <= rows; da++) {
+      for (let db = -cols; db <= cols; db++) {
+        for (const item of grid.get(key(a + da, b + db)) ?? []) {
+          const km = distanceKm(p, item);
+          if (km <= maxKm && (!best || km < best.km)) best = { item, km };
+        }
+      }
+    }
+    return best;
+  };
+}

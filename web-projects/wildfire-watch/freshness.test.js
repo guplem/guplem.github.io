@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { formatAge, nextScanMinutes, freshnessLine } from "./freshness.js";
+import { formatAge, nextScanMinutes, freshnessLine, realFreshnessLine } from "./freshness.js";
 
 describe("formatAge", () => {
   test("says under a minute for fresh data", () => {
@@ -35,5 +35,33 @@ describe("freshnessLine", () => {
       "WeatherNext: updated 6 min ago",
       "ELMFIRE: model run 08:40",
     ]);
+  });
+});
+
+describe("realFreshnessLine", () => {
+  test("names the newest satellite pass, the copy's age and the weather fetch", () => {
+    const now = Date.parse("2026-09-25T14:00:00Z");
+    expect(realFreshnessLine(now, {
+      newestPass: now - 2 * 3_600_000,
+      feedBuilt: now - 14 * 60_000,
+      weather: now - 30_000,
+      fwiDay: "2026-09-25",
+    })).toEqual([
+      "NASA FIRMS: newest satellite pass 2h 0m ago (copy refreshed 14 min ago)",
+      "Open-Meteo: updated <1 min ago",
+      "EFFIS fire danger: forecast for 2026-09-25",
+    ]);
+  });
+  test("says so when the weather has not loaded", () => {
+    const now = Date.parse("2026-09-25T14:00:00Z");
+    const line = realFreshnessLine(now, { newestPass: now, feedBuilt: now, weather: null, fwiDay: "2026-09-25" });
+    expect(line[1]).toBe("Open-Meteo: not loaded yet");
+  });
+});
+
+describe("realFreshnessLine before the feed loads", () => {
+  test("says the fire data is not loaded", () => {
+    const now = Date.parse("2026-09-25T14:00:00Z");
+    expect(realFreshnessLine(now, { newestPass: null, feedBuilt: null, weather: null, fwiDay: "2026-09-25" })[0]).toBe("NASA FIRMS: not loaded");
   });
 });

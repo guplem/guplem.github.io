@@ -24,6 +24,9 @@ describe("frpToPixels", () => {
     expect(frpToPixels(0)).toBeGreaterThanOrEqual(6);
     expect(frpToPixels(100)).toBeGreaterThan(frpToPixels(10));
   });
+  test("caps the size, so one huge fire does not cover a region", () => {
+    expect(frpToPixels(5000)).toBe(24);
+  });
 });
 
 describe("windBand", () => {
@@ -103,5 +106,18 @@ describe("pastRadiusKm", () => {
   });
   test("is null with no MTG series to rebuild it from", () => {
     expect(pastRadiusKm({ ...fire, mtg: { confirmed: false } }, 1)).toBeNull();
+  });
+});
+
+describe("real fires", () => {
+  test("a measured radius wins over the power-based estimate", () => {
+    expect(currentRadiusKm({ frp: 100, radiusKm: 0.3 })).toBe(0.3);
+  });
+  test("the spread can use forecast weather instead of the current reading", () => {
+    const fire = { lat: 42, lon: 1.8, frp: 50, weather: { windFrom: 270, windKmh: 5, tempC: 30, humidity: 25 } };
+    const calm = spreadEllipse(fire, 12);
+    const windy = spreadEllipse(fire, 12, { windFrom: 0, windKmh: 40, tempC: 30, humidity: 25 });
+    expect(windy.semiMajorKm).toBeGreaterThan(calm.semiMajorKm);
+    expect(windy.bearing).toBe(180);
   });
 });
