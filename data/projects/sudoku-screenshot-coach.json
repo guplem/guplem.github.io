@@ -9,6 +9,9 @@
     "The result teaches rather than spoils: every hint names the technique and the exact cells that force it. All pure logic is **TDD-covered** with Bun, and nothing leaves the browser."
   ],
   "skills": ["Vibe Coded", "Architecture", "UI/UX"],
+  "image": "resources/images/projects/sudokuScreenshotCoach.webp",
+  "imageStretched": true,
+  "imageAlt": "A sudoku grid on a phone with the cells that force the move highlighted, and an arrow to the coach's card: place 6 in r1c4, a Naked Single, with the reason and how the technique works.",
   "links": [
     {
       "url": "web-projects/sudoku-screenshot-coach/"

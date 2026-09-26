@@ -1,0 +1,59 @@
+<!doctype html>
+<!--
+  A seeded copy of the dashboard's stats view, for the portfolio image.
+  The live page needs a typed username and GitHub API calls, which the capture
+  script cannot give it. This page loads the project's own style.css and holds
+  the same markup that app.js renders, with fixed numbers for a made-up repository.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>GitHub Stats Dashboard seeded stats view</title>
+    <link rel="stylesheet" href="../../../../../web-projects/github-stats-dashboard/style.css" />
+    <style>
+      #app { padding-top: 1.5rem; }
+      .chart-container { height: 150px; }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <section id="stats-section">
+        <div class="stats-header">
+          <button class="btn btn-secondary">&larr; Back</button>
+          <div>
+            <h2>acme/rocket-app</h2>
+            <p class="subtitle">Launch planner and telemetry viewer for model rockets</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-value stat-accent">&#9733; 42</div><div class="stat-label">Stars</div></div>
+          <div class="stat-card"><div class="stat-value stat-accent">304</div><div class="stat-label">Total PRs</div></div>
+          <div class="stat-card"><div class="stat-value stat-green">23.5</div><div class="stat-label">Commits/Week</div></div>
+          <div class="stat-card"><div class="stat-value stat-warn">2140d</div><div class="stat-label">Age</div></div>
+        </div>
+
+        <div class="card">
+          <h2>Pull Requests</h2>
+          <div class="detail-grid">
+            <div class="detail-item"><div class="detail-value stat-green">281</div><div class="detail-label">Merged</div></div>
+            <div class="detail-item"><div class="detail-value stat-warn">6</div><div class="detail-label">Open</div></div>
+            <div class="detail-item"><div class="detail-value stat-danger">17</div><div class="detail-label">Closed (unmerged)</div></div>
+            <div class="detail-item"><div class="detail-value stat-accent">92%</div><div class="detail-label">Merge Rate</div></div>
+          </div>
+          <div class="chart-container">
+            <div class="bar-chart" id="bars"></div>
+            <div class="chart-labels"><span>Oct 25</span><span>PRs closed</span><span>Sep 26</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script>
+      const counts = [2, 3, 1, 4, 3, 5, 2, 6, 4, 3, 7, 5, 4, 8, 6, 5, 9, 7, 6, 10, 8, 7, 12, 9, 8, 11, 13, 10, 9, 14, 12, 11, 15, 13, 16, 14];
+      const max = Math.max(...counts);
+      document.getElementById("bars").innerHTML = counts
+        .map((count) => `<div class="bar" style="height:${(count / max) * 100}%"></div>`)
+        .join("");
+    </script>
+  </body>
+</html>

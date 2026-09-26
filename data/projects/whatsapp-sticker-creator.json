@@ -9,6 +9,9 @@
     "Stickers are checked against **WhatsApp's own validator source**, which differs from its written guide on four rules. The pixel work is **test-covered**, and nothing leaves the device."
   ],
   "skills": ["Vibe Coded", "Architecture", "UI/UX", "Frontend"],
+  "image": "resources/images/projects/whatsappStickerCreator.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Any photo, a sticker in seconds.\" above three panels: a photo of a cat in a room, the cut-out cat with a white outline and a HELLO! caption on a transparency checkerboard with passed size checks, and the same sticker sent in a chat",
   "links": [
     { "url": "web-projects/whatsapp-sticker-creator/" },
     {

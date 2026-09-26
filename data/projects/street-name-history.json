@@ -9,6 +9,9 @@
     "The result is a keyless, serverless tool that runs on static hosting and degrades gracefully: it surfaces whatever mappers have contributed and says plainly when a street's history simply isn't recorded yet."
   ],
   "skills": ["Vibe Coded", "Architecture"],
+  "image": "resources/images/projects/streetNameHistory.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Every name a street has ever had\" above a search for Karl-Marx-Allee in Berlin, showing it is named after Karl Marx and was called Stalinallee from 1950 to 1961",
   "links": [
     {
       "url": "web-projects/street-name-history/"

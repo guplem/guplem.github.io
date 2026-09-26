@@ -1,0 +1,126 @@
+<!doctype html>
+<!--
+  Source of the portfolio image resources/images/projects/streetNameHistory.webp.
+  Re-render it with:
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/streetNameHistory/ --out resources/images/projects/streetNameHistory.webp --width 1280 --height 800 --quality 80
+  screenshot.webp comes from the page itself, with the street pinned in the link (live APIs, so give it a long wait):
+    bun scripts/captureProjectImage.js --page "web-projects/street-name-history/?q=Karl-Marx-Allee%2C%20Berlin&sel=way%2F4615777" --out resources/images/projects/sources/streetNameHistory/screenshot.webp --width 860 --height 1500 --wait 10000 --quality 85
+  The frame shows three slices of that screenshot (search box, street title, history card) and hides the
+  candidate list and the name cards between them. If the page layout moves, fix the slice offsets below.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Street Name History portfolio image</title>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("../../../../fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: #e8edf6;
+        background:
+          radial-gradient(circle at 90% 8%, rgba(94, 176, 239, 0.26), transparent 42%),
+          radial-gradient(circle at 6% 100%, rgba(126, 224, 194, 0.18), transparent 42%),
+          #0b101b;
+      }
+      .caption {
+        position: absolute;
+        left: 110px;
+        right: 110px;
+        top: 40px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #9aa8c2;
+      }
+      .brand::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #5eb0ef;
+        box-shadow: 0 0 0 5px rgba(94, 176, 239, 0.3);
+      }
+      h1 {
+        margin-top: 16px;
+        font-size: 56px;
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+      .accent {
+        background: linear-gradient(120deg, #5eb0ef, #7ee0c2);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .sub {
+        margin-top: 12px;
+        font-size: 22px;
+        color: #9aa8c2;
+      }
+      /* The screenshot is 860 px wide; each slice shows it at 1.2x (1032 px). */
+      .shot {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 1032px;
+        transform: translateX(-50%);
+        overflow: hidden;
+        border-radius: 14px 14px 0 0;
+        background: #0f1523;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+      .slice {
+        width: 1032px;
+        background-image: url("screenshot.webp");
+        background-size: 1032px auto;
+        background-repeat: no-repeat;
+      }
+      .slice.search {
+        height: 87px;
+        background-position: 0 -207px;
+      }
+      .slice.title {
+        height: 128px;
+        background-position: 0 -773px;
+      }
+      .slice.history {
+        height: 382px;
+        background-position: 0 -1255px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="caption">
+      <div class="brand">Street Name History</div>
+      <h1>Every name a street <span class="accent">has ever had.</span></h1>
+      <p class="sub">Its names in every language, its former names, and who it honours.</p>
+    </div>
+    <div class="shot">
+      <div class="slice search"></div>
+      <div class="slice title"></div>
+      <div class="slice history"></div>
+    </div>
+  </body>
+</html>

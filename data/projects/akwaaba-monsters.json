@@ -9,6 +9,9 @@
     "The world itself is tested, not just the code, and it is built to grow one area at a time."
   ],
   "skills": ["Vibe Coded", "Architecture", "Game Design", "UI/UX"],
+  "image": "resources/images/projects/akwaabaMonsters.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Catch monsters across Ghana\" above two pixel-art game screens: a battle between the creatures Hinoko and Polete, and the player on the dirt roads of Aduma village among thatched huts",
   "links": [
     {
       "url": "web-projects/akwaaba-monsters/"
