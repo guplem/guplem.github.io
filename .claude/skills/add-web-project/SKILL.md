@@ -133,6 +133,21 @@ Create `data/projects/<PROJECT_SLUG>.json` conforming to `data/schemas/project.s
 
 Add the filename to the `projects` array in `data/projects/index.json`.
 
+### 6c. Give the listing an image
+
+Every web-project in the portfolio gets an image in the pull request that adds it to `data/projects/index.json`. Take it when the page first shows its main feature. A scaffold with nothing on screen is not ready: take the image in the pull request that ships the first working version.
+
+1. Open the page in the browser pane and find the view that shows the most of the project at once (layers on, a result shown, a game mid-play).
+2. Capture that view to a file. A browser pane screenshot never reaches the disk, so run the capture script instead. Pass one `--click` per button, in order, with the button text:
+   ```bash
+   bun scripts/captureProjectImage.js --page web-projects/<PROJECT_SLUG>/ --out resources/images/projects/<projectSlugCamelCase>.webp --click "<button text>"
+   ```
+3. Read the WebP file back, and check that it shows the chosen view. Re-run with other clicks, `--width`, `--height` or `--wait` until it does.
+4. Add `image`, `imageStretched: true` and a concrete `imageAlt` (what the picture shows, not the project name) to the project JSON.
+5. Run the three generators from root `AGENTS.md` ("Generated SEO artifacts"), because the image appears in the generated blocks.
+
+If the page cannot show its point in a screenshot (a sound tool, a page behind a key), make an image instead: draw the output with the project's own code, as `aiWorldGen.webp` does. Tell the user when the project ships without an image, and why.
+
 ## 7. Update Documentation
 
 ### 7a. Update `web-projects/AGENTS.md`
@@ -172,6 +187,7 @@ Present to the user:
 - web-projects/<PROJECT_SLUG>/document.js and document.test.js (cloud tier only)
 - web-projects/<PROJECT_SLUG>/README.md
 - data/projects/<PROJECT_SLUG>.json
+- resources/images/projects/<projectSlugCamelCase>.webp (or why there is none yet)
 
 ### Storage tier
 <STORAGE_TIER>, and why.
