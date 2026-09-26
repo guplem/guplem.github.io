@@ -135,18 +135,38 @@ Add the filename to the `projects` array in `data/projects/index.json`.
 
 ### 6c. Give the listing an image
 
-Every web-project in the portfolio gets an image in the pull request that adds it to `data/projects/index.json`. Take it when the page first shows its main feature. A scaffold with nothing on screen is not ready: take the image in the pull request that ships the first working version.
+Every web-project in the portfolio gets an image in the pull request that adds it to `data/projects/index.json`. Make it when the page first shows its main feature. A scaffold with nothing on screen is not ready: make the image in the pull request that ships the first working version.
 
-1. Open the page in the browser pane and find the view that shows the most of the project at once (layers on, a result shown, a game mid-play).
-2. Capture that view to a file. A browser pane screenshot never reaches the disk, so run the capture script instead. Pass one `--click` per button, in order, with the button text:
-   ```bash
-   bun scripts/captureProjectImage.js --page web-projects/<PROJECT_SLUG>/ --out resources/images/projects/<projectSlugCamelCase>.webp --click "<button text>"
-   ```
-3. Read the WebP file back, and check that it shows the chosen view. Re-run with other clicks, `--width`, `--height` or `--wait` until it does.
-4. Add `image`, `imageStretched: true` and a concrete `imageAlt` (what the picture shows, not the project name) to the project JSON.
-5. Run the three generators from root `AGENTS.md` ("Generated SEO artifacts"), because the image appears in the generated blocks.
+**Choose the form first.** The portfolio card shows the image at about 400 px wide, so a full-page screenshot turns the page's own text into noise.
 
-If the page cannot show its point in a screenshot (a sound tool, a page behind a key), make an image instead: draw the output with the project's own code, as `aiWorldGen.webp` does. Tell the user when the project ships without an image, and why.
+| Form | Use it when | Example |
+|---|---|---|
+| **Framed screenshot** (the default) | The page has a real UI to show. A headline says what the project does; a cropped screenshot sits below it. | `sources/wildfireWatch/` |
+| **Composed scene** | The idea is a flow or a gesture that one screenshot cannot show. A headline, numbered steps, and a drawn mock of the key UI. | `margin-notes.webp` |
+| **Plain screenshot** | The page is a picture already (a map, a game, generated art) and it reads at card size with no words. | `globalNewsMap.webp` |
+| **Drawn output** | The page cannot show its point on screen (a page behind a key). Draw the output with the project's own code. | `aiWorldGen.webp` |
+
+**The capture tool.** A browser pane screenshot never reaches the disk, so capture every file with `scripts/captureProjectImage.js`. It opens any page in the repo in headless Chrome, presses one `--click` per button text, in order, and writes a WebP:
+
+```bash
+bun scripts/captureProjectImage.js --page web-projects/<PROJECT_SLUG>/ --out <file>.webp --click "<button text>" --width 1240 --height 700
+```
+
+**Steps for a crafted image** (framed screenshot or composed scene):
+
+1. Open the page in the browser pane, and find the view that shows the most of the project (layers on, a result shown, a game mid-play).
+2. Capture that view to `resources/images/projects/sources/<projectSlugCamelCase>/screenshot.webp`. Keep the viewport small (about 1240 x 700), so the UI stays large after the crop. Pin the data when the page has a demo or seeded mode (`?mode=demo`), so a re-render gives the same picture.
+3. Write `resources/images/projects/sources/<projectSlugCamelCase>/index.html`, a fixed 1280 x 800 page. Copy `sources/wildfireWatch/index.html` as the start. Use the project's own colours, a headline of a few words that says the benefit, one short line under it, and the screenshot cropped so the page footer is out of the frame.
+4. Put both capture commands in a comment at the top of that `index.html`, so the next agent can re-render the image when the project changes.
+5. Render it: `bun scripts/captureProjectImage.js --page resources/images/projects/sources/<projectSlugCamelCase>/ --out resources/images/projects/<projectSlugCamelCase>.webp --width 1280 --height 800 --quality 80`.
+
+**Then, for every form:**
+
+1. Read the final WebP back, and check it at card size: the headline must read, and nothing may be cut off. Adjust and re-render until it does.
+2. Add `image`, `imageStretched: true` and a concrete `imageAlt` (what the picture shows, not the project name) to the project JSON.
+3. Run the three generators from root `AGENTS.md` ("Generated SEO artifacts"), because the image appears in the generated blocks.
+
+Tell the user when the project ships without an image, and why.
 
 ## 7. Update Documentation
 

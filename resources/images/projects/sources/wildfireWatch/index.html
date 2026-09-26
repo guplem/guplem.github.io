@@ -1,0 +1,102 @@
+<!doctype html>
+<!--
+  Source of the portfolio image resources/images/projects/wildfireWatch.webp.
+  Re-render it with:
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/wildfireWatch/ --out resources/images/projects/wildfireWatch.webp --width 1280 --height 800
+  screenshot.webp comes from the page itself, in demo mode so the fires stay the same:
+    bun scripts/captureProjectImage.js --page "web-projects/wildfire-watch/?mode=demo" --out resources/images/projects/sources/wildfireWatch/screenshot.webp --click "Berguedà slope" --click "Weather (wind)" --click "Spread (history & forecast)" --click "+12h" --width 1240 --height 700 --wait 3000 --quality 85
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Wildfire Watch portfolio image</title>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("../../../../fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: #f1f3f4;
+        background:
+          radial-gradient(circle at 90% 8%, rgba(247, 127, 0, 0.28), transparent 40%),
+          radial-gradient(circle at 6% 100%, rgba(214, 40, 40, 0.22), transparent 42%),
+          #15171b;
+      }
+      .caption {
+        position: absolute;
+        left: 110px;
+        right: 110px;
+        top: 52px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #bdc1c6;
+      }
+      .brand::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #d62828;
+        box-shadow: 0 0 0 5px rgba(214, 40, 40, 0.3);
+      }
+      h1 {
+        margin-top: 18px;
+        font-size: 58px;
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+      .accent {
+        color: #f77f00;
+      }
+      .sub {
+        margin-top: 14px;
+        font-size: 22px;
+        color: #bdc1c6;
+      }
+      .shot {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 1060px;
+        height: 528px;
+        transform: translateX(-50%);
+        overflow: hidden;
+        border-radius: 14px 14px 0 0;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="caption">
+      <div class="brand">Wildfire Watch · Catalonia</div>
+      <h1>See where a fire <span class="accent">goes next.</span></h1>
+      <p class="sub">A forecast spread stretched along the wind, and an alert for every town nearby.</p>
+    </div>
+    <div class="shot"><img src="screenshot.webp" alt="" /></div>
+  </body>
+</html>

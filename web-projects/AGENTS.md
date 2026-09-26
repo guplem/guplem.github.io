@@ -129,7 +129,7 @@ All new web-projects use TDD with [Bun's built-in test runner](https://bun.sh/do
 
 **Use the `/add-web-project` command.** It automates the full scaffolding checklist. This command must be used whenever creating a new web-project.
 
-**Every web-project in the portfolio has a listing image**, added in the same pull request as its data file. Capture it with `bun scripts/captureProjectImage.js`, because a browser pane screenshot never reaches the disk. Step 6c of the `add-web-project` skill holds the procedure.
+**Every web-project in the portfolio has a listing image**, added in the same pull request as its data file. Prefer a crafted image (a headline over a cropped screenshot) to a full-page screenshot, because the card is too small for the page's own text. Keep its HTML source in `resources/images/projects/sources/`. Capture every file with `bun scripts/captureProjectImage.js`, because a browser pane screenshot never reaches the disk. Step 6c of the `add-web-project` skill holds the procedure.
 
 ## Existing Projects
 
