@@ -9,6 +9,9 @@
     "The danger score, spread shape and alerts are **pure modules covered by tests written before the code**, so real data sources can replace the demo without touching the map."
   ],
   "skills": ["Vibe Coded", "UI/UX", "Data Visualization", "Architecture"],
+  "image": "resources/images/projects/wildfireWatch.webp",
+  "imageStretched": true,
+  "imageAlt": "A map of Catalonia with a fire near Berga and its forecast spread stretched along the wind",
   "links": [
     { "url": "web-projects/wildfire-watch/" },
     { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/wildfire-watch" }
