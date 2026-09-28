@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f6f1ea" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#16131a" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="Una palabra del español al azar, de las que se usan en España. La definición está oculta hasta que pulsas el botón, para que pruebes si la sabes." />
+  <title>Palabra al azar · Una palabra del español de España · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/spanish-random-word/" />
+  <!-- Drawn inline so the page asks the network for nothing but the definition. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23c2410c'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='700' fill='%23fff' text-anchor='middle'%3E%C3%B1%3C/text%3E%3C/svg%3E" />
+  <!-- Which pull request published this file. Never hand-edit: written by
+       `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
+  <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="306" />
+  <meta name="deploy-date" content="2026-09-28T07:02:06.000Z" />
+<!-- END GENERATED:DEPLOY -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <p class="eyebrow">Palabra al azar</p>
+      <p class="tagline">Una palabra del español de España. ¿Sabes qué significa?</p>
+    </header>
+
+    <main class="card">
+      <h1 class="word" id="word" aria-live="polite">&nbsp;</h1>
+
+      <div class="actions">
+        <button type="button" class="button button-primary" id="toggle" aria-expanded="false" aria-controls="definition">
+          Mostrar definición
+        </button>
+        <button type="button" class="button" id="next">Otra palabra</button>
+      </div>
+
+      <!-- Hidden by default: the point is to guess first. -->
+      <section class="definition" id="definition" hidden aria-live="polite">
+        <p class="status" id="status"></p>
+        <div id="entries"></div>
+        <p class="sources">
+          <a id="wiktionary-link" href="#" target="_blank" rel="noopener">Ver en Wikcionario</a>
+          <span aria-hidden="true">·</span>
+          <a id="rae-link" href="#" target="_blank" rel="noopener">Ver en el diccionario de la RAE</a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="privacy">Las definiciones vienen del <a href="https://es.wiktionary.org/" target="_blank" rel="noopener">Wikcionario</a> (CC BY-SA 4.0). La página solo pide la definición de la palabra que ves.</p>
+      <p id="deploy-line" class="deploy-line"></p>
+      <p><a class="back-link" href="../">Todos los proyectos web</a></p>
+    </footer>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

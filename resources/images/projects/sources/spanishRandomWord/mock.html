@@ -1,0 +1,40 @@
+<!doctype html>
+<!--
+  The page with a definition open, with fixed values, because the capture
+  script cannot wait on the Wiktionary API. The definitions are the real
+  "coger" senses the page shows (Wiktionary, CC BY-SA 4.0).
+  It loads the project's own CSS, so it looks the same as the page.
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Palabra al azar mock</title>
+    <link rel="stylesheet" href="../../../../../web-projects/spanish-random-word/style.css" />
+    <style>.page { min-height: 0; }</style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="masthead">
+        <p class="eyebrow">Palabra al azar</p>
+        <p class="tagline">Una palabra del español de España. ¿Sabes qué significa?</p>
+      </header>
+      <main class="card">
+        <h1 class="word">coger</h1>
+        <div class="actions">
+          <button type="button" class="button button-primary">Ocultar definición</button>
+          <button type="button" class="button">Otra palabra</button>
+        </div>
+        <section class="definition">
+          <h2 class="pos">verbo transitivo</h2>
+          <ol class="senses">
+            <li>Aproximar las manos hacia algo para retenerlo.</li>
+            <li>Agarrar algo con intención de usarlo.</li>
+            <li>Recibir.</li>
+            <li>Alcanzar o atrapar a alguien.</li>
+          </ol>
+          <p class="sources"><a href="#">Ver en Wikcionario</a> · <a href="#">Ver en el diccionario de la RAE</a></p>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

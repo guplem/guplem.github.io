@@ -79,6 +79,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/prime-sieve-arcs/AGENTS.md` | prime-sieve-arcs: the measured reference frames as spec, the scanner and pen model, geometry gotchas |
 | `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
 | `web-projects/wildfire-watch/AGENTS.md` | wildfire-watch: the two modes, module map, the feed pipeline, the never-fake-fires rules, the wind-direction and map-pane gotchas |
+| `web-projects/spanish-random-word/AGENTS.md` | spanish-random-word: module map, the one-rules-module rule, the Wiktionary dump and rate-limit gotchas |
 | `web-projects/unit-converter/AGENTS.md` | unit-converter: module map, the one-input-box contract, unit-catalogue and number-parsing gotchas |
 | `web-projects/mancala/AGENTS.md` | mancala: the engine contract both rule sets answer, how to add a third, the Ba-awa traps |
 | `web-projects/global-news-map/AGENTS.md` | global-news-map: module map, the CORS and UTC gotchas, how a story gets its pin |
@@ -222,6 +223,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [sudoku-screenshot-coach 0005](web-projects/sudoku-screenshot-coach/adr/0005-judge-the-grid-at-full-resolution-and-each-cell-against-itself.md) | Judge the grid at full resolution, and each cell against itself |
 | [sudoku-screenshot-coach 0006](web-projects/sudoku-screenshot-coach/adr/0006-one-candidate-state-shared-by-the-grid-and-the-coach.md) | One candidate state, shared by the grid and the coach |
 | [sudoku-screenshot-coach 0007](web-projects/sudoku-screenshot-coach/adr/0007-uniqueness-techniques-run-only-on-a-grid-with-one-answer.md) | Uniqueness techniques run only on a grid with one answer |
+| [spanish-random-word 0001](web-projects/spanish-random-word/adr/0001-word-list-in-the-repo-definitions-from-wiktionary.md) | The word list lives in the repository, and the definitions come from Wiktionary |
 | [unit-converter 0001](web-projects/unit-converter/adr/0001-one-input-box-instead-of-pickers.md) | One input box carries the whole interface; no category picker, no dropdowns |
 | [unit-converter 0002](web-projects/unit-converter/adr/0002-answer-every-unit-ordered-by-usefulness.md) | Answer every compatible unit at once, ordered by commonness plus readability |
 | [unit-converter 0003](web-projects/unit-converter/adr/0003-live-rates-over-a-bundled-snapshot.md) | Live exchange rates over a bundled snapshot, and always say which is in use |
