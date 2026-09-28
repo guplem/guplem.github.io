@@ -89,4 +89,4 @@ index pages are added later: **a folder index should derive its list from existi
 data rather than duplicating it, and may reuse the site's shared presentation tokens
 even where individual items are self-contained.**
 
-> **Note (2026-09):** the index is no longer the only exception to the self-contained rule. `web-projects/cloud-storage/` is the second, for a different reason: shared code that every project imports, not a page that mirrors the portfolio (ADR 0016).
+> **Note (2026-09):** the index is no longer the only exception to the self-contained rule. `web-projects/cloud-storage/` is the second, for a different reason: shared code that every project imports, not a page that mirrors the portfolio (ADR 0016). `web-projects/online-sync/` is the third, for real-time play between devices (ADR 0017).

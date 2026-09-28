@@ -71,6 +71,8 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/AGENTS.md` | Web projects: conventions, TDD with Bun, full checklist for adding a new web-project |
 | `web-projects/ai-world-gen/AGENTS.md` | ai-world-gen: module map, the two OpenRouter endpoints and their shapes, the per-cell state rules, the tileset gotchas |
 | `web-projects/ai-world-gen/README.md` | ai-world-gen: the concept, the phase roadmap with progress, and the open questions (the project's memory between sessions) |
+| `web-projects/online-sync/AGENTS.md` | online-sync: the shared real-time module map, its rules, the adoption checklist, the WebRTC and QR gotchas |
+| `web-projects/ghana-ludo/AGENTS.md` | ghana-ludo: module map, the rules-module invariants, the side-kick and target-layer gotchas |
 | `web-projects/github-work-board/AGENTS.md` | github-work-board: module map, the higher reliability bar and why, the GitHub API gotchas |
 | `web-projects/cloud-storage/AGENTS.md` | cloud-storage: the shared storage module map, its rules, the adoption checklist |
 | `web-projects/cloud-storage/PLAN.md` | cloud-storage: the phased plan for the standard, and which phase has landed |
@@ -142,7 +144,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 ### Web Projects
 
-`web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site -- with two exceptions: the `web-projects/index.html` directory index, which is data-driven and reuses the site's global CSS (see ADR 0008), and the shared `web-projects/cloud-storage/` module, which any project may import to keep its data in the reader's private GitHub repository (see ADR 0016). See `web-projects/AGENTS.md` for detailed guidance when working there.
+`web-projects/` contains standalone mini-apps -- small games, tools, and experiments, often AI-generated. Each project is fully self-contained (own HTML/CSS/JS) with no shared dependencies with the main portfolio site -- with three exceptions: the `web-projects/index.html` directory index, which is data-driven and reuses the site's global CSS (see ADR 0008), the shared `web-projects/cloud-storage/` module, which any project may import to keep its data in the reader's private GitHub repository (see ADR 0016), and the shared `web-projects/online-sync/` module for real-time play between devices with no server (see ADR 0017). See `web-projects/AGENTS.md` for detailed guidance when working there.
 
 ## Key Patterns and Gotchas
 
@@ -203,6 +205,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0014](adr/0014-three-state-work-filters.md) | Three-state work filter chips, with one button that teaches the third state |
 | [0015](adr/0015-blog-posts-are-plain-html-read-from-the-page.md) | Blog posts are plain HTML, and the post's own head is its only metadata record |
 | [0016](adr/0016-shared-cloud-storage-for-web-projects.md) | Shared cloud storage for web-projects: one token, one private repository, one folder per project, and a local mirror as the fallback |
+| [0017](adr/0017-peer-to-peer-sync-for-web-projects-with-one-host.md) | Peer-to-peer sync for web-projects: WebRTC paired by hand, one authoritative host, the shared `online-sync/` module |
 
 ### Per-project ADRs
 
@@ -242,6 +245,8 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [global-news-map 0003](web-projects/global-news-map/adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
 | [global-news-map 0004](web-projects/global-news-map/adr/0004-on-a-phone-the-list-drives-the-map.md) | On a phone the map holds still and the list drives it |
 | [global-news-map 0005](web-projects/global-news-map/adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md) | A fixed set of ten categories, and the portal's own words when it is none of them |
+| [ghana-ludo 0001](web-projects/ghana-ludo/adr/0001-replicate-the-rules-not-the-code.md) | Replicate the reference game's rules, read as a spec, not its code |
+| [ghana-ludo 0002](web-projects/ghana-ludo/adr/0002-the-host-plays-bots-and-forced-moves.md) | The host plays the bots and the forced moves, outside the reducer |
 | [mancala 0001](web-projects/mancala/adr/0001-two-engines-behind-one-interface.md) | Two rule sets, two engines, one interface |
 | [mancala 0002](web-projects/mancala/adr/0002-the-setup-is-in-the-link-the-position-is-not.md) | The link carries the setup, never the position |
 | [mancala 0003](web-projects/mancala/adr/0003-the-numbers-the-tradition-leaves-out.md) | Decide the numbers the tradition leaves to the players, and measure them |

@@ -226,7 +226,7 @@ The project is scaffolded with TDD ready. Start by writing tests in
 ## Important Rules
 
 - **TDD first.** The scaffold includes a test file but no implementation. Features are built test-first after scaffolding.
-- **Self-contained.** No imports from outside the project folder, except `../cloud-storage/` (root ADR 0016).
+- **Self-contained.** No imports from outside the project folder, except `../cloud-storage/` (root ADR 0016) and `../online-sync/` (root ADR 0017).
 - **Storage tier is decided at creation, with the user.** Cloud is the exception: only for data whose loss hurts or when following the person is the point.
 - **Reuse skills.** Always check existing tags before inventing new ones.
 - **Follow patterns.** The pattern-scout output is the baseline for structure and style.

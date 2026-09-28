@@ -1,0 +1,154 @@
+/* The pairing cards (pairingPanel.js). A project sets these custom
+   properties on any ancestor to match its own colours. */
+.os-card {
+  --os-surface: var(--os-surface-color, #fffdf8);
+  --os-ink: var(--os-ink-color, #1d1a16);
+  --os-muted: var(--os-muted-color, #6b6358);
+  --os-line: var(--os-line-color, #e2dbcf);
+  --os-accent: var(--os-accent-color, #0f7a4a);
+  --os-danger: var(--os-danger-color, #b3261e);
+
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+  padding: 1rem;
+  border: 1px solid var(--os-line);
+  border-radius: 14px;
+  background: var(--os-surface);
+  color: var(--os-ink);
+  text-align: center;
+}
+
+.os-card__heading {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.os-card__qr {
+  width: min(240px, 70vw);
+  aspect-ratio: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.os-card__qr svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.os-card__hint {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--os-muted);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.os-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.os-card__link {
+  flex: 1 1 100%;
+  min-width: 0;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--os-line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--os-muted);
+  font: inherit;
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+}
+
+.os-card__paste {
+  display: grid;
+  gap: 0.4rem;
+  width: 100%;
+  text-align: left;
+}
+
+.os-card__label {
+  font-size: 0.85rem;
+  color: var(--os-muted);
+}
+
+.os-card__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--os-line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--os-ink);
+  font: inherit;
+  font-size: 0.85rem;
+  resize: vertical;
+  word-break: break-all;
+}
+
+.os-card__status {
+  margin: 0;
+  min-height: 1.2em;
+  font-size: 0.9rem;
+}
+
+.os-card__status[data-tone="error"] {
+  color: var(--os-danger);
+}
+
+.os-card__status[data-tone="ok"] {
+  color: var(--os-accent);
+  font-weight: 600;
+}
+
+.os-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.95rem;
+  border: 1px solid var(--os-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--os-ink);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.os-button--primary {
+  border-color: var(--os-accent);
+  background: var(--os-accent);
+  color: #fff;
+}
+
+.os-button--quiet {
+  border-color: transparent;
+  color: var(--os-muted);
+}
+
+.os-button:focus-visible,
+.os-card__input:focus-visible {
+  outline: 3px solid var(--os-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .os-card {
+    --os-surface: var(--os-surface-color, #211d19);
+    --os-ink: var(--os-ink-color, #f3ede3);
+    --os-muted: var(--os-muted-color, #b5ab9c);
+    --os-line: var(--os-line-color, #3a342d);
+    --os-accent: var(--os-accent-color, #2fa36b);
+  }
+}
