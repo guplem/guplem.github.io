@@ -4,7 +4,7 @@
 
 The shared module every web-project uses to keep data in one private GitHub repository: one token, one repository, one folder per project (`triunity-studios-data/<slug>/<file>.json`), one document shape, one merge. With nothing configured, a project keeps working from its local mirror alone.
 
-**This folder is the one allowed import from outside a project's folder.** It is held to the same bar as `github-work-board`: it handles a real credential, so `invariants.test.js` pins the decisions that are cheap to undo and expensive to notice. When one of those tests fails, read root ADR 0016 before you touch the test.
+**This folder is one of the two allowed imports from outside a project's folder** (the other is `../online-sync/`, root ADR 0017). It is held to the same bar as `github-work-board`: it handles a real credential, so `invariants.test.js` pins the decisions that are cheap to undo and expensive to notice. When one of those tests fails, read root ADR 0016 before you touch the test.
 
 ## Module map
 

@@ -1,21 +1,21 @@
 # web-projects/AGENTS.md
 
-> **SCOPE:** These rules apply when working on files under `web-projects/`. Each project inside is self-contained and independent from the main portfolio site -- except the `index.html` directory index (see "The Index Page" below) and the shared `cloud-storage/` module (see "Storage" below).
+> **SCOPE:** These rules apply when working on files under `web-projects/`. Each project inside is self-contained and independent from the main portfolio site -- except the `index.html` directory index (see "The Index Page" below), the shared `cloud-storage/` module (see "Storage" below), and the shared `online-sync/` module (see "Online play" below).
 
 ## Overview
 
-Collection of small, standalone web projects -- games, tools, experiments, demos. Often AI-generated. Each is fully self-contained and independent from the main portfolio site, except the directory index (`index.html`) and the shared `cloud-storage/` module, both described below.
+Collection of small, standalone web projects -- games, tools, experiments, demos. Often AI-generated. Each is fully self-contained and independent from the main portfolio site, except the directory index (`index.html`) and the shared `cloud-storage/` and `online-sync/` modules, all described below.
 
 ## Conventions
 
 - **One folder per project** -- all assets live inside the project folder
-- **Self-contained** -- own HTML, CSS, JS. No shared dependencies with the main site or other projects. The one import allowed from outside a project's folder is `../cloud-storage/` (root ADR 0016)
+- **Self-contained** -- own HTML, CSS, JS. No shared dependencies with the main site or other projects. The only imports allowed from outside a project's folder are `../cloud-storage/` (root ADR 0016) and `../online-sync/` (root ADR 0017)
 - **No build tools, no frameworks** -- vanilla HTML/CSS/JS preferred
 - **Works standalone** -- each project should work by opening its HTML file directly or via any HTTP server
 
 ## The Index Page (`index.html`)
 
-`web-projects/index.html` is the landing page for `https://triunitystudios.com/web-projects/`. Visitors see it as the **Playground**: that is the name in its `<h1>` and `<title>`, and the name the main page links to (the first `.works-doorway` link at the end of the works section in the root `index.html`). The folder, the URL and every path keep the `web-projects` name. Keep the two labels the same when you rename one. It is one of the **two deliberate exceptions** to the self-contained rule above: it is a portfolio-level directory index, so it reads the portfolio data (`../data/projects/*.json`) and reuses the site's global tokens (`../css/global/variables.css`, `../css/global/base.css`). See ADR 0008.
+`web-projects/index.html` is the landing page for `https://triunitystudios.com/web-projects/`. Visitors see it as the **Playground**: that is the name in its `<h1>` and `<title>`, and the name the main page links to (the first `.works-doorway` link at the end of the works section in the root `index.html`). The folder, the URL and every path keep the `web-projects` name. Keep the two labels the same when you rename one. It is one of the **three deliberate exceptions** to the self-contained rule above: it is a portfolio-level directory index, so it reads the portfolio data (`../data/projects/*.json`) and reuses the site's global tokens (`../css/global/variables.css`, `../css/global/base.css`). See ADR 0008.
 
 - **Never hardcode the project list.** It is derived live: a project is listed when it has a link that is **not** `type: "github"` whose URL (after stripping the `triunitystudios.com` origin) starts with `web-projects/`. Adding such a project to the portfolio data makes it appear here automatically.
 - The grid also carries a **generated static fallback block** between `GENERATED:WEB-PROJECTS` markers so crawlers see the list without JS (root ADR 0010). Never hand-edit it; regenerate with `bun scripts/generateSeoBlocks.js`. The static cards mirror the `app.js` card markup exactly; at load `app.js` **adopts** them when their text matches the live-derived cards (wiring search to them, no entrance-animation replay) and only swaps them when they drift.
@@ -102,6 +102,10 @@ A project's data falls into one of three tiers, chosen when the project is creat
 **Cloud is the exception, not the rule.** Setting it up costs the person a GitHub token and a repository, once, and on a phone that is real work. A small experiment does not earn it: recents, a record against the computer, generation settings and a round history all stay on this device. The work board earned it for notes written over weeks; akwaaba-monsters earned it for hours of progress. **Ask the user of the session** which tier a new project gets, unless the answer is plain from the description. Two things never sync whatever the tier: secrets and multi-MB binaries.
 
 `web-projects/cloud-storage/` is the shared module and the second exception to the self-contained rule. Its `AGENTS.md` holds the module map and the adoption checklist; its `PLAN.md` holds the phased plan and which phase has landed. A page that imports it holds a token, so it loads no third-party code.
+
+## Online play (`online-sync/`)
+
+`web-projects/online-sync/` is the shared module for real-time play between devices, with no server, and the third exception to the self-contained rule (root ADR 0017). Browsers connect over WebRTC; a person carries the pairing codes as a link or a QR code; one host page holds the only true state and runs the game's reducer. Its `AGENTS.md` holds the module map, the rules and the adoption checklist. `ghana-ludo/` is the reference adopter.
 
 ## Architecture Decision Records (ADRs)
 

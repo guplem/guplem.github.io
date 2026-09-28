@@ -110,8 +110,8 @@ not drift, and a person would set the same token up once per project.
 
 **Negative:**
 
-- The self-contained rule now has two exceptions, and a third would need a
-  reason as good. The scope below keeps the door narrow.
+- The self-contained rule now has two exceptions, and a third (`online-sync/`,
+  ADR 0017) has since joined them. The scope below keeps the door narrow.
 - A change to the shared module reaches every adopting page at once. The
   invariants and the additive-only contract are the guard, and a bad migration
   would damage a repository shared by every project, not one browser.
