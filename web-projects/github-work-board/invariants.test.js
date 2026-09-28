@@ -372,6 +372,21 @@ describe("the page shows nothing it has not decided (ADR 0036)", () => {
     expect(functionBody(app, "function finishBoot(")).toContain("hidden");
     expect(functionBody(app, "function showView(")).toContain("finishBoot()");
   });
+
+  // The bar slides to full before the start-up screen goes, so for that moment
+  // `showView` has already unhidden the next screen. Without this rule the two
+  // are on the page at once, and the page jumps twice instead of once.
+  test("the next screen waits, hidden, while the bar fills", () => {
+    const css = read("style.css");
+    const rule = [...css.matchAll(/([^{}]*#boot:not\(\[hidden\]\)[^{}]*)\{([^}]*)\}/g)].find((match) =>
+      match[2].includes("display: none"),
+    );
+    expect(rule).toBeDefined();
+    for (const id of ["setup", "board", "settings-view", "add-token-view", "view-toggle"]) {
+      expect(rule[1]).toContain(`#${id}`);
+    }
+    expect(rule[2]).toContain("display: none");
+  });
 });
 
 describe("what the board waits on a person for is readable (ADR 0028)", () => {
