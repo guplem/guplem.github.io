@@ -138,7 +138,7 @@ body {
 
 /* Six columns take the whole window. Only the board does: the setup screen and
  * settings stay at reading width, because prose does not read well wide. */
-.page:has(#board:not([hidden])) {
+.page:has(#board:not([hidden])):not(:has(#boot:not([hidden]))) {
   max-width: none;
 }
 
@@ -905,14 +905,22 @@ textarea.input {
   overflow: hidden;
 }
 
-/* It fills step by step rather than sliding on its own: a bar that moves
- * without being told anything says nothing about how far along the page is. */
+/* It moves only when a step tells it to: a bar that moves without being told
+ * anything says nothing about how far along the page is. Each step slides it to
+ * its mark, and `finishBoot` slides it to full before the screen goes. */
 .boot-bar-fill {
   height: 100%;
   width: 33%;
   border-radius: 9999px;
   background: hsl(var(--primary));
-  transition: width 0.2s ease;
+  transition: width 0.45s ease-out;
+}
+
+/* `showView` unhides the next screen the moment the board decides, while the
+ * bar is still filling. This keeps that screen off the page until the start-up
+ * screen is gone, so the swap happens once (ADR 0036). */
+.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #sort-control, #refresh-control, #view-toggle) {
+  display: none !important;
 }
 
 /* -------------------------------------------------------------------------- */

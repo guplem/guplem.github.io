@@ -2086,6 +2086,9 @@ function showBootStep(id) {
   bar.setAttribute("aria-valuenow", String(percent));
 }
 
+/** How long the start-up bar takes to slide, as `.boot-bar-fill` says in `style.css`. */
+const BOOT_FILL_MS = 450;
+
 /**
  * Take the start-up screen away, because the screen it was waiting for is ready.
  *
@@ -2093,10 +2096,26 @@ function showBootStep(id) {
  * the board knows which screen the reader is on, and every way of knowing that
  * ends in a `showView` call. A second place that hid it would hide it early,
  * and a path that forgot to would leave the reader looking at a bar for good.
+ *
+ * The bar slides to full first, and the screen goes when the slide ends. The
+ * later steps run in one go, so without this the reader sees the bar at its
+ * first mark and then no bar at all. `style.css` keeps the next screen hidden
+ * until then. The timer is there because a bar that is already full has no
+ * slide to end.
  */
 function finishBoot() {
   const boot = element("boot");
-  if (boot) boot.hidden = true;
+  const fill = element("boot-bar-fill");
+  if (!boot || boot.hidden || boot.dataset.finishing) return;
+  boot.dataset.finishing = "true";
+  const hideBoot = () => {
+    boot.hidden = true;
+  };
+  if (!fill) return hideBoot();
+  fill.addEventListener("transitionend", hideBoot, { once: true });
+  setTimeout(hideBoot, BOOT_FILL_MS + 100);
+  fill.style.width = "100%";
+  element("boot-bar").setAttribute("aria-valuenow", "100");
 }
 
 /**

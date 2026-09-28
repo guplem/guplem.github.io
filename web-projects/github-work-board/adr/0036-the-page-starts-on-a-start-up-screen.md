@@ -45,7 +45,16 @@ code that would set it is the thing being waited for. The words live in
 
 **The bar fills step by step. It never slides on its own, and it never starts
 empty.** A bar that moves without being told anything says nothing about how far
-along the page is, and a bar at zero reads as a page that has not started.
+along the page is, and a bar at zero reads as a page that has not started. Each
+step slides the bar to its mark, over 0.45 seconds.
+
+**The bar reaches full before the screen goes.** The later steps run in one go,
+so the browser used to paint the bar at its first mark and then no bar at all:
+it jumped and vanished. `finishBoot` now slides the bar to full and hides the
+screen when the slide ends, with a timer as the fallback, because a bar that is
+already full has no slide to end. `showView` unhides the next screen at once, so
+a rule in `style.css` keeps every screen and masthead control off the page while
+`#boot` shows. Without that rule the two screens would be on the page together.
 
 **The start-up screen ends where the board first knows which screen the reader
 is on: `showView`.** One function takes it away, `finishBoot`, called from
@@ -74,6 +83,8 @@ The bar is about this browser, and the placeholders are about GitHub.
 - **Every reader now waits on one more screen.** It is the honest one, and it is
   the same card as the screen that follows it, so the swap moves the words and
   nothing else.
+- **The swap waits about half a second longer**, for the bar to fill. That is
+  the price of a bar that reads as finished rather than abandoned.
 - **The steps are coarse on purpose.** A step for each of the thirty imports
   would be truer and useless. Three steps name the three things that can be
   slow.

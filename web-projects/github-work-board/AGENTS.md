@@ -175,6 +175,12 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   moves the start-up steps along, and `finishBoot` in `showView` is the one
   place that takes the screen away (ADR 0036). `invariants.test.js` fails on a
   screen that starts visible.
+- **`finishBoot` hides the start-up screen about half a second after
+  `showView` runs**, once the bar has slid to full. For that moment the next
+  screen is unhidden but still off the page, held by the
+  `.page:has(#boot:not([hidden]))` rule in `style.css`. A new screen or masthead
+  control needs a place in that rule, and a new `.page:has(...)` layout rule
+  needs the `#boot` guard that the board's width rule carries (ADR 0036).
 - **One function says whether the board is reading: `renderRefreshBusy` in
   `app.js`.** The refresh button turns and goes down for every read, the
   scheduled one included, because a scheduled read draws no placeholders and no
