@@ -1,0 +1,125 @@
+<!doctype html>
+<!--
+  Source of the portfolio image resources/images/projects/ghanaLudo.webp.
+  Re-render it with:
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/ghanaLudo/ --out resources/images/projects/ghanaLudo.webp --width 1280 --height 800 --quality 80
+  screenshot.webp comes from the page itself, from the #demo link, which deals the same round in progress every time (demo.js):
+    bun scripts/captureProjectImage.js --page "web-projects/ghana-ludo/#demo" --out resources/images/projects/sources/ghanaLudo/screenshot.webp --width 1240 --height 760 --wait 2500 --quality 85
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ghana Ludo portfolio image</title>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("../../../../fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: #1d1a16;
+        background:
+          radial-gradient(circle at 8% 6%, rgba(206, 17, 38, 0.16), transparent 38%),
+          radial-gradient(circle at 30% 100%, rgba(0, 107, 63, 0.18), transparent 42%),
+          #f6efe2;
+      }
+      .caption {
+        position: absolute;
+        left: 72px;
+        top: 86px;
+        width: 480px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 22px;
+        font-weight: 650;
+        color: #6b6358;
+      }
+      .brand::before {
+        content: "★";
+        color: #111;
+        font-size: 22px;
+      }
+      h1 {
+        margin-top: 20px;
+        font-size: 66px;
+        line-height: 1.02;
+        font-weight: 800;
+        letter-spacing: -1.8px;
+      }
+      .accent {
+        color: #006b3f;
+      }
+      .sub {
+        margin-top: 22px;
+        font-size: 25px;
+        line-height: 1.35;
+        color: #4d463d;
+      }
+      .chips {
+        margin-top: 34px;
+        display: grid;
+        gap: 12px;
+      }
+      .chip {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .chip::before {
+        content: "";
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--c);
+      }
+      .shot {
+        position: absolute;
+        right: 56px;
+        top: 60px;
+        width: 680px;
+        height: 680px;
+        overflow: hidden;
+        border-radius: 22px;
+        box-shadow:
+          0 30px 70px rgba(60, 40, 10, 0.25),
+          0 0 0 1px rgba(0, 0, 0, 0.06);
+      }
+      .shot img {
+        position: absolute;
+        width: 1484px;
+        left: -141px;
+        top: -105px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="caption">
+      <div class="brand">Ghana Ludo</div>
+      <h1>Ludo with friends. <span class="accent">No server.</span></h1>
+      <p class="sub">Phones pair with a QR code and play directly to each other.</p>
+      <div class="chips">
+        <div class="chip" style="--c: #ce1126">Back, side and home kicks</div>
+        <div class="chip" style="--c: #e3a400">Alone against bots, or online</div>
+        <div class="chip" style="--c: #1f5fbf">Nothing to install</div>
+      </div>
+    </div>
+    <div class="shot"><img src="screenshot.webp" alt="" /></div>
+  </body>
+</html>

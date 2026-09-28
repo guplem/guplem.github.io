@@ -72,6 +72,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/ai-world-gen/AGENTS.md` | ai-world-gen: module map, the two OpenRouter endpoints and their shapes, the per-cell state rules, the tileset gotchas |
 | `web-projects/ai-world-gen/README.md` | ai-world-gen: the concept, the phase roadmap with progress, and the open questions (the project's memory between sessions) |
 | `web-projects/online-sync/AGENTS.md` | online-sync: the shared real-time module map, its rules, the adoption checklist, the WebRTC and QR gotchas |
+| `web-projects/ghana-ludo/AGENTS.md` | ghana-ludo: module map, the rules-module invariants, the side-kick and target-layer gotchas |
 | `web-projects/github-work-board/AGENTS.md` | github-work-board: module map, the higher reliability bar and why, the GitHub API gotchas |
 | `web-projects/cloud-storage/AGENTS.md` | cloud-storage: the shared storage module map, its rules, the adoption checklist |
 | `web-projects/cloud-storage/PLAN.md` | cloud-storage: the phased plan for the standard, and which phase has landed |
@@ -244,6 +245,8 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [global-news-map 0003](web-projects/global-news-map/adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
 | [global-news-map 0004](web-projects/global-news-map/adr/0004-on-a-phone-the-list-drives-the-map.md) | On a phone the map holds still and the list drives it |
 | [global-news-map 0005](web-projects/global-news-map/adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md) | A fixed set of ten categories, and the portal's own words when it is none of them |
+| [ghana-ludo 0001](web-projects/ghana-ludo/adr/0001-replicate-the-rules-not-the-code.md) | Replicate the reference game's rules, read as a spec, not its code |
+| [ghana-ludo 0002](web-projects/ghana-ludo/adr/0002-the-host-plays-bots-and-forced-moves.md) | The host plays the bots and the forced moves, outside the reducer |
 | [mancala 0001](web-projects/mancala/adr/0001-two-engines-behind-one-interface.md) | Two rule sets, two engines, one interface |
 | [mancala 0002](web-projects/mancala/adr/0002-the-setup-is-in-the-link-the-position-is-not.md) | The link carries the setup, never the position |
 | [mancala 0003](web-projects/mancala/adr/0003-the-numbers-the-tradition-leaves-out.md) | Decide the numbers the tradition leaves to the players, and measure them |
