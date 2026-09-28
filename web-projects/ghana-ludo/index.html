@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f6efe2" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#17130f" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="Ghana Ludo in the browser: back kicks, side kicks and home kicks. Play alone against bots, pass one phone round, or invite friends to their own phones with a QR code, with no server in between." />
+  <title>Ghana Ludo · Online with friends, no server · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/ghana-ludo/" />
+  <!-- Drawn inline so the page asks the network for nothing it does not need. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f6efe2'/%3E%3Ccircle cx='9' cy='9' r='5' fill='%23ce1126'/%3E%3Ccircle cx='23' cy='9' r='5' fill='%23e3a400'/%3E%3Ccircle cx='23' cy='23' r='5' fill='%23006b3f'/%3E%3Ccircle cx='9' cy='23' r='5' fill='%231f5fbf'/%3E%3Cpath d='M16 10.5l1.5 3.9h4.1l-3.3 2.5 1.3 4-3.6-2.5-3.6 2.5 1.3-4-3.3-2.5h4.1z' fill='%23111'/%3E%3C/svg%3E" />
+  <!-- Which pull request published this file. Never hand-edit: written by
+       `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
+  <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="307" />
+  <meta name="deploy-date" content="2026-09-28T07:50:38.000Z" />
+<!-- END GENERATED:DEPLOY -->
+  <link rel="stylesheet" href="../online-sync/pairingPanel.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <h1 class="hero__title">Ghana Ludo</h1>
+      <p class="hero__sub">
+        Ludo the way it is played in Ghana: you can also knock somebody out backwards, sideways,
+        and inside their own house. Play alone against bots, or with friends on their own phones.
+      </p>
+    </header>
+
+    <div class="bar" id="bar" hidden>
+      <span class="bar__room">Table <strong id="room-code"></strong></span>
+      <span class="bar__conn" id="conn-badge"></span>
+      <button class="btn btn--small btn--quiet" id="leave" type="button">Leave</button>
+    </div>
+
+    <!-- ============================= setup ============================= -->
+    <section class="screen" id="screen-setup">
+      <div class="panel">
+        <label class="field">
+          <span class="field__label">Your name</span>
+          <input class="field__input" id="name" maxlength="24" placeholder="e.g. Kwame" autocomplete="nickname" />
+        </label>
+        <button class="btn btn--primary btn--wide" id="open-table" type="button">Open a table</button>
+        <p class="hint">
+          Then add bots, add a second player on this phone, or invite friends. A friend joins from
+          their own phone by scanning a QR code or opening a link.
+        </p>
+
+        <div class="resume" id="resume" hidden>
+          <p id="resume-text"></p>
+          <div class="row">
+            <button class="btn" id="resume-go" type="button">Resume that table</button>
+            <button class="btn btn--quiet" id="resume-drop" type="button">Forget it</button>
+          </div>
+        </div>
+
+        <details class="paste-invite">
+          <summary>Got an invite as text?</summary>
+          <form id="paste-invite-form" class="paste-invite__form">
+            <textarea class="field__input" id="paste-invite" rows="2" placeholder="Paste the invite link or code" spellcheck="false" autocapitalize="off"></textarea>
+            <button class="btn" type="submit">Join</button>
+          </form>
+          <p class="notice" id="paste-invite-error" role="status"></p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============================= guest joining ============================= -->
+    <section class="screen" id="screen-join" hidden>
+      <div class="panel">
+        <h2 class="panel__title">You are invited to a table</h2>
+        <label class="field">
+          <span class="field__label">Your name</span>
+          <input class="field__input" id="join-name" maxlength="24" placeholder="e.g. Akosua" autocomplete="nickname" />
+        </label>
+        <button class="btn btn--primary btn--wide" id="join-go" type="button">Join the table</button>
+        <p class="notice" id="join-status" role="status"></p>
+        <div id="answer-slot"></div>
+      </div>
+    </section>
+
+    <!-- ============================= answer relay ============================= -->
+    <section class="screen" id="screen-relay" hidden>
+      <div class="panel">
+        <h2 class="panel__title">Answer received</h2>
+        <p id="relay-text"></p>
+        <label class="field">
+          <span class="field__label">If your table does not connect, paste this code into its invite card:</span>
+          <input class="field__input" id="relay-code" readonly />
+        </label>
+      </div>
+    </section>
+
+    <!-- ============================= notice ============================= -->
+    <section class="screen" id="screen-notice" hidden>
+      <div class="panel">
+        <p class="notice notice--big" id="notice-text" role="status"></p>
+        <button class="btn btn--primary" id="notice-back" type="button">Back to the start</button>
+      </div>
+    </section>
+
+    <!-- ============================= lobby ============================= -->
+    <section class="screen" id="screen-lobby" hidden>
+      <div class="panel">
+        <h2 class="panel__title">Players</h2>
+        <ol class="seats" id="seats"></ol>
+        <div class="tools" id="host-tools">
+          <button class="btn" id="invite" type="button">Invite a friend</button>
+          <button class="btn" id="add-bot" type="button">Add a bot</button>
+          <form class="tools__local" id="add-local">
+            <input class="field__input" id="local-name" maxlength="24" placeholder="Name" aria-label="Name of the player on this phone" />
+            <button class="btn" type="submit">Add a player on this phone</button>
+          </form>
+        </div>
+        <div class="invite-slot" id="invite-slot"></div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Rules for this round</h2>
+        <div class="options" id="options"></div>
+      </div>
+
+      <button class="btn btn--primary btn--wide" id="start" type="button">Start the round</button>
+      <p class="hint" id="lobby-hint"></p>
+    </section>
+
+    <!-- ============================= table ============================= -->
+    <section class="screen" id="screen-table" hidden>
+      <div class="table">
+        <div class="table__board" id="board"></div>
+        <aside class="table__side">
+          <p class="turn-line" id="turn-line" aria-live="polite"></p>
+          <div class="die-row">
+            <div class="die" id="die"></div>
+            <button class="btn btn--primary" id="roll" type="button">Roll</button>
+          </div>
+          <div class="side-choice" id="side-choice" hidden>
+            <button class="btn btn--primary" id="side-take" type="button">Kick</button>
+            <button class="btn" id="side-leave" type="button">Leave it</button>
+          </div>
+          <ol class="players" id="players"></ol>
+          <div class="invite-slot" id="reinvite-slot"></div>
+          <h3 class="log__title">What happened</h3>
+          <ol class="log" id="log"></ol>
+        </aside>
+      </div>
+
+      <div class="over" id="over" hidden>
+        <div class="over__card">
+          <h2 class="over__title">Round over</h2>
+          <ol class="over__places" id="over-places"></ol>
+          <p class="over__loser" id="over-loser"></p>
+          <div class="row" id="over-host">
+            <button class="btn btn--primary" id="again" type="button">Play again</button>
+            <button class="btn" id="to-lobby" type="button">Back to the lobby</button>
+          </div>
+          <p class="hint" id="over-guest">The host starts the next round.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= rules ============================= -->
+    <section class="text" id="rules">
+      <h2>The rules</h2>
+      <p>
+        Everybody has four pieces in a corner yard. Roll a six to bring one out onto your start
+        field, then walk it once round the board, into your own house, and onto the black star in
+        the middle with the exact number. A six always gives you another roll. You may jump over
+        anybody, but you can never land on your own piece. The round goes on until only one player
+        is left on the board: that one is last.
+      </p>
+      <h3>Four ways to knock somebody out</h3>
+      <dl class="kicks">
+        <dt>Front kick</dt>
+        <dd>The ordinary one: land exactly on an opponent going forwards and they go back to their yard.</dd>
+        <dt>Back kick</dt>
+        <dd>
+          If an opponent stands exactly the rolled number behind you, you may move backwards onto
+          them instead. Your piece carries on forwards from there, so stepping back past your own
+          start field costs you the long way round.
+        </dd>
+        <dt>Side kick</dt>
+        <dd>
+          After a move, a piece that faces an opponent across a house may jump across and knock them
+          out, but only while the house field between is empty. It is always your choice. You may
+          even step back onto an empty field to line one up, but then you must take it.
+        </dd>
+        <dt>Home kick</dt>
+        <dd>
+          With the exact number you may walk into an opponent's house and knock out a piece standing
+          there. Your piece walks back out the way it came on a later turn, with any number.
+        </dd>
+      </dl>
+      <h3>The switches</h3>
+      <p>
+        Whoever opens the table can switch off each special kick, the three rolls you get while
+        nothing of yours is out, piling up to four of your own pieces on your start field, and the
+        safe start field (nobody can be knocked off their own start field).
+      </p>
+    </section>
+
+    <section class="text" id="how">
+      <h2>How online play works, with no server</h2>
+      <p>
+        The phones talk to each other directly, over WebRTC, the same browser technology video calls
+        use. Before they can, each phone must hand the other a short description of how to reach it.
+        There is no server here to carry it, so you carry it: the host's invite is a link (or a QR
+        code), and the friend's phone answers with a link of its own. Once the host opens that
+        answer, the two phones are connected and no game message passes through anybody else.
+      </p>
+      <p>
+        The fastest way at one table: the friend scans the host's QR code with their camera, then
+        the host scans the answer code on the friend's phone. Far apart, send both links through
+        any chat app. Google's public STUN servers tell each phone its own internet address; they
+        see no moves. Some mobile networks block direct connections: then the two phones cannot
+        connect, and joining the same Wi-Fi fixes it.
+      </p>
+      <p>
+        The host's phone holds the one true board and applies every move, so two phones can never
+        disagree about where a piece stands. If somebody loses the connection, their seat waits:
+        the host sends them a fresh invite and they sit back down where they were.
+      </p>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <p class="privacy">
+      No account and no server. Moves travel directly between the players' devices. This browser
+      keeps your name and, on the host's device, the table in progress, so a reload can resume it.
+    </p>
+    <p class="deploy-line" id="deploy-line"></p>
+    <p><a class="back-link" href="../">All web projects</a></p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
