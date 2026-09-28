@@ -634,6 +634,15 @@ function buildSkeletonTokenRow() {
   return row;
 }
 
+/**
+ * Show or hide the "Waiting for you" heading and the review row under it.
+ * With no review waiting, the row is noise above the board (ADR 0013).
+ */
+function showReviewRow(shown) {
+  element("board-heading").hidden = !shown;
+  element("reviews").hidden = !shown;
+}
+
 const times = (count, make) => Array.from({ length: count }, make);
 
 /**
@@ -645,6 +654,9 @@ const times = (count, make) => Array.from({ length: count }, make);
  */
 function renderLoading() {
   const last = readLastCounts(storage);
+  // A row that was empty last time stays hidden while the board waits, so the
+  // placeholders match what is coming (ADR 0004, ADR 0013).
+  showReviewRow(last.reviews !== 0);
   element("reviews-empty").hidden = true;
   element("reviews-count").replaceChildren(buildSkeletonBar("0.75rem"));
   element("reviews-list").replaceChildren(...times(skeletonCount(last.reviews, 2), buildSkeletonCard));
@@ -1773,8 +1785,12 @@ function renderBoard() {
 
   // The row above the columns. It follows the chosen order, and with no choice
   // made it puts the longest-waiting first (ADR 0013).
+  const reviewsNotOnBoard = withoutItems(state.reviews, state.items);
+  // The row hides only when nothing waits at all. When the assignee filter
+  // empties it, the row stays, so the chip that undoes the filter stays too.
+  showReviewRow(reviewsNotOnBoard.length > 0);
   const queued = sortWorkItems(
-    filterByPerson(withoutItems(state.reviews, state.items), state.assignees, "assignees"),
+    filterByPerson(reviewsNotOnBoard, state.assignees, "assignees"),
     reviewSortId(state.sortId),
     hasNote,
   );

@@ -34,6 +34,11 @@ repository on it.
 - **Anything already on the board is left out of the row.** A pull request can
   be assigned to you *and* waiting for your review; showing it twice would put
   the same work on screen twice, and the board is the half that can move it.
+- **The row and its "Waiting for you" heading hide when nothing waits.** An
+  empty row above the board is noise. The check reads the row before the
+  assignee filter: a filter that empties the row leaves it on screen, so the
+  chip that undoes the filter stays reachable. While the board loads, the row
+  stays hidden when it was empty last time (ADR 0004).
 - **The cards carry no move menu.** There is no column to move somebody else's
   pull request into: this row is ordered by how long a review has waited, and
   nothing in it sits in a column.
