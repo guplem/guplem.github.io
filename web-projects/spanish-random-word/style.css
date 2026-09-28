@@ -1,0 +1,225 @@
+/* Palabra al azar.
+ *
+ * One card, one word, two buttons. The word is the content, so it gets the size
+ * and a serif face, and everything else stays quiet around it. The tokens are
+ * declared here, because a web-project never imports the site's global CSS.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #f6f1ea;
+  --surface: #fffdf9;
+  --border: rgba(40, 24, 10, 0.1);
+  --text: #1f160e;
+  --text-body: #3b2f25;
+  --muted: #7a6a5c;
+
+  --accent: #c2410c;
+  --accent-ink: #9a3412;
+  --accent-soft: rgba(194, 65, 12, 0.1);
+  --on-accent: #ffffff;
+
+  --shadow: 0 12px 40px rgba(40, 24, 10, 0.1);
+  --radius: 20px;
+  --radius-full: 999px;
+  --fast: 140ms;
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16131a;
+    --surface: #211d26;
+    --border: rgba(255, 255, 255, 0.1);
+    --text: #f5efe8;
+    --text-body: #ddd3c9;
+    --muted: #a3978c;
+    --accent: #fb923c;
+    --accent-ink: #fdba74;
+    --accent-soft: rgba(251, 146, 60, 0.14);
+    --on-accent: #1f160e;
+    --shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: var(--font);
+  line-height: 1.55;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 1.5rem;
+}
+
+/* --- header -------------------------------------------------------------- */
+
+.masthead {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tagline {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+/* --- the card ------------------------------------------------------------ */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+}
+
+.word {
+  margin: 0 0 1.75rem;
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 11vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.button {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background var(--fast), transform var(--fast);
+}
+
+.button:hover {
+  background: var(--accent-soft);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.button-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.button-primary:hover {
+  background: var(--accent-ink);
+}
+
+/* --- the definition ------------------------------------------------------ */
+
+.definition {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: left;
+}
+
+.status {
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+.status:empty {
+  display: none;
+}
+
+.pos {
+  margin: 1.25rem 0 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.pos:first-child {
+  margin-top: 0;
+}
+
+.senses {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+
+.senses li {
+  margin: 0.35rem 0;
+}
+
+.topic {
+  font-style: italic;
+  color: var(--muted);
+}
+
+.sources {
+  margin: 1.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+a {
+  color: var(--accent-ink);
+}
+
+/* --- footer -------------------------------------------------------------- */
+
+.footer {
+  margin-top: auto;
+  padding-top: 2.5rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.footer p {
+  margin: 0.35rem 0;
+}
+
+.footer a {
+  color: inherit;
+}

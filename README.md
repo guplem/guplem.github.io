@@ -47,6 +47,7 @@ Projects that keep something you made can save it to **one private GitHub reposi
 - **`global-news-map/`** — A world map of the day's news, pinned where it happened, read from Wikipedia's Current Events portal; any past day, with the original sources on every story
 - **`akwaaba-monsters/`** — A handheld-style creature-collecting game set in tropical Ghana, from the first village to the first gym; no image or audio files anywhere, every creature and note is generated in the browser
 - **`wildfire-watch/`** — A live wildfire map for Europe: satellite hotspots, wind, the official fire danger, burnt areas and towns at risk, plus a demo mode
+- **`spanish-random-word/`** — A random everyday Spanish word from Spain; the definition stays hidden until you press the button
 - **`unit-converter/`** — Type an amount and a unit in one box (`100 km`, `5'10"`, `1 1/2 cup`, `100 USD`) and see every unit it can be at once, currencies included
 - **`sudoku-screenshot-coach/`** — Reads a sudoku out of a screenshot and explains the next best move, in English or Spanish
 - **`ChatGPTPong/`** — Canvas-based Pong game
