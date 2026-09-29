@@ -18,6 +18,9 @@
 // nested inside the issue it closes travels in that issue's card (ADR 0016), so
 // marking the nested one only makes it fainter. Mark the card itself to move it.
 //
+// A card that GitHub says is blocked sinks too, below the work that can start
+// now, by the same move (`sinkBlocked`).
+//
 // **A value here is written into `board.json`** the moment somebody marks a
 // card, so it is as permanent as a colour id or a storage key.
 
@@ -94,8 +97,39 @@ export function sinkLowPriorityItems(items, marked) {
  * @returns a new array holding exactly the same groups
  */
 export function sinkLowPriority(groups, marked) {
+  return sinkWithWhatWaitsOnIt(groups, marked);
+}
+
+/**
+ * The same groups, with the blocked ones moved below the rest.
+ *
+ * A card that GitHub says is blocked by open work cannot be started, so in any
+ * column the work the reader can pick up now reads first. It is the same move
+ * as the sink above, for the same reason: what is stacked on a blocked card
+ * cannot merge first either, so it sinks along (ADR 0016).
+ *
+ * This runs after the red-check raise, because a red check on blocked work is
+ * still work nobody can finish. It runs before the reader's own sink, so a card
+ * pushed down by hand stays the lowest: their hand beats the rule (ADR 0026).
+ *
+ * Only the board runs it. The review row holds pull requests alone, and GitHub
+ * has no `blockedBy` on a pull request, so the row has nothing to sink.
+ *
+ * @param groups `{item, children}` pairs, already in the reader's chosen order
+ * @param blocked the keys of the blocked cards, as a Set or a list
+ * @returns a new array holding exactly the same groups
+ */
+export function sinkBlocked(groups, blocked) {
+  return sinkWithWhatWaitsOnIt(groups, blocked);
+}
+
+/**
+ * The groups named by `named`, and everything stacked on top of them, moved to
+ * the bottom. The order handed in holds inside both halves.
+ */
+function sinkWithWhatWaitsOnIt(groups, named) {
   const list = (Array.isArray(groups) ? groups : []).filter((one) => one && typeof one === "object");
-  const keys = marked instanceof Set ? marked : new Set(Array.isArray(marked) ? marked : []);
+  const keys = named instanceof Set ? named : new Set(Array.isArray(named) ? named : []);
   if (keys.size === 0) return [...list];
 
   // Read once, because the answer is the same for every walk below.
