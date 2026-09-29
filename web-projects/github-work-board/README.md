@@ -101,7 +101,9 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   work that has waited longest is at the top, with one rule over it: a stack of
   pull requests reads in the order it can merge. A stacked pull request targets
   another one's branch, so the lower one has to merge first, and it is usually
-  the one that looks least recently touched.
+  the one that looks least recently touched. Inside each column, a card
+  marked **Blocked** goes below the work you can start now, and anything
+  stacked on it goes along.
 - **Or sort it plainly**: recently updated, least recently updated, newest,
   oldest, ones you noted first, by label, by repository, or by title. The choice
   goes into the address bar, so a reload keeps it and a link carries it.
