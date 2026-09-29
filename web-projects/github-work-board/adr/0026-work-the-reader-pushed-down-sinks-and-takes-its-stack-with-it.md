@@ -88,6 +88,27 @@ Their hand beats the rule.
 the one to read first. `invariants.test.js` says so, rather than leaving the
 next reader to guess whether it was forgotten.
 
+## The third pass: blocked work sinks below what can start
+
+**In the smart order, a card that GitHub says is blocked by open work goes below
+the rest of its column.** The reader cannot start blocked work, so a blocked
+card near the top of "To do" is read and skipped every time, which is the same
+cost the reader's own mark exists to remove. "Blocked" is read through
+`isBlocked`, the rule that draws the card's "Blocked" badge, so the card that
+sinks always says why.
+
+**It is the same move as the reader's sink.** What is stacked on a blocked card
+sinks along, and both halves keep the order they had (ADR 0016).
+
+**The three passes run in one order: the raise, then the blocked sink, then the
+reader's sink.** A red check on blocked work is still work nobody can finish, so
+the blocked sink runs after the raise. The reader's sink runs last, so a card
+they pushed down sits below a blocked one: their hand beats the rule.
+
+**The review row has no blocked sink.** It holds pull requests alone, and GitHub
+has no `blockedBy` on a pull request, so the pass would never move anything
+there. `invariants.test.js` pins the order of the passes and this exception.
+
 ## Consequences
 
 - The board has one more thing it will not decide for the reader. Everything

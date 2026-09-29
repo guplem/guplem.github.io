@@ -627,6 +627,16 @@ describe("the review row is ordered by the same rules as a column (ADR 0016, ADR
     expect(source).toMatch(/raiseFailedChecks\([\s\S]{0,60}orderStacksForMerging/);
   });
 
+  // A blocked card sinks below the work that can start now, on the board only.
+  // The order of the passes is the decision: the raise, then the blocked sink,
+  // then the reader's own sink, so their hand still wins (ADR 0026). The row
+  // holds pull requests alone, and GitHub has no `blockedBy` on one.
+  test("the board sinks blocked work between the raise and the reader's sink", () => {
+    const source = read("app.js");
+    expect(source.match(/sinkBlocked\(/g) ?? []).toHaveLength(1);
+    expect(source).toMatch(/sinkLowPriority\(\s*sinkBlocked\(\s*raiseFailedChecks\(/);
+  });
+
   // The comparator half of smart is still the date order the row is built
   // from. Only the pass is new.
   test("the row still compares by how long something has waited", () => {

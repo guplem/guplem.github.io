@@ -4,6 +4,7 @@ import {
   NORMAL,
   knownPriority,
   raiseFailedChecks,
+  sinkBlocked,
   sinkLowPriority,
   sinkLowPriorityItems,
 } from "./priority.js";
@@ -221,3 +222,42 @@ describe("raiseFailedChecks and a stack", () => {
   });
 });
 
+
+describe("sinkBlocked", () => {
+  // A blocked card cannot be started, so in any column the work the reader can
+  // pick up now reads first.
+  test("a blocked card goes below the ones that are not", () => {
+    const list = [group("a"), group("b"), group("c")];
+    expect(keys(sinkBlocked(list, new Set(["a"])))).toEqual(["b", "c", "a"]);
+  });
+
+  test("nothing blocked, nothing moves", () => {
+    const list = [group("a"), group("b")];
+    expect(keys(sinkBlocked(list, new Set()))).toEqual(["a", "b"]);
+    expect(keys(sinkBlocked(list, null))).toEqual(["a", "b"]);
+  });
+
+  test("the order the reader chose still holds inside each half", () => {
+    const list = [group("a"), group("b"), group("c"), group("d")];
+    expect(keys(sinkBlocked(list, ["a", "c"]))).toEqual(["b", "d", "a", "c"]);
+  });
+
+  // The same reason the low-priority sink takes the top of a stack along: what
+  // waits on a blocked card cannot merge first either (ADR 0016).
+  test("what is stacked on a blocked card sinks with it, in merge order", () => {
+    const list = [
+      group("one", { head: "one", base: "main", number: 1 }),
+      group("two", { head: "two", base: "one", number: 2 }),
+      group("other"),
+    ];
+    expect(keys(sinkBlocked(list, new Set(["one"])))).toEqual(["other", "one", "two"]);
+  });
+
+  // The two sinks run one after the other, and the reader's own mark runs
+  // last, so a card pushed down sits below a blocked one.
+  test("a card the reader pushed down still ends up last", () => {
+    const list = [group("low"), group("blocked"), group("free")];
+    const order = sinkLowPriority(sinkBlocked(list, new Set(["blocked"])), new Set(["low"]));
+    expect(keys(order)).toEqual(["free", "blocked", "low"]);
+  });
+});
