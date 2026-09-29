@@ -1,0 +1,130 @@
+<!doctype html>
+<!--
+  Source of the portfolio image resources/images/projects/githubWorkBoard.webp.
+  Re-render it with:
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/githubWorkBoard/ --out resources/images/projects/githubWorkBoard.webp --width 1280 --height 800 --quality 80
+  screenshot.webp is the real board at 1600 px wide, drawn from made-up GitHub
+  answers (a fictional user, fictional acme-labs repositories and reviewers), so
+  no private work appears. The page has no demo mode: to take it again, answer
+  the GitHub calls with fictional data in the browser, then capture the page.
+  The frame below shows three strips of it (header, review row, columns) and
+  leaves out the filter rows, which carry little at card size.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Work Board portfolio image</title>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("../../../../fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: #f4f4f5;
+        background:
+          radial-gradient(circle at 92% 6%, rgba(167, 139, 250, 0.3), transparent 42%),
+          radial-gradient(circle at 4% 100%, rgba(74, 222, 128, 0.18), transparent 42%),
+          #18181b;
+      }
+      .caption {
+        position: absolute;
+        left: 90px;
+        right: 90px;
+        top: 48px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #a1a1aa;
+      }
+      .brand::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+        background: #a78bfa;
+        box-shadow: 0 0 0 5px rgba(167, 139, 250, 0.3);
+      }
+      h1 {
+        margin-top: 16px;
+        font-size: 58px;
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+      .accent {
+        color: #c4b5fd;
+      }
+      .sub {
+        margin-top: 12px;
+        font-size: 22px;
+        color: #a1a1aa;
+      }
+      /* The screenshot is 1600 px wide; 1100 / 1600 = 0.6875 is the scale.
+         The frame is 10 px narrower, to hide the edge of a sixth column. */
+      .shot {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 1090px;
+        height: 548px;
+        transform: translateX(-50%);
+        overflow: hidden;
+        border-radius: 14px 14px 0 0;
+        background: #ffffff;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+      .strip {
+        width: 1100px;
+        background-image: url("screenshot.webp");
+        background-size: 1100px auto;
+        background-repeat: no-repeat;
+      }
+      /* Source rows 0-100: the title and the controls. */
+      .strip.header {
+        height: 69px;
+        background-position: 0 0;
+      }
+      /* Source rows 110-425: "Waiting for you" and the review row. */
+      .strip.review {
+        height: 217px;
+        background-position: 0 -76px;
+      }
+      /* Source rows 645 onward: the five columns. */
+      .strip.columns {
+        height: 300px;
+        background-position: 0 -443px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="caption">
+      <div class="brand">Work Board · for GitHub</div>
+      <h1>All your GitHub work, <span class="accent">on one board.</span></h1>
+      <p class="sub">Issues and pull requests in five columns, with private notes that follow you.</p>
+    </div>
+    <div class="shot">
+      <div class="strip header"></div>
+      <div class="strip review"></div>
+      <div class="strip columns"></div>
+    </div>
+  </body>
+</html>
