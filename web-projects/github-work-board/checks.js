@@ -8,8 +8,9 @@
 // request's last commit, which a fine-grained token reads with "Actions: read"
 // (ADR 0037).
 //
-// So the verdict is worked out here, from every run on that commit. The board
-// sees all of them, which is what makes a sum an honest answer.
+// So the verdict is worked out here, from the newest run of each workflow on
+// that commit. The board sees all of them, which is what makes a sum an honest
+// answer.
 
 /** How many runs the board asks GitHub for on one commit. GitHub's own largest page. */
 export const CHECKS_READ = 100;
@@ -34,8 +35,29 @@ function readRun(run) {
 }
 
 /**
- * Every workflow run on one commit, counted, with the verdict the dot takes its
- * colour from.
+ * The newest run of each workflow on each event, and nothing older.
+ *
+ * A workflow runs again on the same commit when a pull request is labelled or
+ * edited, and a concurrency rule then cancels the older run. GitHub's own page
+ * reads only the newest run, so a cancelled run that a newer one replaced is
+ * not a red check. A push run and a pull request run of the same workflow are
+ * two checks on GitHub's page, so the event is part of the key. Run ids only
+ * grow, so the highest id is the newest run.
+ */
+function latestRuns(runs) {
+  const newest = new Map();
+  let unnamed = 0;
+  for (const run of runs) {
+    const key = run?.workflow_id == null ? `unnamed:${unnamed++}` : `${run.workflow_id}:${run.event ?? ""}`;
+    const held = newest.get(key);
+    if (!held || (run.id ?? 0) > (held.id ?? 0)) newest.set(key, run);
+  }
+  return [...newest.values()];
+}
+
+/**
+ * The newest workflow runs on one commit, counted, with the verdict the dot
+ * takes its colour from.
  *
  * Worst first: one red run is a red dot however many passed, because the work
  * cannot go forward. Then anything still running. A commit nothing has run on
@@ -43,7 +65,7 @@ function readRun(run) {
  */
 export function readWorkflowRuns(runs) {
   const summary = { verdict: "", passed: 0, failed: 0, ongoing: 0, counted: 0, total: 0 };
-  for (const run of Array.isArray(runs) ? runs : []) {
+  for (const run of latestRuns(Array.isArray(runs) ? runs : [])) {
     const one = readRun(run);
     if (one === "") continue;
     summary[one] += 1;
