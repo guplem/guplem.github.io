@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="312" />
-  <meta name="deploy-date" content="2026-09-30T07:15:19.000Z" />
+  <meta name="deploy-pull-request" content="313" />
+  <meta name="deploy-date" content="2026-09-30T09:07:48.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -143,6 +143,20 @@
         </h1>
       </div>
       <div class="masthead-controls">
+        <!-- Find one piece of work: a number keeps that issue or pull request
+             and hides every other card, in the column it sits in. Words find
+             titles. It hides cards only, and lives for this visit (ADR 0038). -->
+        <div class="find-control" id="find-control" role="search" hidden>
+          <label class="visually-hidden" for="find">Find on the board</label>
+          <svg class="icon find-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" />
+          </svg>
+          <input id="find" class="input find-input" type="text" inputmode="search" autocomplete="off"
+            spellcheck="false" placeholder="Find #number or words" />
+          <kbd class="find-key" aria-hidden="true">/</kbd>
+        </div>
+
         <!-- The order the board reads in, at the top of the page where it is
              looked for (ADR 0023). It belongs to the board, so it is not on
              the other screens. -->
@@ -330,6 +344,7 @@
           <p id="board-empty-actions">
             <button id="empty-open-settings" type="button" class="button button-primary">Add a token in Settings</button>
             <button id="clear-filters" type="button" class="button button-outline" hidden>Clear the filters</button>
+            <button id="clear-find" type="button" class="button button-outline" hidden>Clear the search</button>
           </p>
         </div>
 
