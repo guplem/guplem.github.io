@@ -382,7 +382,7 @@ describe("the page shows nothing it has not decided (ADR 0036)", () => {
       match[2].includes("display: none"),
     );
     expect(rule).toBeDefined();
-    for (const id of ["setup", "board", "settings-view", "add-token-view", "view-toggle"]) {
+    for (const id of ["setup", "board", "settings-view", "add-token-view", "find-control", "view-toggle"]) {
       expect(rule[1]).toContain(`#${id}`);
     }
     expect(rule[2]).toContain("display: none");
@@ -890,5 +890,30 @@ describe("one tooltip, and it is the board's (ADR 0033)", () => {
   // scroll (ADR 0012).
   test("the tooltip is a popover, and a manual one so it never closes the menu", () => {
     expect(read("index.html")).toMatch(/id="tooltip"[^>]*popover="manual"/);
+  });
+});
+
+describe("a search hides cards and nothing else (ADR 0038)", () => {
+  // A board that opens from a saved link with one card on it looks broken, and
+  // the reader would not know why the rest is gone.
+  test("the link never carries the search", () => {
+    expect(buildSearch({ findText: "312" })).toBe(buildSearch({}));
+    expect(read("urlState.js")).not.toMatch(/find/i);
+  });
+
+  // The tab and the badges count the board. Finding one card must not turn the
+  // tab into "(1)", which reads as "one thing waits for you".
+  test("the counts are taken from the lists before the search narrows them", () => {
+    const render = functionBody(read("app.js"), "function renderBoard(");
+    const counting = render.slice(render.indexOf("const keysByArea"), render.indexOf("countingSettings()"));
+    expect(counting).toContain("waiting");
+    expect(counting).not.toMatch(/\bfound\b|shownBoard/);
+  });
+
+  // The search runs over GitHub's answer already in memory. A call per key
+  // would spend the search budget of 30 a minute in one word (ADR 0025).
+  test("the search module asks nothing of the network and stores nothing", () => {
+    const source = read("boardSearch.js");
+    expect(source).not.toMatch(/fetch|import /);
   });
 });

@@ -129,6 +129,7 @@ import { readTitle } from "./titles.js";
 import { initialsOf, personLabel } from "./people.js";
 import { LOW, NORMAL, raiseFailedChecks, sinkBlocked, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
 import { countBoard, describeBreakdown, describeExcluded, tabTitle } from "./counting.js";
+import { readSearch, searchGroups, searchItems } from "./boardSearch.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
 import {
@@ -249,6 +250,10 @@ const state = {
   // pull request is, and the board narrows by who is in the review (ADR 0028).
   assignees: [],
   reviewers: [],
+  // What the reader typed in the find box. Only for this visit, and never in
+  // the link: a board that opens with most of its cards hidden looks broken
+  // (ADR 0038).
+  findText: "",
   loading: false,
 };
 
@@ -1618,7 +1623,7 @@ function chooseDoneRange(range) {
 }
 
 /** One column: its name, how much is in it, and the cards. */
-function buildColumn({ column, groups }, counted) {
+function buildColumn({ column, groups }, counted, emptyText = "Nothing here") {
   const section = document.createElement("section");
   section.className = "column";
   section.dataset.columnId = column.id;
@@ -1658,7 +1663,7 @@ function buildColumn({ column, groups }, counted) {
   if (groups.length === 0) {
     const empty = document.createElement("p");
     empty.className = "column-empty";
-    empty.textContent = "Nothing here";
+    empty.textContent = emptyText;
     section.append(empty);
     return section;
   }
@@ -1773,7 +1778,14 @@ function renderBoard() {
   // longer exists would sit there pointing at nothing.
   hideTip();
   const hasNote = (key) => readNote(state.board, key).trim() !== "";
-  const visible = filterByPerson(filterWorkItems(state.items, state), state.reviewers, "reviewers");
+  // While the reader looks for one piece of work, the chips step aside: the
+  // question is "where is it", and a chip must not hide the answer (ADR 0038).
+  const search = readSearch(state.findText);
+  const visible = search
+    ? state.items
+    : filterByPerson(filterWorkItems(state.items, state), state.reviewers, "reviewers");
+  element("board-filters").classList.toggle("filters-set-aside", search !== null);
+  element("assignee-group").classList.toggle("filters-set-aside", search !== null);
   const ordered = sortWorkItems(visible, state.sortId, hasNote);
   // The stack pass runs on the grouped board, not on the items: a pull request
   // travels inside the card of the issue it closes, so the card is what moves.
@@ -1805,11 +1817,8 @@ function renderBoard() {
   // The row above the columns. It follows the chosen order, and with no choice
   // made it puts the longest-waiting first (ADR 0013).
   const reviewsNotOnBoard = withoutItems(state.reviews, state.items);
-  // The row hides only when nothing waits at all. When the assignee filter
-  // empties it, the row stays, so the chip that undoes the filter stays too.
-  showReviewRow(reviewsNotOnBoard.length > 0);
   const queued = sortWorkItems(
-    filterByPerson(reviewsNotOnBoard, state.assignees, "assignees"),
+    search ? reviewsNotOnBoard : filterByPerson(reviewsNotOnBoard, state.assignees, "assignees"),
     reviewSortId(state.sortId),
     hasNote,
   );
@@ -1835,10 +1844,19 @@ function renderBoard() {
   // review row counts the review row: each one is the truth about the list the
   // reader is looking at (ADR 0020).
   state.stackBadges = stackPositions(onBoard);
+  // The search hides cards and nothing else. The badges and the counts are
+  // worked out over the whole board, so finding one card does not rename the
+  // tab or renumber a stack (ADR 0038).
+  const found = searchItems(waiting, search);
+  // The row hides only when nothing waits at all. When the assignee filter
+  // empties it, the row stays, so the chip that undoes the filter stays too.
+  // A search that finds nothing in the row hides the row, because the reader
+  // asked to see one card and nothing else.
+  showReviewRow(reviewsNotOnBoard.length > 0 && (search === null || found.length > 0));
   element("reviews-empty").hidden = waiting.length > 0;
   const stacked = stackPositions(waiting);
   element("reviews-list").replaceChildren(
-    ...waiting.map((item) =>
+    ...found.map((item) =>
       buildWorkItemCard(item, { withMenu: false, stack: stacked[item.key] ?? null, people: "assignees" }),
     ),
   );
@@ -1869,7 +1887,10 @@ function renderBoard() {
   const leftOut = describeExcluded(countFor[REVIEW_ROW_ID]?.excluded ?? 0);
   explain(reviewCount, leftOut);
 
-  element("board-columns").replaceChildren(...board.map((one) => buildColumn(one, countFor[one.column.id])));
+  const shownBoard = board.map(({ column, groups }) => ({ column, groups: searchGroups(groups, search) }));
+  element("board-columns").replaceChildren(
+    ...shownBoard.map((one) => buildColumn(one, countFor[one.column.id], search ? "No match" : undefined)),
+  );
   showTotal(counts);
   // The cards are on the page now, so every note can be measured (ADR 0014).
   for (const note of document.querySelectorAll(".issue .note")) fitNote(note);
@@ -1883,14 +1904,18 @@ function renderBoard() {
   // An empty list has two very different causes, and the way out of each one is
   // different too: widen the filters, or add a token (ADR 0007, ADR 0009).
   const hiddenByFilters = state.items.length > 0 && visible.length === 0;
+  const missed = search !== null && found.length === 0 && shownBoard.every(({ groups }) => groups.length === 0);
   const owners = [...new Set(state.tokens.flatMap((entry) => entry.owners))];
-  element("board-empty").hidden = visible.length > 0;
-  element("board-empty-reason").textContent = hiddenByFilters
-    ? "Nothing here matches the filters you chose."
-    : sayEmptyBoard({ tokenCount: state.tokens.length, owners });
-  element("board-empty-hint").hidden = hiddenByFilters;
-  element("empty-open-settings").hidden = hiddenByFilters;
-  element("clear-filters").hidden = !narrowed;
+  element("board-empty").hidden = visible.length > 0 && !missed;
+  element("board-empty-reason").textContent = missed
+    ? `Nothing on the board matches "${state.findText.trim()}".`
+    : hiddenByFilters
+      ? "Nothing here matches the filters you chose."
+      : sayEmptyBoard({ tokenCount: state.tokens.length, owners });
+  element("board-empty-hint").hidden = hiddenByFilters || missed;
+  element("empty-open-settings").hidden = hiddenByFilters || missed;
+  element("clear-filters").hidden = !narrowed || missed;
+  element("clear-find").hidden = !missed;
 }
 
 /**
@@ -2192,6 +2217,7 @@ function showView(view) {
   state.viewToggleGoesTo = back ?? "settings";
   element("setup").hidden = connected;
   element("board").hidden = !connected || state.view !== "board";
+  element("find-control").hidden = !connected || state.view !== "board";
   element("sort-control").hidden = !connected || state.view !== "board";
   element("refresh-control").hidden = !connected || state.view !== "board";
   element("settings-view").hidden = state.view !== "settings";
@@ -2717,6 +2743,40 @@ function start() {
     state.sortId = sortField.value;
     rememberUrl();
     renderBoard();
+  });
+
+  // Every key redraws the board at once, so the other cards go the moment the
+  // number is typed. Nothing is saved and nothing asks GitHub (ADR 0038).
+  const findField = element("find");
+  const clearFind = () => {
+    findField.value = "";
+    state.findText = "";
+    renderBoard();
+  };
+  findField.addEventListener("input", () => {
+    state.findText = findField.value;
+    renderBoard();
+  });
+  findField.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && findField.value !== "") {
+      event.preventDefault();
+      clearFind();
+    }
+  });
+  element("clear-find").addEventListener("click", () => {
+    clearFind();
+    findField.focus();
+  });
+  // "/" reaches the box from anywhere on the board, the way it does on GitHub,
+  // unless the reader is already typing somewhere.
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (state.view !== "board" || element("find-control").hidden) return;
+    const target = event.target;
+    if (target instanceof HTMLElement && target.closest("input, textarea, select, [contenteditable]")) return;
+    event.preventDefault();
+    findField.focus();
+    findField.select();
   });
 
   // The schedule is not in the address bar, unlike the order. A link is shared,

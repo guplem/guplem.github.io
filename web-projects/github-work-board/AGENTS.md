@@ -58,6 +58,7 @@ It is the short procedure for all of the above.
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
 | `filters.js` | Yes | Narrowing by kind, repository, label and person, and what to offer (ADR 0009, ADR 0028) |
+| `boardSearch.js` | Yes | The find box: an exact number, a pasted GitHub link or words, and which cards stay (ADR 0038) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
@@ -76,8 +77,8 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseFailedChecks`, `priority.sinkBlocked` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → elements.
-Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → cards.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseFailedChecks`, `priority.sinkBlocked` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
+Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025).
 Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
 
@@ -282,6 +283,11 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
 - **A sort id travels in the address bar, so it is permanent.** Renaming one
   silently breaks every link anybody saved; `invariants.test.js` pins the set.
   The same holds for the view names and the filter kind ids.
+- **The find box hides cards and does nothing else.** `renderBoard` applies it
+  last, after `countBoard`, so the badges and the tab keep counting the whole
+  board. While a search is typed the chips stop narrowing, so a chip cannot hide
+  the card the reader looks for. It is the one piece of board state kept out of
+  the link, on purpose (ADR 0038).
 - **Filters widen within one kind and narrow across kinds** (ADR 0009). Two
   labels means either; a kind plus a repository means both. Getting that
   backwards empties the board on the second click.
@@ -601,6 +607,7 @@ before calling it done.
 | [0035](adr/0035-a-reference-lights-the-card-it-names.md) | A reference lights the card it names |
 | [0036](adr/0036-the-page-starts-on-a-start-up-screen.md) | The page starts on a start-up screen, and every other screen starts hidden |
 | [0037](adr/0037-a-dot-says-how-the-checks-are-going.md) | A dot says how the checks are going, read from the Actions API |
+| [0038](adr/0038-a-search-hides-cards-and-nothing-else.md) | A search hides cards and nothing else |
 
 ## What is not built yet
 
@@ -610,3 +617,4 @@ Still to come, roughly in this order: dragging a card instead of choosing its
 column from a dropdown, custom tags, and a "what's next" queue, which the
 blocked marking and the columns now make answerable. Every new view state goes in the address bar
 beside `view`, `sort`, `kind`, `repo`, `label`, `assignee` and `reviewer`, and the tokens never do.
+The find box is the one exception, on purpose (ADR 0038).

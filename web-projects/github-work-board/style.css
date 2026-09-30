@@ -717,6 +717,54 @@ textarea.input {
   gap: 0.5rem;
 }
 
+/* The find box: an `.input` with the magnifier drawn inside its left edge and
+ * the "/" key hint inside its right edge (ADR 0038). */
+.find-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 16rem;
+  max-width: 100%;
+}
+
+.find-input {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.find-icon,
+.find-key {
+  position: absolute;
+  pointer-events: none;
+  color: hsl(var(--muted-foreground));
+}
+
+.find-icon {
+  left: 0.625rem;
+}
+
+.find-key {
+  right: 0.5rem;
+  padding: 0 0.3rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 4px);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+}
+
+/* The hint is for a reader who has not started typing yet. */
+.find-input:focus ~ .find-key,
+.find-input:not(:placeholder-shown) ~ .find-key {
+  display: none;
+}
+
+/* The chips do not apply while a search is typed, so they say so by fading.
+ * They still answer a press, which ends nothing: the search keeps going. */
+.filters-set-aside {
+  opacity: 0.45;
+}
+
 .sort-label {
   font-size: 0.8125rem;
   color: hsl(var(--muted-foreground));
@@ -919,7 +967,7 @@ textarea.input {
 /* `showView` unhides the next screen the moment the board decides, while the
  * bar is still filling. This keeps that screen off the page until the start-up
  * screen is gone, so the swap happens once (ADR 0036). */
-.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #sort-control, #refresh-control, #view-toggle) {
+.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #find-control, #sort-control, #refresh-control, #view-toggle) {
   display: none !important;
 }
 
