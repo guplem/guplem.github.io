@@ -36,10 +36,19 @@ read". That permission is now in `REQUIRED_PERMISSIONS`, so the setup guide, the
 fingerprint and the "your token needs more access" notice all carry it without
 anything else being written by hand (ADR 0005).
 
-**The verdict is the board's own, worked out from every run on the commit.** The
-board sees all of them here, which is what makes a sum an honest answer: one red
-run is a red dot however many passed. The same verdict is what puts a card in
-"Needs attention", so the dot and the column can never disagree.
+**The verdict is the board's own, worked out from the newest run of each
+workflow on the commit.** The board sees all of them here, which is what makes a
+sum an honest answer: one red run is a red dot however many passed. The same
+verdict is what puts a card in "Needs attention", so the dot and the column can
+never disagree.
+
+**A run that a newer run of the same workflow replaced does not count.** A
+workflow runs again on one commit when somebody labels or edits the pull
+request, and a concurrency rule cancels the older run. GitHub's own page reads
+only the newest run, so the board does too. Counted, those cancelled runs made
+a pull request with every check green read "Checks failed". The key is the
+workflow and the event, because GitHub lists a push run and a pull request run
+of one workflow as two checks.
 
 **The board asks about a commit once and keeps the answer.** A run that has
 finished stays finished, and the commit id changes the moment anybody pushes, so

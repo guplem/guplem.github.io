@@ -72,6 +72,35 @@ describe("readWorkflowRuns", () => {
 
   // The REST answer spells the same words in lower case, and carries a run
   // that was asked for but has not started.
+  // A workflow runs again on the same commit when a pull request is labelled or
+  // edited, and its concurrency rule cancels the older run. GitHub's own page
+  // then reads only the newest run of that workflow, and so must the board.
+  // Real case: Galtea-AI/monorepo#5546 had three cancelled "Secret scan" runs
+  // and one that passed, and the board called it red.
+  test("a run that a newer run of the same workflow replaced is not counted", () => {
+    const run = (id, workflow_id, event, conclusion) => ({ id, workflow_id, event, status: "completed", conclusion });
+    const summary = readWorkflowRuns([
+      run(5, 1, "pull_request", "success"),
+      run(3, 1, "pull_request", "cancelled"),
+      run(2, 1, "pull_request", "cancelled"),
+      run(4, 2, "pull_request", "success"),
+    ]);
+    expect(summary).toMatchObject({ verdict: "passed", passed: 2, failed: 0, counted: 2, total: 2 });
+  });
+
+  // The newest run decides, whichever order GitHub lists them in.
+  test("a newer red run still makes the verdict red", () => {
+    const run = (id, conclusion) => ({ id, workflow_id: 1, event: "pull_request", status: "completed", conclusion });
+    expect(readWorkflowRuns([run(1, "success"), run(2, "failure")]).verdict).toBe("failed");
+  });
+
+  // GitHub's page lists a workflow's push run and its pull request run as two
+  // separate checks, so the board keeps one of each.
+  test("the same workflow on two different events counts twice", () => {
+    const run = (id, event, conclusion) => ({ id, workflow_id: 1, event, status: "completed", conclusion });
+    expect(readWorkflowRuns([run(1, "push", "failure"), run(2, "pull_request", "success")]).verdict).toBe("failed");
+  });
+
   test("it reads the words the Actions API uses", () => {
     expect(readWorkflowRuns([started("waiting"), started("requested"), started("pending")]).ongoing).toBe(3);
     expect(readWorkflowRuns([ended("timed_out")]).failed).toBe(1);

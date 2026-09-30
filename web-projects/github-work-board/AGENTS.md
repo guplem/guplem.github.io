@@ -196,6 +196,11 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   One did, for months. The checks come from the Actions API instead
   (`fetchWorkflowRuns`), and `invariants.test.js` fails if the query asks for the
   rollup again (ADR 0037).
+- **One commit can carry cancelled runs that do not count.** A label or an edit
+  starts a workflow again on the same commit, and its concurrency rule cancels
+  the older run. `readWorkflowRuns` keeps only the newest run of each workflow
+  and event, as GitHub's page does. Count every run and a green pull request
+  reads "Checks failed" (ADR 0037).
 - **A commit's checks are asked about once and kept, keyed by the commit id.**
   A run that finished stays finished, and the id changes the moment anybody
   pushes. `needsAsking` holds that rule, and it is what keeps this from being one
