@@ -30,7 +30,8 @@ with genuine `start_date`/`end_date` time versioning. It is the one source with 
 sole OpenStreetMap tag source.**
 
 - **Nominatim** does both the geocoding search *and* delivers the OSM tag bag (namedetails + extratags
-  merged). No Overpass call is made for OSM data.
+  merged). Its `/reverse` endpoint answers a tap on the map (ADR 0002), and `/lookup` reopens a link
+  that names a tapped street. All three return the same tag bag. No Overpass call is made for OSM data.
 - **Wikidata** enriches the "named after & history" panel: street-item description + inception, and the
   honoree entity (explicit `name:etymology:wikidata`, else the street item's `P138`).
 - **OpenHistoricalMap** provides a best-effort dated timeline of nearby historical roads.
@@ -38,8 +39,8 @@ sole OpenStreetMap tag source.**
 Enrichment is non-blocking: Wikidata and OHM fire in parallel (`Promise.allSettled`) after the
 OSM-derived names have already rendered, and each failure degrades to an inline notice in its own slot.
 
-We honour Nominatim's usage policy: search fires on **submit only** (never per keystroke), is throttled
-to ~1 request/second, and OpenStreetMap / Wikidata / OpenHistoricalMap / Nominatim attribution is shown
+We honour Nominatim's usage policy: a call fires on **a submit or a map tap only** (never per keystroke
+or per map move), every call is throttled to ~1 request/second, and OpenStreetMap / Wikidata / OpenHistoricalMap / Nominatim attribution is shown
 in the page footer.
 
 ## Consequences

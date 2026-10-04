@@ -54,6 +54,11 @@ describe("serializeUrlState", () => {
     expect(serializeUrlState({ q: "x", sel: "nope" })).not.toContain("sel");
   });
 
+  test("keeps a street picked on the map, which has no query", () => {
+    expect(serializeUrlState({ q: "", sel: "way/7" })).toBe("sel=way%2F7");
+    expect(parseUrlState("?sel=way%2F7")).toEqual({ q: "", sel: "way/7" });
+  });
+
   test("round-trips with parseUrlState", () => {
     const original = { q: "Carrer de Balmes", sel: "way/999" };
     const parsed = parseUrlState("?" + serializeUrlState(original));
