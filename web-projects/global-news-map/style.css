@@ -960,6 +960,13 @@ main {
     padding-bottom: 0.85rem;
   }
 
+  /* The whole card is one target on a wide screen (`app.js` passes a click on
+     the sources' row to the story button), so the whole card takes the tint. */
+  .stories .story-item {
+    cursor: pointer;
+    transition: background var(--fast) var(--ease);
+  }
+
   /* The list's own heading would stand under the map. A screen reader still
      reads it, which is why it is hidden like `.visually-hidden`. */
   #story-list-heading {
@@ -989,5 +996,12 @@ main {
     display: block;
     left: auto;
     right: 0.6rem;
+  }
+}
+
+/* Only where there is a pointer to hover with, like the phone's row tint. */
+@media (min-width: 60rem) and (hover: hover) {
+  .stories .story-item:hover {
+    background: var(--accent-soft);
   }
 }

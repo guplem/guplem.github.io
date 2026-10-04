@@ -335,6 +335,10 @@ list, where `reading.topmostRow` decides which story the map marks. See ADR 0004
   card and `revealCard` scrolls the page to it only when it is off screen
   (`block: "nearest"`). Hovering a card sets `state.hoveredId`, and `draw` marks
   that pin.
+- **A wide card is one target, but its sources stay outside the button.** A link
+  inside a button is invalid HTML. So the card passes a click outside any link or
+  button on to the story button, and `style.css` tints the whole card on hover.
+  Tint only the button and the sources' row reads as a separate box.
 - **`refreshHighlight` toggles attributes on existing rows; it never rebuilds.**
   Rebuilding would throw away keyboard focus, fold up any story the reader had
   opened, and move the list under a reader who is scrolling it. `selectStory` and
