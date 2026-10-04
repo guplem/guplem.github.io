@@ -1010,4 +1010,10 @@ main {
   .stories .story-item:hover {
     background: var(--accent-soft);
   }
+
+  /* The tint is see-through, so the button's own hover tint on top of the
+     card's made the top of the card a darker second tone. */
+  .stories .story-item .item-main:hover {
+    background: transparent;
+  }
 }
