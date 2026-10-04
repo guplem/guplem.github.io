@@ -10,10 +10,11 @@
 pre-commit:
   parallel: true
   commands:
-    # Regenerate the crawler-facing derived files (sitemap.xml, blog/feed.xml
-    # and the static blocks in index.html / web-projects/index.html /
-    # blog/index.html) whenever the source data, a blog post or the generators
-    # change, and stage the results.
+    # Regenerate the crawler-facing derived files (sitemap.xml, blog/feed.xml,
+    # the static blocks in index.html / web-projects/index.html /
+    # blog/index.html, and the head block of every web-project page)
+    # whenever the source data, a blog post or the generators change, and
+    # stage the results.
     seo-content-sync:
       glob:
         - "data/info.json"
@@ -23,4 +24,4 @@ pre-commit:
         # Modules the generators import; changing them can change the output.
         - "js/utils/textCore.js"
         - "web-projects/discovery.js"
-      run: bun scripts/generateSitemap.js && bun scripts/generateSeoBlocks.js && bun scripts/generateFeed.js && git add sitemap.xml index.html web-projects/index.html blog/index.html blog/feed.xml
+      run: bun scripts/generateSitemap.js && bun scripts/generateSeoBlocks.js && bun scripts/generateFeed.js && bun scripts/generateWebProjectMeta.js && git add sitemap.xml index.html web-projects/index.html blog/index.html blog/feed.xml web-projects/*/index.html web-projects/ChatGPTPong/pong.html

@@ -20,9 +20,9 @@ You run the same check that CI runs (CI is the set of automatic checks GitHub ru
 
    | Step | Command | Run when |
    |---|---|---|
-   | Tests | `bun test .` (from the repo root) | Always. Discovers and runs every `*.test.js`: the web-project suites, the data validation test (`data/projects.test.js`), the `js/utils/textCore.js` tests, and the SEO drift tests (`scripts/generateSitemap.test.js`, `scripts/generateSeoBlocks.test.js`, root ADR 0010). No install step: no `package.json`, Bun's built-in runner. Success is exit code 0 with a "N pass, 0 fail" summary. |
+   | Tests | `bun test .` (from the repo root) | Always. Discovers and runs every `*.test.js`: the web-project suites, the data validation test (`data/projects.test.js`), the `js/utils/textCore.js` tests, and the SEO drift tests (`scripts/generateSitemap.test.js`, `scripts/generateSeoBlocks.test.js`, `scripts/generateWebProjectMeta.test.js`, root ADR 0010). No install step: no `package.json`, Bun's built-in runner. Success is exit code 0 with a "N pass, 0 fail" summary. |
 
-3. **Read failures carefully.** A failing SEO drift test means the committed `sitemap.xml` or `GENERATED:*` blocks are stale; the fix (named in the test) is to re-run the generators (`bun scripts/generateSitemap.js`, `bun scripts/generateSeoBlocks.js`), which is the caller's job, not yours.
+3. **Read failures carefully.** A failing SEO drift test means the committed `sitemap.xml` or `GENERATED:*` blocks are stale; the fix (named in the test) is to re-run the generators (`bun scripts/generateSitemap.js`, `bun scripts/generateSeoBlocks.js`, `bun scripts/generateWebProjectMeta.js`), which is the caller's job, not yours.
 
 Run the full command even for a small change: the suite runs in well under a second and needs no dependency install.
 

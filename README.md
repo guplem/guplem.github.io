@@ -24,12 +24,13 @@ python -m http.server 8000
 
 ### Generated files (SEO)
 
-`sitemap.xml`, `blog/feed.xml` and the `GENERATED` comment-marked blocks inside `index.html`, `web-projects/index.html` and `blog/index.html` are derived from the `data/` JSON and from the blog posts' own `<head>` tags, so search engines can read the content without running JavaScript. Never edit them by hand. After changing `data/` or a post, regenerate them with [Bun](https://bun.sh):
+`sitemap.xml`, `blog/feed.xml` and the `GENERATED` comment-marked blocks inside `index.html`, `web-projects/index.html`, `blog/index.html` and each web-project page are derived from the `data/` JSON and from the blog posts' own `<head>` tags, so search engines can read the content without running JavaScript. Never edit them by hand. After changing `data/` or a post, regenerate them with [Bun](https://bun.sh):
 
 ```bash
 bun scripts/generateSitemap.js
 bun scripts/generateSeoBlocks.js
 bun scripts/generateFeed.js
+bun scripts/generateWebProjectMeta.js
 ```
 
 To make this automatic on every commit, install [lefthook](https://github.com/evilmartians/lefthook) once (`winget install evilmartians.lefthook` on Windows, `brew install lefthook` on macOS) and run `lefthook install` in the repo. If you skip this, CI fails with a message telling you which script to run.

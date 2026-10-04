@@ -13,6 +13,7 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
 - **No build tools, no frameworks** -- vanilla HTML/CSS/JS preferred
 - **Tab icon** -- every HTML page declares a `<link rel="icon">` (an inline SVG `data:` URI is fine), because the site has no `/favicon.ico`. `scripts/webProjectIcons.test.js` enforces this
 - **Works standalone** -- each project should work by opening its HTML file directly or via any HTTP server
+- **Head block for search and link previews** -- every page linked from a `data/projects/*.json` carries an empty `<!-- BEGIN GENERATED:WEB-PROJECT-META -->` / `<!-- END GENERATED:WEB-PROJECT-META -->` pair after its `<link rel="canonical">`. `bun scripts/generateWebProjectMeta.js` fills it with JSON-LD and Open Graph from the project's JSON, and its drift test fails on a page without the pair (root ADR 0010)
 
 ## The Index Page (`index.html`)
 

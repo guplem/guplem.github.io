@@ -64,6 +64,7 @@ Create `web-projects/<PROJECT_SLUG>/` with:
 1. **`index.html`** - HTML boilerplate (the standard starting HTML) following patterns from existing web-projects. Include:
    - Proper `<title>` and meta tags
    - A tab icon: a `<link rel="icon">` with an inline 32x32 SVG `data:` URI in the project's own colours (copy the shape of an existing one, for example `unit-converter`). `scripts/webProjectIcons.test.js` fails without it.
+   - The empty `GENERATED:WEB-PROJECT-META` marker pair right after the `<link rel="canonical">` (see the "Head block" convention in `web-projects/AGENTS.md`). The generator fills it in step 6c.
    - Link to local CSS
    - Script tag with `type="module"` and `defer`
 
@@ -166,7 +167,7 @@ bun scripts/captureProjectImage.js --page web-projects/<PROJECT_SLUG>/ --out <fi
 
 1. Read the final WebP back, and check it at card size: the headline must read, and nothing may be cut off. Adjust and re-render until it does.
 2. Add `image`, `imageStretched: true` and a concrete `imageAlt` (what the picture shows, not the project name) to the project JSON.
-3. Run the three generators from root `AGENTS.md` ("Generated SEO artifacts"), because the image appears in the generated blocks.
+3. Run the four generators from root `AGENTS.md` ("Generated SEO artifacts"), because the image appears in the generated blocks.
 
 Tell the user when the project ships without an image, and why.
 

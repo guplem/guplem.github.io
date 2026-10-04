@@ -12,7 +12,7 @@ Options considered:
 
 ## Decision
 
-Two Bun scripts under `scripts/` regenerate committed, derived, crawler-facing artifacts from `data/`:
+Bun scripts under `scripts/` regenerate committed, derived, crawler-facing artifacts from `data/`:
 
 - **`scripts/generateSitemap.js`** rewrites `sitemap.xml`: homepage, `/web-projects/`, and one URL per locally hosted web-project (detected by reusing the pure `localWebProjectPath` from `web-projects/discovery.js`, per ADR 0008).
 - **`scripts/generateSeoBlocks.js`** rewrites static HTML fallback blocks between `<!-- BEGIN GENERATED:<NAME> -->` / `<!-- END GENERATED:<NAME> -->` marker comments: hero, about, works grid, and additional sections in `index.html`, and the card list in `web-projects/index.html`. Three fidelity levels, chosen by whether users can see the swap:
@@ -22,9 +22,13 @@ Two Bun scripts under `scripts/` regenerate committed, derived, crawler-facing a
 
   No block replicates the JS masonry layout (ADR 0004) or sets element ids; on fetch failure every static fallback stays visible.
 
-Both scripts export pure builders and write only under `import.meta.main`, so tests can import them without side effects.
+Every script exports pure builders and writes only under `import.meta.main`, so tests can import them without side effects.
 
-**Enforcement is the CI drift test, not the hook.** `scripts/generateSitemap.test.js` and `scripts/generateSeoBlocks.test.js` assert the committed files exactly match freshly generated output; `bun test .` in CI (ADR 0009) fails on any drift, including commits made with `--no-verify` or without hooks installed. A root `lefthook.yml` pre-commit command is the local convenience: it regenerates and stages the artifacts whenever `data/` or `scripts/` files are staged. `lefthook` is a dev-only tool (like Bun, per the ADR 0009 carve-out), installed as a standalone binary (`winget install evilmartians.lefthook` / `brew install lefthook`, then `lefthook install`); there is no `package.json` to pin it, which is acceptable because nothing breaks when it is absent -- CI catches the drift.
+**Enforcement is the CI drift test, not the hook.** `scripts/generateSitemap.test.js`, `scripts/generateSeoBlocks.test.js` and `scripts/generateWebProjectMeta.test.js` assert the committed files exactly match freshly generated output; `bun test .` in CI (ADR 0009) fails on any drift, including commits made with `--no-verify` or without hooks installed. A root `lefthook.yml` pre-commit command is the local convenience: it regenerates and stages the artifacts whenever `data/` or `scripts/` files are staged. `lefthook` is a dev-only tool (like Bun, per the ADR 0009 carve-out), installed as a standalone binary (`winget install evilmartians.lefthook` / `brew install lefthook`, then `lefthook install`); there is no `package.json` to pin it, which is acceptable because nothing breaks when it is absent -- CI catches the drift.
+
+- **`scripts/generateWebProjectMeta.js`** writes a `GENERATED:WEB-PROJECT-META` block into the `<head>` of every local web-project page (found with `localWebProjectPath`). The block holds a schema.org `WebApplication` description in JSON-LD and the Open Graph tags, both built from the project's JSON: title, first description paragraph as plain text, image, and `GameApplication` when `types` holds `Videogame` (`UtilitiesApplication` otherwise). Search engines read the JSON-LD to classify the page; chat apps and social sites read Open Graph to draw a link preview. Visitors never see the block, so it is metadata only, never a fallback. Its drift test (`scripts/generateWebProjectMeta.test.js`) also fails when a web-project page has no marker pair, so every new web-project must carry it.
+
+  The visible words still matter more than this block: Google ranks a page by the text a visitor can read, and its rules require structured data to describe visible content. A web-project whose HTML holds almost no text before its script runs may add a short About line (see `web-projects/AGENTS.md`).
 
 This ADR qualifies (does not supersede) ADR 0001, ADR 0002, and ADR 0008; each carries a note pointing here. ADR 0015 extends the same pattern to the blog: a `GENERATED:BLOG-POSTS` block in `blog/index.html`, the Atom feed `blog/feed.xml` (`scripts/generateFeed.js`) and the blog URLs in the sitemap, all read from the posts' own `<head>` tags instead of `data/`.
 
