@@ -285,6 +285,12 @@ main {
   cursor: grab;
 }
 
+/* Over a pin, a click chooses a story, so the cursor says "click" instead of
+   "drag". `app.js` sets the class only while no button is held. */
+#map.over-pin {
+  cursor: pointer;
+}
+
 #map.dragging {
   cursor: grabbing;
 }

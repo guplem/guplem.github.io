@@ -1311,10 +1311,18 @@ function wireMap() {
       pinchDistance = Math.hypot(a.x - b.x, a.y - b.y);
     }
     canvas.classList.add("dragging");
+    canvas.classList.remove("over-pin");
   });
 
   canvas.addEventListener("pointermove", (event) => {
-    if (!pointers.has(event.pointerId)) return;
+    // With no button held, the pointer is only looking. Over a pin the cursor
+    // turns into a pointing hand, because a click there chooses a story;
+    // anywhere else it stays the open hand that says the map can be dragged.
+    if (!pointers.has(event.pointerId)) {
+      const point = canvasPoint(event);
+      canvas.classList.toggle("over-pin", !state.mapCollapsed && Boolean(markerAt(point.x, point.y)));
+      return;
+    }
     const previous = pointers.get(event.pointerId);
     const current = canvasPoint(event);
     pointers.set(event.pointerId, current);
