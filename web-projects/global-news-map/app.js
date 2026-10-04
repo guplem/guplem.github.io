@@ -581,6 +581,16 @@ function storyItem(story, place) {
     item.addEventListener("pointerleave", () => setHoveredStory(null));
   }
 
+  // A card is one target, sources and all. The sources cannot sit inside the
+  // button, because a link inside a button is invalid HTML, so a click on the
+  // card's lower part is passed on to the button. A click on a source still
+  // opens the source. The button stays the keyboard's way in.
+  if (wide) {
+    item.addEventListener("click", (event) => {
+      if (!event.target.closest("a, button")) button.click();
+    });
+  }
+
   // The category is not repeated here: the chip on the first line carries it,
   // open or folded, and writing it twice was the reason this block existed.
   const more = document.createElement("div");
@@ -1301,10 +1311,18 @@ function wireMap() {
       pinchDistance = Math.hypot(a.x - b.x, a.y - b.y);
     }
     canvas.classList.add("dragging");
+    canvas.classList.remove("over-pin");
   });
 
   canvas.addEventListener("pointermove", (event) => {
-    if (!pointers.has(event.pointerId)) return;
+    // With no button held, the pointer is only looking. Over a pin the cursor
+    // turns into a pointing hand, because a click there chooses a story;
+    // anywhere else it stays the open hand that says the map can be dragged.
+    if (!pointers.has(event.pointerId)) {
+      const point = canvasPoint(event);
+      canvas.classList.toggle("over-pin", !state.mapCollapsed && Boolean(markerAt(point.x, point.y)));
+      return;
+    }
     const previous = pointers.get(event.pointerId);
     const current = canvasPoint(event);
     pointers.set(event.pointerId, current);
