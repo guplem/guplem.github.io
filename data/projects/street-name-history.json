@@ -4,7 +4,7 @@
   "date": "2026",
   "title": "Street Name History",
   "description": [
-    "*Street Name History* is a **web tool** that takes any street you search and shows **every name it carries across languages**, the **former names** it has shed over time, and **who or what it was named after** — pulling the answer together live in the browser.",
+    "*Street Name History* is a **web tool** that takes any street you search, or tap on a map, and shows **every name it carries across languages**, the **former names** it has shed over time, and **who or what it was named after** — pulling the answer together live in the browser.",
     "I directed the concept and the **multi-source data architecture**: geocoding and multilingual/historical name tags from **OpenStreetMap** (Nominatim), etymology from **Wikidata**, and dated name timelines from **OpenHistoricalMap**, with enrichment layered on non-blocking so the core result always renders. The pure logic is **TDD-covered** with Bun.",
     "The result is a keyless, serverless tool that runs on static hosting and degrades gracefully: it surfaces whatever mappers have contributed and says plainly when a street's history simply isn't recorded yet."
   ],
