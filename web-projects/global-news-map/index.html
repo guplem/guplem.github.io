@@ -14,8 +14,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="316" />
-  <meta name="deploy-date" content="2026-10-04T07:51:22.000Z" />
+  <meta name="deploy-pull-request" content="317" />
+  <meta name="deploy-date" content="2026-10-04T08:03:27.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -88,39 +88,21 @@
 
           <p class="status" id="status" role="status" aria-live="polite">Reading the day's news…</p>
 
-          <!-- The way to the other places on the chosen pin, on a phone, which
-               has no panel to say that they are there. It floats over the map so
-               that it costs no height: the reader scrolling the list makes it
-               come and go, and a box in the layout would move the list under
-               them every time. -->
+          <!-- The way to the other places on the chosen pin, which nothing
+               else hints at. It floats over the map so that it costs no height:
+               on a phone the reader scrolling the list makes it come and go,
+               and a box in the layout would move the list under them every
+               time. -->
           <button type="button" id="next-place" class="next-place" hidden></button>
         </div>
       </div>
 
-      <!-- The reading column. It sits beside the map on a wide screen and under
-           it on a phone, where it is the only part that scrolls. The open story
-           is never drawn over the map, so the pins it is being compared against
+      <!-- The reading column. On a wide screen its stories are open cards in
+           columns around the map and under it, placed by `app.js`. On a phone
+           it sits under the map and is the only part that scrolls. A story is
+           never drawn over the map, so the pins it is being compared against
            stay visible. -->
       <div class="side" id="reading">
-        <!-- Every story at the chosen location, in full. A marker reading "5"
-             fills this with five stories, so the whole place can be read in one
-             go without hunting for its stories in the day's full list below. -->
-        <aside class="selected" id="selected-panel" hidden aria-labelledby="selected-heading">
-          <div class="selected-head">
-            <div class="selected-titles">
-              <p class="selected-label" id="selected-label"></p>
-              <h2 class="selected-heading" id="selected-heading"></h2>
-              <p class="selected-count" id="selected-count"></p>
-              <!-- Said only when the chosen marker also covers other places. -->
-              <p class="selected-note" id="selected-note" hidden></p>
-            </div>
-            <button type="button" id="selected-close" class="icon-button selected-close" aria-label="Close">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18" /></svg>
-            </button>
-          </div>
-          <div class="selected-stories" id="selected-stories"></div>
-        </aside>
-
         <section class="list" id="story-list" aria-labelledby="story-list-heading">
           <h2 class="section-heading" id="story-list-heading">All the day's stories</h2>
           <p class="hint" id="list-hint">Pick a pin to read a story.</p>

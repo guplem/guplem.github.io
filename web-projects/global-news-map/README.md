@@ -10,13 +10,16 @@ reported by, so you can read the original article.
 
 - **A pin per story**, placed on the most specific place the story names. A story
   about a town is pinned on the town, not on the country around it.
-- **Choose a pin and every story at that place appears in full**, beside the map
-  on a wide screen and in the list itself on a phone, each with its own sources.
+- **Choose a pin and every story at that place is marked in the list.** On a wide
+  screen the page scrolls to the story's card, and hovering a card marks its pin.
   Pins that sit close together share one numbered marker, so a marker can cover
   more than one place: the page says when it does, and choosing the marker again
   moves to the next place on it.
-- **Every story folds to a summary**, and a chevron opens the rest of it with the
-  sources that reported it. On a phone a tap on the story opens it as well, so
+- **A wide screen is a masonry.** The map stands top left, two columns wide, and
+  every story is an open card in the columns around it and under it, each with
+  its sources. The page scrolls; nothing else does.
+- **On a phone every story folds to a summary**, and a chevron opens the rest of
+  it with the sources that reported it. A tap on the story opens it as well, so
   one tap both puts the story on the map and shows the whole of it.
 - **A folded story says what kind of story it is.** Every row carries the
   portal's own category as a small icon and a short name, next to the place. The

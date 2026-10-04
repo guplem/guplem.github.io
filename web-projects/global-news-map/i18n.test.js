@@ -60,12 +60,12 @@ describe("fill", () => {
 
 describe("translate", () => {
   test("answers in the language asked for", () => {
-    expect(translate("story.close", {}, "en")).toBe("Close");
-    expect(translate("story.close", {}, "es")).toBe("Cerrar");
+    expect(translate("story.showMore", {}, "en")).toBe("Show more");
+    expect(translate("story.showMore", {}, "es")).toBe("Ver más");
   });
 
   test("falls back to the default language when a language is unknown", () => {
-    expect(translate("story.close", {}, "fr")).toBe(translate("story.close", {}, DEFAULT_LANGUAGE));
+    expect(translate("story.showMore", {}, "fr")).toBe(translate("story.showMore", {}, DEFAULT_LANGUAGE));
   });
 
   // A visible key is a bug report. A blank space is a bug nobody notices.

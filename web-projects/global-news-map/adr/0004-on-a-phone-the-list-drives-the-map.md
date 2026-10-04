@@ -3,8 +3,8 @@
 ## Context
 
 The page has two halves that answer each other: a map of pins, and the day's
-stories. On a wide screen they sit side by side, so the reader sees both at once
-and the pair works.
+stories. On a wide screen the stories are open cards around the map, so the
+reader sees both at once and the pair works (ADR 0006).
 
 A phone has one column. The first version stacked the halves, so the whole page
 scrolled as one: the reader scrolled down to read a story and the map left the
@@ -18,8 +18,9 @@ Three more things made the phone worse than the wide screen:
   none of them are the news.
 - Every row of the list carried the story's whole sentence, so about two rows fit
   on screen.
-- The sources sat in the panel above the list. A reader who wanted the source of
-  a story had to find the story's pin first.
+- The sources sat in a panel above the list. A reader who wanted the source of
+  a story had to find the story's pin first. The panel is gone now, and ADR 0006
+  records the wide screen.
 
 ## Decision
 
@@ -75,23 +76,22 @@ reader, and that is what lets the credit line say so with no caveat.
 
 Five decisions follow from that one:
 
-1. **The panel is not shown on a phone.** It sits inside the scrolling column, so
-   a panel that rewrote itself as the reader scrolled would resize the column
-   under them. Each row opens in place instead: the summary becomes the whole
+1. **A phone has no panel.** A panel inside the scrolling column, rewritten as
+   the reader scrolled, would resize the column under them. Each row opens in
+   place instead: the summary becomes the whole
    story with its sources. Two things open a row, and the row is the only way to
    a source on a phone, so both are needed. A chevron at the foot of the row
    opens and folds it. A tap on the story itself opens it as well, because the
    chevron is one small target and a reader who taps a story means "show me this
    story"; that tap never folds a row back, since the row a reader taps is also
    the row the map marks, so a tap on an open row is a request to go back to it.
-   A wide screen leaves the row folded on a tap: there the panel already prints
-   the story in full, and opening the row too would print it twice.
+   A wide screen has no folded rows: ADR 0006 shows every card open.
 2. **Nothing that the selection changes takes room in the layout.** The rule
    above, one step out. The selection follows the scrolling, so a box that grows
    or appears with it moves the list under the reader. What the phone still needs
-   from the panel is one thing: a marker can cover several places, and nothing
-   else would hint that the others are there. So a "next place" button floats
-   over the map's bottom left corner, where a thumb reaches it, and it appears
+   is one thing: a marker can cover several places, and nothing else would hint
+   that the others are there. So a "next place" button floats over the map's
+   bottom left corner, where a thumb reaches it, and it appears
    only when the chosen marker covers more than one place. The pill shares that
    corner, and the two are never on screen together: on a phone the pill only
    speaks about a day that has no pins yet.
@@ -133,8 +133,7 @@ anything else, so they stay in the document for a screen reader.
   disc is up to 36 pixels across on a map 160 wide, and at that size every pin
   falls in one group anyway. `updateMarkers` therefore does nothing while the map
   is collapsed, so `state.markers` keeps the grouping the reader last saw at full
-  size, which is what the panel's "this pin also covers N more" note is counted
-  from.
+  size, which is what the "next place" button is counted from.
 - **The small map is a picture, not a control.** No panning, no pinching and no
   choosing a pin on it: a tap expands it instead. A map 160 pixels wide cannot be
   aimed at, and `touch-action: none` on it would capture a finger that meant to
