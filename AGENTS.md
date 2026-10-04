@@ -216,6 +216,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [rps-mind-reader 0001](web-projects/rps-mind-reader/adr/0001-custom-statistical-predictor-no-ml-library.md) | Custom statistical predictor instead of an ML library |
 | [rps-mind-reader 0002](web-projects/rps-mind-reader/adr/0002-predictor-evaluation-methodology.md) | Predictor evaluation methodology: switching battery + held-out real sessions |
 | [street-name-history 0001](web-projects/street-name-history/adr/0001-federated-geodata-sources.md) | Federate Nominatim + Wikidata + OpenHistoricalMap client-side; Nominatim (not Overpass) as sole OSM tag source |
+| [street-name-history 0002](web-projects/street-name-history/adr/0002-tap-a-street-with-nominatim-reverse.md) | Pick a tapped street with Nominatim reverse at street zoom, and reject any answer that is not a street |
 | [prime-sieve-arcs 0001](web-projects/prime-sieve-arcs/adr/0001-reference-frame-measured-as-the-spec.md) | Recover the construction by measuring the reference frame, and keep that frame as the spec |
 | [prime-sieve-arcs 0002](web-projects/prime-sieve-arcs/adr/0002-redraw-every-frame-zooming-camera.md) | Redraw every frame because the camera zooms out, so any frame can be drawn directly |
 | [whatsapp-no-contact 0001](web-projects/whatsapp-no-contact/adr/0001-loose-number-checks-no-phone-library.md) | Check numbers loosely against E.164 and ship no phone-number library |

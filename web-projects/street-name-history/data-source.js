@@ -3,12 +3,16 @@
 // calls is pure and lives in sources.js. Callers handle errors and render fallbacks.
 //
 // Usage-policy note (Nominatim): the public endpoint allows ~1 request/second and forbids
-// autocomplete-style per-keystroke querying, so app.js only searches on submit and throttles.
+// autocomplete-style per-keystroke querying, so app.js only calls it on a submit or a map tap,
+// and throttles every call through one shared slot.
 // Attribution is shown in the UI. See adr/0001.
 
 import {
   buildNominatimUrl,
+  buildNominatimReverseUrl,
+  buildNominatimLookupUrl,
   parseNominatimResults,
+  parseNominatimReverse,
   buildWikidataUrl,
   parseWikidataEntities,
   buildOhmQuery,
@@ -27,6 +31,22 @@ export async function searchStreets(query, { acceptLanguage } = {}) {
   const url = buildNominatimUrl(query, { acceptLanguage });
   const json = await getJson(url, { headers: { Accept: "application/json" } });
   return parseNominatimResults(json);
+}
+
+// The street at a tapped point on the map, or null when Nominatim finds none. Throws on failure.
+export async function reverseStreet(lat, lon, { acceptLanguage } = {}) {
+  const url = buildNominatimReverseUrl(lat, lon, { acceptLanguage });
+  if (!url) return null;
+  const json = await getJson(url, { headers: { Accept: "application/json" } });
+  return parseNominatimReverse(json);
+}
+
+// One element by its "<type>/<id>" ref, or null when it no longer exists. Throws on failure.
+export async function lookupStreet(ref, { acceptLanguage } = {}) {
+  const url = buildNominatimLookupUrl(ref, { acceptLanguage });
+  if (!url) return null;
+  const json = await getJson(url, { headers: { Accept: "application/json" } });
+  return parseNominatimResults(json)[0] || null;
 }
 
 // Fetch Wikidata entities for the given QIDs. Returns {} when there is nothing to fetch, so a

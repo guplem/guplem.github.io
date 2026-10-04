@@ -74,6 +74,37 @@ main {
   gap: 0.6rem;
   margin-bottom: 1rem;
 }
+/* Map: tap a street to pick it. Leaflet needs an explicit height, or it draws an empty box. */
+.map {
+  height: min(55vh, 440px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--panel);
+}
+/* Dark tiles to match the page: invert the light OSM tiles and turn the hues back. */
+.map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+}
+.map .leaflet-control-attribution {
+  background: rgba(15, 21, 35, 0.8);
+  color: var(--text-muted);
+}
+.map .leaflet-control-attribution a {
+  color: var(--accent);
+}
+.map .leaflet-tooltip {
+  color: var(--text);
+  background: var(--panel-2);
+  border-color: var(--border);
+}
+.map-hint {
+  margin: 0.4rem 0 0.6rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 .search input {
   flex: 1;
   padding: 0.85rem 1rem;

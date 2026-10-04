@@ -2,8 +2,8 @@
 //
 // State lives in the URL so any search is shareable and reproducible (root ADR 0006):
 //   q   -> the free-text street query the user typed
-//   sel -> the exact OSM element chosen from the results, as "<type>/<id>" (e.g. "way/12345"),
-//          so a shared link reopens the same street even when the query is ambiguous.
+//   sel -> the exact OSM element chosen from the results or tapped on the map, as "<type>/<id>" (e.g. "way/12345"),
+//          so a shared link reopens the same street even when the query is ambiguous (a tap has no q).
 // Defaults (empty values) are never serialized, to keep links short.
 
 export function parseUrlState(searchString) {

@@ -1,8 +1,11 @@
 import { describe, test, expect } from "bun:test";
 import {
   buildNominatimUrl,
+  buildNominatimReverseUrl,
+  buildNominatimLookupUrl,
   isStreetLike,
   parseNominatimResults,
+  parseNominatimReverse,
   buildWikidataUrl,
   formatWikidataTime,
   parseWikidataEntities,
@@ -20,6 +23,12 @@ describe("buildNominatimUrl", () => {
     expect(url).toContain("extratags=1");
     expect(url).toContain("addressdetails=1");
     expect(url).toContain("q=Balmes+Barcelona");
+  });
+
+  test("asks for each match's simplified line so the map can draw it", () => {
+    const url = buildNominatimUrl("Balmes Barcelona");
+    expect(url).toContain("polygon_geojson=1");
+    expect(url).toContain("polygon_threshold=");
   });
 
   test("honors a custom limit and accept-language", () => {
@@ -78,6 +87,77 @@ describe("parseNominatimResults", () => {
   test("tolerates non-array input", () => {
     expect(parseNominatimResults(null)).toEqual([]);
     expect(parseNominatimResults({})).toEqual([]);
+  });
+
+  test("keeps the GeoJSON line when Nominatim sends one, else null", () => {
+    const line = { type: "LineString", coordinates: [[2.2, 41.2], [2.3, 41.3]] };
+    const out = parseNominatimResults([{ ...raw[1], geojson: line }, raw[0]]);
+    expect(out.find((c) => c.osmId === 7).geometry).toEqual(line);
+    expect(out.find((c) => c.osmId === 5).geometry).toBe(null);
+  });
+});
+
+describe("buildNominatimReverseUrl", () => {
+  test("asks for the street at a point, with every tag and the line", () => {
+    const url = buildNominatimReverseUrl(41.39, 2.16, { acceptLanguage: "ca" });
+    expect(url).toContain("nominatim.openstreetmap.org/reverse");
+    expect(url).toContain("lat=41.39");
+    expect(url).toContain("lon=2.16");
+    expect(url).toContain("zoom=17"); // street level: no buildings or shops
+    expect(url).toContain("namedetails=1");
+    expect(url).toContain("extratags=1");
+    expect(url).toContain("polygon_geojson=1");
+    expect(url).toContain("accept-language=ca");
+  });
+
+  test("returns null for a point that is not a number", () => {
+    expect(buildNominatimReverseUrl(NaN, 2)).toBe(null);
+    expect(buildNominatimReverseUrl(41, undefined)).toBe(null);
+  });
+});
+
+describe("parseNominatimReverse", () => {
+  const reverse = {
+    osm_type: "way", osm_id: 7, display_name: "Carrer de Balmes, Barcelona", lat: "41.2", lon: "2.2",
+    category: "highway", type: "residential", namedetails: { name: "Carrer de Balmes" },
+    extratags: { wikidata: "Q123" }, geojson: { type: "LineString", coordinates: [[2.2, 41.2], [2.3, 41.3]] },
+  };
+
+  test("turns the one reverse answer into the same candidate shape as a search", () => {
+    const candidate = parseNominatimReverse(reverse);
+    expect(candidate.ref).toBe("way/7");
+    expect(candidate.tags.name).toBe("Carrer de Balmes");
+    expect(candidate.tags.wikidata).toBe("Q123");
+    expect(candidate.geometry.type).toBe("LineString");
+  });
+
+  test("returns null when the nearest thing is an area, not a street", () => {
+    // A tap a little off the road makes Nominatim fall back to the neighbourhood around it.
+    const area = { ...reverse, osm_type: "relation", osm_id: 1734091, category: "boundary", type: "administrative" };
+    expect(parseNominatimReverse(area)).toBe(null);
+  });
+
+  test("returns null when Nominatim finds nothing at the point", () => {
+    expect(parseNominatimReverse({ error: "Unable to geocode" })).toBe(null);
+    expect(parseNominatimReverse(null)).toBe(null);
+  });
+});
+
+describe("buildNominatimLookupUrl", () => {
+  test("looks up one element by its ref, with the one-letter type Nominatim wants", () => {
+    const url = buildNominatimLookupUrl("way/7");
+    expect(url).toContain("nominatim.openstreetmap.org/lookup");
+    expect(url).toContain("osm_ids=W7");
+    expect(url).toContain("namedetails=1");
+    expect(url).toContain("extratags=1");
+    expect(url).toContain("polygon_geojson=1");
+    expect(buildNominatimLookupUrl("relation/3")).toContain("osm_ids=R3");
+    expect(buildNominatimLookupUrl("node/1")).toContain("osm_ids=N1");
+  });
+
+  test("returns null for a malformed ref", () => {
+    expect(buildNominatimLookupUrl("street/7")).toBe(null);
+    expect(buildNominatimLookupUrl(null)).toBe(null);
   });
 });
 

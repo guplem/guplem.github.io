@@ -3,11 +3,13 @@
 // parsers pure means the whole request/response contract is unit-testable without a browser.
 //
 // Sources:
-//   - Nominatim (OpenStreetMap geocoder): free-text street search -> candidate places + tags
+//   - Nominatim (OpenStreetMap geocoder): street search, map-tap reverse and ref lookup -> candidate places + tags
 //   - Wikidata (wbgetentities REST): multilingual labels/descriptions + "named after" (P138)
 //   - OpenHistoricalMap (its own Overpass endpoint): time-versioned historical features nearby
 
 const NOMINATIM_BASE = "https://nominatim.openstreetmap.org/search";
+const NOMINATIM_REVERSE_BASE = "https://nominatim.openstreetmap.org/reverse";
+const NOMINATIM_LOOKUP_BASE = "https://nominatim.openstreetmap.org/lookup";
 const WIKIDATA_BASE = "https://www.wikidata.org/w/api.php";
 export const OHM_OVERPASS_URL = "https://overpass-api.openhistoricalmap.org/api/interpreter";
 
@@ -19,19 +21,59 @@ const STREET_TYPES = new Set([
   "cycleway", "service", "track", "street",
 ]);
 
+// Nominatim's "street" zoom for reverse geocoding: it answers with the nearest road, never a
+// building or a shop, which is what a tap on a street means.
+const REVERSE_STREET_ZOOM = 17;
+
+// Simplify each line to about 10 m, so a long street or a city boundary stays a small payload.
+const POLYGON_THRESHOLD = "0.0001";
+
+const OSM_TYPE_LETTER = { node: "N", way: "W", relation: "R" };
+
 // ---- Nominatim ------------------------------------------------------------
 
-export function buildNominatimUrl(query, { limit = 8, acceptLanguage } = {}) {
+// The parameters every Nominatim call shares: every name tag, every extra tag, and the line
+// the map draws.
+function nominatimDetailParams(acceptLanguage) {
   const params = new URLSearchParams({
-    q: String(query || "").trim(),
     format: "jsonv2",
     addressdetails: "1",
     namedetails: "1", // returns name, name:*, old_name, alt_name, etc.
     extratags: "1", // returns wikidata, name:etymology:wikidata, wikipedia, etc.
-    limit: String(limit),
+    polygon_geojson: "1", // returns the element's shape, so the map can highlight it
+    polygon_threshold: POLYGON_THRESHOLD,
   });
   if (acceptLanguage) params.set("accept-language", acceptLanguage);
+  return params;
+}
+
+export function buildNominatimUrl(query, { limit = 8, acceptLanguage } = {}) {
+  const params = nominatimDetailParams(acceptLanguage);
+  params.set("q", String(query || "").trim());
+  params.set("limit", String(limit));
   return `${NOMINATIM_BASE}?${params.toString()}`;
+}
+
+// Reverse geocoding for a tap on the map: the street at (lat, lon).
+export function buildNominatimReverseUrl(lat, lon, { acceptLanguage } = {}) {
+  const la = Number(lat);
+  const lo = Number(lon);
+  if (lat == null || lon == null || !Number.isFinite(la) || !Number.isFinite(lo)) return null;
+  const params = nominatimDetailParams(acceptLanguage);
+  params.set("lat", String(la));
+  params.set("lon", String(lo));
+  params.set("zoom", String(REVERSE_STREET_ZOOM));
+  return `${NOMINATIM_REVERSE_BASE}?${params.toString()}`;
+}
+
+// Lookup of one element by its "<type>/<id>" ref, for a shared link that names a street picked
+// on the map (there is no query to search again).
+export function buildNominatimLookupUrl(ref, { acceptLanguage } = {}) {
+  const match = /^(node|way|relation)\/(\d+)$/.exec(typeof ref === "string" ? ref : "");
+  if (!match) return null;
+  const params = nominatimDetailParams(acceptLanguage);
+  params.set("osm_ids", `${OSM_TYPE_LETTER[match[1]]}${match[2]}`);
+  return `${NOMINATIM_LOOKUP_BASE}?${params.toString()}`;
 }
 
 export function isStreetLike(candidate) {
@@ -42,23 +84,30 @@ export function isStreetLike(candidate) {
 // Normalize Nominatim's jsonv2 array into candidate records, merging namedetails + extratags
 // into one `tags` bag (the single source of truth the name extractor reads). Street-like
 // candidates are sorted first, then by Nominatim's own importance score.
+function isNominatimPlace(r) {
+  return Boolean(r && r.osm_type && r.osm_id != null);
+}
+
+function toCandidate(r) {
+  return {
+    osmType: r.osm_type,
+    osmId: r.osm_id,
+    ref: `${r.osm_type}/${r.osm_id}`,
+    displayName: r.display_name || "",
+    lat: Number(r.lat),
+    lon: Number(r.lon),
+    category: r.category || r.class || null,
+    type: r.type || null,
+    importance: typeof r.importance === "number" ? r.importance : 0,
+    address: r.address || {},
+    tags: { ...(r.namedetails || {}), ...(r.extratags || {}) },
+    geometry: r.geojson || null,
+  };
+}
+
 export function parseNominatimResults(json) {
   const arr = Array.isArray(json) ? json : [];
-  const candidates = arr
-    .filter((r) => r && r.osm_type && r.osm_id != null)
-    .map((r) => ({
-      osmType: r.osm_type,
-      osmId: r.osm_id,
-      ref: `${r.osm_type}/${r.osm_id}`,
-      displayName: r.display_name || "",
-      lat: Number(r.lat),
-      lon: Number(r.lon),
-      category: r.category || r.class || null,
-      type: r.type || null,
-      importance: typeof r.importance === "number" ? r.importance : 0,
-      address: r.address || {},
-      tags: { ...(r.namedetails || {}), ...(r.extratags || {}) },
-    }));
+  const candidates = arr.filter(isNominatimPlace).map(toCandidate);
   candidates.sort((a, b) => {
     const sa = isStreetLike(a) ? 1 : 0;
     const sb = isStreetLike(b) ? 1 : 0;
@@ -66,6 +115,15 @@ export function parseNominatimResults(json) {
     return b.importance - a.importance;
   });
   return candidates;
+}
+
+// Reverse geocoding answers with one object, or with { error } when nothing is near the point.
+// With no street close to the tap, Nominatim falls back to the area around it (a neighbourhood,
+// a town), so anything that is not street-like counts as "no street here".
+export function parseNominatimReverse(json) {
+  if (!isNominatimPlace(json) || json.error) return null;
+  const candidate = toCandidate(json);
+  return isStreetLike(candidate) ? candidate : null;
 }
 
 // ---- Wikidata -------------------------------------------------------------

@@ -60,7 +60,7 @@ Projects that keep something you made can save it to **one private GitHub reposi
 - **`taboo-game/`** — Deterministic multiplayer Taboo game across phones, no server required
 - **`liga-under-tkd/`** — Live taekwondo tournament site (standings, combats, athlete profiles) read from a shared Google Sheet, in CA/ES/EN
 - **`rps-mind-reader/`** — Rock-paper-scissors against an AI that learns your habits and adapts
-- **`street-name-history/`** — Search any street for all its names across languages, its former names, and its etymology (OpenStreetMap + Wikidata + OpenHistoricalMap)
+- **`street-name-history/`** — Search any street, or tap one on a map, for all its names across languages, its former names, and its etymology (OpenStreetMap + Wikidata + OpenHistoricalMap)
 - **`prime-sieve-arcs/`** — The Sieve of Eratosthenes as an animation: every prime hops over its multiples in glowing arcs
 - **`whatsapp-no-contact/`** — Open a WhatsApp chat with any phone number without saving it as a contact: searchable country selector, number field, one button
 

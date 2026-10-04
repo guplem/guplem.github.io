@@ -1,11 +1,18 @@
 // DOM controller and entry point. Not unit-tested (per web-projects/CLAUDE.md): all the
 // logic worth testing lives in the pure modules (urlState.js, names.js, sources.js); this
 // file only wires them to the DOM and the network layer (data-source.js).
+// Leaflet is loaded as a classic script before this module, as the global `L`.
 
 import { parseUrlState, serializeUrlState } from "./urlState.js";
 import { extractNames, collectWikidataIds } from "./names.js";
 import { pickBest } from "./sources.js";
-import { searchStreets, fetchWikidata, fetchOhmTimeline } from "./data-source.js";
+import {
+  searchStreets,
+  reverseStreet,
+  lookupStreet,
+  fetchWikidata,
+  fetchOhmTimeline,
+} from "./data-source.js";
 
 const dom = {
   form: document.getElementById("search-form"),
@@ -14,6 +21,7 @@ const dom = {
   status: document.getElementById("status"),
   candidates: document.getElementById("candidates"),
   detail: document.getElementById("detail"),
+  mapHint: document.getElementById("map-hint"),
   copyLink: document.getElementById("copy-link"),
   shareStatus: document.getElementById("share-status"),
 };
@@ -26,15 +34,27 @@ const VIEWER_LANGS = (navigator.languages && navigator.languages.length
 ).map((l) => l.split("-")[0]);
 const ACCEPT_LANGUAGE = (navigator.languages || [navigator.language || "en"]).join(",");
 
-// Nominatim usage policy: no more than ~1 request/second. We search only on submit, but this
-// guards against impatient repeated submits.
-const MIN_SEARCH_INTERVAL_MS = 1100;
+// Nominatim usage policy: no more than ~1 request/second. We call it only on a submit or a map
+// tap, and every call (search, tap, link lookup) waits for this one shared slot.
+const MIN_NOMINATIM_INTERVAL_MS = 1100;
+
+// Below this map zoom a tap covers many streets, so the tap zooms in instead of picking one.
+const MIN_PICK_ZOOM = 15;
+
+const HIGHLIGHT_STYLE = { color: "#5eb0ef", weight: 7, opacity: 0.9 };
 
 let currentQuery = "";
 let selectedRef = null;
 let lastResults = [];
-let searchInFlight = false;
-let lastSearchAt = 0;
+let nominatimInFlight = false;
+let lastNominatimAt = 0;
+
+const map = L.map("map", { worldCopyJump: true }).setView([30, 10], 2);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
+const highlightLayer = L.layerGroup().addTo(map);
 
 function esc(str) {
   return String(str == null ? "" : str).replace(/[&<>"']/g, (c) =>
@@ -52,18 +72,92 @@ function syncUrl() {
   history.replaceState(null, "", qs ? `${location.pathname}?${qs}` : location.pathname);
 }
 
+// Wait until Nominatim's ~1 request/second slot is free, then claim it.
+async function claimNominatimSlot() {
+  nominatimInFlight = true; // set before the wait, so a second tap meanwhile is ignored
+  dom.button.disabled = true;
+  const wait = MIN_NOMINATIM_INTERVAL_MS - (Date.now() - lastNominatimAt);
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  lastNominatimAt = Date.now();
+}
+
+function releaseNominatimSlot() {
+  nominatimInFlight = false;
+  dom.button.disabled = false;
+}
+
+// ---- Map -------------------------------------------------------------------
+
+function streetLabel(candidate) {
+  return candidate.tags.name || candidate.displayName.split(",")[0];
+}
+
+// Draw the chosen street on the map. `fit` moves the map to it; a tap leaves the view alone,
+// because the reader is already looking at that street.
+function showOnMap(candidate, { fit }) {
+  highlightLayer.clearLayers();
+  let shape = null;
+  if (candidate.geometry) {
+    shape = L.geoJSON(candidate.geometry, {
+      style: HIGHLIGHT_STYLE,
+      pointToLayer: (_feature, latlng) => L.circleMarker(latlng, { ...HIGHLIGHT_STYLE, radius: 8 }),
+    });
+  } else if (Number.isFinite(candidate.lat) && Number.isFinite(candidate.lon)) {
+    shape = L.circleMarker([candidate.lat, candidate.lon], { ...HIGHLIGHT_STYLE, radius: 8 });
+  }
+  if (!shape) return;
+  shape.bindTooltip(esc(streetLabel(candidate)), { sticky: true }).addTo(highlightLayer);
+  if (fit) map.fitBounds(shape.getBounds(), { maxZoom: 17, padding: [24, 24] });
+}
+
+async function pickStreetAt(latlng) {
+  if (nominatimInFlight) return;
+  highlightLayer.clearLayers();
+  L.circleMarker(latlng, { ...HIGHLIGHT_STYLE, radius: 6 }).addTo(highlightLayer);
+  await claimNominatimSlot();
+  setStatus("Finding the street here…");
+  try {
+    const candidate = await reverseStreet(latlng.lat, latlng.lng, { acceptLanguage: ACCEPT_LANGUAGE });
+    if (!candidate) {
+      highlightLayer.clearLayers();
+      setStatus("No street right here. Tap on the line of a street.", "warn");
+      return;
+    }
+    // A tap replaces the search: the query no longer describes what is on screen.
+    currentQuery = "";
+    lastResults = [candidate];
+    renderCandidates(lastResults, candidate.ref);
+    selectCandidate(candidate, { fitMap: false });
+  } catch (err) {
+    highlightLayer.clearLayers();
+    setStatus(`Couldn’t find the street: ${err.message}. Please try again in a moment.`, "error");
+  } finally {
+    releaseNominatimSlot();
+  }
+}
+
+function onMapTap(event) {
+  if (map.getZoom() < MIN_PICK_ZOOM) {
+    map.setView(event.latlng, Math.min(map.getZoom() + 4, MIN_PICK_ZOOM));
+    return;
+  }
+  pickStreetAt(event.latlng);
+}
+
+function updateMapHint() {
+  dom.mapHint.textContent =
+    map.getZoom() < MIN_PICK_ZOOM
+      ? "Tap the map to zoom in, then tap a street to see its names."
+      : "Tap a street to see its names.";
+}
+
 // ---- Search & candidate selection ----------------------------------------
 
 async function runSearch(query, { preselectRef = null } = {}) {
   if (!query) return;
-  if (searchInFlight) return;
+  if (nominatimInFlight) return;
 
-  const wait = MIN_SEARCH_INTERVAL_MS - (Date.now() - lastSearchAt);
-  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-
-  searchInFlight = true;
-  lastSearchAt = Date.now();
-  dom.button.disabled = true;
+  await claimNominatimSlot();
   setStatus("Searching…");
   dom.candidates.hidden = true;
   dom.detail.hidden = true;
@@ -82,8 +176,27 @@ async function runSearch(query, { preselectRef = null } = {}) {
   } catch (err) {
     setStatus(`Search failed: ${err.message}. Please try again in a moment.`, "error");
   } finally {
-    searchInFlight = false;
-    dom.button.disabled = false;
+    releaseNominatimSlot();
+  }
+}
+
+// Reopen a shared link that names a street picked on the map: there is no query, so look the
+// element up directly.
+async function loadSelectedRef(ref) {
+  await claimNominatimSlot();
+  setStatus("Loading the street…");
+  try {
+    const candidate = await lookupStreet(ref, { acceptLanguage: ACCEPT_LANGUAGE });
+    if (!candidate) {
+      setStatus("That street is no longer on OpenStreetMap. Search or tap the map.", "warn");
+      return;
+    }
+    lastResults = [candidate];
+    selectCandidate(candidate);
+  } catch (err) {
+    setStatus(`Couldn’t load the street: ${err.message}. Please try again in a moment.`, "error");
+  } finally {
+    releaseNominatimSlot();
   }
 }
 
@@ -102,7 +215,7 @@ function renderCandidates(results, activeRef) {
           (r) => `
         <li>
           <button type="button" class="candidate${r.ref === active ? " candidate--active" : ""}" data-ref="${esc(r.ref)}">
-            <span class="candidate__name">${esc(r.tags.name || r.displayName.split(",")[0])}</span>
+            <span class="candidate__name">${esc(streetLabel(r))}</span>
             <span class="candidate__meta">${esc(r.displayName)}</span>
             <span class="candidate__kind">${esc(r.type || r.category || "place")}</span>
           </button>
@@ -126,10 +239,11 @@ function markActiveCandidate(ref) {
   });
 }
 
-function selectCandidate(candidate) {
+function selectCandidate(candidate, { fitMap = true } = {}) {
   selectedRef = candidate.ref;
   markActiveCandidate(candidate.ref);
   syncUrl();
+  showOnMap(candidate, { fit: fitMap });
   renderDetail(candidate);
 }
 
@@ -311,10 +425,16 @@ function loadFromUrl() {
   if (state.q) {
     dom.input.value = state.q;
     runSearch(state.q, { preselectRef: state.sel });
+  } else if (state.sel) {
+    loadSelectedRef(state.sel);
   }
 }
 
 function init() {
+  map.on("click", onMapTap);
+  map.on("zoomend", updateMapHint);
+  updateMapHint();
+
   dom.form.addEventListener("submit", (e) => {
     e.preventDefault();
     const q = dom.input.value.trim();
