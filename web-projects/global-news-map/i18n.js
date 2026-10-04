@@ -22,6 +22,12 @@ export const MESSAGES = {
     en: "The day's news, pinned where it happened.",
     es: "Las noticias del día, marcadas donde ocurrieron.",
   },
+  // What the page is, in two sentences. index.html carries the English version
+  // as plain text, so a search engine reads it without running the page.
+  "app.about": {
+    en: "Global News Map puts every story from Wikipedia's Current Events portal on a world map, at the place where it happened. Pick a pin to read the story and its sources, or step back to any past day.",
+    es: "El Mapa mundial de noticias coloca cada noticia del portal de actualidad de Wikipedia en un mapa del mundo, en el lugar donde ocurrió. Toca un marcador para leer la noticia y sus fuentes, o vuelve a cualquier día anterior.",
+  },
 
   // --- the day being shown ---------------------------------------------------
   "day.previous": { en: "Previous day", es: "Día anterior" },

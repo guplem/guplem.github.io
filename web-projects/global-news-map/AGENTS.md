@@ -28,7 +28,7 @@ Human docs: [README.md](README.md). Decision records:
 | `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, `topmostRow` says which row stands at the top of the scrolling list, and `tapUnfolds` says whether a tap on a row also opens it. |
 | `masonry.js` | yes | The wide layout's arithmetic: `columnCountFor` says how many columns fit, `placeCards` puts each card in the shortest column, and `MAP_COLUMNS` is how many columns the map spans. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
-| `i18n.js` | yes | Every word the page says, in English and Spanish. |
+| `i18n.js` | yes | Every word the page says, in English and Spanish. The English `app.about` text must match the static `<p id="about">` in `index.html` (a test ties them); `app.js` swaps it for Spanish. |
 | `urlState.js` | yes | Reading and writing the address bar (root ADR 0006). |
 | `deployStamp.js` | yes | The "deployed at" line (root ADR 0013). |
 | `portalFixture.js` | yes | Test-only. A real portal page, kept as the parser's spec. |

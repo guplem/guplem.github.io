@@ -30,6 +30,7 @@ const $ = (id) => document.getElementById(id);
 const elements = {
   title: $("title"),
   tagline: $("tagline"),
+  about: $("about"),
   prevDay: $("prev-day"),
   nextDay: $("next-day"),
   latestDay: $("latest-day"),
@@ -1053,6 +1054,7 @@ function renderChrome() {
   document.documentElement.lang = state.lang;
   elements.title.textContent = say("app.title");
   elements.tagline.textContent = say("app.tagline");
+  elements.about.textContent = say("app.about");
   elements.prevDay.setAttribute("aria-label", say("day.previous"));
   elements.nextDay.setAttribute("aria-label", say("day.next"));
   elements.latestDay.textContent = say("day.latest");

@@ -830,6 +830,13 @@ main {
   color: var(--accent-ink);
 }
 
+/* The About line leads the footer, so it reads as body text, not as a credit. */
+.footer .about {
+  margin-bottom: 0.75rem;
+  color: var(--text-body);
+  font-size: 0.9rem;
+}
+
 .back-link {
   display: inline-block;
   margin-top: 0.5rem;

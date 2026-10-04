@@ -14,6 +14,7 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
 - **Tab icon** -- every HTML page declares a `<link rel="icon">` (an inline SVG `data:` URI is fine), because the site has no `/favicon.ico`. `scripts/webProjectIcons.test.js` enforces this
 - **Works standalone** -- each project should work by opening its HTML file directly or via any HTTP server
 - **Head block for search and link previews** -- every page linked from a `data/projects/*.json` carries an empty `<!-- BEGIN GENERATED:WEB-PROJECT-META -->` / `<!-- END GENERATED:WEB-PROJECT-META -->` pair after its `<link rel="canonical">`. `bun scripts/generateWebProjectMeta.js` fills it with JSON-LD and Open Graph from the project's JSON, and its drift test fails on a page without the pair (root ADR 0010)
+- **About line (recommended, not required)** -- add one or two plain sentences that say what the tool does when the page's HTML holds little text before its script runs, so a search engine can read what the page is for. Write it in the HTML, never only from JS; a page that translates it keeps the English text in the HTML and a test that ties it to the catalogue. Skip it where it adds nothing or does not fit the layout. `global-news-map` is the reference: a `<p class="about">` at the top of its footer
 
 ## The Index Page (`index.html`)
 

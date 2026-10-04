@@ -1,4 +1,6 @@
 import { describe, expect, test } from "bun:test";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { DEFAULT_LANGUAGE, LANGUAGE_CODES, MESSAGES, fill, makeSay, pickLanguage, translate } from "./i18n.js";
 
 const slotsIn = (text) => [...String(text).matchAll(/\{(\w+)\}/g)].map((match) => match[1]).sort();
@@ -137,5 +139,16 @@ describe("pickLanguage", () => {
   test("copes with no browser languages at all", () => {
     expect(pickLanguage(null, [])).toBe(DEFAULT_LANGUAGE);
     expect(pickLanguage(null, [null, undefined])).toBe(DEFAULT_LANGUAGE);
+  });
+});
+
+// The About line is the one sentence a search engine reads without running the
+// page, so the English version must already sit in index.html. `app.js` only
+// swaps it for the reader's language.
+describe("the About line", () => {
+  test("is in the catalogue, and its English version is written into the page", () => {
+    const page = readFileSync(join(import.meta.dir, "index.html"), "utf8");
+    const english = MESSAGES["app.about"].en;
+    expect(page).toContain(`<p class="about" id="about">${english}</p>`);
   });
 });
