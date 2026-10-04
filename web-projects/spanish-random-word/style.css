@@ -20,6 +20,9 @@
   --accent-soft: rgba(194, 65, 12, 0.1);
   --on-accent: #ffffff;
 
+  --skeleton-base: rgba(40, 24, 10, 0.07);
+  --skeleton-shine: rgba(40, 24, 10, 0.14);
+
   --shadow: 0 12px 40px rgba(40, 24, 10, 0.1);
   --radius: 20px;
   --radius-full: 999px;
@@ -41,6 +44,8 @@
     --accent-ink: #fdba74;
     --accent-soft: rgba(251, 146, 60, 0.14);
     --on-accent: #1f160e;
+    --skeleton-base: rgba(255, 255, 255, 0.06);
+    --skeleton-shine: rgba(255, 255, 255, 0.14);
     --shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
   }
 }
@@ -194,6 +199,44 @@ a:focus-visible {
 .topic {
   font-style: italic;
   color: var(--muted);
+}
+
+/* While the definition loads: bars in the shape of the answer, with a light
+ * band that sweeps across them. */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skeleton-bar {
+  display: block;
+  height: 0.95rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--skeleton-base) 0%, var(--skeleton-shine) 50%, var(--skeleton-base) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-pos {
+  width: 7rem;
+  height: 0.75rem;
+  margin-bottom: 0.15rem;
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-bar {
+    animation: none;
+  }
 }
 
 .sources {
