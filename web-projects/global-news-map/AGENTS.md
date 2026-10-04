@@ -13,7 +13,8 @@ Human docs: [README.md](README.md). Decision records:
 [ADR 0002](adr/0002-place-a-story-by-the-smallest-linked-place.md),
 [ADR 0003](adr/0003-draw-the-map-from-carried-coastlines.md),
 [ADR 0004](adr/0004-on-a-phone-the-list-drives-the-map.md),
-[ADR 0005](adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md).
+[ADR 0005](adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md),
+[ADR 0006](adr/0006-on-a-wide-screen-the-stories-are-open-cards-around-the-map.md).
 
 ## Module map (pure logic is separated from the DOM so it can be unit-tested)
 
@@ -25,6 +26,7 @@ Human docs: [README.md](README.md). Decision records:
 | `places.js` | yes | Which point a story belongs to: candidate titles, the coordinate index, the specificity ranking, how a place is written (`placeLabel`, `countryName`), which places need a country (`placeTitlesOf`), and grouping by place (`storyIdsAtPlace`, `nextPlaceOnMarker`). |
 | `geo.js` | yes | Degrees to pixels, pan, zoom, the grouping of pins that overlap, `groupMatesOf` to name every story sharing one marker, and `splitAtAntimeridian` to cut a coastline where it crosses the 180th meridian. |
 | `reading.js` | yes | The list as the reader uses it: `summarise` folds a story to a summary, `topmostRow` says which row stands at the top of the scrolling list, and `tapUnfolds` says whether a tap on a row also opens it. |
+| `masonry.js` | yes | The wide layout's arithmetic: `columnCountFor` says how many columns fit, `placeCards` puts each card in the shortest column, and `MAP_COLUMNS` is how many columns the map spans. |
 | `world.js` | yes (data) | The world's coastlines. Generated; see `buildWorld.js`. |
 | `i18n.js` | yes | Every word the page says, in English and Spanish. |
 | `urlState.js` | yes | Reading and writing the address bar (root ADR 0006). |
@@ -41,9 +43,11 @@ Data flow: `app.js` → `dataSource.loadDay` → `stories.parseCurrentEvents` �
 
 The two layouts: `app.js` asks `matchMedia("(min-width: 60rem)")` and `style.css`
 uses the same query, once each, so they can never disagree about which layout is
-on screen. Wide puts the map and the reading column side by side. Narrow fixes
-the day and the map to the top of the screen and scrolls only the list, where
-`reading.topmostRow` decides which story the map marks. See ADR 0004.
+on screen. Wide is a masonry: the map (day bar and map) stands top left and
+spans `MAP_COLUMNS` columns, and every story is an open card that `app.js` puts
+in the shortest column through `masonry.placeCards`. Only the page scrolls.
+Narrow fixes the day and the map to the top of the screen and scrolls only the
+list, where `reading.topmostRow` decides which story the map marks. See ADR 0004.
 
 ## Non-obvious conventions and gotchas
 
@@ -195,8 +199,8 @@ the day and the map to the top of the screen and scrolls only the list, where
 - **`updateMarkers` must not run while the map is collapsed, and the small map
   must not group.** Both are the same trap seen from two sides. `clusterPoints`
   works in pixels, so on a canvas 160 wide every pin of the day falls into one
-  marker; `state.pinGroup` is counted from that grouping and feeds the panel's
-  "this pin also covers N more" note, which would then claim the whole day. So
+  marker; `state.pinGroup` is counted from that grouping and feeds the
+  "next place" button, which would then claim the whole day. So
   `updateMarkers` returns early on `state.mapCollapsed` and keeps the grouping
   the reader last saw at full size, and `draw` takes the `drawDots` path, which
   draws one plain dot per story straight from `state.pins`. `showDay` clears
@@ -307,33 +311,30 @@ the day and the map to the top of the screen and scrolls only the list, where
   the Netherlands land about six pixels apart at the opening zoom on a phone. A
   reader saw a Swiss shooting listed under the heading "Amsterdam, Netherlands".
   - `state.group` is the stories at **one place**, keyed on `place.title` through
-    `storyIdsAtPlace`. The panel and the list marks use this, and only this, so
-    the panel's heading is always true of every story under it.
+    `storyIdsAtPlace`. The list marks use this, and only this, so every mark is
+    true of the place the reader chose.
   - `state.pinGroup` is the stories on **one marker**, which may span places. It is
-    used for two things only: the note saying the pin covers more, and stepping to
+    used for two things only: the "next place" button's count, and stepping to
     the next place when the marker is chosen again.
 - **Choosing a marker again steps to the next PLACE on it**, through
   `nextPlaceOnMarker`, never to the next story. Stepping by story meant a pin
   holding two Amsterdam stories and one Aarau story took three taps to reach
   Aarau.
-- **Keep the "this pin also covers N more" note.** Without it the other places on a
-  marker are unreachable in practice, because nothing on screen hints that they
-  exist. The panel shows one place; the marker may hold several. The narrow
-  layout shows no panel, so it carries the same fact as the "next place" button
-  over the map. Both must stay.
-- **The chosen location's stories all appear in the panel above the day's list**,
-  on a wide screen. `renderSelectedPanel` builds it, one block per story, each
-  with its own sources. A reader reported this twice: first that only one story
-  was highlighted, then that only one appeared under the map. The whole place
-  belongs in the panel. The narrow layout hides the panel and opens each row in
-  place instead; the rows sharing the place still carry `data-grouped`.
-- **The panel marks no story as "the one you tapped".** It used to draw a bar down
-  the side of it, and a reader asked what the bar meant. That was the answer:
-  nothing worth a mark. Every story in the panel is at the same place, and all of
-  them are meant to be read.
-- **The day's list always keeps the portal's own order.** An earlier version lifted
-  the chosen group to the top of it. That is now wrong: the panel already shows
-  those stories in full, so promoting them again printed each of them twice.
+- **Keep the "next place" button.** Without it the other places on a marker are
+  unreachable in practice, because nothing on screen hints that they exist. The
+  marker may hold several places. The button stands over the map on both
+  layouts and says how many more places the marker holds.
+- **Every story at the chosen place is marked in the list.** The wide layout shows
+  every card open, so a reader sees the whole place at once. A reader reported
+  this twice: first that only one story was highlighted, then that only one
+  appeared under the map. The narrow layout opens each row in place instead.
+  Either way the rows sharing the place carry `data-grouped`.
+- **The list always keeps the portal's own order.** Never lift the chosen group to
+  the top of it.
+- **A pin and its card answer each other on a wide screen.** A pin click marks the
+  card and `revealCard` scrolls the page to it only when it is off screen
+  (`block: "nearest"`). Hovering a card sets `state.hoveredId`, and `draw` marks
+  that pin.
 - **`refreshHighlight` toggles attributes on existing rows; it never rebuilds.**
   Rebuilding would throw away keyboard focus, fold up any story the reader had
   opened, and move the list under a reader who is scrolling it. `selectStory` and
@@ -343,13 +344,13 @@ the day and the map to the top of the screen and scrolls only the list, where
   is an inset `box-shadow`, not a thicker border: a border makes the text
   narrower, the row rewraps, and every row below it jumps while the reader
   scrolls. The same rule is why the "next place" button stands over the map and
-  not in the layout: the reader scrolling the list makes it come and go.
+  not in the layout: the reader choosing a pin makes it come and go.
 - **The open row's mark is drawn INSIDE the row, and it is the same width on all
   four sides.** Two bugs met here, and both were reported as "one side is thicker
   than the other".
   - An **outer** ring (`box-shadow: 0 0 0 1px`) is cut off on the left and the
-    right. The reading column scrolls, so it carries `overflow-y: auto`, and CSS
-    then computes `overflow-x: auto` as well, which clips anything painted
+    right. On a phone the reading column scrolls, so it carries
+    `overflow-y: auto`, and CSS then computes `overflow-x: auto` as well, which clips anything painted
     outside a row. The top and the bottom of such a ring still show, so the row
     looks framed on two sides only. Never mark a row from outside its own box.
   - A **bar down one edge** (`inset 4px 0 0`) reads as a thicker border, because
@@ -362,9 +363,8 @@ the day and the map to the top of the screen and scrolls only the list, where
 - **A tap on a row opens the row too, on a phone.** `tapUnfolds` in `reading.js`
   holds the rule and the two limits on it: a tap never folds a row back (the row
   a reader taps is also the row the map marks, so a tap on an open row is a
-  request to go back to it), and a wide screen leaves the row folded (the panel
-  above the list already prints the story in full, so opening the row as well
-  would print it twice). The chevron is still what folds a row. `storyItem`
+  request to go back to it), and on a wide screen there is nothing to open (every card is
+  always open and has no chevron). The chevron is what folds a row. `storyItem`
   unfolds **before** it scrolls the list: a row grows downwards, so its own top
   does not move and `revealInList` still aims true.
 - **A folded row carries the place and the category, and the chip is the quieter
@@ -395,23 +395,23 @@ the day and the map to the top of the screen and scrolls only the list, where
   the map passes over other rows on its way, and each of those would otherwise be
   read as a new choice and undo the tap. It is cleared when the story arrives, or
   the moment the reader touches the list themselves.
-- **Never show the panel on a phone, and never rebuild the list while it
-  scrolls.** Both live inside the scrolling column, so either one resizes that
-  column as the selection follows the scrolling, which scrolls it again. That is
-  a loop, not a glitch.
+- **Never rebuild the list while it scrolls.** It lives inside the scrolling
+  column, so a rebuild resizes that column as the selection follows the
+  scrolling, which scrolls it again. That is a loop, not a glitch.
 - **Nothing that the selection changes may take room in the phone's layout.**
   The same trap, one step out: the selection follows the scrolling, so a box that
   grows or appears with it moves the list under the reader's eyes. Anything the
   selection changes goes over the map, the way the "next place" button does. A
   line under the map held the chosen place for one version, and it went for this
   reason and because the reader is reading that place in the list anyway.
-- **The "next place" button and the pill share the map's bottom left corner, and
-  they are never on screen together.** The button sits there because a thumb
+- **On a phone the "next place" button and the pill share the map's bottom left
+  corner, and they are never on screen together.** The button sits there because a thumb
   reaches that corner and because the zoom buttons hold the other side. The pill
   sits there too, and on a phone it only ever says that the day is loading, is
   empty, or could not be reached. Each of those states has no pins, so nothing is
   chosen and `renderNextPlace` hides the button. Give the pill anything to say
-  about a loaded day and the two will overlap.
+  about a loaded day and the two will overlap. On a wide screen the pill carries
+  the counts in that corner, so the button takes the bottom right.
 - **The counts stay off the phone.** `renderCounts` marks the pill
   `data-state="counts"` and `style.css` hides that one state on a narrow screen,
   so the pill still carries the loading line, the empty day and the failure.
@@ -473,3 +473,4 @@ a test that needs Wikipedia fails in CI for reasons of its own.
 | [0003](adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
 | [0004](adr/0004-on-a-phone-the-list-drives-the-map.md) | On a phone the map holds still and the list drives it |
 | [0005](adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md) | A fixed set of ten categories, and the portal's own words when it is none of them |
+| [0006](adr/0006-on-a-wide-screen-the-stories-are-open-cards-around-the-map.md) | On a wide screen the stories are open cards in a masonry around the map, with no panel |

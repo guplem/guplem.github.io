@@ -246,6 +246,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [global-news-map 0003](web-projects/global-news-map/adr/0003-draw-the-map-from-carried-coastlines.md) | Draw the map from coastlines the page carries, not from map tiles |
 | [global-news-map 0004](web-projects/global-news-map/adr/0004-on-a-phone-the-list-drives-the-map.md) | On a phone the map holds still and the list drives it |
 | [global-news-map 0005](web-projects/global-news-map/adr/0005-a-fixed-set-of-ten-categories-with-a-fallback.md) | A fixed set of ten categories, and the portal's own words when it is none of them |
+| [global-news-map 0006](web-projects/global-news-map/adr/0006-on-a-wide-screen-the-stories-are-open-cards-around-the-map.md) | On a wide screen the stories are open cards in a masonry around the map, with no panel |
 | [ghana-ludo 0001](web-projects/ghana-ludo/adr/0001-replicate-the-rules-not-the-code.md) | Replicate the reference game's rules, read as a spec, not its code |
 | [ghana-ludo 0002](web-projects/ghana-ludo/adr/0002-the-host-plays-bots-and-forced-moves.md) | The host plays the bots and the forced moves, outside the reducer |
 | [mancala 0001](web-projects/mancala/adr/0001-two-engines-behind-one-interface.md) | Two rule sets, two engines, one interface |
