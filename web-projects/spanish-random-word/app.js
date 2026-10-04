@@ -71,9 +71,27 @@ function renderEntries(entries) {
   }
 }
 
+/** Grey bars in the shape of one part of speech and its senses, shown while the request runs. */
+function renderSkeleton() {
+  const skeleton = document.createElement("div");
+  skeleton.className = "skeleton";
+  skeleton.setAttribute("role", "status");
+  skeleton.setAttribute("aria-label", "Buscando la definición…");
+  const posBar = document.createElement("span");
+  posBar.className = "skeleton-bar skeleton-pos";
+  skeleton.append(posBar);
+  for (const width of ["92%", "78%", "85%"]) {
+    const lineBar = document.createElement("span");
+    lineBar.className = "skeleton-bar skeleton-line";
+    lineBar.style.width = width;
+    skeleton.append(lineBar);
+  }
+  dom.entries.replaceChildren(skeleton);
+}
+
 async function loadDefinition(word) {
-  dom.status.textContent = "Buscando la definición…";
-  dom.entries.replaceChildren();
+  dom.status.textContent = "";
+  renderSkeleton();
   try {
     const entries = await fetchEntries(word);
     if (word !== current) return;
@@ -82,6 +100,7 @@ async function loadDefinition(word) {
   } catch {
     if (word !== current) return;
     dom.status.textContent = "No se ha podido cargar la definición. Revisa la conexión o usa los enlaces de abajo.";
+    dom.entries.replaceChildren();
   }
 }
 
