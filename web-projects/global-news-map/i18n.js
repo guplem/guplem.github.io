@@ -61,7 +61,6 @@ export const MESSAGES = {
   // --- a story --------------------------------------------------------------
   "story.sources": { en: "Sources", es: "Fuentes" },
   "story.readMore": { en: "Read {title} on Wikipedia", es: "Leer {title} en Wikipedia" },
-  "story.close": { en: "Close", es: "Cerrar" },
   "story.listHeading": { en: "All the day's stories", es: "Todas las noticias del día" },
   "story.unplacedHeading": { en: "Named no place", es: "Sin lugar indicado" },
   "story.unplacedWhy": {
@@ -98,17 +97,8 @@ export const MESSAGES = {
   "category.business.full": { en: "Business and economy", es: "Negocios y economía" },
   "category.science.short": { en: "Science", es: "Ciencia" },
   "category.science.full": { en: "Science and technology", es: "Ciencia y tecnología" },
-  // The panel above the day's list, holding every story at the chosen location.
-  "selected.label": { en: "Selected location", es: "Lugar seleccionado" },
-  "selected.count": { en: "{count} stories here", es: "{count} noticias aquí" },
-  // One marker can cover more than one place. Without this the other places on
-  // a pin are unreachable in practice, because nothing hints that they exist.
-  "selected.alsoOnPin": {
-    en: "This pin also covers {count} more at other places. Choose it again to see them.",
-    es: "Este marcador también cubre {count} más en otros lugares. Elígelo otra vez para verlas.",
-  },
-  // The phone shows no panel, so the same fact needs a button that fits on one
-  // line under the map. Without it the other places on a pin stay unreachable.
+  // One marker can cover more than one place. Without this button the other
+  // places on a pin are unreachable in practice, because nothing hints at them.
   "selected.nextPlace": { en: "Next place (+{count})", es: "Otro lugar (+{count})" },
 
   // --- credit ---------------------------------------------------------------

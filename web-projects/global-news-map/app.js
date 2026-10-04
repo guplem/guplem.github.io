@@ -20,6 +20,7 @@ import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { MIN_ZOOM, clampView, clusterPoints, groupMatesOf, project, splitAtAntimeridian, zoomAt } from "./geo.js";
 import { makeSay, pickLanguage } from "./i18n.js";
 import { nextPlaceOnMarker, placeLabel, storyIdsAtPlace } from "./places.js";
+import { MAP_COLUMNS, columnCountFor, placeCards } from "./masonry.js";
 import { summarise, tapUnfolds, topmostRow } from "./reading.js";
 import { buildSearch, readState } from "./urlState.js";
 import { LAND_SHAPES } from "./world.js";
@@ -34,6 +35,7 @@ const elements = {
   latestDay: $("latest-day"),
   dayInput: $("day-input"),
   dayLabel: $("day-label"),
+  main: document.querySelector("main"),
   stage: $("stage"),
   map: $("map"),
   toggleMap: $("toggle-map"),
@@ -43,13 +45,6 @@ const elements = {
   status: $("status"),
   nextPlace: $("next-place"),
   reading: $("reading"),
-  panel: $("selected-panel"),
-  panelLabel: $("selected-label"),
-  panelHeading: $("selected-heading"),
-  panelCount: $("selected-count"),
-  panelNote: $("selected-note"),
-  panelStories: $("selected-stories"),
-  panelClose: $("selected-close"),
   listHeading: $("story-list-heading"),
   listHint: $("list-hint"),
   stories: $("stories"),
@@ -107,8 +102,9 @@ const CHEVRON = ["M6 9.5 12 15.5 18 9.5"];
 const reducedMotion = () => Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
 
 /**
- * Which layout is on screen. The wide one puts the map and the reading column
- * side by side; the narrow one stacks them and scrolls only the list.
+ * Which layout is on screen. The wide one puts the map in the top left corner
+ * and the stories as open cards in columns around it; the narrow one stacks
+ * them and scrolls only the list.
  *
  * The query is the one `style.css` uses, written once here, so the page and its
  * styles can never disagree about which layout the reader has.
@@ -125,8 +121,13 @@ const state = {
   stories: [],
   selectedId: null,
   /**
-   * The stories at the same PLACE as the chosen one. This is what the panel holds
-   * and what the list marks.
+   * The story whose card the pointer rests on, on a wide screen. Its pin is
+   * drawn as if it were chosen, and nothing else changes: not the list, not the
+   * address bar.
+   */
+  hoveredId: null,
+  /**
+   * The stories at the same PLACE as the chosen one. This is what the list marks.
    *
    * Grouped by place and never by distance on screen. One marker can cover
    * several places, so a distance group put a story in Aarau, Switzerland under
@@ -303,7 +304,7 @@ function drawDots(colour, ink) {
 function updateMarkers() {
   // Nothing is chosen on the collapsed map, so the grouping stays as it was on
   // the full-size one. Grouping against 160 pixels would make one marker of the
-  // whole world, and `pinGroup` feeds the panel's "also covers N more" note.
+  // whole world, and `pinGroup` feeds the "next place" button.
   if (!size.width || state.mapCollapsed) return;
   const points = state.pins.map((pin) => ({ ...project(pin.lon, pin.lat, state.view, size), pin }));
   state.markers = clusterPoints(points, CLUSTER_RADIUS).map((group) => ({
@@ -338,7 +339,9 @@ function draw() {
 
   const selectedMarkers = [];
   for (const marker of state.markers) {
-    if (marker.items.some((item) => item.story.id === state.selectedId)) selectedMarkers.push(marker);
+    // The card under the pointer marks its pin the same way the chosen story does.
+    const marked = marker.items.some((item) => item.story.id === state.selectedId || item.story.id === state.hoveredId);
+    if (marked) selectedMarkers.push(marker);
     else drawMarker(marker, pin, pinInk, false);
   }
   // The chosen marker is drawn last so nothing sits on top of it.
@@ -498,10 +501,12 @@ function setStatus(text, stateName = "") {
 /**
  * One story in the list.
  *
- * The row is folded: it shows where the story happened, what kind of story it
- * is, and a summary of it. A chevron opens the rest, and on a phone a tap on the
- * row itself opens it too. On a phone the opened row is the whole story, panel
- * and all, because that layout shows no panel.
+ * On a wide screen the row is a card that shows the whole story and its
+ * sources, with no fold: there is room for all of it beside and under the map.
+ *
+ * On a phone the row is folded: it shows where the story happened, what kind of
+ * story it is, and a summary of it. A chevron opens the rest, and a tap on the
+ * row itself opens it too.
  *
  * The row is a button, so a keyboard reaches every story.
  */
@@ -511,7 +516,8 @@ function storyItem(story, place) {
   // `refreshHighlight` marks which items are open or grouped, by this id.
   item.dataset.storyId = story.id;
 
-  const open = state.expanded.has(story.id);
+  const wide = isWide();
+  const open = wide || state.expanded.has(story.id);
   const { summary, folded } = summarise(story.text);
 
   const button = document.createElement("button");
@@ -555,10 +561,10 @@ function storyItem(story, place) {
     // The row is unfolded before the list is scrolled. A row grows downwards,
     // so its own top does not move and the scroll below still aims true.
     if (tapUnfolds({ wide: isWide(), open: state.expanded.has(story.id) })) toggleStory(story, item);
-    // A wide screen shows the story in the panel beside the map, so the map
-    // moves to it and zooms in on the place. A phone has no panel: the row
-    // itself goes to the top of the list, where it is the story the map marks,
-    // and a map the reader has zoomed into slides to it without zooming further.
+    // A wide screen already shows the whole card, so the map moves to it and
+    // zooms in on the place. On a phone the row itself goes to the top of the
+    // list, where it is the story the map marks, and a map the reader has zoomed
+    // into slides to it without zooming further.
     selectStory(story.id, {
       centre: isWide() && Boolean(place),
       follow: !isWide(),
@@ -566,6 +572,14 @@ function storyItem(story, place) {
     });
   });
   item.append(button);
+
+  // A card points at its pin while the pointer rests on it, so the reader can
+  // find a story on the map without choosing it. Only on a wide screen: on a
+  // phone the row at the top of the list already marks the map.
+  if (wide && place) {
+    item.addEventListener("pointerenter", () => setHoveredStory(story.id));
+    item.addEventListener("pointerleave", () => setHoveredStory(null));
+  }
 
   // The category is not repeated here: the chip on the first line carries it,
   // open or folded, and writing it twice was the reason this block existed.
@@ -575,9 +589,12 @@ function storyItem(story, place) {
   more.hidden = !open;
   if (story.sources.length) more.append(sourceLinks(story));
 
-  // A story with nothing more to show needs no chevron. Every story on the
-  // portal carries at least one source, so in practice every row has one.
-  if (folded || more.childElementCount) {
+  item.append(more);
+
+  // A card never folds, and a story with nothing more to show needs no chevron.
+  // Every story on the portal carries at least one source, so in practice every
+  // row on a phone has one.
+  if (!wide && (folded || more.childElementCount)) {
     const fold = document.createElement("button");
     fold.type = "button";
     fold.className = "item-fold";
@@ -587,7 +604,7 @@ function storyItem(story, place) {
     fold.setAttribute("aria-controls", more.id);
     fold.append(iconSvg(CHEVRON, "item-chevron"));
     fold.addEventListener("click", () => toggleStory(story, item));
-    item.append(more, fold);
+    item.append(fold);
   }
   return item;
 }
@@ -659,11 +676,13 @@ function fadeIn(element) {
 }
 
 function renderLists() {
-  // The portal's own order, always. The chosen location is shown in full anyway,
-  // in the panel on a wide screen and in the row itself on a phone, so promoting
-  // its stories here would print each of them twice.
+  // The portal's own order, always. The chosen story is marked where it stands,
+  // never moved: on a wide screen every card is already open, and on a phone the
+  // list scrolls to it.
   elements.stories.replaceChildren(...state.pins.map((pin) => storyItem(pin.story, pin.place)));
   elements.unplaced.replaceChildren(...state.unplaced.map((story) => storyItem(story, null)));
+  // The card under the pointer was just thrown away, and it never said so.
+  state.hoveredId = null;
 
   const hasUnplaced = state.unplaced.length > 0;
   elements.unplacedHeading.hidden = !hasUnplaced;
@@ -673,6 +692,120 @@ function renderLists() {
   // runs first because the highlight is derived from the grouping.
   updateMarkers();
   refreshHighlight();
+  layoutCards();
+  watchCards();
+}
+
+// --- the cards (wide layout) ------------------------------------------------
+
+/**
+ * The space between two cards, and between the map and the cards, in CSS
+ * pixels. `style.css` gives the wide `main` no gap of its own, because every
+ * card is placed from here.
+ */
+const CARD_GAP = 16;
+
+/**
+ * Place every card on a wide screen: the map spans the first columns at the top,
+ * and each card goes into whichever column is shortest. See ADR 0006.
+ *
+ * The cards stay in the list's own order in the document, so a screen reader
+ * and a search engine read the day in the portal's order, and the page still
+ * reads as one column before this has run.
+ *
+ * On a phone this takes every placement off again, which is what lets the two
+ * layouts swap on a turned tablet.
+ */
+function layoutCards() {
+  const lists = [elements.stories, elements.unplaced];
+  if (!isWide()) {
+    elements.stage.style.width = "";
+    for (const list of lists) {
+      list.style.height = "";
+      for (const item of list.children) item.style.left = item.style.top = item.style.width = "";
+    }
+    return;
+  }
+
+  const width = elements.main.clientWidth;
+  const columnCount = columnCountFor(width, CARD_GAP);
+  const columnWidth = (width - CARD_GAP * (columnCount - 1)) / columnCount;
+  elements.stage.style.width = `${MAP_COLUMNS * columnWidth + (MAP_COLUMNS - 1) * CARD_GAP}px`;
+
+  // The map's columns start below it. The stage's height follows its width,
+  // because the map keeps its 2:1 shape, so it is read only after the width.
+  const mapBottom = elements.stage.getBoundingClientRect().height;
+  placeList(elements.stories, columnCount, columnWidth, Array(MAP_COLUMNS).fill(mapBottom));
+  placeList(elements.unplaced, columnCount, columnWidth, []);
+
+  // The canvas is as wide as the stage, which may just have changed.
+  const box = canvas.getBoundingClientRect();
+  if (Math.round(box.width) !== size.width || Math.round(box.height) !== size.height) {
+    resizeCanvas();
+    draw();
+  }
+}
+
+/** Measure one list's cards at the column width, then place each one. */
+function placeList(list, columnCount, columnWidth, startHeights) {
+  const items = [...list.children];
+  for (const item of items) item.style.width = `${columnWidth}px`;
+  const heights = items.map((item) => item.getBoundingClientRect().height);
+  const { placements, height } = placeCards({ heights, columnCount, gap: CARD_GAP, startHeights });
+  placements.forEach(({ column, top }, index) => {
+    items[index].style.left = `${column * (columnWidth + CARD_GAP)}px`;
+    items[index].style.top = `${top}px`;
+  });
+  // The cards take no room of their own once they are placed, so the list holds
+  // the room for them, and for the map above the first list.
+  list.style.height = `${height}px`;
+}
+
+/**
+ * Place the cards again whenever anything they depend on changes size: the
+ * page's width, the map (it collapses), or a card itself (the country names
+ * arrive, or the font finishes loading and every line rewraps).
+ *
+ * Placing a card never changes its size, so this cannot feed itself.
+ */
+let layoutFrame = null;
+const cardWatcher =
+  typeof ResizeObserver === "function"
+    ? new ResizeObserver(() => {
+        if (!isWide() || layoutFrame !== null) return;
+        layoutFrame = requestAnimationFrame(() => {
+          layoutFrame = null;
+          layoutCards();
+        });
+      })
+    : null;
+
+function watchCards() {
+  if (!cardWatcher) return;
+  cardWatcher.disconnect();
+  cardWatcher.observe(elements.main);
+  cardWatcher.observe(elements.stage);
+  for (const list of [elements.stories, elements.unplaced]) {
+    for (const item of list.children) cardWatcher.observe(item);
+  }
+}
+
+/** Mark the pin of the card under the pointer, or of none. */
+function setHoveredStory(id) {
+  if (state.hoveredId === id) return;
+  state.hoveredId = id;
+  scheduleDraw();
+}
+
+/**
+ * Bring a chosen card into view, on a wide screen. A card already on screen
+ * stays where it is, so a pin beside its card moves nothing.
+ */
+function revealCard(id) {
+  const card = [...elements.stories.children, ...elements.unplaced.children].find(
+    (item) => item.dataset.storyId === id,
+  );
+  card?.scrollIntoView({ block: "nearest", behavior: reducedMotion() ? "auto" : "smooth" });
 }
 
 /**
@@ -683,8 +816,8 @@ function renderLists() {
  */
 function captureGroup() {
   const chosen = state.pins.find((pin) => pin.story.id === state.selectedId);
-  // What the panel shows: one place, so its heading is always true of every story
-  // in it.
+  // What the list marks: one place, so the "next place" button can step to the
+  // others on the same marker.
   state.group = chosen ? storyIdsAtPlace(state.pins, chosen.place.title) : [];
 
   // What the marker covers, which may be more than one place.
@@ -725,12 +858,11 @@ function refreshHighlight() {
 }
 
 /**
- * The button over the map, which only the narrow layout shows.
+ * The button over the map that steps to the next place on the chosen marker.
  *
- * One marker can cover several places, and the reader is shown one of them. The
- * panel says so on a wide screen. A phone has no panel, so without this button
- * the other places on a marker cannot be reached at all: nothing would hint that
- * they are there.
+ * One marker can cover several places, and the list marks one of them. Without
+ * this button the other places on a marker cannot be reached in practice:
+ * nothing would hint that they are there.
  */
 function renderNextPlace() {
   const chosen = state.pins.find((pin) => pin.story.id === state.selectedId);
@@ -802,49 +934,6 @@ function followList() {
 }
 
 /**
- * Every story at the chosen location, in full, above the day's full list.
- *
- * The wide layout only: the narrow one hides this panel and opens each row in
- * place instead, because a panel that rewrote itself while the reader scrolled
- * would resize the column they are scrolling.
- *
- * This replaced a panel that showed only the story that was tapped. A marker
- * reading "5" stood for five stories and showed one of them, which a reader
- * reported twice: first as "only one is highlighted", then as "only one appears
- * under the map". The whole group belongs here.
- */
-function renderSelectedPanel() {
-  const byId = new Map(state.pins.map((pin) => [pin.story.id, pin]));
-  const chosen = byId.get(state.selectedId);
-  const unplaced = state.unplaced.find((story) => story.id === state.selectedId);
-
-  if (!chosen && !unplaced) {
-    elements.panel.hidden = true;
-    elements.panelStories.replaceChildren();
-    return;
-  }
-  elements.panel.hidden = false;
-
-  // A story with no place is its own group of one; there is no location to head.
-  const group = chosen ? state.group.filter((id) => byId.has(id)) : [state.selectedId];
-  const stories = chosen ? group.map((id) => byId.get(id).story) : [unplaced];
-
-  elements.panelLabel.textContent = say(chosen ? "selected.label" : "story.unplacedHeading");
-  elements.panelHeading.textContent = chosen ? placeLabel(chosen.place, state.lang) : unplaced.category;
-  const count = stories.length;
-  elements.panelCount.hidden = count < 2;
-  elements.panelCount.textContent = count < 2 ? "" : say("selected.count", { count });
-
-  // A marker can cover several places while the panel shows one. Say so, or the
-  // other places on that pin are unreachable in practice: nothing hints at them.
-  const elsewhere = chosen ? state.pinGroup.filter((id) => !group.includes(id)).length : 0;
-  elements.panelNote.hidden = elsewhere === 0;
-  elements.panelNote.textContent = elsewhere === 0 ? "" : say("selected.alsoOnPin", { count: elsewhere });
-
-  elements.panelStories.replaceChildren(...stories.map((story) => selectedStory(story)));
-}
-
-/**
  * What to call a category, in as much room as there is.
  *
  * A folded row gets the short name, an open one the full name. A heading the
@@ -900,7 +989,7 @@ function iconSvg(paths, className) {
   return svg;
 }
 
-/** Who reported the story. The row and the panel both show these. */
+/** Who reported the story. */
 function sourceLinks(story) {
   const sources = document.createElement("div");
   sources.className = "story-sources";
@@ -915,34 +1004,6 @@ function sourceLinks(story) {
     }),
   );
   return sources;
-}
-
-/** One story inside the panel: its own words, and the sources that reported it. */
-function selectedStory(story) {
-  const article = document.createElement("article");
-  article.className = "selected-story";
-  // No mark for "the one you tapped". A reader asked what the bar down the side
-  // meant, which is the answer: nothing worth a mark. Every story in the panel is
-  // at the same place and all of them are meant to be read.
-
-  // The topic trail is the closest thing the portal gives a story to a headline,
-  // and some stories have none. Falling back to the category printed it twice,
-  // once as the label above and once as the heading, so the heading is left out
-  // instead of repeating what the reader has just read.
-  const topic = story.topics.at(-1);
-  const heading = topic && topic !== story.category ? document.createElement("h3") : null;
-  if (heading) {
-    heading.className = "story-heading";
-    heading.textContent = topic;
-  }
-
-  const text = document.createElement("p");
-  text.className = "story-text";
-  text.textContent = story.text;
-
-  // The panel shows a story in full, so its chip carries the full name too.
-  article.append(...[categoryChip(story.category, true), heading, text, sourceLinks(story)].filter(Boolean));
-  return article;
 }
 
 function renderCredits() {
@@ -995,7 +1056,6 @@ function renderChrome() {
   elements.toggleMap.setAttribute("aria-label", say("map.collapse"));
   // Names the canvas for both states, and marks it a button while it is small.
   renderMapCollapsed();
-  elements.panelClose.setAttribute("aria-label", say("story.close"));
   elements.listHeading.textContent = say("story.listHeading");
   elements.unplacedHeading.textContent = say("story.unplacedHeading");
   elements.unplacedWhy.textContent = say("story.unplacedWhy");
@@ -1060,7 +1120,6 @@ function clearSelection() {
   state.selectedId = null;
   state.group = [];
   state.pinGroup = [];
-  renderSelectedPanel();
   // The rows themselves do not change, only their marks. Rebuilding them would
   // throw away keyboard focus and fold open any story the reader had opened.
   refreshHighlight();
@@ -1080,8 +1139,9 @@ function clearSelection() {
  * @param {boolean} [options.follow] move the map to the story's pin without
  *   touching the zoom, and do nothing while the whole world is on screen. This
  *   is the reader scrolling the list on a phone.
- * @param {boolean} [options.reveal] bring the story to the top of the list,
- *   which is what the map does when the reader taps a pin
+ * @param {boolean} [options.reveal] bring the story into view: to the top of
+ *   the list on a phone, onto the screen on a wide one. This is what the map
+ *   does when the reader taps a pin
  * @param {boolean} [options.url] write the address bar now rather than once the
  *   scrolling stops
  */
@@ -1092,11 +1152,13 @@ function selectStory(id, { centre = false, follow = false, reveal = false, url =
   updateMarkers();
   captureGroup();
   if (state.selectedId && (centre || follow)) moveMapToSelection({ closer: centre });
-  renderSelectedPanel();
   refreshHighlight();
   renderNextPlace();
   renderListHint();
-  if (reveal && !isWide()) revealInList(id);
+  if (reveal) {
+    if (isWide()) revealCard(id);
+    else revealInList(id);
+  }
   if (url) writeUrl();
   else writeUrlSoon();
   scheduleDraw();
@@ -1131,7 +1193,6 @@ async function showDay(date, { keepStory = null } = {}) {
   cancelGlide();
   renderDayBar();
   renderLists();
-  renderSelectedPanel();
   renderNextPlace();
   renderCredits();
   writeUrl();
@@ -1151,7 +1212,6 @@ async function showDay(date, { keepStory = null } = {}) {
       onCountries: () => {
         if (controller.signal.aborted) return;
         renderLists();
-        renderSelectedPanel();
         renderNextPlace();
       },
     });
@@ -1167,7 +1227,6 @@ async function showDay(date, { keepStory = null } = {}) {
     updateMarkers();
     captureGroup();
     renderLists();
-    renderSelectedPanel();
     renderNextPlace();
     renderCounts();
     writeUrl();
@@ -1292,7 +1351,7 @@ function wireMap() {
         return;
       }
       // Choosing a marker again moves to the next PLACE on it. A marker can cover
-      // several places, and the panel shows one place at a time, so stepping by
+      // several places, and the list marks one place at a time, so stepping by
       // story would need three taps to reach the second place on a pin holding
       // two stories at the first.
       const here = state.pins.find((pin) => pin.story.id === state.selectedId)?.place?.title ?? null;
@@ -1339,11 +1398,10 @@ function wireMap() {
 /**
  * The scrolling list, on the narrow layout.
  *
- * Scrolling is watched once per frame at most, because the wide layout scrolls
- * the same element and reading every row's box is not free. The wide layout
- * takes no part in this at all: there the panel sits inside this same scrolling
- * column, so a selection that followed the scrolling would resize the column and
- * scroll it again, on and on.
+ * Scrolling is watched once per frame at most, because reading every row's box
+ * is not free. The wide layout takes no part in this at all: there the page
+ * itself scrolls, and the cards sit in several columns, so no single row is "at
+ * the top".
  */
 function wireReadingList() {
   let scrollFrame = null;
@@ -1378,7 +1436,6 @@ function wireChrome() {
     if (chosen && isSelectableDay(chosen)) showDay(chosen);
     else renderDayBar();
   });
-  elements.panelClose.addEventListener("click", clearSelection);
   elements.toggleMap.addEventListener("click", () => setMapCollapsed(!state.mapCollapsed));
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") clearSelection();
@@ -1407,6 +1464,9 @@ function wireChrome() {
   // Turning a phone sideways can swap the layout. The narrow one needs a story
   // chosen, because the map marks whatever stands at the top of the list.
   wideLayout.addEventListener?.("change", () => {
+    // A row is a folded line on a phone and an open card on a wide screen, so
+    // the rows are built again for the new layout, and placed or unplaced.
+    renderLists();
     resizeCanvas();
     draw();
     startReadingList();

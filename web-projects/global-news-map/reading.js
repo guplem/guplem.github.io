@@ -1,11 +1,12 @@
 // The reading list: how much of a story a folded row shows, which row the reader
 // has at the top of the list, and what a tap on a row does to its fold.
 //
-// Both answers belong to the phone layout. There the day and the map hold the
-// top of the screen and only the list moves under them, so the list has to say
-// what the reader is looking at: the row at the top of it is the story the map
-// marks. The rows are folded to a summary as well, because a full sentence per
-// story makes a list that only scrolls.
+// All three answers belong to the phone layout. There the day and the map hold
+// the top of the screen and only the list moves under them, so the list has to
+// say what the reader is looking at: the row at the top of it is the story the
+// map marks. The rows are folded to a summary as well, because a full sentence
+// per story makes a list that only scrolls. The wide layout shows every card
+// open and uses none of these.
 //
 // Nothing here touches the DOM. The caller measures the rows and passes the
 // numbers in, which is what lets `bun test` run this with no browser.
@@ -79,12 +80,11 @@ export function topmostRow(rows, scrollTop, slack = ROW_SLACK) {
  *     also the row the map marks, so a tap on an open row is a request to go
  *     back to it. Folding it away takes the words the reader asked for. The
  *     chevron is what folds a row.
- *   - **The wide layout leaves the row folded.** There the panel above the list
- *     already prints every story at the chosen place, in full, so unfolding the
- *     row too writes the same story twice on one screen.
+ *   - **The wide layout has nothing to unfold.** There every card is always
+ *     open, so the tap only chooses the story.
  *
  * @param {object} row
- * @param {boolean} row.wide the layout that shows the panel beside the map
+ * @param {boolean} row.wide the layout that shows every card open
  * @param {boolean} row.open the row is unfolded already
  * @returns {boolean} true when the tap has to unfold the row
  */

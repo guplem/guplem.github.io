@@ -525,19 +525,19 @@ main {
   color: var(--accent-ink);
 }
 
-/* The way to the other places on the chosen pin. The wide layout says this in
-   the panel, so only a phone shows the button, and it stands over the map
-   rather than in the layout: the reader scrolling the list makes it come and
-   go, and a box in the layout would move the list they are reading.
+/* The way to the other places on the chosen pin. Both layouts show it, and it
+   stands over the map rather than in the layout: the reader scrolling the list
+   makes it come and go, and a box in the layout would move the list they are
+   reading.
 
-   It stands in the bottom LEFT corner, which is the corner a thumb reaches on a
-   phone and the one furthest from the zoom buttons above the other side.
-
-   The pill stands in that corner too, and the two never share it: on a phone the
+   On a phone it stands in the bottom LEFT corner, which is the corner a thumb
+   reaches and the one furthest from the zoom buttons on the other side. The
+   pill stands in that corner too, and the two never share it: on a phone the
    pill only ever says that the day is loading, is empty, or could not be
    reached, and each of those states has no pin at all, so nothing is chosen and
    this button is hidden. Give the pill anything to say about a loaded day and
-   these two will overlap. */
+   these two will overlap. The wide layout moves the button to the bottom right
+   (see its own block below). */
 .next-place {
   display: none;
   position: absolute;
@@ -555,81 +555,12 @@ main {
   cursor: pointer;
 }
 
-/* --- the open story ------------------------------------------------------- */
-
-.selected {
-  position: relative;
-  margin: 0 0 1rem;
-  padding: 0.9rem 1rem 1rem;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-}
-
-.selected-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding-bottom: 0.7rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.selected-label {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.selected-heading {
-  margin: 0.1rem 0 0;
-  color: var(--text);
-  font-size: 1.1rem;
-  line-height: 1.25;
-}
-
-.selected-count {
-  margin: 0.15rem 0 0;
-  color: var(--accent-ink);
-  font-size: 0.82rem;
-}
-
-.selected-note {
-  margin: 0.35rem 0 0;
-  color: var(--muted);
-  font-size: 0.8rem;
-  line-height: 1.4;
-}
-
-.selected-close {
-  width: 2rem;
-  height: 2rem;
-  flex: 0 0 auto;
-  border-color: transparent;
-  background: transparent;
-}
-
-/* One story per block, separated by a rule rather than a card, so a location
-   holding five stories reads as one panel and not as five loose boxes. */
-.selected-story {
-  padding: 0.85rem 0 0;
-}
-
-.selected-story + .selected-story {
-  margin-top: 0.85rem;
-  border-top: 1px solid var(--border);
-}
-
 /* --- the category chip ---------------------------------------------------- */
 
 /* The portal's own grouping of the day, as an icon and a name. It stands on the
    row's first line, so a folded story still says what kind of story it is, and
-   it widens to the category's full name when the row opens. The same chip heads
-   a story in the panel, where there is always room for the full name.
+   it widens to the category's full name when the row opens. A card on a wide
+   screen is always open, so there it always carries the full name.
 
    It is deliberately quieter than the place beside it. The icon carries the
    colour and the name is muted, so the chip is read second and the row still
@@ -661,22 +592,6 @@ main {
   stroke-width: 1.9;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-.selected-story .item-category {
-  margin-bottom: 0.45rem;
-}
-
-.story-heading {
-  margin: 0 0 0.35rem;
-  color: var(--text);
-  font-size: 0.98rem;
-  line-height: 1.3;
-}
-
-.story-text {
-  margin: 0 0 0.55rem;
-  font-size: 0.93rem;
 }
 
 .story-sources {
@@ -766,8 +681,8 @@ main {
 
    Two rules decide that shape, and breaking either one is visible:
 
-   - **The frame is drawn INSIDE the box, never outside it.** The reading column
-     scrolls, so it carries `overflow-y: auto`, and CSS then computes
+   - **The frame is drawn INSIDE the box, never outside it.** On a phone the
+     reading column scrolls, so it carries `overflow-y: auto`, and CSS then computes
      `overflow-x: auto` as well: anything painted outside a row is cut off at
      the column's left and right edges. An outer `0 0 0 1px` ring used to sit
      here and was cut on both sides, while the top and the bottom of it showed.
@@ -831,8 +746,7 @@ main {
 }
 
 /* The rest of the story, which the row shows only once the reader opens it.
-   On a phone this is the only way to the sources, because that layout has no
-   panel. */
+   On a phone this is the only way to the sources. A wide card always shows it. */
 .item-more {
   padding: 0.15rem 0.85rem 0;
 }
@@ -994,12 +908,6 @@ main {
     overscroll-behavior: contain;
   }
 
-  /* No panel on a phone. The rows open in place instead, because a panel that
-     rewrote itself while the reader scrolled would move the list under them. */
-  .selected {
-    display: none;
-  }
-
   .footer {
     /* Also the room the list needs to scroll. The last story can only reach the
        top of the screen, and so be the one the map marks, when something below
@@ -1011,19 +919,68 @@ main {
 
 /* --- wide screens --------------------------------------------------------- */
 
+/* The map in the top left corner, spanning two columns, and every story as an
+   open card in the columns around it and under it. `app.js` places each card in
+   the shortest column (`masonry.js`, ADR 0006): it sets the stage's width, each
+   card's width, left and top, and the height of each list, because a placed card
+   takes no room of its own. Before that runs, the cards read as one column. */
 @media (min-width: 60rem) {
   main {
-    grid-template-columns: minmax(0, 1.65fr) minmax(19rem, 1fr);
-    align-items: start;
+    display: grid;
+    gap: 0;
   }
 
-  /* The reading column follows the page down, so a pin chosen after scrolling
-     still shows its story without a jump back up. */
+  /* The stage and the reading column share one grid cell, so the first column
+     of cards starts level with the top of the map. The stage stands over the
+     column's empty corner; `app.js` keeps the cards out of it. */
+  .stage,
   .side {
-    position: sticky;
-    top: 1rem;
-    max-height: calc(100vh - 2rem);
-    overflow-y: auto;
-    padding-right: 0.25rem;
+    grid-area: 1 / 1;
+  }
+
+  .stage {
+    position: relative;
+    z-index: 1;
+    align-self: start;
+  }
+
+  .stories {
+    display: block;
+    position: relative;
+  }
+
+  .stories .story-item {
+    position: absolute;
+  }
+
+  /* The list's own heading would stand under the map. A screen reader still
+     reads it, which is why it is hidden like `.visually-hidden`. */
+  #story-list-heading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* "Pick a pin to read a story" is for a list of folded rows. Every card here
+     is already the whole story. */
+  #list-hint {
+    display: none;
+  }
+
+  .stories + .section-heading {
+    margin-top: 2rem;
+  }
+
+  /* The pill holds the bottom left corner on a wide screen, where it carries the
+     counts, so the "next place" button takes the bottom right. */
+  .next-place:not([hidden]) {
+    display: block;
+    left: auto;
+    right: 0.6rem;
   }
 }
