@@ -11,6 +11,7 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
 - **One folder per project** -- all assets live inside the project folder
 - **Self-contained** -- own HTML, CSS, JS. No shared dependencies with the main site or other projects. The only imports allowed from outside a project's folder are `../cloud-storage/` (root ADR 0016) and `../online-sync/` (root ADR 0017)
 - **No build tools, no frameworks** -- vanilla HTML/CSS/JS preferred
+- **Tab icon** -- every HTML page declares a `<link rel="icon">` (an inline SVG `data:` URI is fine), because the site has no `/favicon.ico`. `scripts/webProjectIcons.test.js` enforces this
 - **Works standalone** -- each project should work by opening its HTML file directly or via any HTTP server
 
 ## The Index Page (`index.html`)

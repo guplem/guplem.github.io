@@ -63,6 +63,7 @@ Create `web-projects/<PROJECT_SLUG>/` with:
 
 1. **`index.html`** - HTML boilerplate (the standard starting HTML) following patterns from existing web-projects. Include:
    - Proper `<title>` and meta tags
+   - A tab icon: a `<link rel="icon">` with an inline 32x32 SVG `data:` URI in the project's own colours (copy the shape of an existing one, for example `unit-converter`). `scripts/webProjectIcons.test.js` fails without it.
    - Link to local CSS
    - Script tag with `type="module"` and `defer`
 
