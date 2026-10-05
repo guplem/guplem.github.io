@@ -1,0 +1,19 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Misceallaneous", "Web"],
+  "date": "2026",
+  "title": "pskill",
+  "image": "resources/images/projects/pskill.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Agent skills as programs, not long text\" above the pskill viewer, which draws the implement-issue skill as a graph of steps next to the details of one step",
+  "description": [
+    "*pskill* is an **open-source tool** that runs coding-agent skills as **programs, not long text**. A skill becomes a **typed YAML graph** of steps. A small runner hands the agent one step at a time and checks each answer, so the agent cannot skip a step or lose a value.",
+    "I designed the format, the runner and the [**visual viewer**](https://triunitystudios.com/pskill/), which draws each skill as a graph and replays every run in the browser. It works in **Claude Code** and **Codex**, and installs with one command.",
+    "Skills carry their own tests, which run with no AI model, and the project holds **100% test coverage**."
+  ],
+  "skills": ["Vibe Coded", "Architecture", "AI Integration", "Automation", "TDD"],
+  "links": [
+    { "url": "https://triunitystudios.com/pskill/" },
+    { "type": "github", "url": "https://github.com/guplem/pskill" }
+  ]
+}
