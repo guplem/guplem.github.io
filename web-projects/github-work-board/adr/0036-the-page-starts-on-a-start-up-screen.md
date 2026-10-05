@@ -43,10 +43,19 @@ steps, in `messages.js` as `BOOT_STEPS`:
 code that would set it is the thing being waited for. The words live in
 `BOOT_STEPS` as well, and a test keeps the two copies the same.
 
-**The bar fills step by step. It never slides on its own, and it never starts
+**The bar fills step by step. It never slides on its own, and it never rests
 empty.** A bar that moves without being told anything says nothing about how far
 along the page is, and a bar at zero reads as a page that has not started. Each
 step slides the bar to its mark, over 0.45 seconds.
+
+**The first step slides in too.** The first mark used to be the bar's width in
+`style.css`, so the browser painted it a third full, and on a fast load it read
+as frozen. Now the bar is empty in `style.css`. The script under the bar in
+`index.html` reads the bar's width, which makes the browser settle the empty
+bar, then sets the mark that `aria-valuenow` holds, so the change slides. A CSS
+animation from zero was tried and rejected: a step that lands while it runs
+makes the bar jump, and a transition carries on from where the bar is. A test
+ties `aria-valuenow` to the first step's mark in `messages.js`.
 
 **The bar reaches full before the screen goes.** The later steps run in one go,
 so the browser used to paint the bar at its first mark and then no bar at all:
@@ -63,7 +72,9 @@ leave the reader looking at a bar for good. A `start()` that throws says so in
 the same line, because the page cannot recover and a frozen bar explains
 nothing.
 
-**One watchdog, and it is the only script in `index.html`.** `app.js` cannot
+**One watchdog, in the only script in `index.html`.** That script also slides
+the bar to its first mark, which is the only other thing that cannot wait for
+`app.js`. `app.js` cannot
 report a failure to load itself: a module that does not resolve never runs a
 line, so the `try` around `start()` is never reached and the screen sits there
 for ever saying "Loading the board's code". A ten second timer in the page says
