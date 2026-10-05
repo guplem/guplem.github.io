@@ -73,7 +73,8 @@ stale module.
 **It hands over to the screen, not to the answer.** The reader with a token gets
 the board with its placeholders and its turning refresh button (ADR 0004,
 ADR 0029) while GitHub is asked; the reader without one gets the welcome screen.
-The bar is about this browser, and the placeholders are about GitHub.
+This bar is about this browser, and the placeholders are about GitHub. The
+thin read bar (ADR 0039) is a different bar: it shows the read of GitHub.
 
 ## Consequences
 

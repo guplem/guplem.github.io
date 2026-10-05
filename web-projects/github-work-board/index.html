@@ -168,6 +168,20 @@
   </dialog>
 
   <div class="page">
+    <!-- How far a read of GitHub has gone, pinned to the top edge of the
+         window while the placeholders are up (ADR 0039). -->
+    <div
+      id="read-bar"
+      class="read-bar"
+      role="progressbar"
+      aria-label="Reading GitHub"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="0"
+      hidden
+    >
+      <div id="read-bar-fill" class="read-bar-fill"></div>
+    </div>
     <header class="masthead">
       <div>
         <h1>
