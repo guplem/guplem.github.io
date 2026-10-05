@@ -95,6 +95,7 @@ import {
   summariseChecks,
 } from "./messages.js";
 import { CONNECTION_CHECKS, PERMISSIONS, REQUIRED_PERMISSIONS, permissionFor } from "./permissions.js";
+import { READ_STEPS, readProgress } from "./readProgress.js";
 import { DEFAULT_REFRESH, OFF, REFRESH_CHOICES, refreshDue } from "./refresh.js";
 import {
   addToken,
@@ -2254,16 +2255,20 @@ function showNotice(where, text) {
  * Every call says which permission it needed, so a failure names the permission
  * to add rather than repeating GitHub's own wording (ADR 0005).
  *
+ * @param {object} entry the token to ask.
+ * @param {() => void} [onStep] called after each call that the read waits on,
+ *   for the read bar (ADR 0039).
  * @returns {{entry: object, raw: array, rows: array}} the entry with what it
  *   learned, the raw items it returned, and what to show about it.
  */
-async function inspectToken(entry) {
+async function inspectToken(entry, onStep = () => {}) {
   const rows = [];
   const [identity, work, reviewCheck, checksCheck] = CONNECTION_CHECKS;
   let updated = { ...entry, owners: [], itemCount: 0 };
   let links = {};
 
   const viewer = await fetchViewer(entry.token);
+  onStep();
   if (!viewer.ok) {
     rows.push({ id: identity.id, label: identity.label, ok: false, detail: describeFailure({ ...viewer, need: identity.need }) });
     return { entry: updated, raw: [], rows, links, reviews: [] };
@@ -2273,6 +2278,7 @@ async function inspectToken(entry) {
   rows.push({ id: identity.id, label: identity.label, ok: true, detail: `Signed in as ${login}.` });
 
   const answer = await fetchAssignedIssues(entry.token);
+  onStep();
   if (!answer.ok) {
     rows.push({ id: work.id, label: work.label, ok: false, detail: describeFailure({ ...answer, need: work.need }) });
     return { entry: updated, raw: [], rows, links, reviews: [] };
@@ -2293,6 +2299,7 @@ async function inspectToken(entry) {
   // (ADR 0034).
   const { from: since, to: until } = rangeBounds(state.doneRange, new Date());
   const closed = await fetchFinishedWork(entry.token, since);
+  onStep();
   const finished = closed.ok ? finishedBetween(normalizeWorkItems(closed.data), since, until) : [];
   // Back to the raw rows, so the one merge in `connectAll` still de-duplicates
   // everything two tokens both see. The token's own name and count stay on its
@@ -2306,6 +2313,7 @@ async function inspectToken(entry) {
   // token that cannot answer it is not broken: the board simply shows nothing
   // from it (ADR 0013).
   const waiting = await fetchReviewRequests(entry.token);
+  onStep();
   const reviews = waiting.ok ? normalizeWorkItems(waiting.data?.items) : [];
 
   // The relationships of this token's own items, with this token: a node id
@@ -2315,7 +2323,9 @@ async function inspectToken(entry) {
     [...items, ...finished, ...reviews].map((item) => item.key),
   );
   links = linked.ok ? normalizeRelationships(linked.data) : {};
+  onStep();
   const checked = await readChecks(entry.token, links);
+  onStep();
   links = applyCheckSummaries(links, state.checksBySha);
   rows.push({
     id: work.id,
@@ -2510,14 +2520,25 @@ async function connectAll({ quiet = false } = {}) {
       setStatus("Reading GitHub...");
       showView(state.view);
       renderLoading();
+      startReadBar();
     }
 
     const checks = {};
     const everything = [];
     const waiting = [];
     let links = {};
-    for (const entry of state.tokens) {
-      const result = await inspectToken(entry);
+    let stepsDone = 0;
+    const tokenCount = state.tokens.length;
+    const step = () => {
+      stepsDone += 1;
+      if (!quiet) showReadProgress(readProgress(stepsDone, tokenCount));
+    };
+    for (const [index, entry] of state.tokens.entries()) {
+      const result = await inspectToken(entry, step);
+      // A token that stopped early skips the steps it never took, so the bar
+      // still lands where the next token starts.
+      stepsDone = (index + 1) * READ_STEPS.length;
+      if (!quiet) showReadProgress(readProgress(stepsDone, tokenCount));
       state.tokens = updateToken(state.tokens, entry.id, result.entry);
       everything.push(...result.raw);
       checks[entry.id] = result.rows;
@@ -2559,7 +2580,70 @@ async function connectAll({ quiet = false } = {}) {
   } finally {
     state.loading = false;
     renderRefreshBusy();
+    if (!quiet) finishReadBar();
   }
+}
+
+/* -------------------------------------------------------------------------- */
+/* The read bar                                                               */
+/* -------------------------------------------------------------------------- */
+
+/** How long the read bar takes to slide and to fade, as `.read-bar` says in `style.css`. */
+const READ_BAR_FILL_MS = 450;
+const READ_BAR_FADE_MS = 300;
+let readBarTimer = 0;
+
+/**
+ * Put the read bar on the top edge of the window, nearly empty.
+ *
+ * Only a read that draws placeholders shows it. A quiet read replaces a good
+ * board with another one, and the refresh button already says it is reading
+ * (ADR 0025, ADR 0029). A bar that slides across the top every minute would be
+ * motion that tells the reader nothing new (ADR 0039).
+ */
+function startReadBar() {
+  const bar = element("read-bar");
+  const fill = element("read-bar-fill");
+  if (!bar || !fill) return;
+  clearTimeout(readBarTimer);
+  delete bar.dataset.done;
+  // Straight back to the start, with no slide: a bar that slides backwards
+  // reads as work undone.
+  fill.style.transition = "none";
+  fill.style.width = "0";
+  void fill.offsetWidth;
+  fill.style.transition = "";
+  bar.hidden = false;
+  showReadProgress(readProgress(0, state.tokens.length));
+}
+
+/** Slide the read bar to `percent`. */
+function showReadProgress(percent) {
+  const bar = element("read-bar");
+  const fill = element("read-bar-fill");
+  if (!bar || !fill || bar.hidden) return;
+  fill.style.width = `${percent}%`;
+  bar.setAttribute("aria-valuenow", String(percent));
+}
+
+/**
+ * Fill the read bar, then fade it out and hide it.
+ *
+ * It runs once the board is drawn, or once a read failed: either way the read
+ * is over, and a bar left on the screen would say it is not.
+ */
+function finishReadBar() {
+  const bar = element("read-bar");
+  if (!bar || bar.hidden) return;
+  showReadProgress(100);
+  clearTimeout(readBarTimer);
+  readBarTimer = setTimeout(() => {
+    bar.dataset.done = "true";
+    readBarTimer = setTimeout(() => {
+      bar.hidden = true;
+      delete bar.dataset.done;
+    }, READ_BAR_FADE_MS);
+  }, READ_BAR_FILL_MS);
 }
 
 /* -------------------------------------------------------------------------- */

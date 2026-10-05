@@ -60,6 +60,7 @@ It is the short procedure for all of the above.
 | `filters.js` | Yes | Narrowing by kind, repository, label and person, and what to offer (ADR 0009, ADR 0028) |
 | `boardSearch.js` | Yes | The find box: an exact number, a pasted GitHub link or words, and which cards stay (ADR 0038) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
+| `readProgress.js` | Yes | How full the thin bar at the top of the window is, one step per call that a read waits on (ADR 0039) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
 | `relationships.js` | Yes | GitHub's own links between items, the children of an issue, which linked pull request an item is read from, and nesting a pull request under its issue (ADR 0010, ADR 0028) |
@@ -104,6 +105,10 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   a minute, not `core` at 5000 an hour. A new call in the connect path
   multiplies by the number of tokens and by the refresh rate. Do that
   arithmetic in `refresh.test.js` before you add one.
+- **A new `await` in `inspectToken` needs an entry in `READ_STEPS` and an
+  `onStep()` call after it.** The read bar counts those steps. Skip both and
+  nothing fails: the bar just stalls, then jumps at the end of the token
+  (ADR 0039).
 - **GraphQL is charged by the size of the query, not by the call.** The points
   come from the `first:` numbers, so raising one raises what every refresh
   costs and nothing on the page changes. `closedByPullRequestsReferences(first:
@@ -608,6 +613,7 @@ before calling it done.
 | [0036](adr/0036-the-page-starts-on-a-start-up-screen.md) | The page starts on a start-up screen, and every other screen starts hidden |
 | [0037](adr/0037-a-dot-says-how-the-checks-are-going.md) | A dot says how the checks are going, read from the Actions API |
 | [0038](adr/0038-a-search-hides-cards-and-nothing-else.md) | A search hides cards and nothing else |
+| [0039](adr/0039-a-thin-bar-says-how-far-the-read-has-gone.md) | A thin bar says how far the read has gone |
 
 ## What is not built yet
 

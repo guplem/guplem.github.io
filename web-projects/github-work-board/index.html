@@ -49,8 +49,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="321" />
-  <meta name="deploy-date" content="2026-10-04T19:35:48.000Z" />
+  <meta name="deploy-pull-request" content="322" />
+  <meta name="deploy-date" content="2026-10-05T07:08:17.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -168,6 +168,20 @@
   </dialog>
 
   <div class="page">
+    <!-- How far a read of GitHub has gone, pinned to the top edge of the
+         window while the placeholders are up (ADR 0039). -->
+    <div
+      id="read-bar"
+      class="read-bar"
+      role="progressbar"
+      aria-label="Reading GitHub"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="0"
+      hidden
+    >
+      <div id="read-bar-fill" class="read-bar-fill"></div>
+    </div>
     <header class="masthead">
       <div>
         <h1>

@@ -967,8 +967,36 @@ textarea.input {
 /* `showView` unhides the next screen the moment the board decides, while the
  * bar is still filling. This keeps that screen off the page until the start-up
  * screen is gone, so the swap happens once (ADR 0036). */
-.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #find-control, #sort-control, #refresh-control, #view-toggle) {
+.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #find-control, #sort-control, #refresh-control, #view-toggle, #read-bar) {
   display: none !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* The read bar                                                               */
+/* -------------------------------------------------------------------------- */
+
+/* How far a read of GitHub has gone, while the placeholders are up (ADR 0039).
+ * It sits on the top edge of the window, above everything, and it is thin
+ * enough to cover nothing the reader needs. It moves only when a step of the
+ * read ends, like the start-up bar. */
+.read-bar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  height: 3px;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+
+.read-bar[data-done] {
+  opacity: 0;
+}
+
+.read-bar-fill {
+  height: 100%;
+  width: 0;
+  background: hsl(var(--primary));
+  transition: width 0.45s ease-out;
 }
 
 /* -------------------------------------------------------------------------- */
