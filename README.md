@@ -41,6 +41,7 @@ Self-contained mini-apps in `web-projects/`. Browse them all in the **Playground
 
 Projects that keep something you made can save it to **one private GitHub repository you own**, shared by every project on the site, through the [Cloud storage](https://triunitystudios.com/web-projects/cloud-storage/) page linked at the bottom of the Playground. Without it, each project keeps its data in your browser only.
 
+- **`terrain-print/`** — Pick any area of the Moon, Mars or Earth and download a 3D-printable terrain model from real NASA, USGS and open elevation data: one tile, pieces that fit your printer bed, or a jigsaw puzzle in a frame, with a sea level you can raise or lower
 - **`ghana-ludo/`** — Ludo with the Ghanaian house rules: back, side and home kicks. Play alone against bots, or with friends on their own phones: they pair with a QR code and play directly to each other, with no server
 - **`ai-world-gen/`** — Describe a place and watch an AI build its map one tile at a time: a language model invents the world's vocabulary, a fast decision model (Jev) places every cell from its neighbours; bring your own OpenRouter key
 - **`github-work-board/`** — A personal work board on your GitHub issues, with private notes only you can see; the notes are saved in your browser and, through the site's cloud storage, in a private repository you own, so they follow you between devices, and the page runs with no server
