@@ -90,7 +90,8 @@ GitHub..." status line. The skeleton rule (ADR 0004) is about a list that has
 nothing in it yet, so the reader is not left looking at a gap. That is not this
 case: the board already holds a good answer, and it is replaced in place by
 another good answer. Wiping five columns to placeholders every 30 seconds
-would be the opposite of what the rule is for.
+would be the opposite of what the rule is for. The thin read bar on the top
+edge does show, because it covers nothing (ADR 0039).
 
 **Quiet is not invisible: the refresh button turns while it reads.** It is one
 icon in one corner, it holds the reader's own press off a read that is already

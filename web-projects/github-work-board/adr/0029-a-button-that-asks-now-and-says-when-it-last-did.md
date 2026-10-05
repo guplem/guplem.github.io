@@ -74,9 +74,9 @@ named `.icon-only` rather than dodged around.
 - **A press while a scheduled refresh is already running is refused, and the
   button says so rather than looking broken.** It is down and turning for the
   whole of that read, so the refusal is visible before the press instead of
-  after it. This is the one thing a scheduled read is not silent about
-  (ADR 0025): everything else about it stays quiet.
-- **The button is the board's only "reading now" sign, so it must always come
-  back up.** `connectAll` gives it back in a `finally`, which means a read that
+  after it. This and the thin read bar (ADR 0039) are the two things a
+  scheduled read is not silent about (ADR 0025): everything else about it stays
+  quiet.
+- **The button must always come back up.** `connectAll` gives it back in a `finally`, which means a read that
   fails halfway leaves a working button rather than a board that can never ask
   again.

@@ -2507,21 +2507,22 @@ async function readChecks(token, links) {
  * and skips the "Reading GitHub..." status line: the board already holds a
  * good answer, and it is replaced in place by another good answer. The
  * placeholder rule is about a list with nothing in it yet, which is not this
- * case (ADR 0004, ADR 0025).
+ * case (ADR 0004, ADR 0025). The read bar shows on every read (ADR 0039).
  */
 async function connectAll({ quiet = false } = {}) {
   if (state.tokens.length === 0) return;
   state.loading = true;
-  // The one thing a quiet read does show. Everything below runs inside a
-  // `try`, so a read that fails halfway still gives the button back.
+  // The two things a quiet read does show: the turning button and the read
+  // bar. Everything below runs inside a `try`, so a read that fails halfway
+  // still gives the button back and takes the bar away.
   renderRefreshBusy();
   try {
     if (!quiet) {
       setStatus("Reading GitHub...");
       showView(state.view);
       renderLoading();
-      startReadBar();
     }
+    startReadBar();
 
     const checks = {};
     const everything = [];
@@ -2531,14 +2532,14 @@ async function connectAll({ quiet = false } = {}) {
     const tokenCount = state.tokens.length;
     const step = () => {
       stepsDone += 1;
-      if (!quiet) showReadProgress(readProgress(stepsDone, tokenCount));
+      showReadProgress(readProgress(stepsDone, tokenCount));
     };
     for (const [index, entry] of state.tokens.entries()) {
       const result = await inspectToken(entry, step);
       // A token that stopped early skips the steps it never took, so the bar
       // still lands where the next token starts.
       stepsDone = (index + 1) * READ_STEPS.length;
-      if (!quiet) showReadProgress(readProgress(stepsDone, tokenCount));
+      showReadProgress(readProgress(stepsDone, tokenCount));
       state.tokens = updateToken(state.tokens, entry.id, result.entry);
       everything.push(...result.raw);
       checks[entry.id] = result.rows;
@@ -2580,7 +2581,7 @@ async function connectAll({ quiet = false } = {}) {
   } finally {
     state.loading = false;
     renderRefreshBusy();
-    if (!quiet) finishReadBar();
+    finishReadBar();
   }
 }
 
@@ -2596,10 +2597,10 @@ let readBarTimer = 0;
 /**
  * Put the read bar on the top edge of the window, nearly empty.
  *
- * Only a read that draws placeholders shows it. A quiet read replaces a good
- * board with another one, and the refresh button already says it is reading
- * (ADR 0025, ADR 0029). A bar that slides across the top every minute would be
- * motion that tells the reader nothing new (ADR 0039).
+ * Every read shows it, the quiet ones included: the schedule, the refresh
+ * button and a tab that comes back into view. The refresh button sits at the
+ * top of a page that scrolls away, so on its own it says nothing to a reader
+ * halfway down the board (ADR 0039).
  */
 function startReadBar() {
   const bar = element("read-bar");
@@ -2655,8 +2656,8 @@ function finishReadBar() {
  *
  * Every read turns the icon and holds the button down, whoever started it: the
  * reader's press, the schedule, or a tab that came back into view. A scheduled
- * read draws no placeholders and writes no status line (ADR 0025), so this one
- * button is the whole of what the board says while it asks. The same state
+ * read draws no placeholders and writes no status line (ADR 0025), so this
+ * button and the read bar (ADR 0039) are what the board says while it asks. The same state
  * refuses a press, so a second read never runs beside the one already going
  * (ADR 0029).
  *
