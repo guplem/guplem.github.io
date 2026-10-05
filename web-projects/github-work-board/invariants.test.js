@@ -386,6 +386,12 @@ describe("the tokens and their first calls are asked together (ADR 0040)", () =>
       expect(together).toContain(call);
     }
   });
+
+  // The browser opens the secure connection to GitHub while the scripts load,
+  // so the first call does not pay for it.
+  test("the page opens the connection to GitHub before the scripts run", () => {
+    expect(read("index.html")).toMatch(/<link rel="preconnect" href="https:\/\/api\.github\.com" crossorigin/);
+  });
 });
 
 describe("the page shows nothing it has not decided (ADR 0036)", () => {

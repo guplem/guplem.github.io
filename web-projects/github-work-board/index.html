@@ -46,6 +46,10 @@
 <!-- END GENERATED:WEB-PROJECT-META -->
   <!-- Drawn inline, so the page asks the network for nothing but GitHub. -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2318181b'/%3E%3Cg fill='%23fafafa'%3E%3Crect x='6' y='8' width='5' height='16' rx='1.5'/%3E%3Crect x='13.5' y='8' width='5' height='11' rx='1.5'/%3E%3Crect x='21' y='8' width='5' height='7' rx='1.5'/%3E%3C/g%3E%3C/svg%3E" />
+  <!-- Opens the connection to GitHub while the scripts load, so the first read
+       does not wait for it (ADR 0040). `crossorigin` matches how `fetch`
+       calls GitHub: without it the browser opens a connection that no call uses. -->
+  <link rel="preconnect" href="https://api.github.com" crossorigin />
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
