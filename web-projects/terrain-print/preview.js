@@ -22,8 +22,8 @@ export function createPreview(element) {
   controls.enableDamping = true;
   controls.dampingFactor = 0.12;
 
-  scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x1a1f2b, 1.1));
-  const sun = new THREE.DirectionalLight(0xffffff, 2.4);
+  scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x2a3040, 1.6));
+  const sun = new THREE.DirectionalLight(0xffffff, 2.6);
   scene.add(sun);
   scene.add(sun.target);
   const fill = new THREE.DirectionalLight(0x9fb8ff, 0.35);
