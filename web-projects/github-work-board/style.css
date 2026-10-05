@@ -958,7 +958,10 @@ textarea.input {
  * its mark, and `finishBoot` slides it to full before the screen goes. */
 .boot-bar-fill {
   height: 100%;
-  width: 33%;
+  /* Empty at first paint. The script under the bar in `index.html` slides it
+   * to the first mark, so the reader sees it move instead of a bar that
+   * appears a third full and looks frozen. */
+  width: 0;
   border-radius: 9999px;
   background: hsl(var(--primary));
   transition: width 0.45s ease-out;

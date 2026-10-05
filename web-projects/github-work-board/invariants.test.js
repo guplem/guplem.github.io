@@ -12,7 +12,7 @@ import { join } from "node:path";
 import { describe, expect, test } from "bun:test";
 import { DOCUMENT_PATH, RECORD_MAPS, SCHEMA_VERSION, migrate } from "./boardDocument.js";
 import { DEFAULT_REFRESH, OFF } from "./refresh.js";
-import { BOOT_STEPS } from "./messages.js";
+import { BOOT_STEPS, bootStepProgress } from "./messages.js";
 import { SORT_OPTIONS, reviewSortId } from "./sorting.js";
 import { DEFAULT_RANGE, RANGE_PRESETS, readRange } from "./doneRange.js";
 import { buildSearch, readStateFromSearch } from "./urlState.js";
@@ -386,6 +386,23 @@ describe("the page shows nothing it has not decided (ADR 0036)", () => {
       expect(rule[1]).toContain(`#${id}`);
     }
     expect(rule[2]).toContain("display: none");
+  });
+
+  // A first mark written in the stylesheet is painted already filled, and on a
+  // fast load the bar looks frozen at a third. So the bar starts empty, and
+  // the inline script slides it to the mark that the bar holds. A CSS
+  // animation was tried and rejected: a step that lands while it runs makes
+  // the bar jump, and a transition carries on from where the bar is.
+  test("the start-up bar slides in from empty, it does not appear part-filled", () => {
+    const fill = read("style.css").match(/\.boot-bar-fill\s*\{([^}]*)\}/)?.[1] ?? "";
+    expect(fill).toMatch(/\bwidth:\s*0;/);
+    expect(fill).toContain("transition: width");
+    expect(html).toContain('fill.style.width = bar.getAttribute("aria-valuenow") + "%"');
+  });
+
+  test("the mark the bar slides to is the first step's mark", () => {
+    const at = /id="boot-bar"[^>]*aria-valuenow="(\d+)"/.exec(html)?.[1];
+    expect(Number(at)).toBe(bootStepProgress(BOOT_STEPS[0].id));
   });
 });
 

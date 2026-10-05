@@ -241,7 +241,8 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
 - **A module that fails to load leaves the page on the start-up screen for
   ever.** Nothing in `app.js` runs, so the `try` around `start()` never sees it.
   The one inline script in `index.html` is the watchdog that says so after ten
-  seconds. Do not delete it as "the page has no inline scripts" (ADR 0036).
+  seconds, and it also slides the start-up bar from empty to its first mark.
+  Do not delete it as "the page has no inline scripts" (ADR 0036).
 - **A fine-grained token belongs to one owner**, your account or one
   organisation, and cannot see the other's repositories whatever permissions it
   carries. The board therefore holds a **list** of tokens, asks every one, and
