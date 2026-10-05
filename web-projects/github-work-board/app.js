@@ -96,7 +96,7 @@ import {
   summariseChecks,
 } from "./messages.js";
 import { CONNECTION_CHECKS, PERMISSIONS, REQUIRED_PERMISSIONS, permissionFor } from "./permissions.js";
-import { READ_STEPS, readProgress, readingNow } from "./readProgress.js";
+import { READ_STEPS, readProgress, readingNow, stepsDone } from "./readProgress.js";
 import { DEFAULT_REFRESH, OFF, REFRESH_CHOICES, refreshDue } from "./refresh.js";
 import {
   addToken,
@@ -2261,11 +2261,18 @@ function showNotice(where, text) {
  * Every call says which permission it needed, so a failure names the permission
  * to add rather than repeating GitHub's own wording (ADR 0005).
  *
+ * The first four calls go together, because none of them needs another's
+ * answer. The relationships need all of them, and the checks need the
+ * relationships, so those two wait (ADR 0040). A token that fails the first
+ * call has spent three more calls for nothing, which is the price of not
+ * waiting on it.
+ *
  * @param {object} entry the token to ask.
- * @param {() => void} [onStep] called after each call that the read waits on,
- *   for the read bar (ADR 0039).
- * @returns {{entry: object, raw: array, rows: array}} the entry with what it
- *   learned, the raw items it returned, and what to show about it.
+ * @param {(step: string) => void} [onStep] called with a `READ_STEPS` name
+ *   after each call ends, for the read bar (ADR 0039).
+ * @returns {{entry: object, login: string, raw: array, rows: array}} the entry
+ *   with what it learned, who it signed in as, the raw items it returned, and
+ *   what to show about it.
  */
 async function inspectToken(entry, onStep = () => {}) {
   const rows = [];
@@ -2273,21 +2280,34 @@ async function inspectToken(entry, onStep = () => {}) {
   let updated = { ...entry, owners: [], itemCount: 0 };
   let links = {};
 
-  const viewer = await fetchViewer(entry.token);
-  onStep();
+  // What landed in the days the last column is about. A second question,
+  // because the first one asks only for open work and a merged pull request is
+  // closed (ADR 0017). A token that cannot answer it costs the board nothing
+  // but an empty last column. The range is the reader's, and defaults to today
+  // (ADR 0034).
+  const { from: since, to: until } = rangeBounds(state.doneRange, new Date());
+  const stepWhenDone = (step, request) =>
+    request.then((answer) => {
+      onStep(step);
+      return answer;
+    });
+  const [viewer, answer, closed, waiting] = await Promise.all([
+    stepWhenDone("identity", fetchViewer(entry.token)),
+    stepWhenDone("open-work", fetchAssignedIssues(entry.token)),
+    stepWhenDone("finished-work", fetchFinishedWork(entry.token, since)),
+    stepWhenDone("reviews", fetchReviewRequests(entry.token)),
+  ]);
+
   if (!viewer.ok) {
     rows.push({ id: identity.id, label: identity.label, ok: false, detail: describeFailure({ ...viewer, need: identity.need }) });
-    return { entry: updated, raw: [], rows, links, reviews: [] };
+    return { entry: updated, login: "", raw: [], rows, links, reviews: [] };
   }
   const login = viewer.data?.login ?? "";
-  state.login = state.login ?? login;
   rows.push({ id: identity.id, label: identity.label, ok: true, detail: `Signed in as ${login}.` });
 
-  const answer = await fetchAssignedIssues(entry.token);
-  onStep();
   if (!answer.ok) {
     rows.push({ id: work.id, label: work.label, ok: false, detail: describeFailure({ ...answer, need: work.need }) });
-    return { entry: updated, raw: [], rows, links, reviews: [] };
+    return { entry: updated, login, raw: [], rows, links, reviews: [] };
   }
   const raw = Array.isArray(answer.data) ? answer.data : [];
   const items = normalizeWorkItems(raw);
@@ -2298,14 +2318,6 @@ async function inspectToken(entry, onStep = () => {}) {
   const owners = ownersOf(items.map((item) => item.repository));
   updated = { ...updated, owners, itemCount: items.length };
 
-  // What landed in the days the last column is about. A second question,
-  // because the first one asks only for open work and a merged pull request is
-  // closed (ADR 0017). A token that cannot answer it costs the board nothing
-  // but an empty last column. The range is the reader's, and defaults to today
-  // (ADR 0034).
-  const { from: since, to: until } = rangeBounds(state.doneRange, new Date());
-  const closed = await fetchFinishedWork(entry.token, since);
-  onStep();
   const finished = closed.ok ? finishedBetween(normalizeWorkItems(closed.data), since, until) : [];
   // Back to the raw rows, so the one merge in `connectAll` still de-duplicates
   // everything two tokens both see. The token's own name and count stay on its
@@ -2318,8 +2330,6 @@ async function inspectToken(entry, onStep = () => {}) {
   // Waiting on you is not assigned to you, so it takes its own question. A
   // token that cannot answer it is not broken: the board simply shows nothing
   // from it (ADR 0013).
-  const waiting = await fetchReviewRequests(entry.token);
-  onStep();
   const reviews = waiting.ok ? normalizeWorkItems(waiting.data?.items) : [];
 
   // The relationships of this token's own items, with this token: a node id
@@ -2329,9 +2339,9 @@ async function inspectToken(entry, onStep = () => {}) {
     [...items, ...finished, ...reviews].map((item) => item.key),
   );
   links = linked.ok ? normalizeRelationships(linked.data) : {};
-  onStep();
+  onStep("relationships");
   const checked = await readChecks(entry.token, links);
-  onStep();
+  onStep("checks");
   links = applyCheckSummaries(links, state.checksBySha);
   rows.push({
     id: work.id,
@@ -2368,7 +2378,7 @@ async function inspectToken(entry, onStep = () => {}) {
           : checked.detail,
   });
 
-  return { entry: updated, raw: [...raw, ...finishedRaw], rows, links, reviews };
+  return { entry: updated, login, raw: [...raw, ...finishedRaw], rows, links, reviews };
 }
 
 /**
@@ -2518,7 +2528,7 @@ async function readChecks(token, links) {
 async function connectAll({ quiet = false } = {}) {
   if (state.tokens.length === 0) return;
   state.loading = true;
-  state.reading = { stepsDone: 0, tokenCount: state.tokens.length };
+  state.reading = { done: state.tokens.map(() => []), tokenCount: state.tokens.length };
   // The two things a quiet read does show: the turning button and the read
   // bar. Everything below runs inside a `try`, so a read that fails halfway
   // still gives the button back and takes the bar away.
@@ -2535,23 +2545,38 @@ async function connectAll({ quiet = false } = {}) {
     const everything = [];
     const waiting = [];
     let links = {};
-    let stepsDone = 0;
-    const tokenCount = state.tokens.length;
+    const asked = state.tokens;
+    const tokenCount = asked.length;
+    // The steps each token has finished, in list order, for the bar and the
+    // tooltip. The tokens read at the same time, so each one fills its own.
+    const done = asked.map(() => []);
     const showStep = () => {
-      state.reading = { stepsDone, tokenCount };
-      showReadProgress(readProgress(stepsDone, tokenCount));
+      state.reading = { done, tokenCount };
+      showReadProgress(readProgress(stepsDone(done), tokenCount));
       renderRefreshTip();
     };
-    const step = () => {
-      stepsDone += 1;
-      showStep();
-    };
-    for (const [index, entry] of state.tokens.entries()) {
-      const result = await inspectToken(entry, step);
-      // A token that stopped early skips the steps it never took, so the bar
-      // still lands where the next token starts.
-      stepsDone = (index + 1) * READ_STEPS.length;
-      showStep();
+    // Every token at once: none needs another's answer, and one after another
+    // made a reader with three tokens wait three times as long (ADR 0040).
+    const results = await Promise.all(
+      state.tokens.map(async (entry, index) => {
+        const result = await inspectToken(entry, (step) => {
+          done[index].push(step);
+          showStep();
+        });
+        // A token that stopped early skips the steps it never took, so the bar
+        // does not stall on steps that will never end.
+        done[index] = [...READ_STEPS];
+        showStep();
+        return result;
+      }),
+    );
+    // Merged in the order of the list, never in the order the answers came, so
+    // the same two tokens always resolve a shared item the same way.
+    for (const [index, entry] of asked.entries()) {
+      const result = results[index];
+      // The first token in the list that answered names the reader, as it did
+      // when the tokens read one after another.
+      state.login = state.login ?? (result.login || null);
       state.tokens = updateToken(state.tokens, entry.id, result.entry);
       everything.push(...result.raw);
       checks[entry.id] = result.rows;
@@ -2691,8 +2716,8 @@ function renderRefreshBusy() {
  * Say in the refresh button's tooltip what the board is doing.
  *
  * While a read runs, the words name the step it waits on and, with several
- * tokens, which token. Otherwise they say how long ago the board last read
- * (ADR 0029). An open tooltip takes the new words at once, so a reader who
+ * tokens, which tokens are still on it (ADR 0040). Otherwise they say how long
+ * ago the board last read (ADR 0029). An open tooltip takes the new words at once, so a reader who
  * rests the pointer on the button watches the read move (ADR 0039).
  */
 function renderRefreshTip() {
@@ -2700,11 +2725,13 @@ function renderRefreshTip() {
   if (!button) return;
   let words = describeLastRefresh(state.lastReadAt, Date.now());
   if (state.loading && state.reading) {
-    const { tokenCount } = state.reading;
-    const now = readingNow(state.reading.stepsDone, tokenCount);
-    const entry = state.tokens[now.tokenIndex];
-    const tokenName = entry ? entry.name || suggestedTokenName(entry, now.tokenIndex) : "";
-    words = describeReading({ ...now, tokenCount, tokenName });
+    const { done, tokenCount } = state.reading;
+    const now = readingNow(done);
+    const waiting = now.waiting.map((index) => {
+      const entry = state.tokens[index];
+      return { index, name: entry ? entry.name || suggestedTokenName(entry, index) : "" };
+    });
+    words = describeReading({ step: now.step, waiting, tokenCount });
   }
   explain(button, words);
   if (tipFor === button) showTip(button);

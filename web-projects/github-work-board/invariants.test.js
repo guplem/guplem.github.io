@@ -366,6 +366,34 @@ describe("the busy refresh button says what the read waits on (ADR 0039)", () =>
   });
 });
 
+describe("the tokens and their first calls are asked together (ADR 0040)", () => {
+  const app = read("app.js");
+
+  // A loop with an `await` inside reads exactly like this one did, and it makes
+  // every token wait for the one before it. Nothing fails: the board is only
+  // slower, by one whole read for each token.
+  test("every token reads at the same time", () => {
+    const body = functionBody(app, "async function connectAll(");
+    expect(body).toMatch(/Promise\.all\(\s*state\.tokens\.map\(/);
+    expect(body).not.toMatch(/for \([^)]*state\.tokens[^)]*\)\s*\{[^}]*await inspectToken/);
+  });
+
+  // None of the first four calls needs another's answer, so none waits.
+  test("one token's first four calls go together", () => {
+    const body = functionBody(app, "async function inspectToken(");
+    const together = body.match(/await Promise\.all\(\[([\s\S]*?)\]\)/)?.[1] ?? "";
+    for (const call of ["fetchViewer(", "fetchAssignedIssues(", "fetchFinishedWork(", "fetchReviewRequests("]) {
+      expect(together).toContain(call);
+    }
+  });
+
+  // The browser opens the secure connection to GitHub while the scripts load,
+  // so the first call does not pay for it.
+  test("the page opens the connection to GitHub before the scripts run", () => {
+    expect(read("index.html")).toMatch(/<link rel="preconnect" href="https:\/\/api\.github\.com" crossorigin/);
+  });
+});
+
 describe("the page shows nothing it has not decided (ADR 0036)", () => {
   const html = read("index.html");
 

@@ -300,6 +300,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0037](web-projects/github-work-board/adr/0037-a-dot-says-how-the-checks-are-going.md) | A dot says how the checks are going, read from the Actions API |
 | [github-work-board 0038](web-projects/github-work-board/adr/0038-a-search-hides-cards-and-nothing-else.md) | A search hides cards and nothing else |
 | [github-work-board 0039](web-projects/github-work-board/adr/0039-a-thin-bar-says-how-far-the-read-has-gone.md) | A thin bar says how far the read has gone |
+| [github-work-board 0040](web-projects/github-work-board/adr/0040-the-tokens-and-their-first-calls-are-asked-together.md) | The tokens, and their first calls, are asked together |
 | [wildfire-watch 0001](web-projects/wildfire-watch/adr/0001-demo-data-behind-the-real-data-shapes.md) | Keep a demo mode on invented data, in the same shapes as the live data |
 | [wildfire-watch 0002](web-projects/wildfire-watch/adr/0002-copy-the-fire-files-with-a-scheduled-action.md) | Copy the fire files with a scheduled GitHub Action, and read the copy |
 | [wildfire-watch 0003](web-projects/wildfire-watch/adr/0003-live-mode-reads-keyless-sources-and-names-each-one.md) | The live mode reads only keyless sources, and each layer names its source |

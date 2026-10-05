@@ -6,31 +6,52 @@ import {
   READ_STEPS,
   readProgress,
   readingNow,
+  stepsDone,
 } from "./readProgress.js";
 
-describe("which step a read is on, for the refresh button's tooltip (ADR 0039)", () => {
-  // `stepsDone` counts the steps that ended, so the one running is the next.
-  test("a read that has just started is asking who the first token belongs to", () => {
-    expect(readingNow(0, 2)).toEqual({ step: READ_STEPS[0], tokenIndex: 0 });
+describe("which step a read waits on, for the refresh button's tooltip (ADR 0039, ADR 0040)", () => {
+  // Every token reads at the same time, so "the step" is the earliest one that
+  // some token has not finished, and the tokens still on it are the ones named.
+  test("a read that has just started waits on who every token belongs to", () => {
+    expect(readingNow([[], []])).toEqual({ step: READ_STEPS[0], waiting: [0, 1] });
   });
 
-  test("the steps run token by token", () => {
-    expect(readingNow(1, 2)).toEqual({ step: READ_STEPS[1], tokenIndex: 0 });
-    expect(readingNow(READ_STEPS.length, 2)).toEqual({ step: READ_STEPS[0], tokenIndex: 1 });
-    expect(readingNow(READ_STEPS.length * 2 - 1, 2)).toEqual({ step: READ_STEPS.at(-1), tokenIndex: 1 });
+  test("a token that is ahead is not named", () => {
+    expect(readingNow([READ_STEPS.slice(0, 4), ["identity"]])).toEqual({ step: "open-work", waiting: [1] });
+  });
+
+  // The first four calls of one token go together and answer in any order, so
+  // a later call can be done before an earlier one.
+  test("calls that answered out of order still leave the earliest open step", () => {
+    expect(readingNow([["reviews", "identity", "finished-work"]])).toEqual({ step: "open-work", waiting: [0] });
   });
 
   // Every call answered is not the board on the screen: the merge and the
   // render still come, and they get a step of their own.
-  test("after the last call, the board is drawing", () => {
-    expect(readingNow(READ_STEPS.length, 1)).toEqual({ step: READ_DRAWING, tokenIndex: 0 });
-    expect(readingNow(99, 2)).toEqual({ step: READ_DRAWING, tokenIndex: 1 });
+  test("after the last call of every token, the board is drawing", () => {
+    expect(readingNow([[...READ_STEPS], [...READ_STEPS]])).toEqual({ step: READ_DRAWING, waiting: [] });
   });
 
-  test("odd counts stay on a real step", () => {
-    expect(readingNow(-3, 1)).toEqual({ step: READ_STEPS[0], tokenIndex: 0 });
-    expect(readingNow(Number.NaN, 1)).toEqual({ step: READ_STEPS[0], tokenIndex: 0 });
-    expect(readingNow(0, 0)).toEqual({ step: READ_STEPS[0], tokenIndex: 0 });
+  test("odd input stays on a real step", () => {
+    expect(readingNow([])).toEqual({ step: READ_STEPS[0], waiting: [] });
+    expect(readingNow(null)).toEqual({ step: READ_STEPS[0], waiting: [] });
+    expect(readingNow([null])).toEqual({ step: READ_STEPS[0], waiting: [0] });
+  });
+});
+
+describe("how many steps a read has done, over every token (ADR 0040)", () => {
+  test("each step counts once per token, whatever order it ended in", () => {
+    expect(stepsDone([["reviews", "identity"], ["identity"]])).toBe(3);
+  });
+
+  // A step reported twice, or a name nobody knows, must not push the bar on.
+  test("a repeated or unknown step does not count", () => {
+    expect(stepsDone([["identity", "identity", "nonsense"]])).toBe(1);
+  });
+
+  test("odd input counts nothing", () => {
+    expect(stepsDone(null)).toBe(0);
+    expect(stepsDone([null])).toBe(0);
   });
 });
 
