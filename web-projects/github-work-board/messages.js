@@ -56,6 +56,33 @@ export function bootStepProgress(id) {
   return Math.round(((at < 0 ? 0 : at) + 1) * (100 / BOOT_STEPS.length));
 }
 
+/** What each step of a read waits on, as the busy refresh button's tooltip says it (ADR 0039). */
+const READ_STEP_WORDS = new Map([
+  ["identity", "Checking who the token belongs to"],
+  ["open-work", "Reading your open issues and pull requests"],
+  ["finished-work", "Reading the work you finished"],
+  ["reviews", "Reading the reviews waiting for you"],
+  ["relationships", "Reading how the items link to each other"],
+  ["checks", "Reading the checks on your pull requests"],
+]);
+
+/**
+ * What the board waits on right now, for the tooltip on the busy refresh button.
+ *
+ * Several tokens read one after another, so the line then names the token and
+ * its place in the list. One token needs no name. The drawing step asks GitHub
+ * nothing, so it names no token either.
+ */
+export function describeReading({ step, tokenIndex = 0, tokenCount = 1, tokenName = "" } = {}) {
+  if (step === "drawing") return "Drawing the board";
+  const words = READ_STEP_WORDS.get(step);
+  if (!words) return "Reading GitHub";
+  if (!(tokenCount > 1)) return words;
+  const place = `token ${tokenIndex + 1} of ${tokenCount}`;
+  const name = typeof tokenName === "string" ? tokenName.trim() : "";
+  return name === "" ? `${words}, with ${place}` : `${words}, with ${name} (${place})`;
+}
+
 // How long ago, in the units a person would say it in.
 const SINCE = [
   { unit: "day", ms: 24 * 60 * 60_000 },

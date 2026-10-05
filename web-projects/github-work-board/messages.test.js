@@ -4,6 +4,7 @@ import {
   escapeHtml,
   joinWithAnd,
   describeLastRefresh,
+  describeReading,
   noteMenuLabel,
   priorityMenuLabel,
   say,
@@ -13,6 +14,7 @@ import {
   bootStepProgress,
   bootStepWords,
 } from "./messages.js";
+import { READ_DRAWING, READ_STEPS } from "./readProgress.js";
 
 describe("summariseChecks", () => {
   const ok = (label) => ({ label, ok: true, detail: "fine" });
@@ -149,6 +151,44 @@ describe("priorityMenuLabel", () => {
   test("anything it does not know offers the mark", () => {
     expect(priorityMenuLabel("")).toBe("Not a priority");
     expect(priorityMenuLabel(null)).toBe("Not a priority");
+  });
+});
+
+describe("describeReading says what the busy refresh button is waiting on (ADR 0039)", () => {
+  test("every step of a read has its own words", () => {
+    const said = READ_STEPS.map((step) => describeReading({ step, tokenIndex: 0, tokenCount: 1 }));
+    for (const line of said) expect(line.length).toBeGreaterThan(0);
+    expect(new Set(said).size).toBe(READ_STEPS.length);
+  });
+
+  test("the last step is drawing the board, not asking GitHub", () => {
+    expect(describeReading({ step: READ_DRAWING, tokenIndex: 0, tokenCount: 1 })).toBe("Drawing the board");
+  });
+
+  // One token needs no name: there is nothing to tell it apart from.
+  test("with one token, the line names the step alone", () => {
+    expect(describeReading({ step: "open-work", tokenIndex: 0, tokenCount: 1, tokenName: "Work" })).toBe(
+      "Reading your open issues and pull requests",
+    );
+  });
+
+  // Several tokens read one after another, so the line says which one, and how
+  // far through the list it is.
+  test("with several tokens, the line names the token and where it sits", () => {
+    expect(describeReading({ step: "reviews", tokenIndex: 1, tokenCount: 3, tokenName: "Acme" })).toBe(
+      "Reading the reviews waiting for you, with Acme (token 2 of 3)",
+    );
+  });
+
+  test("a token with no name is called by its place", () => {
+    expect(describeReading({ step: "reviews", tokenIndex: 1, tokenCount: 2, tokenName: " " })).toBe(
+      "Reading the reviews waiting for you, with token 2 of 2",
+    );
+  });
+
+  // A step nobody knows must not leave the tooltip blank.
+  test("a step nobody knows still says the board is reading", () => {
+    expect(describeReading({ step: "nonsense", tokenIndex: 0, tokenCount: 1 })).toBe("Reading GitHub");
   });
 });
 
