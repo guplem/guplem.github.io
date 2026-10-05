@@ -319,7 +319,7 @@ export function meshFrame(outer, inner, floorTop, rimTop) {
 }
 
 // ---------------------------------------------------------------------------
-// Checks, used by the tests and by the app before a download.
+// Checks, used by the tests.
 
 /**
  * Every edge used exactly twice, once in each direction: a closed,
