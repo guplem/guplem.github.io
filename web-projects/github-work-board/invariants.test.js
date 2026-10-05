@@ -347,6 +347,25 @@ describe("the board says it is reading, whoever asked (ADR 0029)", () => {
   });
 });
 
+describe("the busy refresh button says what the read waits on (ADR 0039)", () => {
+  // Every disabled `.button` takes no pointer events, so the pointer falls
+  // through to the row behind it. Without this one exception the tooltip
+  // never opens during a read, which is the only time it says something new,
+  // and nothing fails.
+  test("the pointer still reaches the refresh button while it is down", () => {
+    const rule = read("style.css").match(/#refresh-now:disabled\s*\{([^}]*)\}/);
+    expect(rule?.[1]).toContain("pointer-events: auto");
+  });
+
+  // The words change with each step, so they are written whenever the button's
+  // state is, and an open tooltip takes them at once.
+  test("the tooltip words follow the read", () => {
+    const app = read("app.js");
+    expect(functionBody(app, "function renderRefreshBusy(")).toContain("renderRefreshTip()");
+    expect(functionBody(app, "function renderRefreshTip(")).toContain("describeReading(");
+  });
+});
+
 describe("the page shows nothing it has not decided (ADR 0036)", () => {
   const html = read("index.html");
 

@@ -1,5 +1,38 @@
 import { describe, expect, test } from "bun:test";
-import { READ_PROGRESS_CEILING, READ_PROGRESS_FLOOR, READ_STEPS, readProgress } from "./readProgress.js";
+import {
+  READ_DRAWING,
+  READ_PROGRESS_CEILING,
+  READ_PROGRESS_FLOOR,
+  READ_STEPS,
+  readProgress,
+  readingNow,
+} from "./readProgress.js";
+
+describe("which step a read is on, for the refresh button's tooltip (ADR 0039)", () => {
+  // `stepsDone` counts the steps that ended, so the one running is the next.
+  test("a read that has just started is asking who the first token belongs to", () => {
+    expect(readingNow(0, 2)).toEqual({ step: READ_STEPS[0], tokenIndex: 0 });
+  });
+
+  test("the steps run token by token", () => {
+    expect(readingNow(1, 2)).toEqual({ step: READ_STEPS[1], tokenIndex: 0 });
+    expect(readingNow(READ_STEPS.length, 2)).toEqual({ step: READ_STEPS[0], tokenIndex: 1 });
+    expect(readingNow(READ_STEPS.length * 2 - 1, 2)).toEqual({ step: READ_STEPS.at(-1), tokenIndex: 1 });
+  });
+
+  // Every call answered is not the board on the screen: the merge and the
+  // render still come, and they get a step of their own.
+  test("after the last call, the board is drawing", () => {
+    expect(readingNow(READ_STEPS.length, 1)).toEqual({ step: READ_DRAWING, tokenIndex: 0 });
+    expect(readingNow(99, 2)).toEqual({ step: READ_DRAWING, tokenIndex: 1 });
+  });
+
+  test("odd counts stay on a real step", () => {
+    expect(readingNow(-3, 1)).toEqual({ step: READ_STEPS[0], tokenIndex: 0 });
+    expect(readingNow(Number.NaN, 1)).toEqual({ step: READ_STEPS[0], tokenIndex: 0 });
+    expect(readingNow(0, 0)).toEqual({ step: READ_STEPS[0], tokenIndex: 0 });
+  });
+});
 
 describe("the top bar says how far a read has gone (ADR 0039)", () => {
   // One entry for each call `inspectToken` waits on, in the order it waits.

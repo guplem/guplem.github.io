@@ -306,6 +306,20 @@ a:hover {
   pointer-events: none;
 }
 
+/* The refresh button is down for the whole of a read, and its tooltip says
+ * what the read waits on, so the pointer must still reach it (ADR 0039). The
+ * browser sends no click to a disabled button, and the handler refuses a
+ * press during a read as well. */
+#refresh-now:disabled {
+  pointer-events: auto;
+  cursor: progress;
+}
+
+#refresh-now:disabled:hover {
+  background: hsl(var(--background));
+  border-color: hsl(var(--border));
+}
+
 .button-primary {
   background: hsl(var(--primary));
   color: hsl(var(--primary-foreground));

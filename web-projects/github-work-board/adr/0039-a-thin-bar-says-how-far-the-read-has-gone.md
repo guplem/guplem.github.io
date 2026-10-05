@@ -36,12 +36,26 @@ with one.
   board could not see that a read was running. A quiet read still draws no
   placeholders and no status line (ADR 0025); the bar is the only thing it
   adds, and a reader who turned motion down sees it jump instead of slide.
+- **The refresh button's tooltip names the step that runs.** The bar says how
+  far the read has gone; the tooltip says what it waits on, for example
+  "Reading the reviews waiting for you, with Acme (token 2 of 3)". After the
+  last call it says "Drawing the board". `readProgress.readingNow` picks the
+  step and `messages.describeReading` writes the words. An open tooltip takes
+  each new line at once, so a reader who rests the pointer on the button
+  watches the read move. With no read running, the tooltip says when the board
+  last read, as before (ADR 0029).
+- **The pointer still reaches the busy refresh button.** Every disabled
+  `.button` takes no pointer events, so the pointer would reach the row behind
+  it and no tooltip would open. `#refresh-now:disabled` is the one exception.
+  The browser sends no click to a disabled button, and the click handler
+  refuses a press during a read too. `invariants.test.js` pins the exception.
 
 ## Consequences
 
-- A new call in `inspectToken` needs a new entry in `READ_STEPS` and an
-  `onStep()` call after its `await`. Without both, the bar still works but
-  jumps at the end of each token.
+- A new call in `inspectToken` needs a new entry in `READ_STEPS`, an
+  `onStep()` call after its `await`, and words in `READ_STEP_WORDS` in
+  `messages.js`. Without them, the bar still works but jumps at the end of
+  each token, and the tooltip says "Reading GitHub" for that step.
 - The checks step is one step, although it makes one call per commit in
   parallel. That keeps the count fixed and known before the read starts.
 - The steps are not equal in time. The bar shows how many steps are done, not

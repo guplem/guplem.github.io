@@ -87,6 +87,7 @@ import {
   bootStepProgress,
   bootStepWords,
   describeLastRefresh,
+  describeReading,
   escapeHtml,
   noteMenuLabel,
   priorityMenuLabel,
@@ -95,7 +96,7 @@ import {
   summariseChecks,
 } from "./messages.js";
 import { CONNECTION_CHECKS, PERMISSIONS, REQUIRED_PERMISSIONS, permissionFor } from "./permissions.js";
-import { READ_STEPS, readProgress } from "./readProgress.js";
+import { READ_STEPS, readProgress, readingNow } from "./readProgress.js";
 import { DEFAULT_REFRESH, OFF, REFRESH_CHOICES, refreshDue } from "./refresh.js";
 import {
   addToken,
@@ -256,6 +257,9 @@ const state = {
   // (ADR 0038).
   findText: "",
   loading: false,
+  // How far the read in progress has gone, for the busy refresh button's
+  // tooltip. Null when no read runs (ADR 0039).
+  reading: null,
 };
 
 
@@ -1149,7 +1153,9 @@ function showTip(target) {
   const tip = element("tooltip");
   tipFor = target;
   tip.textContent = words;
-  tip.showPopover();
+  // An open tooltip can take new words, as the refresh button's does during a
+  // read. A second `showPopover` on an open one throws.
+  if (!tip.matches(":popover-open")) tip.showPopover();
   const at = tipPlacement(target.getBoundingClientRect(), tip.getBoundingClientRect(), {
     width: window.innerWidth,
     height: window.innerHeight,
@@ -2512,6 +2518,7 @@ async function readChecks(token, links) {
 async function connectAll({ quiet = false } = {}) {
   if (state.tokens.length === 0) return;
   state.loading = true;
+  state.reading = { stepsDone: 0, tokenCount: state.tokens.length };
   // The two things a quiet read does show: the turning button and the read
   // bar. Everything below runs inside a `try`, so a read that fails halfway
   // still gives the button back and takes the bar away.
@@ -2530,16 +2537,21 @@ async function connectAll({ quiet = false } = {}) {
     let links = {};
     let stepsDone = 0;
     const tokenCount = state.tokens.length;
+    const showStep = () => {
+      state.reading = { stepsDone, tokenCount };
+      showReadProgress(readProgress(stepsDone, tokenCount));
+      renderRefreshTip();
+    };
     const step = () => {
       stepsDone += 1;
-      showReadProgress(readProgress(stepsDone, tokenCount));
+      showStep();
     };
     for (const [index, entry] of state.tokens.entries()) {
       const result = await inspectToken(entry, step);
       // A token that stopped early skips the steps it never took, so the bar
       // still lands where the next token starts.
       stepsDone = (index + 1) * READ_STEPS.length;
-      showReadProgress(readProgress(stepsDone, tokenCount));
+      showStep();
       state.tokens = updateToken(state.tokens, entry.id, result.entry);
       everything.push(...result.raw);
       checks[entry.id] = result.rows;
@@ -2580,6 +2592,7 @@ async function connectAll({ quiet = false } = {}) {
     applyAutoRefresh();
   } finally {
     state.loading = false;
+    state.reading = null;
     renderRefreshBusy();
     finishReadBar();
   }
@@ -2671,6 +2684,30 @@ function renderRefreshBusy() {
   button.disabled = busy;
   if (busy) button.setAttribute("aria-busy", "true");
   else button.removeAttribute("aria-busy");
+  renderRefreshTip();
+}
+
+/**
+ * Say in the refresh button's tooltip what the board is doing.
+ *
+ * While a read runs, the words name the step it waits on and, with several
+ * tokens, which token. Otherwise they say how long ago the board last read
+ * (ADR 0029). An open tooltip takes the new words at once, so a reader who
+ * rests the pointer on the button watches the read move (ADR 0039).
+ */
+function renderRefreshTip() {
+  const button = element("refresh-now");
+  if (!button) return;
+  let words = describeLastRefresh(state.lastReadAt, Date.now());
+  if (state.loading && state.reading) {
+    const { tokenCount } = state.reading;
+    const now = readingNow(state.reading.stepsDone, tokenCount);
+    const entry = state.tokens[now.tokenIndex];
+    const tokenName = entry ? entry.name || suggestedTokenName(entry, now.tokenIndex) : "";
+    words = describeReading({ ...now, tokenCount, tokenName });
+  }
+  explain(button, words);
+  if (tipFor === button) showTip(button);
 }
 
 /**
@@ -2960,13 +2997,11 @@ function start() {
   // heard anything, and it is read at the moment the reader asks rather than
   // written once: a label that says "just now" for an hour is worse than none
   // (ADR 0029).
+  // While a read runs, it says what the read waits on instead (ADR 0039).
   const refreshNow = element("refresh-now");
-  const sayWhen = () => {
-    explain(refreshNow, describeLastRefresh(state.lastReadAt, Date.now()));
-  };
-  refreshNow.addEventListener("mouseenter", sayWhen);
-  refreshNow.addEventListener("focus", sayWhen);
-  sayWhen();
+  refreshNow.addEventListener("pointerenter", renderRefreshTip);
+  refreshNow.addEventListener("focus", renderRefreshTip);
+  renderRefreshTip();
 
   refreshNow.addEventListener("click", async () => {
     // Nothing to ask with, or the board is already asking: a second read
@@ -2985,7 +3020,6 @@ function start() {
     } finally {
       state.refreshResting = false;
       renderRefreshBusy();
-      sayWhen();
     }
   });
 
