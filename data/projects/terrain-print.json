@@ -1,0 +1,19 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Terrain Print",
+  "description": [
+    "*Terrain Print* is a **web tool that turns any area of the Moon, Mars or Earth into a 3D-printable model**: one tile, pieces that fit the printer bed, or a **jigsaw puzzle** in a frame.",
+    "I set the bar for the data: **real NASA, USGS and open elevation data**, read at the resolution the print can show, with a **sea level you can raise or lower** on Earth and Mars.",
+    "Every mesh is **checked to be watertight by tests written before the code**."
+  ],
+  "skills": ["Vibe Coded", "Architecture", "API Integration", "UI/UX"],
+  "image": "resources/images/projects/terrainPrint.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Print the Moon, Mars or Earth.\" above a 3D preview of Tenerife as a 16-piece jigsaw puzzle in a round frame, with a blue sea, green land and a white snow cap",
+  "links": [
+    { "url": "web-projects/terrain-print/" },
+    { "type": "github", "url": "https://github.com/guplem/guplem.github.io/tree/main/web-projects/terrain-print" }
+  ]
+}
