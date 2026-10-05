@@ -29,6 +29,8 @@ worse than no label, because it is an answer and it is wrong.
 anything under ten seconds is "just now", because a number of seconds is noise
 to somebody who pressed the button a moment ago. `describeLastRefresh` in
 `messages.js` holds it and is tested, including the clock that moves backwards.
+While a read runs, the same tooltip names the step that the read waits on
+instead (ADR 0039).
 
 **It goes down for every read, whoever started it.** The reader's press, the
 schedule (ADR 0025) and a tab coming back into view all turn the icon and hold
