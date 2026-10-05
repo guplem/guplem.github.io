@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="description" content="Pick any area of the Moon, Mars or Earth on a map and download a 3D-printable terrain model from real NASA, USGS and open elevation data: one tile, pieces that fit your printer bed, or a jigsaw puzzle, with an optional frame and a sea you can raise or lower." />
+  <title>Terrain Print · 3D-Print the Moon, Mars and Earth · Guillem Poy</title>
+  <link rel="canonical" href="https://triunitystudios.com/web-projects/terrain-print/" />
+  <!-- Search-engine and link-preview data, from data/projects/. Never hand-edit:
+       written by `bun scripts/generateWebProjectMeta.js` (root ADR 0010). -->
+  <!-- BEGIN GENERATED:WEB-PROJECT-META -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Terrain Print" />
+  <meta property="og:description" content="Terrain Print is a web tool that turns any area of the Moon, Mars or Earth into a 3D-printable model: one tile, pieces that fit the printer bed, or a jigsaw puzzle in a frame." />
+  <meta property="og:url" content="https://triunitystudios.com/web-projects/terrain-print/" />
+  <meta property="og:image" content="https://triunitystudios.com/resources/images/projects/terrainPrint.webp" />
+  <meta property="og:image:alt" content="Headline &quot;Print the Moon, Mars or Earth.&quot; above a 3D preview of Tenerife as a 16-piece jigsaw puzzle in a round frame, with a blue sea, green land and a white snow cap" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Terrain Print",
+    "url": "https://triunitystudios.com/web-projects/terrain-print/",
+    "description": "Terrain Print is a web tool that turns any area of the Moon, Mars or Earth into a 3D-printable model: one tile, pieces that fit the printer bed, or a jigsaw puzzle in a frame.",
+    "image": "https://triunitystudios.com/resources/images/projects/terrainPrint.webp",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Guillem Poy",
+      "url": "https://triunitystudios.com/"
+    }
+  }
+  </script>
+<!-- END GENERATED:WEB-PROJECT-META -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b1220'/%3E%3Ccircle cx='16' cy='16' r='11' fill='%23b9b8b1'/%3E%3Cpath d='M6 21l6-7 4 4 3-3 7 6a11 11 0 0 1-20 0z' fill='%234f9be8'/%3E%3Ccircle cx='12' cy='11' r='2' fill='%23898880'/%3E%3C/svg%3E" />
+  <!-- Which pull request published this file. Never hand-edit: written by
+       `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
+  <!-- BEGIN GENERATED:DEPLOY -->
+  <meta name="deploy-pull-request" content="328" />
+  <meta name="deploy-date" content="2026-10-05T17:05:40.000Z" />
+<!-- END GENERATED:DEPLOY -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body data-screen="map">
+  <a class="skip-link" href="#panel">Skip to the settings</a>
+  <div class="app">
+    <aside class="panel" id="panel" aria-label="Settings">
+      <header class="brand">
+        <h1>Terrain Print</h1>
+        <p class="lede" id="lede">Point the box at the piece of the Moon you want to print.</p>
+      </header>
+
+      <!-- Map screen -->
+      <div class="screen-map">
+        <section class="group" aria-labelledby="world-title">
+          <h2 id="world-title">World</h2>
+          <div class="worlds" id="worlds" role="radiogroup" aria-label="World">
+            <button type="button" class="world" data-body="moon" role="radio"><span class="globe moon" aria-hidden="true"></span><span><b>Moon</b><small>Our Moon</small></span></button>
+            <button type="button" class="world" data-body="mars" role="radio"><span class="globe mars" aria-hidden="true"></span><span><b>Mars</b><small>Red planet</small></span></button>
+            <button type="button" class="world" data-body="earth" role="radio"><span class="globe earth" aria-hidden="true"></span><span><b>Earth</b><small>Home</small></span></button>
+          </div>
+          <div class="field">
+            <span class="label">Map</span>
+            <div class="segmented" id="layers" role="radiogroup" aria-label="Map layer"></div>
+          </div>
+        </section>
+
+        <section class="group" aria-labelledby="sel-title">
+          <h2 id="sel-title">Selection</h2>
+          <label class="field">
+            <span class="label">Shape</span>
+            <select id="shape" data-field="shape"></select>
+          </label>
+          <label class="field">
+            <span class="label">Box size <output id="box-out">50%</output></span>
+            <input type="range" id="box" min="10" max="90" step="1" value="50" />
+          </label>
+          <p class="readout" id="area-out">–</p>
+          <p class="hint" id="pole-hint" hidden>Near a pole this flat map stretches the box sideways. The model is not stretched: it is measured around the centre of the box.</p>
+          <label class="field">
+            <span class="label">Rotation <output id="rot-out">0°</output></span>
+            <input type="range" id="rotation" data-field="rotation" min="0" max="359" step="1" value="0" />
+          </label>
+        </section>
+
+        <section class="group sea-only" aria-labelledby="sea-title">
+          <h2 id="sea-title">Sea</h2>
+          <label class="check"><input type="checkbox" id="map-sea" data-field="seaOn" /> <span>Fill the sea up to a level</span></label>
+          <label class="field">
+            <span class="label">Sea level <output id="map-sl-out">0 m</output></span>
+            <input type="range" id="map-sl" data-field="seaLevel" step="10" />
+          </label>
+          <div class="chips" id="map-sea-presets"></div>
+          <p class="hint" id="sea-hint"></p>
+        </section>
+
+        <section class="group" aria-labelledby="nav-title">
+          <h2 id="nav-title">Places</h2>
+          <label class="field">
+            <span class="label">Search</span>
+            <input type="search" id="search" placeholder="Try “Tycho”" autocomplete="off" />
+          </label>
+          <ul class="places" id="places" aria-label="Places"></ul>
+          <form class="coords" id="coords">
+            <span class="label">Go to coordinates</span>
+            <div class="row">
+              <input type="number" id="go-lat" placeholder="Lat (−90 to 90)" step="any" min="-90" max="90" aria-label="Latitude" />
+              <input type="number" id="go-lon" placeholder="Lon (−180 to 180)" step="any" min="-180" max="180" aria-label="Longitude" />
+              <button type="submit" class="button small">Go</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <!-- Model screen -->
+      <div class="screen-model">
+        <section class="group" aria-labelledby="size-title">
+          <h2 id="size-title">Model</h2>
+          <label class="field">
+            <span class="label">Size (longest side) <output id="mm-out">150 mm</output></span>
+            <input type="range" id="sizeMm" data-field="sizeMm" min="40" max="600" step="5" />
+          </label>
+          <label class="field">
+            <span class="label">Shape</span>
+            <select id="shape2" data-field="shape"></select>
+          </label>
+          <label class="field">
+            <span class="label">Detail</span>
+            <select id="detail" data-field="detail"></select>
+          </label>
+          <p class="hint" id="detail-hint"></p>
+        </section>
+
+        <section class="group" aria-labelledby="height-title">
+          <h2 id="height-title">Height</h2>
+          <div class="segmented" role="radiogroup" aria-label="Height setting">
+            <button type="button" data-set="heightMode" data-value="relief">Relief height</button>
+            <button type="button" data-set="heightMode" data-value="exaggeration">Exaggeration</button>
+          </div>
+          <label class="field relief-only">
+            <span class="label">Lowest to highest point <output id="relief-out">10 mm</output></span>
+            <input type="range" id="reliefMm" data-field="reliefMm" min="1" max="60" step="0.5" />
+          </label>
+          <label class="field exag-only">
+            <span class="label">Vertical exaggeration <output id="ex-out">1×</output></span>
+            <input type="range" id="exaggeration" data-field="exaggeration" min="0.5" max="50" step="0.5" />
+          </label>
+          <p class="readout" id="scale-out">–</p>
+          <label class="field">
+            <span class="label">Base under the lowest point <output id="base-out">3 mm</output></span>
+            <input type="range" id="baseMm" data-field="baseMm" min="0.8" max="10" step="0.2" />
+          </label>
+          <label class="check"><input type="checkbox" data-field="curvature" /> <span>Keep the curve of the globe</span></label>
+        </section>
+
+        <section class="group sea-only" aria-labelledby="sea2-title">
+          <h2 id="sea2-title">Sea</h2>
+          <label class="check"><input type="checkbox" data-field="seaOn" /> <span>Flat sea surface (off prints the sea floor)</span></label>
+          <label class="field">
+            <span class="label">Sea level <output id="sl-out">0 m</output></span>
+            <input type="range" id="seaLevel" data-field="seaLevel" step="10" />
+          </label>
+          <div class="chips" id="sea-presets"></div>
+          <label class="field">
+            <span class="label">Which low ground floods</span>
+            <select data-field="flood">
+              <option value="connected">Only ground the open sea can reach</option>
+              <option value="all">Every place below the level</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">Step at the coast <output id="step-out">0.4 mm</output></span>
+            <input type="range" data-field="coastStepMm" min="0" max="2" step="0.1" />
+          </label>
+        </section>
+
+        <section class="group" aria-labelledby="pieces-title">
+          <h2 id="pieces-title">Pieces</h2>
+          <div class="segmented three" role="radiogroup" aria-label="Pieces">
+            <button type="button" data-set="split" data-value="single">One piece</button>
+            <button type="button" data-set="split" data-value="bed">Fit to the bed</button>
+            <button type="button" data-set="split" data-value="puzzle">Jigsaw puzzle</button>
+          </div>
+          <label class="field puzzle-only">
+            <span class="label">Number of pieces <output id="pieces-out">24</output></span>
+            <input type="range" id="pieces" data-field="pieces" min="4" max="150" step="1" />
+          </label>
+          <div class="split-only">
+            <label class="field">
+              <span class="label">Joints</span>
+              <select data-field="joint">
+                <option value="knob">Jigsaw knobs that lock</option>
+                <option value="straight">Straight cuts</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="label">Gap between pieces</span>
+              <select id="gap" data-field="gap"></select>
+            </label>
+            <button type="button" class="button ghost" id="shuffle">New cut pattern</button>
+          </div>
+          <p class="readout" id="pieces-readout"></p>
+        </section>
+
+        <section class="group" aria-labelledby="frame-title">
+          <h2 id="frame-title">Frame</h2>
+          <div class="segmented" role="radiogroup" aria-label="Frame">
+            <button type="button" data-set="frame" data-value="none">No frame</button>
+            <button type="button" data-set="frame" data-value="tray">Frame tray</button>
+          </div>
+          <div class="frame-only">
+            <label class="field">
+              <span class="label">Fit around the tile</span>
+              <select id="frameFit" data-field="frameFit"></select>
+            </label>
+            <label class="field">
+              <span class="label">Border width <output id="border-out">6 mm</output></span>
+              <input type="range" data-field="borderMm" min="2" max="20" step="0.5" />
+            </label>
+            <label class="field">
+              <span class="label">Floor thickness <output id="floor-out">2 mm</output></span>
+              <input type="range" data-field="floorMm" min="0.8" max="6" step="0.2" />
+            </label>
+            <label class="field">
+              <span class="label">Border height</span>
+              <select data-field="rimMode">
+                <option value="lowest">Level with the lowest edge of the terrain</option>
+                <option value="highest">Level with the highest edge of the terrain</option>
+                <option value="custom">Custom</option>
+              </select>
+            </label>
+            <label class="field rim-custom-only">
+              <span class="label">Height above the floor <output id="rim-out">4 mm</output></span>
+              <input type="range" data-field="rimMm" min="0.6" max="40" step="0.2" />
+            </label>
+          </div>
+        </section>
+
+        <section class="group" aria-labelledby="colour-title">
+          <h2 id="colour-title">Filament colours</h2>
+          <div class="field"><span class="label">Terrain <output id="c-out"></output></span><div class="swatches" data-colour="terrainColour"></div></div>
+          <div class="field sea-only"><span class="label">Sea <output id="cs-out"></output></span><div class="swatches" data-colour="seaColour"></div></div>
+          <label class="check"><input type="checkbox" data-field="snowOn" /> <span>Snow above a height</span></label>
+          <div class="snow-only">
+            <label class="field">
+              <span class="label">Snow line <output id="snow-out">3000 m</output></span>
+              <input type="range" id="snowLine" data-field="snowLine" step="50" />
+            </label>
+            <div class="field"><span class="label">Snow <output id="cw-out"></output></span><div class="swatches" data-colour="snowColour"></div></div>
+          </div>
+          <div class="field frame-only"><span class="label">Frame <output id="cf-out"></output></span><div class="swatches" data-colour="frameColour"></div></div>
+          <div class="plan" id="colour-plan"></div>
+        </section>
+
+        <section class="group" aria-labelledby="dl-title">
+          <h2 id="dl-title">Download</h2>
+          <div class="downloads">
+            <button type="button" class="button primary" id="dl-3mf" disabled>Download 3MF</button>
+            <button type="button" class="button" id="dl-stl" disabled>Download STL</button>
+          </div>
+          <p class="hint" id="dl-hint">3MF keeps every piece as its own object with its colour. Every slicer opens STL.</p>
+          <ul class="warnings" id="warnings"></ul>
+        </section>
+
+        <section class="group source" aria-labelledby="src-title">
+          <h2 id="src-title">Data</h2>
+          <p id="source-out">–</p>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <p class="about" id="about">Terrain Print turns real elevation data into 3D-printable models. Choose an area of the Moon, Mars or Earth, then download one tile, pieces that fit your printer, or a jigsaw puzzle, with an optional frame. On Earth and Mars you can set the sea level.</p>
+        <p class="credits" id="credits">Heights: NASA LRO LOLA and JAXA SELENE Kaguya (Moon), NASA MGS MOLA and ESA Mars Express HRSC (Mars), both via USGS Astrogeology and Esri; AWS Terrain Tiles by Mapzen with SRTM, GEBCO and others (Earth). Maps: NASA Solar System Treks, OpenStreetMap contributors. Drawn with Leaflet and three.js.</p>
+        <p id="deploy-line" class="deploy-line"></p>
+        <p><a class="back-link" href="../">All web projects</a></p>
+      </footer>
+    </aside>
+
+    <main class="stage" id="stage">
+      <div id="map" class="map" aria-label="Map"></div>
+      <div id="viewer" class="viewer" aria-label="3D preview"></div>
+
+      <div class="hud" id="hud">
+        <span class="hud-title" id="hud-title">Model size</span>
+        <span id="dims">–</span>
+      </div>
+
+      <button type="button" class="button primary make" id="make">Make the 3D model</button>
+
+      <div class="bar" id="bar">
+        <label class="bar-field">
+          <span>Printer bed</span>
+          <select id="printer"></select>
+        </label>
+        <label class="bar-field custom-bed">
+          <span>Bed (mm)</span>
+          <span class="row"><input type="number" id="bed-w" min="80" max="1000" aria-label="Bed width" /> × <input type="number" id="bed-h" min="80" max="1000" aria-label="Bed depth" /></span>
+        </label>
+        <label class="bar-check"><input type="checkbox" id="show-frame" checked /> Frame</label>
+        <label class="bar-check"><input type="checkbox" id="spread" /> Spread pieces</label>
+        <button type="button" class="button small" id="view-back">View the back</button>
+        <button type="button" class="button small" id="back">Back to the map</button>
+      </div>
+
+      <div class="busy" id="busy" hidden>
+        <div class="busy-card" role="status" aria-live="polite">
+          <h2>Making the model</h2>
+          <p id="busy-sub">Reading elevation data for your area</p>
+          <div class="meter"><div class="meter-fill" id="meter"></div></div>
+          <ol class="steps" id="steps">
+            <li data-step="plan">Choosing the best data for this size</li>
+            <li data-step="read">Reading the heights</li>
+            <li data-step="mesh">Building the pieces</li>
+            <li data-step="draw">Drawing the 3D preview</li>
+          </ol>
+          <button type="button" class="button small ghost" id="busy-cancel">Cancel</button>
+        </div>
+      </div>
+      <div class="toast" id="toast" role="alert" hidden></div>
+      <div class="updating" id="updating" hidden>Updating…</div>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

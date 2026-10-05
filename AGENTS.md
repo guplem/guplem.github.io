@@ -88,6 +88,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/whatsapp-sticker-creator/AGENTS.md` | whatsapp-sticker-creator: module map, the WebP container details that silently break a sticker, the pipeline order |
 | `web-projects/akwaaba-monsters/AGENTS.md` | akwaaba-monsters: the engine/content line, the permanent-identifier rule, how to add an area |
 | `web-projects/akwaaba-monsters/ROADMAP.md` | akwaaba-monsters: what the first area left out, and where each missing piece plugs in |
+| `web-projects/terrain-print/AGENTS.md` | terrain-print: module map, the data-source and calibration rules, the watertight-mesh rule, the tile-grid and Leaflet gotchas |
 | `adr/*.md`, `web-projects/*/adr/*.md` | Architecture Decision Records: why behind key choices (root = main-site/cross-cutting; per-project = project-specific) |
 | `README.md` (root) | Human-facing: what the site is, how to run locally, project list |
 | `web-projects/*/README.md` | Human-facing: per-project features, how to run |
@@ -309,6 +310,10 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |
 | [ai-world-gen 0004](web-projects/ai-world-gen/adr/0004-ship-the-vocabulary-for-every-preset-and-let-the-reader-edit-it.md) | Ship the vocabulary for every preset, and let the reader edit it on the setup screen |
 | [ai-world-gen 0005](web-projects/ai-world-gen/adr/0005-the-map-is-evaluated-against-specifications-in-galtea.md) | The map is evaluated against written specifications, in Galtea, before every iteration |
+| [terrain-print 0001](web-projects/terrain-print/adr/0001-read-heights-the-browser-can-reach-at-the-resolution-the-print-shows.md) | Read heights from sources the browser can reach, at the resolution the print can show |
+| [terrain-print 0002](web-projects/terrain-print/adr/0002-measure-a-tiled-copy-against-the-nasa-file-before-trusting-it.md) | Measure a tiled copy against the NASA file before trusting it |
+| [terrain-print 0003](web-projects/terrain-print/adr/0003-mesh-pieces-with-marching-squares-on-the-height-grid.md) | Mesh every piece with marching squares on the height grid |
+| [terrain-print 0004](web-projects/terrain-print/adr/0004-project-around-the-centre-and-size-the-box-by-the-view.md) | Project around the centre of the selection, and size the box by the view |
 
 **Create a new ADR** when making an architectural decision with trade-offs worth preserving. A decision specific to one web-project goes in that project's `adr/` (next per-project number); a main-site or cross-cutting decision (including web-project-wide patterns like URL-as-state or localStorage) goes in root `adr/` (next global number).
 
