@@ -30,10 +30,12 @@ with one.
   The steps it never took count as done, so the bar does not stall.
 - **It covers nothing.** It is three pixels tall, `position: fixed` on the top
   edge, and takes no pointer events.
-- **Only a read that draws placeholders shows it.** A quiet read replaces a
-  good board with another good board, and the refresh button already says that
-  it is reading (ADR 0025, ADR 0029). A bar that slides across the top every
-  minute would be motion that tells the reader nothing new.
+- **Every read shows it, the quiet ones included.** That covers the schedule,
+  the refresh button and a tab that comes back into view. The refresh button
+  sits in a masthead that scrolls away (ADR 0023), so a reader halfway down the
+  board could not see that a read was running. A quiet read still draws no
+  placeholders and no status line (ADR 0025); the bar is the only thing it
+  adds, and a reader who turned motion down sees it jump instead of slide.
 
 ## Consequences
 

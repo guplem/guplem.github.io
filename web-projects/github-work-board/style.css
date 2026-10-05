@@ -975,7 +975,7 @@ textarea.input {
 /* The read bar                                                               */
 /* -------------------------------------------------------------------------- */
 
-/* How far a read of GitHub has gone, while the placeholders are up (ADR 0039).
+/* How far a read of GitHub has gone, during every read (ADR 0039).
  * It sits on the top edge of the window, above everything, and it is thin
  * enough to cover nothing the reader needs. It moves only when a step of the
  * read ends, like the start-up bar. */
