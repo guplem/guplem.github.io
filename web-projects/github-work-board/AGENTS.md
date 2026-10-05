@@ -60,7 +60,7 @@ It is the short procedure for all of the above.
 | `filters.js` | Yes | Narrowing by kind, repository, label and person, and what to offer (ADR 0009, ADR 0028) |
 | `boardSearch.js` | Yes | The find box: an exact number, a pasted GitHub link or words, and which cards stay (ADR 0038) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
-| `readProgress.js` | Yes | How full the thin bar at the top of the window is, one step per call that a read waits on, and which step runs now (ADR 0039) |
+| `readProgress.js` | Yes | How full the thin bar at the top of the window is, one step per call of each token, counted over every token at once, and which step the read waits on (ADR 0039, ADR 0040) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
 | `relationships.js` | Yes | GitHub's own links between items, the children of an issue, which linked pull request an item is read from, and nesting a pull request under its issue (ADR 0010, ADR 0028) |
@@ -105,8 +105,15 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   a minute, not `core` at 5000 an hour. A new call in the connect path
   multiplies by the number of tokens and by the refresh rate. Do that
   arithmetic in `refresh.test.js` before you add one.
-- **A new `await` in `inspectToken` needs an entry in `READ_STEPS`, an
-  `onStep()` call after it, and words in `READ_STEP_WORDS` in `messages.js`.**
+- **Every token reads at the same time, and so do a token's first four
+  calls.** `connectAll` merges the answers in token-list order, never in
+  arrival order, so a shared item resolves the same way on every read. Never
+  turn either `Promise.all` back into a loop with an `await`: nothing fails,
+  and the board waits one whole read longer for each token.
+  `invariants.test.js` pins both (ADR 0040).
+- **A new call in `inspectToken` needs an entry in `READ_STEPS`, an
+  `onStep("<step>")` call when it ends, and words in `READ_STEP_WORDS` in
+  `messages.js`.**
   The read bar and the refresh button's tooltip both follow those steps. Skip
   them and nothing fails: the bar stalls, then jumps, and the tooltip says
   "Reading GitHub" (ADR 0039).
@@ -619,6 +626,7 @@ before calling it done.
 | [0037](adr/0037-a-dot-says-how-the-checks-are-going.md) | A dot says how the checks are going, read from the Actions API |
 | [0038](adr/0038-a-search-hides-cards-and-nothing-else.md) | A search hides cards and nothing else |
 | [0039](adr/0039-a-thin-bar-says-how-far-the-read-has-gone.md) | A thin bar says how far the read has gone |
+| [0040](adr/0040-the-tokens-and-their-first-calls-are-asked-together.md) | The tokens, and their first calls, are asked together |
 
 ## What is not built yet
 

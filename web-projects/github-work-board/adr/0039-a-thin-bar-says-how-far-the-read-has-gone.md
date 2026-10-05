@@ -3,14 +3,14 @@
 ## Context
 
 A full read of GitHub can take several seconds. For each token, `inspectToken`
-waits on six calls one after another: who the token belongs to, the open work,
-the finished work, the reviews, the relationships and the checks. The tokens go
-one after another too. The board draws nothing new until the last call ends.
+makes six calls: who the token belongs to, the open work, the finished work,
+the reviews, the relationships and the checks. The first four go together, and
+every token reads at the same time (ADR 0040). The board draws nothing new
+until the last call ends.
 
 During that wait the reader saw placeholders (ADR 0004) and nothing that moved
 forward. Placeholders say "something is coming". They do not say "it is nearly
-here", and a reader with three tokens waits three times as long as a reader
-with one.
+here".
 
 ## Decision
 
@@ -18,7 +18,7 @@ with one.
 `readProgress.js` holds the rules, and `app.js` moves the bar.
 
 - **The bar moves by real steps, never by a timer.** One step is one call that
-  `inspectToken` waits on, so `READ_STEPS` lists those calls. A bar that moves
+  `inspectToken` makes, so `READ_STEPS` lists those calls. A bar that moves
   on a timer says nothing about the read, which is the rule the start-up bar
   follows too (ADR 0036).
 - **It starts at a small floor, never at zero.** A bar with nothing in it reads
@@ -26,8 +26,11 @@ with one.
 - **It stops short of full until the board is drawn.** Every call answered is
   not the board on the screen: the merge and the render still come. Only
   `finishReadBar` fills it, so a full bar always means a drawn board.
-- **A token that fails early jumps the bar to where the next token starts.**
-  The steps it never took count as done, so the bar does not stall.
+- **The bar counts the steps of every token together.** The tokens read at
+  the same time and answer in any order, so `readProgress.stepsDone` counts
+  each finished step once, whatever order it ended in (ADR 0040).
+- **A token that fails early counts all of its steps as done.** The steps it
+  never took would otherwise never end, and the bar would stall short of them.
 - **It covers nothing.** It is three pixels tall, `position: fixed` on the top
   edge, and takes no pointer events.
 - **Every read shows it, the quiet ones included.** That covers the schedule,
@@ -36,9 +39,12 @@ with one.
   board could not see that a read was running. A quiet read still draws no
   placeholders and no status line (ADR 0025); the bar is the only thing it
   adds, and a reader who turned motion down sees it jump instead of slide.
-- **The refresh button's tooltip names the step that runs.** The bar says how
-  far the read has gone; the tooltip says what it waits on, for example
-  "Reading the reviews waiting for you, with Acme (token 2 of 3)". After the
+- **The refresh button's tooltip names the step that the read waits on.** The
+  bar says how far the read has gone; the tooltip says what it waits on. That
+  is the earliest step that some token has not finished. With one token left on
+  it, the tooltip names the token, for example "Reading the reviews waiting for
+  you, with Acme (token 2 of 3)". With several, it counts them: "with 2 of 3
+  tokens" (ADR 0040). After the
   last call it says "Drawing the board". `readProgress.readingNow` picks the
   step and `messages.describeReading` writes the words. An open tooltip takes
   each new line at once, so a reader who rests the pointer on the button
@@ -53,7 +59,7 @@ with one.
 ## Consequences
 
 - A new call in `inspectToken` needs a new entry in `READ_STEPS`, an
-  `onStep()` call after its `await`, and words in `READ_STEP_WORDS` in
+  `onStep("<step>")` call when it ends, and words in `READ_STEP_WORDS` in
   `messages.js`. Without them, the bar still works but jumps at the end of
   each token, and the tooltip says "Reading GitHub" for that step.
 - The checks step is one step, although it makes one call per commit in

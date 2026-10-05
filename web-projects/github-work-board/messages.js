@@ -69,16 +69,20 @@ const READ_STEP_WORDS = new Map([
 /**
  * What the board waits on right now, for the tooltip on the busy refresh button.
  *
- * Several tokens read one after another, so the line then names the token and
- * its place in the list. One token needs no name. The drawing step asks GitHub
- * nothing, so it names no token either.
+ * Several tokens read at the same time (ADR 0040). `waiting` holds the tokens
+ * still on this step, each as `{ index, name }`. When one is left, the line
+ * names it and its place in the list; when more are left, it counts them. One
+ * token needs no name. The drawing step asks GitHub nothing, so it names no
+ * token either.
  */
-export function describeReading({ step, tokenIndex = 0, tokenCount = 1, tokenName = "" } = {}) {
+export function describeReading({ step, waiting = [], tokenCount = 1 } = {}) {
   if (step === "drawing") return "Drawing the board";
   const words = READ_STEP_WORDS.get(step);
   if (!words) return "Reading GitHub";
-  if (!(tokenCount > 1)) return words;
-  const place = `token ${tokenIndex + 1} of ${tokenCount}`;
+  if (!(tokenCount > 1) || !Array.isArray(waiting) || waiting.length === 0) return words;
+  if (waiting.length > 1) return `${words}, with ${waiting.length} of ${tokenCount} tokens`;
+  const [{ index = 0, name: tokenName = "" } = {}] = waiting;
+  const place = `token ${index + 1} of ${tokenCount}`;
   const name = typeof tokenName === "string" ? tokenName.trim() : "";
   return name === "" ? `${words}, with ${place}` : `${words}, with ${name} (${place})`;
 }
