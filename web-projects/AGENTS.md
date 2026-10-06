@@ -92,6 +92,23 @@ Rules that matter:
 the way the directory index and `cloud-storage/` did. Two copies is cheaper than
 a new exception; four copies is not.
 
+## Report a problem (standard for new projects)
+
+Every web-project carries one plain link that opens the repository's issue
+form, `.github/ISSUE_TEMPLATE/web-project.yml`, with the project already named.
+A visitor then only says what happened. Put it at the bottom of the settings
+screen, or in the footer when the project has no settings. It needs no script:
+
+```html
+<a target="_blank" rel="noopener noreferrer"
+  href="https://github.com/guplem/guplem.github.io/issues/new?template=web-project.yml&amp;project=<PROJECT_SLUG>&amp;title=%5B<PROJECT_SLUG>%5D%20">Report a problem</a>
+```
+
+- **`<PROJECT_SLUG>` is the folder name**, in both places. `scripts/webProjectReportLink.test.js` fails on a link that names another folder, which is what a link copied from another project does.
+- **The `project` field id in the form is permanent.** Every link fills it in by that id, so a rename empties the field in every link at once.
+- **Say that a report needs a GitHub account and is public**, beside the link. A visitor must not write private details into it by surprise.
+- **The form exists only on `main`.** GitHub reads issue templates from the default branch, so a link tested from a branch opens the plain issue page.
+
 ## Storage (`cloud-storage/`)
 
 A project's data falls into one of three tiers, chosen when the project is created. The `/add-web-project` skill asks which, and scaffolds the tier's files (root ADR 0016):

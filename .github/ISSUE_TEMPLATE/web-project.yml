@@ -1,0 +1,48 @@
+name: Report a problem with a web project
+description: Something broke, or you have an idea, in one of the tools or games under triunitystudios.com/web-projects/.
+labels: ["web-project"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report this. A few short answers are enough.
+  # The id `project` is permanent: every "Report a problem" link in
+  # web-projects/ fills it in through the address (`&project=<folder>`).
+  # scripts/webProjectReportLink.test.js checks that this field exists.
+  - type: input
+    id: project
+    attributes:
+      label: Which web project is this about?
+      description: The folder name in the address, for example `github-work-board` in triunitystudios.com/web-projects/github-work-board/.
+      placeholder: github-work-board
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is it?
+      options:
+        - Something does not work
+        - An idea or a request
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened, or what would you like?
+      description: Say what you did, step by step, and what you saw. A screenshot helps.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: false
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      placeholder: For example, an Android phone with Chrome
+    validations:
+      required: false
