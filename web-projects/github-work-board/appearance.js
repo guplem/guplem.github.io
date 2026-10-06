@@ -39,7 +39,7 @@ export const COLUMN_COLOURS = [
  * board told them anything at a glance. These are the colours the board is
  * used with, so they are what it opens with (ADR 0024).
  *
- * **Two are deliberately unpainted.** "Awaiting review" and "Done today" are
+ * **Two are deliberately unpainted.** "Awaiting review" and "Done" are
  * the columns nobody has to act on: one is with somebody else and the other is
  * over. Leaving them plain is what makes the painted ones mean something.
  *
@@ -85,6 +85,21 @@ export function defaultColour(areaId) {
 /** A theme the board knows. Anything else follows the machine. */
 export function knownTheme(value) {
   return typeof value === "string" && KNOWN_THEMES.has(value) ? value : DEFAULT_THEME;
+}
+
+/** How many columns fill the window side by side before the rest scroll (ADR 0018). */
+export const COLUMNS_IN_VIEW = 5;
+
+/**
+ * How many columns share the window, given how many the reader left shown.
+ *
+ * Five fill it and the sixth scrolls. With some hidden, the columns that are
+ * left take the free width instead of leaving a gap. Never less than one, so
+ * the CSS always has a number it can divide by.
+ */
+export function columnsInView(shownCount) {
+  const count = Number.isFinite(shownCount) ? Math.floor(shownCount) : 0;
+  return Math.min(COLUMNS_IN_VIEW, Math.max(1, count));
 }
 
 /**

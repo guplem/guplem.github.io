@@ -1,7 +1,7 @@
 # Work Board
 
 A personal board on top of your GitHub issues, with a private half (notes,
-moved cards, how it looks, what you pushed down, and what it counts) that
+moved cards, how it looks and which parts show, what you pushed down, and what it counts) that
 follows you between devices. It runs entirely in your browser: there is no
 server, no account to make here, and nothing is stored anywhere except GitHub.
 
@@ -134,9 +134,10 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   typing. A hidden tab costs you nothing at all. The choice stays in this
   browser: it is about what this one device spends, so it is not saved to your
   repository.
-- **Paint the columns, and choose light or dark.** A colour on each column
-  and on the review row, from a set of presets, and a theme that follows your
-  machine unless you say otherwise. Both are saved in your own repository, so
+- **Paint the columns, hide the ones you do not need, and choose light or
+  dark.** A colour on each column and on the review row, from a set of presets,
+  a switch to show or hide each one, and a theme that follows your
+  machine unless you say otherwise. All of these are saved in your own repository, so
   the board looks the same on every machine you open it on.
 - **A private note on anything on the board**, including a pull request
   waiting for your review and one nested inside its issue.

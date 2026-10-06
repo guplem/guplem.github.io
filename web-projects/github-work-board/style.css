@@ -1151,11 +1151,17 @@ textarea.input {
 .columns {
   display: grid;
   grid-auto-flow: column;
-  /* Five columns fill the window exactly, so everything but "Done today" is
-   * on screen at once: 100% less the four gaps between them, split five ways.
+  /* Five columns fill the window exactly, so everything but "Done" is on
+   * screen at once: 100% less the gaps between them, split five ways. With
+   * columns hidden in Settings, `app.js` sets `--columns-in-view` lower and the
+   * columns that are left share the width (`appearance.columnsInView`).
    * `max` keeps them usable on a phone, where a fifth of the screen is not a
    * column at all, and the row scrolls sideways as before (ADR 0018). */
-  grid-auto-columns: max(17rem, calc((100% - 4 * 0.75rem) / 5));
+  --columns-in-view: 5;
+  grid-auto-columns: max(
+    17rem,
+    calc((100% - (var(--columns-in-view) - 1) * 0.75rem) / var(--columns-in-view))
+  );
   gap: 0.75rem;
   align-items: start;
   margin-top: 1rem;
@@ -2580,6 +2586,72 @@ textarea.input {
  * reads on every swatch and no colour does. */
 .swatch[aria-pressed="true"] {
   box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--foreground));
+}
+
+/* The colours and the switch stay together at the end of the row. */
+.colour-area-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.875rem;
+}
+
+/* A hidden part reads as switched off, but its colour can still be chosen. */
+.colour-area-hidden .colour-area-name {
+  color: hsl(var(--muted-foreground));
+  text-decoration: line-through;
+}
+
+/* Whether a part is on the board, in the shape shadcn/ui draws a switch: a
+ * pill track and a round thumb that slides to the end that is on (ADR 0004). */
+.switch {
+  position: relative;
+  flex: none;
+  width: 2.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  background: hsl(var(--input));
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.08s ease;
+}
+
+.switch-thumb {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  background: hsl(var(--background));
+  box-shadow: 0 1px 2px hsl(0 0% 0% / 0.25);
+  transition: transform 0.15s ease;
+}
+
+.switch[aria-pressed="true"] {
+  background: hsl(var(--primary));
+}
+
+.switch[aria-pressed="true"] .switch-thumb {
+  transform: translateX(1rem);
+}
+
+.switch:hover {
+  background: hsl(var(--muted-foreground) / 0.55);
+}
+
+.switch[aria-pressed="true"]:hover {
+  background: hsl(var(--primary) / 0.88);
+}
+
+.switch:active {
+  transform: translateY(1px);
+}
+
+.switch:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
 }
 
 /* The shared cloud storage panel inside Settings, in the board's own colours

@@ -12,6 +12,8 @@ import {
   writeNote,
   readColumnColour,
   writeColumnColour,
+  readAreaShown,
+  writeAreaShown,
   readCopyActions,
   readCounting,
   readPriority,
@@ -159,6 +161,43 @@ describe("the colour on a column", () => {
     const before = emptyDocument(now);
     writeColumnColour(before, "todo", "rose", now);
     expect(readColumnColour(before, "todo")).toBe(defaultColour("todo"));
+  });
+});
+
+describe("whether a part of the board is shown", () => {
+  const now = "2026-10-06T10:00:00.000Z";
+
+  // Every part is on screen until the reader hides it. A record with nothing
+  // readable in it is not a choice anybody made.
+  test("every part is shown until the reader hides it", () => {
+    expect(readAreaShown(emptyDocument(now), "todo")).toBe(true);
+    expect(readAreaShown(emptyDocument(now), "reviews")).toBe(true);
+    expect(readAreaShown(null, "done")).toBe(true);
+    expect(readAreaShown({ visibility: { todo: {} } }, "todo")).toBe(true);
+    expect(readAreaShown({ visibility: { todo: { shown: "no" } } }, "todo")).toBe(true);
+  });
+
+  test("round-trips, for a column and for the review row", () => {
+    let doc = writeAreaShown(emptyDocument(now), "done", false, now);
+    doc = writeAreaShown(doc, "reviews", false, now);
+    expect(readAreaShown(doc, "done")).toBe(false);
+    expect(readAreaShown(doc, "reviews")).toBe(false);
+    expect(readAreaShown(doc, "todo")).toBe(true);
+  });
+
+  // Showing a part again keeps the record, like a cleared colour: the other
+  // device has to tell "shown again just now" from "never hidden" (ADR 0002).
+  test("showing a part again keeps the record", () => {
+    let doc = writeAreaShown(emptyDocument(now), "done", false, now);
+    doc = writeAreaShown(doc, "done", true, "2026-10-06T11:00:00.000Z");
+    expect(readAreaShown(doc, "done")).toBe(true);
+    expect(doc.visibility.done.updatedAt).toBe("2026-10-06T11:00:00.000Z");
+  });
+
+  test("the document handed in is never changed", () => {
+    const before = emptyDocument(now);
+    writeAreaShown(before, "done", false, now);
+    expect(readAreaShown(before, "done")).toBe(true);
   });
 });
 

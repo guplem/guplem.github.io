@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="328" />
-  <meta name="deploy-date" content="2026-10-05T17:05:40.000Z" />
+  <meta name="deploy-pull-request" content="329" />
+  <meta name="deploy-date" content="2026-10-06T09:48:38.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -480,7 +480,7 @@
             </div>
 
             <div class="field">
-              <p class="field-label">Colour on each part of the board</p>
+              <p class="field-label">Colour on each part of the board, and whether it is shown</p>
               <!-- One row per thing that can be painted, from appearance.js. -->
               <ul id="colour-areas" class="colour-areas"></ul>
             </div>
@@ -494,7 +494,7 @@
               The browser tab is named "Work Board", with the number of things waiting on you in
               brackets. Choose which parts of the board add up to it, and whether each part counts
               the work you marked "not a priority". That second answer also changes the number on
-              that part's own badge.
+              that part's own badge. A part that you hid from the board never adds to it.
             </p>
           </div>
           <div class="card-content">
@@ -544,6 +544,22 @@
               <!-- Every placeholder the board fills, from copyActions.js. -->
               <ul id="copy-placeholders" class="placeholder-list"></ul>
             </div>
+          </div>
+        </div>
+
+        <!-- The playground's standard "Report a problem" link: the repository's
+             issue form, with this project filled in (web-projects/AGENTS.md). -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Something wrong, or an idea?</h3>
+            <p class="lead">
+              Tell me on GitHub. The form opens with this board already named, so you only say what
+              happened. You need a GitHub account, and the report is public.
+            </p>
+          </div>
+          <div class="card-content">
+            <a class="button button-outline" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/guplem/guplem.github.io/issues/new?template=web-project.yml&amp;project=github-work-board&amp;title=%5Bgithub-work-board%5D%20">Report a problem</a>
           </div>
         </div>
       </section>
