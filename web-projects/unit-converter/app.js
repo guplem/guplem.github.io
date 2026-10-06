@@ -55,6 +55,8 @@ const dom = {
   toast: el("toast"),
   deployLine: el("deploy-line"),
   privacy: el("privacy"),
+  reportLink: el("report-link"),
+  reportNote: el("report-note"),
   backLink: el("back-link"),
   title: el("title"),
   tagline: el("tagline"),
@@ -470,6 +472,8 @@ function applyLanguage(next) {
   dom.recentsHeading.textContent = say("ui.recentsTitle");
   dom.categoriesHeading.textContent = say("ui.categoriesTitle");
   dom.privacy.textContent = say("ui.privacy");
+  dom.reportLink.textContent = say("ui.report");
+  dom.reportNote.textContent = say("ui.reportNote");
   dom.backLink.textContent = say("ui.backToProjects");
   for (const button of dom.langPicker.children) button.setAttribute("aria-pressed", String(button.dataset.lang === lang));
   renderDeployLine(dom.deployLine, readStamp(document), lang, say, escapeForDeployLine, "web-projects/unit-converter");

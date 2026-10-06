@@ -38,6 +38,11 @@ export const MESSAGES = {
     en: "Your pictures never leave your device. This page makes no network requests at all.",
     es: "Tus imágenes nunca salen de tu dispositivo. Esta página no hace ninguna petición de red.",
   },
+  "ui.report": { en: "Report a problem", es: "Informar de un problema" },
+  "ui.reportNote": {
+    en: "(you need a GitHub account, and the report is public)",
+    es: "(necesitas una cuenta de GitHub, y el informe es público)",
+  },
   "ui.back": { en: "All web projects", es: "Todos los proyectos web" },
   "ui.deployed": {
     en: "Deployed on {date} by pull request {pr}.",

@@ -749,6 +749,11 @@ export const MESSAGES = {
     en: "The puzzle is read in your browser. Your picture never leaves your device and is never uploaded.",
     es: "El pasatiempo se lee en tu navegador. Tu imagen nunca sale de tu dispositivo y nunca se sube.",
   },
+  "ui.report": { en: "Report a problem", es: "Informar de un problema" },
+  "ui.report.note": {
+    en: "(you need a GitHub account, and the report is public)",
+    es: "(necesitas una cuenta de GitHub, y el informe es público)",
+  },
   "ui.deployed": { en: "Deployed {date} by pull request {pr}.", es: "Desplegado el {date} por la pull request {pr}." },
   // Shown when the page carries no stamp, which happens only when it is opened
   // straight from the repository rather than from the published site. The line

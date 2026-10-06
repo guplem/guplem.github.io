@@ -88,6 +88,11 @@ export const MESSAGES = {
     en: "Everything is worked out in your browser. The only thing this page fetches is the exchange-rate table.",
     es: "Todo se calcula en tu navegador. Lo único que esta página descarga es la tabla de cambios.",
   },
+  "ui.report": { en: "Report a problem", es: "Informar de un problema" },
+  "ui.reportNote": {
+    en: "You need a GitHub account, and the report is public.",
+    es: "Necesitas una cuenta de GitHub, y el informe es público.",
+  },
   "ui.backToProjects": { en: "All web projects", es: "Todos los proyectos web" },
   "ui.deployed": { en: "Deployed on {date} by pull request {pr}.", es: "Publicado el {date} por la pull request {pr}." },
   "ui.deployedUnknown": {

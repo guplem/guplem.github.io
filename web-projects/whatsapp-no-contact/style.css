@@ -542,6 +542,10 @@ main {
   padding: 0.05em 0.35em;
 }
 
+.page-footer a {
+  color: var(--color-accent);
+}
+
 /* --- Small screens --- */
 
 @media (max-width: 400px) {

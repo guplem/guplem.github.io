@@ -118,6 +118,9 @@ export const TRANSLATIONS = Object.freeze({
     "token.status.Cancelled": "Cancel·lat",
     "token.side.Red": "Vermell",
     "token.side.Blue": "Blau",
+
+    "footer.report": "Informa d'un problema",
+    "footer.reportNote": "Cal un compte de GitHub, i l'informe és públic.",
   },
 
   es: {
@@ -230,6 +233,9 @@ export const TRANSLATIONS = Object.freeze({
     "token.status.Cancelled": "Cancelado",
     "token.side.Red": "Rojo",
     "token.side.Blue": "Azul",
+
+    "footer.report": "Informar de un problema",
+    "footer.reportNote": "Necesitas una cuenta de GitHub, y el informe es público.",
   },
 
   en: {
@@ -342,6 +348,9 @@ export const TRANSLATIONS = Object.freeze({
     "token.status.Cancelled": "Cancelled",
     "token.side.Red": "Red",
     "token.side.Blue": "Blue",
+
+    "footer.report": "Report a problem",
+    "footer.reportNote": "You need a GitHub account, and the report is public.",
   },
 });
 

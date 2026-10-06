@@ -681,7 +681,8 @@ body[data-screen="table"] .hero {
   text-align: center;
 }
 
-.back-link {
+.back-link,
+.report-link {
   color: var(--accent);
 }
 

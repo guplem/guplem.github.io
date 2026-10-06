@@ -55,6 +55,8 @@ const elements = {
   creditWikipedia: $("credit-wikipedia"),
   creditCoastlines: $("credit-coastlines"),
   creditPrivacy: $("credit-privacy"),
+  reportLink: $("report-link"),
+  reportNote: $("report-note"),
   deployLine: $("deploy-line"),
   backLink: $("back-link"),
 };
@@ -1073,6 +1075,8 @@ function renderChrome() {
   elements.unplacedWhy.textContent = say("story.unplacedWhy");
   elements.backLink.textContent = say("ui.backToProjects");
   renderCredits();
+  elements.reportLink.textContent = say("ui.report");
+  elements.reportNote.textContent = say("ui.reportNote");
   renderDeployLine(elements.deployLine, readStamp(document), state.lang, say, escapeHtml, "web-projects/global-news-map");
 }
 

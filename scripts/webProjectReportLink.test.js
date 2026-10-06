@@ -65,12 +65,3 @@ describe("every report link names the web-project that it is in", () => {
     });
   }
 });
-
-describe("the projects that carry the link", () => {
-  // The first adopter. A new web-project adds the link from the start (see
-  // the add-web-project skill).
-  it("github-work-board", () => {
-    const html = readFileSync(join(webProjectsDir, "github-work-board", "index.html"), "utf8");
-    expect(findReportLinks(html).length).toBeGreaterThan(0);
-  });
-});

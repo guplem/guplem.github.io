@@ -535,6 +535,17 @@ input:focus {
     flex-shrink: 0;
 }
 
+/* Footer */
+
+.app-footer {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.app-footer a {
+    color: var(--accent);
+}
+
 /* Loading */
 
 #loading {

@@ -725,6 +725,15 @@ kbd {
   color: var(--accent);
 }
 
+.report-line {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.report-line a {
+  color: var(--accent);
+}
+
 /* --- how the candidates were narrowed --- */
 
 .narrowing {

@@ -479,6 +479,10 @@ footer p {
   line-height: 1.6;
 }
 
+footer a { color: var(--color-accent-strong); }
+
+.report-line { margin-top: 0.5rem; }
+
 @media (max-width: 420px) {
   header { padding: 2rem 1rem 0.25rem; }
   header h1 { font-size: 1.85rem; }
