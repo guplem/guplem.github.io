@@ -643,6 +643,25 @@ textarea.input {
   color: hsl(var(--foreground));
 }
 
+/* A token that may wait for an organisation's approval (ADR 0041). Not red:
+ * nothing is broken, and one person somewhere has to press a button. */
+.approval-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.callout-approval {
+  border-left-color: hsl(var(--primary));
+  background: hsl(var(--card));
+}
+
+.approval-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .callout-title {
   font-weight: 600;
 }

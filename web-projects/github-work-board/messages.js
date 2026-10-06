@@ -62,6 +62,7 @@ const READ_STEP_WORDS = new Map([
   ["open-work", "Reading your open issues and pull requests"],
   ["finished-work", "Reading the work you finished"],
   ["reviews", "Reading the reviews waiting for you"],
+  ["approval", "Checking whether a token waits for an organisation to approve it"],
   ["relationships", "Reading how the items link to each other"],
   ["checks", "Reading the checks on your pull requests"],
 ]);
@@ -190,6 +191,27 @@ export function sayEmptyBoard({ tokenCount = 0, owners = [] } = {}) {
       ? `The board is using ${counted}, which reach ${joinWithAnd(owners)}.`
       : `The board is using ${counted}, and they reached no repository holding work for you.`;
   return `Nothing open is assigned to you. ${reach}`;
+}
+
+/**
+ * What the board says about a token that may wait for an organisation's approval.
+ *
+ * Always "may": GitHub has no call that says a token is pending, so the board
+ * says what it saw and lets the reader confirm it (ADR 0041). `next` is the one
+ * thing to do, which depends on whether the board knows the organisation.
+ */
+export function sayAwaitingApproval({ tokenName = "", organisation = "" } = {}) {
+  const name = typeof tokenName === "string" && tokenName.trim() !== "" ? tokenName.trim() : "This token";
+  const known = typeof organisation === "string" && organisation.trim() !== "" ? organisation.trim() : "";
+  return {
+    title: `${name} may be waiting for ${known || "an organisation"} to approve it`,
+    detail:
+      "It signs in, but it reaches no private repository and found no work. An organisation can ask its owners " +
+      "to approve each new token, and until one does, the token reads public data only.",
+    next: known
+      ? `Send this link to an owner of ${known}. They approve the token on that page, and the board finds the work on its next read.`
+      : "Type the organisation the token is for, and the board gives you the page where its owners approve it.",
+  };
 }
 
 /** Text made safe to put inside HTML. The ampersand goes first, or the rest double-escape. */

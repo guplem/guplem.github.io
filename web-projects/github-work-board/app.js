@@ -70,9 +70,18 @@ import {
   fetchRelationships,
   fetchReviewRequests,
   fetchFirstRepository,
+  fetchPrivateRepository,
+  fetchPublicOrganisations,
   fetchViewer,
   fetchWorkflowRuns,
 } from "./gateway.js";
+import {
+  TOKEN_STATUS_URL,
+  approvalOrganisations,
+  approvalPageUrl,
+  readsOnlyPublicData,
+  shouldAskAboutApproval,
+} from "./approval.js";
 import {
   DEFAULT_KIND,
   KIND_FILTERS,
@@ -95,6 +104,7 @@ import {
   noteMenuLabel,
   priorityMenuLabel,
   say,
+  sayAwaitingApproval,
   sayEmptyBoard,
   summariseChecks,
 } from "./messages.js";
@@ -263,6 +273,12 @@ const state = {
   // How far the read in progress has gone, for the busy refresh button's
   // tooltip. Null when no read runs (ADR 0039).
   reading: null,
+  // The tokens that may wait for an organisation to approve them, keyed by
+  // token id, with the organisations they may wait on. Learned on every read,
+  // never saved: approval can land at any moment (ADR 0041).
+  awaitingApproval: new Map(),
+  // The public organisations of each login, asked once a visit.
+  publicOrganisations: new Map(),
 };
 
 
@@ -1946,12 +1962,141 @@ function renderBoard() {
       : hiddenByFilters
         ? "Nothing here matches the filters you chose."
         : sayEmptyBoard({ tokenCount: state.tokens.length, owners });
-  element("board-empty-hint").hidden = hiddenByFilters || missed || everyColumnHidden;
+  // "Add a token owned by the organisation" is the wrong advice to a reader
+  // who already did, and whose token waits for approval (ADR 0041).
+  element("board-empty-hint").hidden =
+    hiddenByFilters || missed || everyColumnHidden || awaitingApprovalTokens().length > 0;
   const openSettings = element("empty-open-settings");
   openSettings.hidden = (hiddenByFilters || missed) && !everyColumnHidden;
   openSettings.textContent = everyColumnHidden ? "Show a column in Settings" : "Add a token in Settings";
   element("clear-filters").hidden = !narrowed || missed;
   element("clear-find").hidden = !missed;
+  renderApproval();
+}
+
+/** The saved tokens that may wait for an organisation's approval, in list order. */
+function awaitingApprovalTokens() {
+  return state.tokens.flatMap((entry, index) => {
+    const found = state.awaitingApproval.get(entry.id);
+    return found ? [{ entry, index, organisations: found.organisations }] : [];
+  });
+}
+
+/**
+ * One callout for each token that may wait for an organisation's approval.
+ *
+ * It sits above the board, and not only on an empty board: a reader with a
+ * personal token that finds work would otherwise never learn that the
+ * organisation's token finds nothing (ADR 0041).
+ */
+function renderApproval() {
+  const list = element("token-approval");
+  const waiting = awaitingApprovalTokens();
+  list.hidden = waiting.length === 0;
+  // A refresh redraws the board every minute. Rebuilt each time, the callout
+  // would wipe a name the reader is typing, so it is rebuilt only on a change.
+  const shown = JSON.stringify(
+    waiting.map(({ entry, index, organisations }) => [entry.id, entry.name || index, entry.organisation, organisations]),
+  );
+  if (list.dataset.shown === shown) return;
+  list.dataset.shown = shown;
+  list.replaceChildren(...waiting.map(buildApprovalCallout));
+}
+
+function buildApprovalCallout({ entry, index, organisations }) {
+  const callout = document.createElement("div");
+  callout.className = "callout callout-approval";
+  const said = sayAwaitingApproval({
+    tokenName: entry.name || suggestedTokenName(entry, index),
+    organisation: organisations.length === 1 ? organisations[0] : "",
+  });
+
+  const title = document.createElement("p");
+  title.className = "callout-title";
+  title.textContent = said.title;
+  const detail = document.createElement("p");
+  detail.textContent = said.detail;
+  const next = document.createElement("p");
+  next.textContent = said.next;
+
+  const actions = document.createElement("p");
+  actions.className = "approval-actions";
+  for (const organisation of organisations) {
+    const url = approvalPageUrl(organisation);
+    const open = document.createElement("a");
+    open.className = "button button-primary";
+    open.href = url;
+    open.target = "_blank";
+    open.rel = "noopener noreferrer";
+    open.textContent = organisations.length === 1 ? "Open the approval page" : `Open the approval page of ${organisation}`;
+    const copy = document.createElement("button");
+    copy.type = "button";
+    copy.className = "button button-outline";
+    const copyLabel = organisations.length === 1 ? "Copy the link" : `Copy the link for ${organisation}`;
+    copy.textContent = copyLabel;
+    copy.addEventListener("click", () => copyToClipboard(url, copy, copyLabel, () => setStatus(url)));
+    actions.append(open, copy);
+  }
+  const status = document.createElement("a");
+  status.className = "button button-outline";
+  status.href = TOKEN_STATUS_URL;
+  status.target = "_blank";
+  status.rel = "noopener noreferrer";
+  status.textContent = "See your tokens on GitHub";
+  actions.append(status);
+
+  // The reader knows which organisation the token is for, and GitHub does not
+  // say. What they type is kept beside the token, so they type it once.
+  const field = document.createElement("div");
+  field.className = "field";
+  const inputId = `approval-organisation-${entry.id}`;
+  const label = document.createElement("label");
+  label.className = "field-label";
+  label.htmlFor = inputId;
+  label.textContent = organisations.length === 0 ? "Organisation the token is for" : "Not this organisation? Type the right one";
+  const row = document.createElement("div");
+  row.className = "field-row";
+  const input = document.createElement("input");
+  input.id = inputId;
+  input.className = "input";
+  input.type = "text";
+  input.autocomplete = "off";
+  input.spellcheck = false;
+  input.placeholder = "organisation-name";
+  input.value = entry.organisation;
+  const save = document.createElement("button");
+  save.type = "button";
+  save.className = "button button-outline";
+  save.textContent = "Use this organisation";
+  const help = document.createElement("p");
+  help.className = "field-help";
+  help.textContent = "The name in the organisation's address on GitHub: github.com/<name>.";
+  const keep = () => {
+    const typed = input.value.trim();
+    if (typed !== "" && approvalPageUrl(typed) === "") {
+      help.textContent = `"${typed}" is not a GitHub name. Use letters, digits and single hyphens.`;
+      return;
+    }
+    state.tokens = updateToken(state.tokens, entry.id, { organisation: typed });
+    saveTokens(storage, state.tokens);
+    const found = state.awaitingApproval.get(entry.id);
+    if (found) {
+      const publicOrganisations = state.publicOrganisations.get(state.login ?? "") ?? [];
+      state.awaitingApproval.set(entry.id, {
+        organisations: approvalOrganisations({ saved: typed, publicOrganisations, login: state.login ?? "" }),
+      });
+    }
+    renderApproval();
+  };
+  save.addEventListener("click", keep);
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") keep();
+  });
+  row.append(input, save);
+  field.append(label, row, help);
+
+  callout.append(title, detail, next, actions, field);
+  return callout;
 }
 
 /**
@@ -2319,7 +2464,8 @@ function showNotice(where, text) {
  * answer. The relationships need all of them, and the checks need the
  * relationships, so those two wait (ADR 0040). A token that fails the first
  * call has spent three more calls for nothing, which is the price of not
- * waiting on it.
+ * waiting on it. A token that found no work of any kind then makes one more
+ * call, the approval question (ADR 0041), before the relationships.
  *
  * @param {object} entry the token to ask.
  * @param {(step: string) => void} [onStep] called with a `READ_STEPS` name
@@ -2354,14 +2500,14 @@ async function inspectToken(entry, onStep = () => {}) {
 
   if (!viewer.ok) {
     rows.push({ id: identity.id, label: identity.label, ok: false, detail: describeFailure({ ...viewer, need: identity.need }) });
-    return { entry: updated, login: "", raw: [], rows, links, reviews: [] };
+    return { entry: updated, login: "", raw: [], rows, links, reviews: [], approval: null };
   }
   const login = viewer.data?.login ?? "";
   rows.push({ id: identity.id, label: identity.label, ok: true, detail: `Signed in as ${login}.` });
 
   if (!answer.ok) {
     rows.push({ id: work.id, label: work.label, ok: false, detail: describeFailure({ ...answer, need: work.need }) });
-    return { entry: updated, login, raw: [], rows, links, reviews: [] };
+    return { entry: updated, login, raw: [], rows, links, reviews: [], approval: null };
   }
   const raw = Array.isArray(answer.data) ? answer.data : [];
   const items = normalizeWorkItems(raw);
@@ -2386,6 +2532,18 @@ async function inspectToken(entry, onStep = () => {}) {
   // from it (ADR 0013).
   const reviews = waiting.ok ? normalizeWorkItems(waiting.data?.items) : [];
 
+  // A token waiting for an organisation's approval finds nothing, exactly like
+  // a token with nothing to do. Only a token that found nothing pays for the
+  // question (ADR 0041).
+  const approval = shouldAskAboutApproval({
+    openCount: items.length,
+    finishedCount: finished.length,
+    reviewCount: reviews.length,
+  })
+    ? await askAboutApproval(entry, login)
+    : null;
+  onStep("approval");
+
   // The relationships of this token's own items, with this token: a node id
   // from one owner is not readable by another owner's token (ADR 0010).
   const linked = await fetchRelationships(
@@ -2402,9 +2560,11 @@ async function inspectToken(entry, onStep = () => {}) {
     label: work.label,
     ok: true,
     detail:
-      items.length === 0
-        ? "This token reached no repository with work assigned to you."
-        : `${counted.issues} issues and ${counted.pullRequests} pull requests, in ${owners.join(", ")}.`,
+      approval !== null
+        ? "This token reaches no private repository and found no work. An organisation owner may still need to approve it."
+        : items.length === 0
+          ? "This token reached no repository with work assigned to you."
+          : `${counted.issues} issues and ${counted.pullRequests} pull requests, in ${owners.join(", ")}.`,
   });
 
   // What the reader has to see about the other two calls this read made. Both
@@ -2432,7 +2592,32 @@ async function inspectToken(entry, onStep = () => {}) {
           : checked.detail,
   });
 
-  return { entry: updated, login, raw: [...raw, ...finishedRaw], rows, links, reviews };
+  return { entry: updated, login, raw: [...raw, ...finishedRaw], rows, links, reviews, approval };
+}
+
+/**
+ * Whether a token that found nothing may wait for an organisation's approval.
+ *
+ * One call proves it can be so: a pending token reaches no private repository.
+ * A second call, once a visit, reads the person's public organisations, unless
+ * the reader already typed the organisation for this token (ADR 0041).
+ *
+ * @returns {{organisations: string[]} | null} null when the token reaches a
+ *   private repository, or when the call failed and so proves nothing.
+ */
+async function askAboutApproval(entry, login) {
+  const privateRepository = await fetchPrivateRepository(entry.token);
+  if (!readsOnlyPublicData(privateRepository)) return null;
+  let publicOrganisations = [];
+  if (approvalPageUrl(entry.organisation) === "" && login !== "") {
+    if (!state.publicOrganisations.has(login)) {
+      const answer = await fetchPublicOrganisations(entry.token, login);
+      const names = answer.ok && Array.isArray(answer.data) ? answer.data.map((one) => one?.login) : [];
+      state.publicOrganisations.set(login, names);
+    }
+    publicOrganisations = state.publicOrganisations.get(login);
+  }
+  return { organisations: approvalOrganisations({ saved: entry.organisation, publicOrganisations, login }) };
 }
 
 /**
@@ -2596,6 +2781,7 @@ async function connectAll({ quiet = false } = {}) {
     startReadBar();
 
     const checks = {};
+    const awaitingApproval = new Map();
     const everything = [];
     const waiting = [];
     let links = {};
@@ -2634,10 +2820,12 @@ async function connectAll({ quiet = false } = {}) {
       state.tokens = updateToken(state.tokens, entry.id, result.entry);
       everything.push(...result.raw);
       checks[entry.id] = result.rows;
+      if (result.approval) awaitingApproval.set(entry.id, result.approval);
       waiting.push(...(result.reviews ?? []));
       links = { ...links, ...(result.links ?? {}) };
     }
     state.checks = checks;
+    state.awaitingApproval = awaitingApproval;
     state.links = links;
     // Through the same step as the board's own items: a review card needs the
     // branch names to know it is one of a stack (ADR 0020).

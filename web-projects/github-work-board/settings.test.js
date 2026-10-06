@@ -45,6 +45,7 @@ const entry = (over = {}) => ({
   name: "",
   owners: [],
   itemCount: 0,
+  organisation: "",
   ...over,
 });
 
@@ -81,7 +82,20 @@ describe("the saved tokens", () => {
           name: "",
       owners: [],
       itemCount: 0,
+      organisation: "",
     });
+  });
+
+  // GitHub never says which organisation a token waits on, so the reader types
+  // it once and the board keeps it beside the token it is about (ADR 0041).
+  test("an entry keeps the organisation the reader typed for it, trimmed", () => {
+    saveTokens(storage, [entry({ organisation: "  Galtea-AI " })]);
+    expect(readTokens(storage)[0].organisation).toBe("Galtea-AI");
+  });
+
+  test("an organisation that is not text is stored as none", () => {
+    saveTokens(storage, [entry({ organisation: 7 })]);
+    expect(readTokens(storage)[0].organisation).toBe("");
   });
 
   // Settings can show a token in full, on request, one token at a time

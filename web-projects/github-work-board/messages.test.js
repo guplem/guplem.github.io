@@ -8,6 +8,7 @@ import {
   noteMenuLabel,
   priorityMenuLabel,
   say,
+  sayAwaitingApproval,
   sayEmptyBoard,
   summariseChecks,
   BOOT_STEPS,
@@ -93,6 +94,29 @@ describe("sayEmptyBoard", () => {
   test("never throws, whatever it is handed", () => {
     expect(typeof sayEmptyBoard()).toBe("string");
     expect(sayEmptyBoard({ tokenCount: 0 })).toContain("No token");
+  });
+});
+
+describe("sayAwaitingApproval", () => {
+  // The board cannot be sure: GitHub has no call that says "pending". So every
+  // sentence says "may", and says what the board saw that made it ask (ADR 0041).
+  test("names the token and the organisation when the board knows it", () => {
+    const said = sayAwaitingApproval({ tokenName: "Work", organisation: "Galtea-AI" });
+    expect(said.title).toBe("Work may be waiting for Galtea-AI to approve it");
+    expect(said.detail).toContain("no private repository");
+    expect(said.detail).toContain("public data");
+    expect(said.next).toContain("an owner of Galtea-AI");
+  });
+
+  test("asks for the organisation when the board does not know it", () => {
+    const said = sayAwaitingApproval({ tokenName: "Token 2", organisation: "" });
+    expect(said.title).toBe("Token 2 may be waiting for an organisation to approve it");
+    expect(said.next).toContain("Type the organisation");
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(typeof sayAwaitingApproval().title).toBe("string");
+    expect(sayAwaitingApproval().title).toContain("This token");
   });
 });
 

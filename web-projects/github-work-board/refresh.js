@@ -10,6 +10,7 @@
 // | Budget | Limit | What one refresh spends, per token |
 // |---|---|---|
 // | REST `core` | 5000 an hour | 3 calls: who you are, open work, work closed today |
+// | REST `core` | the same | 1 call, only for a token that found nothing: does it reach a private repository (ADR 0041) |
 // | REST `core` | the same | 1 call for each commit the board has no final answer about its checks yet (ADR 0037) |
 // | REST `search` | 30 a **minute** | 1 call: the pull requests waiting for your review |
 // | GraphQL | 5000 points an hour | 1 or 2 calls: the links between items, then the children of any issue that has them |

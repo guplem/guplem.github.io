@@ -48,6 +48,7 @@ read takes about 4.5 seconds.
 ## Consequences
 
 - **The read makes exactly the same calls**, so the rate limit costs the same.
+  (ADR 0041 later added one call, only for a token that found no work.)
   The tight budget, `search` at 30 a minute (ADR 0025), is untouched.
 - **The board still draws once**, with every answer in place. No card moves to
   another column a moment after it appears. That is why the board does not

@@ -96,6 +96,9 @@ function readEntry(value) {
     name: typeof value.name === "string" ? value.name.trim() : "",
     owners: Array.isArray(value.owners) ? value.owners.filter((one) => typeof one === "string") : [],
     itemCount: Number.isFinite(value.itemCount) ? value.itemCount : 0,
+    // The organisation the reader typed, because GitHub never says which one a
+    // token waits on for approval (ADR 0041).
+    organisation: typeof value.organisation === "string" ? value.organisation.trim() : "",
   };
 }
 
@@ -128,6 +131,7 @@ export function readTokens(storage) {
       name: "",
       owners: [],
       itemCount: 0,
+      organisation: "",
     },
   ];
 }

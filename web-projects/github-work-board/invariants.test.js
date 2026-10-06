@@ -981,3 +981,23 @@ describe("a search hides cards and nothing else (ADR 0038)", () => {
     expect(source).not.toMatch(/fetch|import /);
   });
 });
+
+describe("a token that found nothing says it may wait for approval (ADR 0041)", () => {
+  const app = read("app.js");
+
+  // Every call a pending token makes answers 200, so the board is empty and
+  // nothing errors. Drop the question and the reader is back to an empty board
+  // with no route to the cause, which is the failure this decision fixed.
+  test("the read asks about approval, and only for a token that found nothing", () => {
+    const body = functionBody(app, "async function inspectToken(");
+    expect(body).toContain("shouldAskAboutApproval(");
+    expect(body).toContain('onStep("approval")');
+  });
+
+  // On an empty board only, a reader whose personal token finds work would
+  // never see it, and that reader is the usual case.
+  test("the callout is drawn on every board, not only on an empty one", () => {
+    expect(functionBody(app, "function renderBoard(")).toContain("renderApproval()");
+    expect(read("index.html")).toMatch(/<div id="token-approval"[^>]*\shidden>/);
+  });
+});
