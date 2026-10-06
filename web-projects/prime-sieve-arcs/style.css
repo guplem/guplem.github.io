@@ -213,9 +213,29 @@ body.is-paused #controls {
   color: var(--ink-dim);
 }
 
+#report {
+  padding-right: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-dim);
+}
+
+#report a {
+  color: var(--ink-dim);
+  text-underline-offset: 2px;
+  transition: color var(--transition);
+}
+
+#report a:hover,
+#report a:focus-visible {
+  color: rgba(236, 201, 77, 0.9);
+  outline: none;
+}
+
 @media (max-width: 600px) {
   #caption p,
-  #hint {
+  #hint,
+  #report-note {
     display: none;
   }
 

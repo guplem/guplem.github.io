@@ -123,6 +123,13 @@ export const MESSAGES = {
     es: "La página solo habla con Wikipedia y Wikidata. Nada sobre ti se guarda ni se envía a otro sitio.",
   },
 
+  // --- the report link (web-projects/AGENTS.md) ----------------------------
+  "ui.report": { en: "Report a problem", es: "Informar de un problema" },
+  "ui.reportNote": {
+    en: "You need a GitHub account, and the report is public.",
+    es: "Necesitas una cuenta de GitHub, y el informe es público.",
+  },
+
   // --- the deployed-at line (root ADR 0013) ---------------------------------
   "ui.deployed": {
     en: "Deployed {date} by pull request {pr}.",

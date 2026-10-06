@@ -167,7 +167,7 @@ for (const id of [
   "export-wastickers-hint", "export-contents-hint", "pack-clear",
   "install-panel", "install-heading", "install-lead", "install-save", "install-app",
   "install-android", "install-ios", "install-open", "install-minimum", "install-single",
-  "privacy", "deploy-line", "back-link",
+  "privacy", "report-link", "report-note", "deploy-line", "back-link",
 ]) {
   dom[id] = document.getElementById(id);
 }
@@ -1732,6 +1732,8 @@ function applyLanguage() {
     "install-open": "install.open",
     "pack-clear": "packUi.clear",
     privacy: "ui.privacy",
+    "report-link": "ui.report",
+    "report-note": "ui.reportNote",
     "back-link": "ui.back",
   };
   for (const [id, key] of Object.entries(text)) {

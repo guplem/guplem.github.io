@@ -268,6 +268,23 @@ a:hover {
   100% { box-shadow: 0 0 0 0 rgba(84, 224, 138, 0); }
 }
 
+/* ---------------- footer ---------------- */
+
+.app-footer {
+  padding: 0.9rem 1rem 1.4rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.app-footer span {
+  display: block;
+}
+/* On Home the footer sits on the dark-blue canvas. */
+body.is-home .app-footer,
+body.is-home .app-footer a {
+  color: var(--hero-accent);
+}
+
 /* ---------------- main layout ---------------- */
 
 .view {

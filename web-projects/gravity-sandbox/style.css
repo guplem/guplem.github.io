@@ -64,6 +64,24 @@ canvas {
   background-clip: text;
 }
 
+#report-line {
+  margin-top: 3px;
+  font-size: 0.7rem;
+  letter-spacing: 0.3px;
+  color: rgba(160, 180, 220, 0.35);
+}
+
+#report-line a {
+  color: rgba(160, 180, 220, 0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+#report-line a:hover {
+  color: #e0e8ff;
+  text-decoration: underline;
+}
+
 /* ── Buttons ────────────────────────────────────────────────────────────── */
 #controls {
   display: flex;
