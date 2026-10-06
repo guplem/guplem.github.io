@@ -6,6 +6,7 @@ import {
   REVIEW_ROW_ID,
   THEMES,
   colourableAreas,
+  columnsInView,
   defaultColour,
   knownColour,
   knownTheme,
@@ -118,5 +119,22 @@ describe("the colour each part opens with", () => {
   test("a part nobody has heard of is not painted", () => {
     expect(defaultColour("made-up")).toBe(DEFAULT_COLOUR);
     expect(defaultColour(null)).toBe(DEFAULT_COLOUR);
+  });
+});
+
+// Five columns fill the window and the sixth scrolls (ADR 0018). With some
+// hidden, the columns that are left share the width instead of leaving a gap.
+describe("columnsInView", () => {
+  test("the columns that are shown share the window, up to five", () => {
+    expect(columnsInView(6)).toBe(5);
+    expect(columnsInView(5)).toBe(5);
+    expect(columnsInView(3)).toBe(3);
+    expect(columnsInView(1)).toBe(1);
+  });
+
+  // With every column hidden, the CSS still needs a number it can divide by.
+  test("never less than one", () => {
+    expect(columnsInView(0)).toBe(1);
+    expect(columnsInView(Number.NaN)).toBe(1);
   });
 });

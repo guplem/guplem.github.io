@@ -62,6 +62,27 @@ repeating them. Keep the two copies identical: an explicit choice has to win in
 
 **Automatic is the theme's default**, and it stores nothing until the reader chooses.
 
+**The reader can hide any part of the board, and every part starts shown.** A
+third record map, `visibility`, holds one record per part, keyed by the same ids
+as `colours`. The switch sits at the end of that part's colour row in Settings,
+because both answer "how does this part look". A record means the reader chose;
+showing a part again keeps its record, like a cleared colour.
+
+- **A hidden part is not drawn and gets no placeholder**, the review row
+  included.
+- **A hidden part adds nothing to the number in the tab.** A count the reader
+  cannot find on the screen explains nothing (ADR 0030). Its counting choices
+  stay stored, and come back with the part.
+- **The columns that are left share the window.** Five fill it and the sixth
+  scrolls (ADR 0018); with fewer shown, `appearance.columnsInView` gives the
+  CSS a smaller number to split the width by.
+- **The find box does not reach into a hidden part.** The reader hid it, so it
+  is not on the board, and a search hides cards and nothing else (ADR 0038).
+- **"Move to" still offers a hidden column.** Moving a card there is a real
+  choice, for example to file it away, and the card simply leaves the screen.
+- **With every column hidden, the board says so** and offers the way back to
+  Settings, rather than reading as a broken page.
+
 ## Consequences
 
 **The repository is no longer "your notes".** It holds the notes, the cards

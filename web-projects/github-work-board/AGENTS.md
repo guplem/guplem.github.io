@@ -6,7 +6,7 @@
 
 A personal work board on top of GitHub issues. The page runs with no server: the
 reader pastes a fine-grained personal access token, and the browser calls
-`api.github.com` directly. Their private half (their notes, columns, colours, theme, marked priority,
+`api.github.com` directly. Their private half (their notes, columns, colours, which parts are shown, theme, marked priority,
 counting choices and the lines they copy from a card, now; tags and a "what's
 next" queue later) lives in one JSON file, `board.json`, kept by the shared
 cloud storage (`web-projects/cloud-storage/`, root ADR 0016): mirrored in this
@@ -41,11 +41,11 @@ It is the short procedure for all of the above.
 
 | File | Pure? | Responsibility |
 |---|---|---|
-| `boardDocument.js` | Yes | What each record means to the board: one note, column, colour, theme, priority, counting choice or copy action at a time, over the shared envelope (`../cloud-storage/envelope.js`) |
+| `boardDocument.js` | Yes | What each record means to the board: one note, column, colour, shown or hidden part, theme, priority, counting choice or copy action at a time, over the shared envelope (`../cloud-storage/envelope.js`) |
 | `legacyStorage.js` | Yes | The one-time hand-over of the board's old data repository and its writing token to cloud storage (root ADR 0016) |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
-| `appearance.js` | Yes | The colours a column can be painted, and light or dark (ADR 0024) |
+| `appearance.js` | Yes | The colours a column can be painted, light or dark, and how many shown columns share the window (ADR 0024) |
 | `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
 | `doneRange.js` | Yes | Which days the last column is about: the presets, every midnight boundary in the reader's clock, the words in its heading, and the written form a link carries (ADR 0034) |
 | `children.js` | Yes | The order the children of an issue read in, the count of closed ones beside their pills, and the words on the press that opens the list (ADR 0032) |
@@ -78,10 +78,10 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseFailedChecks`, `priority.sinkBlocked` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done today" newest first) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseFailedChecks`, `priority.sinkBlocked` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done" newest first) → the parts the reader hid are dropped (ADR 0024) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
 Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025). The read bar still shows (ADR 0039).
-Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
+Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
 
 ## Non-obvious conventions and gotchas
 
@@ -520,9 +520,15 @@ Data flow, saving: a keystroke, a card moved, a colour, the theme, a priority ma
   add-token -> settings, because that is where it was opened from (ADR 0018).
   A view name travels in the address bar, so it is as permanent as a sort id.
 - **Five columns fill the window on purpose.** `grid-auto-columns` is the
-  window less the four gaps, split five ways, so "Done today" is the one that
-  scrolls. The `max(17rem, ...)` half of it is what keeps a phone usable; drop
-  it and a column becomes 80 pixels wide (ADR 0018).
+  window less the gaps, split by `--columns-in-view`, so "Done" is the one that
+  scrolls. `app.js` lowers that number through `fitColumns` when the reader
+  hides columns. The `max(17rem, ...)` half of it is what keeps a phone usable;
+  drop it and a column becomes 80 pixels wide (ADR 0018).
+- **A hidden part is dropped in three places in `app.js`, and each one must
+  stay.** `renderLoading` (no placeholder), the areas handed to `countBoard`
+  (no share of the tab number), and the columns drawn in `renderBoard`. Miss
+  one and nothing fails: a hidden column flashes in while the board reads, or
+  the tab counts work the reader cannot see (ADR 0024).
 - **A nested pull request card hides its repository behind a hover.** It sits
   inside the card of the issue that already names it. Only the nested card
   does: `buildWorkItemCard(item, { compact: true })` (ADR 0018).

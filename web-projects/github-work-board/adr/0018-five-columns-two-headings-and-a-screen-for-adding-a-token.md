@@ -20,9 +20,10 @@ different places: the screen spends its room on things nobody is reading.
 ## Decision
 
 **Five columns fill the window, and the sixth is the one you rarely want.**
-`grid-auto-columns: max(17rem, calc((100% - 4 * 0.75rem) / 5))`. The window
-less the four gaps, split five ways, so everything up to "Ready to merge" is on
-screen and "Done today" is a scroll away. `max` keeps a column usable on a
+`grid-auto-columns` is the window less the gaps, split by
+`--columns-in-view`, which is five, so everything up to "Ready to merge" is on
+screen and "Done" is a scroll away. A reader who hides columns in Settings
+lowers that number, and the columns that are left share the width (ADR 0024). `max` keeps a column usable on a
 phone, where a fifth of the screen is not a column at all, and the row scrolls
 sideways there as it always did.
 

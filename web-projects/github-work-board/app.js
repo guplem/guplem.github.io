@@ -16,6 +16,7 @@ import {
   DOCUMENT_PATH,
   PROJECT,
   RECORD_MAPS,
+  readAreaShown,
   readColumn,
   readColumnColour,
   readCopyActions,
@@ -24,6 +25,7 @@ import {
   readPriority,
   readTheme,
   removeCopyAction,
+  writeAreaShown,
   writeColumn,
   writeColumnColour,
   writeCopyAction,
@@ -38,6 +40,7 @@ import {
   REVIEW_ROW_ID,
   THEMES,
   colourableAreas,
+  columnsInView,
 } from "./appearance.js";
 import { CHECKS_FAILED, attentionReason } from "./attention.js";
 import { describeChecks, needsAsking, readWorkflowRuns } from "./checks.js";
@@ -666,15 +669,18 @@ function renderLoading() {
   const last = readLastCounts(storage);
   // A row that was empty last time stays hidden while the board waits, so the
   // placeholders match what is coming (ADR 0004, ADR 0013).
-  showReviewRow(last.reviews !== 0);
+  // A part the reader hid gets no placeholder either.
+  showReviewRow(last.reviews !== 0 && readAreaShown(state.board, REVIEW_ROW_ID));
   element("reviews-empty").hidden = true;
   element("reviews-count").replaceChildren(buildSkeletonBar("0.75rem"));
   element("reviews-list").replaceChildren(...times(skeletonCount(last.reviews, 2), buildSkeletonCard));
 
+  const shownColumns = COLUMNS.filter((column) => readAreaShown(state.board, column.id));
   const columns = element("board-columns");
   columns.setAttribute("aria-busy", "true");
+  fitColumns(shownColumns.length);
   columns.replaceChildren(
-    ...COLUMNS.map((column, index) => {
+    ...shownColumns.map((column, index) => {
       const section = document.createElement("section");
       section.className = "column";
       const head = document.createElement("div");
@@ -684,7 +690,7 @@ function renderLoading() {
       list.className = "issues";
       // Spread what was there last time across the columns, so the placeholder
       // is the height of the board that is coming (ADR 0004).
-      const share = Math.max(1, Math.round(skeletonCount(last.items) / COLUMNS.length));
+      const share = Math.max(1, Math.round(skeletonCount(last.items) / Math.max(1, shownColumns.length)));
       list.replaceChildren(...times(index === 0 ? share + 1 : share, buildSkeletonCard));
       section.append(head, list);
       return section;
@@ -705,6 +711,14 @@ function renderLoading() {
     ...times(skeletonCount(last.tokens ?? state.tokens.length, 1), buildSkeletonTokenRow),
   );
   state.checks = {};
+}
+
+/**
+ * Tell the CSS how many columns share the window. Five fill it and the sixth
+ * scrolls; with some hidden, the columns that are left take the free width.
+ */
+function fitColumns(shownCount) {
+  element("board-columns").style.setProperty("--columns-in-view", String(columnsInView(shownCount)));
 }
 
 /**
@@ -1854,12 +1868,14 @@ function renderBoard() {
   // The search hides cards and nothing else. The badges and the counts are
   // worked out over the whole board, so finding one card does not rename the
   // tab or renumber a stack (ADR 0038).
-  const found = searchItems(waiting, search);
+  // A part the reader hid in Settings is not drawn, and nothing in it is found.
+  const reviewRowShown = readAreaShown(state.board, REVIEW_ROW_ID);
+  const found = reviewRowShown ? searchItems(waiting, search) : [];
   // The row hides only when nothing waits at all. When the assignee filter
   // empties it, the row stays, so the chip that undoes the filter stays too.
   // A search that finds nothing in the row hides the row, because the reader
   // asked to see one card and nothing else.
-  showReviewRow(reviewsNotOnBoard.length > 0 && (search === null || found.length > 0));
+  showReviewRow(reviewRowShown && reviewsNotOnBoard.length > 0 && (search === null || found.length > 0));
   element("reviews-empty").hidden = waiting.length > 0;
   const stacked = stackPositions(waiting);
   element("reviews-list").replaceChildren(
@@ -1877,13 +1893,16 @@ function renderBoard() {
   // (ADR 0030). The work pushed down is read through the same set the fade and
   // the sink use, never a second check of its own (ADR 0026).
   // `colourableAreas` is the one list of the board's parts, so Settings and the
-  // counting can never drift apart on what the parts are.
+  // counting can never drift apart on what the parts are. A hidden part adds
+  // nothing to the tab: a number the reader cannot find on screen explains
+  // nothing.
   const keysByArea = {
     [REVIEW_ROW_ID]: waiting.map((item) => item.key),
     ...Object.fromEntries(board.map(({ column, groups }) => [column.id, groups.map((group) => group.item.key)])),
   };
+  const shownAreas = colourableAreas().filter((area) => readAreaShown(state.board, area.id));
   const counts = countBoard(
-    colourableAreas().map((area) => ({ ...area, keys: keysByArea[area.id] ?? [] })),
+    shownAreas.map((area) => ({ ...area, keys: keysByArea[area.id] ?? [] })),
     lowPriorityKeys([...waiting, ...board.flatMap(({ groups }) => groups.map((group) => group.item))]),
     countingSettings(),
   );
@@ -1894,7 +1913,10 @@ function renderBoard() {
   const leftOut = describeExcluded(countFor[REVIEW_ROW_ID]?.excluded ?? 0);
   explain(reviewCount, leftOut);
 
-  const shownBoard = board.map(({ column, groups }) => ({ column, groups: searchGroups(groups, search) }));
+  const shownBoard = board
+    .filter(({ column }) => readAreaShown(state.board, column.id))
+    .map(({ column, groups }) => ({ column, groups: searchGroups(groups, search) }));
+  fitColumns(shownBoard.length);
   element("board-columns").replaceChildren(
     ...shownBoard.map((one) => buildColumn(one, countFor[one.column.id], search ? "No match" : undefined)),
   );
@@ -1912,22 +1934,29 @@ function renderBoard() {
   // different too: widen the filters, or add a token (ADR 0007, ADR 0009).
   const hiddenByFilters = state.items.length > 0 && visible.length === 0;
   const missed = search !== null && found.length === 0 && shownBoard.every(({ groups }) => groups.length === 0);
+  // With every column hidden, the board is blank on purpose, and it says so
+  // rather than read as broken.
+  const everyColumnHidden = shownBoard.length === 0;
   const owners = [...new Set(state.tokens.flatMap((entry) => entry.owners))];
-  element("board-empty").hidden = visible.length > 0 && !missed;
+  element("board-empty").hidden = visible.length > 0 && !missed && !everyColumnHidden;
   element("board-empty-reason").textContent = missed
     ? `Nothing on the board matches "${state.findText.trim()}".`
-    : hiddenByFilters
-      ? "Nothing here matches the filters you chose."
-      : sayEmptyBoard({ tokenCount: state.tokens.length, owners });
-  element("board-empty-hint").hidden = hiddenByFilters || missed;
-  element("empty-open-settings").hidden = hiddenByFilters || missed;
+    : everyColumnHidden
+      ? "Every column is hidden. Show one in Settings, under \"How the board looks\"."
+      : hiddenByFilters
+        ? "Nothing here matches the filters you chose."
+        : sayEmptyBoard({ tokenCount: state.tokens.length, owners });
+  element("board-empty-hint").hidden = hiddenByFilters || missed || everyColumnHidden;
+  const openSettings = element("empty-open-settings");
+  openSettings.hidden = (hiddenByFilters || missed) && !everyColumnHidden;
+  openSettings.textContent = everyColumnHidden ? "Show a column in Settings" : "Add a token in Settings";
   element("clear-filters").hidden = !narrowed || missed;
   element("clear-find").hidden = !missed;
 }
 
 /**
- * The appearance panel in Settings: the theme, and a colour for each part of
- * the board. Both are written to the reader's own repository, so a choice made
+ * The appearance panel in Settings: the theme, and a colour and a shown switch
+ * for each part of the board. Both are written to the reader's own repository, so a choice made
  * on one machine is there on the next (ADR 0024).
  */
 /**
@@ -2124,7 +2153,32 @@ function renderAppearance() {
         swatches.append(swatch);
       }
 
-      row.append(name, swatches);
+      // Whether the part is on the board at all. A button that says so through
+      // `aria-pressed`, like every two-state control here (ADR 0004), drawn as
+      // a switch because it reads as on and off.
+      const shown = readAreaShown(state.board, area.id);
+      row.classList.toggle("colour-area-hidden", !shown);
+      const visibility = document.createElement("button");
+      visibility.type = "button";
+      visibility.className = "switch";
+      visibility.setAttribute("aria-pressed", shown ? "true" : "false");
+      visibility.setAttribute("aria-label", `Show ${area.label} on the board`);
+      explain(visibility, shown ? "Shown on the board. Press to hide it." : "Hidden from the board. Press to show it.");
+      const thumb = document.createElement("span");
+      thumb.className = "switch-thumb";
+      visibility.append(thumb);
+      visibility.addEventListener("click", () => {
+        state.board = writeAreaShown(state.board, area.id, !shown, new Date().toISOString());
+        scheduleSave();
+        renderAppearance();
+        renderBoard();
+      });
+
+      const controls = document.createElement("div");
+      controls.className = "colour-area-controls";
+      controls.append(swatches, visibility);
+
+      row.append(name, controls);
       return row;
     }),
   );

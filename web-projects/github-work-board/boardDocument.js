@@ -2,7 +2,7 @@
 //
 // It holds one file, `board.json`, in the reader's cloud storage (root ADR 0016):
 // the notes, the cards moved by hand, the work pushed down the list, the colour
-// on each column and whether the board is light or dark. Everything here is the reader's; nothing is GitHub's. Two rules keep it safe to
+// on each column, which parts are shown or hidden, and whether the board is light or dark. Everything here is the reader's; nothing is GitHub's. Two rules keep it safe to
 // change, and ADR 0002 explains why both are worth the cost:
 //
 // 1. Records are only ever added. A note the reader cleared keeps its key and
@@ -28,7 +28,7 @@ export const PROJECT = "github-work-board";
 export const DOCUMENT_PATH = "board.json";
 
 /** The record maps this build knows about. Adding one here is the whole change. */
-export const RECORD_MAPS = ["notes", "columns", "colours", "appearance", "priorities", "counting", "copyActions"];
+export const RECORD_MAPS = ["notes", "columns", "colours", "visibility", "appearance", "priorities", "counting", "copyActions"];
 
 const shape = defineDocument(RECORD_MAPS);
 
@@ -125,6 +125,33 @@ export function writeColumnColour(document, areaId, colourId, now) {
     ...base,
     updatedAt: now,
     colours: { ...base.colours, [areaId]: { colourId: String(colourId ?? ""), updatedAt: now } },
+  };
+}
+
+/**
+ * Whether one column, or the review row, is on the board.
+ *
+ * **Every part is shown until the reader hides it.** A record means the
+ * reader chose, and a record with no readable answer is not a choice.
+ */
+export function readAreaShown(document, areaId) {
+  const record = isPlainObject(document) && isPlainObject(document.visibility) ? document.visibility[areaId] : null;
+  return isPlainObject(record) && typeof record.shown === "boolean" ? record.shown : true;
+}
+
+/**
+ * The same document with one area shown or hidden. The document handed in is
+ * not changed.
+ *
+ * Showing an area again keeps the record, the same way a cleared colour does:
+ * the other device has to tell "shown again just now" from "never hidden".
+ */
+export function writeAreaShown(document, areaId, shown, now) {
+  const base = migrate(document, now);
+  return {
+    ...base,
+    updatedAt: now,
+    visibility: { ...base.visibility, [areaId]: { shown: shown === true, updatedAt: now } },
   };
 }
 
