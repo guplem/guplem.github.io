@@ -39,7 +39,7 @@ export const COLUMNS = [
   },
   { id: "awaiting-review", label: "Awaiting review", hint: "A reviewer was asked, no verdict yet" },
   { id: "ready-to-merge", label: "Ready to merge", hint: "Approved" },
-  { id: "done", label: "Done today", hint: "Merged or closed since midnight" },
+  { id: "done", label: "Done", hint: "Merged or closed in the days you chose" },
 ];
 
 export const COLUMN_IDS = COLUMNS.map((column) => column.id);
@@ -217,7 +217,7 @@ export function groupIntoColumns(groups, relationships, overrides) {
     byId.get(columnFor(group?.item, relationship, chosen))?.groups.push(group);
   }
 
-  // "Done today" is the one column that is a log rather than a queue, so it
+  // The last column is the one that is a log rather than a queue, so it
   // reads newest first whatever order the reader asked for: the useful end of
   // a log is the thing that just landed. A card moved there by hand carries no
   // moment, so it goes last rather than disappearing (ADR 0017).

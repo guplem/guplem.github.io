@@ -29,7 +29,8 @@ range travels in the link.**
   single chosen day carries its weekday, because "last Friday" is how the
   question is asked. A heading that still said "Done today" while showing last
   week would be a lie, and it is the one column whose name is a claim about
-  time.
+  time. For the same reason, the column's name away from the board (in
+  Settings and in "Move to") is just "Done".
 - **Every boundary is midnight in the reader's own clock**, exactly as ADR 0017
   decided for today. `doneRange.js` owns every one of them now, and
   `workItems.startOfToday` is gone: one file decides where a day starts.

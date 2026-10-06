@@ -46,6 +46,12 @@ describe("COLUMNS", () => {
   test("every column has something to put at the top of it", () => {
     for (const column of COLUMNS) expect(column.label.length).toBeGreaterThan(0);
   });
+
+  // The last column takes a range of days (ADR 0034), so its name away from
+  // the board cannot promise "today". Its heading says the range itself.
+  test("the last column is called Done, with no day in its name", () => {
+    expect(COLUMNS.find((column) => column.id === "done").label).toBe("Done");
+  });
 });
 
 describe("readColumnId", () => {
