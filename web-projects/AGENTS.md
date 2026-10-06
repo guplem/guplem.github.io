@@ -92,12 +92,14 @@ Rules that matter:
 the way the directory index and `cloud-storage/` did. Two copies is cheaper than
 a new exception; four copies is not.
 
-## Report a problem (standard for new projects)
+## Report a problem (recommended, not required)
 
-Every web-project carries one plain link that opens the repository's issue
-form, `.github/ISSUE_TEMPLATE/web-project.yml`, with the project already named.
-A visitor then only says what happened. Put it at the bottom of the settings
-screen, or in the footer when the project has no settings. It needs no script:
+Most web-projects carry one plain link that opens the repository's issue form,
+`.github/ISSUE_TEMPLATE/web-project.yml`, with the project already named. A
+visitor then only says what happened. Place it where it fits the project: the
+bottom of a settings screen, the footer, or an about or help panel. Leave it
+out where it would spoil the piece, or where nobody would report anything
+(ChatGPTPong is kept exactly as ChatGPT wrote it). It needs no script:
 
 ```html
 <a target="_blank" rel="noopener noreferrer"

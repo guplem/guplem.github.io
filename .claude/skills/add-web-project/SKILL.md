@@ -83,7 +83,7 @@ Create `web-projects/<PROJECT_SLUG>/` with:
 
 5. **`deployStamp.js`** - Copy it and its test file from `web-projects/sudoku-screenshot-coach/`. It puts a "deployed at <date> by pull request #N" line in the footer, read from two meta tags in this page's own `<head>`. It fetches nothing. Add a `<p id="deploy-line" class="deploy-line"></p>` to the footer, add the `GENERATED:DEPLOY` block to the `<head>` (copy it with its placeholder values), and call `renderDeployLine(element, readStamp(document), lang, say, escapeHtml, "web-projects/<PROJECT_SLUG>")` at start-up and on every language change. `scripts/generateDeployStamp.js` finds the block automatically, so there is nothing to register. Remember that the pull request stamps itself in a second commit, after it is opened. See root ADR 0013 and the section in `web-projects/AGENTS.md`.
 
-5b. **"Report a problem" link** - Add the link to the repository's issue form, with `<PROJECT_SLUG>` filled in, at the bottom of the settings screen or in the footer. Copy it from the "Report a problem" section in `web-projects/AGENTS.md`.
+5b. **"Report a problem" link** - Add the link to the repository's issue form, with `<PROJECT_SLUG>` filled in, wherever it fits the project (a settings screen, the footer, a help panel). Copy it from the "Report a problem" section in `web-projects/AGENTS.md`.
 
 6. **`README.md`** - Project README following existing web-project READMEs:
    ```markdown
