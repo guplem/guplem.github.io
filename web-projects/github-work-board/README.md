@@ -200,7 +200,9 @@ empty and the board suggests one from wherever the token finds work.
    owned by your account cannot see an organisation's repositories, whatever
    permissions you give it. Create another token with the organisation as the
    **Resource owner**, grant it the same permissions, and paste it there. An
-   organisation owner may have to approve the token first.
+   organisation owner may have to approve the token first. Until then the
+   token finds nothing, and the board says so above the board, with a link to
+   the page where the organisation's owners approve it.
 
    Keep cloud storage on your personal token, in **Settings**, never on the
    organisation's. An organisation's owners can read its repositories, and

@@ -398,6 +398,12 @@
              of the time, and every count lives on the thing it counts. -->
         <p id="board-status" class="status" role="status" aria-live="polite"></p>
 
+        <!-- A token that may be waiting for an organisation to approve it.
+             GitHub says nothing about it, so the board says what it saw, and
+             links the page where the organisation's owners approve it
+             (ADR 0041). -->
+        <div id="token-approval" class="approval-list" hidden></div>
+
         <!-- An empty board has several causes, and "nothing is assigned to you"
              is a lie for most of them (ADR 0007). -->
         <div id="board-empty" class="callout" hidden>

@@ -58,7 +58,15 @@ describe("how many steps a read has done, over every token (ADR 0040)", () => {
 describe("the top bar says how far a read has gone (ADR 0039)", () => {
   // One entry for each call `inspectToken` waits on, in the order it waits.
   test("these are the steps of one token's read, in order", () => {
-    expect(READ_STEPS).toEqual(["identity", "open-work", "finished-work", "reviews", "relationships", "checks"]);
+    expect(READ_STEPS).toEqual([
+      "identity",
+      "open-work",
+      "finished-work",
+      "reviews",
+      "approval",
+      "relationships",
+      "checks",
+    ]);
   });
 
   // A bar with nothing in it reads as a page that has not started.

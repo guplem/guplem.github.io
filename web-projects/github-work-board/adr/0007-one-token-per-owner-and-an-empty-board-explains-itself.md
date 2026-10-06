@@ -33,7 +33,8 @@ no route from the symptom to the cause.
 
 - `settings.js` stores a list. Each entry carries the token, a permanent `id`,
   the permission fingerprint it was approved against (ADR 0005), the repository
-  owners it turned out to reach, and whether it can write the board file.
+  owners it turned out to reach, the organisation the reader typed for it
+  (ADR 0041), and whether it can write the board file.
 - **Every token is asked for the work assigned to you, and the answers are
   merged** by node id, so an item two tokens can both see appears once.
 - **Exactly one token writes the board file**: the first whose owner holds that

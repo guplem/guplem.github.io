@@ -13,12 +13,13 @@ guide:
 | Budget | Limit | What one refresh spends, per token |
 |---|---|---|
 | REST `core` | 5000 an hour | 3 calls: who you are, open work, work closed today |
+| REST `core` | the same | 1 call, only for a token that found no work: does it reach a private repository (ADR 0041) |
 | REST `search` | 30 a **minute** | 1 call: the pull requests waiting for your review |
 | GraphQL | 5000 points an hour | 1 call, or 2: the links between items, then the children of any issue that has them |
 
 The board holds a list of tokens, not one (ADR 0007), and a refresh asks every
 one of them. So the cost is five calls per token, per refresh, and six when
-something on the board has children.
+something on the board has children. A token that found no work adds one more.
 
 Two tokens on the shortest schedule spend 720 of the 5000 core calls an hour,
 and 4 of the 30 search calls a minute. The tight budget is `search`, because it

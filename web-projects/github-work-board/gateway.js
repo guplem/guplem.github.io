@@ -102,6 +102,28 @@ export function fetchFirstRepository(token) {
 }
 
 /**
+ * One private repository this token can reach, or none.
+ *
+ * A token waiting for an organisation's approval reads public data only, so
+ * this answers an empty list for it. The board asks only about a token that
+ * found no work at all (ADR 0041).
+ */
+export function fetchPrivateRepository(token) {
+  return call(token, "/user/repos?visibility=private&per_page=1", { need: PERMISSIONS.metadata });
+}
+
+/**
+ * The organisations a person belongs to in public.
+ *
+ * `GET /user/orgs` answers an empty list to every fine-grained token, so this
+ * public list is the only one a token can read. A membership is private by
+ * default, so it is often empty too (ADR 0041).
+ */
+export function fetchPublicOrganisations(token, login) {
+  return call(token, `/users/${encodeURIComponent(login)}/orgs?per_page=100`, { need: PERMISSIONS.metadata });
+}
+
+/**
  * Every open issue assigned to the token's owner, across every repository the
  * token can read. Pull requests come back in this answer too; `issues.js`
  * drops them.

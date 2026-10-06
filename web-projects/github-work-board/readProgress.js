@@ -2,15 +2,25 @@
 //
 // The read is not one call. For each token, `inspectToken` in `app.js` makes
 // six calls: the first four together, then the relationships, then the
-// checks. Every token reads at the same time (ADR 0040). So the bar can move by
-// real steps instead of a timer that guesses (ADR 0039).
+// checks. A token that found no work makes one more, the approval question
+// (ADR 0041), and that step counts for every token. Every token reads at the
+// same time (ADR 0040). So the bar can move by real steps instead of a timer
+// that guesses (ADR 0039).
 //
 // The bar never reaches full here. Every call answered is not yet the board
 // drawn: the merge and the render come after. `app.js` fills the bar only when
 // the board is on the screen.
 
 /** One entry for each call `inspectToken` makes, in the order the board waits on them. */
-export const READ_STEPS = ["identity", "open-work", "finished-work", "reviews", "relationships", "checks"];
+export const READ_STEPS = [
+  "identity",
+  "open-work",
+  "finished-work",
+  "reviews",
+  "approval",
+  "relationships",
+  "checks",
+];
 
 /** A bar with nothing in it reads as a page that has not started. */
 export const READ_PROGRESS_FLOOR = 5;

@@ -62,6 +62,7 @@ It is the short procedure for all of the above.
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `readProgress.js` | Yes | How full the thin bar at the top of the window is, one step per call of each token, counted over every token at once, and which step the read waits on (ADR 0039, ADR 0040) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
+| `approval.js` | Yes | Whether a token that found nothing may wait for an organisation's approval, which organisation, and the page where its owners approve it (ADR 0041) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
 | `relationships.js` | Yes | GitHub's own links between items, the children of an issue, which linked pull request an item is read from, and nesting a pull request under its issue (ADR 0010, ADR 0028) |
 | `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, and what to call that column away from the board (ADR 0011) |
@@ -101,7 +102,8 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   with the override as its text, which runs in the page's world. Measure what
   fires, not when.
 - **One refresh costs five GitHub calls for each token, and six when
-  something on the board has children**, and the tight budget is `search` at 30
+  something on the board has children**, plus one for a token that found
+  nothing (ADR 0041), and the tight budget is `search` at 30
   a minute, not `core` at 5000 an hour. A new call in the connect path
   multiplies by the number of tokens and by the refresh rate. Do that
   arithmetic in `refresh.test.js` before you add one.
@@ -498,6 +500,13 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   come back with overlapping owners and the same capped count. The reader names
   a token; the board only suggests a name from where it found work, and shows
   the token masked so a row can be matched against GitHub's own list (ADR 0007).
+- **A token waiting for an organisation's approval looks exactly like a token
+  with nothing to do.** Every call answers 200 with nothing in it, and GitHub
+  has no call that says "pending" or names the organisation. The one tell is
+  that it reaches no private repository, so `inspectToken` asks that of a token
+  that found nothing, and the reader types the organisation when the public
+  list is empty. Keep the sentence a "may": a public-only token answers the
+  same way (ADR 0041).
 - **Settings copies a token and never prints one on request.** GitHub shows a
   token once, so this browser holds the only copy (ADR 0015). `Copy` is the one
   control, and the warning dialog comes first. The token reaches the screen
@@ -633,6 +642,7 @@ before calling it done.
 | [0038](adr/0038-a-search-hides-cards-and-nothing-else.md) | A search hides cards and nothing else |
 | [0039](adr/0039-a-thin-bar-says-how-far-the-read-has-gone.md) | A thin bar says how far the read has gone |
 | [0040](adr/0040-the-tokens-and-their-first-calls-are-asked-together.md) | The tokens, and their first calls, are asked together |
+| [0041](adr/0041-a-token-that-finds-nothing-may-wait-for-approval.md) | A token that finds nothing may wait for approval, and the board says where to approve it |
 
 ## What is not built yet
 
