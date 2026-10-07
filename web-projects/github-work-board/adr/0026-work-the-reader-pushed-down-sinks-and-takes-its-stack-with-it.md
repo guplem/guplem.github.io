@@ -83,9 +83,10 @@ would show work that reads as ready and is not.
 **The raise runs before the sink**, so a card the reader pushed down stays down.
 Their hand beats the rule.
 
-**The review row does not raise, on purpose.** It answers a different question,
-"what am I being asked to read", and a pull request that does not build is not
-the one to read first. `invariants.test.js` says so, rather than leaving the
+**The review row does not raise red checks, on purpose.** It answers a different
+question, "what am I being asked to read", and a pull request that does not
+build is not the one to read first. It raises a different thing: the reviews the
+reader started (ADR 0042). `invariants.test.js` says so, rather than leaving the
 next reader to guess whether it was forgotten.
 
 ## The third pass: blocked work sinks below what can start
@@ -145,8 +146,9 @@ there. `invariants.test.js` pins the order of the passes and this exception.
 
   **The rule is now one rule.** The row and every column run the same two passes
   of the smart order, in the same order: the stacks first, then the cards the
-  reader pushed down. The row is flat and a column holds groups, and that is the
-  only difference between them. `invariants.test.js` pins both passes in both
+  reader pushed down. The row is flat and a column holds groups. Apart from
+  that, the one difference is a pass of the row's own: between the two, it
+  raises the reviews the reader started (ADR 0042). `invariants.test.js` pins both passes in both
   places, because the row drifted away from the columns once already, one pass
   at a time.
 - **A mark on a mid-stack pull request moves two cards.** That surprises until

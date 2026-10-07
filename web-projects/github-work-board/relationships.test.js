@@ -260,6 +260,23 @@ describe("the people in a pull request's review (ADR 0028)", () => {
     ]);
   });
 
+  // The review row puts a pull request the reader already reviewed above one
+  // they never opened (ADR 0042). The query counts the reader's own submitted
+  // reviews, a plain comment included, which `latestOpinionatedReviews` leaves out.
+  test("a pull request the reader reviewed before says so on the card", () => {
+    const links = normalizeRelationships(graph({ readerReviews: { totalCount: 2 } }));
+    const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);
+    expect(item.reviewedByReader).toBe(true);
+  });
+
+  // No count is "the board did not ask", which must never read as a review.
+  test("no review from the reader, or no answer at all, is not a review", () => {
+    for (const over of [{ readerReviews: { totalCount: 0 } }, {}, { readerReviews: null }]) {
+      const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], normalizeRelationships(graph(over)));
+      expect(item.reviewedByReader).toBe(false);
+    }
+  });
+
   test("nobody in the review is an empty list, never undefined", () => {
     const links = normalizeRelationships(graph());
     const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);

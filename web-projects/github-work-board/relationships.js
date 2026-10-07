@@ -121,6 +121,10 @@ function readLink(value) {
     // card draws them so the reader can see who is blocking it and who they
     // can chase (ADR 0028).
     reviewers: reviewPeople(value.reviewRequests, value.latestOpinionatedReviews),
+    // Whether the reader submitted any review here before, a plain comment
+    // included. Only a pull request's own node carries the count, so a linked
+    // one reads false. The review row raises these (ADR 0042).
+    reviewedByReader: Number(value.readerReviews?.totalCount) > 0,
   };
 }
 
@@ -300,6 +304,7 @@ export function applyPullRequestState(items, byId) {
       baseRefName: self.baseRefName,
       askedAgain: self.askedAgain,
       reviewers: self.reviewers,
+      reviewedByReader: self.reviewedByReader,
     };
   });
 }

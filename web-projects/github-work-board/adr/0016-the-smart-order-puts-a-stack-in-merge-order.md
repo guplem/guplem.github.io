@@ -88,7 +88,9 @@ treatment has to be added in both places.
 
 **The review row reads its stacks bottom first too.** It is one flat row of
 pull requests waiting on the reader, and a flat item is a group with nothing
-nested in it, so the same pass runs on it (`orderItemsForMerging`).
+nested in it, so the same pass runs on it (`orderItemsForMerging`). The row
+then raises the reviews the reader started (ADR 0042) and sinks the cards they
+pushed down (ADR 0026).
 `reviewSortId` still maps smart to `updated-asc`, because that is the
 comparator half of smart; the pass is the rest of it.
 

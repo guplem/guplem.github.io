@@ -21,6 +21,10 @@
 // A card that GitHub says is blocked sinks too, below the work that can start
 // now, by the same move (`sinkBlocked`).
 //
+// Two things rise, by the opposite move: a red check on the board
+// (`raiseFailedChecks`), and in the review row a pull request the reader
+// reviewed before (`raiseReviewedBeforeItems`, ADR 0042).
+//
 // **A value here is written into `board.json`** the moment somebody marks a
 // card, so it is as permanent as a colour id or a storage key.
 
@@ -176,8 +180,42 @@ function sinkWithWhatWaitsOnIt(groups, named) {
  * @returns a new array holding exactly the same groups
  */
 export function raiseFailedChecks(groups, red) {
+  return raiseWithItsStack(groups, red);
+}
+
+/**
+ * The same flat review row, with the pull requests the reader reviewed before
+ * moved to the top.
+ *
+ * A review the reader already started is half-done work: the author answered
+ * it and asked them to look again. Finishing it comes before opening a review
+ * nobody has started, or the row fills with work waiting on a second look
+ * (ADR 0042).
+ *
+ * It is the same move as the red-check raise, so a whole stack rises in merge
+ * order (ADR 0016). Only the row runs it: the board holds the reader's own
+ * work, not reviews. It runs before the reader's own sink, so a card pushed
+ * down by hand stays down (ADR 0026).
+ *
+ * @param items work items, not groups, already in the reader's chosen order
+ * @param reviewed the keys the reader reviewed before, as a Set or a list
+ * @returns a new array holding exactly the same items
+ */
+export function raiseReviewedBeforeItems(items, reviewed) {
+  const list = (Array.isArray(items) ? items : []).filter((one) => one && typeof one === "object");
+  return raiseWithItsStack(
+    list.map((item) => ({ item, children: [] })),
+    reviewed,
+  ).map((group) => group.item);
+}
+
+/**
+ * The groups named by `named`, and every group in the same stack, moved to the
+ * top. The order handed in holds inside both halves.
+ */
+function raiseWithItsStack(groups, named) {
   const list = (Array.isArray(groups) ? groups : []).filter((one) => one && typeof one === "object");
-  const keys = red instanceof Set ? red : new Set(Array.isArray(red) ? red : []);
+  const keys = named instanceof Set ? named : new Set(Array.isArray(named) ? named : []);
   if (keys.size === 0) return [...list];
 
   const bottom = bottomOf(list);
