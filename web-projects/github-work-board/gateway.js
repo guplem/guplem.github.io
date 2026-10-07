@@ -332,6 +332,43 @@ export async function fetchRelationships(token, ids, login = "") {
 }
 
 /**
+ * Whether each item a note is filed under is still open, for the suggested
+ * cleanup (ADR 0043).
+ *
+ * Asked only when the reader opens that screen, never on a refresh: a reader
+ * with three hundred notes would otherwise spend three calls per token on every
+ * tick (ADR 0025). The query asks for the item and nothing linked to it, so a
+ * full batch costs one point.
+ *
+ * Every token is asked about every id, because a note does not say which owner
+ * its item belongs to. A token answers null for an item it cannot see, which
+ * `cleanup.readItemStates` skips. A failed batch keeps the batches already
+ * answered: a partial cleanup list is still a true one.
+ */
+const ITEM_STATES_QUERY = `query($ids: [ID!]!) {
+  nodes(ids: $ids) {
+    __typename
+    ... on Issue { id number title url state closedAt repository { nameWithOwner } }
+    ... on PullRequest { id number title url state merged closedAt repository { nameWithOwner } }
+  }
+}`;
+
+export async function fetchItemStates(token, ids) {
+  const wanted = Array.isArray(ids) ? ids.filter((id) => typeof id === "string" && id !== "") : [];
+  const found = [];
+  for (let start = 0; start < wanted.length; start += RELATIONSHIP_BATCH) {
+    const answer = await call(token, "/graphql", {
+      method: "POST",
+      need: PERMISSIONS.issuesRead,
+      body: { query: ITEM_STATES_QUERY, variables: { ids: wanted.slice(start, start + RELATIONSHIP_BATCH) } },
+    });
+    if (!answer.ok) return start === 0 ? answer : { ok: true, data: found };
+    found.push(...(Array.isArray(answer.data?.data?.nodes) ? answer.data.data.nodes : []));
+  }
+  return { ok: true, data: found };
+}
+
+/**
  * Every open pull request waiting for a review from this token's owner.
  *
  * A review waiting on you is not assigned to you, so the issues endpoint never

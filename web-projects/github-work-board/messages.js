@@ -224,3 +224,40 @@ export function escapeHtml(text) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 }
+
+/**
+ * What the suggested cleanup says above its list, and under it (ADR 0043).
+ *
+ * `found` is how many notes sit on finished work, `unreadable` how many sit on
+ * work that no token answered for, and `failures` holds one sentence per token
+ * that could not answer.
+ *
+ * A token that failed knows nothing, so the board never counts a note as
+ * unreadable while one did: the token that could read it may be the one that
+ * failed. A board where no token answered says only that.
+ */
+export function describeCleanup({ found = 0, unreadable = 0, failures = [], tokenCount = 0 } = {}) {
+  const failed = Array.isArray(failures) ? failures : [];
+  if (failed.length > 0 && failed.length >= tokenCount) {
+    return { status: `The board could not ask GitHub about your notes. ${failed.join(" ")}`, unreadable: "" };
+  }
+  const counted =
+    found === 0
+      ? "Nothing to clean up. Every note is on work that is still open."
+      : found === 1
+        ? "1 note is on finished work."
+        : `${found} notes are on finished work.`;
+  if (failed.length > 0) {
+    return {
+      status: `${counted} Some tokens could not answer, so this list may be short. ${failed.join(" ")}`,
+      unreadable: "",
+    };
+  }
+  const leftAlone =
+    unreadable === 0
+      ? ""
+      : unreadable === 1
+        ? "1 more note is on work that none of your tokens can read, so the board leaves it alone."
+        : `${unreadable} more notes are on work that none of your tokens can read, so the board leaves them alone.`;
+  return { status: counted, unreadable: leftAlone };
+}

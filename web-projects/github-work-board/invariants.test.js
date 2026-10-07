@@ -401,7 +401,7 @@ describe("the page shows nothing it has not decided (ADR 0036)", () => {
   // whatever is visible in it is what a reader sees first. The setup screen was
   // visible, and it flashed at every reader who already has a token.
   test("every screen starts hidden, and the start-up screen is the one that shows", () => {
-    for (const id of ["setup", "board", "settings-view", "add-token-view"]) {
+    for (const id of ["setup", "board", "settings-view", "add-token-view", "cleanup-view"]) {
       expect(new RegExp(`<section id="${id}"[^>]*\\shidden`).test(html)).toBe(true);
     }
     expect(/<section id="boot"[^>]*\shidden/.test(html)).toBe(false);
@@ -429,7 +429,7 @@ describe("the page shows nothing it has not decided (ADR 0036)", () => {
       match[2].includes("display: none"),
     );
     expect(rule).toBeDefined();
-    for (const id of ["setup", "board", "settings-view", "add-token-view", "find-control", "view-toggle"]) {
+    for (const id of ["setup", "board", "settings-view", "add-token-view", "cleanup-view", "find-control", "view-toggle"]) {
       expect(rule[1]).toContain(`#${id}`);
     }
     expect(rule[2]).toContain("display: none");
@@ -1029,5 +1029,29 @@ describe("a token that found nothing says it may wait for approval (ADR 0041)", 
   test("the callout is drawn on every board, not only on an empty one", () => {
     expect(functionBody(app, "function renderBoard(")).toContain("renderApproval()");
     expect(read("index.html")).toMatch(/<div id="token-approval"[^>]*\shidden>/);
+  });
+});
+
+describe("the suggested cleanup deletes nothing it cannot prove, and asks only when opened (ADR 0043)", () => {
+  const app = read("app.js");
+
+  // The cleanup asks GitHub about every note, which is a call per token per
+  // hundred notes. On the refresh path that would multiply by the schedule
+  // (ADR 0025); opened by hand it costs once.
+  test("the refresh never asks about the notes", () => {
+    expect(functionBody(app, "async function connectAll(")).not.toContain("fetchItemStates");
+    expect(functionBody(app, "async function inspectToken(")).not.toContain("fetchItemStates");
+  });
+
+  // A deleted note keeps its key, or the other device's older copy comes back
+  // on the next merge (ADR 0002). `deleteNotes` is the one way the cleanup
+  // writes a note.
+  test("the cleanup empties a note through deleteNotes, never by removing its key", () => {
+    expect(app).toContain("deleteNotes(");
+    expect(read("cleanup.js")).not.toMatch(/\bdelete\s+\w+\[/);
+  });
+
+  test("the reader's choice to keep a note travels in the board file", () => {
+    expect(RECORD_MAPS).toContain("cleanup");
   });
 });

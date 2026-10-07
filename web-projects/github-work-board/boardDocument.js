@@ -2,7 +2,8 @@
 //
 // It holds one file, `board.json`, in the reader's cloud storage (root ADR 0016):
 // the notes, the cards moved by hand, the work pushed down the list, the colour
-// on each column, which parts are shown or hidden, and whether the board is light or dark. Everything here is the reader's; nothing is GitHub's. Two rules keep it safe to
+// on each column, which parts are shown or hidden, whether the board is light or dark, and
+// the notes the reader keeps out of the suggested cleanup. Everything here is the reader's; nothing is GitHub's. Two rules keep it safe to
 // change, and ADR 0002 explains why both are worth the cost:
 //
 // 1. Records are only ever added. A note the reader cleared keeps its key and
@@ -28,7 +29,17 @@ export const PROJECT = "github-work-board";
 export const DOCUMENT_PATH = "board.json";
 
 /** The record maps this build knows about. Adding one here is the whole change. */
-export const RECORD_MAPS = ["notes", "columns", "colours", "visibility", "appearance", "priorities", "counting", "copyActions"];
+export const RECORD_MAPS = [
+  "notes",
+  "columns",
+  "colours",
+  "visibility",
+  "appearance",
+  "priorities",
+  "counting",
+  "copyActions",
+  "cleanup",
+];
 
 const shape = defineDocument(RECORD_MAPS);
 
@@ -67,6 +78,30 @@ export function writeNote(document, issueKey, body, now) {
     ...base,
     updatedAt: now,
     notes: { ...base.notes, [issueKey]: { body: String(body ?? ""), updatedAt: now } },
+  };
+}
+
+/**
+ * Whether the suggested cleanup may offer this note for deletion (ADR 0043).
+ *
+ * **Every note is suggested until the reader keeps it.** A record means the
+ * reader chose, and a record with no readable answer is not a choice.
+ */
+export function readNoteSuggested(document, issueKey) {
+  const record = isPlainObject(document) && isPlainObject(document.cleanup) ? document.cleanup[issueKey] : null;
+  return isPlainObject(record) && typeof record.suggested === "boolean" ? record.suggested : true;
+}
+
+/**
+ * The same document with one note kept out of the cleanup, or let back in.
+ * The document handed in is not changed.
+ */
+export function writeNoteSuggested(document, issueKey, suggested, now) {
+  const base = migrate(document, now);
+  return {
+    ...base,
+    updatedAt: now,
+    cleanup: { ...base.cleanup, [issueKey]: { suggested: suggested === true, updatedAt: now } },
   };
 }
 

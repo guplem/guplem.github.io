@@ -846,10 +846,12 @@ textarea.input {
   color: hsl(var(--foreground));
 }
 
-/* The saved tokens, and the lines the reader copies from a card: two lists of
- * the same shape, so Settings reads as one page rather than several. */
+/* The saved tokens, the lines the reader copies from a card, and the notes the
+ * cleanup suggests: lists of the same shape, so the screens read as one page
+ * rather than several. */
 .tokens,
-.copy-actions {
+.copy-actions,
+.cleanup-list {
   list-style: none;
   margin: 0.5rem 0 0;
   padding: 0;
@@ -858,7 +860,8 @@ textarea.input {
 }
 
 .token-row,
-.copy-action-row {
+.copy-action-row,
+.cleanup-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -874,14 +877,16 @@ textarea.input {
 }
 
 .token-row:hover,
-.copy-action-row:hover {
+.copy-action-row:hover,
+.cleanup-row:hover {
   border-color: hsl(var(--ring) / 0.3);
 }
 
 /* The two lines of a token row, and of a connection check. A grid rather than
  * two inline children, so the placeholder that mirrors them stacks too. */
 .token-lines,
-.copy-action-lines {
+.copy-action-lines,
+.cleanup-lines {
   display: grid;
   gap: 0.375rem;
   align-content: start;
@@ -898,7 +903,8 @@ textarea.input {
 /* The buttons on a token row. They wrap under the two lines on a narrow
  * screen rather than squeezing the name box out of readable width. */
 .token-actions,
-.copy-action-buttons {
+.copy-action-buttons,
+.cleanup-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
@@ -918,6 +924,51 @@ textarea.input {
   border-radius: calc(var(--radius) - 4px);
   background: hsl(var(--background));
   color: hsl(var(--foreground));
+}
+
+/* Where a suggested note lives: its kind, its state and its repository, on
+ * one line above the title. */
+.cleanup-where {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.cleanup-title {
+  margin: 0;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.cleanup-title:hover {
+  text-decoration: underline;
+}
+
+.cleanup-title:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* The note itself, as the reader wrote it, line breaks kept. Three lines are
+ * enough to recognise it; the whole note is one hover away. */
+.cleanup-note {
+  margin: 0;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1003,7 +1054,7 @@ textarea.input {
 /* `showView` unhides the next screen the moment the board decides, while the
  * bar is still filling. This keeps that screen off the page until the start-up
  * screen is gone, so the swap happens once (ADR 0036). */
-.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #find-control, #sort-control, #refresh-control, #view-toggle, #read-bar) {
+.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #cleanup-view, #find-control, #sort-control, #refresh-control, #view-toggle, #read-bar) {
   display: none !important;
 }
 

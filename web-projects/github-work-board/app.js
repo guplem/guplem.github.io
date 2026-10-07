@@ -31,9 +31,17 @@ import {
   writeCopyAction,
   writeCounting,
   writeNote,
+  writeNoteSuggested,
   writePriority,
   writeTheme,
 } from "./boardDocument.js";
+import {
+  cleanupCandidates,
+  cleanupSuggestions,
+  deleteNotes,
+  readItemStates,
+  unreadableCount,
+} from "./cleanup.js";
 import {
   COLUMN_COLOURS,
   DEFAULT_COLOUR,
@@ -67,6 +75,7 @@ import { readStamp, renderDeployLine } from "./deployStamp.js";
 import {
   fetchAssignedIssues,
   fetchFinishedWork,
+  fetchItemStates,
   fetchRelationships,
   fetchReviewRequests,
   fetchFirstRepository,
@@ -98,6 +107,7 @@ import { describeFailure, describeMissingPermission } from "./githubErrors.js";
 import {
   bootStepProgress,
   bootStepWords,
+  describeCleanup,
   describeLastRefresh,
   describeReading,
   escapeHtml,
@@ -287,6 +297,14 @@ const state = {
   awaitingApproval: new Map(),
   // The public organisations of each login, asked once a visit.
   publicOrganisations: new Map(),
+  // What GitHub said about the items the notes are filed under, for the
+  // suggested cleanup. Asked each time that screen opens and never saved:
+  // it is GitHub's data, not the reader's (ADR 0043). Null until asked.
+  cleanupStates: null,
+  cleanupAsking: false,
+  // A sentence for each token that could not answer, so the screen says the
+  // list may be short.
+  cleanupFailures: [],
 };
 
 
@@ -2418,6 +2436,7 @@ function showView(view) {
   finishBoot();
   // Settings carries the cloud storage panel, and the local mirror and the
   // cloud copy can both have changed since it was drawn (root ADR 0016).
+  if (view === "cleanup" && state.tokens.length > 0) askAboutNotes().catch(() => {});
   if (view === "settings") {
     cloudPanel?.refresh();
     // Every permission, proved now. The reader opened Settings because they
@@ -2429,8 +2448,11 @@ function showView(view) {
 
   // One control, and where it goes depends on where you are. Adding a token
   // was opened from Settings, so "back" from there means Settings (ADR 0018).
-  const back = { board: null, settings: "board", "add-token": "settings" }[state.view] ?? null;
-  const label = { settings: "Back to the board", "add-token": "Back to settings" }[state.view] ?? "Settings";
+  // The cleanup is opened from Settings too, so it goes back there (ADR 0043).
+  const back = { board: null, settings: "board", "add-token": "settings", cleanup: "settings" }[state.view] ?? null;
+  const label =
+    { settings: "Back to the board", "add-token": "Back to settings", cleanup: "Back to settings" }[state.view] ??
+    "Settings";
 
   // A token shown in full stays shown only while the reader is looking at it.
   if (state.view !== "settings" && state.revealed.size > 0) {
@@ -2449,7 +2471,183 @@ function showView(view) {
   element("refresh-control").hidden = !connected || state.view !== "board";
   element("settings-view").hidden = state.view !== "settings";
   element("add-token-view").hidden = state.view !== "add-token";
+  element("cleanup-view").hidden = state.view !== "cleanup";
   rememberUrl();
+}
+
+/* -------------------------------------------------------------------------- */
+/* The suggested cleanup                                                      */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Ask every token whether the items the notes are filed under are still open.
+ *
+ * Only when the reader opens the cleanup or presses "Check again", never on a
+ * refresh (ADR 0043). Every token is asked at the same time, and the answers
+ * are merged in token-list order, as the board's own read does (ADR 0040).
+ */
+async function askAboutNotes() {
+  if (state.cleanupAsking) return;
+  const candidates = cleanupCandidates(state.board);
+  state.cleanupAsking = true;
+  state.cleanupFailures = [];
+  renderCleanup();
+  try {
+    const answers =
+      candidates.length === 0
+        ? []
+        : await Promise.all(state.tokens.map((entry) => fetchItemStates(entry.token, candidates)));
+    state.cleanupFailures = answers.flatMap((answer, index) =>
+      answer.ok ? [] : [`${state.tokens[index].name || `Token ${index + 1}`}: ${describeFailure(answer)}`],
+    );
+    state.cleanupStates = readItemStates(answers.map((answer) => (answer.ok ? answer.data : [])));
+  } finally {
+    state.cleanupAsking = false;
+    renderCleanup();
+  }
+}
+
+/** One note the cleanup suggests: where it is, what it says, and the two answers. */
+function buildCleanupRow(suggestion) {
+  const row = document.createElement("li");
+  row.className = "cleanup-row";
+
+  const lines = document.createElement("div");
+  lines.className = "cleanup-lines";
+
+  const where = document.createElement("p");
+  where.className = "cleanup-where";
+  const kind = document.createElement("span");
+  kind.className = suggestion.kind === "pull-request" ? "badge badge-pull" : "badge badge-issue";
+  kind.textContent = suggestion.kind === "pull-request" ? "PR" : "Issue";
+  const status = document.createElement("span");
+  status.className = suggestion.state === "merged" ? "badge badge-success" : "badge badge-outline";
+  status.textContent = suggestion.state === "merged" ? "Merged" : "Closed";
+  const place = document.createElement("span");
+  place.textContent = `${suggestion.repository} #${suggestion.number}`;
+  where.append(kind, status, place);
+  if (suggestion.closedAt !== "") {
+    const when = document.createElement("span");
+    when.textContent = `· ${new Date(suggestion.closedAt).toLocaleDateString()}`;
+    where.append(when);
+  }
+
+  const title = document.createElement("a");
+  title.className = "cleanup-title";
+  title.href = suggestion.url;
+  title.target = "_blank";
+  title.rel = "noopener";
+  title.textContent = suggestion.title;
+
+  // Three lines are enough to recognise a note; the whole of it is one hover away.
+  const note = document.createElement("p");
+  note.className = "cleanup-note";
+  note.textContent = suggestion.note;
+  explain(note, suggestion.note);
+
+  lines.append(where, title, note);
+
+  const buttons = document.createElement("div");
+  buttons.className = "cleanup-buttons";
+  const keep = document.createElement("button");
+  keep.type = "button";
+  keep.className = "button button-outline";
+  keep.textContent = "Keep";
+  explain(keep, "Keep this note, and stop suggesting it on every device.");
+  keep.addEventListener("click", () => {
+    state.board = writeNoteSuggested(state.board, suggestion.key, false, new Date().toISOString());
+    scheduleSave();
+    renderCleanup();
+  });
+  const drop = document.createElement("button");
+  drop.type = "button";
+  drop.className = "button button-danger";
+  drop.textContent = "Delete";
+  drop.addEventListener("click", () => {
+    state.board = deleteNotes(state.board, [suggestion.key], new Date().toISOString());
+    scheduleSave();
+    renderCleanup();
+    renderBoard();
+  });
+  buttons.append(keep, drop);
+
+  row.append(lines, buttons);
+  return row;
+}
+
+/** A placeholder in the shape of a cleanup row: three lines and two buttons (ADR 0004). */
+function buildSkeletonCleanupRow() {
+  const row = document.createElement("li");
+  row.className = "cleanup-row skeleton-card";
+  const lines = document.createElement("div");
+  lines.className = "cleanup-lines";
+  lines.append(buildSkeletonBar("12rem"), buildSkeletonBar("70%", "skeleton-title"), buildSkeletonBar("90%"));
+  const buttons = document.createElement("div");
+  buttons.className = "cleanup-buttons";
+  buttons.append(buildSkeletonBar("3.5rem", "skeleton-button"), buildSkeletonBar("4rem", "skeleton-button"));
+  row.append(lines, buttons);
+  return row;
+}
+
+/** The cleanup screen, from what GitHub last said and the board as it is now. */
+function renderCleanup() {
+  const list = element("cleanup-list");
+  const deleteAll = element("cleanup-delete-all");
+  const unreadable = element("cleanup-unreadable");
+  element("cleanup-again").disabled = state.cleanupAsking;
+
+  // Nothing appears out of nothing. While GitHub answers, the screen draws one
+  // placeholder per note it asked about, which is the most that can come back
+  // (ADR 0004).
+  if (state.cleanupAsking || state.cleanupStates === null) {
+    const asked = cleanupCandidates(state.board).length;
+    element("cleanup-status").textContent =
+      asked === 0 ? "" : "Asking GitHub which of your notes are on finished work...";
+    list.replaceChildren(...times(asked === 0 ? 0 : skeletonCount(asked), buildSkeletonCleanupRow));
+    deleteAll.hidden = true;
+    unreadable.hidden = true;
+    return;
+  }
+
+  const suggestions = cleanupSuggestions(state.board, state.cleanupStates);
+  // An item no token can read may be deleted, or may sit behind a token this
+  // browser does not hold. The board cannot tell which, so it says so and
+  // offers nothing (ADR 0043).
+  const said = describeCleanup({
+    found: suggestions.length,
+    unreadable: unreadableCount(cleanupCandidates(state.board), state.cleanupStates),
+    failures: state.cleanupFailures,
+    tokenCount: state.tokens.length,
+  });
+  element("cleanup-status").textContent = said.status;
+  list.replaceChildren(...suggestions.map(buildCleanupRow));
+
+  deleteAll.hidden = suggestions.length < 2;
+  deleteAll.textContent = `Delete all ${suggestions.length}`;
+  unreadable.hidden = said.unreadable === "";
+  unreadable.textContent = said.unreadable;
+}
+
+/** Ask before "Delete all", because one press empties many notes (ADR 0043). */
+function confirmDeleteAll() {
+  if (state.cleanupStates === null) return;
+  const count = cleanupSuggestions(state.board, state.cleanupStates).length;
+  if (count === 0) return;
+  element("cleanup-confirm-text").textContent =
+    `This deletes ${count} notes on closed and merged work, on every device. ` +
+    "Your data repository keeps the old versions in its history, but the board will not show them again.";
+  element("cleanup-confirm").showModal();
+}
+
+/** Delete every note the cleanup suggests right now. */
+function deleteAllSuggested() {
+  if (state.cleanupStates === null) return;
+  const keys = cleanupSuggestions(state.board, state.cleanupStates).map((one) => one.key);
+  if (keys.length === 0) return;
+  state.board = deleteNotes(state.board, keys, new Date().toISOString());
+  scheduleSave();
+  renderCleanup();
+  renderBoard();
 }
 
 /** Keep the address bar showing the open screen and the chosen order. */
@@ -3227,6 +3425,18 @@ function start() {
     window.scrollTo({ top: 0 });
   };
   element("open-add-token").addEventListener("click", openAddToken);
+  element("open-cleanup").addEventListener("click", () => {
+    showView("cleanup");
+    window.scrollTo({ top: 0 });
+  });
+  element("cleanup-again").addEventListener("click", () => askAboutNotes().catch(() => {}));
+  element("cleanup-delete-all").addEventListener("click", confirmDeleteAll);
+  const cleanupConfirm = element("cleanup-confirm");
+  element("cleanup-confirm-cancel").addEventListener("click", () => cleanupConfirm.close());
+  element("cleanup-confirm-go").addEventListener("click", () => {
+    cleanupConfirm.close();
+    deleteAllSuggested();
+  });
   element("cancel-add-token").addEventListener("click", () => showView("settings"));
   element("add-token").addEventListener("click", () =>
     connectPastedToken(element("another-token"), element("another-token-name").value),
@@ -3436,6 +3646,8 @@ function start() {
       paintTheme();
       renderAppearance();
       if (!state.loading) renderBoard();
+      // Another device may have deleted or kept a note the cleanup lists.
+      if (state.view === "cleanup") renderCleanup();
     },
     onStatus: (sync) => {
       // The panel in Settings carries the badge. The board itself speaks only

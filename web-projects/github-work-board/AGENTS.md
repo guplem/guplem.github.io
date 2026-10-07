@@ -7,7 +7,7 @@
 A personal work board on top of GitHub issues. The page runs with no server: the
 reader pastes a fine-grained personal access token, and the browser calls
 `api.github.com` directly. Their private half (their notes, columns, colours, which parts are shown, theme, marked priority,
-counting choices and the lines they copy from a card, now; tags and a "what's
+counting choices, the lines they copy from a card and the notes they keep out of the suggested cleanup, now; tags and a "what's
 next" queue later) lives in one JSON file, `board.json`, kept by the shared
 cloud storage (`web-projects/cloud-storage/`, root ADR 0016): mirrored in this
 browser, and saved to the private repository they own, so the board follows
@@ -41,7 +41,8 @@ It is the short procedure for all of the above.
 
 | File | Pure? | Responsibility |
 |---|---|---|
-| `boardDocument.js` | Yes | What each record means to the board: one note, column, colour, shown or hidden part, theme, priority, counting choice or copy action at a time, over the shared envelope (`../cloud-storage/envelope.js`) |
+| `boardDocument.js` | Yes | What each record means to the board: one note, column, colour, shown or hidden part, theme, priority, counting choice, copy action or note kept out of the cleanup at a time, over the shared envelope (`../cloud-storage/envelope.js`) |
+| `cleanup.js` | Yes | The suggested cleanup: which notes sit on closed or merged work, from GitHub's answer about each item, and emptying the ones the reader lets go (ADR 0043) |
 | `legacyStorage.js` | Yes | The one-time hand-over of the board's old data repository and its writing token to cloud storage (root ADR 0016) |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
@@ -72,7 +73,7 @@ It is the short procedure for all of the above.
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The list of tokens, through an injected storage (ADR 0007) |
-| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), what a running read waits on (ADR 0039), and whether the notes are syncing (ADR 0019) |
+| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), what a running read waits on (ADR 0039), whether the notes are syncing (ADR 0019), and what the cleanup found (ADR 0043) |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `style.css` | - | The design system: colour roles, one radius, and the five parts every screen is built from (ADR 0004) |
 | `gateway.js` | No | The **only** file that calls the network |
@@ -82,6 +83,7 @@ It is the short procedure for all of the above.
 Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseFailedChecks`, `priority.sinkBlocked` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done" newest first) → the parts the reader hid are dropped (ADR 0024) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
 Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.raiseReviewedBeforeItems` → `priority.sinkLowPriorityItems` (the last three only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025). The read bar still shows (ADR 0039).
+Data flow, the cleanup: opening `?view=cleanup` or pressing "Check again" → `cleanup.cleanupCandidates` → `gateway.fetchItemStates` for every token at once → `cleanup.readItemStates` (token-list order) → `cleanup.cleanupSuggestions` → rows. Delete → `cleanup.deleteNotes`; Keep → `boardDocument.writeNoteSuggested` (ADR 0043).
 Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
 
 ## Non-obvious conventions and gotchas
@@ -321,6 +323,13 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   between; the cycle runs once more.
 - **A cleared note keeps its key.** Deleting the key would read as "this device
   never had it" and the other device's older text would come back (ADR 0002).
+  The suggested cleanup deletes the same way, through `cleanup.deleteNotes`.
+- **The cleanup suggests a note only when a token saw its work closed.** No
+  answer for an item can mean "deleted" or "behind a token in another
+  browser", so a note on unreadable work is counted and never offered. While
+  any token failed, the board does not count unreadable notes at all
+  (ADR 0043). The cleanup asks GitHub only when its view opens, never on a
+  refresh; `invariants.test.js` pins that.
 - **`migrate` never throws and never drops a map it does not recognise.** An old
   tab that saves must not wipe what a newer build wrote.
 - **Nothing reaches the screen through `innerHTML`** except the deploy line,
@@ -331,7 +340,7 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   (ADR 0001).
 - **The repository holds the whole of the reader's half, not just notes.**
   `board.json` carries the notes, the cards moved by hand, the colour on each
-  column and the theme (ADR 0024). The cloud storage panel calls it the **data
+  column, the theme (ADR 0024) and the notes kept out of the cleanup (ADR 0043). The cloud storage panel calls it the **data
   repository**, because it now holds every adopting project's data, not only
   the board's; say "your half of the board", never "your notes", in anything
   new.
@@ -526,9 +535,10 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   add-token screen. Text starting with `{` is always read as a backup, never
   tried as a token: a blob that was cut short must report itself, not come
   back as GitHub's complaint about a bad credential.
-- **There are three views, and one control moves between them.** Board,
-  Settings, and `add-token`; the toggle goes board -> settings -> board, and
-  add-token -> settings, because that is where it was opened from (ADR 0018).
+- **There are four views, and one control moves between them.** Board,
+  Settings, `add-token` and `cleanup`; the toggle goes board -> settings ->
+  board, and add-token or cleanup -> settings, because that is where each was
+  opened from (ADR 0018, ADR 0043).
   A view name travels in the address bar, so it is as permanent as a sort id.
 - **Five columns fill the window on purpose.** `grid-auto-columns` is the
   window less the gaps, split by `--columns-in-view`, so "Done" is the one that
@@ -600,6 +610,12 @@ A green suite does not prove the page loads: nothing here executes `app.js`.
 After a change to `app.js` or `gateway.js`, open the page and read the console
 before calling it done.
 
+**The browser pane keeps old modules in its cache, and a hard reload does not
+always clear them.** A fresh `app.js` that imports a name from a stale
+`messages.js` fails to load, and the page looks broken when the code is not.
+Check `performance.getEntriesByType("resource")` for a `transferSize` of 0, and
+`fetch` each changed file with `{ cache: "reload" }` before the reload.
+
 ## Architecture Decision Records
 
 | ADR | Topic |
@@ -646,6 +662,7 @@ before calling it done.
 | [0040](adr/0040-the-tokens-and-their-first-calls-are-asked-together.md) | The tokens, and their first calls, are asked together |
 | [0041](adr/0041-a-token-that-finds-nothing-may-wait-for-approval.md) | A token that finds nothing may wait for approval, and the board says where to approve it |
 | [0042](adr/0042-a-review-you-started-comes-before-a-new-one.md) | A review you started comes before a new one |
+| [0043](adr/0043-the-cleanup-suggests-notes-on-finished-work.md) | The cleanup suggests the notes on finished work, and deletes nothing it cannot prove |
 
 ## What is not built yet
 

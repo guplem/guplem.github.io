@@ -36,8 +36,9 @@ const REVIEWER_PARAM = "reviewer";
 /** The screens this page has. Named in links, so a name is never changed. */
 // A view name travels in the address bar, so it is permanent, exactly like
 // a sort id. "add-token" is its own screen because the guide it holds is
-// long enough to bury the rest of Settings (ADR 0018).
-export const VIEWS = ["board", "settings", "add-token"];
+// long enough to bury the rest of Settings (ADR 0018). "cleanup" is the
+// suggested cleanup of the data repository, opened from Settings (ADR 0043).
+export const VIEWS = ["board", "settings", "add-token", "cleanup"];
 export const DEFAULT_VIEW = "board";
 
 /** One of the views above, whatever was asked for. */

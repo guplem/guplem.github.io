@@ -8,6 +8,8 @@ import {
   migrate,
   parseDocument,
   readNote,
+  readNoteSuggested,
+  writeNoteSuggested,
   serializeDocument,
   writeNote,
   readColumnColour,
@@ -373,5 +375,31 @@ describe("the colour a part of the board opens with (ADR 0024)", () => {
     expect(readColumnColour(painted, "ongoing")).toBe("rose");
     const cleared = writeColumnColour(emptyDocument(now), "ongoing", "default", now);
     expect(readColumnColour(cleared, "ongoing")).toBe("default");
+  });
+});
+
+describe("a note the reader keeps out of the cleanup (ADR 0043)", () => {
+  // Every note is a candidate until the reader says otherwise.
+  test("a note nobody answered for is suggested", () => {
+    expect(readNoteSuggested(emptyDocument(NOW), ISSUE)).toBe(true);
+  });
+
+  test("the reader can keep one, and change their mind later", () => {
+    const kept = writeNoteSuggested(emptyDocument(NOW), ISSUE, false, NOW);
+    expect(readNoteSuggested(kept, ISSUE)).toBe(false);
+    expect(readNoteSuggested(writeNoteSuggested(kept, ISSUE, true, LATER), ISSUE)).toBe(true);
+  });
+
+  // The answer travels with the board, so another device does not suggest the
+  // same note again.
+  test("is saved in its own map, filed under the item's node id", () => {
+    expect(RECORD_MAPS).toContain("cleanup");
+    const kept = writeNoteSuggested(emptyDocument(NOW), ISSUE, false, NOW);
+    expect(kept.cleanup[ISSUE]).toEqual({ suggested: false, updatedAt: NOW });
+  });
+
+  test("an unreadable record reads as suggested", () => {
+    const odd = { ...emptyDocument(NOW), cleanup: { [ISSUE]: { suggested: "no", updatedAt: NOW } } };
+    expect(readNoteSuggested(odd, ISSUE)).toBe(true);
   });
 });
