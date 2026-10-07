@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   MESSAGES,
+  describeCleanup,
   escapeHtml,
   joinWithAnd,
   describeLastRefresh,
@@ -319,5 +320,46 @@ describe("summariseChecks with a check nothing could prove", () => {
 
   test("nothing checked at all says so", () => {
     expect(summariseChecks([unknown, unknown])).toBe("2 checks not checked yet");
+  });
+});
+
+describe("describeCleanup (ADR 0043)", () => {
+  test("counts the notes on finished work", () => {
+    expect(describeCleanup({ found: 1, unreadable: 0, failures: [], tokenCount: 1 }).status).toBe(
+      "1 note is on finished work.",
+    );
+    expect(describeCleanup({ found: 3, unreadable: 0, failures: [], tokenCount: 1 }).status).toBe(
+      "3 notes are on finished work.",
+    );
+  });
+
+  test("says when there is nothing to clean up", () => {
+    expect(describeCleanup({ found: 0, unreadable: 0, failures: [], tokenCount: 1 }).status).toBe(
+      "Nothing to clean up. Every note is on work that is still open.",
+    );
+  });
+
+  // A board that could not ask GitHub knows nothing about the notes. "Nothing
+  // to clean up" would be a confident wrong answer, and calling every note
+  // unreadable would be another.
+  test("says the board could not ask when no token answered, and nothing else", () => {
+    const said = describeCleanup({ found: 0, unreadable: 4, failures: ["Work: rejected."], tokenCount: 1 });
+    expect(said.status).toBe("The board could not ask GitHub about your notes. Work: rejected.");
+    expect(said.unreadable).toBe("");
+  });
+
+  test("says the list may be short when some tokens failed, and stays quiet on what nobody could read", () => {
+    const said = describeCleanup({ found: 2, unreadable: 3, failures: ["Org: rejected."], tokenCount: 2 });
+    expect(said.status).toBe("2 notes are on finished work. Some tokens could not answer, so this list may be short. Org: rejected.");
+    expect(said.unreadable).toBe("");
+  });
+
+  test("names the notes on work no token could read", () => {
+    expect(describeCleanup({ found: 0, unreadable: 1, failures: [], tokenCount: 1 }).unreadable).toBe(
+      "1 more note is on work that none of your tokens can read, so the board leaves it alone.",
+    );
+    expect(describeCleanup({ found: 0, unreadable: 2, failures: [], tokenCount: 1 }).unreadable).toBe(
+      "2 more notes are on work that none of your tokens can read, so the board leaves them alone.",
+    );
   });
 });

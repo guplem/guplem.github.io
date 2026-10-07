@@ -147,6 +147,10 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
 - **A private note on any issue**, added from the card's own menu and shown only
   where one exists. Notes are yours alone: they never appear on GitHub's issue
   page, and nobody else sees them.
+- **A suggested cleanup for notes on finished work.** A note stays in your
+  repository after its issue closes or its pull request merges. **Settings ->
+  Review suggested cleanup** lists those notes. Delete each one, delete them
+  all at once, or keep one so the board stops suggesting it on every device.
 - **Settings says whether your board is getting through.** The cloud storage
   panel shows **Saving** or **Not saving**, and when it is not, it says what
   to fix. It answers when you open Settings and again after **Save and

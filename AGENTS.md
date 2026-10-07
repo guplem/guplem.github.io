@@ -304,6 +304,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0040](web-projects/github-work-board/adr/0040-the-tokens-and-their-first-calls-are-asked-together.md) | The tokens, and their first calls, are asked together |
 | [github-work-board 0041](web-projects/github-work-board/adr/0041-a-token-that-finds-nothing-may-wait-for-approval.md) | A token that finds nothing may wait for approval, and the board says where to approve it |
 | [github-work-board 0042](web-projects/github-work-board/adr/0042-a-review-you-started-comes-before-a-new-one.md) | A review you started comes before a new one |
+| [github-work-board 0043](web-projects/github-work-board/adr/0043-the-cleanup-suggests-notes-on-finished-work.md) | The cleanup suggests the notes on finished work, and deletes nothing it cannot prove |
 | [wildfire-watch 0001](web-projects/wildfire-watch/adr/0001-demo-data-behind-the-real-data-shapes.md) | Keep a demo mode on invented data, in the same shapes as the live data |
 | [wildfire-watch 0002](web-projects/wildfire-watch/adr/0002-copy-the-fire-files-with-a-scheduled-action.md) | Copy the fire files with a scheduled GitHub Action, and read the copy |
 | [wildfire-watch 0003](web-projects/wildfire-watch/adr/0003-live-mode-reads-keyless-sources-and-names-each-one.md) | The live mode reads only keyless sources, and each layer names its source |

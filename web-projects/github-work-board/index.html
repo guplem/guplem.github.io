@@ -171,6 +171,24 @@
     </div>
   </dialog>
 
+  <!-- Asked before "Delete all" in the suggested cleanup, because one press
+       empties many notes at once (ADR 0043). One note at a time needs no
+       question: the row says what it deletes. -->
+  <dialog id="cleanup-confirm" class="dialog" aria-labelledby="cleanup-confirm-heading">
+    <div class="card">
+      <div class="card-header">
+        <h2 id="cleanup-confirm-heading">Delete these notes?</h2>
+      </div>
+      <div class="card-content">
+        <p id="cleanup-confirm-text" class="field-help"></p>
+        <p class="step-action">
+          <button id="cleanup-confirm-cancel" type="button" class="button button-outline">Cancel</button>
+          <button id="cleanup-confirm-go" type="button" class="button button-danger">Delete them</button>
+        </p>
+      </div>
+    </div>
+  </dialog>
+
   <div class="page">
     <!-- How far a read of GitHub has gone, pinned to the top edge of the
          window during every read, the scheduled ones included (ADR 0039). -->
@@ -240,7 +258,7 @@
           </button>
         </div>
 
-        <!-- One control for both screens. The arrow appears only on the way back,
+        <!-- One control for every screen. The arrow appears only on the way back,
              because only that direction is a return (ADR 0008). -->
         <button id="view-toggle" type="button" class="button button-outline" hidden>
           <svg id="view-toggle-arrow" class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
@@ -471,6 +489,19 @@
             <!-- The shared settings component, full mode (root ADR 0016). It carries
                  the badge that says whether saves get through (ADR 0019). -->
             <div id="cloud-settings"></div>
+
+            <!-- The suggested cleanup is its own screen, because it asks GitHub
+                 about every note and lists them (ADR 0043). -->
+            <div class="field">
+              <p class="field-label">Suggested cleanup</p>
+              <p class="field-help">
+                A note stays in your data repository after its issue closes or its pull request merges. This
+                lists those notes, so you can delete them or keep them.
+              </p>
+              <p class="step-action">
+                <button id="open-cleanup" type="button" class="button button-outline">Review suggested cleanup</button>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -648,6 +679,36 @@
                 </p>
               </li>
             </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- The suggested cleanup of the data repository. It lists the notes left
+           on closed and merged work, and empties the ones the reader lets go.
+           Opened from Settings, so "back" goes to Settings (ADR 0043). -->
+      <section id="cleanup-view" aria-labelledby="cleanup-heading" hidden>
+        <div class="card">
+          <div class="card-header">
+            <h2 id="cleanup-heading">Suggested cleanup</h2>
+            <p class="lead">
+              These notes are on issues that closed and pull requests that merged or closed. The board never
+              shows those cards again, so the notes stay in your data repository and nobody reads them.
+              Delete what you no longer need. Choose "Keep" for a note you want, and the board stops
+              suggesting it, on every device.
+            </p>
+          </div>
+          <div class="card-content">
+            <p id="cleanup-status" class="status" role="status" aria-live="polite"></p>
+            <ul id="cleanup-list" class="cleanup-list"></ul>
+            <p id="cleanup-unreadable" class="field-help" hidden></p>
+            <p class="step-action">
+              <button id="cleanup-delete-all" type="button" class="button button-danger" hidden>Delete all</button>
+              <button id="cleanup-again" type="button" class="button button-outline">Check again</button>
+            </p>
+            <p class="field-help">
+              A deleted note is not lost for good. Your data repository keeps every saved version in its history,
+              so you can still read it on GitHub.
+            </p>
           </div>
         </div>
       </section>

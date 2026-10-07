@@ -25,6 +25,14 @@ describe("the add-token view", () => {
   });
 });
 
+describe("the cleanup view", () => {
+  // The suggested cleanup is its own screen, opened from Settings (ADR 0043).
+  test("is a view the link can name", () => {
+    expect(readStateFromSearch("?view=cleanup").view).toBe("cleanup");
+    expect(buildSearch({ ...DEFAULTS, view: "cleanup" })).toBe("?view=cleanup");
+  });
+});
+
 describe("readStateFromSearch", () => {
   test("reads the chosen order", () => {
     expect(readStateFromSearch("?sort=title")).toEqual({ ...DEFAULTS, sortId: "title" });
@@ -63,7 +71,7 @@ describe("readStateFromSearch", () => {
   });
 
   test("the views are exactly these", () => {
-    expect(VIEWS).toEqual(["board", "settings", "add-token"]);
+    expect(VIEWS).toEqual(["board", "settings", "add-token", "cleanup"]);
     expect(VIEWS).toContain(DEFAULT_VIEW);
   });
 });
