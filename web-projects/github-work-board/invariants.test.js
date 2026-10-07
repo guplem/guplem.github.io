@@ -19,7 +19,7 @@ import { buildSearch, readStateFromSearch } from "./urlState.js";
 import { COLUMN_IDS } from "./columns.js";
 import { KIND_FILTERS } from "./filters.js";
 import { normalizeWorkItem } from "./workItems.js";
-import { REQUIRED_PERMISSIONS } from "./permissions.js";
+import { PERMISSIONS, REQUIRED_PERMISSIONS } from "./permissions.js";
 import { LEGACY_KEYS, STORAGE_KEYS } from "./settings.js";
 import { PLACEHOLDERS } from "./copyActions.js";
 
@@ -746,9 +746,6 @@ describe("a filter named in a link keeps its name (ADR 0009)", () => {
   });
 });
 
-// A permission list written twice is a permission list that drifts. The code
-// asks GitHub for the access; the page and the README only report what the code
-// asks for. ADR 0005.
 // A column id is written into board.json the moment a card is moved by hand,
 // so it is as permanent as a storage key (ADR 0011).
 describe("a column a card was moved to keeps its name (ADR 0011)", () => {
@@ -771,7 +768,21 @@ describe("a column a card was moved to keeps its name (ADR 0011)", () => {
   });
 });
 
+// A permission list written twice is a permission list that drifts. The code
+// asks GitHub for the access; the page and the README only report what the code
+// asks for. ADR 0005.
 describe("the permission list is written once (ADR 0005)", () => {
+  // The board reads GitHub and writes nothing there: the reader's half goes
+  // through the shared cloud storage, with its own token (root ADR 0016).
+  // Issues asked for "Read and write" from the first version, with no call that wrote. A
+  // token on a page like this one should carry no access it does not use.
+  test("every permission is read-only, because the board writes nothing to GitHub", () => {
+    for (const permission of REQUIRED_PERMISSIONS) {
+      expect(`${permission.name}: ${permission.level}`).toBe(`${permission.name}: Read-only`);
+    }
+    expect(Object.values(PERMISSIONS).filter((need) => /write/i.test(need))).toEqual([]);
+  });
+
   test("the page does not spell out the permissions, it carries the slot the code fills", () => {
     const page = read("index.html");
     expect(page).toContain('class="permissions"');

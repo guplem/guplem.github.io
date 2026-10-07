@@ -71,7 +71,9 @@ into the `change-the-board` skill as a required step.
 **Least privilege stays affordable.** The reason to over-ask up front ("grant
 Pull requests now, so you need not edit the token later") disappears, because
 widening later costs the reader one prompt they cannot miss. The board therefore
-asks only for what it uses today.
+asks only for what it uses today. Today that is read access alone, because the
+board writes nothing to GitHub: `invariants.test.js` fails on a `Read and write`
+level, so a write permission comes back only with a call that writes.
 
 **There is no banner across the board, on purpose.** A reader who suspects a
 problem opens Settings, and Settings answers it line by line. The board itself
@@ -94,3 +96,5 @@ asking for every permission the board might ever want.** It is a real cost paid
 by the reader, in access they did not need to give, to save the author a step.
 
 > **Note (2026-09):** the list shrank once. `Contents` moved to the cloud storage's own permission list (`web-projects/cloud-storage/cloudPermissions.js`), because the board file is written by the cloud token, not by a work token (root ADR 0016). A shrinking list needs no notice now: every row in Settings is a call, and a call that no longer happens is a row that no longer exists.
+
+> **Note (2026-10):** `Issues` dropped from `Read and write` to `Read-only`. It asked for write from the first version, and no call ever wrote. A token made with write still works; it only carries more than the board needs.

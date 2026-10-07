@@ -21,7 +21,6 @@
 export const PERMISSIONS = {
   metadata: "Metadata: read",
   issuesRead: "Issues: read",
-  issuesWrite: "Issues: write",
   pullRequestsRead: "Pull requests: read",
   actionsRead: "Actions: read",
 };
@@ -41,7 +40,7 @@ export const REQUIRED_PERMISSIONS = [
   {
     id: "issues",
     name: "Issues",
-    level: "Read and write",
+    level: "Read-only",
     why: "the board reads the issues assigned to you",
     without: "Without it, the board cannot show the issues assigned to you.",
   },
