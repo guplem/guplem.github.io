@@ -142,7 +142,15 @@ import { childSummary, childrenProgress, childrenToggleLabel, orderChildren } fr
 import { EXAMPLE_ACTIONS, PLACEHOLDERS, fillCopyTemplate } from "./copyActions.js";
 import { readTitle } from "./titles.js";
 import { initialsOf, personLabel } from "./people.js";
-import { LOW, NORMAL, raiseFailedChecks, sinkBlocked, sinkLowPriority, sinkLowPriorityItems } from "./priority.js";
+import {
+  LOW,
+  NORMAL,
+  raiseFailedChecks,
+  raiseReviewedBeforeItems,
+  sinkBlocked,
+  sinkLowPriority,
+  sinkLowPriorityItems,
+} from "./priority.js";
 import { countBoard, describeBreakdown, describeExcluded, tabTitle } from "./counting.js";
 import { readSearch, searchGroups, searchItems } from "./boardSearch.js";
 import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
@@ -1790,6 +1798,14 @@ function failedCheckKeys(items) {
 }
 
 /**
+ * The pull requests the reader reviewed before, which the review row raises
+ * (ADR 0042).
+ */
+function reviewedBeforeKeys(items) {
+  return new Set(items.filter((item) => item?.reviewedByReader === true).map((item) => item.key));
+}
+
+/**
  * The cards that GitHub says are blocked by open work.
  *
  * Read through `isBlocked`, which is what draws the "Blocked" badge, so the
@@ -1861,10 +1877,15 @@ function renderBoard() {
   );
   // The row is ordered by the same rules as a column, in the same order: the
   // stacks first, then the cards the reader pushed down (ADR 0016, ADR 0026).
-  // The row is flat and a column holds groups, which is the only difference.
+  // The row is flat and a column holds groups. Between the two, the row alone
+  // raises the reviews the reader already started, so half-done work is
+  // finished before new work is opened (ADR 0042).
   const waiting =
     state.sortId === "smart"
-      ? sinkLowPriorityItems(orderItemsForMerging(queued), lowPriorityKeys(queued))
+      ? sinkLowPriorityItems(
+          raiseReviewedBeforeItems(orderItemsForMerging(queued), reviewedBeforeKeys(queued)),
+          lowPriorityKeys(queued),
+        )
       : queued;
 
   // Over everything on screen, not one area: a stack can have a card in the
@@ -2549,6 +2570,7 @@ async function inspectToken(entry, onStep = () => {}) {
   const linked = await fetchRelationships(
     entry.token,
     [...items, ...finished, ...reviews].map((item) => item.key),
+    login,
   );
   links = linked.ok ? normalizeRelationships(linked.data) : {};
   onStep("relationships");

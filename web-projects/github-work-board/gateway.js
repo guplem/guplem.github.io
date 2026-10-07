@@ -228,8 +228,15 @@ export async function fetchFinishedWork(token, since) {
  * at five, measured with `rateLimit(dryRun: true)`. Nothing reads past the
  * merged one or the first open one (`columns.pullRequestState`), and the room
  * that made is what pays for the second pass below (ADR 0025).
+ *
+ * **`readerReviews` counts the reader's own submitted reviews, comments
+ * included.** The review row raises a pull request the reader reviewed before
+ * (ADR 0042). `latestOpinionatedReviews` cannot answer it, because it leaves a
+ * plain comment out. `first: 1` with only `totalCount` read costs nothing: a
+ * full batch measured 18 points with it and 18 without. It is asked only when
+ * the login is known, because an empty `author` counts everybody's reviews.
  */
-const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
+const RELATIONSHIPS_QUERY = `query($ids: [ID!]!, $login: String, $knowsReader: Boolean!) {
   nodes(ids: $ids) {
     __typename
     ... on Issue {
@@ -265,6 +272,7 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
       commits(last: 1) { nodes { commit { oid } } }
       reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
       latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
+      readerReviews: reviews(first: 1, author: $login, states: [APPROVED, CHANGES_REQUESTED, COMMENTED, DISMISSED]) @include(if: $knowsReader) { totalCount }
       closingIssuesReferences(first: 20) { nodes { id number title state url } }
     }
   }
@@ -273,14 +281,14 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!) {
 /** How many ids GraphQL accepts in one `nodes` call. */
 export const RELATIONSHIP_BATCH = 100;
 
-async function askAbout(token, ids) {
+async function askAbout(token, ids, login) {
   const found = [];
   for (let start = 0; start < ids.length; start += RELATIONSHIP_BATCH) {
     const batch = ids.slice(start, start + RELATIONSHIP_BATCH);
     const answer = await call(token, "/graphql", {
       method: "POST",
       need: PERMISSIONS.issuesRead,
-      body: { query: RELATIONSHIPS_QUERY, variables: { ids: batch } },
+      body: { query: RELATIONSHIPS_QUERY, variables: { ids: batch, login, knowsReader: login !== null } },
     });
     if (!answer.ok) return { ok: false, answer, found };
     // GraphQL answers 200 with an `errors` array when part of a query fails.
@@ -290,11 +298,16 @@ async function askAbout(token, ids) {
   return { ok: true, found };
 }
 
-export async function fetchRelationships(token, ids) {
+/**
+ * @param login the token owner's login, so each pull request can say whether
+ *   they reviewed it before (ADR 0042); empty when unknown
+ */
+export async function fetchRelationships(token, ids, login = "") {
   const wanted = Array.isArray(ids) ? ids.filter((id) => typeof id === "string" && id !== "") : [];
   if (wanted.length === 0) return { ok: true, data: [] };
+  const reader = typeof login === "string" && login !== "" ? login : null;
 
-  const first = await askAbout(token, wanted);
+  const first = await askAbout(token, wanted, reader);
   if (!first.ok) return first.answer;
 
   // A child is not on the board and its id is not known until the answer above
@@ -314,7 +327,7 @@ export async function fetchRelationships(token, ids) {
   // A failed second pass costs the children's columns and nothing else, so the
   // board keeps the answer it already has rather than reporting an error over
   // work that is only mentioned on a card.
-  const second = await askAbout(token, children);
+  const second = await askAbout(token, children, reader);
   return { ok: true, data: [...first.found, ...second.found] };
 }
 

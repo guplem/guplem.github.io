@@ -675,7 +675,7 @@ describe("the review row is ordered by the same rules as a column (ADR 0016, ADR
   // the stacks first, then the cards the reader pushed down.
   test("the row sinks what the reader pushed down, exactly as a column does", () => {
     const source = read("app.js");
-    expect(source).toMatch(/sinkLowPriorityItems\(\s*orderItemsForMerging/);
+    expect(source).toMatch(/sinkLowPriorityItems\(\s*raiseReviewedBeforeItems\(\s*orderItemsForMerging/);
     expect(source).toMatch(/sinkLowPriority\([\s\S]{0,120}orderStacksForMerging/);
   });
 
@@ -699,6 +699,25 @@ describe("the review row is ordered by the same rules as a column (ADR 0016, ADR
     const source = read("app.js");
     expect(source.match(/sinkBlocked\(/g) ?? []).toHaveLength(1);
     expect(source).toMatch(/sinkLowPriority\(\s*sinkBlocked\(\s*raiseFailedChecks\(/);
+  });
+
+  // One pass belongs to the row alone, on purpose. A pull request the reader
+  // reviewed before is half-done work, so it reads before a review nobody has
+  // started. The board holds the reader's own work, not reviews, so it has
+  // nothing to raise. The order is the decision: the stacks, then this raise,
+  // then the reader's own sink, so their hand still wins (ADR 0042, ADR 0026).
+  test("the row raises what the reader reviewed before, and the board does not", () => {
+    const source = read("app.js");
+    expect(source.match(/raiseReviewedBeforeItems\(/g) ?? []).toHaveLength(1);
+    expect(source).toMatch(/raiseReviewedBeforeItems\(\s*orderItemsForMerging\(queued\),\s*reviewedBeforeKeys\(queued\)/);
+  });
+
+  // Trim this field and every review reads as a first one: nothing errors, and
+  // the row quietly goes back to oldest first (ADR 0042).
+  test("the query asks whether the reader reviewed each pull request before", () => {
+    const query = read("gateway.js");
+    expect(query).toMatch(/readerReviews: reviews\([^)]*author: \$login/);
+    expect(query).toContain("COMMENTED");
   });
 
   // The comparator half of smart is still the date order the row is built

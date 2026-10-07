@@ -30,7 +30,10 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   request that number is, by title.
 - **The review row sorts by the same rules as the columns.** Under the smart
   order it reads a stack in merge order, so the one to review first comes
-  first, and it pushes down anything you marked "not a priority". Every other
+  first. A pull request you reviewed before (an approval, a change request or a
+  plain comment) comes before one you have not opened yet, so you finish the
+  reviews you started before you begin new ones. A stack moves up together. It
+  pushes down anything you marked "not a priority". Every other
   order gives the row a plain date order, like the columns.
 - **A stacked pull request says so**, in the columns and on the review row
   alike: `Stack #5073 · 2 of 3` names the stack by the pull request that merges

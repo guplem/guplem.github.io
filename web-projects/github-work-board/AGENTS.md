@@ -52,7 +52,7 @@ It is the short procedure for all of the above.
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
 | `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, and filling one in (ADR 0031) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
-| `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, and the cards whose checks came back red (ADR 0026) |
+| `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards whose checks came back red (ADR 0026), and the reviews the reader started (ADR 0042) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022, ADR 0031) |
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
@@ -80,7 +80,7 @@ It is the short procedure for all of the above.
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
 Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseFailedChecks`, `priority.sinkBlocked` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done" newest first) → the parts the reader hid are dropped (ADR 0024) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
-Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.sinkLowPriorityItems` (the last two only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
+Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.raiseReviewedBeforeItems` → `priority.sinkLowPriorityItems` (the last three only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025). The read bar still shows (ADR 0039).
 Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
 
@@ -164,11 +164,13 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   `sinkLowPriorityItems`), in that order. The row drifted away from the columns
   once already, one pass at a time, and nothing failed either time: the badge
   said "1 of 3" on a card sitting last, and a marked card stayed where it was.
-  Add anything to one side and add it to the other (ADR 0016, ADR 0026). The two
+  Add anything to one side and add it to the other (ADR 0016, ADR 0026). The three
   deliberate exceptions are the red-check raise and the blocked sink, which the
-  board does and the row does not. The row holds pull requests alone, and
-  GitHub has no `blockedBy` on a pull request. `invariants.test.js` states both
-  in tests so they never read as an oversight.
+  board does and the row does not, and the raise of the reviews the reader
+  started, which the row does and the board does not (ADR 0042). The row holds
+  pull requests alone, and GitHub has no `blockedBy` on a pull request.
+  `invariants.test.js` states all three in tests so they never read as an
+  oversight.
 - **"Who is reviewing this" is never `reviewRequests` alone.** GitHub drops a
   reviewer from that list the moment they submit a review, so a pull request
   held up by one `CHANGES_REQUESTED` review has an empty request list. Read
@@ -643,6 +645,7 @@ before calling it done.
 | [0039](adr/0039-a-thin-bar-says-how-far-the-read-has-gone.md) | A thin bar says how far the read has gone |
 | [0040](adr/0040-the-tokens-and-their-first-calls-are-asked-together.md) | The tokens, and their first calls, are asked together |
 | [0041](adr/0041-a-token-that-finds-nothing-may-wait-for-approval.md) | A token that finds nothing may wait for approval, and the board says where to approve it |
+| [0042](adr/0042-a-review-you-started-comes-before-a-new-one.md) | A review you started comes before a new one |
 
 ## What is not built yet
 

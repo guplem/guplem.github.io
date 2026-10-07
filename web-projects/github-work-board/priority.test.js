@@ -4,6 +4,7 @@ import {
   NORMAL,
   knownPriority,
   raiseFailedChecks,
+  raiseReviewedBeforeItems,
   sinkBlocked,
   sinkLowPriority,
   sinkLowPriorityItems,
@@ -171,6 +172,66 @@ describe("sinkLowPriorityItems", () => {
   test("never throws, whatever it is handed", () => {
     expect(sinkLowPriorityItems(null, null)).toEqual([]);
     expect(sinkLowPriorityItems([], new Set(["a"]))).toEqual([]);
+  });
+});
+
+describe("raiseReviewedBeforeItems", () => {
+  const item = (key, { head = "", base = "", repository = "me/repo" } = {}) => ({
+    key,
+    kind: "pull-request",
+    repository,
+    headRefName: head,
+    baseRefName: base,
+  });
+  const keys = (items) => items.map((one) => one.key);
+
+  // A review the reader already started is half-done work. Finishing it comes
+  // before opening a new one (ADR 0042).
+  test("a pull request the reader reviewed before goes to the top of the row", () => {
+    const row = [item("a"), item("b"), item("c")];
+    expect(keys(raiseReviewedBeforeItems(row, new Set(["c"])))).toEqual(["c", "a", "b"]);
+  });
+
+  test("the order handed in still holds inside each half", () => {
+    const row = [item("a"), item("b"), item("c"), item("d")];
+    expect(keys(raiseReviewedBeforeItems(row, new Set(["b", "d"])))).toEqual(["b", "d", "a", "c"]);
+  });
+
+  test("nothing reviewed before, nothing moves", () => {
+    const row = [item("a"), item("b")];
+    expect(keys(raiseReviewedBeforeItems(row, new Set()))).toEqual(["a", "b"]);
+    expect(keys(raiseReviewedBeforeItems(row, null))).toEqual(["a", "b"]);
+  });
+
+  // Nothing in a stack merges before the one below it (ADR 0016), so a raised
+  // middle card takes its whole stack up, bottom first.
+  test("a re-review anywhere in a stack raises the whole stack, in merge order", () => {
+    const stack = () => [
+      item("one", { head: "one", base: "main" }),
+      item("two", { head: "two", base: "one" }),
+      item("three", { head: "three", base: "two" }),
+    ];
+    for (const reviewed of ["one", "two", "three"]) {
+      expect(keys(raiseReviewedBeforeItems([item("other"), ...stack()], new Set([reviewed])))).toEqual([
+        "one",
+        "two",
+        "three",
+        "other",
+      ]);
+    }
+  });
+
+  // The reader's own mark runs after this pass, so their hand still wins
+  // (ADR 0026).
+  test("a card the reader pushed down stays down, even when they reviewed it before", () => {
+    const row = [item("a"), item("b")];
+    const raised = raiseReviewedBeforeItems(row, new Set(["b"]));
+    expect(keys(sinkLowPriorityItems(raised, new Set(["b"])))).toEqual(["a", "b"]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(raiseReviewedBeforeItems(null, null)).toEqual([]);
+    expect(raiseReviewedBeforeItems([], new Set(["a"]))).toEqual([]);
   });
 });
 
