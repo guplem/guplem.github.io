@@ -187,7 +187,7 @@ empty and the board suggests one from wherever the token finds work.
      every repository whose issues you want on the board.
    - **Repository permissions:** set each of these and leave the rest alone.
      - `Metadata` → Read-only
-     - `Issues` → Read and write
+     - `Issues` → Read-only
      - `Pull requests` → Read-only
      - `Actions` → Read-only
    - **Expiration:** pick a date. 90 days is a good default.
