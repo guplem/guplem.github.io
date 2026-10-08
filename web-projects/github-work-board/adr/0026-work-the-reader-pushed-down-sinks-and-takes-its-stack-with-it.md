@@ -101,10 +101,11 @@ sinks always says why.
 **It is the same move as the reader's sink.** What is stacked on a blocked card
 sinks along, and both halves keep the order they had (ADR 0016).
 
-**The three passes run in one order: the raise, then the blocked sink, then the
-reader's sink.** A red check on blocked work is still work nobody can finish, so
-the blocked sink runs after the raise. The reader's sink runs last, so a card
-they pushed down sits below a blocked one: their hand beats the rule.
+**The passes run in one order: the red-check raise, then the blocked sink, then
+the reader's raise (ADR 0044), then the reader's sink.** A red check on blocked
+work is still work nobody can finish, so the blocked sink runs after the raise.
+The reader's sink runs last, so a card they pushed down sits below a blocked
+one: their hand beats the rule.
 
 **The review row has no blocked sink.** It holds pull requests alone, and GitHub
 has no `blockedBy` on a pull request, so the pass would never move anything
@@ -144,9 +145,9 @@ there. `invariants.test.js` pins the order of the passes and this exception.
   lists that sort by different rules also make the rule impossible to learn: the
   reader has to remember which half of the board obeys them.
 
-  **The rule is now one rule.** The row and every column run the same two passes
+  **The rule is now one rule.** The row and every column run the same passes
   of the smart order, in the same order: the stacks first, then the cards the
-  reader pushed down. The row is flat and a column holds groups. Apart from
+  reader raised (ADR 0044), then the cards the reader pushed down. The row is flat and a column holds groups. Apart from
   that, the one difference is a pass of the row's own: between the two, it
   raises the reviews the reader started (ADR 0042). `invariants.test.js` pins both passes in both
   places, because the row drifted away from the columns once already, one pass

@@ -1648,6 +1648,66 @@ textarea.input {
   box-shadow: var(--shadow-md);
 }
 
+/**
+ * A card the reader marked "high priority" (ADR 0044).
+ *
+ * An orange border and a flame in the top corner, so it is found at a glance.
+ * Orange, not the red of a verdict or the amber of a stack or a conflict: this
+ * is the reader's own word, not something GitHub says is wrong (ADR 0011,
+ * ADR 0027). Written after the card's hover, so the border stays on a hover;
+ * a lit stack still wins, because its rules come later.
+ *
+ * `>` on purpose: a pull request nested in a raised issue is its own card, and
+ * must not inherit the flame's room.
+ */
+.issue[data-priority="high"] {
+  border-color: hsl(18 92% 50% / 0.85);
+  box-shadow: 0 0 0 1px hsl(18 92% 50% / 0.45), var(--shadow-sm);
+}
+
+.issue[data-priority="high"] > .priority-mark {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: hsl(18 92% 48%);
+  cursor: help;
+}
+
+.issue[data-priority="high"] > .priority-mark .icon {
+  width: 1.0625rem;
+  height: 1.0625rem;
+  stroke-width: 2.2;
+}
+
+/* The menu button moves one place left, so the flame keeps the corner. */
+.issue[data-priority="high"] > .icon-button {
+  right: 2.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .issue[data-priority="high"] {
+    border-color: hsl(20 95% 60% / 0.8);
+    box-shadow: 0 0 0 1px hsl(20 95% 60% / 0.4), var(--shadow-sm);
+  }
+
+  :root:not([data-theme="light"]) .issue[data-priority="high"] > .priority-mark {
+    color: hsl(20 95% 62%);
+  }
+}
+
+:root[data-theme="dark"] .issue[data-priority="high"] {
+  border-color: hsl(20 95% 60% / 0.8);
+  box-shadow: 0 0 0 1px hsl(20 95% 60% / 0.4), var(--shadow-sm);
+}
+
+:root[data-theme="dark"] .issue[data-priority="high"] > .priority-mark {
+  color: hsl(20 95% 62%);
+}
+
 .issue-where {
   display: flex;
   align-items: center;

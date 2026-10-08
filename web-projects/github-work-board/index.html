@@ -125,10 +125,13 @@
          card. Built here rather than on every card, because one menu serves
          the whole board (ADR 0012, ADR 0031). -->
     <div id="menu-copies" role="none"></div>
-    <!-- The reader's own ranking. It makes the card fainter everywhere, and in
-         the smart order it sinks the card to the bottom of its list, taking
-         anything stacked on top of it down as well (ADR 0026). -->
-    <button id="menu-priority" type="button" class="menu-item" role="menuitem">Not a priority</button>
+    <!-- The reader's own ranking, one row per priority; the card's own one is
+         hidden. "High" draws a border and a flame and, in the smart order,
+         raises the card with its stack (ADR 0044). "Not a priority" makes it
+         fainter and sinks it with anything stacked on it (ADR 0026). -->
+    <button id="menu-priority-high" type="button" class="menu-item" role="menuitem">High priority</button>
+    <button id="menu-priority-normal" type="button" class="menu-item" role="menuitem">Normal priority</button>
+    <button id="menu-priority-low" type="button" class="menu-item" role="menuitem">Not a priority</button>
     <button id="menu-move" type="button" class="menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="false">
       <span>Move to</span>
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6" /></svg>
