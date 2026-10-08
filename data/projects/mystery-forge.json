@@ -1,0 +1,19 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Misceallaneous", "Web"],
+  "date": "2026",
+  "title": "Mystery Forge",
+  "image": "resources/images/projects/mystery-forge.webp",
+  "imageStretched": true,
+  "imageAlt": "Headline \"Print your own mystery game\" above the settings page of Mystery Forge, a printed newspaper page from a game, and the companion page on a phone",
+  "description": [
+    "*Mystery Forge* is an **open-source generator of printable mystery games**. You choose the players, the length and the language; an AI writes a new case with suspects, clues and puzzles, and you play it with paper and envelopes.",
+    "I designed the pipeline so that the AI never checks its own work: **code builds and checks the puzzles**, and **AI test players** solve each one with only what real players hold.",
+    "It runs on [*pskill*](https://triunitystudios.com/pskill/), works in **50 languages**, and holds **100% test coverage**."
+  ],
+  "skills": ["Vibe Coded", "Architecture", "AI Integration", "TDD"],
+  "links": [
+    { "url": "https://triunitystudios.com/mystery-forge/" },
+    { "type": "github", "url": "https://github.com/guplem/mystery-forge" }
+  ]
+}

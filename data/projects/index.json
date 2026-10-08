@@ -1,6 +1,7 @@
 {
   "title": "My Work",
   "projects": [
+    "mystery-forge.json",
     "terrain-print.json",
     "pskill.json",
     "ghana-ludo.json",
