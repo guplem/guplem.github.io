@@ -33,7 +33,8 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   first. A pull request you reviewed before (an approval, a change request or a
   plain comment) comes before one you have not opened yet, so you finish the
   reviews you started before you begin new ones. A stack moves up together. It
-  pushes down anything you marked "not a priority". Every other
+  lifts anything you marked "high priority" and pushes down anything you marked
+  "not a priority". Every other
   order gives the row a plain date order, like the columns.
 - **A stacked pull request says so**, in the columns and on the review row
   alike: `Stack #5073 · 2 of 3` names the stack by the pull request that merges
@@ -121,6 +122,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   pull request stacked on top of a card you pushed down goes with it, because
   it cannot merge until that one does. The mark is saved in your own
   repository, so it follows you between machines.
+- **Lift the work that matters this week to the top.** Mark any card "high
+  priority" from the same menu. It gets an orange border and a flame in its top
+  corner, in every order, and in the smart order it climbs to the top of its
+  list. The raised cards keep the smart order among themselves, and a raised
+  pull request brings the rest of its stack up with it, still in merge order.
 - **The browser tab counts what is waiting on you.** It reads "Work Board (4)",
   so you can see from another tab whether it is worth going back. In Settings
   you choose which parts of the board add up to that number, and whether each

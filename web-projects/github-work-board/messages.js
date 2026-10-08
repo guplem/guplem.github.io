@@ -131,14 +131,20 @@ export function noteMenuLabel(noteText) {
 }
 
 /**
- * What the menu offers about the reader's own ranking of a card.
+ * The words on the menu row that sets one priority.
  *
- * Each one names what the row does, not what the card is: a menu row is a
- * thing the reader presses (ADR 0026).
+ * The menu offers the priorities the card is not in, so each row names where
+ * the card goes (ADR 0026, ADR 0044).
  */
 export function priorityMenuLabel(priority) {
-  return priority === "low" ? "Make it a priority" : "Not a priority";
+  if (priority === "high") return "High priority";
+  if (priority === "low") return "Not a priority";
+  return "Normal priority";
 }
+
+/** What the flame on a raised card says, on the pointer (ADR 0044). */
+export const HIGH_PRIORITY_TIP =
+  "You marked this high priority. In the smart order it reads first in its list, with anything it is stacked on.";
 
 /**
  * The one line on a folded token row.

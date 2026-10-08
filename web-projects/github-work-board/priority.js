@@ -1,9 +1,10 @@
 // What moves up and down a list, and what travels with it.
 //
 // A card marked "not a priority" is drawn fainter wherever it appears, and in
-// the smart order it sinks to the bottom of its list (ADR 0026). Every other
-// order says what it does on the label, and must keep doing exactly that, so
-// there the mark only changes how the card looks.
+// the smart order it sinks to the bottom of its list (ADR 0026). A card marked
+// "high priority" wears a flame and, in the smart order, rises (ADR 0044).
+// Every other order says what it does on the label, and must keep doing
+// exactly that, so there the mark only changes how the card looks.
 //
 // **Marking one card can move more than one.** A stacked pull request cannot
 // merge until the one below it does (ADR 0016). So a card pushed down takes
@@ -21,9 +22,14 @@
 // A card that GitHub says is blocked sinks too, below the work that can start
 // now, by the same move (`sinkBlocked`).
 //
-// Two things rise, by the opposite move: a red check on the board
-// (`raiseFailedChecks`), and in the review row a pull request the reader
-// reviewed before (`raiseReviewedBeforeItems`, ADR 0042).
+// Three things rise, by the opposite move: a red check on the board
+// (`raiseFailedChecks`), in the review row a pull request the reader reviewed
+// before (`raiseReviewedBeforeItems`, ADR 0042), and in both lists a card the
+// reader marked "high priority" (`raiseHighPriority`, ADR 0044).
+//
+// **The reader's two marks run last, the raise and then the sink.** Their hand
+// beats every rule, and a pushed-down base still takes a raised top down with
+// it, so a stack still reads bottom first (ADR 0016).
 //
 // **A value here is written into `board.json`** the moment somebody marks a
 // card, so it is as permanent as a colour id or a storage key.
@@ -54,6 +60,9 @@ function bottomOf(list) {
   return found;
 }
 
+/** Raised by the reader: drawn with a border and a flame, and read first. */
+export const HIGH = "high";
+
 /** Pushed down by the reader. */
 export const LOW = "low";
 
@@ -67,8 +76,18 @@ export const NORMAL = "normal";
  * faint for a reason the reader cannot undo.
  */
 export function knownPriority(value) {
-  return value === LOW ? LOW : NORMAL;
+  return value === HIGH || value === LOW ? value : NORMAL;
 }
+
+/**
+ * The flame drawn in the corner of a card marked "high priority", as SVG
+ * paths on a 24 by 24 grid (Lucide's "flame"). A flame, not a warning sign:
+ * the board already uses red and amber for what GitHub says is wrong
+ * (ADR 0011), and this is the reader's own word, not a fault (ADR 0044).
+ */
+export const HIGH_PRIORITY_PATHS = [
+  "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z",
+];
 
 /**
  * The same flat row, with the marked cards moved to the bottom.
@@ -206,6 +225,42 @@ export function raiseReviewedBeforeItems(items, reviewed) {
   return raiseWithItsStack(
     list.map((item) => ({ item, children: [] })),
     reviewed,
+  ).map((group) => group.item);
+}
+
+/**
+ * The same groups, with the ones the reader marked "high priority" moved to
+ * the top.
+ *
+ * It is the same move as the red-check raise, so a whole stack rises in merge
+ * order (ADR 0016). The order handed in holds inside both halves, so the raised
+ * cards keep the smart order among themselves: a red check still reads first
+ * and a blocked card last, inside the raised group as outside it.
+ *
+ * It runs after the rules and before the reader's own sink (ADR 0044).
+ *
+ * @param groups `{item, children}` pairs, already in the reader's chosen order
+ * @param marked the keys the reader raised, as a Set or a list
+ * @returns a new array holding exactly the same groups
+ */
+export function raiseHighPriority(groups, marked) {
+  return raiseWithItsStack(groups, marked);
+}
+
+/**
+ * The same flat review row, with the pull requests the reader marked "high
+ * priority" moved to the top. The row follows the same rules as a column
+ * (ADR 0026, ADR 0044).
+ *
+ * @param items work items, not groups, already in the reader's chosen order
+ * @param marked the keys the reader raised, as a Set or a list
+ * @returns a new array holding exactly the same items
+ */
+export function raiseHighPriorityItems(items, marked) {
+  const list = (Array.isArray(items) ? items : []).filter((one) => one && typeof one === "object");
+  return raiseWithItsStack(
+    list.map((item) => ({ item, children: [] })),
+    marked,
   ).map((group) => group.item);
 }
 

@@ -41,8 +41,8 @@ never saw it.
   whole stack up, in merge order, because nothing in a stack merges before the
   one below it (ADR 0016).
 - **The passes run in this order**: the stacks, then this raise, then the
-  reader's own sink. A card that the reader pushed down stays down, because
-  their hand beats the rule (ADR 0026).
+  reader's own raise (ADR 0044), then the reader's own sink. A card that the
+  reader pushed down stays down, because their hand beats the rule (ADR 0026).
 - **Only the row runs it.** The board holds the reader's own work, not reviews.
   `invariants.test.js` pins both the order of the passes and the single call.
 

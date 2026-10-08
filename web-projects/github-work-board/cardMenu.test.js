@@ -10,7 +10,7 @@ const pull = {
   headRefName: "claude/read-the-notes",
 };
 
-const NOTHING = { note: false, branch: false, move: false, priority: false, copies: [] };
+const NOTHING = { note: false, branch: false, move: false, priorities: [], copies: [] };
 
 describe("cardMenuRows", () => {
   // The note is the reader's own half of this board, filed under the item's
@@ -38,9 +38,21 @@ describe("cardMenuRows", () => {
   // Like a note, the mark belongs to the work and not to the place the card
   // sits, so every card can carry one: a column card, a review card, and a
   // pull request nested in its issue (ADR 0022, ADR 0026).
-  test("any card can be pushed down the list, wherever it is drawn", () => {
-    expect(cardMenuRows(issue, { canMove: true }).priority).toBe(true);
-    expect(cardMenuRows(pull, { canMove: false }).priority).toBe(true);
+  test("any card can be raised or pushed down, wherever it is drawn", () => {
+    expect(cardMenuRows(issue, { canMove: true }).priorities).toEqual(["high", "low"]);
+    expect(cardMenuRows(pull, { canMove: false }).priorities).toEqual(["high", "low"]);
+  });
+
+  // Three priorities, so the menu offers the two the card is not in, always in
+  // the same order: high first, then normal, then low (ADR 0044).
+  test("offers the two priorities the card is not in", () => {
+    expect(cardMenuRows(issue, { priority: "high" }).priorities).toEqual(["normal", "low"]);
+    expect(cardMenuRows(issue, { priority: "low" }).priorities).toEqual(["high", "normal"]);
+    expect(cardMenuRows(issue, { priority: "normal" }).priorities).toEqual(["high", "low"]);
+  });
+
+  test("a priority it does not know reads as the ordinary one", () => {
+    expect(cardMenuRows(issue, { priority: "urgent" }).priorities).toEqual(["high", "low"]);
   });
 
   // The menu is one element serving the whole board (ADR 0012), so it is

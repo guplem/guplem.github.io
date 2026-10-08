@@ -604,8 +604,10 @@ describe("only the smart order moves a card the reader pushed down (ADR 0026)", 
       match[1].replace(/\/\*[\s\S]*?\*\//g, "").trim(),
     );
     expect(selectors.length).toBeGreaterThan(0);
+    // A dark-theme guard in front is not a place, so it may stay (ADR 0024).
+    const themeGuard = /^:root(:not\(\[data-theme="light"\]\)|\[data-theme="dark"\])\s+/;
     for (const selector of selectors) {
-      for (const one of selector.split(",")) expect(one.trim().startsWith(".issue")).toBe(true);
+      for (const one of selector.split(",")) expect(one.trim().replace(themeGuard, "").startsWith(".issue")).toBe(true);
     }
   });
 
@@ -671,12 +673,27 @@ describe("the review row is ordered by the same rules as a column (ADR 0016, ADR
   });
 
   // The row drifted away from the columns once already, one pass at a time.
-  // The two passes that belong to both run in both places, in the same order:
-  // the stacks first, then the cards the reader pushed down.
+  // The passes that belong to both run in both places, in the same order: the
+  // stacks first, then the cards the reader raised, then the cards the reader
+  // pushed down.
   test("the row sinks what the reader pushed down, exactly as a column does", () => {
     const source = read("app.js");
-    expect(source).toMatch(/sinkLowPriorityItems\(\s*raiseReviewedBeforeItems\(\s*orderItemsForMerging/);
-    expect(source).toMatch(/sinkLowPriority\([\s\S]{0,120}orderStacksForMerging/);
+    expect(source).toMatch(
+      /sinkLowPriorityItems\(\s*raiseHighPriorityItems\(\s*raiseReviewedBeforeItems\(\s*orderItemsForMerging/,
+    );
+    expect(source).toMatch(/sinkLowPriority\([\s\S]{0,160}orderStacksForMerging/);
+  });
+
+  // The reader's two marks run last, in both lists, and in this order: the
+  // raise, then the sink. Their hand beats every rule, and a pushed-down base
+  // still takes a raised top down with it, so a stack reads bottom first
+  // (ADR 0044, ADR 0026, ADR 0016).
+  test("the reader's raise runs after the rules and before the reader's sink, in both lists", () => {
+    const source = read("app.js");
+    expect(source.match(/raiseHighPriority\(/g) ?? []).toHaveLength(1);
+    expect(source.match(/raiseHighPriorityItems\(/g) ?? []).toHaveLength(1);
+    expect(source).toMatch(/sinkLowPriority\(\s*raiseHighPriority\(\s*sinkBlocked\(/);
+    expect(source).toMatch(/sinkLowPriorityItems\(\s*raiseHighPriorityItems\(/);
   });
 
   // One pass belongs to the board alone, on purpose. A red check raises a card
@@ -692,13 +709,14 @@ describe("the review row is ordered by the same rules as a column (ADR 0016, ADR
   });
 
   // A blocked card sinks below the work that can start now, on the board only.
-  // The order of the passes is the decision: the raise, then the blocked sink,
-  // then the reader's own sink, so their hand still wins (ADR 0026). The row
-  // holds pull requests alone, and GitHub has no `blockedBy` on one.
-  test("the board sinks blocked work between the raise and the reader's sink", () => {
+  // The order of the passes is the decision: the red-check raise, then the
+  // blocked sink, then the reader's own marks, so their hand still wins
+  // (ADR 0026, ADR 0044). The row holds pull requests alone, and GitHub has no
+  // `blockedBy` on one.
+  test("the board sinks blocked work after the red-check raise", () => {
     const source = read("app.js");
     expect(source.match(/sinkBlocked\(/g) ?? []).toHaveLength(1);
-    expect(source).toMatch(/sinkLowPriority\(\s*sinkBlocked\(\s*raiseFailedChecks\(/);
+    expect(source).toMatch(/sinkBlocked\(\s*raiseFailedChecks\(/);
   });
 
   // One pass belongs to the row alone, on purpose. A pull request the reader

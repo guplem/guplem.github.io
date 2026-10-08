@@ -53,8 +53,8 @@ It is the short procedure for all of the above.
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
 | `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, and filling one in (ADR 0031) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
-| `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards whose checks came back red (ADR 0026), and the reviews the reader started (ADR 0042) |
-| `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it (ADR 0022, ADR 0031) |
+| `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards whose checks came back red (ADR 0026), the reviews the reader started (ADR 0042), and the work the reader raised, with its flame icon (ADR 0044) |
+| `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it, including the priorities the card is not in (ADR 0022, ADR 0031, ADR 0044) |
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
@@ -80,8 +80,8 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseFailedChecks`, `priority.sinkBlocked` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done" newest first) → the parts the reader hid are dropped (ADR 0024) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
-Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.raiseReviewedBeforeItems` → `priority.sinkLowPriorityItems` (the last three only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseFailedChecks`, `priority.sinkBlocked`, `priority.raiseHighPriority` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done" newest first) → the parts the reader hid are dropped (ADR 0024) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
+Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.raiseReviewedBeforeItems` → `priority.raiseHighPriorityItems` → `priority.sinkLowPriorityItems` (the last four only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025). The read bar still shows (ADR 0039).
 Data flow, the cleanup: opening `?view=cleanup` or pressing "Check again" → `cleanup.cleanupCandidates` → `gateway.fetchItemStates` for every token at once → `cleanup.readItemStates` (token-list order) → `cleanup.cleanupSuggestions` → rows. Delete → `cleanup.deleteNotes`; Keep → `boardDocument.writeNoteSuggested` (ADR 0043).
 Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
@@ -146,6 +146,11 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   one cannot merge first, so leaving it up would show work that reads as ready
   and is not. Do not "fix" this into a single-card move: it recreates the exact
   failure ADR 0016 exists to prevent.
+- **A card marked "high priority" rises with its whole stack, and the
+  reader's two marks run last: the raise, then the sink.** Run the sink first
+  and a raised top climbs over the base that it waits on. Run either before
+  the rules and a red check or a blocked card overrules the reader's hand
+  (ADR 0044). `invariants.test.js` pins the order in both lists.
 - **Nothing on this page sets `title`, and a new one would give the reader two
   tooltips at once.** The board draws its own (ADR 0033): write one with
   `explain(element, words)` in `app.js`, which sets `data-tip`. The system's
@@ -160,9 +165,10 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   own "Checks failed" pill is what says why (ADR 0011, ADR 0026). A change that
   "restores" the old column rule hides work in the column nobody watches.
 - **The review row and the columns sort by one rule, and that rule lives in two
-  places in `app.js`.** `sorting.js` only compares. Both passes of the smart
-  order run twice: on the grouped board (`orderStacksForMerging`, then
-  `sinkLowPriority`) and on the flat review row (`orderItemsForMerging`, then
+  places in `app.js`.** `sorting.js` only compares. The shared passes of the
+  smart order run twice: on the grouped board (`orderStacksForMerging`, then
+  `raiseHighPriority`, then `sinkLowPriority`) and on the flat review row
+  (`orderItemsForMerging`, then `raiseHighPriorityItems`, then
   `sinkLowPriorityItems`), in that order. The row drifted away from the columns
   once already, one pass at a time, and nothing failed either time: the badge
   said "1 of 3" on a card sitting last, and a marked card stayed where it was.
@@ -663,6 +669,7 @@ Check `performance.getEntriesByType("resource")` for a `transferSize` of 0, and
 | [0041](adr/0041-a-token-that-finds-nothing-may-wait-for-approval.md) | A token that finds nothing may wait for approval, and the board says where to approve it |
 | [0042](adr/0042-a-review-you-started-comes-before-a-new-one.md) | A review you started comes before a new one |
 | [0043](adr/0043-the-cleanup-suggests-notes-on-finished-work.md) | The cleanup suggests the notes on finished work, and deletes nothing it cannot prove |
+| [0044](adr/0044-work-the-reader-raised-climbs-and-wears-a-flame.md) | Work the reader raised climbs with its stack, and wears a flame |
 
 ## What is not built yet
 

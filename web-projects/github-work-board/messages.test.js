@@ -166,16 +166,17 @@ describe("escapeHtml", () => {
 });
 
 describe("priorityMenuLabel", () => {
-  // Each one names what the row does, not what the card is, because a menu row
-  // is a thing the reader presses.
-  test("offers to push a card down, and to bring it back", () => {
-    expect(priorityMenuLabel("normal")).toBe("Not a priority");
-    expect(priorityMenuLabel("low")).toBe("Make it a priority");
+  // A row names the priority it sets. The menu offers the two the card is
+  // not in, so each label must say where the card goes (ADR 0044).
+  test("names the priority each row sets", () => {
+    expect(priorityMenuLabel("high")).toBe("High priority");
+    expect(priorityMenuLabel("normal")).toBe("Normal priority");
+    expect(priorityMenuLabel("low")).toBe("Not a priority");
   });
 
-  test("anything it does not know offers the mark", () => {
-    expect(priorityMenuLabel("")).toBe("Not a priority");
-    expect(priorityMenuLabel(null)).toBe("Not a priority");
+  test("anything it does not know is the ordinary priority", () => {
+    expect(priorityMenuLabel("")).toBe("Normal priority");
+    expect(priorityMenuLabel(null)).toBe("Normal priority");
   });
 });
 

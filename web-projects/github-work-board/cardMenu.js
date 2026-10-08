@@ -10,16 +10,21 @@
 // offered only when this card holds everything its template asks for (ADR 0031).
 
 import { canFillTemplate } from "./copyActions.js";
+import { HIGH, LOW, NORMAL, knownPriority } from "./priority.js";
+
+/** Every priority, in the order the menu offers them. */
+const PRIORITY_ORDER = [HIGH, NORMAL, LOW];
 
 /**
  * @param item the work item the menu was opened for
  * @param canMove whether this card sits in a column it could be moved between
  * @param copyActions the lines the reader wrote, from `readCopyActions`
+ * @param priority the card's priority now, from `readPriority`
  */
-export function cardMenuRows(item, { canMove = false, copyActions = [] } = {}) {
+export function cardMenuRows(item, { canMove = false, copyActions = [], priority = NORMAL } = {}) {
   const kind = item && typeof item === "object" ? item.kind : null;
   if (!item || typeof item !== "object") {
-    return { note: false, branch: false, move: false, priority: false, copies: [] };
+    return { note: false, branch: false, move: false, priorities: [], copies: [] };
   }
 
   return {
@@ -35,7 +40,9 @@ export function cardMenuRows(item, { canMove = false, copyActions = [] } = {}) {
     move: canMove === true,
     // Every card, like the note above. The mark is filed under the item's node
     // id, so it follows the work and not the place the card sits (ADR 0026).
-    priority: true,
+    // One row for each priority the card is not in, so a press always changes
+    // something (ADR 0044).
+    priorities: PRIORITY_ORDER.filter((one) => one !== knownPriority(priority)),
     // The reader's own lines, in the order Settings holds them. An action this
     // card cannot fill is left out rather than copied with a hole in it: an
     // issue has no branch, exactly as "Copy branch name" already says.

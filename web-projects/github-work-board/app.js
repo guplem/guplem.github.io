@@ -111,6 +111,7 @@ import {
   describeLastRefresh,
   describeReading,
   escapeHtml,
+  HIGH_PRIORITY_TIP,
   noteMenuLabel,
   priorityMenuLabel,
   say,
@@ -153,9 +154,13 @@ import { EXAMPLE_ACTIONS, PLACEHOLDERS, fillCopyTemplate } from "./copyActions.j
 import { readTitle } from "./titles.js";
 import { initialsOf, personLabel } from "./people.js";
 import {
+  HIGH,
+  HIGH_PRIORITY_PATHS,
   LOW,
   NORMAL,
   raiseFailedChecks,
+  raiseHighPriority,
+  raiseHighPriorityItems,
   raiseReviewedBeforeItems,
   sinkBlocked,
   sinkLowPriority,
@@ -425,6 +430,31 @@ function buildAttentionPill(reason) {
 }
 
 /**
+ * The flame in the corner of a card the reader marked "high priority". It sits
+ * where the card's menu button is, and the button moves one place left on such
+ * a card, so the two never cover each other (ADR 0044).
+ */
+function buildHighPriorityMark() {
+  const mark = document.createElement("span");
+  mark.className = "priority-mark";
+  mark.setAttribute("role", "img");
+  mark.setAttribute("aria-label", "High priority");
+  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  drawing.setAttribute("viewBox", "0 0 24 24");
+  drawing.setAttribute("aria-hidden", "true");
+  drawing.setAttribute("focusable", "false");
+  drawing.setAttribute("class", "icon");
+  for (const d of HIGH_PRIORITY_PATHS) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    line.setAttribute("d", d);
+    drawing.append(line);
+  }
+  mark.append(drawing);
+  explain(mark, HIGH_PRIORITY_TIP);
+  return mark;
+}
+
+/**
  * One card. A nested pull request keeps the menu but not the move: it travels
  * in its issue's column, because the pair is one piece of work (ADR 0010), so
  * moving it on its own would do nothing, but copying its branch still does
@@ -450,9 +480,10 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   // What GitHub links to this item. The card asks it three times over: what
   // blocks it, what holds it up, and who is in its review.
   const relationship = readRelationship(state.links, item.key);
-  // Fainter wherever it is drawn, in every order. Only the smart order moves
-  // it as well (ADR 0026).
-  if (readPriority(state.board, item.key) === LOW) card.setAttribute("data-priority", LOW);
+  // Fainter, or bordered with a flame in the corner, wherever it is drawn, in
+  // every order. Only the smart order moves it as well (ADR 0026, ADR 0044).
+  const priority = readPriority(state.board, item.key);
+  if (priority !== NORMAL) card.setAttribute("data-priority", priority);
   // Which stack this card belongs to, out of everything drawn right now. The
   // hover lights up the rest of the stack by matching on it (ADR 0027).
   const inStack = state.stackRoots[item.key];
@@ -492,6 +523,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     state.menuCanMove = withMenu;
   });
   card.append(more);
+  if (priority === HIGH) card.append(buildHighPriorityMark());
 
   const kind = document.createElement("span");
   kind.className = item.kind === "pull-request" ? "badge badge-pull" : "badge badge-issue";
@@ -1789,11 +1821,11 @@ function showTotal(counts) {
   explain(badge, describeBreakdown(counts.parts));
 }
 
-/** The cards the reader marked, out of the ones on screen right now. */
-function lowPriorityKeys(items) {
+/** The cards the reader marked with one priority, out of the ones on screen right now. */
+function priorityKeys(items, priority) {
   const marked = new Set();
   for (const item of items) {
-    if (item && readPriority(state.board, item.key) === LOW) marked.add(item.key);
+    if (item && readPriority(state.board, item.key) === priority) marked.add(item.key);
   }
   return marked;
 }
@@ -1871,17 +1903,22 @@ function renderBoard() {
   // check no longer moves a card out of the column it belongs in (ADR 0011), so
   // this is what keeps it from being lost in the middle of one. Then the
   // blocked cards go below the rest of their column, because nobody can start
-  // them. The reader's sink runs last: a card they pushed down stays down,
-  // because their hand beats the rule (ADR 0026).
+  // them. The reader's own marks run last, because their hand beats the rule:
+  // the cards they marked "high priority" climb to the top, still in the smart
+  // order among themselves (ADR 0044), and then a card they pushed down stays
+  // down (ADR 0026).
   const plainItems = plain.map((group) => group.item);
   const grouped =
     state.sortId === "smart"
       ? sinkLowPriority(
-          sinkBlocked(
-            raiseFailedChecks(orderStacksForMerging(plain), failedCheckKeys(plainItems)),
-            blockedKeys(plainItems),
+          raiseHighPriority(
+            sinkBlocked(
+              raiseFailedChecks(orderStacksForMerging(plain), failedCheckKeys(plainItems)),
+              blockedKeys(plainItems),
+            ),
+            priorityKeys(plainItems, HIGH),
           ),
-          lowPriorityKeys(plainItems),
+          priorityKeys(plainItems, LOW),
         )
       : plain;
 
@@ -1894,15 +1931,19 @@ function renderBoard() {
     hasNote,
   );
   // The row is ordered by the same rules as a column, in the same order: the
-  // stacks first, then the cards the reader pushed down (ADR 0016, ADR 0026).
+  // stacks first, then the cards the reader raised, then the cards the reader
+  // pushed down (ADR 0016, ADR 0044, ADR 0026).
   // The row is flat and a column holds groups. Between the two, the row alone
   // raises the reviews the reader already started, so half-done work is
   // finished before new work is opened (ADR 0042).
   const waiting =
     state.sortId === "smart"
       ? sinkLowPriorityItems(
-          raiseReviewedBeforeItems(orderItemsForMerging(queued), reviewedBeforeKeys(queued)),
-          lowPriorityKeys(queued),
+          raiseHighPriorityItems(
+            raiseReviewedBeforeItems(orderItemsForMerging(queued), reviewedBeforeKeys(queued)),
+            priorityKeys(queued, HIGH),
+          ),
+          priorityKeys(queued, LOW),
         )
       : queued;
 
@@ -1958,7 +1999,7 @@ function renderBoard() {
   const shownAreas = colourableAreas().filter((area) => readAreaShown(state.board, area.id));
   const counts = countBoard(
     shownAreas.map((area) => ({ ...area, keys: keysByArea[area.id] ?? [] })),
-    lowPriorityKeys([...waiting, ...board.flatMap(({ groups }) => groups.map((group) => group.item))]),
+    priorityKeys([...waiting, ...board.flatMap(({ groups }) => groups.map((group) => group.item))], LOW),
     countingSettings(),
   );
   const countFor = Object.fromEntries(counts.parts.map((part) => [part.id, part]));
@@ -3578,15 +3619,18 @@ function start() {
     }
   });
 
-  element("menu-priority").addEventListener("click", () => {
-    const item = state.menuItem;
-    if (!item) return;
-    const now = readPriority(state.board, item.key);
-    state.board = writePriority(state.board, item.key, now === LOW ? NORMAL : LOW, new Date().toISOString());
-    scheduleSave();
-    closeCardMenu();
-    renderBoard();
-  });
+  for (const priority of [HIGH, NORMAL, LOW]) {
+    const row = element(`menu-priority-${priority}`);
+    row.textContent = priorityMenuLabel(priority);
+    row.addEventListener("click", () => {
+      const item = state.menuItem;
+      if (!item) return;
+      state.board = writePriority(state.board, item.key, priority, new Date().toISOString());
+      scheduleSave();
+      closeCardMenu();
+      renderBoard();
+    });
+  }
 
   element("menu-note").addEventListener("click", () => {
     const item = state.menuItem;
@@ -3602,17 +3646,19 @@ function start() {
     const open = event.newState === "open";
     if (open && state.menuItem) {
       element("menu-note").textContent = noteMenuLabel(readNote(state.board, state.menuItem.key));
-      element("menu-priority").textContent = priorityMenuLabel(readPriority(state.board, state.menuItem.key));
       const rows = cardMenuRows(state.menuItem, {
         canMove: state.menuCanMove,
         copyActions: readCopyActions(state.board),
+        priority: readPriority(state.board, state.menuItem.key),
       });
       element("menu-copies").replaceChildren(
         ...rows.copies.map((action) => buildCopyMenuRow(action, state.menuItem)),
       );
       element("menu-note").hidden = !rows.note;
       element("menu-branch").hidden = !rows.branch;
-      element("menu-priority").hidden = !rows.priority;
+      for (const priority of [HIGH, NORMAL, LOW]) {
+        element(`menu-priority-${priority}`).hidden = !rows.priorities.includes(priority);
+      }
       move.hidden = !rows.move;
     }
     state.menuAnchor?.setAttribute("aria-expanded", open ? "true" : "false");
