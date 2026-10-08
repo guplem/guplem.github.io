@@ -233,6 +233,7 @@ describe("a card pushed down", () => {
 
   test("round-trips", () => {
     expect(readPriority(writePriority(emptyDocument(now), "I_1", "low", now), "I_1")).toBe("low");
+    expect(readPriority(writePriority(emptyDocument(now), "I_1", "high", now), "I_1")).toBe("high");
   });
 
   test("nothing marked is the ordinary priority", () => {

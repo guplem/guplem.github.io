@@ -1,9 +1,12 @@
 import { describe, expect, test } from "bun:test";
 import {
+  HIGH,
   LOW,
   NORMAL,
   knownPriority,
   raiseFailedChecks,
+  raiseHighPriority,
+  raiseHighPriorityItems,
   raiseReviewedBeforeItems,
   sinkBlocked,
   sinkLowPriority,
@@ -19,6 +22,7 @@ const keys = (groups) => groups.map((one) => one.item.key);
 
 describe("knownPriority", () => {
   test("keeps a priority the board knows", () => {
+    expect(knownPriority(HIGH)).toBe(HIGH);
     expect(knownPriority(LOW)).toBe(LOW);
     expect(knownPriority(NORMAL)).toBe(NORMAL);
   });
@@ -320,5 +324,95 @@ describe("sinkBlocked", () => {
     const list = [group("low"), group("blocked"), group("free")];
     const order = sinkLowPriority(sinkBlocked(list, new Set(["blocked"])), new Set(["low"]));
     expect(keys(order)).toEqual(["free", "blocked", "low"]);
+  });
+});
+
+describe("raiseHighPriority", () => {
+  // The reader's own word that a card matters this week. In the smart order it
+  // reads first in its list (ADR 0044).
+  test("a card the reader raised goes to the top", () => {
+    const list = [group("a"), group("b"), group("c")];
+    expect(keys(raiseHighPriority(list, new Set(["c"])))).toEqual(["c", "a", "b"]);
+  });
+
+  test("nothing raised, nothing moves", () => {
+    const list = [group("a"), group("b")];
+    expect(keys(raiseHighPriority(list, new Set()))).toEqual(["a", "b"]);
+    expect(keys(raiseHighPriority(list, null))).toEqual(["a", "b"]);
+  });
+
+  // The cards that rose keep the smart order among themselves, exactly as the
+  // cards that sank do (ADR 0026).
+  test("the order handed in still holds inside each half", () => {
+    const list = [group("a"), group("b"), group("c"), group("d")];
+    expect(keys(raiseHighPriority(list, ["b", "d"]))).toEqual(["b", "d", "a", "c"]);
+  });
+
+  // Nothing in a stack merges before the one below it (ADR 0016), so a raised
+  // card takes its whole stack up, bottom first, like a red check does.
+  test("a raised card anywhere in a stack raises the whole stack, in merge order", () => {
+    const stack = () => [
+      group("one", { head: "one", base: "main", number: 1 }),
+      group("two", { head: "two", base: "one", number: 2 }),
+      group("three", { head: "three", base: "two", number: 3 }),
+    ];
+    for (const raised of ["one", "two", "three"]) {
+      expect(keys(raiseHighPriority([group("other"), ...stack()], new Set([raised])))).toEqual([
+        "one",
+        "two",
+        "three",
+        "other",
+      ]);
+    }
+  });
+
+  // The raise runs after the rules (the red check and the blocked sink), so the
+  // reader's hand beats them: a blocked card they raised reads first.
+  test("a blocked card the reader raised still reads first", () => {
+    const list = [group("free"), group("blocked")];
+    const order = raiseHighPriority(sinkBlocked(list, new Set(["blocked"])), new Set(["blocked"]));
+    expect(keys(order)).toEqual(["blocked", "free"]);
+  });
+
+  // Inside the raised group the rules still hold: a red check reads before a
+  // card that merely matters, and a blocked one reads after it.
+  test("the raised cards keep the smart order among themselves", () => {
+    const list = [group("blocked"), group("plain"), group("red"), group("other")];
+    const ruled = sinkBlocked(raiseFailedChecks(list, new Set(["red"])), new Set(["blocked"]));
+    const order = raiseHighPriority(ruled, new Set(["blocked", "plain", "red"]));
+    expect(keys(order)).toEqual(["red", "plain", "blocked", "other"]);
+  });
+
+  // The two marks meet in one stack: the bottom pushed down, a top raised. The
+  // sink runs last, and a pushed-down base takes everything on it down, so the
+  // stack still reads bottom first (ADR 0016, ADR 0026).
+  test("a raised top over a pushed-down bottom sinks with its bottom", () => {
+    const list = [
+      group("other"),
+      group("one", { head: "one", base: "main", number: 1 }),
+      group("two", { head: "two", base: "one", number: 2 }),
+    ];
+    const order = sinkLowPriority(raiseHighPriority(list, new Set(["two"])), new Set(["one"]));
+    expect(keys(order)).toEqual(["other", "one", "two"]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(raiseHighPriority(null, null)).toEqual([]);
+    expect(() => raiseHighPriority([{}, { item: null }], new Set(["a"]))).not.toThrow();
+  });
+});
+
+describe("raiseHighPriorityItems", () => {
+  const item = (key) => ({ key, kind: "pull-request", repository: "me/repo", headRefName: "", baseRefName: "" });
+  const keys = (items) => items.map((one) => one.key);
+
+  // The review row follows the same rule as a column, flat (ADR 0026).
+  test("a raised review goes to the top of the row", () => {
+    const row = [item("a"), item("b"), item("c")];
+    expect(keys(raiseHighPriorityItems(row, new Set(["c"])))).toEqual(["c", "a", "b"]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(raiseHighPriorityItems(null, null)).toEqual([]);
   });
 });
