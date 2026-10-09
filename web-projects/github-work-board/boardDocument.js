@@ -69,6 +69,15 @@ export function readNote(document, issueKey) {
 }
 
 /**
+ * Whether a note holds anything the reader wrote. Spaces and line breaks alone
+ * are no note: the board draws no box for them, and an emptied box goes away
+ * when the reader leaves it (ADR 0014).
+ */
+export function hasNoteText(body) {
+  return typeof body === "string" && body.trim() !== "";
+}
+
+/**
  * The same document with one note written. The document handed in is never
  * changed, so a caller can always fall back to what it already had.
  */

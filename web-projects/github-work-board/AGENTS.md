@@ -417,6 +417,8 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   one from the menu this visit. An empty box on every card is forty invitations
   to write something nobody wanted to write, and it is the tallest thing on a
   card (ADR 0014). Which empty boxes are open is held in memory, never saved.
+  A box that is empty when the reader leaves it is removed on `blur`, never on
+  the keystroke that emptied it; `invariants.test.js` pins that.
 - **The card menu is a `popover`, and it has to be.** `.columns` scrolls
   sideways, so `overflow-x: auto` clips anything positioned inside a card. Only
   the top layer escapes it (ADR 0012).

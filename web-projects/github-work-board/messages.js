@@ -131,6 +131,18 @@ export function noteMenuLabel(noteText) {
 }
 
 /**
+ * What the status line says when an emptied note box goes away. The line is far
+ * from the card, so it names the card and the way to write a note again
+ * (ADR 0014).
+ */
+export function noteRemovedStatus(item) {
+  const card = item && typeof item === "object" ? item : {};
+  const name =
+    typeof card.repository === "string" && Number.isInteger(card.number) ? ` from ${card.repository} #${card.number}` : "";
+  return `Note removed${name}. To write one again, choose "Add note" in the card's menu.`;
+}
+
+/**
  * The words on the menu row that sets one priority.
  *
  * The menu offers the priorities the card is not in, so each row names where

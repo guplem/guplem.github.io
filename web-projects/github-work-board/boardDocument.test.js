@@ -7,6 +7,7 @@ import {
   emptyDocument,
   migrate,
   parseDocument,
+  hasNoteText,
   readNote,
   readNoteSuggested,
   writeNoteSuggested,
@@ -70,6 +71,24 @@ describe("migrate", () => {
     );
     expect(readNote(doc, "good")).toBe("yes");
     expect(doc.notes.bad).toBeUndefined();
+  });
+});
+
+// A box left with only spaces in it holds nothing a reader wrote. The board
+// treats it as no note: it draws no box for it, and an emptied box goes away
+// when the reader leaves it (ADR 0014).
+describe("hasNoteText", () => {
+  test("a note with words in it is a note", () => {
+    expect(hasNoteText("look at the rate limit")).toBe(true);
+    expect(hasNoteText("  x  ")).toBe(true);
+  });
+
+  test("nothing, or only spaces and line breaks, is no note", () => {
+    expect(hasNoteText("")).toBe(false);
+    expect(hasNoteText("   ")).toBe(false);
+    expect(hasNoteText(" \n\t ")).toBe(false);
+    expect(hasNoteText(null)).toBe(false);
+    expect(hasNoteText(7)).toBe(false);
   });
 });
 

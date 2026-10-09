@@ -950,6 +950,18 @@ describe("the page itself", () => {
   });
 });
 
+// An emptied note box goes away, but only once the reader has left it. A box
+// that removed itself on the keystroke that emptied it would vanish under the
+// cursor of a reader who cleared it to retype it (ADR 0014).
+describe("an emptied note box goes when the reader leaves it (ADR 0014)", () => {
+  test("the box is removed on blur, and the typing never removes it", () => {
+    const builder = functionBody(read("app.js"), "function buildNoteBox(");
+    expect(builder).toContain('"blur"');
+    const typing = builder.slice(builder.indexOf('"input"'), builder.indexOf('"blur"'));
+    expect(typing).not.toContain("remove");
+  });
+});
+
 // A placeholder is written into board.json the moment the reader saves a line,
 // so renaming one silently empties that part of every line they already wrote
 // (ADR 0031). The same rule a column id lives under (ADR 0011).
