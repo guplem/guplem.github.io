@@ -178,6 +178,17 @@ export function columnFor(item, relationship, overrideId) {
 }
 
 /**
+ * Where a card moved by hand sits, and where the rules would put it, by the
+ * columns' names. Null when the card follows the rules. The dot on a moved
+ * card says both, so the reader sees what the move overrides (ADR 0011).
+ */
+export function handMove(item, relationship, overrideId) {
+  const chosen = readColumnId(overrideId);
+  if (chosen === AUTOMATIC) return null;
+  return { chosen: stateLabel(chosen), automatic: stateLabel(automaticColumn(item, relationship)) };
+}
+
+/**
  * What the "move to" menu offers for one card.
  *
  * The first entry hands the card back to the rules and says which column they

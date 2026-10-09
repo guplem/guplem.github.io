@@ -128,18 +128,32 @@
     <!-- The reader's own ranking, one row per priority; the card's own one is
          hidden. "High" draws a border and a flame and, in the smart order,
          raises the card with its stack (ADR 0044). "Not a priority" makes it
-         fainter and sinks it with anything stacked on it (ADR 0026). -->
+         fainter, gives it an arrow and sinks it with anything stacked on it
+         (ADR 0026, ADR 0046). -->
     <button id="menu-priority-high" type="button" class="menu-item" role="menuitem">High priority</button>
     <button id="menu-priority-normal" type="button" class="menu-item" role="menuitem">Normal priority</button>
     <button id="menu-priority-low" type="button" class="menu-item" role="menuitem">Not a priority</button>
     <button id="menu-move" type="button" class="menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="false">
-      <span>Move to</span>
+      <span class="menu-label">Move to</span>
+      <!-- Shown while the card sits where the reader put it, not where the
+           rules would (ADR 0011). -->
+      <span class="menu-dot" hidden></span>
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6" /></svg>
     </button>
     <!-- Inside the menu it belongs to, not beside it. Two auto popovers that
          are not nested in the DOM are unrelated, so opening this one would
          close the menu that opened it (ADR 0012). -->
     <div id="card-submenu" class="menu" popover="auto" role="menu" aria-label="Move to column"></div>
+  </div>
+
+  <!-- One icon picker for every line in Settings, pointed at whichever line
+       opened it, like the card menu (ADR 0012, ADR 0031). -->
+  <div id="icon-picker" class="menu icon-picker" popover="auto" role="dialog" aria-label="Pick an icon">
+    <div id="icon-picker-choices" class="icon-picker-choices"></div>
+    <label class="icon-picker-emoji">
+      <span class="field-help">Or type one emoji</span>
+      <input id="icon-picker-emoji" class="input" type="text" autocomplete="off" spellcheck="false" />
+    </label>
   </div>
 
   <!-- Shown once, before the first token leaves Settings as readable text. The
@@ -575,13 +589,14 @@
             <div class="field">
               <p class="field-label" id="new-copy-action-label-text">A new line</p>
               <div class="field-row">
+                <button id="new-copy-action-icon" class="button button-outline icon-only copy-icon-button"></button>
                 <input id="new-copy-action-name" class="input copy-action-name" type="text" autocomplete="off"
                   aria-label="Name of the new line" />
                 <input id="new-copy-action-template" class="input" type="text" autocomplete="off" spellcheck="false"
                   aria-label="What the new line copies" />
                 <button id="add-copy-action" type="button" class="button button-outline">Add</button>
               </div>
-              <p class="field-help">The name is what the card's menu shows. The line below it is what you get.</p>
+              <p class="field-help">The icon and the name are what the card's menu shows. The line below it is what you get.</p>
             </div>
 
             <div class="field">

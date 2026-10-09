@@ -67,6 +67,7 @@ import {
   COLUMNS,
   attentionFor,
   columnFor,
+  handMove,
   groupIntoColumns,
   moveOptions,
   stateLabel,
@@ -112,8 +113,9 @@ import {
   describeLastRefresh,
   describeReading,
   escapeHtml,
-  HIGH_PRIORITY_TIP,
+  movedByHandTip,
   noteMenuLabel,
+  priorityMarkTip,
   priorityMenuLabel,
   say,
   sayAwaitingApproval,
@@ -148,18 +150,25 @@ import {
 } from "../cloud-storage/cloudSettings.js";
 import { skeletonCount } from "./skeletons.js";
 import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
-import { cardMenuRows } from "./cardMenu.js";
+import { MENU_ICON_PATHS, cardMenuRows } from "./cardMenu.js";
 import { TOOLTIP_DELAY_MS, tipPlacement } from "./tooltip.js";
 import { childSummary, childrenProgress, childrenToggleLabel, orderChildren } from "./children.js";
-import { EXAMPLE_ACTIONS, PLACEHOLDERS, fillCopyTemplate } from "./copyActions.js";
+import {
+  COPY_ICONS,
+  EXAMPLE_ACTIONS,
+  PLACEHOLDERS,
+  fillCopyTemplate,
+  pickEmoji,
+  readCopyIcon,
+} from "./copyActions.js";
 import { readTitle } from "./titles.js";
 import { MILESTONE_PATHS, milestoneFilterTip, milestoneLinkTip, milestoneProgress } from "./milestones.js";
 import { initialsOf, personLabel } from "./people.js";
 import {
   HIGH,
-  HIGH_PRIORITY_PATHS,
   LOW,
   NORMAL,
+  PRIORITY_PATHS,
   raiseFailedChecks,
   raiseHighPriority,
   raiseHighPriorityItems,
@@ -245,6 +254,12 @@ const state = {
   stackBadges: {},
   menuItem: null,
   menuAnchor: null,
+  // The line in Settings the icon picker is pointed at, and the press that
+  // opened it. `actionId` is null for the new line, which has no id yet.
+  iconPickerFor: null,
+  iconPickerAnchor: null,
+  // The icon picked for the new line, before Add writes it (ADR 0031).
+  newCopyIcon: "",
   // Cards whose note box is open although the note is still empty. Only for
   // this visit: a box somebody opened and left empty is not worth saving.
   notesOpen: new Set(),
@@ -326,6 +341,36 @@ function setStatus(text) {
   element("board-status").textContent = text;
 }
 
+/**
+ * One icon, drawn from SVG paths on a 24 by 24 grid. This project carries no
+ * icon set and imports nothing (ADR 0001), so the module that owns what an
+ * icon means also holds its paths.
+ */
+function drawIcon(paths, className = "icon") {
+  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  drawing.setAttribute("viewBox", "0 0 24 24");
+  drawing.setAttribute("aria-hidden", "true");
+  drawing.setAttribute("focusable", "false");
+  drawing.setAttribute("class", className);
+  for (const d of paths) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    line.setAttribute("d", d);
+    drawing.append(line);
+  }
+  return drawing;
+}
+
+/** The icon on a line the reader wrote: one from the list, or one emoji (ADR 0031). */
+function drawCopyIcon(stored) {
+  const icon = readCopyIcon(stored);
+  if (icon.kind === "icon") return drawIcon(icon.paths);
+  const emoji = document.createElement("span");
+  emoji.className = "icon icon-emoji";
+  emoji.setAttribute("aria-hidden", "true");
+  emoji.textContent = icon.text;
+  return emoji;
+}
+
 /** One row of the setup guide's permission list, from `permissions.js`. */
 function buildPermissionRow(permission) {
   const row = document.createElement("li");
@@ -391,16 +436,7 @@ function buildCheckRow({ label, ok, detail }) {
 
 /** The icon for one kind of change, drawn from its paths (ADR 0001). */
 function buildChangeIcon(type, breaking) {
-  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  drawing.setAttribute("viewBox", "0 0 24 24");
-  drawing.setAttribute("aria-hidden", "true");
-  drawing.setAttribute("focusable", "false");
-  drawing.setAttribute("class", `icon change-icon change-${type.id}${breaking ? " is-breaking" : ""}`);
-  for (const d of type.paths) {
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    line.setAttribute("d", d);
-    drawing.append(line);
-  }
+  const drawing = drawIcon(type.paths, `icon change-icon change-${type.id}${breaking ? " is-breaking" : ""}`);
   const name = document.createElementNS("http://www.w3.org/2000/svg", "title");
   name.textContent = breaking ? `${type.label}, and it breaks something` : type.label;
   drawing.append(name);
@@ -418,18 +454,7 @@ function buildAttentionPill(reason) {
   const pill = document.createElement("span");
   pill.className = `badge badge-attention attention-${reason.id}`;
 
-  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  drawing.setAttribute("viewBox", "0 0 24 24");
-  drawing.setAttribute("aria-hidden", "true");
-  drawing.setAttribute("focusable", "false");
-  drawing.setAttribute("class", "icon");
-  for (const d of reason.paths) {
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    line.setAttribute("d", d);
-    drawing.append(line);
-  }
-
-  pill.append(drawing, document.createTextNode(reason.label));
+  pill.append(drawIcon(reason.paths), document.createTextNode(reason.label));
   explain(pill, reason.detail);
   return pill;
 }
@@ -455,17 +480,7 @@ function buildMilestonePill(milestone, canFilter) {
     link.target = "_blank";
     link.rel = "noopener";
   }
-  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  drawing.setAttribute("viewBox", "0 0 24 24");
-  drawing.setAttribute("aria-hidden", "true");
-  drawing.setAttribute("focusable", "false");
-  drawing.setAttribute("class", "icon");
-  for (const d of MILESTONE_PATHS) {
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    line.setAttribute("d", d);
-    drawing.append(line);
-  }
-  link.append(drawing);
+  link.append(drawIcon(MILESTONE_PATHS));
   if (progress.label !== "") link.append(document.createTextNode(progress.label));
   link.setAttribute("aria-label", milestoneLinkTip(milestone));
   explain(link, milestoneLinkTip(milestone));
@@ -491,28 +506,29 @@ function buildMilestonePill(milestone, canFilter) {
 }
 
 /**
- * The flame in the corner of a card the reader marked "high priority". It sits
- * where the card's menu button is, and the button moves one place left on such
- * a card, so the two never cover each other (ADR 0044).
+ * The mark in the corner of a card the reader marked: the flame for "high
+ * priority", the arrow for "not a priority". It is the icon the menu row
+ * draws. It sits where the card's menu button is, and the button moves one
+ * place left on such a card, so the two never cover each other (ADR 0026,
+ * ADR 0044).
  */
-function buildHighPriorityMark() {
+function buildPriorityMark(priority) {
   const mark = document.createElement("span");
   mark.className = "priority-mark";
   mark.setAttribute("role", "img");
-  mark.setAttribute("aria-label", "High priority");
-  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  drawing.setAttribute("viewBox", "0 0 24 24");
-  drawing.setAttribute("aria-hidden", "true");
-  drawing.setAttribute("focusable", "false");
-  drawing.setAttribute("class", "icon");
-  for (const d of HIGH_PRIORITY_PATHS) {
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    line.setAttribute("d", d);
-    drawing.append(line);
-  }
-  mark.append(drawing);
-  explain(mark, HIGH_PRIORITY_TIP);
+  mark.setAttribute("aria-label", priorityMenuLabel(priority));
+  mark.append(drawIcon(PRIORITY_PATHS[priority]));
+  explain(mark, priorityMarkTip(priority));
   return mark;
+}
+
+/**
+ * What the dot on a card moved by hand says: the column the reader chose and
+ * the one the rules would choose (ADR 0011).
+ */
+function movedTip(item, column) {
+  const move = handMove(item, readRelationship(state.links, item.key), column);
+  return move ? movedByHandTip(move.chosen, move.automatic) : "";
 }
 
 /**
@@ -541,8 +557,8 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   // What GitHub links to this item. The card asks it three times over: what
   // blocks it, what holds it up, and who is in its review.
   const relationship = readRelationship(state.links, item.key);
-  // Fainter, or bordered with a flame in the corner, wherever it is drawn, in
-  // every order. Only the smart order moves it as well (ADR 0026, ADR 0044).
+  // Fainter with an arrow in the corner, or bordered with a flame there,
+  // wherever it is drawn, in every order. Only the smart order moves it as well (ADR 0026, ADR 0044).
   const priority = readPriority(state.board, item.key);
   if (priority !== NORMAL) card.setAttribute("data-priority", priority);
   // Which stack this card belongs to, out of everything drawn right now. The
@@ -573,6 +589,13 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     dots.append(dot);
   }
   more.append(dots);
+  // A card moved by hand no longer follows the rules. The dot says so, and
+  // the button stays in sight so the dot can (ADR 0011).
+  const column = readColumn(state.board, item.key);
+  if (cardMenuRows(item, { canMove: withMenu, column }).moved) {
+    more.setAttribute("data-moved", "");
+    explain(more, movedTip(item, column));
+  }
   // The browser opens the menu, through `popovertarget`. Calling `showPopover`
   // from a click handler instead means the same click reaches the page and the
   // browser light-dismisses the menu it has just opened: it flashes and closes.
@@ -584,7 +607,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     state.menuCanMove = withMenu;
   });
   card.append(more);
-  if (priority === HIGH) card.append(buildHighPriorityMark());
+  if (priority !== NORMAL) card.append(buildPriorityMark(priority));
 
   const kind = document.createElement("span");
   kind.className = item.kind === "pull-request" ? "badge badge-pull" : "badge badge-issue";
@@ -888,15 +911,7 @@ function paint(element_, areaId) {
 
 /** The arrow on the press that opens a list: pointing down when it is open. */
 function buildChevron(open) {
-  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  drawing.setAttribute("viewBox", "0 0 24 24");
-  drawing.setAttribute("aria-hidden", "true");
-  drawing.setAttribute("focusable", "false");
-  drawing.setAttribute("class", `icon chevron${open ? " is-open" : ""}`);
-  const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  line.setAttribute("d", "M9 6l6 6-6 6");
-  drawing.append(line);
-  return drawing;
+  return drawIcon(["M9 6l6 6-6 6"], `icon chevron${open ? " is-open" : ""}`);
 }
 
 /** The theme the reader chose, on the root element where the tokens read it. */
@@ -1397,7 +1412,7 @@ function buildCopyMenuRow(action, item) {
   row.type = "button";
   row.className = "menu-item";
   row.setAttribute("role", "menuitem");
-  row.textContent = action.label;
+  fillMenuRow(row, drawCopyIcon(action.icon), action.label);
   const filled = fillCopyTemplate(action.template, item);
   explain(row, filled);
   row.addEventListener("click", async () => {
@@ -1414,17 +1429,29 @@ function buildCopyMenuRow(action, item) {
 }
 
 /**
+ * An icon and words in one menu row. The words sit in their own span, so they
+ * can change on their own and end in an ellipsis when they are long.
+ */
+function fillMenuRow(row, icon, words) {
+  const label = document.createElement("span");
+  label.className = "menu-label";
+  label.textContent = words;
+  row.replaceChildren(icon, label);
+}
+
+/**
  * Put a menu next to the thing that opened it, and keep it on the screen.
  *
  * A popover lives in the browser's top layer, so nothing clips it, and nothing
  * positions it either: it has to be placed by hand. The clamp is what stops a
  * menu opened by the last card in the last column from hanging off the edge.
  */
-function placeMenu(menu, anchor, { beside = false } = {}) {
+function placeMenu(menu, anchor, { beside = false, fromLeft = false } = {}) {
   const at = anchor.getBoundingClientRect();
   const size = menu.getBoundingClientRect();
   const gap = 4;
-  const left = beside ? at.right + gap : at.right - size.width;
+  const below = fromLeft ? at.left : at.right - size.width;
+  const left = beside ? at.right + gap : below;
   const top = beside ? at.top : at.bottom + gap;
   menu.style.left = `${Math.max(gap, Math.min(left, window.innerWidth - size.width - gap))}px`;
   menu.style.top = `${Math.max(gap, Math.min(top, window.innerHeight - size.height - gap))}px`;
@@ -1764,17 +1791,7 @@ function buildDoneRange() {
 
 /** The calendar on the press that opens the picker. */
 function buildCalendarIcon() {
-  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  drawing.setAttribute("viewBox", "0 0 24 24");
-  drawing.setAttribute("aria-hidden", "true");
-  drawing.setAttribute("focusable", "false");
-  drawing.setAttribute("class", "icon");
-  for (const d of ["M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z", "M3 10h18", "M8 3v4", "M16 3v4"]) {
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    line.setAttribute("d", d);
-    drawing.append(line);
-  }
-  return drawing;
+  return drawIcon(["M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z", "M3 10h18", "M8 3v4", "M16 3v4"]);
 }
 
 /**
@@ -2320,6 +2337,9 @@ function renderCounting() {
 function buildCopyActionRow(action) {
   const row = document.createElement("li");
   row.className = "copy-action-row";
+  const icon = document.createElement("button");
+  icon.className = "button button-outline icon-only copy-icon-button";
+  wireCopyIconButton(icon, action.id, action.icon);
 
   const save = (changes) => {
     state.board = writeCopyAction(state.board, action.id, { ...action, ...changes }, new Date().toISOString());
@@ -2361,8 +2381,72 @@ function buildCopyActionRow(action) {
   });
   buttons.append(drop);
 
-  row.append(lines, buttons);
+  row.append(icon, lines, buttons);
   return row;
+}
+
+/**
+ * The press that opens the icon picker for one line, showing the icon the line
+ * has now. `actionId` is null for the new line, which has no id yet (ADR 0031).
+ */
+function wireCopyIconButton(press, actionId, stored) {
+  press.type = "button";
+  // The browser opens the picker, as it opens the card menu (ADR 0012).
+  press.setAttribute("popovertarget", "icon-picker");
+  press.setAttribute("aria-haspopup", "dialog");
+  press.setAttribute("aria-expanded", "false");
+  press.setAttribute("aria-label", "Icon in the card menu");
+  press.replaceChildren(drawCopyIcon(stored));
+  explain(press, "The icon this line shows in the card menu. Press to pick another.");
+  press.addEventListener("click", () => {
+    state.iconPickerFor = { actionId };
+    state.iconPickerAnchor = press;
+  });
+}
+
+/** The icon stored on the line the picker is pointed at. */
+function pickerIcon() {
+  const actionId = state.iconPickerFor?.actionId ?? null;
+  if (actionId === null) return state.newCopyIcon;
+  return readCopyActions(state.board).find((action) => action.id === actionId)?.icon ?? "";
+}
+
+/**
+ * Fill the icon picker for whichever line opened it. One picker serves every
+ * line, the way one menu serves every card (ADR 0012).
+ */
+function fillIconPicker() {
+  const now = readCopyIcon(pickerIcon());
+  element("icon-picker-choices").replaceChildren(
+    ...COPY_ICONS.map((one) => {
+      const choice = document.createElement("button");
+      choice.type = "button";
+      choice.className = "icon-choice";
+      choice.setAttribute("aria-label", one.label);
+      choice.setAttribute("aria-pressed", now.kind === "icon" && now.id === one.id ? "true" : "false");
+      explain(choice, one.label);
+      choice.append(drawIcon(one.paths));
+      choice.addEventListener("click", () => chooseCopyIcon(one.id));
+      return choice;
+    }),
+  );
+  element("icon-picker-emoji").value = now.kind === "emoji" ? now.text : "";
+}
+
+/** Give the line the picker is pointed at a new icon, and close the picker. */
+function chooseCopyIcon(icon) {
+  const actionId = state.iconPickerFor?.actionId ?? null;
+  element("icon-picker").hidePopover();
+  if (actionId === null) {
+    state.newCopyIcon = icon;
+    element("new-copy-action-icon").replaceChildren(drawCopyIcon(icon));
+    return;
+  }
+  const action = readCopyActions(state.board).find((one) => one.id === actionId);
+  if (!action) return;
+  state.board = writeCopyAction(state.board, action.id, { ...action, icon }, new Date().toISOString());
+  scheduleSave();
+  renderCopyActions();
 }
 
 /** The lines the reader wrote, in Settings. */
@@ -3664,10 +3748,17 @@ function start() {
       return showNotice("settings-notice", "A line needs something to copy. Write it in the second box.");
     }
     const now = new Date().toISOString();
-    state.board = writeCopyAction(state.board, newId(), { label: name.value, template: line, createdAt: now }, now);
+    state.board = writeCopyAction(
+      state.board,
+      newId(),
+      { label: name.value, template: line, icon: state.newCopyIcon, createdAt: now },
+      now,
+    );
     scheduleSave();
     name.value = "";
     template.value = "";
+    state.newCopyIcon = "";
+    element("new-copy-action-icon").replaceChildren(drawCopyIcon(""));
     renderCopyActions();
     name.focus();
   });
@@ -3678,6 +3769,27 @@ function start() {
 
   wireTooltip();
 
+  // The icon picker in Settings. Filled before it is shown, so it has a size
+  // to be placed by; placed after, because only then does it have one.
+  const picker = element("icon-picker");
+  wireCopyIconButton(element("new-copy-action-icon"), null, "");
+  picker.addEventListener("beforetoggle", (event) => {
+    if (event.newState === "open") fillIconPicker();
+  });
+  picker.addEventListener("toggle", (event) => {
+    const open = event.newState === "open";
+    state.iconPickerAnchor?.setAttribute("aria-expanded", open ? "true" : "false");
+    // Under the button and running right, over the line's own boxes rather
+    // than over the line below.
+    if (open) placeMenu(picker, state.iconPickerAnchor, { fromLeft: true });
+  });
+  // Whatever the keyboard sends: the last emoji in it is the icon, and text
+  // with no emoji waits for one.
+  element("icon-picker-emoji").addEventListener("input", (event) => {
+    const emoji = pickEmoji(event.target.value);
+    if (emoji !== "") chooseCopyIcon(emoji);
+  });
+
   const menu = element("card-menu");
   const submenu = element("card-submenu");
   const move = element("menu-move");
@@ -3687,6 +3799,9 @@ function start() {
   // through `popovertarget`; the hover has no click to dismiss it, so it can
   // open the popover itself.
   move.setAttribute("popovertarget", "card-submenu");
+  move.prepend(drawIcon(MENU_ICON_PATHS.move));
+  fillMenuRow(element("menu-note"), drawIcon(MENU_ICON_PATHS.note), "Add note");
+  fillMenuRow(element("menu-branch"), drawIcon(MENU_ICON_PATHS.branch), "Copy branch name");
   move.addEventListener("mouseenter", () => {
     if (!submenu.matches(":popover-open")) submenu.showPopover();
   });
@@ -3707,7 +3822,7 @@ function start() {
 
   for (const priority of [HIGH, NORMAL, LOW]) {
     const row = element(`menu-priority-${priority}`);
-    row.textContent = priorityMenuLabel(priority);
+    fillMenuRow(row, drawIcon(PRIORITY_PATHS[priority]), priorityMenuLabel(priority));
     row.addEventListener("click", () => {
       const item = state.menuItem;
       if (!item) return;
@@ -3731,11 +3846,15 @@ function start() {
   menu.addEventListener("toggle", (event) => {
     const open = event.newState === "open";
     if (open && state.menuItem) {
-      element("menu-note").textContent = noteMenuLabel(readNote(state.board, state.menuItem.key));
+      element("menu-note").querySelector(".menu-label").textContent = noteMenuLabel(
+        readNote(state.board, state.menuItem.key),
+      );
+      const column = readColumn(state.board, state.menuItem.key);
       const rows = cardMenuRows(state.menuItem, {
         canMove: state.menuCanMove,
         copyActions: readCopyActions(state.board),
         priority: readPriority(state.board, state.menuItem.key),
+        column,
       });
       element("menu-copies").replaceChildren(
         ...rows.copies.map((action) => buildCopyMenuRow(action, state.menuItem)),
@@ -3746,6 +3865,8 @@ function start() {
         element(`menu-priority-${priority}`).hidden = !rows.priorities.includes(priority);
       }
       move.hidden = !rows.move;
+      move.querySelector(".menu-dot").hidden = !rows.moved;
+      explain(move, rows.moved ? movedTip(state.menuItem, column) : "");
     }
     state.menuAnchor?.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) placeMenu(menu, state.menuAnchor);

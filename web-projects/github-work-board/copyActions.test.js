@@ -1,11 +1,15 @@
 import { describe, expect, test } from "bun:test";
 import {
+  COPY_ICONS,
+  DEFAULT_COPY_ICON,
   EXAMPLE_ACTIONS,
   PLACEHOLDERS,
   canFillTemplate,
   fillCopyTemplate,
   orderCopyActions,
+  pickEmoji,
   placeholdersIn,
+  readCopyIcon,
 } from "./copyActions.js";
 
 const pull = {
@@ -129,6 +133,7 @@ describe("orderCopyActions", () => {
       id: "a",
       label: "Implement",
       template: "#{N}",
+      icon: "",
       createdAt: now,
     });
   });
@@ -136,12 +141,81 @@ describe("orderCopyActions", () => {
   test("never throws, whatever is in the file", () => {
     expect(orderCopyActions(null)).toEqual([]);
     expect(orderCopyActions({ a: 7, b: null, c: { template: "{N}" } })).toEqual([
-      { id: "c", label: "{N}", template: "{N}", createdAt: "" },
+      { id: "c", label: "{N}", template: "{N}", icon: "", createdAt: "" },
     ]);
   });
 });
 
+describe("the icon on a line", () => {
+  test("the icon the reader picked travels with the line", () => {
+    const stored = { a: { label: "Ask", template: "{URL}", icon: " eye ", createdAt: "", updatedAt: "" } };
+    expect(orderCopyActions(stored)[0].icon).toBe("eye");
+  });
+
+  test("a line from before icons existed reads with no icon", () => {
+    const stored = { a: { label: "Ask", template: "{URL}", createdAt: "", updatedAt: "" } };
+    expect(orderCopyActions(stored)[0].icon).toBe("");
+  });
+});
+
+// An icon is optional. A line with none, or with one this build does not know,
+// draws the plain copy icon, so every row in the menu lines up (ADR 0031).
+describe("readCopyIcon", () => {
+  test("an icon from the list is drawn from its own paths", () => {
+    const eye = COPY_ICONS.find((one) => one.id === "eye");
+    expect(readCopyIcon("eye")).toEqual({ kind: "icon", id: "eye", paths: eye.paths });
+  });
+
+  test("one emoji is drawn as the emoji", () => {
+    expect(readCopyIcon("🚀")).toEqual({ kind: "emoji", text: "🚀" });
+    expect(readCopyIcon(" 🐛 ")).toEqual({ kind: "emoji", text: "🐛" });
+  });
+
+  // These are one emoji to the reader, and several code points to JavaScript.
+  test("an emoji built from several code points is still one emoji", () => {
+    expect(readCopyIcon("👩‍💻").kind).toBe("emoji");
+    expect(readCopyIcon("🇬🇭").kind).toBe("emoji");
+    expect(readCopyIcon("👍🏽").kind).toBe("emoji");
+  });
+
+  test("no icon, or anything that is not one icon, is the plain copy icon", () => {
+    const plain = readCopyIcon("");
+    expect(plain.kind).toBe("icon");
+    expect(plain.id).toBe(DEFAULT_COPY_ICON);
+    for (const other of [null, 7, "Rocket", "ab", "🚀🚀", "someday"]) expect(readCopyIcon(other)).toEqual(plain);
+  });
+});
+
+// The box under the icon list takes whatever the keyboard sends. A second
+// emoji typed after the first replaces it, because a line has one icon.
+describe("pickEmoji", () => {
+  test("keeps the last emoji typed", () => {
+    expect(pickEmoji("🚀")).toBe("🚀");
+    expect(pickEmoji("🚀🐛")).toBe("🐛");
+    expect(pickEmoji("go 👩‍💻")).toBe("👩‍💻");
+  });
+
+  test("text with no emoji in it gives nothing", () => {
+    expect(pickEmoji("")).toBe("");
+    expect(pickEmoji("rocket")).toBe("");
+    expect(pickEmoji(null)).toBe("");
+  });
+});
+
 describe("what the reader is offered", () => {
+  // An icon id is written into board.json, so the list carries one entry per
+  // id, each with a name for the picker and something to draw.
+  test("every icon in the list has its own id, a name and paths", () => {
+    const ids = COPY_ICONS.map((one) => one.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids).toContain(DEFAULT_COPY_ICON);
+    for (const one of COPY_ICONS) {
+      expect(one.id).toMatch(/^[a-z-]+$/);
+      expect(one.label.length).toBeGreaterThan(0);
+      expect(one.paths.length).toBeGreaterThan(0);
+    }
+  });
+
   // A token is written into board.json the moment the reader saves a template,
   // so renaming one breaks every template already saved. The list is also what
   // Settings shows, so it carries its own words for each one.

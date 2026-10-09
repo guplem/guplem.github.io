@@ -18,7 +18,14 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   example `/implement-issue #{N}`, and it becomes a row in every card's menu
   that copies it with that card's own number in it. `{URL}`, `{TITLE}`,
   `{REPO}` and `{BRANCH}` work the same way. A line that asks for a branch is
-  not offered on an issue, because an issue has none.
+  not offered on an issue, because an issue has none. Give each line an icon in
+  Settings: pick one from the list, or type one emoji.
+- **A card menu you can read by its icons.** Every row leads with one: a note,
+  a branch, a column, a flame for high priority, a level line for normal and an
+  arrow for "not a priority".
+- **A card you moved by hand wears a blue dot** on its menu button, which then
+  stays in view. Rest on the dot to see where you put the card and where the
+  rules would put it, so a move that went stale does not hide.
 - **Point at anything that names other work and that card lights up.** A child's
   pill, a child in the list, "Blocked by", "Sub-issue of": the card it means is
   washed violet wherever it sits on the board, so you find it with a glance
@@ -122,7 +129,8 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   goes into the address bar, so a reload keeps it and a link carries it.
 - **Push work you do not care about this week to the bottom.** Mark any card
   "not a priority" from its own menu. It goes faint wherever it appears, in
-  every order, and in the smart order it sinks to the bottom of its list. A
+  every order, and wears an arrow to the bottom line in its top corner. In the
+  smart order it sinks to the bottom of its list. A
   pull request stacked on top of a card you pushed down goes with it, because
   it cannot merge until that one does. The mark is saved in your own
   repository, so it follows you between machines.

@@ -6,6 +6,7 @@ import {
   automaticColumn,
   columnFor,
   groupIntoColumns,
+  handMove,
   moveOptions,
   readColumnId,
   stateLabel,
@@ -243,6 +244,23 @@ describe("columnFor", () => {
 
   test("a column that no longer exists falls back to the rule, not to nothing", () => {
     expect(columnFor(issue(), links(), "a-column-we-removed")).toBe("todo");
+  });
+});
+
+// The dot on a card moved by hand names both columns: where the reader put it
+// and where the rules would. The page asks here for both, and never works out
+// the rule's column by itself (ADR 0011).
+describe("handMove", () => {
+  const relationship = links([linkedPull({ reviewDecision: "APPROVED" })]);
+
+  test("names the column chosen by hand and the one the rules would choose", () => {
+    expect(handMove(issue(), relationship, "ongoing")).toEqual({ chosen: "Ongoing", automatic: "Ready to merge" });
+  });
+
+  test("a card left to the rules was not moved", () => {
+    expect(handMove(issue(), relationship, "")).toBe(null);
+    expect(handMove(issue(), relationship, AUTOMATIC)).toBe(null);
+    expect(handMove(issue(), relationship, "someday")).toBe(null);
   });
 });
 
