@@ -1,4 +1,5 @@
-// Narrowing the list: by kind, by repository, by label, and by person.
+// Narrowing the list: by kind, by repository, by label, by milestone, and by
+// person.
 //
 // Two rules, and they pull in opposite directions on purpose:
 //
@@ -32,11 +33,13 @@ function asList(value) {
 }
 
 /** The items still worth showing. The list handed in is not changed or reordered. */
-export function filterWorkItems(items, { kind, repositories, labels } = {}) {
+export function filterWorkItems(items, { kind, repositories, labels, milestones } = {}) {
   const list = Array.isArray(items) ? items : [];
   const wantedKind = readKind(kind);
   const wantedRepositories = new Set(asList(repositories));
   const wantedLabels = new Set(asList(labels));
+  // By name, across repositories, the way a label is chosen (ADR 0045).
+  const wantedMilestones = new Set(asList(milestones));
 
   return list.filter((item) => {
     if (wantedKind !== DEFAULT_KIND && item?.kind !== wantedKind) return false;
@@ -45,6 +48,7 @@ export function filterWorkItems(items, { kind, repositories, labels } = {}) {
       const carried = Array.isArray(item?.labels) ? item.labels : [];
       if (!carried.some((label) => wantedLabels.has(label?.name))) return false;
     }
+    if (wantedMilestones.size > 0 && !wantedMilestones.has(item?.milestone?.title)) return false;
     return true;
   });
 }
@@ -113,6 +117,13 @@ export function availableLabels(items) {
   return sortedUnique(names.filter((name) => typeof name === "string" && name !== ""));
 }
 
+/** Every milestone the list is in, each once, by name. */
+export function availableMilestones(items) {
+  const list = Array.isArray(items) ? items : [];
+  const names = list.map((item) => item?.milestone?.title);
+  return sortedUnique(names.filter((name) => typeof name === "string" && name !== ""));
+}
+
 /** A value added when it is missing, removed when it is there. The list is not changed. */
 export function toggleInList(list, value) {
   const current = asList(list);
@@ -125,11 +136,12 @@ export function toggleInList(list, value) {
  * The "clear" button appears only when this is more than zero, so it is what
  * gives the reader a way out of a list they have filtered down to nothing.
  */
-export function activeFilterCount({ kind, repositories, labels, assignees, reviewers } = {}) {
+export function activeFilterCount({ kind, repositories, labels, milestones, assignees, reviewers } = {}) {
   return (
     (readKind(kind) === DEFAULT_KIND ? 0 : 1) +
     asList(repositories).length +
     asList(labels).length +
+    asList(milestones).length +
     asList(assignees).length +
     asList(reviewers).length
   );

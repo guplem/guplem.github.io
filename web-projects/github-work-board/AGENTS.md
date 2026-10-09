@@ -58,7 +58,8 @@ It is the short procedure for all of the above.
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
-| `filters.js` | Yes | Narrowing by kind, repository, label and person, and what to offer (ADR 0009, ADR 0028) |
+| `filters.js` | Yes | Narrowing by kind, repository, label, milestone and person, and what to offer (ADR 0009, ADR 0028, ADR 0045) |
+| `milestones.js` | Yes | The milestone a piece of work is in, read from the answer the board already has: its share closed and the words on its pill (ADR 0045) |
 | `boardSearch.js` | Yes | The find box: an exact number, a pasted GitHub link or words, and which cards stay (ADR 0038) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `readProgress.js` | Yes | How full the thin bar at the top of the window is, one step per call of each token, counted over every token at once, and which step the read waits on (ADR 0039, ADR 0040) |
@@ -320,6 +321,13 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
 - **Filters widen within one kind and narrow across kinds** (ADR 0009). Two
   labels means either; a kind plus a repository means both. Getting that
   backwards empties the board on the second click.
+- **A new filter in the link needs a `state.<name> = asked.<name>;` line in
+  `start()`.** Without it the link writes the filter and the page never reads
+  it back, so a shared link opens unfiltered. The two person filters were lost
+  this way; `invariants.test.js` now fails on a missing line (ADR 0045).
+- **The milestone comes free with each item.** The issues and search answers
+  carry it, counts included, so the pill costs no call. Never ask the
+  milestones endpoint for it (ADR 0045).
 - **The `issue` and `pull-request` ids name two things at once**: a work item's
   own `kind`, and a filter in the address bar. Renaming one breaks the filter
   and every card's badge together.
@@ -670,6 +678,7 @@ Check `performance.getEntriesByType("resource")` for a `transferSize` of 0, and
 | [0042](adr/0042-a-review-you-started-comes-before-a-new-one.md) | A review you started comes before a new one |
 | [0043](adr/0043-the-cleanup-suggests-notes-on-finished-work.md) | The cleanup suggests the notes on finished work, and deletes nothing it cannot prove |
 | [0044](adr/0044-work-the-reader-raised-climbs-and-wears-a-flame.md) | Work the reader raised climbs with its stack, and wears a flame |
+| [0045](adr/0045-a-milestone-is-a-pill-with-a-link-and-a-filter.md) | A milestone is a pill with a link half and a filter half |
 
 ## What is not built yet
 
@@ -678,5 +687,5 @@ private notes, sorting, the filters and the settings screen are built.
 Still to come, roughly in this order: dragging a card instead of choosing its
 column from a dropdown, custom tags, and a "what's next" queue, which the
 blocked marking and the columns now make answerable. Every new view state goes in the address bar
-beside `view`, `sort`, `kind`, `repo`, `label`, `assignee` and `reviewer`, and the tokens never do.
+beside `view`, `sort`, `kind`, `repo`, `label`, `milestone`, `assignee` and `reviewer`, and the tokens never do.
 The find box is the one exception, on purpose (ADR 0038).

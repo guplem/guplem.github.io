@@ -5,6 +5,7 @@ import {
   activeFilterCount,
   availableAssignees,
   availableLabels,
+  availableMilestones,
   availableRepositories,
   availableReviewers,
   filterByPerson,
@@ -123,6 +124,50 @@ describe("availableRepositories and availableLabels", () => {
     expect(availableLabels([item({ labels: [] })])).toEqual([]);
     expect(availableLabels(null)).toEqual([]);
     expect(availableRepositories(null)).toEqual([]);
+  });
+});
+
+describe("by milestone", () => {
+  const inMilestone = (key, repository, title) =>
+    item({ key, repository, milestone: title === null ? null : { title, url: "", openCount: 1, closedCount: 1 } });
+  const SPRINT_A = inMilestone("a", "me/alpha", "Sprint 12");
+  const SPRINT_B = inMilestone("b", "me/beta", "Sprint 12");
+  const LAUNCH = inMilestone("l", "me/alpha", "Launch");
+  const NONE = inMilestone("n", "me/alpha", null);
+  const all = [SPRINT_A, SPRINT_B, LAUNCH, NONE];
+
+  // A milestone is chosen by its name, the way a label is. Two repositories
+  // that both name a milestone "Sprint 12" are almost always the same sprint
+  // (ADR 0045).
+  test("keeps the work in the chosen milestone, in every repository", () => {
+    expect(keys(filterWorkItems(all, { milestones: ["Sprint 12"] }))).toEqual(["a", "b"]);
+  });
+
+  // Within one kind of filter the chosen values widen (ADR 0009).
+  test("two milestones means either", () => {
+    expect(keys(filterWorkItems(all, { milestones: ["Sprint 12", "Launch"] }))).toEqual(["a", "b", "l"]);
+  });
+
+  // Across kinds each one narrows (ADR 0009).
+  test("a milestone and a repository means both", () => {
+    expect(keys(filterWorkItems(all, { milestones: ["Sprint 12"], repositories: ["me/beta"] }))).toEqual(["b"]);
+  });
+
+  test("no milestone chosen keeps everything, work in none included", () => {
+    expect(keys(filterWorkItems(all, { milestones: [] }))).toEqual(["a", "b", "l", "n"]);
+  });
+
+  test("offers each milestone once, in a readable order", () => {
+    expect(availableMilestones(all)).toEqual(["Launch", "Sprint 12"]);
+    expect(availableMilestones([NONE])).toEqual([]);
+    expect(availableMilestones(null)).toEqual([]);
+  });
+
+  // The "clear" button is the way out of an empty list, so a milestone chosen
+  // and nothing else must still show it.
+  test("a milestone chosen counts as a narrowing", () => {
+    expect(activeFilterCount({ milestones: ["Sprint 12"] })).toBe(1);
+    expect(activeFilterCount({ milestones: ["Sprint 12", "Launch"], labels: ["bug"] })).toBe(3);
   });
 });
 

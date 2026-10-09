@@ -783,6 +783,28 @@ describe("a filter named in a link keeps its name (ADR 0009)", () => {
   });
 });
 
+// A milestone pill filters the board by the milestone's name, and that name
+// travels in the link like a label does (ADR 0045).
+describe("a milestone named in a link keeps its name (ADR 0009, ADR 0045)", () => {
+  test("the parameter is `milestone`, one per milestone", () => {
+    expect(buildSearch({ milestones: ["Sprint 12", "Launch"] })).toBe("?milestone=Sprint+12&milestone=Launch");
+    expect(readStateFromSearch("?milestone=Launch").milestones).toEqual(["Launch"]);
+  });
+});
+
+// A filter the link carries and start-up never reads is worse than no filter:
+// the board opens unfiltered, and the next change of order rewrites the link
+// without it. The two person filters were lost this way, with every test green,
+// until this test (ADR 0009, ADR 0028).
+describe("start-up restores every filter a link carries (ADR 0009)", () => {
+  test("app.js copies every list the address bar reads into the board's state", () => {
+    const app = read("app.js");
+    for (const name of Object.keys(readStateFromSearch(""))) {
+      expect(app).toContain(`state.${name} = asked.${name};`);
+    }
+  });
+});
+
 // A column id is written into board.json the moment a card is moved by hand,
 // so it is as permanent as a storage key (ADR 0011).
 describe("a column a card was moved to keeps its name (ADR 0011)", () => {
