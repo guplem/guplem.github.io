@@ -3379,6 +3379,8 @@ function start() {
   state.kind = asked.kind;
   state.repositories = asked.repositories;
   state.labels = asked.labels;
+  state.assignees = asked.assignees;
+  state.reviewers = asked.reviewers;
   state.doneRange = asked.doneRange;
   renderFilters();
   const sortField = element("sort");
