@@ -8,6 +8,7 @@ import {
   describeReading,
   movedByHandTip,
   noteMenuLabel,
+  noteRemovedStatus,
   priorityMarkTip,
   priorityMenuLabel,
   say,
@@ -164,6 +165,20 @@ describe("escapeHtml", () => {
     expect(escapeHtml(null)).toBe("");
     expect(escapeHtml(undefined)).toBe("");
     expect(escapeHtml(7)).toBe("7");
+  });
+});
+
+// The status line is far from the card, so it names the card whose note went
+// away, and says how to write one again (ADR 0014).
+describe("noteRemovedStatus", () => {
+  test("names the card and the way back", () => {
+    const said = noteRemovedStatus({ repository: "me/work", number: 87 });
+    expect(said).toContain("me/work #87");
+    expect(said).toContain("Add note");
+  });
+
+  test("still says something for a card with no name", () => {
+    expect(noteRemovedStatus(null).length).toBeGreaterThan(0);
   });
 });
 

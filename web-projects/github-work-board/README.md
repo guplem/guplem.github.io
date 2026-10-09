@@ -164,7 +164,8 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   waiting for your review and one nested inside its issue.
 - **A private note on any issue**, added from the card's own menu and shown only
   where one exists. Notes are yours alone: they never appear on GitHub's issue
-  page, and nobody else sees them.
+  page, and nobody else sees them. To delete a note, empty its box and click
+  away: the box folds shut, and the status line names the card.
 - **A suggested cleanup for notes on finished work.** A note stays in your
   repository after its issue closes or its pull request merges. **Settings ->
   Review suggested cleanup** lists those notes. Delete each one, delete them

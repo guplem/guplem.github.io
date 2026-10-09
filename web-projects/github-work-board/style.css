@@ -2332,6 +2332,34 @@ button.milestone-name[aria-pressed="true"]:hover {
   margin-top: 0.75rem;
 }
 
+/* An emptied note box the reader left. It folds away rather than vanishing,
+ * so the reader sees the note go (ADR 0014). `NOTE_LEAVE_MS` in `app.js`
+ * removes the box after the same 0.2 seconds. */
+.issue .note.is-leaving {
+  overflow: hidden;
+  pointer-events: none;
+  animation: note-leave 0.2s ease forwards;
+}
+
+@keyframes note-leave {
+  to {
+    height: 0;
+    min-height: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 0;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .issue .note.is-leaving {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 /* What GitHub links to this item: its parent, what blocks it, its children. */
 .issue-links {
   display: flex;
