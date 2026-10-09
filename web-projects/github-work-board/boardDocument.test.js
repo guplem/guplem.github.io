@@ -341,8 +341,27 @@ describe("the lines the reader copies from a card (ADR 0031)", () => {
       now,
     );
     expect(readCopyActions(document)).toEqual([
-      { id: "a1", label: "Implement", template: "/implement-issue #{N}", createdAt: now },
+      { id: "a1", label: "Implement", template: "/implement-issue #{N}", icon: "", createdAt: now },
     ]);
+  });
+
+  test("round-trips the icon the reader picked", () => {
+    const document = writeCopyAction(emptyDocument(now), "a1", { label: "Ask", template: "{URL}", icon: "eye" }, now);
+    expect(readCopyActions(document)[0].icon).toBe("eye");
+  });
+
+  // The Add button and the remove write a line without naming its icon. The
+  // icon is the reader's choice, so only a write that names one changes it.
+  test("a write that does not name the icon keeps the one already there", () => {
+    const one = writeCopyAction(emptyDocument(now), "a1", { label: "Ask", template: "{URL}", icon: "🚀" }, now);
+    const edited = writeCopyAction(one, "a1", { label: "Ask again", template: "{URL}" }, later);
+    expect(edited.copyActions.a1.icon).toBe("🚀");
+    expect(removeCopyAction(one, "a1", later).copyActions.a1.icon).toBe("🚀");
+  });
+
+  test("an empty icon takes the icon off", () => {
+    const one = writeCopyAction(emptyDocument(now), "a1", { label: "Ask", template: "{URL}", icon: "eye" }, now);
+    expect(writeCopyAction(one, "a1", { label: "Ask", template: "{URL}", icon: "" }, later).copyActions.a1.icon).toBe("");
   });
 
   test("nobody starts with an action", () => {

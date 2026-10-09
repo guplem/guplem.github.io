@@ -1342,9 +1342,10 @@ textarea.input {
 /**
  * A card the reader pushed down.
  *
- * Fainter, and nothing else: it stays readable, clickable and openable, so the
- * mark is a hint and never a wall (ADR 0026). The whole card fades, which is
- * the same idiom the disabled button uses.
+ * Fainter, with its arrow in the corner: it stays readable, clickable and
+ * openable, so the mark is a hint and never a wall (ADR 0026, ADR 0046). The
+ * whole card fades, arrow included, which is the same idiom the disabled
+ * button uses.
  *
  * No `.column` in front of it: the mark belongs to the work, so a marked card
  * fades in the review row too, where there is no column.
@@ -1388,10 +1389,12 @@ textarea.input {
   transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-/* Always there for a finger and for a keyboard; fading in is only for a mouse. */
+/* Always there for a finger and for a keyboard; fading in is only for a mouse.
+ * A card moved by hand keeps it in sight, or its dot could not say so. */
 .issue:hover .icon-button,
 .icon-button:focus-visible,
-.icon-button[aria-expanded="true"] {
+.icon-button[aria-expanded="true"],
+.icon-button[data-moved] {
   opacity: 1;
 }
 
@@ -1474,8 +1477,7 @@ textarea.input {
 .menu-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.5rem;
   width: 100%;
   padding: 0.375rem 0.5rem;
   border: 0;
@@ -1504,6 +1506,46 @@ textarea.input {
   font-weight: 600;
 }
 
+/* Every row leads with its icon, in the quiet colour, so the words still lead
+ * the eye. The words take the rest of the row. */
+.menu-item > .icon {
+  color: hsl(var(--muted-foreground));
+}
+
+.menu-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* The row's own icon is the flame the card wears, in the card's orange
+ * (ADR 0044). */
+#menu-priority-high > .icon {
+  color: hsl(18 92% 48%);
+}
+
+/* A card moved by hand: one dot on its menu button and one on "Move to". Blue,
+ * a colour no verdict on the board uses, because it marks the reader's own
+ * choice and not a fault (ADR 0011). The same colour reads on both themes. */
+.menu-dot,
+.icon-button[data-moved]::after {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 999px;
+  background: hsl(217 91% 58%);
+}
+
+.menu-dot {
+  flex: 0 0 auto;
+}
+
+.icon-button[data-moved]::after {
+  content: "";
+  position: absolute;
+  top: 0.125rem;
+  right: 0.125rem;
+  box-shadow: 0 0 0 2px hsl(var(--card));
+}
+
 .menu-mark {
   flex: 0 0 1rem;
   color: hsl(var(--muted-foreground));
@@ -1517,11 +1559,71 @@ textarea.input {
  * holds its width and the row ends in an ellipsis rather than growing to the
  * width of a sentence (ADR 0031). */
 #menu-copies .menu-item {
-  display: block;
   max-width: 18rem;
+}
+
+#menu-copies .menu-label {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+/* An emoji the reader picked, in the box an icon takes, so the rows line up. */
+.icon-emoji {
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+/* The icon picker in Settings: the list as a grid, and the emoji box under it. */
+.icon-picker {
+  min-width: 0;
+  padding: 0.5rem;
+}
+
+.icon-picker-choices {
+  display: grid;
+  grid-template-columns: repeat(6, 2rem);
+  gap: 0.25rem;
+}
+
+.icon-choice {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) - 4px);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.icon-choice:hover {
+  background: hsl(var(--accent));
+}
+
+.icon-choice:active {
+  transform: translateY(1px);
+}
+
+.icon-choice:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px hsl(var(--ring));
+}
+
+.icon-choice[aria-pressed="true"] {
+  border-color: hsl(var(--ring) / 0.5);
+  background: hsl(var(--accent));
+}
+
+.icon-picker-emoji {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 60rem) {
@@ -1665,7 +1767,7 @@ textarea.input {
   box-shadow: 0 0 0 1px hsl(18 92% 50% / 0.45), var(--shadow-sm);
 }
 
-.issue[data-priority="high"] > .priority-mark {
+.issue[data-priority] > .priority-mark {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
@@ -1673,8 +1775,12 @@ textarea.input {
   place-items: center;
   width: 1.75rem;
   height: 1.75rem;
-  color: hsl(18 92% 48%);
+  color: hsl(var(--muted-foreground));
   cursor: help;
+}
+
+.issue[data-priority="high"] > .priority-mark {
+  color: hsl(18 92% 48%);
 }
 
 .issue[data-priority="high"] > .priority-mark .icon {
@@ -1683,8 +1789,8 @@ textarea.input {
   stroke-width: 2.2;
 }
 
-/* The menu button moves one place left, so the flame keeps the corner. */
-.issue[data-priority="high"] > .icon-button {
+/* The menu button moves one place left, so the mark keeps the corner. */
+.issue[data-priority] > .icon-button {
   right: 2.25rem;
 }
 
@@ -1697,6 +1803,10 @@ textarea.input {
   :root:not([data-theme="light"]) .issue[data-priority="high"] > .priority-mark {
     color: hsl(20 95% 62%);
   }
+
+  :root:not([data-theme="light"]) #menu-priority-high > .icon {
+    color: hsl(20 95% 62%);
+  }
 }
 
 :root[data-theme="dark"] .issue[data-priority="high"] {
@@ -1705,6 +1815,10 @@ textarea.input {
 }
 
 :root[data-theme="dark"] .issue[data-priority="high"] > .priority-mark {
+  color: hsl(20 95% 62%);
+}
+
+:root[data-theme="dark"] #menu-priority-high > .icon {
   color: hsl(20 95% 62%);
 }
 

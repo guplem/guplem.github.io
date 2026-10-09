@@ -3,6 +3,7 @@ import {
   HIGH,
   LOW,
   NORMAL,
+  PRIORITY_PATHS,
   knownPriority,
   raiseFailedChecks,
   raiseHighPriority,
@@ -414,5 +415,22 @@ describe("raiseHighPriorityItems", () => {
 
   test("never throws, whatever it is handed", () => {
     expect(raiseHighPriorityItems(null, null)).toEqual([]);
+  });
+});
+
+// One icon per priority. The menu row that sets a priority and the mark in the
+// card's corner draw the same one, so the reader learns a single shape for
+// each (ADR 0044).
+describe("PRIORITY_PATHS", () => {
+  test("every priority has its own icon", () => {
+    const drawn = [HIGH, NORMAL, LOW].map((one) => PRIORITY_PATHS[one]);
+    for (const paths of drawn) expect(paths.length).toBeGreaterThan(0);
+    expect(new Set(drawn.map((paths) => paths.join(" "))).size).toBe(3);
+  });
+
+  // The flame is the mark ADR 0044 chose, and the menu must not invent a
+  // second picture for the same mark.
+  test("high priority is still the flame", () => {
+    expect(PRIORITY_PATHS[HIGH][0]).toStartWith("M8.5 14.5");
   });
 });

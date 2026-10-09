@@ -154,9 +154,32 @@ export function priorityMenuLabel(priority) {
   return "Normal priority";
 }
 
-/** What the flame on a raised card says, on the pointer (ADR 0044). */
-export const HIGH_PRIORITY_TIP =
-  "You marked this high priority. In the smart order it reads first in its list, with anything it is stacked on.";
+/**
+ * What the mark in a card's corner says, on the pointer. Only the two marks
+ * the reader set draw one, so an ordinary card has nothing to say
+ * (ADR 0026, ADR 0044).
+ */
+export function priorityMarkTip(priority) {
+  if (priority === "high") {
+    return "You marked this high priority. In the smart order it reads first in its list, with anything it is stacked on.";
+  }
+  if (priority === "low") {
+    return "You marked this not a priority. In the smart order it reads last in its list, with anything stacked on it.";
+  }
+  return "";
+}
+
+/**
+ * What the dot on a card moved by hand says. It names both columns, so the
+ * reader sees what the move overrides without opening the menu (ADR 0011).
+ */
+export function movedByHandTip(chosenLabel, automaticLabel) {
+  const rules =
+    chosenLabel === automaticLabel
+      ? "The rules would put it in the same column today."
+      : `The rules would put it in ${automaticLabel}.`;
+  return `You moved this to ${chosenLabel} by hand. ${rules} Choose Automatic under "Move to" to hand it back.`;
+}
 
 /**
  * The one line on a folded token row.

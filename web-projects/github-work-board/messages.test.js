@@ -6,8 +6,10 @@ import {
   joinWithAnd,
   describeLastRefresh,
   describeReading,
+  movedByHandTip,
   noteMenuLabel,
   noteRemovedStatus,
+  priorityMarkTip,
   priorityMenuLabel,
   say,
   sayAwaitingApproval,
@@ -192,6 +194,37 @@ describe("priorityMenuLabel", () => {
   test("anything it does not know is the ordinary priority", () => {
     expect(priorityMenuLabel("")).toBe("Normal priority");
     expect(priorityMenuLabel(null)).toBe("Normal priority");
+  });
+});
+
+// The mark in the corner of a card says what the reader's own mark does when
+// the pointer rests on it. Only the two marks the reader set draw one; an
+// ordinary card has no mark and so no words (ADR 0026, ADR 0044).
+describe("priorityMarkTip", () => {
+  test("a raised card and a pushed-down card each say what the mark does", () => {
+    expect(priorityMarkTip("high")).toContain("high priority");
+    expect(priorityMarkTip("low")).toContain("not a priority");
+    expect(priorityMarkTip("high")).not.toBe(priorityMarkTip("low"));
+  });
+
+  test("an ordinary card has no mark, so nothing to say", () => {
+    expect(priorityMarkTip("normal")).toBe("");
+    expect(priorityMarkTip("urgent")).toBe("");
+  });
+});
+
+// The dot on a card moved by hand. It names both columns, so the reader sees
+// what the move overrides without opening the menu (ADR 0011).
+describe("movedByHandTip", () => {
+  test("names the column the reader chose and the one the rules would choose", () => {
+    const said = movedByHandTip("Ongoing", "To do");
+    expect(said).toContain("Ongoing");
+    expect(said).toContain("To do");
+    expect(said).toContain("Automatic");
+  });
+
+  test("says so when the rules would put the card in the same place", () => {
+    expect(movedByHandTip("Ongoing", "Ongoing")).toContain("same column");
   });
 });
 

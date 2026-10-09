@@ -44,6 +44,8 @@ filled in.**
   reader to every machine (ADR 0024) and two devices that each add one keep
   both (ADR 0002). A removed line keeps its key with an empty template, the
   same way a cleared note keeps its key.
+- **A line can carry an icon**, picked from a list or typed as one emoji, and
+  the menu row leads with it. ADR 0046 holds the rules.
 - **Oldest first, with the id breaking a tie.** Two devices can write a line in
   the same second, and both have to read the same order.
 

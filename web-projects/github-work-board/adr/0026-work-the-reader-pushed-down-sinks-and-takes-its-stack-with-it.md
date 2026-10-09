@@ -19,7 +19,9 @@ mark does two things, and they are deliberately not the same thing.
 **It draws the card fainter, in every order, everywhere the card appears.** That
 half is not an order, so no order gets to opt out of it. A marked card keeps
 full opacity while the pointer is on it, or while anything inside it has focus,
-so the mark never gets in the way of reading or using the card.
+so the mark never gets in the way of reading or using the card. An arrow to the
+bottom line in its top corner says why it is faint; the menu row that sets the
+mark draws the same arrow (ADR 0046).
 
 **It sinks the card to the bottom of its list, and only in the smart order.**
 Every other order says what it does in its own name and has to keep doing
@@ -51,7 +53,7 @@ in merge order.
 
 **The card that carries the mark is the card that moves.** A pull request nested
 inside the issue it closes travels in that issue's card (ADR 0016), so marking
-the nested one only makes it fainter. That is the same rule the move menu
+the nested one only fades it and gives it the mark. That is the same rule the move menu
 follows, and it is why the nested card is offered the mark at all: it is the
 reader's judgement about that pull request, and it shows on that pull request.
 

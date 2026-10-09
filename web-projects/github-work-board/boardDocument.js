@@ -284,7 +284,7 @@ export function readCopyActions(document) {
  * `createdAt` is what the order reads, so an edit keeps the one the action was
  * made under and only a new action sets it.
  */
-export function writeCopyAction(document, id, { label, template, createdAt }, now) {
+export function writeCopyAction(document, id, { label, template, icon, createdAt }, now) {
   const base = migrate(document, now);
   const before = isPlainObject(base.copyActions[id]) ? base.copyActions[id] : {};
   return {
@@ -295,6 +295,8 @@ export function writeCopyAction(document, id, { label, template, createdAt }, no
       [id]: {
         label: String(label ?? ""),
         template: String(template ?? ""),
+        // Only a write that names the icon changes it: Add and Remove do not.
+        icon: String(icon ?? before.icon ?? ""),
         createdAt: String(createdAt ?? before.createdAt ?? now),
         updatedAt: now,
       },
