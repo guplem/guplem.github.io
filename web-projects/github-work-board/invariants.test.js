@@ -21,7 +21,7 @@ import { KIND_FILTERS } from "./filters.js";
 import { normalizeWorkItem } from "./workItems.js";
 import { PERMISSIONS, REQUIRED_PERMISSIONS } from "./permissions.js";
 import { LEGACY_KEYS, STORAGE_KEYS } from "./settings.js";
-import { PLACEHOLDERS } from "./copyActions.js";
+import { COPY_ICONS, PLACEHOLDERS } from "./copyActions.js";
 
 const FOLDER = import.meta.dir;
 const sourceFiles = readdirSync(FOLDER).filter((name) => name.endsWith(".js") && !name.endsWith(".test.js"));
@@ -956,6 +956,14 @@ describe("the page itself", () => {
 describe("a placeholder the reader typed keeps its name (ADR 0031)", () => {
   test("these are the placeholders, and a name is never changed or dropped", () => {
     expect(PLACEHOLDERS.map((one) => one.token)).toEqual(["{N}", "{URL}", "{TITLE}", "{REPO}", "{BRANCH}"]);
+  });
+
+  // An icon id is written into board.json the moment the reader picks it. A
+  // renamed id draws the plain copy icon on every line that used it.
+  test("an icon id the reader picked keeps its name", () => {
+    for (const id of ["copy", "link", "terminal", "message", "send", "branch", "pull-request", "bot", "eye", "check", "rocket", "star"]) {
+      expect(COPY_ICONS.map((one) => one.id)).toContain(id);
+    }
   });
 
   test("the saved document carries a map for the lines themselves", () => {

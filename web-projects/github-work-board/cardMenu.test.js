@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { cardMenuRows } from "./cardMenu.js";
+import { MENU_ICON_PATHS, cardMenuRows } from "./cardMenu.js";
 
 const issue = { key: "I_1", kind: "issue", number: 87, url: "https://github.com/me/work/issues/87" };
 const pull = {
@@ -10,7 +10,7 @@ const pull = {
   headRefName: "claude/read-the-notes",
 };
 
-const NOTHING = { note: false, branch: false, move: false, priorities: [], copies: [] };
+const NOTHING = { note: false, branch: false, move: false, moved: false, priorities: [], copies: [] };
 
 describe("cardMenuRows", () => {
   // The note is the reader's own half of this board, filed under the item's
@@ -90,5 +90,42 @@ describe("the lines the reader wrote (ADR 0031)", () => {
 
   test("a row appears wherever the card is drawn, like the note does", () => {
     expect(cardMenuRows(pull, { canMove: false, copyActions: actions }).copies).toEqual(actions);
+  });
+});
+
+// A card the reader moved by hand no longer follows the rules, and nothing
+// else on the card says so. The menu button and the "Move to" row carry a dot
+// while that is true, so the reader can tell a stuck card from a wrong rule
+// (ADR 0011).
+describe("a card moved by hand says so", () => {
+  test("a card in a column with a column chosen by hand is moved", () => {
+    expect(cardMenuRows(issue, { canMove: true, column: "ongoing" }).moved).toBe(true);
+  });
+
+  test("a card left to the rules is not moved", () => {
+    expect(cardMenuRows(issue, { canMove: true, column: "" }).moved).toBe(false);
+    expect(cardMenuRows(issue, { canMove: true, column: "automatic" }).moved).toBe(false);
+    expect(cardMenuRows(issue, { canMove: true }).moved).toBe(false);
+  });
+
+  // A column id the board does not know reads as automatic, so the card is
+  // where the rules put it and the dot would be a lie.
+  test("a column the board does not know is not a move", () => {
+    expect(cardMenuRows(issue, { canMove: true, column: "someday" }).moved).toBe(false);
+  });
+
+  // A pull request nested in its issue travels in that issue's column, so a
+  // record written for it changes nothing on screen (ADR 0012).
+  test("a card that cannot be moved never shows the dot", () => {
+    expect(cardMenuRows(pull, { canMove: false, column: "ongoing" }).moved).toBe(false);
+  });
+});
+
+describe("the menu's own rows carry an icon", () => {
+  test("the note, the branch and the move each have one", () => {
+    for (const row of ["note", "branch", "move"]) {
+      expect(MENU_ICON_PATHS[row].length).toBeGreaterThan(0);
+      for (const d of MENU_ICON_PATHS[row]) expect(typeof d).toBe("string");
+    }
   });
 });

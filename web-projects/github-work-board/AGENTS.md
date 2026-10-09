@@ -51,10 +51,10 @@ It is the short procedure for all of the above.
 | `doneRange.js` | Yes | Which days the last column is about: the presets, every midnight boundary in the reader's clock, the words in its heading, and the written form a link carries (ADR 0034) |
 | `children.js` | Yes | The order the children of an issue read in, the count of closed ones beside their pills, and the words on the press that opens the list (ADR 0032) |
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
-| `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, and filling one in (ADR 0031) |
+| `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, filling one in, and the icon each line wears (ADR 0031, ADR 0046) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
-| `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards whose checks came back red (ADR 0026), the reviews the reader started (ADR 0042), and the work the reader raised, with its flame icon (ADR 0044) |
-| `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it, including the priorities the card is not in (ADR 0022, ADR 0031, ADR 0044) |
+| `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards whose checks came back red (ADR 0026), the reviews the reader started (ADR 0042), and the work the reader raised, and the icon for each priority (ADR 0044, ADR 0046) |
+| `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it, including the priorities the card is not in, whether it wears the moved-by-hand dot, and the icons on its own rows (ADR 0022, ADR 0031, ADR 0044, ADR 0046) |
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
@@ -67,7 +67,7 @@ It is the short procedure for all of the above.
 | `approval.js` | Yes | Whether a token that found nothing may wait for an organisation's approval, which organisation, and the page where its owners approve it (ADR 0041) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
 | `relationships.js` | Yes | GitHub's own links between items, the children of an issue, which linked pull request an item is read from, and nesting a pull request under its issue (ADR 0010, ADR 0028) |
-| `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, and what to call that column away from the board (ADR 0011) |
+| `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, what to call that column away from the board, and the two names a moved card's dot says (ADR 0011, ADR 0046) |
 | `checks.js` | Yes | How the checks on the last commit are going: the workflow runs counted into one verdict, when to ask GitHub again, and the sentence behind the dot (ADR 0037) |
 | `attention.js` | Yes | The three reasons a pull request wants its author (conflicts, red checks, changes requested), with the words and the icon each pill draws (ADR 0011) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
@@ -158,6 +158,11 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
   tooltip cannot be themed, placed or laid out, and it reads the breakdown
   beside the title as a cramped block. `invariants.test.js` fails on any
   `title` written by a module or left in `index.html`.
+- **An icon is a list of SVG paths in the module that owns its meaning, drawn
+  by `drawIcon` in `app.js`.** The card's corner mark and the menu row for a
+  priority both read `PRIORITY_PATHS`, so they cannot drift apart. A copy
+  line's icon id is written into `board.json`, so it is as permanent as a
+  placeholder; `invariants.test.js` pins the ids (ADR 0046).
 - **`.badge` is `inline-flex`, so whitespace between two child elements
   disappears.** A badge built from two spans needs a `gap`, not a space in the
   text (ADR 0027).
@@ -434,7 +439,8 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
 - **`cardMenu.cardMenuRows` decides which rows the menu offers, and nothing
   else does.** Add note on every card, Copy branch name on a pull request, Move
   to on a card that sits in a column, and one row per line the reader wrote in
-  Settings that this card can fill (ADR 0031). The first three answers were
+  Settings that this card can fill (ADR 0031), the priorities it is not in
+  (ADR 0044), and whether it wears the moved-by-hand dot (ADR 0046). The first three answers were
   three conditions written into `app.js` one at a time, and the newest of them
   quietly stopped a note being addable anywhere but the columns (ADR 0022).
 - **A note is filed under the item's node id, so it belongs to the work and not
@@ -679,6 +685,7 @@ Check `performance.getEntriesByType("resource")` for a `transferSize` of 0, and
 | [0043](adr/0043-the-cleanup-suggests-notes-on-finished-work.md) | The cleanup suggests the notes on finished work, and deletes nothing it cannot prove |
 | [0044](adr/0044-work-the-reader-raised-climbs-and-wears-a-flame.md) | Work the reader raised climbs with its stack, and wears a flame |
 | [0045](adr/0045-a-milestone-is-a-pill-with-a-link-and-a-filter.md) | A milestone is a pill with a link half and a filter half |
+| [0046](adr/0046-the-menu-speaks-in-icons-and-a-moved-card-wears-a-dot.md) | The menu speaks in icons, and a card moved by hand wears a dot |
 
 ## What is not built yet
 

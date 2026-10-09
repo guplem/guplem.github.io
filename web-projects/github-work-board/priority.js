@@ -1,7 +1,8 @@
 // What moves up and down a list, and what travels with it.
 //
-// A card marked "not a priority" is drawn fainter wherever it appears, and in
-// the smart order it sinks to the bottom of its list (ADR 0026). A card marked
+// A card marked "not a priority" is drawn fainter wherever it appears, wears an
+// arrow in its corner, and in the smart order sinks to the bottom of its list
+// (ADR 0026, ADR 0046). A card marked
 // "high priority" wears a flame and, in the smart order, rises (ADR 0044).
 // Every other order says what it does on the label, and must keep doing
 // exactly that, so there the mark only changes how the card looks.
@@ -80,14 +81,23 @@ export function knownPriority(value) {
 }
 
 /**
- * The flame drawn in the corner of a card marked "high priority", as SVG
- * paths on a 24 by 24 grid (Lucide's "flame"). A flame, not a warning sign:
- * the board already uses red and amber for what GitHub says is wrong
- * (ADR 0011), and this is the reader's own word, not a fault (ADR 0044).
+ * The icon for each priority, as SVG paths on a 24 by 24 grid (Lucide). The
+ * menu row that sets a priority and the mark in the card's corner draw the
+ * same one, so the reader learns one shape for each.
+ *
+ * High is a flame, not a warning sign: the board already uses red and amber
+ * for what GitHub says is wrong (ADR 0011), and this is the reader's own word,
+ * not a fault (ADR 0044). Low is an arrow to the bottom line, because that is
+ * where the smart order takes the card (ADR 0026). Normal is a level line; it
+ * shows only in the menu, because an ordinary card carries no mark.
  */
-export const HIGH_PRIORITY_PATHS = [
-  "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z",
-];
+export const PRIORITY_PATHS = {
+  [HIGH]: [
+    "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z",
+  ],
+  [NORMAL]: ["M5 12h14"],
+  [LOW]: ["M12 17V3", "m6 11 6 6 6-6", "M19 21H5"],
+};
 
 /**
  * The same flat row, with the marked cards moved to the bottom.

@@ -151,7 +151,8 @@ three pills, worst first.
 then pushes the fix has to move it back, because their choice outranks the
 rules for ever. "Automatic" is one click away and the control says what the
 rules would pick, which is the smallest honest fix; a rule that expired the
-override on its own would be guessing at intent.
+override on its own would be guessing at intent. A moved card wears a dot on its
+menu button, which names both columns, so a stale move can be seen (ADR 0046).
 
 **Moving is a menu, not a drag.** Dragging is the gesture people expect from a
 kanban board, and it is a lot of code to do properly on touch as well as with a

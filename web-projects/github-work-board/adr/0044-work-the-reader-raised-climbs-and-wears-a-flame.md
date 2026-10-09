@@ -71,7 +71,8 @@ the card plain and never strands it.
 
 - The flame and the border take the corner that the menu button had. On a
   raised card the button moves left; on touch screens, where the button is
-  always visible, both show side by side.
+  always visible, both show side by side. A card pushed down wears its own mark
+  in the same corner, and the menu draws both marks on its rows (ADR 0046).
 - A lit stack (ADR 0027) and a lit reference (ADR 0035) still repaint the border
   for as long as the pointer rests, because their rules come later in
   `style.css`. The flame stays, so the mark is never lost.

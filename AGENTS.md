@@ -307,6 +307,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0043](web-projects/github-work-board/adr/0043-the-cleanup-suggests-notes-on-finished-work.md) | The cleanup suggests the notes on finished work, and deletes nothing it cannot prove |
 | [github-work-board 0044](web-projects/github-work-board/adr/0044-work-the-reader-raised-climbs-and-wears-a-flame.md) | Work the reader raised climbs with its stack, and wears a flame |
 | [github-work-board 0045](web-projects/github-work-board/adr/0045-a-milestone-is-a-pill-with-a-link-and-a-filter.md) | A milestone is a pill with a link half and a filter half |
+| [github-work-board 0046](web-projects/github-work-board/adr/0046-the-menu-speaks-in-icons-and-a-moved-card-wears-a-dot.md) | The menu speaks in icons, and a card moved by hand wears a dot |
 | [wildfire-watch 0001](web-projects/wildfire-watch/adr/0001-demo-data-behind-the-real-data-shapes.md) | Keep a demo mode on invented data, in the same shapes as the live data |
 | [wildfire-watch 0002](web-projects/wildfire-watch/adr/0002-copy-the-fire-files-with-a-scheduled-action.md) | Copy the fire files with a scheduled GitHub Action, and read the copy |
 | [wildfire-watch 0003](web-projects/wildfire-watch/adr/0003-live-mode-reads-keyless-sources-and-names-each-one.md) | The live mode reads only keyless sources, and each layer names its source |
