@@ -2272,22 +2272,24 @@ textarea.input {
 /* The share of the milestone that is closed shows as a green fill behind the
  * number, only while the reader hovers or focuses the link half. At rest the
  * fill would pull the eye on every card (ADR 0045). The fill is a background
- * image, so the hover colour still paints under it. */
+ * image, so the hover colour still paints under it. It grows from the left
+ * edge to the share and shrinks back on leave, so it sweeps rather than
+ * blinks. The global reduced-motion rule turns the sweep into a jump. */
 .milestone-link {
   gap: 0.25rem;
   padding-left: 0.4375rem;
   border-right: 1px solid hsl(var(--border));
   text-decoration: none;
   font-variant-numeric: tabular-nums;
+  background-image: linear-gradient(hsl(var(--success) / 0.28), hsl(var(--success) / 0.28));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-color 0.15s ease, color 0.15s ease, background-size 0.45s ease-out;
 }
 
 .milestone-link:hover,
 .milestone-link:focus-visible {
-  background-image: linear-gradient(
-    to right,
-    hsl(var(--success) / 0.28) var(--milestone-progress, 0%),
-    transparent var(--milestone-progress, 0%)
-  );
+  background-size: var(--milestone-progress, 0%) 100%;
 }
 
 .milestone-link .icon {
