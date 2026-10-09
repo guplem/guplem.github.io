@@ -2269,14 +2269,20 @@ textarea.input {
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* The share of the milestone that is closed, as a green fill behind the
- * number. The colour sits on its own so the hover can still paint under it. */
+/* The share of the milestone that is closed shows as a green fill behind the
+ * number, only while the reader hovers or focuses the link half. At rest the
+ * fill would pull the eye on every card (ADR 0045). The fill is a background
+ * image, so the hover colour still paints under it. */
 .milestone-link {
   gap: 0.25rem;
   padding-left: 0.4375rem;
   border-right: 1px solid hsl(var(--border));
   text-decoration: none;
   font-variant-numeric: tabular-nums;
+}
+
+.milestone-link:hover,
+.milestone-link:focus-visible {
   background-image: linear-gradient(
     to right,
     hsl(var(--success) / 0.28) var(--milestone-progress, 0%),

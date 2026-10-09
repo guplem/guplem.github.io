@@ -31,8 +31,10 @@ An empty milestone shows the icon and no number, because 0% would invent one.
 
 **The pill has two halves, and each half does one thing.**
 
-- The icon and the share are a link to the milestone on GitHub. A green fill
-  behind them shows the share.
+- The icon and the share are a link to the milestone on GitHub. While the
+  reader hovers or focuses this half, a green fill behind it shows the share.
+  At rest the fill stays hidden: on every card at once it pulls the eye away
+  from the work, and the number already says the share.
 - The name is a filter chip. A press narrows the board to that milestone, and
   the name stays pressed while it does. It presses the same chip as the new
   "Milestone" group above the board.

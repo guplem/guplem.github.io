@@ -484,7 +484,7 @@ function buildMilestonePill(milestone, canFilter) {
   if (progress.label !== "") link.append(document.createTextNode(progress.label));
   link.setAttribute("aria-label", milestoneLinkTip(milestone));
   explain(link, milestoneLinkTip(milestone));
-  // How far the milestone is, as a fill behind the link half.
+  // How far the milestone is, as a fill behind the link half on hover.
   if (progress.percent !== null) link.style.setProperty("--milestone-progress", `${progress.percent}%`);
 
   const name = document.createElement(canFilter ? "button" : "span");
