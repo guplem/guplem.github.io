@@ -21,6 +21,7 @@ import {
   readColumnColour,
   readCopyActions,
   readCounting,
+  hasNoteText,
   readNote,
   readPriority,
   readTheme,
@@ -115,6 +116,7 @@ import {
   escapeHtml,
   movedByHandTip,
   noteMenuLabel,
+  noteRemovedStatus,
   priorityMarkTip,
   priorityMenuLabel,
   say,
@@ -759,7 +761,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
   // for one from the menu. An empty box on every card is forty invitations to
   // write something nobody wanted to write (ADR 0014).
   const written = readNote(state.board, item.key);
-  if (written !== "" || state.notesOpen.has(item.key)) card.append(buildNoteBox(item, written));
+  if (hasNoteText(written) || state.notesOpen.has(item.key)) card.append(buildNoteBox(item, written));
 
   return card;
 }
@@ -1281,6 +1283,9 @@ function fitNote(note) {
   note.style.height = `${note.scrollHeight + (note.offsetHeight - note.clientHeight)}px`;
 }
 
+/** How long an emptied note box takes to fold away. `style.css` holds the same number. */
+const NOTE_LEAVE_MS = 200;
+
 function buildNoteBox(item, written) {
   const note = document.createElement("textarea");
   note.className = "input note";
@@ -1290,10 +1295,38 @@ function buildNoteBox(item, written) {
   note.value = written;
   note.setAttribute("aria-label", `Note on ${item.repository} #${item.number}`);
 
+  // Whether this box has held words this visit. A box opened from the menu and
+  // left empty held no note, so it closes without a word in the status line.
+  let held = hasNoteText(written);
+
+  // While the reader is in the box, a redraw keeps it, even emptied.
+  note.addEventListener("focus", () => state.notesOpen.add(item.key));
+
   note.addEventListener("input", () => {
     state.board = writeNote(state.board, item.key, note.value, new Date().toISOString());
     scheduleSave();
     fitNote(note);
+    if (hasNoteText(note.value)) held = true;
+  });
+
+  // Emptied and left, the note is gone, so the box folds away and the status
+  // line says so. Only on leaving, never on the keystroke that emptied it: a
+  // reader who cleared the box to retype it is still in it (ADR 0014).
+  note.addEventListener("blur", () => {
+    // Another window took the focus, and the box still holds it in this page.
+    if (document.activeElement === note || !note.isConnected) return;
+    if (hasNoteText(note.value)) return;
+    // Spaces alone are no note, so they are not kept either.
+    if (note.value !== "") {
+      state.board = writeNote(state.board, item.key, "", new Date().toISOString());
+      scheduleSave();
+    }
+    state.notesOpen.delete(item.key);
+    if (held) setStatus(noteRemovedStatus(item));
+    note.classList.add("is-leaving");
+    // A timer, not `animationend`: with reduced motion there is no animation,
+    // and the box must still go.
+    setTimeout(() => note.remove(), NOTE_LEAVE_MS);
   });
   return note;
 }

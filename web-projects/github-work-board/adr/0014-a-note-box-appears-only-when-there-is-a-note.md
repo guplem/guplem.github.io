@@ -27,6 +27,11 @@ shown only where a note exists, or a dialog for writing the first one.
 - Which empty boxes are open is remembered for the visit only, in memory. A box
   somebody opened and left empty is not worth writing to the reader's
   repository, and it should not come back tomorrow.
+- **A box that is empty when the reader leaves it goes away.** It folds shut,
+  and the status line says which card lost its note and that "Add note" writes
+  a new one. A box opened from the menu and left with nothing ever typed in it
+  closes without a word. Spaces alone count as empty. To write again, the
+  reader uses "Add note", the same way as the first time.
 
 **No dialog.** A dialog is heavier than the line it captures: it covers the
 board, it needs its own dismissal, and it separates the note from the card it is
@@ -52,11 +57,19 @@ until something else redrew it.
 the right way round: reading happens on every visit, writing a note happens
 rarely.
 
-**Emptying a note leaves the box until the next render.** The note is cleared in
-the document (with its tombstone, ADR 0002), and the box disappears the next
-time the board is rebuilt rather than vanishing under the cursor mid-edit. That
-is deliberate: a control that removes itself while somebody is using it is worse
-than one that waits.
+**Emptying a note removes the box when the reader leaves it, and not before.**
+The note is cleared in the document on the keystroke that empties it (with its
+tombstone, ADR 0002). The box stays while the reader is in it, even across a
+redraw, because a reader who clears a box to retype it is still using it, and a
+control that removes itself under the cursor is worse than one that waits. On
+blur it folds away, so the reader sees the note go. A blur caused by another
+window taking the focus does not count: the box still holds the focus inside
+the page. `invariants.test.js` fails if the typing ever removes the box.
+
+**Rejected: a delete button on every note.** It is one more control on every
+card that carries a note, beside the text, where a stray tap loses the note in
+one press. Emptying the box is already a deliberate act, and leaving it is the
+moment the reader is done.
 
 **A card gives no sign of a note it is not showing.** There is nothing to give a
 sign of: if a note exists, the box is shown. This stops being true the day the
