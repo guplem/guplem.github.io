@@ -97,6 +97,7 @@ import {
   activeFilterCount,
   availableAssignees,
   availableLabels,
+  availableMilestones,
   availableRepositories,
   availableReviewers,
   filterByPerson,
@@ -152,6 +153,7 @@ import { TOOLTIP_DELAY_MS, tipPlacement } from "./tooltip.js";
 import { childSummary, childrenProgress, childrenToggleLabel, orderChildren } from "./children.js";
 import { EXAMPLE_ACTIONS, PLACEHOLDERS, fillCopyTemplate } from "./copyActions.js";
 import { readTitle } from "./titles.js";
+import { MILESTONE_PATHS, milestoneFilterTip, milestoneLinkTip, milestoneProgress } from "./milestones.js";
 import { initialsOf, personLabel } from "./people.js";
 import {
   HIGH,
@@ -284,6 +286,9 @@ const state = {
   kind: DEFAULT_KIND,
   repositories: [],
   labels: [],
+  // Chosen by name, like a label, from the filter group or a card's pill
+  // (ADR 0045).
+  milestones: [],
   // Two filters over two lists: the row of reviews narrows by whose work each
   // pull request is, and the board narrows by who is in the review (ADR 0028).
   assignees: [],
@@ -426,6 +431,62 @@ function buildAttentionPill(reason) {
 
   pill.append(drawing, document.createTextNode(reason.label));
   explain(pill, reason.detail);
+  return pill;
+}
+
+/**
+ * The milestone a card is in, as one pill with two halves (ADR 0045).
+ *
+ * The icon and the share are a link to the milestone on GitHub. The name
+ * narrows the board to that milestone, and is pressed while it does.
+ *
+ * @param milestone `{title, url, openCount, closedCount}`
+ * @param canFilter false on a review card, which the board's filters never narrow
+ */
+function buildMilestonePill(milestone, canFilter) {
+  const pill = document.createElement("span");
+  pill.className = "badge badge-milestone";
+
+  const progress = milestoneProgress(milestone);
+  const link = document.createElement(milestone.url === "" ? "span" : "a");
+  link.className = "milestone-link";
+  if (milestone.url !== "") {
+    link.href = milestone.url;
+    link.target = "_blank";
+    link.rel = "noopener";
+  }
+  const drawing = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  drawing.setAttribute("viewBox", "0 0 24 24");
+  drawing.setAttribute("aria-hidden", "true");
+  drawing.setAttribute("focusable", "false");
+  drawing.setAttribute("class", "icon");
+  for (const d of MILESTONE_PATHS) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    line.setAttribute("d", d);
+    drawing.append(line);
+  }
+  link.append(drawing);
+  if (progress.label !== "") link.append(document.createTextNode(progress.label));
+  link.setAttribute("aria-label", milestoneLinkTip(milestone));
+  explain(link, milestoneLinkTip(milestone));
+  // How far the milestone is, as a fill behind the link half.
+  if (progress.percent !== null) link.style.setProperty("--milestone-progress", `${progress.percent}%`);
+
+  const name = document.createElement(canFilter ? "button" : "span");
+  name.className = "milestone-name";
+  name.textContent = milestone.title;
+  if (canFilter) {
+    const pressed = state.milestones.includes(milestone.title);
+    name.type = "button";
+    name.setAttribute("aria-pressed", pressed ? "true" : "false");
+    explain(name, milestoneFilterTip(milestone, pressed));
+    name.addEventListener("click", () => {
+      state.milestones = toggleInList(state.milestones, milestone.title);
+      afterFilterChange();
+    });
+  }
+
+  pill.append(link, name);
   return pill;
 }
 
@@ -641,7 +702,10 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
         : null;
   if (faces) card.append(faces);
 
-  if (item.labels.length > 0) {
+  // The milestone closes the row, after the labels. Only the board's filters
+  // can narrow by it, so a review card's pill links and does not filter
+  // (ADR 0009, ADR 0045).
+  if (item.labels.length > 0 || item.milestone) {
     const labels = document.createElement("p");
     labels.className = "issue-labels";
     for (const label of item.labels) {
@@ -650,6 +714,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
       chip.textContent = label.name;
       labels.append(chip);
     }
+    if (item.milestone) labels.append(buildMilestonePill(item.milestone, people !== "assignees"));
     card.append(labels);
   }
 
@@ -779,6 +844,10 @@ function renderLoading() {
   element("label-group").hidden = !(last.labels > 0);
   element("label-filters").replaceChildren(
     ...times(skeletonCount(last.labels, 3), () => buildSkeletonBar("4.5rem", "skeleton-pill")),
+  );
+  element("milestone-group").hidden = !(last.milestones > 0);
+  element("milestone-filters").replaceChildren(
+    ...times(skeletonCount(last.milestones, 1), () => buildSkeletonBar("5.5rem", "skeleton-pill")),
   );
 
   element("tokens").replaceChildren(
@@ -984,6 +1053,18 @@ function renderFilters() {
       }),
     ),
   );
+
+  // The same chips a card's milestone pill presses (ADR 0045).
+  const milestones = availableMilestones(state.items);
+  element("milestone-group").hidden = milestones.length === 0;
+  element("milestone-filters").replaceChildren(
+    ...milestones.map((name) =>
+      buildChip(name, state.milestones.includes(name), () => {
+        state.milestones = toggleInList(state.milestones, name);
+        afterFilterChange();
+      }),
+    ),
+  );
 }
 
 function afterFilterChange() {
@@ -996,6 +1077,7 @@ function clearFilters() {
   state.kind = DEFAULT_KIND;
   state.repositories = [];
   state.labels = [];
+  state.milestones = [];
   state.assignees = [];
   state.reviewers = [];
   afterFilterChange();
@@ -3109,6 +3191,7 @@ async function connectAll({ quiet = false } = {}) {
       items: state.items.length,
       repositories: availableRepositories(state.items).length,
       labels: availableLabels(state.items).length,
+      milestones: availableMilestones(state.items).length,
       tokens: state.tokens.length,
     });
     // Only when something is wrong. A board that saves itself is the ordinary
@@ -3379,6 +3462,7 @@ function start() {
   state.kind = asked.kind;
   state.repositories = asked.repositories;
   state.labels = asked.labels;
+  state.milestones = asked.milestones;
   state.assignees = asked.assignees;
   state.reviewers = asked.reviewers;
   state.doneRange = asked.doneRange;

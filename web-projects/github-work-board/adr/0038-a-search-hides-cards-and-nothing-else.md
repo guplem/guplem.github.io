@@ -6,7 +6,7 @@ The reader often knows one number, #312, and wants one answer: which column is
 that pull request in? The board had no way to ask. The reader read the number
 off every card in six columns and the review row.
 
-The board already narrows by kind, repository, label and person (ADR 0009).
+The board already narrows by kind, repository, label, milestone and person (ADR 0009).
 Those chips answer "show me a kind of work". A number answers "show me one
 piece of work", which is a different question with different rules.
 

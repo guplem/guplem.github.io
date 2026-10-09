@@ -10,6 +10,7 @@ const DEFAULTS = {
   kind: DEFAULT_KIND,
   repositories: [],
   labels: [],
+  milestones: [],
   assignees: [],
   reviewers: [],
   doneRange: DEFAULT_RANGE,
@@ -64,6 +65,15 @@ describe("readStateFromSearch", () => {
       repositories: ["me/a", "me/b"],
     });
     expect(readStateFromSearch("?label=bug&label=urgent")).toEqual({ ...DEFAULTS, labels: ["bug", "urgent"] });
+    expect(readStateFromSearch("?milestone=Sprint+12&milestone=Launch")).toEqual({
+      ...DEFAULTS,
+      milestones: ["Sprint 12", "Launch"],
+    });
+  });
+
+  // One parameter per milestone, never a comma-joined value (ADR 0009).
+  test("writes one parameter per chosen milestone", () => {
+    expect(buildSearch({ milestones: ["Sprint 12", "v1, final"] })).toBe("?milestone=Sprint+12&milestone=v1%2C+final");
   });
 
   test("a kind nobody offers is everything", () => {
@@ -108,6 +118,7 @@ describe("buildSearch", () => {
       kind: "issue",
       repositories: ["me/a"],
       labels: ["bug"],
+      milestones: ["Sprint 12"],
       assignees: ["ana"],
       reviewers: ["leo"],
       doneRange: "2026-09-15..2026-09-19",

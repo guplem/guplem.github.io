@@ -2136,6 +2136,78 @@ textarea.input {
   margin-top: 0.5rem;
 }
 
+/* The milestone, after the labels (ADR 0045). Filled where a label is only
+ * outlined, so the two never read as the same kind of thing. Two halves: the
+ * icon and the share link to GitHub, the name filters the board. */
+.badge-milestone {
+  padding: 0;
+  overflow: hidden;
+  border-color: hsl(var(--border));
+}
+
+.milestone-link,
+.milestone-name {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.0625rem 0.5rem;
+  font: inherit;
+  color: inherit;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* The share of the milestone that is closed, as a green fill behind the
+ * number. The colour sits on its own so the hover can still paint under it. */
+.milestone-link {
+  gap: 0.25rem;
+  padding-left: 0.4375rem;
+  border-right: 1px solid hsl(var(--border));
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+  background-image: linear-gradient(
+    to right,
+    hsl(var(--success) / 0.28) var(--milestone-progress, 0%),
+    transparent var(--milestone-progress, 0%)
+  );
+}
+
+.milestone-link .icon {
+  width: 0.8125rem;
+  height: 0.8125rem;
+}
+
+a.milestone-link:hover,
+button.milestone-name:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+a.milestone-link:focus-visible,
+button.milestone-name:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: -2px;
+}
+
+button.milestone-name {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+button.milestone-name:active {
+  background-color: hsl(var(--accent) / 0.7);
+}
+
+/* Pressed like a chosen filter chip, because it is one. */
+button.milestone-name[aria-pressed="true"] {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-weight: 600;
+}
+
+button.milestone-name[aria-pressed="true"]:hover {
+  background-color: hsl(var(--primary) / 0.88);
+}
+
 .issue .note {
   margin-top: 0.75rem;
 }

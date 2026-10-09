@@ -61,6 +61,31 @@ describe("normalizeWorkItem", () => {
     expect(normalizeWorkItem(RAW_ISSUE).kind).toBe("issue");
   });
 
+  // GitHub sends the milestone inside the same answer, counts and all, so the
+  // pill and its share cost no call of their own (ADR 0045).
+  test("reads the milestone the work is in", () => {
+    const raw = {
+      ...RAW_ISSUE,
+      milestone: {
+        title: "Sprint 12",
+        html_url: "https://github.com/guplem/guplem.github.io/milestone/3",
+        open_issues: 8,
+        closed_issues: 12,
+      },
+    };
+    expect(normalizeWorkItem(raw).milestone).toEqual({
+      title: "Sprint 12",
+      url: "https://github.com/guplem/guplem.github.io/milestone/3",
+      openCount: 8,
+      closedCount: 12,
+    });
+  });
+
+  test("work in no milestone says so with null", () => {
+    expect(normalizeWorkItem(RAW_ISSUE).milestone).toBe(null);
+    expect(normalizeWorkItem({ ...RAW_ISSUE, milestone: null }).milestone).toBe(null);
+  });
+
   test("reads whether a pull request is still a draft", () => {
     expect(normalizeWorkItem(RAW_PULL).isDraft).toBe(true);
     expect(normalizeWorkItem({ ...RAW_PULL, draft: false }).isDraft).toBe(false);
