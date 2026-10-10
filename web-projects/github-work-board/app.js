@@ -104,8 +104,12 @@ import {
   availableMilestones,
   availableRepositories,
   availableReviewers,
+  boardFilterCount,
   filterByPerson,
   filterWorkItems,
+  filtersToggleLabel,
+  shownChoices,
+  shownKinds,
   toggleInList,
 } from "./filters.js";
 import { describeFailure, describeMissingPermission } from "./githubErrors.js";
@@ -134,11 +138,13 @@ import {
   browserStorage,
   forgetAllTokens,
   readAutoRefresh,
+  readFiltersOpen,
   readLastCounts,
   readTokens,
   removeToken,
   renameToken,
   saveAutoRefresh,
+  saveFiltersOpen,
   saveLastCounts,
   saveTokens,
   updateToken,
@@ -325,6 +331,9 @@ const state = {
   // pull request is, and the board narrows by who is in the review (ADR 0028).
   assignees: [],
   reviewers: [],
+  // Whether the board's filters are open, or folded down to the chosen ones.
+  // Kept in this browser, folded unless the reader opened them (ADR 0049).
+  filtersOpen: readFiltersOpen(storage),
   // What the reader typed in the find box. Only for this visit, and never in
   // the link: a board that opens with most of its cards hidden looks broken
   // (ADR 0038).
@@ -926,21 +935,32 @@ function renderLoading() {
   );
   element("board-empty").hidden = true;
 
-  element("repository-group").hidden = !(last.repositories > 1);
+  // Folded, a group holds only the chips the link chose, so the placeholder
+  // counts those instead of last time's (ADR 0049).
+  const open = state.filtersOpen;
+  renderFiltersToggle();
+  element("kind-group").hidden = shownKinds(state.kind, open).length === 0;
+  element("repository-group").hidden = open ? !(last.repositories > 1) : state.repositories.length === 0;
   element("repository-filters").replaceChildren(
-    ...times(skeletonCount(last.repositories, 2), () => buildSkeletonBar("7rem", "skeleton-pill")),
+    ...times(open ? skeletonCount(last.repositories, 2) : state.repositories.length, () =>
+      buildSkeletonBar("7rem", "skeleton-pill"),
+    ),
   );
-  element("label-group").hidden = !(last.labels > 0);
+  element("label-group").hidden = open ? !(last.labels > 0) : state.labels.length === 0;
   element("label-filters").replaceChildren(
-    ...times(skeletonCount(last.labels, 3), () => buildSkeletonBar("4.5rem", "skeleton-pill")),
+    ...times(open ? skeletonCount(last.labels, 3) : state.labels.length, () => buildSkeletonBar("4.5rem", "skeleton-pill")),
   );
-  element("milestone-group").hidden = !(last.milestones > 0);
+  element("milestone-group").hidden = open ? !(last.milestones > 0) : state.milestones.length === 0;
   element("milestone-filters").replaceChildren(
-    ...times(skeletonCount(last.milestones, 1), () => buildSkeletonBar("5.5rem", "skeleton-pill")),
+    ...times(open ? skeletonCount(last.milestones, 1) : state.milestones.length, () =>
+      buildSkeletonBar("5.5rem", "skeleton-pill"),
+    ),
   );
-  // One row per field, as many as last time (ADR 0004, ADR 0047).
+  // One row per field, as many as last time (ADR 0004, ADR 0047). Folded,
+  // one row stands in for whatever field values the link chose.
+  const fieldRows = open ? (last.fields > 0 ? last.fields : 0) : Math.min(1, state.fields.length);
   element("field-groups").replaceChildren(
-    ...times(last.fields > 0 ? last.fields : 0, () => {
+    ...times(fieldRows, () => {
       const group = document.createElement("div");
       group.className = "filter-group";
       const chips = document.createElement("div");
@@ -1092,8 +1112,16 @@ function buildChip(label, pressed, onToggle) {
  * filter that can only ever empty the board is noise (ADR 0009).
  */
 function renderFilters() {
+  // Folded, each group shows only what the reader chose, and a group with
+  // nothing chosen hides. "Everything" narrows nothing, so it is not a choice
+  // a folded group keeps (ADR 0049).
+  const open = state.filtersOpen;
+  renderFiltersToggle();
+
+  const kinds = shownKinds(state.kind, open);
+  element("kind-group").hidden = kinds.length === 0;
   element("kind-filters").replaceChildren(
-    ...KIND_FILTERS.map((kind) =>
+    ...kinds.map((kind) =>
       buildChip(kind.label, state.kind === kind.id, () => {
         state.kind = kind.id;
         afterFilterChange();
@@ -1102,9 +1130,10 @@ function renderFilters() {
   );
 
   const repositories = availableRepositories(state.items);
-  element("repository-group").hidden = repositories.length < 2;
+  const shownRepositories = shownChoices(repositories, state.repositories, open);
+  element("repository-group").hidden = shownRepositories.length === 0 || (open && repositories.length < 2);
   element("repository-filters").replaceChildren(
-    ...repositories.map((name) =>
+    ...shownRepositories.map((name) =>
       buildChip(name, state.repositories.includes(name), () => {
         state.repositories = toggleInList(state.repositories, name);
         afterFilterChange();
@@ -1115,9 +1144,10 @@ function renderFilters() {
   // Only offered when the list can actually use it, exactly like the
   // repository chips (ADR 0009).
   const reviewers = availableReviewers(state.items);
-  element("reviewer-group").hidden = reviewers.length < 2;
+  const shownReviewers = shownChoices(reviewers, state.reviewers, open, (person) => person.login);
+  element("reviewer-group").hidden = shownReviewers.length === 0 || (open && reviewers.length < 2);
   element("reviewer-filters").replaceChildren(
-    ...reviewers.map((person) =>
+    ...shownReviewers.map((person) =>
       buildChip(person.name, state.reviewers.includes(person.login), () => {
         state.reviewers = toggleInList(state.reviewers, person.login);
         afterFilterChange();
@@ -1137,9 +1167,10 @@ function renderFilters() {
   );
 
   const labels = availableLabels(state.items);
-  element("label-group").hidden = labels.length === 0;
+  const shownLabels = shownChoices(labels, state.labels, open);
+  element("label-group").hidden = shownLabels.length === 0;
   element("label-filters").replaceChildren(
-    ...labels.map((name) =>
+    ...shownLabels.map((name) =>
       buildChip(name, state.labels.includes(name), () => {
         state.labels = toggleInList(state.labels, name);
         afterFilterChange();
@@ -1149,9 +1180,10 @@ function renderFilters() {
 
   // The same chips a card's milestone pill presses (ADR 0045).
   const milestones = availableMilestones(state.items);
-  element("milestone-group").hidden = milestones.length === 0;
+  const shownMilestones = shownChoices(milestones, state.milestones, open);
+  element("milestone-group").hidden = shownMilestones.length === 0;
   element("milestone-filters").replaceChildren(
-    ...milestones.map((name) =>
+    ...shownMilestones.map((name) =>
       buildChip(name, state.milestones.includes(name), () => {
         state.milestones = toggleInList(state.milestones, name);
         afterFilterChange();
@@ -1161,8 +1193,11 @@ function renderFilters() {
 
   // One row per issue field with numbers or options, built from what the list
   // holds (ADR 0047). A field pill on a card presses the same chip.
+  const fieldRows = availableFieldFilters(state.items)
+    .map((field) => ({ ...field, values: shownChoices(field.values, state.fields, open, (value) => value.key) }))
+    .filter((field) => field.values.length > 0);
   element("field-groups").replaceChildren(
-    ...availableFieldFilters(state.items).map((field) => {
+    ...fieldRows.map((field) => {
       const group = document.createElement("div");
       group.className = "filter-group";
       const name = document.createElement("p");
@@ -1184,6 +1219,19 @@ function renderFilters() {
       return group;
     }),
   );
+}
+
+/** The button that folds and opens the board's filters, and says what a press does. */
+function renderFiltersToggle() {
+  const toggle = element("filters-toggle");
+  toggle.textContent = filtersToggleLabel(state.filtersOpen, boardFilterCount(state));
+  toggle.setAttribute("aria-expanded", state.filtersOpen ? "true" : "false");
+}
+
+function toggleFilters() {
+  state.filtersOpen = !state.filtersOpen;
+  saveFiltersOpen(storage, state.filtersOpen);
+  renderFilters();
 }
 
 function afterFilterChange() {
@@ -4083,6 +4131,7 @@ function start() {
     showView("settings", element("empty-open-settings").dataset.section || DEFAULT_SECTION),
   );
   element("clear-filters").addEventListener("click", clearFilters);
+  element("filters-toggle").addEventListener("click", toggleFilters);
 
   wireTooltip();
 

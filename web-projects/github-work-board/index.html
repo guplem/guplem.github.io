@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="343" />
-  <meta name="deploy-date" content="2026-10-10T12:19:36.000Z" />
+  <meta name="deploy-pull-request" content="344" />
+  <meta name="deploy-date" content="2026-10-10T13:13:32.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -406,9 +406,14 @@
 
         <h2 class="section-heading">Your issues and pull requests</h2>
 
-        <!-- Chips built from what the list actually holds (ADR 0009). -->
+        <!-- Chips built from what the list actually holds (ADR 0009). Folded,
+             only the chosen chips show, and the button opens the rest
+             (ADR 0049). -->
         <div class="filters" id="board-filters">
-          <div class="filter-group">
+          <div class="filters-head">
+            <button id="filters-toggle" type="button" class="button button-ghost filters-toggle" aria-controls="board-filters" aria-expanded="false">Show the filters</button>
+          </div>
+          <div class="filter-group" id="kind-group">
             <p class="filter-label">Kind</p>
             <div class="chips" id="kind-filters" role="group" aria-label="Kind"></div>
           </div>

@@ -82,6 +82,7 @@ describe("the stored document (ADR 0002)", () => {
       tokens: "github-work-board.tokens",
       lastCounts: "github-work-board.lastCounts",
       autoRefresh: "github-work-board.autoRefresh",
+      filtersOpen: "github-work-board.filtersOpen",
     });
   });
 

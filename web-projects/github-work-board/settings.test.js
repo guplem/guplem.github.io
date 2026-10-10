@@ -6,11 +6,13 @@ import {
   browserStorage,
   forgetAllTokens,
   readAutoRefresh,
+  readFiltersOpen,
   readLastCounts,
   readTokens,
   removeToken,
   renameToken,
   saveAutoRefresh,
+  saveFiltersOpen,
   saveLastCounts,
   saveTokens,
   updateToken,
@@ -307,5 +309,42 @@ describe("the legacy data repository", () => {
     storage.setItem(LEGACY_KEYS.dataRepo, JSON.stringify({ owner: "guplem", repo: "work-board-data" }));
     forgetAllTokens(storage);
     expect(readLegacyDataRepo(storage)).toBeNull();
+  });
+});
+
+// Whether the filters are open is about this screen, like the refresh
+// schedule, so it stays in this browser (ADR 0049).
+describe("whether the filters are open", () => {
+  let storage;
+  beforeEach(() => {
+    storage = fakeStorage();
+  });
+
+  test("a browser that was never told keeps them folded", () => {
+    expect(readFiltersOpen(storage)).toBe(false);
+  });
+
+  test("round-trips", () => {
+    saveFiltersOpen(storage, true);
+    expect(readFiltersOpen(storage)).toBe(true);
+    saveFiltersOpen(storage, false);
+    expect(readFiltersOpen(storage)).toBe(false);
+  });
+
+  test("anything else stored reads as folded", () => {
+    storage.setItem(STORAGE_KEYS.filtersOpen, "yes please");
+    expect(readFiltersOpen(storage)).toBe(false);
+  });
+
+  test("signing out forgets it too", () => {
+    saveFiltersOpen(storage, true);
+    forgetAllTokens(storage);
+    expect(readFiltersOpen(storage)).toBe(false);
+    expect(storage.data.size).toBe(0);
+  });
+
+  test("a browser that refuses to store never breaks the page", () => {
+    expect(() => saveFiltersOpen(refusingStorage, true)).not.toThrow();
+    expect(readFiltersOpen(refusingStorage)).toBe(false);
   });
 });

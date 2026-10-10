@@ -66,9 +66,8 @@ else.
 could not have given.
 
 **Chips take room at the top of the board**, more with more repositories. A
-person in twenty repositories gets twenty chips. That is the next thing to fix
-if it becomes a problem, probably by folding the group behind a count, and it is
-not worth building before it hurts.
+person in twenty repositories gets twenty chips. The filters therefore fold
+down to the chosen chips behind one button (ADR 0049).
 
 **The label chips list every label in use, not every label defined.** They change
 as the work changes, which means a label can vanish from the chips while it is
