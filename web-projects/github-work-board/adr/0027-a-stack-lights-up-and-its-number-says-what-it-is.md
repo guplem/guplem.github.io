@@ -44,20 +44,22 @@ not a stacked card clears the light by itself.
 repositories can both hold a pull request numbered 7. The number is for reading;
 the node id is for matching.
 
-**The light is computed over everything on screen. The badge counts only the
-list its card is in** (the review row, or the board), never the whole screen
-(ADR 0020). These answer two different questions and are allowed to differ:
+**The light lights the stack the badge names, and nothing else.** The badge
+counts only the list its card is in (the review row, or the board), never the
+whole screen (ADR 0020). The light is worked out the same way, list by list
+(`stackLights`), and the answers are put side by side. A card with no badge
+lights nothing.
 
-- The badge answers "where does this card sit among the pull requests **this
-  list holds**". ADR 0020 decided that on purpose: somebody who asked for a
-  review on two of their three gets a row of two, and "1 of 2" is the truth about
-  the row in front of the reader, not about the board.
-- The light answers "what else **on this screen** is in this chain", which is a
-  question about the screen, so it is computed over the screen.
+The light was first worked out over the whole screen, to answer "what else
+on this screen is in this chain". That broke in real use. One pull request on
+the board targeted a branch from the review row, so the screen read as one
+stack. The badges still said "Stack #5843" and "Stack #6015", and pointing at
+any stacked card lit every stacked card on the page. A light that disagrees
+with the badge beside it tells the reader nothing.
 
-In practice a stack belongs to one person, so it sits either in the review row
-or in the reader's own columns, and the two answers agree. They can differ only
-when a reader stacks their own pull request on a colleague's.
+The cost: a chain that runs from the review row into the columns lights as two
+stacks, one in each list. That is what its badges already say, so the screen
+stays consistent with itself.
 
 **The badge is two parts, and each answers for itself.** Hovering the number
 says which pull request that number is, with its title. Hovering "2 of 3" keeps

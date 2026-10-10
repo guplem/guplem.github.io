@@ -39,9 +39,8 @@ bottom.
   about somebody else's screen.
 - **Each list counts itself**, so the board works its badges out over the
   board and the review row over the row. Two lists, two truths, and each badge
-  is the truth about the list it sits in. The light is the one that is computed
-  over the whole screen, because it answers a question about the screen
-  (ADR 0027).
+  is the truth about the list it sits in. The light is worked out the same way,
+  list by list, so it always lights the stack the badge names (ADR 0027).
 - **The badge goes on the pull request's own card, wherever that card is.** A
   pull request nested under the issue it closes carries it there, because that
   is the card the stack is about. The issue above it lights up with the stack

@@ -197,3 +197,26 @@ export function stackPositions(items) {
   }
   return where;
 }
+
+/**
+ * The stack each card lights up with, list by list.
+ *
+ * The light names the same stack as the badge on the card, and the badge counts
+ * only the list its card is in (ADR 0020). So the light is worked out the same
+ * way: each list on its own, and the answers put side by side.
+ *
+ * It was once worked out over the whole screen. Then one pull request on the
+ * board that targeted a branch from the review row joined two stacks into one.
+ * The badges still said "Stack #5843" and "Stack #6015", and pointing at either
+ * lit every stacked card on the page (ADR 0027).
+ *
+ * @param lists the lists on screen, each an array of work items
+ * @returns `{[key]: root}`, the key of the bottom of each card's stack
+ */
+export function stackLights(lists) {
+  const lit = {};
+  for (const list of Array.isArray(lists) ? lists : []) {
+    for (const [key, at] of Object.entries(stackPositions(list))) lit[key] = at.root;
+  }
+  return lit;
+}

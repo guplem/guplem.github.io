@@ -159,7 +159,7 @@ import {
   saveToken as saveCloudToken,
 } from "../cloud-storage/cloudSettings.js";
 import { skeletonCount } from "./skeletons.js";
-import { orderItemsForMerging, orderStacksForMerging, stackPositions } from "./stacks.js";
+import { orderItemsForMerging, orderStacksForMerging, stackLights, stackPositions } from "./stacks.js";
 import { MENU_ICON_PATHS, cardMenuRows } from "./cardMenu.js";
 import { TOOLTIP_DELAY_MS, tipPlacement } from "./tooltip.js";
 import { childSummary, childrenProgress, childrenToggleLabel, orderChildren } from "./children.js";
@@ -2230,16 +2230,12 @@ function renderBoard() {
         )
       : queued;
 
-  // Over everything on screen, not one area: a stack can have a card in the
-  // review row and another in a column, and the reader can see both. The badge
-  // keeps its own count of the review row alone, which answers a different
-  // question: where this card sits among the ones you were asked to review
-  // (ADR 0020, ADR 0027).
+  // The light names the stack the card's badge names, so it is worked out list
+  // by list, exactly like the badges. Worked out over the whole screen, one
+  // pull request that targeted a branch in the other list joined two stacks,
+  // and a hover lit every stacked card on the page (ADR 0020, ADR 0027).
   const onBoard = grouped.flatMap((group) => [group.item, ...group.children]);
-  const onScreen = [...waiting, ...onBoard];
-  state.stackRoots = Object.fromEntries(
-    Object.entries(stackPositions(onScreen)).map(([key, at]) => [key, at.root]),
-  );
+  state.stackRoots = stackLights([waiting, onBoard]);
   // The badge on a card in a column counts the board, the way the badge in the
   // review row counts the review row: each one is the truth about the list the
   // reader is looking at (ADR 0020).

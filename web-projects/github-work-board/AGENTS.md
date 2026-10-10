@@ -57,7 +57,7 @@ It is the short procedure for all of the above.
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it, including the priorities the card is not in, whether it wears the moved-by-hand dot, and the icons on its own rows (ADR 0022, ADR 0031, ADR 0044, ADR 0046) |
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
-| `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
+| `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name, and which stack each card lights up with (ADR 0020, ADR 0027) |
 | `filters.js` | Yes | Narrowing by kind, repository, label, milestone, issue field and person, what to offer, and what a folded group still shows (ADR 0009, ADR 0028, ADR 0045, ADR 0047, ADR 0049) |
 | `fields.js` | Yes | The issue fields set on an issue, read from the answer the board already has: their words, which of them a filter offers, and narrowing by them (ADR 0047) |
 | `settingsSections.js` | Yes | The sections of Settings with their permanent ids, the section each sub-screen goes back to, and the written list of settings the search finds (ADR 0048) |
@@ -420,8 +420,11 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   itself.** The board works its badges out over the board (`state.stackBadges`)
   and the review row over the row: "1 of 2" is the truth about the row in front
   of the reader, and counting a third they were not asked to review would be a
-  badge about somebody else's screen. The light is the one pass over the whole
-  screen, because it answers a question about the screen (ADR 0020, ADR 0027).
+  badge about somebody else's screen. The light is worked out list by list too
+  (`stackLights`), so it always lights the stack the badge names. Do not move it
+  back to one pass over the whole screen: one pull request that targets a branch
+  in the other list then joins two stacks, and a hover lights every stacked card
+  on the page (ADR 0020, ADR 0027).
 - **A reference to another item carries `data-points-at`, and a card carries
   `data-key`.** One listener ties them together and lights the card a pill, a
   child's row or a link line names. Both names are set in one file and read in
