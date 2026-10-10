@@ -110,13 +110,22 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   other card goes, and the one left sits in the column it is in, so you see its
   state at a glance. Words find titles too. The filters step aside while you
   search, and Escape brings the whole board back.
-- **Filter by kind, repository, label or milestone.** Two labels means either of
+- **Filter by kind, repository, label, milestone or issue field.** Two labels means either of
   them; a kind plus a repository means both. The filters go into the address bar
   too, so "everything tagged urgent in this repository" is a link.
 - **See the milestone on each card.** A pill after the labels names the
   milestone and shows how much of it is closed. Press the icon or the number to
   open the milestone on GitHub; press the name to show only that milestone's
   work.
+- **See the issue fields on each card.** The fields your organisation set on an
+  issue, such as the effort or the priority, show as small pills under the
+  labels. Press a number or an option to show only the work with that value.
+  They come with the issues the board already reads, so they cost no extra
+  call and no extra permission. Pull requests have no issue fields.
+- **Choose what each card shows.** In Settings, under "How the board looks",
+  switch the labels, the milestone, the fields, the people, the parent and
+  blockers, or the sub-issues off. The choice is saved with your half of the
+  board, so it follows you to every machine.
 - **A smart order, which is what the board opens on.** Oldest first, so the
   work that has waited longest is at the top, with one rule over it: a stack of
   pull requests reads in the order it can merge. A stacked pull request targets

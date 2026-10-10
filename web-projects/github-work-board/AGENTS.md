@@ -6,7 +6,7 @@
 
 A personal work board on top of GitHub issues. The page runs with no server: the
 reader pastes a fine-grained personal access token, and the browser calls
-`api.github.com` directly. Their private half (their notes, columns, colours, which parts are shown, theme, marked priority,
+`api.github.com` directly. Their private half (their notes, columns, colours, which parts of the board and of a card are shown, theme, marked priority,
 counting choices, the lines they copy from a card and the notes they keep out of the suggested cleanup, now; tags and a "what's
 next" queue later) lives in one JSON file, `board.json`, kept by the shared
 cloud storage (`web-projects/cloud-storage/`, root ADR 0016): mirrored in this
@@ -41,7 +41,7 @@ It is the short procedure for all of the above.
 
 | File | Pure? | Responsibility |
 |---|---|---|
-| `boardDocument.js` | Yes | What each record means to the board: one note, column, colour, shown or hidden part, theme, priority, counting choice, copy action or note kept out of the cleanup at a time, over the shared envelope (`../cloud-storage/envelope.js`) |
+| `boardDocument.js` | Yes | What each record means to the board: one note, column, colour, shown or hidden part of the board or of a card, theme, priority, counting choice, copy action or note kept out of the cleanup at a time, over the shared envelope (`../cloud-storage/envelope.js`) |
 | `cleanup.js` | Yes | The suggested cleanup: which notes sit on closed or merged work, from GitHub's answer about each item, and emptying the ones the reader lets go (ADR 0043) |
 | `legacyStorage.js` | Yes | The one-time hand-over of the board's old data repository and its writing token to cloud storage (root ADR 0016) |
 | `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
@@ -58,7 +58,9 @@ It is the short procedure for all of the above.
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
-| `filters.js` | Yes | Narrowing by kind, repository, label, milestone and person, and what to offer (ADR 0009, ADR 0028, ADR 0045) |
+| `filters.js` | Yes | Narrowing by kind, repository, label, milestone, issue field and person, and what to offer (ADR 0009, ADR 0028, ADR 0045, ADR 0047) |
+| `fields.js` | Yes | The issue fields set on an issue, read from the answer the board already has: their words, which of them a filter offers, and narrowing by them (ADR 0047) |
+| `cardParts.js` | Yes | The parts of a card the reader can hide in Settings, with their permanent ids (ADR 0047) |
 | `milestones.js` | Yes | The milestone a piece of work is in, read from the answer the board already has: its share closed and the words on its pill (ADR 0045) |
 | `boardSearch.js` | Yes | The find box: an exact number, a pasted GitHub link or words, and which cards stay (ADR 0038) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
@@ -85,7 +87,7 @@ Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `
 Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.raiseReviewedBeforeItems` → `priority.raiseHighPriorityItems` → `priority.sinkLowPriorityItems` (the last four only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025). The read bar still shows (ADR 0039).
 Data flow, the cleanup: opening `?view=cleanup` or pressing "Check again" → `cleanup.cleanupCandidates` → `gateway.fetchItemStates` for every token at once → `cleanup.readItemStates` (token-list order) → `cleanup.cleanupSuggestions` → rows. Delete → `cleanup.deleteNotes`; Keep → `boardDocument.writeNoteSuggested` (ADR 0043).
-Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
+Data flow, saving: a keystroke, a card moved, a colour, a part of the board or of a card shown or hidden, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
 
 ## Non-obvious conventions and gotchas
 
@@ -333,6 +335,18 @@ Data flow, saving: a keystroke, a card moved, a colour, a part shown or hidden, 
 - **The milestone comes free with each item.** The issues and search answers
   carry it, counts included, so the pill costs no call. Never ask the
   milestones endpoint for it (ADR 0045).
+- **The issue fields come free with each issue, too.** `GET /issues` sends
+  them inline as `issue_field_values`, under the `Issues: read` permission the
+  board already has. Never ask GraphQL or the project API for them: project
+  fields need a permission every reader would have to add, and a fine-grained
+  token cannot read a user's project at all. A pull request has no issue
+  fields (ADR 0047).
+- **A part of a card is not a part of the board.** `cardParts` and
+  `visibility` are two record maps on purpose, so hiding the labels on every
+  card can never hide a column with the same id. A new part of a card that the
+  reader can hide is one entry in `CARD_PARTS` and one `shows("<id>")` check in
+  `buildWorkItemCard`; `invariants.test.js` fails on a part the card never
+  asks about (ADR 0047).
 - **The `issue` and `pull-request` ids name two things at once**: a work item's
   own `kind`, and a filter in the address bar. Renaming one breaks the filter
   and every card's badge together.
@@ -688,6 +702,7 @@ Check `performance.getEntriesByType("resource")` for a `transferSize` of 0, and
 | [0044](adr/0044-work-the-reader-raised-climbs-and-wears-a-flame.md) | Work the reader raised climbs with its stack, and wears a flame |
 | [0045](adr/0045-a-milestone-is-a-pill-with-a-link-and-a-filter.md) | A milestone is a pill with a link half and a filter half |
 | [0046](adr/0046-the-menu-speaks-in-icons-and-a-moved-card-wears-a-dot.md) | The menu speaks in icons, and a card moved by hand wears a dot |
+| [0047](adr/0047-issue-fields-come-free-and-the-reader-chooses-what-a-card-shows.md) | Issue fields come free with each issue, and the reader chooses what a card shows |
 
 ## What is not built yet
 
@@ -696,5 +711,5 @@ private notes, sorting, the filters and the settings screen are built.
 Still to come, roughly in this order: dragging a card instead of choosing its
 column from a dropdown, custom tags, and a "what's next" queue, which the
 blocked marking and the columns now make answerable. Every new view state goes in the address bar
-beside `view`, `sort`, `kind`, `repo`, `label`, `milestone`, `assignee` and `reviewer`, and the tokens never do.
+beside `view`, `sort`, `kind`, `repo`, `label`, `milestone`, `field`, `assignee` and `reviewer`, and the tokens never do.
 The find box is the one exception, on purpose (ADR 0038).
