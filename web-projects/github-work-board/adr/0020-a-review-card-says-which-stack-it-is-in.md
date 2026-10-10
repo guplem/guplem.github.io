@@ -28,9 +28,9 @@ column.
 ## Decision
 
 **A badge on the card: `Stack #5073 · 2 of 3`, in the review row and in
-the columns alike.** It names the stack by the number of its bottom, which is
-the one that merges first, and says where this one sits counting from that
-bottom.
+the columns alike** (`2a of 2` when the stack branches, see Consequences).
+It names the stack by the number of its bottom, which is the one that merges
+first, and says where this one sits counting from that bottom.
 
 - **Only what the reader was given is counted.** `stackPositions` reads the list
   it is handed and nothing else. Somebody who asked for a review on two of
@@ -62,16 +62,28 @@ board's own items did, so a review card carried no branch names and could not
 know it was stacked. They come from a different endpoint in a different shape
 (ADR 0013) and were the only list skipping that step.
 
-**A branching stack is described loosely.** Two pull requests based on the same
-branch are both "2 of 3", because `position` counts depth from the bottom and
-`size` counts the whole tree. A branching stack is rare and the badge is still
-true about what has to merge first; an exact answer would need to name the
-branch, and the badge has no room.
+**A stack that branches gives each pull request on a shared level a letter**
+(2026-10). The badge first counted depth from the bottom over the size of the
+whole tree, so two pull requests based on the same branch were both "2 of 3".
+That was meant to be rare. It was not: one base with eight pull requests on it
+put eight identical "2 of 9" badges on the board. Now:
 
-**The board's own cards still have no badge.** The columns plus the smart order
-already carry a stack's order there, and the badge would repeat it on every
-card. It is worth adding the day somebody reads a column without the smart
-order on.
+- `position` still counts levels from the bottom. A level that holds more than
+  one pull request adds a letter: `2a`, `2b`, `2c`. Past `z` the letters go on
+  as `aa`, `ab`.
+- The letters count across the whole level, not per parent. Per parent, two
+  branches would both hold a `3a`, and the badges would match again.
+- The letters run in merge order (`orderStacksForMerging`), so the pull requests
+  on one parent sit side by side.
+- The number after "of" is the levels, not the pull requests: "2a of 9" would
+  say there are nine levels. In a straight stack the two are equal, so a
+  straight stack reads as it always did.
+- The tooltip carries the rest: the count of pull requests in the stack, how
+  many share the level, and which pull request this one targets.
+
+`describeStackPosition` in `stacks.js` writes the words, so a test pins them.
+Naming the branch on the badge would answer exactly, but the badge has no room
+for it.
 
 **Rejected at first, and then done: sorting the review row so a stack reads
 bottom-first.** The reasoning here was that the row answers one question, how

@@ -159,7 +159,13 @@ import {
   saveToken as saveCloudToken,
 } from "../cloud-storage/cloudSettings.js";
 import { skeletonCount } from "./skeletons.js";
-import { orderItemsForMerging, orderStacksForMerging, stackLights, stackPositions } from "./stacks.js";
+import {
+  describeStackPosition,
+  orderItemsForMerging,
+  orderStacksForMerging,
+  stackLights,
+  stackPositions,
+} from "./stacks.js";
 import { MENU_ICON_PATHS, cardMenuRows } from "./cardMenu.js";
 import { TOOLTIP_DELAY_MS, tipPlacement } from "./tooltip.js";
 import { childSummary, childrenProgress, childrenToggleLabel, orderChildren } from "./children.js";
@@ -694,13 +700,11 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
 
     const where = document.createElement("span");
     where.className = "stack-position";
-    where.textContent = `· ${stack.position} of ${stack.size}`;
-    explain(
-      where,
-      stack.position === 1
-        ? `The first of ${stack.size} stacked pull requests. Nothing is waiting on it.`
-        : `Number ${stack.position} of ${stack.size} stacked pull requests. #${stack.stack} merges first.`,
-    );
+    // A stack that branches gives the pull requests on one level a letter
+    // each, or eight of them would all read "2 of 9" (ADR 0020).
+    const words = describeStackPosition(stack);
+    where.textContent = `· ${words.text}`;
+    explain(where, words.tip);
 
     inStack.append(which, where);
     heading.append(inStack);
