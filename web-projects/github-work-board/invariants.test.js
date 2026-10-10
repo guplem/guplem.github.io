@@ -22,6 +22,7 @@ import { normalizeWorkItem } from "./workItems.js";
 import { PERMISSIONS, REQUIRED_PERMISSIONS } from "./permissions.js";
 import { LEGACY_KEYS, STORAGE_KEYS } from "./settings.js";
 import { COPY_ICONS, PLACEHOLDERS } from "./copyActions.js";
+import { SETTINGS_ENTRIES, SETTINGS_SECTIONS } from "./settingsSections.js";
 
 const FOLDER = import.meta.dir;
 const sourceFiles = readdirSync(FOLDER).filter((name) => name.endsWith(".js") && !name.endsWith(".test.js"));
@@ -1131,5 +1132,41 @@ describe("the parts of a card", () => {
     for (const part of ["people", "labels", "milestone", "fields", "links", "children"]) {
       expect(app).toContain(`shows("${part}")`);
     }
+  });
+});
+
+// ADR 0048: Settings is split into sections, and its search reads a written list.
+describe("the sections of Settings", () => {
+  const html = read("index.html");
+  const app = read("app.js");
+
+  // The search finds a setting in the list and scrolls to the row that carries
+  // its id. A row renamed on one side and not the other is a result that goes
+  // nowhere, and nothing errors.
+  test("every setting the search can find is a row on the page, and every row is findable", () => {
+    const onPage = [...html.matchAll(/data-setting="([^"]+)"/g)].map((match) => match[1]);
+    expect([...onPage].sort()).toEqual(SETTINGS_ENTRIES.map((entry) => entry.id).sort());
+  });
+
+  // Every section is a pane, and every pane starts hidden, so the page never
+  // flashes all five at once before app.js picks one (ADR 0036).
+  test("every section has one pane, and it starts hidden", () => {
+    for (const section of SETTINGS_SECTIONS) {
+      const pane = new RegExp(`<div class="card settings-pane" data-section="${section.id}" hidden>`);
+      expect(pane.test(html)).toBe(true);
+    }
+    expect([...html.matchAll(/data-section="/g)].length).toBe(SETTINGS_SECTIONS.length);
+  });
+
+  // Proving every permission costs one call each per token. It runs when the
+  // reader opens the tokens, not when they come to change a colour.
+  test("the permissions are checked only when the tokens section opens", () => {
+    expect(app).toMatch(/section === "tokens"[^\n]*\n?[^\n]*checkEveryToken\(\)/);
+  });
+
+  // The count is announced, never the list (WCAG 4.1.3); the status line is
+  // on the page from the start, empty, so a screen reader is listening to it.
+  test("the search announces a count from a status line the page already has", () => {
+    expect(html).toMatch(/id="settings-find-status"[^>]*role="status"/);
   });
 });

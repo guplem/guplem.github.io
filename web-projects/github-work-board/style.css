@@ -142,6 +142,15 @@ body {
   max-width: none;
 }
 
+/* Settings has an index beside its sections on a wide screen, so it takes the
+ * reading width plus the index (ADR 0048). The `#boot` guard keeps the start-up
+ * screen at its own width while it is up (ADR 0036). */
+@media (min-width: 60rem) {
+  .page:has(#settings-view:not([hidden])):not(:has(#boot:not([hidden]))) {
+    max-width: 58rem;
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /* Type                                                                       */
 /* -------------------------------------------------------------------------- */
@@ -3130,4 +3139,185 @@ button.milestone-name[aria-pressed="true"]:hover {
  * its own here: only the badge and its one-line detail. */
 #cloud-settings {
   margin-top: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Settings: an index, a search, one section at a time (ADR 0048)             */
+/* -------------------------------------------------------------------------- */
+
+/* On a phone the index is a block of pills above the section. On a wide
+ * screen it stands to the left. */
+.settings-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.settings-nav {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  min-width: 0;
+}
+
+/* On a phone the index sits above the section and the report link goes to the
+ * foot, below it: the nav's own box steps aside so its children join the
+ * layout's order. A wide screen keeps the nav as one column. */
+@media (max-width: 59.99rem) {
+  .settings-nav {
+    display: contents;
+  }
+}
+
+/* Five short names wrap onto two lines on a phone rather than scroll, so the
+ * open one is always in sight. */
+.settings-index {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.settings-index-link {
+  display: block;
+  white-space: nowrap;
+  padding: 0.375rem 0.75rem;
+  border-radius: calc(var(--radius) - 2px);
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.settings-index-link:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.settings-index-link:active {
+  transform: translateY(1px);
+}
+
+.settings-index-link:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 1px;
+}
+
+.settings-index-link[aria-current="page"] {
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
+  font-weight: 600;
+}
+
+.settings-report {
+  margin: 0;
+  order: 4;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.settings-report a {
+  display: block;
+  font-size: 0.875rem;
+  color: hsl(var(--foreground));
+}
+
+.settings-panes {
+  order: 3;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  min-width: 0;
+}
+
+.settings-panes > .status:empty {
+  display: none;
+}
+
+/* The heading takes the focus after a move, so a screen reader hears where it
+ * landed. It is not a control, so it shows no ring. */
+.settings-pane .card-title:focus {
+  outline: none;
+}
+
+@media (min-width: 60rem) {
+  .settings-layout {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .settings-index {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0.125rem;
+  }
+}
+
+/* The answers while the search holds text: the setting, and the section it is
+ * in under it, so the reader knows where the press takes them. */
+.settings-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.375rem;
+}
+
+.settings-result {
+  display: grid;
+  width: 100%;
+  gap: 0.125rem;
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.settings-result:hover {
+  background: hsl(var(--accent));
+  border-color: hsl(var(--ring) / 0.35);
+}
+
+.settings-result:active {
+  transform: translateY(1px);
+}
+
+.settings-result:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 1px;
+}
+
+.settings-result-name {
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.settings-result-where {
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* The row a search result took the reader to lights up once and fades, so the
+ * eye finds it on a tall section. */
+.setting-lit {
+  animation: setting-lit 1.6s ease-out;
+  border-radius: calc(var(--radius) - 2px);
+}
+
+@keyframes setting-lit {
+  0%,
+  30% {
+    box-shadow: 0 0 0 4px hsl(var(--ring) / 0.35);
+    background-color: hsl(var(--ring) / 0.08);
+  }
+  100% {
+    box-shadow: 0 0 0 4px hsl(var(--ring) / 0);
+    background-color: transparent;
+  }
 }
