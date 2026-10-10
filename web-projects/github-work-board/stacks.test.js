@@ -1,5 +1,12 @@
 import { describe, expect, test } from "bun:test";
-import { orderItemsForMerging, orderStacksForMerging, stackLights, stackPositions, stackedUnder } from "./stacks.js";
+import {
+  describeStackPosition,
+  orderItemsForMerging,
+  orderStacksForMerging,
+  stackLights,
+  stackPositions,
+  stackedUnder,
+} from "./stacks.js";
 
 /** A pull request as the board holds one, with the two branch names that make a stack. */
 const pull = (number, head, base, over = {}) => ({
@@ -237,6 +244,85 @@ describe("stackPositions names the pull request the number belongs to (ADR 0027)
   test("a title nobody wrote is an empty one, never undefined", () => {
     const at = stackPositions([pull(1, "a", "main"), pull(2, "b", "a")]);
     expect(at.PR_2.title).toBe("");
+  });
+});
+
+describe("stackPositions in a stack that branches", () => {
+  // The real case: #6021 was the base, and eight pull requests all targeted
+  // its branch. Every one of the eight read "2 of 9", so the board showed eight
+  // identical badges and no way to tell them apart.
+  test("pull requests on one level get a letter each, so no two badges match", () => {
+    const at = stackPositions([
+      pull(6021, "base", "main"),
+      pull(6022, "one", "base"),
+      pull(6023, "two", "base"),
+      pull(6024, "three", "base"),
+    ]);
+    expect(at.PR_6021).toMatchObject({ label: "1", position: 1, levels: 2, size: 4, under: null });
+    expect(at.PR_6022).toMatchObject({ label: "2a", position: 2, levels: 2, sharing: 3, under: 6021 });
+    expect(at.PR_6023).toMatchObject({ label: "2b", position: 2, levels: 2, sharing: 3, under: 6021 });
+    expect(at.PR_6024).toMatchObject({ label: "2c", position: 2, levels: 2, sharing: 3, under: 6021 });
+  });
+
+  // A straight stack has one pull request per level. It reads as it always did.
+  test("a straight stack has no letters, and its levels are its size", () => {
+    const at = stackPositions([pull(1, "a", "main"), pull(2, "b", "a"), pull(3, "c", "b")]);
+    expect(at.PR_2).toMatchObject({ label: "2", levels: 3, size: 3, sharing: 1, under: 1 });
+    expect(at.PR_3).toMatchObject({ label: "3", levels: 3, under: 2 });
+  });
+
+  // Letters count across the whole level, not per parent. Per parent, two
+  // branches would both hold a "3a", and the badges would match again.
+  test("letters are unique on a level even under different parents", () => {
+    const at = stackPositions([
+      pull(1, "root", "main"),
+      pull(2, "left", "root"),
+      pull(3, "right", "root"),
+      pull(4, "left-1", "left"),
+      pull(5, "left-2", "left"),
+      pull(6, "right-1", "right"),
+    ]);
+    const labels = Object.values(at).map((one) => one.label);
+    expect(new Set(labels).size).toBe(labels.length);
+    expect([at.PR_4.label, at.PR_5.label, at.PR_6.label]).toEqual(["3a", "3b", "3c"]);
+  });
+
+  // A level that holds one pull request needs no letter, even when the level
+  // below it branched.
+  test("a level with one pull request has no letter", () => {
+    const at = stackPositions([pull(1, "root", "main"), pull(2, "x", "root"), pull(3, "y", "root"), pull(4, "z", "x")]);
+    expect(at.PR_4.label).toBe("3");
+  });
+
+  test("past z the letters carry on as aa, ab", () => {
+    const tops = Array.from({ length: 28 }, (_, i) => pull(100 + i, `top-${i}`, "root"));
+    const at = stackPositions([pull(1, "root", "main"), ...tops]);
+    expect(at.PR_125.label).toBe("2z");
+    expect(at.PR_126.label).toBe("2aa");
+    expect(at.PR_127.label).toBe("2ab");
+  });
+});
+
+describe("describeStackPosition", () => {
+  test("a straight stack reads as it always did", () => {
+    const [at] = Object.values(stackPositions([pull(1, "a", "main"), pull(2, "b", "a")])).slice(1);
+    expect(describeStackPosition(at).text).toBe("2 of 2");
+  });
+
+  // "2a of 9" would say there are nine levels. The count after "of" is the
+  // levels, and the tooltip carries the count of pull requests.
+  test("a branched one names the level, the letter and how many levels there are", () => {
+    const at = stackPositions([pull(6021, "base", "main"), pull(6022, "one", "base"), pull(6023, "two", "base")]);
+    const words = describeStackPosition(at.PR_6023);
+    expect(words.text).toBe("2b of 2");
+    expect(words.tip).toContain("#6021");
+    expect(words.tip).toContain("2 pull requests");
+    expect(words.tip).toContain("3 pull requests");
+  });
+
+  test("the bottom says it merges first", () => {
+    const at = stackPositions([pull(1, "a", "main"), pull(2, "b", "a")]);
+    expect(describeStackPosition(at.PR_1).tip).toContain("merges first");
   });
 });
 

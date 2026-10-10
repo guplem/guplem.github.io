@@ -150,9 +150,18 @@ export function orderItemsForMerging(items) {
  * pull request numbered 7 and the number cannot. The title is what the number
  * on the badge means, which a number alone never says.
  *
+ * **A stack that branches gives each pull request on a shared level a letter.**
+ * Eight pull requests that all target one branch used to read "2 of 9" eight
+ * times over. The letters count across the whole level, not per parent, so no
+ * two badges in one stack ever match.
+ *
  * @param items work items, not groups
- * @returns `{[key]: {stack, root, title, position, size}}` for anything in a
- *   stack of two or more, where `position` counts from the bottom
+ * @returns `{[key]: {stack, root, title, position, size, levels, sharing,
+ *   label, under}}` for anything in a stack of two or more. `position` counts
+ *   levels from the bottom, `size` counts pull requests, `levels` is the
+ *   deepest position, `sharing` is how many sit on this level, `label` is the
+ *   position plus a letter when `sharing` is above one, and `under` is the
+ *   number of the pull request this one targets (null for the bottom).
  */
 export function stackPositions(items) {
   const list = (Array.isArray(items) ? items : []).filter((one) => one && typeof one === "object");
@@ -182,20 +191,82 @@ export function stackPositions(items) {
     sizeOf.set(root, (sizeOf.get(root) ?? 0) + 1);
   }
 
+  // Each level of each stack, in merge order, so the letters run the way the
+  // smart order reads the cards: a parent's pull requests side by side.
+  const levelOf = (group) => `${rootOf.get(group).item.key}|${depthOf.get(group)}`;
+  const onLevel = new Map();
+  const letterOf = new Map();
+  for (const group of orderStacksForMerging(groups)) {
+    const level = levelOf(group);
+    const index = onLevel.get(level) ?? 0;
+    letterOf.set(group, index);
+    onLevel.set(level, index + 1);
+  }
+  const levelsOf = new Map();
+  for (const group of groups) {
+    const root = rootOf.get(group);
+    levelsOf.set(root, Math.max(levelsOf.get(root) ?? 0, depthOf.get(group) + 1));
+  }
+
   const where = {};
   for (const group of groups) {
     const root = rootOf.get(group);
     const size = sizeOf.get(root) ?? 1;
     if (size < 2) continue;
+    const position = depthOf.get(group) + 1;
+    const sharing = onLevel.get(levelOf(group)) ?? 1;
+    const below = group === root ? null : parentOf.get(group);
     where[group.item.key] = {
       stack: root.item.number,
       root: root.item.key,
       title: typeof root.item.title === "string" ? root.item.title : "",
-      position: depthOf.get(group) + 1,
+      position,
       size,
+      levels: levelsOf.get(root) ?? position,
+      sharing,
+      label: sharing > 1 ? `${position}${letterFor(letterOf.get(group) ?? 0)}` : `${position}`,
+      under: below ? below.item.number : null,
     };
   }
   return where;
+}
+
+/** 0 → "a", 25 → "z", 26 → "aa": the letters a spreadsheet gives its columns. */
+function letterFor(index) {
+  let rest = index;
+  let letters = "";
+  do {
+    letters = String.fromCharCode(97 + (rest % 26)) + letters;
+    rest = Math.floor(rest / 26) - 1;
+  } while (rest >= 0);
+  return letters;
+}
+
+/**
+ * The words on a stack badge, and the tooltip that explains them.
+ *
+ * The count after "of" is the levels, not the pull requests: "2a of 9" would
+ * say there are nine levels. In a straight stack the two are the same, so a
+ * straight stack reads exactly as it always did. The tooltip carries the rest.
+ *
+ * @param at one answer from `stackPositions`
+ * @returns `{text, tip}`
+ */
+export function describeStackPosition(at) {
+  const text = `${at.label} of ${at.levels}`;
+  const many = (count) => `${count} pull request${count === 1 ? "" : "s"}`;
+  if (at.position === 1) {
+    return { text, tip: `The bottom of a stack of ${many(at.size)}. It merges first, and nothing is waiting on it.` };
+  }
+  const sits = at.under === null ? "" : ` It targets the branch of #${at.under}.`;
+  const shared =
+    at.sharing > 1
+      ? ` Level ${at.position} of ${at.levels} holds ${many(at.sharing)}; the letter tells them apart.`
+      : ` Level ${at.position} of ${at.levels}.`;
+  return {
+    text,
+    tip: `In a stack of ${many(at.size)}.${shared}${sits} #${at.stack} merges first.`,
+  };
 }
 
 /**
