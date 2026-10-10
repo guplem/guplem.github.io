@@ -42,7 +42,7 @@ stayed put, and it removed the second button that said the same thing.
 
 **The header no longer stays put.** The token guide moved to its own screen
 (ADR 0018) and settings shrank to about one screen with it, so the reason for
-the stickiness went with it. ADR 0023 measured that and took it out. What
+the stickiness went with it. ADR 0023 measured that and took it out. Settings is later split into sections (ADR 0048), and the one toggle still goes between the views. What
 survives from this decision is the part that was never about scrolling: one
 control moves between the views, and no screen carries a second one.
 

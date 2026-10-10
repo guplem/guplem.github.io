@@ -625,8 +625,9 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   about one screen, and the stickiness went with the reason for it (ADR 0023).
   The add-token screen is the one still longer than a window, and it carries its
   own Cancel at the end of the last step. Measure before adding a second exit or
-  putting the stickiness back: board 983, settings 1067, add a token 2110, in a
-  window of 898.
+  putting the stickiness back: board 983, add a token 2110, in a window of 898. Settings was 1067 as one
+  screen. It is five sections now, from 899 to 2009 each, and Cloud storage is
+  the long one (ADR 0023, ADR 0048).
 - **The order lives in the masthead**, beside the way to Settings, and is
   hidden on the screens it does not govern (ADR 0023).
 - **A placeholder mirrors the row it replaces, line for line.** A token row is

@@ -1,6 +1,6 @@
 // What the address bar carries, and what it must never carry.
 //
-// The open view, the chosen order and the filters in force, each left out when
+// The open view (and, in Settings, the open section), the chosen order and the filters in force, each left out when
 // it is the default (root ADR 0006): a link that spells out a default adds
 // noise and implies a choice nobody made. A list is written as one parameter
 // per item (`?repo=a&repo=b`), never as one comma-separated value, so a name

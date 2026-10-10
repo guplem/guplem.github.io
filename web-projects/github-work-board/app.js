@@ -2818,10 +2818,8 @@ function finishBoot() {
  *
  * Which screen is open lives in the address bar (root ADR 0006), so a reload
  * comes back to the same place. Settings needs a token to manage, so before the
- * first connection the welcome screen is the only screen there is.
- */
-/**
- * Open one view, and for Settings one section of it (ADR 0048).
+ * first connection the welcome screen is the only screen there is. For
+ * Settings, one section of it opens too (ADR 0048).
  *
  * @param section the section to open in Settings; left out, Settings opens on
  *   the section the reader was last on, or the one a sub-screen was opened from
