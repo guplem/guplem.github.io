@@ -406,9 +406,14 @@
 
         <h2 class="section-heading">Your issues and pull requests</h2>
 
-        <!-- Chips built from what the list actually holds (ADR 0009). -->
+        <!-- Chips built from what the list actually holds (ADR 0009). Folded,
+             only the chosen chips show, and the button opens the rest
+             (ADR 0049). -->
         <div class="filters" id="board-filters">
-          <div class="filter-group">
+          <div class="filters-head">
+            <button id="filters-toggle" type="button" class="button button-ghost filters-toggle" aria-controls="board-filters" aria-expanded="false">Show the filters</button>
+          </div>
+          <div class="filter-group" id="kind-group">
             <p class="filter-label">Kind</p>
             <div class="chips" id="kind-filters" role="group" aria-label="Kind"></div>
           </div>

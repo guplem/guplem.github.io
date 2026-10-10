@@ -4,6 +4,10 @@ import {
   KIND_FILTERS,
   activeFilterCount,
   availableAssignees,
+  boardFilterCount,
+  filtersToggleLabel,
+  shownChoices,
+  shownKinds,
   availableLabels,
   availableMilestones,
   availableRepositories,
@@ -305,5 +309,58 @@ describe("activeFilterCount counts the people too", () => {
   test("nobody chosen narrows nothing", () => {
     expect(activeFilterCount({})).toBe(0);
     expect(activeFilterCount({ assignees: [], reviewers: [] })).toBe(0);
+  });
+});
+
+// The filters fold away, so a long list of chips does not push the board down.
+// Folded, only what the reader chose stays in sight, so the reason the list is
+// short is never hidden (ADR 0049).
+describe("folding the filters", () => {
+  test("open, every choice is shown, in the order it was offered", () => {
+    expect(shownChoices(["a", "b", "c"], ["c"], true)).toEqual(["a", "b", "c"]);
+  });
+
+  test("folded, only the chosen ones are shown, in the order they were offered", () => {
+    expect(shownChoices(["a", "b", "c"], ["c", "a"], false)).toEqual(["a", "c"]);
+  });
+
+  test("folded with nothing chosen, nothing is shown", () => {
+    expect(shownChoices(["a", "b"], [], false)).toEqual([]);
+  });
+
+  // People are offered as objects and chosen by login.
+  test("a choice can be matched by a key of its own", () => {
+    const people = [{ login: "ana" }, { login: "bo" }];
+    expect(shownChoices(people, ["bo"], false, (one) => one.login)).toEqual([{ login: "bo" }]);
+  });
+
+  test("open, every kind is offered", () => {
+    expect(shownKinds("issue", true)).toEqual(KIND_FILTERS);
+  });
+
+  test("folded, the chosen kind stays in sight", () => {
+    expect(shownKinds("issue", false).map((one) => one.id)).toEqual(["issue"]);
+  });
+
+  // "Everything" narrows nothing, so it is not a filter, and a folded group
+  // must not hold it.
+  test("folded, Everything is not shown, because it narrows nothing", () => {
+    expect(shownKinds(DEFAULT_KIND, false)).toEqual([]);
+    expect(shownKinds("not-a-kind", false)).toEqual([]);
+  });
+
+  // The assignee chips sit above the review row and never fold.
+  test("the board's own count leaves the review row's assignees out", () => {
+    expect(boardFilterCount({ kind: "all", labels: ["bug"], assignees: ["ana"] })).toBe(1);
+    expect(boardFilterCount({ kind: "issue", reviewers: ["bo"] })).toBe(2);
+    expect(boardFilterCount({ kind: "all" })).toBe(0);
+  });
+
+  test("the toggle says what a press does, and how many are chosen", () => {
+    expect(filtersToggleLabel(false, 0)).toBe("Show the filters");
+    expect(filtersToggleLabel(false, 1)).toBe("Show all the filters (1 chosen)");
+    expect(filtersToggleLabel(false, 3)).toBe("Show all the filters (3 chosen)");
+    expect(filtersToggleLabel(true, 0)).toBe("Hide the filters");
+    expect(filtersToggleLabel(true, 2)).toBe("Show only the chosen filters");
   });
 });

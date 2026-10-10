@@ -151,3 +151,46 @@ export function activeFilterCount({ kind, repositories, labels, milestones, fiel
     asList(reviewers).length
   );
 }
+
+/**
+ * How many of the board's own narrowings are in force.
+ *
+ * The assignee chips narrow the review row, not the board, and they never
+ * fold, so the count on the board's fold leaves them out (ADR 0049).
+ */
+export function boardFilterCount(chosen = {}) {
+  return activeFilterCount({ ...chosen, assignees: [] });
+}
+
+/**
+ * The choices a group shows. Open, all of them. Folded, only the chosen ones,
+ * so a short list always shows why it is short (ADR 0049). The order offered
+ * is kept either way.
+ *
+ * @param options what the group offers
+ * @param chosen the keys the reader chose
+ * @param open whether the filters are open
+ * @param keyOf how to read an option's key, for options that are not strings
+ */
+export function shownChoices(options, chosen, open, keyOf = (one) => one) {
+  const list = Array.isArray(options) ? options : [];
+  if (open) return [...list];
+  const wanted = new Set(asList(chosen));
+  return list.filter((one) => wanted.has(keyOf(one)));
+}
+
+/**
+ * The kinds the kind group shows. Folded, "Everything" is never one of them:
+ * it narrows nothing, so it is not a filter (ADR 0049).
+ */
+export function shownKinds(kind, open) {
+  if (open) return [...KIND_FILTERS];
+  const chosen = readKind(kind);
+  return chosen === DEFAULT_KIND ? [] : KIND_FILTERS.filter((one) => one.id === chosen);
+}
+
+/** The words on the button that folds and opens the filters. They say what a press does. */
+export function filtersToggleLabel(open, count) {
+  if (open) return count > 0 ? "Show only the chosen filters" : "Hide the filters";
+  return count > 0 ? `Show all the filters (${count} chosen)` : "Show the filters";
+}

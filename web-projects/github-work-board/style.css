@@ -1653,6 +1653,19 @@ textarea.input {
   margin: 0.75rem 0 0.5rem;
 }
 
+/* The button that folds the filters down to the chosen chips, and opens them
+ * again (ADR 0049). Small and quiet: the chips are what the reader reads. */
+.filters-head {
+  display: flex;
+}
+
+.filters-toggle {
+  height: 1.75rem;
+  padding: 0 0.5rem;
+  margin-left: -0.5rem;
+  font-size: 0.8125rem;
+}
+
 /* The issue field rows sit in the filters' own grid, at its own gap (ADR 0047). */
 .field-groups {
   display: grid;
