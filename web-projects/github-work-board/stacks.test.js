@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { orderItemsForMerging, orderStacksForMerging, stackPositions, stackedUnder } from "./stacks.js";
+import { orderItemsForMerging, orderStacksForMerging, stackLights, stackPositions, stackedUnder } from "./stacks.js";
 
 /** A pull request as the board holds one, with the two branch names that make a stack. */
 const pull = (number, head, base, over = {}) => ({
@@ -237,6 +237,35 @@ describe("stackPositions names the pull request the number belongs to (ADR 0027)
   test("a title nobody wrote is an empty one, never undefined", () => {
     const at = stackPositions([pull(1, "a", "main"), pull(2, "b", "a")]);
     expect(at.PR_2.title).toBe("");
+  });
+});
+
+describe("stackLights names the stack each card's badge names (ADR 0027)", () => {
+  // The bug this exists for: the light was worked out over the whole screen,
+  // and the badges list by list. One pull request in the board targeted a
+  // branch from the review row, so the screen read as one stack. The badges
+  // said "Stack #5843" and "Stack #6015", and a hover lit both stacks at once.
+  test("two stacks the badges keep apart light apart", () => {
+    const row = [pull(5843, "alerts-api", "main"), pull(5844, "alerts-ui", "alerts-api")];
+    const board = [pull(6015, "write-less", "alerts-ui"), pull(6034, "write-less-fix", "write-less")];
+    const lit = stackLights([row, board]);
+    expect(lit.PR_5843).toBe("PR_5843");
+    expect(lit.PR_5844).toBe("PR_5843");
+    expect(lit.PR_6015).toBe("PR_6015");
+    expect(lit.PR_6034).toBe("PR_6015");
+  });
+
+  // A card with no badge must light nothing, or the hover says it is in a
+  // stack when the card itself says it is not.
+  test("a pull request alone in its list lights nothing", () => {
+    const row = [pull(1, "a", "main")];
+    const board = [pull(2, "b", "a")];
+    expect(stackLights([row, board])).toEqual({});
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(stackLights(null)).toEqual({});
+    expect(stackLights([null, [7]])).toEqual({});
   });
 });
 
