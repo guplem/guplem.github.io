@@ -17,6 +17,8 @@ import {
   PROJECT,
   RECORD_MAPS,
   readAreaShown,
+  readCardPartShown,
+  writeCardPartShown,
   readColumn,
   readColumnColour,
   readCopyActions,
@@ -164,6 +166,8 @@ import {
   readCopyIcon,
 } from "./copyActions.js";
 import { readTitle } from "./titles.js";
+import { CARD_PARTS } from "./cardParts.js";
+import { availableFieldFilters, fieldFilterKey, fieldText, isFilterableField } from "./fields.js";
 import { MILESTONE_PATHS, milestoneFilterTip, milestoneLinkTip, milestoneProgress } from "./milestones.js";
 import { initialsOf, personLabel } from "./people.js";
 import {
@@ -306,6 +310,8 @@ const state = {
   // Chosen by name, like a label, from the filter group or a card's pill
   // (ADR 0045).
   milestones: [],
+  // Issue field values the board is narrowed to, as `Effort: 3` (ADR 0047).
+  fields: [],
   // Two filters over two lists: the row of reviews narrows by whose work each
   // pull request is, and the board narrows by who is in the review (ADR 0028).
   assignees: [],
@@ -458,6 +464,39 @@ function buildAttentionPill(reason) {
 
   pill.append(drawIcon(reason.paths), document.createTextNode(reason.label));
   explain(pill, reason.detail);
+  return pill;
+}
+
+/**
+ * One issue field on a card: its name, quiet, and its value (ADR 0047).
+ *
+ * A number or an option is a filter chip, pressed while the board is narrowed
+ * to it. A date or a free text is only words: a chip for it would match one
+ * card.
+ */
+function buildFieldPill(field, canFilter) {
+  const filters = canFilter && isFilterableField(field);
+  const pill = document.createElement(filters ? "button" : "span");
+  pill.className = "badge badge-field";
+  if (field.color) pill.setAttribute("data-option-colour", field.color.toLowerCase());
+  const name = document.createElement("span");
+  name.className = "field-name";
+  name.textContent = field.name;
+  const value = document.createElement("span");
+  value.className = "field-value";
+  value.textContent = fieldText(field);
+  pill.append(name, value);
+  if (filters) {
+    const key = fieldFilterKey(field);
+    const pressed = state.fields.includes(key);
+    pill.type = "button";
+    pill.setAttribute("aria-pressed", pressed ? "true" : "false");
+    explain(pill, pressed ? `Show everything again, not only ${key}` : `Show only the work with ${key}`);
+    pill.addEventListener("click", () => {
+      state.fields = toggleInList(state.fields, key);
+      afterFilterChange();
+    });
+  }
   return pill;
 }
 
@@ -725,37 +764,53 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
             },
           })
         : null;
-  if (faces) card.append(faces);
+  // The reader chooses which of these parts their cards carry, in Settings
+  // (ADR 0047). The title, the pills and the note always stay.
+  const shows = (part) => readCardPartShown(state.board, part);
+  if (faces && shows("people")) card.append(faces);
 
   // The milestone closes the row, after the labels. Only the board's filters
   // can narrow by it, so a review card's pill links and does not filter
   // (ADR 0009, ADR 0045).
-  if (item.labels.length > 0 || item.milestone) {
+  const labelList = shows("labels") ? item.labels : [];
+  const milestone = shows("milestone") ? item.milestone : null;
+  if (labelList.length > 0 || milestone) {
     const labels = document.createElement("p");
     labels.className = "issue-labels";
-    for (const label of item.labels) {
+    for (const label of labelList) {
       const chip = document.createElement("span");
       chip.className = "badge badge-outline";
       chip.textContent = label.name;
       labels.append(chip);
     }
-    if (item.milestone) labels.append(buildMilestonePill(item.milestone, people !== "assignees"));
+    if (milestone) labels.append(buildMilestonePill(milestone, people !== "assignees"));
     card.append(labels);
+  }
+
+  // The issue fields that are set, one pill each (ADR 0047). Like the
+  // milestone's name, a number or an option filters the board, and only on
+  // the board.
+  const fields = shows("fields") ? (item.fields ?? []) : [];
+  if (fields.length > 0) {
+    const row = document.createElement("p");
+    row.className = "issue-fields";
+    for (const field of fields) row.append(buildFieldPill(field, people !== "assignees"));
+    card.append(row);
   }
 
   // "Sub-issue of", not "Part of": the card has to say what the relationship is
   // as well as which issue it is with, because the reader meets this card in a
   // column, away from its parent (ADR 0010).
-  if (relationship.parent) {
+  if (relationship.parent && shows("links")) {
     card.append(buildLinkLine("Sub-issue of", [relationship.parent]));
   }
 
   const blockers = openBlockers(relationship);
-  if (blockers.length > 0) {
+  if (blockers.length > 0 && shows("links")) {
     card.append(buildLinkLine("Blocked by", blockers));
   }
 
-  if (relationship.subIssues.total > 0) card.append(buildChildren(item, relationship.subIssues));
+  if (relationship.subIssues.total > 0 && shows("children")) card.append(buildChildren(item, relationship.subIssues));
 
   // The box is not there until there is a note in it, or until the reader asks
   // for one from the menu. An empty box on every card is forty invitations to
@@ -873,6 +928,18 @@ function renderLoading() {
   element("milestone-group").hidden = !(last.milestones > 0);
   element("milestone-filters").replaceChildren(
     ...times(skeletonCount(last.milestones, 1), () => buildSkeletonBar("5.5rem", "skeleton-pill")),
+  );
+  // One row per field, as many as last time (ADR 0004, ADR 0047).
+  element("field-groups").replaceChildren(
+    ...times(last.fields > 0 ? last.fields : 0, () => {
+      const group = document.createElement("div");
+      group.className = "filter-group";
+      const chips = document.createElement("div");
+      chips.className = "chips";
+      chips.append(...times(3, () => buildSkeletonBar("2.5rem", "skeleton-pill")));
+      group.append(buildSkeletonBar("4rem"), chips);
+      return group;
+    }),
   );
 
   element("tokens").replaceChildren(
@@ -1082,6 +1149,32 @@ function renderFilters() {
       }),
     ),
   );
+
+  // One row per issue field with numbers or options, built from what the list
+  // holds (ADR 0047). A field pill on a card presses the same chip.
+  element("field-groups").replaceChildren(
+    ...availableFieldFilters(state.items).map((field) => {
+      const group = document.createElement("div");
+      group.className = "filter-group";
+      const name = document.createElement("p");
+      name.className = "filter-label";
+      name.textContent = field.name;
+      const chips = document.createElement("div");
+      chips.className = "chips";
+      chips.setAttribute("role", "group");
+      chips.setAttribute("aria-label", field.name);
+      chips.append(
+        ...field.values.map((value) =>
+          buildChip(value.text, state.fields.includes(value.key), () => {
+            state.fields = toggleInList(state.fields, value.key);
+            afterFilterChange();
+          }),
+        ),
+      );
+      group.append(name, chips);
+      return group;
+    }),
+  );
 }
 
 function afterFilterChange() {
@@ -1095,6 +1188,7 @@ function clearFilters() {
   state.repositories = [];
   state.labels = [];
   state.milestones = [];
+  state.fields = [];
   state.assignees = [];
   state.reviewers = [];
   afterFilterChange();
@@ -2532,6 +2626,7 @@ function renderCopyActionHelp() {
 
 function renderAppearance() {
   renderCounting();
+  renderCardParts();
   renderCopyActions();
   const theme = readTheme(state.board);
   element("theme-choices").replaceChildren(
@@ -2603,6 +2698,51 @@ function renderAppearance() {
       controls.append(swatches, visibility);
 
       row.append(name, controls);
+      return row;
+    }),
+  );
+}
+
+/**
+ * One switch per part of a card, under "How the board looks" (ADR 0047).
+ *
+ * The same switch as a part of the board, because it answers the same kind of
+ * question: is this on screen or not. Every card is drawn again at once.
+ */
+function renderCardParts() {
+  element("card-parts").replaceChildren(
+    ...CARD_PARTS.map((part) => {
+      const shown = readCardPartShown(state.board, part.id);
+      const row = document.createElement("li");
+      row.className = "colour-area card-part";
+      row.classList.toggle("colour-area-hidden", !shown);
+
+      const words = document.createElement("div");
+      const name = document.createElement("p");
+      name.className = "colour-area-name";
+      name.textContent = part.label;
+      const says = document.createElement("p");
+      says.className = "card-part-says";
+      says.textContent = `Shows ${part.says}.`;
+      words.append(name, says);
+
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "switch";
+      toggle.setAttribute("aria-pressed", shown ? "true" : "false");
+      toggle.setAttribute("aria-label", `Show ${part.label.toLowerCase()} on each card`);
+      explain(toggle, shown ? "Shown on every card. Press to hide it." : "Hidden from every card. Press to show it.");
+      const thumb = document.createElement("span");
+      thumb.className = "switch-thumb";
+      toggle.append(thumb);
+      toggle.addEventListener("click", () => {
+        state.board = writeCardPartShown(state.board, part.id, !shown, new Date().toISOString());
+        scheduleSave();
+        renderCardParts();
+        renderBoard();
+      });
+
+      row.append(words, toggle);
       return row;
     }),
   );
@@ -3309,6 +3449,7 @@ async function connectAll({ quiet = false } = {}) {
       repositories: availableRepositories(state.items).length,
       labels: availableLabels(state.items).length,
       milestones: availableMilestones(state.items).length,
+      fields: availableFieldFilters(state.items).length,
       tokens: state.tokens.length,
     });
     // Only when something is wrong. A board that saves itself is the ordinary
@@ -3580,6 +3721,7 @@ function start() {
   state.repositories = asked.repositories;
   state.labels = asked.labels;
   state.milestones = asked.milestones;
+  state.fields = asked.fields;
   state.assignees = asked.assignees;
   state.reviewers = asked.reviewers;
   state.doneRange = asked.doneRange;

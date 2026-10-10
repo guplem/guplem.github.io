@@ -11,6 +11,7 @@ const DEFAULTS = {
   repositories: [],
   labels: [],
   milestones: [],
+  fields: [],
   assignees: [],
   reviewers: [],
   doneRange: DEFAULT_RANGE,
@@ -76,6 +77,16 @@ describe("readStateFromSearch", () => {
     expect(buildSearch({ milestones: ["Sprint 12", "v1, final"] })).toBe("?milestone=Sprint+12&milestone=v1%2C+final");
   });
 
+  // A field value is chosen by its field's name and its words, one parameter
+  // each, like a label (ADR 0047).
+  test("reads and writes one parameter per chosen field value", () => {
+    expect(readStateFromSearch("?field=Effort%3A+3&field=Priority%3A+P1")).toEqual({
+      ...DEFAULTS,
+      fields: ["Effort: 3", "Priority: P1"],
+    });
+    expect(buildSearch({ fields: ["Effort: 3"] })).toBe("?field=Effort%3A+3");
+  });
+
   test("a kind nobody offers is everything", () => {
     expect(readStateFromSearch("?kind=issues")).toEqual(DEFAULTS);
   });
@@ -119,6 +130,7 @@ describe("buildSearch", () => {
       repositories: ["me/a"],
       labels: ["bug"],
       milestones: ["Sprint 12"],
+      fields: ["Effort: 3", "Priority: P1"],
       assignees: ["ana"],
       reviewers: ["leo"],
       doneRange: "2026-09-15..2026-09-19",

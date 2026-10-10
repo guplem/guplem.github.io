@@ -1644,6 +1644,16 @@ textarea.input {
   margin: 0.75rem 0 0.5rem;
 }
 
+/* The issue field rows sit in the filters' own grid, at its own gap (ADR 0047). */
+.field-groups {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.field-groups:empty {
+  display: none;
+}
+
 .filter-group {
   display: flex;
   align-items: baseline;
@@ -2248,6 +2258,89 @@ textarea.input {
   flex-wrap: wrap;
   gap: 0.3125rem;
   margin-top: 0.5rem;
+}
+
+/* The issue fields that are set, in a row under the labels (ADR 0047). The
+ * name is quiet and the value carries the weight, so "Effort 3" reads at a
+ * glance. A number or an option is a button that filters the board. */
+.issue-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3125rem;
+  margin-top: 0.375rem;
+}
+
+.badge-field {
+  gap: 0.3125rem;
+  font: inherit;
+  font-size: 0.75rem;
+  border-color: hsl(var(--border));
+  background-color: transparent;
+  color: inherit;
+}
+
+.field-name {
+  color: hsl(var(--muted-foreground));
+}
+
+.field-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* An option carries the colour GitHub gave it, as a dot, which reads on a light
+ * and a dark card alike. */
+.badge-field[data-option-colour] .field-value::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--option-colour, hsl(var(--muted-foreground)));
+}
+.badge-field[data-option-colour="blue"] { --option-colour: hsl(217 91% 60%); }
+.badge-field[data-option-colour="green"] { --option-colour: hsl(142 71% 45%); }
+.badge-field[data-option-colour="orange"] { --option-colour: hsl(25 95% 53%); }
+.badge-field[data-option-colour="pink"] { --option-colour: hsl(330 81% 60%); }
+.badge-field[data-option-colour="purple"] { --option-colour: hsl(271 81% 56%); }
+.badge-field[data-option-colour="red"] { --option-colour: hsl(0 84% 60%); }
+.badge-field[data-option-colour="yellow"] { --option-colour: hsl(45 93% 47%); }
+
+button.badge-field {
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+button.badge-field:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+button.badge-field:active {
+  transform: translateY(1px);
+}
+
+button.badge-field:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 1px;
+}
+
+/* Pressed while the board is narrowed to it, like the milestone's name. */
+button.badge-field[aria-pressed="true"] {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+button.badge-field[aria-pressed="true"]:hover {
+  background-color: hsl(var(--primary) / 0.88);
+}
+
+button.badge-field[aria-pressed="true"] .field-name {
+  color: inherit;
+  opacity: 0.8;
 }
 
 /* The milestone, after the labels (ADR 0045). Filled where a label is only
@@ -2952,6 +3045,18 @@ button.milestone-name[aria-pressed="true"]:hover {
 .colour-area-hidden .colour-area-name {
   color: hsl(var(--muted-foreground));
   text-decoration: line-through;
+}
+
+/* A part of every card: its name, one line on what it is, and the switch
+ * (ADR 0047). The line keeps the row from wrapping under the switch. */
+.card-part {
+  flex-wrap: nowrap;
+}
+
+.card-part-says {
+  margin: 0.125rem 0 0;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
 }
 
 /* Whether a part is on the board, in the shape shadcn/ui draws a switch: a

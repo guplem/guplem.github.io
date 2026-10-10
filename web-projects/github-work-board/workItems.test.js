@@ -81,6 +81,27 @@ describe("normalizeWorkItem", () => {
     });
   });
 
+  // The issues endpoint sends the issue fields inside the same answer, so a
+  // field on a card costs no call of its own (ADR 0047).
+  test("reads the issue fields that are set", () => {
+    const raw = {
+      ...RAW_ISSUE,
+      issue_field_values: [
+        { issue_field_name: "Effort", data_type: "number", value: 3 },
+        { issue_field_name: "Priority", data_type: "single_select", value: "P1", single_select_option: { name: "P1", color: "red" } },
+      ],
+    };
+    expect(normalizeWorkItem(raw).fields).toEqual([
+      { name: "Effort", kind: "number", value: 3, color: "" },
+      { name: "Priority", kind: "select", value: "P1", color: "red" },
+    ]);
+  });
+
+  test("work with no fields set carries an empty list", () => {
+    expect(normalizeWorkItem(RAW_ISSUE).fields).toEqual([]);
+    expect(normalizeWorkItem(RAW_PULL).fields).toEqual([]);
+  });
+
   test("work in no milestone says so with null", () => {
     expect(normalizeWorkItem(RAW_ISSUE).milestone).toBe(null);
     expect(normalizeWorkItem({ ...RAW_ISSUE, milestone: null }).milestone).toBe(null);

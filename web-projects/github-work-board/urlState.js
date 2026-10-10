@@ -25,6 +25,9 @@ const REPOSITORY_PARAM = "repo";
 const LABEL_PARAM = "label";
 // A milestone is chosen by its name, like a label (ADR 0045).
 const MILESTONE_PARAM = "milestone";
+// A field value is chosen by its field's name and its words, `Effort: 3`,
+// one parameter each (ADR 0047).
+const FIELD_PARAM = "field";
 // Two filters over two different lists, so two names. `assignee` narrows the
 // row of pull requests waiting on the reader, by whose work each one is.
 // `reviewer` narrows the reader's own board, by who is in the review
@@ -62,6 +65,7 @@ export function readStateFromSearch(search) {
     repositories: readList(params, REPOSITORY_PARAM),
     labels: readList(params, LABEL_PARAM),
     milestones: readList(params, MILESTONE_PARAM),
+    fields: readList(params, FIELD_PARAM),
     assignees: readList(params, ASSIGNEE_PARAM),
     reviewers: readList(params, REVIEWER_PARAM),
     doneRange: readRange(params.get(DONE_PARAM) ?? DEFAULT_RANGE),
@@ -69,7 +73,18 @@ export function readStateFromSearch(search) {
 }
 
 /** The search string for a view, or an empty string when nothing needs saying. */
-export function buildSearch({ sortId, view, kind, repositories, labels, milestones, assignees, reviewers, doneRange } = {}) {
+export function buildSearch({
+  sortId,
+  view,
+  kind,
+  repositories,
+  labels,
+  milestones,
+  fields,
+  assignees,
+  reviewers,
+  doneRange,
+} = {}) {
   const params = new URLSearchParams();
   const chosenView = readView(view);
   const chosenKind = readKind(kind);
@@ -86,6 +101,9 @@ export function buildSearch({ sortId, view, kind, repositories, labels, mileston
   }
   for (const name of Array.isArray(milestones) ? milestones : []) {
     if (typeof name === "string" && name !== "") params.append(MILESTONE_PARAM, name);
+  }
+  for (const key of Array.isArray(fields) ? fields : []) {
+    if (typeof key === "string" && key !== "") params.append(FIELD_PARAM, key);
   }
 
   for (const login of Array.isArray(assignees) ? assignees : []) {

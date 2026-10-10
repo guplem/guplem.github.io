@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="341" />
-  <meta name="deploy-date" content="2026-10-09T08:34:04.000Z" />
+  <meta name="deploy-pull-request" content="342" />
+  <meta name="deploy-date" content="2026-10-10T12:07:17.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -431,6 +431,9 @@
             <p class="filter-label">Milestone</p>
             <div class="chips" id="milestone-filters" role="group" aria-label="Milestone"></div>
           </div>
+          <!-- One group per issue field with numbers or options, built by app.js
+               (ADR 0047). A field pill on a card presses the same chip. -->
+          <div id="field-groups" class="field-groups"></div>
         </div>
 
         <!-- Only what the board has to say right now: a line copied, a call
@@ -542,6 +545,12 @@
               <p class="field-label">Colour on each part of the board, and whether it is shown</p>
               <!-- One row per thing that can be painted, from appearance.js. -->
               <ul id="colour-areas" class="colour-areas"></ul>
+            </div>
+
+            <div class="field">
+              <p class="field-label">What each card shows</p>
+              <!-- One row per part of a card, from cardParts.js (ADR 0047). -->
+              <ul id="card-parts" class="colour-areas card-parts"></ul>
             </div>
           </div>
         </div>

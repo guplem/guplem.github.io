@@ -15,6 +15,7 @@
 // note filed under the number would attach itself to something else. ADR 0002
 // holds that rule; `invariants.test.js` guards it.
 
+import { readFieldValues } from "./fields.js";
 import { readMilestone } from "./milestones.js";
 import { readPerson } from "./people.js";
 
@@ -67,6 +68,9 @@ export function normalizeWorkItem(raw) {
     // The milestone, with the counts its pill needs, from this same answer
     // (ADR 0045). Null when the work is in none.
     milestone: readMilestone(raw.milestone),
+    // The issue fields that are set, from this same answer (ADR 0047). GitHub
+    // has none on a pull request, so its list is empty.
+    fields: readFieldValues(raw.issue_field_values),
     // Whose work this is. A review card shows it, so the reader knows who to
     // ask about the pull request they are being asked to read (ADR 0028).
     assignees: Array.isArray(raw.assignees) ? raw.assignees.map(readPerson).filter(Boolean) : [],
