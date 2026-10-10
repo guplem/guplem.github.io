@@ -1,8 +1,8 @@
 // The fields GitHub shows beside an issue: the effort, the priority, a target
 // date, whatever the organisation defined.
 //
-// The values arrive inside the graph answer the board already asks for, so a
-// field on a card costs no call of its own (ADR 0010, ADR 0047). This module
+// The values arrive inside the REST issues answer the board already reads, as
+// `issue_field_values`, so a field on a card costs no call of its own (ADR 0047). This module
 // reads them, says each one in words, and narrows the board by them.
 //
 // A field filter follows ADR 0009 with each field as its own kind: two values
