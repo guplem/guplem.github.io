@@ -2,7 +2,7 @@
 //
 // It holds one file, `board.json`, in the reader's cloud storage (root ADR 0016):
 // the notes, the cards moved by hand, the work pushed down the list, the colour
-// on each column, which parts are shown or hidden, whether the board is light or dark, and
+// on each column, which parts of the board and of each card are shown or hidden, whether the board is light or dark, and
 // the notes the reader keeps out of the suggested cleanup. Everything here is the reader's; nothing is GitHub's. Two rules keep it safe to
 // change, and ADR 0002 explains why both are worth the cost:
 //
@@ -39,6 +39,7 @@ export const RECORD_MAPS = [
   "counting",
   "copyActions",
   "cleanup",
+  "cardParts",
 ];
 
 const shape = defineDocument(RECORD_MAPS);
@@ -196,6 +197,33 @@ export function writeAreaShown(document, areaId, shown, now) {
     ...base,
     updatedAt: now,
     visibility: { ...base.visibility, [areaId]: { shown: shown === true, updatedAt: now } },
+  };
+}
+
+/**
+ * Whether one part of every card is drawn: the labels, the milestone, the
+ * fields and the rest of `cardParts.CARD_PARTS` (ADR 0047).
+ *
+ * **Every part is shown until the reader hides it**, so a board that has never
+ * been to Settings looks the way it always did. It is its own map, not a key
+ * in `visibility`: a part of a card and a part of the board are two different
+ * things, and one must never hide the other by sharing an id.
+ */
+export function readCardPartShown(document, partId) {
+  const record = isPlainObject(document) && isPlainObject(document.cardParts) ? document.cardParts[partId] : null;
+  return isPlainObject(record) && typeof record.shown === "boolean" ? record.shown : true;
+}
+
+/**
+ * The same document with one part of every card shown or hidden. The document
+ * handed in is not changed, and showing a part again keeps the record.
+ */
+export function writeCardPartShown(document, partId, shown, now) {
+  const base = migrate(document, now);
+  return {
+    ...base,
+    updatedAt: now,
+    cardParts: { ...base.cardParts, [partId]: { shown: shown === true, updatedAt: now } },
   };
 }
 

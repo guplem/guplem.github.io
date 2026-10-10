@@ -1115,3 +1115,21 @@ describe("the suggested cleanup deletes nothing it cannot prove, and asks only w
     expect(RECORD_MAPS).toContain("cleanup");
   });
 });
+
+// ADR 0047: which parts of a card the reader sees is theirs, and follows them.
+describe("the parts of a card", () => {
+  // In `board.json`, never in `localStorage`: a choice made on the laptop has
+  // to be there on the desktop, exactly like the colours (ADR 0024).
+  test("the reader's choice travels in the board file, in a map of its own", () => {
+    expect(RECORD_MAPS).toContain("cardParts");
+  });
+
+  // A switch the card ignores looks finished and does nothing. Every part is
+  // asked about by name where the card is built.
+  test("the card asks about every part before it draws it", () => {
+    const app = read("app.js");
+    for (const part of ["people", "labels", "milestone", "fields", "links", "children"]) {
+      expect(app).toContain(`shows("${part}")`);
+    }
+  });
+});

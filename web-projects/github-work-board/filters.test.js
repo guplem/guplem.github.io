@@ -153,6 +153,18 @@ describe("by milestone", () => {
     expect(keys(filterWorkItems(all, { milestones: ["Sprint 12"], repositories: ["me/beta"] }))).toEqual(["b"]);
   });
 
+  // Each field is a kind of its own, so it narrows like a repository does
+  // (ADR 0009, ADR 0047).
+  test("a field value narrows the list like any other kind", () => {
+    const sized = [
+      { key: "x", kind: "issue", repository: "me/a", labels: [], fields: [{ name: "Effort", kind: "number", value: 3 }] },
+      { key: "y", kind: "issue", repository: "me/b", labels: [], fields: [{ name: "Effort", kind: "number", value: 3 }] },
+      { key: "z", kind: "issue", repository: "me/a", labels: [], fields: [] },
+    ];
+    expect(keys(filterWorkItems(sized, { fields: ["Effort: 3"] }))).toEqual(["x", "y"]);
+    expect(keys(filterWorkItems(sized, { fields: ["Effort: 3"], repositories: ["me/b"] }))).toEqual(["y"]);
+  });
+
   test("no milestone chosen keeps everything, work in none included", () => {
     expect(keys(filterWorkItems(all, { milestones: [] }))).toEqual(["a", "b", "l", "n"]);
   });
@@ -168,6 +180,7 @@ describe("by milestone", () => {
   test("a milestone chosen counts as a narrowing", () => {
     expect(activeFilterCount({ milestones: ["Sprint 12"] })).toBe(1);
     expect(activeFilterCount({ milestones: ["Sprint 12", "Launch"], labels: ["bug"] })).toBe(3);
+    expect(activeFilterCount({ fields: ["Effort: 3", "Priority: P1"] })).toBe(2);
   });
 });
 

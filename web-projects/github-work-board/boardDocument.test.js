@@ -16,6 +16,8 @@ import {
   readColumnColour,
   writeColumnColour,
   readAreaShown,
+  readCardPartShown,
+  writeCardPartShown,
   writeAreaShown,
   readCopyActions,
   readCounting,
@@ -440,5 +442,48 @@ describe("a note the reader keeps out of the cleanup (ADR 0043)", () => {
   test("an unreadable record reads as suggested", () => {
     const odd = { ...emptyDocument(NOW), cleanup: { [ISSUE]: { suggested: "no", updatedAt: NOW } } };
     expect(readNoteSuggested(odd, ISSUE)).toBe(true);
+  });
+});
+
+describe("whether a part of every card is shown", () => {
+  const now = "2026-10-10T10:00:00.000Z";
+
+  // Every part of a card is on it until the reader hides it, so a board that
+  // has never been to Settings looks exactly as it did before (ADR 0047).
+  test("every part is shown until the reader hides it", () => {
+    expect(readCardPartShown(emptyDocument(now), "labels")).toBe(true);
+    expect(readCardPartShown(null, "fields")).toBe(true);
+    expect(readCardPartShown({ cardParts: { labels: {} } }, "labels")).toBe(true);
+    expect(readCardPartShown({ cardParts: { labels: { shown: "no" } } }, "labels")).toBe(true);
+  });
+
+  test("round-trips, one part at a time", () => {
+    let doc = writeCardPartShown(emptyDocument(now), "milestone", false, now);
+    doc = writeCardPartShown(doc, "fields", false, now);
+    expect(readCardPartShown(doc, "milestone")).toBe(false);
+    expect(readCardPartShown(doc, "fields")).toBe(false);
+    expect(readCardPartShown(doc, "labels")).toBe(true);
+  });
+
+  // Showing a part again keeps the record, like a part of the board shown
+  // again: the other device has to tell "shown again" from "never hidden".
+  test("showing a part again keeps the record", () => {
+    let doc = writeCardPartShown(emptyDocument(now), "labels", false, now);
+    doc = writeCardPartShown(doc, "labels", true, "2026-10-10T11:00:00.000Z");
+    expect(readCardPartShown(doc, "labels")).toBe(true);
+    expect(doc.cardParts.labels.updatedAt).toBe("2026-10-10T11:00:00.000Z");
+  });
+
+  // A card part is not a part of the board: hiding the labels must not hide a
+  // column that happens to share an id, or the other way round.
+  test("is kept apart from the parts of the board", () => {
+    const doc = writeCardPartShown(emptyDocument(now), "labels", false, now);
+    expect(readAreaShown(doc, "labels")).toBe(true);
+  });
+
+  test("the document handed in is never changed", () => {
+    const before = emptyDocument(now);
+    writeCardPartShown(before, "labels", false, now);
+    expect(readCardPartShown(before, "labels")).toBe(true);
   });
 });

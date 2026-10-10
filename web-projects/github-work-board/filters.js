@@ -1,5 +1,5 @@
-// Narrowing the list: by kind, by repository, by label, by milestone, and by
-// person.
+// Narrowing the list: by kind, by repository, by label, by milestone, by
+// issue field (`fields.js`), and by person.
 //
 // Two rules, and they pull in opposite directions on purpose:
 //
@@ -11,6 +11,8 @@
 //
 // The chosen values travel in the address bar (`urlState.js`), so a filtered
 // board can be sent to yourself or bookmarked. See ADR 0009.
+
+import { filterByFields } from "./fields.js";
 
 /** The kinds a person can ask for. Named in links, so an id is never changed. */
 export const DEFAULT_KIND = "all";
@@ -33,7 +35,7 @@ function asList(value) {
 }
 
 /** The items still worth showing. The list handed in is not changed or reordered. */
-export function filterWorkItems(items, { kind, repositories, labels, milestones } = {}) {
+export function filterWorkItems(items, { kind, repositories, labels, milestones, fields } = {}) {
   const list = Array.isArray(items) ? items : [];
   const wantedKind = readKind(kind);
   const wantedRepositories = new Set(asList(repositories));
@@ -41,7 +43,9 @@ export function filterWorkItems(items, { kind, repositories, labels, milestones 
   // By name, across repositories, the way a label is chosen (ADR 0045).
   const wantedMilestones = new Set(asList(milestones));
 
-  return list.filter((item) => {
+  // Each field is a kind of its own: two values of one field widen, two
+  // fields narrow (ADR 0047).
+  return filterByFields(list, fields).filter((item) => {
     if (wantedKind !== DEFAULT_KIND && item?.kind !== wantedKind) return false;
     if (wantedRepositories.size > 0 && !wantedRepositories.has(item?.repository)) return false;
     if (wantedLabels.size > 0) {
@@ -136,12 +140,13 @@ export function toggleInList(list, value) {
  * The "clear" button appears only when this is more than zero, so it is what
  * gives the reader a way out of a list they have filtered down to nothing.
  */
-export function activeFilterCount({ kind, repositories, labels, milestones, assignees, reviewers } = {}) {
+export function activeFilterCount({ kind, repositories, labels, milestones, fields, assignees, reviewers } = {}) {
   return (
     (readKind(kind) === DEFAULT_KIND ? 0 : 1) +
     asList(repositories).length +
     asList(labels).length +
     asList(milestones).length +
+    asList(fields).length +
     asList(assignees).length +
     asList(reviewers).length
   );
