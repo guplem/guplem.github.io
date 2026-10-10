@@ -167,6 +167,13 @@ import {
 } from "./copyActions.js";
 import { readTitle } from "./titles.js";
 import { CARD_PARTS } from "./cardParts.js";
+import {
+  DEFAULT_SECTION,
+  SETTINGS_SECTIONS,
+  matchSettings,
+  parentSection,
+  readSection,
+} from "./settingsSections.js";
 import { availableFieldFilters, fieldFilterKey, fieldText, isFilterableField } from "./fields.js";
 import { MILESTONE_PATHS, milestoneFilterTip, milestoneLinkTip, milestoneProgress } from "./milestones.js";
 import { initialsOf, personLabel } from "./people.js";
@@ -304,6 +311,8 @@ const state = {
   // happened (ADR 0029).
   refreshResting: false,
   view: DEFAULT_VIEW,
+  // The section of Settings that is open, and in the link while it is (ADR 0048).
+  section: DEFAULT_SECTION,
   kind: DEFAULT_KIND,
   repositories: [],
   labels: [],
@@ -2264,7 +2273,7 @@ function renderBoard() {
   element("board-empty-reason").textContent = missed
     ? `Nothing on the board matches "${state.findText.trim()}".`
     : everyColumnHidden
-      ? "Every column is hidden. Show one in Settings, under \"How the board looks\"."
+      ? "Every column is hidden. Show one in Settings, under \"Look\"."
       : hiddenByFilters
         ? "Nothing here matches the filters you chose."
         : sayEmptyBoard({ tokenCount: state.tokens.length, owners });
@@ -2275,6 +2284,7 @@ function renderBoard() {
   const openSettings = element("empty-open-settings");
   openSettings.hidden = (hiddenByFilters || missed) && !everyColumnHidden;
   openSettings.textContent = everyColumnHidden ? "Show a column in Settings" : "Add a token in Settings";
+  openSettings.dataset.section = everyColumnHidden ? "appearance" : "tokens";
   element("clear-filters").hidden = !narrowed || missed;
   element("clear-find").hidden = !missed;
   renderApproval();
@@ -2808,27 +2818,27 @@ function finishBoot() {
  *
  * Which screen is open lives in the address bar (root ADR 0006), so a reload
  * comes back to the same place. Settings needs a token to manage, so before the
- * first connection the welcome screen is the only screen there is.
+ * first connection the welcome screen is the only screen there is. For
+ * Settings, one section of it opens too (ADR 0048).
+ *
+ * @param section the section to open in Settings; left out, Settings opens on
+ *   the section the reader was last on, or the one a sub-screen was opened from
  */
-function showView(view) {
+function showView(view, section) {
   // The board has decided something, so the start-up screen has nothing left
   // to say.
   finishBoot();
-  // Settings carries the cloud storage panel, and the local mirror and the
-  // cloud copy can both have changed since it was drawn (root ADR 0016).
   if (view === "cleanup" && state.tokens.length > 0) askAboutNotes().catch(() => {});
-  if (view === "settings") {
-    cloudPanel?.refresh();
-    // Every permission, proved now. The reader opened Settings because they
-    // want to know, and the answers cost one call each (ADR 0005).
-    checkEveryToken().catch(() => {});
-  }
+  const cameFrom = parentSection(state.view);
+  if (view === "settings") state.section = readSection(section ?? cameFrom ?? state.section);
   const connected = state.tokens.length > 0;
   state.view = connected ? view : DEFAULT_VIEW;
+  if (state.view === "settings") showSettingsSection(state.section);
 
   // One control, and where it goes depends on where you are. Adding a token
   // was opened from Settings, so "back" from there means Settings (ADR 0018).
-  // The cleanup is opened from Settings too, so it goes back there (ADR 0043).
+  // The cleanup is opened from Settings too, so it goes back there (ADR 0043),
+  // to the section each was opened from (ADR 0048).
   const back = { board: null, settings: "board", "add-token": "settings", cleanup: "settings" }[state.view] ?? null;
   const label =
     { settings: "Back to the board", "add-token": "Back to settings", cleanup: "Back to settings" }[state.view] ??
@@ -2853,6 +2863,124 @@ function showView(view) {
   element("add-token-view").hidden = state.view !== "add-token";
   element("cleanup-view").hidden = state.view !== "cleanup";
   rememberUrl();
+}
+
+/**
+ * Draw one section of Settings, and only that one (ADR 0048).
+ *
+ * The two dear things run only for the section that shows their answer: the
+ * permission checks cost one call per permission per token (ADR 0005), and the
+ * cloud storage panel asks its repository again (root ADR 0016). A reader who
+ * comes to change a colour spends no call at all.
+ */
+function showSettingsSection(section) {
+  state.section = readSection(section);
+  for (const pane of document.querySelectorAll(".settings-pane")) {
+    pane.hidden = pane.dataset.section !== state.section;
+  }
+  for (const link of document.querySelectorAll("#settings-index a")) {
+    if (link.dataset.section === state.section) {
+      link.setAttribute("aria-current", "page");
+    }
+    else link.removeAttribute("aria-current");
+  }
+  if (state.section === "tokens") checkEveryToken().catch(() => {});
+  if (state.section === "storage") cloudPanel?.refresh();
+}
+
+/** Move to another section, from the index or from a search result. */
+function openSettingsSection(section, { focus = true } = {}) {
+  clearSettingsSearch();
+  showSettingsSection(section);
+  rememberUrl();
+  if (focus) document.querySelector(`.settings-pane[data-section="${state.section}"] .card-title`)?.focus();
+}
+
+/**
+ * The index of sections: real links, so one can be copied or opened in a new
+ * tab, and a plain press stays on the page (ADR 0048).
+ */
+function buildSettingsIndex() {
+  element("settings-index").replaceChildren(
+    ...SETTINGS_SECTIONS.map((one) => {
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      link.className = "settings-index-link";
+      link.dataset.section = one.id;
+      link.href = `${location.pathname}${buildSearch({ view: "settings", section: one.id })}`;
+      link.textContent = one.label;
+      explain(link, one.says);
+      link.addEventListener("click", (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+        event.preventDefault();
+        openSettingsSection(one.id);
+      });
+      item.append(link);
+      return item;
+    }),
+  );
+}
+
+/**
+ * The search in Settings. It reads the written list in `settingsSections.js`,
+ * so it finds a setting in a section that is not drawn (ADR 0048). While it
+ * holds text, the answers stand where the section was.
+ */
+function renderSettingsSearch() {
+  const typed = element("settings-find").value;
+  const results = matchSettings(typed);
+  const searching = typed.trim() !== "";
+  element("settings-results").hidden = !searching;
+  for (const pane of document.querySelectorAll(".settings-pane")) {
+    pane.hidden = searching || pane.dataset.section !== state.section;
+  }
+  element("settings-find-status").textContent = !searching
+    ? ""
+    : results.length === 0
+      ? `No setting matches "${typed.trim()}".`
+      : results.length === 1
+        ? "1 setting matches."
+        : `${results.length} settings match.`;
+  element("settings-results").replaceChildren(
+    ...results.map(({ entry, section }) => {
+      const item = document.createElement("li");
+      const go = document.createElement("button");
+      go.type = "button";
+      go.className = "settings-result";
+      const name = document.createElement("span");
+      name.className = "settings-result-name";
+      name.textContent = entry.label;
+      const where = document.createElement("span");
+      where.className = "settings-result-where";
+      where.textContent = section.label;
+      go.append(name, where);
+      go.addEventListener("click", () => jumpToSetting(entry));
+      item.append(go);
+      return item;
+    }),
+  );
+}
+
+function clearSettingsSearch() {
+  const box = element("settings-find");
+  if (box.value === "") return;
+  box.value = "";
+  renderSettingsSearch();
+}
+
+/** Open the section a setting lives in, scroll to its row, and light it briefly. */
+function jumpToSetting(entry) {
+  openSettingsSection(entry.section, { focus: false });
+  const row = document.querySelector(`[data-setting="${entry.id}"]`);
+  if (!row) return;
+  row.scrollIntoView({ block: "center", behavior: "smooth" });
+  row.classList.remove("setting-lit");
+  // A reflow between the two, so the light runs again on a second jump.
+  void row.offsetWidth;
+  row.classList.add("setting-lit");
+  row.addEventListener("animationend", () => row.classList.remove("setting-lit"), { once: true });
+  const first = row.matches("button, a, input") ? row : row.querySelector("button, a, input, select, textarea");
+  first?.focus({ preventScroll: true });
 }
 
 /* -------------------------------------------------------------------------- */
@@ -3717,6 +3845,7 @@ function start() {
   const asked = readStateFromSearch(location.search);
   state.sortId = asked.sortId;
   state.view = asked.view;
+  state.section = asked.section;
   state.kind = asked.kind;
   state.repositories = asked.repositories;
   state.labels = asked.labels;
@@ -3939,7 +4068,20 @@ function start() {
   });
 
   element("view-toggle").addEventListener("click", () => showView(state.viewToggleGoesTo ?? "settings"));
-  element("empty-open-settings").addEventListener("click", () => showView("settings"));
+  buildSettingsIndex();
+  element("settings-find").addEventListener("input", renderSettingsSearch);
+  element("settings-find").addEventListener("keydown", (event) => {
+    if (event.key === "Escape") clearSettingsSearch();
+    // Enter takes the reader to the first answer, as a search box would.
+    if (event.key === "Enter") {
+      const [first] = matchSettings(element("settings-find").value);
+      if (first) jumpToSetting(first.entry);
+    }
+  });
+  // Each reason lands on the section that answers it (ADR 0048).
+  element("empty-open-settings").addEventListener("click", () =>
+    showView("settings", element("empty-open-settings").dataset.section || DEFAULT_SECTION),
+  );
   element("clear-filters").addEventListener("click", clearFilters);
 
   wireTooltip();

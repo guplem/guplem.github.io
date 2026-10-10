@@ -1,6 +1,6 @@
 // What the address bar carries, and what it must never carry.
 //
-// The open view, the chosen order and the filters in force, each left out when
+// The open view (and, in Settings, the open section), the chosen order and the filters in force, each left out when
 // it is the default (root ADR 0006): a link that spells out a default adds
 // noise and implies a choice nobody made. A list is written as one parameter
 // per item (`?repo=a&repo=b`), never as one comma-separated value, so a name
@@ -16,6 +16,7 @@
 
 import { DEFAULT_RANGE, isDefaultRange, readRange } from "./doneRange.js";
 import { DEFAULT_KIND, readKind } from "./filters.js";
+import { DEFAULT_SECTION, readSection } from "./settingsSections.js";
 import { DEFAULT_SORT_ID, readSortId } from "./sorting.js";
 
 const SORT_PARAM = "sort";
@@ -37,6 +38,9 @@ const FIELD_PARAM = "field";
 const DONE_PARAM = "done";
 const ASSIGNEE_PARAM = "assignee";
 const REVIEWER_PARAM = "reviewer";
+// Which section of Settings is open. Written only while Settings is, because
+// it means nothing anywhere else (ADR 0048).
+const SECTION_PARAM = "section";
 
 /** The screens this page has. Named in links, so a name is never changed. */
 // A view name travels in the address bar, so it is permanent, exactly like
@@ -69,6 +73,7 @@ export function readStateFromSearch(search) {
     assignees: readList(params, ASSIGNEE_PARAM),
     reviewers: readList(params, REVIEWER_PARAM),
     doneRange: readRange(params.get(DONE_PARAM) ?? DEFAULT_RANGE),
+    section: readSection(params.get(SECTION_PARAM)),
   };
 }
 
@@ -84,6 +89,7 @@ export function buildSearch({
   assignees,
   reviewers,
   doneRange,
+  section,
 } = {}) {
   const params = new URLSearchParams();
   const chosenView = readView(view);
@@ -91,6 +97,9 @@ export function buildSearch({
   const chosenSort = readSortId(sortId);
 
   if (chosenView !== DEFAULT_VIEW) params.append(VIEW_PARAM, chosenView);
+  if (chosenView === "settings" && readSection(section) !== DEFAULT_SECTION) {
+    params.append(SECTION_PARAM, readSection(section));
+  }
   if (chosenSort !== DEFAULT_SORT_ID) params.append(SORT_PARAM, chosenSort);
   if (chosenKind !== DEFAULT_KIND) params.append(KIND_PARAM, chosenKind);
   for (const name of Array.isArray(repositories) ? repositories : []) {

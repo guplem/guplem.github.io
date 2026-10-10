@@ -190,8 +190,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   you wrote is overwritten by the other device.
 - **Plain error messages.** When a call fails, the page names the permission to
   add instead of showing GitHub's own wording.
-- **A settings screen** for your tokens: what each one reaches, how to add
-  another, and which repository holds the board.
+- **A settings screen in five sections**: GitHub tokens, cloud storage, how
+  the board looks, what the tab counts, and the lines you copy from a card.
+  An index beside them moves between sections, and each section has its own
+  link. A search box finds any setting by the word you think of ("dark",
+  "hide", "backup") and takes you to it.
 - **Your tokens back out again.** GitHub shows a token once and never again, so
   this browser holds the only copy. Settings can copy any token, show it, or
   copy every one of them as a single backup you keep in your password manager.

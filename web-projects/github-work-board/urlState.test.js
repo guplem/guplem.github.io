@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { DEFAULT_RANGE } from "./doneRange.js";
 import { DEFAULT_KIND } from "./filters.js";
+import { DEFAULT_SECTION } from "./settingsSections.js";
 import { DEFAULT_SORT_ID } from "./sorting.js";
 import { DEFAULT_VIEW, VIEWS, buildSearch, readStateFromSearch } from "./urlState.js";
 
@@ -15,7 +16,35 @@ const DEFAULTS = {
   assignees: [],
   reviewers: [],
   doneRange: DEFAULT_RANGE,
+  section: DEFAULT_SECTION,
 };
+
+describe("the section of Settings", () => {
+  // Settings is split into sections, and the open one travels in the link so
+  // "Show a column in Settings" can land on the right one (ADR 0048).
+  test("round-trips a section", () => {
+    expect(buildSearch({ ...DEFAULTS, view: "settings", section: "appearance" })).toBe("?view=settings&section=appearance");
+    expect(readStateFromSearch("?view=settings&section=appearance")).toEqual({
+      ...DEFAULTS,
+      view: "settings",
+      section: "appearance",
+    });
+  });
+
+  test("the default section is left out of the link", () => {
+    expect(buildSearch({ ...DEFAULTS, view: "settings", section: DEFAULT_SECTION })).toBe("?view=settings");
+  });
+
+  // A section means nothing on the board, so it never rides along there.
+  test("a section is only written while Settings is open", () => {
+    expect(buildSearch({ ...DEFAULTS, view: "board", section: "appearance" })).toBe("");
+    expect(buildSearch({ ...DEFAULTS, view: "cleanup", section: "storage" })).toBe("?view=cleanup");
+  });
+
+  test("a section nobody offers opens the default one", () => {
+    expect(readStateFromSearch("?view=settings&section=nope").section).toBe(DEFAULT_SECTION);
+  });
+});
 
 describe("the add-token view", () => {
   // Adding a token is its own screen, so the guide has room to be a
@@ -134,6 +163,7 @@ describe("buildSearch", () => {
       assignees: ["ana"],
       reviewers: ["leo"],
       doneRange: "2026-09-15..2026-09-19",
+      section: DEFAULT_SECTION,
     };
     expect(readStateFromSearch(buildSearch(state))).toEqual(state);
   });

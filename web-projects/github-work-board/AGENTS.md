@@ -60,6 +60,7 @@ It is the short procedure for all of the above.
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it, with the bottom's name (ADR 0020, ADR 0027) |
 | `filters.js` | Yes | Narrowing by kind, repository, label, milestone, issue field and person, and what to offer (ADR 0009, ADR 0028, ADR 0045, ADR 0047) |
 | `fields.js` | Yes | The issue fields set on an issue, read from the answer the board already has: their words, which of them a filter offers, and narrowing by them (ADR 0047) |
+| `settingsSections.js` | Yes | The sections of Settings with their permanent ids, the section each sub-screen goes back to, and the written list of settings the search finds (ADR 0048) |
 | `cardParts.js` | Yes | The parts of a card the reader can hide in Settings, with their permanent ids (ADR 0047) |
 | `milestones.js` | Yes | The milestone a piece of work is in, read from the answer the board already has: its share closed and the words on its pill (ADR 0045) |
 | `boardSearch.js` | Yes | The find box: an exact number, a pasted GitHub link or words, and which cards stay (ADR 0038) |
@@ -574,8 +575,23 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
 - **There are four views, and one control moves between them.** Board,
   Settings, `add-token` and `cleanup`; the toggle goes board -> settings ->
   board, and add-token or cleanup -> settings, because that is where each was
-  opened from (ADR 0018, ADR 0043).
+  opened from (ADR 0018, ADR 0043). Settings opens on the section the
+  sub-screen came from (`parentSection`, ADR 0048).
   A view name travels in the address bar, so it is as permanent as a sort id.
+- **Settings is five sections, and the open one is `section=` in the link.**
+  A section id is permanent, like a view name. It is a parameter and not a new
+  view, so `?view=settings` links still work. Only one pane is drawn; every
+  pane starts `hidden` in `index.html` (ADR 0048).
+- **The permission checks and the cloud panel refresh run per section.**
+  `showSettingsSection` runs `checkEveryToken` for `tokens` only and
+  `cloudPanel.refresh` for `storage` only. Moving either back into `showView`
+  makes every visit to Settings spend GitHub calls; `invariants.test.js`
+  pins the first (ADR 0048).
+- **The Settings search reads `SETTINGS_ENTRIES`, never the page.** A new
+  setting needs an entry there and a `data-setting="<id>"` on its row in
+  `index.html`; `invariants.test.js` fails when the two disagree. The search
+  announces only the count, from a status line that is on the page from the
+  start (ADR 0048).
 - **Five columns fill the window on purpose.** `grid-auto-columns` is the
   window less the gaps, split by `--columns-in-view`, so "Done" is the one that
   scrolls. `app.js` lowers that number through `fitColumns` when the reader
@@ -609,8 +625,9 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   about one screen, and the stickiness went with the reason for it (ADR 0023).
   The add-token screen is the one still longer than a window, and it carries its
   own Cancel at the end of the last step. Measure before adding a second exit or
-  putting the stickiness back: board 983, settings 1067, add a token 2110, in a
-  window of 898.
+  putting the stickiness back: board 983, add a token 2110, in a window of 898. Settings was 1067 as one
+  screen. It is five sections now, from 899 to 2009 each, and Cloud storage is
+  the long one (ADR 0023, ADR 0048).
 - **The order lives in the masthead**, beside the way to Settings, and is
   hidden on the screens it does not govern (ADR 0023).
 - **A placeholder mirrors the row it replaces, line for line.** A token row is
@@ -703,6 +720,7 @@ Check `performance.getEntriesByType("resource")` for a `transferSize` of 0, and
 | [0045](adr/0045-a-milestone-is-a-pill-with-a-link-and-a-filter.md) | A milestone is a pill with a link half and a filter half |
 | [0046](adr/0046-the-menu-speaks-in-icons-and-a-moved-card-wears-a-dot.md) | The menu speaks in icons, and a card moved by hand wears a dot |
 | [0047](adr/0047-issue-fields-come-free-and-the-reader-chooses-what-a-card-shows.md) | Issue fields come free with each issue, and the reader chooses what a card shows |
+| [0048](adr/0048-settings-is-split-into-sections-and-the-section-is-in-the-link.md) | Settings is split into sections, the section is in the link, and a search finds any setting |
 
 ## What is not built yet
 
@@ -711,5 +729,5 @@ private notes, sorting, the filters and the settings screen are built.
 Still to come, roughly in this order: dragging a card instead of choosing its
 column from a dropdown, custom tags, and a "what's next" queue, which the
 blocked marking and the columns now make answerable. Every new view state goes in the address bar
-beside `view`, `sort`, `kind`, `repo`, `label`, `milestone`, `field`, `assignee` and `reviewer`, and the tokens never do.
+beside `view`, `section`, `sort`, `kind`, `repo`, `label`, `milestone`, `field`, `assignee` and `reviewer`, and the tokens never do.
 The find box is the one exception, on purpose (ADR 0038).

@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="342" />
-  <meta name="deploy-date" content="2026-10-10T12:07:17.000Z" />
+  <meta name="deploy-pull-request" content="343" />
+  <meta name="deploy-date" content="2026-10-10T12:19:36.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -466,34 +466,61 @@
         <div id="board-columns" class="columns"></div>
       </section>
 
-      <!-- Settings is a stack of cards, one per subject, so the two kinds of
+      <!-- Settings is five sections, one card per subject, so the two kinds of
            token cannot be confused: the tokens that read work live in one
-           card, and the one token that saves the board lives in the cloud
-           storage card (ADR 0018, root ADR 0016). -->
+           section, and the one token that saves the board lives in the cloud
+           storage section (ADR 0018, ADR 0048, root ADR 0016). -->
       <section id="settings-view" aria-labelledby="settings-heading" hidden>
         <h2 id="settings-heading" class="settings-title">Settings</h2>
 
-        <div class="card">
+        <!-- Five sections, one drawn at a time, and the open one is in the link
+             (ADR 0048). The index and the search sit beside them on a wide
+             screen and above them on a phone. app.js fills the index from
+             settingsSections.js. -->
+        <div class="settings-layout">
+          <nav class="settings-nav" aria-label="Settings sections">
+            <div class="settings-search" role="search">
+              <label class="visually-hidden" for="settings-find">Search settings</label>
+              <input id="settings-find" class="input" type="search" autocomplete="off" spellcheck="false"
+                placeholder="Search settings" />
+            </div>
+            <ul id="settings-index" class="settings-index"></ul>
+            <!-- The playground's standard "Report a problem" link: the repository's
+                 issue form, with this project filled in (web-projects/AGENTS.md). -->
+            <p class="settings-report">
+              <a target="_blank" rel="noopener noreferrer"
+                href="https://github.com/guplem/guplem.github.io/issues/new?template=web-project.yml&amp;project=github-work-board&amp;title=%5Bgithub-work-board%5D%20">Report a problem</a>
+              <span>Needs a GitHub account, and the report is public.</span>
+            </p>
+          </nav>
+
+          <div class="settings-panes">
+            <!-- Empty until the reader searches, and then only the count, never
+                 the list: a screen reader would read every result. -->
+            <p id="settings-find-status" class="status" role="status" aria-live="polite"></p>
+            <ul id="settings-results" class="settings-results" hidden></ul>
+
+        <div class="card settings-pane" data-section="tokens" hidden>
           <div class="card-header">
-            <h3 class="card-title">Tokens that read your work</h3>
+            <h3 class="card-title" tabindex="-1">Tokens that read your work</h3>
             <p class="lead">
               These tokens fetch your issues and pull requests. Each one reaches one owner, your account or one
-              organisation. Opening this screen tries every permission the board needs on every token, and each one
-              says what it could do and what to add if it could not. They save nothing: saving is the next card's job.
+              organisation. Opening this section tries every permission the board needs on every token, and each one
+              says what it could do and what to add if it could not. They save nothing: saving is the job of Cloud storage.
             </p>
           </div>
           <div class="card-content">
-            <ul id="tokens" class="tokens"></ul>
+            <ul id="tokens" class="tokens" data-setting="token-list"></ul>
             <p id="settings-notice" class="status" role="status" aria-live="polite"></p>
-            <p class="step-action">
+            <p class="step-action" data-setting="add-token">
               <button id="open-add-token" type="button" class="button button-primary">Add token</button>
               <!-- Every permission is tried again, one call each. Opening this
                    screen does it too; this is for after you fix a token on
                    GitHub without leaving the page (ADR 0005). -->
-              <button id="recheck-tokens" type="button" class="button button-outline">Check every permission again</button>
+              <button id="recheck-tokens" type="button" class="button button-outline" data-setting="recheck-tokens">Check every permission again</button>
               <button id="copy-backup" type="button" class="button button-outline">Copy every token as a backup</button>
             </p>
-            <p class="field-help">
+            <p class="field-help" data-setting="token-backup">
               A backup is one piece of text holding every token and the name you gave it. Keep it in your password
               manager. To set this board up in another browser, on another computer, or in another Chrome profile,
               press <strong>Add token</strong> there and paste that text instead of a token.
@@ -501,9 +528,9 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card settings-pane" data-section="storage" hidden>
           <div class="card-header">
-            <h3 class="card-title">Cloud storage: where your half of the board is saved</h3>
+            <h3 class="card-title" tabindex="-1">Cloud storage: where your half of the board is saved</h3>
             <p class="lead">
               Your notes, the cards you moved by hand, and how the board looks are saved in this browser, and in
               your own private repository once cloud storage is set up. One storage token does the saving, and the
@@ -513,11 +540,11 @@
           <div class="card-content">
             <!-- The shared settings component, full mode (root ADR 0016). It carries
                  the badge that says whether saves get through (ADR 0019). -->
-            <div id="cloud-settings"></div>
+            <div id="cloud-settings" data-setting="cloud-storage"></div>
 
             <!-- The suggested cleanup is its own screen, because it asks GitHub
                  about every note and lists them (ADR 0043). -->
-            <div class="field">
+            <div class="field" data-setting="cleanup">
               <p class="field-label">Suggested cleanup</p>
               <p class="field-help">
                 A note stays in your data repository after its issue closes or its pull request merges. This
@@ -530,24 +557,24 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card settings-pane" data-section="appearance" hidden>
           <div class="card-header">
-            <h3 class="card-title">How the board looks</h3>
+            <h3 class="card-title" tabindex="-1">How the board looks</h3>
             <p class="lead">Saved beside your notes, so the board looks the same on every machine you open it on.</p>
           </div>
           <div class="card-content">
-            <div class="field">
+            <div class="field" data-setting="theme">
               <p class="field-label" id="theme-label">Theme</p>
               <div class="chips" id="theme-choices" role="group" aria-labelledby="theme-label"></div>
             </div>
 
-            <div class="field">
+            <div class="field" data-setting="column-colours">
               <p class="field-label">Colour on each part of the board, and whether it is shown</p>
               <!-- One row per thing that can be painted, from appearance.js. -->
-              <ul id="colour-areas" class="colour-areas"></ul>
+              <ul id="colour-areas" class="colour-areas" data-setting="column-shown"></ul>
             </div>
 
-            <div class="field">
+            <div class="field" data-setting="card-parts">
               <p class="field-label">What each card shows</p>
               <!-- One row per part of a card, from cardParts.js (ADR 0047). -->
               <ul id="card-parts" class="colour-areas card-parts"></ul>
@@ -555,9 +582,9 @@
           </div>
         </div>
 
-        <div class="card">
+        <div class="card settings-pane" data-section="counting" hidden>
           <div class="card-header">
-            <h3 class="card-title">What the tab name counts</h3>
+            <h3 class="card-title" tabindex="-1">What the tab name counts</h3>
             <p class="lead">
               The browser tab is named "Work Board", with the number of things waiting on you in
               brackets. Choose which parts of the board add up to it, and whether each part counts
@@ -568,14 +595,14 @@
           <div class="card-content">
             <div class="field">
               <!-- One row per part of the board, from appearance.js, filled by app.js. -->
-              <ul id="counting-areas" class="colour-areas counting-areas"></ul>
+              <ul id="counting-areas" class="colour-areas counting-areas" data-setting="tab-count"></ul>
             </div>
           </div>
         </div>
 
-        <div class="card">
+        <div class="card settings-pane" data-section="copy-lines" hidden>
           <div class="card-header">
-            <h3 class="card-title">Lines you copy from a card</h3>
+            <h3 class="card-title" tabindex="-1">Lines you copy from a card</h3>
             <p class="lead">
               Write a line once here, and copy it filled in from any card's menu. The board puts the
               card's own number, link or title where you left a placeholder. Saved beside your notes,
@@ -585,7 +612,7 @@
           <div class="card-content">
             <div class="field">
               <!-- One row per line the reader wrote, filled by app.js. -->
-              <ul id="copy-actions" class="copy-actions"></ul>
+              <ul id="copy-actions" class="copy-actions" data-setting="copy-actions"></ul>
               <!-- Shown until the reader writes their own. The examples come
                    from copyActions.js, so the page cannot suggest a
                    placeholder the board does not fill (ADR 0031). -->
@@ -608,7 +635,7 @@
               <p class="field-help">The icon and the name are what the card's menu shows. The line below it is what you get.</p>
             </div>
 
-            <div class="field">
+            <div class="field" data-setting="copy-placeholders">
               <p class="field-label">What you can put in a line</p>
               <!-- Every placeholder the board fills, from copyActions.js. -->
               <ul id="copy-placeholders" class="placeholder-list"></ul>
@@ -616,19 +643,6 @@
           </div>
         </div>
 
-        <!-- The playground's standard "Report a problem" link: the repository's
-             issue form, with this project filled in (web-projects/AGENTS.md). -->
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Something wrong, or an idea?</h3>
-            <p class="lead">
-              Tell me on GitHub. The form opens with this board already named, so you only say what
-              happened. You need a GitHub account, and the report is public.
-            </p>
-          </div>
-          <div class="card-content">
-            <a class="button button-outline" target="_blank" rel="noopener noreferrer"
-              href="https://github.com/guplem/guplem.github.io/issues/new?template=web-project.yml&amp;project=github-work-board&amp;title=%5Bgithub-work-board%5D%20">Report a problem</a>
           </div>
         </div>
       </section>
