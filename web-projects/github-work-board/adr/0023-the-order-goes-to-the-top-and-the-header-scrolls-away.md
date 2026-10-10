@@ -24,7 +24,13 @@ pixels tall:
 | Settings | 1067 |
 | Add a token | 2110 |
 
-Settings is a screen and a bit. The one screen still meaningfully longer is
+Settings is a screen and a bit.
+
+Settings later grew to about four windows and was split into sections
+(ADR 0048). Measured on 2026-10-10 in the same window, with one token: GitHub
+tokens 899, Cloud storage 2009, Look 1388, Tab count 924, Copy lines 984. Cloud
+storage is the one long section, and it is the shared panel; the masthead's
+toggle is still the one way back, so measure again before adding a second. The one screen still meaningfully longer is
 the add-token guide, and it carries its own **Cancel** at pixel 1761, at the
 end of the last step, which is exactly where a reader who read it ends up.
 
