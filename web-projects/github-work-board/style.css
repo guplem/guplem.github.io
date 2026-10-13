@@ -1755,11 +1755,15 @@ textarea.input {
   color: hsl(var(--muted-foreground));
 }
 
+/* `minmax(0, 1fr)`, not the default track: the default is as wide as the
+ * widest thing in it that cannot wrap, so one long label on one card widened
+ * every card in the column, past the column's edge. */
 .issues {
   list-style: none;
   margin: 1rem 0 0;
   padding: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
 }
 
@@ -2168,6 +2172,8 @@ textarea.input {
 
 .issue-title {
   display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   margin-top: 0.125rem;
   font-size: 0.9375rem;
   font-weight: 600;
@@ -2273,6 +2279,14 @@ textarea.input {
 
 .issue-scope::after {
   content: " ·";
+}
+
+/* A pill on a card keeps to one line while it fits, and breaks only when it
+ * is wider than the card on its own: a long label or milestone name. */
+.issue .badge {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .issue-labels {
@@ -2391,6 +2405,10 @@ button.badge-field[aria-pressed="true"] .field-name {
  * edge to the share and shrinks back on leave, so it sweeps rather than
  * blinks. The global reduced-motion rule turns the sweep into a jump. */
 .milestone-link {
+  /* Only the name breaks when the pill is wider than the card; the share
+   * stays on one line. */
+  flex: 0 0 auto;
+  white-space: nowrap;
   gap: 0.25rem;
   padding-left: 0.4375rem;
   border-right: 1px solid hsl(var(--border));
