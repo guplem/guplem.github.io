@@ -1171,3 +1171,27 @@ describe("the sections of Settings", () => {
     expect(html).toMatch(/id="settings-find-status"[^>]*role="status"/);
   });
 });
+
+// This one really happened. `.issues` is a grid, and a grid track with no size
+// is as wide as the widest thing in it that cannot wrap. One long label, field
+// value or milestone name on one card widened every card in that column, and
+// the cards spilled over the next column. Nothing errors, and it shows only
+// with somebody's real labels (ADR 0018).
+describe("a card is never wider than its column (ADR 0018)", () => {
+  const css = read("style.css");
+
+  test("the list of cards gives its one track the column's width and no more", () => {
+    const rule = css.match(/\n\.issues\s*\{([^}]*)\}/)?.[1] ?? "";
+    expect(rule).toContain("grid-template-columns: minmax(0, 1fr)");
+  });
+
+  // Fitting the card is half of it: a pill or a word wider than the card then
+  // spills out of the card instead, so each one must be able to break.
+  test("a pill and a title on a card can break to fit it", () => {
+    const pill = css.match(/\n\.issue \.badge\s*\{([^}]*)\}/)?.[1] ?? "";
+    expect(pill).toContain("max-width: 100%");
+    expect(pill).toContain("white-space: normal");
+    const title = [...css.matchAll(/\n\.issue-title\s*\{([^}]*)\}/g)].map((match) => match[1]).join("");
+    expect(title).toContain("overflow-wrap: anywhere");
+  });
+});
