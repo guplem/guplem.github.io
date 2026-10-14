@@ -603,7 +603,10 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
 - **`.issues` sets `grid-template-columns: minmax(0, 1fr)`, and every pill on a
   card may break.** A grid track with no size grows to the widest thing that
   cannot wrap, so one long label on one card pushed every card in that column
-  over the next column. `invariants.test.js` pins both halves.
+  over the next column. The review row is an `.issues` list that flows
+  sideways, so `.issues.reviews-list` resets it to `none`: that one track
+  became the row's first column, a sliver that stretched every card in the row
+  hundreds of pixels tall. `invariants.test.js` pins all three.
 - **A hidden part is dropped in three places in `app.js`, and each one must
   stay.** `renderLoading` (no placeholder), the areas handed to `countBoard`
   (no share of the tab number), and the columns drawn in `renderBoard`. Miss

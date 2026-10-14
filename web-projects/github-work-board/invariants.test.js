@@ -1185,6 +1185,15 @@ describe("a card is never wider than its column (ADR 0018)", () => {
     expect(rule).toContain("grid-template-columns: minmax(0, 1fr)");
   });
 
+  // The review row is an `.issues` list too, but it lays its cards out
+  // sideways, one auto-sized column each. The one track above became its first
+  // column: it squeezed the first card to a sliver, the sliver grew hundreds of
+  // pixels tall, and every card in the row stretched to match (ADR 0013).
+  test("the review row has no column of its own, only one per card", () => {
+    const rule = css.match(/\n\.issues\.reviews-list\s*\{([^}]*)\}/)?.[1] ?? "";
+    expect(rule).toContain("grid-template-columns: none");
+  });
+
   // Fitting the card is half of it: a pill or a word wider than the card then
   // spills out of the card instead, so each one must be able to break.
   test("a pill and a title on a card can break to fit it", () => {
