@@ -23,8 +23,8 @@
 // A card that GitHub says is blocked sinks too, below the work that can start
 // now, by the same move (`sinkBlocked`).
 //
-// Three things rise, by the opposite move: a red check on the board
-// (`raiseFailedChecks`), in the review row a pull request the reader reviewed
+// Three things rise, by the opposite move: on the board the work that wants its
+// author, ranked (`raiseNeedsAttention`), in the review row a pull request the reader reviewed
 // before (`raiseReviewedBeforeItems`, ADR 0042), and in both lists a card the
 // reader marked "high priority" (`raiseHighPriority`, ADR 0044).
 //
@@ -35,6 +35,7 @@
 // **A value here is written into `board.json`** the moment somebody marks a
 // card, so it is as permanent as a colour id or a storage key.
 
+import { ATTENTION_RANK } from "./attention.js";
 import { stackedUnder } from "./stacks.js";
 
 /**
@@ -141,7 +142,7 @@ export function sinkLowPriority(groups, marked) {
  * as the sink above, for the same reason: what is stacked on a blocked card
  * cannot merge first either, so it sinks along (ADR 0016).
  *
- * This runs after the red-check raise, because a red check on blocked work is
+ * This runs after the attention raise, because a red check on blocked work is
  * still work nobody can finish. It runs before the reader's own sink, so a card
  * pushed down by hand stays the lowest: their hand beats the rule (ADR 0026).
  *
@@ -189,27 +190,41 @@ function sinkWithWhatWaitsOnIt(groups, named) {
 }
 
 /**
- * The same groups, with the ones whose checks came back red moved to the top.
+ * The same groups, with the ones that want their author moved to the top, in
+ * the rank `ATTENTION_RANK` gives: changes requested first, then a red check,
+ * then a conflict.
  *
  * A red check no longer moves a card out of the column it belongs in: a
  * reviewer who has been asked is the more useful thing for a column to say
  * (ADR 0011). So the check has to be visible some other way inside that column,
- * and this is it: the work that needs a push is the first thing read there.
+ * and this is it. In "Needs attention" the same pass puts the three reasons in
+ * the order the reader works through them (ADR 0026).
  *
- * **A red check raises the whole stack it is in, in merge order.** Nothing in a
+ * **Each reason raises the whole stack it is in, in merge order.** Nothing in a
  * stack can merge before the one below it (ADR 0016), so raising a middle card
- * over its own base would show work that reads as ready and is not. That is the
- * exact failure the sink below avoids by taking a whole top of a stack with it.
+ * over its own base would show work that reads as ready and is not. A stack
+ * ranks by the highest reason any card in it carries.
  *
- * This runs before the sink, so a card the reader pushed down stays down: their
- * hand beats the rule (ADR 0026).
+ * The ranks are raised lowest first, and each raise keeps the order handed in
+ * on both sides of it, so the last raise ends on top and the order the reader
+ * chose holds inside each rank.
+ *
+ * This runs before the sinks, so a card the reader pushed down stays down:
+ * their hand beats the rule (ADR 0026).
  *
  * @param groups `{item, children}` pairs, already in the reader's chosen order
- * @param red the keys whose checks came back red, as a Set or a list
+ * @param reasons a Map from a key to the reasons that card wants its author
  * @returns a new array holding exactly the same groups
  */
-export function raiseFailedChecks(groups, red) {
-  return raiseWithItsStack(groups, red);
+export function raiseNeedsAttention(groups, reasons) {
+  const found = reasons instanceof Map ? reasons : new Map();
+  let list = (Array.isArray(groups) ? groups : []).filter((one) => one && typeof one === "object");
+  for (const reason of [...ATTENTION_RANK].reverse()) {
+    const keys = new Set();
+    for (const [key, ids] of found) if (Array.isArray(ids) && ids.includes(reason)) keys.add(key);
+    list = raiseWithItsStack(list, keys);
+  }
+  return list;
 }
 
 /**
@@ -221,7 +236,7 @@ export function raiseFailedChecks(groups, red) {
  * nobody has started, or the row fills with work waiting on a second look
  * (ADR 0042).
  *
- * It is the same move as the red-check raise, so a whole stack rises in merge
+ * It is the same move as the attention raise, so a whole stack rises in merge
  * order (ADR 0016). Only the row runs it: the board holds the reader's own
  * work, not reviews. It runs before the reader's own sink, so a card pushed
  * down by hand stays down (ADR 0026).
@@ -242,10 +257,11 @@ export function raiseReviewedBeforeItems(items, reviewed) {
  * The same groups, with the ones the reader marked "high priority" moved to
  * the top.
  *
- * It is the same move as the red-check raise, so a whole stack rises in merge
+ * It is the same move as the attention raise, so a whole stack rises in merge
  * order (ADR 0016). The order handed in holds inside both halves, so the raised
- * cards keep the smart order among themselves: a red check still reads first
- * and a blocked card last, inside the raised group as outside it.
+ * cards keep the smart order among themselves: the work that wants its author
+ * still reads first and a blocked card last, inside the raised group as
+ * outside it.
  *
  * It runs after the rules and before the reader's own sink (ADR 0044).
  *

@@ -36,7 +36,7 @@ never saw it.
 - **The field is asked only when the login is known**, through
   `@include(if: $knowsReader)`. An empty `author` makes GitHub count every
   reviewer, and every pull request would read as reviewed.
-- **The raise is the red-check raise, on a flat row**
+- **The raise is the same move as the attention raise, on a flat row**
   (`priority.raiseReviewedBeforeItems`). A pull request in a stack takes its
   whole stack up, in merge order, because nothing in a stack merges before the
   one below it (ADR 0016).

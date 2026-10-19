@@ -45,6 +45,17 @@ export const ATTENTION_REASONS = [
 export const ATTENTION_IDS = ATTENTION_REASONS.map((one) => one.id);
 
 /**
+ * The order the smart order reads the reasons in, most urgent first.
+ *
+ * This is not the order the pills read in. A pill says how badly the merge is
+ * stuck; a column says what to do next. A reviewer who asked for changes is a
+ * person waiting on the author, so that card reads first. A red check reads
+ * next, and a conflict last. A card with two reasons ranks by the higher one
+ * (ADR 0026).
+ */
+export const ATTENTION_RANK = ["changes-requested", "checks-failed", "conflicts"];
+
+/**
  * The one reason that does not decide a column on its own.
  *
  * A red check is the author's move, and so is a conflict and so are changes

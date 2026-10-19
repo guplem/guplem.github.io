@@ -5,7 +5,7 @@ import {
   NORMAL,
   PRIORITY_PATHS,
   knownPriority,
-  raiseFailedChecks,
+  raiseNeedsAttention,
   raiseHighPriority,
   raiseHighPriorityItems,
   raiseReviewedBeforeItems,
@@ -240,28 +240,57 @@ describe("raiseReviewedBeforeItems", () => {
   });
 });
 
-describe("raiseFailedChecks", () => {
+describe("raiseNeedsAttention", () => {
+  const reasons = (entries) => new Map(Object.entries(entries));
+
   // A red check no longer moves a card out of its column when somebody is
   // waited on (ADR 0011). It climbs to the top of the column instead, so the
   // work that needs a push is the first thing read there (ADR 0026).
   test("a card with a red check goes to the top", () => {
     const list = [group("a"), group("b"), group("c")];
-    expect(keys(raiseFailedChecks(list, new Set(["c"])))).toEqual(["c", "a", "b"]);
+    expect(keys(raiseNeedsAttention(list, reasons({ c: ["checks-failed"] })))).toEqual(["c", "a", "b"]);
   });
 
-  test("nothing red, nothing moves", () => {
+  test("nothing wants the author, nothing moves", () => {
     const list = [group("a"), group("b")];
-    expect(keys(raiseFailedChecks(list, new Set()))).toEqual(["a", "b"]);
-    expect(keys(raiseFailedChecks(list, null))).toEqual(["a", "b"]);
+    expect(keys(raiseNeedsAttention(list, new Map()))).toEqual(["a", "b"]);
+    expect(keys(raiseNeedsAttention(list, null))).toEqual(["a", "b"]);
   });
 
-  test("the order the reader chose still holds inside each half", () => {
-    const list = [group("a"), group("b"), group("c"), group("d")];
-    expect(keys(raiseFailedChecks(list, new Set(["b", "d"])))).toEqual(["b", "d", "a", "c"]);
+  // The reader asked for this order: a reviewer's changes first, because a
+  // person waits on them; then a red check; then a conflict.
+  test("changes requested, then a red check, then a conflict", () => {
+    const list = [group("plain"), group("conflict"), group("red"), group("changes")];
+    const order = raiseNeedsAttention(
+      list,
+      reasons({ conflict: ["conflicts"], red: ["checks-failed"], changes: ["changes-requested"] }),
+    );
+    expect(keys(order)).toEqual(["changes", "red", "conflict", "plain"]);
+  });
+
+  // A card with two reasons reads with the higher one.
+  test("a card with two reasons ranks by the higher one", () => {
+    const list = [group("red"), group("both")];
+    const order = raiseNeedsAttention(list, reasons({ red: ["checks-failed"], both: ["conflicts", "changes-requested"] }));
+    expect(keys(order)).toEqual(["both", "red"]);
+  });
+
+  test("the order the reader chose still holds inside each rank", () => {
+    const list = [group("a"), group("b"), group("c"), group("d"), group("e")];
+    const order = raiseNeedsAttention(
+      list,
+      reasons({ a: ["conflicts"], b: ["changes-requested"], c: ["conflicts"], d: ["changes-requested"] }),
+    );
+    expect(keys(order)).toEqual(["b", "d", "a", "c", "e"]);
+  });
+
+  test("a reason the board does not know moves nothing", () => {
+    const list = [group("a"), group("b")];
+    expect(keys(raiseNeedsAttention(list, reasons({ b: ["something-new"] })))).toEqual(["a", "b"]);
   });
 });
 
-describe("raiseFailedChecks and a stack", () => {
+describe("raiseNeedsAttention and a stack", () => {
   // main <- one <- two <- three, handed in already in merge order.
   const stack = () => [
     group("one", { head: "one", base: "main", number: 1 }),
@@ -272,11 +301,25 @@ describe("raiseFailedChecks and a stack", () => {
   // The whole stack travels, because nothing in it can merge before the one
   // below it. Raising a middle card over its own base would show work that
   // reads as ready and is not, which is the exact failure ADR 0016 forbids.
-  test("a red check anywhere in a stack raises the whole stack, in merge order", () => {
+  test("a reason anywhere in a stack raises the whole stack, in merge order", () => {
     for (const red of ["one", "two", "three"]) {
-      const order = keys(raiseFailedChecks([group("other"), ...stack()], new Set([red])));
+      const order = keys(raiseNeedsAttention([group("other"), ...stack()], new Map([[red, ["checks-failed"]]])));
       expect(order).toEqual(["one", "two", "three", "other"]);
     }
+  });
+
+  // The stack ranks by the highest reason any card in it carries.
+  test("a stack ranks by its highest reason", () => {
+    const list = [group("red"), ...stack()];
+    const order = raiseNeedsAttention(
+      list,
+      new Map([
+        ["red", ["checks-failed"]],
+        ["one", ["conflicts"]],
+        ["three", ["changes-requested"]],
+      ]),
+    );
+    expect(keys(order)).toEqual(["one", "two", "three", "red"]);
   });
 
   test("a ring of retargeted branches never hangs", () => {
@@ -284,7 +327,7 @@ describe("raiseFailedChecks and a stack", () => {
       group("x", { head: "x", base: "y", number: 1 }),
       group("y", { head: "y", base: "x", number: 2 }),
     ];
-    expect(keys(raiseFailedChecks(ring, new Set(["x"])))).toHaveLength(2);
+    expect(keys(raiseNeedsAttention(ring, new Map([["x", ["conflicts"]]])))).toHaveLength(2);
   });
 });
 
@@ -379,7 +422,7 @@ describe("raiseHighPriority", () => {
   // card that merely matters, and a blocked one reads after it.
   test("the raised cards keep the smart order among themselves", () => {
     const list = [group("blocked"), group("plain"), group("red"), group("other")];
-    const ruled = sinkBlocked(raiseFailedChecks(list, new Set(["red"])), new Set(["blocked"]));
+    const ruled = sinkBlocked(raiseNeedsAttention(list, new Map([["red", ["checks-failed"]]])), new Set(["blocked"]));
     const order = raiseHighPriority(ruled, new Set(["blocked", "plain", "red"]));
     expect(keys(order)).toEqual(["red", "plain", "blocked", "other"]);
   });

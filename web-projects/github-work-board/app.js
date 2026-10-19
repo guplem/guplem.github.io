@@ -53,7 +53,7 @@ import {
   colourableAreas,
   columnsInView,
 } from "./appearance.js";
-import { CHECKS_FAILED, attentionReason } from "./attention.js";
+import { attentionReason } from "./attention.js";
 import { describeChecks, needsAsking, readWorkflowRuns } from "./checks.js";
 import {
   DEFAULT_RANGE,
@@ -194,9 +194,9 @@ import {
   LOW,
   NORMAL,
   PRIORITY_PATHS,
-  raiseFailedChecks,
   raiseHighPriority,
   raiseHighPriorityItems,
+  raiseNeedsAttention,
   raiseReviewedBeforeItems,
   sinkBlocked,
   sinkLowPriority,
@@ -2118,20 +2118,22 @@ function priorityKeys(items, priority) {
 }
 
 /**
- * The cards whose checks came back red.
+ * The reasons each card wants its author: changes requested, a red check, a
+ * conflict.
  *
- * Read through `attentionFor`, which is what draws the pill, so the card that
- * climbs is always a card wearing "Checks failed". A second rule of its own
- * could disagree with the pill, and the reader would see a card at the top with
- * nothing on it to say why (ADR 0011).
+ * Read through `attentionFor`, which is what draws the pills, so the card that
+ * climbs is always a card wearing the pill that says why. A second rule of its
+ * own could disagree with the pill, and the reader would see a card at the top
+ * with nothing on it to say why (ADR 0011).
  */
-function failedCheckKeys(items) {
-  const red = new Set();
+function attentionByKey(items) {
+  const found = new Map();
   for (const item of items) {
     if (!item) continue;
-    if (attentionFor(item, readRelationship(state.links, item.key)).includes(CHECKS_FAILED)) red.add(item.key);
+    const reasons = attentionFor(item, readRelationship(state.links, item.key));
+    if (reasons.length > 0) found.set(item.key, reasons);
   }
-  return red;
+  return found;
 }
 
 /**
@@ -2186,9 +2188,11 @@ function renderBoard() {
   // of them along: those cannot merge first, so leaving them up would show work
   // that reads as ready and is not (ADR 0016, ADR 0026). Like the stack pass,
   // only the smart order does this.
-  // Then the cards with a red check climb to the top of their column. A red
-  // check no longer moves a card out of the column it belongs in (ADR 0011), so
-  // this is what keeps it from being lost in the middle of one. Then the
+  // Then the cards that want their author climb to the top of their column:
+  // changes requested first, then a red check, then a conflict. A red check no
+  // longer moves a card out of the column it belongs in (ADR 0011), so this is
+  // what keeps it from being lost in the middle of one, and in "Needs
+  // attention" it puts the reasons in the order they are worked through. Then the
   // blocked cards go below the rest of their column, because nobody can start
   // them. The reader's own marks run last, because their hand beats the rule:
   // the cards they marked "high priority" climb to the top, still in the smart
@@ -2200,7 +2204,7 @@ function renderBoard() {
       ? sinkLowPriority(
           raiseHighPriority(
             sinkBlocked(
-              raiseFailedChecks(orderStacksForMerging(plain), failedCheckKeys(plainItems)),
+              raiseNeedsAttention(orderStacksForMerging(plain), attentionByKey(plainItems)),
               blockedKeys(plainItems),
             ),
             priorityKeys(plainItems, HIGH),

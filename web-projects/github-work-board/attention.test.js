@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   ATTENTION_IDS,
+  ATTENTION_RANK,
   ATTENTION_REASONS,
   attentionPills,
   attentionReason,
@@ -33,6 +34,14 @@ describe("the reasons themselves", () => {
       // the card as a shape-less word.
       expect(reason.paths.length).toBeGreaterThan(0);
     }
+  });
+
+  // The order a column reads in is not the order the pills read in. A
+  // reviewer's changes come first there, because a person waits on them; a red
+  // check next; a conflict last. Every reason has exactly one rank.
+  test("the smart order ranks changes requested, then a red check, then a conflict", () => {
+    expect(ATTENTION_RANK).toEqual(["changes-requested", "checks-failed", "conflicts"]);
+    expect([...ATTENTION_RANK].sort()).toEqual([...ATTENTION_IDS].sort());
   });
 
   test("an id the board does not draw reads as nothing", () => {

@@ -29,7 +29,7 @@ This mark is the reader's own word about the work, so it takes a colour and a
 shape that nothing else on the card uses.
 
 **A raised card takes its whole stack up, in merge order.** It is the same move
-as the red-check raise. Nothing in a stack merges before the one below it
+as the attention raise. Nothing in a stack merges before the one below it
 (ADR 0016), so a raised top over its own base would show work that reads as
 ready and is not.
 

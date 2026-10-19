@@ -53,7 +53,7 @@ It is the short procedure for all of the above.
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
 | `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, filling one in, and the icon each line wears (ADR 0031, ADR 0046) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
-| `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards whose checks came back red (ADR 0026), the reviews the reader started (ADR 0042), and the work the reader raised, and the icon for each priority (ADR 0044, ADR 0046) |
+| `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards that want their author, ranked changes requested, then red checks, then conflicts (ADR 0026), the reviews the reader started (ADR 0042), and the work the reader raised, and the icon for each priority (ADR 0044, ADR 0046) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it, including the priorities the card is not in, whether it wears the moved-by-hand dot, and the icons on its own rows (ADR 0022, ADR 0031, ADR 0044, ADR 0046) |
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
@@ -72,7 +72,7 @@ It is the short procedure for all of the above.
 | `relationships.js` | Yes | GitHub's own links between items, the children of an issue, which linked pull request an item is read from, and nesting a pull request under its issue (ADR 0010, ADR 0028) |
 | `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, what to call that column away from the board, and the two names a moved card's dot says (ADR 0011, ADR 0046) |
 | `checks.js` | Yes | How the checks on the last commit are going: the workflow runs counted into one verdict, when to ask GitHub again, and the sentence behind the dot (ADR 0037) |
-| `attention.js` | Yes | The three reasons a pull request wants its author (conflicts, red checks, changes requested), with the words and the icon each pill draws (ADR 0011) |
+| `attention.js` | Yes | The three reasons a pull request wants its author (conflicts, red checks, changes requested), with the words and the icon each pill draws, and the rank the smart order reads them in (ADR 0011, ADR 0026) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
@@ -84,7 +84,7 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseFailedChecks`, `priority.sinkBlocked`, `priority.raiseHighPriority` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done" newest first) → the parts the reader hid are dropped (ADR 0024) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseNeedsAttention`, `priority.sinkBlocked`, `priority.raiseHighPriority` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done" newest first) → the parts the reader hid are dropped (ADR 0024) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
 Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.raiseReviewedBeforeItems` → `priority.raiseHighPriorityItems` → `priority.sinkLowPriorityItems` (the last four only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025). The read bar still shows (ADR 0039).
 Data flow, the cleanup: opening `?view=cleanup` or pressing "Check again" → `cleanup.cleanupCandidates` → `gateway.fetchItemStates` for every token at once → `cleanup.readItemStates` (token-list order) → `cleanup.cleanupSuggestions` → rows. Delete → `cleanup.deleteNotes`; Keep → `boardDocument.writeNoteSuggested` (ADR 0043).
@@ -173,6 +173,11 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   climbs to the top of its column instead, in the smart order, and the card's
   own "Checks failed" pill is what says why (ADR 0011, ADR 0026). A change that
   "restores" the old column rule hides work in the column nobody watches.
+- **The smart order ranks the three attention reasons in a different order from
+  the pills.** `ATTENTION_RANK` puts changes requested first, then a red check,
+  then a conflict; `ATTENTION_REASONS` draws the pills worst first, conflict
+  first. The two lists answer different questions, so do not merge them into
+  one (ADR 0026).
 - **The review row and the columns sort by one rule, and that rule lives in two
   places in `app.js`.** `sorting.js` only compares. The shared passes of the
   smart order run twice: on the grouped board (`orderStacksForMerging`, then
@@ -182,7 +187,7 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   once already, one pass at a time, and nothing failed either time: the badge
   said "1 of 3" on a card sitting last, and a marked card stayed where it was.
   Add anything to one side and add it to the other (ADR 0016, ADR 0026). The three
-  deliberate exceptions are the red-check raise and the blocked sink, which the
+  deliberate exceptions are the attention raise and the blocked sink, which the
   board does and the row does not, and the raise of the reviews the reader
   started, which the row does and the board does not (ADR 0042). The row holds
   pull requests alone, and GitHub has no `blockedBy` on a pull request.
