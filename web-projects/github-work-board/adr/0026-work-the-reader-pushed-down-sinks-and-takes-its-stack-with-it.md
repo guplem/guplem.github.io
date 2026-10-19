@@ -69,23 +69,37 @@ Adding the map was the whole storage change: `migrate`, `sync.planSave` and
 every invariant are generic over `RECORD_MAPS`, which is what ADR 0002 built
 them for.
 
-## The other pass: a red check climbs
+## The other pass: the work that wants its author climbs
 
-**In the smart order, a card whose checks came back red goes to the top of its
+**In the smart order, a card that wants its author goes to the top of its
 column.** A red check no longer moves a card out of the column it belongs in: a
 reviewer who has been asked outranks it (ADR 0011). So the check has to be
 visible some other way inside that column, and this is it. The work that needs a
 push is the first thing read there.
 
-**A red check raises the whole stack it is in, in merge order**, for the same
+**The three reasons rise in a fixed rank: changes requested, then a red check,
+then a conflict.** `ATTENTION_RANK` in `attention.js` holds it, and
+`raiseNeedsAttention` applies it. A conflict and changes requested put a card in
+"Needs attention" by themselves (ADR 0011), so the rank mostly decides how that
+column reads. Changes requested come first because a reviewer is a person who
+waits on the author. A red check comes next, and a conflict last. Inside each
+rank, the order the reader chose holds. A card with two reasons ranks by the
+higher one.
+
+**This rank is not the order of the pills.** A card draws its pills worst
+first, conflict first, because the pills say how badly the merge is stuck. The
+column says what to do next, and the reader asked for that order.
+
+**A reason raises the whole stack it is in, in merge order**, for the same
 reason the sink takes a whole top of a stack with it: nothing in a stack merges
 before the one below it (ADR 0016), and raising a middle card over its own base
-would show work that reads as ready and is not.
+would show work that reads as ready and is not. A stack ranks by the highest
+reason that any card in it carries.
 
 **The raise runs before the sink**, so a card the reader pushed down stays down.
 Their hand beats the rule.
 
-**The review row does not raise red checks, on purpose.** It answers a different
+**The review row does not run this raise, on purpose.** It answers a different
 question, "what am I being asked to read", and a pull request that does not
 build is not the one to read first. It raises a different thing: the reviews the
 reader started (ADR 0042). `invariants.test.js` says so, rather than leaving the
@@ -103,7 +117,7 @@ sinks always says why.
 **It is the same move as the reader's sink.** What is stacked on a blocked card
 sinks along, and both halves keep the order they had (ADR 0016).
 
-**The passes run in one order: the red-check raise, then the blocked sink, then
+**The passes run in one order: the attention raise, then the blocked sink, then
 the reader's raise (ADR 0044), then the reader's sink.** A red check on blocked
 work is still work nobody can finish, so the blocked sink runs after the raise.
 The reader's sink runs last, so a card they pushed down sits below a blocked

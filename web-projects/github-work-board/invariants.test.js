@@ -698,27 +698,28 @@ describe("the review row is ordered by the same rules as a column (ADR 0016, ADR
     expect(source).toMatch(/sinkLowPriorityItems\(\s*raiseHighPriorityItems\(/);
   });
 
-  // One pass belongs to the board alone, on purpose. A red check raises a card
-  // to the top of its column, because the column no longer moves it out
-  // (ADR 0011). The row answers a different question, "what am I being asked to
-  // read", and a broken pull request is not the one to read first. So the row
-  // does not raise, and this test says so rather than leaving the next reader
-  // to guess whether it was forgotten (ADR 0026).
-  test("the row does not raise red checks, and that is deliberate", () => {
+  // One pass belongs to the board alone, on purpose. The work that wants its
+  // author (changes requested, then a red check, then a conflict) rises to the
+  // top of its column, because a red check no longer moves a card out of its
+  // column (ADR 0011). The row answers a different question, "what am I being
+  // asked to read", and a broken pull request is not the one to read first. So
+  // the row does not raise, and this test says so rather than leaving the next
+  // reader to guess whether it was forgotten (ADR 0026).
+  test("the row does not raise the work that wants its author, and that is deliberate", () => {
     const source = read("app.js");
-    expect(source.match(/raiseFailedChecks\(/g) ?? []).toHaveLength(1);
-    expect(source).toMatch(/raiseFailedChecks\([\s\S]{0,60}orderStacksForMerging/);
+    expect(source.match(/raiseNeedsAttention\(/g) ?? []).toHaveLength(1);
+    expect(source).toMatch(/raiseNeedsAttention\([\s\S]{0,60}orderStacksForMerging/);
   });
 
   // A blocked card sinks below the work that can start now, on the board only.
-  // The order of the passes is the decision: the red-check raise, then the
+  // The order of the passes is the decision: the attention raise, then the
   // blocked sink, then the reader's own marks, so their hand still wins
   // (ADR 0026, ADR 0044). The row holds pull requests alone, and GitHub has no
   // `blockedBy` on one.
-  test("the board sinks blocked work after the red-check raise", () => {
+  test("the board sinks blocked work after the attention raise", () => {
     const source = read("app.js");
     expect(source.match(/sinkBlocked\(/g) ?? []).toHaveLength(1);
-    expect(source).toMatch(/sinkBlocked\(\s*raiseFailedChecks\(/);
+    expect(source).toMatch(/sinkBlocked\(\s*raiseNeedsAttention\(/);
   });
 
   // One pass belongs to the row alone, on purpose. A pull request the reader

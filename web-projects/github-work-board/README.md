@@ -68,7 +68,8 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   work you cannot hand on: the branch conflicts, a reviewer asked for changes
   and is still waiting, or a check came back red with nobody else to wait for.
   Each card says which of the three it is, with a pill you can hover for what to
-  do about it. A card with all three says all three.
+  do about it. A card with all three says all three. In the smart order the
+  column reads changes requested first, then red checks, then conflicts.
 - **A red check does not pull a card out of "Awaiting review".** Somebody is
   reading it, and that is the longer wait, so the column keeps saying so. In the
   smart order the card climbs to the top of its column instead, and its "Checks
