@@ -209,6 +209,28 @@ describe("groupByLinkedIssue", () => {
     expect(groups[0].children.map((one) => one.key)).toEqual(["PR_a"]);
   });
 
+  // One pull request can close two issues. Each issue is still one piece of
+  // work with that pull request in it, so each card shows it. Nesting it under
+  // the first issue only left the second card looking like it had none.
+  test("puts a pull request under every issue it closes that is on the board", () => {
+    const links = normalizeRelationships([
+      {
+        __typename: "PullRequest",
+        id: "PR_both",
+        closingIssuesReferences: { nodes: [{ id: "I_one" }, { id: "I_two" }] },
+      },
+    ]);
+    const shared = { key: "PR_both", kind: "pull-request" };
+    const groups = groupByLinkedIssue(
+      [{ key: "I_one", kind: "issue" }, shared, { key: "I_two", kind: "issue" }],
+      links,
+    );
+    expect(groups.map((one) => [one.item.key, one.children.map((child) => child.key)])).toEqual([
+      ["I_one", ["PR_both"]],
+      ["I_two", ["PR_both"]],
+    ]);
+  });
+
   test("keeps a pull request on its own when its issue is not on the board", () => {
     const groups = groupByLinkedIssue([pull], byId);
     expect(groups.map((one) => one.item.key)).toEqual(["PR_a"]);
