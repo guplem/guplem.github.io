@@ -347,6 +347,12 @@ export function applyCheckSummaries(byId, bySha) {
  * whose issue is not on the board keeps its own place, because hiding it would
  * lose it.
  *
+ * A pull request that closes two issues on the board goes inside both cards.
+ * Each issue is its own piece of work with that pull request in it, and an
+ * issue card with no pull request inside reads as if nothing were open for it.
+ * So the same pull request can appear in two groups: anything that counts the
+ * pull requests on the board must count each key once.
+ *
  * @returns {{item: object, children: object[]}[]} top level in the order given
  */
 export function groupByLinkedIssue(items, byId) {
@@ -357,11 +363,13 @@ export function groupByLinkedIssue(items, byId) {
 
   for (const item of list) {
     if (item?.kind !== "pull-request") continue;
-    const home = readRelationship(byId, item.key).closes.find((one) => present.has(one.id));
-    if (!home) continue;
-    if (!childrenOf.has(home.id)) childrenOf.set(home.id, []);
-    childrenOf.get(home.id).push(item);
-    nested.add(item.key);
+    const homes = readRelationship(byId, item.key).closes.filter((one) => present.has(one.id));
+    for (const home of homes) {
+      if (!childrenOf.has(home.id)) childrenOf.set(home.id, []);
+      const children = childrenOf.get(home.id);
+      if (!children.includes(item)) children.push(item);
+      nested.add(item.key);
+    }
   }
 
   return list

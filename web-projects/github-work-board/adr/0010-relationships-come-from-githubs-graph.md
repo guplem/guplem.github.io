@@ -45,7 +45,10 @@ Four rules follow from what the data means:
   the word would stop meaning anything.
 - **A pull request nests under the issue it closes, when both are on the
   board.** If its issue is not there, it keeps its own card, because hiding it
-  would lose it.
+  would lose it. A pull request that closes two issues on the board nests
+  under both: each issue card shows the work in it, and an issue card with no
+  pull request inside reads as if nothing were open for it. The board then
+  lists each pull request once when it counts a stack.
 - **A child is asked about a second time, with the same query.** A card lists
   its children and says which column each one is in, and that column is the
   same rule every card uses, which reads the pull requests that would close the

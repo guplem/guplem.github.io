@@ -2242,7 +2242,9 @@ function renderBoard() {
   // by list, exactly like the badges. Worked out over the whole screen, one
   // pull request that targeted a branch in the other list joined two stacks,
   // and a hover lit every stacked card on the page (ADR 0020, ADR 0027).
-  const onBoard = grouped.flatMap((group) => [group.item, ...group.children]);
+  // A pull request that closes two issues sits inside both cards, so it is
+  // listed once here, or its stack would count it twice (ADR 0010).
+  const onBoard = uniqueByKey(grouped.flatMap((group) => [group.item, ...group.children]));
   state.stackRoots = stackLights([waiting, onBoard]);
   // The badge on a card in a column counts the board, the way the badge in the
   // review row counts the review row: each one is the truth about the list the
