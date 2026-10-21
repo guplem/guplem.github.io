@@ -12,7 +12,7 @@
   "imageAlt": "MyTube subscriptions feed: video cards with toggles to hide Shorts, watched, and older videos, plus per-video Watch Later and seen buttons",
   "skills": ["Vibe Coded", "Frontend", "UI/UX", "Architecture"],
   "links": [
-    { "type": "link", "url": "https://script.google.com/macros/s/AKfycbxKXGIgGhnj4jFBsx9KvMLQW9tRbVToQN2jfyZXrGRcWUynjrX6oWBnUDleJZlvT9E1/exec" },
+    { "url": "https://triunitystudios.com/MyTube/" },
     { "type": "github", "url": "https://github.com/guplem/MyTube" }
   ]
 }
