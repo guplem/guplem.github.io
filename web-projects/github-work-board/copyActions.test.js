@@ -6,6 +6,7 @@ import {
   PLACEHOLDERS,
   canFillTemplate,
   fillCopyTemplate,
+  offeredIn,
   orderCopyActions,
   pickEmoji,
   placeholdersIn,
@@ -122,6 +123,17 @@ describe("orderCopyActions", () => {
     expect(orderCopyActions(stored).map((one) => one.id)).toEqual(["b"]);
   });
 
+  // The reader picks where a line is offered. Nothing picked is everywhere, so
+  // every line saved before this choice existed keeps its rows.
+  test("carries the parts of the board a line is offered in, and none means everywhere", () => {
+    const stored = {
+      a: { label: "Implement", template: "#{N}", areas: ["todo", "todo", 7, " ", "ongoing"], createdAt: now },
+      b: { label: "Link", template: "{URL}", createdAt: later },
+      c: { label: "Broken", template: "{URL}", areas: "todo", createdAt: later },
+    };
+    expect(orderCopyActions(stored).map((one) => one.areas)).toEqual([["todo", "ongoing"], [], []]);
+  });
+
   test("an action with no label is named by what it copies", () => {
     const stored = { a: { label: "  ", template: "/implement-issue #{N}", createdAt: now, updatedAt: now } };
     expect(orderCopyActions(stored)[0].label).toBe("/implement-issue #{N}");
@@ -134,6 +146,7 @@ describe("orderCopyActions", () => {
       label: "Implement",
       template: "#{N}",
       icon: "",
+      areas: [],
       createdAt: now,
     });
   });
@@ -141,7 +154,7 @@ describe("orderCopyActions", () => {
   test("never throws, whatever is in the file", () => {
     expect(orderCopyActions(null)).toEqual([]);
     expect(orderCopyActions({ a: 7, b: null, c: { template: "{N}" } })).toEqual([
-      { id: "c", label: "{N}", template: "{N}", icon: "", createdAt: "" },
+      { id: "c", label: "{N}", template: "{N}", icon: "", areas: [], createdAt: "" },
     ]);
   });
 });
@@ -244,5 +257,35 @@ describe("what the reader is offered", () => {
       expect(placeholdersIn(one.template).length).toBeGreaterThan(0);
       expect(one.template.match(/\{[A-Za-z]+\}/g)).toEqual(placeholdersIn(one.template));
     }
+  });
+});
+
+// A line meant for work not started yet, such as a prompt that asks an agent
+// to implement an issue, is noise on a card already in review. The reader
+// picks the parts of the board where each line is offered.
+describe("offeredIn", () => {
+  test("a line with no parts picked is offered everywhere", () => {
+    expect(offeredIn({ areas: [] }, "todo")).toBe(true);
+    expect(offeredIn({ areas: [] }, "reviews")).toBe(true);
+    expect(offeredIn({}, "done")).toBe(true);
+    expect(offeredIn({ areas: [] }, "")).toBe(true);
+  });
+
+  test("a line with parts picked is offered only there", () => {
+    const line = { areas: ["todo", "reviews"] };
+    expect(offeredIn(line, "todo")).toBe(true);
+    expect(offeredIn(line, "reviews")).toBe(true);
+    expect(offeredIn(line, "ongoing")).toBe(false);
+  });
+
+  // A card the board cannot place belongs to no part, so only a line meant
+  // for everywhere is offered on it.
+  test("a card in no known part takes only the lines meant for everywhere", () => {
+    expect(offeredIn({ areas: ["todo"] }, "")).toBe(false);
+    expect(offeredIn({ areas: ["todo"] }, undefined)).toBe(false);
+  });
+
+  test("never throws on something that is not a line", () => {
+    expect(offeredIn(null, "todo")).toBe(false);
   });
 });

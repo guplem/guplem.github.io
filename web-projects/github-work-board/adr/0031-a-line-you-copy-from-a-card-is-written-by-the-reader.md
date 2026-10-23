@@ -44,6 +44,15 @@ filled in.**
   reader to every machine (ADR 0024) and two devices that each add one keep
   both (ADR 0002). A removed line keeps its key with an empty template, the
   same way a cleared note keeps its key.
+- **A line is offered everywhere, or only in the parts of the board the reader
+  picks.** A part is the review row or a column, by the id
+  `appearance.colourableAreas` gives it. A prompt that asks an agent to
+  implement an issue belongs on work in "To do" and is noise on a card in
+  review. No part picked means everywhere, so every line saved before this
+  choice existed keeps its rows, and a new line starts there. The part is
+  where the card is drawn, a column moved by hand included; a pull request
+  nested in its issue is in that issue's column. `copyActions.offeredIn`
+  decides it, and `cardMenu.cardMenuRows` applies it with every other row.
 - **A line can carry an icon**, picked from a list or typed as one emoji, and
   the menu row leads with it. ADR 0046 holds the rules.
 - **Oldest first, with the id breaking a tie.** Two devices can write a line in
@@ -82,6 +91,10 @@ the text alone keeps the board out of that argument.
 **Rejected: `localStorage`.** A line is a preference, and a preference that
 does not follow the reader is one they write twice (ADR 0024). The tokens stay
 in this browser because they are credentials; a sentence is not.
+
+**A part id is as permanent as a column id**, because it is one. It is written
+into the line the moment the reader picks it, and the column ids are pinned
+already (ADR 0011).
 
 **Rejected: a submenu holding the lines.** The menu is short, and a reader with
 three lines would open two popovers to reach one row. Two auto popovers that

@@ -19,7 +19,9 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   that copies it with that card's own number in it. `{URL}`, `{TITLE}`,
   `{REPO}` and `{BRANCH}` work the same way. A line that asks for a branch is
   not offered on an issue, because an issue has none. Give each line an icon in
-  Settings: pick one from the list, or type one emoji.
+  Settings: pick one from the list, or type one emoji. A line is offered
+  everywhere, or only in the parts of the board you pick: an implement prompt
+  can stay in "To do" and stay out of the cards already in review.
 - **A card menu you can read by its icons.** Every row leads with one: a note,
   a branch, a column, a flame for high priority, a level line for normal and an
   arrow for "not a priority".

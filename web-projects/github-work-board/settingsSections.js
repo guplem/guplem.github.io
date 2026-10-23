@@ -55,7 +55,7 @@ export const SETTINGS_ENTRIES = [
   { id: "column-shown", section: "appearance", label: "Show or hide a part of the board", keywords: ["hide", "show", "column", "review row", "done", "visible"] },
   { id: "card-parts", section: "appearance", label: "What each card shows", keywords: ["hide", "show", "card", "labels", "milestone", "fields", "effort", "priority", "people", "faces", "parent", "blockers", "sub-issues", "children"] },
   { id: "tab-count", section: "counting", label: "What the tab name counts", keywords: ["tab", "title", "number", "count", "badge", "not a priority", "low priority"] },
-  { id: "copy-actions", section: "copy-lines", label: "Lines you copy from a card", keywords: ["copy", "template", "line", "snippet", "clipboard", "menu", "branch"] },
+  { id: "copy-actions", section: "copy-lines", label: "Lines you copy from a card", keywords: ["copy", "template", "line", "snippet", "clipboard", "menu", "branch", "column", "where", "prompt"] },
   { id: "copy-placeholders", section: "copy-lines", label: "What you can put in a line", keywords: ["placeholder", "number", "link", "title", "variables"] },
 ];
 

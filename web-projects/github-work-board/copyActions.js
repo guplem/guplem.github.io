@@ -20,6 +20,11 @@
 //    branch, so a template using `{BRANCH}` does not appear in an issue's menu.
 //    That is the answer "Copy branch name" already gives (ADR 0021).
 //
+// A line can also be limited to some parts of the board: a prompt that asks an
+// agent to implement an issue means nothing on a card already in review. A part
+// is the review row or a column, by the id `appearance.colourableAreas` gives
+// it, and no part picked means everywhere (ADR 0031).
+//
 // A token here is written into `board.json` the moment the reader saves a
 // template, so it is as permanent as a column id. Renaming one breaks every
 // template already saved, and `invariants.test.js` guards the list.
@@ -235,6 +240,36 @@ export function canFillTemplate(template, item) {
 }
 
 /**
+ * The parts of the board a stored line is limited to: every id once, in the
+ * order the reader picked them. Anything else reads as none, which is
+ * everywhere, so a line saved before this choice existed keeps every row.
+ */
+function readAreas(value) {
+  if (!Array.isArray(value)) return [];
+  const areas = [];
+  for (const one of value) {
+    const id = text(one).trim();
+    if (id !== "" && !areas.includes(id)) areas.push(id);
+  }
+  return areas;
+}
+
+/**
+ * Whether a line is offered on a card in one part of the board.
+ *
+ * A line with no part picked is offered everywhere. A card the board cannot
+ * place (`area` empty) takes only those lines.
+ *
+ * @param action one line, from `orderCopyActions`
+ * @param area the id of the part the card is drawn in: the review row or a column
+ */
+export function offeredIn(action, area) {
+  if (!action || typeof action !== "object") return false;
+  const areas = readAreas(action.areas);
+  return areas.length === 0 || areas.includes(text(area));
+}
+
+/**
  * The stored map into the list Settings and the menu read, in one order.
  *
  * Oldest first, so the list holds still as the reader adds to it, with the id
@@ -246,7 +281,7 @@ export function canFillTemplate(template, item) {
  * can tell "removed just now" from "never seen" (ADR 0002).
  *
  * @param stored `document.copyActions`, the raw record map
- * @returns `[{id, label, template, icon, createdAt}]`
+ * @returns `[{id, label, template, icon, areas, createdAt}]`
  */
 export function orderCopyActions(stored) {
   const map = stored && typeof stored === "object" && !Array.isArray(stored) ? stored : {};
@@ -261,6 +296,7 @@ export function orderCopyActions(stored) {
       label: label === "" ? template : label,
       template,
       icon: text(record.icon).trim(),
+      areas: readAreas(record.areas),
       createdAt: text(record.createdAt),
     });
   }

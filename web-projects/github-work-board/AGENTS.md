@@ -51,7 +51,7 @@ It is the short procedure for all of the above.
 | `doneRange.js` | Yes | Which days the last column is about: the presets, every midnight boundary in the reader's clock, the words in its heading, and the written form a link carries (ADR 0034) |
 | `children.js` | Yes | The order the children of an issue read in, the count of closed ones beside their pills, and the words on the press that opens the list (ADR 0032) |
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
-| `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, filling one in, and the icon each line wears (ADR 0031, ADR 0046) |
+| `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, filling one in, the parts of the board each line is offered in, and the icon each line wears (ADR 0031, ADR 0046) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
 | `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards that want their author, ranked changes requested, then red checks, then conflicts (ADR 0026), the reviews the reader started (ADR 0042), and the work the reader raised, and the icon for each priority (ADR 0044, ADR 0046) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it, including the priorities the card is not in, whether it wears the moved-by-hand dot, and the icons on its own rows (ADR 0022, ADR 0031, ADR 0044, ADR 0046) |
@@ -464,7 +464,8 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
 - **`cardMenu.cardMenuRows` decides which rows the menu offers, and nothing
   else does.** Add note on every card, Copy branch name on a pull request, Move
   to on a card that sits in a column, and one row per line the reader wrote in
-  Settings that this card can fill (ADR 0031), the priorities it is not in
+  Settings that this card can fill and that is offered in the part of the
+  board the card is drawn in (ADR 0031), the priorities it is not in
   (ADR 0044), and whether it wears the moved-by-hand dot (ADR 0046). The first three answers were
   three conditions written into `app.js` one at a time, and the newest of them
   quietly stopped a note being addable anywhere but the columns (ADR 0022).
@@ -472,6 +473,12 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   to the place the card is drawn.** A review card and a nested pull request take
   one exactly like a column card does. Do not hide the box by where the card
   sits; that rule existed, in CSS, and it was wrong (ADR 0022).
+- **A card knows the part of the board it is drawn in, through the `area`
+  option of `buildWorkItemCard`.** A copy line limited to "To do" reads it.
+  The review row passes `REVIEW_ROW_ID`, a column passes its id, and a nested
+  pull request takes its issue's column. A new place that draws a card with a
+  menu must pass one too, or it offers only the lines meant for everywhere
+  (ADR 0031).
 - **A nested pull request card carries a menu, with no move in it.** It travels
   in its issue's column, so the move would write to the document and change
   nothing on screen. Copying its branch does mean something, which is why it has
