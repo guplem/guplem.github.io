@@ -611,8 +611,15 @@ function movedTip(item, column) {
  *     asking me."
  *   - `none`: for an issue whose pull request is nested under it, because that
  *     card draws the same faces one line below.
+ *
+ * `area` is the part of the board the card is drawn in, the review row or its
+ * column, so the menu offers only the lines the reader meant for there
+ * (ADR 0031).
  */
-function buildWorkItemCard(item, { withMenu = true, compact = false, stack = null, people = "reviewers" } = {}) {
+function buildWorkItemCard(
+  item,
+  { withMenu = true, compact = false, stack = null, people = "reviewers", area = "" } = {},
+) {
 
   const card = document.createElement("li");
   card.className = "issue";
@@ -670,6 +677,7 @@ function buildWorkItemCard(item, { withMenu = true, compact = false, stack = nul
     state.menuAnchor = more;
     // Only a card in a column can be moved between columns (ADR 0022).
     state.menuCanMove = withMenu;
+    state.menuArea = area;
   });
   card.append(more);
   if (priority !== NORMAL) card.append(buildPriorityMark(priority));
@@ -1869,8 +1877,11 @@ function buildChildren(item, subIssues) {
   return box;
 }
 
-/** One card, with any pull request that closes it nested inside. */
-function buildGroupCard({ item, children }) {
+/**
+ * One card, with any pull request that closes it nested inside. `area` is the
+ * column it is drawn in, and the nested pull request travels in it too.
+ */
+function buildGroupCard({ item, children }, area) {
   // The nested pull request draws the review, so the issue above it must not
   // draw the same faces again (ADR 0028).
   //
@@ -1880,6 +1891,7 @@ function buildGroupCard({ item, children }) {
   const card = buildWorkItemCard(item, {
     people: children.length > 0 ? "none" : "reviewers",
     stack: state.stackBadges[item.key] ?? null,
+    area,
   });
   if (children.length === 0) return card;
 
@@ -1899,6 +1911,7 @@ function buildGroupCard({ item, children }) {
         compact: true,
         people: "reviewers",
         stack: state.stackBadges[child.key] ?? null,
+        area,
       }),
     ),
   );
@@ -2037,7 +2050,7 @@ function buildColumn({ column, groups }, counted, emptyText = "Nothing here") {
 
   const list = document.createElement("ul");
   list.className = "issues";
-  list.replaceChildren(...groups.map(buildGroupCard));
+  list.replaceChildren(...groups.map((group) => buildGroupCard(group, column.id)));
 
   section.append(head);
   if (picker?.panel) section.append(picker.panel);
@@ -2265,7 +2278,12 @@ function renderBoard() {
   const stacked = stackPositions(waiting);
   element("reviews-list").replaceChildren(
     ...found.map((item) =>
-      buildWorkItemCard(item, { withMenu: false, stack: stacked[item.key] ?? null, people: "assignees" }),
+      buildWorkItemCard(item, {
+        withMenu: false,
+        stack: stacked[item.key] ?? null,
+        people: "assignees",
+        area: REVIEW_ROW_ID,
+      }),
     ),
   );
 
@@ -2557,7 +2575,7 @@ function buildCopyActionRow(action) {
   template.setAttribute("aria-label", "What this line copies");
   template.addEventListener("input", () => save({ template: template.value }));
 
-  lines.append(name, template);
+  lines.append(name, template, buildCopyAreaChips(action));
 
   const buttons = document.createElement("div");
   buttons.className = "copy-action-buttons";
@@ -2574,6 +2592,37 @@ function buildCopyActionRow(action) {
 
   row.append(icon, lines, buttons);
   return row;
+}
+
+/**
+ * Where one line is offered: "Everywhere", or the parts of the board the
+ * reader picked. A press on a part adds it or takes it away, and taking the
+ * last one away is everywhere again (ADR 0031).
+ */
+function buildCopyAreaChips(action) {
+  const chips = document.createElement("div");
+  chips.className = "chips copy-action-areas";
+  chips.setAttribute("role", "group");
+  chips.setAttribute("aria-label", "Where the card menu offers this line");
+
+  const set = (areas) => {
+    state.board = writeCopyAction(state.board, action.id, { ...action, areas }, new Date().toISOString());
+    scheduleSave();
+    renderCopyActions();
+  };
+
+  const everywhere = buildChip("Everywhere", action.areas.length === 0, () => set([]));
+  explain(everywhere, "Offer this line on every card. Pick a part of the board instead to offer it only there.");
+  chips.append(everywhere);
+  for (const area of colourableAreas()) {
+    const picked = action.areas.includes(area.id);
+    chips.append(
+      buildChip(area.label, picked, () =>
+        set(picked ? action.areas.filter((one) => one !== area.id) : [...action.areas, area.id]),
+      ),
+    );
+  }
+  return chips;
 }
 
 /**
@@ -4227,6 +4276,7 @@ function start() {
         copyActions: readCopyActions(state.board),
         priority: readPriority(state.board, state.menuItem.key),
         column,
+        area: state.menuArea,
       });
       element("menu-copies").replaceChildren(
         ...rows.copies.map((action) => buildCopyMenuRow(action, state.menuItem)),

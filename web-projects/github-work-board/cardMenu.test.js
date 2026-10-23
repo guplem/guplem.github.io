@@ -91,6 +91,18 @@ describe("the lines the reader wrote (ADR 0031)", () => {
   test("a row appears wherever the card is drawn, like the note does", () => {
     expect(cardMenuRows(pull, { canMove: false, copyActions: actions }).copies).toEqual(actions);
   });
+
+  // A prompt to implement an issue belongs on work not started yet. The reader
+  // picks the parts of the board a line is offered in, and none is everywhere.
+  test("a line limited to some parts of the board is a row only on a card there", () => {
+    const limited = [
+      { id: "a1", label: "Implement", template: "/implement-issue #{N}", areas: ["todo"] },
+      { id: "a2", label: "Link", template: "{URL}", areas: [] },
+    ];
+    expect(cardMenuRows(issue, { copyActions: limited, area: "todo" }).copies).toEqual(limited);
+    expect(cardMenuRows(issue, { copyActions: limited, area: "ongoing" }).copies).toEqual([limited[1]]);
+    expect(cardMenuRows(issue, { copyActions: limited }).copies).toEqual([limited[1]]);
+  });
 });
 
 // A card the reader moved by hand no longer follows the rules, and nothing

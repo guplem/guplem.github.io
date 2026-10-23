@@ -10,7 +10,7 @@
 // offered only when this card holds everything its template asks for (ADR 0031).
 
 import { AUTOMATIC, readColumnId } from "./columns.js";
-import { COPY_ICONS, canFillTemplate } from "./copyActions.js";
+import { COPY_ICONS, canFillTemplate, offeredIn } from "./copyActions.js";
 import { HIGH, LOW, NORMAL, knownPriority } from "./priority.js";
 
 /**
@@ -33,8 +33,10 @@ const PRIORITY_ORDER = [HIGH, NORMAL, LOW];
  * @param copyActions the lines the reader wrote, from `readCopyActions`
  * @param priority the card's priority now, from `readPriority`
  * @param column the column the reader moved this card to, from `readColumn`
+ * @param area the part of the board the card is drawn in: the review row or the
+ *   column it sits in, by the id `appearance.colourableAreas` gives it
  */
-export function cardMenuRows(item, { canMove = false, copyActions = [], priority = NORMAL, column = "" } = {}) {
+export function cardMenuRows(item, { canMove = false, copyActions = [], priority = NORMAL, column = "", area = "" } = {}) {
   const kind = item && typeof item === "object" ? item.kind : null;
   if (!item || typeof item !== "object") {
     return { note: false, branch: false, move: false, moved: false, priorities: [], copies: [] };
@@ -63,7 +65,10 @@ export function cardMenuRows(item, { canMove = false, copyActions = [], priority
     priorities: PRIORITY_ORDER.filter((one) => one !== knownPriority(priority)),
     // The reader's own lines, in the order Settings holds them. An action this
     // card cannot fill is left out rather than copied with a hole in it: an
-    // issue has no branch, exactly as "Copy branch name" already says.
-    copies: (Array.isArray(copyActions) ? copyActions : []).filter((action) => canFillTemplate(action?.template, item)),
+    // issue has no branch, exactly as "Copy branch name" already says. A line
+    // the reader limited to other parts of the board is left out too.
+    copies: (Array.isArray(copyActions) ? copyActions : []).filter(
+      (action) => canFillTemplate(action?.template, item) && offeredIn(action, area),
+    ),
   };
 }
