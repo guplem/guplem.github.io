@@ -334,6 +334,8 @@ describe("what each part of the board counts", () => {
 describe("the lines the reader copies from a card (ADR 0031)", () => {
   const now = "2026-09-22T10:00:00.000Z";
   const later = "2026-09-22T11:00:00.000Z";
+  // The lines the reader wrote, without the one a new board starts with.
+  const readOwn = (document) => readCopyActions(document).filter((one) => one.id !== "branch-name");
 
   test("round-trips one action", () => {
     const document = writeCopyAction(
@@ -342,14 +344,36 @@ describe("the lines the reader copies from a card (ADR 0031)", () => {
       { label: "Implement", template: "/implement-issue #{N}", createdAt: now },
       now,
     );
-    expect(readCopyActions(document)).toEqual([
+    expect(readOwn(document)).toEqual([
       { id: "a1", label: "Implement", template: "/implement-issue #{N}", icon: "", areas: [], createdAt: now },
     ]);
   });
 
+  // "Copy branch name" was a fixed menu row (ADR 0021). It is a line the board
+  // starts with now, read in and never written until the reader changes it.
+  test("a new board reads one line, the branch, and the file holds none", () => {
+    const document = emptyDocument(now);
+    expect(readCopyActions(document).map((one) => one.template)).toEqual(["{BRANCH}"]);
+    expect(document.copyActions).toEqual({});
+  });
+
+  test("the starting line, once removed, is not read again", () => {
+    const document = removeCopyAction(emptyDocument(now), "branch-name", later);
+    expect(readCopyActions(document)).toEqual([]);
+  });
+
+  // The edit keeps the starting line's place: the menu row does not jump below
+  // the reader's own lines the first time they rename it.
+  test("the starting line, once edited, keeps its place above the reader's lines", () => {
+    const own = writeCopyAction(emptyDocument(now), "a1", { label: "Ask", template: "{URL}", createdAt: now }, now);
+    const [branch] = readCopyActions(own);
+    const edited = writeCopyAction(own, branch.id, { ...branch, label: "Branch" }, later);
+    expect(readCopyActions(edited).map((one) => one.label)).toEqual(["Branch", "Ask"]);
+  });
+
   test("round-trips the parts of the board the reader picked for a line", () => {
     const document = writeCopyAction(emptyDocument(now), "a1", { label: "Ask", template: "{URL}", areas: ["todo"] }, now);
-    expect(readCopyActions(document)[0].areas).toEqual(["todo"]);
+    expect(readOwn(document)[0].areas).toEqual(["todo"]);
   });
 
   // Like the icon: Add, an edit of the text and Remove do not name the parts,
@@ -364,7 +388,7 @@ describe("the lines the reader copies from a card (ADR 0031)", () => {
 
   test("round-trips the icon the reader picked", () => {
     const document = writeCopyAction(emptyDocument(now), "a1", { label: "Ask", template: "{URL}", icon: "eye" }, now);
-    expect(readCopyActions(document)[0].icon).toBe("eye");
+    expect(readOwn(document)[0].icon).toBe("eye");
   });
 
   // The Add button and the remove write a line without naming its icon. The
@@ -381,9 +405,11 @@ describe("the lines the reader copies from a card (ADR 0031)", () => {
     expect(writeCopyAction(one, "a1", { label: "Ask", template: "{URL}", icon: "" }, later).copyActions.a1.icon).toBe("");
   });
 
-  test("nobody starts with an action", () => {
-    expect(readCopyActions(emptyDocument(now))).toEqual([]);
-    expect(readCopyActions(null)).toEqual([]);
+  // The board ships one line and no more: "Copy branch name", which was a
+  // fixed menu row before the reader could write lines (ADR 0021, ADR 0031).
+  test("a new board starts with the branch line and nothing else", () => {
+    expect(readCopyActions(emptyDocument(now)).map((one) => one.id)).toEqual(["branch-name"]);
+    expect(readCopyActions(null).map((one) => one.id)).toEqual(["branch-name"]);
   });
 
   // A removed action keeps its key with an empty template, the same way a
@@ -392,7 +418,7 @@ describe("the lines the reader copies from a card (ADR 0031)", () => {
   test("a removed action keeps its key, so the other device hears about it", () => {
     const one = writeCopyAction(emptyDocument(now), "a1", { label: "Implement", template: "#{N}" }, now);
     const gone = removeCopyAction(one, "a1", later);
-    expect(readCopyActions(gone)).toEqual([]);
+    expect(readOwn(gone)).toEqual([]);
     expect(gone.copyActions.a1.template).toBe("");
     expect(gone.copyActions.a1.updatedAt).toBe(later);
   });
@@ -405,13 +431,13 @@ describe("the lines the reader copies from a card (ADR 0031)", () => {
   test("writing one action says nothing about another", () => {
     const one = writeCopyAction(emptyDocument(now), "a1", { label: "One", template: "#{N}" }, now);
     const two = writeCopyAction(one, "a2", { label: "Two", template: "{URL}" }, later);
-    expect(readCopyActions(two).map((action) => action.label)).toEqual(["One", "Two"]);
+    expect(readOwn(two).map((action) => action.label)).toEqual(["One", "Two"]);
   });
 
   test("the document handed in is never changed", () => {
     const before = emptyDocument(now);
     writeCopyAction(before, "a1", { label: "One", template: "#{N}" }, now);
-    expect(readCopyActions(before)).toEqual([]);
+    expect(readOwn(before)).toEqual([]);
   });
 });
 

@@ -8,6 +8,9 @@ import {
   fillCopyTemplate,
   offeredIn,
   orderCopyActions,
+  STARTING_ACTIONS,
+  withStartingActions,
+  writtenByReader,
   pickEmoji,
   placeholdersIn,
   readCopyIcon,
@@ -156,6 +159,81 @@ describe("orderCopyActions", () => {
     expect(orderCopyActions({ a: 7, b: null, c: { template: "{N}" } })).toEqual([
       { id: "c", label: "{N}", template: "{N}", icon: "", areas: [], createdAt: "" },
     ]);
+  });
+});
+
+// "Copy branch name" was a fixed row in the card menu (ADR 0021). It is a line
+// the board starts with now, so the reader can rename it, limit it to some
+// parts of the board, or remove it, like any line they wrote (ADR 0031).
+describe("the line the board starts with", () => {
+  const now = "2026-10-23T10:00:00.000Z";
+
+  test("a board with no lines starts with one that copies the branch", () => {
+    expect(orderCopyActions(withStartingActions(null))).toEqual([
+      {
+        id: "branch-name",
+        label: "Copy branch name",
+        template: "{BRANCH}",
+        icon: "branch",
+        areas: [],
+        createdAt: "1970-01-01T00:00:00.000Z",
+      },
+    ]);
+  });
+
+  // It is read in, never written: a board that saved it on every device would
+  // need a merge rule for the same line arriving twice. Nothing is in the file
+  // until the reader changes it.
+  test("the starting line is added to what is read, and the map handed in is not changed", () => {
+    const stored = {};
+    withStartingActions(stored);
+    expect(stored).toEqual({});
+  });
+
+  // It sorts first because the fixed row sat above every line the reader wrote.
+  test("it comes before the lines the reader wrote", () => {
+    const stored = { a: { label: "Ask", template: "{URL}", createdAt: now, updatedAt: now } };
+    expect(orderCopyActions(withStartingActions(stored)).map((one) => one.id)).toEqual(["branch-name", "a"]);
+  });
+
+  test("a starting line the reader edited reads as the reader wrote it", () => {
+    const stored = {
+      "branch-name": { label: "Branch", template: "git checkout {BRANCH}", createdAt: "1970-01-01T00:00:00.000Z", updatedAt: now },
+    };
+    expect(orderCopyActions(withStartingActions(stored))[0]).toMatchObject({ label: "Branch", template: "git checkout {BRANCH}" });
+  });
+
+  // A removed line keeps its key with an empty template (ADR 0002). That key is
+  // what keeps the starting line from coming back on the next read.
+  test("a starting line the reader removed stays removed", () => {
+    const stored = { "branch-name": { label: "Copy branch name", template: "", createdAt: now, updatedAt: now } };
+    expect(orderCopyActions(withStartingActions(stored))).toEqual([]);
+  });
+
+  test("never throws, whatever is in the file", () => {
+    expect(orderCopyActions(withStartingActions([1, 2]))).toHaveLength(STARTING_ACTIONS.length);
+    expect(orderCopyActions(withStartingActions("text"))).toHaveLength(STARTING_ACTIONS.length);
+  });
+
+  test("every starting line uses a placeholder this board fills and an icon it draws", () => {
+    for (const one of STARTING_ACTIONS) {
+      expect(placeholdersIn(one.template).length).toBeGreaterThan(0);
+      expect(COPY_ICONS.map((icon) => icon.id)).toContain(one.icon);
+    }
+  });
+
+  // Settings lists the examples until the reader writes a line. The starting
+  // line is not one they wrote, so it must not hide the examples from a new
+  // reader, who would then never see what a line can be.
+  test("the starting line is not a line the reader wrote", () => {
+    const own = { a: { label: "Ask", template: "{URL}", createdAt: now, updatedAt: now } };
+    expect(writtenByReader(orderCopyActions(withStartingActions(null)))).toEqual([]);
+    expect(writtenByReader(orderCopyActions(withStartingActions(own))).map((one) => one.id)).toEqual(["a"]);
+    expect(writtenByReader(null)).toEqual([]);
+  });
+
+  test("the examples show the branch too, so a reader who removed it can write it again", () => {
+    expect(EXAMPLE_ACTIONS.map((one) => one.template)).toContain("{BRANCH}");
   });
 });
 

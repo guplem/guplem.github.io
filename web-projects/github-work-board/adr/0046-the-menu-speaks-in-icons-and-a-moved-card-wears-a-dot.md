@@ -18,7 +18,7 @@ today, and the board looked exactly as it does when a rule is wrong.
 
 **Every row in the card menu leads with an icon.** The icon is drawn from SVG
 paths that the module owning its meaning holds: `cardMenu.MENU_ICON_PATHS` for
-the note, the branch and the move, `priority.PRIORITY_PATHS` for the
+the note and the move, `priority.PRIORITY_PATHS` for the
 priorities, and `copyActions.COPY_ICONS` for the reader's lines. `app.js` draws
 every icon through one function, `drawIcon`.
 

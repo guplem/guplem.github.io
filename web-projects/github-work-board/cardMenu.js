@@ -10,7 +10,7 @@
 // offered only when this card holds everything its template asks for (ADR 0031).
 
 import { AUTOMATIC, readColumnId } from "./columns.js";
-import { COPY_ICONS, canFillTemplate, offeredIn } from "./copyActions.js";
+import { canFillTemplate, offeredIn } from "./copyActions.js";
 import { HIGH, LOW, NORMAL, knownPriority } from "./priority.js";
 
 /**
@@ -20,7 +20,6 @@ import { HIGH, LOW, NORMAL, knownPriority } from "./priority.js";
  */
 export const MENU_ICON_PATHS = {
   note: ["M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z", "M15 3v4a2 2 0 0 0 2 2h4"],
-  branch: COPY_ICONS.find((one) => one.id === "branch").paths,
   move: ["M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z", "M9 3v18", "M15 3v18"],
 };
 
@@ -39,7 +38,7 @@ const PRIORITY_ORDER = [HIGH, NORMAL, LOW];
 export function cardMenuRows(item, { canMove = false, copyActions = [], priority = NORMAL, column = "", area = "" } = {}) {
   const kind = item && typeof item === "object" ? item.kind : null;
   if (!item || typeof item !== "object") {
-    return { note: false, branch: false, move: false, moved: false, priorities: [], copies: [] };
+    return { note: false, move: false, moved: false, priorities: [], copies: [] };
   }
 
   return {
@@ -47,8 +46,6 @@ export function cardMenuRows(item, { canMove = false, copyActions = [], priority
     // id, so it belongs to the work and not to the place the card sits: the
     // review row and a nested pull request take one exactly like a column does.
     note: true,
-    // An issue has no branch.
-    branch: kind === "pull-request",
     // A card outside the columns has no column to move between: the review
     // row holds none, and a pull request nested in its issue travels in that
     // issue's column (ADR 0012).
@@ -65,8 +62,9 @@ export function cardMenuRows(item, { canMove = false, copyActions = [], priority
     priorities: PRIORITY_ORDER.filter((one) => one !== knownPriority(priority)),
     // The reader's own lines, in the order Settings holds them. An action this
     // card cannot fill is left out rather than copied with a hole in it: an
-    // issue has no branch, exactly as "Copy branch name" already says. A line
-    // the reader limited to other parts of the board is left out too.
+    // issue has no branch, so "Copy branch name", the line a new board starts
+    // with, is offered on a pull request alone. A line the reader limited to
+    // other parts of the board is left out too.
     copies: (Array.isArray(copyActions) ? copyActions : []).filter(
       (action) => canFillTemplate(action?.template, item) && offeredIn(action, area),
     ),

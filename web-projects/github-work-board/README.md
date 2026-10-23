@@ -13,7 +13,9 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   board forgets the note` becomes a red icon, a muted `api`, and the words
   that matter. A title the board does not recognise keeps every word it has.
 - **Copy a branch name** from any pull request card, through the card menu,
-  including one nested inside its issue.
+  including one nested inside its issue. It is the one line a new board starts
+  with, so you can rename it, limit it to some parts of the board, or remove it
+  in Settings, like a line you wrote.
 - **Copy your own lines from a card.** Write a line once in Settings, for
   example `/implement-issue #{N}`, and it becomes a row in every card's menu
   that copies it with that card's own number in it. `{URL}`, `{TITLE}`,

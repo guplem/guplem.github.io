@@ -36,7 +36,9 @@ Three things had to be right, and each was wrong first:
 3. **A nested pull request keeps the menu, with no move in it.** It travels in
    its issue's column, because the pair is one piece of work (ADR 0010), so a
    move would write to the document and change nothing on screen. Copying its
-   branch does mean something, which is why the menu stays (ADR 0021).
+   branch does mean something, which is why the menu stays (ADR 0021). The
+   branch is now a line the reader can change (ADR 0031), and it is still
+   offered there.
 
 **The columns reach the real edge of the window.** The track is pulled out to the
 full width with negative margins and carries the page's gutter as its own

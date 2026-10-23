@@ -42,7 +42,10 @@ nothing is lost.
   (ADR 0001). Keeping them beside the type list keeps a type in one place.
 
 **Copy branch name is a row in the card menu**, and it is the row a nested
-pull request gets. The menu now shows only the rows that mean something for the
+pull request gets. It began as a fixed row. It is now the one line a new board
+starts with, under the reader's lines (ADR 0031), so the reader can rename it,
+limit it or remove it, and the rule that keeps it off an issue is the rule for
+every line. The menu now shows only the rows that mean something for the
 card that opened it: an issue has no branch, and a nested pull request cannot
 be moved, because its column comes from the issue it travels in (ADR 0012).
 That reasoning was never "a nested card gets no menu", it was "a move would do
@@ -62,9 +65,9 @@ for a fix, blue for docs, purple for a refactor. They live beside the badge
 colours in `style.css` and have to stay distinguishable in both schemes.
 
 **A copy has nowhere to report itself but the board's status line.** The menu
-closes on the press, so the status line says `Copied fix-branch.`, and on a
-browser that refuses the clipboard it says the branch instead, where it can at
-least be selected.
+closes on the press, so the status line says `Copied fix-branch`, and on a
+browser that refuses the clipboard it says the line instead, where it can at
+least be selected. Every line the reader copies reports itself the same way.
 
 **Rejected: muting the description instead of the prefix.** The description is
 the content. The prefix is what repeats.

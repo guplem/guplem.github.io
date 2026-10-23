@@ -22,7 +22,7 @@ import { defineDocument } from "../cloud-storage/envelope.js";
 import { defaultColour, knownColour, knownTheme } from "./appearance.js";
 import { knownPriority } from "./priority.js";
 import { defaultCounting } from "./counting.js";
-import { orderCopyActions } from "./copyActions.js";
+import { orderCopyActions, withStartingActions } from "./copyActions.js";
 
 /** The project's folder in the cloud storage, and the file inside it. */
 export const PROJECT = "github-work-board";
@@ -299,10 +299,11 @@ export function writeCounting(document, areaId, { counted, withLowPriority }, no
  *
  * One record per action, so two devices that each add one keep both. An action
  * the reader removed keeps its key with an empty template, and `copyActions.js`
- * is what leaves it out of the list.
+ * is what leaves it out of the list. The line a new board starts with is read
+ * in here, and is in the file only once the reader changes it.
  */
 export function readCopyActions(document) {
-  return orderCopyActions(isPlainObject(document) ? document.copyActions : null);
+  return orderCopyActions(withStartingActions(isPlainObject(document) ? document.copyActions : null));
 }
 
 /**

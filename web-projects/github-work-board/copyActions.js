@@ -18,7 +18,10 @@
 //    placeholder, because the reader types the template by hand.
 // 3. **An action the card cannot fill is not offered at all.** An issue has no
 //    branch, so a template using `{BRANCH}` does not appear in an issue's menu.
-//    That is the answer "Copy branch name" already gives (ADR 0021).
+//
+// A new board starts with one line, "Copy branch name", which was a fixed row
+// in the card menu before the reader could write lines (ADR 0021). It is read
+// in, never written, until the reader changes it (`withStartingActions`).
 //
 // A line can also be limited to some parts of the board: a prompt that asks an
 // agent to implement an issue means nothing on a card already in review. A part
@@ -41,11 +44,11 @@ export const PLACEHOLDERS = [
 /**
  * What an empty Settings suggests.
  *
- * Nobody starts with a line, so the boxes have to say what one looks like. The
- * first is the greyed-out example text in the two boxes, and all of them are
- * listed under the boxes until the reader writes their own.
+ * Nobody starts with a sentence of their own, so the boxes have to say what one
+ * looks like. The first is the greyed-out example text in the two boxes, and
+ * all of them are listed under the boxes until the reader writes their own.
  *
- * The last one is a placeholder and nothing else. The other two wrap words
+ * The last two are a placeholder and nothing else. The first two wrap words
  * around a placeholder, and on their own they read as if a line has to be a
  * sentence.
  */
@@ -53,7 +56,63 @@ export const EXAMPLE_ACTIONS = [
   { label: "Implement this issue", template: "/implement-issue #{N}" },
   { label: "Ask for a review", template: "Please, whenever you can, take a look and review {URL}" },
   { label: "Copy link", template: "{URL}" },
+  { label: "Copy branch name", template: "{BRANCH}" },
 ];
+
+/**
+ * The lines a new board starts with, before the reader writes any.
+ *
+ * Only one, and only because it was a fixed row in the card menu before the
+ * reader could write lines (ADR 0021). Nobody's sentence is the right default,
+ * and a branch name is not a sentence (ADR 0031).
+ *
+ * An id is permanent: a reader who edits or removes the line writes a record
+ * under it, and that record is what keeps this one from being read in again.
+ * `invariants.test.js` guards the list. The `createdAt` sorts it above every
+ * line the reader wrote, where the fixed row sat.
+ */
+export const STARTING_ACTIONS = [
+  {
+    id: "branch-name",
+    label: "Copy branch name",
+    template: "{BRANCH}",
+    icon: "branch",
+    areas: [],
+    createdAt: "1970-01-01T00:00:00.000Z",
+  },
+];
+
+const STARTING_IDS = new Set(STARTING_ACTIONS.map((one) => one.id));
+
+/**
+ * The lines the reader wrote, without the ones a new board starts with. An
+ * edited starting line is still not one they wrote: Settings keeps listing the
+ * examples until they write their own.
+ *
+ * @param actions the list from `orderCopyActions`
+ */
+export function writtenByReader(actions) {
+  return (Array.isArray(actions) ? actions : []).filter((one) => !STARTING_IDS.has(one?.id));
+}
+
+/**
+ * The stored map with every starting line the file holds no record of.
+ *
+ * Read in, never written. Writing the line on every device that opens the
+ * board would change the file with nothing changed by the reader. A removed
+ * line keeps its key with an empty template (ADR 0002), so it stays removed.
+ * The map handed in is not changed.
+ *
+ * @param stored `document.copyActions`, the raw record map
+ */
+export function withStartingActions(stored) {
+  const map = stored && typeof stored === "object" && !Array.isArray(stored) ? stored : {};
+  const filled = { ...map };
+  for (const { id, ...record } of STARTING_ACTIONS) {
+    if (!Object.hasOwn(map, id)) filled[id] = { ...record, areas: [...record.areas] };
+  }
+  return filled;
+}
 
 /**
  * The icons a line can carry in the card menu, as SVG paths on a 24 by 24 grid
