@@ -176,6 +176,7 @@ import {
   fillCopyTemplate,
   pickEmoji,
   readCopyIcon,
+  writtenByReader,
 } from "./copyActions.js";
 import { readTitle } from "./titles.js";
 import { CARD_PARTS } from "./cardParts.js";
@@ -2692,14 +2693,16 @@ function chooseCopyIcon(icon) {
 /** The lines the reader wrote, in Settings. */
 function renderCopyActions() {
   const actions = readCopyActions(state.board);
-  element("copy-actions-empty").hidden = actions.length > 0;
+  // The line a new board starts with is not one the reader wrote, so the
+  // examples stay until they write their own (ADR 0031).
+  element("copy-actions-empty").hidden = writtenByReader(actions).length > 0;
   element("copy-actions").replaceChildren(...actions.map(buildCopyActionRow));
 }
 
 /**
  * The examples in the empty boxes, and the list of placeholders under them.
  *
- * Nobody starts with a line, so the boxes have to say what one looks like, and
+ * Nobody starts with a sentence of their own, so the boxes have to say what one looks like, and
  * both the examples and the placeholders come from `copyActions.js` so the page
  * cannot offer something the board does not fill (ADR 0031).
  */
@@ -4222,23 +4225,8 @@ function start() {
   move.setAttribute("popovertarget", "card-submenu");
   move.prepend(drawIcon(MENU_ICON_PATHS.move));
   fillMenuRow(element("menu-note"), drawIcon(MENU_ICON_PATHS.note), "Add note");
-  fillMenuRow(element("menu-branch"), drawIcon(MENU_ICON_PATHS.branch), "Copy branch name");
   move.addEventListener("mouseenter", () => {
     if (!submenu.matches(":popover-open")) submenu.showPopover();
-  });
-
-  element("menu-branch").addEventListener("click", async () => {
-    const item = state.menuItem;
-    const branch = typeof item?.headRefName === "string" ? item.headRefName : "";
-    closeCardMenu();
-    if (branch === "") return setStatus("This one has no branch.");
-    try {
-      await navigator.clipboard.writeText(branch);
-      setStatus(`Copied ${branch}.`);
-    } catch {
-      // Nowhere to put it but the status line, which is at least selectable.
-      setStatus(`This browser would not copy. The branch is ${branch}`);
-    }
   });
 
   for (const priority of [HIGH, NORMAL, LOW]) {
@@ -4282,7 +4270,6 @@ function start() {
         ...rows.copies.map((action) => buildCopyMenuRow(action, state.menuItem)),
       );
       element("menu-note").hidden = !rows.note;
-      element("menu-branch").hidden = !rows.branch;
       for (const priority of [HIGH, NORMAL, LOW]) {
         element(`menu-priority-${priority}`).hidden = !rows.priorities.includes(priority);
       }

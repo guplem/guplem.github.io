@@ -21,7 +21,7 @@ import { KIND_FILTERS } from "./filters.js";
 import { normalizeWorkItem } from "./workItems.js";
 import { PERMISSIONS, REQUIRED_PERMISSIONS } from "./permissions.js";
 import { LEGACY_KEYS, STORAGE_KEYS } from "./settings.js";
-import { COPY_ICONS, PLACEHOLDERS } from "./copyActions.js";
+import { COPY_ICONS, PLACEHOLDERS, STARTING_ACTIONS } from "./copyActions.js";
 import { SETTINGS_ENTRIES, SETTINGS_SECTIONS } from "./settingsSections.js";
 
 const FOLDER = import.meta.dir;
@@ -979,6 +979,20 @@ describe("a placeholder the reader typed keeps its name (ADR 0031)", () => {
     for (const id of ["copy", "link", "terminal", "message", "send", "branch", "pull-request", "bot", "eye", "check", "rocket", "star"]) {
       expect(COPY_ICONS.map((one) => one.id)).toContain(id);
     }
+  });
+
+  // The starting line is read in under this id, and a reader who edits or
+  // removes it writes a record under the same id. A renamed id brings back a
+  // line every reader removed (ADR 0031).
+  test("the line the board starts with keeps its id", () => {
+    expect(STARTING_ACTIONS.map((one) => one.id)).toEqual(["branch-name"]);
+  });
+
+  // "Copy branch name" was a fixed row once (ADR 0021). A second one beside the
+  // starting line would put the branch in the menu twice.
+  test("the branch is copied by a line, not by a fixed row", () => {
+    expect(read("index.html")).not.toContain("menu-branch");
+    expect(read("app.js")).not.toContain("menu-branch");
   });
 
   test("the saved document carries a map for the lines themselves", () => {

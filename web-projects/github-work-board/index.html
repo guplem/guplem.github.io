@@ -118,12 +118,10 @@
 
   <div id="card-menu" class="menu" popover="auto" role="menu" aria-label="Card actions">
     <button id="menu-note" type="button" class="menu-item" role="menuitem">Add note</button>
-    <!-- A pull request's branch, for checking it out. The one row a nested
-         pull request gets: its move would change nothing (ADR 0021). -->
-    <button id="menu-branch" type="button" class="menu-item" role="menuitem">Copy branch name</button>
     <!-- The lines the reader wrote in Settings, one row each, filled from this
          card. Built here rather than on every card, because one menu serves
-         the whole board (ADR 0012, ADR 0031). -->
+         the whole board (ADR 0012, ADR 0031). A new board starts with one,
+         "Copy branch name", which a nested pull request gets too (ADR 0021). -->
     <div id="menu-copies" role="none"></div>
     <!-- The reader's own ranking, one row per priority; the card's own one is
          hidden. "High" draws a border and a flame and, in the smart order,
@@ -618,11 +616,12 @@
             <div class="field">
               <!-- One row per line the reader wrote, filled by app.js. -->
               <ul id="copy-actions" class="copy-actions" data-setting="copy-actions"></ul>
-              <!-- Shown until the reader writes their own. The examples come
+              <!-- Shown until the reader writes their own; the line a new board
+                   starts with does not count. The examples come
                    from copyActions.js, so the page cannot suggest a
                    placeholder the board does not fill (ADR 0031). -->
               <div id="copy-actions-empty">
-                <p class="field-help">You have written none yet. For example:</p>
+                <p class="field-help">You have written none of your own yet. For example:</p>
                 <ul id="copy-action-examples" class="example-list"></ul>
               </div>
             </div>

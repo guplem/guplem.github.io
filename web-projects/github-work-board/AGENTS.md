@@ -51,7 +51,7 @@ It is the short procedure for all of the above.
 | `doneRange.js` | Yes | Which days the last column is about: the presets, every midnight boundary in the reader's clock, the words in its heading, and the written form a link carries (ADR 0034) |
 | `children.js` | Yes | The order the children of an issue read in, the count of closed ones beside their pills, and the words on the press that opens the list (ADR 0032) |
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
-| `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, filling one in, the parts of the board each line is offered in, and the icon each line wears (ADR 0031, ADR 0046) |
+| `copyActions.js` | Yes | The lines the reader copies from a card, the one line a new board starts with, the placeholders they can carry, filling one in, the parts of the board each line is offered in, and the icon each line wears (ADR 0031, ADR 0046) |
 | `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
 | `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards that want their author, ranked changes requested, then red checks, then conflicts (ADR 0026), the reviews the reader started (ADR 0042), and the work the reader raised, and the icon for each priority (ADR 0044, ADR 0046) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it, including the priorities the card is not in, whether it wears the moved-by-hand dot, and the icons on its own rows (ADR 0022, ADR 0031, ADR 0044, ADR 0046) |
@@ -462,9 +462,9 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   no colon: "Fix the thing" is a fix and "Fixture loading is slow" is not, and
   nothing in the string tells them apart (ADR 0021).
 - **`cardMenu.cardMenuRows` decides which rows the menu offers, and nothing
-  else does.** Add note on every card, Copy branch name on a pull request, Move
-  to on a card that sits in a column, and one row per line the reader wrote in
-  Settings that this card can fill and that is offered in the part of the
+  else does.** Add note on every card, Move to on a card that sits in a
+  column, and one row per line the reader wrote in Settings that this card can
+  fill and that is offered in the part of the
   board the card is drawn in (ADR 0031), the priorities it is not in
   (ADR 0044), and whether it wears the moved-by-hand dot (ADR 0046). The first three answers were
   three conditions written into `app.js` one at a time, and the newest of them
@@ -479,6 +479,12 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   pull request takes its issue's column. A new place that draws a card with a
   menu must pass one too, or it offers only the lines meant for everywhere
   (ADR 0031).
+- **"Copy branch name" is a line, not a fixed menu row.** It is the one line
+  a new board starts with (`copyActions.STARTING_ACTIONS`), read in by
+  `withStartingActions` and written to `board.json` only once the reader edits
+  or removes it. Never add the fixed row back: the branch would show twice.
+  The id `branch-name` is permanent, because a removed line is a record under
+  it; `invariants.test.js` pins both (ADR 0031).
 - **A nested pull request card carries a menu, with no move in it.** It travels
   in its issue's column, so the move would write to the document and change
   nothing on screen. Copying its branch does mean something, which is why it has

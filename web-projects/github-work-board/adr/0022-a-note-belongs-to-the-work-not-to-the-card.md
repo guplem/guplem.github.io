@@ -29,12 +29,12 @@ than to the place the card is drawn.** Every card takes one: a column, the
 review row, and a pull request nested inside its issue.
 
 **Which rows the menu offers is one pure function**, `cardMenuRows`, with a
-test that states all three answers:
+test that states every answer:
 
 | Row | When |
 |---|---|
 | Add note | Every card |
-| Copy branch name | A pull request |
+| Copy branch name | A pull request, because it is a line that copies `{BRANCH}` (ADR 0031) |
 | Move to | A card that sits in a column |
 
 **"Move to" stays out of the review row.** That has nothing to do with whose

@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { MENU_ICON_PATHS, cardMenuRows } from "./cardMenu.js";
+import { orderCopyActions, withStartingActions } from "./copyActions.js";
 
 const issue = { key: "I_1", kind: "issue", number: 87, url: "https://github.com/me/work/issues/87" };
 const pull = {
@@ -10,7 +11,7 @@ const pull = {
   headRefName: "claude/read-the-notes",
 };
 
-const NOTHING = { note: false, branch: false, move: false, moved: false, priorities: [], copies: [] };
+const NOTHING = { note: false, move: false, moved: false, priorities: [], copies: [] };
 
 describe("cardMenuRows", () => {
   // The note is the reader's own half of this board, filed under the item's
@@ -21,9 +22,17 @@ describe("cardMenuRows", () => {
     expect(cardMenuRows(pull, { canMove: false }).note).toBe(true);
   });
 
+  // "Copy branch name" is the line a new board starts with, not a row of its
+  // own. An issue has no branch, so the line that copies one is not offered
+  // there, by the same rule as any line the reader wrote (ADR 0031).
   test("only a pull request has a branch to copy", () => {
-    expect(cardMenuRows(pull, { canMove: true }).branch).toBe(true);
-    expect(cardMenuRows(issue, { canMove: true }).branch).toBe(false);
+    const copyActions = orderCopyActions(withStartingActions(null));
+    expect(cardMenuRows(pull, { copyActions }).copies.map((one) => one.template)).toEqual(["{BRANCH}"]);
+    expect(cardMenuRows(issue, { copyActions }).copies).toEqual([]);
+  });
+
+  test("the menu has no fixed branch row beside the lines", () => {
+    expect(cardMenuRows(pull, { canMove: true })).not.toHaveProperty("branch");
   });
 
   // A card outside the columns has no column to move between: the review row
@@ -134,8 +143,8 @@ describe("a card moved by hand says so", () => {
 });
 
 describe("the menu's own rows carry an icon", () => {
-  test("the note, the branch and the move each have one", () => {
-    for (const row of ["note", "branch", "move"]) {
+  test("the note and the move each have one", () => {
+    for (const row of ["note", "move"]) {
       expect(MENU_ICON_PATHS[row].length).toBeGreaterThan(0);
       for (const d of MENU_ICON_PATHS[row]) expect(typeof d).toBe("string");
     }
