@@ -189,7 +189,7 @@ import {
 } from "./settingsSections.js";
 import { availableFieldFilters, fieldFilterKey, fieldText, isFilterableField } from "./fields.js";
 import { MILESTONE_PATHS, milestoneFilterTip, milestoneLinkTip, milestoneProgress } from "./milestones.js";
-import { initialsOf, personLabel } from "./people.js";
+import { initialsOf, otherPeople, othersBadge, othersHeading, personLabel } from "./people.js";
 import {
   HIGH,
   LOW,
@@ -268,6 +268,9 @@ let cloudPanel = null;
 const state = {
   tokens: [],
   login: null,
+  // Every account the reader signed in with, one per token that answered. A
+  // card counts the people other than these (ADR 0028).
+  readers: [],
   board: null,
   items: [],
   reviews: [],
@@ -622,6 +625,10 @@ function buildWorkItemCard(
   { withMenu = true, compact = false, stack = null, people = "reviewers", area = "" } = {},
 ) {
 
+  // The reader chooses which of these parts their cards carry, in Settings
+  // (ADR 0047). The title, the pills and the note always stay.
+  const shows = (part) => readCardPartShown(state.board, part);
+
   const card = document.createElement("li");
   card.className = "issue";
   // Which item this card is. Anything that names an item elsewhere on the
@@ -741,6 +748,12 @@ function buildWorkItemCard(
     if (reason) heading.append(buildAttentionPill(reason));
   }
 
+  // Whether the reader carries this alone. On the board that is the other
+  // assignees; in the review row it is the other people in the review. The
+  // reader alone draws nothing (ADR 0028).
+  const others = shows("people") ? buildOthersBadge(item, area === REVIEW_ROW_ID) : null;
+  if (others) heading.append(others);
+
   // A nested pull request is almost always in its issue's own repository, so
   // the name is repetition taking the width the title needs. It stays one
   // hover away (ADR 0018).
@@ -795,9 +808,6 @@ function buildWorkItemCard(
             },
           })
         : null;
-  // The reader chooses which of these parts their cards carry, in Settings
-  // (ADR 0047). The title, the pills and the note always stay.
-  const shows = (part) => readCardPartShown(state.board, part);
   if (faces && shows("people")) card.append(faces);
 
   // The milestone closes the row, after the labels. Only the board's filters
@@ -1094,6 +1104,27 @@ function buildChecksDot(summary) {
   words.textContent = says;
   dot.append(words);
   return dot;
+}
+
+/**
+ * "+2" in a card's heading when two people other than the reader share the
+ * work, or nothing. Resting on it lists each of them, face and name.
+ */
+function buildOthersBadge(item, inReviewRow) {
+  const others = otherPeople(item, { inReviewRow, readers: state.readers });
+  const words = othersBadge(others);
+  if (words === "") return null;
+  const badge = document.createElement("span");
+  badge.className = "badge badge-outline badge-others";
+  badge.textContent = words;
+  // Focusable, so a keyboard reaches the list too (ADR 0033).
+  badge.tabIndex = 0;
+  const heading = othersHeading(others.length, { inReviewRow });
+  const lines = others.map((person) => personLabel(person, inReviewRow ? (person.state ?? "") : ""));
+  badge.setAttribute("aria-label", `${heading}: ${lines.join(", ")}`);
+  explain(badge, [heading, ...lines].join("\n"));
+  tipPeople.set(badge, { heading, people: others.map((person, index) => ({ person, words: lines[index] })) });
+  return badge;
 }
 
 /** The row of faces on a card, or nothing when there is nobody to draw. */
@@ -1512,6 +1543,38 @@ function explain(target, words) {
   else target.removeAttribute("data-tip");
 }
 
+/**
+ * The people a tooltip lists with their pictures, keyed by the element it is
+ * about. Its `data-tip` keeps the same words, so the plain text still says it
+ * all when this is missing.
+ */
+const tipPeople = new WeakMap();
+
+/** One line of a people tooltip: the face, then the words. */
+function buildTipPerson({ person, words }) {
+  const row = document.createElement("span");
+  row.className = "tooltip-person";
+  const face = document.createElement("span");
+  face.className = "avatar avatar-small";
+  face.setAttribute("aria-hidden", "true");
+  const initials = document.createElement("span");
+  initials.className = "avatar-initials";
+  initials.textContent = initialsOf(person);
+  face.append(initials);
+  if (person.avatarUrl !== "") {
+    const picture = document.createElement("img");
+    picture.className = "avatar-picture";
+    picture.src = person.avatarUrl;
+    picture.alt = "";
+    picture.addEventListener("error", () => picture.remove());
+    face.append(picture);
+  }
+  const name = document.createElement("span");
+  name.textContent = words;
+  row.append(face, name);
+  return row;
+}
+
 /** The thing the tooltip is about right now, and the wait before it appears. */
 let tipFor = null;
 let tipTimer = 0;
@@ -1534,7 +1597,15 @@ function showTip(target) {
   if (words === "") return;
   const tip = element("tooltip");
   tipFor = target;
-  tip.textContent = words;
+  const people = tipPeople.get(target);
+  if (people) {
+    const heading = document.createElement("span");
+    heading.className = "tooltip-heading";
+    heading.textContent = people.heading;
+    tip.replaceChildren(heading, ...people.people.map(buildTipPerson));
+  } else {
+    tip.textContent = words;
+  }
   // An open tooltip can take new words, as the refresh button's does during a
   // read. A second `showPopover` on an open one throws.
   if (!tip.matches(":popover-open")) tip.showPopover();
@@ -3646,8 +3717,10 @@ async function connectAll({ quiet = false } = {}) {
     );
     // Merged in the order of the list, never in the order the answers came, so
     // the same two tokens always resolve a shared item the same way.
+    const readers = [];
     for (const [index, entry] of asked.entries()) {
       const result = results[index];
+      if (result.login) readers.push(result.login);
       // The first token in the list that answered names the reader, as it did
       // when the tokens read one after another.
       state.login = state.login ?? (result.login || null);
@@ -3658,6 +3731,7 @@ async function connectAll({ quiet = false } = {}) {
       waiting.push(...(result.reviews ?? []));
       links = { ...links, ...(result.links ?? {}) };
     }
+    state.readers = readers;
     state.checks = checks;
     state.awaitingApproval = awaitingApproval;
     state.links = links;
@@ -3891,6 +3965,7 @@ function signOut() {
   state.reviews = [];
   state.links = {};
   state.login = null;
+  state.readers = [];
   element("token").value = "";
   paintTheme();
   showView(DEFAULT_VIEW);

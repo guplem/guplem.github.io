@@ -96,6 +96,27 @@ inside it stays the size a plain face draws. Three pixels was tried first and
 read as heavy beside the text on the card, so two is the weight that answers
 the question without shouting. `invariants.test.js` holds both numbers.
 
+**A card says how many other people share the work, as "+N" in its heading**
+(added 2026-10). The faces answer "whose work" and "who am I waiting for". They
+do not answer "do I carry this alone?", and the reader needs that answer to
+decide whether to hurry, or to coordinate first. So each card counts the people
+other than the reader, and which people again depends on the list:
+
+- **On the board, the other assignees.** The reader is always one of the
+  assignees on their own work. One more name means somebody shares it.
+- **In the review row, the other people in the review**, read with
+  `reviewPeople` like the faces are, so a reviewer who already answered still
+  counts. The tooltip says what each one did, so "approved" reads differently
+  from "has not reviewed yet".
+
+The reader alone draws nothing, so a card that has nothing to say stays as it
+was. Every account the reader signed in with is the reader, one per token
+(ADR 0007), and a login matches in any case. `people.otherPeople` holds the
+rule. Resting on the mark, or focusing it, lists each person with their picture
+and name. This is the one tooltip that carries pictures, so it keeps the same
+words in `data-tip` as well (ADR 0033). The mark hides with the faces when the
+reader hides "people" in Settings (ADR 0047).
+
 ## Consequences
 
 - **The page now loads images from `avatars.githubusercontent.com`.** It is the
@@ -121,4 +142,5 @@ the question without shouting. `invariants.test.js` holds both numbers.
   That is the point: the person to chase about your issue is in that review.
 - **Rejected: showing the assignees on a board card when nobody is in the
   review.** On a board of your own work the assignee is you, so the face would
-  be noise on exactly the cards that have nothing to say.
+  be noise on exactly the cards that have nothing to say. The "+N" mark is not
+  that face: it leaves the reader out, so it draws only where somebody else is.

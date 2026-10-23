@@ -110,6 +110,10 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   yet, or approved. An issue shows the review of the pull request that would
   close it, because that is where the answer is. That is two separate filters,
   one for each list, and a link carries both.
+- **See whether you carry the work alone.** A card shows **+1**, **+2** and so
+  on when other people share it: other assignees on your own work, other
+  reviewers on a pull request waiting for your review. Rest on the mark to see
+  each of them, picture and name. A card that is yours alone shows nothing.
 - **Find one issue or pull request by its number.** Type `312` (or `#312`, or
   paste its GitHub link) in the box at the top, or press `/` to reach it. Every
   other card goes, and the one left sits in the column it is in, so you see its
