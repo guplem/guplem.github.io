@@ -1,5 +1,16 @@
 import { describe, expect, test } from "bun:test";
-import { APPROVED, ASKED, CHANGES_REQUESTED, initialsOf, personLabel, readPerson, reviewPeople } from "./people.js";
+import {
+  APPROVED,
+  ASKED,
+  CHANGES_REQUESTED,
+  initialsOf,
+  otherPeople,
+  othersBadge,
+  othersHeading,
+  personLabel,
+  readPerson,
+  reviewPeople,
+} from "./people.js";
 
 const user = (login, name = null, avatarUrl = `https://avatars.githubusercontent.com/${login}`) => ({
   login,
@@ -136,5 +147,84 @@ describe("personLabel", () => {
 
   test("never throws", () => {
     expect(personLabel(null)).toBe("");
+  });
+});
+
+describe("otherPeople", () => {
+  const me = user("guplem", "Guillem");
+  const ana = user("ana", "Ana");
+  const leo = user("leo", "Leo");
+
+  // On the board the work is the reader's own, so the reader is always one of
+  // the assignees. The question is whether anybody else shares it.
+  test("on the board, the assignees other than the reader", () => {
+    const item = { assignees: [me, ana, leo], reviewers: [{ ...leo, state: APPROVED }] };
+    expect(otherPeople(item, { inReviewRow: false, readers: ["guplem"] }).map((one) => one.login)).toEqual(["ana", "leo"]);
+  });
+
+  // In the review row the reader was asked to review. The question is whether
+  // somebody else was asked too, so the two can share the work out.
+  test("in the review row, the people in the review other than the reader", () => {
+    const item = {
+      assignees: [ana],
+      reviewers: [
+        { ...leo, state: CHANGES_REQUESTED },
+        { ...me, state: ASKED },
+        { ...ana, state: APPROVED },
+      ],
+    };
+    const found = otherPeople(item, { inReviewRow: true, readers: ["guplem"] });
+    expect(found.map((one) => [one.login, one.state])).toEqual([
+      ["leo", CHANGES_REQUESTED],
+      ["ana", APPROVED],
+    ]);
+  });
+
+  // GitHub treats a login as the same login in any case, and the token's
+  // answer and an item's answer do not always agree on the case.
+  test("the reader is found in any case", () => {
+    const item = { assignees: [user("GuPlem")] };
+    expect(otherPeople(item, { inReviewRow: false, readers: ["guplem"] })).toEqual([]);
+  });
+
+  // Each token names its own account. A reader with two accounts is the reader
+  // under both names, and neither of them is somebody else.
+  test("every account the reader signed in with is the reader", () => {
+    const item = { assignees: [me, user("guplem-work"), ana] };
+    const found = otherPeople(item, { inReviewRow: false, readers: ["guplem", "guplem-work"] });
+    expect(found.map((one) => one.login)).toEqual(["ana"]);
+  });
+
+  test("being the only one leaves nobody", () => {
+    expect(otherPeople({ assignees: [me] }, { inReviewRow: false, readers: ["guplem"] })).toEqual([]);
+    expect(otherPeople({ reviewers: [{ ...me, state: ASKED }] }, { inReviewRow: true, readers: ["guplem"] })).toEqual([]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(otherPeople(null, { inReviewRow: false, readers: ["guplem"] })).toEqual([]);
+    expect(otherPeople({ assignees: "no" }, {})).toEqual([]);
+    expect(otherPeople({ reviewers: [null, {}] }, { inReviewRow: true, readers: null })).toEqual([]);
+  });
+});
+
+describe("othersBadge", () => {
+  // The reader alone needs no mark: that is the plain card.
+  test("nothing when nobody else is there", () => {
+    expect(othersBadge([])).toBe("");
+    expect(othersBadge(null)).toBe("");
+  });
+
+  test("a plus and how many others", () => {
+    expect(othersBadge([{ login: "ana" }])).toBe("+1");
+    expect(othersBadge([{ login: "ana" }, { login: "leo" }, { login: "max" }])).toBe("+3");
+  });
+});
+
+describe("othersHeading", () => {
+  test("says which question the list answers", () => {
+    expect(othersHeading(1, { inReviewRow: false })).toBe("1 more person assigned");
+    expect(othersHeading(2, { inReviewRow: false })).toBe("2 more people assigned");
+    expect(othersHeading(1, { inReviewRow: true })).toBe("1 more person in the review");
+    expect(othersHeading(3, { inReviewRow: true })).toBe("3 more people in the review");
   });
 });

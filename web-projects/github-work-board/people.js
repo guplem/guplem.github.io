@@ -104,3 +104,43 @@ export function personLabel(person, state = "") {
   if (state === APPROVED) return `${who} approved`;
   return who;
 }
+
+/**
+ * Who else is on this work, other than the reader.
+ *
+ * The question differs by list, exactly like the faces do (ADR 0028):
+ *
+ * - On the **board** the work is the reader's own, so the reader is always an
+ *   assignee. The others are the assignees who share it: "do I carry this
+ *   alone, or do I coordinate with somebody?"
+ * - In the **review row** the reader was asked to review. The others are the
+ *   people in the review: "am I the only reviewer, or can we share it out?"
+ *
+ * A login matches in any case, because GitHub treats it so. Every account the
+ * reader signed in with is the reader.
+ *
+ * @param item a work item, after `applyPullRequestState`
+ * @param inReviewRow whether the card is drawn in the review row
+ * @param readers the logins the reader signed in with
+ */
+export function otherPeople(item, { inReviewRow = false, readers = [] } = {}) {
+  const list = inReviewRow ? item?.reviewers : item?.assignees;
+  if (!Array.isArray(list)) return [];
+  const reader = new Set((Array.isArray(readers) ? readers : []).map((login) => text(login).toLowerCase()));
+  return list.filter((person) => {
+    const login = text(person?.login).toLowerCase();
+    return login !== "" && !reader.has(login);
+  });
+}
+
+/** The mark on a card: "+2" for two others, nothing when the reader is alone. */
+export function othersBadge(others) {
+  const count = Array.isArray(others) ? others.length : 0;
+  return count > 0 ? `+${count}` : "";
+}
+
+/** The first line of the tooltip on that mark, which also names it. */
+export function othersHeading(count, { inReviewRow = false } = {}) {
+  const who = count === 1 ? "1 more person" : `${count} more people`;
+  return inReviewRow ? `${who} in the review` : `${who} assigned`;
+}

@@ -52,7 +52,7 @@ It is the short procedure for all of the above.
 | `children.js` | Yes | The order the children of an issue read in, the count of closed ones beside their pills, and the words on the press that opens the list (ADR 0032) |
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
 | `copyActions.js` | Yes | The lines the reader copies from a card, the placeholders they can carry, filling one in, the parts of the board each line is offered in, and the icon each line wears (ADR 0031, ADR 0046) |
-| `people.js` | Yes | Who a card is about, and what the board waits on each of them for (ADR 0028) |
+| `people.js` | Yes | Who a card is about, what the board waits on each of them for, and who other than the reader shares the work, for the "+N" mark (ADR 0028) |
 | `priority.js` | Yes | What moves up and down a list and what travels with it: the work the reader pushed down, the blocked cards, the cards that want their author, ranked changes requested, then red checks, then conflicts (ADR 0026), the reviews the reader started (ADR 0042), and the work the reader raised, and the icon for each priority (ADR 0044, ADR 0046) |
 | `cardMenu.js` | Yes | Which rows the card menu offers for the card that opened it, including the priorities the card is not in, whether it wears the moved-by-hand dot, and the icons on its own rows (ADR 0022, ADR 0031, ADR 0044, ADR 0046) |
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |

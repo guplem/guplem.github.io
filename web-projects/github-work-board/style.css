@@ -2050,6 +2050,51 @@ textarea.input {
 }
 
 /**
+ * "+2" in a card's heading: two people other than the reader share this work.
+ * It is focusable, so the list behind it answers a keyboard too (ADR 0028).
+ */
+.badge-others {
+  cursor: default;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge-others:hover {
+  border-color: hsl(var(--primary) / 0.5);
+  color: hsl(var(--foreground));
+}
+
+.badge-others:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* The list behind that mark: one line per person, face first. */
+.tooltip-heading {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.tooltip-person {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  white-space: normal;
+}
+
+.tooltip-person + .tooltip-person {
+  margin-top: 0.25rem;
+}
+
+.avatar-small {
+  display: inline-block;
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  cursor: default;
+}
+
+/**
  * What the board is waiting on this person for, as a ring round their face.
  *
  * The same three answers the column rules use (ADR 0011): somebody who asked
