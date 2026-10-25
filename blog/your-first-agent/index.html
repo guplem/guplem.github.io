@@ -169,6 +169,43 @@
           <figcaption>Today, the agent notes what matters in a file in its folder. Tomorrow, the browser chat has forgotten everything, but the agent reads its file and goes on where you stopped.</figcaption>
         </figure>
 
+        <h3 id="the-endless-chat-trap"><a class="heading-anchor" href="#the-endless-chat-trap">The endless chat trap</a></h3>
+        <p>Because each new chat starts almost from zero, many people do the logical thing: they open one chat for one subject (their classes, their diet, their renovation) and use it for weeks. That way they do not have to explain everything again. But this creates another problem, and almost nobody sees it.</p>
+        <p>Everything the model reads to answer is called the <a class="term" href="#g-context">context</a>: its rules, the whole conversation and your new message. The context has a maximum size. When an endless chat fills it, the app must make room: depending on the app, it <a class="term" href="#g-compact">compacts</a> the old messages into a summary, or stops reading them. It does not tell you, and details get lost on the way.</p>
+        <p>And even when everything fits, a huge context works worse. Think of it like this: if I give you one page and ask you something about it, you will almost surely get it right. If I give you the whole Bible and ask the same question, it is much easier to miss something. A model is the same: the longer the context, the harder it is to keep every detail in mind.</p>
+
+        <figure class="diagram ctxfill">
+          <svg viewBox="0 0 720 240" role="img" aria-labelledby="ctxfill-title ctxfill-desc">
+            <title id="ctxfill-title">An endless chat against a new chat with a folder</title>
+            <desc id="ctxfill-desc">Two bars stand for the context, with a limit on the right. In the top bar, "An endless chat", weeks of messages pile up until the context is full. Then the app summarises the oldest ones, and details get lost. In the bottom bar, "A new chat and your folder", the context holds only three pieces: the AGENTS.md, the data file that is needed and your question. There is plenty of room left.</desc>
+            <line x1="640" y1="40" x2="640" y2="214" class="limit-line" />
+            <text x="640" y="30" text-anchor="middle" class="label-soft">context limit</text>
+            <text x="30" y="58" class="label">An endless chat: weeks of messages</text>
+            <rect x="30" y="66" width="610" height="42" rx="10" class="box" />
+            <g class="blocks"><rect x="40" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:0.00s" /><rect x="63" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:0.18s" /><rect x="86" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:0.36s" /><rect x="109" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:0.54s" /><rect x="132" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:0.72s" /><rect x="155" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:0.90s" /><rect x="178" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:1.08s" /><rect x="201" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:1.26s" /><rect x="224" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:1.44s" /><rect x="247" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:1.62s" /><rect x="270" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:1.80s" /><rect x="293" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:1.98s" /><rect x="316" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:2.16s" /><rect x="339" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:2.34s" /><rect x="362" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:2.52s" /><rect x="385" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:2.70s" /><rect x="408" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:2.88s" /><rect x="431" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:3.06s" /><rect x="454" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:3.24s" /><rect x="477" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:3.42s" /><rect x="500" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:3.60s" /><rect x="523" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:3.78s" /><rect x="546" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:3.96s" /><rect x="569" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:4.14s" /><rect x="592" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:4.32s" /><rect x="615" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:4.50s" /></g>
+            <g class="cf-over"><rect x="34" y="70" width="352" height="34" rx="8" class="compact-overlay" /><text x="210" y="92" text-anchor="middle" class="bubble-text">summarised by the app: details get lost</text></g>
+            <text x="636" y="126" text-anchor="end" class="cap-bad cf-full">full</text>
+            <g class="cf-new">
+              <text x="30" y="156" class="label">A new chat and your folder: only what is needed</text>
+              <rect x="30" y="164" width="610" height="46" rx="10" class="box-strong" />
+              <rect x="40" y="172" width="112" height="30" rx="9" class="piece" /><rect x="50" y="183" width="8" height="8" rx="4" class="sw-agents" /><text x="64" y="192" class="bubble-text">AGENTS.md</text><rect x="158" y="172" width="112" height="30" rx="9" class="piece" /><rect x="168" y="183" width="8" height="8" rx="4" class="sw-data" /><text x="182" y="192" class="bubble-text">progress.md</text><rect x="276" y="172" width="112" height="30" rx="9" class="piece" /><rect x="286" y="183" width="8" height="8" rx="4" class="sw-teal" /><text x="300" y="192" class="bubble-text">your question</text>
+              <text x="630" y="228" text-anchor="end" class="cap-good">room to spare</text>
+            </g>
+          </svg>
+          <figcaption>An endless chat fills the context, and the app summarises the old part without telling you. With a folder, each chat starts clean and reads only what it needs.</figcaption>
+        </figure>
+
+        <p>An agent with a folder solves this, because what matters lives in files, not in the chat. So you can open a new chat for each task, with a clean context, and the agent reads only the files that the task needs.</p>
+
+        <h3 id="what-a-chat-cannot-do"><a class="heading-anchor" href="#what-a-chat-cannot-do">And on top of that, an agent can…</a></h3>
+        <p>Beyond remembering, working in a folder opens up things that a chat does not do:</p>
+        <ul>
+          <li><strong>Create real files on your computer.</strong> A page to print, a table for Excel and, if your app can, a PDF or a Word file, saved straight into your folder.</li>
+          <li><strong>Work with many files.</strong> In a chat you attach a few. In a folder you can have hundreds or thousands: 300 scanned invoices, for example. The agent opens them one by one and leaves you a table with the total for each month. It takes time and uses up your plan, but there is no limit on how many files you can give it.</li>
+          <li><strong>Use programs on your computer,</strong> with your permission: sort photos, convert documents or do exact sums with a script.</li>
+          <li><strong>Leave a trail.</strong> Everything it does stays in files that you can check, fix or delete.</li>
+        </ul>
+
         <p>So the agent you will build has three parts:</p>
         <ul>
           <li><strong>The model, the brain.</strong> A company (Anthropic, OpenAI, Google) or an open project makes it. It almost never lives on your computer: it is on the internet.</li>
@@ -388,12 +425,12 @@
         <h2 id="step-4-instructions"><a class="heading-anchor" href="#step-4-instructions">Give it instructions: the AGENTS.md file</a></h2>
         <p class="section-lead">You tell the agent who it is and how it must work, one time and for good.</p>
         <p>That goes in a file called <a class="term" href="#g-agents-md">AGENTS.md</a>, at the root of the folder (directly inside it, not in a subfolder).</p>
-        <p>First, one key idea: the <a class="term" href="#g-context">context</a>. The model remembers nothing between messages. Each time you write, the app sends it everything it must keep in mind, all at once:</p>
+        <p>Remember the <a class="term" href="#g-context">context</a>, from the start: the model remembers nothing between messages. Each time you write, the app sends it everything it must keep in mind, all at once. This is what goes in:</p>
 
         <figure class="diagram context">
           <svg viewBox="0 0 720 330" role="img" aria-labelledby="context-title context-desc">
             <title id="context-title">What the model reads each time you write</title>
-            <desc id="context-desc">Five boxes appear one by one: the app's rules, the AGENTS.md file, the the name and description of each skill, the conversation so far and your new message. A bracket joins them and calls them "the context". An arrow takes the context to the model, and the model sends back an answer. The model does not know anything that is not in those boxes.</desc>
+            <desc id="context-desc">Five boxes appear one by one: the app's rules, the AGENTS.md file, the name and description of each skill, the conversation so far and your new message. A bracket joins them and calls them "the context". An arrow takes the context to the model, and the model sends back an answer. The model does not know anything that is not in those boxes.</desc>
             <g class="ctx-box"><rect x="20" y="20" width="300" height="46" rx="12" class="box" /><rect x="36" y="38" width="10" height="10" rx="5" class="sw-soft" /><text x="56" y="40" class="label">The app's rules</text><text x="56" y="56" class="label-soft">"You can read and write files…"</text></g>
             <g class="ctx-box"><rect x="20" y="78" width="300" height="46" rx="12" class="box" /><rect x="36" y="96" width="10" height="10" rx="5" class="sw-agents" /><text x="56" y="98" class="label">AGENTS.md</text><text x="56" y="114" class="label-soft">"You are my personal tutor…"</text></g>
             <g class="ctx-box"><rect x="20" y="136" width="300" height="46" rx="12" class="box" /><rect x="36" y="154" width="10" height="10" rx="5" class="sw-skills" /><text x="56" y="156" class="label">Skills: name and description</text><text x="56" y="172" class="label-soft">"practice-exam: makes an exam…"</text></g>
@@ -911,7 +948,9 @@ You speak to me in (language), (in what tone).
           <dt id="g-agents-md">AGENTS.md</dt>
           <dd data-related="g-context g-folder g-skill">A text file with the agent's instructions, at the root of its folder. It is an open standard that almost every app reads.</dd>
           <dt id="g-context">Context</dt>
-          <dd data-related="g-model g-agents-md g-skill">Everything the model reads before it answers: the app's rules, the AGENTS.md, the the name and description of each skill, the conversation and your message. The model does not know anything that is not in the context.</dd>
+          <dd data-related="g-model g-agents-md g-compact">Everything the model reads before it answers: the app's rules, the AGENTS.md, the name and description of each skill, the conversation and your message. The model does not know anything that is not in the context. The longer it is, the harder it is to keep every detail in mind.</dd>
+          <dt id="g-compact">Compact</dt>
+          <dd data-related="g-context">What the app does when a conversation no longer fits in the context: it summarises the old messages, or stops reading them, to make room. Details get lost on the way.</dd>
           <dt id="g-skill">Skill</dt>
           <dd data-related="g-context g-agents-md g-script">A recipe for a task that you repeat: a folder with a SKILL.md file (name, description and steps). The agent only reads the description until it needs the skill.</dd>
           <dt id="g-script">Script</dt>
