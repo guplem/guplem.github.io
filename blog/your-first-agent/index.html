@@ -59,6 +59,9 @@
         <symbol id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></symbol>
         <symbol id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" /></symbol>
         <symbol id="ico-folder-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5h6l2 2h10v10.5H3z" /><path d="M9 13.5l2 2 4-4" /></symbol>
+        <symbol id="ico-model" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5A3 3 0 0 0 7 5a3 3 0 0 0-2.5 4.5A3.5 3.5 0 0 0 5 16a3 3 0 0 0 7 2.5z" /><path d="M12 5.5A3 3 0 0 1 17 5a3 3 0 0 1 2.5 4.5A3.5 3.5 0 0 1 19 16a3 3 0 0 1-7 2.5z" /><path d="M12 5.5v13" /></symbol>
+        <symbol id="ico-app" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5" /><path d="M3 8.5h18" /><path d="M7 12.5h7M7 15.5h10" /></symbol>
+        <symbol id="ico-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M3 6.5h6l2 2h10v10.5H3z" /></symbol>
       </defs>
     </svg>
 
@@ -137,7 +140,7 @@
             <title id="forget-title">A chat forgets, a folder remembers</title>
             <desc id="forget-desc">Two columns, at two moments. At the top, "Today": in both columns the person writes "I am in my last school year. I know topic 3 well now." In the browser chat, the AI answers "Great! Shall we start?". In the folder, the agent answers "Great! I will note it." and writes two lines in its file data/progress.md: "Year: last year of school" and "Topic 3: mastered". Then the chat closes. At the bottom, "Tomorrow": the person asks "What do I review today?". The browser chat remembers nothing and answers "I do not know what you study. Tell me?". The agent reads data/progress.md and answers "Topic 4 today: you already know topic 3."</desc>
             <g class="s1"><text x="175" y="24" text-anchor="middle" class="label">A chat in the browser</text></g>
-            <g class="s5"><text x="575" y="24" text-anchor="middle" class="label">An agent in a folder</text></g>
+            <g class="s5"><g class="part-ico"><title>The folder: the agent's home and memory, on your computer.</title><use href="#ico-folder" x="474" y="10" width="18" height="18" /></g><text x="585" y="24" text-anchor="middle" class="label">An agent in a folder</text></g>
             <g class="sv"><line x1="350" y1="8" x2="350" y2="228" class="sep-line" /><line x1="350" y1="258" x2="350" y2="420" class="sep-line" /></g>
             <g class="s2"><text x="20" y="84" class="row-label">TODAY</text><rect x="20" y="92" width="310" height="128" rx="14" class="box" /></g>
             <g class="s6"><rect x="370" y="92" width="230" height="128" rx="14" class="box" /></g>
@@ -235,9 +238,9 @@
 
         <p>So the agent you will build has three parts:</p>
         <ul>
-          <li><strong>The model, the brain.</strong> A company (Anthropic, OpenAI, Google…) or an open project makes it. It usually runs on the internet, not on your computer.</li>
-          <li><strong>The app, where you work together.</strong> A program on your computer. It is where you talk to the agent and see what it does, and it gives the agent its tools: read, create and change the files in its folder.</li>
-          <li><strong>The folder, the home and the memory.</strong> It holds the agent's instructions, what it must remember and what it gives you. It is yours: you are in full control, and you can copy it and share it as you like.</li>
+          <li><span class="part-icon" title="The model: the brain that reads and writes text. It runs on the internet."><svg aria-hidden="true"><use href="#ico-model" /></svg></span><strong>The model, the brain.</strong> A company (Anthropic, OpenAI, Google…) or an open project makes it. It usually runs on the internet, not on your computer.</li>
+          <li><span class="part-icon" title="The app: the program where you talk to the agent, and that gives it its tools."><svg aria-hidden="true"><use href="#ico-app" /></svg></span><strong>The app, where you work together.</strong> A program on your computer. It is where you talk to the agent and see what it does, and it gives the agent its tools: read, create and change the files in its folder.</li>
+          <li><span class="part-icon" title="The folder: the agent's home and memory, on your computer."><svg aria-hidden="true"><use href="#ico-folder" /></svg></span><strong>The folder, the home and the memory.</strong> It holds the agent's instructions, what it must remember and what it gives you. It is yours: you are in full control, and you can copy it and share it as you like.</li>
         </ul>
 
         <details class="more">
@@ -459,7 +462,7 @@
           <svg viewBox="0 0 720 330" role="img" aria-labelledby="context-title context-desc">
             <title id="context-title">What the model reads each time you write</title>
             <desc id="context-desc">Five boxes appear one by one: the app's rules, the AGENTS.md file, the name and description of each skill, the conversation so far and your new message. A bracket joins them and calls them "the context". An arrow takes the context to the model, and the model sends back an answer. The model does not know anything that is not in those boxes.</desc>
-            <g class="ctx-box"><rect x="20" y="20" width="300" height="46" rx="12" class="box" /><rect x="36" y="38" width="10" height="10" rx="5" class="sw-soft" /><text x="56" y="40" class="label">The app's rules</text><text x="56" y="56" class="label-soft">"You can read and write files…"</text></g>
+            <g class="ctx-box"><rect x="20" y="20" width="300" height="46" rx="12" class="box" /><g class="part-ico"><title>The app: the program where you talk to the agent, and that gives it its tools.</title><use href="#ico-app" x="31" y="34" width="18" height="18" /></g><text x="56" y="40" class="label">The app's rules</text><text x="56" y="56" class="label-soft">"You can read and write files…"</text></g>
             <g class="ctx-box"><rect x="20" y="78" width="300" height="46" rx="12" class="box" /><rect x="36" y="96" width="10" height="10" rx="5" class="sw-agents" /><text x="56" y="98" class="label">AGENTS.md</text><text x="56" y="114" class="label-soft">"You are my personal tutor…"</text></g>
             <g class="ctx-box"><rect x="20" y="136" width="300" height="46" rx="12" class="box" /><rect x="36" y="154" width="10" height="10" rx="5" class="sw-skills" /><text x="56" y="156" class="label">Skills: name and description</text><text x="56" y="172" class="label-soft">"practice-exam: makes an exam…"</text></g>
             <g class="ctx-box"><rect x="20" y="194" width="300" height="46" rx="12" class="box" /><rect x="36" y="212" width="10" height="10" rx="5" class="sw-soft" /><text x="56" y="214" class="label">The conversation</text><text x="56" y="230" class="label-soft">Everything you both said today</text></g>
@@ -467,7 +470,7 @@
             <path class="bracket wire-teal" d="M338 22 Q352 22 352 40 L352 140 Q352 159 368 159 Q352 159 352 178 L352 278 Q352 296 338 296" />
             <g class="ctx-label"><text x="384" y="152" class="label-on-teal">the context</text><text x="384" y="170" class="label-soft">all of it, every time</text>
               <path d="M488 159 L540 159" class="wire-teal" /><polygon points="540,153 552,159 540,165" class="arrow-teal" /></g>
-            <g class="ctx-model"><rect x="560" y="124" width="140" height="70" rx="16" class="box-strong" /><text x="630" y="155" text-anchor="middle" class="label">The model</text><text x="630" y="174" text-anchor="middle" class="label-soft">reads and answers</text></g>
+            <g class="ctx-model"><rect x="560" y="124" width="140" height="70" rx="16" class="box-strong" /><g class="part-ico"><title>The model: the brain that reads and writes text. It runs on the internet.</title><use href="#ico-model" x="621" y="130" width="18" height="18" /></g><text x="630" y="163" text-anchor="middle" class="label">The model</text><text x="630" y="181" text-anchor="middle" class="label-soft">reads and answers</text></g>
             <g class="ctx-answer"><rect x="560" y="214" width="140" height="58" rx="14" class="bubble-agent" /><text x="630" y="239" text-anchor="middle" class="bubble-text">"Topic 2 today. It</text><text x="630" y="256" text-anchor="middle" class="bubble-text">has been 9 days…"</text></g>
           </svg>
           <figcaption>The context is everything the model reads before it answers. AGENTS.md is always in it; of the skills, only the name and the description, until a skill is needed.</figcaption>
