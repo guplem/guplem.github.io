@@ -567,7 +567,7 @@ const finale = document.querySelector("[data-finale]");
 if (finale) {
   const stepBoxes = [...document.querySelectorAll('input[data-done^="paso-"]')];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const wins = [...document.querySelectorAll(".finale-wins li")].map((item) => item.textContent);
+  const wins = [...document.querySelectorAll("[data-finale] .fx-card-text")].map((item) => item.textContent);
   const colours = ["--teal", "--f-agents", "--f-data", "--f-skills", "--f-scripts", "--f-exports"];
 
   const pending = document.createElement("div");
