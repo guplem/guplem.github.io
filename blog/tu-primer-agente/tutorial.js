@@ -266,6 +266,21 @@ for (const block of document.querySelectorAll(".codeblock")) {
     }
   });
   block.append(button);
+
+  // A long message starts folded to its first lines; the button unfolds it.
+  if (block.classList.contains("is-collapsible")) {
+    block.classList.add("is-folded");
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "fold-button";
+    const label = () => setIconLabel(toggle, block.classList.contains("is-folded") ? "ico-chevron-down" : "ico-chevron-up", block.classList.contains("is-folded") ? body.dataset.moreLabel : body.dataset.lessLabel);
+    label();
+    toggle.addEventListener("click", () => {
+      block.classList.toggle("is-folded");
+      label();
+    });
+    block.append(toggle);
+  }
 }
 
 /* ---------- The folder explorer ---------- */

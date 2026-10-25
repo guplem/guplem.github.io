@@ -48,7 +48,7 @@
     </script>
   </head>
 
-  <body class="agente" data-example-param="example" data-anim-prev="◀ Back" data-anim-pause="❚❚ Pause" data-anim-play="▶ Play" data-anim-again="↺ Play again" data-anim-next="Next ▶" data-badge-new="new" data-badge-changed="updated" data-copy-label="Copy" data-copied-label="Copied">
+  <body class="agente" data-example-param="example" data-anim-prev="◀ Back" data-anim-pause="❚❚ Pause" data-anim-play="▶ Play" data-anim-again="↺ Play again" data-anim-next="Next ▶" data-badge-new="new" data-badge-changed="updated" data-more-label="Show the whole message" data-less-label="Show less" data-copy-label="Copy" data-copied-label="Copied">
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <defs>
         <symbol id="ico-bot" viewBox="-12 -16 24 26"><rect x="-1" y="-13" width="2" height="5" style="fill: var(--teal)" /><circle cx="0" cy="-13.5" r="2.4" style="fill: var(--teal)" /><rect x="-10" y="-8" width="20" height="17" rx="5" style="fill: var(--teal)" /><g class="visor-eyes"><ellipse cx="-4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /><ellipse cx="4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /></g></symbol>
@@ -65,6 +65,8 @@
         <symbol id="ico-os-mac" viewBox="0 0 24 24"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" /></symbol>
         <symbol id="ico-os-windows" viewBox="0 0 24 24"><path fill="currentColor" d="M3 4.6l7.4-1v7.1H3zM11.4 3.4L21 2v8.7h-9.6zM3 11.6h7.4v7.2L3 17.8zM11.4 11.6H21V22l-9.6-1.3z" /></symbol>
         <symbol id="ico-os-linux" viewBox="0 0 24 24"><path fill="currentColor" d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.71-.07-.268-.005-.47.193-.6.224-.135.38-.271.483-.336.104-.074.143-.102.176-.131h.002v-.003c.169-.202.436-.47.839-.601.139-.036.294-.065.466-.065zm2.8 2.142c.358 1.417 1.196 3.475 1.735 4.473.286.534.855 1.659 1.102 3.024.156-.005.33.018.513.064.646-1.671-.546-3.467-1.089-3.966-.22-.2-.232-.335-.123-.335.59.534 1.365 1.572 1.646 2.757.13.535.16 1.104.021 1.67.067.028.135.06.205.067 1.032.534 1.413.938 1.23 1.537v-.043c-.06-.003-.12 0-.18 0h-.016c.151-.467-.182-.825-1.065-1.224-.915-.4-1.646-.336-1.77.465-.008.043-.013.066-.018.135-.068.023-.139.053-.209.064-.43.268-.662.669-.793 1.187-.13.533-.17 1.156-.205 1.869v.003c-.02.334-.17.838-.319 1.35-1.5 1.072-3.58 1.538-5.348.334a2.645 2.645 0 00-.402-.533 1.45 1.45 0 00-.275-.333c.182 0 .338-.03.465-.067a.615.615 0 00.314-.334c.108-.267 0-.697-.345-1.163-.345-.467-.931-.995-1.788-1.521-.63-.4-.986-.87-1.15-1.396-.165-.534-.143-1.085-.015-1.645.245-1.07.873-2.11 1.274-2.763.107-.065.037.135-.408.974-.396.751-1.14 2.497-.122 3.854a8.123 8.123 0 01.647-2.876c.564-1.278 1.743-3.504 1.836-5.268.048.036.217.135.289.202.218.133.38.333.59.465.21.201.477.335.876.335.039.003.075.006.11.006.412 0 .73-.134.997-.268.29-.134.52-.334.74-.4h.005c.467-.135.835-.402 1.044-.7zm2.185 8.958c.037.6.343 1.245.882 1.377.588.134 1.434-.333 1.791-.765l.211-.01c.315-.007.577.01.847.268l.003.003c.208.199.305.53.391.876.085.4.154.78.409 1.066.486.527.645.906.636 1.14l.003-.007v.018l-.003-.012c-.015.262-.185.396-.498.595-.63.401-1.746.712-2.457 1.57-.618.737-1.37 1.14-2.036 1.191-.664.053-1.237-.2-1.574-.898l-.005-.003c-.21-.4-.12-1.025.056-1.69.176-.668.428-1.344.463-1.897.037-.714.076-1.335.195-1.814.12-.465.308-.797.641-.984l.045-.022zm-10.814.049h.01c.053 0 .105.005.157.014.376.055.706.333 1.023.752l.91 1.664.003.003c.243.533.754 1.064 1.189 1.637.434.598.77 1.131.729 1.57v.006c-.057.744-.48 1.148-1.125 1.294-.645.135-1.52.002-2.395-.464-.968-.536-2.118-.469-2.857-.602-.369-.066-.61-.2-.723-.4-.11-.2-.113-.602.123-1.23v-.004l.002-.003c.117-.334.03-.752-.027-1.118-.055-.401-.083-.71.043-.94.16-.334.396-.4.69-.533.294-.135.64-.202.915-.47h.002v-.002c.256-.268.445-.601.668-.838.19-.201.38-.336.663-.336zm7.159-9.074c-.435.201-.945.535-1.488.535-.542 0-.97-.267-1.28-.466-.154-.134-.28-.268-.373-.335-.164-.134-.144-.333-.074-.333.109.016.129.134.199.2.096.066.215.2.36.333.292.2.68.467 1.167.467.485 0 1.053-.267 1.398-.466.195-.135.445-.334.648-.467.156-.136.149-.267.279-.267.128.016.034.134-.147.332a8.097 8.097 0 01-.69.468zm-1.082-1.583V5.64c-.006-.02.013-.042.029-.05.074-.043.18-.027.26.004.063 0 .16.067.15.135-.006.049-.085.066-.135.066-.055 0-.092-.043-.141-.068-.052-.018-.146-.008-.163-.065zm-.551 0c-.02.058-.113.049-.166.066-.047.025-.086.068-.14.068-.05 0-.13-.02-.136-.068-.01-.066.088-.133.15-.133.08-.031.184-.047.259-.005.019.009.036.03.03.05v.02h.003z" /></symbol>
+        <symbol id="ico-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" /></symbol>
+        <symbol id="ico-chevron-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6" /></symbol>
       </defs>
     </svg>
 
@@ -490,10 +492,12 @@
         <p>Look at AGENTS.md: it is in the context of every conversation, so what you write there, the agent always keeps in mind. That is why it is so powerful. Skills, which you will see in step 6, go in with only their name and one sentence. And it is an open standard: Claude, ChatGPT (Codex), Antigravity, Goose and many other apps read it. So you do not depend on any one app.</p>
 
         <h3 id="your-agents-md"><a class="heading-anchor" href="#your-agents-md">Your AGENTS.md</a></h3>
-        <p>This is the AGENTS.md for your example. Read it: it says who the agent is, what it does, where it keeps each thing, and a few rules. Change the details that are yours (your school year, your groups, your goal) and keep the structure.</p>
+        <p>The easiest way is to let the agent create the AGENTS.md for you. This is the message for your example, with the whole file inside. Open it and read it: it says who the agent is, what it does, where it keeps each thing, and a few rules. Copy it, paste it in the chat and, before you send it, change the details that are yours (your school year, your groups, your goal). Keep the structure.</p>
 
         <div class="variant" data-example="estudiante"><p class="variant-label">Student</p>
-          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># My study tutor
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create an AGENTS.md file in this folder with this content:
+
+# My study tutor
 
 You are my personal tutor. I am in the last year of high school.
 You speak to me in English, with short sentences and examples.
@@ -518,7 +522,9 @@ You speak to me in English, with short sentences and examples.
 - To prepare a practice exam, use the practice-exam skill.</pre></div></div>
 
         <div class="variant" data-example="docente"><p class="variant-label">Teacher</p>
-          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># My class helper
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create an AGENTS.md file in this folder with this content:
+
+# My class helper
 
 You are my class helper. I teach maths in Year 4 (4th grade), to two groups: 4A and 4B.
 You speak to me in English, in a clear and practical way.
@@ -541,7 +547,9 @@ You speak to me in English, in a clear and practical way.
 - To prepare a worksheet, use the make-worksheet skill.</pre></div></div>
 
         <div class="variant" data-example="salud"><p class="variant-label">Health</p>
-          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># My coach
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create an AGENTS.md file in this folder with this content:
+
+# My coach
 
 You are my personal coach. My goal is in data/goal.md.
 You speak to me in English, with encouragement but without exaggeration.
@@ -563,7 +571,9 @@ You speak to me in English, with encouragement but without exaggeration.
 - For the weekly summary, use the weekly-summary skill.</pre></div></div>
 
         <div class="variant" data-example="diario"><p class="variant-label">Journal</p>
-          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># My journal
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create an AGENTS.md file in this folder with this content:
+
+# My journal
 
 You are my personal journal. I tell you how my day went and you put it in order.
 You speak to me in English, calmly. You do not judge: you listen and you put things in order.
@@ -584,7 +594,9 @@ You speak to me in English, calmly. You do not judge: you listen and you put thi
 - To close the day, use the close-the-day skill.</pre></div></div>
 
         <div class="variant" data-example="reforma"><p class="variant-label">Renovation</p>
-          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># Bathroom renovation
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create an AGENTS.md file in this folder with this content:
+
+# Bathroom renovation
 
 You are the project manager for my bathroom renovation. I know nothing about building work: explain everything to me.
 You speak to me in English, in a clear and orderly way.
@@ -608,10 +620,6 @@ You speak to me in English, in a clear and orderly way.
 - Do not accept a measurement that I did not give you.
 - To prepare a call with a professional, use the prepare-call skill.</pre></div></div>
 
-        <p>To create it, the easiest way is to ask the agent. Click "Copy" on the text above. Then write this message and, under it, paste the text with <kbd>Ctrl</kbd> + <kbd>V</kbd> (<kbd>Cmd</kbd> + <kbd>V</kbd> on a Mac):</p>
-        <div class="codeblock prompt no-name"><pre>Create an AGENTS.md file in this folder with this content:
-
-(paste the text here)</pre></div>
 
         <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p class="note" data-icon="!"><span><strong>Claude reads the AGENTS.md too</strong> (since its September 2026 version), as long as there is no <code>CLAUDE.md</code> file. If your Claude does not read it, ask: "Create a CLAUDE.md file that contains only the line <code>@AGENTS.md</code>". That line tells it to load your AGENTS.md, and the other apps ignore the CLAUDE.md.</span></p></div>
 
@@ -715,10 +723,12 @@ You speak to me in English, in a clear and orderly way.
 
         <p class="note" data-icon="!"><span><strong>On a Mac, the dot at the start hides the folder.</strong> Finder does not show folders whose name starts with a dot, and it does not let you create them. To see them, press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>.</kbd> in Finder. On Windows you see them normally. The easiest way, on both: let the agent create it.</span></p>
 
-        <p>This is the skill for your example:</p>
+        <p>This is the message that creates the skill for your example, with its SKILL.md inside. Copy it and send it to the agent:</p>
 
         <div class="variant" data-example="estudiante"><p class="variant-label">Student</p>
-          <div class="codeblock"><span class="file-name">practice-exam/SKILL.md</span><pre data-copy>---
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create a skill with this SKILL.md, in the skills folder that this app uses:
+
+---
 name: practice-exam
 description: Prepares a practice exam on the topics I ask for, with questions like the ones in class. Use it when I want to practise for an exam.
 ---
@@ -733,7 +743,9 @@ description: Prepares a practice exam on the topics I ask for, with questions li
 6. When we finish, update data/progress.md with what I got right and wrong.</pre></div></div>
 
         <div class="variant" data-example="docente"><p class="variant-label">Teacher</p>
-          <div class="codeblock"><span class="file-name">make-worksheet/SKILL.md</span><pre data-copy>---
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create a skill with this SKILL.md, in the skills folder that this app uses:
+
+---
 name: make-worksheet
 description: Prepares a worksheet of exercises for a group and a topic, ready to print. Use it when I ask for a worksheet or exercises for class.
 ---
@@ -747,7 +759,9 @@ description: Prepares a worksheet of exercises for a group and a topic, ready to
 5. Tell me how to print it: open it in the browser and use Print.</pre></div></div>
 
         <div class="variant" data-example="salud"><p class="variant-label">Health</p>
-          <div class="codeblock"><span class="file-name">weekly-summary/SKILL.md</span><pre data-copy>---
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create a skill with this SKILL.md, in the skills folder that this app uses:
+
+---
 name: weekly-summary
 description: Makes the summary of the week's workouts and meals and compares it with the goal. Use it when I ask for the summary or ask how I am doing.
 ---
@@ -761,7 +775,9 @@ description: Makes the summary of the week's workouts and meals and compares it 
 5. Tell me the summary in three sentences.</pre></div></div>
 
         <div class="variant" data-example="diario"><p class="variant-label">Journal</p>
-          <div class="codeblock"><span class="file-name">close-the-day/SKILL.md</span><pre data-copy>---
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create a skill with this SKILL.md, in the skills folder that this app uses:
+
+---
 name: close-the-day
 description: Saves the day's entry from what I tell you. Use it when I say that I want to close the day or write in the journal.
 ---
@@ -775,7 +791,9 @@ description: Saves the day's entry from what I tell you. Use it when I say that 
 5. Say goodbye with a short sentence.</pre></div></div>
 
         <div class="variant" data-example="reforma"><p class="variant-label">Renovation</p>
-          <div class="codeblock"><span class="file-name">prepare-call/SKILL.md</span><pre data-copy>---
+          <div class="codeblock prompt is-collapsible"><span class="file-name">Message for your agent</span><pre data-copy>Create a skill with this SKILL.md, in the skills folder that this app uses:
+
+---
 name: prepare-call
 description: Prepares a call or a visit with a professional for the renovation, with what to ask and what to decide. Use it when I am going to talk to a plumber, a builder, an electrician or a shop.
 ---
@@ -788,10 +806,6 @@ description: Prepares a call or a visit with a professional for the renovation, 
 4. Save it in exports/call-PROFESSIONAL-DATE.md.
 5. After the call, ask me what we discussed and update data/contacts.md and data/steps.md.</pre></div></div>
 
-        <p>To create it, ask the agent, with the text pasted:</p>
-        <div class="codeblock prompt no-name"><pre>Create a skill with this SKILL.md, in the skills folder that this app uses:
-
-(paste the text here)</pre></div>
         <p>Then, in a new conversation, ask for something that matches the description. You will see that it opens the skill and follows its steps:</p>
         <div class="variant" data-example="estudiante"><p class="variant-label">Student</p><div class="codeblock prompt no-name"><pre>Make me a practice exam on topic 3.</pre></div></div>
         <div class="variant" data-example="docente"><p class="variant-label">Teacher</p><div class="codeblock prompt no-name"><pre>Make me a multiplication worksheet for 4A.</pre></div></div>
