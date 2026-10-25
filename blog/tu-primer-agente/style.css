@@ -1615,3 +1615,19 @@ body:not(.js-ready) .js-only {
 }
 .anim-controls button:hover { color: var(--ink); border-color: var(--teal); }
 .anim-controls button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* Icons inside buttons. Every action button carries one, before its label:
+   copy (and a tick once copied), the theme choices, the folder check. */
+.btn-icon {
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.4em;
+  vertical-align: -0.2em;
+  flex: none;
+}
+.copy-button,
+.checker-button,
+.theme-switch button {
+  display: inline-flex;
+  align-items: center;
+}

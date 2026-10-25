@@ -233,6 +233,16 @@ for (const term of document.querySelectorAll("a.term")) {
 addEventListener("scroll", hideTerm, { passive: true });
 
 /* ---------- Copy buttons ---------- */
+// A button shows an icon from the page's hidden SVG symbols, then its label.
+function setIconLabel(button, icon, label) {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "btn-icon");
+  svg.setAttribute("aria-hidden", "true");
+  const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+  use.setAttribute("href", `#${icon}`);
+  svg.append(use);
+  button.replaceChildren(svg, label);
+}
 const copyLabel = body.dataset.copyLabel ?? "Copy";
 const copiedLabel = body.dataset.copiedLabel ?? "Copied";
 for (const block of document.querySelectorAll(".codeblock")) {
@@ -240,12 +250,12 @@ for (const block of document.querySelectorAll(".codeblock")) {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "copy-button";
-  button.textContent = copyLabel;
+  setIconLabel(button, "ico-copy", copyLabel);
   button.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(pre.textContent);
-      button.textContent = copiedLabel;
-      setTimeout(() => (button.textContent = copyLabel), 1600);
+      setIconLabel(button, "ico-check", copiedLabel);
+      setTimeout(() => setIconLabel(button, "ico-copy", copyLabel), 1600);
     } catch (error) {
       const range = document.createRange();
       range.selectNodeContents(pre);
