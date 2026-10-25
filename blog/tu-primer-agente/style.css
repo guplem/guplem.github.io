@@ -871,9 +871,9 @@ button.choice[aria-pressed="true"]::after {
   margin-left: 6px;
 }
 
-.tree-item.is-hidden-file .tree-name::after {
+.tree-name[data-hidden-label]::after {
   content: attr(data-hidden-label);
-  margin-left: 6px;
+  margin-left: 8px;
   font: 500 0.72rem var(--sans);
   color: var(--ink-soft);
   border-radius: 999px;
@@ -937,19 +937,47 @@ button.choice[aria-pressed="true"]::after {
   background: color-mix(in srgb, var(--c) 6%, var(--panel));
 }
 
-.agente .post .explorer-detail .detail-title {
-  margin: 0;
-  font: 650 1rem var(--mono);
-  color: var(--c);
-}
-
 .agente .post .explorer-detail p {
   font-size: 1rem;
   line-height: 1.6;
 }
 
+/* Who writes the part and who uses it: two lines, each with an icon
+   (a pencil, then an eye), under a thin line in the part's colour. */
 .explorer-detail .tree-who {
-  display: flex !important;
+  display: grid !important;
+  grid-column: auto;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+}
+
+.explorer-detail .tree-who span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  background: none;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.explorer-detail .tree-who span::before {
+  content: "";
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: var(--c);
+  -webkit-mask: var(--who-icon) center / contain no-repeat;
+  mask: var(--who-icon) center / contain no-repeat;
+}
+
+.explorer-detail .tree-who span:first-child {
+  --who-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h4L19 9l-4-4L4 16z'/%3E%3C/svg%3E");
+}
+
+.explorer-detail .tree-who span:last-child {
+  --who-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
 }
 
 @media (max-width: 640px) {
