@@ -7,7 +7,7 @@
 // only DOM glue. Every sentence it shows is read from the page, so it holds
 // no language of its own.
 
-import { APPS, EXAMPLE_IDS, animationSteps, checkFolder, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
+import { APPS, EXAMPLE_IDS, animationEnd, animationSteps, checkFolder, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
 
 const root = document.documentElement;
 const body = document.body;
@@ -351,24 +351,26 @@ if (checker) {
 
 /* ---------- Drawings: start when seen, pause, step ----------
    A drawing waits until the reader can see all of it, then plays. The
-   buttons under it pause it and move one step back or forward. The steps
-   come from the drawing's own CSS (animationSteps), so the CSS stays the one
+   buttons under it pause it and move one step back or forward. It plays
+   once and stops on the finished picture, and its play button turns into
+   "play again". The steps and the end
+   come from the drawing's own CSS (animationSteps, animationEnd), so the CSS stays the one
    place that sets the order. With reduced motion, CSS already shows the
    finished picture, so the drawing gets no buttons. */
-const animLabels = { prev: body.dataset.animPrev, pause: body.dataset.animPause, play: body.dataset.animPlay, next: body.dataset.animNext };
+const animLabels = { prev: body.dataset.animPrev, pause: body.dataset.animPause, play: body.dataset.animPlay, next: body.dataset.animNext, again: body.dataset.animAgain };
 if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   for (const figure of document.querySelectorAll("figure.diagram")) {
     const svg = figure.querySelector("svg");
     const animations = () => svg.getAnimations({ subtree: true });
     if (!svg || animations().length === 0) continue;
     const cycle = animations()[0].effect.getTiming().duration;
-    const steps = animationSteps(
-      animations().map((animation) => {
-        const { delay, duration } = animation.effect.getTiming();
-        const keyframes = animation.effect.getKeyframes().map((frame) => ({ offset: frame.computedOffset, opacity: frame.opacity === undefined ? undefined : Number(frame.opacity) }));
-        return { delay, duration, keyframes };
-      }),
-    );
+    const timings = animations().map((animation) => {
+      const { delay, duration } = animation.effect.getTiming();
+      const keyframes = animation.effect.getKeyframes().map((frame) => ({ offset: frame.computedOffset, opacity: frame.opacity === undefined ? undefined : Number(frame.opacity) }));
+      return { delay, duration, keyframes };
+    });
+    const steps = animationSteps(timings);
+    const end = animationEnd(timings) ?? cycle;
     let playing = false;
     let held = false; // the reader paused it, so scrolling does not restart it
     const now = () => (animations()[0].currentTime ?? 0) % cycle;
@@ -393,14 +395,29 @@ if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches)
     const next = button(animLabels.next);
     svg.after(bar);
 
+    let finished = false;
+    const watchEnd = () => {
+      if (!playing) return;
+      if (now() >= end) {
+        seek(end);
+        playing = false;
+        finished = true;
+        held = true;
+        toggle.textContent = animLabels.again;
+      } else requestAnimationFrame(watchEnd);
+    };
     const play = () => {
+      if (finished) seek(0);
+      finished = false;
       for (const animation of animations()) animation.play();
       playing = true;
       toggle.textContent = animLabels.pause;
+      requestAnimationFrame(watchEnd);
     };
     const pause = () => {
       seek(now());
       playing = false;
+      finished = false;
       toggle.textContent = animLabels.play;
     };
     toggle.addEventListener("click", () => {
@@ -416,7 +433,13 @@ if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches)
     next.addEventListener("click", () => {
       held = true;
       pause();
-      seek(stepAfter(steps, now()));
+      const target = stepAfter(steps, now());
+      // Past the last step: show the finished picture, as the end of a play does.
+      if (target === 0 && now() > 0) {
+        seek(end);
+        finished = true;
+        toggle.textContent = animLabels.again;
+      } else seek(target);
     });
 
     seek(0);
