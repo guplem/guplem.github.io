@@ -1668,3 +1668,9 @@ body:not(.js-ready) .js-only {
   display: inline-flex;
   align-items: center;
 }
+
+/* The three parts of an agent (model, app, folder) each have one icon,
+   used in the list that names them and in the drawings, with a tooltip. */
+.part-icon { display: inline-block; width: 1.25em; height: 1.25em; margin-right: 0.4em; vertical-align: -0.25em; color: var(--teal); }
+.part-icon svg { width: 100%; height: 100%; }
+.diagram .part-ico { color: var(--teal); }
