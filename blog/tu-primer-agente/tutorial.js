@@ -7,7 +7,7 @@
 // only DOM glue. Every sentence it shows is read from the page, so it holds
 // no language of its own.
 
-import { APPS, EXAMPLE_IDS, animationEnd, animationSteps, checkFolder, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
+import { APPS, EXAMPLE_IDS, animationEnd, animationSteps, checkFolder, folderAt, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
 
 const root = document.documentElement;
 const body = document.body;
@@ -269,6 +269,36 @@ for (const block of document.querySelectorAll(".codeblock")) {
 }
 
 /* ---------- The folder explorer ---------- */
+// The folder grows step by step: the explorer in step 2 shows only what the
+// reader has made so far, and each later step ends with a copy of it that
+// shows the folder at that point, with what the step made or filled marked.
+const masterExplorer = document.querySelector("[data-explorer][data-folder-step]");
+if (masterExplorer) {
+  const pristine = masterExplorer.cloneNode(true);
+  const badges = { fresh: body.dataset.badgeNew, changed: body.dataset.badgeChanged };
+  const showFolder = (explorer, step) => {
+    const at = folderAt(step);
+    if (!at) return;
+    for (const item of explorer.querySelectorAll(".tree-item")) {
+      const part = item.dataset.part;
+      item.hidden = !at.parts.includes(part);
+      const mark = at.fresh.includes(part) ? "fresh" : at.changed.includes(part) ? "changed" : null;
+      if (!mark) continue;
+      const badge = document.createElement("span");
+      badge.className = `tree-badge is-${mark}`;
+      badge.textContent = badges[mark];
+      item.querySelector(".tree-name").append(badge);
+      item.dataset.marked = "";
+    }
+  };
+  for (const slot of document.querySelectorAll(".folder-now[data-folder-step]")) {
+    const copy = pristine.cloneNode(true);
+    slot.append(copy);
+    showFolder(copy, slot.dataset.folderStep);
+  }
+  showFolder(masterExplorer, masterExplorer.dataset.folderStep);
+}
+
 for (const explorer of document.querySelectorAll("[data-explorer]")) {
   const items = [...explorer.querySelectorAll(".tree-item")];
   const detail = explorer.querySelector(".explorer-detail");
@@ -293,7 +323,8 @@ for (const explorer of document.querySelectorAll("[data-explorer]")) {
       }
     });
   }
-  select(items[0]);
+  // Open on what this step made, or else on the first part the folder has.
+  select(items.find((item) => !item.hidden && "marked" in item.dataset) ?? items.find((item) => !item.hidden));
 }
 
 /* ---------- The folder check ---------- */

@@ -7,7 +7,7 @@
 // choice writes, and which part of a folder is right or wrong.
 
 import { describe, expect, test } from "bun:test";
-import { APP_IDS, EXAMPLE_IDS, animationEnd, animationSteps, checkFolder, parseFrontmatter, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
+import { APP_IDS, EXAMPLE_IDS, animationEnd, animationSteps, checkFolder, folderAt, parseFrontmatter, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
 
 describe("recommendApps", () => {
   test("returns null when the reader has ticked nothing", () => {
@@ -244,5 +244,29 @@ describe("animationEnd", () => {
 
   test("returns null for a drawing with no steps", () => {
     expect(animationEnd([])).toBeNull();
+  });
+});
+
+describe("folderAt", () => {
+  test("starts with the two empty folders that step 2 creates, both new", () => {
+    expect(folderAt("paso-2")).toEqual({ parts: ["data", "exports"], fresh: ["data", "exports"], changed: [] });
+  });
+
+  test("adds AGENTS.md in step 4 and keeps the parts from before", () => {
+    expect(folderAt("paso-4")).toEqual({ parts: ["agents", "data", "exports"], fresh: ["agents"], changed: [] });
+  });
+
+  test("marks a part that a step fills as changed, not new", () => {
+    expect(folderAt("paso-5")).toEqual({ parts: ["agents", "data", "exports"], fresh: [], changed: ["data"] });
+    expect(folderAt("paso-8").changed).toEqual(["exports"]);
+  });
+
+  test("lists the parts in the order of the explorer", () => {
+    expect(folderAt("paso-7").parts).toEqual(["agents", "data", "skills", "scripts", "exports"]);
+  });
+
+  test("returns null for a step that does not change the folder", () => {
+    expect(folderAt("paso-3")).toBeNull();
+    expect(folderAt("paso-99")).toBeNull();
   });
 });
