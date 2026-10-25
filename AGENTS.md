@@ -105,7 +105,7 @@ python -m http.server 8000
 ```
 No linter or package manager for the main site. Web-projects use Bun's test runner (`bun test`) for their pure logic -- see `web-projects/AGENTS.md`.
 
-**CI:** `.github/workflows/test.yml` runs `bun test .` (the whole suite: web-projects tests, the data validation test, the `textCore` tests, and the `scripts/` tests -- the SEO-artifact drift tests, the font, web-project tab-icon and report-link guard tests, and the portfolio-image capture script's own tests) on every pull request and push to `main`, and it is a required status check on `main` -- a PR with a failing test cannot be merged. Keep tests green; a new web-project's tests are picked up automatically. See ADR 0009.
+**CI:** `.github/workflows/test.yml` runs `bun test .` (the whole suite: web-projects tests, the data validation test, the `textCore` tests, and the `scripts/` tests -- the SEO-artifact drift tests, the font, web-project tab-icon and report-link guard tests, and the portfolio-image capture script's own tests), plus the blog's tests (`blog/tu-primer-agente/agentCore.test.js`, and `examples.test.js`, which keeps each example folder and its zip identical) on every pull request and push to `main`, and it is a required status check on `main` -- a PR with a failing test cannot be merged. Keep tests green; a new web-project's tests are picked up automatically. See ADR 0009.
 
 Whenever you need to confirm the code still passes, delegate to the `validate` agent (it runs the checks the way CI does).
 
@@ -141,7 +141,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 ### Blog
 
-`blog/` holds long-form posts as plain HTML pages: the text is in the file, no script renders it, and each post owns its look on a thin shared skeleton (`blog/blog.css`). A post is written for crawlers and language models, so every fact in it (chart numbers and picture descriptions included) is text in the file. A post's `<head>` is its only metadata record; `scripts/blogPosts.js` reads it to write the index block, `blog/feed.xml` and the sitemap entries. See `blog/AGENTS.md` and ADR 0015. Whenever you add or rework a post, use the `add-blog-post` skill.
+`blog/` holds long-form posts as plain HTML pages: the text is in the file, no script renders it, and each post owns its look on a thin shared skeleton (`blog/blog.css`). A post is written for crawlers and language models, so every fact in it (chart numbers and picture descriptions included) is text in the file. A post may add a script and a tested pure module for an interactive extra, and it may ship downloadable example folders (`blog/tu-primer-agente/` and `blog/your-first-agent/`, one tutorial in two languages). A post's `<head>` is its only metadata record; `scripts/blogPosts.js` reads it to write the index block, `blog/feed.xml` and the sitemap entries. See `blog/AGENTS.md` and ADR 0015. Whenever you add or rework a post, use the `add-blog-post` skill.
 
 ### Web Projects
 
@@ -151,7 +151,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **External CDN dependency:** `marked` is imported via `esm.sh` CDN -- no local node_modules. Network failure breaks markdown rendering.
 
-**Self-hosted font:** the Inter font is self-hosted at `resources/fonts/InterVariable.woff2` (not Google Fonts). Every HTML page that uses the site font must include both a `<link rel="preload" ... as="font" ... crossorigin>` for it and a link to `css/global/fonts.css`. `scripts/fontSelfHosted.test.js` enforces this.
+**Self-hosted font:** the Inter font is self-hosted at `resources/fonts/InterVariable.woff2` (not Google Fonts). A blog post may add a second self-hosted font (`resources/fonts/PlusJakartaSans-Latin.woff2`, with its licence next to it) but still loads Inter. Every HTML page that uses the site font must include both a `<link rel="preload" ... as="font" ... crossorigin>` for it and a link to `css/global/fonts.css`. `scripts/fontSelfHosted.test.js` enforces this.
 
 **Caching:** Both JSON fetches and markdown->HTML conversions are cached in `Map` objects. Clear browser cache after updating data files during development.
 
