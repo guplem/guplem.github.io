@@ -43,10 +43,10 @@ describe("recommendApps", () => {
     expect(result.warnings).toContain("no-app-uses-both");
   });
 
-  test("starts a reader with nothing on a free plan, and ignores other ticks next to 'nothing'", () => {
-    // Antigravity is free for everyone; the ChatGPT app's Codex mode is still reaching free accounts.
-    expect(recommendApps(["none"])).toEqual({ best: "antigravity", alternatives: ["codex", "goose"], warnings: ["made-for-code"] });
-    expect(recommendApps(["none", "claude"]).best).toBe("antigravity");
+  test("starts a reader with nothing on the free ChatGPT app, and ignores other ticks next to 'nothing'", () => {
+    // The ChatGPT app is the simplest start and Codex works on the free plan; Antigravity is the free fallback.
+    expect(recommendApps(["none"])).toEqual({ best: "codex", alternatives: ["antigravity", "goose"], warnings: [] });
+    expect(recommendApps(["none", "claude"]).best).toBe("codex");
   });
 
   test("never names an app twice, and names only known apps", () => {
