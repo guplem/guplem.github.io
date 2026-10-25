@@ -1241,6 +1241,29 @@ body:not(.js-ready) .js-only {
 @keyframes f-f { 0%, 64% { opacity: 0; transform: translateY(6px); } 68%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
 @keyframes f-g { 0%, 72% { opacity: 0; } 76%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
 
+/* Drawing 3, "an endless chat against a new chat with a folder". One 14 s
+   cycle. Top bar: 26 messages appear one after another (each 0.18 s after
+   the one before, so the bar fills in about 5 s); when it is full, the word
+   "full" shows (42%) and a grey cover marks the oldest half as summarised
+   (50%). Bottom bar: the three pieces of a clean chat show (64%). It holds,
+   then clears (92-97%). The messages keep their offsets, so the next cycle
+   fills the bar in the same order. */
+.diagram .blk-person { fill: var(--teal); }
+.diagram .blk-ai { fill: var(--ink-soft); fill-opacity: 0.45; }
+.diagram .piece { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+.diagram .compact-overlay { fill: var(--paper); fill-opacity: 0.88; stroke: var(--line); stroke-dasharray: 4 4; }
+.diagram .limit-line { stroke: var(--bad); stroke-width: 2; stroke-dasharray: 5 5; }
+
+.ctxfill .blocks rect { animation: cf-block 14s infinite backwards; }
+.ctxfill .cf-full { animation: cf-full 14s infinite; }
+.ctxfill .cf-over { animation: cf-over 14s infinite; }
+.ctxfill .cf-new { animation: cf-new 14s infinite; }
+
+@keyframes cf-block { 0% { opacity: 0; } 2%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes cf-full { 0%, 40% { opacity: 0; } 44%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes cf-over { 0%, 48% { opacity: 0; } 54%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
+@keyframes cf-new { 0%, 62% { opacity: 0; transform: translateY(6px); } 68%, 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+
 /* Drawing 2, "what the model reads". One 10 s cycle. The five boxes appear
    one by one (0-35%), the bracket draws (35-48%), the word "context" and the
    arrow show (48-56%), the model box lights (56-62%), and the answer arrives
@@ -1287,6 +1310,7 @@ body:not(.js-ready) .js-only {
 
 @media (prefers-reduced-motion: reduce) {
   .forget *,
+  .ctxfill *,
   .context *,
   .visor-eyes ellipse {
     animation: none !important;

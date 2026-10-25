@@ -169,6 +169,43 @@
           <figcaption>Hoy, el agente apunta lo importante en un archivo de su carpeta. Mañana, el chat del navegador ha olvidado todo, pero el agente lee su archivo y sigue donde lo dejasteis.</figcaption>
         </figure>
 
+        <h3 id="la-trampa-del-chat-eterno"><a class="heading-anchor" href="#la-trampa-del-chat-eterno">La trampa del chat eterno</a></h3>
+        <p>Como cada chat nuevo empieza casi de cero, mucha gente hace lo lógico: abre un chat para una cosa (las clases, la dieta, la obra) y lo usa durante semanas. Así no tiene que volver a explicarlo todo. Pero eso crea otro problema, y casi nadie lo ve.</p>
+        <p>Todo lo que el modelo lee para responder se llama el <a class="term" href="#g-contexto">contexto</a>: sus reglas, la conversación entera y tu mensaje nuevo. El contexto tiene un tamaño máximo. Cuando un chat eterno lo llena, la app tiene que hacer sitio: según la app, <a class="term" href="#g-compactar">compacta</a> los mensajes antiguos en un resumen o deja de leerlos. No te avisa, y por el camino se pierden detalles.</p>
+        <p>Y aunque todo quepa, un contexto enorme funciona peor. Piénsalo así: si te doy una página y te pregunto algo sobre ella, aciertas casi seguro. Si te doy la Biblia entera y te pregunto lo mismo, es mucho más fácil que se te escape algo. A un modelo le pasa igual: cuanto más largo es el contexto, más le cuesta tener en cuenta cada cosa.</p>
+
+        <figure class="diagram ctxfill">
+          <svg viewBox="0 0 720 240" role="img" aria-labelledby="ctxfill-title ctxfill-desc">
+            <title id="ctxfill-title">Un chat eterno frente a un chat nuevo con carpeta</title>
+            <desc id="ctxfill-desc">Dos barras representan el contexto, con un límite a la derecha. En la de arriba, "Un chat eterno", los mensajes de varias semanas se acumulan hasta llenar el contexto. Entonces la app resume los más antiguos, y se pierden detalles. En la de abajo, "Un chat nuevo y tu carpeta", el contexto solo lleva tres piezas: el AGENTS.md, el archivo de datos que hace falta y tu pregunta. Sobra mucho sitio.</desc>
+            <line x1="640" y1="40" x2="640" y2="214" class="limit-line" />
+            <text x="640" y="30" text-anchor="middle" class="label-soft">límite del contexto</text>
+            <text x="30" y="58" class="label">Un chat eterno: semanas de mensajes</text>
+            <rect x="30" y="66" width="610" height="42" rx="10" class="box" />
+            <g class="blocks"><rect x="40" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:0.00s" /><rect x="63" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:0.18s" /><rect x="86" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:0.36s" /><rect x="109" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:0.54s" /><rect x="132" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:0.72s" /><rect x="155" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:0.90s" /><rect x="178" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:1.08s" /><rect x="201" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:1.26s" /><rect x="224" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:1.44s" /><rect x="247" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:1.62s" /><rect x="270" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:1.80s" /><rect x="293" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:1.98s" /><rect x="316" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:2.16s" /><rect x="339" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:2.34s" /><rect x="362" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:2.52s" /><rect x="385" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:2.70s" /><rect x="408" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:2.88s" /><rect x="431" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:3.06s" /><rect x="454" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:3.24s" /><rect x="477" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:3.42s" /><rect x="500" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:3.60s" /><rect x="523" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:3.78s" /><rect x="546" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:3.96s" /><rect x="569" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:4.14s" /><rect x="592" y="76" width="18" height="22" rx="5" class="blk-person" style="animation-delay:4.32s" /><rect x="615" y="76" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:4.50s" /></g>
+            <g class="cf-over"><rect x="34" y="70" width="352" height="34" rx="8" class="compact-overlay" /><text x="210" y="92" text-anchor="middle" class="bubble-text">resumido por la app: se pierden detalles</text></g>
+            <text x="636" y="126" text-anchor="end" class="cap-bad cf-full">lleno</text>
+            <g class="cf-new">
+              <text x="30" y="156" class="label">Un chat nuevo y tu carpeta: solo lo que hace falta</text>
+              <rect x="30" y="164" width="610" height="46" rx="10" class="box-strong" />
+              <rect x="40" y="172" width="112" height="30" rx="9" class="piece" /><rect x="50" y="183" width="8" height="8" rx="4" class="sw-agents" /><text x="64" y="192" class="bubble-text">AGENTS.md</text><rect x="158" y="172" width="112" height="30" rx="9" class="piece" /><rect x="168" y="183" width="8" height="8" rx="4" class="sw-data" /><text x="182" y="192" class="bubble-text">progreso.md</text><rect x="276" y="172" width="112" height="30" rx="9" class="piece" /><rect x="286" y="183" width="8" height="8" rx="4" class="sw-teal" /><text x="300" y="192" class="bubble-text">tu pregunta</text>
+              <text x="630" y="228" text-anchor="end" class="cap-good">sobra sitio</text>
+            </g>
+          </svg>
+          <figcaption>Un chat eterno llena el contexto, y la app resume lo antiguo sin avisar. Con una carpeta, cada chat empieza limpio y lee solo lo que necesita.</figcaption>
+        </figure>
+
+        <p>Un agente con carpeta lo resuelve, porque lo importante vive en archivos, no en el chat. Así puedes abrir un chat nuevo para cada tarea, con el contexto limpio, y el agente lee solo los archivos que esa tarea necesita.</p>
+
+        <h3 id="lo-que-un-chat-no-puede"><a class="heading-anchor" href="#lo-que-un-chat-no-puede">Y además, un agente puede…</a></h3>
+        <p>Más allá de recordar, trabajar en una carpeta abre cosas que un chat no hace:</p>
+        <ul>
+          <li><strong>Crear archivos de verdad en tu ordenador.</strong> Una página para imprimir, una tabla para Excel y, si tu app sabe, un PDF o un Word, guardados directamente en tu carpeta.</li>
+          <li><strong>Trabajar con muchos archivos.</strong> En un chat adjuntas unos pocos. En una carpeta puedes tener cientos o miles: 300 facturas escaneadas, por ejemplo. El agente las abre una a una y te deja una tabla con el total de cada mes. Tardará y gastará uso, pero no hay un límite de archivos que subir.</li>
+          <li><strong>Usar programas de tu ordenador,</strong> con tu permiso: ordenar fotos, convertir documentos o hacer cuentas exactas con un script.</li>
+          <li><strong>Dejar rastro.</strong> Todo lo que hace queda en archivos que puedes revisar, corregir o borrar.</li>
+        </ul>
+
         <p>Así que el agente que vas a crear tiene tres piezas:</p>
         <ul>
           <li><strong>El modelo, el cerebro.</strong> Lo pone una empresa (Anthropic, OpenAI, Google) o un proyecto abierto. Casi siempre no vive en tu ordenador: está en internet.</li>
@@ -388,7 +425,7 @@
         <h2 id="paso-4-instrucciones"><a class="heading-anchor" href="#paso-4-instrucciones">Dale instrucciones: el archivo AGENTS.md</a></h2>
         <p class="section-lead">Le dices al agente quién es y cómo tiene que trabajar, una sola vez y para siempre.</p>
         <p>Eso va en un archivo llamado <a class="term" href="#g-agents-md">AGENTS.md</a>, en la raíz de la carpeta (dentro de ella, no en una subcarpeta).</p>
-        <p>Primero, una idea clave: el <a class="term" href="#g-contexto">contexto</a>. El modelo no recuerda nada entre mensajes. Cada vez que escribes, la app le manda de golpe todo lo que debe tener en cuenta:</p>
+        <p>Recuerda el <a class="term" href="#g-contexto">contexto</a>, del principio: el modelo no recuerda nada entre mensajes. Cada vez que escribes, la app le manda de golpe todo lo que debe tener en cuenta. Esto es lo que entra:</p>
 
         <figure class="diagram context">
           <svg viewBox="0 0 720 330" role="img" aria-labelledby="context-title context-desc">
@@ -911,7 +948,9 @@ Me hablas en (idioma), (con qué tono).
           <dt id="g-agents-md">AGENTS.md</dt>
           <dd data-related="g-contexto g-carpeta g-skill">Un archivo de texto con las instrucciones del agente, en la raíz de su carpeta. Es un estándar abierto que leen casi todas las apps.</dd>
           <dt id="g-contexto">Contexto</dt>
-          <dd data-related="g-modelo g-agents-md g-skill">Todo lo que el modelo lee antes de responder: las reglas de la app, el AGENTS.md, el nombre y la descripción de las skills, la conversación y tu mensaje. Lo que no está en el contexto, el modelo no lo sabe.</dd>
+          <dd data-related="g-modelo g-agents-md g-compactar">Todo lo que el modelo lee antes de responder: las reglas de la app, el AGENTS.md, el nombre y la descripción de las skills, la conversación y tu mensaje. Lo que no está en el contexto, el modelo no lo sabe. Cuanto más largo es, más le cuesta tener en cuenta cada cosa.</dd>
+          <dt id="g-compactar">Compactar</dt>
+          <dd data-related="g-contexto">Lo que hace la app cuando una conversación ya no cabe en el contexto: resume o deja de leer los mensajes antiguos para hacer sitio. Por el camino se pierden detalles.</dd>
           <dt id="g-skill">Skill</dt>
           <dd data-related="g-contexto g-agents-md g-script">Una receta para una tarea que repites: una carpeta con un archivo SKILL.md (nombre, descripción y pasos). El agente solo lee la descripción hasta que la necesita.</dd>
           <dt id="g-script">Script</dt>
