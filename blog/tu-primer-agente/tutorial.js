@@ -585,22 +585,73 @@ if (finale) {
 
   let played = false;
   let seen = false;
+  // The confetti is drawn on one canvas, and the chips move with fixed
+  // numbers, so the browser can hand them to the graphics card: dozens of
+  // separately painted pieces made the page stutter.
   const party = () => {
     const layer = document.createElement("div");
     layer.className = "party";
     layer.setAttribute("aria-hidden", "true");
-    for (let i = 0; i < 90; i++) {
-      const piece = document.createElement("span");
-      piece.className = "confetti-piece";
-      piece.style.cssText = `left:${Math.random() * 100}vw;--x:${(Math.random() - 0.5) * 40}vw;--r:${(Math.random() - 0.5) * 1440}deg;--t:${2.6 + Math.random() * 2}s;--d:${Math.random() * 0.9}s;background:var(${colours[i % colours.length]})`;
-      layer.append(piece);
-    }
+    const canvas = document.createElement("canvas");
+    const ratio = Math.min(devicePixelRatio || 1, 1.5);
+    const width = innerWidth;
+    const height = innerHeight;
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    layer.append(canvas);
+    const style = getComputedStyle(body);
+    const paints = colours.map((name) => style.getPropertyValue(name).trim() || "#2a9d8f");
+    const pieces = Array.from({ length: 90 }, (_, i) => ({
+      x: Math.random() * width,
+      drift: (Math.random() - 0.5) * 0.4 * width,
+      turn: (Math.random() - 0.5) * 8 * Math.PI,
+      time: 2600 + Math.random() * 2000,
+      delay: Math.random() * 900,
+      paint: paints[i % paints.length],
+    }));
+    const ease = (t) => 1 - (1 - t) ** 2.2;
+    const context = canvas.getContext("2d");
+    const start = performance.now();
+    const frame = (now) => {
+      if (!canvas.isConnected) return;
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      context.clearRect(0, 0, width, height);
+      let falling = false;
+      for (const piece of pieces) {
+        const t = (now - start - piece.delay) / piece.time;
+        if (t < 0) { falling = true; continue; }
+        if (t >= 1) continue;
+        falling = true;
+        const k = ease(t);
+        context.save();
+        context.translate(piece.x + piece.drift * k, -16 + k * height * 1.1);
+        context.rotate(piece.turn * k);
+        context.globalAlpha = 1 - 0.15 * t;
+        context.fillStyle = piece.paint;
+        context.fillRect(-4.5, -7.5, 9, 15);
+        context.restore();
+      }
+      if (falling) requestAnimationFrame(frame);
+      else canvas.remove();
+    };
+    requestAnimationFrame(frame);
     wins.forEach((win, i) => {
       const chip = document.createElement("span");
       chip.className = "win-chip";
       chip.textContent = win;
-      chip.style.cssText = `left:${4 + Math.random() * 72}vw;--d:${0.8 + i * 0.45}s;--c:var(${colours[i % colours.length]})`;
+      chip.style.left = `${4 + Math.random() * 72}vw`;
+      chip.style.setProperty("--c", `var(${colours[i % colours.length]})`);
       layer.append(chip);
+      const rise = height * 0.85;
+      chip.animate(
+        [
+          { opacity: 0, transform: "translateY(0) scale(0.8)" },
+          { opacity: 1, transform: `translateY(${-0.14 * height}px) scale(1)`, offset: 0.12 },
+          { opacity: 1, offset: 0.8 },
+          { opacity: 0, transform: `translateY(${-rise}px) scale(1)` },
+        ],
+        { duration: 5500, delay: 800 + i * 450, easing: "ease-out", fill: "both" },
+      );
     });
     body.append(layer);
     setTimeout(() => layer.remove(), 9000);
