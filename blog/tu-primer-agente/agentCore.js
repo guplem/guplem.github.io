@@ -203,3 +203,31 @@ export function animationEnd(timings) {
   }
   return end === Infinity ? last : end;
 }
+
+/** The parts of the agent's folder, in the order the explorer lists them. */
+const FOLDER_PARTS = ["agents", "data", "skills", "scripts", "exports"];
+
+/** What each step adds to the folder, and what it fills. Steps not listed leave the folder as it was. */
+const FOLDER_STEPS = [
+  { step: "paso-2", adds: ["data", "exports"], fills: [] },
+  { step: "paso-4", adds: ["agents"], fills: [] },
+  { step: "paso-5", adds: [], fills: ["data"] },
+  { step: "paso-6", adds: ["skills"], fills: [] },
+  { step: "paso-7", adds: ["scripts"], fills: [] },
+  { step: "paso-8", adds: [], fills: ["exports"] },
+];
+
+/**
+ * The reader's folder at the end of a step: which parts exist, which ones
+ * the step created and which ones it filled. The page shows it as a small
+ * explorer, so the folder grows step by step.
+ * @param {string} step a step id, as in data-done ("paso-4")
+ * @returns {{parts: string[], fresh: string[], changed: string[]} | null} null for a step that does not change the folder
+ */
+export function folderAt(step) {
+  const index = FOLDER_STEPS.findIndex((one) => one.step === step);
+  if (index === -1) return null;
+  const present = new Set(FOLDER_STEPS.slice(0, index + 1).flatMap((one) => one.adds));
+  const { adds, fills } = FOLDER_STEPS[index];
+  return { parts: FOLDER_PARTS.filter((part) => present.has(part)), fresh: [...adds], changed: [...fills] };
+}

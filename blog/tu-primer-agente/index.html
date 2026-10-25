@@ -48,7 +48,7 @@
     </script>
   </head>
 
-  <body class="agente" data-example-param="ejemplo" data-anim-prev="◀ Anterior" data-anim-pause="❚❚ Pausa" data-anim-play="▶ Seguir" data-anim-again="↺ Volver a empezar" data-anim-next="Siguiente ▶" data-copy-label="Copiar" data-copied-label="Copiado">
+  <body class="agente" data-example-param="ejemplo" data-anim-prev="◀ Anterior" data-anim-pause="❚❚ Pausa" data-anim-play="▶ Seguir" data-anim-again="↺ Volver a empezar" data-anim-next="Siguiente ▶" data-badge-new="nuevo" data-badge-changed="actualizado" data-copy-label="Copiar" data-copied-label="Copiado">
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <defs>
         <symbol id="ico-bot" viewBox="-12 -16 24 26"><rect x="-1" y="-13" width="2" height="5" style="fill: var(--teal)" /><circle cx="0" cy="-13.5" r="2.4" style="fill: var(--teal)" /><rect x="-10" y="-8" width="20" height="17" rx="5" style="fill: var(--teal)" /><g class="visor-eyes"><ellipse cx="-4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /><ellipse cx="4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /></g></symbol>
@@ -359,9 +359,9 @@
             . Los nombres sencillos evitan problemas con algunas apps.</li>
           <li><strong>Dentro, crea dos carpetas:</strong> <span class="part part-data">datos</span> y <span class="part part-exports">exportaciones</span>. El resto lo creará el propio agente más adelante.</li>
         </ol>
-        <p>Cuando termines la guía, la carpeta tendrá estas partes. Cada una tiene un color, el mismo en toda la página. Toca una parte para ver para qué sirve y quién la lee.</p>
+        <p><span class="js-only">Así debería quedar tu carpeta ahora. Irá creciendo: al final de cada paso verás cómo queda, con lo nuevo marcado. </span><span class="no-js-only">Cuando termines la guía, la carpeta tendrá estas partes. </span>Cada parte tiene un color, el mismo en toda la página. Toca una parte para ver para qué sirve y quién la lee.</p>
 
-        <div class="explorer" data-explorer>
+        <div class="explorer" data-explorer data-folder-step="paso-2">
           <div class="explorer-head">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10.5H3z" /></svg>
             <span>Escritorio › <span data-folder-name>mi-tutor-de-estudio</span></span>
@@ -641,6 +641,8 @@ Me hablas en español, de forma clara y ordenada.
           </div>
         </details>
 
+        <div class="folder-now js-only" data-folder-step="paso-4"><p class="folder-now-title">Tu carpeta, al terminar este paso:</p></div>
+
         <label class="done-check js-only"><input type="checkbox" data-done="paso-4" /> Mi agente sabe quién es</label>
       </section>
 
@@ -688,6 +690,8 @@ Me hablas en español, de forma clara y ordenada.
         <p class="note" data-icon="i"><span><strong>¿Por qué no basta con la memoria de ChatGPT?</strong> La memoria de ChatGPT es una lista corta de notas que guarda la app, y solo sirve en esa app. Tus archivos los lees enteros, los corriges y los llevas a cualquier app.</span></p>
 
         <p class="note tip" data-icon="✦"><span><strong>Consejo:</strong> si no sabes cómo hacer algo, pregúntaselo al propio agente. «¿Dónde guardas lo que te cuento?» o «¿Cómo le cambio el nombre a esta carpeta?» son preguntas perfectamente válidas.</span></p>
+
+        <div class="folder-now js-only" data-folder-step="paso-5"><p class="folder-now-title">Tu carpeta, al terminar este paso:</p></div>
 
         <label class="done-check js-only"><input type="checkbox" data-done="paso-5" /> Mi agente tiene memoria</label>
       </section>
@@ -806,6 +810,8 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
           </div>
         </details>
 
+        <div class="folder-now js-only" data-folder-step="paso-6"><p class="folder-now-title">Tu carpeta, al terminar este paso:</p></div>
+
         <label class="done-check js-only"><input type="checkbox" data-done="paso-6" /> Mi agente tiene su primera skill</label>
       </section>
 
@@ -830,6 +836,8 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
 
         <p class="note" data-icon="!"><span><strong>No necesitas saber programar.</strong> Si el agente te pide instalar algo (como Python, el lenguaje de estos scripts) y no quieres, dile que no y sáltate este paso; en un ordenador del trabajo, quizá no te dejen. En Mac puede salir una ventana que ofrece instalar las "herramientas de desarrollo de línea de comandos": también puedes decir que no. El agente sigue funcionando: hará las cuentas él mismo, con cuidado.</span></p>
 
+        <div class="folder-now js-only" data-folder-step="paso-7"><p class="folder-now-title">Tu carpeta, al terminar este paso:</p></div>
+
         <label class="done-check js-only"><input type="checkbox" data-done="paso-7" /> Tengo un script, o me lo salto</label>
       </section>
 
@@ -851,6 +859,8 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
           <li><strong>CSV (<code>.csv</code>)</strong> para abrir en Excel o en Google Sheets. Si Excel lo pone todo en una columna, usa "Datos", "Desde texto o CSV" y elige la coma como separador.</li>
           <li><strong>PDF o Word</strong> si tu app los sabe crear. Pregúntale: "¿Puedes crear un PDF?".</li>
         </ul>
+
+        <div class="folder-now js-only" data-folder-step="paso-8"><p class="folder-now-title">Tu carpeta, al terminar este paso:</p></div>
 
         <label class="done-check js-only"><input type="checkbox" data-done="paso-8" /> Tengo mi primer resultado</label>
       </section>

@@ -48,7 +48,7 @@
     </script>
   </head>
 
-  <body class="agente" data-example-param="example" data-anim-prev="◀ Back" data-anim-pause="❚❚ Pause" data-anim-play="▶ Play" data-anim-again="↺ Play again" data-anim-next="Next ▶" data-copy-label="Copy" data-copied-label="Copied">
+  <body class="agente" data-example-param="example" data-anim-prev="◀ Back" data-anim-pause="❚❚ Pause" data-anim-play="▶ Play" data-anim-again="↺ Play again" data-anim-next="Next ▶" data-badge-new="new" data-badge-changed="updated" data-copy-label="Copy" data-copied-label="Copied">
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <defs>
         <symbol id="ico-bot" viewBox="-12 -16 24 26"><rect x="-1" y="-13" width="2" height="5" style="fill: var(--teal)" /><circle cx="0" cy="-13.5" r="2.4" style="fill: var(--teal)" /><rect x="-10" y="-8" width="20" height="17" rx="5" style="fill: var(--teal)" /><g class="visor-eyes"><ellipse cx="-4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /><ellipse cx="4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /></g></symbol>
@@ -359,9 +359,9 @@
             . Simple names avoid problems with some apps.</li>
           <li><strong>Inside it, create two folders:</strong> <span class="part part-data">data</span> and <span class="part part-exports">exports</span>. The agent itself will create the rest later.</li>
         </ol>
-        <p>When you finish the guide, the folder will have these parts. Each one has a colour, the same everywhere on this page. Tap a part to see what it is for and who reads it.</p>
+        <p><span class="js-only">This is how your folder should look now. It will grow: at the end of each step you will see how it looks, with what is new marked. </span><span class="no-js-only">When you finish the guide, the folder will have these parts. </span>Each part has a colour, the same everywhere on this page. Tap a part to see what it is for and who reads it.</p>
 
-        <div class="explorer" data-explorer>
+        <div class="explorer" data-explorer data-folder-step="paso-2">
           <div class="explorer-head">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10.5H3z" /></svg>
             <span>Desktop › <span data-folder-name>my-study-tutor</span></span>
@@ -641,6 +641,8 @@ You speak to me in English, in a clear and orderly way.
           </div>
         </details>
 
+        <div class="folder-now js-only" data-folder-step="paso-4"><p class="folder-now-title">Your folder, at the end of this step:</p></div>
+
         <label class="done-check js-only"><input type="checkbox" data-done="paso-4" /> My agent knows who it is</label>
       </section>
 
@@ -688,6 +690,8 @@ You speak to me in English, in a clear and orderly way.
         <p class="note" data-icon="i"><span><strong>Why is ChatGPT's memory not enough?</strong> ChatGPT's memory is a short list of notes that the app keeps, and it only works in that app. You can read your files in full, correct them and take them to any app.</span></p>
 
         <p class="note tip" data-icon="✦"><span><strong>Tip:</strong> if you do not know how to do something, ask the agent itself. "Where do you keep what I tell you?" or "How do I rename this folder?" are perfectly good questions.</span></p>
+
+        <div class="folder-now js-only" data-folder-step="paso-5"><p class="folder-now-title">Your folder, at the end of this step:</p></div>
 
         <label class="done-check js-only"><input type="checkbox" data-done="paso-5" /> My agent has memory</label>
       </section>
@@ -806,6 +810,8 @@ description: Prepares a call or a visit with a professional for the renovation, 
           </div>
         </details>
 
+        <div class="folder-now js-only" data-folder-step="paso-6"><p class="folder-now-title">Your folder, at the end of this step:</p></div>
+
         <label class="done-check js-only"><input type="checkbox" data-done="paso-6" /> My agent has its first skill</label>
       </section>
 
@@ -830,6 +836,8 @@ description: Prepares a call or a visit with a professional for the renovation, 
 
         <p class="note" data-icon="!"><span><strong>You do not need to know how to program.</strong> If the agent asks you to install something (such as Python, the language of these scripts) and you do not want to, say no and skip this step; on a work computer, you may not be allowed to. On a Mac, a window can appear that offers to install the "command line developer tools": you can say no to that too. The agent still works: it will do the calculations itself, carefully.</span></p>
 
+        <div class="folder-now js-only" data-folder-step="paso-7"><p class="folder-now-title">Your folder, at the end of this step:</p></div>
+
         <label class="done-check js-only"><input type="checkbox" data-done="paso-7" /> I have a script, or I skip it</label>
       </section>
 
@@ -851,6 +859,8 @@ description: Prepares a call or a visit with a professional for the renovation, 
           <li><strong>CSV (<code>.csv</code>)</strong> to open in Excel or Google Sheets. If Excel puts everything in one column, use "Data &gt; From Text/CSV" and choose the comma as the separator.</li>
           <li><strong>PDF or Word</strong> if your app can create them. Ask it: "Can you create a PDF?".</li>
         </ul>
+
+        <div class="folder-now js-only" data-folder-step="paso-8"><p class="folder-now-title">Your folder, at the end of this step:</p></div>
 
         <label class="done-check js-only"><input type="checkbox" data-done="paso-8" /> I have my first result</label>
       </section>

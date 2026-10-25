@@ -1734,3 +1734,22 @@ body:not(.js-ready) .js-only {
 
 /* A tip, here and there in the steps: same box as a note, with a star. */
 .agente .post .note.tip::before { color: var(--teal); }
+
+/* The folder at the end of a step: a copy of the explorer with only the
+   parts made so far. A part the step made says "new"; one it filled says
+   "updated". */
+.tree-item[hidden] { display: none; }
+.folder-now { margin: var(--sp-md) 0 var(--sp-sm); }
+.agente .post .folder-now-title { margin: 0 0 -8px; font-weight: 700; font-size: 0.95rem; color: var(--ink-soft); }
+.tree-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font: 700 0.66rem var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+}
+.tree-badge.is-fresh { background: var(--teal); color: var(--on-teal); }
+.tree-badge.is-changed { box-shadow: inset 0 0 0 1.5px var(--teal); color: var(--teal); }
