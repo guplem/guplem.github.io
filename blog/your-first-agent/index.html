@@ -380,9 +380,9 @@
                 <span class="tree-desc">What the agent must remember: notes, logs, lists. Text files or tables.</span>
                 <span class="tree-who"><span>The agent reads it and updates it</span><span>You can open it and correct it</span></span>
               </li>
-              <li class="tree-item is-hidden-file" style="--c: var(--f-skills)" data-part="skills" data-hidden-label="hidden">
+              <li class="tree-item is-hidden-file" style="--c: var(--f-skills)" data-part="skills">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10.5H3z" fill="currentColor" fill-opacity=".16" /></svg>
-                <span class="tree-name"><span data-skills-dir>.agents/skills/</span><small>the skills</small></span>
+                <span class="tree-name" data-hidden-label="hidden" title="Its name starts with a dot, so your computer hides it"><span data-skills-dir>.agents/skills/</span><small>the skills</small></span>
                 <span class="tree-desc">Instructions for tasks that you repeat, such as "make me a practice exam". Each one is a folder with a SKILL.md file. The agent only reads the title and the description until it needs the skill. The folder name depends on the app: <code>.claude/skills/</code> in Claude and <code>.agents/skills/</code> in the others.</span>
                 <span class="tree-who"><span>The agent writes them with you</span><span>The agent opens them when it needs them</span></span>
               </li>

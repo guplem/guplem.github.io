@@ -276,12 +276,10 @@ for (const explorer of document.querySelectorAll("[data-explorer]")) {
   const select = (item) => {
     for (const other of items) other.setAttribute("aria-selected", String(other === item));
     detail.style.setProperty("--c", item.style.getPropertyValue("--c"));
-    const name = item.querySelector(".tree-name").cloneNode(true);
-    name.querySelector("small")?.remove();
-    detail.innerHTML = `<p class="detail-title"></p><p></p>`;
-    detail.firstChild.textContent = `${name.textContent.trim()} · ${item.querySelector(".tree-name small").textContent}`;
-    detail.children[1].textContent = item.querySelector(".tree-desc").textContent;
-    detail.append(item.querySelector(".tree-who").cloneNode(true));
+    // The selected row already names the part, so the pane holds its job and who uses it.
+    const desc = document.createElement("p");
+    desc.innerHTML = item.querySelector(".tree-desc").innerHTML;
+    detail.replaceChildren(desc, item.querySelector(".tree-who").cloneNode(true));
   };
   explorer.querySelector(".tree").setAttribute("role", "listbox");
   for (const item of items) {
