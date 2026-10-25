@@ -1227,7 +1227,7 @@ body:not(.js-ready) .js-only {
   background: var(--teal);
   -webkit-mask: var(--download-icon) center / contain no-repeat;
   mask: var(--download-icon) center / contain no-repeat;
-  --download-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12M7 10.5l5 5 5-5M4 17v3h16v-3'/%3E%3C/svg%3E");
+  --download-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12M7 10.5l5 5 5-5M4 17v3h16v-3'/%3E%3C/svg%3E");
 }
 
 .downloads b {
