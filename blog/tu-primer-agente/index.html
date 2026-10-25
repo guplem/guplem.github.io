@@ -130,44 +130,28 @@
           <svg viewBox="0 0 800 470" role="img" aria-labelledby="forget-title forget-desc">
             <title id="forget-title">Un chat olvida, una carpeta recuerda</title>
             <desc id="forget-desc">Dos columnas, en dos momentos. Arriba, "Hoy": en las dos columnas, la persona escribe "Estudio 2.º Bachillerato. El tema 3 ya lo domino." En el chat del navegador, la IA contesta "¡Genial! ¿Empezamos?". En la carpeta, el agente contesta "¡Genial! Lo apunto." y escribe dos líneas en su archivo datos/progreso.md: "Curso: 2.º Bachillerato" y "Tema 3: dominado". Luego se cierra el chat. Abajo, "Mañana": la persona pregunta "¿Qué repaso hoy?". El chat del navegador no recuerda nada y contesta "No sé qué estudias. ¿Me lo cuentas?". El agente lee datos/progreso.md y contesta "Toca el tema 4: el 3 ya lo dominas."</desc>
-            <text x="175" y="24" text-anchor="middle" class="label">Un chat en el navegador</text>
-            <text x="575" y="24" text-anchor="middle" class="label">Un agente en una carpeta</text>
-            <text x="20" y="84" class="row-label">HOY</text>
-            <rect x="20" y="92" width="310" height="128" rx="14" class="box" />
-            <rect x="370" y="92" width="230" height="128" rx="14" class="box" />
-            <g class="f-a">
-              <rect x="110" y="102" width="182" height="48" rx="14" class="bubble-person" /><text x="201" y="120" text-anchor="middle" class="bubble-text-person">Estudio 2.º Bachillerato.</text><text x="201" y="140" text-anchor="middle" class="bubble-text-person">El tema 3 ya lo domino.</text><use href="#ico-user" x="300" y="113" width="24" height="24" />
-              <rect x="388" y="102" width="182" height="48" rx="14" class="bubble-person" /><text x="479" y="120" text-anchor="middle" class="bubble-text-person">Estudio 2.º Bachillerato.</text><text x="479" y="140" text-anchor="middle" class="bubble-text-person">El tema 3 ya lo domino.</text><use href="#ico-user" x="576" y="113" width="24" height="24" />
-            </g>
-            <g class="f-b">
-              <use href="#ico-bot" x="28" y="168" width="24" height="26" /><rect x="58" y="166" width="170" height="30" rx="14" class="bubble-agent" /><text x="143" y="186" text-anchor="middle" class="bubble-text">¡Genial! ¿Empezamos?</text>
-              <use href="#ico-bot" x="378" y="172" width="24" height="26" /><rect x="408" y="160" width="182" height="46" rx="14" class="bubble-agent" /><text x="420" y="177" class="tag-text">✎ escribe en progreso.md</text><text x="420" y="196" class="bubble-text">¡Genial! Lo apunto.</text>
-            </g>
-            <path class="f-write wire-teal arrow-path" d="M590 176 C606 176 606 150 622 150" /><polygon class="f-write-head arrow-teal" points="617,145 627,150 617,155" />
-            <g class="f-file">
-            <rect x="626" y="122" width="160" height="104" rx="14" class="box-strong" />
-            <text x="640" y="146" class="label-on-teal">datos/progreso.md</text>
-            <text x="640" y="214" class="label-soft">un archivo de la carpeta</text>
-            </g>
-            <rect class="f-glow" x="626" y="122" width="160" height="104" rx="14" />
-            <g class="f-c"><rect x="640" y="160" width="8" height="8" rx="4" class="sw-data" /><text x="654" y="168" class="bubble-text">Curso: 2.º Bachillerato</text></g>
-            <g class="f-d"><rect x="640" y="180" width="8" height="8" rx="4" class="sw-data" /><text x="654" y="188" class="bubble-text">Tema 3: dominado</text></g>
-            <g class="f-sep"><line x1="20" y1="244" x2="600" y2="244" class="sep-line" /><text x="310" y="240" text-anchor="middle" class="label-soft sep-text">se cierra el chat · al día siguiente…</text></g>
-            <g class="f-tomorrow">
-            <text x="20" y="276" class="row-label">MAÑANA</text>
-            <rect x="20" y="284" width="310" height="128" rx="14" class="box" />
-            <rect x="370" y="284" width="230" height="128" rx="14" class="box" />
-            </g>
-            <g class="f-e">
-              <rect x="170" y="296" width="122" height="30" rx="14" class="bubble-person" /><text x="231" y="316" text-anchor="middle" class="bubble-text-person">¿Qué repaso hoy?</text><use href="#ico-user" x="300" y="299" width="24" height="24" />
-              <rect x="448" y="296" width="122" height="30" rx="14" class="bubble-person" /><text x="509" y="316" text-anchor="middle" class="bubble-text-person">¿Qué repaso hoy?</text><use href="#ico-user" x="576" y="299" width="24" height="24" />
-            </g>
-            <path class="f-read wire-teal arrow-path" d="M700 226 C700 300 640 352 598 352" /><polygon class="f-read-head arrow-teal" points="603,347 593,352 603,357" />
-            <g class="f-f">
-              <use href="#ico-bot" x="28" y="356" width="24" height="26" /><rect x="58" y="340" width="170" height="44" rx="14" class="bubble-agent" /><text x="143" y="358" text-anchor="middle" class="bubble-text">No sé qué estudias.</text><text x="143" y="375" text-anchor="middle" class="bubble-text">¿Me lo cuentas?</text>
-              <use href="#ico-bot" x="378" y="360" width="24" height="26" /><rect x="408" y="336" width="182" height="62" rx="14" class="bubble-agent" /><text x="420" y="353" class="tag-text">📖 lee progreso.md</text><text x="420" y="371" class="bubble-text">Toca el tema 4:</text><text x="420" y="388" class="bubble-text">el 3 ya lo dominas.</text>
-            </g>
-            <g class="f-g"><text x="175" y="440" text-anchor="middle" class="label cap-bad">Olvida: vuelta a empezar.</text><text x="485" y="440" text-anchor="middle" class="label cap-good">Recuerda: lo lee de su carpeta.</text></g>
+            <g class="s1"><text x="175" y="24" text-anchor="middle" class="label">Un chat en el navegador</text></g>
+            <g class="s5"><text x="575" y="24" text-anchor="middle" class="label">Un agente en una carpeta</text></g>
+            <g class="s5"><line x1="350" y1="8" x2="350" y2="228" class="sep-line" /><line x1="350" y1="258" x2="350" y2="420" class="sep-line" /></g>
+            <g class="s2"><text x="20" y="84" class="row-label">HOY</text><rect x="20" y="92" width="310" height="128" rx="14" class="box" /></g>
+            <g class="s6"><rect x="370" y="92" width="230" height="128" rx="14" class="box" /></g>
+            <g class="s3"><rect x="110" y="102" width="182" height="48" rx="14" class="bubble-person" /><text x="201" y="120" text-anchor="middle" class="bubble-text-person">Estudio 2.º Bachillerato.</text><text x="201" y="140" text-anchor="middle" class="bubble-text-person">El tema 3 ya lo domino.</text><use href="#ico-user" x="300" y="113" width="24" height="24" /> </g>
+            <g class="s7"><rect x="388" y="102" width="182" height="48" rx="14" class="bubble-person" /><text x="479" y="120" text-anchor="middle" class="bubble-text-person">Estudio 2.º Bachillerato.</text><text x="479" y="140" text-anchor="middle" class="bubble-text-person">El tema 3 ya lo domino.</text><use href="#ico-user" x="576" y="113" width="24" height="24" /></g>
+            <g class="s4"><use href="#ico-bot" x="28" y="168" width="24" height="26" /><rect x="58" y="166" width="170" height="30" rx="14" class="bubble-agent" /><text x="143" y="186" text-anchor="middle" class="bubble-text">¡Genial! ¿Empezamos?</text> </g>
+            <g class="s8"><use href="#ico-bot" x="378" y="172" width="24" height="26" /><rect x="408" y="160" width="182" height="46" rx="14" class="bubble-agent" /><text x="420" y="177" class="tag-text">✎ escribe en progreso.md</text><text x="420" y="196" class="bubble-text">¡Genial! Lo apunto.</text></g>
+            <g class="s9"><path class="wire-teal arrow-path" d="M590 176 C606 176 606 150 622 150" /><polygon class="arrow-teal" points="617,145 627,150 617,155" /><g><rect x="626" y="122" width="160" height="104" rx="14" class="box-strong" /> <text x="640" y="146" class="label-on-teal">datos/progreso.md</text> <text x="640" y="214" class="label-soft">un archivo de la carpeta</text></g></g>
+            <rect class="f-glow s16" x="626" y="122" width="160" height="104" rx="14" />
+            <g class="s9b"><rect x="640" y="160" width="8" height="8" rx="4" class="sw-data" /><text x="654" y="168" class="bubble-text">Curso: 2.º Bachillerato</text></g>
+            <g class="s9c"><rect x="640" y="180" width="8" height="8" rx="4" class="sw-data" /><text x="654" y="188" class="bubble-text">Tema 3: dominado</text></g>
+            <g class="s10"><line x1="20" y1="244" x2="600" y2="244" class="sep-line" /><text x="310" y="240" text-anchor="middle" class="label-soft sep-text">se cierra el chat · al día siguiente…</text></g>
+            <g class="s11"><text x="20" y="276" class="row-label">MAÑANA</text><rect x="20" y="284" width="310" height="128" rx="14" class="box" /></g>
+            <g class="s14"><rect x="370" y="284" width="230" height="128" rx="14" class="box" /></g>
+            <g class="s12"><rect x="170" y="296" width="122" height="30" rx="14" class="bubble-person" /><text x="231" y="316" text-anchor="middle" class="bubble-text-person">¿Qué repaso hoy?</text><use href="#ico-user" x="300" y="299" width="24" height="24" /> </g>
+            <g class="s15"><rect x="448" y="296" width="122" height="30" rx="14" class="bubble-person" /><text x="509" y="316" text-anchor="middle" class="bubble-text-person">¿Qué repaso hoy?</text><use href="#ico-user" x="576" y="299" width="24" height="24" /></g>
+            <g class="s16"><path class="wire-teal arrow-path" d="M700 226 C700 300 640 352 598 352" /><polygon class="arrow-teal" points="603,347 593,352 603,357" /></g>
+            <g class="s13"><use href="#ico-bot" x="28" y="356" width="24" height="26" /><rect x="58" y="340" width="170" height="44" rx="14" class="bubble-agent" /><text x="143" y="358" text-anchor="middle" class="bubble-text">No sé qué estudias.</text><text x="143" y="375" text-anchor="middle" class="bubble-text">¿Me lo cuentas?</text> </g>
+            <g class="s17"><use href="#ico-bot" x="378" y="360" width="24" height="26" /><rect x="408" y="336" width="182" height="62" rx="14" class="bubble-agent" /><text x="420" y="353" class="tag-text">📖 lee progreso.md</text><text x="420" y="371" class="bubble-text">Toca el tema 4:</text><text x="420" y="388" class="bubble-text">el 3 ya lo dominas.</text></g>
+            <g class="s18"><text x="175" y="440" text-anchor="middle" class="label cap-bad">Olvida: vuelta a empezar.</text><text x="485" y="440" text-anchor="middle" class="label cap-good">Recuerda: lo lee de su carpeta.</text></g>
           </svg>
           <figcaption>Hoy, el agente apunta lo importante en un archivo de su carpeta. Mañana, el chat del navegador ha olvidado todo, pero el agente lee su archivo y sigue donde lo dejasteis.</figcaption>
         </figure>
