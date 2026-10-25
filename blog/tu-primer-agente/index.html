@@ -119,12 +119,11 @@
             <li><a href="#fin-del-tutorial" data-step-link="fin">¡Fin del tutorial!</a></li>
             <li class="toc-group" aria-hidden="true">Extras</li>
             <li><a href="#comprueba-tu-agente" data-step-link="comprueba">Comprueba tu agente</a></li>
-            <li><a href="#adaptalo-a-lo-tuyo">Adáptalo a lo tuyo</a></li>
-            <li><a href="#usalo-cada-dia">Úsalo cada día</a></li>
+            <li><a href="#adaptalo-a-lo-tuyo">Crea tu propio agente</a></li>
+            <li><a href="#usalo-cada-dia">Mejora tu agente con el uso</a></li>
             <li><a href="#limites-y-avisos">Límites y avisos</a></li>
             <li><a href="#descarga-los-ejemplos">Descarga los ejemplos</a></li>
             <li><a href="#glosario">Glosario</a></li>
-            <li><a href="#para-asistentes-de-ia">Si eres una IA</a></li>
           </ol>
         </nav>
       </details>
@@ -909,7 +908,7 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
         <h2 id="fin-del-tutorial"><a class="heading-anchor" href="#fin-del-tutorial">¡Hasta aquí el tutorial!</a></h2>
         <p class="section-lead">Felicidades: tu agente ya trabaja en tu carpeta, y sabes crear otros.</p>
         <p>Has hecho los ocho pasos. Tu agente tiene instrucciones, memoria, habilidades, herramientas y un sitio donde dejarte los resultados. Y lo más importante: sabes hacerlo otra vez, para cualquier cosa que repitas en tu trabajo o en tu vida.</p>
-        <div class="finale js-only" data-finale data-missing="Para ver la celebración, marca los pasos que hayas hecho. Te falta:" data-replay="↺ Otra vez">
+        <div class="finale js-only" data-finale data-replay="↺ Otra vez">
           <div class="finale-stage">
           <svg class="finale-art" viewBox="0 0 720 380" role="img" aria-labelledby="fin-del-tutorial-art">
             <title id="fin-del-tutorial-art">Celebración: el agente sale de su carpeta y a su alrededor aparecen tareas hechas</title>
@@ -923,7 +922,7 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
           </svg>
           </div>
         </div>
-        <p>Lo que viene ahora es opcional: comprobar que tu carpeta está bien, adaptarlo a lo tuyo, consejos para el día a día, los avisos importantes y un glosario. Vuelve a ello cuando lo necesites.</p>
+        <p>Lo que viene ahora es opcional: comprobar que tu carpeta está bien, crear tu propio agente, mejorarlo con el uso, los avisos importantes y un glosario. Vuelve a ello cuando lo necesites.</p>
       </section>
 
       <!-- ============ Comprueba ============ -->
@@ -970,10 +969,10 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
         <label class="done-check js-only"><input type="checkbox" data-done="comprueba" /> Mi agente funciona</label>
       </section>
 
-      <!-- ============ Adáptalo ============ -->
+      <!-- ============ Crea tu propio agente ============ -->
       <section>
         <p class="step-label extra-label">Extra · opcional</p>
-        <h2 id="adaptalo-a-lo-tuyo"><a class="heading-anchor" href="#adaptalo-a-lo-tuyo">Adáptalo a lo tuyo</a></h2>
+        <h2 id="adaptalo-a-lo-tuyo"><a class="heading-anchor" href="#adaptalo-a-lo-tuyo">Crea tu propio agente</a></h2>
         <p class="section-lead">Crea un agente para algo que no está en los cinco ejemplos: tu trabajo, una afición, un proyecto.</p>
         <p>Los pasos son los mismos; solo cambia el AGENTS.md.</p>
         <p>Lo más fácil es que el agente te entreviste. En una carpeta nueva, ábrelo y escribe:</p>
@@ -1002,11 +1001,11 @@ Me hablas en (idioma), (con qué tono).
         </ul>
       </section>
 
-      <!-- ============ Úsalo cada día ============ -->
+      <!-- ============ Mejora tu agente con el uso ============ -->
       <section>
         <p class="step-label extra-label">Extra · opcional</p>
-        <h2 id="usalo-cada-dia"><a class="heading-anchor" href="#usalo-cada-dia">Úsalo cada día</a></h2>
-        <p class="section-lead">Las costumbres que hacen que el agente mejore con el uso.</p>
+        <h2 id="usalo-cada-dia"><a class="heading-anchor" href="#usalo-cada-dia">Mejora tu agente con el uso</a></h2>
+        <p class="section-lead">Con unas pocas costumbres, cada semana te ayuda mejor.</p>
         <ul>
           <li><strong>Una conversación por tarea.</strong> Cuando acabes algo, empieza una nueva. La memoria está en los archivos, no en el chat, así que no pierdes nada, y el contexto queda limpio.</li>
           <li><strong>Corrige en el archivo, no en el chat.</strong> Si hace algo mal, pídele que añada una regla al AGENTS.md o que mejore la skill.</li>
@@ -1085,19 +1084,16 @@ Me hablas en (idioma), (con qué tono).
       </section>
 
       <!-- ============ Para IAs ============ -->
-      <section>
-        <p class="step-label extra-label">Extra · opcional</p>
-        <h2 id="para-asistentes-de-ia"><a class="heading-anchor" href="#para-asistentes-de-ia">Si eres una IA que ayuda a alguien con esta guía</a></h2>
-        <div class="for-ai">
-          <p class="section-lead">Para el asistente de IA al que una persona le ha pasado esta página. Las personas pueden saltársela.</p>
-          <ul>
-            <li><strong>Qué es esto:</strong> un tutorial para personas sin conocimientos técnicos. Al final tienen una carpeta que es un agente: <code>AGENTS.md</code> (instrucciones), <code>datos/</code> (memoria), una carpeta de skills (<code>.agents/skills/</code>, o <code>.claude/skills/</code> en Claude) con un <code>SKILL.md</code> por skill, <code>scripts/</code> (opcional) y <code>exportaciones/</code> (resultados). Si Claude no lee el AGENTS.md, un <code>CLAUDE.md</code> con la línea <code>@AGENTS.md</code> lo resuelve.</li>
-            <li><strong>Dónde está la persona:</strong> la dirección de la página puede llevar <code>?app=</code> (<code>claude</code> es el apartado Code de la app de Claude; <code>codex</code>, el modo Codex de la app de escritorio de ChatGPT; <code>antigravity</code>; o <code>goose</code>) y <code>?ejemplo=</code> (<code>estudiante</code>, <code>docente</code>, <code>salud</code>, <code>diario</code> o <code>reforma</code>). Sigue solo esa variante. Los pasos van del 1 (elegir app) al 8 (exportaciones); pregúntale en qué paso está.</li>
-            <li><strong>Cómo ayudar:</strong> frases cortas, una instrucción cada vez, sin jerga. No des por hecho que sabe usar la terminal. Si un archivo falla, lo más probable es el nombre (<code>AGENTS.md.txt</code>, minúsculas) o una carpeta oculta que no ve.</li>
-            <li><strong>Los ejemplos completos</strong> están en la sección "Descarga los ejemplos" de esta página.</li>
-          </ul>
-        </div>
-      </section>
+      <aside class="for-ai" id="para-asistentes-de-ia">
+        <p class="for-ai-title"><strong>Si eres una IA que ayuda a alguien con esta guía</strong></p>
+        <p class="section-lead">Para el asistente de IA al que una persona le ha pasado esta página. Las personas pueden saltársela.</p>
+        <ul>
+          <li><strong>Qué es esto:</strong> un tutorial para personas sin conocimientos técnicos. Al final tienen una carpeta que es un agente: <code>AGENTS.md</code> (instrucciones), <code>datos/</code> (memoria), una carpeta de skills (<code>.agents/skills/</code>, o <code>.claude/skills/</code> en Claude) con un <code>SKILL.md</code> por skill, <code>scripts/</code> (opcional) y <code>exportaciones/</code> (resultados). Si Claude no lee el AGENTS.md, un <code>CLAUDE.md</code> con la línea <code>@AGENTS.md</code> lo resuelve.</li>
+          <li><strong>Dónde está la persona:</strong> la dirección de la página puede llevar <code>?app=</code> (<code>claude</code> es el apartado Code de la app de Claude; <code>codex</code>, el modo Codex de la app de escritorio de ChatGPT; <code>antigravity</code>; o <code>goose</code>) y <code>?ejemplo=</code> (<code>estudiante</code>, <code>docente</code>, <code>salud</code>, <code>diario</code> o <code>reforma</code>). Sigue solo esa variante. Los pasos van del 1 (elegir app) al 8 (exportaciones); pregúntale en qué paso está.</li>
+          <li><strong>Cómo ayudar:</strong> frases cortas, una instrucción cada vez, sin jerga. No des por hecho que sabe usar la terminal. Si un archivo falla, lo más probable es el nombre (<code>AGENTS.md.txt</code>, minúsculas) o una carpeta oculta que no ve.</li>
+          <li><strong>Los ejemplos completos</strong> están en la sección "Descarga los ejemplos" de esta página.</li>
+        </ul>
+      </aside>
 
       <footer class="post-footer">
         <p>Si te atascas en algún paso, pásale esta página a tu agente y pregúntale. Está escrita para que la entienda.</p>

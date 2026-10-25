@@ -759,21 +759,31 @@ button.choice[aria-pressed="true"]::after {
   color: var(--ink-soft);
 }
 
+/* The copy button sits in the top right corner of the box, and an empty
+   float of the same size keeps the first line of text out from under it. */
 .copy-button {
   position: absolute;
-  top: 34px;
-  right: 10px;
-  font: 600 0.8rem var(--sans);
+  top: calc(var(--name-h, 21px) + 6px);
+  right: 6px;
+  font: 600 0.78rem var(--sans);
   border: 0;
   border-radius: 999px;
-  padding: 5px 12px;
+  padding: 4px 10px;
   background: var(--chip);
   color: var(--ink);
   cursor: pointer;
 }
 
-.codeblock.no-name .copy-button {
-  top: 10px;
+.codeblock.no-name {
+  --name-h: 0px;
+}
+
+.js-ready .codeblock pre::before {
+  content: "";
+  float: right;
+  width: var(--copy-w, 84px);
+  height: 22px;
+  margin: -10px -12px 0 10px;
 }
 
 /* A message to send to the agent */
@@ -1217,18 +1227,17 @@ body:not(.js-ready) .js-only {
   content: ".zip";
 }
 
-/* === For AI assistants: plain, small === */
+/* === For AI assistants ===
+   The note for an AI that reads the page stays in the HTML as text, but
+   people do not see it: it is clipped to nothing, not hidden, so tools
+   that read the page as text still find it. */
 .agente .post .for-ai {
-  margin-top: var(--sp-md);
-  padding: 18px 20px;
-  border-radius: 16px;
-  background: var(--chip);
-}
-
-.agente .post .for-ai p,
-.agente .post .for-ai li {
-  font-size: 0.98rem;
-  line-height: 1.6;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* === Drawings ===
@@ -1815,12 +1824,11 @@ body:not(.js-ready) .sv-ex:not([data-example="estudiante"]) { display: none; }
 }
 
 /* === The end of the tutorial ===
-   Until every step is ticked, the stage lists the steps still to tick.
-   Then the drawing plays: rays turn, the folder and the agent pop up, eight
+   The eight steps show as cards that tick. Once all are ticked, the
+   drawing appears and plays: rays turn, the folder and the agent pop up, eight
    finished tasks fly out around them, and two lines close it. Confetti and
    floating task chips fall and rise over the page (built by tutorial.js),
-   and the page keeps a light decoration: a coloured bar on top and a
-   sparkle by the title. */
+   and the page keeps a sparkle by the title. */
 .finale {
   margin: var(--sp-md) 0;
   padding: 18px;
@@ -1831,9 +1839,7 @@ body:not(.js-ready) .sv-ex:not([data-example="estudiante"]) { display: none; }
   text-align: center;
   overflow: hidden;
 }
-.finale-art { display: none; width: 100%; height: auto; }
-.finale.is-complete .finale-art { display: block; }
-.finale.is-complete .finale-pending { display: none; }
+.finale-art { display: block; width: 100%; height: auto; }
 .finale-replay { display: none; }
 .finale.is-complete .finale-replay {
   display: inline-flex;
@@ -1846,43 +1852,10 @@ body:not(.js-ready) .sv-ex:not([data-example="estudiante"]) { display: none; }
   color: var(--ink);
   cursor: pointer;
 }
-.agente .post .finale-pending p { font-weight: 700; color: var(--ink); }
-.agente .post .finale-pending ul {
-  list-style: none;
-  padding: 0;
-  margin: 10px auto 0;
-  display: grid;
-  gap: 6px;
-  max-width: 420px;
-  text-align: left;
-}
-.agente .post .finale-pending li + li { margin-top: 0; }
-.finale-pending li a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: var(--panel);
-  box-shadow: 0 0 0 1px var(--line);
-  color: var(--ink);
-  text-decoration: none;
-}
-.finale-pending li a::before {
-  content: "";
-  flex: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 2px var(--line);
-}
-.finale-pending li.is-done a { color: var(--ink-soft); }
-.finale-pending li.is-done a::before {
-  box-shadow: none;
-  background: var(--teal);
-  -webkit-mask: var(--tick) center / contain no-repeat;
-  mask: var(--tick) center / contain no-repeat;
-}
+.finale-steps { grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); }
+.finale-steps .choice b { font-size: 0.98rem; line-height: 1.35; }
+.finale { display: none; }
+.finale.is-complete { display: block; }
 
 .finale-art .fx-rays line { stroke: var(--teal); stroke-opacity: 0.1; stroke-width: 6; }
 .finale-art .fx-folder-shape { fill: color-mix(in srgb, var(--f-exports) 25%, var(--panel)); stroke: var(--f-exports); stroke-width: 2.5; }
