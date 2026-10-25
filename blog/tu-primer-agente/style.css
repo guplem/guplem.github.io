@@ -1789,3 +1789,9 @@ body:not(.js-ready) .js-only {
 /* The files of datos/ in step 5, shown as an explorer of that folder. */
 .explorer-detail .tree-who:empty { display: none !important; }
 .agente .post .explorer-detail p::first-letter { text-transform: uppercase; }
+
+/* The drawings speak the reader's example: each example-specific label is
+   five <g class="variant sv-ex"> copies, one per example. The script hides
+   the ones not chosen; with no script, the student example shows. */
+svg [hidden] { display: none; }
+body:not(.js-ready) .sv-ex:not([data-example="estudiante"]) { display: none; }
