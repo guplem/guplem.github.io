@@ -557,3 +557,87 @@ if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches)
     ).observe(svg);
   }
 }
+
+/* ---------- The end of the tutorial: a celebration ----------
+   Once every step is ticked and the reader reaches the end of the
+   tutorial, the drawing there plays, confetti falls over the page and the
+   things an agent can do drift up across it. Until then, the same place
+   lists the steps still to tick. Every word shown is read from the page. */
+const finale = document.querySelector("[data-finale]");
+if (finale) {
+  const stepBoxes = [...document.querySelectorAll('input[data-done^="paso-"]')];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const wins = [...document.querySelectorAll(".finale-wins li")].map((item) => item.textContent);
+  const colours = ["--teal", "--f-agents", "--f-data", "--f-skills", "--f-scripts", "--f-exports"];
+
+  const pending = document.createElement("div");
+  pending.className = "finale-pending";
+  const pendingTitle = document.createElement("p");
+  pendingTitle.textContent = finale.dataset.missing;
+  const list = document.createElement("ul");
+  pending.append(pendingTitle, list);
+  finale.prepend(pending);
+  const replay = document.createElement("button");
+  replay.type = "button";
+  replay.className = "finale-replay";
+  replay.textContent = finale.dataset.replay;
+  finale.append(replay);
+
+  let played = false;
+  let seen = false;
+  const party = () => {
+    const layer = document.createElement("div");
+    layer.className = "party";
+    layer.setAttribute("aria-hidden", "true");
+    for (let i = 0; i < 90; i++) {
+      const piece = document.createElement("span");
+      piece.className = "confetti-piece";
+      piece.style.cssText = `left:${Math.random() * 100}vw;--x:${(Math.random() - 0.5) * 40}vw;--r:${(Math.random() - 0.5) * 1440}deg;--t:${2.6 + Math.random() * 2}s;--d:${Math.random() * 0.9}s;background:var(${colours[i % colours.length]})`;
+      layer.append(piece);
+    }
+    wins.forEach((win, i) => {
+      const chip = document.createElement("span");
+      chip.className = "win-chip";
+      chip.textContent = win;
+      chip.style.cssText = `left:${4 + Math.random() * 72}vw;--d:${0.8 + i * 0.45}s;--c:var(${colours[i % colours.length]})`;
+      layer.append(chip);
+    });
+    body.append(layer);
+    setTimeout(() => layer.remove(), 9000);
+  };
+  const celebrate = () => {
+    played = true;
+    finale.classList.remove("is-playing");
+    void finale.offsetWidth; // restart the CSS animations
+    finale.classList.add("is-playing");
+    if (!reduce) party();
+  };
+  const render = () => {
+    const complete = stepBoxes.every((box) => box.checked);
+    finale.classList.toggle("is-complete", complete);
+    body.classList.toggle("is-graduated", complete);
+    list.replaceChildren(
+      ...stepBoxes.map((box) => {
+        const link = document.querySelector(`[data-step-link="${box.dataset.done}"]`);
+        const item = document.createElement("li");
+        item.className = box.checked ? "is-done" : "";
+        const anchor = document.createElement("a");
+        anchor.href = link?.getAttribute("href") ?? "#";
+        anchor.textContent = link?.firstChild?.textContent.trim() ?? box.dataset.done;
+        item.append(anchor);
+        return item;
+      }),
+    );
+    if (complete && seen && !played) celebrate();
+  };
+  for (const box of stepBoxes) box.addEventListener("change", render);
+  replay.addEventListener("click", celebrate);
+  new IntersectionObserver(
+    ([entry]) => {
+      seen = entry.isIntersecting;
+      if (seen) render();
+    },
+    { threshold: 0.45 },
+  ).observe(finale);
+  render();
+}
