@@ -116,7 +116,7 @@
       <!-- ============ Del chat al agente ============ -->
       <section>
         <h2 id="del-chat-al-agente"><a class="heading-anchor" href="#del-chat-al-agente">Del chat al agente</a></h2>
-        <p>Esta sección explica qué vas a construir y por qué vale la pena. Todavía no hay que instalar nada.</p>
+        <p class="section-lead">Qué vas a construir y por qué vale la pena. Todavía no hay que instalar nada.</p>
         <p>Cuando usas ChatGPT, Claude o Gemini en el navegador, pasan tres cosas:</p>
         <ul>
           <li><strong>Cada conversación empieza casi de cero.</strong> Algunas apps recuerdan un poco, pero no decides tú qué. Le vuelves a explicar quién eres y qué quieres.</li>
@@ -181,7 +181,8 @@
       <section>
         <p class="step-label">Paso 1 de 8</p>
         <h2 id="paso-1-elige-tu-app"><a class="heading-anchor" href="#paso-1-elige-tu-app">Elige tu app</a></h2>
-        <p>En este paso eliges e instalas el programa que conectará el modelo con tu carpeta. Aquí lo llamo simplemente "la app". Si lo lees por ahí, su nombre técnico es <a class="term" href="#g-app">harness</a> (en inglés, "arnés"): lo que envuelve al modelo y le da herramientas.</p>
+        <p class="section-lead">Eliges e instalas el programa que conectará el modelo con tu carpeta.</p>
+        <p>Aquí lo llamo simplemente "la app". Si lo lees por ahí, su nombre técnico es <a class="term" href="#g-app">harness</a> (en inglés, "arnés"): lo que envuelve al modelo y le da herramientas.</p>
         <p class="note" data-icon="i"><span><strong>Necesitas un ordenador</strong> (Windows, Mac o Linux), no el móvil: el agente trabaja con los archivos de tu ordenador.</span></p>
         <p>Cada app funciona con unas cuentas y no con otras. Así que la mejor app para ti depende de lo que ya pagas. Marca lo que tengas:</p>
 
@@ -250,7 +251,8 @@
       <section>
         <p class="step-label">Paso 2 de 8</p>
         <h2 id="paso-2-crea-la-carpeta"><a class="heading-anchor" href="#paso-2-crea-la-carpeta">Crea la carpeta</a></h2>
-        <p>En este paso creas la casa del agente. Una <a class="term" href="#g-carpeta">carpeta</a> es un contenedor de tu ordenador que guarda <a class="term" href="#g-archivo">archivos</a>. Un archivo es un documento con un nombre, y su final (<code>.md</code>, <code>.csv</code>, <code>.pdf</code>) dice qué tipo de contenido guarda.</p>
+        <p class="section-lead">Creas la casa del agente.</p>
+        <p>Una <a class="term" href="#g-carpeta">carpeta</a> es un contenedor de tu ordenador que guarda <a class="term" href="#g-archivo">archivos</a>. Un archivo es un documento con un nombre, y su final (<code>.md</code>, <code>.csv</code>, <code>.pdf</code>) dice qué tipo de contenido guarda.</p>
         <p>El agente solo ve lo que hay dentro de su carpeta. Eso es bueno: tú decides qué sabe y qué no. Pero recuerda que lo que lea lo manda al modelo, en internet, para poder responder. No metas en la carpeta nada que no contarías a esa empresa.</p>
         <ol>
           <li><strong>Crea una carpeta en el Escritorio</strong> (o en Documentos, si prefieres). En Mac: clic derecho en el Escritorio, "Nueva carpeta". En Windows: clic derecho, "Nuevo", "Carpeta".</li>
@@ -329,7 +331,8 @@
       <section>
         <p class="step-label">Paso 3 de 8</p>
         <h2 id="paso-3-abre-la-carpeta"><a class="heading-anchor" href="#paso-3-abre-la-carpeta">Abre la carpeta en tu app y saluda</a></h2>
-        <p>En este paso conectas la app con la carpeta y compruebas que el agente la ve. A partir de aquí, casi todo lo hará el agente: tú le dices qué quieres y él crea los archivos.</p>
+        <p class="section-lead">Conectas la app con la carpeta y compruebas que el agente la ve.</p>
+        <p>A partir de aquí, casi todo lo hará el agente: tú le dices qué quieres y él crea los archivos.</p>
 
         <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p>Abre la app de Claude y entra en <strong>Code</strong>. Bajo el cuadro de mensaje, en el primer selector elige "Local"; después, en el selector de carpeta, pulsa "Open folder…" y elige la tuya. Junto al cuadro de mensaje está el modo de permisos: empieza con "Manual", que te pregunta antes de cada cambio. Los nombres de los botones pueden cambiar un poco entre versiones.</p></div>
         <div class="variant" data-app="codex"><p class="variant-label">ChatGPT</p><p>Abre la app de ChatGPT y elige <strong>Codex</strong> en el selector de modo. Pulsa "Add new project" (nuevo proyecto) y elige tu carpeta. Deja el modo de permisos en "Ask for approval": trabaja dentro de tu carpeta y te pregunta antes de salir de ella.</p></div>
@@ -363,7 +366,8 @@
       <section>
         <p class="step-label">Paso 4 de 8</p>
         <h2 id="paso-4-instrucciones"><a class="heading-anchor" href="#paso-4-instrucciones">Dale instrucciones: el archivo AGENTS.md</a></h2>
-        <p>En este paso le dices al agente quién es y cómo tiene que trabajar, una sola vez y para siempre. Eso va en un archivo llamado <a class="term" href="#g-agents-md">AGENTS.md</a>, en la raíz de la carpeta (dentro de ella, no en una subcarpeta).</p>
+        <p class="section-lead">Le dices al agente quién es y cómo tiene que trabajar, una sola vez y para siempre.</p>
+        <p>Eso va en un archivo llamado <a class="term" href="#g-agents-md">AGENTS.md</a>, en la raíz de la carpeta (dentro de ella, no en una subcarpeta).</p>
         <p>Primero, una idea clave: el <a class="term" href="#g-contexto">contexto</a>. El modelo no recuerda nada entre mensajes. Cada vez que escribes, la app le manda de golpe todo lo que debe tener en cuenta:</p>
 
         <figure class="diagram context">
@@ -548,7 +552,8 @@ Me hablas en español, de forma clara y ordenada.
       <section>
         <p class="step-label">Paso 5 de 8</p>
         <h2 id="paso-5-memoria"><a class="heading-anchor" href="#paso-5-memoria">Dale memoria: la carpeta datos</a></h2>
-        <p>En este paso creas los archivos donde el agente guarda lo que debe recordar. Es lo que convierte un chat que olvida en un agente que te conoce.</p>
+        <p class="section-lead">Creas los archivos donde el agente guarda lo que debe recordar.</p>
+        <p>Es lo que convierte un chat que olvida en un agente que te conoce.</p>
         <p>Tu AGENTS.md ya dice qué archivos usar y cuándo actualizarlos. Así que solo tienes que pedírselo:</p>
         <div class="codeblock prompt no-name"><pre>Crea los archivos de datos que dice el AGENTS.md. Para rellenarlos, hazme las preguntas que necesites, una a una.</pre></div>
         <p>El agente te hará preguntas y creará los archivos. En tu ejemplo:</p>
@@ -593,7 +598,8 @@ Me hablas en español, de forma clara y ordenada.
       <section>
         <p class="step-label">Paso 6 de 8</p>
         <h2 id="paso-6-skills"><a class="heading-anchor" href="#paso-6-skills">Enséñale recetas: las skills</a></h2>
-        <p>En este paso le enseñas al agente una tarea que repites, paso a paso, para que la haga siempre igual de bien. Eso es una <a class="term" href="#g-skill">skill</a> (en inglés, "habilidad"): una receta.</p>
+        <p class="section-lead">Le enseñas al agente una tarea que repites, paso a paso, para que la haga siempre igual de bien.</p>
+        <p>Eso es una <a class="term" href="#g-skill">skill</a> (en inglés, "habilidad"): una receta.</p>
         <p>Podrías poner todos los pasos en el AGENTS.md, pero ocuparían el contexto de todas las conversaciones, también las que no los necesitan. Una skill es más lista: el agente solo ve su nombre y una frase que la describe. Cuando le pides algo que encaja con esa frase, abre la receta entera y la sigue.</p>
         <p>Una skill es una carpeta con un archivo <code>SKILL.md</code> dentro. La carpeta se llama igual que la skill. Ese archivo empieza con un bloque entre dos líneas <code>---</code> con el nombre y la descripción, y luego van los pasos. Las skills de la carpeta del agente van aquí:</p>
 
@@ -709,7 +715,8 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
       <section>
         <p class="step-label">Paso 7 de 8 · opcional</p>
         <h2 id="paso-7-scripts"><a class="heading-anchor" href="#paso-7-scripts">Herramientas fijas: la carpeta scripts</a></h2>
-        <p>En este paso, que puedes saltarte, le das al agente una herramienta que da siempre el mismo resultado. Es útil para cuentas, sumas y fechas.</p>
+        <p class="section-lead">Le das al agente una herramienta que da siempre el mismo resultado. Puedes saltarte este paso.</p>
+        <p>Es útil para cuentas, sumas y fechas.</p>
         <p>Un modelo escribe muy bien, pero calcula como una persona con prisa: casi siempre bien, a veces mal. Un <a class="term" href="#g-script">script</a> es un programa pequeño que hace una cuenta exacta, igual cada vez. No lo tienes que escribir ni ejecutar tú: lo hace el agente.</p>
 
         <div class="variant" data-example="estudiante"><p class="variant-label">Estudiante</p>
@@ -732,7 +739,8 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
       <section>
         <p class="step-label">Paso 8 de 8</p>
         <h2 id="paso-8-exportaciones"><a class="heading-anchor" href="#paso-8-exportaciones">Los resultados: la carpeta exportaciones</a></h2>
-        <p>En este paso le pides al agente algo terminado, para usar fuera de la conversación. Lo guardará en <span class="part part-exports">exportaciones</span>, y así siempre sabes dónde buscarlo.</p>
+        <p class="section-lead">Le pides al agente algo terminado, para usar fuera de la conversación.</p>
+        <p>Lo guardará en <span class="part part-exports">exportaciones</span>, y así siempre sabes dónde buscarlo.</p>
         <div class="variant" data-example="estudiante"><p class="variant-label">Estudiante</p><div class="codeblock prompt no-name"><pre>Hazme un resumen de una página del tema que más me cuesta, para repasar en el bus.</pre></div></div>
         <div class="variant" data-example="docente"><p class="variant-label">Docente</p><div class="codeblock prompt no-name"><pre>Prepárame una ficha de fracciones para 4.º B.</pre></div></div>
         <div class="variant" data-example="salud"><p class="variant-label">Salud</p><div class="codeblock prompt no-name"><pre>Hazme el resumen de esta semana.</pre></div></div>
@@ -752,7 +760,7 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
       <!-- ============ Comprueba ============ -->
       <section>
         <h2 id="comprueba-tu-agente"><a class="heading-anchor" href="#comprueba-tu-agente">Comprueba tu agente</a></h2>
-        <p>Esta sección revisa que tu carpeta tiene todo en su sitio. Hazlo cuando acabes, o cuando algo no funcione.</p>
+        <p class="section-lead">Revisa que tu carpeta tiene todo en su sitio, cuando acabes o cuando algo no funcione.</p>
 
         <div class="checker js-only" data-checker data-data-dir="datos" data-exports-dir="exportaciones">
           <p>Elige tu carpeta. La página mira los nombres de los archivos y lee solo <code>AGENTS.md</code> y los <code>SKILL.md</code>. <strong>Nada sale de tu ordenador:</strong> todo pasa en tu navegador.</p>
@@ -795,7 +803,8 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
       <!-- ============ Adáptalo ============ -->
       <section>
         <h2 id="adaptalo-a-lo-tuyo"><a class="heading-anchor" href="#adaptalo-a-lo-tuyo">Adáptalo a lo tuyo</a></h2>
-        <p>Esta sección sirve para crear un agente para algo que no está en los cinco ejemplos: tu trabajo, una afición, un proyecto. Los pasos son los mismos; solo cambia el AGENTS.md.</p>
+        <p class="section-lead">Crea un agente para algo que no está en los cinco ejemplos: tu trabajo, una afición, un proyecto.</p>
+        <p>Los pasos son los mismos; solo cambia el AGENTS.md.</p>
         <p>Lo más fácil es que el agente te entreviste. En una carpeta nueva, ábrelo y escribe:</p>
         <div class="codeblock prompt no-name"><pre>Quiero un agente que me ayude con (tu tarea). Hazme preguntas, una a una, sobre lo que hago y lo que necesito. Cuando tengas suficiente, escribe un AGENTS.md con esta plantilla y crea las carpetas que nombre.</pre></div>
         <p>Y pega debajo esta plantilla:</p>
@@ -825,7 +834,7 @@ Me hablas en (idioma), (con qué tono).
       <!-- ============ Úsalo cada día ============ -->
       <section>
         <h2 id="usalo-cada-dia"><a class="heading-anchor" href="#usalo-cada-dia">Úsalo cada día</a></h2>
-        <p>Esta sección reúne las costumbres que hacen que el agente mejore con el uso.</p>
+        <p class="section-lead">Las costumbres que hacen que el agente mejore con el uso.</p>
         <ul>
           <li><strong>Una conversación por tarea.</strong> Cuando acabes algo, empieza una nueva. La memoria está en los archivos, no en el chat, así que no pierdes nada, y el contexto queda limpio.</li>
           <li><strong>Corrige en el archivo, no en el chat.</strong> Si hace algo mal, pídele que añada una regla al AGENTS.md o que mejore la skill.</li>
@@ -838,7 +847,7 @@ Me hablas en (idioma), (con qué tono).
       <!-- ============ Límites ============ -->
       <section>
         <h2 id="limites-y-avisos"><a class="heading-anchor" href="#limites-y-avisos">Límites y avisos</a></h2>
-        <p>Esta sección cuenta lo que este agente no hace, y lo que conviene saber antes de confiarle cosas.</p>
+        <p class="section-lead">Lo que este agente no hace, y lo que conviene saber antes de confiarle cosas.</p>
         <ul>
           <li><strong>Lo que hay en la carpeta viaja al modelo.</strong> Para responder, la app manda partes de tus archivos a la empresa del modelo. No guardes ahí contraseñas, ni datos de otras personas que no te hayan dado permiso.</li>
           <li><strong>Si es para el trabajo, pregunta antes.</strong> Mira si tu empresa tiene normas sobre IA y una cuenta de empresa (por ejemplo Claude Team o ChatGPT Business). No guardes datos de compañeros con su nombre: usa códigos, como hace el ejemplo de docente.</li>
@@ -902,7 +911,7 @@ Me hablas en (idioma), (con qué tono).
       <section>
         <h2 id="para-asistentes-de-ia"><a class="heading-anchor" href="#para-asistentes-de-ia">Si eres una IA que ayuda a alguien con esta guía</a></h2>
         <div class="for-ai">
-          <p>Esta sección es para el asistente de IA al que una persona le ha pasado esta página. Las personas pueden saltársela.</p>
+          <p class="section-lead">Para el asistente de IA al que una persona le ha pasado esta página. Las personas pueden saltársela.</p>
           <ul>
             <li><strong>Qué es esto:</strong> un tutorial para personas sin conocimientos técnicos. Al final tienen una carpeta que es un agente: <code>AGENTS.md</code> (instrucciones), <code>datos/</code> (memoria), una carpeta de skills (<code>.agents/skills/</code>, o <code>.claude/skills/</code> en Claude) con un <code>SKILL.md</code> por skill, <code>scripts/</code> (opcional) y <code>exportaciones/</code> (resultados). Si Claude no lee el AGENTS.md, un <code>CLAUDE.md</code> con la línea <code>@AGENTS.md</code> lo resuelve.</li>
             <li><strong>Dónde está la persona:</strong> la dirección de la página puede llevar <code>?app=</code> (<code>claude</code> es el apartado Code de la app de Claude; <code>codex</code>, el modo Codex de la app de escritorio de ChatGPT; <code>antigravity</code>; o <code>goose</code>) y <code>?ejemplo=</code> (<code>estudiante</code>, <code>docente</code>, <code>salud</code>, <code>diario</code> o <code>reforma</code>). Sigue solo esa variante. Los pasos van del 1 (elegir app) al 8 (exportaciones); pregúntale en qué paso está.</li>
