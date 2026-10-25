@@ -1,0 +1,21 @@
+student,group,activity,date,grade
+A01,4A,Multiplication,2026-10-02,7.5
+A02,4A,Multiplication,2026-10-02,6.0
+A03,4A,Multiplication,2026-10-02,8.5
+B01,4B,Multiplication,2026-10-02,5.0
+B02,4B,Multiplication,2026-10-02,6.5
+B03,4B,Multiplication,2026-10-02,4.5
+A01,4A,Problems,2026-10-09,8.0
+A02,4A,Problems,2026-10-09,5.5
+A03,4A,Problems,2026-10-09,9.0
+B01,4B,Problems,2026-10-09,6.0
+B02,4B,Problems,2026-10-09,7.0
+B03,4B,Problems,2026-10-09,5.0
+A01,4A,Fractions: halves,2026-10-16,7.0
+A02,4A,Fractions: halves,2026-10-16,6.5
+A03,4A,Fractions: halves,2026-10-16,8.0
+B01,4B,Fractions: halves,2026-10-16,4.5
+B02,4B,Fractions: halves,2026-10-16,5.5
+B03,4B,Fractions: halves,2026-10-16,4.0
+A01,4A,Mental maths,2026-10-20,9.0
+B01,4B,Mental maths,2026-10-20,6.5

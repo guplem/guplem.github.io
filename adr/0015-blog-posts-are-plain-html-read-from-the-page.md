@@ -39,7 +39,7 @@ Options considered for the list of posts and the feed:
 
 - **A post is `blog/<slug>/index.html`, and its text is in the file.** No
   script fetches or renders content at load time. A post may use JavaScript
-  only for an extra that hides nothing when it is absent.
+  only for an extra, and with no script the post must still show everything.
 - **The post's `<head>` is its only metadata record.** `og:title` is the
   title, `description` the summary, `article:published_time` the date (a full
   UTC instant, so two posts on one day still order), `og:image` the optional
@@ -55,11 +55,33 @@ Options considered for the list of posts and the feed:
 - **Each post owns its look, on a shared skeleton.** `blog/blog.css` holds
   the top bar, the index cards, the byline and the footer. A post's
   `style.css` is loaded after it and is scoped by a class on `<body>`. The
-  Inter font stays self-hosted on every post (ADR 0005), and
+  Inter font stays self-hosted on every post (ADR 0005). A post may add a
+  second self-hosted font in `resources/fonts/`, with its licence beside it
+  (`tu-primer-agente/` adds Plus Jakarta Sans).
   `scripts/fontSelfHosted.test.js` covers every post through the same reader
   the generators use. The blog also puts back the scrollbar that
   `css/global/base.css` hides for the portfolio, themed by each post, because
   a reader of long text needs to see how much of it is left.
+- **An interactive post holds every variant as text, and its script only
+  hides.** `tu-primer-agente/` has one block per example and per app
+  (`.variant[data-example]`, `.variant[data-app]`). With no script, all of
+  them show. `tutorial.js` hides the ones the reader did not choose, reads
+  every sentence it shows from the page, and keeps the choice in the address
+  (`?app=`, and `?ejemplo=` or `?example=`), so a link repeats the choice.
+  The decisions (which app fits, what the address carries) are in the pure
+  module `agentCore.js`, tested with Bun first (ADR 0012); `tutorial.js` is
+  DOM glue.
+- **A post in two languages is two posts with two slugs**
+  (`tu-primer-agente/`, `your-first-agent/`), linked by
+  `<link rel="alternate" hreflang>` and a language link in the top bar. The
+  second imports the first one's `style.css` and loads its `tutorial.js`.
+  Each page then has its own URL, head and language for a crawler, and the
+  generators list both with no language rule.
+- **A post may ship example folders for the reader to download.** Each
+  folder is committed beside a `.zip` of it, so a crawler reads every file
+  and a reader takes one download. `examples.test.js` fails when a zip and
+  its folder differ. The files in them are reader content, not instructions
+  for the agents that work on this repository.
 - **Every section heading is a link to itself.** Each `h2` to `h4` carries
   an id and wraps its text in an anchor to that id, so a tap puts the section
   in the address bar (as Wikipedia does) and a reader can share one section,
@@ -86,6 +108,8 @@ Options considered for the list of posts and the feed:
   the generators; nothing else lists it by hand.
 - A post can look like its subject (a letter on paper, a map table at night)
   without a theme system.
+- An interactive post still reads fully with no script, so a crawler sees
+  every variant.
 
 **Negative:**
 
@@ -94,5 +118,8 @@ Options considered for the list of posts and the feed:
 - Three more generated artifacts can drift, and a post with a broken head fails
   CI instead of silently disappearing from the list. That is the intended
   trade.
+- A post with every variant in the HTML is long, and a two-language post
+  must be edited twice. The texts can drift. Only the zips have a test, so
+  the owner keeps the two texts in step.
 - Per-post CSS means per-post maintenance. A change to the shared skeleton
   has to be checked against every post's overrides.

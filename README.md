@@ -72,9 +72,10 @@ Posts live in `blog/<slug>/index.html` as plain HTML: the text is in the file, n
 
 - **`why-a-blog-now/`** — Why writing for the open web makes sense again now that language models read it, and why these posts are plain HTML. The reference for the usual shape and length of a post
 - **`ai-world-gen-thousands-of-tiny-decisions/`** — How the AI World Gen map generator asks a decision model (Jev) one question per tile, compared with two faster methods, and the Galtea evaluation loop that measured every change, with charts and every version's maps. The reference for charts and data
+- **`tu-primer-agente/`** and **`your-first-agent/`** — A step-by-step tutorial, in Spanish and in English, for moving from a chat to your own AI agent: a folder on your computer with instructions, memory and recipes. It has an app picker, a folder check, and downloadable example folders
 
 ## Deployment
 
 GitHub Pages with custom domain. Push to `main` deploys automatically.
 
-Pull requests are tested automatically: a GitHub Actions workflow runs the full test suite (`bun test .` -- the web-project tests plus the portfolio data validation) on every pull request, and a pull request cannot be merged while a test fails.
+Pull requests are tested automatically: a GitHub Actions workflow runs the full test suite (`bun test .` -- the web-project tests, the portfolio data validation, the blog tests and the `scripts/` tests) on every pull request, and a pull request cannot be merged while a test fails.
