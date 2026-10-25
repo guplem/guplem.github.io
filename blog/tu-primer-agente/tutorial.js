@@ -567,7 +567,7 @@ const finale = document.querySelector("[data-finale]");
 if (finale) {
   const stepBoxes = [...document.querySelectorAll('input[data-done^="paso-"]')];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const wins = [...document.querySelectorAll(".finale-wins li")].map((item) => item.textContent);
+  const wins = [...document.querySelectorAll("[data-finale] .fx-card-text")].map((item) => item.textContent);
   const colours = ["--teal", "--f-agents", "--f-data", "--f-skills", "--f-scripts", "--f-exports"];
 
   const pending = document.createElement("div");
@@ -605,6 +605,18 @@ if (finale) {
     body.append(layer);
     setTimeout(() => layer.remove(), 9000);
   };
+  // Fit each task pill to its text, so a long task never spills out.
+  const fitCards = () => {
+    finale.querySelectorAll(".fx-card").forEach((card) => {
+      const box = card.querySelector(".fx-card-box");
+      const text = card.querySelector(".fx-card-text");
+      const width = text.getComputedTextLength();
+      if (!width) return; // not laid out yet
+      const centre = Number(text.getAttribute("x"));
+      box.setAttribute("width", Math.ceil(width + 28));
+      box.setAttribute("x", Math.floor(centre - width / 2 - 14));
+    });
+  };
   const celebrate = () => {
     played = true;
     finale.classList.remove("is-playing");
@@ -616,6 +628,7 @@ if (finale) {
     const complete = stepBoxes.every((box) => box.checked);
     finale.classList.toggle("is-complete", complete);
     body.classList.toggle("is-graduated", complete);
+    if (complete) fitCards();
     list.replaceChildren(
       ...stepBoxes.map((box) => {
         const link = document.querySelector(`[data-step-link="${box.dataset.done}"]`);
@@ -640,4 +653,5 @@ if (finale) {
     { threshold: 0.45 },
   ).observe(finale);
   render();
+  document.fonts?.ready.then(() => { if (finale.classList.contains("is-complete")) fitCards(); });
 }
