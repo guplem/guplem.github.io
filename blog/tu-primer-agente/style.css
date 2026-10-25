@@ -1204,9 +1204,10 @@ body:not(.js-ready) .js-only {
    and "tomorrow" below, so the still picture tells the whole story; the
    animation only shows it in order. One 18 s cycle:
    - today: the person writes (4-8%), the AI answers in both columns (12-16%);
-     on the right, an arrow carries the note into the file (20-26%) and its two
-     lines appear (26-29%, 30-33%);
-   - the chat closes: the line between the rows lights up (38-46%);
+     on the right, an arrow carries the note to the file, which appears
+     (20-26%), and its two lines appear (26-29%, 30-33%);
+   - the chat closes: the line between the rows appears (36-40%), then the
+     empty "tomorrow" row (44-48%);
    - tomorrow: the person asks (50-54%), an arrow reads the file and the file
      glows (58-66%), both columns answer (64-68%), and the captions show
      (72-76%);
@@ -1222,9 +1223,11 @@ body:not(.js-ready) .js-only {
 .forget .f-a { animation: f-a 18s infinite; }
 .forget .f-b { animation: f-b 18s infinite; }
 .forget .f-write, .forget .f-write-head { animation: f-write 18s infinite; }
+.forget .f-file { animation: f-file 18s infinite; }
 .forget .f-c { animation: f-c 18s infinite; }
 .forget .f-d { animation: f-d 18s infinite; }
 .forget .f-sep { animation: f-sep 18s infinite; }
+.forget .f-tomorrow { animation: f-tomorrow 18s infinite; }
 .forget .f-e { animation: f-e 18s infinite; }
 .forget .f-read, .forget .f-read-head, .forget .f-glow { animation: f-read 18s infinite; }
 .forget .f-f { animation: f-f 18s infinite; }
@@ -1233,9 +1236,11 @@ body:not(.js-ready) .js-only {
 @keyframes f-a { 0%, 4% { opacity: 0; transform: translateY(6px); } 8%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
 @keyframes f-b { 0%, 12% { opacity: 0; transform: translateY(6px); } 16%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
 @keyframes f-write { 0%, 20% { opacity: 0; } 26%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes f-file { 0%, 22% { opacity: 0; transform: translateX(-8px); } 26%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
 @keyframes f-c { 0%, 26% { opacity: 0; transform: translateX(-8px); } 29%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
 @keyframes f-d { 0%, 30% { opacity: 0; transform: translateX(-8px); } 33%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
-@keyframes f-sep { 0%, 38% { opacity: 0.25; } 42%, 46% { opacity: 1; } 52%, 94% { opacity: 0.6; } 99%, 100% { opacity: 0.25; } }
+@keyframes f-sep { 0%, 36% { opacity: 0; } 40%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes f-tomorrow { 0%, 44% { opacity: 0; } 48%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
 @keyframes f-e { 0%, 50% { opacity: 0; transform: translateY(6px); } 54%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
 @keyframes f-read { 0%, 58% { opacity: 0; } 62%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
 @keyframes f-f { 0%, 64% { opacity: 0; transform: translateY(6px); } 68%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }

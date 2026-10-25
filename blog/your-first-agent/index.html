@@ -132,7 +132,6 @@
             <desc id="forget-desc">Two columns, at two moments. At the top, "Today": in both columns the person writes "I am in my last school year. I know topic 3 well now." In the browser chat, the AI answers "Great! Shall we start?". In the folder, the agent answers "Great! I will note it." and writes two lines in its file data/progress.md: "Year: last year of school" and "Topic 3: mastered". Then the chat closes. At the bottom, "Tomorrow": the person asks "What do I review today?". The browser chat remembers nothing and answers "I do not know what you study. Tell me?". The agent reads data/progress.md and answers "Topic 4 today: you already know topic 3."</desc>
             <text x="175" y="24" text-anchor="middle" class="label">A chat in the browser</text>
             <text x="575" y="24" text-anchor="middle" class="label">An agent in a folder</text>
-            <g class="legend"><use href="#ico-user" x="320" y="36" width="24" height="24" /><text x="348" y="52" class="label-soft">you</text><use href="#ico-bot" x="400" y="35" width="24" height="26" /><text x="428" y="52" class="label-soft">the AI</text></g>
             <text x="20" y="84" class="row-label">TODAY</text>
             <rect x="20" y="92" width="310" height="128" rx="14" class="box" />
             <rect x="370" y="92" width="230" height="128" rx="14" class="box" />
@@ -145,16 +144,20 @@
               <use href="#ico-bot" x="378" y="172" width="24" height="26" /><rect x="408" y="160" width="182" height="46" rx="14" class="bubble-agent" /><text x="420" y="177" class="tag-text">✎ writes to progress.md</text><text x="420" y="196" class="bubble-text">Great! I will note it.</text>
             </g>
             <path class="f-write wire-teal arrow-path" d="M590 176 C606 176 606 150 622 150" /><polygon class="f-write-head arrow-teal" points="617,145 627,150 617,155" />
+            <g class="f-file">
             <rect x="626" y="122" width="160" height="104" rx="14" class="box-strong" />
-            <rect class="f-glow" x="626" y="122" width="160" height="104" rx="14" />
             <text x="640" y="146" class="label-on-teal">data/progress.md</text>
             <text x="640" y="214" class="label-soft">a file in the folder</text>
+            </g>
+            <rect class="f-glow" x="626" y="122" width="160" height="104" rx="14" />
             <g class="f-c"><rect x="640" y="160" width="8" height="8" rx="4" class="sw-data" /><text x="654" y="168" class="bubble-text">Year: last school year</text></g>
             <g class="f-d"><rect x="640" y="180" width="8" height="8" rx="4" class="sw-data" /><text x="654" y="188" class="bubble-text">Topic 3: mastered</text></g>
             <g class="f-sep"><line x1="20" y1="244" x2="600" y2="244" class="sep-line" /><text x="310" y="240" text-anchor="middle" class="label-soft sep-text">the chat closes · the next day…</text></g>
+            <g class="f-tomorrow">
             <text x="20" y="276" class="row-label">TOMORROW</text>
             <rect x="20" y="284" width="310" height="128" rx="14" class="box" />
             <rect x="370" y="284" width="230" height="128" rx="14" class="box" />
+            </g>
             <g class="f-e">
               <rect x="170" y="296" width="122" height="30" rx="14" class="bubble-person" /><text x="231" y="316" text-anchor="middle" class="bubble-text-person">What do I review today?</text><use href="#ico-user" x="300" y="299" width="24" height="24" />
               <rect x="448" y="296" width="122" height="30" rx="14" class="bubble-person" /><text x="509" y="316" text-anchor="middle" class="bubble-text-person">What do I review today?</text><use href="#ico-user" x="576" y="299" width="24" height="24" />
