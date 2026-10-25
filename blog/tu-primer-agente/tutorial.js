@@ -561,8 +561,9 @@ if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches)
 /* ---------- The end of the tutorial: a celebration ----------
    Once every step is ticked and the reader reaches the end of the
    tutorial, the drawing there plays, confetti falls over the page and the
-   things an agent can do drift up across it. Until then, the same place
-   lists the steps still to tick. Every word shown is read from the page. */
+   things an agent can do drift up across it. Above the drawing, the steps
+   show as cards that tick, and the drawing stays hidden until all eight
+   are ticked. Every word shown is read from the page. */
 const finale = document.querySelector("[data-finale]");
 if (finale) {
   const stepBoxes = [...document.querySelectorAll('input[data-done^="paso-"]')];
@@ -570,13 +571,27 @@ if (finale) {
   const wins = [...document.querySelectorAll("[data-finale] .fx-card-text")].map((item) => item.textContent);
   const colours = ["--teal", "--f-agents", "--f-data", "--f-skills", "--f-scripts", "--f-exports"];
 
-  const pending = document.createElement("div");
-  pending.className = "finale-pending";
-  const pendingTitle = document.createElement("p");
-  pendingTitle.textContent = finale.dataset.missing;
-  const list = document.createElement("ul");
-  pending.append(pendingTitle, list);
-  finale.prepend(pending);
+  // The steps, as cards that tick like the example cards. A card toggles
+  // its step's own check, so the two always agree.
+  const pending = document.createElement("ul");
+  pending.className = "choice-grid finale-steps";
+  const cards = stepBoxes.map((box) => {
+    const link = document.querySelector(`[data-step-link="${box.dataset.done}"]`);
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "choice";
+    const name = document.createElement("b");
+    name.textContent = link?.firstChild?.textContent.trim() ?? box.dataset.done;
+    const claim = document.createElement("span");
+    claim.textContent = box.closest("label")?.textContent.trim() ?? "";
+    card.append(name, claim);
+    card.addEventListener("click", () => box.click());
+    const item = document.createElement("li");
+    item.append(card);
+    pending.append(item);
+    return card;
+  });
+  finale.before(pending);
   const replay = document.createElement("button");
   replay.type = "button";
   replay.className = "finale-replay";
@@ -680,18 +695,7 @@ if (finale) {
     finale.classList.toggle("is-complete", complete);
     body.classList.toggle("is-graduated", complete);
     if (complete) fitCards();
-    list.replaceChildren(
-      ...stepBoxes.map((box) => {
-        const link = document.querySelector(`[data-step-link="${box.dataset.done}"]`);
-        const item = document.createElement("li");
-        item.className = box.checked ? "is-done" : "";
-        const anchor = document.createElement("a");
-        anchor.href = link?.getAttribute("href") ?? "#";
-        anchor.textContent = link?.firstChild?.textContent.trim() ?? box.dataset.done;
-        item.append(anchor);
-        return item;
-      }),
-    );
+    cards.forEach((card, i) => card.setAttribute("aria-pressed", String(stepBoxes[i].checked)));
     if (complete && seen && !played) celebrate();
   };
   for (const box of stepBoxes) box.addEventListener("change", render);
