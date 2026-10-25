@@ -64,7 +64,8 @@ const langBase = langLink?.getAttribute("href");
 
 function showPath() {
   const example = state.example ?? EXAMPLE_IDS[0];
-  for (const block of document.querySelectorAll(".variant[data-example]")) block.hidden = block.dataset.example !== example;
+  // toggleAttribute, not .hidden: the drawings' variants are SVG elements, which have no .hidden property.
+  for (const block of document.querySelectorAll(".variant[data-example]")) block.toggleAttribute("hidden", block.dataset.example !== example);
   for (const button of exampleButtons) button.setAttribute("aria-pressed", String(button.dataset.example === state.example));
   const folder = document.querySelector(`.variant[data-example="${example}"] code`)?.textContent;
   for (const slot of document.querySelectorAll("[data-folder-name]")) if (folder) slot.textContent = folder;
