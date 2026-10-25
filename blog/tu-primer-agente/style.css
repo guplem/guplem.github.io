@@ -1272,14 +1272,41 @@ body:not(.js-ready) .js-only {
    the messages vanish under it (41%), and the cover shrinks to one small
    "summary" piece (44-49%). The next message arrives (54%), then the AI's
    answer with its note (62%), then the closing line (72%). It holds, then
-   clears (94-99%). The messages keep their offsets, so the next cycle fills
-   the bar in the same order; their group (.cf-old) hides them all at once. */
+   clears (94-99%). Each message has its own keyframe rule (cf-b1 to cf-b26)
+   instead of a delay: a delay shifts the whole loop, so old messages would
+   still show when the next cycle starts. Their group (.cf-old) hides them
+   all at once. */
 .diagram .blk-person { fill: var(--teal); }
 .diagram .blk-ai { fill: var(--ink-soft); fill-opacity: 0.45; }
 .diagram .compact-overlay { fill: var(--paper); fill-opacity: 0.92; stroke: var(--line); stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
 .diagram .limit-line { stroke: var(--bad); stroke-width: 2; stroke-dasharray: 5 5; }
 
-.ctxfill .blocks rect { animation: cf-block 18s infinite backwards; }
+.ctxfill .blocks rect:nth-child(1) { animation: cf-b1 18s infinite; }
+.ctxfill .blocks rect:nth-child(2) { animation: cf-b2 18s infinite; }
+.ctxfill .blocks rect:nth-child(3) { animation: cf-b3 18s infinite; }
+.ctxfill .blocks rect:nth-child(4) { animation: cf-b4 18s infinite; }
+.ctxfill .blocks rect:nth-child(5) { animation: cf-b5 18s infinite; }
+.ctxfill .blocks rect:nth-child(6) { animation: cf-b6 18s infinite; }
+.ctxfill .blocks rect:nth-child(7) { animation: cf-b7 18s infinite; }
+.ctxfill .blocks rect:nth-child(8) { animation: cf-b8 18s infinite; }
+.ctxfill .blocks rect:nth-child(9) { animation: cf-b9 18s infinite; }
+.ctxfill .blocks rect:nth-child(10) { animation: cf-b10 18s infinite; }
+.ctxfill .blocks rect:nth-child(11) { animation: cf-b11 18s infinite; }
+.ctxfill .blocks rect:nth-child(12) { animation: cf-b12 18s infinite; }
+.ctxfill .blocks rect:nth-child(13) { animation: cf-b13 18s infinite; }
+.ctxfill .blocks rect:nth-child(14) { animation: cf-b14 18s infinite; }
+.ctxfill .blocks rect:nth-child(15) { animation: cf-b15 18s infinite; }
+.ctxfill .blocks rect:nth-child(16) { animation: cf-b16 18s infinite; }
+.ctxfill .blocks rect:nth-child(17) { animation: cf-b17 18s infinite; }
+.ctxfill .blocks rect:nth-child(18) { animation: cf-b18 18s infinite; }
+.ctxfill .blocks rect:nth-child(19) { animation: cf-b19 18s infinite; }
+.ctxfill .blocks rect:nth-child(20) { animation: cf-b20 18s infinite; }
+.ctxfill .blocks rect:nth-child(21) { animation: cf-b21 18s infinite; }
+.ctxfill .blocks rect:nth-child(22) { animation: cf-b22 18s infinite; }
+.ctxfill .blocks rect:nth-child(23) { animation: cf-b23 18s infinite; }
+.ctxfill .blocks rect:nth-child(24) { animation: cf-b24 18s infinite; }
+.ctxfill .blocks rect:nth-child(25) { animation: cf-b25 18s infinite; }
+.ctxfill .blocks rect:nth-child(26) { animation: cf-b26 18s infinite; }
 .ctxfill .cf-old { animation: cf-old 18s infinite; }
 .ctxfill .cf-full { animation: cf-full 18s infinite; }
 .ctxfill .cf-squash { transform-box: fill-box; transform-origin: left center; animation: cf-squash 18s infinite; }
@@ -1289,7 +1316,32 @@ body:not(.js-ready) .js-only {
 .ctxfill .cf-answer { animation: cf-answer 18s infinite; }
 .ctxfill .cf-lost { animation: cf-lost 18s infinite; }
 
-@keyframes cf-block { 0% { opacity: 0; } 2%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b1 { 0%, 1.00% { opacity: 0; } 2.00%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b2 { 0%, 2.11% { opacity: 0; } 3.11%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b3 { 0%, 3.22% { opacity: 0; } 4.22%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b4 { 0%, 4.33% { opacity: 0; } 5.33%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b5 { 0%, 5.44% { opacity: 0; } 6.44%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b6 { 0%, 6.55% { opacity: 0; } 7.55%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b7 { 0%, 7.66% { opacity: 0; } 8.66%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b8 { 0%, 8.77% { opacity: 0; } 9.77%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b9 { 0%, 9.88% { opacity: 0; } 10.88%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b10 { 0%, 10.99% { opacity: 0; } 11.99%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b11 { 0%, 12.10% { opacity: 0; } 13.10%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b12 { 0%, 13.21% { opacity: 0; } 14.21%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b13 { 0%, 14.32% { opacity: 0; } 15.32%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b14 { 0%, 15.43% { opacity: 0; } 16.43%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b15 { 0%, 16.54% { opacity: 0; } 17.54%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b16 { 0%, 17.65% { opacity: 0; } 18.65%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b17 { 0%, 18.76% { opacity: 0; } 19.76%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b18 { 0%, 19.87% { opacity: 0; } 20.87%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b19 { 0%, 20.98% { opacity: 0; } 21.98%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b20 { 0%, 22.09% { opacity: 0; } 23.09%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b21 { 0%, 23.20% { opacity: 0; } 24.20%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b22 { 0%, 24.31% { opacity: 0; } 25.31%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b23 { 0%, 25.42% { opacity: 0; } 26.42%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b24 { 0%, 26.53% { opacity: 0; } 27.53%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b25 { 0%, 27.64% { opacity: 0; } 28.64%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-b26 { 0%, 28.75% { opacity: 0; } 29.75%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
 @keyframes cf-old { 0%, 39% { opacity: 1; } 42%, 100% { opacity: 0; } }
 @keyframes cf-full { 0%, 29% { opacity: 0; } 32%, 46% { opacity: 1; } 49%, 100% { opacity: 0; } }
 @keyframes cf-squash { 0%, 34% { opacity: 0; transform: none; } 37%, 43% { opacity: 1; transform: none; } 49%, 94% { opacity: 1; transform: scaleX(0.2); } 99%, 100% { opacity: 0; transform: scaleX(0.2); } }
