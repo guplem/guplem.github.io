@@ -1795,3 +1795,7 @@ body:not(.js-ready) .js-only {
    the ones not chosen; with no script, the student example shows. */
 svg [hidden] { display: none; }
 body:not(.js-ready) .sv-ex:not([data-example="estudiante"]) { display: none; }
+
+/* An example answer under a message the reader sends: the agent's bubble
+   alone, with the steps it took, ending in "…" where the answer goes on. */
+.chat.chat-reply { margin-top: 10px; }
