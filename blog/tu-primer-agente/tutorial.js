@@ -100,13 +100,14 @@ const picker = document.querySelector("[data-picker]");
 if (picker) {
   const subs = new Set();
   const result = picker.querySelector(".picker-result");
-  const tags = { best: picker.dataset.labelBest, other: picker.dataset.labelOther, use: picker.dataset.labelUse, chosen: picker.dataset.labelChosen };
+  const tags = { best: picker.dataset.labelBest, other: picker.dataset.labelOther, use: picker.dataset.labelUse, chosen: picker.dataset.labelChosen, yours: picker.dataset.labelYours };
 
   const card = (app, kind) => {
     const info = document.querySelector(`.app-info[data-app="${app}"]`);
     const element = document.createElement("div");
-    element.className = `app-card${kind === "best" ? " is-best" : ""}${state.app === app ? " is-chosen" : ""}`;
-    element.innerHTML = `<span class="app-tag">${kind === "best" ? tags.best : tags.other}</span>${info.innerHTML}`;
+    element.className = `app-card${kind === "other" ? "" : " is-best"}${state.app === app ? " is-chosen" : ""}`;
+    const tag = { best: tags.best, other: tags.other, yours: tags.yours }[kind];
+    element.innerHTML = `<span class="app-tag">${tag}</span>${info.innerHTML}`;
     const use = document.createElement("button");
     use.type = "button";
     use.className = "use-app";
@@ -127,7 +128,8 @@ if (picker) {
     if (advice) {
       result.append(card(advice.best, "best"), ...advice.alternatives.map((app) => card(app, "other")));
     } else if (state.app) {
-      result.append(card(state.app, "best"));
+      // Nothing ticked: no recommendation, only the app the reader chose before.
+      result.append(card(state.app, "yours"));
     }
   }
 

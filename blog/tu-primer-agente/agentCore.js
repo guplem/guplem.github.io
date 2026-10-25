@@ -31,8 +31,9 @@ const SUBSCRIPTIONS = ["chatgpt", "claude", "gemini", "api", "none"];
 export function recommendApps(subscriptions) {
   const has = new Set(subscriptions.filter((id) => SUBSCRIPTIONS.includes(id)));
   if (has.size === 0) return null;
-  // Antigravity is free for everyone; the ChatGPT app's Codex mode is still reaching free accounts.
-  if (has.has("none")) return { best: "antigravity", alternatives: ["codex", "goose"], warnings: ["made-for-code"] };
+  // The ChatGPT app is the simplest start, and its Codex mode works on the free plan.
+  // Antigravity is free too, and it is the fallback when a free account does not see Codex yet.
+  if (has.has("none")) return { best: "codex", alternatives: ["antigravity", "goose"], warnings: [] };
 
   const order = [];
   if (has.has("api")) order.push("goose");
