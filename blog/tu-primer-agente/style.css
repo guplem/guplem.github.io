@@ -1785,3 +1785,7 @@ body:not(.js-ready) .js-only {
   font: 600 0.85rem var(--sans);
   cursor: pointer;
 }
+
+/* The files of datos/ in step 5, shown as an explorer of that folder. */
+.explorer-detail .tree-who:empty { display: none !important; }
+.agente .post .explorer-detail p::first-letter { text-transform: uppercase; }
