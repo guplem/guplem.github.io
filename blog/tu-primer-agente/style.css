@@ -412,18 +412,30 @@
   border-top: 1px solid var(--line);
 }
 
-.agente .post .note::before {
-  content: attr(data-icon);
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1.5px var(--line);
-  color: var(--teal);
-  font-weight: 800;
-  font-size: 0.9rem;
+/* Every small icon is a line drawing in the same style as the button icons
+   (24-pixel grid, round 2-pixel strokes), painted with a mask in the
+   current colour, so no icon is a typed character. */
+:root {
+  --icon-info: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M12 16v-4.5M12 8h.01'/%3E%3C/svg%3E");
+  --icon-alert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 4.2 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9.5v4M12 17h.01'/%3E%3C/svg%3E");
+  --icon-tip: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18h6M10 21.5h4M15 14.5c.2-1 .7-1.7 1.5-2.5A6 6 0 1 0 7.5 12c.8.8 1.3 1.5 1.5 2.5'/%3E%3C/svg%3E");
+  --icon-help: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M9.2 9a3 3 0 0 1 5.8 1c0 2-3 2.8-3 2.8M12 17h.01'/%3E%3C/svg%3E");
+  --icon-new: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6-5.6-1.9 5.6-1.9z'/%3E%3C/svg%3E");
+  --icon-changed: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 11.5A8 8 0 0 0 6.3 6.3L4 8.5M4 4v4.5h4.5M4 12.5a8 8 0 0 0 13.7 5.2l2.3-2.2M20 20v-4.5h-4.5'/%3E%3C/svg%3E");
 }
+
+.agente .post .note::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  margin: 3px;
+  background: var(--teal);
+  -webkit-mask: var(--note-icon, var(--icon-info)) center / contain no-repeat;
+  mask: var(--note-icon, var(--icon-info)) center / contain no-repeat;
+}
+.agente .post .note[data-icon="!"] { --note-icon: var(--icon-alert); }
+.agente .post .note[data-icon="✦"] { --note-icon: var(--icon-tip); }
+.agente .post .note[data-icon="?"] { --note-icon: var(--icon-help); }
 
 .agente .post .note p {
   font-size: 1rem;
@@ -460,17 +472,13 @@
 }
 
 .agente .post details.more > summary::before {
-  content: "?";
+  content: "";
   flex: none;
-  display: grid;
-  place-items: center;
   width: 22px;
   height: 22px;
-  border-radius: 50%;
-  background: var(--teal-wash);
-  color: var(--teal);
-  font-size: 0.8rem;
-  font-weight: 800;
+  background: var(--teal);
+  -webkit-mask: var(--icon-help) center / contain no-repeat;
+  mask: var(--icon-help) center / contain no-repeat;
 }
 
 .agente .post details.more[open] > summary {
@@ -1634,9 +1642,15 @@ body:not(.js-ready) .js-only {
 }
 
 .agente .post .toc a.is-done::before {
-  content: "✓ ";
-  color: var(--ok);
-  font-weight: 800;
+  content: "";
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-right: 0.3em;
+  vertical-align: -0.1em;
+  background: var(--ok);
+  -webkit-mask: var(--tick) center / contain no-repeat;
+  mask: var(--tick) center / contain no-repeat;
 }
 
 .agente .toc-jump {
@@ -1719,11 +1733,14 @@ body:not(.js-ready) .js-only {
    a page with no script, or with reduced motion, shows none. */
 .anim-controls { display: flex; justify-content: center; gap: 8px; margin: 6px 0 4px; }
 .anim-controls button {
+  display: inline-flex; align-items: center;
   font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-soft);
   background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
-  padding: 4px 12px; cursor: pointer;
+  padding: 5px 13px; cursor: pointer;
 }
 .anim-controls button:hover { color: var(--ink); border-color: var(--teal); }
+/* .diagram svg makes every drawing full width; the button icons stay small. */
+.diagram .anim-controls .btn-icon { display: inline; width: 1.1em; height: 1.1em; }
 .anim-controls button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 
 /* Icons inside buttons. Every action button carries one, before its label:
@@ -1731,12 +1748,18 @@ body:not(.js-ready) .js-only {
 .btn-icon {
   width: 1.1em;
   height: 1.1em;
-  margin-right: 0.4em;
+  margin-right: 0.45em;
   vertical-align: -0.2em;
   flex: none;
 }
+.btn-icon.is-after {
+  margin-right: 0;
+  margin-left: 0.45em;
+}
 .copy-button,
 .checker-button,
+.finale-replay,
+.use-app,
 .theme-switch button {
   display: inline-flex;
   align-items: center;
@@ -1780,9 +1803,16 @@ body:not(.js-ready) .js-only {
   background: color-mix(in srgb, var(--c) 13%, var(--panel));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 30%, transparent);
 }
-.tree-badge::before { font-size: 0.8em; }
-.tree-badge.is-fresh::before { content: "✦"; }
-.tree-badge.is-changed::before { content: "↻"; font-size: 1em; }
+.tree-badge::before {
+  content: "";
+  width: 11px;
+  height: 11px;
+  background: currentColor;
+  -webkit-mask: var(--badge-icon) center / contain no-repeat;
+  mask: var(--badge-icon) center / contain no-repeat;
+}
+.tree-badge.is-fresh { --badge-icon: var(--icon-new); }
+.tree-badge.is-changed { --badge-icon: var(--icon-changed); }
 /* A marked row gives its column to the badge, so its label goes under the name. */
 .explorer.is-interactive .tree-item[data-marked] .tree-name small { display: block; margin-left: 0; }
 

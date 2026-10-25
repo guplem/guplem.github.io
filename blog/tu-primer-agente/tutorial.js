@@ -112,7 +112,8 @@ if (picker) {
     const use = document.createElement("button");
     use.type = "button";
     use.className = "use-app";
-    use.textContent = state.app === app ? tags.chosen : tags.use;
+    if (state.app === app) setIconLabel(use, "ico-check", tags.chosen);
+    else use.textContent = tags.use;
     use.addEventListener("click", () => {
       state.app = app;
       showPath();
@@ -237,14 +238,15 @@ addEventListener("scroll", hideTerm, { passive: true });
 
 /* ---------- Copy buttons ---------- */
 // A button shows an icon from the page's hidden SVG symbols, then its label.
-function setIconLabel(button, icon, label) {
+function setIconLabel(button, icon, label, after = false) {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("class", "btn-icon");
+  svg.setAttribute("class", after ? "btn-icon is-after" : "btn-icon");
   svg.setAttribute("aria-hidden", "true");
   const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
   use.setAttribute("href", `#${icon}`);
   svg.append(use);
-  button.replaceChildren(svg, label);
+  if (after) button.replaceChildren(label, svg);
+  else button.replaceChildren(svg, label);
 }
 const copyLabel = body.dataset.copyLabel ?? "Copy";
 const copiedLabel = body.dataset.copiedLabel ?? "Copied";
@@ -485,16 +487,19 @@ if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches)
 
     const bar = document.createElement("div");
     bar.className = "anim-controls";
-    const button = (label) => {
+    const button = () => {
       const element = document.createElement("button");
       element.type = "button";
-      element.textContent = label;
       bar.append(element);
       return element;
     };
-    const prev = button(animLabels.prev);
-    const toggle = button(animLabels.pause);
-    const next = button(animLabels.next);
+    const prev = button();
+    const toggle = button();
+    const next = button();
+    setIconLabel(prev, "ico-back", animLabels.prev);
+    setIconLabel(next, "ico-forward", animLabels.next, true);
+    // The play button shows what a press does: pause, play, or play again.
+    const show = (state) => setIconLabel(toggle, { pause: "ico-pause", play: "ico-play", again: "ico-replay" }[state], animLabels[state]);
     svg.after(bar);
 
     let finished = false;
@@ -505,7 +510,7 @@ if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches)
         playing = false;
         finished = true;
         held = true;
-        toggle.textContent = animLabels.again;
+        show("again");
       } else requestAnimationFrame(watchEnd);
     };
     const play = () => {
@@ -513,14 +518,14 @@ if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches)
       finished = false;
       for (const animation of animations()) animation.play();
       playing = true;
-      toggle.textContent = animLabels.pause;
+      show("pause");
       requestAnimationFrame(watchEnd);
     };
     const pause = () => {
       seek(now());
       playing = false;
       finished = false;
-      toggle.textContent = animLabels.play;
+      show("play");
     };
     toggle.addEventListener("click", () => {
       held = playing;
@@ -540,12 +545,12 @@ if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches)
       if (target === 0 && now() > 0) {
         seek(end);
         finished = true;
-        toggle.textContent = animLabels.again;
+        show("again");
       } else seek(target);
     });
 
     seek(0);
-    toggle.textContent = animLabels.play;
+    show("play");
     // "Fully seen": the whole drawing, or most of the screen when it is taller.
     new IntersectionObserver(
       ([entry]) => {
@@ -595,7 +600,7 @@ if (finale) {
   const replay = document.createElement("button");
   replay.type = "button";
   replay.className = "finale-replay";
-  replay.textContent = finale.dataset.replay;
+  setIconLabel(replay, "ico-replay", finale.dataset.replay);
   finale.append(replay);
 
   let played = false;
