@@ -151,7 +151,7 @@
 
         <p>So the agent you will build has three parts:</p>
         <ul>
-          <li><strong>The model, the brain.</strong> A company (Anthropic, OpenAI, Google) or an open project makes it. It does not live on your computer: it is on the internet.</li>
+          <li><strong>The model, the brain.</strong> A company (Anthropic, OpenAI, Google) or an open project makes it. It almost never lives on your computer: it is on the internet.</li>
           <li><strong>The app, the hands.</strong> A desktop program that connects the model to your computer. It lets the model read and write files, and it asks you for permission first.</li>
           <li><strong>The folder, the home and the memory.</strong> It holds the agent's instructions, what it must remember and what it gives you. It is yours, and you can always open it.</li>
         </ul>
@@ -182,7 +182,7 @@
         <p class="step-label">Step 1 of 8</p>
         <h2 id="step-1-choose-your-app"><a class="heading-anchor" href="#step-1-choose-your-app">Choose your app</a></h2>
         <p>In this step you choose and install the program that connects the model to your folder. Here I just call it "the app". If you see the word elsewhere, its technical name is a <a class="term" href="#g-app">harness</a>: the part that wraps the model and gives it tools.</p>
-        <p class="note" data-icon="i"><span><strong>You need a computer</strong> (Windows or Mac), not a phone: the agent works with the files on your computer.</span></p>
+        <p class="note" data-icon="i"><span><strong>You need a computer</strong> (Windows, Mac or Linux), not a phone: the agent works with the files on your computer.</span></p>
         <p>Each app works with some accounts and not with others. So the best app for you depends on what you already pay for. Mark what you have:</p>
 
         <div class="picker js-only" data-picker data-label-best="Recommended for you" data-label-other="Also works for you" data-label-use="Use this one" data-label-chosen="Chosen ✓">
@@ -196,7 +196,7 @@
           <div class="picker-result" aria-live="polite"></div>
           <p class="warnbox" data-warning="no-app-uses-both" hidden><strong>No app uses your ChatGPT account and your Claude account at the same time.</strong> That is fine: the folder you will create works with both. You can open it in one app today and in the other one tomorrow.</p>
           <p class="warnbox" data-warning="made-for-code" hidden><strong>Antigravity was made for programming.</strong> You will see some programmer words. Do not worry: the agent works just as well with your documents.</p>
-          <p class="warnbox" data-warning="no-claude-in-goose" hidden><strong>Goose cannot use your Claude subscription:</strong> Anthropic does not allow other apps to use it. In Goose you will use your key; to use your Claude subscription, choose the Claude app.</p>
+          <p class="warnbox" data-warning="no-claude-in-goose" hidden><strong>Goose uses your Claude subscription only if you also install Claude Code and an adapter from the terminal.</strong> It is simpler to use the Claude app with your subscription, or Goose with your key.</p>
         </div>
 
         <p>This table sums up the advice:</p>
@@ -205,7 +205,7 @@
             <thead><tr><th>If you have…</th><th>Use</th><th>Other option</th></tr></thead>
             <tbody>
               <tr><td>Claude Pro or Max</td><td>The Claude desktop app, Code section</td><td>If you also have ChatGPT, the ChatGPT app</td></tr>
-              <tr><td>ChatGPT</td><td>The ChatGPT desktop app, in Codex mode</td><td>Goose, which signs in with your ChatGPT account</td></tr>
+              <tr><td>ChatGPT</td><td>The ChatGPT desktop app, in Codex mode</td><td>Goose, which signs in with your ChatGPT Plus or Pro subscription</td></tr>
               <tr><td>Google AI Pro (Gemini)</td><td>Antigravity, from Google</td><td>Goose with a free Gemini key</td></tr>
               <tr><td>An OpenRouter key or another API key</td><td>Goose, free and open</td><td>The app from the company that makes your model</td></tr>
               <tr><td>Nothing yet</td><td>Antigravity, free with your Google account and a weekly limit</td><td>The ChatGPT app with a free account, if you see Codex mode when you open it</td></tr>
@@ -216,11 +216,11 @@
         <div class="apps no-js-only">
           <div class="app-info variant" data-app="claude">
             <p class="app-name"><b>The Claude desktop app</b>, from Anthropic, Code section</p>
-            <p>For Mac and Windows. You need a paid plan: Pro, Max, Team or Enterprise. The app has two sections that work with folders, Cowork and Code. This guide uses <strong>Code</strong>, because it reads the instructions and the skills (the recipes from step 6) inside your folder; Cowork only uses the skills that you upload to your account. Do not let the name scare you: you will not program. Download it at <a href="https://claude.ai/download">claude.ai/download</a>.</p>
+            <p>For Mac and Windows, and Linux in beta. You need a paid plan: Pro, Max, Team or Enterprise. The app has two sections that work with folders, Cowork and Code. This guide uses <strong>Code</strong>, because it reads the instructions and the skills (the recipes from step 6) inside your folder; Cowork only uses the skills that you upload to your account. Do not let the name scare you: you will not program. Download it at <a href="https://claude.ai/download">claude.ai/download</a>.</p>
           </div>
           <div class="app-info variant" data-app="codex">
             <p class="app-name"><b>The ChatGPT desktop app</b>, from OpenAI, in Codex mode</p>
-            <p>For Mac, Windows and Linux. Since July 2026, Codex lives inside the ChatGPT app: you choose it in the mode selector. Codex is the mode of the app that works with folders: you will not program. It works with the Plus, Pro, Business and Enterprise plans, and it is slowly reaching Free and Go. <strong>If your account is free and you do not see Codex, use Antigravity:</strong> it is free. Download it at <a href="https://openai.com/chatgpt/download/">openai.com/chatgpt/download</a>.</p>
+            <p>For Mac and Windows, and Linux in preview. Since July 2026, Codex lives inside the ChatGPT app: you choose it in the mode selector. Codex is the mode of the app that works with folders: you will not program. It works with every plan; on Free and Go it has less use and it is still reaching some accounts. <strong>If your account is free and you do not see Codex, use Antigravity:</strong> it is free. Download it at <a href="https://chatgpt.com/download/">chatgpt.com/download</a>.</p>
           </div>
           <div class="app-info variant" data-app="antigravity">
             <p class="app-name"><b>Antigravity</b>, from Google</p>
@@ -228,8 +228,8 @@
           </div>
           <div class="app-info variant" data-app="goose">
             <p class="app-name"><b>Goose</b>, open and free</p>
-            <p>For Mac, Windows and Linux. It is open source (anyone can read and reuse its code), and it works with almost any model: your ChatGPT account, a key from OpenRouter, Anthropic or Google, or a model that runs on your own computer. It cannot use a Claude subscription. Download it at <a href="https://goose-docs.ai">goose-docs.ai</a>.</p>
-            <p><strong>Before you start, change one setting:</strong> by default, Goose acts without asking for permission. In "Settings &gt; Chat &gt; Default Mode", choose "Manual" or "Smart Approval", so that it asks you before it touches your files.</p>
+            <p>For Mac, Windows and Linux. It is open source (anyone can read and reuse its code), and it works with almost any model: your ChatGPT Plus or Pro subscription, a key from OpenRouter, Anthropic or Google, or a model that runs on your own computer. With a Claude subscription it works only if you also install Claude Code from the terminal. Download it at <a href="https://goose-docs.ai">goose-docs.ai</a>.</p>
+            <p><strong>Before you start, change one setting:</strong> by default, Goose acts without asking for permission. In "Settings &gt; Chat &gt; Default Mode", choose "Manual" (its docs call it "Manual Approval") or "Smart", so that it asks you before it touches your files.</p>
           </div>
         </div>
 
@@ -239,7 +239,7 @@
             <p>A <strong>subscription</strong> (ChatGPT Plus, Claude Pro) is a monthly fee with a usage limit. An <strong>API key</strong> is a long password that gives access to a model, and you pay for what you use, cent by cent.</p>
             <p><a href="https://openrouter.ai">OpenRouter</a> is a service that gives you one key for hundreds of models from many companies, and some of them are free. It is the simplest way to try different models with Goose.</p>
             <p><strong>Be careful with free models:</strong> some use what you send them to improve. Do not send them personal or work data.</p>
-            <p>There are more open apps. OpenWork is very easy to install, but it is young and it still loses chats when it updates. Pi has many settings, but you use it from the terminal (the text window where you type commands); I will write a separate post about it.</p>
+            <p>There are more open apps. OpenWork is very easy to install, but it is young and it sometimes stops showing older chats after an update. Pi has many settings, but you use it from the terminal (the text window where you type commands); I will write a separate post about it.</p>
           </div>
         </details>
 
@@ -313,7 +313,7 @@
             <p>A file holds information. A <strong>text file</strong> holds only letters, with no hidden formatting, and any program can read it. A model loves it: it reads it just like you do. A Word document, on the other hand, holds much more than the text, and it is harder for a program to read.</p>
             <ul>
               <li><strong>Markdown (<code>.md</code>):</strong> text with a few simple marks. <code>#</code> is a title, <code>-</code> is a list item, <code>**word**</code> is bold. It is the best format for instructions and notes.</li>
-              <li><strong>CSV (<code>.csv</code>):</strong> a table written as text, with one row per line and the columns separated by commas. It opens in Excel or Google Sheets. It is the best format for logs that you want to add up or draw in a chart.</li>
+              <li><strong>CSV (<code>.csv</code>):</strong> a table written as text, with one row per line and the columns separated by commas. It opens in Google Sheets, or in Excel with "Data &gt; From Text/CSV". It is the best format for logs that you want to add up or draw in a chart.</li>
               <li><strong>JSON (<code>.json</code>):</strong> data with a fixed structure, such as <code>{"topic": 3, "status": "mastered"}</code>. It is the best format when a program, such as a script, must always read the data in the same way.</li>
             </ul>
             <p>A practical rule: start with Markdown. Move to CSV when you want to count or make charts.</p>
@@ -331,9 +331,9 @@
         <h2 id="step-3-open-the-folder"><a class="heading-anchor" href="#step-3-open-the-folder">Open the folder in your app and say hello</a></h2>
         <p>In this step you connect the app to the folder and check that the agent can see it. From here on, the agent does almost everything: you tell it what you want, and it creates the files.</p>
 
-        <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p>Open the Claude app and go to <strong>Code</strong>. Under the message box there is a folder selector (or the "+" button, "Add folder"): choose yours. Next to the message box is the permission mode: start with "Manual", which asks you before each change. The button names can change a little between versions.</p></div>
+        <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p>Open the Claude app and go to <strong>Code</strong>. Under the message box, choose "Local" in the first selector; then, in the folder selector, click "Open folder…" and choose yours. Next to the message box is the permission mode: start with "Manual", which asks you before each change. The button names can change a little between versions.</p></div>
         <div class="variant" data-app="codex"><p class="variant-label">ChatGPT</p><p>Open the ChatGPT app and choose <strong>Codex</strong> in the mode selector. Click "Add new project" and choose your folder. Leave the permission mode on "Ask for approval": it works inside your folder and asks you before it goes outside it.</p></div>
-        <div class="variant" data-app="antigravity"><p class="variant-label">Antigravity</p><p>Open the Antigravity app. Click the new project icon (a folder with a +), then "Add Folder", choose your folder and click "Create". If it asks where to work, choose "Local mode": your own folder. For permissions, start with "Request Review", which asks you before each action.</p></div>
+        <div class="variant" data-app="antigravity"><p class="variant-label">Antigravity</p><p>Open the Antigravity app. Click the new project icon (a folder with a +), then "Add Folder", choose your folder and click "Create". If it asks where to work, choose "Local mode": your own folder. For permissions, start with "Request Review", which asks you before each command and before it leaves your folder or uses the internet.</p></div>
         <div class="variant" data-app="goose"><p class="variant-label">Goose</p><p>Open Goose. In the bar at the bottom there is a folder selector: choose yours. Before you type, check the permission mode: in "Settings &gt; Chat &gt; Default Mode", choose "Manual", which asks you before it changes a file.</p></div>
 
         <p>Now write your first message:</p>
@@ -352,7 +352,7 @@
         </div>
         <p class="chat-who">The visor is the agent; the figure on the right is you.</p>
 
-        <p>Each app has a <strong>permission mode</strong>: it decides what the agent does on its own and what it asks you first. At the start, choose a mode that asks you before it changes files or runs programs. When it asks for permission, read what it wants to do and accept if it makes sense. For example, if it asks to create the file that you just asked for, accept. When you trust it, you can give it more freedom inside that folder.</p>
+        <p>Each app has a <strong>permission mode</strong>: it decides what the agent does on its own and what it asks you first. At the start, choose the most careful mode of your app (the one named above). Some ask you before every change; others change files inside your folder without asking, but ask you before they leave it, use the internet or run programs. When it asks for permission, read what it wants to do and accept if it makes sense. For example, if it asks to create the file that you just asked for, accept. When you trust it, you can give it more freedom inside that folder.</p>
 
         <p class="note" data-icon="!"><span><strong>If it does not see the folder</strong>, check that you chose the right folder and not the whole Desktop. On a Mac, the first time, the system asks if the app can access the Desktop: click "Allow". If you said no, go to "System Settings &gt; Privacy &amp; Security &gt; Files and Folders", and turn on your app.</span></p>
 
@@ -369,10 +369,10 @@
         <figure class="diagram context">
           <svg viewBox="0 0 720 330" role="img" aria-labelledby="context-title context-desc">
             <title id="context-title">What the model reads each time you write</title>
-            <desc id="context-desc">Five boxes appear one by one: the app's rules, the AGENTS.md file, the skill titles, the conversation so far and your new message. A bracket joins them and calls them "the context". An arrow takes the context to the model, and the model sends back an answer. The model does not know anything that is not in those boxes.</desc>
+            <desc id="context-desc">Five boxes appear one by one: the app's rules, the AGENTS.md file, the the name and description of each skill, the conversation so far and your new message. A bracket joins them and calls them "the context". An arrow takes the context to the model, and the model sends back an answer. The model does not know anything that is not in those boxes.</desc>
             <g class="ctx-box"><rect x="20" y="20" width="300" height="46" rx="12" class="box" /><rect x="36" y="38" width="10" height="10" rx="5" class="sw-soft" /><text x="56" y="40" class="label">The app's rules</text><text x="56" y="56" class="label-soft">"You can read and write files…"</text></g>
             <g class="ctx-box"><rect x="20" y="78" width="300" height="46" rx="12" class="box" /><rect x="36" y="96" width="10" height="10" rx="5" class="sw-agents" /><text x="56" y="98" class="label">AGENTS.md</text><text x="56" y="114" class="label-soft">"You are my personal tutor…"</text></g>
-            <g class="ctx-box"><rect x="20" y="136" width="300" height="46" rx="12" class="box" /><rect x="36" y="154" width="10" height="10" rx="5" class="sw-skills" /><text x="56" y="156" class="label">Skill titles</text><text x="56" y="172" class="label-soft">"practice-exam: makes an exam…"</text></g>
+            <g class="ctx-box"><rect x="20" y="136" width="300" height="46" rx="12" class="box" /><rect x="36" y="154" width="10" height="10" rx="5" class="sw-skills" /><text x="56" y="156" class="label">Skills: name and description</text><text x="56" y="172" class="label-soft">"practice-exam: makes an exam…"</text></g>
             <g class="ctx-box"><rect x="20" y="194" width="300" height="46" rx="12" class="box" /><rect x="36" y="212" width="10" height="10" rx="5" class="sw-soft" /><text x="56" y="214" class="label">The conversation</text><text x="56" y="230" class="label-soft">Everything you both said today</text></g>
             <g class="ctx-box"><rect x="20" y="252" width="300" height="46" rx="12" class="box-strong" /><rect x="36" y="270" width="10" height="10" rx="5" class="sw-teal" /><text x="56" y="272" class="label">Your message</text><text x="56" y="288" class="label-soft">"What should I review today?"</text></g>
             <path class="bracket wire-teal" d="M338 22 Q352 22 352 40 L352 140 Q352 159 368 159 Q352 159 352 178 L352 278 Q352 296 338 296" />
@@ -381,10 +381,10 @@
             <g class="ctx-model"><rect x="560" y="124" width="140" height="70" rx="16" class="box-strong" /><text x="630" y="155" text-anchor="middle" class="label">The model</text><text x="630" y="174" text-anchor="middle" class="label-soft">reads and answers</text></g>
             <g class="ctx-answer"><rect x="560" y="214" width="140" height="58" rx="14" class="bubble-agent" /><text x="630" y="239" text-anchor="middle" class="bubble-text">"Topic 2 today. It</text><text x="630" y="256" text-anchor="middle" class="bubble-text">has been 9 days…"</text></g>
           </svg>
-          <figcaption>The context is everything the model reads before it answers. AGENTS.md is always in it; of the skills, only the title is in it until a skill is needed.</figcaption>
+          <figcaption>The context is everything the model reads before it answers. AGENTS.md is always in it; of the skills, only the name and the description, until a skill is needed.</figcaption>
         </figure>
 
-        <p>(Skills are recipes for tasks that you repeat; you will see them in step 6.) That is why AGENTS.md is so powerful: it is in the context of every conversation. What you write there, the agent always keeps in mind. And it is an open standard: ChatGPT (Codex), Antigravity, Goose and many other apps read it, and Claude reads it with one helper line that you will see below. So you do not depend on any one app.</p>
+        <p>(Skills are recipes for tasks that you repeat; you will see them in step 6.) That is why AGENTS.md is so powerful: it is in the context of every conversation. What you write there, the agent always keeps in mind. And it is an open standard: Claude, ChatGPT (Codex), Antigravity, Goose and many other apps read it. So you do not depend on any one app.</p>
 
         <h3 id="your-agents-md"><a class="heading-anchor" href="#your-agents-md">Your AGENTS.md</a></h3>
         <p>This is the AGENTS.md for your example. Read it: it says who the agent is, what it does, where it keeps each thing, and a few rules. Change the details that are yours (your school year, your groups, your goal) and keep the structure.</p>
@@ -510,7 +510,7 @@ You speak to me in English, in a clear and orderly way.
 
 (paste the text here)</pre></div>
 
-        <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p class="note" data-icon="!"><span><strong>In Claude, also add a CLAUDE.md.</strong> Claude looks for its own file first, <code>CLAUDE.md</code>. Ask the agent: "Create a CLAUDE.md file that contains only the line <code>@AGENTS.md</code>". That line tells it to load your AGENTS.md too. So your instructions stay in one file, and the other apps ignore the CLAUDE.md.</span></p></div>
+        <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p class="note" data-icon="!"><span><strong>Claude reads the AGENTS.md too</strong> (since its September 2026 version), as long as there is no <code>CLAUDE.md</code> file. If your Claude does not read it, ask: "Create a CLAUDE.md file that contains only the line <code>@AGENTS.md</code>". That line tells it to load your AGENTS.md, and the other apps ignore the CLAUDE.md.</span></p></div>
 
         <p class="note" data-icon="!"><span><strong>If you create it by hand on Windows,</strong> make sure that it does not end in <code>.txt</code>: Windows hides the end of file names, and the agent would not find the file. Further down, in "I prefer to create it by hand", you can see how to avoid this.</span></p>
         <p>Now <strong>start a new conversation</strong>, because the app reads the AGENTS.md at the start. Ask:</p>
@@ -557,7 +557,7 @@ You speak to me in English, in a clear and orderly way.
           <li><span class="part part-data">data/subjects.md</span>: your subjects, their topics and the exam dates.</li>
           <li><span class="part part-data">data/progress.md</span>: a table with each topic, its status, the date of the last review and what you find hard.</li>
           <li><span class="part part-data">data/assignments.md</span>: each assignment, its due date and its status.</li>
-          <li><span class="part part-data">data/notes/</span>: save your notes here, as text or PDF. If they are photos, move them to the computer and save them here: the apps in this guide also read images.</li>
+          <li><span class="part part-data">data/notes/</span>: save your notes here, as text or PDF. If they are photos, move them to the computer and save them here: the apps in this guide also read images, if the model you use supports them.</li>
         </ul></div>
         <div class="variant" data-example="docente"><p class="variant-label">Teacher</p><ul>
           <li><span class="part part-data">data/groups.md</span>: each group, the current topic and what it finds hardest.</li>
@@ -567,7 +567,7 @@ You speak to me in English, in a clear and orderly way.
         <p class="note" data-icon="!"><span><strong>Grades are data about children.</strong> Before you save them, read your school's rules about AI tools. If you are not sure, save only how each group is doing, with no individual grades.</span></p></div>
         <div class="variant" data-example="salud"><p class="variant-label">Health</p><ul>
           <li><span class="part part-data">data/goal.md</span>: your goal, where you start from and the date.</li>
-          <li><span class="part part-data">data/log.csv</span>: one row per workout or meal.</li>
+          <li><span class="part part-data">data/log.csv</span>: one row per entry (a run takes two rows: km and minutes).</li>
           <li><span class="part part-data">data/routine.md</span>: your weekly routine.</li>
         </ul></div>
         <div class="variant" data-example="diario"><p class="variant-label">Journal</p><ul>
@@ -777,13 +777,13 @@ description: Prepares a call or a visit with a professional for the renovation, 
             <span data-msg="scripts:ok">There are scripts.</span>
             <span data-msg="scripts:optional">There are no scripts. They are optional.</span>
             <span data-msg="exports:ok">The <code>exports</code> folder has results.</span>
-            <span data-msg="exports:unknown">I see nothing in <code>exports</code>. If it exists and is empty, that is fine: the browser does not see empty folders.</span>
+            <span data-msg="exports:unknown">I see nothing in <code>exports</code>. If it exists and is empty, that is fine: this page does not see empty folders.</span>
           </div>
         </div>
 
         <p>You can also check it by hand, or ask the agent: "Check that the folder matches this list".</p>
         <ul>
-          <li>There is an <code>AGENTS.md</code> file at the root, with that exact name (and, in Claude, a <code>CLAUDE.md</code> with the line <code>@AGENTS.md</code>).</li>
+          <li>There is an <code>AGENTS.md</code> file at the root, with that exact name.</li>
           <li>The <code>data</code> folder has the files that the AGENTS.md names.</li>
           <li>Your app's skills folder has one folder per skill, each with its <code>SKILL.md</code>. On a Mac, press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>.</kbd> to see it.</li>
           <li>The <code>exports</code> folder exists. The <code>scripts</code> folder is optional.</li>
@@ -843,17 +843,17 @@ You speak to me in (language), (in what tone).
           <li><strong>What is in the folder goes to the model.</strong> To answer, the app sends parts of your files to the company that runs the model. Do not keep passwords there, or data about other people who have not given you permission.</li>
           <li><strong>If it is for work, ask first.</strong> Check if your company has rules about AI and a company account (for example Claude Team or ChatGPT Business). Do not save data about colleagues with their names: use codes, as the teacher example does.</li>
           <li><strong>It makes mistakes.</strong> Check the important things: a health figure, a building measurement, a student's grade.</li>
-          <li><strong>The apps have usage limits.</strong> With a free or cheap plan, you can reach the limit on a day of heavy use. Wait a few hours or change apps: the folder works in all of them.</li>
+          <li><strong>The apps have usage limits.</strong> With a free or cheap plan, you can reach the limit on a day of heavy use. Wait a few hours or change apps: the folder works in all of them. If you move to Claude, or away from Claude, ask the agent to copy the skills to the folder that the new app uses.</li>
           <li><strong>Make copies.</strong> If the folder is in Google Drive, OneDrive or Dropbox, you have a copy and you can open it on another computer. That also uploads your data to that service, and on a Mac the Desktop can be synced with iCloud without you knowing. If you know how to use <a class="term" href="#g-git">Git</a>, even better: it saves every change.</li>
           <li><strong>On two computers, one at a time.</strong> The folder travels, but the conversations and the app settings stay on each computer. Add the folder in the app on each one, work on only one at a time, and wait until it finishes syncing. If a "conflicted" file appears, ask the agent to merge the two.</li>
         </ul>
-        <p class="note" data-icon="?"><span><strong>And from your phone?</strong> Your agent lives on your computer, so your phone does not see it. There are workarounds: if you leave the computer on with the app open, Claude and Antigravity (with their "Remote Control") and ChatGPT (with Codex on the phone, iPhone only) let you continue the conversation from your phone. Goose does not. And if the folder is in Google Drive, you can open it on another computer. But the natural place for this agent is the computer.</span></p>
+        <p class="note" data-icon="?"><span><strong>And from your phone?</strong> Your agent lives on your computer, so your phone does not see it. There are workarounds: if you leave the computer on with the app open, Claude and Antigravity (with their "Remote Control") and ChatGPT (with Codex in the phone app, on iPhone or Android) let you continue the conversation from your phone. Goose does not. And if the folder is in Google Drive, you can open it on another computer. But the natural place for this agent is the computer.</span></p>
       </section>
 
       <!-- ============ Downloads ============ -->
       <section>
         <h2 id="download-the-examples"><a class="heading-anchor" href="#download-the-examples">Download the examples</a></h2>
-        <p>If you want to see how the folder looks at the end, or start from a ready-made one, download your example. Each one is a <code>.zip</code> file. On a Mac, double-click it to unzip it; on Windows, right-click it and choose "Extract All". Move the folder wherever you want and open it with your app (step 3). Each one comes with a little sample data, one skill, one script and one result; delete the sample data and add your own. On a Mac you will not see the folders that start with a dot (the skills) until you press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>.</kbd>.</p>
+        <p>If you want to see how the folder looks at the end, or start from a ready-made one, download your example. Each one is a <code>.zip</code> file. On a Mac, double-click it to unzip it; on Windows, right-click it and choose "Extract All"; inside there will be another folder with the same name: use that one, the one with the AGENTS.md. Move the folder wherever you want and open it with your app (step 3). Each one comes with a little sample data, one skill, one script and one result; delete the sample data and add your own. On a Mac you will not see the folders that start with a dot (the skills) until you press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>.</kbd>.</p>
         <ul class="downloads">
           <li><a href="examples/my-study-tutor.zip" download><b>Student</b><span>my-study-tutor</span></a></li>
           <li><a href="examples/my-class-helper.zip" download><b>Teacher</b><span>my-class-helper</span></a></li>
@@ -882,7 +882,7 @@ You speak to me in (language), (in what tone).
           <dt id="g-agents-md">AGENTS.md</dt>
           <dd data-related="g-context g-folder g-skill">A text file with the agent's instructions, at the root of its folder. It is an open standard that almost every app reads.</dd>
           <dt id="g-context">Context</dt>
-          <dd data-related="g-model g-agents-md g-skill">Everything the model reads before it answers: the app's rules, the AGENTS.md, the skill titles, the conversation and your message. The model does not know anything that is not in the context.</dd>
+          <dd data-related="g-model g-agents-md g-skill">Everything the model reads before it answers: the app's rules, the AGENTS.md, the the name and description of each skill, the conversation and your message. The model does not know anything that is not in the context.</dd>
           <dt id="g-skill">Skill</dt>
           <dd data-related="g-context g-agents-md g-script">A recipe for a task that you repeat: a folder with a SKILL.md file (name, description and steps). The agent only reads the description until it needs the skill.</dd>
           <dt id="g-script">Script</dt>
@@ -890,7 +890,7 @@ You speak to me in (language), (in what tone).
           <dt id="g-api-key">API key</dt>
           <dd data-related="g-subscription g-model">A long password that gives access to a model from any app. You pay for what you use, instead of a monthly fee. OpenRouter gives one key for hundreds of models.</dd>
           <dt id="g-subscription">Subscription</dt>
-          <dd data-related="g-api-key g-app">A monthly fee, such as ChatGPT Plus or Claude Pro, with a usage limit. It only works in that company's apps.</dd>
+          <dd data-related="g-api-key g-app">A monthly fee, such as ChatGPT Plus or Claude Pro, with a usage limit. It almost always works only in that company's apps; Goose can sign in with ChatGPT Plus or Pro.</dd>
           <dt id="g-git">Git</dt>
           <dd data-related="g-folder g-file">A program that saves the history of every change in a folder, so that you can go back. The history also keeps the data, so treat it with the same care.</dd>
           <dt id="g-tool">Tool</dt>
@@ -904,7 +904,7 @@ You speak to me in (language), (in what tone).
         <div class="for-ai">
           <p>This section is for the AI assistant that a person has given this page to. People can skip it.</p>
           <ul>
-            <li><strong>What this is:</strong> a tutorial for people with no technical knowledge. At the end they have a folder that is an agent: <code>AGENTS.md</code> (instructions), <code>data/</code> (memory), a skills folder (<code>.agents/skills/</code>, or <code>.claude/skills/</code> in Claude) with one <code>SKILL.md</code> per skill, <code>scripts/</code> (optional) and <code>exports/</code> (results). In Claude, also a <code>CLAUDE.md</code> with the line <code>@AGENTS.md</code>.</li>
+            <li><strong>What this is:</strong> a tutorial for people with no technical knowledge. At the end they have a folder that is an agent: <code>AGENTS.md</code> (instructions), <code>data/</code> (memory), a skills folder (<code>.agents/skills/</code>, or <code>.claude/skills/</code> in Claude) with one <code>SKILL.md</code> per skill, <code>scripts/</code> (optional) and <code>exports/</code> (results). If Claude does not read the AGENTS.md, a <code>CLAUDE.md</code> with the line <code>@AGENTS.md</code> fixes it.</li>
             <li><strong>Where the person is:</strong> the page address can carry <code>?app=</code> (<code>claude</code> is the Code section of the Claude app; <code>codex</code>, the Codex mode of the ChatGPT desktop app; <code>antigravity</code>; or <code>goose</code>) and <code>?example=</code> (<code>estudiante</code> for student, <code>docente</code> for teacher, <code>salud</code> for health, <code>diario</code> for journal, or <code>reforma</code> for renovation). Follow only that variant. The steps go from 1 (choose an app) to 8 (exports); ask the person which step they are on.</li>
             <li><strong>How to help:</strong> short sentences, one instruction at a time, no jargon. Do not assume that they know how to use the terminal. If a file fails, the most likely cause is the name (<code>AGENTS.md.txt</code>, lower case) or a hidden folder that they cannot see.</li>
             <li><strong>The full examples</strong> are in the "Download the examples" section of this page.</li>
