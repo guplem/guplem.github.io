@@ -14,7 +14,7 @@ Luego escribe: "Hazme el resumen de esta semana."
 ## Qué hay dentro
 - AGENTS.md: las instrucciones. CLAUDE.md solo apunta a ellas.
 - datos/: tu objetivo, tu rutina y el registro de entrenos y comidas.
-- .agents/skills/ y .claude/skills/: la receta del resumen semanal (la misma, para todas las apps).
+- .agents/skills/ y .claude/skills/: la skill del resumen semanal (la misma, para todas las apps).
 - scripts/resumen.py: suma los últimos 7 días (necesita Python 3).
 - exportaciones/: los resúmenes que te entrega el agente.
 

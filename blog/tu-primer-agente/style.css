@@ -1280,6 +1280,54 @@ body:not(.js-ready) .js-only {
 @keyframes cf-answer { 0%, 61% { opacity: 0; transform: translateY(6px); } 65%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
 @keyframes cf-lost { 0%, 71% { opacity: 0; } 75%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
 
+/* Drawing 4, "with a folder, what matters carries from one chat to the next".
+   One 24 s cycle, the same marks as drawing 3. Chat 1: two messages, and the
+   agent writes one line into the file (2-15%). Chat 2: the agent reads the
+   file into a clean context, then two messages (18-29%). Chat 3: it reads the
+   file, 17 messages fill the bar (33-52%), and the app compacts them: a cover
+   spreads (61%), the messages vanish under it, and it shrinks to one small
+   "summary" piece (64-70%). The agent reads the file again and answers
+   (76-83%), then the closing line shows (86%). It holds, then clears
+   (96-99%). The chat 3 messages keep their offsets; their group (.cy-old)
+   shows them only between 33% and 62%, so no message from the last cycle
+   lingers. */
+.diagram .piece { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+.carry .cy-a { animation: cy-a 24s infinite; }
+.carry .cy-b { animation: cy-b 24s infinite; }
+.carry .cy-write { animation: cy-write 24s infinite; }
+.carry .cy-line { animation: cy-line 24s infinite; }
+.carry .cy-read2 { animation: cy-read2 24s infinite; }
+.carry .cy-p2 { animation: cy-p2 24s infinite; }
+.carry .cy-c { animation: cy-c 24s infinite; }
+.carry .cy-d { animation: cy-d 24s infinite; }
+.carry .cy-read3 { animation: cy-read3 24s infinite; }
+.carry .cy-sum { animation: cy-sum 24s infinite; }
+.carry .cy-p4 { animation: cy-p4 24s infinite; }
+.carry .cy-e { animation: cy-e 24s infinite; }
+.carry .cy-end { animation: cy-end 24s infinite; }
+.carry .cy-blocks rect { animation: cy-block 24s infinite backwards; }
+.carry .cy-old { animation: cy-old 24s infinite; }
+.carry .cy-squash { transform-box: fill-box; transform-origin: left center; animation: cy-squash 24s infinite; }
+.carry .cy-sumall { animation: cy-sumall 24s infinite; }
+
+@keyframes cy-a { 0%, 2% { opacity: 0; transform: translateY(4px); } 5%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cy-b { 0%, 5% { opacity: 0; transform: translateY(4px); } 8%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cy-write { 0%, 9% { opacity: 0; } 12%, 96% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cy-line { 0%, 12% { opacity: 0; transform: translateY(4px); } 15%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cy-read2 { 0%, 18% { opacity: 0; } 21%, 96% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cy-p2 { 0%, 20% { opacity: 0; transform: translateY(4px); } 23%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cy-c { 0%, 23% { opacity: 0; transform: translateY(4px); } 26%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cy-d { 0%, 26% { opacity: 0; transform: translateY(4px); } 29%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cy-read3 { 0%, 33% { opacity: 0; } 36%, 96% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cy-sum { 0%, 71% { opacity: 0; } 74%, 96% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cy-p4 { 0%, 76% { opacity: 0; transform: translateY(4px); } 79%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cy-e { 0%, 80% { opacity: 0; transform: translateY(4px); } 83%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cy-end { 0%, 86% { opacity: 0; transform: translateY(4px); } 89%, 96% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cy-block { 0%, 37% { opacity: 0; } 38%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cy-old { 0%, 32% { opacity: 0; } 33%, 62% { opacity: 1; } 65%, 100% { opacity: 0; } }
+@keyframes cy-squash { 0%, 58% { opacity: 0; transform: none; } 61%, 64% { opacity: 1; transform: none; } 70%, 96% { opacity: 1; transform: scaleX(0.2); } 99%, 100% { opacity: 0; transform: scaleX(0.2); } }
+@keyframes cy-sumall { 0%, 60% { opacity: 0; } 62%, 66% { opacity: 1; } 68%, 100% { opacity: 0; } }
+
 /* Drawing 2, "what the model reads". One 10 s cycle. The five boxes appear
    one by one (0-35%), the bracket draws (35-48%), the word "context" and the
    arrow show (48-56%), the model box lights (56-62%), and the answer arrives
@@ -1327,6 +1375,7 @@ body:not(.js-ready) .js-only {
 @media (prefers-reduced-motion: reduce) {
   .forget *,
   .ctxfill *,
+  .carry *,
   .context *,
   .visor-eyes ellipse {
     animation: none !important;
@@ -1339,6 +1388,9 @@ body:not(.js-ready) .js-only {
   .ctxfill .cf-full,
   .ctxfill .cf-sumall { opacity: 0 !important; }
   .ctxfill .cf-squash { transform: scaleX(0.2) !important; }
+  .carry .cy-old,
+  .carry .cy-sumall { opacity: 0 !important; }
+  .carry .cy-squash { transform: scaleX(0.2) !important; }
 }
 
 /* === Contents ===

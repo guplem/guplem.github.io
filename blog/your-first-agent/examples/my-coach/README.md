@@ -14,7 +14,7 @@ Then type: "Make me the summary of this week."
 ## What is inside
 - AGENTS.md: the instructions. CLAUDE.md only points to them.
 - data/: your goal, your routine and the log of workouts and meals.
-- .agents/skills/ and .claude/skills/: the weekly summary recipe (the same one, for all apps).
+- .agents/skills/ and .claude/skills/: the weekly summary skill (the same one, for all apps).
 - scripts/summary.py: adds up the last 7 days (needs Python 3).
 - exports/: the summaries that the agent gives you.
 

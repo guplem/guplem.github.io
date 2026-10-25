@@ -14,7 +14,7 @@ Then write: "Who are you and what can you do?"
 ## What is inside
 - AGENTS.md: the instructions. CLAUDE.md only points to them.
 - data/: the memory (the entries of each day and the themes).
-- .agents/skills/ and .claude/skills/: the close-the-day recipe.
+- .agents/skills/ and .claude/skills/: the close-the-day skill.
 - scripts/mood.py: counts the days of each mood per month (needs Python 3).
 - exports/: an example summary.
 
