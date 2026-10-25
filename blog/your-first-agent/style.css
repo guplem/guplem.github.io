@@ -1,0 +1,8 @@
+/* "Your first agent" shares the look of its Spanish twin, "Tu primer agente"
+   (blog/AGENTS.md: a post in two languages is two posts). */
+@import url("../tu-primer-agente/style.css");
+
+:root {
+  --scroll-track: var(--paper);
+  --scroll-thumb: #c3cdca;
+}

@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../../resources/images/webicon.webp" />
+    <title>Your first AI agent lives in a folder · Guillem Poy</title>
+    <!-- The generators read this head (scripts/blogPosts.js): og:title is the
+         post's title, description its summary, article:published_time its date.
+         Change them here and run the generators; nothing else lists this post.
+         The Spanish version is ../tu-primer-agente/; keep the two in step. -->
+    <meta name="description" content="A step-by-step guide, with no coding, from the ChatGPT chat to your own agent: a folder with instructions (AGENTS.md), memory and recipes. For Claude, ChatGPT, Antigravity and Goose." />
+    <link rel="canonical" href="https://triunitystudios.com/blog/your-first-agent/" />
+    <link rel="alternate" hreflang="es" href="https://triunitystudios.com/blog/tu-primer-agente/" />
+    <link rel="alternate" hreflang="en" href="https://triunitystudios.com/blog/your-first-agent/" />
+    <link rel="alternate" type="application/atom+xml" title="Guillem Poy · Blog" href="../feed.xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:title" content="Your first AI agent lives in a folder" />
+    <meta property="og:description" content="A step-by-step guide, with no coding, to go from a chat to your own agent: a folder on your computer with instructions, memory and recipes." />
+    <meta property="og:url" content="https://triunitystudios.com/blog/your-first-agent/" />
+    <meta property="article:published_time" content="2026-10-25T14:00:00Z" />
+    <meta property="article:author" content="Guillem Poy" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Your first AI agent lives in a folder",
+        "description": "A step-by-step guide, with no coding, from the ChatGPT chat to your own agent: a folder with instructions (AGENTS.md), memory and recipes. For Claude, ChatGPT, Antigravity and Goose.",
+        "datePublished": "2026-10-25T14:00:00Z",
+        "inLanguage": "en",
+        "author": { "@type": "Person", "name": "Guillem Poy", "url": "https://triunitystudios.com/" },
+        "mainEntityOfPage": "https://triunitystudios.com/blog/your-first-agent/"
+      }
+    </script>
+
+    <link rel="preload" href="../../resources/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../../resources/fonts/PlusJakartaSans-Latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../../css/global/fonts.css" />
+    <link rel="stylesheet" href="../../css/global/variables.css" />
+    <link rel="stylesheet" href="../../css/global/base.css" />
+    <link rel="stylesheet" href="../blog.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      // The reader's light or dark choice, applied before the page paints so it never flashes.
+      try { const theme = localStorage.getItem("agent-tutorial-theme"); if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme; } catch (error) {}
+    </script>
+  </head>
+
+  <body class="agente" data-example-param="example" data-copy-label="Copy" data-copied-label="Copied">
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <radialGradient id="visor-fill" cx="50%" cy="22%" r="72%"><stop offset="0" stop-color="#1c252d" /><stop offset="1" stop-color="#000102" /></radialGradient>
+      </defs>
+    </svg>
+
+    <div class="topbar">
+      <a class="back-link" href="../">← Blog</a>
+      <div class="topbar-tools">
+        <a class="lang-link" href="../tu-primer-agente/" hreflang="es" lang="es">Español</a>
+        <div class="theme-switch js-only" role="group" aria-label="Theme">
+          <button type="button" data-theme-choice="system" aria-pressed="true">System</button>
+          <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+          <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+        </div>
+        <a class="feed-link" href="../feed.xml">Feed (Atom)</a>
+      </div>
+    </div>
+
+    <article class="post">
+      <header class="post-header">
+        <p class="post-kicker">Tutorial · from zero, no coding</p>
+        <h1>Your first AI agent lives in a folder</h1>
+        <p class="post-standfirst">This guide is for you if you use ChatGPT in the browser, copy and paste a lot, and every chat starts from zero. Step by step, you will build your own agent: a folder on your computer with its instructions, its memory and its recipes.</p>
+        <p class="post-byline">
+          <a href="../../">Guillem Poy</a>
+          <time datetime="2026-10-25">25 October 2026</time>
+          <span>15 minute read; an hour if you build it as you go</span>
+        </p>
+      </header>
+
+      <p class="short-version-lead"><strong>The short version</strong>, if you only have a minute:</p>
+      <ul class="short-version">
+        <li><strong>A chat forgets; a folder remembers.</strong> If the agent saves what it learns in files in a folder, it still knows it tomorrow.</li>
+        <li><strong>You need three things:</strong> a desktop app (Claude, ChatGPT, Antigravity or Goose), a folder, and a file of instructions called <code>AGENTS.md</code>.</li>
+        <li><strong>What you learn works in every app.</strong> <code>AGENTS.md</code> and skills are standards. If you change apps, your agent is still yours.</li>
+        <li><strong>At the end you will have an agent that works,</strong> built from one of five examples: student, teacher, health, journal or a home renovation.</li>
+      </ul>
+
+      <details class="toc" id="contents">
+        <summary>Contents and progress</summary>
+        <nav aria-label="Contents">
+          <ol>
+            <li><a href="#from-chat-to-agent">From chat to agent<span class="toc-state" data-state="example"></span></a></li>
+            <li><a href="#step-1-choose-your-app" data-step-link="paso-1">1. Choose your app<span class="toc-state" data-state="app"></span></a></li>
+            <li><a href="#step-2-create-the-folder" data-step-link="paso-2">2. Create the folder</a></li>
+            <li><a href="#step-3-open-the-folder" data-step-link="paso-3">3. Open the folder and say hello</a></li>
+            <li><a href="#step-4-instructions" data-step-link="paso-4">4. The instructions: AGENTS.md</a></li>
+            <li><a href="#step-5-memory" data-step-link="paso-5">5. The memory: data</a></li>
+            <li><a href="#step-6-skills" data-step-link="paso-6">6. The recipes: skills</a></li>
+            <li><a href="#step-7-scripts" data-step-link="paso-7">7. The tools: scripts</a></li>
+            <li><a href="#step-8-exports" data-step-link="paso-8">8. The results: exports</a></li>
+            <li><a href="#check-your-agent" data-step-link="comprueba">Check your agent</a></li>
+            <li><a href="#adapt-it-to-your-case">Adapt it to your case</a></li>
+            <li><a href="#use-it-every-day">Use it every day</a></li>
+            <li><a href="#limits-and-warnings">Limits and warnings</a></li>
+            <li><a href="#download-the-examples">Download the examples</a></li>
+            <li><a href="#glossary">Glossary</a></li>
+            <li><a href="#for-ai-assistants">If you are an AI</a></li>
+          </ol>
+        </nav>
+      </details>
+      <a class="toc-jump" href="#contents">&uarr; Contents</a>
+
+      <!-- ============ From chat to agent ============ -->
+      <section>
+        <h2 id="from-chat-to-agent"><a class="heading-anchor" href="#from-chat-to-agent">From chat to agent</a></h2>
+        <p>This section explains what you will build and why it is worth it. You do not need to install anything yet.</p>
+        <p>When you use ChatGPT, Claude or Gemini in the browser, three things happen:</p>
+        <ul>
+          <li><strong>Every chat starts almost from zero.</strong> Some apps remember a little, but you do not decide what. You explain again who you are and what you want.</li>
+          <li><strong>You are the messenger.</strong> You copy text from your files, paste it in the chat, copy the answer and paste it somewhere else.</li>
+          <li><strong>It cannot touch your files.</strong> It cannot open your notes, add your workout to a table, or save a PDF on your computer.</li>
+        </ul>
+        <p>An <a class="term" href="#g-agent">agent</a> fixes all three. It is an AI <a class="term" href="#g-model">model</a> (the "brain" that understands and writes text) that can also act, not only talk: read files, write them, and follow several steps on its own. To act, it needs an <a class="term" href="#g-app">app</a> on your computer that gives it those hands, and a <a class="term" href="#g-folder">folder</a> to work in.</p>
+
+        <figure class="diagram forget">
+          <svg viewBox="0 0 720 300" role="img" aria-labelledby="forget-title forget-desc">
+            <title id="forget-title">A chat forgets, a folder remembers</title>
+            <desc id="forget-desc">Two columns. On the left, "A chat in the browser": three messages appear and, when the chat closes, they disappear; the next day the chat is empty. On the right, "An agent in a folder": the same three messages appear and each one leaves a line in a file in the folder, for example in data/progress.md; the next day the lines are still there and the agent reads them again.</desc>
+            <text x="180" y="26" text-anchor="middle" class="label">A chat in the browser</text>
+            <rect x="40" y="40" width="280" height="200" rx="14" class="box" />
+            <g class="msg-a"><rect x="60" y="58" width="200" height="30" rx="15" class="bubble-person" /><text x="160" y="78" text-anchor="middle" class="bubble-text-person">I'm in my last school year</text></g>
+            <g class="msg-b"><rect x="100" y="100" width="200" height="30" rx="15" class="bubble-agent" /><text x="200" y="120" text-anchor="middle" class="bubble-text">Got it. Which topic?</text></g>
+            <g class="msg-c"><rect x="60" y="142" width="200" height="30" rx="15" class="bubble-person" /><text x="160" y="162" text-anchor="middle" class="bubble-text-person">I know topic 3 well now</text></g>
+            <g class="next-day"><text x="180" y="206" text-anchor="middle" class="label-soft">The next day: an empty chat.</text><text x="180" y="224" text-anchor="middle" class="label-soft">You start again.</text></g>
+            <text x="540" y="26" text-anchor="middle" class="label">An agent in a folder</text>
+            <rect x="400" y="40" width="280" height="122" rx="14" class="box" />
+            <g class="keep-a"><rect x="420" y="54" width="200" height="28" rx="14" class="bubble-person" /><text x="520" y="73" text-anchor="middle" class="bubble-text-person">I'm in my last school year</text></g>
+            <g class="keep-b"><rect x="460" y="88" width="200" height="28" rx="14" class="bubble-agent" /><text x="560" y="107" text-anchor="middle" class="bubble-text">Got it. Which topic?</text></g>
+            <g class="keep-c"><rect x="420" y="122" width="200" height="28" rx="14" class="bubble-person" /><text x="520" y="141" text-anchor="middle" class="bubble-text-person">I know topic 3 well now</text></g>
+            <rect x="400" y="172" width="280" height="96" rx="14" class="box-strong" />
+            <text x="416" y="194" class="label-on-teal">data/progress.md</text>
+            <g class="note-line"><rect x="416" y="206" width="8" height="8" rx="4" class="sw-data" /><text x="432" y="214" class="bubble-text">Year: last year of high school</text></g>
+            <g class="note-line note-line-3"><rect x="416" y="226" width="8" height="8" rx="4" class="sw-data" /><text x="432" y="234" class="bubble-text">Topic 3: mastered</text></g>
+            <g class="next-day"><text x="540" y="290" text-anchor="middle" class="label-soft">The next day: it reads them and goes on from there.</text></g>
+          </svg>
+          <figcaption>A chat forgets when it closes. An agent writes the important things in files in its folder, and the next day it reads them again.</figcaption>
+        </figure>
+
+        <p>So the agent you will build has three parts:</p>
+        <ul>
+          <li><strong>The model, the brain.</strong> A company (Anthropic, OpenAI, Google) or an open project makes it. It does not live on your computer: it is on the internet.</li>
+          <li><strong>The app, the hands.</strong> A desktop program that connects the model to your computer. It lets the model read and write files, and it asks you for permission first.</li>
+          <li><strong>The folder, the home and the memory.</strong> It holds the agent's instructions, what it must remember and what it gives you. It is yours, and you can always open it.</li>
+        </ul>
+
+        <details class="more">
+          <summary>What exactly is a model (LLM)?</summary>
+          <div>
+            <p>A <em>large language model</em> (LLM) is a program trained on a huge amount of text. Given some text, it works out the most likely next words, one word at a time. That is how it writes its answers.</p>
+            <p>The important part for this guide: the model only knows what it learned in training and what you give it in each message. It remembers nothing by itself. That is why the folder is so useful.</p>
+            <p>To read more: <a href="https://en.wikipedia.org/wiki/Large_language_model">Large language model, on Wikipedia</a>.</p>
+          </div>
+        </details>
+
+        <h3 id="choose-your-example"><a class="heading-anchor" href="#choose-your-example">Choose your example</a></h3>
+        <p>The guide is the same for everyone. Only what the agent knows how to do changes. Choose the example that is closest to your case; later you can adapt it to anything.</p>
+        <ul class="choice-grid" data-choice="example">
+          <li><button type="button" class="choice" data-example="estudiante" aria-pressed="false"><b>Student</b><span>A tutor that asks you exam questions, remembers what you already know and keeps track of your assignments.</span></button></li>
+          <li><button type="button" class="choice" data-example="docente" aria-pressed="false"><b>Teacher</b><span>A helper that makes worksheets and keeps track of how each class group is doing.</span></button></li>
+          <li><button type="button" class="choice" data-example="salud" aria-pressed="false"><b>Health and fitness</b><span>A coach that logs your workouts and meals and tells you how close you are to your goal.</span></button></li>
+          <li><button type="button" class="choice" data-example="diario" aria-pressed="false"><b>Journal</b><span>A journal that saves each day and helps you see what repeats.</span></button></li>
+          <li><button type="button" class="choice" data-example="reforma" aria-pressed="false"><b>Home renovation</b><span>A project manager for your bathroom or kitchen: steps, contacts and budget.</span></button></li>
+        </ul>
+        <p class="no-js-only"><em>Without JavaScript you will see all five examples in each step, each with its name. Follow only yours.</em></p>
+      </section>
+
+      <!-- ============ Step 1 ============ -->
+      <section>
+        <p class="step-label">Step 1 of 8</p>
+        <h2 id="step-1-choose-your-app"><a class="heading-anchor" href="#step-1-choose-your-app">Choose your app</a></h2>
+        <p>In this step you choose and install the program that connects the model to your folder. Here I just call it "the app". If you see the word elsewhere, its technical name is a <a class="term" href="#g-app">harness</a>: the part that wraps the model and gives it tools.</p>
+        <p class="note" data-icon="i"><span><strong>You need a computer</strong> (Windows or Mac), not a phone: the agent works with the files on your computer.</span></p>
+        <p>Each app works with some accounts and not with others. So the best app for you depends on what you already pay for. Mark what you have:</p>
+
+        <div class="picker js-only" data-picker data-label-best="Recommended for you" data-label-other="Also works for you" data-label-use="Use this one" data-label-chosen="Chosen ✓">
+          <div class="chips" role="group" aria-label="What you already have">
+            <button type="button" class="chip" data-sub="chatgpt" aria-pressed="false">ChatGPT (free or paid)</button>
+            <button type="button" class="chip" data-sub="claude" aria-pressed="false">Claude Pro or Max</button>
+            <button type="button" class="chip" data-sub="gemini" aria-pressed="false">Google AI Pro (Gemini)</button>
+            <button type="button" class="chip" data-sub="api" aria-pressed="false">An OpenRouter key or another API key</button>
+            <button type="button" class="chip" data-sub="none" aria-pressed="false">Nothing yet</button>
+          </div>
+          <div class="picker-result" aria-live="polite"></div>
+          <p class="warnbox" data-warning="no-app-uses-both" hidden><strong>No app uses your ChatGPT account and your Claude account at the same time.</strong> That is fine: the folder you will create works with both. You can open it in one app today and in the other one tomorrow.</p>
+          <p class="warnbox" data-warning="made-for-code" hidden><strong>Antigravity was made for programming.</strong> You will see some programmer words. Do not worry: the agent works just as well with your documents.</p>
+          <p class="warnbox" data-warning="no-claude-in-goose" hidden><strong>Goose cannot use your Claude subscription:</strong> Anthropic does not allow other apps to use it. In Goose you will use your key; to use your Claude subscription, choose the Claude app.</p>
+        </div>
+
+        <p>This table sums up the advice:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>If you have…</th><th>Use</th><th>Other option</th></tr></thead>
+            <tbody>
+              <tr><td>Claude Pro or Max</td><td>The Claude desktop app, Code section</td><td>If you also have ChatGPT, the ChatGPT app</td></tr>
+              <tr><td>ChatGPT</td><td>The ChatGPT desktop app, in Codex mode</td><td>Goose, which signs in with your ChatGPT account</td></tr>
+              <tr><td>Google AI Pro (Gemini)</td><td>Antigravity, from Google</td><td>Goose with a free Gemini key</td></tr>
+              <tr><td>An OpenRouter key or another API key</td><td>Goose, free and open</td><td>The app from the company that makes your model</td></tr>
+              <tr><td>Nothing yet</td><td>Antigravity, free with your Google account and a weekly limit</td><td>The ChatGPT app with a free account, if you see Codex mode when you open it</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="apps no-js-only">
+          <div class="app-info variant" data-app="claude">
+            <p class="app-name"><b>The Claude desktop app</b>, from Anthropic, Code section</p>
+            <p>For Mac and Windows. You need a paid plan: Pro, Max, Team or Enterprise. The app has two sections that work with folders, Cowork and Code. This guide uses <strong>Code</strong>, because it reads the instructions and the skills (the recipes from step 6) inside your folder; Cowork only uses the skills that you upload to your account. Do not let the name scare you: you will not program. Download it at <a href="https://claude.ai/download">claude.ai/download</a>.</p>
+          </div>
+          <div class="app-info variant" data-app="codex">
+            <p class="app-name"><b>The ChatGPT desktop app</b>, from OpenAI, in Codex mode</p>
+            <p>For Mac, Windows and Linux. Since July 2026, Codex lives inside the ChatGPT app: you choose it in the mode selector. Codex is the mode of the app that works with folders: you will not program. It works with the Plus, Pro, Business and Enterprise plans, and it is slowly reaching Free and Go. <strong>If your account is free and you do not see Codex, use Antigravity:</strong> it is free. Download it at <a href="https://openai.com/chatgpt/download/">openai.com/chatgpt/download</a>.</p>
+          </div>
+          <div class="app-info variant" data-app="antigravity">
+            <p class="app-name"><b>Antigravity</b>, from Google</p>
+            <p>For Mac, Windows and Linux. Free for personal use, with a weekly limit; with Google AI Pro or Ultra you get more use. Install the Antigravity app from <a href="https://antigravity.google/download">antigravity.google/download</a>.</p>
+          </div>
+          <div class="app-info variant" data-app="goose">
+            <p class="app-name"><b>Goose</b>, open and free</p>
+            <p>For Mac, Windows and Linux. It is open source (anyone can read and reuse its code), and it works with almost any model: your ChatGPT account, a key from OpenRouter, Anthropic or Google, or a model that runs on your own computer. It cannot use a Claude subscription. Download it at <a href="https://goose-docs.ai">goose-docs.ai</a>.</p>
+            <p><strong>Before you start, change one setting:</strong> by default, Goose acts without asking for permission. In "Settings &gt; Chat &gt; Default Mode", choose "Manual" or "Smart Approval", so that it asks you before it touches your files.</p>
+          </div>
+        </div>
+
+        <details class="more">
+          <summary>What is an API key? (if you do not have one, you do not need one)</summary>
+          <div>
+            <p>A <strong>subscription</strong> (ChatGPT Plus, Claude Pro) is a monthly fee with a usage limit. An <strong>API key</strong> is a long password that gives access to a model, and you pay for what you use, cent by cent.</p>
+            <p><a href="https://openrouter.ai">OpenRouter</a> is a service that gives you one key for hundreds of models from many companies, and some of them are free. It is the simplest way to try different models with Goose.</p>
+            <p><strong>Be careful with free models:</strong> some use what you send them to improve. Do not send them personal or work data.</p>
+            <p>There are more open apps. OpenWork is very easy to install, but it is young and it still loses chats when it updates. Pi has many settings, but you use it from the terminal (the text window where you type commands); I will write a separate post about it.</p>
+          </div>
+        </details>
+
+        <label class="done-check js-only"><input type="checkbox" data-done="paso-1" /> I have installed the app</label>
+      </section>
+
+      <!-- ============ Step 2 ============ -->
+      <section>
+        <p class="step-label">Step 2 of 8</p>
+        <h2 id="step-2-create-the-folder"><a class="heading-anchor" href="#step-2-create-the-folder">Create the folder</a></h2>
+        <p>In this step you create the agent's home. A <a class="term" href="#g-folder">folder</a> is a container on your computer that holds <a class="term" href="#g-file">files</a>. A file is a document with a name, and its ending (<code>.md</code>, <code>.csv</code>, <code>.pdf</code>) tells you what kind of content it holds.</p>
+        <p>The agent only sees what is inside its folder. That is good: you decide what it knows and what it does not. But remember that it sends what it reads to the model, on the internet, so that it can answer. Do not put anything in the folder that you would not tell that company.</p>
+        <ol>
+          <li><strong>Create a folder on the Desktop</strong> (or in Documents, if you prefer). On a Mac: right-click on the Desktop, "New Folder". On Windows: right-click, "New", "Folder".</li>
+          <li><strong>Give it a name with no spaces and no accents,</strong> for example:
+            <span class="variant" data-example="estudiante"><span class="variant-label">Student</span> <code>my-study-tutor</code></span>
+            <span class="variant" data-example="docente"><span class="variant-label">Teacher</span> <code>my-class-helper</code></span>
+            <span class="variant" data-example="salud"><span class="variant-label">Health</span> <code>my-coach</code></span>
+            <span class="variant" data-example="diario"><span class="variant-label">Journal</span> <code>my-journal</code></span>
+            <span class="variant" data-example="reforma"><span class="variant-label">Renovation</span> <code>bathroom-renovation</code></span>
+            . Simple names avoid problems with some apps.</li>
+          <li><strong>Inside it, create two folders:</strong> <span class="part part-data">data</span> and <span class="part part-exports">exports</span>. The agent will create the rest later.</li>
+        </ol>
+        <p>When you finish the guide, the folder will have these parts. Each one has a colour, the same everywhere on this page. Tap a part to see what it is for and who reads it.</p>
+
+        <div class="explorer" data-explorer>
+          <div class="explorer-head">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10.5H3z" /></svg>
+            <span>Desktop › <span data-folder-name>my-study-tutor</span></span>
+          </div>
+          <div class="explorer-body">
+            <ul class="tree">
+              <li class="tree-item" style="--c: var(--f-agents)" data-part="agents">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6 2.5h8l5 5v14H6z" fill="currentColor" fill-opacity=".14" /><path d="M14 2.5v5h5" /></svg>
+                <span class="tree-name">AGENTS.md<small>the instructions</small></span>
+                <span class="tree-desc">Who the agent is, what it does and where it keeps each thing. It is plain text. The app reads it at the start of every chat.</span>
+                <span class="tree-who"><span>You write it (with help from the agent)</span><span>The agent always reads it</span></span>
+              </li>
+              <li class="tree-item" style="--c: var(--f-data)" data-part="data">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10.5H3z" fill="currentColor" fill-opacity=".16" /></svg>
+                <span class="tree-name">data/<small>the memory</small></span>
+                <span class="tree-desc">What the agent must remember: notes, logs, lists. Text files or tables.</span>
+                <span class="tree-who"><span>The agent reads it and updates it</span><span>You can open it and correct it</span></span>
+              </li>
+              <li class="tree-item is-hidden-file" style="--c: var(--f-skills)" data-part="skills" data-hidden-label="hidden">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10.5H3z" fill="currentColor" fill-opacity=".16" /></svg>
+                <span class="tree-name"><span data-skills-dir>.agents/skills/</span><small>the recipes</small></span>
+                <span class="tree-desc">Recipes for tasks that you repeat, such as "make me a practice exam". Each one is a folder with a SKILL.md file. The agent only reads the title and the description until it needs the recipe. The folder name depends on the app: <code>.claude/skills/</code> in Claude and <code>.agents/skills/</code> in the others.</span>
+                <span class="tree-who"><span>The agent writes them with you</span><span>The agent opens them when it needs them</span></span>
+              </li>
+              <li class="tree-item" style="--c: var(--f-scripts)" data-part="scripts">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10.5H3z" fill="currentColor" fill-opacity=".16" /></svg>
+                <span class="tree-name">scripts/<small>the tools (optional)</small></span>
+                <span class="tree-desc">Small programs that always do the same job in the same way: add up, sort, count. The agent writes them and runs them.</span>
+                <span class="tree-who"><span>The agent writes them</span><span>The agent runs them</span></span>
+              </li>
+              <li class="tree-item" style="--c: var(--f-exports)" data-part="exports">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10.5H3z" fill="currentColor" fill-opacity=".16" /></svg>
+                <span class="tree-name">exports/<small>the results</small></span>
+                <span class="tree-desc">What the agent gives you: worksheets, summaries, tables, pages to print.</span>
+                <span class="tree-who"><span>The agent creates it</span><span>You open it</span></span>
+              </li>
+            </ul>
+            <div class="explorer-detail" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <details class="more">
+          <summary>What is a text file, and what are Markdown, CSV and JSON?</summary>
+          <div>
+            <p>A file holds information. A <strong>text file</strong> holds only letters, with no hidden formatting, and any program can read it. A model loves it: it reads it just like you do. A Word document, on the other hand, holds much more than the text, and it is harder for a program to read.</p>
+            <ul>
+              <li><strong>Markdown (<code>.md</code>):</strong> text with a few simple marks. <code>#</code> is a title, <code>-</code> is a list item, <code>**word**</code> is bold. It is the best format for instructions and notes.</li>
+              <li><strong>CSV (<code>.csv</code>):</strong> a table written as text, with one row per line and the columns separated by commas. It opens in Excel or Google Sheets. It is the best format for logs that you want to add up or draw in a chart.</li>
+              <li><strong>JSON (<code>.json</code>):</strong> data with a fixed structure, such as <code>{"topic": 3, "status": "mastered"}</code>. It is the best format when a program, such as a script, must always read the data in the same way.</li>
+            </ul>
+            <p>A practical rule: start with Markdown. Move to CSV when you want to count or make charts.</p>
+          </div>
+        </details>
+
+        <p class="note" data-icon="i"><span><strong>Did you know?</strong> If you copy the folder to another computer, the agent travels with it: its instructions and its memory are inside. And if you prefer to start from a ready-made one, <a href="#download-the-examples">download your example</a> and keep reading to understand each part.</span></p>
+
+        <label class="done-check js-only"><input type="checkbox" data-done="paso-2" /> I have created the folder</label>
+      </section>
+
+      <!-- ============ Step 3 ============ -->
+      <section>
+        <p class="step-label">Step 3 of 8</p>
+        <h2 id="step-3-open-the-folder"><a class="heading-anchor" href="#step-3-open-the-folder">Open the folder in your app and say hello</a></h2>
+        <p>In this step you connect the app to the folder and check that the agent can see it. From here on, the agent does almost everything: you tell it what you want, and it creates the files.</p>
+
+        <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p>Open the Claude app and go to <strong>Code</strong>. Under the message box there is a folder selector (or the "+" button, "Add folder"): choose yours. Next to the message box is the permission mode: start with "Manual", which asks you before each change. The button names can change a little between versions.</p></div>
+        <div class="variant" data-app="codex"><p class="variant-label">ChatGPT</p><p>Open the ChatGPT app and choose <strong>Codex</strong> in the mode selector. Click "Add new project" and choose your folder. Leave the permission mode on "Ask for approval": it works inside your folder and asks you before it goes outside it.</p></div>
+        <div class="variant" data-app="antigravity"><p class="variant-label">Antigravity</p><p>Open the Antigravity app. Click the new project icon (a folder with a +), then "Add Folder", choose your folder and click "Create". If it asks where to work, choose "Local mode": your own folder. For permissions, start with "Request Review", which asks you before each action.</p></div>
+        <div class="variant" data-app="goose"><p class="variant-label">Goose</p><p>Open Goose. In the bar at the bottom there is a folder selector: choose yours. Before you type, check the permission mode: in "Settings &gt; Chat &gt; Default Mode", choose "Manual", which asks you before it changes a file.</p></div>
+
+        <p>Now write your first message:</p>
+        <div class="codeblock prompt no-name"><pre>Hello. What is in this folder?</pre></div>
+        <p>You will see something like this. The agent uses its <a class="term" href="#g-tool">tools</a> (read, write, search) and shows you each step:</p>
+
+        <div class="chat" role="group" aria-label="Example conversation">
+          <div class="msg from-person">
+            <p class="bubble">Hello. What is in this folder?</p>
+            <svg class="avatar" viewBox="0 0 40 40" role="img" aria-label="You"><circle cx="20" cy="20" r="20" fill="var(--chip)" /><circle cx="20" cy="15" r="6.5" fill="var(--ink-soft)" /><path d="M8 33c2-7 7-10 12-10s10 3 12 10" fill="var(--ink-soft)" /></svg>
+          </div>
+          <div class="msg from-agent">
+            <svg class="avatar" viewBox="0 0 100 92" role="img" aria-label="The agent"><path d="M50 0A50 49.5 0 0 1 100 49.5A46 40.5 0 0 1 54 90H46A46 40.5 0 0 1 0 49.5A50 49.5 0 0 1 50 0z" fill="url(#visor-fill)" /><g class="visor-eyes" fill="#87ddff"><g transform="rotate(14 29 45)"><ellipse cx="29" cy="45" rx="13" ry="8" /></g><g transform="rotate(-14 71 45)"><ellipse cx="71" cy="45" rx="13" ry="8" /></g></g></svg>
+            <div class="bubble"><div class="msg-steps"><span>looked at the folder</span></div>There are two empty folders: <span class="part part-data">data</span> and <span class="part part-exports">exports</span>. There are no instructions yet. What do you want me to do?</div>
+          </div>
+        </div>
+        <p class="chat-who">The visor is the agent; the figure on the right is you.</p>
+
+        <p>Each app has a <strong>permission mode</strong>: it decides what the agent does on its own and what it asks you first. At the start, choose a mode that asks you before it changes files or runs programs. When it asks for permission, read what it wants to do and accept if it makes sense. For example, if it asks to create the file that you just asked for, accept. When you trust it, you can give it more freedom inside that folder.</p>
+
+        <p class="note" data-icon="!"><span><strong>If it does not see the folder</strong>, check that you chose the right folder and not the whole Desktop. On a Mac, the first time, the system asks if the app can access the Desktop: click "Allow". If you said no, go to "System Settings &gt; Privacy &amp; Security &gt; Files and Folders", and turn on your app.</span></p>
+
+        <label class="done-check js-only"><input type="checkbox" data-done="paso-3" /> The agent has answered me</label>
+      </section>
+
+      <!-- ============ Step 4 ============ -->
+      <section>
+        <p class="step-label">Step 4 of 8</p>
+        <h2 id="step-4-instructions"><a class="heading-anchor" href="#step-4-instructions">Give it instructions: the AGENTS.md file</a></h2>
+        <p>In this step you tell the agent who it is and how it must work, one time and for good. That goes in a file called <a class="term" href="#g-agents-md">AGENTS.md</a>, at the root of the folder (directly inside it, not in a subfolder).</p>
+        <p>First, one key idea: the <a class="term" href="#g-context">context</a>. The model remembers nothing between messages. Each time you write, the app sends it everything it must keep in mind, all at once:</p>
+
+        <figure class="diagram context">
+          <svg viewBox="0 0 720 330" role="img" aria-labelledby="context-title context-desc">
+            <title id="context-title">What the model reads each time you write</title>
+            <desc id="context-desc">Five boxes appear one by one: the app's rules, the AGENTS.md file, the skill titles, the conversation so far and your new message. A bracket joins them and calls them "the context". An arrow takes the context to the model, and the model sends back an answer. The model does not know anything that is not in those boxes.</desc>
+            <g class="ctx-box"><rect x="20" y="20" width="300" height="46" rx="12" class="box" /><rect x="36" y="38" width="10" height="10" rx="5" class="sw-soft" /><text x="56" y="40" class="label">The app's rules</text><text x="56" y="56" class="label-soft">"You can read and write files…"</text></g>
+            <g class="ctx-box"><rect x="20" y="78" width="300" height="46" rx="12" class="box" /><rect x="36" y="96" width="10" height="10" rx="5" class="sw-agents" /><text x="56" y="98" class="label">AGENTS.md</text><text x="56" y="114" class="label-soft">"You are my personal tutor…"</text></g>
+            <g class="ctx-box"><rect x="20" y="136" width="300" height="46" rx="12" class="box" /><rect x="36" y="154" width="10" height="10" rx="5" class="sw-skills" /><text x="56" y="156" class="label">Skill titles</text><text x="56" y="172" class="label-soft">"practice-exam: makes an exam…"</text></g>
+            <g class="ctx-box"><rect x="20" y="194" width="300" height="46" rx="12" class="box" /><rect x="36" y="212" width="10" height="10" rx="5" class="sw-soft" /><text x="56" y="214" class="label">The conversation</text><text x="56" y="230" class="label-soft">Everything you both said today</text></g>
+            <g class="ctx-box"><rect x="20" y="252" width="300" height="46" rx="12" class="box-strong" /><rect x="36" y="270" width="10" height="10" rx="5" class="sw-teal" /><text x="56" y="272" class="label">Your message</text><text x="56" y="288" class="label-soft">"What should I review today?"</text></g>
+            <path class="bracket wire-teal" d="M338 22 Q352 22 352 40 L352 140 Q352 159 368 159 Q352 159 352 178 L352 278 Q352 296 338 296" />
+            <g class="ctx-label"><text x="384" y="152" class="label-on-teal">the context</text><text x="384" y="170" class="label-soft">all of it, every time</text>
+              <path d="M488 159 L540 159" class="wire-teal" /><polygon points="540,153 552,159 540,165" class="arrow-teal" /></g>
+            <g class="ctx-model"><rect x="560" y="124" width="140" height="70" rx="16" class="box-strong" /><text x="630" y="155" text-anchor="middle" class="label">The model</text><text x="630" y="174" text-anchor="middle" class="label-soft">reads and answers</text></g>
+            <g class="ctx-answer"><rect x="560" y="214" width="140" height="58" rx="14" class="bubble-agent" /><text x="630" y="239" text-anchor="middle" class="bubble-text">"Topic 2 today. It</text><text x="630" y="256" text-anchor="middle" class="bubble-text">has been 9 days…"</text></g>
+          </svg>
+          <figcaption>The context is everything the model reads before it answers. AGENTS.md is always in it; of the skills, only the title is in it until a skill is needed.</figcaption>
+        </figure>
+
+        <p>(Skills are recipes for tasks that you repeat; you will see them in step 6.) That is why AGENTS.md is so powerful: it is in the context of every conversation. What you write there, the agent always keeps in mind. And it is an open standard: ChatGPT (Codex), Antigravity, Goose and many other apps read it, and Claude reads it with one helper line that you will see below. So you do not depend on any one app.</p>
+
+        <h3 id="your-agents-md"><a class="heading-anchor" href="#your-agents-md">Your AGENTS.md</a></h3>
+        <p>This is the AGENTS.md for your example. Read it: it says who the agent is, what it does, where it keeps each thing, and a few rules. Change the details that are yours (your school year, your groups, your goal) and keep the structure.</p>
+
+        <div class="variant" data-example="estudiante"><p class="variant-label">Student</p>
+          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># My study tutor
+
+You are my personal tutor. I am in the last year of high school.
+You speak to me in English, with short sentences and examples.
+
+## What you do
+- You explain the topics in a simple way, with examples.
+- When I ask, you give me exam-style questions, one at a time, and you correct me.
+- You keep track of what I already know well and what I find hard.
+- You remind me of the assignments that are due.
+
+## Where you keep things
+- data/subjects.md: my subjects, their topics and the exam dates.
+- data/progress.md: a table with each topic, its status (new, in progress, mastered), the date of the last review and what I find hard.
+- data/assignments.md: each assignment with its due date and its status.
+- data/notes/: my notes, one file per topic.
+- exports/: the practice exams and the summaries.
+
+## Rules
+- Before you answer, read what you need from data/.
+- At the end of each study session, update data/progress.md.
+- If something is not in my notes, tell me. Do not make it up.
+- To prepare a practice exam, use the practice-exam skill.</pre></div></div>
+
+        <div class="variant" data-example="docente"><p class="variant-label">Teacher</p>
+          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># My class helper
+
+You are my class helper. I teach maths in Year 4 (4th grade), to two groups: 4A and 4B.
+You speak to me in English, in a clear and practical way.
+
+## What you do
+- You make worksheets with exercises that fit the level of each group.
+- You keep track of how each group is doing: which topics we have covered and what is hardest.
+- You help me plan the week.
+
+## Where you keep things
+- data/groups.md: each group, the current topic and what it finds hardest.
+- data/grades.csv: the grades, with the columns student,group,activity,date,grade. One row per student and activity.
+- data/calendar.md: the planned lessons and assessments.
+- exports/: the worksheets and the plans, ready to print.
+
+## Rules
+- Never save the full names of students. Use their class list number (A01, A02…).
+- The worksheets have the answers on a separate page.
+- Before you prepare anything, read data/groups.md.
+- To prepare a worksheet, use the make-worksheet skill.</pre></div></div>
+
+        <div class="variant" data-example="salud"><p class="variant-label">Health</p>
+          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># My coach
+
+You are my personal coach. My goal is in data/goal.md.
+You speak to me in English, with encouragement but without exaggeration.
+
+## What you do
+- You log each workout and each meal that I tell you about.
+- You suggest workouts based on my routine and on how I am doing.
+- Each week you tell me how close I am to my goal, with numbers.
+
+## Where you keep things
+- data/goal.md: my goal, my starting point and the deadline.
+- data/log.csv: one row per entry, with the columns date,type,detail,amount,unit. For example: 2026-10-20,run,easy,5,km. The type is run, gym or meal. A run takes two rows, one in km and one in min. Gym goes in min and meals go in kcal.
+- data/routine.md: my weekly routine.
+- exports/: the weekly summaries.
+
+## Rules
+- Write in data/log.csv as soon as I tell you something. Do not wait until the end.
+- If I ask you something medical, or I tell you about a pain that does not go away, tell me to ask a professional.
+- For the weekly summary, use the weekly-summary skill.</pre></div></div>
+
+        <div class="variant" data-example="diario"><p class="variant-label">Journal</p>
+          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># My journal
+
+You are my personal journal. I tell you how my day went and you put it in order.
+You speak to me in English, calmly. You do not judge: you listen and you put things in order.
+
+## What you do
+- You save what I tell you each day, in my own words.
+- You ask me one or two questions if I want to go deeper, never more.
+- When I ask, you help me see what repeats: people, topics, moods.
+
+## Where you keep things
+- data/entries/: one file per day, with the date as its name (2026-10-25.md).
+- data/themes.md: the topics and the people that come up often.
+- exports/: the summaries that I ask for.
+
+## Rules
+- Each entry starts with two lines: the date (# 2026-10-25) and the mood in one word (Mood: calm).
+- Do not change what I wrote: if you summarise it, save the summary separately.
+- To close the day, use the close-the-day skill.</pre></div></div>
+
+        <div class="variant" data-example="reforma"><p class="variant-label">Renovation</p>
+          <div class="codeblock"><span class="file-name">AGENTS.md</span><pre data-copy># Bathroom renovation
+
+You are the project manager for my bathroom renovation. I know nothing about building work: explain everything to me.
+You speak to me in English, in a clear and orderly way.
+
+## What you do
+- You keep the list of renovation steps and their status.
+- You keep the contacts of the professionals and what we discussed with each one.
+- You keep the budget: what we planned and what we spent.
+- You warn me about anything that blocks the next step.
+
+## Where you keep things
+- data/steps.md: each step in order, with its status (to do, in progress, done) and what it depends on.
+- data/contacts.md: each professional, their phone number and a summary of each conversation.
+- data/measurements.md: the bathroom measurements that I give you.
+- data/budget.csv: one row per item, with the columns item,planned,spent.
+- data/ideas/: photos and notes with ideas for the design.
+- exports/: lists to take to the shop, summaries, simple plans.
+
+## Rules
+- Before you answer, read data/steps.md.
+- Do not accept a measurement that I did not give you.
+- To prepare a call with a professional, use the prepare-call skill.</pre></div></div>
+
+        <p>To create it, the easiest way is to ask the agent. Click "Copy" on the text above. Then write this message and, under it, paste the text with <kbd>Ctrl</kbd> + <kbd>V</kbd> (<kbd>Cmd</kbd> + <kbd>V</kbd> on a Mac):</p>
+        <div class="codeblock prompt no-name"><pre>Create an AGENTS.md file in this folder with this content:
+
+(paste the text here)</pre></div>
+
+        <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p class="note" data-icon="!"><span><strong>In Claude, also add a CLAUDE.md.</strong> Claude looks for its own file first, <code>CLAUDE.md</code>. Ask the agent: "Create a CLAUDE.md file that contains only the line <code>@AGENTS.md</code>". That line tells it to load your AGENTS.md too. So your instructions stay in one file, and the other apps ignore the CLAUDE.md.</span></p></div>
+
+        <p class="note" data-icon="!"><span><strong>If you create it by hand on Windows,</strong> make sure that it does not end in <code>.txt</code>: Windows hides the end of file names, and the agent would not find the file. Further down, in "I prefer to create it by hand", you can see how to avoid this.</span></p>
+        <p>Now <strong>start a new conversation</strong>, because the app reads the AGENTS.md at the start. Ask:</p>
+        <div class="codeblock prompt no-name"><pre>Who are you and what can you do?</pre></div>
+        <p>If it answers with what you put in the AGENTS.md, it works.</p>
+
+        <details class="more">
+          <summary>I prefer to create it by hand. How?</summary>
+          <div>
+            <p>You need a plain text editor:</p>
+            <ul>
+              <li><strong>On a Mac, TextEdit:</strong> create a new document and choose "Format &gt; Make Plain Text". Paste the text and save it as <code>AGENTS.md</code> inside your folder. If it asks, choose "Use .md".</li>
+              <li><strong>On Windows, Notepad:</strong> paste the text, choose "Save As", set "Save as type" to "All files" and type <code>AGENTS.md</code>. If you do not, Windows saves it as <code>AGENTS.md.txt</code> and the agent does not find it.</li>
+            </ul>
+            <p>The name matters: <code>AGENTS</code> in capitals and <code>.md</code> in lower case. To see the end of file names on Windows: in File Explorer, "View &gt; Show &gt; File name extensions".</p>
+          </div>
+        </details>
+
+        <details class="more">
+          <summary>What makes a good AGENTS.md?</summary>
+          <div>
+            <ul>
+              <li><strong>Short.</strong> It is in the context of every conversation, so every line counts. If it grows a lot, move details to a skill.</li>
+              <li><strong>Concrete.</strong> "Update data/progress.md at the end of each session" works; "be organised" does not.</li>
+              <li><strong>With a map.</strong> Say where each thing is. The agent does not have to guess.</li>
+              <li><strong>Alive.</strong> When the agent does something wrong, do not correct it only in the chat. Ask it: "Add this rule to the AGENTS.md so that it does not happen again".</li>
+            </ul>
+          </div>
+        </details>
+
+        <label class="done-check js-only"><input type="checkbox" data-done="paso-4" /> My agent knows who it is</label>
+      </section>
+
+      <!-- ============ Step 5 ============ -->
+      <section>
+        <p class="step-label">Step 5 of 8</p>
+        <h2 id="step-5-memory"><a class="heading-anchor" href="#step-5-memory">Give it memory: the data folder</a></h2>
+        <p>In this step you create the files where the agent keeps what it must remember. This is what turns a chat that forgets into an agent that knows you.</p>
+        <p>Your AGENTS.md already says which files to use and when to update them. So you only have to ask:</p>
+        <div class="codeblock prompt no-name"><pre>Create the data files that the AGENTS.md lists. To fill them in, ask me the questions you need, one at a time.</pre></div>
+        <p>The agent will ask you questions and create the files. In your example:</p>
+
+        <div class="variant" data-example="estudiante"><p class="variant-label">Student</p><ul>
+          <li><span class="part part-data">data/subjects.md</span>: your subjects, their topics and the exam dates.</li>
+          <li><span class="part part-data">data/progress.md</span>: a table with each topic, its status, the date of the last review and what you find hard.</li>
+          <li><span class="part part-data">data/assignments.md</span>: each assignment, its due date and its status.</li>
+          <li><span class="part part-data">data/notes/</span>: save your notes here, as text or PDF. If they are photos, move them to the computer and save them here: the apps in this guide also read images.</li>
+        </ul></div>
+        <div class="variant" data-example="docente"><p class="variant-label">Teacher</p><ul>
+          <li><span class="part part-data">data/groups.md</span>: each group, the current topic and what it finds hardest.</li>
+          <li><span class="part part-data">data/grades.csv</span>: the grades, with students by number, never by name.</li>
+          <li><span class="part part-data">data/calendar.md</span>: the lessons and the assessments.</li>
+        </ul>
+        <p class="note" data-icon="!"><span><strong>Grades are data about children.</strong> Before you save them, read your school's rules about AI tools. If you are not sure, save only how each group is doing, with no individual grades.</span></p></div>
+        <div class="variant" data-example="salud"><p class="variant-label">Health</p><ul>
+          <li><span class="part part-data">data/goal.md</span>: your goal, where you start from and the date.</li>
+          <li><span class="part part-data">data/log.csv</span>: one row per workout or meal.</li>
+          <li><span class="part part-data">data/routine.md</span>: your weekly routine.</li>
+        </ul></div>
+        <div class="variant" data-example="diario"><p class="variant-label">Journal</p><ul>
+          <li><span class="part part-data">data/entries/</span>: one file per day, for example <code>2026-10-25.md</code>.</li>
+          <li><span class="part part-data">data/themes.md</span>: the topics and the people that repeat.</li>
+        </ul></div>
+        <div class="variant" data-example="reforma"><p class="variant-label">Renovation</p><ul>
+          <li><span class="part part-data">data/steps.md</span>: the steps in order, with their status.</li>
+          <li><span class="part part-data">data/contacts.md</span>: the professionals and what you discussed with each one.</li>
+          <li><span class="part part-data">data/measurements.md</span>: the bathroom measurements, taken by you.</li>
+          <li><span class="part part-data">data/budget.csv</span>: what you planned and what you spent, item by item.</li>
+          <li><span class="part part-data">data/ideas/</span>: save photos and notes of bathrooms that you like here.</li>
+        </ul></div>
+
+        <p>Open the files yourself too. A <code>.md</code> file opens in any text editor (TextEdit, Notepad); a <code>.csv</code> file opens in Excel or Google Sheets. They are yours: if something is wrong, correct it by hand or tell the agent. And if one day you want to start again from zero, delete them.</p>
+
+        <p class="note" data-icon="i"><span><strong>Why is ChatGPT's memory not enough?</strong> ChatGPT's memory is a short list of notes that the app keeps, and it only works in that app. You can read your files in full, correct them and take them to any app.</span></p>
+
+        <label class="done-check js-only"><input type="checkbox" data-done="paso-5" /> My agent has memory</label>
+      </section>
+
+      <!-- ============ Step 6 ============ -->
+      <section>
+        <p class="step-label">Step 6 of 8</p>
+        <h2 id="step-6-skills"><a class="heading-anchor" href="#step-6-skills">Teach it recipes: skills</a></h2>
+        <p>In this step you teach the agent a task that you repeat, step by step, so that it always does it equally well. That is a <a class="term" href="#g-skill">skill</a>: a recipe.</p>
+        <p>You could put all the steps in the AGENTS.md, but they would take up the context of every conversation, even the ones that do not need them. A skill is smarter: the agent only sees its name and one sentence that describes it. When you ask for something that matches that sentence, it opens the full recipe and follows it.</p>
+        <p>A skill is a folder with a <code>SKILL.md</code> file inside. The folder has the same name as the skill. That file starts with a block between two <code>---</code> lines with the name and the description, and then come the steps. The skills in the agent's folder go here:</p>
+
+        <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p><code class="part part-skills">.claude/skills/</code>, and inside it one folder per skill. Claude does not look in <code>.agents/skills/</code>.</p></div>
+        <div class="variant" data-app="codex"><p class="variant-label">ChatGPT</p><p><code class="part part-skills">.agents/skills/</code>, and inside it one folder per skill.</p></div>
+        <div class="variant" data-app="antigravity"><p class="variant-label">Antigravity</p><p><code class="part part-skills">.agents/skills/</code>, and inside it one folder per skill.</p></div>
+        <div class="variant" data-app="goose"><p class="variant-label">Goose</p><p><code class="part part-skills">.agents/skills/</code>, and inside it one folder per skill. Goose also reads <code>.claude/skills/</code>.</p></div>
+
+        <p class="note" data-icon="!"><span><strong>On a Mac, the dot at the start hides the folder.</strong> Finder does not show folders whose name starts with a dot, and it does not let you create them. To see them, press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>.</kbd> in Finder. On Windows you see them normally. The easiest way, on both: let the agent create it.</span></p>
+
+        <p>This is the skill for your example:</p>
+
+        <div class="variant" data-example="estudiante"><p class="variant-label">Student</p>
+          <div class="codeblock"><span class="file-name">practice-exam/SKILL.md</span><pre data-copy>---
+name: practice-exam
+description: Prepares a practice exam on the topics I ask for, with questions like the ones in class. Use it when I want to practise for an exam.
+---
+
+# Prepare a practice exam
+
+1. Ask me which subject and which topics are in the exam, if I have not said so.
+2. Read my notes on those topics in data/notes/ and their status in data/progress.md.
+3. Write 10 questions: 4 on the topics I find hardest and 6 on the rest. Mix short questions and longer written ones.
+4. Save the exam in exports/exam-SUBJECT-DATE.md, with the answers at the end.
+5. Ask me if I want to do it now with you, one question at a time.
+6. When we finish, update data/progress.md with what I got right and wrong.</pre></div></div>
+
+        <div class="variant" data-example="docente"><p class="variant-label">Teacher</p>
+          <div class="codeblock"><span class="file-name">make-worksheet/SKILL.md</span><pre data-copy>---
+name: make-worksheet
+description: Prepares a worksheet of exercises for a group and a topic, ready to print. Use it when I ask for a worksheet or exercises for class.
+---
+
+# Make a worksheet
+
+1. Ask me the group and the topic, if I have not said so.
+2. Read data/groups.md to know the level of the group and what it finds hardest.
+3. Write 8 exercises, from easiest to hardest. The first two come with a worked example.
+4. Save the worksheet in exports/worksheet-GROUP-TOPIC.html, with no spaces or accents in the name (for example worksheet-4B-fractions.html), with large letters and space to answer, and the answers on a separate page.
+5. Tell me how to print it: open it in the browser and use Print.</pre></div></div>
+
+        <div class="variant" data-example="salud"><p class="variant-label">Health</p>
+          <div class="codeblock"><span class="file-name">weekly-summary/SKILL.md</span><pre data-copy>---
+name: weekly-summary
+description: Makes the summary of the week's workouts and meals and compares it with the goal. Use it when I ask for the summary or ask how I am doing.
+---
+
+# Weekly summary
+
+1. Read data/log.csv and keep only the last 7 days.
+2. If scripts/summary.py exists, run it to get the totals. If not, add them up yourself, carefully.
+3. Compare with data/goal.md: am I on track?
+4. Write the summary in exports/summary-DATE.md: totals, what went well and one single thing to improve.
+5. Tell me the summary in three sentences.</pre></div></div>
+
+        <div class="variant" data-example="diario"><p class="variant-label">Journal</p>
+          <div class="codeblock"><span class="file-name">close-the-day/SKILL.md</span><pre data-copy>---
+name: close-the-day
+description: Saves the day's entry from what I tell you. Use it when I say that I want to close the day or write in the journal.
+---
+
+# Close the day
+
+1. If I have not told you about my day, ask me: "How did today go?".
+2. Listen. Ask me two questions at most to understand it better.
+3. Save the entry in data/entries/DATE.md in the format that the AGENTS.md gives: the date, the mood and what I told you, in my own words.
+4. If a person or a topic comes up that is already in data/themes.md, add one mention to it. If it is new and I have named it twice, add it.
+5. Say goodbye with a short sentence.</pre></div></div>
+
+        <div class="variant" data-example="reforma"><p class="variant-label">Renovation</p>
+          <div class="codeblock"><span class="file-name">prepare-call/SKILL.md</span><pre data-copy>---
+name: prepare-call
+description: Prepares a call or a visit with a professional for the renovation, with what to ask and what to decide. Use it when I am going to talk to a plumber, a builder, an electrician or a shop.
+---
+
+# Prepare a call
+
+1. Ask me who I am going to talk to, if I have not said so.
+2. Read data/steps.md, data/contacts.md and data/budget.csv.
+3. Write a short list: what I must tell them, what I must ask them and what we must decide.
+4. Save it in exports/call-PROFESSIONAL-DATE.md.
+5. After the call, ask me what we discussed and update data/contacts.md and data/steps.md.</pre></div></div>
+
+        <p>To create it, ask the agent, with the text pasted:</p>
+        <div class="codeblock prompt no-name"><pre>Create a skill with this SKILL.md, in the skills folder that this app uses:
+
+(paste the text here)</pre></div>
+        <p>Then, in a new conversation, ask for something that matches the description. You will see that it opens the skill and follows its steps:</p>
+        <div class="variant" data-example="estudiante"><p class="variant-label">Student</p><div class="codeblock prompt no-name"><pre>Make me a practice exam on topic 3.</pre></div></div>
+        <div class="variant" data-example="docente"><p class="variant-label">Teacher</p><div class="codeblock prompt no-name"><pre>Make me a multiplication worksheet for 4A.</pre></div></div>
+        <div class="variant" data-example="salud"><p class="variant-label">Health</p><div class="codeblock prompt no-name"><pre>How am I doing this week?</pre></div></div>
+        <div class="variant" data-example="diario"><p class="variant-label">Journal</p><div class="codeblock prompt no-name"><pre>I want to close the day.</pre></div></div>
+        <div class="variant" data-example="reforma"><p class="variant-label">Renovation</p><div class="codeblock prompt no-name"><pre>Tomorrow I am calling the plumber. Prepare the call for me.</pre></div></div>
+
+        <details class="more">
+          <summary>The rules for a skill</summary>
+          <div>
+            <ul>
+              <li><strong>The name</strong> is in lower case, with no accents or spaces, and with hyphens: <code>practice-exam</code>. It is the same as the name of its folder.</li>
+              <li><strong>The description</strong> says what the skill does and when to use it. It is the only thing the agent sees until it opens the skill, so write it with the words you will use when you ask for it.</li>
+              <li><strong>Do not use a colon (:) inside the description.</strong> The block at the start uses colons to separate each field from its value, and one more colon can break it.</li>
+              <li><strong>The steps</strong> are normal instructions, like the ones you would give a person.</li>
+              <li><strong>It can hold more files</strong> in its folder: a template, an example, a script.</li>
+            </ul>
+            <p>It is an open standard, <a href="https://agentskills.io">Agent Skills</a>. That is why the same skill works in every app in this guide.</p>
+          </div>
+        </details>
+
+        <label class="done-check js-only"><input type="checkbox" data-done="paso-6" /> My agent has its first skill</label>
+      </section>
+
+      <!-- ============ Step 7 ============ -->
+      <section>
+        <p class="step-label">Step 7 of 8 · optional</p>
+        <h2 id="step-7-scripts"><a class="heading-anchor" href="#step-7-scripts">Fixed tools: the scripts folder</a></h2>
+        <p>In this step, which you can skip, you give the agent a tool that always gives the same result. It is useful for counts, sums and dates.</p>
+        <p>A model writes very well, but it calculates like a person in a hurry: almost always right, sometimes wrong. A <a class="term" href="#g-script">script</a> is a small program that does an exact calculation, the same way every time. You do not have to write it or run it: the agent does that.</p>
+
+        <div class="variant" data-example="estudiante"><p class="variant-label">Student</p>
+          <div class="codeblock prompt no-name"><pre>Write a script in scripts/what-to-review.py that reads the table in data/progress.md and tells me which topics I have not reviewed for more than 7 days, from the oldest to the most recent. Add to the AGENTS.md, under Rules, that you use it when I ask what I should review.</pre></div></div>
+        <div class="variant" data-example="docente"><p class="variant-label">Teacher</p>
+          <div class="codeblock prompt no-name"><pre>Write a script in scripts/averages.py that reads data/grades.csv and calculates the average of each group and of each activity. Add to the AGENTS.md, under Rules, that you use it when I ask for averages or a summary of grades.</pre></div></div>
+        <div class="variant" data-example="salud"><p class="variant-label">Health</p>
+          <div class="codeblock prompt no-name"><pre>Write a script in scripts/summary.py that reads data/log.csv and adds up the workout minutes and the kilometres of the last 7 days, counting back from the most recent date in the log. Add to the AGENTS.md, under Rules, that you use it for the summaries.</pre></div></div>
+        <div class="variant" data-example="diario"><p class="variant-label">Journal</p>
+          <div class="codeblock prompt no-name"><pre>Write a script in scripts/mood.py that reads the entries in data/entries/ and counts how many days of each mood there were in each month, from the "Mood:" line. Add to the AGENTS.md, under Rules, that you use it when I ask how I have been.</pre></div></div>
+        <div class="variant" data-example="reforma"><p class="variant-label">Renovation</p>
+          <div class="codeblock prompt no-name"><pre>Write a script in scripts/budget.py that reads data/budget.csv and gives the total planned, the total spent and the items that go over what was planned. Add to the AGENTS.md, under Rules, that you use it when I ask about money.</pre></div></div>
+
+        <p class="note" data-icon="!"><span><strong>You do not need to know how to program.</strong> If the agent asks you to install something (such as Python, the language of these scripts) and you do not want to, say no and skip this step; on a work computer, you may not be allowed to. On a Mac, a window can appear that offers to install the "command line developer tools": you can say no to that too. The agent still works: it will do the calculations itself, carefully.</span></p>
+
+        <label class="done-check js-only"><input type="checkbox" data-done="paso-7" /> I have a script, or I skip it</label>
+      </section>
+
+      <!-- ============ Step 8 ============ -->
+      <section>
+        <p class="step-label">Step 8 of 8</p>
+        <h2 id="step-8-exports"><a class="heading-anchor" href="#step-8-exports">The results: the exports folder</a></h2>
+        <p>In this step you ask the agent for something finished, to use outside the conversation. It will save it in <span class="part part-exports">exports</span>, so you always know where to look.</p>
+        <div class="variant" data-example="estudiante"><p class="variant-label">Student</p><div class="codeblock prompt no-name"><pre>Make me a one-page summary of the topic I find hardest, to review on the bus.</pre></div></div>
+        <div class="variant" data-example="docente"><p class="variant-label">Teacher</p><div class="codeblock prompt no-name"><pre>Make me a fractions worksheet for 4B.</pre></div></div>
+        <div class="variant" data-example="salud"><p class="variant-label">Health</p><div class="codeblock prompt no-name"><pre>Make me this week's summary.</pre></div></div>
+        <div class="variant" data-example="diario"><p class="variant-label">Journal</p><div class="codeblock prompt no-name"><pre>Make me a summary of this month: the best, the worst and what repeats.</pre></div></div>
+        <div class="variant" data-example="reforma"><p class="variant-label">Renovation</p><div class="codeblock prompt no-name"><pre>Make me the list of materials for the bathroom shop, with the measurements from data/measurements.md.</pre></div></div>
+        <p>Which format should you ask for?</p>
+        <ul>
+          <li><strong>Markdown (<code>.md</code>)</strong> to read it yourself or to give it to another agent.</li>
+          <li><strong>An HTML page (<code>.html</code>)</strong> for something that looks nice: it opens in the browser and you print it from there.</li>
+          <li><strong>CSV (<code>.csv</code>)</strong> to open in Excel or Google Sheets. If Excel puts everything in one column, use "Data &gt; From Text/CSV" and choose the comma as the separator.</li>
+          <li><strong>PDF or Word</strong> if your app can create them. Ask it: "Can you create a PDF?".</li>
+        </ul>
+
+        <label class="done-check js-only"><input type="checkbox" data-done="paso-8" /> I have my first result</label>
+      </section>
+
+      <!-- ============ Check ============ -->
+      <section>
+        <h2 id="check-your-agent"><a class="heading-anchor" href="#check-your-agent">Check your agent</a></h2>
+        <p>This section checks that your folder has everything in its place. Do it when you finish, or when something does not work.</p>
+
+        <div class="checker js-only" data-checker data-data-dir="data" data-exports-dir="exports">
+          <p>Choose your folder. The page looks at the file names and reads only <code>AGENTS.md</code> and the <code>SKILL.md</code> files. <strong>Nothing leaves your computer:</strong> everything happens in your browser.</p>
+          <p><button type="button" class="checker-button">Choose my folder</button></p>
+          <input type="file" class="checker-input" webkitdirectory multiple hidden />
+          <ul class="checker-results" aria-live="polite"></ul>
+          <div hidden data-messages>
+            <span data-msg="empty:missing">The folder is empty, or the browser could not read it.</span>
+            <span data-msg="agents-md:ok">There is an <code>AGENTS.md</code> at the root.</span>
+            <span data-msg="agents-md:warn">The file is called <code>{detail}</code>. Rename it to <code>AGENTS.md</code>: <code>AGENTS</code> in capitals.</span>
+            <span data-msg="agents-md:missing">There is no <code>AGENTS.md</code> at the root of the folder. Go back to step 4.</span>
+            <span data-msg="agents-md:missing:detail">The file is called <code>{detail}</code>. Remove the <code>.txt</code> from the end (step 4, "I prefer to create it by hand").</span>
+            <span data-msg="agents-md-content:ok">The <code>AGENTS.md</code> has instructions.</span>
+            <span data-msg="agents-md-content:warn">The <code>AGENTS.md</code> is almost empty. Tell the agent who it is and what it does.</span>
+            <span data-msg="data:ok">The <code>data</code> folder has files.</span>
+            <span data-msg="data:missing">The <code>data</code> folder does not exist or is empty. Go back to step 5.</span>
+            <span data-msg="skills:ok">There is at least one skill in its place.</span>
+            <span data-msg="skills:warn">There are skills in <code>{detail}</code>, but your app looks for them in another folder. Check step 6.</span>
+            <span data-msg="skills:missing">There are no skills. Go back to step 6, or carry on without them: they are an extra.</span>
+            <span data-msg="skill-format:warn">Check these skills: <code>{detail}</code>. The name in the SKILL.md must be the same as its folder name, in lower case and with hyphens, and it must have a description.</span>
+            <span data-msg="scripts:ok">There are scripts.</span>
+            <span data-msg="scripts:optional">There are no scripts. They are optional.</span>
+            <span data-msg="exports:ok">The <code>exports</code> folder has results.</span>
+            <span data-msg="exports:unknown">I see nothing in <code>exports</code>. If it exists and is empty, that is fine: the browser does not see empty folders.</span>
+          </div>
+        </div>
+
+        <p>You can also check it by hand, or ask the agent: "Check that the folder matches this list".</p>
+        <ul>
+          <li>There is an <code>AGENTS.md</code> file at the root, with that exact name (and, in Claude, a <code>CLAUDE.md</code> with the line <code>@AGENTS.md</code>).</li>
+          <li>The <code>data</code> folder has the files that the AGENTS.md names.</li>
+          <li>Your app's skills folder has one folder per skill, each with its <code>SKILL.md</code>. On a Mac, press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>.</kbd> to see it.</li>
+          <li>The <code>exports</code> folder exists. The <code>scripts</code> folder is optional.</li>
+          <li>In a new conversation, the agent knows who it is without you explaining it.</li>
+        </ul>
+        <label class="done-check js-only"><input type="checkbox" data-done="comprueba" /> My agent works</label>
+      </section>
+
+      <!-- ============ Adapt it ============ -->
+      <section>
+        <h2 id="adapt-it-to-your-case"><a class="heading-anchor" href="#adapt-it-to-your-case">Adapt it to your case</a></h2>
+        <p>This section helps you create an agent for something that is not in the five examples: your job, a hobby, a project. The steps are the same; only the AGENTS.md changes.</p>
+        <p>The easiest way is to let the agent interview you. In a new folder, open it and write:</p>
+        <div class="codeblock prompt no-name"><pre>I want an agent that helps me with (your task). Ask me questions, one at a time, about what I do and what I need. When you have enough, write an AGENTS.md with this template and create the folders that it names.</pre></div>
+        <p>And paste this template under it:</p>
+        <div class="codeblock"><span class="file-name">AGENTS.md template</span><pre data-copy># (Your agent's name)
+
+You are (who it is: my helper for…, my tutor for…).
+You speak to me in (language), (in what tone).
+
+## What you do
+- (The three or four tasks that you will ask for most.)
+
+## Where you keep things
+- data/(file).md: (what it holds).
+- exports/: (what you give me).
+
+## Rules
+- (What it must always do.)
+- (What it must never do.)</pre></div>
+        <p>Some ideas to get you started:</p>
+        <ul>
+          <li><strong>Human resources:</strong> the open hiring processes, their stages and the questions for each interview, with candidates by code, never by name.</li>
+          <li><strong>Research:</strong> the log of field samples in a CSV, and a skill that prepares the report for each field trip.</li>
+          <li><strong>A hobby:</strong> your vegetable garden, your recipes or your trips, with what worked and what did not.</li>
+        </ul>
+      </section>
+
+      <!-- ============ Use it every day ============ -->
+      <section>
+        <h2 id="use-it-every-day"><a class="heading-anchor" href="#use-it-every-day">Use it every day</a></h2>
+        <p>This section collects the habits that make the agent better the more you use it.</p>
+        <ul>
+          <li><strong>One conversation per task.</strong> When you finish something, start a new one. The memory is in the files, not in the chat, so you lose nothing, and the context stays clean.</li>
+          <li><strong>Correct the file, not the chat.</strong> If it does something wrong, ask it to add a rule to the AGENTS.md or to improve the skill.</li>
+          <li><strong>Ask it what to save.</strong> At the end of a session: "Is there anything from today that you should save in data?".</li>
+          <li><strong>Look at its files from time to time.</strong> They are your agent. The better they are, the better it works.</li>
+          <li><strong>Grow little by little.</strong> When you repeat a task three times, turn it into a skill.</li>
+        </ul>
+      </section>
+
+      <!-- ============ Limits ============ -->
+      <section>
+        <h2 id="limits-and-warnings"><a class="heading-anchor" href="#limits-and-warnings">Limits and warnings</a></h2>
+        <p>This section tells you what this agent does not do, and what you should know before you trust it with things.</p>
+        <ul>
+          <li><strong>What is in the folder goes to the model.</strong> To answer, the app sends parts of your files to the company that runs the model. Do not keep passwords there, or data about other people who have not given you permission.</li>
+          <li><strong>If it is for work, ask first.</strong> Check if your company has rules about AI and a company account (for example Claude Team or ChatGPT Business). Do not save data about colleagues with their names: use codes, as the teacher example does.</li>
+          <li><strong>It makes mistakes.</strong> Check the important things: a health figure, a building measurement, a student's grade.</li>
+          <li><strong>The apps have usage limits.</strong> With a free or cheap plan, you can reach the limit on a day of heavy use. Wait a few hours or change apps: the folder works in all of them.</li>
+          <li><strong>Make copies.</strong> If the folder is in Google Drive, OneDrive or Dropbox, you have a copy and you can open it on another computer. That also uploads your data to that service, and on a Mac the Desktop can be synced with iCloud without you knowing. If you know how to use <a class="term" href="#g-git">Git</a>, even better: it saves every change.</li>
+          <li><strong>On two computers, one at a time.</strong> The folder travels, but the conversations and the app settings stay on each computer. Add the folder in the app on each one, work on only one at a time, and wait until it finishes syncing. If a "conflicted" file appears, ask the agent to merge the two.</li>
+        </ul>
+        <p class="note" data-icon="?"><span><strong>And from your phone?</strong> Your agent lives on your computer, so your phone does not see it. There are workarounds: if you leave the computer on with the app open, Claude and Antigravity (with their "Remote Control") and ChatGPT (with Codex on the phone, iPhone only) let you continue the conversation from your phone. Goose does not. And if the folder is in Google Drive, you can open it on another computer. But the natural place for this agent is the computer.</span></p>
+      </section>
+
+      <!-- ============ Downloads ============ -->
+      <section>
+        <h2 id="download-the-examples"><a class="heading-anchor" href="#download-the-examples">Download the examples</a></h2>
+        <p>If you want to see how the folder looks at the end, or start from a ready-made one, download your example. Each one is a <code>.zip</code> file. On a Mac, double-click it to unzip it; on Windows, right-click it and choose "Extract All". Move the folder wherever you want and open it with your app (step 3). Each one comes with a little sample data, one skill, one script and one result; delete the sample data and add your own. On a Mac you will not see the folders that start with a dot (the skills) until you press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>.</kbd>.</p>
+        <ul class="downloads">
+          <li><a href="examples/my-study-tutor.zip" download><b>Student</b><span>my-study-tutor</span></a></li>
+          <li><a href="examples/my-class-helper.zip" download><b>Teacher</b><span>my-class-helper</span></a></li>
+          <li><a href="examples/my-coach.zip" download><b>Health</b><span>my-coach</span></a></li>
+          <li><a href="examples/my-journal.zip" download><b>Journal</b><span>my-journal</span></a></li>
+          <li><a href="examples/bathroom-renovation.zip" download><b>Renovation</b><span>bathroom-renovation</span></a></li>
+        </ul>
+        <p>The examples have the skills in both folders, <code>.agents/skills/</code> and <code>.claude/skills/</code>, so that they work in any app. In your folder you only need the one for your app.</p>
+      </section>
+
+      <!-- ============ Glossary ============ -->
+      <section>
+        <h2 id="glossary"><a class="heading-anchor" href="#glossary">Glossary</a></h2>
+        <p>The key words of the guide, in one sentence each. In the text, move the mouse over a word in bold, or tap it on your phone, to see its definition.</p>
+        <dl class="glossary" data-related-label="Related:">
+          <dt id="g-model">Model (LLM)</dt>
+          <dd data-related="g-agent g-context g-app">The brain: a program trained on a huge amount of text that understands and writes. For example Claude, GPT or Gemini. LLM stands for "large language model".</dd>
+          <dt id="g-app">App or harness</dt>
+          <dd data-related="g-model g-folder g-tool">The desktop program that connects the model to your computer: it gives the model tools and passes it your instructions. For example Claude, ChatGPT in Codex mode, Antigravity or Goose.</dd>
+          <dt id="g-agent">Agent</dt>
+          <dd data-related="g-model g-app g-folder">A model that, thanks to the app, can act on its own over several steps: read, decide, write and check.</dd>
+          <dt id="g-folder">Folder</dt>
+          <dd data-related="g-agent g-file g-agents-md">A container on your computer that holds files. The agent's folder is its home: it only sees what is inside.</dd>
+          <dt id="g-file">File</dt>
+          <dd data-related="g-folder">A document with a name. Its ending (.md, .csv, .json) tells you what kind of content it holds.</dd>
+          <dt id="g-agents-md">AGENTS.md</dt>
+          <dd data-related="g-context g-folder g-skill">A text file with the agent's instructions, at the root of its folder. It is an open standard that almost every app reads.</dd>
+          <dt id="g-context">Context</dt>
+          <dd data-related="g-model g-agents-md g-skill">Everything the model reads before it answers: the app's rules, the AGENTS.md, the skill titles, the conversation and your message. The model does not know anything that is not in the context.</dd>
+          <dt id="g-skill">Skill</dt>
+          <dd data-related="g-context g-agents-md g-script">A recipe for a task that you repeat: a folder with a SKILL.md file (name, description and steps). The agent only reads the description until it needs the skill.</dd>
+          <dt id="g-script">Script</dt>
+          <dd data-related="g-skill g-tool">A small program that does one exact task, the same way every time, such as adding up a column in a table.</dd>
+          <dt id="g-api-key">API key</dt>
+          <dd data-related="g-subscription g-model">A long password that gives access to a model from any app. You pay for what you use, instead of a monthly fee. OpenRouter gives one key for hundreds of models.</dd>
+          <dt id="g-subscription">Subscription</dt>
+          <dd data-related="g-api-key g-app">A monthly fee, such as ChatGPT Plus or Claude Pro, with a usage limit. It only works in that company's apps.</dd>
+          <dt id="g-git">Git</dt>
+          <dd data-related="g-folder g-file">A program that saves the history of every change in a folder, so that you can go back. The history also keeps the data, so treat it with the same care.</dd>
+          <dt id="g-tool">Tool</dt>
+          <dd data-related="g-app g-agent g-script">An action that the app lets the model do: read a file, write it, search or run a script.</dd>
+        </dl>
+      </section>
+
+      <!-- ============ For AIs ============ -->
+      <section>
+        <h2 id="for-ai-assistants"><a class="heading-anchor" href="#for-ai-assistants">If you are an AI helping someone with this guide</a></h2>
+        <div class="for-ai">
+          <p>This section is for the AI assistant that a person has given this page to. People can skip it.</p>
+          <ul>
+            <li><strong>What this is:</strong> a tutorial for people with no technical knowledge. At the end they have a folder that is an agent: <code>AGENTS.md</code> (instructions), <code>data/</code> (memory), a skills folder (<code>.agents/skills/</code>, or <code>.claude/skills/</code> in Claude) with one <code>SKILL.md</code> per skill, <code>scripts/</code> (optional) and <code>exports/</code> (results). In Claude, also a <code>CLAUDE.md</code> with the line <code>@AGENTS.md</code>.</li>
+            <li><strong>Where the person is:</strong> the page address can carry <code>?app=</code> (<code>claude</code> is the Code section of the Claude app; <code>codex</code>, the Codex mode of the ChatGPT desktop app; <code>antigravity</code>; or <code>goose</code>) and <code>?example=</code> (<code>estudiante</code> for student, <code>docente</code> for teacher, <code>salud</code> for health, <code>diario</code> for journal, or <code>reforma</code> for renovation). Follow only that variant. The steps go from 1 (choose an app) to 8 (exports); ask the person which step they are on.</li>
+            <li><strong>How to help:</strong> short sentences, one instruction at a time, no jargon. Do not assume that they know how to use the terminal. If a file fails, the most likely cause is the name (<code>AGENTS.md.txt</code>, lower case) or a hidden folder that they cannot see.</li>
+            <li><strong>The full examples</strong> are in the "Download the examples" section of this page.</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="post-footer">
+        <p>If you get stuck on a step, give this page to your agent and ask it. It is written so that the agent can understand it.</p>
+      </footer>
+    </article>
+
+    <footer class="page-footer">
+      <p>Part of <a href="../../">Guillem Poy's portfolio</a>. All posts: <a href="../">Blog</a>.</p>
+    </footer>
+
+    <script>
+      // Contents: an extra, never content. Without it, the list is a folded box of plain links.
+      // With it, the list opens in the corner of a wide screen, and the section being read is marked.
+      (() => {
+        const contents = document.getElementById("contents");
+        if (!contents) return;
+        const wideScreen = window.matchMedia("(min-width: 1280px)");
+        const openOnWideScreen = () => { if (wideScreen.matches) contents.open = true; };
+        openOnWideScreen();
+        wideScreen.addEventListener("change", openOnWideScreen);
+        window.addEventListener("hashchange", () => { if (location.hash === "#contents") contents.open = true; });
+        const linkById = new Map([...contents.querySelectorAll('a[href^="#"]')].map((link) => [link.getAttribute("href").slice(1), link]));
+        const headings = [...linkById.keys()].map((id) => document.getElementById(id)).filter(Boolean);
+        let markPending = false;
+        const markCurrentSection = () => {
+          markPending = false;
+          let current = null;
+          for (const heading of headings) if (heading.getBoundingClientRect().top <= window.innerHeight * 0.3) current = heading;
+          for (const [id, link] of linkById) {
+            if (current && id === current.id) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          }
+        };
+        window.addEventListener("scroll", () => {
+          if (!markPending) { markPending = true; requestAnimationFrame(markCurrentSection); }
+        }, { passive: true });
+        markCurrentSection();
+      })();
+    </script>
+    <script type="module" src="../tu-primer-agente/tutorial.js"></script>
+  </body>
+</html>
