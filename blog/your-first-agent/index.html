@@ -333,8 +333,8 @@
           <div>
             <p>A <strong>subscription</strong> (ChatGPT Plus, Claude Pro) is a monthly fee with a usage limit. An <strong>API key</strong> is a long password that gives access to a model, and you pay for what you use, cent by cent.</p>
             <p><a href="https://openrouter.ai">OpenRouter</a> is a service that gives you one key for hundreds of models from many companies, and some of them are free. It is the simplest way to try different models with Goose.</p>
-            <p><strong>Be careful with free models:</strong> some use what you send them to improve. Do not send them personal or work data.</p>
-            <p>There are more open apps. OpenWork is very easy to install, but it is young and it sometimes stops showing older chats after an update. Pi has many settings, but you use it from the terminal (the text window where you type commands); I will write a separate post about it.</p>
+            <p><strong>Be careful with free models:</strong> some use what you send them to improve. Be careful if you send them personal or work data; it is probably best to avoid it.</p>
+            <p>There are more open apps. OpenWork is very easy to install, but it is young and it sometimes stops showing older chats after an update. Pi has many settings, but you use it from the terminal (the text window where you type commands).</p>
           </div>
         </details>
 
@@ -347,7 +347,7 @@
         <h2 id="step-2-create-the-folder"><a class="heading-anchor" href="#step-2-create-the-folder">Create the folder</a></h2>
         <p class="section-lead">You create the agent's home.</p>
         <p>A <a class="term" href="#g-folder">folder</a> is a container on your computer that holds <a class="term" href="#g-file">files</a>. A file is a document with a name, and its ending (<code>.md</code>, <code>.csv</code>, <code>.pdf</code>) tells you what kind of content it holds.</p>
-        <p>The agent only sees what is inside its folder. That is good: you decide what it knows and what it does not. But remember that it sends what it reads to the model, on the internet, so that it can answer. Do not put anything in the folder that you would not tell that company.</p>
+        <p>The agent only sees what is inside its folder. That is good: you decide what it knows and what it does not. But remember that it sends what it reads to the model, on the internet, so that it can answer. So keep in mind that the company behind the model may get to see what is in the folder.</p>
         <ol>
           <li><strong>Create a folder on the Desktop</strong> (or in Documents, if you prefer). On a Mac: right-click on the Desktop, "New Folder". On Windows: right-click, "New", "Folder".</li>
           <li><strong>Give it a name with no spaces and no accents,</strong> for example:
@@ -357,7 +357,7 @@
             <span class="variant" data-example="diario"><span class="variant-label">Journal</span> <code>my-journal</code></span>
             <span class="variant" data-example="reforma"><span class="variant-label">Renovation</span> <code>bathroom-renovation</code></span>
             . Simple names avoid problems with some apps.</li>
-          <li><strong>Inside it, create two folders:</strong> <span class="part part-data">data</span> and <span class="part part-exports">exports</span>. The agent will create the rest later.</li>
+          <li><strong>Inside it, create two folders:</strong> <span class="part part-data">data</span> and <span class="part part-exports">exports</span>. The agent itself will create the rest later.</li>
         </ol>
         <p>When you finish the guide, the folder will have these parts. Each one has a colour, the same everywhere on this page. Tap a part to see what it is for and who reads it.</p>
 
@@ -412,7 +412,7 @@
               <li><strong>CSV (<code>.csv</code>):</strong> a table written as text, with one row per line and the columns separated by commas. It opens in Google Sheets, or in Excel with "Data &gt; From Text/CSV". It is the best format for logs that you want to add up or draw in a chart.</li>
               <li><strong>JSON (<code>.json</code>):</strong> data with a fixed structure, such as <code>{"topic": 3, "status": "mastered"}</code>. It is the best format when a program, such as a script, must always read the data in the same way.</li>
             </ul>
-            <p>A practical rule: start with Markdown. Move to CSV when you want to count or make charts.</p>
+            <p>A practical rule: start with Markdown. Move to CSV when you want to count or make charts. Use JSON when a script must read the data; usually the agent itself will decide that.</p>
           </div>
         </details>
 
