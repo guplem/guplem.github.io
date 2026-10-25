@@ -6,7 +6,7 @@ https://triunitystudios.com/blog/your-first-agent/
 What is inside:
 - AGENTS.md: the instructions of the agent. CLAUDE.md only points to that file.
 - data/: the memory (subjects, progress, assignments and notes).
-- .agents/skills/ and .claude/skills/: the "practice-exam" recipe (the same in both).
+- .agents/skills/ and .claude/skills/: the "practice-exam" skill (the same in both).
 - scripts/what-to-review.py: tells you which topics to review. It needs Python 3.
 - exports/: a sample result, a one-page summary.
 

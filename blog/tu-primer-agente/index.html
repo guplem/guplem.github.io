@@ -9,7 +9,7 @@
          post's title, description its summary, article:published_time its date.
          Change them here and run the generators; nothing else lists this post.
          The English version is ../your-first-agent/; keep the two in step. -->
-    <meta name="description" content="Una guía paso a paso, sin programar, para pasar del chat de ChatGPT a un agente propio: una carpeta en tu ordenador con instrucciones (AGENTS.md), memoria y recetas. Sirve para Claude, ChatGPT, Antigravity y Goose." />
+    <meta name="description" content="Una guía paso a paso, sin programar, para pasar del chat de ChatGPT a un agente propio: una carpeta en tu ordenador con instrucciones (AGENTS.md), memoria y habilidades (skills). Sirve para Claude, ChatGPT, Antigravity y Goose." />
     <link rel="canonical" href="https://triunitystudios.com/blog/tu-primer-agente/" />
     <link rel="alternate" hreflang="es" href="https://triunitystudios.com/blog/tu-primer-agente/" />
     <link rel="alternate" hreflang="en" href="https://triunitystudios.com/blog/your-first-agent/" />
@@ -18,7 +18,7 @@
     <meta property="og:locale" content="es_ES" />
     <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:title" content="Tu primer agente de IA vive en una carpeta" />
-    <meta property="og:description" content="Una guía paso a paso, sin programar, para pasar del chat a un agente propio: una carpeta en tu ordenador con instrucciones, memoria y recetas." />
+    <meta property="og:description" content="Una guía paso a paso, sin programar, para pasar del chat a un agente propio: una carpeta en tu ordenador con instrucciones, memoria y habilidades." />
     <meta property="og:url" content="https://triunitystudios.com/blog/tu-primer-agente/" />
     <meta property="article:published_time" content="2026-10-25T14:00:00Z" />
     <meta property="article:author" content="Guillem Poy" />
@@ -27,7 +27,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Tu primer agente de IA vive en una carpeta",
-        "description": "Una guía paso a paso, sin programar, para pasar del chat de ChatGPT a un agente propio: una carpeta en tu ordenador con instrucciones (AGENTS.md), memoria y recetas. Sirve para Claude, ChatGPT, Antigravity y Goose.",
+        "description": "Una guía paso a paso, sin programar, para pasar del chat de ChatGPT a un agente propio: una carpeta en tu ordenador con instrucciones (AGENTS.md), memoria y habilidades (skills). Sirve para Claude, ChatGPT, Antigravity y Goose.",
         "datePublished": "2026-10-25T14:00:00Z",
         "inLanguage": "es",
         "author": { "@type": "Person", "name": "Guillem Poy", "url": "https://triunitystudios.com/" },
@@ -73,7 +73,7 @@
       <header class="post-header">
         <p class="post-kicker">Tutorial · desde cero, sin programar</p>
         <h1>Tu primer agente de IA vive en una carpeta</h1>
-        <p class="post-standfirst">Si usas ChatGPT en el navegador, copias y pegas, y cada conversación empieza de cero, esta guía es para ti. Paso a paso, vas a crear un agente propio: una carpeta en tu ordenador con sus instrucciones, su memoria y sus recetas.</p>
+        <p class="post-standfirst">Si usas una IA en el navegador, copias y pegas, y cada conversación empieza de cero, esta guía es para ti. Paso a paso, vas a crear un agente propio: una carpeta en tu ordenador con sus instrucciones, su memoria y sus habilidades.</p>
         <p class="post-byline">
           <a href="../../">Guillem Poy</a>
           <time datetime="2026-10-25">25 de octubre de 2026</time>
@@ -99,7 +99,7 @@
             <li><a href="#paso-3-abre-la-carpeta" data-step-link="paso-3">3. Abre la carpeta y saluda</a></li>
             <li><a href="#paso-4-instrucciones" data-step-link="paso-4">4. Las instrucciones: AGENTS.md</a></li>
             <li><a href="#paso-5-memoria" data-step-link="paso-5">5. La memoria: datos</a></li>
-            <li><a href="#paso-6-skills" data-step-link="paso-6">6. Las recetas: skills</a></li>
+            <li><a href="#paso-6-skills" data-step-link="paso-6">6. Las habilidades: skills</a></li>
             <li><a href="#paso-7-scripts" data-step-link="paso-7">7. Las herramientas: scripts</a></li>
             <li><a href="#paso-8-exportaciones" data-step-link="paso-8">8. Los resultados: exportaciones</a></li>
             <li><a href="#comprueba-tu-agente" data-step-link="comprueba">Comprueba tu agente</a></li>
@@ -122,9 +122,9 @@
         <ul>
           <li><strong>Cada conversación empieza casi de cero.</strong> Algunas apps recuerdan un poco, pero no decides tú qué. Le vuelves a explicar quién eres y qué quieres.</li>
           <li><strong>Tú haces de cartero.</strong> Copias un texto de tus archivos, lo pegas en el chat, copias la respuesta y la pegas en otro sitio.</li>
-          <li><strong>No puede tocar tus archivos.</strong> No puede abrir tus apuntes, ni apuntar tu entreno en una tabla, ni guardar un PDF en tu ordenador.</li>
+          <li><strong>No trabaja con los archivos de tu ordenador.</strong> No puede leer tus apuntes, ni cambiar tu tabla de entrenos, ni crear un documento en tu carpeta. Algunas apps se conectan a servicios como Google Drive, pero lo que tienes en tu ordenador se queda fuera.</li>
         </ul>
-        <p>Un <a class="term" href="#g-agente">agente</a> resuelve las tres. Es un <a class="term" href="#g-modelo">modelo</a> de IA (el "cerebro" que entiende y escribe texto) que, además de hablar, puede actuar: leer archivos, escribirlos y seguir varios pasos solo. Para actuar necesita una <a class="term" href="#g-app">app</a> en tu ordenador que le dé esas manos, y una <a class="term" href="#g-carpeta">carpeta</a> donde trabajar.</p>
+        <p>Un <a class="term" href="#g-agente">agente</a> resuelve las tres. Es un <a class="term" href="#g-modelo">modelo</a> de IA (el "cerebro" que entiende y escribe texto) que, además de hablar, puede actuar: leer archivos, escribirlos y seguir por su cuenta las instrucciones que tú le dejas escritas. Para actuar necesita una <a class="term" href="#g-app">app</a> en tu ordenador que le dé esas manos, y una <a class="term" href="#g-carpeta">carpeta</a> donde trabajar.</p>
 
         <figure class="diagram forget">
           <svg viewBox="0 0 800 470" role="img" aria-labelledby="forget-title forget-desc">
@@ -173,9 +173,9 @@
         </figure>
 
         <h3 id="la-trampa-del-chat-eterno"><a class="heading-anchor" href="#la-trampa-del-chat-eterno">La trampa del chat eterno</a></h3>
-        <p>Como cada chat nuevo empieza casi de cero, mucha gente hace lo lógico: abre un chat para una cosa (las clases, la dieta, la obra) y lo usa durante semanas. Así no tiene que volver a explicarlo todo. Pero eso crea otro problema, y casi nadie lo ve.</p>
-        <p>Todo lo que el modelo lee para responder se llama el <a class="term" href="#g-contexto">contexto</a>: sus reglas, la conversación entera y tu mensaje nuevo. El contexto tiene un tamaño máximo. Cuando un chat eterno lo llena, la app tiene que hacer sitio: según la app, <a class="term" href="#g-compactar">compacta</a> los mensajes antiguos en un resumen o deja de leerlos. No te avisa, y por el camino se pierden detalles.</p>
-        <p>Y aunque todo quepa, un contexto enorme funciona peor. Piénsalo así: si te doy una página y te pregunto algo sobre ella, aciertas casi seguro. Si te doy la Biblia entera y te pregunto lo mismo, es mucho más fácil que se te escape algo. A un modelo le pasa igual: cuanto más largo es el contexto, más le cuesta tener en cuenta cada cosa.</p>
+        <p>Como cada chat nuevo empieza casi de cero, mucha gente hace lo lógico: abre un chat para una cosa (las clases, la dieta, la obra…) y lo usa durante semanas. Así no tiene que volver a explicarlo todo. Pero eso crea otro problema, y casi nadie lo ve: demasiado contexto juega en tu contra.</p>
+        <p>Todo lo que el modelo lee para responder se llama el <a class="term" href="#g-contexto">contexto</a>: sus reglas, la conversación entera y tu mensaje nuevo. El contexto tiene un tamaño máximo. Cuando un chat eterno lo llena, la app tiene que hacer sitio: según la app, <a class="term" href="#g-compactar">compacta</a> los mensajes antiguos en un resumen o deja de leerlos. Puede que no te avise, y por el camino se pierden detalles.</p>
+        <p>Y aunque todo quepa, un contexto enorme funciona peor. Piénsalo así: si te lees una página y te pregunto algo sobre ella, aciertas casi seguro. Si te lees la Biblia entera y te pregunto lo mismo, es mucho más fácil que se te escape algo. A un modelo le pasa igual: cuanto más largo es el contexto, más le cuesta tener en cuenta cada cosa.</p>
 
         <figure class="diagram ctxfill">
           <svg viewBox="0 0 720 200" role="img" aria-labelledby="ctxfill-title ctxfill-desc">
@@ -199,24 +199,59 @@
 
         <p>Un agente con carpeta lo resuelve, porque lo importante vive en archivos, no en el chat. Así puedes abrir un chat nuevo para cada tarea, con el contexto limpio, y el agente lee solo los archivos que esa tarea necesita.</p>
 
+        <figure class="diagram carry">
+          <svg viewBox="0 0 760 330" role="img" aria-labelledby="carry-title carry-desc">
+            <title id="carry-title">Con una carpeta, lo importante pasa de un chat a otro</title>
+            <desc id="carry-desc">Tres chats con el mismo agente, cada uno con su barra de contexto y el límite a la derecha. Al lado, un archivo de la carpeta: datos/progreso.md. Chat 1: le cuentas que ya dominas el tema 3, y el agente lo apunta en el archivo: "Tema 3: dominado". Chat 2: un chat nuevo y limpio; el agente lee el archivo y ya sabe lo del tema 3. Chat 3: un chat largo que se llena; la app lo compacta en un resumen. No pasa nada: el agente vuelve a leer el archivo y no se pierde nada esencial.</desc>
+            <line x1="560" y1="30" x2="560" y2="272" class="limit-line" />
+            <text x="560" y="20" text-anchor="middle" class="label-soft">límite del contexto</text>
+            <text x="30" y="52" class="label">Chat 1: le cuentas algo</text>
+            <rect x="30" y="60" width="530" height="40" rx="10" class="box" />
+            <text x="30" y="136" class="label">Chat 2: un chat nuevo, limpio</text>
+            <rect x="30" y="144" width="530" height="40" rx="10" class="box" />
+            <text x="30" y="220" class="label">Chat 3: un chat largo</text>
+            <rect x="30" y="228" width="530" height="40" rx="10" class="box" />
+            <rect x="590" y="120" width="160" height="80" rx="14" class="box-strong" />
+            <text x="604" y="142" class="label-on-teal">datos/progreso.md</text>
+            <g class="cy-line"><rect x="604" y="164" width="8" height="8" rx="4" class="sw-data" /><text x="618" y="172" class="bubble-text">Tema 3: dominado</text></g>
+            <g class="cy-a"><rect x="40" y="69" width="18" height="22" rx="5" class="blk-person" /></g>
+            <g class="cy-b"><rect x="63" y="69" width="18" height="22" rx="5" class="blk-ai" /><text x="92" y="85" class="label-soft">«El tema 3 ya lo domino» → lo apunta en el archivo</text></g>
+            <g class="cy-write"><path d="M540 80 C580 80 640 92 650 110" class="wire-teal arrow-path" /><polygon points="645,108 651,119 656,106" class="arrow-teal" /></g>
+            <g class="cy-read2"><path d="M588 164 L572 164" class="wire-teal" /><polygon points="572,159 562,164 572,169" class="arrow-teal" /></g>
+            <g class="cy-p2"><rect x="40" y="152" width="100" height="24" rx="8" class="piece" /><rect x="50" y="160" width="8" height="8" rx="4" class="sw-data" /><text x="64" y="168" class="bubble-text">progreso.md</text></g>
+            <g class="cy-c"><rect x="148" y="153" width="18" height="22" rx="5" class="blk-person" /></g>
+            <g class="cy-d"><rect x="171" y="153" width="18" height="22" rx="5" class="blk-ai" /><text x="200" y="169" class="label-soft">lee el archivo: ya sabe lo del tema 3</text></g>
+            <g class="cy-read3"><path d="M670 202 C670 240 620 248 572 248" class="wire-teal arrow-path" /><polygon points="572,243 562,248 572,253" class="arrow-teal" /></g>
+            <g class="cy-old"><g class="cy-p3"><rect x="40" y="236" width="100" height="24" rx="8" class="piece" /><rect x="50" y="244" width="8" height="8" rx="4" class="sw-data" /><text x="64" y="252" class="bubble-text">progreso.md</text></g><g class="cy-blocks"><rect x="148" y="238" width="18" height="22" rx="5" class="blk-person" style="animation-delay:0.0s" /><rect x="171" y="238" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:0.2s" /><rect x="194" y="238" width="18" height="22" rx="5" class="blk-person" style="animation-delay:0.4s" /><rect x="217" y="238" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:0.6s" /><rect x="240" y="238" width="18" height="22" rx="5" class="blk-person" style="animation-delay:0.8s" /><rect x="263" y="238" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:1.0s" /><rect x="286" y="238" width="18" height="22" rx="5" class="blk-person" style="animation-delay:1.2s" /><rect x="309" y="238" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:1.4s" /><rect x="332" y="238" width="18" height="22" rx="5" class="blk-person" style="animation-delay:1.6s" /><rect x="355" y="238" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:1.8s" /><rect x="378" y="238" width="18" height="22" rx="5" class="blk-person" style="animation-delay:2.0s" /><rect x="401" y="238" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:2.2s" /><rect x="424" y="238" width="18" height="22" rx="5" class="blk-person" style="animation-delay:2.4s" /><rect x="447" y="238" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:2.6s" /><rect x="470" y="238" width="18" height="22" rx="5" class="blk-person" style="animation-delay:2.8s" /><rect x="493" y="238" width="18" height="22" rx="5" class="blk-ai" style="animation-delay:3.0s" /><rect x="516" y="238" width="18" height="22" rx="5" class="blk-person" style="animation-delay:3.2s" /></g></g>
+            <rect x="36" y="232" width="520" height="32" rx="8" class="compact-overlay cy-squash" />
+            <text x="296" y="253" text-anchor="middle" class="bubble-text cy-sumall">la app compacta el chat…</text>
+            <text x="88" y="253" text-anchor="middle" class="bubble-text cy-sum">resumen</text>
+            <g class="cy-p4"><rect x="148" y="236" width="100" height="24" rx="8" class="piece" /><rect x="158" y="244" width="8" height="8" rx="4" class="sw-data" /><text x="172" y="252" class="bubble-text">progreso.md</text></g>
+            <g class="cy-e"><rect x="256" y="237" width="18" height="22" rx="5" class="blk-ai" /><text x="148" y="290" class="label-soft">vuelve a leer el archivo: no se pierde nada esencial</text></g>
+            <text x="30" y="320" class="label cap-good cy-end">Se compacta, pero lo importante está a salvo en el archivo.</text>
+          </svg>
+          <figcaption>El agente guarda lo importante en un archivo de su carpeta. Cada chat nuevo lo lee, y aunque un chat largo se compacte, el archivo sigue ahí.</figcaption>
+        </figure>
+
         <h3 id="lo-que-un-chat-no-puede"><a class="heading-anchor" href="#lo-que-un-chat-no-puede">Y además, un agente puede…</a></h3>
         <p>Más allá de recordar, trabajar en una carpeta abre cosas que un chat no hace:</p>
         <ul>
-          <li><strong>Crear archivos de verdad en tu ordenador.</strong> Una página para imprimir, una tabla para Excel y, si tu app sabe, un PDF o un Word, guardados directamente en tu carpeta.</li>
+          <li><strong>Crear archivos de verdad en tu ordenador.</strong> Una tabla para Excel, una página para imprimir o un documento para enviar. Se guardan en tu carpeta: son tuyos, los abres con tus programas de siempre y los compartes como quieras.</li>
           <li><strong>Trabajar con muchos archivos.</strong> En un chat adjuntas unos pocos. En una carpeta puedes tener cientos o miles: 300 facturas escaneadas, por ejemplo. El agente las abre una a una y te deja una tabla con el total de cada mes. Tardará y gastará uso, pero no hay un límite de archivos que subir.</li>
-          <li><strong>Usar programas de tu ordenador,</strong> con tu permiso: ordenar fotos, convertir documentos o hacer cuentas exactas con un script.</li>
-          <li><strong>Dejar rastro.</strong> Todo lo que hace queda en archivos que puedes revisar, corregir o borrar.</li>
+          <li><strong>Usar programas de tu ordenador,</strong> con tu permiso: ordenar fotos, convertir documentos o hacer cuentas con un <a class="term" href="#g-script">script</a>, un programa pequeño que el propio agente escribe. Un modelo escribe la respuesta que le parece más probable, así que puede fallar en una suma larga. Un script hace la cuenta de verdad, y repite el mismo proceso igual las veces que haga falta.</li>
+          <li><strong>Aprender habilidades.</strong> Le puedes escribir <a class="term" href="#g-skill">skills</a>: instrucciones para una tarea concreta, que el agente sigue cuando hace falta o cuando se lo pides. Las verás en el paso 6.</li>
+          <li><strong>Trabajar en paralelo.</strong> Puedes abrir varios chats a la vez con la misma carpeta, cada uno con su tarea. Todos leen y guardan en los mismos archivos; va mejor si cada uno toca archivos distintos.</li>
         </ul>
 
         <p>Así que el agente que vas a crear tiene tres piezas:</p>
         <ul>
-          <li><strong>El modelo, el cerebro.</strong> Lo pone una empresa (Anthropic, OpenAI, Google) o un proyecto abierto. Casi siempre no vive en tu ordenador: está en internet.</li>
-          <li><strong>La app, las manos.</strong> Un programa de escritorio que conecta el modelo con tu ordenador. Le deja leer y escribir archivos, y te pide permiso antes.</li>
-          <li><strong>La carpeta, la casa y la memoria.</strong> Dentro van sus instrucciones, lo que debe recordar y lo que te entrega. Es tuya y la puedes abrir siempre.</li>
+          <li><strong>El modelo, el cerebro.</strong> Lo pone una empresa (Anthropic, OpenAI, Google…) o un proyecto abierto. Normalmente funciona en internet, no en tu ordenador.</li>
+          <li><strong>La app, donde trabajáis juntos.</strong> Un programa en tu ordenador. Es donde tú hablas con el agente y ves lo que hace, y es lo que le da sus herramientas: leer, crear y cambiar los archivos de su carpeta.</li>
+          <li><strong>La carpeta, la casa y la memoria.</strong> Dentro van sus instrucciones, lo que debe recordar y lo que te entrega. Es tuya: la controlas por completo, la copias y la compartes como quieras.</li>
         </ul>
 
         <details class="more">
-          <summary>¿Qué es exactamente un modelo (LLM)?</summary>
+          <summary>¿Qué es un modelo (LLM), y por qué no recuerda nada?</summary>
           <div>
             <p>Un modelo de lenguaje grande (en inglés <em>large language model</em>, LLM) es un programa entrenado con muchísimo texto. Dado un texto, calcula cuál es la continuación más probable, palabra a palabra. De ahí salen sus respuestas.</p>
             <p>Lo importante para esta guía: el modelo solo sabe lo que aprendió al entrenarse y lo que tú le das en cada mensaje. No recuerda nada por sí mismo. Por eso la carpeta es tan útil.</p>
@@ -225,7 +260,8 @@
         </details>
 
         <h3 id="elige-tu-ejemplo"><a class="heading-anchor" href="#elige-tu-ejemplo">Elige tu ejemplo</a></h3>
-        <p>La guía es igual para todos. Solo cambia lo que el agente sabe hacer. Elige el ejemplo que más se parezca a lo tuyo; luego lo puedes adaptar a cualquier cosa.</p>
+        <p>A partir de aquí, vas a crear un agente de verdad, paso a paso. Para que cada paso sea concreto, elige ahora un ejemplo: la guía te enseñará a crear ese agente. Escoge el que más se parezca a lo tuyo, o el que te apetezca.</p>
+        <p>Los pasos son los mismos para todos; solo cambia lo que el agente sabe hacer. Con lo que aprendas podrás crear después cualquier otro: uno para tus finanzas, para tu huerto, para preparar unas oposiciones o para tu negocio.</p>
         <ul class="choice-grid" data-choice="example">
           <li><button type="button" class="choice" data-example="estudiante" aria-pressed="false"><b>Estudiante</b><span>Un tutor que te hace preguntas de examen, recuerda lo que ya dominas y lleva tus entregas.</span></button></li>
           <li><button type="button" class="choice" data-example="docente" aria-pressed="false"><b>Docente</b><span>Un ayudante que prepara fichas y lleva cómo va cada grupo de clase.</span></button></li>
@@ -276,7 +312,7 @@
         <div class="apps no-js-only">
           <div class="app-info variant" data-app="claude">
             <p class="app-name"><b>La app de escritorio de Claude</b>, de Anthropic, apartado Code</p>
-            <p>Para Mac y Windows, y Linux en beta. Necesitas un plan de pago: Pro, Max, Team o Enterprise. La app tiene dos apartados que trabajan con carpetas, Cowork y Code. Esta guía usa <strong>Code</strong>, porque lee las instrucciones y las skills (las recetas del paso 6) que hay dentro de tu carpeta; Cowork solo usa las skills que subes a tu cuenta. No te asuste el nombre: no vas a programar. Descárgala en <a href="https://claude.ai/download">claude.ai/download</a>.</p>
+            <p>Para Mac y Windows, y Linux en beta. Necesitas un plan de pago: Pro, Max, Team o Enterprise. La app tiene dos apartados que trabajan con carpetas, Cowork y Code. Esta guía usa <strong>Code</strong>, porque lee las instrucciones y las skills (las habilidades del paso 6) que hay dentro de tu carpeta; Cowork solo usa las skills que subes a tu cuenta. No te asuste el nombre: no vas a programar. Descárgala en <a href="https://claude.ai/download">claude.ai/download</a>.</p>
           </div>
           <div class="app-info variant" data-app="codex">
             <p class="app-name"><b>La app de escritorio de ChatGPT</b>, de OpenAI, en modo Codex</p>
@@ -347,8 +383,8 @@
               </li>
               <li class="tree-item is-hidden-file" style="--c: var(--f-skills)" data-part="skills" data-hidden-label="oculta">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10.5H3z" fill="currentColor" fill-opacity=".16" /></svg>
-                <span class="tree-name"><span data-skills-dir>.agents/skills/</span><small>las recetas</small></span>
-                <span class="tree-desc">Recetas para tareas que repites, como "prepárame un examen". Cada una es una carpeta con un archivo SKILL.md. El agente solo lee el título y la descripción hasta que la necesita. El nombre depende de la app: <code>.claude/skills/</code> en Claude y <code>.agents/skills/</code> en las demás.</span>
+                <span class="tree-name"><span data-skills-dir>.agents/skills/</span><small>las habilidades</small></span>
+                <span class="tree-desc">Instrucciones para tareas que repites, como "prepárame un examen". Cada una es una carpeta con un archivo SKILL.md. El agente solo lee el título y la descripción hasta que la necesita. El nombre depende de la app: <code>.claude/skills/</code> en Claude y <code>.agents/skills/</code> en las demás.</span>
                 <span class="tree-who"><span>Las escribe el agente contigo</span><span>El agente las abre cuando tocan</span></span>
               </li>
               <li class="tree-item" style="--c: var(--f-scripts)" data-part="scripts">
@@ -447,7 +483,7 @@
           <figcaption>El contexto es todo lo que el modelo lee antes de responder. AGENTS.md entra siempre; de las skills, solo el nombre y la descripción hasta que hacen falta.</figcaption>
         </figure>
 
-        <p>(Las skills son recetas para tareas que repites; las verás en el paso 6.) Por eso AGENTS.md es tan potente: entra en el contexto de todas las conversaciones. Lo que escribas ahí, el agente lo tiene presente siempre. Y es un estándar abierto: lo leen Claude, ChatGPT (Codex), Antigravity, Goose y muchas otras apps. Así no dependes de ninguna.</p>
+        <p>(Las skills son instrucciones para tareas que repites; las verás en el paso 6.) Por eso AGENTS.md es tan potente: entra en el contexto de todas las conversaciones. Lo que escribas ahí, el agente lo tiene presente siempre. Y es un estándar abierto: lo leen Claude, ChatGPT (Codex), Antigravity, Goose y muchas otras apps. Así no dependes de ninguna.</p>
 
         <h3 id="tu-agents-md"><a class="heading-anchor" href="#tu-agents-md">Tu AGENTS.md</a></h3>
         <p>Este es el AGENTS.md de tu ejemplo. Léelo: verás que dice quién es el agente, qué hace, dónde guarda cada cosa y unas reglas. Cambia los datos que son tuyos (tu curso, tus grupos, tu objetivo) y deja la estructura.</p>
@@ -656,10 +692,10 @@ Me hablas en español, de forma clara y ordenada.
       <!-- ============ Paso 6 ============ -->
       <section>
         <p class="step-label">Paso 6 de 8</p>
-        <h2 id="paso-6-skills"><a class="heading-anchor" href="#paso-6-skills">Enséñale recetas: las skills</a></h2>
+        <h2 id="paso-6-skills"><a class="heading-anchor" href="#paso-6-skills">Enséñale habilidades: las skills</a></h2>
         <p class="section-lead">Le enseñas al agente una tarea que repites, paso a paso, para que la haga siempre igual de bien.</p>
-        <p>Eso es una <a class="term" href="#g-skill">skill</a> (en inglés, "habilidad"): una receta.</p>
-        <p>Podrías poner todos los pasos en el AGENTS.md, pero ocuparían el contexto de todas las conversaciones, también las que no los necesitan. Una skill es más lista: el agente solo ve su nombre y una frase que la describe. Cuando le pides algo que encaja con esa frase, abre la receta entera y la sigue.</p>
+        <p>Eso es una <a class="term" href="#g-skill">skill</a> (en inglés, "habilidad"): unas instrucciones guardadas para una tarea concreta.</p>
+        <p>Podrías poner todos los pasos en el AGENTS.md, pero ocuparían el contexto de todas las conversaciones, también las que no los necesitan. Una skill es más lista: el agente solo ve su nombre y una frase que la describe. Cuando le pides algo que encaja con esa frase, abre la skill entera y la sigue.</p>
         <p>Una skill es una carpeta con un archivo <code>SKILL.md</code> dentro. La carpeta se llama igual que la skill. Ese archivo empieza con un bloque entre dos líneas <code>---</code> con el nombre y la descripción, y luego van los pasos. Las skills de la carpeta del agente van aquí:</p>
 
         <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p><code class="part part-skills">.claude/skills/</code>, y dentro una carpeta por skill. Claude no mira <code>.agents/skills/</code>.</p></div>
@@ -954,7 +990,7 @@ Me hablas en (idioma), (con qué tono).
           <dt id="g-compactar">Compactar</dt>
           <dd data-related="g-contexto">Lo que hace la app cuando una conversación ya no cabe en el contexto: resume o deja de leer los mensajes antiguos para hacer sitio. Por el camino se pierden detalles.</dd>
           <dt id="g-skill">Skill</dt>
-          <dd data-related="g-contexto g-agents-md g-script">Una receta para una tarea que repites: una carpeta con un archivo SKILL.md (nombre, descripción y pasos). El agente solo lee la descripción hasta que la necesita.</dd>
+          <dd data-related="g-contexto g-agents-md g-script">Instrucciones para una tarea que repites: una carpeta con un archivo SKILL.md (nombre, descripción y pasos). El agente solo lee la descripción hasta que la necesita.</dd>
           <dt id="g-script">Script</dt>
           <dd data-related="g-skill g-herramienta">Un programa pequeño que hace una tarea exacta, igual cada vez, como sumar una columna de una tabla.</dd>
           <dt id="g-clave-api">Clave de API</dt>

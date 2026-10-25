@@ -14,7 +14,7 @@ Luego escribe: "¿Quién eres y qué sabes hacer?"
 ## Qué trae
 - AGENTS.md: las instrucciones. CLAUDE.md solo apunta a ellas.
 - datos/: la memoria (entradas del día y temas).
-- .agents/skills/ y .claude/skills/: la receta cerrar-el-dia.
+- .agents/skills/ y .claude/skills/: la skill cerrar-el-dia.
 - scripts/animo.py: cuenta los días de cada ánimo por mes (necesita Python 3).
 - exportaciones/: un resumen de ejemplo.
 
