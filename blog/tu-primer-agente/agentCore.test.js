@@ -7,7 +7,7 @@
 // choice writes, and which part of a folder is right or wrong.
 
 import { describe, expect, test } from "bun:test";
-import { APP_IDS, EXAMPLE_IDS, animationSteps, checkFolder, parseFrontmatter, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
+import { APP_IDS, EXAMPLE_IDS, animationEnd, animationSteps, checkFolder, parseFrontmatter, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
 
 describe("recommendApps", () => {
   test("returns null when the reader has ticked nothing", () => {
@@ -224,5 +224,25 @@ describe("stepAfter and stepBefore", () => {
     expect(stepAfter(steps, 3000)).toBe(0);
     expect(stepBefore(steps, 1000)).toBe(0);
     expect(stepBefore(steps, 0)).toBe(0);
+  });
+});
+
+describe("animationEnd", () => {
+  test("ends where the finished picture starts to clear", () => {
+    expect(animationEnd([fadeIn(0, 0.1, 0.13), fadeIn(0, 0.3, 0.33)])).toBe(9500);
+  });
+
+  test("ignores a piece that leaves on purpose before the last step", () => {
+    const cover = { delay: 0, duration: 10000, keyframes: [{ offset: 0, opacity: 0 }, { offset: 0.2, opacity: 1 }, { offset: 0.25, opacity: 1 }, { offset: 0.27, opacity: 0 }, { offset: 1, opacity: 0 }] };
+    expect(animationEnd([cover, fadeIn(0, 0.3, 0.33)])).toBe(9500);
+  });
+
+  test("takes the earliest clear, so no piece is already fading", () => {
+    const early = { delay: 0, duration: 10000, keyframes: [{ offset: 0, opacity: 0 }, { offset: 0.5, opacity: 1 }, { offset: 0.92, opacity: 1 }, { offset: 0.97, opacity: 0 }, { offset: 1, opacity: 0 }] };
+    expect(animationEnd([early, fadeIn(0, 0.3, 0.33)])).toBe(9200);
+  });
+
+  test("returns null for a drawing with no steps", () => {
+    expect(animationEnd([])).toBeNull();
   });
 });

@@ -177,3 +177,28 @@ export function stepAfter(steps, time) {
 export function stepBefore(steps, time) {
   return steps.findLast((step) => step < time - 1) ?? 0;
 }
+
+/**
+ * Find where a drawing is finished: the moment, after its last step, when the
+ * first piece starts to clear for the next loop. The page stops there, so the
+ * reader keeps the finished picture. A piece that leaves before the last step
+ * (a cover that gives way to a summary) does not count.
+ * @param {{delay: number, duration: number, keyframes: {offset: number, opacity?: number}[]}[]} timings as for animationSteps
+ * @returns {number | null} the moment in ms, or null when the drawing has no steps
+ */
+export function animationEnd(timings) {
+  const steps = animationSteps(timings);
+  if (steps.length === 0) return null;
+  const last = steps.at(-1);
+  let end = Infinity;
+  for (const { delay, duration, keyframes } of timings) {
+    const frames = keyframes.filter((frame) => typeof frame.opacity === "number");
+    if (frames.length === 0) continue;
+    const top = Math.max(...frames.map((frame) => frame.opacity));
+    const held = frames.findLastIndex((frame) => frame.opacity === top);
+    if (held === frames.length - 1) continue;
+    const moment = Math.round(delay + frames[held].offset * duration);
+    if (moment > last) end = Math.min(end, moment);
+  }
+  return end === Infinity ? last : end;
+}
