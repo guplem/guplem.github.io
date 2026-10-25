@@ -466,9 +466,12 @@
         <p>Recuerda el <a class="term" href="#g-contexto">contexto</a>, del principio: el modelo no recuerda nada entre mensajes. Cada vez que escribes, la app le manda de golpe todo lo que debe tener en cuenta. Esto es lo que entra:</p>
 
         <figure class="diagram context">
-          <svg viewBox="0 0 720 330" role="img" aria-labelledby="context-title context-desc">
+          <svg viewBox="0 0 760 330" role="img" aria-labelledby="context-title context-desc">
             <title id="context-title">Lo que lee el modelo cada vez que escribes</title>
-            <desc id="context-desc">Cinco cajas aparecen una a una: las reglas de la app, el archivo AGENTS.md, el nombre y la descripción de las skills, la conversación hasta ahora y tu mensaje nuevo. Una llave las junta y las llama "el contexto". Una flecha lleva el contexto al modelo, y el modelo devuelve una respuesta. Lo que no está en esas cajas, el modelo no lo sabe.</desc>
+            <desc id="context-desc">Cinco cajas aparecen una a una: las reglas de la app, el archivo AGENTS.md, el nombre y la descripción de las skills, la conversación hasta ahora y tu mensaje nuevo. Una llave las junta y las llama "el contexto". Las tres primeras son iguales en cada chat; las dos últimas son de este chat. Una flecha lleva el contexto al modelo, y otra flecha, "responde", lleva del modelo a su respuesta. Lo que no está en esas cajas, el modelo no lo sabe.</desc>
+            <g class="ctx-group"><rect x="6" y="12" width="352" height="178" rx="16" class="group-box" /><text transform="translate(26 101) rotate(-90)" text-anchor="middle" class="label-soft">igual en cada chat</text></g>
+            <g class="ctx-group g2"><rect x="6" y="186" width="352" height="120" rx="16" class="group-box" /><text transform="translate(26 246) rotate(-90)" text-anchor="middle" class="label-soft">lo de este chat</text></g>
+            <g class="ctx-main" transform="translate(30 0)">
             <g class="ctx-box"><rect x="20" y="20" width="300" height="46" rx="12" class="box" /><g class="part-ico"><title>La app: el programa donde hablas con el agente, y que le da sus herramientas.</title><use href="#ico-app" x="31" y="34" width="18" height="18" /></g><text x="56" y="40" class="label">Reglas de la app</text><text x="56" y="56" class="label-soft">"Puedes leer y escribir archivos…"</text></g>
             <g class="ctx-box"><rect x="20" y="78" width="300" height="46" rx="12" class="box" /><rect x="36" y="96" width="10" height="10" rx="5" class="sw-agents" /><text x="56" y="98" class="label">AGENTS.md</text><text x="56" y="114" class="label-soft">"Eres mi tutor personal…"</text></g>
             <g class="ctx-box"><rect x="20" y="136" width="300" height="46" rx="12" class="box" /><rect x="36" y="154" width="10" height="10" rx="5" class="sw-skills" /><text x="56" y="156" class="label">Skills: nombre y descripción</text><text x="56" y="172" class="label-soft">"preparar-examen: crea un examen…"</text></g>
@@ -477,13 +480,14 @@
             <path class="bracket wire-teal" d="M338 22 Q352 22 352 40 L352 140 Q352 159 368 159 Q352 159 352 178 L352 278 Q352 296 338 296" />
             <g class="ctx-label"><text x="384" y="152" class="label-on-teal">el contexto</text><text x="384" y="170" class="label-soft">todo junto, cada vez</text>
               <path d="M488 159 L540 159" class="wire-teal" /><polygon points="540,153 552,159 540,165" class="arrow-teal" /></g>
-            <g class="ctx-model"><rect x="560" y="124" width="140" height="70" rx="16" class="box-strong" /><g class="part-ico"><title>El modelo: el cerebro que lee y escribe texto. Funciona en internet.</title><use href="#ico-model" x="621" y="130" width="18" height="18" /></g><text x="630" y="163" text-anchor="middle" class="label">El modelo</text><text x="630" y="181" text-anchor="middle" class="label-soft">lee y responde</text></g>
-            <g class="ctx-answer"><rect x="560" y="214" width="140" height="58" rx="14" class="bubble-agent" /><text x="630" y="239" text-anchor="middle" class="bubble-text">"Hoy toca el tema 2,</text><text x="630" y="256" text-anchor="middle" class="bubble-text">hace 9 días que no…"</text></g>
+            <g class="ctx-model"><rect x="560" y="124" width="140" height="70" rx="16" class="box-strong" /><g class="part-ico"><title>El modelo: el cerebro que lee y escribe texto. Funciona en internet.</title><use href="#ico-model" x="621" y="130" width="18" height="18" /></g><text x="630" y="163" text-anchor="middle" class="label">El modelo</text><text x="630" y="181" text-anchor="middle" class="label-soft">lee el contexto</text></g>
+            <g class="ctx-answer"><path d="M630 196 L630 226" class="wire-teal" /><polygon points="625,224 630,234 635,224" class="arrow-teal" /><text x="640" y="218" class="label-soft">responde</text><rect x="560" y="238" width="140" height="58" rx="14" class="bubble-agent" /><text x="630" y="263" text-anchor="middle" class="bubble-text">"Hoy toca el tema 2,</text><text x="630" y="280" text-anchor="middle" class="bubble-text">hace 9 días que no…"</text></g>
+            </g>
           </svg>
           <figcaption>El contexto es todo lo que el modelo lee antes de responder. AGENTS.md entra siempre; de las skills, solo el nombre y la descripción hasta que hacen falta.</figcaption>
         </figure>
 
-        <p>(Las skills son instrucciones para tareas que repites; las verás en el paso 6.) Por eso AGENTS.md es tan potente: entra en el contexto de todas las conversaciones. Lo que escribas ahí, el agente lo tiene presente siempre. Y es un estándar abierto: lo leen Claude, ChatGPT (Codex), Antigravity, Goose y muchas otras apps. Así no dependes de ninguna.</p>
+        <p>Fíjate en AGENTS.md: entra en el contexto de todas las conversaciones, así que lo que escribas ahí el agente lo tiene presente siempre. Por eso es tan potente. Las skills, que verás en el paso 6, entran solo con su nombre y una frase. Y es un estándar abierto: lo leen Claude, ChatGPT (Codex), Antigravity, Goose y muchas otras apps. Así no dependes de ninguna.</p>
 
         <h3 id="tu-agents-md"><a class="heading-anchor" href="#tu-agents-md">Tu AGENTS.md</a></h3>
         <p>Este es el AGENTS.md de tu ejemplo. Léelo: verás que dice quién es el agente, qué hace, dónde guarda cada cosa y unas reglas. Cambia los datos que son tuyos (tu curso, tus grupos, tu objetivo) y deja la estructura.</p>

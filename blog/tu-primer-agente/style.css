@@ -1487,6 +1487,12 @@ body:not(.js-ready) .js-only {
    arrow show (48-56%), the model box lights (56-62%), and the answer arrives
    (62-70%). It holds, then clears (95-100%). */
 .context .ctx-box { opacity: 0; animation: ctx-box 10s infinite; }
+/* The two groups of the context: what is the same in every chat (rules,
+   AGENTS.md, skills) and what comes from this chat. Each group's backdrop
+   shows with its first box. */
+.diagram .group-box { fill: var(--chip); fill-opacity: 0.55; }
+.context .ctx-group { opacity: 0; animation: ctx-box 10s infinite; }
+.context .ctx-group.g2 { animation-delay: 1.8s; }
 .context .ctx-box:nth-of-type(2) { animation-delay: 0.6s; }
 .context .ctx-box:nth-of-type(3) { animation-delay: 1.2s; }
 .context .ctx-box:nth-of-type(4) { animation-delay: 1.8s; }
