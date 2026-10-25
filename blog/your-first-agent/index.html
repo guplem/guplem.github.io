@@ -51,7 +51,8 @@
   <body class="agente" data-example-param="example" data-copy-label="Copy" data-copied-label="Copied">
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <defs>
-        <radialGradient id="visor-fill" cx="50%" cy="22%" r="72%"><stop offset="0" stop-color="#1c252d" /><stop offset="1" stop-color="#000102" /></radialGradient>
+        <symbol id="ico-bot" viewBox="-12 -16 24 26"><rect x="-1" y="-13" width="2" height="5" style="fill: var(--teal)" /><circle cx="0" cy="-13.5" r="2.4" style="fill: var(--teal)" /><rect x="-10" y="-8" width="20" height="17" rx="5" style="fill: var(--teal)" /><g class="visor-eyes"><ellipse cx="-4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /><ellipse cx="4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /></g></symbol>
+        <symbol id="ico-user" viewBox="-12 -12 24 24"><circle r="12" style="fill: var(--chip)" /><circle cy="-3.5" r="4.3" style="fill: var(--ink-soft)" /><path d="M-7.5 8.5c1-5 4-7 7.5-7s6.5 2 7.5 7z" style="fill: var(--ink-soft)" /></symbol>
       </defs>
     </svg>
 
@@ -126,27 +127,46 @@
         <p>An <a class="term" href="#g-agent">agent</a> fixes all three. It is an AI <a class="term" href="#g-model">model</a> (the "brain" that understands and writes text) that can also act, not only talk: read files, write them, and follow several steps on its own. To act, it needs an <a class="term" href="#g-app">app</a> on your computer that gives it those hands, and a <a class="term" href="#g-folder">folder</a> to work in.</p>
 
         <figure class="diagram forget">
-          <svg viewBox="0 0 720 300" role="img" aria-labelledby="forget-title forget-desc">
+          <svg viewBox="0 0 800 470" role="img" aria-labelledby="forget-title forget-desc">
             <title id="forget-title">A chat forgets, a folder remembers</title>
-            <desc id="forget-desc">Two columns. On the left, "A chat in the browser": three messages appear and, when the chat closes, they disappear; the next day the chat is empty. On the right, "An agent in a folder": the same three messages appear and each one leaves a line in a file in the folder, for example in data/progress.md; the next day the lines are still there and the agent reads them again.</desc>
-            <text x="180" y="26" text-anchor="middle" class="label">A chat in the browser</text>
-            <rect x="40" y="40" width="280" height="200" rx="14" class="box" />
-            <g class="msg-a"><rect x="60" y="58" width="200" height="30" rx="15" class="bubble-person" /><text x="160" y="78" text-anchor="middle" class="bubble-text-person">I'm in my last school year</text></g>
-            <g class="msg-b"><rect x="100" y="100" width="200" height="30" rx="15" class="bubble-agent" /><text x="200" y="120" text-anchor="middle" class="bubble-text">Got it. Which topic?</text></g>
-            <g class="msg-c"><rect x="60" y="142" width="200" height="30" rx="15" class="bubble-person" /><text x="160" y="162" text-anchor="middle" class="bubble-text-person">I know topic 3 well now</text></g>
-            <g class="next-day"><text x="180" y="206" text-anchor="middle" class="label-soft">The next day: an empty chat.</text><text x="180" y="224" text-anchor="middle" class="label-soft">You start again.</text></g>
-            <text x="540" y="26" text-anchor="middle" class="label">An agent in a folder</text>
-            <rect x="400" y="40" width="280" height="122" rx="14" class="box" />
-            <g class="keep-a"><rect x="420" y="54" width="200" height="28" rx="14" class="bubble-person" /><text x="520" y="73" text-anchor="middle" class="bubble-text-person">I'm in my last school year</text></g>
-            <g class="keep-b"><rect x="460" y="88" width="200" height="28" rx="14" class="bubble-agent" /><text x="560" y="107" text-anchor="middle" class="bubble-text">Got it. Which topic?</text></g>
-            <g class="keep-c"><rect x="420" y="122" width="200" height="28" rx="14" class="bubble-person" /><text x="520" y="141" text-anchor="middle" class="bubble-text-person">I know topic 3 well now</text></g>
-            <rect x="400" y="172" width="280" height="96" rx="14" class="box-strong" />
-            <text x="416" y="194" class="label-on-teal">data/progress.md</text>
-            <g class="note-line"><rect x="416" y="206" width="8" height="8" rx="4" class="sw-data" /><text x="432" y="214" class="bubble-text">Year: last year of high school</text></g>
-            <g class="note-line note-line-3"><rect x="416" y="226" width="8" height="8" rx="4" class="sw-data" /><text x="432" y="234" class="bubble-text">Topic 3: mastered</text></g>
-            <g class="next-day"><text x="540" y="290" text-anchor="middle" class="label-soft">The next day: it reads them and goes on from there.</text></g>
+            <desc id="forget-desc">Two columns, at two moments. At the top, "Today": in both columns the person writes "I am in my last school year. I know topic 3 well now." In the browser chat, the AI answers "Great! Shall we start?". In the folder, the agent answers "Great! I will note it." and writes two lines in its file data/progress.md: "Year: last year of school" and "Topic 3: mastered". Then the chat closes. At the bottom, "Tomorrow": the person asks "What do I review today?". The browser chat remembers nothing and answers "I do not know what you study. Tell me?". The agent reads data/progress.md and answers "Topic 4 today: you already know topic 3."</desc>
+            <text x="175" y="24" text-anchor="middle" class="label">A chat in the browser</text>
+            <text x="575" y="24" text-anchor="middle" class="label">An agent in a folder</text>
+            <g class="legend"><use href="#ico-user" x="320" y="36" width="24" height="24" /><text x="348" y="52" class="label-soft">you</text><use href="#ico-bot" x="400" y="35" width="24" height="26" /><text x="428" y="52" class="label-soft">the AI</text></g>
+            <text x="20" y="84" class="row-label">TODAY</text>
+            <rect x="20" y="92" width="310" height="128" rx="14" class="box" />
+            <rect x="370" y="92" width="230" height="128" rx="14" class="box" />
+            <g class="f-a">
+              <rect x="110" y="102" width="182" height="48" rx="14" class="bubble-person" /><text x="201" y="120" text-anchor="middle" class="bubble-text-person">I am in my last school year.</text><text x="201" y="140" text-anchor="middle" class="bubble-text-person">I know topic 3 well now.</text><use href="#ico-user" x="300" y="113" width="24" height="24" />
+              <rect x="388" y="102" width="182" height="48" rx="14" class="bubble-person" /><text x="479" y="120" text-anchor="middle" class="bubble-text-person">I am in my last school year.</text><text x="479" y="140" text-anchor="middle" class="bubble-text-person">I know topic 3 well now.</text><use href="#ico-user" x="576" y="113" width="24" height="24" />
+            </g>
+            <g class="f-b">
+              <use href="#ico-bot" x="28" y="168" width="24" height="26" /><rect x="58" y="166" width="170" height="30" rx="14" class="bubble-agent" /><text x="143" y="186" text-anchor="middle" class="bubble-text">Great! Shall we start?</text>
+              <use href="#ico-bot" x="378" y="172" width="24" height="26" /><rect x="408" y="160" width="182" height="46" rx="14" class="bubble-agent" /><text x="420" y="177" class="tag-text">✎ writes to progress.md</text><text x="420" y="196" class="bubble-text">Great! I will note it.</text>
+            </g>
+            <path class="f-write wire-teal arrow-path" d="M590 176 C606 176 606 150 622 150" /><polygon class="f-write-head arrow-teal" points="617,145 627,150 617,155" />
+            <rect x="626" y="122" width="160" height="104" rx="14" class="box-strong" />
+            <rect class="f-glow" x="626" y="122" width="160" height="104" rx="14" />
+            <text x="640" y="146" class="label-on-teal">data/progress.md</text>
+            <text x="640" y="214" class="label-soft">a file in the folder</text>
+            <g class="f-c"><rect x="640" y="160" width="8" height="8" rx="4" class="sw-data" /><text x="654" y="168" class="bubble-text">Year: last school year</text></g>
+            <g class="f-d"><rect x="640" y="180" width="8" height="8" rx="4" class="sw-data" /><text x="654" y="188" class="bubble-text">Topic 3: mastered</text></g>
+            <g class="f-sep"><line x1="20" y1="244" x2="600" y2="244" class="sep-line" /><text x="310" y="240" text-anchor="middle" class="label-soft sep-text">the chat closes · the next day…</text></g>
+            <text x="20" y="276" class="row-label">TOMORROW</text>
+            <rect x="20" y="284" width="310" height="128" rx="14" class="box" />
+            <rect x="370" y="284" width="230" height="128" rx="14" class="box" />
+            <g class="f-e">
+              <rect x="170" y="296" width="122" height="30" rx="14" class="bubble-person" /><text x="231" y="316" text-anchor="middle" class="bubble-text-person">What do I review today?</text><use href="#ico-user" x="300" y="299" width="24" height="24" />
+              <rect x="448" y="296" width="122" height="30" rx="14" class="bubble-person" /><text x="509" y="316" text-anchor="middle" class="bubble-text-person">What do I review today?</text><use href="#ico-user" x="576" y="299" width="24" height="24" />
+            </g>
+            <path class="f-read wire-teal arrow-path" d="M700 226 C700 300 640 352 598 352" /><polygon class="f-read-head arrow-teal" points="603,347 593,352 603,357" />
+            <g class="f-f">
+              <use href="#ico-bot" x="28" y="356" width="24" height="26" /><rect x="58" y="340" width="170" height="44" rx="14" class="bubble-agent" /><text x="143" y="358" text-anchor="middle" class="bubble-text">I do not know what</text><text x="143" y="375" text-anchor="middle" class="bubble-text">you study. Tell me?</text>
+              <use href="#ico-bot" x="378" y="360" width="24" height="26" /><rect x="408" y="336" width="182" height="62" rx="14" class="bubble-agent" /><text x="420" y="353" class="tag-text">📖 reads progress.md</text><text x="420" y="371" class="bubble-text">Topic 4 today: you</text><text x="420" y="388" class="bubble-text">already know topic 3.</text>
+            </g>
+            <g class="f-g"><text x="175" y="440" text-anchor="middle" class="label cap-bad">It forgets: start again.</text><text x="485" y="440" text-anchor="middle" class="label cap-good">It remembers: it reads its folder.</text></g>
           </svg>
-          <figcaption>A chat forgets when it closes. An agent writes the important things in files in its folder, and the next day it reads them again.</figcaption>
+          <figcaption>Today, the agent notes what matters in a file in its folder. Tomorrow, the browser chat has forgotten everything, but the agent reads its file and goes on where you stopped.</figcaption>
         </figure>
 
         <p>So the agent you will build has three parts:</p>
@@ -346,14 +366,14 @@
         <div class="chat" role="group" aria-label="Example conversation">
           <div class="msg from-person">
             <p class="bubble">Hello. What is in this folder?</p>
-            <svg class="avatar" viewBox="0 0 40 40" role="img" aria-label="You"><circle cx="20" cy="20" r="20" fill="var(--chip)" /><circle cx="20" cy="15" r="6.5" fill="var(--ink-soft)" /><path d="M8 33c2-7 7-10 12-10s10 3 12 10" fill="var(--ink-soft)" /></svg>
+            <svg class="avatar" viewBox="-12 -12 24 24" role="img" aria-label="You"><use href="#ico-user" x="-12" y="-12" width="24" height="24" /></svg>
           </div>
           <div class="msg from-agent">
-            <svg class="avatar" viewBox="0 0 100 92" role="img" aria-label="The agent"><path d="M50 0A50 49.5 0 0 1 100 49.5A46 40.5 0 0 1 54 90H46A46 40.5 0 0 1 0 49.5A50 49.5 0 0 1 50 0z" fill="url(#visor-fill)" /><g class="visor-eyes" fill="#87ddff"><g transform="rotate(14 29 45)"><ellipse cx="29" cy="45" rx="13" ry="8" /></g><g transform="rotate(-14 71 45)"><ellipse cx="71" cy="45" rx="13" ry="8" /></g></g></svg>
+            <svg class="avatar" viewBox="-12 -16 24 26" role="img" aria-label="The agent"><use href="#ico-bot" x="-12" y="-16" width="24" height="26" /></svg>
             <div class="bubble"><div class="msg-steps"><span>looked at the folder</span></div>There are two empty folders: <span class="part part-data">data</span> and <span class="part part-exports">exports</span>. There are no instructions yet. What do you want me to do?</div>
           </div>
         </div>
-        <p class="chat-who">The visor is the agent; the figure on the right is you.</p>
+        <p class="chat-who">The robot is the agent; the person on the right is you.</p>
 
         <p>Each app has a <strong>permission mode</strong>: it decides what the agent does on its own and what it asks you first. At the start, choose the most careful mode of your app (the one named above). Some ask you before every change; others change files inside your folder without asking, but ask you before they leave it, use the internet or run programs. When it asks for permission, read what it wants to do and accept if it makes sense. For example, if it asks to create the file that you just asked for, accept. When you trust it, you can give it more freedom inside that folder.</p>
 
