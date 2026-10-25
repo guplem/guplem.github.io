@@ -312,6 +312,51 @@ if (masterExplorer) {
     showFolder(copy, slot.dataset.folderStep);
   }
   showFolder(masterExplorer, masterExplorer.dataset.folderStep);
+
+  // Step 5 lists the files the agent makes in datos/ for each example. The
+  // list stays in the page as text; the script shows it as an explorer of
+  // datos/, each file marked new, with its job in the side pane.
+  const fileIcon = pristine.querySelector('[data-part="agents"] svg');
+  const folderIcon = pristine.querySelector('[data-part="data"] svg');
+  for (const list of document.querySelectorAll("ul.data-files")) {
+    const explorer = document.createElement("div");
+    explorer.className = "explorer data-explorer";
+    explorer.setAttribute("data-explorer", "");
+    const head = pristine.querySelector(".explorer-head").cloneNode(true);
+    head.querySelector("span").append(` › ${list.querySelector(".part").textContent.trim().split("/")[0]}`);
+    const bodyPane = document.createElement("div");
+    bodyPane.className = "explorer-body";
+    const tree = document.createElement("ul");
+    tree.className = "tree";
+    for (const entry of list.children) {
+      const path = entry.querySelector(".part").textContent.trim();
+      const job = entry.cloneNode(true);
+      job.querySelector(".part").remove();
+      const item = document.createElement("li");
+      item.className = "tree-item";
+      item.style.setProperty("--c", "var(--f-data)");
+      item.dataset.marked = "";
+      const name = document.createElement("span");
+      name.className = "tree-name";
+      name.textContent = path.replace(/^[^/]+\//, "");
+      const desc = document.createElement("span");
+      desc.className = "tree-desc";
+      desc.innerHTML = job.innerHTML.replace(/^\s*:\s*/, "");
+      const who = document.createElement("span");
+      who.className = "tree-who";
+      const badge = document.createElement("span");
+      badge.className = "tree-badge is-fresh";
+      badge.textContent = badges.fresh;
+      item.append((path.endsWith("/") ? folderIcon : fileIcon).cloneNode(true), name, desc, who, badge);
+      tree.append(item);
+    }
+    const detail = document.createElement("div");
+    detail.className = "explorer-detail";
+    bodyPane.append(tree, detail);
+    explorer.append(head, bodyPane);
+    list.hidden = true;
+    list.after(explorer);
+  }
 }
 
 for (const explorer of document.querySelectorAll("[data-explorer]")) {
