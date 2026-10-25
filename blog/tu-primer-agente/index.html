@@ -333,8 +333,8 @@
           <div>
             <p>Una <strong>suscripción</strong> (ChatGPT Plus, Claude Pro) es una cuota al mes con un límite de uso. Una <strong>clave de API</strong> es una contraseña larga que da acceso a un modelo, y pagas por lo que gastas, céntimo a céntimo.</p>
             <p><a href="https://openrouter.ai">OpenRouter</a> es un servicio que te da una sola clave para cientos de modelos de muchas empresas, y algunos son gratuitos. Es la forma más sencilla de probar modelos distintos con Goose.</p>
-            <p><strong>Ojo con los modelos gratuitos:</strong> algunos usan lo que les mandas para mejorar. No les mandes datos personales ni de trabajo.</p>
-            <p>Hay más apps abiertas. OpenWork es muy fácil de instalar, pero es joven y a veces deja de mostrar conversaciones antiguas al actualizarse. Pi es muy configurable, pero se usa desde la terminal; le dedicaré otra entrada.</p>
+            <p><strong>Ojo con los modelos gratuitos:</strong> algunos usan lo que les mandas para mejorar. Ten cuidado si les mandas datos personales o de trabajo; seguramente es mejor evitarlo.</p>
+            <p>Hay más apps abiertas. OpenWork es muy fácil de instalar, pero es joven y a veces deja de mostrar conversaciones antiguas al actualizarse. Pi es muy configurable, pero se usa desde la terminal.</p>
           </div>
         </details>
 
@@ -347,7 +347,7 @@
         <h2 id="paso-2-crea-la-carpeta"><a class="heading-anchor" href="#paso-2-crea-la-carpeta">Crea la carpeta</a></h2>
         <p class="section-lead">Creas la casa del agente.</p>
         <p>Una <a class="term" href="#g-carpeta">carpeta</a> es un contenedor de tu ordenador que guarda <a class="term" href="#g-archivo">archivos</a>. Un archivo es un documento con un nombre, y su final (<code>.md</code>, <code>.csv</code>, <code>.pdf</code>) dice qué tipo de contenido guarda.</p>
-        <p>El agente solo ve lo que hay dentro de su carpeta. Eso es bueno: tú decides qué sabe y qué no. Pero recuerda que lo que lea lo manda al modelo, en internet, para poder responder. No metas en la carpeta nada que no contarías a esa empresa.</p>
+        <p>El agente solo ve lo que hay dentro de su carpeta. Eso es bueno: tú decides qué sabe y qué no. Pero recuerda que lo que lea lo manda al modelo, en internet, para poder responder. Así que ten presente que la empresa del modelo puede llegar a ver lo que hay en la carpeta.</p>
         <ol>
           <li><strong>Crea una carpeta en el Escritorio</strong> (o en Documentos, si prefieres). En Mac: clic derecho en el Escritorio, "Nueva carpeta". En Windows: clic derecho, "Nuevo", "Carpeta".</li>
           <li><strong>Ponle un nombre sin espacios ni tildes,</strong> por ejemplo:
@@ -357,7 +357,7 @@
             <span class="variant" data-example="diario"><span class="variant-label">Diario</span> <code>mi-diario</code></span>
             <span class="variant" data-example="reforma"><span class="variant-label">Reforma</span> <code>reforma-del-bano</code></span>
             . Los nombres sencillos evitan problemas con algunas apps.</li>
-          <li><strong>Dentro, crea dos carpetas:</strong> <span class="part part-data">datos</span> y <span class="part part-exports">exportaciones</span>. El resto lo creará el agente más adelante.</li>
+          <li><strong>Dentro, crea dos carpetas:</strong> <span class="part part-data">datos</span> y <span class="part part-exports">exportaciones</span>. El resto lo creará el propio agente más adelante.</li>
         </ol>
         <p>Cuando termines la guía, la carpeta tendrá estas partes. Cada una tiene un color, el mismo en toda la página. Toca una parte para ver para qué sirve y quién la lee.</p>
 
@@ -412,7 +412,7 @@
               <li><strong>CSV (<code>.csv</code>):</strong> una tabla escrita como texto, con una fila por línea y las columnas separadas por comas. Se abre en Google Sheets, o en Excel con "Datos", "Desde texto o CSV". Es lo mejor para registros que quieras sumar o dibujar en un gráfico.</li>
               <li><strong>JSON (<code>.json</code>):</strong> datos con una estructura fija, como <code>{"tema": 3, "estado": "dominado"}</code>. Es lo mejor cuando un programa, como un script, tiene que leerlos siempre igual.</li>
             </ul>
-            <p>Regla práctica: empieza con Markdown. Pasa a CSV cuando quieras contar o hacer gráficos.</p>
+            <p>Regla práctica: empieza con Markdown. Pasa a CSV cuando quieras contar o hacer gráficos. Usa JSON cuando un script tenga que leer los datos; normalmente lo decidirá el propio agente.</p>
           </div>
         </details>
 
