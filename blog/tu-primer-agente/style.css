@@ -999,8 +999,9 @@ button.choice[aria-pressed="true"] {
   color: var(--ink-soft);
 }
 
-/* The agent's visor: a dark round face with two glowing eyes, the face of
-   EVE from Guillem's Eva assistant. The eyes blink every 7 s. */
+/* The two icons of every conversation in the post: a robot for the AI
+   (#ico-bot) and a person for the reader (#ico-user), both symbols in the
+   hidden SVG at the top of the page. The robot's eyes blink every 7 s. */
 .visor-eyes ellipse {
   transform-box: fill-box;
   transform-origin: center;
@@ -1199,44 +1200,46 @@ body:not(.js-ready) .js-only {
 .diagram .bubble-agent { fill: var(--chip); }
 .diagram .bubble-text { fill: var(--ink); font-size: 12px; font-weight: 500; }
 
-/* Drawing 1, "a chat forgets, a folder remembers". One 9 s cycle.
-   Left: three messages appear (0-30%), then fade away when the chat closes
-   (55-65%), and "next day: empty" shows (65-95%). Right: the same messages
-   appear (0-30%), each drops a line into a file of the folder (30-50%), and
-   the lines stay; "next day: it remembers" shows (65-95%). */
-.forget .msg-a { animation: forget-msg 9s infinite; }
-.forget .msg-b { animation: forget-msg 9s infinite 0.6s; }
-.forget .msg-c { animation: forget-msg 9s infinite 1.2s; }
-.forget .keep-a { animation: keep-msg 9s infinite; }
-.forget .keep-b { animation: keep-msg 9s infinite 0.6s; }
-.forget .keep-c { animation: keep-msg 9s infinite 1.2s; }
-.forget .note-line { animation: note-line 9s infinite; }
-.forget .note-line-2 { animation-delay: 0.6s; }
-.forget .note-line-3 { animation-delay: 1.2s; }
-.forget .next-day { animation: next-day 9s infinite; }
+/* Drawing 1, "a chat forgets, a folder remembers". Two rows, "today" above
+   and "tomorrow" below, so the still picture tells the whole story; the
+   animation only shows it in order. One 18 s cycle:
+   - today: the person writes (4-8%), the AI answers in both columns (12-16%);
+     on the right, an arrow carries the note into the file (20-26%) and its two
+     lines appear (26-29%, 30-33%);
+   - the chat closes: the line between the rows lights up (38-46%);
+   - tomorrow: the person asks (50-54%), an arrow reads the file and the file
+     glows (58-66%), both columns answer (64-68%), and the captions show
+     (72-76%);
+   - it holds, then everything clears (94-99%). */
+.diagram .row-label { fill: var(--ink-soft); font-size: 11px; font-weight: 800; letter-spacing: 0.1em; }
+.diagram .tag-text { fill: var(--teal); font-size: 10.5px; font-weight: 700; font-family: var(--mono); }
+.diagram .sep-line { stroke: var(--line); stroke-width: 2; stroke-dasharray: 6 6; }
+.diagram .cap-bad { fill: var(--bad); font-size: 13px; }
+.diagram .cap-good { fill: var(--ok); font-size: 13px; }
+.diagram .arrow-path { stroke-dasharray: 6 5; }
+.diagram .f-glow { fill: none; stroke: var(--teal); stroke-width: 5; stroke-opacity: 0.35; }
 
-@keyframes forget-msg {
-  0% { opacity: 0; }
-  6%, 55% { opacity: 1; }
-  65%, 100% { opacity: 0; }
-}
+.forget .f-a { animation: f-a 18s infinite; }
+.forget .f-b { animation: f-b 18s infinite; }
+.forget .f-write, .forget .f-write-head { animation: f-write 18s infinite; }
+.forget .f-c { animation: f-c 18s infinite; }
+.forget .f-d { animation: f-d 18s infinite; }
+.forget .f-sep { animation: f-sep 18s infinite; }
+.forget .f-e { animation: f-e 18s infinite; }
+.forget .f-read, .forget .f-read-head, .forget .f-glow { animation: f-read 18s infinite; }
+.forget .f-f { animation: f-f 18s infinite; }
+.forget .f-g { animation: f-g 18s infinite; }
 
-@keyframes keep-msg {
-  0% { opacity: 0; }
-  6%, 55% { opacity: 1; }
-  65%, 100% { opacity: 0.25; }
-}
-
-@keyframes note-line {
-  0%, 30% { opacity: 0; transform: translateX(-10px); }
-  40%, 100% { opacity: 1; transform: none; }
-}
-
-@keyframes next-day {
-  0%, 62% { opacity: 0; }
-  68%, 96% { opacity: 1; }
-  100% { opacity: 0; }
-}
+@keyframes f-a { 0%, 4% { opacity: 0; transform: translateY(6px); } 8%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes f-b { 0%, 12% { opacity: 0; transform: translateY(6px); } 16%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes f-write { 0%, 20% { opacity: 0; } 26%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes f-c { 0%, 26% { opacity: 0; transform: translateX(-8px); } 29%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes f-d { 0%, 30% { opacity: 0; transform: translateX(-8px); } 33%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes f-sep { 0%, 38% { opacity: 0.25; } 42%, 46% { opacity: 1; } 52%, 94% { opacity: 0.6; } 99%, 100% { opacity: 0.25; } }
+@keyframes f-e { 0%, 50% { opacity: 0; transform: translateY(6px); } 54%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes f-read { 0%, 58% { opacity: 0; } 62%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes f-f { 0%, 64% { opacity: 0; transform: translateY(6px); } 68%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes f-g { 0%, 72% { opacity: 0; } 76%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
 
 /* Drawing 2, "what the model reads". One 10 s cycle. The five boxes appear
    one by one (0-35%), the bracket draws (35-48%), the word "context" and the
@@ -1290,11 +1293,6 @@ body:not(.js-ready) .js-only {
     opacity: 1 !important;
     stroke-dashoffset: 0 !important;
     transform: none !important;
-  }
-  .forget .msg-a,
-  .forget .msg-b,
-  .forget .msg-c {
-    opacity: 0.25 !important;
   }
 }
 
