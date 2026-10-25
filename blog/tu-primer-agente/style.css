@@ -1058,12 +1058,6 @@ button.choice[aria-pressed="true"]::after {
   color: var(--warn);
 }
 
-.agente .post .chat-who {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-}
-
 /* The two icons of every conversation in the post: a robot for the AI
    (#ico-bot) and a person for the reader (#ico-user), both symbols in the
    hidden SVG at the top of the page. The robot's eyes blink every 7 s. */
@@ -1741,15 +1735,26 @@ body:not(.js-ready) .js-only {
 .tree-item[hidden] { display: none; }
 .folder-now { margin: var(--sp-md) 0 var(--sp-sm); }
 .agente .post .folder-now-title { margin: 0 0 -8px; font-weight: 700; font-size: 0.95rem; color: var(--ink-soft); }
+/* The badge sits in its own column at the right end of its row, in the part's own colour:
+   a soft tint, a small mark (a sparkle for new, a circular arrow for
+   updated) and the word in lower case. */
+.explorer.is-interactive .tree-item[data-marked] { grid-template-columns: 22px minmax(0, 1fr) auto; }
 .tree-badge {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 1px 8px;
+  grid-column: 3;
+  grid-row: 1;
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px 2px 7px;
   border-radius: 999px;
-  font: 700 0.66rem var(--sans);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  vertical-align: 2px;
+  font: 650 0.75rem var(--sans);
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 13%, var(--panel));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 30%, transparent);
 }
-.tree-badge.is-fresh { background: var(--teal); color: var(--on-teal); }
-.tree-badge.is-changed { box-shadow: inset 0 0 0 1.5px var(--teal); color: var(--teal); }
+.tree-badge::before { font-size: 0.8em; }
+.tree-badge.is-fresh::before { content: "✦"; }
+.tree-badge.is-changed::before { content: "↻"; font-size: 1em; }
+/* A marked row gives its column to the badge, so its label goes under the name. */
+.explorer.is-interactive .tree-item[data-marked] .tree-name small { display: block; margin-left: 0; }

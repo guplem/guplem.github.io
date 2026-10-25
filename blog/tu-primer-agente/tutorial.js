@@ -287,7 +287,7 @@ if (masterExplorer) {
       const badge = document.createElement("span");
       badge.className = `tree-badge is-${mark}`;
       badge.textContent = badges[mark];
-      item.querySelector(".tree-name").append(badge);
+      item.append(badge);
       item.dataset.marked = "";
     }
   };
