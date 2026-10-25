@@ -1204,9 +1204,10 @@ body:not(.js-ready) .js-only {
    chat, agent in a folder) split by a vertical line, and two rows (today,
    tomorrow). The still picture tells the whole story; the animation shows
    one piece at a time, so the eye follows one thing. One 34 s cycle, one
-   step every 4.6% (about 1.6 s), in the owner's order:
-   today in the browser (title, box, person, AI: s1-s4), today in the folder
-   (title and the vertical line, box, person, AI: s5-s8), the file with its
+   step every 4.4% (about 1.5 s), in the owner's order:
+   today in the browser (title, box, person, AI: s1-s4), the vertical line
+   that opens the second topic (sv), today in the folder (title, box,
+   person, AI: s5-s8), the file with its
    arrow and then its two lines (s9, s9b, s9c), the chat closes (s10),
    tomorrow in the browser (box, person, AI: s11-s13), tomorrow in the
    folder (box, person: s14-s15), the agent reads the file and the file
@@ -1224,6 +1225,7 @@ body:not(.js-ready) .js-only {
 .forget .s2 { animation: fw-s2 34s infinite; }
 .forget .s3 { animation: fw-s3 34s infinite; }
 .forget .s4 { animation: fw-s4 34s infinite; }
+.forget .sv { animation: fw-sv 34s infinite; }
 .forget .s5 { animation: fw-s5 34s infinite; }
 .forget .s6 { animation: fw-s6 34s infinite; }
 .forget .s7 { animation: fw-s7 34s infinite; }
@@ -1242,25 +1244,26 @@ body:not(.js-ready) .js-only {
 .forget .s9c { animation: fw-s9c 34s infinite; }
 
 @keyframes fw-s1 { 0%, 2.0% { opacity: 0; } 4.5%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s2 { 0%, 6.6% { opacity: 0; } 9.1%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s3 { 0%, 11.2% { opacity: 0; transform: translateY(6px); } 13.7%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s4 { 0%, 15.8% { opacity: 0; transform: translateY(6px); } 18.3%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s5 { 0%, 20.4% { opacity: 0; } 22.9%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s6 { 0%, 25.0% { opacity: 0; } 27.5%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s7 { 0%, 29.6% { opacity: 0; transform: translateY(6px); } 32.1%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s8 { 0%, 34.2% { opacity: 0; transform: translateY(6px); } 36.7%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s9 { 0%, 38.8% { opacity: 0; } 41.3%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s10 { 0%, 43.4% { opacity: 0; } 45.9%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s11 { 0%, 48.0% { opacity: 0; } 50.5%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s12 { 0%, 52.6% { opacity: 0; transform: translateY(6px); } 55.1%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s13 { 0%, 57.2% { opacity: 0; transform: translateY(6px); } 59.7%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s14 { 0%, 61.8% { opacity: 0; } 64.3%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s15 { 0%, 66.4% { opacity: 0; transform: translateY(6px); } 68.9%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s16 { 0%, 71.0% { opacity: 0; } 73.5%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s17 { 0%, 75.6% { opacity: 0; transform: translateY(6px); } 78.1%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s18 { 0%, 80.2% { opacity: 0; } 82.7%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s9b { 0%, 40.3% { opacity: 0; } 42.8%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
-@keyframes fw-s9c { 0%, 41.8% { opacity: 0; } 44.3%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s2 { 0%, 6.4% { opacity: 0; } 8.9%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s3 { 0%, 10.8% { opacity: 0; transform: translateY(6px); } 13.3%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s4 { 0%, 15.2% { opacity: 0; transform: translateY(6px); } 17.7%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes fw-sv { 0%, 19.6% { opacity: 0; } 22.1%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s5 { 0%, 24.0% { opacity: 0; } 26.5%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s6 { 0%, 28.4% { opacity: 0; } 30.9%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s7 { 0%, 32.8% { opacity: 0; transform: translateY(6px); } 35.3%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s8 { 0%, 37.2% { opacity: 0; transform: translateY(6px); } 39.7%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s9 { 0%, 41.6% { opacity: 0; } 44.1%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s10 { 0%, 46.0% { opacity: 0; } 48.5%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s11 { 0%, 50.4% { opacity: 0; } 52.9%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s12 { 0%, 54.8% { opacity: 0; transform: translateY(6px); } 57.3%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s13 { 0%, 59.2% { opacity: 0; transform: translateY(6px); } 61.7%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s14 { 0%, 63.6% { opacity: 0; } 66.1%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s15 { 0%, 68.0% { opacity: 0; transform: translateY(6px); } 70.5%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s16 { 0%, 72.4% { opacity: 0; } 74.9%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s17 { 0%, 76.8% { opacity: 0; transform: translateY(6px); } 79.3%, 95% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s18 { 0%, 81.2% { opacity: 0; } 83.7%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s9b { 0%, 43.1% { opacity: 0; } 45.6%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes fw-s9c { 0%, 44.6% { opacity: 0; } 47.1%, 95% { opacity: 1; } 99%, 100% { opacity: 0; } }
 
 /* Drawing 3, "what happens when an endless chat fills the context". One
    18 s cycle. 26 messages appear one after another (each 0.2 s after the one
@@ -1549,3 +1552,14 @@ body:not(.js-ready) .js-only {
 .agente .page-footer a {
   color: var(--teal);
 }
+
+/* Playback controls under each animated drawing. tutorial.js adds them, so
+   a page with no script, or with reduced motion, shows none. */
+.anim-controls { display: flex; justify-content: center; gap: 8px; margin: 6px 0 4px; }
+.anim-controls button {
+  font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-soft);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+  padding: 4px 12px; cursor: pointer;
+}
+.anim-controls button:hover { color: var(--ink); border-color: var(--teal); }
+.anim-controls button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }

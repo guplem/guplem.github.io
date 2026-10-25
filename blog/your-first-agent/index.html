@@ -48,7 +48,7 @@
     </script>
   </head>
 
-  <body class="agente" data-example-param="example" data-copy-label="Copy" data-copied-label="Copied">
+  <body class="agente" data-example-param="example" data-anim-prev="◀ Back" data-anim-pause="❚❚ Pause" data-anim-play="▶ Play" data-anim-next="Next ▶" data-copy-label="Copy" data-copied-label="Copied">
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <defs>
         <symbol id="ico-bot" viewBox="-12 -16 24 26"><rect x="-1" y="-13" width="2" height="5" style="fill: var(--teal)" /><circle cx="0" cy="-13.5" r="2.4" style="fill: var(--teal)" /><rect x="-10" y="-8" width="20" height="17" rx="5" style="fill: var(--teal)" /><g class="visor-eyes"><ellipse cx="-4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /><ellipse cx="4" cy="0.5" rx="2.3" ry="2.6" style="fill: var(--on-teal)" /></g></symbol>
@@ -132,7 +132,7 @@
             <desc id="forget-desc">Two columns, at two moments. At the top, "Today": in both columns the person writes "I am in my last school year. I know topic 3 well now." In the browser chat, the AI answers "Great! Shall we start?". In the folder, the agent answers "Great! I will note it." and writes two lines in its file data/progress.md: "Year: last year of school" and "Topic 3: mastered". Then the chat closes. At the bottom, "Tomorrow": the person asks "What do I review today?". The browser chat remembers nothing and answers "I do not know what you study. Tell me?". The agent reads data/progress.md and answers "Topic 4 today: you already know topic 3."</desc>
             <g class="s1"><text x="175" y="24" text-anchor="middle" class="label">A chat in the browser</text></g>
             <g class="s5"><text x="575" y="24" text-anchor="middle" class="label">An agent in a folder</text></g>
-            <g class="s5"><line x1="350" y1="8" x2="350" y2="228" class="sep-line" /><line x1="350" y1="258" x2="350" y2="420" class="sep-line" /></g>
+            <g class="sv"><line x1="350" y1="8" x2="350" y2="228" class="sep-line" /><line x1="350" y1="258" x2="350" y2="420" class="sep-line" /></g>
             <g class="s2"><text x="20" y="84" class="row-label">TODAY</text><rect x="20" y="92" width="310" height="128" rx="14" class="box" /></g>
             <g class="s6"><rect x="370" y="92" width="230" height="128" rx="14" class="box" /></g>
             <g class="s3"><rect x="110" y="102" width="182" height="48" rx="14" class="bubble-person" /><text x="201" y="120" text-anchor="middle" class="bubble-text-person">I am in my last school year.</text><text x="201" y="140" text-anchor="middle" class="bubble-text-person">I know topic 3 well now.</text><use href="#ico-user" x="300" y="113" width="24" height="24" /> </g>

@@ -146,3 +146,34 @@ export function checkFolder(files, { app, dataDir, exportsDir, seesHiddenFolders
   results.push({ id: "exports", status: inside(exportsDir).length > 0 ? "ok" : "unknown" });
   return results;
 }
+
+/**
+ * Find the steps of an animated drawing: the moments, within one cycle, when
+ * each piece is fully shown. A piece is shown when its opacity rises to its
+ * highest value; an animation that only fades out, or never touches the
+ * opacity, adds no step. The page reads these timings from its CSS
+ * animations, so the drawing's CSS stays the only place that sets the order.
+ * @param {{delay: number, duration: number, keyframes: {offset: number, opacity?: number}[]}[]} timings delay and duration in ms
+ * @returns {number[]} sorted moments in ms, without repeats
+ */
+export function animationSteps(timings) {
+  const moments = new Set();
+  for (const { delay, duration, keyframes } of timings) {
+    const frames = keyframes.filter((frame) => typeof frame.opacity === "number");
+    if (frames.length === 0) continue;
+    const top = Math.max(...frames.map((frame) => frame.opacity));
+    const rise = frames.findIndex((frame, i) => i > 0 && frame.opacity === top && frames[i - 1].opacity < top);
+    if (rise > 0) moments.add(Math.round(delay + frames[rise].offset * duration));
+  }
+  return [...moments].sort((a, b) => a - b);
+}
+
+/** The next step after `time`, or 0 (the empty drawing) after the last one. */
+export function stepAfter(steps, time) {
+  return steps.find((step) => step > time + 1) ?? 0;
+}
+
+/** The step before `time`, or 0 (the empty drawing) before the first one. */
+export function stepBefore(steps, time) {
+  return steps.findLast((step) => step < time - 1) ?? 0;
+}

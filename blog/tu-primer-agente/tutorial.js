@@ -7,7 +7,7 @@
 // only DOM glue. Every sentence it shows is read from the page, so it holds
 // no language of its own.
 
-import { APPS, EXAMPLE_IDS, checkFolder, readState, recommendApps, writeQuery } from "./agentCore.js";
+import { APPS, EXAMPLE_IDS, animationSteps, checkFolder, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
 
 const root = document.documentElement;
 const body = document.body;
@@ -347,4 +347,88 @@ if (checker) {
     show(files.filter((file) => !file.path.split("/").some((part) => skip.has(part))), seesHiddenFolders);
     input.value = "";
   });
+}
+
+/* ---------- Drawings: start when seen, pause, step ----------
+   A drawing waits until the reader can see all of it, then plays. The
+   buttons under it pause it and move one step back or forward. The steps
+   come from the drawing's own CSS (animationSteps), so the CSS stays the one
+   place that sets the order. With reduced motion, CSS already shows the
+   finished picture, so the drawing gets no buttons. */
+const animLabels = { prev: body.dataset.animPrev, pause: body.dataset.animPause, play: body.dataset.animPlay, next: body.dataset.animNext };
+if (animLabels.pause && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  for (const figure of document.querySelectorAll("figure.diagram")) {
+    const svg = figure.querySelector("svg");
+    const animations = () => svg.getAnimations({ subtree: true });
+    if (!svg || animations().length === 0) continue;
+    const cycle = animations()[0].effect.getTiming().duration;
+    const steps = animationSteps(
+      animations().map((animation) => {
+        const { delay, duration } = animation.effect.getTiming();
+        const keyframes = animation.effect.getKeyframes().map((frame) => ({ offset: frame.computedOffset, opacity: frame.opacity === undefined ? undefined : Number(frame.opacity) }));
+        return { delay, duration, keyframes };
+      }),
+    );
+    let playing = false;
+    let held = false; // the reader paused it, so scrolling does not restart it
+    const now = () => (animations()[0].currentTime ?? 0) % cycle;
+    const seek = (time) => {
+      for (const animation of animations()) {
+        animation.pause();
+        animation.currentTime = time;
+      }
+    };
+
+    const bar = document.createElement("div");
+    bar.className = "anim-controls";
+    const button = (label) => {
+      const element = document.createElement("button");
+      element.type = "button";
+      element.textContent = label;
+      bar.append(element);
+      return element;
+    };
+    const prev = button(animLabels.prev);
+    const toggle = button(animLabels.pause);
+    const next = button(animLabels.next);
+    svg.after(bar);
+
+    const play = () => {
+      for (const animation of animations()) animation.play();
+      playing = true;
+      toggle.textContent = animLabels.pause;
+    };
+    const pause = () => {
+      seek(now());
+      playing = false;
+      toggle.textContent = animLabels.play;
+    };
+    toggle.addEventListener("click", () => {
+      held = playing;
+      if (playing) pause();
+      else play();
+    });
+    prev.addEventListener("click", () => {
+      held = true;
+      pause();
+      seek(stepBefore(steps, now()));
+    });
+    next.addEventListener("click", () => {
+      held = true;
+      pause();
+      seek(stepAfter(steps, now()));
+    });
+
+    seek(0);
+    toggle.textContent = animLabels.play;
+    // "Fully seen": the whole drawing, or most of the screen when it is taller.
+    new IntersectionObserver(
+      ([entry]) => {
+        const seen = entry.intersectionRatio > 0.97 || entry.intersectionRect.height > innerHeight * 0.8;
+        if (seen && !playing && !held) play();
+        else if (!entry.isIntersecting && playing) pause();
+      },
+      { threshold: [0, 0.25, 0.5, 0.75, 0.98, 1] },
+    ).observe(svg);
+  }
 }
