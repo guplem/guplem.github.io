@@ -7,7 +7,7 @@
 // choice writes, and which part of a folder is right or wrong.
 
 import { describe, expect, test } from "bun:test";
-import { APP_IDS, EXAMPLE_IDS, checkFolder, parseFrontmatter, readState, recommendApps, writeQuery } from "./agentCore.js";
+import { APP_IDS, EXAMPLE_IDS, animationSteps, checkFolder, parseFrontmatter, readState, recommendApps, stepAfter, stepBefore, writeQuery } from "./agentCore.js";
 
 describe("recommendApps", () => {
   test("returns null when the reader has ticked nothing", () => {
@@ -179,5 +179,50 @@ describe("checkFolder", () => {
 
   test("says the folder is empty when there is nothing to check", () => {
     expect(checkFolder([], { app: "goose", ...names })).toEqual([{ id: "empty", status: "missing" }]);
+  });
+});
+
+// A drawing's timing as the page reads it from its CSS animations: a delay in
+// ms, one cycle in ms, and the opacity at each keyframe offset.
+const fadeIn = (delay, from, to) => ({ delay, duration: 10000, keyframes: [{ offset: 0, opacity: 0 }, { offset: from, opacity: 0 }, { offset: to, opacity: 1 }, { offset: 0.95, opacity: 1 }, { offset: 1, opacity: 0 }] });
+
+describe("animationSteps", () => {
+  test("lists, in order, the moment each piece is fully shown", () => {
+    expect(animationSteps([fadeIn(0, 0.3, 0.33), fadeIn(0, 0.1, 0.13)])).toEqual([1300, 3300]);
+  });
+
+  test("adds the delay of a piece that starts later", () => {
+    expect(animationSteps([fadeIn(400, 0.1, 0.13)])).toEqual([1700]);
+  });
+
+  test("counts a piece that brightens from dim to full, and ignores one that only fades out", () => {
+    const brighten = { delay: 0, duration: 10000, keyframes: [{ offset: 0, opacity: 0.35 }, { offset: 0.55, opacity: 0.35 }, { offset: 0.62, opacity: 1 }, { offset: 1, opacity: 0.35 }] };
+    const fadeOut = { delay: 0, duration: 10000, keyframes: [{ offset: 0, opacity: 1 }, { offset: 0.4, opacity: 1 }, { offset: 0.42, opacity: 0 }, { offset: 1, opacity: 0 }] };
+    expect(animationSteps([brighten, fadeOut])).toEqual([6200]);
+  });
+
+  test("ignores an animation that never changes the opacity", () => {
+    const draw = { delay: 0, duration: 10000, keyframes: [{ offset: 0 }, { offset: 0.5 }, { offset: 1 }] };
+    expect(animationSteps([draw])).toEqual([]);
+  });
+
+  test("merges pieces that show at the same moment", () => {
+    expect(animationSteps([fadeIn(0, 0.1, 0.13), fadeIn(0, 0.1, 0.13)])).toEqual([1300]);
+  });
+});
+
+describe("stepAfter and stepBefore", () => {
+  const steps = [1000, 2000, 3000];
+  test("move to the next and the previous step", () => {
+    expect(stepAfter(steps, 1000)).toBe(2000);
+    expect(stepAfter(steps, 1500)).toBe(2000);
+    expect(stepBefore(steps, 2000)).toBe(1000);
+    expect(stepBefore(steps, 2500)).toBe(2000);
+  });
+
+  test("start again from the empty drawing at either end", () => {
+    expect(stepAfter(steps, 3000)).toBe(0);
+    expect(stepBefore(steps, 1000)).toBe(0);
+    expect(stepBefore(steps, 0)).toBe(0);
   });
 });
