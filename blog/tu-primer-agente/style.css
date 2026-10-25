@@ -1944,19 +1944,8 @@ body:not(.js-ready) .sv-ex:not([data-example="estudiante"]) { display: none; }
   100% { opacity: 0; transform: translateY(-85vh) scale(1); }
 }
 
-/* The page after the tutorial: a coloured bar on top, a sparkle by the title. */
-body.is-graduated::before {
-  content: "";
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 4px;
-  z-index: 70;
-  background: linear-gradient(90deg, var(--teal), var(--f-agents), var(--f-skills), var(--f-scripts), var(--f-exports), var(--teal));
-  background-size: 200% 100%;
-  animation: bar-flow 8s linear infinite;
-}
+/* The page after the tutorial: a sparkle by the title. */
 body.is-graduated .post-header h1::after { content: " ✦"; color: var(--f-skills); }
-@keyframes bar-flow { to { background-position: 200% 0; } }
 
 /* The sections after the tutorial are extras: a lighter label, and a heading in the contents list. */
 .agente .post .extra-label { color: var(--ink-soft); }
@@ -1970,6 +1959,5 @@ body.is-graduated .post-header h1::after { content: " ✦"; color: var(--f-skill
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .finale *,
-  body.is-graduated::before { animation: none !important; }
+  .finale * { animation: none !important; }
 }
