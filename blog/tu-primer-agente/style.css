@@ -1813,3 +1813,163 @@ body:not(.js-ready) .sv-ex:not([data-example="estudiante"]) { display: none; }
 @media (hover: none) {
   .copy-button { opacity: 0.6; }
 }
+
+/* === The end of the tutorial ===
+   Until every step is ticked, the stage lists the steps still to tick.
+   Then the drawing plays: rays turn, the folder and the agent pop up, eight
+   finished tasks fly out around them, and two lines close it. Confetti and
+   floating task chips fall and rise over the page (built by tutorial.js),
+   and the page keeps a light decoration: a coloured bar on top and a
+   sparkle by the title. */
+.finale {
+  margin: var(--sp-md) 0;
+  padding: 18px;
+  border-radius: 22px;
+  background:
+    radial-gradient(120% 90% at 50% 40%, color-mix(in srgb, var(--teal) 12%, var(--panel)), var(--panel));
+  box-shadow: 0 0 0 1px var(--line), 0 24px 50px -36px var(--teal);
+  text-align: center;
+  overflow: hidden;
+}
+.finale-art { display: none; width: 100%; height: auto; }
+.finale.is-complete .finale-art { display: block; }
+.finale.is-complete .finale-pending { display: none; }
+.finale-replay { display: none; }
+.finale.is-complete .finale-replay {
+  display: inline-flex;
+  margin-top: 6px;
+  font: 600 0.85rem var(--sans);
+  padding: 5px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--ink);
+  cursor: pointer;
+}
+.agente .post .finale-pending p { font-weight: 700; color: var(--ink); }
+.agente .post .finale-pending ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px auto 0;
+  display: grid;
+  gap: 6px;
+  max-width: 420px;
+  text-align: left;
+}
+.agente .post .finale-pending li + li { margin-top: 0; }
+.finale-pending li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: 0 0 0 1px var(--line);
+  color: var(--ink);
+  text-decoration: none;
+}
+.finale-pending li a::before {
+  content: "";
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+.finale-pending li.is-done a { color: var(--ink-soft); }
+.finale-pending li.is-done a::before {
+  box-shadow: none;
+  background: var(--teal);
+  -webkit-mask: var(--tick) center / contain no-repeat;
+  mask: var(--tick) center / contain no-repeat;
+}
+
+.finale-art .fx-rays line { stroke: var(--teal); stroke-opacity: 0.1; stroke-width: 6; }
+.finale-art .fx-folder-shape { fill: color-mix(in srgb, var(--f-exports) 25%, var(--panel)); stroke: var(--f-exports); stroke-width: 2.5; }
+.finale-art .fx-card-box { fill: var(--panel); stroke: var(--c); stroke-width: 2; }
+.finale-art .fx-card-text { fill: var(--ink); font: 600 12.5px var(--sans); }
+.finale-art .fx-title { fill: var(--ink); font: 800 21px var(--sans); }
+.finale-art .fx-sub { fill: var(--teal); font: 650 15px var(--sans); }
+.finale-art .fx-spark { fill: var(--f-skills); font-size: 18px; }
+
+.finale.is-playing .fx-rays { transform-box: view-box; transform-origin: 360px 165px; animation: fx-in 0.8s ease both, fx-spin 40s linear 0.8s infinite; }
+.finale.is-playing .fx-folder,
+.finale.is-playing .fx-bot { transform-box: fill-box; transform-origin: center bottom; animation: fx-pop 0.7s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+.finale.is-playing .fx-folder { animation-delay: 0.2s; }
+.finale.is-playing .fx-bot { animation-delay: 0.7s; }
+.finale.is-playing .fx-card { animation: fx-fly 0.8s cubic-bezier(0.2, 1.4, 0.4, 1) calc(1.3s + var(--i) * 0.2s) both; }
+.finale.is-playing .fx-spark { transform-box: fill-box; transform-origin: center; animation: fx-twinkle 1.6s ease-in-out calc(2.4s + var(--i) * 0.2s) infinite both; }
+.finale.is-playing .fx-title { animation: fx-up 0.7s ease 3.2s both; }
+.finale.is-playing .fx-sub { animation: fx-up 0.7s ease 3.8s both; }
+
+@keyframes fx-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fx-spin { to { transform: rotate(360deg); } }
+@keyframes fx-pop { 0% { opacity: 0; transform: scale(0.2); } 100% { opacity: 1; transform: none; } }
+@keyframes fx-fly { 0% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.2); } 100% { opacity: 1; transform: none; } }
+@keyframes fx-twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.15); } }
+@keyframes fx-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* Over the page: confetti that falls, and the tasks an agent can do, rising. */
+.party { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
+.confetti-piece {
+  position: absolute;
+  top: -16px;
+  width: 9px;
+  height: 15px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: confetti-fall var(--t) cubic-bezier(0.3, 0.55, 0.6, 1) var(--d) forwards;
+}
+@keyframes confetti-fall {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0); }
+  100% { opacity: 0.85; transform: translate(var(--x), 110vh) rotate(var(--r)); }
+}
+.win-chip {
+  position: absolute;
+  bottom: -50px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink);
+  font: 700 1rem var(--sans);
+  white-space: nowrap;
+  box-shadow: 0 0 0 2px var(--c), 0 14px 30px -14px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  animation: chip-rise 5.5s ease-out var(--d) forwards;
+}
+@keyframes chip-rise {
+  0% { opacity: 0; transform: translateY(0) scale(0.8); }
+  12% { opacity: 1; transform: translateY(-14vh) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-85vh) scale(1); }
+}
+
+/* The page after the tutorial: a coloured bar on top, a sparkle by the title. */
+body.is-graduated::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 4px;
+  z-index: 70;
+  background: linear-gradient(90deg, var(--teal), var(--f-agents), var(--f-skills), var(--f-scripts), var(--f-exports), var(--teal));
+  background-size: 200% 100%;
+  animation: bar-flow 8s linear infinite;
+}
+body.is-graduated .post-header h1::after { content: " ✦"; color: var(--f-skills); }
+@keyframes bar-flow { to { background-position: 200% 0; } }
+
+/* The sections after the tutorial are extras: a lighter label, and a heading in the contents list. */
+.agente .post .extra-label { color: var(--ink-soft); }
+.agente .post .toc li.toc-group {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .finale *,
+  body.is-graduated::before { animation: none !important; }
+}
