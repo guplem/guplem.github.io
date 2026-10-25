@@ -850,8 +850,15 @@ description: Prepares a call or a visit with a professional for the renovation, 
         <p class="step-label">Step 7 of 8 · optional</p>
         <h2 id="step-7-scripts"><a class="heading-anchor" href="#step-7-scripts">Fixed tools: the scripts folder</a></h2>
         <p class="section-lead">You give the agent a tool that always gives the same result. You can skip this step.</p>
-        <p>It is useful for counts, sums and dates.</p>
-        <p>A model writes very well, but it calculates like a person in a hurry: almost always right, sometimes wrong. A <a class="term" href="#g-script">script</a> is a small program that does an exact calculation, the same way every time. You do not have to write it or run it: the agent does that.</p>
+        <p>A model writes very well, but it calculates like a very clever person doing sums in their head: almost always right, sometimes wrong. And if you ask it for the same thing ten times, it may do it in ten slightly different ways. A <a class="term" href="#g-script">script</a> is a small program that does an exact task, the same way every time, as many times as needed. You do not have to write it or run it: the agent does that.</p>
+        <p>It is useful for anything mechanical that repeats:</p>
+        <ul>
+          <li><strong>Doing sums:</strong> adding up expenses, working out averages, counting days.</li>
+          <li><strong>Sorting and renaming files:</strong> putting the date on 200 photos, or moving them into one folder per month.</li>
+          <li><strong>Converting and combining:</strong> turning documents into PDFs, or joining many tables into one.</li>
+          <li><strong>Checking:</strong> finding dates that are due, or rows missing from a table.</li>
+        </ul>
+        <p>Once written, the script stays in your folder: the agent runs it again every time, in seconds, and it always gives the same result.</p>
 
         <div class="variant" data-example="estudiante"><p class="variant-label">Student</p>
           <div class="codeblock prompt no-name"><pre>Write a script in scripts/what-to-review.py that reads the table in data/progress.md and tells me which topics I have not reviewed for more than 7 days, from the oldest to the most recent. Add to the AGENTS.md, under Rules, that you use it when I ask what I should review.</pre></div><div class="chat chat-reply" role="group" aria-label="Example answer"><div class="msg from-agent"><svg class="avatar" viewBox="-12 -16 24 26" role="img" aria-label="The agent"><use href="#ico-bot" x="-12" y="-16" width="24" height="26" /></svg><div class="bubble"><div class="msg-steps"><span>created scripts/what-to-review.py</span><span>ran the script</span><span>edited AGENTS.md</span></div>Done. According to the script, you have not reviewed topic 2 and topic 5 for more than 7 days. I added the rule to AGENTS.md…</div></div></div></div>

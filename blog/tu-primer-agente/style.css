@@ -1799,3 +1799,17 @@ body:not(.js-ready) .sv-ex:not([data-example="estudiante"]) { display: none; }
 /* An example answer under a message the reader sends: the agent's bubble
    alone, with the steps it took, ending in "…" where the answer goes on. */
 .chat.chat-reply { margin-top: 10px; }
+
+/* The copy button sits over the text, so it stays faint until the reader
+   points at the block or reaches the button with the keyboard. */
+.copy-button {
+  opacity: 0.35;
+  transition: opacity 0.15s ease;
+}
+.codeblock:hover .copy-button,
+.copy-button:focus-visible {
+  opacity: 1;
+}
+@media (hover: none) {
+  .copy-button { opacity: 0.6; }
+}
