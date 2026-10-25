@@ -100,10 +100,12 @@ const SKILL_NAME = /^[a-z0-9]+(-[a-z0-9]+)*$/;
  * a folder with nothing in it cannot be seen: the exports folder, often empty,
  * is "unknown" rather than "missing".
  * @param {{path: string, text?: string}[]} files paths relative to the agent's folder, with "/" separators
- * @param {{app: string | null, dataDir: string, exportsDir: string}} options
+ * @param {{app: string | null, dataDir: string, exportsDir: string, seesHiddenFolders?: boolean}} options
+ *   seesHiddenFolders: false when the browser leaves out folders that start
+ *   with a dot (Safari's folder input does), so missing skills are "unknown"
  * @returns {{id: string, status: "ok" | "warn" | "missing" | "unknown" | "optional", detail?: string}[]}
  */
-export function checkFolder(files, { app, dataDir, exportsDir }) {
+export function checkFolder(files, { app, dataDir, exportsDir, seesHiddenFolders = true }) {
   if (files.length === 0) return [{ id: "empty", status: "missing" }];
   const results = [];
   const inside = (dir) => files.filter((file) => file.path.startsWith(`${dir}/`));
@@ -136,7 +138,8 @@ export function checkFolder(files, { app, dataDir, exportsDir }) {
     if (wrong.length > 0) results.push({ id: "skill-format", status: "warn", detail: wrong.join(", ") });
   } else {
     const elsewhere = [...new Set(Object.values(APPS).map((one) => one.skillsDir))].find((dir) => skillFiles(dir).length > 0);
-    results.push(elsewhere ? { id: "skills", status: "warn", detail: elsewhere } : { id: "skills", status: "missing" });
+    if (elsewhere) results.push({ id: "skills", status: "warn", detail: elsewhere });
+    else results.push({ id: "skills", status: seesHiddenFolders ? "missing" : "unknown" });
   }
 
   results.push({ id: "scripts", status: inside("scripts").length > 0 ? "ok" : "optional" });

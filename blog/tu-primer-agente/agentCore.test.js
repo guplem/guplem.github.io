@@ -155,6 +155,13 @@ describe("checkFolder", () => {
     expect(statusOf(results, "exports")).toBe("unknown");
   });
 
+  test("says it cannot see the skills when the browser hides folders that start with a dot", () => {
+    // Safari's folder picker leaves out .agents and .claude, so "no skills" would be a false alarm there.
+    const folder = goodFolder.filter((file) => !file.path.includes("SKILL.md"));
+    expect(statusOf(checkFolder(folder, { app: "goose", ...names, seesHiddenFolders: false }), "skills")).toBe("unknown");
+    expect(statusOf(checkFolder(folder, { app: "goose", ...names }), "skills")).toBe("missing");
+  });
+
   test("treats the scripts folder as optional", () => {
     const folder = goodFolder.filter((file) => !file.path.startsWith("scripts/"));
     expect(statusOf(checkFolder(folder, { app: "goose", ...names }), "scripts")).toBe("optional");

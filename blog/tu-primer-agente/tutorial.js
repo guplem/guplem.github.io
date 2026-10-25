@@ -298,8 +298,8 @@ if (checker) {
 
   const escape = (text) => text.replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char]);
 
-  function show(files) {
-    const found = checkFolder(files, { app: state.app, dataDir: checker.dataset.dataDir, exportsDir: checker.dataset.exportsDir });
+  function show(files, seesHiddenFolders) {
+    const found = checkFolder(files, { app: state.app, dataDir: checker.dataset.dataDir, exportsDir: checker.dataset.exportsDir, seesHiddenFolders });
     results.replaceChildren(
       ...found.map((one) => {
         const key = one.detail && messages[`${one.id}:${one.status}:detail`] ? `${one.id}:${one.status}:detail` : `${one.id}:${one.status}`;
@@ -326,7 +326,7 @@ if (checker) {
         const directory = await window.showDirectoryPicker({ mode: "read" });
         const files = [];
         await walk(directory, "", files);
-        show(files);
+        show(files, true);
       } catch (error) {
         if (error.name !== "AbortError") input.click();
       }
@@ -342,7 +342,9 @@ if (checker) {
         return { path, text: wantsText(path) ? await file.text() : undefined };
       }),
     );
-    show(files.filter((file) => !file.path.split("/").some((part) => skip.has(part))));
+    // A folder input may leave out folders that start with a dot (Safari does); if none came through, assume it hid them.
+    const seesHiddenFolders = files.some((file) => file.path.split("/").some((part) => part.startsWith(".")));
+    show(files.filter((file) => !file.path.split("/").some((part) => skip.has(part))), seesHiddenFolders);
     input.value = "";
   });
 }
