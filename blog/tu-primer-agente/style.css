@@ -1058,12 +1058,6 @@ button.choice[aria-pressed="true"]::after {
   color: var(--warn);
 }
 
-.agente .post .chat-who {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-}
-
 /* The two icons of every conversation in the post: a robot for the AI
    (#ico-bot) and a person for the reader (#ico-user), both symbols in the
    hidden SVG at the top of the page. The robot's eyes blink every 7 s. */
