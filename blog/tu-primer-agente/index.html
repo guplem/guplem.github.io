@@ -850,8 +850,15 @@ description: Prepara una llamada o una visita con un profesional de la obra, con
         <p class="step-label">Paso 7 de 8 · opcional</p>
         <h2 id="paso-7-scripts"><a class="heading-anchor" href="#paso-7-scripts">Herramientas fijas: la carpeta scripts</a></h2>
         <p class="section-lead">Le das al agente una herramienta que da siempre el mismo resultado. Puedes saltarte este paso.</p>
-        <p>Es útil para cuentas, sumas y fechas.</p>
-        <p>Un modelo escribe muy bien, pero calcula como una persona con prisa: casi siempre bien, a veces mal. Un <a class="term" href="#g-script">script</a> es un programa pequeño que hace una cuenta exacta, igual cada vez. No lo tienes que escribir ni ejecutar tú: lo hace el agente.</p>
+        <p>Un modelo escribe muy bien, pero calcula como una persona muy lista que hace las cuentas de cabeza: casi siempre bien, a veces mal. Y si le pides lo mismo diez veces, puede hacerlo de diez formas un poco distintas. Un <a class="term" href="#g-script">script</a> es un programa pequeño que hace una tarea exacta, igual cada vez, tantas veces como haga falta. No lo tienes que escribir ni ejecutar tú: lo hace el agente.</p>
+        <p>Sirve para todo lo que es mecánico y se repite:</p>
+        <ul>
+          <li><strong>Hacer cuentas:</strong> sumar gastos, sacar medias, contar días.</li>
+          <li><strong>Ordenar y renombrar archivos:</strong> poner la fecha a 200 fotos, o moverlas a una carpeta por mes.</li>
+          <li><strong>Convertir y juntar:</strong> pasar documentos a PDF, o juntar muchas tablas en una.</li>
+          <li><strong>Revisar:</strong> buscar fechas que vencen, o filas que faltan en una tabla.</li>
+        </ul>
+        <p>Una vez escrito, el script se queda en tu carpeta: el agente lo vuelve a usar cada vez, en segundos, y siempre da el mismo resultado.</p>
 
         <div class="variant" data-example="estudiante"><p class="variant-label">Estudiante</p>
           <div class="codeblock prompt no-name"><pre>Escribe un script en scripts/que-repasar.py que lea la tabla de datos/progreso.md y me diga qué temas hace más de 7 días que no repaso, del más antiguo al más reciente. Añade al AGENTS.md, en Reglas, que lo uses cuando te pregunte qué me toca repasar.</pre></div><div class="chat chat-reply" role="group" aria-label="Ejemplo de respuesta"><div class="msg from-agent"><svg class="avatar" viewBox="-12 -16 24 26" role="img" aria-label="El agente"><use href="#ico-bot" x="-12" y="-16" width="24" height="26" /></svg><div class="bubble"><div class="msg-steps"><span>creó scripts/que-repasar.py</span><span>ejecutó el script</span><span>editó AGENTS.md</span></div>Hecho. Según el script, hace más de 7 días que no repasas el tema 2 y el tema 5. He añadido la regla al AGENTS.md…</div></div></div></div>
