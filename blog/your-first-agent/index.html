@@ -116,7 +116,7 @@
       <!-- ============ From chat to agent ============ -->
       <section>
         <h2 id="from-chat-to-agent"><a class="heading-anchor" href="#from-chat-to-agent">From chat to agent</a></h2>
-        <p>This section explains what you will build and why it is worth it. You do not need to install anything yet.</p>
+        <p class="section-lead">What you will build, and why it is worth it. You do not need to install anything yet.</p>
         <p>When you use ChatGPT, Claude or Gemini in the browser, three things happen:</p>
         <ul>
           <li><strong>Every chat starts almost from zero.</strong> Some apps remember a little, but you do not decide what. You explain again who you are and what you want.</li>
@@ -181,7 +181,8 @@
       <section>
         <p class="step-label">Step 1 of 8</p>
         <h2 id="step-1-choose-your-app"><a class="heading-anchor" href="#step-1-choose-your-app">Choose your app</a></h2>
-        <p>In this step you choose and install the program that connects the model to your folder. Here I just call it "the app". If you see the word elsewhere, its technical name is a <a class="term" href="#g-app">harness</a>: the part that wraps the model and gives it tools.</p>
+        <p class="section-lead">You choose and install the program that connects the model to your folder.</p>
+        <p>Here I just call it "the app". If you see the word elsewhere, its technical name is a <a class="term" href="#g-app">harness</a>: the part that wraps the model and gives it tools.</p>
         <p class="note" data-icon="i"><span><strong>You need a computer</strong> (Windows, Mac or Linux), not a phone: the agent works with the files on your computer.</span></p>
         <p>Each app works with some accounts and not with others. So the best app for you depends on what you already pay for. Mark what you have:</p>
 
@@ -250,7 +251,8 @@
       <section>
         <p class="step-label">Step 2 of 8</p>
         <h2 id="step-2-create-the-folder"><a class="heading-anchor" href="#step-2-create-the-folder">Create the folder</a></h2>
-        <p>In this step you create the agent's home. A <a class="term" href="#g-folder">folder</a> is a container on your computer that holds <a class="term" href="#g-file">files</a>. A file is a document with a name, and its ending (<code>.md</code>, <code>.csv</code>, <code>.pdf</code>) tells you what kind of content it holds.</p>
+        <p class="section-lead">You create the agent's home.</p>
+        <p>A <a class="term" href="#g-folder">folder</a> is a container on your computer that holds <a class="term" href="#g-file">files</a>. A file is a document with a name, and its ending (<code>.md</code>, <code>.csv</code>, <code>.pdf</code>) tells you what kind of content it holds.</p>
         <p>The agent only sees what is inside its folder. That is good: you decide what it knows and what it does not. But remember that it sends what it reads to the model, on the internet, so that it can answer. Do not put anything in the folder that you would not tell that company.</p>
         <ol>
           <li><strong>Create a folder on the Desktop</strong> (or in Documents, if you prefer). On a Mac: right-click on the Desktop, "New Folder". On Windows: right-click, "New", "Folder".</li>
@@ -329,7 +331,8 @@
       <section>
         <p class="step-label">Step 3 of 8</p>
         <h2 id="step-3-open-the-folder"><a class="heading-anchor" href="#step-3-open-the-folder">Open the folder in your app and say hello</a></h2>
-        <p>In this step you connect the app to the folder and check that the agent can see it. From here on, the agent does almost everything: you tell it what you want, and it creates the files.</p>
+        <p class="section-lead">You connect the app to the folder and check that the agent can see it.</p>
+        <p>From here on, the agent does almost everything: you tell it what you want, and it creates the files.</p>
 
         <div class="variant" data-app="claude"><p class="variant-label">Claude</p><p>Open the Claude app and go to <strong>Code</strong>. Under the message box, choose "Local" in the first selector; then, in the folder selector, click "Open folder…" and choose yours. Next to the message box is the permission mode: start with "Manual", which asks you before each change. The button names can change a little between versions.</p></div>
         <div class="variant" data-app="codex"><p class="variant-label">ChatGPT</p><p>Open the ChatGPT app and choose <strong>Codex</strong> in the mode selector. Click "Add new project" and choose your folder. Leave the permission mode on "Ask for approval": it works inside your folder and asks you before it goes outside it.</p></div>
@@ -363,7 +366,8 @@
       <section>
         <p class="step-label">Step 4 of 8</p>
         <h2 id="step-4-instructions"><a class="heading-anchor" href="#step-4-instructions">Give it instructions: the AGENTS.md file</a></h2>
-        <p>In this step you tell the agent who it is and how it must work, one time and for good. That goes in a file called <a class="term" href="#g-agents-md">AGENTS.md</a>, at the root of the folder (directly inside it, not in a subfolder).</p>
+        <p class="section-lead">You tell the agent who it is and how it must work, one time and for good.</p>
+        <p>That goes in a file called <a class="term" href="#g-agents-md">AGENTS.md</a>, at the root of the folder (directly inside it, not in a subfolder).</p>
         <p>First, one key idea: the <a class="term" href="#g-context">context</a>. The model remembers nothing between messages. Each time you write, the app sends it everything it must keep in mind, all at once:</p>
 
         <figure class="diagram context">
@@ -548,7 +552,8 @@ You speak to me in English, in a clear and orderly way.
       <section>
         <p class="step-label">Step 5 of 8</p>
         <h2 id="step-5-memory"><a class="heading-anchor" href="#step-5-memory">Give it memory: the data folder</a></h2>
-        <p>In this step you create the files where the agent keeps what it must remember. This is what turns a chat that forgets into an agent that knows you.</p>
+        <p class="section-lead">You create the files where the agent keeps what it must remember.</p>
+        <p>This is what turns a chat that forgets into an agent that knows you.</p>
         <p>Your AGENTS.md already says which files to use and when to update them. So you only have to ask:</p>
         <div class="codeblock prompt no-name"><pre>Create the data files that the AGENTS.md lists. To fill them in, ask me the questions you need, one at a time.</pre></div>
         <p>The agent will ask you questions and create the files. In your example:</p>
@@ -593,7 +598,8 @@ You speak to me in English, in a clear and orderly way.
       <section>
         <p class="step-label">Step 6 of 8</p>
         <h2 id="step-6-skills"><a class="heading-anchor" href="#step-6-skills">Teach it recipes: skills</a></h2>
-        <p>In this step you teach the agent a task that you repeat, step by step, so that it always does it equally well. That is a <a class="term" href="#g-skill">skill</a>: a recipe.</p>
+        <p class="section-lead">You teach the agent a task that you repeat, step by step, so that it always does it equally well.</p>
+        <p>That is a <a class="term" href="#g-skill">skill</a>: a recipe.</p>
         <p>You could put all the steps in the AGENTS.md, but they would take up the context of every conversation, even the ones that do not need them. A skill is smarter: the agent only sees its name and one sentence that describes it. When you ask for something that matches that sentence, it opens the full recipe and follows it.</p>
         <p>A skill is a folder with a <code>SKILL.md</code> file inside. The folder has the same name as the skill. That file starts with a block between two <code>---</code> lines with the name and the description, and then come the steps. The skills in the agent's folder go here:</p>
 
@@ -709,7 +715,8 @@ description: Prepares a call or a visit with a professional for the renovation, 
       <section>
         <p class="step-label">Step 7 of 8 · optional</p>
         <h2 id="step-7-scripts"><a class="heading-anchor" href="#step-7-scripts">Fixed tools: the scripts folder</a></h2>
-        <p>In this step, which you can skip, you give the agent a tool that always gives the same result. It is useful for counts, sums and dates.</p>
+        <p class="section-lead">You give the agent a tool that always gives the same result. You can skip this step.</p>
+        <p>It is useful for counts, sums and dates.</p>
         <p>A model writes very well, but it calculates like a person in a hurry: almost always right, sometimes wrong. A <a class="term" href="#g-script">script</a> is a small program that does an exact calculation, the same way every time. You do not have to write it or run it: the agent does that.</p>
 
         <div class="variant" data-example="estudiante"><p class="variant-label">Student</p>
@@ -732,7 +739,8 @@ description: Prepares a call or a visit with a professional for the renovation, 
       <section>
         <p class="step-label">Step 8 of 8</p>
         <h2 id="step-8-exports"><a class="heading-anchor" href="#step-8-exports">The results: the exports folder</a></h2>
-        <p>In this step you ask the agent for something finished, to use outside the conversation. It will save it in <span class="part part-exports">exports</span>, so you always know where to look.</p>
+        <p class="section-lead">You ask the agent for something finished, to use outside the conversation.</p>
+        <p>It will save it in <span class="part part-exports">exports</span>, so you always know where to look.</p>
         <div class="variant" data-example="estudiante"><p class="variant-label">Student</p><div class="codeblock prompt no-name"><pre>Make me a one-page summary of the topic I find hardest, to review on the bus.</pre></div></div>
         <div class="variant" data-example="docente"><p class="variant-label">Teacher</p><div class="codeblock prompt no-name"><pre>Make me a fractions worksheet for 4B.</pre></div></div>
         <div class="variant" data-example="salud"><p class="variant-label">Health</p><div class="codeblock prompt no-name"><pre>Make me this week's summary.</pre></div></div>
@@ -752,7 +760,7 @@ description: Prepares a call or a visit with a professional for the renovation, 
       <!-- ============ Check ============ -->
       <section>
         <h2 id="check-your-agent"><a class="heading-anchor" href="#check-your-agent">Check your agent</a></h2>
-        <p>This section checks that your folder has everything in its place. Do it when you finish, or when something does not work.</p>
+        <p class="section-lead">Check that your folder has everything in its place, when you finish or when something does not work.</p>
 
         <div class="checker js-only" data-checker data-data-dir="data" data-exports-dir="exports">
           <p>Choose your folder. The page looks at the file names and reads only <code>AGENTS.md</code> and the <code>SKILL.md</code> files. <strong>Nothing leaves your computer:</strong> everything happens in your browser.</p>
@@ -795,7 +803,8 @@ description: Prepares a call or a visit with a professional for the renovation, 
       <!-- ============ Adapt it ============ -->
       <section>
         <h2 id="adapt-it-to-your-case"><a class="heading-anchor" href="#adapt-it-to-your-case">Adapt it to your case</a></h2>
-        <p>This section helps you create an agent for something that is not in the five examples: your job, a hobby, a project. The steps are the same; only the AGENTS.md changes.</p>
+        <p class="section-lead">Create an agent for something that is not in the five examples: your job, a hobby, a project.</p>
+        <p>The steps are the same; only the AGENTS.md changes.</p>
         <p>The easiest way is to let the agent interview you. In a new folder, open it and write:</p>
         <div class="codeblock prompt no-name"><pre>I want an agent that helps me with (your task). Ask me questions, one at a time, about what I do and what I need. When you have enough, write an AGENTS.md with this template and create the folders that it names.</pre></div>
         <p>And paste this template under it:</p>
@@ -825,7 +834,7 @@ You speak to me in (language), (in what tone).
       <!-- ============ Use it every day ============ -->
       <section>
         <h2 id="use-it-every-day"><a class="heading-anchor" href="#use-it-every-day">Use it every day</a></h2>
-        <p>This section collects the habits that make the agent better the more you use it.</p>
+        <p class="section-lead">The habits that make the agent better the more you use it.</p>
         <ul>
           <li><strong>One conversation per task.</strong> When you finish something, start a new one. The memory is in the files, not in the chat, so you lose nothing, and the context stays clean.</li>
           <li><strong>Correct the file, not the chat.</strong> If it does something wrong, ask it to add a rule to the AGENTS.md or to improve the skill.</li>
@@ -838,7 +847,7 @@ You speak to me in (language), (in what tone).
       <!-- ============ Limits ============ -->
       <section>
         <h2 id="limits-and-warnings"><a class="heading-anchor" href="#limits-and-warnings">Limits and warnings</a></h2>
-        <p>This section tells you what this agent does not do, and what you should know before you trust it with things.</p>
+        <p class="section-lead">What this agent does not do, and what you should know before you trust it with things.</p>
         <ul>
           <li><strong>What is in the folder goes to the model.</strong> To answer, the app sends parts of your files to the company that runs the model. Do not keep passwords there, or data about other people who have not given you permission.</li>
           <li><strong>If it is for work, ask first.</strong> Check if your company has rules about AI and a company account (for example Claude Team or ChatGPT Business). Do not save data about colleagues with their names: use codes, as the teacher example does.</li>
@@ -902,7 +911,7 @@ You speak to me in (language), (in what tone).
       <section>
         <h2 id="for-ai-assistants"><a class="heading-anchor" href="#for-ai-assistants">If you are an AI helping someone with this guide</a></h2>
         <div class="for-ai">
-          <p>This section is for the AI assistant that a person has given this page to. People can skip it.</p>
+          <p class="section-lead">For the AI assistant that a person has given this page to. People can skip it.</p>
           <ul>
             <li><strong>What this is:</strong> a tutorial for people with no technical knowledge. At the end they have a folder that is an agent: <code>AGENTS.md</code> (instructions), <code>data/</code> (memory), a skills folder (<code>.agents/skills/</code>, or <code>.claude/skills/</code> in Claude) with one <code>SKILL.md</code> per skill, <code>scripts/</code> (optional) and <code>exports/</code> (results). If Claude does not read the AGENTS.md, a <code>CLAUDE.md</code> with the line <code>@AGENTS.md</code> fixes it.</li>
             <li><strong>Where the person is:</strong> the page address can carry <code>?app=</code> (<code>claude</code> is the Code section of the Claude app; <code>codex</code>, the Codex mode of the ChatGPT desktop app; <code>antigravity</code>; or <code>goose</code>) and <code>?example=</code> (<code>estudiante</code> for student, <code>docente</code> for teacher, <code>salud</code> for health, <code>diario</code> for journal, or <code>reforma</code> for renovation). Follow only that variant. The steps go from 1 (choose an app) to 8 (exports); ask the person which step they are on.</li>
