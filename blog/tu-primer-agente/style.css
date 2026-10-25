@@ -1246,28 +1246,39 @@ body:not(.js-ready) .js-only {
 @keyframes f-f { 0%, 64% { opacity: 0; transform: translateY(6px); } 68%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
 @keyframes f-g { 0%, 72% { opacity: 0; } 76%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
 
-/* Drawing 3, "an endless chat against a new chat with a folder". One 14 s
-   cycle. Top bar: 26 messages appear one after another (each 0.18 s after
-   the one before, so the bar fills in about 5 s); when it is full, the word
-   "full" shows (42%) and a grey cover marks the oldest half as summarised
-   (50%). Bottom bar: the three pieces of a clean chat show (64%). It holds,
-   then clears (92-97%). The messages keep their offsets, so the next cycle
-   fills the bar in the same order. */
+/* Drawing 3, "what happens when an endless chat fills the context". One
+   18 s cycle. 26 messages appear one after another (each 0.2 s after the one
+   before, so the bar fills in about 5 s, 0-29%); the word "full" shows (31%).
+   A cover spreads over the whole bar, "the app summarises everything" (37%),
+   the messages vanish under it (41%), and the cover shrinks to one small
+   "summary" piece (44-49%). The next message arrives (54%), then the AI's
+   answer with its note (62%), then the closing line (72%). It holds, then
+   clears (94-99%). The messages keep their offsets, so the next cycle fills
+   the bar in the same order; their group (.cf-old) hides them all at once. */
 .diagram .blk-person { fill: var(--teal); }
 .diagram .blk-ai { fill: var(--ink-soft); fill-opacity: 0.45; }
-.diagram .piece { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
-.diagram .compact-overlay { fill: var(--paper); fill-opacity: 0.88; stroke: var(--line); stroke-dasharray: 4 4; }
+.diagram .compact-overlay { fill: var(--paper); fill-opacity: 0.92; stroke: var(--line); stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
 .diagram .limit-line { stroke: var(--bad); stroke-width: 2; stroke-dasharray: 5 5; }
 
-.ctxfill .blocks rect { animation: cf-block 14s infinite backwards; }
-.ctxfill .cf-full { animation: cf-full 14s infinite; }
-.ctxfill .cf-over { animation: cf-over 14s infinite; }
-.ctxfill .cf-new { animation: cf-new 14s infinite; }
+.ctxfill .blocks rect { animation: cf-block 18s infinite backwards; }
+.ctxfill .cf-old { animation: cf-old 18s infinite; }
+.ctxfill .cf-full { animation: cf-full 18s infinite; }
+.ctxfill .cf-squash { transform-box: fill-box; transform-origin: left center; animation: cf-squash 18s infinite; }
+.ctxfill .cf-sumall { animation: cf-sumall 18s infinite; }
+.ctxfill .cf-sum { animation: cf-sum 18s infinite; }
+.ctxfill .cf-next { animation: cf-next 18s infinite; }
+.ctxfill .cf-answer { animation: cf-answer 18s infinite; }
+.ctxfill .cf-lost { animation: cf-lost 18s infinite; }
 
-@keyframes cf-block { 0% { opacity: 0; } 2%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
-@keyframes cf-full { 0%, 40% { opacity: 0; } 44%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
-@keyframes cf-over { 0%, 48% { opacity: 0; } 54%, 92% { opacity: 1; } 97%, 100% { opacity: 0; } }
-@keyframes cf-new { 0%, 62% { opacity: 0; transform: translateY(6px); } 68%, 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+@keyframes cf-block { 0% { opacity: 0; } 2%, 97% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-old { 0%, 39% { opacity: 1; } 42%, 100% { opacity: 0; } }
+@keyframes cf-full { 0%, 29% { opacity: 0; } 32%, 46% { opacity: 1; } 49%, 100% { opacity: 0; } }
+@keyframes cf-squash { 0%, 34% { opacity: 0; transform: none; } 37%, 43% { opacity: 1; transform: none; } 49%, 94% { opacity: 1; transform: scaleX(0.2); } 99%, 100% { opacity: 0; transform: scaleX(0.2); } }
+@keyframes cf-sumall { 0%, 36% { opacity: 0; } 38%, 42% { opacity: 1; } 44%, 100% { opacity: 0; } }
+@keyframes cf-sum { 0%, 48% { opacity: 0; } 51%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
+@keyframes cf-next { 0%, 53% { opacity: 0; transform: translateY(6px); } 57%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cf-answer { 0%, 61% { opacity: 0; transform: translateY(6px); } 65%, 94% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; } }
+@keyframes cf-lost { 0%, 71% { opacity: 0; } 75%, 94% { opacity: 1; } 99%, 100% { opacity: 0; } }
 
 /* Drawing 2, "what the model reads". One 10 s cycle. The five boxes appear
    one by one (0-35%), the bracket draws (35-48%), the word "context" and the
@@ -1323,6 +1334,11 @@ body:not(.js-ready) .js-only {
     stroke-dashoffset: 0 !important;
     transform: none !important;
   }
+  /* The drawing ends after the summary: the full bar and its cover are gone. */
+  .ctxfill .cf-old,
+  .ctxfill .cf-full,
+  .ctxfill .cf-sumall { opacity: 0 !important; }
+  .ctxfill .cf-squash { transform: scaleX(0.2) !important; }
 }
 
 /* === Contents ===
