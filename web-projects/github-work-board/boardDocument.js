@@ -295,7 +295,8 @@ export function writeCounting(document, areaId, { counted, withLowPriority }, no
 }
 
 /**
- * The lines the reader copies from a card, oldest first (ADR 0031).
+ * The lines the reader copies from a card, in the order the reader picked
+ * (ADR 0031).
  *
  * One record per action, so two devices that each add one keep both. An action
  * the reader removed keeps its key with an empty template, and `copyActions.js`
@@ -310,12 +311,15 @@ export function readCopyActions(document) {
  * The same document with one action written. The document handed in is not
  * changed.
  *
- * `createdAt` is what the order reads, so an edit keeps the one the action was
- * made under and only a new action sets it.
+ * `createdAt` is what the order reads for a line never moved, so an edit keeps
+ * the one the action was made under and only a new action sets it.
  */
-export function writeCopyAction(document, id, { label, template, icon, areas, createdAt }, now) {
+export function writeCopyAction(document, id, { label, template, icon, areas, position, createdAt }, now) {
   const base = migrate(document, now);
   const before = isPlainObject(base.copyActions[id]) ? base.copyActions[id] : {};
+  // Where the reader moved the line. Like the icon, only a write that names a
+  // position changes it, and a line never moved stores none.
+  const place = Number.isFinite(position) ? position : Number.isFinite(before.position) ? before.position : null;
   return {
     ...base,
     updatedAt: now,
@@ -329,6 +333,7 @@ export function writeCopyAction(document, id, { label, template, icon, areas, cr
         // The parts of the board the line is offered in, and none is
         // everywhere. Like the icon, only a write that names them changes them.
         areas: Array.isArray(areas) ? areas.map(String) : Array.isArray(before.areas) ? before.areas : [],
+        ...(place === null ? {} : { position: place }),
         createdAt: String(createdAt ?? before.createdAt ?? now),
         updatedAt: now,
       },
