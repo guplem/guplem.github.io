@@ -23,6 +23,9 @@
 // in the card menu before the reader could write lines (ADR 0021). It is read
 // in, never written, until the reader changes it (`withStartingActions`).
 //
+// The reader puts the lines in the order the menu shows them, with the arrows
+// in Settings. A moved line carries a `position` (`moveCopyAction`).
+//
 // A line can also be limited to some parts of the board: a prompt that asks an
 // agent to implement an issue means nothing on a card already in review. A part
 // is the review row or a column, by the id `appearance.colourableAreas` gives
@@ -198,6 +201,12 @@ export const COPY_ICONS = [
   },
 ];
 
+/** The arrows that move a line up or down the list in Settings (Lucide chevrons). */
+export const MOVE_PATHS = {
+  up: ["m18 15-6-6-6 6"],
+  down: ["m6 9 6 6 6-6"],
+};
+
 /** What a line with no icon, or one this build does not know, draws. */
 export const DEFAULT_COPY_ICON = "copy";
 
@@ -331,16 +340,20 @@ export function offeredIn(action, area) {
 /**
  * The stored map into the list Settings and the menu read, in one order.
  *
- * Oldest first, so the list holds still as the reader adds to it, with the id
- * breaking a tie: two devices can write an action in the same second and both
- * have to read the same order.
+ * The reader's order: a line they moved carries a `position`, and a line they
+ * never moved sorts by when it was made, read as milliseconds on the same
+ * scale. So every line saved before a move existed keeps its place, oldest
+ * first, and the list holds still as the reader adds to it. The id breaks a
+ * tie: two devices can write an action in the same second and both have to
+ * read the same order.
  *
  * An action with no template left is one the reader removed. It keeps its key
  * in the file, the same way a cleared note keeps its key, so the other device
  * can tell "removed just now" from "never seen" (ADR 0002).
  *
  * @param stored `document.copyActions`, the raw record map
- * @returns `[{id, label, template, icon, areas, createdAt}]`
+ * @returns `[{id, label, template, icon, areas, position, createdAt}]`, with
+ *   `position` null on a line never moved
  */
 export function orderCopyActions(stored) {
   const map = stored && typeof stored === "object" && !Array.isArray(stored) ? stored : {};
@@ -356,12 +369,59 @@ export function orderCopyActions(stored) {
       template,
       icon: text(record.icon).trim(),
       areas: readAreas(record.areas),
+      position: Number.isFinite(record.position) ? record.position : null,
       createdAt: text(record.createdAt),
     });
   }
-  return actions.sort((one, other) =>
-    one.createdAt === other.createdAt
-      ? one.id.localeCompare(other.id)
-      : one.createdAt.localeCompare(other.createdAt),
-  );
+  return actions.sort((one, other) => {
+    const a = rankOf(one);
+    const b = rankOf(other);
+    return a === b ? one.id.localeCompare(other.id) : a < b ? -1 : 1;
+  });
+}
+
+/**
+ * Where a line sits: its position when the reader moved it, otherwise when it
+ * was made. A line with no readable date sorts first, as it always did.
+ */
+function rankOf(action) {
+  if (Number.isFinite(action?.position)) return action.position;
+  const made = Date.parse(text(action?.createdAt));
+  return Number.isFinite(made) ? made : -Infinity;
+}
+
+/** The room a move leaves at either end of the list: one second on the date scale. */
+const POSITION_STEP = 1000;
+
+/**
+ * The positions to write so one line swaps with its neighbour above or below.
+ *
+ * Usually one write, the line that moved, placed halfway between its new
+ * neighbours. Writing every line on each move would let two devices that each
+ * move a different line overwrite each other (ADR 0002). When there is no room
+ * between the neighbours (two lines made in the same moment, or many moves in
+ * one place), every line is numbered again instead.
+ *
+ * @param actions the list from `orderCopyActions`
+ * @param id the line to move
+ * @param step -1 for up, 1 for down
+ * @returns `[{id, position}]`, empty when the line cannot move that way
+ */
+export function moveCopyAction(actions, id, step) {
+  const list = Array.isArray(actions) ? actions : [];
+  const from = list.findIndex((one) => one?.id === id);
+  const to = from + (step < 0 ? -1 : 1);
+  if (from < 0 || to < 0 || to >= list.length) return [];
+
+  const reordered = list.filter((_, index) => index !== from);
+  reordered.splice(to, 0, list[from]);
+  const before = to > 0 ? rankOf(reordered[to - 1]) : null;
+  const after = to < reordered.length - 1 ? rankOf(reordered[to + 1]) : null;
+  const position =
+    before === null ? after - POSITION_STEP : after === null ? before + POSITION_STEP : (before + after) / 2;
+
+  const fits =
+    Number.isFinite(position) && (before === null || position > before) && (after === null || position < after);
+  if (fits) return [{ id, position }];
+  return reordered.map((one, index) => ({ id: one.id, position: index * POSITION_STEP }));
 }

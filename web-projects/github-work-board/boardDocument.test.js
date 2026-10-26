@@ -345,7 +345,7 @@ describe("the lines the reader copies from a card (ADR 0031)", () => {
       now,
     );
     expect(readOwn(document)).toEqual([
-      { id: "a1", label: "Implement", template: "/implement-issue #{N}", icon: "", areas: [], createdAt: now },
+      { id: "a1", label: "Implement", template: "/implement-issue #{N}", icon: "", areas: [], position: null, createdAt: now },
     ]);
   });
 
@@ -384,6 +384,21 @@ describe("the lines the reader copies from a card (ADR 0031)", () => {
     expect(edited.copyActions.a1.areas).toEqual(["todo"]);
     expect(removeCopyAction(one, "a1", later).copyActions.a1.areas).toEqual(["todo"]);
     expect(writeCopyAction(one, "a1", { label: "Ask", template: "{URL}", areas: [] }, later).copyActions.a1.areas).toEqual([]);
+  });
+
+  // The reader's order. Like the icon, only a write that names a position
+  // changes it, so an edit of the text does not send a moved line back.
+  test("round-trips the position the reader moved a line to, and an edit keeps it", () => {
+    const one = writeCopyAction(emptyDocument(now), "a1", { label: "Ask", template: "{URL}", position: 5 }, now);
+    expect(readOwn(one)[0].position).toBe(5);
+    const edited = writeCopyAction(one, "a1", { label: "Ask again", template: "{URL}" }, later);
+    expect(edited.copyActions.a1.position).toBe(5);
+    expect(removeCopyAction(one, "a1", later).copyActions.a1.position).toBe(5);
+  });
+
+  test("a line never moved stores no position", () => {
+    const one = writeCopyAction(emptyDocument(now), "a1", { label: "Ask", template: "{URL}" }, now);
+    expect(Object.hasOwn(one.copyActions.a1, "position")).toBe(false);
   });
 
   test("round-trips the icon the reader picked", () => {
