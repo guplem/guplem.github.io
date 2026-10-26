@@ -6,6 +6,7 @@ import {
   PLACEHOLDERS,
   canFillTemplate,
   fillCopyTemplate,
+  moveCopyAction,
   offeredIn,
   orderCopyActions,
   STARTING_ACTIONS,
@@ -150,6 +151,7 @@ describe("orderCopyActions", () => {
       template: "#{N}",
       icon: "",
       areas: [],
+      position: null,
       createdAt: now,
     });
   });
@@ -157,8 +159,99 @@ describe("orderCopyActions", () => {
   test("never throws, whatever is in the file", () => {
     expect(orderCopyActions(null)).toEqual([]);
     expect(orderCopyActions({ a: 7, b: null, c: { template: "{N}" } })).toEqual([
-      { id: "c", label: "{N}", template: "{N}", icon: "", areas: [], createdAt: "" },
+      { id: "c", label: "{N}", template: "{N}", icon: "", areas: [], position: null, createdAt: "" },
     ]);
+  });
+});
+
+// The reader puts the lines in the order the menu shows them. A line they
+// moved carries a position; one they never moved sorts by when it was made, on
+// the same scale, so the lines saved before a move existed keep their order.
+describe("the order the reader picked", () => {
+  const first = "2026-09-22T10:00:00.000Z";
+  const second = "2026-09-22T11:00:00.000Z";
+  const third = "2026-09-22T12:00:00.000Z";
+  const stored = {
+    a: { label: "A", template: "{N}", createdAt: first },
+    b: { label: "B", template: "{N}", createdAt: second },
+    c: { label: "C", template: "{N}", createdAt: third },
+  };
+  const order = (map) => orderCopyActions(map).map((one) => one.id);
+  const apply = (map, writes) => {
+    const next = { ...map };
+    for (const { id, position } of writes) next[id] = { ...next[id], position };
+    return next;
+  };
+
+  test("a position wins over when the line was made", () => {
+    const moved = { ...stored, c: { ...stored.c, position: Date.parse(first) - 1 } };
+    expect(order(moved)).toEqual(["c", "a", "b"]);
+  });
+
+  test("a position that is not a number reads as none", () => {
+    const broken = { ...stored, c: { ...stored.c, position: "0" }, b: { ...stored.b, position: Number.NaN } };
+    expect(order(broken)).toEqual(["a", "b", "c"]);
+  });
+
+  test("moving a line up or down swaps it with its neighbour", () => {
+    const up = apply(stored, moveCopyAction(orderCopyActions(stored), "c", -1));
+    expect(order(up)).toEqual(["a", "c", "b"]);
+    const down = apply(stored, moveCopyAction(orderCopyActions(stored), "a", 1));
+    expect(order(down)).toEqual(["b", "a", "c"]);
+    const top = apply(stored, moveCopyAction(orderCopyActions(stored), "b", -1));
+    expect(order(top)).toEqual(["b", "a", "c"]);
+    const bottom = apply(stored, moveCopyAction(orderCopyActions(stored), "b", 1));
+    expect(order(bottom)).toEqual(["a", "c", "b"]);
+  });
+
+  // One record per move, when there is room between the neighbours. Writing
+  // every line on each move would make two devices that each move a different
+  // line overwrite each other (ADR 0002).
+  test("a move writes only the line that moved", () => {
+    expect(moveCopyAction(orderCopyActions(stored), "c", -1).map((one) => one.id)).toEqual(["c"]);
+  });
+
+  test("a line at the edge does not move past it, and an unknown line does nothing", () => {
+    expect(moveCopyAction(orderCopyActions(stored), "a", -1)).toEqual([]);
+    expect(moveCopyAction(orderCopyActions(stored), "c", 1)).toEqual([]);
+    expect(moveCopyAction(orderCopyActions(stored), "zz", 1)).toEqual([]);
+    expect(moveCopyAction(null, "a", 1)).toEqual([]);
+  });
+
+  // Two lines made in the same moment leave no room between them. The move
+  // then numbers every line again, which is rare and still lands right.
+  test("with no room between two neighbours, every line is numbered again", () => {
+    const tied = {
+      a: { label: "A", template: "{N}", createdAt: first },
+      b: { label: "B", template: "{N}", createdAt: first },
+      c: { label: "C", template: "{N}", createdAt: first },
+    };
+    const writes = moveCopyAction(orderCopyActions(tied), "c", -1);
+    expect(order(apply(tied, writes))).toEqual(["a", "c", "b"]);
+  });
+
+  test("many moves in the same place still land right", () => {
+    let map = stored;
+    for (let i = 0; i < 80; i += 1) {
+      const id = order(map)[2];
+      map = apply(map, moveCopyAction(orderCopyActions(map), id, -1));
+    }
+    expect(order(map)).toHaveLength(3);
+    const before = order(map);
+    const after = order(apply(map, moveCopyAction(orderCopyActions(map), before[2], -1)));
+    expect(after).toEqual([before[0], before[2], before[1]]);
+  });
+
+  // The starting line has a `createdAt` from 1970, and a line with none at all
+  // sorts first. Moving a line above either must still work.
+  test("a line moves above the starting line and above a line with no date", () => {
+    const withStart = withStartingActions({ a: { label: "A", template: "{N}", createdAt: first }, z: { label: "Z", template: "{N}" } });
+    const before = order(withStart);
+    expect(before).toEqual(["z", "branch-name", "a"]);
+    const once = apply(withStart, moveCopyAction(orderCopyActions(withStart), "a", -1));
+    expect(order(once)).toEqual(["z", "a", "branch-name"]);
+    const twice = apply(once, moveCopyAction(orderCopyActions(once), "a", -1));
+    expect(order(twice)).toEqual(["a", "z", "branch-name"]);
   });
 });
 
@@ -176,6 +269,7 @@ describe("the line the board starts with", () => {
         template: "{BRANCH}",
         icon: "branch",
         areas: [],
+        position: null,
         createdAt: "1970-01-01T00:00:00.000Z",
       },
     ]);

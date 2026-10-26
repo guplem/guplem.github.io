@@ -72,8 +72,16 @@ filled in.**
   decides it, and `cardMenu.cardMenuRows` applies it with every other row.
 - **A line can carry an icon**, picked from a list or typed as one emoji, and
   the menu row leads with it. ADR 0046 holds the rules.
-- **Oldest first, with the id breaking a tie.** Two devices can write a line in
-  the same second, and both have to read the same order.
+- **The reader picks the order, with an arrow up and an arrow down on each
+  line in Settings.** The card menu shows the lines in that order. A moved line
+  carries a `position`. A line never moved sorts by its `createdAt`, read as
+  milliseconds on the same scale, so the lines saved before the arrows existed
+  keep their order, oldest first. The id breaks a tie: two devices can write a
+  line in the same second, and both have to read the same order.
+- **A move writes one line, not the whole list.** `copyActions.moveCopyAction`
+  places the moved line halfway between its new neighbours. Only when there is
+  no room between them (two lines made in the same moment, or many moves in
+  one place) does it number every line again.
 
 ## Consequences
 
@@ -130,6 +138,17 @@ reader who wrote the same line had it twice.
 **A part id is as permanent as a column id**, because it is one. It is written
 into the line the moment the reader picks it, and the column ids are pinned
 already (ADR 0011).
+
+**Rejected: one list of ids that holds the order.** It is one record, so two
+devices that each move a line at once keep only one of the moves, and a line
+added on one device is missing from the other's list. A position on each line
+merges record by record, like everything else here (ADR 0002). Two devices that
+move the same line still keep only the later move, which is the rule for any
+edit of one line.
+
+**Rejected: dragging a line.** Arrows work the same with a finger, a mouse and
+a keyboard, and the list is short. The press keeps the keyboard on the line it
+moved, so a line travels several places with several presses.
 
 **Rejected: a submenu holding the lines.** The menu is short, and a reader with
 three lines would open two popovers to reach one row. Two auto popovers that

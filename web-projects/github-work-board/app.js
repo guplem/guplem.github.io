@@ -177,6 +177,8 @@ import {
   pickEmoji,
   readCopyIcon,
   writtenByReader,
+  MOVE_PATHS,
+  moveCopyAction,
 } from "./copyActions.js";
 import { readTitle } from "./titles.js";
 import { CARD_PARTS } from "./cardParts.js";
@@ -2615,9 +2617,10 @@ function renderCounting() {
  * rebuilt under the cursor: a list that redraws itself on every keystroke
  * throws the reader out of the box they are in (ADR 0031).
  */
-function buildCopyActionRow(action) {
+function buildCopyActionRow(action, index, actions) {
   const row = document.createElement("li");
   row.className = "copy-action-row";
+  row.dataset.copyAction = action.id;
   const icon = document.createElement("button");
   icon.className = "button button-outline icon-only copy-icon-button";
   wireCopyIconButton(icon, action.id, action.icon);
@@ -2651,6 +2654,10 @@ function buildCopyActionRow(action) {
 
   const buttons = document.createElement("div");
   buttons.className = "copy-action-buttons";
+  buttons.append(
+    buildCopyMoveButton(action, -1, index === 0),
+    buildCopyMoveButton(action, 1, index === actions.length - 1),
+  );
   const drop = document.createElement("button");
   drop.type = "button";
   drop.className = "button button-danger";
@@ -2664,6 +2671,37 @@ function buildCopyActionRow(action) {
 
   row.append(icon, lines, buttons);
   return row;
+}
+
+/**
+ * One arrow that moves a line up or down, which is the order the card menu
+ * shows the lines in. The press keeps the keyboard on the line it moved, so a
+ * line can travel several places with several presses (ADR 0031).
+ */
+function buildCopyMoveButton(action, step, atEdge) {
+  const press = document.createElement("button");
+  press.type = "button";
+  press.className = `button button-outline icon-only ${step < 0 ? "copy-move-up" : "copy-move-down"}`;
+  press.disabled = atEdge;
+  press.setAttribute("aria-label", step < 0 ? "Move this line up" : "Move this line down");
+  explain(press, step < 0 ? "Move up in the card menu" : "Move down in the card menu");
+  press.append(drawIcon(step < 0 ? MOVE_PATHS.up : MOVE_PATHS.down));
+  press.addEventListener("click", () => {
+    const writes = moveCopyAction(readCopyActions(state.board), action.id, step);
+    if (writes.length === 0) return;
+    const now = new Date().toISOString();
+    const current = new Map(readCopyActions(state.board).map((one) => [one.id, one]));
+    for (const { id, position } of writes) {
+      state.board = writeCopyAction(state.board, id, { ...current.get(id), position }, now);
+    }
+    scheduleSave();
+    renderCopyActions();
+    const row = [...element("copy-actions").children].find((one) => one.dataset.copyAction === action.id);
+    const same = row?.querySelector(step < 0 ? ".copy-move-up" : ".copy-move-down");
+    const other = row?.querySelector(step < 0 ? ".copy-move-down" : ".copy-move-up");
+    (same && !same.disabled ? same : other)?.focus();
+  });
+  return press;
 }
 
 /**
