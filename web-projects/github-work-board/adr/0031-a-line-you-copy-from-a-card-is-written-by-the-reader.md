@@ -44,6 +44,12 @@ filled in.**
   copies as `{AUTOR}`. Dropping it would hand back a sentence with a hole in it
   and nothing on screen would say why. The mistake travels to the clipboard,
   where the reader meets it.
+- **A placeholder is filled as it is, and never encoded.** A line can be a
+  link, such as one that opens a Claude Code cloud session on the card
+  (`https://claude.ai/code/new?q=...&repo={REPO}`), and the examples show one.
+  The reader encodes the fixed text by hand, `#` as `%23` above all. `{N}`
+  and `{REPO}` are safe in a link as they are; `{TITLE}` is not, and the
+  board offers no encoded form of it yet.
 - **The case does not matter.** `{url}` and `{URL}` are one placeholder,
   because the reader types the template by hand.
 - **A line the card cannot fill is not offered.** An issue has no branch, so a

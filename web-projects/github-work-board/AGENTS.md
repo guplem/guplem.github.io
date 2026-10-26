@@ -485,6 +485,13 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   or removes it. Never add the fixed row back: the branch would show twice.
   The id `branch-name` is permanent, because a removed line is a record under
   it; `invariants.test.js` pins both (ADR 0031).
+- **A copy line can be a link, and the board encodes nothing in it.** The
+  example that opens a Claude Code cloud session
+  (`claude.ai/code/new?q=...&repo={REPO}`) works because `{N}` and `{REPO}`
+  need no encoding and the fixed text is encoded by hand. A raw `#` ends the
+  query and drops the number. Tested on 2026-10-26: `q` and `repo` work, and
+  an `environment` parameter does nothing, so the environment and the
+  organisation are whatever claude.ai has selected (ADR 0031).
 - **The order of the copy lines is a `position` on each line, never one list
   of ids.** A list is one record, so two devices that each move a line would
   keep only one move. A line never moved sorts by `createdAt`, read as
