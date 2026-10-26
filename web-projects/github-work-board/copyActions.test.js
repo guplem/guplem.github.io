@@ -235,6 +235,17 @@ describe("the line the board starts with", () => {
   test("the examples show the branch too, so a reader who removed it can write it again", () => {
     expect(EXAMPLE_ACTIONS.map((one) => one.template)).toContain("{BRANCH}");
   });
+
+  // The board fills a placeholder as it is and encodes nothing, so a link
+  // works only when the reader encodes the fixed text by hand. A raw "#" would
+  // end the query there and drop the number from the prompt.
+  test("one example is a link that opens a Claude Code cloud session on the card", () => {
+    const link = EXAMPLE_ACTIONS.find((one) => one.template.startsWith("https://claude.ai/code/new?"));
+    expect(link).toBeDefined();
+    const filled = new URL(fillCopyTemplate(link.template, issue));
+    expect(filled.searchParams.get("q")).toBe(`/implement-issue #${issue.number}`);
+    expect(filled.searchParams.get("repo")).toBe(issue.repository);
+  });
 });
 
 describe("the icon on a line", () => {

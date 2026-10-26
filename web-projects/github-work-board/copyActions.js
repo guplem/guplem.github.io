@@ -48,12 +48,18 @@ export const PLACEHOLDERS = [
  * looks like. The first is the greyed-out example text in the two boxes, and
  * all of them are listed under the boxes until the reader writes their own.
  *
- * The last two are a placeholder and nothing else. The first two wrap words
+ * The last two are a placeholder and nothing else. The first three wrap words
  * around a placeholder, and on their own they read as if a line has to be a
  * sentence.
+ *
+ * The second is a link that opens a Claude Code cloud session on the card's
+ * repository with the prompt filled in. The board encodes no placeholder, so
+ * the fixed text is encoded by hand: `%2F` is `/`, `%20` a space and `%23` a
+ * `#`. A raw `#` would end the query and drop the number.
  */
 export const EXAMPLE_ACTIONS = [
   { label: "Implement this issue", template: "/implement-issue #{N}" },
+  { label: "Implement in a Claude Code cloud session", template: "https://claude.ai/code/new?q=%2Fimplement-issue%20%23{N}&repo={REPO}" },
   { label: "Ask for a review", template: "Please, whenever you can, take a look and review {URL}" },
   { label: "Copy link", template: "{URL}" },
   { label: "Copy branch name", template: "{BRANCH}" },
