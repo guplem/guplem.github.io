@@ -79,10 +79,14 @@ Rules that matter:
   your branch conflicts. A conflicting pull request has no merge commit for
   GitHub to build, so **no workflow starts at all**, and the pull request shows
   no failing check to explain it. Read `gh pr view <N> --json mergeStateStatus`:
-  `DIRTY` confirms it. The fix is one merge: merge `origin/main`, take your own
-  side of each `index.html`, run the stamp script again with your own number,
-  and push. Do not push empty commits to "wake up" the checks, and do not reopen
-  the pull request. Neither starts a run, because the cause is the conflict.
+  `DIRTY` confirms it. The fix is one merge: merge `origin/main`, resolve
+  only the two stamp lines in each `index.html`, run the stamp script again
+  with your own number, and push. Never take your whole side of a page: a page
+  that `main` also changed loses that change, and nothing but a test of that
+  page notices. When your branch changed only the stamp in a page, take
+  `main`'s whole page (`git checkout origin/main -- <page>`) and stamp it.
+  Do not push empty commits to "wake up" the checks, and do not reopen the
+  pull request. Neither starts a run, because the cause is the conflict.
 - **Do not promise more than is true.** The page now makes no network calls at
   all, so a "nothing leaves your device" claim can be absolute. Keep it accurate
   if that ever changes.
