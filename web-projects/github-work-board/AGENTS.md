@@ -64,7 +64,7 @@ It is the short procedure for all of the above.
 | `cardParts.js` | Yes | The parts of a card the reader can hide in Settings, with their permanent ids (ADR 0047) |
 | `milestones.js` | Yes | The milestone a piece of work is in, read from the answer the board already has: its share closed and the words on its pill (ADR 0045) |
 | `boardSearch.js` | Yes | The find box: part of a number, a pasted GitHub link or words, the match-case and whole-word choices, and which cards stay (ADR 0038) |
-| `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
+| `skeletons.js` | Yes | How many placeholders to draw while the board waits, and their uneven spread across the columns (ADR 0004) |
 | `readProgress.js` | Yes | How full the thin bar at the top of the window is, one step per call of each token, counted over every token at once, and which step the read waits on (ADR 0039, ADR 0040) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, saying what it reached, and which tokens failed to read (`failedReads`, ADR 0007) |
 | `approval.js` | Yes | Whether a token that found nothing may wait for an organisation's approval, which organisation, and the page where its owners approve it (ADR 0041) |
@@ -631,6 +631,11 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   scrolls. `app.js` lowers that number through `fitColumns` when the reader
   hides columns. The `max(17rem, ...)` half of it is what keeps a phone usable;
   drop it and a column becomes 80 pixels wide (ADR 0018).
+- **The columns do not scroll sideways while the board reads.** On a wide
+  screen, `.columns[aria-busy="true"]` sets `overflow-x: hidden`, so no scroll
+  bar sits under the placeholders. `connectAll` removes `aria-busy` when the
+  real cards land, and the bar comes back. Never leave `aria-busy` set after a
+  read, or the reader cannot reach "Done".
 - **`.issues` sets `grid-template-columns: minmax(0, 1fr)`, and every pill on a
   card may break.** A grid track with no size grows to the widest thing that
   cannot wrap, so one long label on one card pushed every card in that column
