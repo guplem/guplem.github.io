@@ -51,13 +51,25 @@ motion gets none of it. A card lifts one pixel under the pointer, for the same
 reason a button changes colour: it says the card is a thing the reader can act
 on.
 
-**The status line is a snackbar.** What the board says about something the
-reader just did ("Note removed ...", "This browser would not copy ...") floats at the foot of the
-window, where it is seen, and leaves on its own after `snackbarHoldMs`
+**The status line is a snackbar, and it confirms what the reader just did.**
+What the board says about something the reader just did floats at the foot of
+the window, where it is seen, and leaves on its own after `snackbarHoldMs`
 (`messages.js`). It waits while the pointer rests on it. A line that is still
 true, such as a save that does not get through, stays until it is replaced. It
 was a grey line above the columns, usually scrolled out of sight at the moment
 it spoke.
+
+Every action whose result is not plain at the pointer confirms itself there:
+a copy (the menu closes, or only the button's word changes), a card moved or
+marked (it can land out of sight), a token, a copy line or a note removed, a
+note kept, an organisation saved. The words live in `messages.js`
+(`copiedStatus` and the functions beside it). A copied token or backup is
+never repeated in the line, because a token on screen is a token in a screen
+share (ADR 0015). The snackbar sits outside every view in `index.html`, so it
+speaks on Settings and the cleanup too; inside the board view it confirmed
+those screens' actions on a hidden element. `invariants.test.js` pins that.
+A change the reader sees happen under the pointer (a colour, a theme, a
+switch) needs no line.
 
 **Nothing appears out of nothing after a pause.** Every list the board is about
 to fill draws a placeholder first, in the shape of what is coming and in as

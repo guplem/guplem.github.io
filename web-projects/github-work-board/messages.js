@@ -173,10 +173,94 @@ export function noteMenuLabel(noteText) {
  * (ADR 0014).
  */
 export function noteRemovedStatus(item) {
-  const card = item && typeof item === "object" ? item : {};
-  const name =
-    typeof card.repository === "string" && Number.isInteger(card.number) ? ` from ${card.repository} #${card.number}` : "";
+  const name = cardName(item) === "" ? "" : ` from ${cardName(item)}`;
   return `Note removed${name}. To write one again, choose "Add note" in the card's menu.`;
+}
+
+/** The longest copied text a confirmation repeats before it cuts the rest. */
+const COPIED_SHOWN_CHARS = 48;
+
+/** "acme-labs/api #418", or nothing when the card does not say where it lives. */
+function cardName(item) {
+  const card = item && typeof item === "object" ? item : {};
+  return typeof card.repository === "string" && Number.isInteger(card.number) ? `${card.repository} #${card.number}` : "";
+}
+
+/** `"name"` with a space before it, or nothing for an empty name. */
+function quoted(name) {
+  return typeof name === "string" && name.trim() !== "" ? ` "${name.trim()}"` : "";
+}
+
+/*
+ * The confirmations. A press that changes nothing on screen (a copy), or
+ * changes it out of sight (a card moved to a scrolled column, a row gone from
+ * Settings), leaves the reader unsure that it worked. Each line below goes to
+ * the snackbar as a passing line, so it says so once and leaves (ADR 0004).
+ */
+
+/** After a copy: what went to the clipboard, cut short when it is long. */
+export function copiedStatus(text) {
+  if (typeof text !== "string" || text.trim() === "") return "Copied.";
+  const shown = text.length > COPIED_SHOWN_CHARS ? `${text.slice(0, COPIED_SHOWN_CHARS - 1)}…` : text;
+  return `Copied "${shown}".`;
+}
+
+/**
+ * After a token is copied. It never repeats the token: a token on screen is a
+ * token in a screen share (ADR 0015).
+ */
+export function tokenCopiedStatus() {
+  return "Token copied. Paste it only where you keep passwords.";
+}
+
+/** After the backup of every token is copied. It never repeats the backup either. */
+export function backupCopiedStatus(count) {
+  const what = count === 1 ? "Your token copied as a backup" : `${count} tokens copied as one backup`;
+  return `${what}. Keep it only where you keep passwords.`;
+}
+
+export function tokenRemovedStatus(name) {
+  return `Token${quoted(name)} removed from this browser.`;
+}
+
+export function copyLineAddedStatus(label) {
+  return `Line${quoted(label)} added to the card menu.`;
+}
+
+export function copyLineRemovedStatus(label) {
+  return `Line${quoted(label)} removed from the card menu.`;
+}
+
+export function notesDeletedStatus(count) {
+  return count === 1 ? "Note deleted." : `${count} notes deleted.`;
+}
+
+export function noteKeptStatus() {
+  return "Note kept. The cleanup will not suggest it again.";
+}
+
+/** After a move: the card can land in a column out of sight, so the line names both. */
+export function cardMovedStatus(item, columnLabel) {
+  const name = cardName(item);
+  return name === "" ? `Moved to ${columnLabel}.` : `${name} moved to ${columnLabel}.`;
+}
+
+/** After a priority mark: the card may climb or sink out of sight. */
+export function priorityStatus(item, priority) {
+  const name = cardName(item) || "Card";
+  if (priority === "high") return `${name} marked high priority.`;
+  if (priority === "low") return `${name} marked not a priority.`;
+  return `${name} back to normal priority.`;
+}
+
+export function organisationSavedStatus(name) {
+  return quoted(name) === "" ? "Organisation cleared." : `Organisation${quoted(name)} saved.`;
+}
+
+export function storageTokenStatus(name) {
+  return quoted(name) === ""
+    ? "This token now saves your half of the board."
+    : `Token${quoted(name)} now saves your half of the board.`;
 }
 
 /**

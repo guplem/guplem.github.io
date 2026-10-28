@@ -432,11 +432,6 @@
             <button id="clear-board-filters" type="button" class="button button-ghost filter-clear" hidden>Clear filters</button>
           </div>
         </div>
-        <!-- Only what the board has to say right now: a line copied, a call
-             that failed, a board nothing can write to. It says nothing the rest
-             of the time, and every count lives on the thing it counts. -->
-        <p id="board-status" class="status" role="status" aria-live="polite"></p>
-
         <!-- A token that may be waiting for an organisation to approve it.
              GitHub says nothing about it, so the board says what it saw, and
              links the page where the organisation's owners approve it
@@ -756,6 +751,13 @@
         </div>
       </section>
     </main>
+
+    <!-- The snackbar: what the board has to say right now. It confirms what
+         the reader just did (a line copied, a note deleted, a token removed),
+         or says what is still true (a call that failed, a board nothing can
+         write to). It sits outside every view, so it speaks on Settings and
+         the cleanup too, and every count lives on the thing it counts. -->
+    <p id="board-status" class="status" role="status" aria-live="polite"></p>
 
     <footer class="footer">
       <p>Everything happens in your browser. Your half of the board goes to your own private repository and nowhere else.</p>

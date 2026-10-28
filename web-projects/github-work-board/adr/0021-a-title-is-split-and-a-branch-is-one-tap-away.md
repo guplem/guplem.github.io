@@ -64,11 +64,15 @@ style rather than disappearing.
 for a fix, blue for docs, purple for a refactor. They live beside the badge
 colours in `style.css` and have to stay distinguishable in both schemes.
 
-**A copy that works says nothing.** The reader pressed the row, so a status
-line that repeats `Copied fix-branch` tells them nothing new, and it pushes the
-board down by one line. Only a failure speaks: on a browser that refuses the
-clipboard, the board's status line shows the line instead, where the reader can
-at least select it. Every line the reader copies behaves the same way.
+**A copy that works says so, in the snackbar.** The menu closes on the press,
+so nothing on screen shows that the copy happened, and the reader is left
+unsure. The snackbar says `Copied "fix-branch"` and leaves on its own. It
+floats over the board, so it moves nothing. (This rule once said the opposite,
+when the status line sat above the columns and pushed the board down by one
+line; the snackbar removed that cost, ADR 0004.) A failure speaks too: on a
+browser that refuses the clipboard, the snackbar shows the whole line instead,
+where the reader can at least select it. Every line the reader copies behaves
+the same way.
 
 **Rejected: muting the description instead of the prefix.** The description is
 the content. The prefix is what repeats.

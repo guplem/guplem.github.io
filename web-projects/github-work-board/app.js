@@ -123,6 +123,18 @@ import {
   noteMenuLabel,
   noteRemovedStatus,
   snackbarHoldMs,
+  backupCopiedStatus,
+  cardMovedStatus,
+  copiedStatus,
+  copyLineAddedStatus,
+  copyLineRemovedStatus,
+  noteKeptStatus,
+  notesDeletedStatus,
+  organisationSavedStatus,
+  priorityStatus,
+  storageTokenStatus,
+  tokenCopiedStatus,
+  tokenRemovedStatus,
   priorityMarkTip,
   priorityMenuLabel,
   say,
@@ -385,7 +397,9 @@ let statusListening = false;
 /**
  * The board's one status line, drawn as a snackbar at the foot of the window.
  *
- * A passing line ("Note removed ...", "This browser would not copy ...") leaves on its own after
+ * It sits outside every view, so it speaks on Settings and the cleanup too.
+ * A passing line ("Copied ...", "Note removed ...", "Token removed ...")
+ * confirms something the reader just did, and leaves on its own after
  * `snackbarHoldMs`, and waits while the pointer rests on it, so a reader who
  * is selecting its text does not lose it. Any other line stays until the next
  * one replaces it, because it says something is still true ("Reading
@@ -1457,7 +1471,9 @@ function buildTokenRow(entry, index) {
   copy.className = "button button-ghost";
   copy.textContent = "Copy";
   copy.addEventListener("click", () => {
-    askBeforeShowing(() => copyToClipboard(entry.token, copy, "Copy", () => revealToken(entry.id)));
+    askBeforeShowing(() =>
+      copyToClipboard(entry.token, copy, "Copy", () => revealToken(entry.id), tokenCopiedStatus()),
+    );
   });
 
   const drop = document.createElement("button");
@@ -1465,9 +1481,11 @@ function buildTokenRow(entry, index) {
   drop.className = "button button-danger";
   drop.textContent = "Remove";
   drop.addEventListener("click", () => {
+    const removedName = entry.name || name.value;
     state.tokens = removeToken(state.tokens, entry.id);
     saveTokens(storage, state.tokens);
     if (state.tokens.length === 0) return signOut();
+    setStatus(tokenRemovedStatus(removedName), { passing: true });
     connectAll();
   });
 
@@ -1493,6 +1511,7 @@ function buildTokenRow(entry, index) {
       cloudPanel?.refresh();
       store.reconnect();
       renderTokenList();
+      setStatus(storageTokenStatus(name.value), { passing: true });
     });
     actions.append(use);
   }
@@ -1544,15 +1563,17 @@ function askBeforeShowing(run) {
 }
 
 /**
- * Put text on the clipboard and say so on the button that asked.
+ * Put text on the clipboard and say so, on the button that asked and in the
+ * snackbar (`said`, or the copied text itself).
  *
  * A browser refuses the clipboard outside a secure page, and the reader must
  * not be left thinking a copy happened. `whenRefused` is the way out that needs
  * no clipboard: show the token so it can be selected by hand.
  */
-async function copyToClipboard(text, button, label, whenRefused) {
+async function copyToClipboard(text, button, label, whenRefused, said = copiedStatus(text)) {
   try {
     await navigator.clipboard.writeText(text);
+    setStatus(said, { passing: true });
     button.textContent = "Copied";
     setTimeout(() => {
       button.textContent = label;
@@ -1796,9 +1817,11 @@ function buildCopyMenuRow(action, item) {
   row.addEventListener("click", async () => {
     closeCardMenu();
     try {
-      // A copy that works says nothing: the reader pressed the row, and a
-      // line repeating it back only pushes the board down (ADR 0021).
+      // The menu closes on the press, so nothing on screen shows the copy
+      // happened. The snackbar says so, and floats, so it moves nothing
+      // (ADR 0021).
       await navigator.clipboard.writeText(filled);
+      setStatus(copiedStatus(filled), { passing: true });
     } catch {
       // Nowhere to put it but the status line, which is at least selectable.
       setStatus(`This browser would not copy. The line is ${filled}`, { passing: true });
@@ -1874,6 +1897,7 @@ function fillMoveMenu() {
         scheduleSave();
         closeCardMenu();
         renderBoard();
+        setStatus(cardMovedStatus(item, option.label), { passing: true });
       });
       return choice;
     }),
@@ -2652,6 +2676,7 @@ function buildApprovalCallout({ entry, index, organisations }) {
     }
     state.tokens = updateToken(state.tokens, entry.id, { organisation: typed });
     saveTokens(storage, state.tokens);
+    setStatus(organisationSavedStatus(typed), { passing: true });
     const found = state.awaitingApproval.get(entry.id);
     if (found) {
       const publicOrganisations = state.publicOrganisations.get(state.login ?? "") ?? [];
@@ -2777,6 +2802,7 @@ function buildCopyActionRow(action, index, actions) {
     state.board = removeCopyAction(state.board, action.id, new Date().toISOString());
     scheduleSave();
     renderCopyActions();
+    setStatus(copyLineRemovedStatus(action.label), { passing: true });
   });
   buttons.append(drop);
 
@@ -3389,6 +3415,7 @@ function buildCleanupRow(suggestion) {
     state.board = writeNoteSuggested(state.board, suggestion.key, false, new Date().toISOString());
     scheduleSave();
     renderCleanup();
+    setStatus(noteKeptStatus(), { passing: true });
   });
   const drop = document.createElement("button");
   drop.type = "button";
@@ -3399,6 +3426,7 @@ function buildCleanupRow(suggestion) {
     scheduleSave();
     renderCleanup();
     renderBoard();
+    setStatus(notesDeletedStatus(1), { passing: true });
   });
   buttons.append(keep, drop);
 
@@ -3479,6 +3507,7 @@ function deleteAllSuggested() {
   scheduleSave();
   renderCleanup();
   renderBoard();
+  setStatus(notesDeletedStatus(keys.length), { passing: true });
 }
 
 /** Keep the address bar showing the open screen and the chosen order. */
@@ -4296,8 +4325,12 @@ function start() {
       return showNotice("settings-notice", "No token is connected yet.");
     }
     askBeforeShowing(() =>
-      copyToClipboard(encodeTokenBackup(state.tokens), backup, "Copy every token as a backup", () =>
-        showNotice("settings-notice", "This browser refused the clipboard. Copy each token from its own row."),
+      copyToClipboard(
+        encodeTokenBackup(state.tokens),
+        backup,
+        "Copy every token as a backup",
+        () => showNotice("settings-notice", "This browser refused the clipboard. Copy each token from its own row."),
+        backupCopiedStatus(state.tokens.length),
       ),
     );
   });
@@ -4392,6 +4425,7 @@ function start() {
       now,
     );
     scheduleSave();
+    setStatus(copyLineAddedStatus(name.value), { passing: true });
     name.value = "";
     template.value = "";
     state.newCopyIcon = "";
@@ -4476,6 +4510,7 @@ function start() {
       scheduleSave();
       closeCardMenu();
       renderBoard();
+      setStatus(priorityStatus(item, priority), { passing: true });
     });
   }
 

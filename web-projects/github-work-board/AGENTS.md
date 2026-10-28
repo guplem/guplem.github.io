@@ -77,7 +77,7 @@ It is the short procedure for all of the above.
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The list of tokens and the choices kept only in this browser (refresh schedule, last counts; the retired `filtersOpen` key stays only in `LEGACY_KEYS`, so sign-out clears it), through an injected storage (ADR 0007, ADR 0025, ADR 0049) |
-| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), how long a review card has been open (`describeOpened`), what a running read waits on (ADR 0039), whether the notes are syncing (ADR 0019), what the cleanup found (ADR 0043), and how long a passing line stays in the snackbar (ADR 0004) |
+| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), how long a review card has been open (`describeOpened`), what a running read waits on (ADR 0039), whether the notes are syncing (ADR 0019), what the cleanup found (ADR 0043), the confirmations the snackbar gives after an action, and how long a passing line stays there (ADR 0004) |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `style.css` | - | The design system: colour roles, one radius, and the five parts every screen is built from (ADR 0004) |
 | `gateway.js` | No | The **only** file that calls the network |
@@ -677,8 +677,11 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   version did: give the container `.token-lines` (ADR 0004).
 - **The board's status line is a snackbar, and only a passing line leaves on
   its own.** `setStatus(text, { passing: true })` is for a line about something
-  the reader just did ("Note removed ...", "This browser would not copy ..."); it goes after
-  `snackbarHoldMs`. Call it without `passing` for a line that is still true
+  the reader just did ("Copied ...", "Note removed ...", "Token removed ..."); it goes after
+  `snackbarHoldMs`. A new action whose result is not plain at the pointer
+  (a copy, a removal, a card that moves out of sight) confirms itself this
+  way, with its words in `messages.js`; never repeat a token in the line. The
+  snackbar sits outside every view, so it speaks on every screen. Call it without `passing` for a line that is still true
   (a read under way, a save that does not get through): that one stays until
   the next `setStatus` replaces it. Mark a still-true line as passing and the
   warning vanishes while the fault is still there (ADR 0004).
