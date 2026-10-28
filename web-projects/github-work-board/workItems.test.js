@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import {
+  KIND_ICONS,
   countByKind,
+  workState,
   finishedAt,
   finishedBetween,
   normalizeWorkItem,
@@ -351,5 +353,45 @@ describe("who a work item belongs to", () => {
   test("anything in the list that is not a person is dropped", () => {
     const item = normalizeWorkItem({ node_id: "P_1", assignees: [{ login: "ana" }, {}, null, 7] });
     expect(item.assignees.map((one) => one.login)).toEqual(["ana"]);
+  });
+});
+
+// A card says what kind of work it is with an icon, the way GitHub does, and
+// the icon's colour says where that work stands: open, a draft, merged or
+// closed. The word ("Issue", "Pull request") is still there for a screen
+// reader and on the pointer.
+describe("workState: where a piece of work stands, for its icon", () => {
+  const base = { kind: "issue", state: "open", isDraft: false, mergedAt: "" };
+
+  test("open work is open", () => {
+    expect(workState(base)).toBe("open");
+    expect(workState({ ...base, kind: "pull-request" })).toBe("open");
+  });
+
+  test("a draft pull request is a draft", () => {
+    expect(workState({ ...base, kind: "pull-request", isDraft: true })).toBe("draft");
+  });
+
+  test("a merged pull request is merged, and a closed issue is closed", () => {
+    expect(workState({ ...base, kind: "pull-request", state: "closed", mergedAt: "2026-10-28T10:00:00Z" })).toBe("merged");
+    expect(workState({ ...base, state: "closed" })).toBe("closed");
+  });
+
+  // Closed without merging never lands (ADR 0017), and it must not wear the
+  // merged colour.
+  test("a pull request closed without merging is closed, not merged", () => {
+    expect(workState({ ...base, kind: "pull-request", state: "closed" })).toBe("closed");
+  });
+
+  test("anything unreadable reads as open", () => {
+    expect(workState(null)).toBe("open");
+  });
+
+  test("each kind of work has an icon, drawn from paths on a 24 by 24 grid", () => {
+    for (const kind of ["issue", "pull-request"]) {
+      expect(Array.isArray(KIND_ICONS[kind])).toBe(true);
+      expect(KIND_ICONS[kind].length).toBeGreaterThan(0);
+      for (const d of KIND_ICONS[kind]) expect(d).toMatch(/^[Mm]/);
+    }
   });
 });

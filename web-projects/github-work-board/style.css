@@ -1140,7 +1140,7 @@ textarea.input {
 /* `showView` unhides the next screen the moment the board decides, while the
  * bar is still filling. This keeps that screen off the page until the start-up
  * screen is gone, so the swap happens once (ADR 0036). */
-.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #cleanup-view, #find-control, #sort-control, #refresh-control, #view-toggle, #read-bar) {
+.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #cleanup-view, #find-control, #sort-control, #refresh-control, #theme-switch, #view-toggle, #read-bar) {
   display: none !important;
 }
 
@@ -1777,49 +1777,182 @@ textarea.input {
 /* Filters                                                                    */
 /* -------------------------------------------------------------------------- */
 
-.filters {
-  display: grid;
-  gap: 0.625rem;
-  margin: 0.75rem 0 0.5rem;
-}
-
-/* The button that folds the filters down to the chosen chips, and opens them
- * again (ADR 0049). Small and quiet: the chips are what the reader reads. */
-.filters-head {
+/* The heading of the board's half and its filters share one bar, and wrap
+ * under each other on a narrow screen (ADR 0049). */
+.board-bar {
   display: flex;
-}
-
-.filters-toggle {
-  height: 1.75rem;
-  padding: 0 0.5rem;
-  margin-left: -0.5rem;
-  font-size: 0.8125rem;
-}
-
-/* The issue field rows sit in the filters' own grid, at its own gap (ADR 0047). */
-.field-groups {
-  display: grid;
-  gap: 0.625rem;
-}
-
-.field-groups:empty {
-  display: none;
-}
-
-.filter-group {
-  display: flex;
-  align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.375rem 0.625rem;
+  align-items: center;
+  gap: 0.625rem 1rem;
+  margin: 2.25rem 0 0.875rem;
 }
 
-.filter-label {
-  flex: 0 0 5rem;
-  font-size: 0.75rem;
+.board-bar .section-heading {
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* One menu button per kind of filter. A button with a choice in force wears
+ * the count, so the reason the board is short is never out of sight. */
+.filter-menus {
+  display: contents;
+}
+
+.filter-button {
+  height: 2rem;
+  padding: 0 0.625rem 0 0.75rem;
+  gap: 0.375rem;
+}
+
+.filter-button.is-active {
+  border-color: hsl(var(--foreground) / 0.3);
+}
+
+.filter-button[aria-expanded="true"] {
+  background: hsl(var(--accent));
+}
+
+.filter-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.3125rem;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.chevron-down {
+  width: 0.875rem;
+  height: 0.875rem;
   color: hsl(var(--muted-foreground));
+  transition: transform 0.15s ease;
+}
+
+.filter-button[aria-expanded="true"] .chevron-down {
+  transform: rotate(180deg);
+}
+
+.filter-clear {
+  height: 2rem;
+  padding: 0 0.625rem;
+}
+
+/* The menu a filter button opens: one row per choice, each with a box the
+ * reader ticks. It stays open while they tick, because two labels is the
+ * usual case (ADR 0009). */
+.filter-menu {
+  min-width: 13rem;
+  max-width: 20rem;
+  max-height: min(24rem, 70vh);
+  overflow-y: auto;
+}
+
+.filter-box {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid hsl(var(--input));
+  border-radius: 0.3125rem;
+  background: hsl(var(--card));
+  color: transparent;
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.filter-tick {
+  width: 0.75rem;
+  height: 0.75rem;
+  stroke-width: 3;
+}
+
+.filter-option[aria-checked="true"] .filter-box {
+  background: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+/**
+ * A segmented switch: a few choices of which one (or, for people, some) are
+ * on. The kind of work, and whose work a review is. The pressed segment is a
+ * raised white tab on a grey track, the way shadcn draws a tab list.
+ */
+.segmented {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.125rem;
+  padding: 0.1875rem;
+  border-radius: calc(var(--radius) - 1px);
+  background: hsl(var(--foreground) / 0.06);
+}
+
+.segment {
+  height: 1.625rem;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: calc(var(--radius) - 3px);
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.segment:hover {
+  color: hsl(var(--foreground));
+}
+
+.segment:active {
+  transform: translateY(1px);
+}
+
+.segment:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.6);
+}
+
+.segment[aria-pressed="true"] {
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  box-shadow: var(--shadow-sm);
+}
+
+/* A segment that is only an icon: the theme switch in the masthead. */
+.segment-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 1.875rem;
+  padding: 0;
+}
+
+.theme-switch {
+  flex-wrap: nowrap;
+}
+
+/* When the board last heard from GitHub, beside the button that asks again. */
+.last-read {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  white-space: nowrap;
+}
+
+.skeleton-segment {
+  height: 1.625rem;
+  border-radius: calc(var(--radius) - 3px);
 }
 
 .chips {
@@ -2066,12 +2199,123 @@ textarea.input {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.3125rem 0.375rem;
+  gap: 0.25rem 0.375rem;
   min-height: 1.5rem;
   padding-right: 1.75rem;
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
   color: hsl(var(--muted-foreground));
+}
+
+/* The kind of work, as GitHub draws it, coloured by where it stands. */
+.kind-mark {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+
+.kind-icon {
+  width: 1rem;
+  height: 1rem;
+  stroke-width: 1.9;
+}
+
+.kind-open {
+  color: hsl(var(--success));
+}
+
+.kind-draft {
+  color: hsl(var(--muted-foreground));
+}
+
+.kind-merged,
+.kind-closed {
+  color: hsl(262 60% 52%);
+}
+
+.issue-repo {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.issue-number {
+  color: hsl(var(--foreground) / 0.7);
+}
+
+/* What the work waits on, in one row under the title. */
+.issue-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3125rem;
+  margin: 0.5rem 0 0;
+}
+
+.badge-draft {
+  background: hsl(var(--foreground) / 0.07);
+  color: hsl(var(--muted-foreground));
+}
+
+/* The foot of a card: what the work is about on the left, who it is with on
+ * the right. On a narrow card the faces drop under the tags. */
+.issue-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.625rem;
+}
+
+.issue-foot > .issue-people {
+  margin: 0 0 0 auto;
+}
+
+.issue-tags {
+  display: grid;
+  gap: 0.3125rem;
+  min-width: 0;
+}
+
+.issue-tags > .issue-labels,
+.issue-tags > .issue-fields {
+  margin-top: 0;
+}
+
+/* A review card's foot: whose work it is, and how long it has been open. */
+.issue-foot-review {
+  align-items: center;
+}
+
+.issue-who {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  font-size: 0.75rem;
+  color: hsl(var(--foreground) / 0.8);
+}
+
+.issue-who > .issue-people {
+  margin: 0;
+}
+
+.issue-who-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.issue-age {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  white-space: nowrap;
+}
+
+.reviews .issue-tags {
+  margin-top: 0.625rem;
 }
 
 /**
@@ -2345,8 +2589,18 @@ textarea.input {
 
 /* The filter row above the review cards, which the board's own filters sit
  * outside of. */
+/* Whose work each review is, at the right end of the row's heading. */
 .reviews-filters {
-  margin: 0 0 0.75rem;
+  margin-left: auto;
+}
+
+.reviews-head {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.reviews-head .column-name {
+  flex: 0 1 auto;
 }
 
 /**
@@ -2789,10 +3043,9 @@ button.milestone-name[aria-pressed="true"]:hover {
 
 .link-label {
   flex: 0 0 auto;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: hsl(var(--foreground) / 0.75);
 }
 
 /* An underline, not a bottom border: a reference that wraps onto a second
@@ -2898,16 +3151,23 @@ button.milestone-name[aria-pressed="true"]:hover {
   font-size: 0.8125rem;
 }
 
-/* One line each, so ten children stay a list rather than a wall of text. */
+/* Two lines at most, so a narrow column still shows enough of each title to
+ * tell the children apart, and ten children stay a list rather than a wall. */
 .child-title {
   min-width: 0;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
+/* A compact badge, so the state takes the space it needs and the title the
+ * rest. */
 .child-state {
   flex: 0 0 auto;
+  padding: 0 0.375rem;
+  font-size: 0.6875rem;
 }
 
 /* The state a child is in, wearing the colour the reader gave that column, so
@@ -2971,19 +3231,32 @@ button.milestone-name[aria-pressed="true"]:hover {
 /* A pull request sits inside the card of the issue it closes, indented and
  * joined to it by a line, so the pair reads as one piece of work (ADR 0010). */
 .issues.nested {
-  margin-top: 0.75rem;
-  margin-left: 0.25rem;
-  padding-left: 0.75rem;
-  border-left: 2px solid hsl(var(--border));
-  gap: 0.5rem;
+  margin-top: 0.625rem;
+  gap: 0.375rem;
 }
 
 /* The pull request inside its issue: a flatter card on a quieter ground, so
  * the pair reads as one piece of work and not as two cards stacked. */
 .issues.nested .issue {
-  background: hsl(var(--background) / 0.6);
+  background: hsl(var(--background) / 0.7);
+  border-color: hsl(var(--border));
   box-shadow: none;
-  padding: 0.625rem 0.75rem 0.6875rem;
+  border-radius: calc(var(--radius) - 2px);
+  padding: 0.5rem 0.625rem 0.5625rem;
+}
+
+.issues.nested .issue-title {
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+}
+
+.issues.nested .issue-foot {
+  margin-top: 0.375rem;
+}
+
+.issues.nested .icon-button {
+  top: 0.3125rem;
+  right: 0.3125rem;
 }
 
 .issues.nested .issue:hover {

@@ -106,10 +106,8 @@ import {
   availableReviewers,
   boardFilterCount,
   filterByPerson,
+  filterMenus,
   filterWorkItems,
-  filtersToggleLabel,
-  shownChoices,
-  shownKinds,
   toggleInList,
 } from "./filters.js";
 import { describeFailure, describeMissingPermission } from "./githubErrors.js";
@@ -118,6 +116,7 @@ import {
   bootStepWords,
   describeCleanup,
   describeLastRefresh,
+  describeOpened,
   describeReading,
   escapeHtml,
   movedByHandTip,
@@ -139,13 +138,11 @@ import {
   browserStorage,
   forgetAllTokens,
   readAutoRefresh,
-  readFiltersOpen,
   readLastCounts,
   readTokens,
   removeToken,
   renameToken,
   saveAutoRefresh,
-  saveFiltersOpen,
   saveLastCounts,
   saveTokens,
   updateToken,
@@ -223,12 +220,14 @@ import {
 import { encodeTokenBackup, looksLikeBackup, readTokenBackup } from "./tokenBackup.js";
 import { describeTokenReach, suggestedTokenName } from "./tokenIdentity.js";
 import {
+  KIND_ICONS,
   countByKind,
   finishedBetween,
   normalizeWorkItems,
   ownersOf,
   uniqueByKey,
   withoutItems,
+  workState,
 } from "./workItems.js";
 
 
@@ -344,9 +343,9 @@ const state = {
   // pull request is, and the board narrows by who is in the review (ADR 0028).
   assignees: [],
   reviewers: [],
-  // Whether the board's filters are open, or folded down to the chosen ones.
-  // Kept in this browser, folded unless the reader opened them (ADR 0049).
-  filtersOpen: readFiltersOpen(storage),
+  // Which filter menu is open, and the button that opened it (ADR 0049).
+  filterMenuId: null,
+  filterMenuAnchor: null,
   // What the reader typed in the find box. Only for this visit, and never in
   // the link: a board that opens with most of its cards hidden looks broken
   // (ADR 0038).
@@ -739,77 +738,42 @@ function buildWorkItemCard(
   card.append(more);
   if (priority !== NORMAL) card.append(buildPriorityMark(priority));
 
-  const kind = document.createElement("span");
-  kind.className = item.kind === "pull-request" ? "badge badge-pull" : "badge badge-issue";
-  kind.textContent = item.kind === "pull-request" ? "PR" : "Issue";
-  heading.append(kind);
+  // The kind as an icon, the way GitHub draws it, coloured by where the work
+  // stands. The word is there for a screen reader and on the pointer.
+  const kindWord = item.kind === "pull-request" ? (item.isDraft ? "Draft pull request" : "Pull request") : "Issue";
+  const kind = drawIcon(KIND_ICONS[item.kind] ?? KIND_ICONS.issue, `icon kind-icon kind-${workState(item)}`);
+  kind.setAttribute("aria-hidden", "false");
+  kind.setAttribute("role", "img");
+  kind.setAttribute("aria-label", kindWord);
+  const kindHolder = document.createElement("span");
+  kindHolder.className = "kind-mark";
+  kindHolder.append(kind);
+  explain(kindHolder, kindWord);
+  heading.append(kindHolder);
 
-  // How the checks on the last commit are going, beside the kind, because it
+  // A nested pull request is almost always in its issue's own repository, so
+  // the name is repetition taking the width the title needs. It stays one
+  // hover away (ADR 0018).
+  const where = document.createElement("span");
+  where.className = "issue-repo";
+  where.textContent = compact ? "" : item.repository;
+  const number = document.createElement("span");
+  number.className = "issue-number";
+  number.textContent = `#${item.number}`;
+  if (compact) explain(number, item.repository);
+  if (!compact) heading.append(where);
+  heading.append(number);
+
+  // How the checks on the last commit are going, after the number, because it
   // is a thing only a pull request has (ADR 0037).
   const checks = buildChecksDot(item.checks);
   if (checks) heading.append(checks);
-
-  // Three cards from one person are often one stack, and the row of reviews
-  // gives no other sign of it or of which to read first (ADR 0020).
-  if (stack) {
-    const inStack = document.createElement("span");
-    inStack.className = "badge badge-stack";
-
-    // The number is the bottom of the stack. On its own it says nothing about
-    // what that pull request is, so hovering it answers that and nothing else
-    // (ADR 0027).
-    const which = document.createElement("span");
-    which.className = "stack-number";
-    which.textContent = `Stack #${stack.stack}`;
-    explain(which, stack.title === "" ? `Pull request #${stack.stack}` : `#${stack.stack} ${stack.title}`);
-
-    const where = document.createElement("span");
-    where.className = "stack-position";
-    // A stack that branches gives the pull requests on one level a letter
-    // each, or eight of them would all read "2 of 9" (ADR 0020).
-    const words = describeStackPosition(stack);
-    where.textContent = `· ${words.text}`;
-    explain(where, words.tip);
-
-    inStack.append(which, where);
-    heading.append(inStack);
-  }
-
-  if (item.isDraft) {
-    const draft = document.createElement("span");
-    draft.className = "badge badge-outline";
-    draft.textContent = "Draft";
-    heading.append(draft);
-  }
-
-  if (isBlocked(relationship)) {
-    const blocked = document.createElement("span");
-    blocked.className = "badge badge-blocked";
-    blocked.textContent = "Blocked";
-    heading.append(blocked);
-  }
-
-  // Why this work is with the person who wrote it. Drawn on every card that
-  // has a reason, not only on the ones sitting in "Needs attention": a card
-  // the reader moved somewhere by hand still conflicts (ADR 0011).
-  for (const id of attentionFor(item, relationship)) {
-    const reason = attentionReason(id);
-    if (reason) heading.append(buildAttentionPill(reason));
-  }
 
   // Whether the reader carries this alone. On the board that is the other
   // assignees; in the review row it is the other people in the review. The
   // reader alone draws nothing (ADR 0028).
   const others = shows("people") ? buildOthersBadge(item, area === REVIEW_ROW_ID) : null;
   if (others) heading.append(others);
-
-  // A nested pull request is almost always in its issue's own repository, so
-  // the name is repetition taking the width the title needs. It stays one
-  // hover away (ADR 0018).
-  const where = document.createElement("span");
-  where.textContent = compact ? `#${item.number}` : `${item.repository} #${item.number}`;
-  if (compact) explain(where, item.repository);
-  heading.append(where);
   card.append(heading);
 
   // `fix(api):` is the same on hundreds of cards and the rest is the only part
@@ -834,6 +798,113 @@ function buildWorkItemCard(
   link.append(document.createTextNode(read.description));
   card.append(link);
 
+  // What the work is waiting on, under the title where the eye lands next:
+  // the stack it is in, a draft, a blocker, and the reasons it wants its
+  // author. Drawn on every card that has one, wherever it sits: a card the
+  // reader moved by hand still conflicts (ADR 0011).
+  const flags = document.createElement("p");
+  flags.className = "issue-flags";
+
+  // Three cards from one person are often one stack, and the row of reviews
+  // gives no other sign of it or of which to read first (ADR 0020).
+  if (stack) {
+    const inStack = document.createElement("span");
+    inStack.className = "badge badge-stack";
+
+    // The number is the bottom of the stack. On its own it says nothing about
+    // what that pull request is, so hovering it answers that and nothing else
+    // (ADR 0027).
+    const which = document.createElement("span");
+    which.className = "stack-number";
+    which.textContent = `Stack #${stack.stack}`;
+    explain(which, stack.title === "" ? `Pull request #${stack.stack}` : `#${stack.stack} ${stack.title}`);
+
+    const position = document.createElement("span");
+    position.className = "stack-position";
+    // A stack that branches gives the pull requests on one level a letter
+    // each, or eight of them would all read "2 of 9" (ADR 0020).
+    const words = describeStackPosition(stack);
+    position.textContent = `· ${words.text}`;
+    explain(position, words.tip);
+
+    inStack.append(which, position);
+    flags.append(inStack);
+  }
+
+  if (item.isDraft) {
+    const draft = document.createElement("span");
+    draft.className = "badge badge-draft";
+    draft.textContent = "Draft";
+    flags.append(draft);
+  }
+
+  if (isBlocked(relationship)) {
+    const blocked = document.createElement("span");
+    blocked.className = "badge badge-blocked";
+    blocked.textContent = "Blocked";
+    flags.append(blocked);
+  }
+
+  for (const id of attentionFor(item, relationship)) {
+    const reason = attentionReason(id);
+    if (reason) flags.append(buildAttentionPill(reason));
+  }
+  if (flags.childElementCount > 0) card.append(flags);
+
+  // "Sub-issue of", not "Part of": the card has to say what the relationship is
+  // as well as which issue it is with, because the reader meets this card in a
+  // column, away from its parent (ADR 0010).
+  if (relationship.parent && shows("links")) {
+    card.append(buildLinkLine("Sub-issue of", [relationship.parent]));
+  }
+
+  const blockers = openBlockers(relationship);
+  if (blockers.length > 0 && shows("links")) {
+    card.append(buildLinkLine("Blocked by", blockers));
+  }
+
+  if (relationship.subIssues.total > 0 && shows("children")) card.append(buildChildren(item, relationship.subIssues));
+
+  // The box is not there until there is a note in it, or until the reader asks
+  // for one from the menu. An empty box on every card is forty invitations to
+  // write something nobody wanted to write (ADR 0014).
+  const written = readNote(state.board, item.key);
+  if (hasNoteText(written) || state.notesOpen.has(item.key)) card.append(buildNoteBox(item, written));
+
+  // The foot of the card: what the work is about on the left (labels, the
+  // milestone, the issue fields), and who it is with on the right. A pull
+  // request nested in this card goes above it (`buildGroupCard`).
+  const tags = document.createElement("div");
+  tags.className = "issue-tags";
+
+  // The milestone closes the labels. Only the board's filters can narrow by
+  // it, so a review card's pill links and does not filter (ADR 0009, ADR 0045).
+  const labelList = shows("labels") ? item.labels : [];
+  const milestone = shows("milestone") ? item.milestone : null;
+  if (labelList.length > 0 || milestone) {
+    const labels = document.createElement("p");
+    labels.className = "issue-labels";
+    for (const label of labelList) {
+      const chip = document.createElement("span");
+      chip.className = "badge badge-outline";
+      chip.textContent = label.name;
+      labels.append(chip);
+    }
+    if (milestone) labels.append(buildMilestonePill(milestone, people !== "assignees"));
+    tags.append(labels);
+  }
+
+  // The issue fields that are set, one pill each (ADR 0047). Like the
+  // milestone's name, a number or an option filters the board, and only on
+  // the board.
+  const fields = shows("fields") ? (item.fields ?? []) : [];
+  if (fields.length > 0) {
+    const row = document.createElement("p");
+    row.className = "issue-fields";
+    for (const field of fields) row.append(buildFieldPill(field, people !== "assignees"));
+    tags.append(row);
+  }
+
   // Who this is about. In the review row that is whose work it is; on the
   // board it is who is in the review, each face carrying what the board waits
   // on them for (ADR 0028). An issue carries the review of the pull request its
@@ -857,56 +928,41 @@ function buildWorkItemCard(
             },
           })
         : null;
-  if (faces && shows("people")) card.append(faces);
+  const showFaces = faces && shows("people") && faces.childElementCount > 0;
 
-  // The milestone closes the row, after the labels. Only the board's filters
-  // can narrow by it, so a review card's pill links and does not filter
-  // (ADR 0009, ADR 0045).
-  const labelList = shows("labels") ? item.labels : [];
-  const milestone = shows("milestone") ? item.milestone : null;
-  if (labelList.length > 0 || milestone) {
-    const labels = document.createElement("p");
-    labels.className = "issue-labels";
-    for (const label of labelList) {
-      const chip = document.createElement("span");
-      chip.className = "badge badge-outline";
-      chip.textContent = label.name;
-      labels.append(chip);
+  // A review card names whose work it is beside the face, and how long it has
+  // been open on the right, so the oldest one is found without opening it.
+  const inReviewRow = people === "assignees";
+  const opened = inReviewRow ? describeOpened(item.createdAt, Date.now()) : "";
+
+  if (tags.childElementCount > 0 || showFaces || opened !== "") {
+    const foot = document.createElement("div");
+    foot.className = inReviewRow ? "issue-foot issue-foot-review" : "issue-foot";
+    if (inReviewRow) {
+      const who = document.createElement("span");
+      who.className = "issue-who";
+      if (showFaces) who.append(faces);
+      const only = Array.isArray(item.assignees) && item.assignees.length === 1 ? item.assignees[0] : null;
+      if (only && shows("people")) {
+        const name = document.createElement("span");
+        name.className = "issue-who-name";
+        name.textContent = only.name || only.login;
+        who.append(name);
+      }
+      if (who.childElementCount > 0) foot.append(who);
+      if (opened !== "") {
+        const age = document.createElement("span");
+        age.className = "issue-age";
+        age.textContent = opened;
+        foot.append(age);
+      }
+      if (tags.childElementCount > 0) card.append(tags);
+    } else {
+      if (tags.childElementCount > 0) foot.append(tags);
+      if (showFaces) foot.append(faces);
     }
-    if (milestone) labels.append(buildMilestonePill(milestone, people !== "assignees"));
-    card.append(labels);
+    if (foot.childElementCount > 0) card.append(foot);
   }
-
-  // The issue fields that are set, one pill each (ADR 0047). Like the
-  // milestone's name, a number or an option filters the board, and only on
-  // the board.
-  const fields = shows("fields") ? (item.fields ?? []) : [];
-  if (fields.length > 0) {
-    const row = document.createElement("p");
-    row.className = "issue-fields";
-    for (const field of fields) row.append(buildFieldPill(field, people !== "assignees"));
-    card.append(row);
-  }
-
-  // "Sub-issue of", not "Part of": the card has to say what the relationship is
-  // as well as which issue it is with, because the reader meets this card in a
-  // column, away from its parent (ADR 0010).
-  if (relationship.parent && shows("links")) {
-    card.append(buildLinkLine("Sub-issue of", [relationship.parent]));
-  }
-
-  const blockers = openBlockers(relationship);
-  if (blockers.length > 0 && shows("links")) {
-    card.append(buildLinkLine("Blocked by", blockers));
-  }
-
-  if (relationship.subIssues.total > 0 && shows("children")) card.append(buildChildren(item, relationship.subIssues));
-
-  // The box is not there until there is a note in it, or until the reader asks
-  // for one from the menu. An empty box on every card is forty invitations to
-  // write something nobody wanted to write (ADR 0014).
-  const written = readNote(state.board, item.key);
-  if (hasNoteText(written) || state.notesOpen.has(item.key)) card.append(buildNoteBox(item, written));
 
   return card;
 }
@@ -1007,41 +1063,13 @@ function renderLoading() {
   );
   element("board-empty").hidden = true;
 
-  // Folded, a group holds only the chips the link chose, so the placeholder
-  // counts those instead of last time's (ADR 0049).
-  const open = state.filtersOpen;
-  renderFiltersToggle();
-  element("kind-group").hidden = shownKinds(state.kind, open).length === 0;
-  element("repository-group").hidden = open ? !(last.repositories > 1) : state.repositories.length === 0;
-  element("repository-filters").replaceChildren(
-    ...times(open ? skeletonCount(last.repositories, 2) : state.repositories.length, () =>
-      buildSkeletonBar("7rem", "skeleton-pill"),
-    ),
-  );
-  element("label-group").hidden = open ? !(last.labels > 0) : state.labels.length === 0;
-  element("label-filters").replaceChildren(
-    ...times(open ? skeletonCount(last.labels, 3) : state.labels.length, () => buildSkeletonBar("4.5rem", "skeleton-pill")),
-  );
-  element("milestone-group").hidden = open ? !(last.milestones > 0) : state.milestones.length === 0;
-  element("milestone-filters").replaceChildren(
-    ...times(open ? skeletonCount(last.milestones, 1) : state.milestones.length, () =>
-      buildSkeletonBar("5.5rem", "skeleton-pill"),
-    ),
-  );
-  // One row per field, as many as last time (ADR 0004, ADR 0047). Folded,
-  // one row stands in for whatever field values the link chose.
-  const fieldRows = open ? (last.fields > 0 ? last.fields : 0) : Math.min(1, state.fields.length);
-  element("field-groups").replaceChildren(
-    ...times(fieldRows, () => {
-      const group = document.createElement("div");
-      group.className = "filter-group";
-      const chips = document.createElement("div");
-      chips.className = "chips";
-      chips.append(...times(3, () => buildSkeletonBar("2.5rem", "skeleton-pill")));
-      group.append(buildSkeletonBar("4rem"), chips);
-      return group;
-    }),
-  );
+  // One placeholder button per menu the bar held last time, so the bar does
+  // not grow when the real menus land (ADR 0004, ADR 0049).
+  const menus =
+    (last.repositories > 1 ? 1 : 0) + (last.labels > 0 ? 1 : 0) + (last.milestones > 0 ? 1 : 0) + (last.fields ?? 0);
+  element("kind-filters").replaceChildren(...times(3, () => buildSkeletonBar("4.5rem", "skeleton-segment")));
+  element("filter-menus").replaceChildren(...times(menus, () => buildSkeletonBar("6.5rem", "skeleton-button")));
+  element("clear-board-filters").hidden = true;
 
   element("tokens").replaceChildren(
     ...times(skeletonCount(last.tokens ?? state.tokens.length, 1), buildSkeletonTokenRow),
@@ -1089,6 +1117,47 @@ function paintTheme() {
   const theme = readTheme(state.board);
   if (theme === "auto") document.documentElement.removeAttribute("data-theme");
   else document.documentElement.setAttribute("data-theme", theme);
+  renderThemeSwitch();
+}
+
+/** The icon for each theme in the masthead's switch, on a 24 by 24 grid. */
+const THEME_ICONS = {
+  auto: ["M4 5h16v11H4Z", "M9 20h6", "M12 16v4"],
+  light: [
+    "M16 12a4 4 0 1 1-8 0a4 4 0 1 1 8 0Z",
+    "M12 2v2",
+    "M12 20v2",
+    "m4.9 4.9 1.4 1.4",
+    "m17.7 17.7 1.4 1.4",
+    "M2 12h2",
+    "M20 12h2",
+    "m4.9 19.1 1.4-1.4",
+    "m17.7 6.3 1.4-1.4",
+  ],
+  dark: ["M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"],
+};
+
+/** Write the reader's theme, wherever they chose it: the masthead or Settings. */
+function chooseTheme(id) {
+  state.board = writeTheme(state.board, id, new Date().toISOString());
+  scheduleSave();
+  paintTheme();
+  renderAppearance();
+}
+
+/** The masthead's theme switch: the machine's setting, light, or dark (ADR 0024). */
+function renderThemeSwitch() {
+  const theme = readTheme(state.board);
+  element("theme-switch").replaceChildren(
+    ...THEMES.map((one) => {
+      const segment = buildSegment("", theme === one.id, () => chooseTheme(one.id));
+      segment.classList.add("segment-icon");
+      segment.setAttribute("aria-label", one.id === "auto" ? "Theme: follow this device" : `Theme: ${one.label}`);
+      segment.append(drawIcon(THEME_ICONS[one.id] ?? THEME_ICONS.auto));
+      explain(segment, one.id === "auto" ? "Follow this device" : one.label);
+      return segment;
+    }),
+  );
 }
 
 /**
@@ -1198,133 +1267,125 @@ function buildChip(label, pressed, onToggle) {
   return chip;
 }
 
+/** One choice in a segmented switch: the kind of work, or whose work a review is. */
+function buildSegment(label, pressed, onPress) {
+  const segment = document.createElement("button");
+  segment.type = "button";
+  segment.className = "segment";
+  segment.setAttribute("aria-pressed", pressed ? "true" : "false");
+  segment.textContent = label;
+  segment.addEventListener("click", onPress);
+  return segment;
+}
+
+/** The list in state that one filter menu chooses into. */
+const FILTER_LISTS = { repository: "repositories", reviewer: "reviewers", label: "labels", milestone: "milestones" };
+
+function filterListOf(menuId) {
+  return menuId.startsWith("field:") ? "fields" : FILTER_LISTS[menuId];
+}
+
 /**
- * Build the chips from what the list actually holds.
- *
- * A repository or a label nobody is assigned anything in is not offered: a
- * filter that can only ever empty the board is noise (ADR 0009).
+ * The filter bar: a switch for the kind, and one menu per kind of filter,
+ * built from what the list actually holds (ADR 0009, ADR 0049). A filter that
+ * can only ever empty the board is not offered.
  */
 function renderFilters() {
-  // Folded, each group shows only what the reader chose, and a group with
-  // nothing chosen hides. "Everything" narrows nothing, so it is not a choice
-  // a folded group keeps (ADR 0049).
-  const open = state.filtersOpen;
-  renderFiltersToggle();
-
-  const kinds = shownKinds(state.kind, open);
-  element("kind-group").hidden = kinds.length === 0;
   element("kind-filters").replaceChildren(
-    ...kinds.map((kind) =>
-      buildChip(kind.label, state.kind === kind.id, () => {
+    ...KIND_FILTERS.map((kind) =>
+      buildSegment(kind.label, state.kind === kind.id, () => {
         state.kind = kind.id;
         afterFilterChange();
       }),
     ),
   );
 
-  const repositories = availableRepositories(state.items);
-  const shownRepositories = shownChoices(repositories, state.repositories, open);
-  element("repository-group").hidden = shownRepositories.length === 0 || (open && repositories.length < 2);
-  element("repository-filters").replaceChildren(
-    ...shownRepositories.map((name) =>
-      buildChip(name, state.repositories.includes(name), () => {
-        state.repositories = toggleInList(state.repositories, name);
-        afterFilterChange();
-      }),
-    ),
-  );
+  const menus = filterMenus(state.items, state);
+  element("filter-menus").replaceChildren(...menus.map(buildFilterButton));
+  element("clear-board-filters").hidden = boardFilterCount(state) === 0;
+  // The button the open menu belongs to was just drawn again.
+  if (state.filterMenuId !== null) {
+    state.filterMenuAnchor =
+      [...element("filter-menus").children].find((button) => button.dataset.menu === state.filterMenuId) ?? null;
+    state.filterMenuAnchor?.setAttribute("aria-expanded", "true");
+    if (element("filter-menu").matches(":popover-open")) fillFilterMenu();
+  }
 
-  // Only offered when the list can actually use it, exactly like the
-  // repository chips (ADR 0009).
-  const reviewers = availableReviewers(state.items);
-  const shownReviewers = shownChoices(reviewers, state.reviewers, open, (person) => person.login);
-  element("reviewer-group").hidden = shownReviewers.length === 0 || (open && reviewers.length < 2);
-  element("reviewer-filters").replaceChildren(
-    ...shownReviewers.map((person) =>
-      buildChip(person.name, state.reviewers.includes(person.login), () => {
-        state.reviewers = toggleInList(state.reviewers, person.login);
-        afterFilterChange();
-      }),
-    ),
-  );
-
+  // Whose work each review is: everyone, or the people the reader picked.
   const assignees = availableAssignees(withoutItems(state.reviews, state.items));
   element("assignee-group").hidden = assignees.length < 2;
   element("assignee-filters").replaceChildren(
+    buildSegment("Everyone", state.assignees.length === 0, () => {
+      state.assignees = [];
+      afterFilterChange();
+    }),
     ...assignees.map((person) =>
-      buildChip(person.name, state.assignees.includes(person.login), () => {
+      buildSegment(person.name, state.assignees.includes(person.login), () => {
         state.assignees = toggleInList(state.assignees, person.login);
         afterFilterChange();
       }),
     ),
   );
+}
 
-  const labels = availableLabels(state.items);
-  const shownLabels = shownChoices(labels, state.labels, open);
-  element("label-group").hidden = shownLabels.length === 0;
-  element("label-filters").replaceChildren(
-    ...shownLabels.map((name) =>
-      buildChip(name, state.labels.includes(name), () => {
-        state.labels = toggleInList(state.labels, name);
+/** One button in the filter bar. It opens the shared menu, filled for it. */
+function buildFilterButton(menu) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = menu.count > 0 ? "button button-outline filter-button is-active" : "button button-outline filter-button";
+  button.dataset.menu = menu.id;
+  button.setAttribute("aria-haspopup", "menu");
+  button.setAttribute("aria-expanded", "false");
+  button.setAttribute("popovertarget", "filter-menu");
+  const name = document.createElement("span");
+  name.textContent = menu.label;
+  button.append(name);
+  if (menu.count > 0) {
+    const count = document.createElement("span");
+    count.className = "filter-count";
+    count.textContent = String(menu.count);
+    count.setAttribute("aria-label", `${menu.count} chosen`);
+    button.append(count);
+  }
+  button.append(buildChevronDown());
+  button.addEventListener("click", () => {
+    state.filterMenuId = menu.id;
+    state.filterMenuAnchor = button;
+  });
+  return button;
+}
+
+function buildChevronDown() {
+  return drawIcon(["m6 9 6 6 6-6"], "icon chevron-down");
+}
+
+/** The open filter menu's rows: one per choice, each a box the reader ticks. */
+function fillFilterMenu() {
+  const menu = filterMenus(state.items, state).find((one) => one.id === state.filterMenuId);
+  const list = element("filter-menu");
+  list.setAttribute("aria-label", menu ? menu.label : "Filter");
+  list.replaceChildren(
+    ...(menu?.options ?? []).map((option) => {
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = "menu-item filter-option";
+      row.setAttribute("role", "menuitemcheckbox");
+      row.setAttribute("aria-checked", option.chosen ? "true" : "false");
+      const box = document.createElement("span");
+      box.className = "filter-box";
+      box.append(drawIcon(["m5 12 5 5 9-10"], "icon filter-tick"));
+      const label = document.createElement("span");
+      label.className = "menu-label";
+      label.textContent = option.text;
+      row.append(box, label);
+      row.addEventListener("click", () => {
+        const field = filterListOf(menu.id);
+        state[field] = toggleInList(state[field], option.key);
         afterFilterChange();
-      }),
-    ),
-  );
-
-  // The same chips a card's milestone pill presses (ADR 0045).
-  const milestones = availableMilestones(state.items);
-  const shownMilestones = shownChoices(milestones, state.milestones, open);
-  element("milestone-group").hidden = shownMilestones.length === 0;
-  element("milestone-filters").replaceChildren(
-    ...shownMilestones.map((name) =>
-      buildChip(name, state.milestones.includes(name), () => {
-        state.milestones = toggleInList(state.milestones, name);
-        afterFilterChange();
-      }),
-    ),
-  );
-
-  // One row per issue field with numbers or options, built from what the list
-  // holds (ADR 0047). A field pill on a card presses the same chip.
-  const fieldRows = availableFieldFilters(state.items)
-    .map((field) => ({ ...field, values: shownChoices(field.values, state.fields, open, (value) => value.key) }))
-    .filter((field) => field.values.length > 0);
-  element("field-groups").replaceChildren(
-    ...fieldRows.map((field) => {
-      const group = document.createElement("div");
-      group.className = "filter-group";
-      const name = document.createElement("p");
-      name.className = "filter-label";
-      name.textContent = field.name;
-      const chips = document.createElement("div");
-      chips.className = "chips";
-      chips.setAttribute("role", "group");
-      chips.setAttribute("aria-label", field.name);
-      chips.append(
-        ...field.values.map((value) =>
-          buildChip(value.text, state.fields.includes(value.key), () => {
-            state.fields = toggleInList(state.fields, value.key);
-            afterFilterChange();
-          }),
-        ),
-      );
-      group.append(name, chips);
-      return group;
+      });
+      return row;
     }),
   );
-}
-
-/** The button that folds and opens the board's filters, and says what a press does. */
-function renderFiltersToggle() {
-  const toggle = element("filters-toggle");
-  toggle.textContent = filtersToggleLabel(state.filtersOpen, boardFilterCount(state));
-  toggle.setAttribute("aria-expanded", state.filtersOpen ? "true" : "false");
-}
-
-function toggleFilters() {
-  state.filtersOpen = !state.filtersOpen;
-  saveFiltersOpen(storage, state.filtersOpen);
-  renderFilters();
 }
 
 function afterFilterChange() {
@@ -2037,7 +2098,9 @@ function buildGroupCard({ item, children }, area) {
       }),
     ),
   );
-  card.append(nest);
+  // Above the card's foot, so the issue's labels close the card and the pull
+  // request reads as part of the work, not as something after it.
+  card.insertBefore(nest, card.querySelector(":scope > .issue-foot"));
   return card;
 }
 
@@ -2904,12 +2967,7 @@ function renderAppearance() {
   const theme = readTheme(state.board);
   element("theme-choices").replaceChildren(
     ...THEMES.map((one) =>
-      buildChip(one.label, theme === one.id, () => {
-        state.board = writeTheme(state.board, one.id, new Date().toISOString());
-        scheduleSave();
-        paintTheme();
-        renderAppearance();
-      }),
+      buildChip(one.label, theme === one.id, () => chooseTheme(one.id)),
     ),
   );
 
@@ -3116,6 +3174,8 @@ function showView(view, section) {
   toggle.hidden = !connected;
   element("view-toggle-label").textContent = label;
   element("view-toggle-arrow").hidden = back === null;
+  element("view-toggle-gear").hidden = back !== null;
+  element("theme-switch").hidden = !connected;
   state.viewToggleGoesTo = back ?? "settings";
   element("setup").hidden = connected;
   element("board").hidden = !connected || state.view !== "board";
@@ -3973,6 +4033,9 @@ function renderRefreshTip() {
   }
   explain(button, words);
   if (tipFor === button) showTip(button);
+  // The same answer in words beside the button, short: the tooltip holds the
+  // detail of a read under way (ADR 0029, ADR 0039).
+  element("last-read").textContent = state.loading ? "Reading GitHub" : describeLastRefresh(state.lastReadAt, Date.now());
 }
 
 /**
@@ -4350,7 +4413,17 @@ function start() {
     showView("settings", element("empty-open-settings").dataset.section || DEFAULT_SECTION),
   );
   element("clear-filters").addEventListener("click", clearFilters);
-  element("filters-toggle").addEventListener("click", toggleFilters);
+  element("clear-board-filters").addEventListener("click", clearFilters);
+  const filterMenu = element("filter-menu");
+  filterMenu.addEventListener("beforetoggle", (event) => {
+    if (event.newState === "open") fillFilterMenu();
+  });
+  filterMenu.addEventListener("toggle", (event) => {
+    const open = event.newState === "open";
+    state.filterMenuAnchor?.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open && state.filterMenuAnchor) placeMenu(filterMenu, state.filterMenuAnchor, { fromLeft: true });
+    if (!open) state.filterMenuId = null;
+  });
 
   wireTooltip();
 

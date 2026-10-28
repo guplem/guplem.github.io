@@ -122,6 +122,23 @@ export function describeLastRefresh(lastAt, now) {
   return "Refreshed just now";
 }
 
+/**
+ * How long a pull request has been open, for its review card. GitHub does not
+ * say when the review was asked for, so this says "Opened", which is true, and
+ * never "Waiting", which would be a guess. Empty when the date is unreadable.
+ */
+export function describeOpened(createdAt, now) {
+  const at = typeof createdAt === "string" ? Date.parse(createdAt) : Number.NaN;
+  if (!Number.isFinite(at)) return "";
+  const waited = Math.max(0, now - at);
+  if (waited < JUST_NOW_MS) return "Opened just now";
+  for (const { unit, ms } of SINCE) {
+    const count = Math.floor(waited / ms);
+    if (count >= 1) return `Opened ${count} ${unit}${count === 1 ? "" : "s"} ago`;
+  }
+  return "Opened just now";
+}
+
 /** A passing message stays at least this long, and never longer than the cap. */
 const SNACKBAR_MIN_MS = 4000;
 const SNACKBAR_MAX_MS = 10_000;

@@ -123,10 +123,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   search, and Escape brings the whole board back.
 - **Filter by kind, repository, label, milestone or issue field.** Two labels means either of
   them; a kind plus a repository means both. The filters go into the address bar
-  too, so "everything tagged urgent in this repository" is a link. A button
-  folds the filters down to the chips you chose, so a long list of chips does
-  not push the columns down. The board starts folded, and this browser
-  remembers your choice.
+  too, so "everything tagged urgent in this repository" is a link. One bar
+  holds a switch for All, Issues or Pull requests, and one menu for each
+  other filter. A badge on a menu says how many values you chose, and "Clear
+  filters" resets them, so a long list of values does not push the columns
+  down.
 - **See the milestone on each card.** A pill after the labels names the
   milestone and shows how much of it is closed. Press the icon or the number to
   open the milestone on GitHub; press the name to show only that milestone's

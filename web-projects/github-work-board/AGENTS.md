@@ -44,7 +44,7 @@ It is the short procedure for all of the above.
 | `boardDocument.js` | Yes | What each record means to the board: one note, column, colour, shown or hidden part of the board or of a card, theme, priority, counting choice, copy action or note kept out of the cleanup at a time, over the shared envelope (`../cloud-storage/envelope.js`) |
 | `cleanup.js` | Yes | The suggested cleanup: which notes sit on closed or merged work, from GitHub's answer about each item, and emptying the ones the reader lets go (ADR 0043) |
 | `legacyStorage.js` | Yes | The one-time hand-over of the board's old data repository and its writing token to cloud storage (root ADR 0016) |
-| `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike |
+| `workItems.js` | Yes | GitHub's answer into the items the board shows, issues and pull requests alike, the kind icons (`KIND_ICONS`) and where a piece of work stands for the icon's colour (`workState`: open, draft, merged or closed) |
 | `sorting.js` | Yes | The orders the list can be put in, all of them total (ADR 0006) |
 | `appearance.js` | Yes | The colours a column can be painted, light or dark, and how many shown columns share the window (ADR 0024) |
 | `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
@@ -58,7 +58,7 @@ It is the short procedure for all of the above.
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it (with a letter on a level that branches), with the bottom's name, and which stack each card lights up with (ADR 0020, ADR 0027) |
-| `filters.js` | Yes | Narrowing by kind, repository, label, milestone, issue field and person, what to offer, and what a folded group still shows (ADR 0009, ADR 0028, ADR 0045, ADR 0047, ADR 0049) |
+| `filters.js` | Yes | Narrowing by kind, repository, label, milestone, issue field and person, the menus the filter bar offers (`filterMenus`) and the count of chosen values (ADR 0009, ADR 0028, ADR 0045, ADR 0047, ADR 0049) |
 | `fields.js` | Yes | The issue fields set on an issue, read from the answer the board already has: their words, which of them a filter offers, and narrowing by them (ADR 0047) |
 | `settingsSections.js` | Yes | The sections of Settings with their permanent ids, the section each sub-screen goes back to, and the written list of settings the search finds (ADR 0048) |
 | `cardParts.js` | Yes | The parts of a card the reader can hide in Settings, with their permanent ids (ADR 0047) |
@@ -76,8 +76,8 @@ It is the short procedure for all of the above.
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
-| `settings.js` | Yes | The list of tokens and the choices kept only in this browser (refresh schedule, last counts, filters open or folded), through an injected storage (ADR 0007, ADR 0025, ADR 0049) |
-| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), what a running read waits on (ADR 0039), whether the notes are syncing (ADR 0019), what the cleanup found (ADR 0043), and how long a passing line stays in the snackbar (ADR 0004) |
+| `settings.js` | Yes | The list of tokens and the choices kept only in this browser (refresh schedule, last counts; the retired `filtersOpen` key stays only in `LEGACY_KEYS`, so sign-out clears it), through an injected storage (ADR 0007, ADR 0025, ADR 0049) |
+| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), how long a review card has been open (`describeOpened`), what a running read waits on (ADR 0039), whether the notes are syncing (ADR 0019), what the cleanup found (ADR 0043), and how long a passing line stays in the snackbar (ADR 0004) |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `style.css` | - | The design system: colour roles, one radius, and the five parts every screen is built from (ADR 0004) |
 | `gateway.js` | No | The **only** file that calls the network |
@@ -773,7 +773,7 @@ Check `performance.getEntriesByType("resource")` for a `transferSize` of 0, and
 | [0046](adr/0046-the-menu-speaks-in-icons-and-a-moved-card-wears-a-dot.md) | The menu speaks in icons, and a card moved by hand wears a dot |
 | [0047](adr/0047-issue-fields-come-free-and-the-reader-chooses-what-a-card-shows.md) | Issue fields come free with each issue, and the reader chooses what a card shows |
 | [0048](adr/0048-settings-is-split-into-sections-and-the-section-is-in-the-link.md) | Settings is split into sections, the section is in the link, and a search finds any setting |
-| [0049](adr/0049-the-filters-fold-down-to-the-chosen-chips.md) | The filters fold down to the chosen chips, and "Everything" is not a filter |
+| [0049](adr/0049-the-filters-are-one-bar-a-kind-switch-and-one-menu-per-filter.md) | The filters are one bar, a kind switch and one menu per filter |
 
 ## What is not built yet
 

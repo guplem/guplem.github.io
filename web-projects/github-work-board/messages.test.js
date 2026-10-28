@@ -5,6 +5,7 @@ import {
   escapeHtml,
   joinWithAnd,
   describeLastRefresh,
+  describeOpened,
   describeReading,
   movedByHandTip,
   noteMenuLabel,
@@ -440,5 +441,32 @@ describe("snackbarHoldMs: how long a passing message stays on screen", () => {
 
   test("nothing stays longer than ten seconds", () => {
     expect(snackbarHoldMs("word ".repeat(400))).toBe(10_000);
+  });
+});
+
+// A review card says how long the pull request has been open, so the one that
+// has waited longest is found without opening it. GitHub does not say when the
+// review was asked for, so the card says "Opened", which is true, and never
+// "Waiting", which would be a guess.
+describe("describeOpened: how long a pull request has been open", () => {
+  const now = Date.parse("2026-10-28T12:00:00Z");
+
+  test("in the largest whole unit", () => {
+    expect(describeOpened("2026-10-25T12:00:00Z", now)).toBe("Opened 3 days ago");
+    expect(describeOpened("2026-10-28T07:00:00Z", now)).toBe("Opened 5 hours ago");
+    expect(describeOpened("2026-10-28T11:59:00Z", now)).toBe("Opened 1 minute ago");
+  });
+
+  test("a moment ago reads as just now", () => {
+    expect(describeOpened("2026-10-28T11:59:55Z", now)).toBe("Opened just now");
+  });
+
+  test("a date it cannot read says nothing", () => {
+    expect(describeOpened("", now)).toBe("");
+    expect(describeOpened("not a date", now)).toBe("");
+  });
+
+  test("a clock that moved backwards never says the future", () => {
+    expect(describeOpened("2026-10-29T12:00:00Z", now)).toBe("Opened just now");
   });
 });

@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="400" />
-  <meta name="deploy-date" content="2026-10-28T16:03:56.000Z" />
+  <meta name="deploy-pull-request" content="401" />
+  <meta name="deploy-date" content="2026-10-28T16:20:32.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -116,6 +116,9 @@
        card menu, which is an auto popover. -->
   <div id="tooltip" class="tooltip" popover="manual" role="tooltip"></div>
 
+  <!-- One menu for every filter in the bar, pointed at whichever button
+       opened it, like the card menu (ADR 0012, ADR 0049). -->
+  <div id="filter-menu" class="menu filter-menu" popover="auto" role="menu" aria-label="Filter"></div>
   <div id="card-menu" class="menu" popover="auto" role="menu" aria-label="Card actions">
     <button id="menu-note" type="button" class="menu-item" role="menuitem">Add note</button>
     <!-- The lines the reader wrote in Settings, one row each, filled from this
@@ -251,7 +254,7 @@
              looked for (ADR 0023). It belongs to the board, so it is not on
              the other screens. -->
         <div class="sort-control" id="sort-control" hidden>
-          <label class="sort-label" for="sort">Sort by</label>
+          <label class="sort-label" for="sort">Sort</label>
           <!-- Filled from SORT_OPTIONS, so an order exists in one place (ADR 0006). -->
           <select id="sort" class="select"></select>
         </div>
@@ -261,7 +264,11 @@
              the top (ADR 0023). Off until the reader turns it on, because every
              refresh spends their GitHub rate limit (ADR 0025). -->
         <div class="sort-control" id="refresh-control" hidden>
-          <label class="sort-label" for="refresh">Refresh</label>
+          <!-- When the board last heard from GitHub, in words, so a quiet
+               morning and a board that stopped asking look different
+               (ADR 0029). The button's tooltip says the same, and more. -->
+          <span id="last-read" class="last-read"></span>
+          <label class="visually-hidden" for="refresh">Refresh</label>
           <!-- Filled from REFRESH_CHOICES, so a schedule exists in one place. -->
           <select id="refresh" class="select"></select>
           <!-- Ask GitHub right now, whatever the schedule says. It reports how
@@ -277,11 +284,20 @@
           </button>
         </div>
 
+        <!-- Light, dark, or whatever the machine says, one press away. The
+             same choice as in Settings, saved beside the notes (ADR 0024). -->
+        <div class="segmented theme-switch" id="theme-switch" role="group" aria-label="Theme" hidden></div>
         <!-- One control for every screen. The arrow appears only on the way back,
              because only that direction is a return (ADR 0008). -->
         <button id="view-toggle" type="button" class="button button-outline" hidden>
           <svg id="view-toggle-arrow" class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
             <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          <svg id="view-toggle-gear" class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0" />
+            <path d="M18 6a2 2 0 1 1-4 0a2 2 0 1 1 4 0Z" />
+            <path d="M12 12a2 2 0 1 1-4 0a2 2 0 1 1 4 0Z" />
+            <path d="M20 18a2 2 0 1 1-4 0a2 2 0 1 1 4 0Z" />
           </svg>
           <span id="view-toggle-label">Settings</span>
         </button>
@@ -388,61 +404,34 @@
       <section id="board" aria-labelledby="board-heading" hidden>
         <!-- Above the columns, and outside them: this is work waiting on you,
              not work assigned to you (ADR 0013). -->
-        <h2 id="board-heading" class="section-heading">Waiting for you</h2>
+        <!-- The row names itself; this heading is for a screen reader's list
+             of headings, which still reads the board as two halves (ADR 0018). -->
+        <h2 id="board-heading" class="visually-hidden">Waiting for you</h2>
         <section id="reviews" class="reviews" aria-labelledby="reviews-heading">
           <div class="column-head reviews-head">
-            <h3 class="column-name" id="reviews-heading">Pull requests waiting for your review</h3>
+            <h3 class="column-name" id="reviews-heading">Waiting for your review</h3>
             <span id="reviews-count" class="badge column-count">0</span>
-          </div>
-          <!-- The one filter this row has: whose work each pull request is
-               (ADR 0009, ADR 0028). It is hidden until two people appear. -->
-          <div class="filters reviews-filters" id="assignee-group" hidden>
-            <div class="filter-group">
-              <p class="filter-label">Assignee</p>
-              <div class="chips" id="assignee-filters" role="group" aria-label="Assignee"></div>
+            <!-- The one filter this row has: whose work each pull request is
+                 (ADR 0009, ADR 0028). It is hidden until two people appear. -->
+            <div class="reviews-filters" id="assignee-group" hidden>
+              <div class="segmented" id="assignee-filters" role="group" aria-label="Assignee"></div>
             </div>
           </div>
           <p id="reviews-empty" class="column-empty" hidden>No review waiting for you matches the assignee filter.</p>
           <ul id="reviews-list" class="issues reviews-list"></ul>
         </section>
 
-        <h2 class="section-heading">Your issues and pull requests</h2>
-
-        <!-- Chips built from what the list actually holds (ADR 0009). Folded,
-             only the chosen chips show, and the button opens the rest
-             (ADR 0049). -->
-        <div class="filters" id="board-filters">
-          <div class="filters-head">
-            <button id="filters-toggle" type="button" class="button button-ghost filters-toggle" aria-controls="board-filters" aria-expanded="false">Show the filters</button>
+        <!-- The heading and the filters share one bar: a switch for the kind,
+             and one menu per kind of filter, built from what the list holds
+             (ADR 0009, ADR 0049). The menus open `#filter-menu`. -->
+        <div class="board-bar">
+          <h2 class="section-heading">Your issues and pull requests</h2>
+          <div class="filters" id="board-filters" role="group" aria-label="Filters">
+            <div class="segmented" id="kind-filters" role="group" aria-label="Kind"></div>
+            <div class="filter-menus" id="filter-menus"></div>
+            <button id="clear-board-filters" type="button" class="button button-ghost filter-clear" hidden>Clear filters</button>
           </div>
-          <div class="filter-group" id="kind-group">
-            <p class="filter-label">Kind</p>
-            <div class="chips" id="kind-filters" role="group" aria-label="Kind"></div>
-          </div>
-          <div class="filter-group" id="repository-group" hidden>
-            <p class="filter-label">Repository</p>
-            <div class="chips" id="repository-filters" role="group" aria-label="Repository"></div>
-          </div>
-          <!-- Who is in the review, on the reader's own work. Tapping a face on a
-                 card presses the same chip (ADR 0028). -->
-            <div class="filter-group" id="reviewer-group" hidden>
-              <p class="filter-label">Reviewer</p>
-              <div class="chips" id="reviewer-filters" role="group" aria-label="Reviewer"></div>
-            </div>
-            <div class="filter-group" id="label-group" hidden>
-            <p class="filter-label">Label</p>
-            <div class="chips" id="label-filters" role="group" aria-label="Label"></div>
-          </div>
-          <!-- The milestone name on a card presses the same chip (ADR 0045). -->
-          <div class="filter-group" id="milestone-group" hidden>
-            <p class="filter-label">Milestone</p>
-            <div class="chips" id="milestone-filters" role="group" aria-label="Milestone"></div>
-          </div>
-          <!-- One group per issue field with numbers or options, built by app.js
-               (ADR 0047). A field pill on a card presses the same chip. -->
-          <div id="field-groups" class="field-groups"></div>
         </div>
-
         <!-- Only what the board has to say right now: a line copied, a call
              that failed, a board nothing can write to. It says nothing the rest
              of the time, and every count lives on the thing it counts. -->
