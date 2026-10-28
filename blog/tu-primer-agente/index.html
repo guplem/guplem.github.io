@@ -65,6 +65,7 @@
         <symbol id="ico-os-mac" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.9c1.5 0 2.7 1.1 4 1.1 3 0 6-8 6-12.2A4.9 4.9 0 0 0 17 5c-2.2 0-4 1.4-5 2-1-.6-2.8-2-5-2a4.9 4.9 0 0 0-5 4.8C2 14 5 22 8 22c1.3 0 2.5-1.1 4-1.1z" /><path d="M12 7c.2-2.3 1.7-4 3.7-4.3-.2 2.3-1.7 4-3.7 4.3z" /></symbol>
         <symbol id="ico-os-windows" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2.5" /><path d="M12 3v18M3 12h18" /></symbol>
         <symbol id="ico-os-linux" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5c2.3 0 3.6 1.9 3.6 4.3 0 1.7.8 2.9 1.9 4.4 1.2 1.7 1.8 3.6 1.3 5.6-.4 1.7-1.8 2.7-3.4 2.7H8.6c-1.6 0-3-1-3.4-2.7-.5-2 .1-3.9 1.3-5.6 1.1-1.5 1.9-2.7 1.9-4.4 0-2.4 1.3-4.3 3.6-4.3z" /><path d="M9.6 13c.3 2.6 1.2 4.4 2.4 4.4s2.1-1.8 2.4-4.4" /><path d="M10.6 6.6h.01M13.4 6.6h.01" /><path d="M11 9l1 .8 1-.8" /><path d="M6.5 21.5h3.5M14 21.5h3.5" /></symbol>
+        <symbol id="ico-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18" /></symbol>
         <symbol id="ico-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6" /></symbol>
         <symbol id="ico-forward" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6" /></symbol>
         <symbol id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 5.5v13a1 1 0 0 0 1.5.86l10-6.5a1 1 0 0 0 0-1.72l-10-6.5a1 1 0 0 0-1.5.86z" /></symbol>
@@ -295,8 +296,7 @@
           </div>
           <div class="picker-result" aria-live="polite"></div>
           <p class="warnbox" data-warning="no-app-uses-both" hidden><strong>Ninguna app usa a la vez tu cuenta de ChatGPT y la de Claude.</strong> No pasa nada: la carpeta que vas a crear sirve para las dos. Puedes abrirla hoy en una app y mañana en la otra.</p>
-          <p class="warnbox" data-warning="made-for-code" hidden><strong>Antigravity nació para programar.</strong> Verás alguna palabra de programador. No te preocupes: el agente trabaja igual con tus documentos.</p>
-          <p class="warnbox" data-warning="no-claude-in-goose" hidden><strong>Goose solo usa tu suscripción de Claude si instalas también Claude Code y un adaptador desde la terminal.</strong> Es más sencillo usar la app de Claude con tu suscripción, o Goose con tu clave.</p>
+          <p class="warnbox" data-warning="no-claude-in-goose" data-app="goose" hidden><strong>Goose solo usa tu suscripción de Claude si instalas también Claude Code y un adaptador desde la terminal.</strong> Es más sencillo usar la app de Claude con tu suscripción, o Goose con tu clave.</p>
         </div>
 
         <p>Esta tabla resume la recomendación:</p>
@@ -328,13 +328,32 @@
             <p class="app-name"><b>Antigravity</b>, de Google</p>
             <p class="os-list"><span class="os"><svg class="os-icon" aria-hidden="true"><use href="#ico-os-mac" /></svg>Mac</span><span class="os"><svg class="os-icon" aria-hidden="true"><use href="#ico-os-windows" /></svg>Windows</span><span class="os"><svg class="os-icon" aria-hidden="true"><use href="#ico-os-linux" /></svg>Linux</span></p>
             <p>Gratis para uso personal, con un límite semanal; con Google AI Pro o Ultra tienes más uso. Descárgala en <a href="https://antigravity.google/download">antigravity.google/download</a>.</p>
+            <p class="warnbox"><strong>Antigravity nació para programar.</strong> Verás alguna palabra de programador. No te preocupes: el agente trabaja igual con tus documentos.</p>
           </div>
           <div class="app-info variant" data-app="goose">
             <p class="app-name"><b>Goose</b>, abierta y gratuita</p>
             <p class="os-list"><span class="os"><svg class="os-icon" aria-hidden="true"><use href="#ico-os-mac" /></svg>Mac</span><span class="os"><svg class="os-icon" aria-hidden="true"><use href="#ico-os-windows" /></svg>Windows</span><span class="os"><svg class="os-icon" aria-hidden="true"><use href="#ico-os-linux" /></svg>Linux</span></p>
             <p>De código abierto. Funciona con casi cualquier modelo: tu suscripción ChatGPT Plus o Pro, una clave de API (OpenRouter, Anthropic, Google) o un modelo que corre en tu propio ordenador. Descárgala en <a href="https://goose-docs.ai">goose-docs.ai</a>.</p>
+            <p class="warnbox"><strong>Goose no trae ningún modelo incluido.</strong> La primera vez que la abras, conéctala a una cuenta o a una clave de API. <button type="button" class="help-link" commandfor="goose-help" command="show-modal">Cómo conectarla</button></p>
           </div>
         </div>
+
+        <dialog id="goose-help" class="help-dialog" closedby="any" aria-labelledby="goose-help-title">
+          <div class="help-dialog-head">
+            <p id="goose-help-title" class="help-dialog-title">Cómo conectar Goose a un modelo</p>
+            <button type="button" class="dialog-close" commandfor="goose-help" command="close"><svg class="btn-icon" aria-hidden="true"><use href="#ico-close" /></svg>Cerrar</button>
+          </div>
+          <p>La primera vez que abres Goose, te muestra una pantalla de bienvenida con varias opciones, en inglés. Busca abajo lo que tienes y elige esa opción. Si marcaste algo arriba, sale resaltado.</p>
+          <ul class="help-steps">
+            <li data-sub="chatgpt"><b>ChatGPT Plus o Pro.</b> Elige <strong>ChatGPT Subscription</strong>. Se abre el navegador: entra con tu cuenta de ChatGPT, da permiso a Goose y vuelve a la app. Con el plan gratuito de ChatGPT no funciona.</li>
+            <li data-sub="gemini"><b>Google AI Pro (Gemini).</b> Goose no usa tu suscripción, pero Google da gratis una clave de API, con un límite de uso. Créala en <a href="https://aistudio.google.com/app/apikey">aistudio.google.com/app/apikey</a> y cópiala. En Goose, elige <strong>Quick Setup with API Key</strong> y pégala. Ojo: con la clave gratuita, Google puede usar lo que le mandas para mejorar sus productos.</li>
+            <li data-sub="api"><b>Una cuenta de OpenRouter.</b> Elige <strong>OpenRouter</strong>. Se abre el navegador: entra en tu cuenta, o crea una, y Goose recibe la clave sin que tengas que copiarla.</li>
+            <li data-sub="api"><b>Otra clave de API</b> (de OpenAI, Anthropic, Google…). Elige <strong>Quick Setup with API Key</strong> y pega la clave. Goose reconoce de qué empresa es.</li>
+            <li data-sub="claude"><b>Claude Pro o Max.</b> Goose no usa tu suscripción de Claude sin pasos de programador. Es más sencillo usar la app de escritorio de Claude.</li>
+            <li><b>Un modelo en tu ordenador.</b> Instala <a href="https://ollama.com">Ollama</a> y descarga con él un modelo, por ejemplo <code>qwen2.5</code>. En Goose, elige <strong>Other Providers</strong> y pulsa <strong>Configure</strong> junto a Ollama. Es la opción más técnica, y necesitas un ordenador potente.</li>
+          </ul>
+          <p>Más detalles en la <a href="https://goose-docs.ai/docs/getting-started/providers">guía de Goose sobre proveedores</a> (en inglés).</p>
+        </dialog>
 
         <details class="more">
           <summary>¿Qué es una clave de API? (si no tienes una, no la necesitas)</summary>

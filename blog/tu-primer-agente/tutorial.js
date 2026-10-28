@@ -96,6 +96,29 @@ for (const button of exampleButtons) {
   });
 }
 
+/* ---------- Help dialogs ----------
+   A button with commandfor opens or closes its <dialog> with no script in
+   current browsers. This covers the browsers that do not know the attribute yet. */
+if (!("command" in HTMLButtonElement.prototype)) {
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("button[commandfor]");
+    const dialog = button && document.getElementById(button.getAttribute("commandfor"));
+    if (!(dialog instanceof HTMLDialogElement)) return;
+    if (button.getAttribute("command") === "show-modal") dialog.showModal();
+    else if (button.getAttribute("command") === "close") dialog.close();
+  });
+}
+// A click on the dark area around a dialog closes it, also where closedby="any" is not known.
+for (const dialog of document.querySelectorAll("dialog.help-dialog")) {
+  dialog.addEventListener("click", (event) => {
+    if (event.target !== dialog) return;
+    // The dialog's own padding is also the dialog: close only outside its box.
+    const box = dialog.getBoundingClientRect();
+    const inside = event.clientX >= box.left && event.clientX <= box.right && event.clientY >= box.top && event.clientY <= box.bottom;
+    if (!inside) dialog.close();
+  });
+}
+
 /* ---------- Step 1: the app picker ---------- */
 const picker = document.querySelector("[data-picker]");
 if (picker) {
@@ -103,12 +126,19 @@ if (picker) {
   const result = picker.querySelector(".picker-result");
   const tags = { best: picker.dataset.labelBest, other: picker.dataset.labelOther, use: picker.dataset.labelUse, chosen: picker.dataset.labelChosen, yours: picker.dataset.labelYours };
 
-  const card = (app, kind) => {
+  // A warning with data-app belongs to that app: it shows inside the app's card.
+  const card = (app, kind, warnings = []) => {
     const info = document.querySelector(`.app-info[data-app="${app}"]`);
     const element = document.createElement("div");
     element.className = `app-card${kind === "other" ? "" : " is-best"}${state.app === app ? " is-chosen" : ""}`;
     const tag = { best: tags.best, other: tags.other, yours: tags.yours }[kind];
     element.innerHTML = `<span class="app-tag">${tag}</span>${info.innerHTML}`;
+    for (const warning of picker.querySelectorAll(`[data-warning][data-app="${app}"]`)) {
+      if (!warnings.includes(warning.dataset.warning)) continue;
+      const copy = warning.cloneNode(true);
+      copy.hidden = false;
+      element.append(copy);
+    }
     const use = document.createElement("button");
     use.type = "button";
     use.className = "use-app";
@@ -125,10 +155,12 @@ if (picker) {
 
   function renderPicker() {
     const advice = recommendApps([...subs]);
-    for (const warning of picker.querySelectorAll("[data-warning]")) warning.hidden = !advice?.warnings.includes(warning.dataset.warning);
+    // The Goose help dialog highlights the rows for what the reader ticked.
+    for (const row of document.querySelectorAll(".help-steps [data-sub]")) row.classList.toggle("is-yours", subs.has(row.dataset.sub));
+    for (const warning of picker.querySelectorAll("[data-warning]:not([data-app])")) warning.hidden = !advice?.warnings.includes(warning.dataset.warning);
     result.replaceChildren();
     if (advice) {
-      result.append(card(advice.best, "best"), ...advice.alternatives.map((app) => card(app, "other")));
+      result.append(card(advice.best, "best", advice.warnings), ...advice.alternatives.map((app) => card(app, "other", advice.warnings)));
     } else if (state.app) {
       // Nothing ticked: no recommendation, only the app the reader chose before.
       result.append(card(state.app, "yours"));

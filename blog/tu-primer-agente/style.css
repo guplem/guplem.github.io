@@ -616,6 +616,10 @@ button.choice[aria-pressed="true"]::after {
 }
 
 /* === The app picker === */
+.picker {
+  margin-bottom: var(--sp-md);
+}
+
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -699,6 +703,11 @@ button.choice[aria-pressed="true"]::after {
   color: var(--ink-soft);
 }
 
+.agente .post .app-card .warnbox {
+  margin: 4px 0;
+  color: var(--ink);
+}
+
 .app-card .use-app {
   justify-self: start;
   font: 600 0.88rem var(--sans);
@@ -716,12 +725,109 @@ button.choice[aria-pressed="true"]::after {
 }
 
 .agente .post .warnbox {
-  margin: 0;
+  margin: 10px 0 0;
   padding: 12px 16px;
   border-radius: 14px;
   background: var(--warn-wash);
   font-size: 1rem;
   line-height: 1.6;
+}
+
+/* A help link inside a warning opens a dialog with the steps. */
+.agente .post .help-link {
+  font: inherit;
+  font-weight: 700;
+  color: var(--teal);
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.agente .post .help-link::before {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.3em;
+  vertical-align: -0.15em;
+  background: currentColor;
+  -webkit-mask: var(--icon-help) center / contain no-repeat;
+  mask: var(--icon-help) center / contain no-repeat;
+}
+
+.agente .post .help-dialog {
+  margin: auto;
+  width: min(600px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  padding: 22px 24px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--line), 0 20px 50px rgb(0 0 0 / 0.25);
+}
+
+.help-dialog::backdrop {
+  background: rgb(0 0 0 / 0.45);
+}
+
+.help-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.agente .post .help-dialog .help-dialog-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.help-dialog .dialog-close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  font: 600 0.88rem var(--sans);
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 14px;
+  background: var(--chip);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.agente .post .help-dialog p,
+.agente .post .help-steps li {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.agente .post .help-steps {
+  display: grid;
+  gap: 8px;
+  margin: var(--sp-sm) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.agente .post .help-steps li {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.agente .post .help-steps li.is-yours {
+  background: var(--teal-wash);
+  box-shadow: 0 0 0 2px var(--teal);
 }
 
 /* === Tables === */

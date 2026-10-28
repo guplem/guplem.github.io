@@ -44,8 +44,8 @@ export function recommendApps(subscriptions) {
 
   const warnings = [];
   if (has.has("chatgpt") && has.has("claude")) warnings.push("no-app-uses-both");
-  if (apps[0] === "antigravity") warnings.push("made-for-code");
-  if (apps[0] === "goose" && has.has("claude")) warnings.push("no-claude-in-goose");
+  // The page shows this one inside the Goose card, so it holds while Goose is offered at all.
+  if (apps.includes("goose") && has.has("claude")) warnings.push("no-claude-in-goose");
   return { best: apps[0], alternatives: apps.slice(1), warnings };
 }
 
