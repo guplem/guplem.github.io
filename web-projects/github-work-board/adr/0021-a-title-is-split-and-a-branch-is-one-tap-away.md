@@ -64,10 +64,11 @@ style rather than disappearing.
 for a fix, blue for docs, purple for a refactor. They live beside the badge
 colours in `style.css` and have to stay distinguishable in both schemes.
 
-**A copy has nowhere to report itself but the board's status line.** The menu
-closes on the press, so the status line says `Copied fix-branch`, and on a
-browser that refuses the clipboard it says the line instead, where it can at
-least be selected. Every line the reader copies reports itself the same way.
+**A copy that works says nothing.** The reader pressed the row, so a status
+line that repeats `Copied fix-branch` tells them nothing new, and it pushes the
+board down by one line. Only a failure speaks: on a browser that refuses the
+clipboard, the board's status line shows the line instead, where the reader can
+at least select it. Every line the reader copies behaves the same way.
 
 **Rejected: muting the description instead of the prefix.** The description is
 the content. The prefix is what repeats.

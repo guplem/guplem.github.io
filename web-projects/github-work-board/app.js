@@ -1688,8 +1688,9 @@ function buildCopyMenuRow(action, item) {
   row.addEventListener("click", async () => {
     closeCardMenu();
     try {
+      // A copy that works says nothing: the reader pressed the row, and a
+      // line repeating it back only pushes the board down (ADR 0021).
       await navigator.clipboard.writeText(filled);
-      setStatus(`Copied ${filled}`);
     } catch {
       // Nowhere to put it but the status line, which is at least selectable.
       setStatus(`This browser would not copy. The line is ${filled}`);
