@@ -212,6 +212,99 @@
     </div>
   </dialog>
 
+  <!-- The bar across the top of the window, outside the page so its ends reach
+       the window's edges on every screen while the page itself stays centred
+       at reading width. It scrolls away with everything else (ADR 0023). -->
+  <header class="masthead">
+    <div>
+      <h1>
+        <!-- The mark the browser tab wears, drawn inline like every icon here. -->
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 16 16" focusable="false"><rect x="2" y="3" width="3" height="10" rx="1" /><rect x="6.5" y="3" width="3" height="7" rx="1" /><rect x="11" y="3" width="3" height="4.5" rx="1" /></svg>
+        </span>
+        Work board
+        <!-- The same number the browser tab carries. Resting on it says
+             where it comes from (ADR 0030). -->
+        <span id="board-total" class="board-total" hidden></span>
+      </h1>
+    </div>
+    <div class="masthead-controls">
+      <!-- Find one piece of work: a number keeps the issues and pull
+           requests whose number holds it and hides every other card, in the
+           column it sits in. Words find titles. Two presses beside it match
+           the case and whole words, both off by default. It hides cards
+           only, and lives for this visit (ADR 0038). -->
+      <div class="find-control" id="find-control" role="search" hidden>
+        <label class="visually-hidden" for="find">Find on the board</label>
+        <svg class="icon find-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+        <input id="find" class="input find-input" type="text" inputmode="search" autocomplete="off"
+          spellcheck="false" placeholder="Find #number or words" />
+        <kbd class="find-key" aria-hidden="true">/</kbd>
+        <div class="find-options">
+          <button id="find-match-case" type="button" class="find-option" aria-pressed="false"
+            aria-label="Match case">Aa</button>
+          <button id="find-whole-word" type="button" class="find-option find-option-word" aria-pressed="false"
+            aria-label="Match whole word">ab</button>
+        </div>
+        <!-- While a search is typed: how many cards it left. -->
+        <span id="find-count" class="find-count" aria-live="polite"></span>
+      </div>
+
+      <!-- The order the board reads in, at the top of the page where it is
+           looked for (ADR 0023). It belongs to the board, so it is not on
+           the other screens. -->
+      <div class="sort-control" id="sort-control" hidden>
+        <label class="sort-label" for="sort">Sort</label>
+        <!-- Filled from SORT_OPTIONS, so an order exists in one place (ADR 0006). -->
+        <select id="sort" class="select"></select>
+      </div>
+
+      <!-- How often the board asks GitHub again on its own. Beside the order,
+           for the same reason: it belongs to the board and it is looked for at
+           the top (ADR 0023). Off until the reader turns it on, because every
+           refresh spends their GitHub rate limit (ADR 0025). -->
+      <div class="sort-control" id="refresh-control" hidden>
+        <!-- When the board last heard from GitHub, in words, so a quiet
+             morning and a board that stopped asking look different
+             (ADR 0029). The button's tooltip says the same, and more. -->
+        <span id="last-read" class="last-read"></span>
+        <label class="visually-hidden" for="refresh">Refresh</label>
+        <!-- Filled from REFRESH_CHOICES, so a schedule exists in one place. -->
+        <select id="refresh" class="select"></select>
+        <!-- Ask GitHub right now, whatever the schedule says. It reports how
+             long ago the board last heard anything. It turns and goes down
+             for every read, the scheduled one included, and refuses a press
+             until that answer is in (ADR 0029). -->
+        <button id="refresh-now" type="button" class="button button-outline icon-only">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+            <path d="M21 3v6h-6" />
+          </svg>
+          <span class="visually-hidden">Refresh now</span>
+        </button>
+      </div>
+
+      <!-- Light, dark, or whatever the machine says, one press away. The
+           same choice as in Settings, saved beside the notes (ADR 0024). -->
+      <div class="segmented theme-switch" id="theme-switch" role="group" aria-label="Theme" hidden></div>
+      <!-- The way into Settings, on the board only. The way back from every
+           other screen is its own button, on the left above that screen's
+           heading, where a reader looks for it (ADR 0008). -->
+      <button id="view-toggle" type="button" class="button button-outline" hidden>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0" />
+          <path d="M18 6a2 2 0 1 1-4 0a2 2 0 1 1 4 0Z" />
+          <path d="M12 12a2 2 0 1 1-4 0a2 2 0 1 1 4 0Z" />
+          <path d="M20 18a2 2 0 1 1-4 0a2 2 0 1 1 4 0Z" />
+        </svg>
+        Settings
+      </button>
+    </div>
+  </header>
+
   <div class="page">
     <!-- How far a read of GitHub has gone, pinned to the top edge of the
          window during every read, the scheduled ones included (ADR 0039). -->
@@ -227,99 +320,16 @@
     >
       <div id="read-bar-fill" class="read-bar-fill"></div>
     </div>
-    <header class="masthead">
-      <div>
-        <h1>
-          <!-- The mark the browser tab wears, drawn inline like every icon here. -->
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 16 16" focusable="false"><rect x="2" y="3" width="3" height="10" rx="1" /><rect x="6.5" y="3" width="3" height="7" rx="1" /><rect x="11" y="3" width="3" height="4.5" rx="1" /></svg>
-          </span>
-          Work board
-          <!-- The same number the browser tab carries. Resting on it says
-               where it comes from (ADR 0030). -->
-          <span id="board-total" class="board-total" hidden></span>
-        </h1>
-      </div>
-      <div class="masthead-controls">
-        <!-- Find one piece of work: a number keeps the issues and pull
-             requests whose number holds it and hides every other card, in the
-             column it sits in. Words find titles. Two presses beside it match
-             the case and whole words, both off by default. It hides cards
-             only, and lives for this visit (ADR 0038). -->
-        <div class="find-control" id="find-control" role="search" hidden>
-          <label class="visually-hidden" for="find">Find on the board</label>
-          <svg class="icon find-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <circle cx="11" cy="11" r="7" />
-            <path d="m20 20-3.5-3.5" />
-          </svg>
-          <input id="find" class="input find-input" type="text" inputmode="search" autocomplete="off"
-            spellcheck="false" placeholder="Find #number or words" />
-          <kbd class="find-key" aria-hidden="true">/</kbd>
-          <div class="find-options">
-            <button id="find-match-case" type="button" class="find-option" aria-pressed="false"
-              aria-label="Match case">Aa</button>
-            <button id="find-whole-word" type="button" class="find-option find-option-word" aria-pressed="false"
-              aria-label="Match whole word">ab</button>
-          </div>
-          <!-- While a search is typed: how many cards it left. -->
-          <span id="find-count" class="find-count" aria-live="polite"></span>
-        </div>
-
-        <!-- The order the board reads in, at the top of the page where it is
-             looked for (ADR 0023). It belongs to the board, so it is not on
-             the other screens. -->
-        <div class="sort-control" id="sort-control" hidden>
-          <label class="sort-label" for="sort">Sort</label>
-          <!-- Filled from SORT_OPTIONS, so an order exists in one place (ADR 0006). -->
-          <select id="sort" class="select"></select>
-        </div>
-
-        <!-- How often the board asks GitHub again on its own. Beside the order,
-             for the same reason: it belongs to the board and it is looked for at
-             the top (ADR 0023). Off until the reader turns it on, because every
-             refresh spends their GitHub rate limit (ADR 0025). -->
-        <div class="sort-control" id="refresh-control" hidden>
-          <!-- When the board last heard from GitHub, in words, so a quiet
-               morning and a board that stopped asking look different
-               (ADR 0029). The button's tooltip says the same, and more. -->
-          <span id="last-read" class="last-read"></span>
-          <label class="visually-hidden" for="refresh">Refresh</label>
-          <!-- Filled from REFRESH_CHOICES, so a schedule exists in one place. -->
-          <select id="refresh" class="select"></select>
-          <!-- Ask GitHub right now, whatever the schedule says. It reports how
-               long ago the board last heard anything. It turns and goes down
-               for every read, the scheduled one included, and refuses a press
-               until that answer is in (ADR 0029). -->
-          <button id="refresh-now" type="button" class="button button-outline icon-only">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M21 12a9 9 0 1 1-2.64-6.36" />
-              <path d="M21 3v6h-6" />
-            </svg>
-            <span class="visually-hidden">Refresh now</span>
-          </button>
-        </div>
-
-        <!-- Light, dark, or whatever the machine says, one press away. The
-             same choice as in Settings, saved beside the notes (ADR 0024). -->
-        <div class="segmented theme-switch" id="theme-switch" role="group" aria-label="Theme" hidden></div>
-        <!-- One control for every screen. The arrow appears only on the way back,
-             because only that direction is a return (ADR 0008). -->
-        <button id="view-toggle" type="button" class="button button-outline" hidden>
-          <svg id="view-toggle-arrow" class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          <svg id="view-toggle-gear" class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0" />
-            <path d="M18 6a2 2 0 1 1-4 0a2 2 0 1 1 4 0Z" />
-            <path d="M12 12a2 2 0 1 1-4 0a2 2 0 1 1 4 0Z" />
-            <path d="M20 18a2 2 0 1 1-4 0a2 2 0 1 1 4 0Z" />
-          </svg>
-          <span id="view-toggle-label">Settings</span>
-        </button>
-      </div>
-    </header>
-
     <main>
+      <!-- The way back from Settings, adding a token and the cleanup: on the
+           left, above the screen's heading, with an arrow that points back.
+           Where it goes depends on where the reader is (ADR 0008, ADR 0018). -->
+      <button id="view-back" type="button" class="button button-ghost back-button" hidden>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        <span id="view-back-label">Back to the board</span>
+      </button>
       <!-- What the reader sees first, because the browser paints this file
            before it runs a line of the board's code. Every other screen below
            starts hidden, so nothing the board has not decided is ever on the
