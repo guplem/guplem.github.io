@@ -122,6 +122,26 @@ export function describeLastRefresh(lastAt, now) {
   return "Refreshed just now";
 }
 
+/** A passing message stays at least this long, and never longer than the cap. */
+const SNACKBAR_MIN_MS = 4000;
+const SNACKBAR_MAX_MS = 10_000;
+/** About how long a reader takes over one word, read at a glance. */
+const SNACKBAR_MS_PER_WORD = 300;
+
+/**
+ * How long a passing message stays in the snackbar at the foot of the window.
+ *
+ * "Copied ..." and "Note removed ..." say something once and then mean
+ * nothing, so they leave on their own. A longer line is held longer, because
+ * the one that says the browser would not copy carries the whole line to copy
+ * by hand. Zero means there is nothing to show.
+ */
+export function snackbarHoldMs(text) {
+  if (typeof text !== "string" || text.trim() === "") return 0;
+  const words = text.trim().split(/\s+/).length;
+  return Math.min(SNACKBAR_MAX_MS, Math.max(SNACKBAR_MIN_MS, words * SNACKBAR_MS_PER_WORD));
+}
+
 /**
  * What the menu offers about a note: writing the first one is a different act
  * from changing one that is already there.

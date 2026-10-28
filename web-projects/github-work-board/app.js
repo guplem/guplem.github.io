@@ -123,6 +123,7 @@ import {
   movedByHandTip,
   noteMenuLabel,
   noteRemovedStatus,
+  snackbarHoldMs,
   priorityMarkTip,
   priorityMenuLabel,
   say,
@@ -375,8 +376,54 @@ const state = {
 /* Small builders                                                             */
 /* -------------------------------------------------------------------------- */
 
-function setStatus(text) {
-  element("board-status").textContent = text;
+/** How long the snackbar takes to fade out; `style.css` fades it over the same time. */
+const SNACKBAR_LEAVE_MS = 180;
+let statusTimer = null;
+// The passing line on show, or null when the line stays until it is replaced.
+let statusPassing = null;
+let statusListening = false;
+
+/**
+ * The board's one status line, drawn as a snackbar at the foot of the window.
+ *
+ * A passing line ("Copied ...", "Note removed ...") leaves on its own after
+ * `snackbarHoldMs`, and waits while the pointer rests on it, so a reader who
+ * is selecting its text does not lose it. Any other line stays until the next
+ * one replaces it, because it says something is still true ("Reading
+ * GitHub...", a save that does not get through).
+ */
+function setStatus(text, { passing = false } = {}) {
+  const line = element("board-status");
+  if (!statusListening) {
+    statusListening = true;
+    line.addEventListener("pointerenter", () => {
+      if (statusPassing === null) return;
+      clearTimeout(statusTimer);
+      line.removeAttribute("data-leaving");
+    });
+    line.addEventListener("pointerleave", () => {
+      if (statusPassing !== null) holdStatus();
+    });
+  }
+  clearTimeout(statusTimer);
+  line.removeAttribute("data-leaving");
+  line.textContent = text;
+  statusPassing = passing && text !== "" ? text : null;
+  if (statusPassing !== null) holdStatus();
+}
+
+function holdStatus() {
+  const line = element("board-status");
+  clearTimeout(statusTimer);
+  line.removeAttribute("data-leaving");
+  statusTimer = setTimeout(() => {
+    line.setAttribute("data-leaving", "");
+    statusTimer = setTimeout(() => {
+      line.removeAttribute("data-leaving");
+      line.textContent = "";
+      statusPassing = null;
+    }, SNACKBAR_LEAVE_MS);
+  }, snackbarHoldMs(statusPassing));
 }
 
 /**
@@ -1519,7 +1566,7 @@ function buildNoteBox(item, written) {
       scheduleSave();
     }
     state.notesOpen.delete(item.key);
-    if (held) setStatus(noteRemovedStatus(item));
+    if (held) setStatus(noteRemovedStatus(item), { passing: true });
     note.classList.add("is-leaving");
     // A timer, not `animationend`: with reduced motion there is no animation,
     // and the box must still go.
@@ -1689,10 +1736,10 @@ function buildCopyMenuRow(action, item) {
     closeCardMenu();
     try {
       await navigator.clipboard.writeText(filled);
-      setStatus(`Copied ${filled}`);
+      setStatus(`Copied ${filled}`, { passing: true });
     } catch {
       // Nowhere to put it but the status line, which is at least selectable.
-      setStatus(`This browser would not copy. The line is ${filled}`);
+      setStatus(`This browser would not copy. The line is ${filled}`, { passing: true });
     }
   });
   return row;
