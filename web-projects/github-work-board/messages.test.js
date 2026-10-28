@@ -415,7 +415,7 @@ describe("describeCleanup (ADR 0043)", () => {
 });
 
 describe("snackbarHoldMs: how long a passing message stays on screen", () => {
-  // A line like "Copied ..." floats at the foot of the window and leaves on
+  // A line like "Note removed ..." floats at the foot of the window and leaves on
   // its own. Too short and the reader misses it; for ever and it covers the
   // board long after it stopped meaning anything.
   test("an empty line is not held at all", () => {
@@ -425,13 +425,13 @@ describe("snackbarHoldMs: how long a passing message stays on screen", () => {
   });
 
   test("a short line stays long enough to read twice", () => {
-    expect(snackbarHoldMs("Copied 418-rate-limit")).toBeGreaterThanOrEqual(4000);
+    expect(snackbarHoldMs("Note removed from acme-labs/api #418")).toBeGreaterThanOrEqual(4000);
   });
 
   // The line that says the browser would not copy carries the whole line to
-  // copy by hand, so it has to stay up longer than "Copied".
+  // copy by hand, so it has to stay up longer than a short line.
   test("a longer line stays longer", () => {
-    const short = snackbarHoldMs("Copied 418-rate-limit");
+    const short = snackbarHoldMs("Note removed from acme-labs/api #418");
     const long = snackbarHoldMs(
       "This browser would not copy. The line is /implement-issue #418 in acme-labs/api, pick a rate limit store first",
     );

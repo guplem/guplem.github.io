@@ -386,7 +386,7 @@ let statusListening = false;
 /**
  * The board's one status line, drawn as a snackbar at the foot of the window.
  *
- * A passing line ("Copied ...", "Note removed ...") leaves on its own after
+ * A passing line ("Note removed ...", "This browser would not copy ...") leaves on its own after
  * `snackbarHoldMs`, and waits while the pointer rests on it, so a reader who
  * is selecting its text does not lose it. Any other line stays until the next
  * one replaces it, because it says something is still true ("Reading
@@ -1735,8 +1735,9 @@ function buildCopyMenuRow(action, item) {
   row.addEventListener("click", async () => {
     closeCardMenu();
     try {
+      // A copy that works says nothing: the reader pressed the row, and a
+      // line repeating it back only pushes the board down (ADR 0021).
       await navigator.clipboard.writeText(filled);
-      setStatus(`Copied ${filled}`, { passing: true });
     } catch {
       // Nowhere to put it but the status line, which is at least selectable.
       setStatus(`This browser would not copy. The line is ${filled}`, { passing: true });

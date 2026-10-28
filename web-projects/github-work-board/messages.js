@@ -131,7 +131,7 @@ const SNACKBAR_MS_PER_WORD = 300;
 /**
  * How long a passing message stays in the snackbar at the foot of the window.
  *
- * "Copied ..." and "Note removed ..." say something once and then mean
+ * "Note removed ..." and the like say something once and then mean
  * nothing, so they leave on their own. A longer line is held longer, because
  * the one that says the browser would not copy carries the whole line to copy
  * by hand. Zero means there is nothing to show.

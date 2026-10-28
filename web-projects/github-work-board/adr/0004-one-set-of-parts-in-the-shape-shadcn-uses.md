@@ -52,7 +52,7 @@ reason a button changes colour: it says the card is a thing the reader can act
 on.
 
 **The status line is a snackbar.** What the board says about something the
-reader just did ("Copied ...", "Note removed ...") floats at the foot of the
+reader just did ("Note removed ...", "This browser would not copy ...") floats at the foot of the
 window, where it is seen, and leaves on its own after `snackbarHoldMs`
 (`messages.js`). It waits while the pointer rests on it. A line that is still
 true, such as a save that does not get through, stays until it is replaced. It

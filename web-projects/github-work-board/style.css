@@ -1894,7 +1894,7 @@ textarea.input {
  * The board's status line, as a snackbar.
  *
  * It floats at the foot of the window, over the board, because what it says
- * ("Copied ...", "Note removed ...") is about something the reader just did,
+ * ("Note removed ...") is about something the reader just did,
  * and the line's old place above the columns was usually scrolled out of
  * sight. `app.js` takes a passing line away on its own (`snackbarHoldMs`);
  * empty, the element is still there for a screen reader and takes no room.

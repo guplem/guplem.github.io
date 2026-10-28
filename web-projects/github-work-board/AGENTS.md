@@ -677,7 +677,7 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   version did: give the container `.token-lines` (ADR 0004).
 - **The board's status line is a snackbar, and only a passing line leaves on
   its own.** `setStatus(text, { passing: true })` is for a line about something
-  the reader just did ("Copied ...", "Note removed ..."); it goes after
+  the reader just did ("Note removed ...", "This browser would not copy ..."); it goes after
   `snackbarHoldMs`. Call it without `passing` for a line that is still true
   (a read under way, a save that does not get through): that one stays until
   the next `setStatus` replaces it. Mark a still-true line as passing and the
