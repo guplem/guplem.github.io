@@ -170,7 +170,7 @@ import {
   saveRepo as saveCloudRepo,
   saveToken as saveCloudToken,
 } from "../cloud-storage/cloudSettings.js";
-import { skeletonCount } from "./skeletons.js";
+import { skeletonColumnCounts, skeletonCount } from "./skeletons.js";
 import {
   describeStackPosition,
   orderItemsForMerging,
@@ -1087,6 +1087,9 @@ function renderLoading() {
   const columns = element("board-columns");
   columns.setAttribute("aria-busy", "true");
   fitColumns(shownColumns.length);
+  // Spread what was there last time across the columns, unevenly, so the
+  // placeholder looks like a board and is about its height (ADR 0004).
+  const cardCounts = skeletonColumnCounts(last.items, shownColumns.length);
   columns.replaceChildren(
     ...shownColumns.map((column, index) => {
       const section = document.createElement("section");
@@ -1096,10 +1099,7 @@ function renderLoading() {
       head.append(buildSkeletonBar("7rem", "skeleton-title"), buildSkeletonBar("1.5rem", "skeleton-pill"));
       const list = document.createElement("ul");
       list.className = "issues";
-      // Spread what was there last time across the columns, so the placeholder
-      // is the height of the board that is coming (ADR 0004).
-      const share = Math.max(1, Math.round(skeletonCount(last.items) / Math.max(1, shownColumns.length)));
-      list.replaceChildren(...times(index === 0 ? share + 1 : share, buildSkeletonCard));
+      list.replaceChildren(...times(cardCounts[index], buildSkeletonCard));
       section.append(head, list);
       return section;
     }),
