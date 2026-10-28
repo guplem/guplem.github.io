@@ -13,32 +13,40 @@
 :root {
   color-scheme: light dark;
 
-  --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
+  /* A grey ground and white cards, so a card reads as a thing that sits on
+   * the board rather than a box drawn on the same paper. */
+  --background: 240 5% 96.5%;
+  --foreground: 240 6% 10%;
   --card: 0 0% 100%;
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 240 3.8% 46.1%;
-  --accent: 240 4.8% 95.9%;
-  --accent-foreground: 240 5.9% 10%;
-  --primary: 240 5.9% 10%;
+  --muted: 240 5% 93%;
+  --muted-foreground: 240 4% 40%;
+  --accent: 240 5% 94%;
+  --accent-foreground: 240 6% 10%;
+  --primary: 240 6% 10%;
   --primary-foreground: 0 0% 98%;
-  --secondary: 240 4.8% 95.9%;
-  --secondary-foreground: 240 5.9% 10%;
-  --success: 142 71% 35%;
+  --secondary: 240 5% 93%;
+  --secondary-foreground: 240 6% 10%;
+  --success: 142 71% 33%;
   --success-foreground: 0 0% 98%;
-  --destructive: 0 72% 45%;
+  --destructive: 0 72% 44%;
   --destructive-foreground: 0 0% 98%;
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 240 10% 3.9%;
+  --border: 240 6% 90%;
+  --input: 240 6% 86%;
+  --ring: 240 6% 10%;
 
   --radius: 0.625rem;
-  --gutter: 1.25rem;
-  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* The lanes: a column and the review row, which hold cards. */
+  --radius-lg: 0.875rem;
+  --radius-md: calc(var(--radius) - 2px);
+  --gutter: 1.5rem;
+  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --shadow-sm: 0 1px 2px 0 hsl(var(--foreground) / 0.05);
-  --shadow: 0 1px 3px 0 hsl(var(--foreground) / 0.07), 0 1px 2px -1px hsl(var(--foreground) / 0.07);
-  --shadow-md: 0 4px 12px -2px hsl(var(--foreground) / 0.1), 0 2px 6px -2px hsl(var(--foreground) / 0.06);
+  --shadow: 0 1px 3px 0 hsl(var(--foreground) / 0.08), 0 1px 2px -1px hsl(var(--foreground) / 0.06);
+  --shadow-md: 0 4px 12px -2px hsl(var(--foreground) / 0.1), 0 2px 4px -2px hsl(var(--foreground) / 0.06);
+  /* What floats over the page: a menu, a tooltip, the snackbar, a dialog. */
+  --shadow-lg: 0 16px 40px -8px hsl(var(--foreground) / 0.18), 0 4px 10px -4px hsl(var(--foreground) / 0.1);
 }
 
 /* Dark, three ways round. The machine's own setting decides unless the reader
@@ -49,56 +57,58 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 7% 6.5%;
-    --muted: 240 4% 12%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 4% 14%;
-    --accent-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 4% 14%;
-    --secondary-foreground: 0 0% 98%;
-    --success: 142 60% 45%;
-    --success-foreground: 240 10% 3.9%;
-    --destructive: 0 70% 58%;
-    --destructive-foreground: 240 10% 3.9%;
-    --border: 240 4% 16%;
-    --input: 240 4% 18%;
-    --ring: 240 5% 70%;
+    --background: 228 12% 6%;
+    --foreground: 240 5% 93%;
+    --card: 228 9% 10%;
+    --muted: 228 8% 14%;
+    --muted-foreground: 235 5% 62%;
+    --accent: 228 8% 16%;
+    --accent-foreground: 240 5% 93%;
+    --primary: 240 5% 93%;
+    --primary-foreground: 228 12% 8%;
+    --secondary: 228 8% 16%;
+    --secondary-foreground: 240 5% 93%;
+    --success: 142 60% 50%;
+    --success-foreground: 228 12% 6%;
+    --destructive: 0 80% 66%;
+    --destructive-foreground: 228 12% 6%;
+    --border: 228 8% 17%;
+    --input: 228 8% 22%;
+    --ring: 235 6% 72%;
 
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
-    --shadow-md: 0 4px 14px -2px rgb(0 0 0 / 0.55), 0 2px 6px -2px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 6px 16px -4px rgb(0 0 0 / 0.6), 0 2px 6px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 18px 44px -8px rgb(0 0 0 / 0.7), 0 4px 12px -4px rgb(0 0 0 / 0.5);
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 7% 6.5%;
-    --muted: 240 4% 12%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 4% 14%;
-    --accent-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 4% 14%;
-    --secondary-foreground: 0 0% 98%;
-    --success: 142 60% 45%;
-    --success-foreground: 240 10% 3.9%;
-    --destructive: 0 70% 58%;
-    --destructive-foreground: 240 10% 3.9%;
-    --border: 240 4% 16%;
-    --input: 240 4% 18%;
-    --ring: 240 5% 70%;
+    --background: 228 12% 6%;
+    --foreground: 240 5% 93%;
+    --card: 228 9% 10%;
+    --muted: 228 8% 14%;
+    --muted-foreground: 235 5% 62%;
+    --accent: 228 8% 16%;
+    --accent-foreground: 240 5% 93%;
+    --primary: 240 5% 93%;
+    --primary-foreground: 228 12% 8%;
+    --secondary: 228 8% 16%;
+    --secondary-foreground: 240 5% 93%;
+    --success: 142 60% 50%;
+    --success-foreground: 228 12% 6%;
+    --destructive: 0 80% 66%;
+    --destructive-foreground: 228 12% 6%;
+    --border: 228 8% 17%;
+    --input: 228 8% 22%;
+    --ring: 235 6% 72%;
 
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.4);
-    --shadow-md: 0 4px 14px -2px rgb(0 0 0 / 0.55), 0 2px 6px -2px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 6px 16px -4px rgb(0 0 0 / 0.6), 0 2px 6px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 18px 44px -8px rgb(0 0 0 / 0.7), 0 4px 12px -4px rgb(0 0 0 / 0.5);
 }
 
 :root[data-theme="light"] {
@@ -133,7 +143,7 @@ body {
 .page {
   max-width: 44rem;
   margin: 0 auto;
-  padding: 1rem var(--gutter) 4rem;
+  padding: 0 var(--gutter) 4rem;
 }
 
 /* Six columns take the whole window. Only the board does: the setup screen and
@@ -164,7 +174,7 @@ h3 {
 }
 
 h1 {
-  font-size: 1.875rem;
+  font-size: 1.0625rem;
   font-weight: 650;
 }
 
@@ -190,8 +200,38 @@ p {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 0.75rem 1rem;
-  margin-bottom: 2rem;
-  padding-block: 1rem;
+  margin-bottom: 1.75rem;
+  padding-block: 0.75rem;
+  /* A bar across the whole window, on every screen, although the page itself
+   * is narrower on most of them. The border image is painted outside the box
+   * (`outset`), so it widens the bar without widening the page: outset
+   * painting never adds a sideways scroll. The bottom pixel is the bar's
+   * edge. */
+  border-image: linear-gradient(to top, hsl(var(--border)) 1px, hsl(var(--card)) 1px) fill 0 / 0 / 0 100vmax;
+}
+
+/* The board's name, with the mark the browser tab wears beside it. */
+.masthead h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.4375rem;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.brand-mark svg {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
 }
 
 /* The controls stay together on a phone, and wrap under the name as one piece
@@ -240,13 +280,13 @@ a:hover {
 .card {
   background: hsl(var(--card));
   border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   margin-bottom: 1.25rem;
 }
 
 .card-header {
-  padding: 1.25rem 1.25rem 0;
+  padding: 1.375rem 1.5rem 0;
 }
 
 .card-header .lead {
@@ -254,7 +294,7 @@ a:hover {
 }
 
 .card-content {
-  padding: 1.25rem;
+  padding: 1.25rem 1.5rem 1.5rem;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -269,9 +309,9 @@ a:hover {
   height: 2.25rem;
   padding: 0 0.9375rem;
   border: 1px solid transparent;
-  border-radius: calc(var(--radius) - 2px);
+  border-radius: var(--radius-md);
   font-family: inherit;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
@@ -325,7 +365,7 @@ a:hover {
 }
 
 #refresh-now:disabled:hover {
-  background: hsl(var(--background));
+  background: hsl(var(--card));
   border-color: hsl(var(--border));
 }
 
@@ -341,7 +381,7 @@ a:hover {
 }
 
 .button-outline {
-  background: hsl(var(--background));
+  background: hsl(var(--card));
   border-color: hsl(var(--border));
   color: hsl(var(--foreground));
   box-shadow: var(--shadow-sm);
@@ -374,7 +414,7 @@ a:hover {
 /* Signing out throws a credential away, so the button says so on approach
  * rather than looking like every other button until it is too late. */
 .button-danger {
-  background: hsl(var(--background));
+  background: hsl(var(--card));
   border-color: hsl(var(--border));
   color: hsl(var(--muted-foreground));
 }
@@ -394,10 +434,10 @@ a:hover {
   width: 100%;
   height: 2.25rem;
   padding: 0 0.75rem;
-  background: transparent;
+  background: hsl(var(--card));
   color: inherit;
   border: 1px solid hsl(var(--input));
-  border-radius: calc(var(--radius) - 2px);
+  border-radius: var(--radius-md);
   font-family: inherit;
   font-size: 0.875rem;
   box-shadow: var(--shadow-sm);
@@ -414,8 +454,8 @@ a:hover {
 
 .input:focus {
   outline: none;
-  border-color: hsl(var(--ring));
-  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.15);
+  border-color: hsl(var(--ring) / 0.7);
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.12);
 }
 
 /**
@@ -459,9 +499,9 @@ textarea.input {
   border: 1px solid transparent;
   border-radius: 9999px;
   padding: 0.0625rem 0.5rem;
-  font-size: 0.75rem;
+  font-size: 0.71875rem;
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.5;
   white-space: nowrap;
   background: hsl(var(--secondary));
   color: hsl(var(--secondary-foreground));
@@ -624,11 +664,11 @@ textarea.input {
 
 .callout {
   border: 1px solid hsl(var(--border));
-  border-left-width: 3px;
-  border-radius: calc(var(--radius) - 2px);
-  padding: 0.75rem 0.875rem;
+  border-radius: var(--radius);
+  padding: 0.875rem 1rem;
   font-size: 0.875rem;
-  background: hsl(var(--muted) / 0.6);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow-sm);
 }
 
 .callout > * + * {
@@ -636,8 +676,8 @@ textarea.input {
 }
 
 .callout-warning {
-  border-left-color: hsl(var(--destructive));
-  background: hsl(var(--destructive) / 0.07);
+  border-color: hsl(var(--destructive) / 0.3);
+  background: hsl(var(--destructive) / 0.06);
   margin-bottom: 1.25rem;
 }
 
@@ -647,8 +687,8 @@ textarea.input {
 }
 
 .callout-inline {
-  border-left-color: hsl(var(--destructive));
-  background: hsl(var(--destructive) / 0.07);
+  border-color: hsl(var(--destructive) / 0.3);
+  background: hsl(var(--destructive) / 0.06);
   color: hsl(var(--foreground));
 }
 
@@ -661,8 +701,8 @@ textarea.input {
 }
 
 .callout-approval {
-  border-left-color: hsl(var(--primary));
-  background: hsl(var(--card));
+  border-color: hsl(38 92% 50% / 0.4);
+  background: hsl(38 92% 50% / 0.07);
 }
 
 .approval-actions {
@@ -765,13 +805,18 @@ textarea.input {
   position: relative;
   display: flex;
   align-items: center;
-  width: 16rem;
+  width: 18rem;
   max-width: 100%;
 }
 
 .find-input {
   padding-left: 2rem;
   padding-right: 2rem;
+  background: hsl(var(--background));
+}
+
+.find-input:focus {
+  background: hsl(var(--card));
 }
 
 .find-icon,
@@ -789,7 +834,9 @@ textarea.input {
   right: 0.5rem;
   padding: 0 0.3rem;
   border: 1px solid hsl(var(--border));
-  border-radius: calc(var(--radius) - 4px);
+  border-bottom-width: 2px;
+  background: hsl(var(--card));
+  border-radius: calc(var(--radius) - 5px);
   font-family: var(--mono);
   font-size: 0.75rem;
   line-height: 1.25rem;
@@ -819,7 +866,7 @@ textarea.input {
   appearance: none;
   height: 2.25rem;
   padding: 0 2rem 0 0.75rem;
-  background-color: hsl(var(--background));
+  background-color: hsl(var(--card));
   background-image: linear-gradient(45deg, transparent 50%, hsl(var(--muted-foreground)) 50%),
     linear-gradient(135deg, hsl(var(--muted-foreground)) 50%, transparent 50%);
   background-position: right 1rem center, right 0.7rem center;
@@ -827,10 +874,11 @@ textarea.input {
   background-repeat: no-repeat;
   color: inherit;
   border: 1px solid hsl(var(--input));
-  border-radius: calc(var(--radius) - 2px);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   font-family: inherit;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -997,7 +1045,36 @@ textarea.input {
 }
 
 .dialog::backdrop {
-  background: hsl(var(--background) / 0.7);
+  background: hsl(240 10% 4% / 0.45);
+  backdrop-filter: blur(3px);
+}
+
+.dialog > .card {
+  margin: 0;
+  box-shadow: var(--shadow-lg);
+}
+
+/* The dialog rises a little and fades in, so it reads as arriving over the
+ * page rather than replacing it. */
+.dialog[open] {
+  animation: rise-in 0.2s var(--ease);
+}
+
+.dialog[open]::backdrop {
+  animation: fade-in 0.2s ease-out;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
 }
 
 .warning-list {
@@ -1170,46 +1247,69 @@ textarea.input {
 /* A row, not a column: this is work waiting on you rather than work you are
  * doing, so it sits above the board and scrolls sideways on its own. */
 .reviews {
-  margin-top: 1rem;
-  padding: 0.625rem;
-  background: hsl(var(--muted) / 0.4);
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+  background: hsl(var(--foreground) / 0.035);
+  border: 0;
+  border-radius: var(--radius-lg);
 }
 
 /* A column or the review row, painted. `app.js` sets `--tint` to the chosen
- * colour's bare HSL channels and nothing else changes: the wash and the outline
- * are the same channels at two alphas, which is why the tokens are channels in
- * the first place (ADR 0004, ADR 0024). The attribute is absent only when the
- * colour is "None"; most parts open painted, and a record always wins. */
+ * colour's bare HSL channels and nothing else changes: the lane is washed with
+ * the colour, and its heading and count are written in a deeper shade of it.
+ * No outline: the wash alone says which lane is which, and an outline round
+ * every lane drew six boxes where the reader wanted to see cards (ADR 0004,
+ * ADR 0024). The attribute is absent only when the colour is "None"; most
+ * parts open painted, and a record always wins. */
 .reviews[data-colour],
 .column[data-colour] {
-  background: hsl(var(--tint) / 0.1);
-  border-color: hsl(var(--tint) / 0.4);
+  background: hsl(var(--tint) / 0.075);
+}
+
+/* The heading's colour is the lane's, mixed toward the text colour. The text
+ * colour is near black on a light page and near white on a dark one, so one
+ * rule gives a deep shade on light and a pale one on dark, and both read. */
+.reviews[data-colour] .column-name,
+.column[data-colour] .column-name {
+  color: color-mix(in oklab, hsl(var(--tint)) 62%, hsl(var(--foreground)));
+}
+
+.reviews[data-colour] .column-count,
+.column[data-colour] .column-count {
+  background: hsl(var(--tint) / 0.16);
+  color: color-mix(in oklab, hsl(var(--tint)) 62%, hsl(var(--foreground)));
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .reviews[data-colour],
   :root:not([data-theme="light"]) .column[data-colour] {
-    background: hsl(var(--tint) / 0.14);
-    border-color: hsl(var(--tint) / 0.45);
+    background: hsl(var(--tint) / 0.1);
+  }
+
+  :root:not([data-theme="light"]) .reviews[data-colour] .column-count,
+  :root:not([data-theme="light"]) .column[data-colour] .column-count {
+    background: hsl(var(--tint) / 0.2);
   }
 }
 
 :root[data-theme="dark"] .reviews[data-colour],
 :root[data-theme="dark"] .column[data-colour] {
-  background: hsl(var(--tint) / 0.14);
-  border-color: hsl(var(--tint) / 0.45);
+  background: hsl(var(--tint) / 0.1);
+}
+
+:root[data-theme="dark"] .reviews[data-colour] .column-count,
+:root[data-theme="dark"] .column[data-colour] .column-count {
+  background: hsl(var(--tint) / 0.2);
 }
 
 .reviews-head {
-  padding-bottom: 0.5rem;
+  padding: 0.125rem 0.25rem 0.5rem;
 }
 
 .reviews-list {
   grid-auto-flow: column;
-  grid-auto-columns: minmax(16rem, 20rem);
-  gap: 0.625rem;
+  grid-auto-columns: minmax(17rem, 21rem);
+  gap: 0.75rem;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   padding-bottom: 0.25rem;
@@ -1253,10 +1353,10 @@ textarea.input {
 }
 
 .column {
-  background: hsl(var(--muted) / 0.4);
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  padding: 0.625rem;
+  background: hsl(var(--foreground) / 0.035);
+  border: 0;
+  border-radius: var(--radius-lg);
+  padding: 0.375rem 0.5rem 0.5rem;
   min-width: 0;
 }
 
@@ -1265,14 +1365,16 @@ textarea.input {
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.125rem 0.25rem 0.625rem;
+  min-height: 2.25rem;
+  padding: 0 0.375rem 0.25rem;
 }
 
 .column-name {
   flex: 1 1 auto;
   font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
+  color: hsl(var(--foreground) / 0.85);
 }
 
 /* The press that opens the picker on the last column. It is quiet until the
@@ -1313,12 +1415,14 @@ textarea.input {
 /* The picker itself, under the whole heading so it has the column's width. */
 .done-range-panel {
   display: grid;
-  gap: 0.375rem;
-  margin: 0 0.25rem 0.625rem;
-  padding: 0.5rem;
+  gap: 0.5rem;
+  margin: 0 0 0.625rem;
+  padding: 0.625rem;
   border: 1px solid hsl(var(--border));
-  border-radius: var(--radius-md);
-  background: hsl(var(--background));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow-md);
+  animation: rise-in 0.18s var(--ease);
 }
 
 /* Two dates and the press that asks for them. They wrap on a narrow column
@@ -1336,14 +1440,20 @@ textarea.input {
 }
 
 .column-count {
-  background: hsl(var(--background));
+  min-width: 1.5rem;
+  justify-content: center;
+  background: hsl(var(--foreground) / 0.07);
   color: hsl(var(--muted-foreground));
-  border-color: hsl(var(--border));
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
 .column-empty {
-  padding: 0.75rem 0.25rem;
+  margin: 0.25rem 0 0;
+  padding: 1rem 0.75rem;
+  border: 1px dashed hsl(var(--foreground) / 0.14);
+  border-radius: var(--radius);
+  text-align: center;
   font-size: 0.8125rem;
   color: hsl(var(--muted-foreground));
 }
@@ -1450,12 +1560,12 @@ textarea.input {
   inset: auto;
   margin: 0;
   max-width: 20rem;
-  padding: 0.3125rem 0.5rem;
+  padding: 0.4375rem 0.625rem;
   border: 0;
-  border-radius: calc(var(--radius) - 4px);
+  border-radius: calc(var(--radius) - 3px);
   background: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   font-size: 0.75rem;
   line-height: 1.45;
   white-space: pre-line;
@@ -1466,16 +1576,24 @@ textarea.input {
   display: none;
 }
 
+/* A tooltip and a menu arrive with a short fade and a small rise. They
+ * appear where the reader is already looking, so the motion only has to say
+ * "this is new", and it is over before the eye has moved. `@starting-style`
+ * is where they come from; a browser without it simply shows them. */
+.tooltip:popover-open {
+  animation: fade-in 0.12s ease-out;
+}
+
 .menu {
   position: fixed;
   inset: auto;
   margin: 0;
-  min-width: 11rem;
-  padding: 0.25rem;
+  min-width: 12rem;
+  padding: 0.3125rem;
   background: hsl(var(--card));
   border: 1px solid hsl(var(--border));
-  border-radius: calc(var(--radius) - 2px);
-  box-shadow: var(--shadow-md);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
   color: inherit;
 }
 
@@ -1483,12 +1601,24 @@ textarea.input {
   display: none;
 }
 
+.menu:popover-open {
+  animation: menu-in 0.14s var(--ease);
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+
 .menu-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.625rem;
   width: 100%;
-  padding: 0.375rem 0.5rem;
+  min-height: 2rem;
+  padding: 0.375rem 0.625rem;
   border: 0;
   border-radius: calc(var(--radius) - 4px);
   background: transparent;
@@ -1701,11 +1831,12 @@ textarea.input {
 .chip {
   font-family: inherit;
   font-size: 0.8125rem;
+  font-weight: 500;
   line-height: 1.3;
-  padding: 0.1875rem 0.625rem;
+  padding: 0.3125rem 0.75rem;
   border: 1px solid hsl(var(--border));
   border-radius: 9999px;
-  background: hsl(var(--background));
+  background: hsl(var(--card));
   color: hsl(var(--muted-foreground));
   cursor: pointer;
   transition:
@@ -1728,6 +1859,10 @@ textarea.input {
 .chip:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+}
+
+.chip:hover:not([aria-pressed="true"]) {
+  box-shadow: var(--shadow-sm);
 }
 
 /* A chosen chip has to be obvious at a glance, because it is the reason the
@@ -1755,6 +1890,53 @@ textarea.input {
   color: hsl(var(--muted-foreground));
 }
 
+/**
+ * The board's status line, as a snackbar.
+ *
+ * It floats at the foot of the window, over the board, because what it says
+ * ("Note removed ...") is about something the reader just did,
+ * and the line's old place above the columns was usually scrolled out of
+ * sight. `app.js` takes a passing line away on its own (`snackbarHoldMs`);
+ * empty, the element is still there for a screen reader and takes no room.
+ */
+#board-status {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  z-index: 900;
+  min-height: 0;
+  max-width: min(36rem, calc(100vw - 2rem));
+  margin: 0;
+  padding: 0.6875rem 1rem;
+  border-radius: var(--radius);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: var(--shadow-lg);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  transform: translateX(-50%);
+  animation: snackbar-in 0.22s var(--ease);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+#board-status:empty {
+  display: none;
+}
+
+#board-status[data-leaving] {
+  opacity: 0;
+  transform: translate(-50%, 0.5rem);
+}
+
+@keyframes snackbar-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.75rem);
+  }
+}
+
 /* `minmax(0, 1fr)`, not the default track: the default is as wide as the
  * widest thing in it that cannot wrap, so one long label on one card widened
  * every card in the column, past the column's edge. */
@@ -1774,22 +1956,37 @@ textarea.input {
   grid-template-columns: none;
 }
 
+/* Inside a lane the cards sit right under its heading, closer together than
+ * the lists on the other screens. */
+.column .issues,
+.reviews .issues {
+  margin-top: 0;
+  gap: 0.5rem;
+}
+
 .issue {
   background: hsl(var(--card));
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
-  padding: 0.875rem 1rem 1rem;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  padding: 0.75rem 0.875rem 0.8125rem;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s var(--ease),
+    opacity 0.15s ease;
 }
 
+/* The card lifts a pixel under the pointer, so the board feels like things
+ * you can pick up rather than rows printed on it. */
 .issue:hover {
-  border-color: hsl(var(--ring) / 0.28);
+  border-color: hsl(var(--foreground) / 0.16);
   box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .issue:focus-within {
-  border-color: hsl(var(--ring) / 0.5);
+  border-color: hsl(var(--foreground) / 0.24);
   box-shadow: var(--shadow-md);
 }
 
@@ -1869,9 +2066,11 @@ textarea.input {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.375rem;
-  font-family: var(--mono);
+  gap: 0.3125rem 0.375rem;
+  min-height: 1.5rem;
+  padding-right: 1.75rem;
   font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
   color: hsl(var(--muted-foreground));
 }
 
@@ -1903,9 +2102,9 @@ textarea.input {
 /* An issue and a pull request sit in the same list, so the kind has to be
  * readable at a glance and not only from the word in the badge. */
 .badge-issue {
-  background: hsl(var(--success) / 0.15);
+  background: hsl(var(--success) / 0.12);
   color: hsl(var(--success));
-  border-color: hsl(var(--success) / 0.3);
+  font-weight: 600;
 }
 
 /* A pull request that is one of several stacked on each other. Its own
@@ -1976,8 +2175,18 @@ textarea.input {
  * than the name, because it is a fact about the board and not part of what the
  * board is called (ADR 0030). */
 .board-total {
-  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.25rem;
+  padding: 0 0.4375rem;
+  border-radius: 9999px;
+  background: hsl(var(--foreground) / 0.07);
+  font-size: 0.75rem;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
   color: hsl(var(--muted-foreground));
   cursor: help;
 }
@@ -2190,9 +2399,8 @@ textarea.input {
   /* The badge is two parts now, each with its own answer on hover, and a flex
    * box eats the space between them (ADR 0027). */
   gap: 0.25rem;
-  background: hsl(38 92% 50% / 0.15);
-  color: hsl(32 81% 36%);
-  border-color: hsl(38 92% 50% / 0.35);
+  background: hsl(38 92% 50% / 0.14);
+  color: hsl(32 81% 34%);
   font-variant-numeric: tabular-nums;
 }
 
@@ -2207,9 +2415,9 @@ textarea.input {
 }
 
 .badge-pull {
-  background: hsl(262 60% 50% / 0.15);
+  background: hsl(262 60% 50% / 0.12);
   color: hsl(262 60% 45%);
-  border-color: hsl(262 60% 50% / 0.3);
+  font-weight: 600;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -2226,16 +2434,25 @@ textarea.input {
   display: inline-block;
   max-width: 100%;
   overflow-wrap: anywhere;
-  margin-top: 0.125rem;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  margin-top: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 550;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
   text-decoration: none;
+  text-decoration-color: hsl(var(--foreground) / 0.4);
+  text-underline-offset: 3px;
 }
 
 .issue-title:hover {
   text-decoration: underline;
-  text-decoration-color: hsl(var(--foreground));
+  text-decoration-color: hsl(var(--foreground) / 0.4);
+}
+
+.issue-title:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  border-radius: 3px;
 }
 
 /* The kind of change a title announces, drawn from `titles.js` (ADR 0021).
@@ -2325,7 +2542,7 @@ textarea.input {
  * rest of the line says what it is. */
 .issue-scope {
   margin-right: 0.375rem;
-  font-weight: 500;
+  font-weight: 450;
   color: hsl(var(--muted-foreground));
 }
 
@@ -2345,7 +2562,14 @@ textarea.input {
   display: flex;
   flex-wrap: wrap;
   gap: 0.3125rem;
-  margin-top: 0.5rem;
+  margin-top: 0.625rem;
+}
+
+/* A label is a quiet outlined tag with square-ish corners, so it never reads
+ * as a status pill: a pill says what is happening, a label what it is about. */
+.issue-labels > .badge-outline {
+  border-radius: 0.375rem;
+  color: hsl(var(--foreground) / 0.72);
 }
 
 /* The issue fields that are set, in a row under the labels (ADR 0047). The
@@ -2517,6 +2741,11 @@ button.milestone-name[aria-pressed="true"]:hover {
 
 .issue .note {
   margin-top: 0.75rem;
+  background: hsl(var(--background));
+}
+
+.issue .note:focus {
+  background: hsl(var(--card));
 }
 
 /* An emptied note box the reader left. It folds away rather than vanishing,
@@ -2566,16 +2795,20 @@ button.milestone-name[aria-pressed="true"]:hover {
   text-transform: uppercase;
 }
 
+/* An underline, not a bottom border: a reference that wraps onto a second
+ * line keeps its line under the words, where a border drew a rule under the
+ * whole box. */
 .issue-link {
   color: hsl(var(--muted-foreground));
-  text-decoration: none;
-  border-bottom: 1px solid hsl(var(--border));
-  transition: color 0.15s ease, border-color 0.15s ease;
+  text-decoration: underline;
+  text-decoration-color: hsl(var(--foreground) / 0.2);
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
 .issue-link:hover {
   color: hsl(var(--foreground));
-  border-bottom-color: hsl(var(--foreground));
+  text-decoration-color: hsl(var(--foreground) / 0.6);
 }
 
 /* The children of an issue: one pill per child on the heading line, and the
@@ -2739,22 +2972,30 @@ button.milestone-name[aria-pressed="true"]:hover {
  * joined to it by a line, so the pair reads as one piece of work (ADR 0010). */
 .issues.nested {
   margin-top: 0.75rem;
-  margin-left: 0.5rem;
-  padding-left: 0.875rem;
+  margin-left: 0.25rem;
+  padding-left: 0.75rem;
   border-left: 2px solid hsl(var(--border));
   gap: 0.5rem;
 }
 
+/* The pull request inside its issue: a flatter card on a quieter ground, so
+ * the pair reads as one piece of work and not as two cards stacked. */
 .issues.nested .issue {
-  background: hsl(var(--muted) / 0.35);
+  background: hsl(var(--background) / 0.6);
+  box-shadow: none;
+  padding: 0.625rem 0.75rem 0.6875rem;
+}
+
+.issues.nested .issue:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Blocked is the one state that changes what you should do next, so it is the
  * one badge that is not quiet. */
 .badge-blocked {
-  background: hsl(var(--destructive) / 0.14);
+  background: hsl(var(--destructive) / 0.11);
   color: hsl(var(--destructive));
-  border-color: hsl(var(--destructive) / 0.3);
   font-weight: 600;
 }
 
@@ -2763,9 +3004,8 @@ button.milestone-name[aria-pressed="true"]:hover {
  * and the icon and the word say which. Loud like "Blocked", because both are
  * states that change what you do next. */
 .badge-attention {
-  background: hsl(var(--destructive) / 0.14);
+  background: hsl(var(--destructive) / 0.11);
   color: hsl(var(--destructive));
-  border-color: hsl(var(--destructive) / 0.3);
   font-weight: 600;
   gap: 0.25rem;
 }
@@ -2780,9 +3020,8 @@ button.milestone-name[aria-pressed="true"]:hover {
 /* A conflict is the one of the three that nothing but a merge clears, so it
  * carries the amber of a warning rather than the red of a verdict. */
 .attention-conflicts {
-  background: hsl(38 92% 50% / 0.16);
-  color: hsl(32 90% 34%);
-  border-color: hsl(38 92% 50% / 0.35);
+  background: hsl(38 92% 50% / 0.15);
+  color: hsl(30 90% 32%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -2800,7 +3039,7 @@ button.milestone-name[aria-pressed="true"]:hover {
 /* -------------------------------------------------------------------------- */
 
 .footer {
-  margin-top: 3rem;
+  margin-top: 3.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid hsl(var(--border));
   display: grid;
@@ -2815,7 +3054,7 @@ button.milestone-name[aria-pressed="true"]:hover {
   }
 
   .page {
-    padding: 1rem var(--gutter) 3rem;
+    padding: 0 var(--gutter) 3rem;
   }
 
   .card-header,
@@ -2851,6 +3090,11 @@ button.milestone-name[aria-pressed="true"]:hover {
     animation: none;
     background: hsl(var(--muted));
   }
+
+  /* The card keeps its shadow under the pointer and loses the lift. */
+  .issue {
+    transform: none !important;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2860,8 +3104,8 @@ button.milestone-name[aria-pressed="true"]:hover {
 /* The masthead names the tool. These name the two halves of the board, so a
  * reader can tell at a glance which list is waiting on them (ADR 0018). */
 .section-heading {
-  margin: 2.5rem 0 0.5rem;
-  font-size: 1.0625rem;
+  margin: 2.25rem 0 0.5rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
@@ -3080,8 +3324,7 @@ button.milestone-name[aria-pressed="true"]:hover {
 }
 
 /* One colour to press. It is painted with the same channels the column gets,
- * at the same two alphas, so the swatch is the answer rather than a guess at
- * it (ADR 0024). */
+ * so the swatch is the answer rather than a guess at it (ADR 0024). */
 .swatch {
   width: 1.5rem;
   height: 1.5rem;

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#17181c" media="(prefers-color-scheme: dark)" />
   <meta name="description" content="A personal work board on top of GitHub issues. Paste a fine-grained token, keep private notes in your own private repository, and the board syncs itself across your devices." />
   <title>Work Board · Your GitHub Issues, Your Notes · Guillem Poy</title>
   <link rel="canonical" href="https://triunitystudios.com/web-projects/github-work-board/" />
@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="398" />
-  <meta name="deploy-date" content="2026-10-28T14:57:56.000Z" />
+  <meta name="deploy-pull-request" content="399" />
+  <meta name="deploy-date" content="2026-10-28T15:50:27.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -222,6 +222,10 @@
     <header class="masthead">
       <div>
         <h1>
+          <!-- The mark the browser tab wears, drawn inline like every icon here. -->
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 16 16" focusable="false"><rect x="2" y="3" width="3" height="10" rx="1" /><rect x="6.5" y="3" width="3" height="7" rx="1" /><rect x="11" y="3" width="3" height="4.5" rx="1" /></svg>
+          </span>
           Work board
           <!-- The same number the browser tab carries. Resting on it says
                where it comes from (ADR 0030). -->

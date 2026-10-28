@@ -5,9 +5,9 @@
 // GitHub knows.
 //
 // **A colour is bare HSL channels, never a finished colour.** The wash behind a
-// column and the outline round it are the same channels at two alphas, which a
-// hex value cannot do, and which is why every colour in this file is written
-// the way `style.css` writes its own (ADR 0004).
+// column, its count and the swatch in Settings are the same channels at
+// different alphas, which a hex value cannot do, and which is why every colour
+// in this file is written the way `style.css` writes its own (ADR 0004).
 //
 // **An id here is written into `board.json`** the moment somebody picks one, so
 // it is as permanent as a storage key or a column id.

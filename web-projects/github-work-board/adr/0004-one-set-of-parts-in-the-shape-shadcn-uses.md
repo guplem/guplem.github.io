@@ -37,6 +37,28 @@ components.
    given a line break worth the name, and one of the board's tooltips is a
    breakdown with a line per part of the board (ADR 0033).
 
+**A grey ground, and white cards on it.** The page is a light grey and every
+card, panel and control is the card colour, so a card reads as something that
+sits on the board. The masthead is a bar of the card colour across the whole
+window. In dark mode the same roles hold: a near-black ground, and cards one
+step lighter.
+
+**What floats over the page shares one shadow and one entrance.** A menu, a
+tooltip, a dialog and the snackbar wear `--shadow-lg` and arrive with a short
+fade and a small rise, about a sixth of a second. The motion only says "this
+is new", in the place the reader already looks, and a reader who asked for less
+motion gets none of it. A card lifts one pixel under the pointer, for the same
+reason a button changes colour: it says the card is a thing the reader can act
+on.
+
+**The status line is a snackbar.** What the board says about something the
+reader just did ("Note removed ...", "This browser would not copy ...") floats at the foot of the
+window, where it is seen, and leaves on its own after `snackbarHoldMs`
+(`messages.js`). It waits while the pointer rests on it. A line that is still
+true, such as a save that does not get through, stays until it is replaced. It
+was a grey line above the columns, usually scrolled out of sight at the moment
+it spoke.
+
 **Nothing appears out of nothing after a pause.** Every list the board is about
 to fill draws a placeholder first, in the shape of what is coming and in as
 close to the right number as the page can know. The number is what the board

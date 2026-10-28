@@ -13,6 +13,7 @@ import {
   priorityMenuLabel,
   say,
   sayAwaitingApproval,
+  snackbarHoldMs,
   sayEmptyBoard,
   summariseChecks,
   BOOT_STEPS,
@@ -410,5 +411,34 @@ describe("describeCleanup (ADR 0043)", () => {
     expect(describeCleanup({ found: 0, unreadable: 2, failures: [], tokenCount: 1 }).unreadable).toBe(
       "2 more notes are on work that none of your tokens can read, so the board leaves them alone.",
     );
+  });
+});
+
+describe("snackbarHoldMs: how long a passing message stays on screen", () => {
+  // A line like "Note removed ..." floats at the foot of the window and leaves on
+  // its own. Too short and the reader misses it; for ever and it covers the
+  // board long after it stopped meaning anything.
+  test("an empty line is not held at all", () => {
+    expect(snackbarHoldMs("")).toBe(0);
+    expect(snackbarHoldMs("   ")).toBe(0);
+    expect(snackbarHoldMs(null)).toBe(0);
+  });
+
+  test("a short line stays long enough to read twice", () => {
+    expect(snackbarHoldMs("Note removed from acme-labs/api #418")).toBeGreaterThanOrEqual(4000);
+  });
+
+  // The line that says the browser would not copy carries the whole line to
+  // copy by hand, so it has to stay up longer than a short line.
+  test("a longer line stays longer", () => {
+    const short = snackbarHoldMs("Note removed from acme-labs/api #418");
+    const long = snackbarHoldMs(
+      "This browser would not copy. The line is /implement-issue #418 in acme-labs/api, pick a rate limit store first",
+    );
+    expect(long).toBeGreaterThan(short);
+  });
+
+  test("nothing stays longer than ten seconds", () => {
+    expect(snackbarHoldMs("word ".repeat(400))).toBe(10_000);
   });
 });
