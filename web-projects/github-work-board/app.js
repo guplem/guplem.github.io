@@ -3395,27 +3395,24 @@ function showView(view, section) {
   state.view = connected ? view : DEFAULT_VIEW;
   if (state.view === "settings") showSettingsSection(state.section);
 
-  // One control, and where it goes depends on where you are. Adding a token
-  // was opened from Settings, so "back" from there means Settings (ADR 0018).
-  // The cleanup is opened from Settings too, so it goes back there (ADR 0043),
-  // to the section each was opened from (ADR 0048).
-  const back = { board: null, settings: "board", "add-token": "settings", cleanup: "settings" }[state.view] ?? null;
-  const label =
-    { settings: "Back to the board", "add-token": "Back to settings", cleanup: "Back to settings" }[state.view] ??
-    "Settings";
+  // The way back depends on where you are. Adding a token was opened from
+  // Settings, so "back" from there means Settings (ADR 0018). The cleanup is
+  // opened from Settings too, so it goes back there (ADR 0043), to the section
+  // each was opened from (ADR 0048). The board has no way back, only the way
+  // into Settings (ADR 0008).
+  const back = { settings: "board", "add-token": "settings", cleanup: "settings" }[state.view] ?? null;
+  const backLabel = back === "board" ? "Back to the board" : "Back to settings";
 
   // A token shown in full stays shown only while the reader is looking at it.
   if (state.view !== "settings" && state.revealed.size > 0) {
     state.revealed.clear();
     renderTokenList();
   }
-  const toggle = element("view-toggle");
-  toggle.hidden = !connected;
-  element("view-toggle-label").textContent = label;
-  element("view-toggle-arrow").hidden = back === null;
-  element("view-toggle-gear").hidden = back !== null;
+  element("view-toggle").hidden = !connected || back !== null;
+  element("view-back").hidden = !connected || back === null;
+  element("view-back-label").textContent = backLabel;
   element("theme-switch").hidden = !connected;
-  state.viewToggleGoesTo = back ?? "settings";
+  state.viewBackGoesTo = back ?? "board";
   element("setup").hidden = connected;
   element("board").hidden = !connected || state.view !== "board";
   element("find-control").hidden = !connected || state.view !== "board";
@@ -4663,7 +4660,8 @@ function start() {
     name.focus();
   });
 
-  element("view-toggle").addEventListener("click", () => showView(state.viewToggleGoesTo ?? "settings"));
+  element("view-toggle").addEventListener("click", () => showView("settings"));
+  element("view-back").addEventListener("click", () => showView(state.viewBackGoesTo ?? "board"));
   buildSettingsIndex();
   element("settings-find").addEventListener("input", renderSettingsSearch);
   element("settings-find").addEventListener("keydown", (event) => {
