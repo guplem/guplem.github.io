@@ -1454,6 +1454,15 @@ body:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-vie
   scroll-padding-inline: var(--gutter);
 }
 
+/* While the board waits, the placeholder columns do not scroll: a scroll bar
+ * under grey boxes only says that more grey boxes are off to the side. The bar
+ * comes back with the real cards. */
+@media (width > 60rem) {
+  .columns[aria-busy="true"] {
+    overflow-x: hidden;
+  }
+}
+
 .column {
   background: hsl(var(--foreground) / 0.035);
   border: 0;

@@ -19,3 +19,25 @@ export function skeletonCount(lastKnown, fallback = SKELETON_FALLBACK) {
   if (!Number.isFinite(lastKnown)) return fallback;
   return Math.min(MOST_SKELETONS, Math.max(1, Math.round(lastKnown)));
 }
+
+/**
+ * How tall each column looks against the others, read left to right. A real
+ * board is uneven, and a row of equal columns reads as a grid of grey rather
+ * than as a board, so the placeholder is uneven too. The pattern repeats past
+ * the sixth column.
+ */
+const COLUMN_SHAPE = [1.5, 1, 0.5, 1, 2, 1];
+
+/**
+ * How many placeholder cards to draw in each shown column, given how many cards
+ * the whole board held last time. The total stays close to that number, and
+ * every column gets at least one card.
+ */
+export function skeletonColumnCounts(lastKnown, columns) {
+  if (columns <= 0) return [];
+  const share = Math.max(1, skeletonCount(lastKnown) / columns);
+  return Array.from({ length: columns }, (_, index) => {
+    const weight = COLUMN_SHAPE[index % COLUMN_SHAPE.length];
+    return Math.min(MOST_SKELETONS, Math.max(1, Math.round(share * weight)));
+  });
+}
