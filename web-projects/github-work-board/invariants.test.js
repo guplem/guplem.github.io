@@ -260,6 +260,28 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(page).toContain('id="cancel-add-token"');
   });
 
+  // The way back sat on the right of the masthead, where a reader looks for a
+  // way forward, and it wore the Settings icon. It is a button of its own now,
+  // at the top left of the screen it leaves, with an arrow, and it is the
+  // first thing in <main> so it sits above every sub-screen's heading
+  // (ADR 0008).
+  test("the way back is on the left, above the screen, and points back", () => {
+    const page = read("index.html");
+    const main = page.slice(page.indexOf("<main>"));
+    expect(main.indexOf('id="view-back"')).toBeGreaterThan(-1);
+    expect(main.indexOf('id="view-back"')).toBeLessThan(main.indexOf("<section"));
+    const masthead = page.slice(page.indexOf('<header class="masthead">'), page.indexOf("</header>"));
+    expect(masthead).not.toContain("view-back");
+    expect(masthead).not.toContain("view-toggle-arrow");
+  });
+
+  // The masthead sat inside the centred page, so on Settings its name and its
+  // buttons stopped short of the window's edges. It sits outside the page now.
+  test("the masthead is outside the centred page", () => {
+    const page = read("index.html");
+    expect(page.indexOf('<header class="masthead">')).toBeLessThan(page.indexOf('<div class="page">'));
+  });
+
   // Without this one rule, every element the page hides with `hidden` and also
   // gives a `display` to stays on screen: an empty filter row, a "clear the
   // filters" button with no filters, a settings button inside settings. The
@@ -431,7 +453,7 @@ describe("the page shows nothing it has not decided (ADR 0036)", () => {
       match[2].includes("display: none"),
     );
     expect(rule).toBeDefined();
-    for (const id of ["setup", "board", "settings-view", "add-token-view", "cleanup-view", "find-control", "view-toggle"]) {
+    for (const id of ["setup", "board", "settings-view", "add-token-view", "cleanup-view", "find-control", "view-toggle", "view-back"]) {
       expect(rule[1]).toContain(`#${id}`);
     }
     expect(rule[2]).toContain("display: none");
