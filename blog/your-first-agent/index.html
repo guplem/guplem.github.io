@@ -65,6 +65,7 @@
         <symbol id="ico-os-mac" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.9c1.5 0 2.7 1.1 4 1.1 3 0 6-8 6-12.2A4.9 4.9 0 0 0 17 5c-2.2 0-4 1.4-5 2-1-.6-2.8-2-5-2a4.9 4.9 0 0 0-5 4.8C2 14 5 22 8 22c1.3 0 2.5-1.1 4-1.1z" /><path d="M12 7c.2-2.3 1.7-4 3.7-4.3-.2 2.3-1.7 4-3.7 4.3z" /></symbol>
         <symbol id="ico-os-windows" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2.5" /><path d="M12 3v18M3 12h18" /></symbol>
         <symbol id="ico-os-linux" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5c2.3 0 3.6 1.9 3.6 4.3 0 1.7.8 2.9 1.9 4.4 1.2 1.7 1.8 3.6 1.3 5.6-.4 1.7-1.8 2.7-3.4 2.7H8.6c-1.6 0-3-1-3.4-2.7-.5-2 .1-3.9 1.3-5.6 1.1-1.5 1.9-2.7 1.9-4.4 0-2.4 1.3-4.3 3.6-4.3z" /><path d="M9.6 13c.3 2.6 1.2 4.4 2.4 4.4s2.1-1.8 2.4-4.4" /><path d="M10.6 6.6h.01M13.4 6.6h.01" /><path d="M11 9l1 .8 1-.8" /><path d="M6.5 21.5h3.5M14 21.5h3.5" /></symbol>
+        <symbol id="ico-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18" /></symbol>
         <symbol id="ico-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6" /></symbol>
         <symbol id="ico-forward" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6" /></symbol>
         <symbol id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 5.5v13a1 1 0 0 0 1.5.86l10-6.5a1 1 0 0 0 0-1.72l-10-6.5a1 1 0 0 0-1.5.86z" /></symbol>
@@ -333,9 +334,26 @@
             <p class="app-name"><b>Goose</b>, open and free</p>
             <p class="os-list"><span class="os"><svg class="os-icon" aria-hidden="true"><use href="#ico-os-mac" /></svg>Mac</span><span class="os"><svg class="os-icon" aria-hidden="true"><use href="#ico-os-windows" /></svg>Windows</span><span class="os"><svg class="os-icon" aria-hidden="true"><use href="#ico-os-linux" /></svg>Linux</span></p>
             <p>Open source (anyone can read and reuse its code). It works with almost any model: your ChatGPT Plus or Pro subscription, an API key (OpenRouter, Anthropic, Google) or a model that runs on your own computer. Download it at <a href="https://goose-docs.ai">goose-docs.ai</a>.</p>
-            <p class="warnbox"><strong>Goose comes with no model of its own.</strong> The first time you open it, connect it to one: your ChatGPT Plus or Pro account, an API key or a model on your computer. If you have none of the three, pick another app.</p>
+            <p class="warnbox"><strong>Goose comes with no model of its own.</strong> The first time you open it, connect it to an account or an API key. <button type="button" class="help-link" commandfor="goose-help" command="show-modal">How to connect it</button></p>
           </div>
         </div>
+
+        <dialog id="goose-help" class="help-dialog" closedby="any" aria-labelledby="goose-help-title">
+          <div class="help-dialog-head">
+            <h3 id="goose-help-title">How to connect Goose to a model</h3>
+            <button type="button" class="dialog-close" commandfor="goose-help" command="close"><svg class="btn-icon" aria-hidden="true"><use href="#ico-close" /></svg>Close</button>
+          </div>
+          <p>The first time you open Goose, it shows a welcome screen with several options. Find what you have below and pick that option. If you ticked something above, it is highlighted.</p>
+          <ul class="help-steps">
+            <li data-sub="chatgpt"><b>ChatGPT Plus or Pro.</b> Pick <strong>ChatGPT Subscription</strong>. Your browser opens: sign in with your ChatGPT account, give Goose permission and go back to the app. It does not work with the free ChatGPT plan.</li>
+            <li data-sub="gemini"><b>Google AI Pro (Gemini).</b> Goose does not use your subscription, but Google gives you a free API key, with a usage limit. Create it at <a href="https://aistudio.google.com/app/apikey">aistudio.google.com/app/apikey</a> and copy it. In Goose, pick <strong>Quick Setup with API Key</strong> and paste it. Note: with the free key, Google may use what you send it to improve its products.</li>
+            <li data-sub="api"><b>An OpenRouter account.</b> Pick <strong>OpenRouter</strong>. Your browser opens: sign in, or create an account, and Goose gets the key without you copying it.</li>
+            <li data-sub="api"><b>Another API key</b> (from OpenAI, Anthropic, Google…). Pick <strong>Quick Setup with API Key</strong> and paste the key. Goose recognises which company it is from.</li>
+            <li data-sub="claude"><b>Claude Pro or Max.</b> Goose does not use your Claude subscription without programmer steps. It is simpler to use the Claude desktop app.</li>
+            <li><b>A model on your computer.</b> Install <a href="https://ollama.com">Ollama</a> and use it to download a model, for example <code>qwen2.5</code>. In Goose, pick <strong>Other Providers</strong> and press <strong>Configure</strong> next to Ollama. It is the most technical option, and you need a powerful computer.</li>
+          </ul>
+          <p>More details in <a href="https://goose-docs.ai/docs/getting-started/providers">Goose's guide to providers</a>.</p>
+        </dialog>
 
         <details class="more">
           <summary>What is an API key? (if you do not have one, you do not need one)</summary>

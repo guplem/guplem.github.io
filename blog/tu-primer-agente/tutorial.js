@@ -96,6 +96,29 @@ for (const button of exampleButtons) {
   });
 }
 
+/* ---------- Help dialogs ----------
+   A button with commandfor opens or closes its <dialog> with no script in
+   current browsers. This covers the browsers that do not know the attribute yet. */
+if (!("command" in HTMLButtonElement.prototype)) {
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("button[commandfor]");
+    const dialog = button && document.getElementById(button.getAttribute("commandfor"));
+    if (!(dialog instanceof HTMLDialogElement)) return;
+    if (button.getAttribute("command") === "show-modal") dialog.showModal();
+    else if (button.getAttribute("command") === "close") dialog.close();
+  });
+}
+// A click on the dark area around a dialog closes it, also where closedby="any" is not known.
+for (const dialog of document.querySelectorAll("dialog.help-dialog")) {
+  dialog.addEventListener("click", (event) => {
+    if (event.target !== dialog) return;
+    // The dialog's own padding is also the dialog: close only outside its box.
+    const box = dialog.getBoundingClientRect();
+    const inside = event.clientX >= box.left && event.clientX <= box.right && event.clientY >= box.top && event.clientY <= box.bottom;
+    if (!inside) dialog.close();
+  });
+}
+
 /* ---------- Step 1: the app picker ---------- */
 const picker = document.querySelector("[data-picker]");
 if (picker) {
@@ -132,6 +155,8 @@ if (picker) {
 
   function renderPicker() {
     const advice = recommendApps([...subs]);
+    // The Goose help dialog highlights the rows for what the reader ticked.
+    for (const row of document.querySelectorAll(".help-steps [data-sub]")) row.classList.toggle("is-yours", subs.has(row.dataset.sub));
     for (const warning of picker.querySelectorAll("[data-warning]:not([data-app])")) warning.hidden = !advice?.warnings.includes(warning.dataset.warning);
     result.replaceChildren();
     if (advice) {
