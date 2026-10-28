@@ -1227,3 +1227,24 @@ describe("a card is never wider than its column (ADR 0018)", () => {
     expect(title).toContain("overflow-wrap: anywhere");
   });
 });
+
+describe("the snackbar speaks on every screen (ADR 0004)", () => {
+  // It sat inside the board view, so a copy, a removed token or a deleted
+  // note in Settings or the cleanup was confirmed on a hidden element, and
+  // the reader saw nothing. Outside every view, it is seen wherever the
+  // reader is.
+  test("the snackbar is outside every view", () => {
+    const html = read("index.html");
+    const status = html.indexOf('id="board-status"');
+    expect(status).toBeGreaterThan(-1);
+    expect(status).toBeGreaterThan(html.indexOf("</main>"));
+  });
+
+  // A copy closes the menu or changes only the button's word, so a copy
+  // that works confirms itself in the snackbar too (ADR 0021).
+  test("a copy that works says so", () => {
+    const app = read("app.js");
+    expect(app).toMatch(/writeText\(filled\);\s*setStatus\(copiedStatus\(filled\)/);
+    expect(app).toMatch(/writeText\(text\);\s*setStatus\(said/);
+  });
+});

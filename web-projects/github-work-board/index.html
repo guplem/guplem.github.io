@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="403" />
-  <meta name="deploy-date" content="2026-10-28T16:52:10.000Z" />
+  <meta name="deploy-pull-request" content="404" />
+  <meta name="deploy-date" content="2026-10-28T16:54:47.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -440,11 +440,6 @@
             <button id="clear-board-filters" type="button" class="button button-ghost filter-clear" hidden>Clear filters</button>
           </div>
         </div>
-        <!-- Only what the board has to say right now: a line copied, a call
-             that failed, a board nothing can write to. It says nothing the rest
-             of the time, and every count lives on the thing it counts. -->
-        <p id="board-status" class="status" role="status" aria-live="polite"></p>
-
         <!-- A token that may be waiting for an organisation to approve it.
              GitHub says nothing about it, so the board says what it saw, and
              links the page where the organisation's owners approve it
@@ -764,6 +759,13 @@
         </div>
       </section>
     </main>
+
+    <!-- The snackbar: what the board has to say right now. It confirms what
+         the reader just did (a line copied, a note deleted, a token removed),
+         or says what is still true (a call that failed, a board nothing can
+         write to). It sits outside every view, so it speaks on Settings and
+         the cleanup too, and every count lives on the thing it counts. -->
+    <p id="board-status" class="status" role="status" aria-live="polite"></p>
 
     <footer class="footer">
       <p>Everything happens in your browser. Your half of the board goes to your own private repository and nowhere else.</p>

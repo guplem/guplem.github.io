@@ -10,6 +10,18 @@ import {
   movedByHandTip,
   noteMenuLabel,
   noteRemovedStatus,
+  copiedStatus,
+  tokenCopiedStatus,
+  backupCopiedStatus,
+  tokenRemovedStatus,
+  copyLineAddedStatus,
+  copyLineRemovedStatus,
+  notesDeletedStatus,
+  noteKeptStatus,
+  cardMovedStatus,
+  priorityStatus,
+  organisationSavedStatus,
+  storageTokenStatus,
   priorityMarkTip,
   priorityMenuLabel,
   say,
@@ -441,6 +453,83 @@ describe("snackbarHoldMs: how long a passing message stays on screen", () => {
 
   test("nothing stays longer than ten seconds", () => {
     expect(snackbarHoldMs("word ".repeat(400))).toBe(10_000);
+  });
+});
+
+// What the snackbar says after the reader does something. A press that changes
+// nothing on screen, or changes it far from the pointer, leaves the reader
+// unsure it worked; one short line confirms it (ADR 0004).
+describe("confirmations: one line after an action", () => {
+  const card = { repository: "acme-labs/api", number: 418 };
+
+  test("a copy names what it copied", () => {
+    expect(copiedStatus("fix/rate-limit")).toBe('Copied "fix/rate-limit".');
+  });
+
+  // The snackbar is one line at the foot of the window; a long link must not
+  // fill it.
+  test("a long copy is cut short with an ellipsis", () => {
+    const said = copiedStatus("x".repeat(200));
+    expect(said.length).toBeLessThan(80);
+    expect(said).toContain("…");
+  });
+
+  test("a copy with nothing to name still says it copied", () => {
+    expect(copiedStatus("")).toBe("Copied.");
+    expect(copiedStatus(null)).toBe("Copied.");
+  });
+
+  // A token on screen is a token in a screen share (ADR 0015), so the line
+  // that confirms the copy never carries the token itself.
+  test("a copied token is never printed", () => {
+    expect(tokenCopiedStatus()).not.toContain("ghp_");
+    expect(tokenCopiedStatus()).toMatch(/^Token copied\./);
+    expect(backupCopiedStatus(1)).toMatch(/^Your token copied as a backup\./);
+    expect(backupCopiedStatus(3)).toMatch(/^3 tokens copied as one backup\./);
+  });
+
+  test("a removed token is named", () => {
+    expect(tokenRemovedStatus("Work")).toBe('Token "Work" removed from this browser.');
+    expect(tokenRemovedStatus("")).toBe("Token removed from this browser.");
+  });
+
+  test("a copy line added or removed is named", () => {
+    expect(copyLineAddedStatus("Copy branch name")).toBe('Line "Copy branch name" added to the card menu.');
+    expect(copyLineRemovedStatus("Copy branch name")).toBe('Line "Copy branch name" removed from the card menu.');
+    expect(copyLineAddedStatus("")).toBe("Line added to the card menu.");
+    expect(copyLineRemovedStatus(undefined)).toBe("Line removed from the card menu.");
+  });
+
+  test("deleted notes are counted", () => {
+    expect(notesDeletedStatus(1)).toBe("Note deleted.");
+    expect(notesDeletedStatus(4)).toBe("4 notes deleted.");
+  });
+
+  test("a kept note says the cleanup will leave it alone", () => {
+    expect(noteKeptStatus()).toBe("Note kept. The cleanup will not suggest it again.");
+  });
+
+  // The card can land in a column scrolled out of sight, so the line names
+  // the card and where it went.
+  test("a moved card names the card and the column", () => {
+    expect(cardMovedStatus(card, "Ongoing")).toBe("acme-labs/api #418 moved to Ongoing.");
+    expect(cardMovedStatus({}, "Ongoing")).toBe("Moved to Ongoing.");
+  });
+
+  test("a priority mark names the card and the mark", () => {
+    expect(priorityStatus(card, "high")).toBe("acme-labs/api #418 marked high priority.");
+    expect(priorityStatus(card, "low")).toBe("acme-labs/api #418 marked not a priority.");
+    expect(priorityStatus(card, "normal")).toBe("acme-labs/api #418 back to normal priority.");
+  });
+
+  test("a saved organisation is named, and an emptied one says so", () => {
+    expect(organisationSavedStatus("acme-labs")).toBe('Organisation "acme-labs" saved.');
+    expect(organisationSavedStatus("")).toBe("Organisation cleared.");
+  });
+
+  test("a token handed to storage is named", () => {
+    expect(storageTokenStatus("Work")).toBe('Token "Work" now saves your half of the board.');
+    expect(storageTokenStatus("")).toBe("This token now saves your half of the board.");
   });
 });
 
