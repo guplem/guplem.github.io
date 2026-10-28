@@ -33,7 +33,6 @@ export const STORAGE_KEYS = {
   tokens: "github-work-board.tokens",
   lastCounts: "github-work-board.lastCounts",
   autoRefresh: "github-work-board.autoRefresh",
-  filtersOpen: "github-work-board.filtersOpen",
 };
 
 /**
@@ -45,6 +44,9 @@ export const LEGACY_KEYS = {
   token: "github-work-board.token",
   grantedPermissions: "github-work-board.grantedPermissions",
   dataRepo: "github-work-board.dataRepo",
+  // Whether the filters were folded, from before they became one bar of menus
+  // (ADR 0049). Nothing reads it; signing out still clears it.
+  filtersOpen: "github-work-board.filtersOpen",
 };
 
 function readRaw(storage, key) {
@@ -153,7 +155,7 @@ export function forgetAllTokens(storage) {
   removeRaw(storage, LEGACY_KEYS.dataRepo);
   removeRaw(storage, STORAGE_KEYS.lastCounts);
   removeRaw(storage, STORAGE_KEYS.autoRefresh);
-  removeRaw(storage, STORAGE_KEYS.filtersOpen);
+  removeRaw(storage, LEGACY_KEYS.filtersOpen);
 }
 
 /**
@@ -169,21 +171,6 @@ export function readAutoRefresh(storage) {
 
 export function saveAutoRefresh(storage, choice) {
   writeRaw(storage, STORAGE_KEYS.autoRefresh, knownRefresh(choice));
-}
-
-/**
- * Whether the board's filters are open, or folded down to the chosen ones.
- *
- * It stays in this browser, like the refresh schedule: it is about how much
- * room this screen has, not about the reader's work (ADR 0049). Folded is the
- * default, and anything this build does not know reads as folded.
- */
-export function readFiltersOpen(storage) {
-  return readRaw(storage, STORAGE_KEYS.filtersOpen) === "true";
-}
-
-export function saveFiltersOpen(storage, open) {
-  writeRaw(storage, STORAGE_KEYS.filtersOpen, open === true ? "true" : "false");
 }
 
 /**

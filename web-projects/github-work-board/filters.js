@@ -12,13 +12,13 @@
 // The chosen values travel in the address bar (`urlState.js`), so a filtered
 // board can be sent to yourself or bookmarked. See ADR 0009.
 
-import { filterByFields } from "./fields.js";
+import { availableFieldFilters, filterByFields } from "./fields.js";
 
 /** The kinds a person can ask for. Named in links, so an id is never changed. */
 export const DEFAULT_KIND = "all";
 
 export const KIND_FILTERS = [
-  { id: "all", label: "Everything" },
+  { id: "all", label: "All" },
   { id: "issue", label: "Issues" },
   { id: "pull-request", label: "Pull requests" },
 ];
@@ -155,42 +155,50 @@ export function activeFilterCount({ kind, repositories, labels, milestones, fiel
 /**
  * How many of the board's own narrowings are in force.
  *
- * The assignee chips narrow the review row, not the board, and they never
- * fold, so the count on the board's fold leaves them out (ADR 0049).
+ * The assignee control narrows the review row, not the board, so the count
+ * on the filter bar leaves it out (ADR 0049).
  */
 export function boardFilterCount(chosen = {}) {
   return activeFilterCount({ ...chosen, assignees: [] });
 }
 
 /**
- * The choices a group shows. Open, all of them. Folded, only the chosen ones,
- * so a short list always shows why it is short (ADR 0049). The order offered
- * is kept either way.
+ * The menus the filter bar offers, one per kind of filter, built from what the
+ * list actually holds (ADR 0009, ADR 0049).
  *
- * @param options what the group offers
- * @param chosen the keys the reader chose
- * @param open whether the filters are open
- * @param keyOf how to read an option's key, for options that are not strings
+ * A repository or a reviewer is offered only when there are two to choose
+ * between, because one can never narrow anything; a label, a milestone or an
+ * issue field is offered from one, because it narrows the work that lacks it.
+ * A menu the reader chose from always stays, so a choice can be seen and
+ * undone. Each option says whether it is chosen, and `count` is how many are.
+ *
+ * @param items the board's work items
+ * @param chosen the reader's filters: `repositories`, `reviewers`, `labels`,
+ *   `milestones` and `fields`, each a list of keys
  */
-export function shownChoices(options, chosen, open, keyOf = (one) => one) {
-  const list = Array.isArray(options) ? options : [];
-  if (open) return [...list];
-  const wanted = new Set(asList(chosen));
-  return list.filter((one) => wanted.has(keyOf(one)));
-}
-
-/**
- * The kinds the kind group shows. Folded, "Everything" is never one of them:
- * it narrows nothing, so it is not a filter (ADR 0049).
- */
-export function shownKinds(kind, open) {
-  if (open) return [...KIND_FILTERS];
-  const chosen = readKind(kind);
-  return chosen === DEFAULT_KIND ? [] : KIND_FILTERS.filter((one) => one.id === chosen);
-}
-
-/** The words on the button that folds and opens the filters. They say what a press does. */
-export function filtersToggleLabel(open, count) {
-  if (open) return count > 0 ? "Show only the chosen filters" : "Hide the filters";
-  return count > 0 ? `Show all the filters (${count} chosen)` : "Show the filters";
+export function filterMenus(items, chosen) {
+  const list = Array.isArray(items) ? items : [];
+  const picked = chosen && typeof chosen === "object" ? chosen : {};
+  const menu = (id, label, values, chosenKeys, least) => {
+    const wanted = new Set(asList(chosenKeys));
+    const options = values.map(({ key, text }) => ({ key, text, chosen: wanted.has(key) }));
+    const count = id.startsWith("field:") ? options.filter((one) => one.chosen).length : wanted.size;
+    return options.length >= least || count > 0 ? [{ id, label, options, count }] : [];
+  };
+  const plain = (names) => names.map((name) => ({ key: name, text: name }));
+  return [
+    ...menu("repository", "Repository", plain(availableRepositories(list)), picked.repositories, 2),
+    ...menu(
+      "reviewer",
+      "Reviewer",
+      availableReviewers(list).map((person) => ({ key: person.login, text: person.name || person.login })),
+      picked.reviewers,
+      2,
+    ),
+    ...menu("label", "Label", plain(availableLabels(list)), picked.labels, 1),
+    ...menu("milestone", "Milestone", plain(availableMilestones(list)), picked.milestones, 1),
+    ...availableFieldFilters(list).flatMap((field) =>
+      menu(`field:${field.name}`, field.name, field.values, picked.fields, 1),
+    ),
+  ];
 }

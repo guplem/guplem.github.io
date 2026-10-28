@@ -70,6 +70,8 @@ repeating them. Keep the two copies identical: an explicit choice has to win in
 **both** directions, or choosing light on a dark machine does nothing.
 
 **Automatic is the theme's default**, and it stores nothing until the reader chooses.
+The reader chooses in a three-way switch in the masthead (System, Light, Dark,
+`#theme-switch`), so the choice is one press from any screen.
 
 **The reader can hide any part of the board, and every part starts shown.** A
 third record map, `visibility`, holds one record per part, keyed by the same ids

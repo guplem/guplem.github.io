@@ -56,7 +56,7 @@ short, and it answers "what is waiting on me", which a filter can only spoil.
 That changed when the cards started showing people (ADR 0028). The row now has
 one filter, by the assignee of each pull request, and it is separate from the
 board's filters in every way: its own name in the link (`assignee=`, against the
-board's `reviewer=`), its own chips above the row, and no effect on the columns.
+board's `reviewer=`), its own segmented control in the review row's header, and no effect on the columns.
 The two rules above still hold inside it, because they are about one filter over
 one list: two people chosen widen the row, and the row is narrowed by nothing
 else.
@@ -65,9 +65,9 @@ else.
 `urgent` in this repository" is a link, which is the main thing `localStorage`
 could not have given.
 
-**Chips take room at the top of the board**, more with more repositories. A
-person in twenty repositories gets twenty chips. The filters therefore fold
-down to the chosen chips behind one button (ADR 0049).
+**Values take room, more with more repositories.** A person in twenty
+repositories gets twenty values. The filters therefore sit in one bar, with
+one dropdown menu per kind of filter, so the values cost one row (ADR 0049).
 
 **The label chips list every label in use, not every label defined.** They change
 as the work changes, which means a label can vanish from the chips while it is

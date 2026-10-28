@@ -5,9 +5,7 @@ import {
   activeFilterCount,
   availableAssignees,
   boardFilterCount,
-  filtersToggleLabel,
-  shownChoices,
-  shownKinds,
+  filterMenus,
   availableLabels,
   availableMilestones,
   availableRepositories,
@@ -312,55 +310,67 @@ describe("activeFilterCount counts the people too", () => {
   });
 });
 
-// The filters fold away, so a long list of chips does not push the board down.
-// Folded, only what the reader chose stays in sight, so the reason the list is
-// short is never hidden (ADR 0049).
-describe("folding the filters", () => {
-  test("open, every choice is shown, in the order it was offered", () => {
-    expect(shownChoices(["a", "b", "c"], ["c"], true)).toEqual(["a", "b", "c"]);
+// The filters are one bar: a switch for the kind, and one menu per kind of
+// filter. A reader with eight repositories and twenty labels gets four buttons,
+// not four rows of chips that push the columns down (ADR 0049).
+describe("filterMenus: the menus the filter bar offers", () => {
+  const ana = { login: "ana", name: "Ana Ruiz" };
+  const bo = { login: "bo", name: "" };
+
+  test("nothing on the board offers nothing", () => {
+    expect(filterMenus([], {})).toEqual([]);
+    expect(filterMenus(null, null)).toEqual([]);
   });
 
-  test("folded, only the chosen ones are shown, in the order they were offered", () => {
-    expect(shownChoices(["a", "b", "c"], ["c", "a"], false)).toEqual(["a", "c"]);
+  // One repository cannot narrow anything, so it is not offered (ADR 0009).
+  test("the repository menu needs two repositories", () => {
+    expect(filterMenus([ISSUE], {}).map((menu) => menu.id)).not.toContain("repository");
+    expect(filterMenus([ISSUE, PULL], {}).map((menu) => menu.id)).toContain("repository");
   });
 
-  test("folded with nothing chosen, nothing is shown", () => {
-    expect(shownChoices(["a", "b"], [], false)).toEqual([]);
+  // Once the reader chose one, the menu stays, or there would be no way to
+  // see or undo the choice.
+  test("a menu the reader chose from stays, even with one choice left", () => {
+    const menus = filterMenus([ISSUE], { repositories: ["me/alpha"] });
+    expect(menus.find((menu) => menu.id === "repository")?.count).toBe(1);
   });
 
-  // People are offered as objects and chosen by login.
-  test("a choice can be matched by a key of its own", () => {
-    const people = [{ login: "ana" }, { login: "bo" }];
-    expect(shownChoices(people, ["bo"], false, (one) => one.login)).toEqual([{ login: "bo" }]);
+  test("labels are offered from one, each saying whether it is chosen", () => {
+    const labels = filterMenus([ISSUE, BOTH], { labels: ["urgent"] }).find((menu) => menu.id === "label");
+    expect(labels.label).toBe("Label");
+    expect(labels.options).toEqual([
+      { key: "bug", text: "bug", chosen: false },
+      { key: "urgent", text: "urgent", chosen: true },
+    ]);
+    expect(labels.count).toBe(1);
   });
 
-  test("open, every kind is offered", () => {
-    expect(shownKinds("issue", true)).toEqual(KIND_FILTERS);
+  // A reviewer is chosen by login and read by name.
+  test("reviewers are chosen by login and named by their name", () => {
+    const menus = filterMenus([item({ key: "x", reviewers: [ana] }), item({ key: "y", reviewers: [bo] })], {
+      reviewers: ["bo"],
+    });
+    const reviewers = menus.find((menu) => menu.id === "reviewer");
+    expect(reviewers.options).toContainEqual({ key: "ana", text: "Ana Ruiz", chosen: false });
+    expect(reviewers.options).toContainEqual({ key: "bo", text: "bo", chosen: true });
   });
 
-  test("folded, the chosen kind stays in sight", () => {
-    expect(shownKinds("issue", false).map((one) => one.id)).toEqual(["issue"]);
+  test("the menus come in one order: repository, reviewer, label, milestone", () => {
+    const menus = filterMenus(
+      [
+        item({ key: "x", repository: "me/a", labels: [{ name: "bug" }], milestone: { title: "v1" }, reviewers: [ana] }),
+        item({ key: "y", repository: "me/b", reviewers: [bo] }),
+      ],
+      {},
+    );
+    expect(menus.map((menu) => menu.id)).toEqual(["repository", "reviewer", "label", "milestone"]);
   });
 
-  // "Everything" narrows nothing, so it is not a filter, and a folded group
-  // must not hold it.
-  test("folded, Everything is not shown, because it narrows nothing", () => {
-    expect(shownKinds(DEFAULT_KIND, false)).toEqual([]);
-    expect(shownKinds("not-a-kind", false)).toEqual([]);
-  });
-
-  // The assignee chips sit above the review row and never fold.
+  // The board's own count leaves the review row's assignees out: they narrow
+  // that row, not the board.
   test("the board's own count leaves the review row's assignees out", () => {
     expect(boardFilterCount({ kind: "all", labels: ["bug"], assignees: ["ana"] })).toBe(1);
     expect(boardFilterCount({ kind: "issue", reviewers: ["bo"] })).toBe(2);
     expect(boardFilterCount({ kind: "all" })).toBe(0);
-  });
-
-  test("the toggle says what a press does, and how many are chosen", () => {
-    expect(filtersToggleLabel(false, 0)).toBe("Show the filters");
-    expect(filtersToggleLabel(false, 1)).toBe("Show all the filters (1 chosen)");
-    expect(filtersToggleLabel(false, 3)).toBe("Show all the filters (3 chosen)");
-    expect(filtersToggleLabel(true, 0)).toBe("Hide the filters");
-    expect(filtersToggleLabel(true, 2)).toBe("Show only the chosen filters");
   });
 });

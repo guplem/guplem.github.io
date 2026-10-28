@@ -183,3 +183,34 @@ export function finishedBetween(items, since, until) {
 
 // Where a day starts and stops is `doneRange.js`, which owns every boundary
 // the last column is measured by, in the reader's own clock (ADR 0034).
+
+/**
+ * The icon for each kind of work, as SVG paths on a 24 by 24 grid, drawn by
+ * `drawIcon` in `app.js`. An open circle with a dot is an issue; three rings
+ * joined by a branch is a pull request, the shapes GitHub uses, so a reader
+ * who knows GitHub reads them without the word.
+ */
+export const KIND_ICONS = {
+  issue: ["M21 12a9 9 0 1 1-18 0a9 9 0 1 1 18 0Z", "M13 12a1 1 0 1 1-2 0a1 1 0 1 1 2 0Z"],
+  "pull-request": [
+    "M8.5 5.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z",
+    "M8.5 18.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z",
+    "M20.5 18.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z",
+    "M6 8v8",
+    "M18 16V9a3 3 0 0 0-3-3h-4",
+    "m13 3-3 3 3 3",
+  ],
+};
+
+/**
+ * Where a piece of work stands, for the colour of its icon: open, a draft,
+ * merged, or closed. A pull request closed without merging is closed, never
+ * merged, because it never landed (ADR 0017).
+ */
+export function workState(item) {
+  if (!isPlainObject(item)) return "open";
+  if (item.state === "closed") {
+    return item.kind === "pull-request" && typeof item.mergedAt === "string" && item.mergedAt !== "" ? "merged" : "closed";
+  }
+  return item.kind === "pull-request" && item.isDraft === true ? "draft" : "open";
+}

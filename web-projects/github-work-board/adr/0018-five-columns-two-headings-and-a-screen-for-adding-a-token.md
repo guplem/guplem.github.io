@@ -43,6 +43,11 @@ did not know.
 masthead instead, at the top of the page rather than in the middle of the
 board. What stands from this decision is the two headings themselves.
 
+> **Note:** the review row's heading later became one visible heading,
+> "Waiting for your review", with the count. The assignee choice is a
+> segmented control in that header. The board's heading still has the filter
+> bar beside it (ADR 0049).
+
 **Adding a token is its own screen**, `?view=add-token`, with the guide as four
 numbered steps. It was a block inside Settings, where it buried the tokens, the
 backup and the board repository under a wall of instructions somebody reads
