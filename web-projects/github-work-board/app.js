@@ -1022,6 +1022,18 @@ function buildSkeletonBar(width, extra = "") {
   return bar;
 }
 
+/**
+ * A placeholder for one segment of a switch. It carries the real label, unseen,
+ * so the switch already has its real width; only the pressed one is a grey bar.
+ */
+function buildSkeletonSegment(label, pressed) {
+  const slot = document.createElement("span");
+  slot.className = pressed ? "skeleton skeleton-segment" : "skeleton-segment";
+  slot.setAttribute("aria-hidden", "true");
+  slot.textContent = label;
+  return slot;
+}
+
 /** A placeholder in the shape of a work item card. */
 function buildSkeletonCard() {
   const card = document.createElement("li");
@@ -1110,7 +1122,11 @@ function renderLoading() {
   // not grow when the real menus land (ADR 0004, ADR 0049).
   const menus =
     (last.repositories > 1 ? 1 : 0) + (last.labels > 0 ? 1 : 0) + (last.milestones > 0 ? 1 : 0) + (last.fields ?? 0);
-  element("kind-filters").replaceChildren(...times(3, () => buildSkeletonBar("4.5rem", "skeleton-segment")));
+  // The switch keeps its real labels, unseen, so it is already its real width,
+  // and only the pressed tab shimmers: one selector, where it will sit.
+  element("kind-filters").replaceChildren(
+    ...KIND_FILTERS.map((kind) => buildSkeletonSegment(kind.label, state.kind === kind.id)),
+  );
   element("filter-menus").replaceChildren(...times(menus, () => buildSkeletonBar("6.5rem", "skeleton-button")));
   element("clear-board-filters").hidden = true;
 
