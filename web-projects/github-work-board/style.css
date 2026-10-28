@@ -2149,9 +2149,19 @@ body:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-vie
   white-space: nowrap;
 }
 
+/* A switch segment while the board waits: the size of a real segment, with its
+ * label unseen. Only the pressed one is also a .skeleton bar. */
 .skeleton-segment {
+  display: inline-flex;
+  align-items: center;
   height: 1.625rem;
+  padding: 0 0.75rem;
   border-radius: calc(var(--radius) - 3px);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: transparent;
+  user-select: none;
+  pointer-events: none;
 }
 
 .chips {

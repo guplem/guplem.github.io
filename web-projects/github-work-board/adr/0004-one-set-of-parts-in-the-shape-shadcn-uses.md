@@ -80,6 +80,9 @@ held last time, kept in storage by `settings.js` and clamped by `skeletons.js`,
 so a reader with eleven items sees eleven placeholders and the page barely moves
 when the real eleven land. A spinner says "something is happening"; a
 placeholder says "this is what is coming, and this is how much of it".
+A switch draws one placeholder, where its pressed tab will sit, and keeps its
+real labels unseen so it is already its real width. Three grey bars in a row
+read as three things loading, not as one switch.
 
 **Every part answers the pointer and the keyboard.** A hover state on every
 button variant, a press state, a focus ring that stays readable on any surface,
