@@ -811,7 +811,7 @@ textarea.input {
 
 .find-input {
   padding-left: 2rem;
-  padding-right: 2rem;
+  padding-right: 6rem;
   background: hsl(var(--background));
 }
 
@@ -831,7 +831,7 @@ textarea.input {
 }
 
 .find-key {
-  right: 0.5rem;
+  right: 3.875rem;
   padding: 0 0.3rem;
   border: 1px solid hsl(var(--border));
   border-bottom-width: 2px;
@@ -846,6 +846,54 @@ textarea.input {
 .find-input:focus ~ .find-key,
 .find-input:not(:placeholder-shown) ~ .find-key {
   display: none;
+}
+
+/* Match case and whole word, inside the right edge of the box, as in a code
+ * editor. Pressed reads as the accent wash with a ring (ADR 0038). */
+.find-options {
+  position: absolute;
+  right: 0.25rem;
+  display: flex;
+  gap: 0.125rem;
+}
+
+.find-option {
+  display: grid;
+  place-items: center;
+  width: 1.625rem;
+  height: 1.625rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) - 4px);
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.find-option-word {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.find-option:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--foreground));
+}
+
+.find-option:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px hsl(var(--ring));
+}
+
+.find-option[aria-pressed="true"] {
+  border-color: hsl(var(--ring) / 0.5);
+  background: hsl(var(--accent));
+  color: hsl(var(--foreground));
 }
 
 /* The chips do not apply while a search is typed, so they say so by fading.

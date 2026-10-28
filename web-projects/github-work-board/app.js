@@ -362,6 +362,10 @@ const state = {
   // the link: a board that opens with most of its cards hidden looks broken
   // (ADR 0038).
   findText: "",
+  // The two presses in the find box, both off: a search ignores the case and
+  // finds part of a word or a number. For this visit only, like the text.
+  findMatchCase: false,
+  findWholeWord: false,
   loading: false,
   // How far the read in progress has gone, for the busy refresh button's
   // tooltip. Null when no read runs (ADR 0039).
@@ -2394,7 +2398,7 @@ function renderBoard() {
   const hasNote = (key) => readNote(state.board, key).trim() !== "";
   // While the reader looks for one piece of work, the chips step aside: the
   // question is "where is it", and a chip must not hide the answer (ADR 0038).
-  const search = readSearch(state.findText);
+  const search = readSearch(state.findText, { matchCase: state.findMatchCase, wholeWord: state.findWholeWord });
   const visible = search
     ? state.items
     : filterByPerson(filterWorkItems(state.items, state), state.reviewers, "reviewers");
@@ -4251,6 +4255,22 @@ function start() {
       clearFind();
     }
   });
+  // Each press flips one choice and redraws at once, and keeps the focus in
+  // the box so the reader can keep typing.
+  const findOptions = [
+    ["find-match-case", "findMatchCase", "Match case"],
+    ["find-whole-word", "findWholeWord", "Match whole word, and the whole number"],
+  ];
+  for (const [id, key, words] of findOptions) {
+    const press = element(id);
+    explain(press, words);
+    press.addEventListener("mousedown", (event) => event.preventDefault());
+    press.addEventListener("click", () => {
+      state[key] = !state[key];
+      press.setAttribute("aria-pressed", state[key] ? "true" : "false");
+      renderBoard();
+    });
+  }
   element("clear-find").addEventListener("click", () => {
     clearFind();
     findField.focus();

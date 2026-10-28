@@ -1083,6 +1083,14 @@ describe("a search hides cards and nothing else (ADR 0038)", () => {
 
   // The search runs over GitHub's answer already in memory. A call per key
   // would spend the search budget of 30 a minute in one word (ADR 0025).
+  // The reader asked for a loose search by default: any case, part of a word,
+  // part of a number. The two presses start off, and nothing turns them on.
+  test("match case and whole word start off", () => {
+    expect(read("app.js")).toMatch(/findMatchCase: false,\s*findWholeWord: false,/);
+    expect(read("index.html")).toMatch(/id="find-match-case"[^>]*aria-pressed="false"/);
+    expect(read("index.html")).toMatch(/id="find-whole-word"[^>]*aria-pressed="false"/);
+  });
+
   test("the search module asks nothing of the network and stores nothing", () => {
     const source = read("boardSearch.js");
     expect(source).not.toMatch(/fetch|import /);
