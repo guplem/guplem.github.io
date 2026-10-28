@@ -50,6 +50,8 @@ decided the window, not taste.
   abandoned, not done, and reporting it as done would claim work that never
   shipped. ADR 0011 already said a closed unmerged pull request counts for
   nothing; `finishedAt` answers `""` for it, so it never reaches the board.
+- **A card in this column says when it finished**, with a tick: "Merged 3 hours
+  ago" or "Closed 1 day ago" (`describeFinished` in `messages.js`).
 - **"Done today" reads newest first, whatever order the reader chose.** Every
   other column is a queue of work to pick up, so the chosen order decides it.
   This one is a log of what landed, and the useful end of a log is the thing

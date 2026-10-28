@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { MASK, describeTokenReach, maskToken, suggestedTokenName } from "./tokenIdentity.js";
+import { MASK, describeTokenReach, failedReads, maskToken, suggestedTokenName } from "./tokenIdentity.js";
 
 describe("maskToken", () => {
   // Enough to tell two tokens apart against GitHub's own list, and obviously a
@@ -54,5 +54,43 @@ describe("describeTokenReach", () => {
   test("never throws, whatever it is handed", () => {
     expect(typeof describeTokenReach()).toBe("string");
     expect(typeof describeTokenReach({})).toBe("string");
+  });
+});
+
+// A token whose read failed must say so on the board. Read as "nothing found",
+// it told the reader nothing was assigned to them, which was a wrong answer
+// to a refused or expired token (ADR 0007).
+describe("failedReads", () => {
+  const tokens = [
+    { id: "a", name: "Personal", token: "x" },
+    { id: "b", name: "", token: "y" },
+  ];
+
+  test("names each token whose own read failed, with GitHub's reason", () => {
+    const checks = {
+      a: [{ id: "identity", ok: false, detail: "GitHub rejected the token." }],
+      b: [
+        { id: "identity", ok: true, detail: "Signed in as me." },
+        { id: "issues", ok: true, detail: "" },
+      ],
+    };
+    expect(failedReads(tokens, checks)).toEqual([{ entry: tokens[0], index: 0, detail: "GitHub rejected the token." }]);
+  });
+
+  test("a failed work read counts too", () => {
+    const checks = { b: [{ id: "identity", ok: true }, { id: "issues", ok: false, detail: "No access." }] };
+    expect(failedReads(tokens, checks).map((one) => one.index)).toEqual([1]);
+  });
+
+  // The reviews and the checks are extras: a token that cannot read them still
+  // reads the board.
+  test("a failed extra is not a failed read", () => {
+    const checks = { a: [{ id: "identity", ok: true }, { id: "issues", ok: true }, { id: "reviews", ok: false }] };
+    expect(failedReads(tokens, checks)).toEqual([]);
+  });
+
+  test("never throws, whatever it is handed", () => {
+    expect(failedReads(null, null)).toEqual([]);
+    expect(failedReads(tokens, { a: "nonsense" })).toEqual([]);
   });
 });

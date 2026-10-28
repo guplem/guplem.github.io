@@ -4,6 +4,8 @@
 // reaches the screen through `textContent` everywhere except the deploy line,
 // which needs a link inside a sentence and therefore needs `escapeHtml`.
 
+import { finishedAt } from "./workItems.js";
+
 export const MESSAGES = {
   "ui.deployed": "Deployed {date} by pull request {pr}.",
   "ui.deployedUnknown": "Not published yet. See the {history}.",
@@ -128,15 +130,31 @@ export function describeLastRefresh(lastAt, now) {
  * never "Waiting", which would be a guess. Empty when the date is unreadable.
  */
 export function describeOpened(createdAt, now) {
-  const at = typeof createdAt === "string" ? Date.parse(createdAt) : Number.NaN;
+  return describeSince("Opened", createdAt, now);
+}
+
+/**
+ * When a card in the last column landed: "Merged 3 hours ago" for a pull
+ * request, "Closed 1 day ago" for an issue. Empty for work that did not land
+ * (ADR 0017).
+ */
+export function describeFinished(item, now) {
+  const when = finishedAt(item);
+  if (when === "") return "";
+  return describeSince(item.kind === "pull-request" ? "Merged" : "Closed", when, now);
+}
+
+/** "<Verb> 3 days ago", in the largest whole unit; empty for an unreadable date. */
+function describeSince(verb, isoDate, now) {
+  const at = typeof isoDate === "string" ? Date.parse(isoDate) : Number.NaN;
   if (!Number.isFinite(at)) return "";
   const waited = Math.max(0, now - at);
-  if (waited < JUST_NOW_MS) return "Opened just now";
+  if (waited < JUST_NOW_MS) return `${verb} just now`;
   for (const { unit, ms } of SINCE) {
     const count = Math.floor(waited / ms);
-    if (count >= 1) return `Opened ${count} ${unit}${count === 1 ? "" : "s"} ago`;
+    if (count >= 1) return `${verb} ${count} ${unit}${count === 1 ? "" : "s"} ago`;
   }
-  return "Opened just now";
+  return `${verb} just now`;
 }
 
 /** A passing message stays at least this long, and never longer than the cap. */
@@ -174,7 +192,7 @@ export function noteMenuLabel(noteText) {
  */
 export function noteRemovedStatus(item) {
   const name = cardName(item) === "" ? "" : ` from ${cardName(item)}`;
-  return `Note removed${name}. To write one again, choose "Add note" in the card's menu.`;
+  return `Note removed${name}.`;
 }
 
 /** The longest copied text a confirmation repeats before it cuts the rest. */
@@ -422,4 +440,11 @@ export function describeCleanup({ found = 0, unreadable = 0, failures = [], toke
         ? "1 more note is on work that none of your tokens can read, so the board leaves it alone."
         : `${unreadable} more notes are on work that none of your tokens can read, so the board leaves them alone.`;
   return { status: counted, unreadable: leftAlone };
+}
+
+/** How many cards a search left, in the find box: "1 match", "4 matches". */
+export function describeMatches(count) {
+  if (!Number.isInteger(count) || count < 0) return "";
+  if (count === 0) return "No match";
+  return count === 1 ? "1 match" : `${count} matches`;
 }

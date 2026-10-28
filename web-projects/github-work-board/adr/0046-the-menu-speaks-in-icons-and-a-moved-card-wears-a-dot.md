@@ -58,7 +58,7 @@ own choice, and must not read as a fault.
   Moved cards are few, and each one is a choice that can go stale (ADR 0011).
 - **A card moved to the column the rules would pick still wears the dot.** The
   record still outranks the rules, and the next change on GitHub will show it.
-  The words say "the same column today", and "Automatic" removes the dot.
+  The words say "the same column today", and "Hand back to the rules" removes the dot.
 - **Rejected: any SVG or picture the reader uploads.** A picture is a file to
   store and a thing to sanitise, on a page that holds a credential (ADR 0001).
   Twelve icons and every emoji cover what a menu row needs.

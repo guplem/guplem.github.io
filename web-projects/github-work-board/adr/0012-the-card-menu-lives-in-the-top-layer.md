@@ -33,6 +33,13 @@ Three things had to be right, and each was wrong first:
 2. **The submenu is nested inside the menu in the DOM.** Two auto popovers that
    are not nested are unrelated, so opening the second closes the first. As
    siblings, hovering "Move to" closed the menu it lives in.
+   The menu has three groups: the note and copy lines, the priorities, and
+   "Move to". A thin separator sits between two groups, and it hides when a
+   neighbouring group is empty. The "Move to" submenu has the heading "Put this
+   card in", one row per column with a dot in the column's colour, and a tick
+   on the column the card sits in, whoever put it there. A press on that column
+   only closes the menu. `columns.moveOptions` answers
+   `{ columns, automatic, moved }` for it.
 3. **A nested pull request keeps the menu, with no move in it.** It travels in
    its issue's column, because the pair is one piece of work (ADR 0010), so a
    move would write to the document and change nothing on screen. Copying its

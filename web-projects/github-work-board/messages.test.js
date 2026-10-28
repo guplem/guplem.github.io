@@ -6,6 +6,7 @@ import {
   joinWithAnd,
   describeLastRefresh,
   describeOpened,
+  describeFinished,
   describeReading,
   movedByHandTip,
   noteMenuLabel,
@@ -22,6 +23,7 @@ import {
   priorityStatus,
   organisationSavedStatus,
   storageTokenStatus,
+  describeMatches,
   priorityMarkTip,
   priorityMenuLabel,
   say,
@@ -184,11 +186,23 @@ describe("escapeHtml", () => {
 
 // The status line is far from the card, so it names the card whose note went
 // away, and says how to write one again (ADR 0014).
+describe("describeMatches", () => {
+  test("counts the cards a search left, in words", () => {
+    expect(describeMatches(0)).toBe("No match");
+    expect(describeMatches(1)).toBe("1 match");
+    expect(describeMatches(4)).toBe("4 matches");
+  });
+
+  test("says nothing for a count it cannot read", () => {
+    expect(describeMatches(-1)).toBe("");
+    expect(describeMatches("3")).toBe("");
+  });
+});
+
 describe("noteRemovedStatus", () => {
-  test("names the card and the way back", () => {
-    const said = noteRemovedStatus({ repository: "me/work", number: 87 });
-    expect(said).toContain("me/work #87");
-    expect(said).toContain("Add note");
+  // The line carries an "Undo" press, so it names the card and stops there.
+  test("names the card, in one short sentence", () => {
+    expect(noteRemovedStatus({ repository: "me/work", number: 87 })).toBe("Note removed from me/work #87.");
   });
 
   test("still says something for a card with no name", () => {
@@ -537,6 +551,24 @@ describe("confirmations: one line after an action", () => {
 // has waited longest is found without opening it. GitHub does not say when the
 // review was asked for, so the card says "Opened", which is true, and never
 // "Waiting", which would be a guess.
+// A card in the last column says when the work landed, because that column is
+// a log, and a log entry without its time is half an entry (ADR 0017).
+describe("describeFinished: when a card in the last column landed", () => {
+  const now = Date.parse("2026-10-28T12:00:00Z");
+
+  test("a pull request says merged, an issue says closed", () => {
+    expect(describeFinished({ kind: "pull-request", mergedAt: "2026-10-28T09:00:00Z" }, now)).toBe("Merged 3 hours ago");
+    expect(describeFinished({ kind: "issue", state: "closed", closedAt: "2026-10-27T12:00:00Z" }, now)).toBe(
+      "Closed 1 day ago",
+    );
+  });
+
+  test("work that did not land says nothing", () => {
+    expect(describeFinished({ kind: "pull-request", mergedAt: null }, now)).toBe("");
+    expect(describeFinished(null, now)).toBe("");
+  });
+});
+
 describe("describeOpened: how long a pull request has been open", () => {
   const now = Date.parse("2026-10-28T12:00:00Z");
 

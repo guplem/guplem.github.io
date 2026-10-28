@@ -18,7 +18,10 @@ shown only where a note exists, or a dialog for writing the first one.
 
 **The box is there when the note is there. Otherwise the menu offers it.**
 
-- A card with a note shows the box, filled, as before.
+- A card with a note shows the box, filled, as before. The box sits in a
+  `.note-box` wrapper with a speech-bubble icon. At rest it is a soft filled
+  box. While it has focus, the line "Only you see this. It saves by itself."
+  shows below it.
 - A card without one shows nothing, and the ⋯ menu offers **Add note**, which
   puts the box on that card and puts the cursor in it.
 - The same row reads **Edit note** when a note exists, because writing the first
@@ -28,8 +31,9 @@ shown only where a note exists, or a dialog for writing the first one.
   somebody opened and left empty is not worth writing to the reader's
   repository, and it should not come back tomorrow.
 - **A box that is empty when the reader leaves it goes away.** It folds shut,
-  and the status line says which card lost its note and that "Add note" writes
-  a new one. A box opened from the menu and left with nothing ever typed in it
+  and the status line says "Note removed from <repo> #N." and carries an
+  "Undo" press that writes the old words back. The fold animation runs on the
+  `.note-box` wrapper. A box opened from the menu and left with nothing ever typed in it
   closes without a word. Spaces alone count as empty. To write again, the
   reader uses "Add note", the same way as the first time.
 

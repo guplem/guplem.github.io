@@ -53,17 +53,17 @@ describe("orderChildren", () => {
 // asked about (ADR 0032).
 describe("childrenProgress", () => {
   test("reads closed out of total, and says it as one short line", () => {
-    expect(childrenProgress({ completed: 3, total: 8 })).toEqual({ done: 3, total: 8, label: "3/8" });
+    expect(childrenProgress({ completed: 3, total: 8 })).toEqual({ done: 3, total: 8, label: "3 of 8 closed" });
   });
 
   test("none done and all done both read", () => {
-    expect(childrenProgress({ completed: 0, total: 4 }).label).toBe("0/4");
-    expect(childrenProgress({ completed: 4, total: 4 }).label).toBe("4/4");
+    expect(childrenProgress({ completed: 0, total: 4 }).label).toBe("0 of 4 closed");
+    expect(childrenProgress({ completed: 4, total: 4 }).label).toBe("4 of 4 closed");
   });
 
   // Nothing here may invent a number: a card would state it as fact.
   test("anything that is not a pair of counts reads as nothing", () => {
-    expect(childrenProgress(null)).toEqual({ done: 0, total: 0, label: "0/0" });
+    expect(childrenProgress(null)).toEqual({ done: 0, total: 0, label: "0 of 0 closed" });
     expect(childrenProgress({ completed: "3", total: 8 }).done).toBe(0);
     expect(childrenProgress({ completed: -2, total: 8 }).done).toBe(0);
   });
@@ -71,7 +71,7 @@ describe("childrenProgress", () => {
   // A parent whose children were closed and then reopened can answer with more
   // done than there are. The card must not print "9/8".
   test("more done than there are reads as all of them", () => {
-    expect(childrenProgress({ completed: 9, total: 8 }).label).toBe("8/8");
+    expect(childrenProgress({ completed: 9, total: 8 }).label).toBe("8 of 8 closed");
   });
 });
 

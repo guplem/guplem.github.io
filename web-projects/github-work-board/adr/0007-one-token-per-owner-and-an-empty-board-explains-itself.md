@@ -65,6 +65,12 @@ is assigned to you" on its own: it always names how many tokens are in use and
 which owners they reach, and the page adds the one thing worth trying, which is
 adding a token owned by the organisation.
 
+**A token whose read failed is named above the board.** When the identity
+check or the issues check is red, `failedReads` in `tokenIdentity.js` gives the
+token and GitHub's reason. The red callout `#token-failures` shows them with
+"Fix the token in Settings". When every token failed, the empty-board callout
+is hidden, because "nothing is assigned" would be false.
+
 **A token saved by the one-token version is migrated, not discarded.**
 `readTokens` reads the old key as the first entry; `invariants.test.js` pins both
 old key names so the migration cannot be deleted by accident.

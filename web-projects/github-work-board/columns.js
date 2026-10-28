@@ -188,21 +188,39 @@ export function handMove(item, relationship, overrideId) {
   return { chosen: stateLabel(chosen), automatic: stateLabel(automaticColumn(item, relationship)) };
 }
 
+/** What an empty column says, in its own words, keyed by column id. */
+const EMPTY_TEXT = {
+  todo: "Nothing to do",
+  ongoing: "Nothing ongoing",
+  "needs-changes": "Nothing needs your attention",
+  "awaiting-review": "Nothing awaiting review",
+  "ready-to-merge": "Nothing ready to merge",
+  done: "Nothing finished in these days",
+};
+
+/** The words an empty column shows, or plain words for a column it does not know. */
+export function emptyColumnText(columnId) {
+  return EMPTY_TEXT[columnId] ?? "Nothing here";
+}
+
 /**
  * What the "move to" menu offers for one card.
  *
- * The first entry hands the card back to the rules and says which column they
- * would pick, so the reader can see what an override is overriding. Exactly one
- * entry is marked as current.
+ * Every column, with exactly one checked: the one the card sits in, whoever
+ * put it there, so the menu reads like the board. `automatic` names the column
+ * the rules would pick, and `moved` says whether the reader overrode them, so
+ * the menu can offer to hand the card back (ADR 0011).
  */
 export function moveOptions(item, relationship, overrideId) {
   const automatic = automaticColumn(item, relationship);
   const chosen = readColumnId(overrideId);
-  const label = COLUMNS.find((column) => column.id === automatic)?.label ?? automatic;
-  return [
-    { id: AUTOMATIC, label: `Automatic (${label})`, current: chosen === AUTOMATIC },
-    ...COLUMNS.map((column) => ({ id: column.id, label: column.label, current: chosen === column.id })),
-  ];
+  const moved = chosen !== AUTOMATIC;
+  const sitsIn = moved ? chosen : automatic;
+  return {
+    columns: COLUMNS.map((column) => ({ id: column.id, label: column.label, current: column.id === sitsIn })),
+    automatic: { id: automatic, label: COLUMNS.find((column) => column.id === automatic)?.label ?? automatic },
+    moved,
+  };
 }
 
 /**

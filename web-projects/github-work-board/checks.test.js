@@ -4,18 +4,20 @@ import { MOST_ASKS, describeChecks, needsAsking, readWorkflowRuns } from "./chec
 describe("describeChecks", () => {
   // Worst first, which is the order every other list of reasons on a card
   // reads in.
+  // A heading, then one line per kind of answer, so the tooltip reads as a
+  // short list (ADR 0037).
   test("the breakdown reads worst first, and leaves out what is zero", () => {
     expect(describeChecks({ verdict: "failed", failed: 2, passed: 5, ongoing: 1, counted: 8, total: 8 })).toBe(
-      "Checks: 2 failed, 1 still running, 5 passed.",
+      "Checks on the last commit\n2 failed\n1 still running\n5 passed",
     );
     expect(describeChecks({ verdict: "passed", failed: 0, passed: 5, ongoing: 0, counted: 5, total: 5 })).toBe(
-      "Checks: 5 passed.",
+      "Checks on the last commit\n5 passed",
     );
   });
 
   test("one of anything is not plural", () => {
     expect(describeChecks({ verdict: "failed", failed: 1, passed: 1, ongoing: 1, counted: 3, total: 3 })).toBe(
-      "Checks: 1 failed, 1 still running, 1 passed.",
+      "Checks on the last commit\n1 failed\n1 still running\n1 passed",
     );
   });
 
@@ -35,7 +37,7 @@ describe("describeChecks", () => {
 
   test("it says when it read only part of the checks", () => {
     expect(describeChecks({ verdict: "failed", failed: 1, passed: 49, ongoing: 0, counted: 50, total: 73 })).toBe(
-      "Checks: 1 failed, 49 passed. Read from the first 50 of 73.",
+      "Checks on the last commit\n1 failed\n49 passed\nRead from the first 50 of 73.",
     );
   });
 

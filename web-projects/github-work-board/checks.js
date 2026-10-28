@@ -139,6 +139,6 @@ export function describeChecks(summary) {
   if (summary.counted === 0) return ALONE[verdict] ?? "";
 
   const said = PARTS.filter((part) => summary[part.key] > 0).map((part) => `${summary[part.key]} ${part.words}`);
-  const rest = summary.total > summary.counted ? ` Read from the first ${summary.counted} of ${summary.total}.` : "";
-  return `Checks: ${said.join(", ")}.${rest}`;
+  const rest = summary.total > summary.counted ? [`Read from the first ${summary.counted} of ${summary.total}.`] : [];
+  return ["Checks on the last commit", ...said, ...rest].join("\n");
 }
