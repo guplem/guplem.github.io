@@ -616,6 +616,10 @@ button.choice[aria-pressed="true"]::after {
 }
 
 /* === The app picker === */
+.picker {
+  margin-bottom: var(--sp-md);
+}
+
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -699,6 +703,11 @@ button.choice[aria-pressed="true"]::after {
   color: var(--ink-soft);
 }
 
+.agente .post .app-card .warnbox {
+  margin: 4px 0;
+  color: var(--ink);
+}
+
 .app-card .use-app {
   justify-self: start;
   font: 600 0.88rem var(--sans);
@@ -716,7 +725,7 @@ button.choice[aria-pressed="true"]::after {
 }
 
 .agente .post .warnbox {
-  margin: 0;
+  margin: 10px 0 0;
   padding: 12px 16px;
   border-radius: 14px;
   background: var(--warn-wash);

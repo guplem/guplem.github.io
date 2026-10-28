@@ -103,12 +103,19 @@ if (picker) {
   const result = picker.querySelector(".picker-result");
   const tags = { best: picker.dataset.labelBest, other: picker.dataset.labelOther, use: picker.dataset.labelUse, chosen: picker.dataset.labelChosen, yours: picker.dataset.labelYours };
 
-  const card = (app, kind) => {
+  // A warning with data-app belongs to that app: it shows inside the app's card.
+  const card = (app, kind, warnings = []) => {
     const info = document.querySelector(`.app-info[data-app="${app}"]`);
     const element = document.createElement("div");
     element.className = `app-card${kind === "other" ? "" : " is-best"}${state.app === app ? " is-chosen" : ""}`;
     const tag = { best: tags.best, other: tags.other, yours: tags.yours }[kind];
     element.innerHTML = `<span class="app-tag">${tag}</span>${info.innerHTML}`;
+    for (const warning of picker.querySelectorAll(`[data-warning][data-app="${app}"]`)) {
+      if (!warnings.includes(warning.dataset.warning)) continue;
+      const copy = warning.cloneNode(true);
+      copy.hidden = false;
+      element.append(copy);
+    }
     const use = document.createElement("button");
     use.type = "button";
     use.className = "use-app";
@@ -125,10 +132,10 @@ if (picker) {
 
   function renderPicker() {
     const advice = recommendApps([...subs]);
-    for (const warning of picker.querySelectorAll("[data-warning]")) warning.hidden = !advice?.warnings.includes(warning.dataset.warning);
+    for (const warning of picker.querySelectorAll("[data-warning]:not([data-app])")) warning.hidden = !advice?.warnings.includes(warning.dataset.warning);
     result.replaceChildren();
     if (advice) {
-      result.append(card(advice.best, "best"), ...advice.alternatives.map((app) => card(app, "other")));
+      result.append(card(advice.best, "best", advice.warnings), ...advice.alternatives.map((app) => card(app, "other", advice.warnings)));
     } else if (state.app) {
       // Nothing ticked: no recommendation, only the app the reader chose before.
       result.append(card(state.app, "yours"));

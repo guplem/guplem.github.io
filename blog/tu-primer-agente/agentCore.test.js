@@ -22,12 +22,13 @@ describe("recommendApps", () => {
     expect(recommendApps(["chatgpt"])).toEqual({ best: "codex", alternatives: ["goose"], warnings: [] });
   });
 
-  test("sends a Gemini subscriber to Antigravity, says it is made for code, and offers Goose with a Gemini key", () => {
-    expect(recommendApps(["gemini"])).toEqual({ best: "antigravity", alternatives: ["goose"], warnings: ["made-for-code"] });
+  test("sends a Gemini subscriber to Antigravity, and offers Goose with a Gemini key", () => {
+    expect(recommendApps(["gemini"])).toEqual({ best: "antigravity", alternatives: ["goose"], warnings: [] });
   });
 
-  test("warns that Goose cannot use a Claude subscription when Goose leads", () => {
+  test("warns that Goose cannot use a Claude subscription whenever Goose is offered", () => {
     expect(recommendApps(["api", "claude"]).warnings).toContain("no-claude-in-goose");
+    expect(recommendApps(["chatgpt", "claude"]).warnings).toContain("no-claude-in-goose");
     expect(recommendApps(["claude"]).warnings).not.toContain("no-claude-in-goose");
   });
 
