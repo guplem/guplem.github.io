@@ -23,7 +23,7 @@ the answer:
 
 **A fourth view, `?view=cleanup`, lists the notes on closed and merged work.**
 Settings opens it from the cloud storage card, which is where the data
-repository lives. The masthead toggle goes back to Settings, as it does from
+repository lives. The back button goes back to Settings, as it does from
 the add-token screen (ADR 0018).
 
 - **The board asks GitHub when the reader opens the view**, and again on

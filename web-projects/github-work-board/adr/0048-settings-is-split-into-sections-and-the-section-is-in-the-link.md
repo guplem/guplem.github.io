@@ -32,7 +32,7 @@ A section id is permanent, like a view name; a test pins the set. The default
 section, `tokens`, is left out of the link, so every saved `?view=settings`
 link still works. The link carries a section only while Settings is open.
 The section is a parameter, not a new view name, because a new view name would
-grow the permanent list of views and the toggle's map for what is one screen.
+grow the permanent list of views and the back button's map for what is one screen.
 
 **An index stands beside the section on a wide screen, and above it on a
 phone.** The index is real links, so a section can be copied or opened in a

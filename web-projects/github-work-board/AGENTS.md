@@ -222,7 +222,7 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
 - **`finishBoot` hides the start-up screen about half a second after
   `showView` runs**, once the bar has slid to full. For that moment the next
   screen is unhidden but still off the page, held by the
-  `.page:has(#boot:not([hidden]))` rule in `style.css`. A new screen or masthead
+  `body:has(#boot:not([hidden]))` rule in `style.css`. A new screen or masthead
   control needs a place in that rule, and a new `.page:has(...)` layout rule
   needs the `#boot` guard that the board's width rule carries (ADR 0036).
 - **One function says whether the board is reading: `renderRefreshBusy` in
@@ -606,9 +606,10 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   add-token screen. Text starting with `{` is always read as a backup, never
   tried as a token: a blob that was cut short must report itself, not come
   back as GitHub's complaint about a bad credential.
-- **There are four views, and one control moves between them.** Board,
-  Settings, `add-token` and `cleanup`; the toggle goes board -> settings ->
-  board, and add-token or cleanup -> settings, because that is where each was
+- **There are four views: one way in, and one way back from each.** Board,
+  Settings, `add-token` and `cleanup`. The masthead's "Settings" button shows
+  on the board only; `#view-back`, the first thing in `<main>`, goes settings
+  -> board, and add-token or cleanup -> settings, because that is where each was
   opened from (ADR 0018, ADR 0043). Settings opens on the section the
   sub-screen came from (`parentSection`, ADR 0048).
   A view name travels in the address bar, so it is as permanent as a sort id.
@@ -660,8 +661,10 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   and left the board stuck on "Reading GitHub..." with every test green. That
   is three times now that an `app.js` change was caught by opening the page
   and not by the suite.
-- **The masthead toggle is the only way between the views, and the masthead
-  scrolls with the page.** It was sticky while settings was about twice the
+- **The masthead sits outside `.page`, so it spans the window on every screen,
+  and it scrolls with the page.** The page below it stays centred at reading
+  width. The back button is the only way back from a screen (ADR 0008). The
+  masthead was sticky while settings was about twice the
   height of a window; the token guide moved out (ADR 0018), settings shrank to
   about one screen, and the stickiness went with the reason for it (ADR 0023).
   The add-token screen is the one still longer than a window, and it carries its
