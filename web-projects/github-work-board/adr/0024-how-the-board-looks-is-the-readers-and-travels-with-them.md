@@ -26,11 +26,20 @@ record maps: `colours` (one record per paintable area) and `appearance` (one
 record, the theme). Adding a map is the whole change, which is what ADR 0002
 built the document for.
 
-**A colour is bare HSL channels, and the page paints with two alphas.** `app.js`
-sets `--tint` on the column and the CSS washes the background at one alpha and
-the outline at another. That is only possible because every colour token here is
-channels rather than a finished colour (ADR 0004), and it is why a preset is
-one string.
+**A colour is bare HSL channels, and the page paints a lane with it.** `app.js`
+sets `--tint` on the column and the CSS washes the lane's background with the
+colour at a low alpha, and writes its heading and count in a deeper shade of the
+same colour. That is only possible because every colour token here is channels
+rather than a finished colour (ADR 0004), and it is why a preset is one string.
+
+**The wash carries the colour, and no outline is drawn.** The board once drew
+the wash and a tinted outline round every lane. Six outlined boxes read as six
+boxes, and the cards inside them came second. A lane with no edge reads as a
+place on the board where cards sit. The heading's shade is the colour mixed
+toward the page's text colour (`color-mix`), so one rule gives a deep shade on
+a light page and a pale one on a dark page, and both stay readable. An
+unpainted lane is a faint grey wash of the text colour, so it still reads as a
+lane.
 
 **The board opens painted, and the reader's hand always wins.** It shipped with
 nothing painted, on the grounds that the absence of a rule is honest. It is also
