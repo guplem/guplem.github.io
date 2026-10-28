@@ -783,9 +783,12 @@ button.choice[aria-pressed="true"]::after {
   margin-bottom: 10px;
 }
 
-.agente .post .help-dialog h3 {
+.agente .post .help-dialog .help-dialog-title {
   margin: 0;
   font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
 }
 
 .help-dialog .dialog-close {
