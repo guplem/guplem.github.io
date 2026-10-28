@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="402" />
-  <meta name="deploy-date" content="2026-10-28T16:24:22.000Z" />
+  <meta name="deploy-pull-request" content="403" />
+  <meta name="deploy-date" content="2026-10-28T16:52:10.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -236,9 +236,11 @@
         </h1>
       </div>
       <div class="masthead-controls">
-        <!-- Find one piece of work: a number keeps that issue or pull request
-             and hides every other card, in the column it sits in. Words find
-             titles. It hides cards only, and lives for this visit (ADR 0038). -->
+        <!-- Find one piece of work: a number keeps the issues and pull
+             requests whose number holds it and hides every other card, in the
+             column it sits in. Words find titles. Two presses beside it match
+             the case and whole words, both off by default. It hides cards
+             only, and lives for this visit (ADR 0038). -->
         <div class="find-control" id="find-control" role="search" hidden>
           <label class="visually-hidden" for="find">Find on the board</label>
           <svg class="icon find-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -248,6 +250,12 @@
           <input id="find" class="input find-input" type="text" inputmode="search" autocomplete="off"
             spellcheck="false" placeholder="Find #number or words" />
           <kbd class="find-key" aria-hidden="true">/</kbd>
+          <div class="find-options">
+            <button id="find-match-case" type="button" class="find-option" aria-pressed="false"
+              aria-label="Match case">Aa</button>
+            <button id="find-whole-word" type="button" class="find-option find-option-word" aria-pressed="false"
+              aria-label="Match whole word">ab</button>
+          </div>
         </div>
 
         <!-- The order the board reads in, at the top of the page where it is
