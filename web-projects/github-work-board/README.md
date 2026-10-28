@@ -119,8 +119,11 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
 - **Find one issue or pull request by its number.** Type `312` (or `#312`, or
   paste its GitHub link) in the box at the top, or press `/` to reach it. Every
   other card goes, and the one left sits in the column it is in, so you see its
-  state at a glance. Words find titles too. The filters step aside while you
-  search, and Escape brings the whole board back.
+  state at a glance. Part of a number or a word is enough: `31` also keeps
+  #312. Two presses in the box match the case (`Aa`) and whole words or the
+  whole number (`ab`); both are off until you press them. Words find titles
+  too. The filters step aside while you search, and Escape brings the whole
+  board back.
 - **Filter by kind, repository, label, milestone or issue field.** Two labels means either of
   them; a kind plus a repository means both. The filters go into the address bar
   too, so "everything tagged urgent in this repository" is a link. One bar

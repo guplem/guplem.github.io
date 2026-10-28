@@ -17,14 +17,22 @@ columns and their headings stay, so the one card left sits in the column that
 it is in. `boardSearch.js` holds the rules, and `app.js` applies them last,
 after the order, the grouping and the counts.
 
-- **A number finds that number exactly.** "31" keeps #31 and hides #312. The
-  reader types the whole number they know, and a number that merely starts
-  with it is noise. A leading `#` is allowed.
+- **A number finds every number that holds it.** "31" keeps #31, #312 and
+  #131, so the board narrows as the reader types, the same way words do. A
+  leading `#` is allowed.
+- **Two presses in the box narrow it further, both off by default**, as in a
+  code editor: "Aa" matches the case, and "ab" matches whole words only. With
+  "ab" on, a number finds that number exactly: "31" keeps #31 and hides #312.
+  The two choices live for this visit only, like the text.
+- **A pasted GitHub link always finds its number exactly**, and its
+  repository in any case, whatever the two presses say. It names one piece of
+  work, and GitHub reads a repository name in any case.
 - **A bare number finds it in every repository.** Two repositories can each
   have a #12, and the board shows both. A GitHub link pasted into the box
   names its repository, and then only that one stays.
 - **Anything else is words.** Every word must appear in the title or the
-  repository name, in any case.
+  repository name: in any case and as part of a word by default, or as typed
+  and as a whole word when the reader presses "Aa" or "ab".
 - **A pull request nested in an issue's card keeps that card whole.** The card
   is where the reader finds the pull request (ADR 0010).
 - **The chips step aside while a search is typed.** They fade and stop
@@ -55,9 +63,11 @@ reader, and work closed outside the last column's range, is not on the board,
 so the search cannot find it. The empty callout names the text that found
 nothing, so the reader can tell a typo from an absence.
 
-**Rejected: matching the start of a number.** It narrows as the reader types,
-but it leaves #312 beside #31 once the whole number is in, which is the one
-moment that matters.
+**A whole number became a choice, not the rule.** The first version found a
+number only exactly, so "31" hid #312. That left the reader nothing while they
+typed, and treated numbers differently from words. The board now finds part of
+a number by default, and "ab" brings back the exact match for a reader who
+knows the whole number and wants #31 alone.
 
 **Rejected: the search as a fifth chip filter.** A chip narrows together with
 the other chips (ADR 0009). A search that a chip could defeat would miss the
