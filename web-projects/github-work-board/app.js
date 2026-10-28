@@ -205,7 +205,7 @@ import {
 } from "./priority.js";
 import { countBoard, describeBreakdown, describeExcluded, tabTitle } from "./counting.js";
 import { readSearch, searchGroups, searchItems } from "./boardSearch.js";
-import { DEFAULT_SORT_ID, SORT_OPTIONS, reviewSortId, sortWorkItems } from "./sorting.js";
+import { DEFAULT_SORT_ID, SORT_OPTIONS, describeSort, reviewSortId, sortWorkItems } from "./sorting.js";
 import { DEFAULT_VIEW, buildSearch, readStateFromSearch } from "./urlState.js";
 import {
   applyCheckSummaries,
@@ -4195,8 +4195,11 @@ function start() {
     }),
   );
   sortField.value = state.sortId;
+  // The name is short, so resting on the field says what the order does.
+  explain(sortField, describeSort(state.sortId));
   sortField.addEventListener("change", () => {
     state.sortId = sortField.value;
+    explain(sortField, describeSort(state.sortId));
     rememberUrl();
     renderBoard();
   });

@@ -20,7 +20,7 @@
 export const DEFAULT_SORT_ID = "smart";
 
 export const SORT_OPTIONS = [
-  { id: "smart", label: "Smart (oldest, stacks in merge order)" },
+  { id: "smart", label: "Smart order" },
   { id: "updated-desc", label: "Recently updated" },
   { id: "updated-asc", label: "Least recently updated" },
   { id: "created-desc", label: "Newest first" },
@@ -32,6 +32,29 @@ export const SORT_OPTIONS = [
 ];
 
 const KNOWN = new Set(SORT_OPTIONS.map((option) => option.id));
+
+// Everything the smart order does, in the order the board applies it. The
+// name stays short and the list goes in the tooltip, because no name of one
+// line can carry seven rules (ADR 0020). Change this list with the passes in
+// `renderBoard`, or the tooltip promises an order the board does not draw.
+const SMART_ORDER_RULES = [
+  "Oldest first, so the work that waited longest is cleared first.",
+  "A stack of pull requests reads in merge order, bottom first.",
+  "Work that wants you goes to the top: Changes requested, then failed checks, then conflicts.",
+  "Blocked work goes to the bottom, because nobody can start it.",
+  "Work you marked high priority climbs to the top, with its stack.",
+  "Work you marked not a priority sinks to the bottom, with its stack.",
+  "In the review row, reviews you already started come first.",
+];
+
+/**
+ * What an order does, in words for its tooltip. The smart order lists its
+ * rules; any other order is explained by its own name; an unknown id is "".
+ */
+export function describeSort(id) {
+  if (id === "smart") return ["Smart order, in each column:", ...SMART_ORDER_RULES.map((rule) => `• ${rule}`)].join("\n");
+  return SORT_OPTIONS.find((option) => option.id === id)?.label ?? "";
+}
 
 /**
  * The order for the row of reviews waiting on you.
