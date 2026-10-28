@@ -30,9 +30,11 @@ and a bookmark works.
 Settings needs a token to manage, so before the first connection it is not
 reachable: the welcome screen is the settings screen at that point.
 
-**One control moves between the screens.** The masthead button is the only way
-in and the only way out: it reads "Settings" on the board and "Back to the
-board" in settings.
+**One way in and one way back.** The masthead's "Settings" button, on the
+right, is the way in, and the board is the only screen that shows it. Every
+other screen carries one back button, on the left, above its heading, with an
+arrow that points back: "Back to the board" in Settings, "Back to settings"
+on the two screens opened from Settings.
 
 The first version put the way out at the top of the settings card. Settings was
 taller than a window (about 1900 pixels against 840), so scrolling even once put
@@ -43,8 +45,18 @@ stayed put, and it removed the second button that said the same thing.
 **The header no longer stays put.** The token guide moved to its own screen
 (ADR 0018) and settings shrank to about one screen with it, so the reason for
 the stickiness went with it. ADR 0023 measured that and took it out. Settings is later split into sections (ADR 0048), and the one toggle still goes between the views. What
-survives from this decision is the part that was never about scrolling: one
-control moves between the views, and no screen carries a second one.
+survives from this decision is the part that was never about scrolling: each
+screen has one way back, and no screen carries a second one.
+
+**The way back moved to the left, out of the masthead.** It used to be the same
+button as the way in, on the right of the masthead, relabelled per screen. The
+owner found it in the wrong place: a reader looks for "back" at the top left,
+where a browser and every app put it, and the right side reads as a way
+forward. The button also swapped its icon by script, and the deployed page
+showed the Settings icon beside "Back to the board". Two buttons with fixed
+icons cannot show the wrong one. The masthead also moved out of the centred
+page, so its ends reach the window's edges on every screen, while the page
+below stays at reading width. `invariants.test.js` pins both.
 
 **The token guide is a `<template>` in the page, cloned into every slot.**
 `index.html` holds it once; `app.js` clones it into the welcome screen and into

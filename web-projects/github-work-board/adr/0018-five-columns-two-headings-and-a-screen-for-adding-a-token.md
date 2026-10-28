@@ -61,9 +61,9 @@ it, and the moment they are holding the token is the moment they know what it
 is for. Left empty, the board still suggests a name from where the token found
 work.
 
-**The masthead toggle still goes back, and now it knows where from.** Board to
-Settings, Settings to the board, add-token to Settings. One control, as
-ADR 0008 requires, and no second exit inside a screen.
+**The back button knows where from.** Settings goes back to the board, and
+add-token goes back to Settings. One way back per screen, as ADR 0008 requires,
+and no second exit inside a screen.
 
 **Each token's checks fold into its own row.** One line while shut, and it
 names the failure rather than counting it when exactly one thing failed, so

@@ -192,8 +192,11 @@ p {
   margin: 0;
 }
 
-/* The top of the page: the name of the tool, the order the board reads in,
- * and the way to Settings. It scrolls away with everything else (ADR 0023). */
+/* The top of the window: the name of the tool, the order the board reads in,
+ * and the way to Settings. It sits outside `.page`, so it spans the window on
+ * every screen and its ends line up with the board's gutters, while the page
+ * below stays centred at reading width. It scrolls away with everything else
+ * (ADR 0023). */
 .masthead {
   display: flex;
   align-items: center;
@@ -201,13 +204,21 @@ p {
   justify-content: space-between;
   gap: 0.75rem 1rem;
   margin-bottom: 1.75rem;
-  padding-block: 0.75rem;
-  /* A bar across the whole window, on every screen, although the page itself
-   * is narrower on most of them. The border image is painted outside the box
-   * (`outset`), so it widens the bar without widening the page: outset
-   * painting never adds a sideways scroll. The bottom pixel is the bar's
-   * edge. */
-  border-image: linear-gradient(to top, hsl(var(--border)) 1px, hsl(var(--card)) 1px) fill 0 / 0 / 0 100vmax;
+  padding: 0.75rem var(--gutter);
+  background: hsl(var(--card));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+/* The way back, at the top left of the screen it leaves (ADR 0008). Pulled
+ * left by its own padding, so the arrow lines up with the heading below. */
+.button.back-button {
+  margin: -0.5rem 0 0.75rem -0.75rem;
+  padding-inline: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.button.back-button:hover {
+  color: hsl(var(--foreground));
 }
 
 /* The board's name, with the mark the browser tab wears beside it. */
@@ -1231,7 +1242,7 @@ textarea.input {
 /* `showView` unhides the next screen the moment the board decides, while the
  * bar is still filling. This keeps that screen off the page until the start-up
  * screen is gone, so the swap happens once (ADR 0036). */
-.page:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #cleanup-view, #find-control, #sort-control, #refresh-control, #theme-switch, #view-toggle, #read-bar) {
+body:has(#boot:not([hidden])) :is(#setup, #board, #settings-view, #add-token-view, #cleanup-view, #find-control, #sort-control, #refresh-control, #theme-switch, #view-toggle, #view-back, #read-bar) {
   display: none !important;
 }
 
