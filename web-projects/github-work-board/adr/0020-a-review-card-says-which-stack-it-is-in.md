@@ -91,9 +91,12 @@ long something has waited, and that the badge could say the merge order without
 taking that sort away. It does not work. The badge and the order then give the
 reader two different answers at the same time, and the order is the louder one.
 
-The smart order also says what it does in its own name, "Smart (oldest, stacks
-in merge order)", and the row was not doing the second half. ADR 0016 now runs
-the stack pass on the row as well. Every other order still gives the row a pure
+The smart order promises merge order for stacks, and the row was not doing it.
+ADR 0016 now runs the stack pass on the row as well. The order once carried
+that promise in its name, "Smart (oldest, stacks in merge order)". The order
+now applies seven rules, and a name of one line cannot hold them, so the name
+is "Smart order" and its tooltip lists every rule (`describeSort` in
+`sorting.js`). Every other order still gives the row a pure
 date order, so nobody who asked for a date order lost one. **Rejected: naming the
 stack by its branch.** A branch name is long, and the bottom's number is
 already a link the reader can follow.

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { DEFAULT_SORT_ID, SORT_OPTIONS, readSortId, reviewSortId, sortWorkItems } from "./sorting.js";
+import { DEFAULT_SORT_ID, SORT_OPTIONS, describeSort, readSortId, reviewSortId, sortWorkItems } from "./sorting.js";
 
 const item = (over) => ({
   key: "k",
@@ -26,6 +26,33 @@ describe("SORT_OPTIONS", () => {
 
   test("the default is one of them", () => {
     expect(SORT_OPTIONS.map((option) => option.id)).toContain(DEFAULT_SORT_ID);
+  });
+});
+
+describe("describeSort", () => {
+  test("the smart order keeps a short name and lists every rule it applies", () => {
+    const smart = SORT_OPTIONS.find((option) => option.id === "smart");
+    expect(smart.label).toBe("Smart order");
+    const says = describeSort("smart");
+    for (const rule of [
+      "Oldest first",
+      "merge order",
+      "Changes requested",
+      "Blocked",
+      "high priority",
+      "not a priority",
+      "already started",
+    ]) {
+      expect(says).toContain(rule);
+    }
+  });
+
+  test("any other order is explained by its own name", () => {
+    expect(describeSort("title")).toBe("Title, A to Z");
+  });
+
+  test("an unknown order explains nothing", () => {
+    expect(describeSort("nope")).toBe("");
   });
 });
 
