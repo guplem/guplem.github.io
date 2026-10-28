@@ -88,7 +88,7 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   fine-grained token can see checks, so a repository whose CI lives somewhere
   else shows no dot.
 - **An issue draws its children as a row of pills.** A card with sub-issues
-  shows one small pill per child under "Children", each painted with the colour
+  shows one small pill per child under "Children" ("3 of 7 closed"), each painted with the colour
   of the column that child sits in, and the count of how many are closed beside
   them. Hover a pill to see which issue it is and where it sits, or press it to
   open it. One press below, the whole list unfolds, each child with its column:
@@ -128,8 +128,8 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   them; a kind plus a repository means both. The filters go into the address bar
   too, so "everything tagged urgent in this repository" is a link. One bar
   holds a switch for All, Issues or Pull requests, and one menu for each
-  other filter. A badge on a menu says how many values you chose, and "Clear
-  filters" resets them, so a long list of values does not push the columns
+  other filter. A badge on a menu says how many values you chose, each option says how many cards carry it, and a long menu has a find box. "Clear"
+  resets one filter and "Clear filters" resets them all, so a long list of values does not push the columns
   down.
 - **See the milestone on each card.** A pill after the labels names the
   milestone and shows how much of it is closed. Press the icon or the number to

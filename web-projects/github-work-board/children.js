@@ -74,7 +74,7 @@ export function childrenProgress(summary) {
   const whole = (value) => (Number.isInteger(value) && value >= 0 ? value : 0);
   const total = whole(summary?.total);
   const done = Math.min(whole(summary?.completed), total);
-  return { done, total, label: `${done}/${total}` };
+  return { done, total, label: `${done} of ${total} closed` };
 }
 
 /**

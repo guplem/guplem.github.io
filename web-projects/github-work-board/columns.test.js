@@ -5,6 +5,7 @@ import {
   attentionFor,
   automaticColumn,
   columnFor,
+  emptyColumnText,
   groupIntoColumns,
   handMove,
   moveOptions,
@@ -267,29 +268,32 @@ describe("handMove", () => {
 describe("moveOptions", () => {
   const relationship = links([linkedPull({ reviewDecision: "APPROVED" })]);
 
-  test("offers automatic first, and says which column the rules would pick", () => {
-    const [first] = moveOptions(issue(), relationship, "");
-    expect(first.id).toBe(AUTOMATIC);
-    expect(first.label).toBe("Automatic (Ready to merge)");
+  test("offers every column, in board order", () => {
+    expect(moveOptions(issue(), relationship, "").columns.map((one) => one.id)).toEqual(COLUMNS.map((one) => one.id));
   });
 
-  test("offers every column after it", () => {
-    expect(moveOptions(issue(), relationship, "").slice(1).map((one) => one.id)).toEqual(
-      COLUMNS.map((one) => one.id),
-    );
+  test("says which column the rules would pick", () => {
+    expect(moveOptions(issue(), relationship, "").automatic).toEqual({ id: "ready-to-merge", label: "Ready to merge" });
   });
 
-  // Exactly one entry is the current one, so a menu can show a mark beside it.
-  test("marks the one in force, and only that one", () => {
-    const onRules = moveOptions(issue(), relationship, "");
-    expect(onRules.filter((one) => one.current).map((one) => one.id)).toEqual([AUTOMATIC]);
+  // Exactly one column is checked: the one the card sits in, whoever put it
+  // there. The menu then reads like the board.
+  test("on the rules, checks the column the rules picked and is not moved", () => {
+    const menu = moveOptions(issue(), relationship, "");
+    expect(menu.moved).toBe(false);
+    expect(menu.columns.filter((one) => one.current).map((one) => one.id)).toEqual(["ready-to-merge"]);
+  });
 
-    const moved = moveOptions(issue(), relationship, "needs-changes");
-    expect(moved.filter((one) => one.current).map((one) => one.id)).toEqual(["needs-changes"]);
+  test("moved by hand, checks the chosen column and says so", () => {
+    const menu = moveOptions(issue(), relationship, "needs-changes");
+    expect(menu.moved).toBe(true);
+    expect(menu.columns.filter((one) => one.current).map((one) => one.id)).toEqual(["needs-changes"]);
   });
 
   test("never throws, whatever it is handed", () => {
-    expect(moveOptions(null, null, null).length).toBe(COLUMNS.length + 1);
+    const menu = moveOptions(null, null, null);
+    expect(menu.columns.length).toBe(COLUMNS.length);
+    expect(menu.moved).toBe(false);
   });
 });
 
@@ -401,5 +405,25 @@ describe("stateLabel", () => {
   test("a column nobody knows has no name", () => {
     expect(stateLabel("made-up")).toBe("");
     expect(stateLabel(null)).toBe("");
+  });
+});
+
+// An empty column says what is missing in its own words, not "Nothing here".
+describe("emptyColumnText", () => {
+  test("names what the column would hold", () => {
+    expect(emptyColumnText("todo")).toBe("Nothing to do");
+    expect(emptyColumnText("ongoing")).toBe("Nothing ongoing");
+    expect(emptyColumnText("needs-changes")).toBe("Nothing needs your attention");
+    expect(emptyColumnText("awaiting-review")).toBe("Nothing awaiting review");
+    expect(emptyColumnText("ready-to-merge")).toBe("Nothing ready to merge");
+    expect(emptyColumnText("done")).toBe("Nothing finished in these days");
+  });
+
+  test("every column has its words", () => {
+    for (const column of COLUMNS) expect(emptyColumnText(column.id)).not.toBe("Nothing here");
+  });
+
+  test("a column it does not know falls back to plain words", () => {
+    expect(emptyColumnText("nope")).toBe("Nothing here");
   });
 });

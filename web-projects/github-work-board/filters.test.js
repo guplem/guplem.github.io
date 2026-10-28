@@ -314,6 +314,24 @@ describe("activeFilterCount counts the people too", () => {
 // filter. A reader with eight repositories and twenty labels gets four buttons,
 // not four rows of chips that push the columns down (ADR 0049).
 describe("filterMenus: the menus the filter bar offers", () => {
+  // Each option says how much of the list carries it, so the reader can see
+  // what a choice will leave before making it.
+  test("each option counts the work that carries it", () => {
+    const repositories = filterMenus([ISSUE, PULL, BOTH], {}).find((menu) => menu.id === "repository");
+    expect(repositories.options.map((one) => [one.key, one.matches])).toEqual([
+      ["me/alpha", 1],
+      ["me/beta", 2],
+    ]);
+  });
+
+  // Two choices in one menu widen the board (ADR 0009). The menu says so in
+  // its own words, under its list.
+  test("each menu says that two choices in it match either", () => {
+    const menus = filterMenus([ISSUE, PULL, BOTH], {});
+    expect(menus.find((menu) => menu.id === "label").hint).toBe("Two labels match either");
+    expect(menus.find((menu) => menu.id === "repository").hint).toBe("Two repositories match either");
+  });
+
   const ana = { login: "ana", name: "Ana Ruiz" };
   const bo = { login: "bo", name: "" };
 
@@ -339,8 +357,8 @@ describe("filterMenus: the menus the filter bar offers", () => {
     const labels = filterMenus([ISSUE, BOTH], { labels: ["urgent"] }).find((menu) => menu.id === "label");
     expect(labels.label).toBe("Label");
     expect(labels.options).toEqual([
-      { key: "bug", text: "bug", chosen: false },
-      { key: "urgent", text: "urgent", chosen: true },
+      { key: "bug", text: "bug", chosen: false, matches: 2 },
+      { key: "urgent", text: "urgent", chosen: true, matches: 1 },
     ]);
     expect(labels.count).toBe(1);
   });
@@ -351,8 +369,8 @@ describe("filterMenus: the menus the filter bar offers", () => {
       reviewers: ["bo"],
     });
     const reviewers = menus.find((menu) => menu.id === "reviewer");
-    expect(reviewers.options).toContainEqual({ key: "ana", text: "Ana Ruiz", chosen: false });
-    expect(reviewers.options).toContainEqual({ key: "bo", text: "bo", chosen: true });
+    expect(reviewers.options).toContainEqual({ key: "ana", text: "Ana Ruiz", chosen: false, matches: 1 });
+    expect(reviewers.options).toContainEqual({ key: "bo", text: "bo", chosen: true, matches: 1 });
   });
 
   test("the menus come in one order: repository, reviewer, label, milestone", () => {

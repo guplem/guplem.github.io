@@ -25,6 +25,10 @@ heading.** `filters.js` holds the rules, and `app.js` draws them.
   Reviewer, Label, Milestone, and one per issue field. A press opens one
   shared popover, `#filter-menu`, in the top layer (ADR 0012). It holds one
   checkbox per value, and a "Clear filters" action.
+- **Each option shows how many cards carry it** (`matches` on each option from
+  `filterMenus`). A menu with six or more options has a find box at the top.
+  The foot of the menu shows the `hint` ("Two labels match either") and a
+  "Clear" press for that one filter when a value is chosen.
 - **A count badge on the button says how many values are chosen.** A reader
   sees from the closed bar which filters are in force.
 - **`filterMenus(items, chosen)` builds the menus.** It offers a repository or

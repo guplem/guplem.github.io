@@ -49,3 +49,24 @@ export function describeTokenReach({ token, itemCount = 0 } = {}) {
   const found = count === 0 ? "no work found" : `${count} ${count === 1 ? "item" : "items"}`;
   return [maskToken(token), found, "reads your work"].filter((part) => part !== "").join(" · ");
 }
+
+/** The checks whose failure means the token read nothing for the board. */
+const READ_CHECKS = new Set(["identity", "issues"]);
+
+/**
+ * The tokens whose own read failed in the last read, in list order, each with
+ * GitHub's reason in words. A failed extra (reviews, checks) is not a failed
+ * read: the board still has that token's work (ADR 0007).
+ *
+ * @param tokens the saved tokens
+ * @param checks the rows each token's read wrote, keyed by token id
+ */
+export function failedReads(tokens, checks) {
+  const list = Array.isArray(tokens) ? tokens : [];
+  const byId = checks && typeof checks === "object" ? checks : {};
+  return list.flatMap((entry, index) => {
+    const rows = Array.isArray(byId[entry?.id]) ? byId[entry.id] : [];
+    const failed = rows.find((row) => row && READ_CHECKS.has(row.id) && row.ok === false);
+    return failed ? [{ entry, index, detail: typeof failed.detail === "string" ? failed.detail : "" }] : [];
+  });
+}

@@ -119,9 +119,11 @@ Three things this rests on:
 
 **A card moved by hand stays moved**, in `board.json` under a new `columns`
 record map, which merges across devices like every other record (ADR 0002). The
-move control also offers "Automatic", which hands the card back to the rules,
-and it says which column the rules would choose, so the reader can see what they
-are overriding.
+move control lists every column with a tick on the one the card sits in. When
+the reader moved the card, a foot row reads "Hand back to the rules (<column>)",
+which says which column the rules would choose, so the reader can see what they
+are overriding. When the rules put the card there, the foot says "The rules put
+it here."
 
 **Column ids are permanent**, like sort ids and storage keys, because they are
 written into the saved document the moment a card is moved. `invariants.test.js`
@@ -149,7 +151,7 @@ three pills, worst first.
 
 **A moved card can go stale.** Somebody who moves a card to "Needs attention" and
 then pushes the fix has to move it back, because their choice outranks the
-rules for ever. "Automatic" is one click away and the control says what the
+rules for ever. "Hand back to the rules" is one click away and the control says what the
 rules would pick, which is the smallest honest fix; a rule that expired the
 override on its own would be guessing at intent. A moved card wears a dot on its
 menu button, which names both columns, so a stale move can be seen (ADR 0046).

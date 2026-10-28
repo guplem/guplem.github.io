@@ -54,8 +54,10 @@ on.
 **The status line is a snackbar, and it confirms what the reader just did.**
 What the board says about something the reader just did floats at the foot of
 the window, where it is seen, and leaves on its own after `snackbarHoldMs`
-(`messages.js`). It waits while the pointer rests on it. A line that is still
-true, such as a save that does not get through, stays until it is replaced. It
+(`messages.js`). It waits while the pointer rests on it. A line can carry one
+press (`setStatus(text, { passing, action })`), such as the "Undo" on a removed
+note. A line that is still true, such as a save that does not get through,
+stays until it is replaced. It
 was a grey line above the columns, usually scrolled out of sight at the moment
 it spoke.
 

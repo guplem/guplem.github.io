@@ -131,9 +131,14 @@
          raises the card with its stack (ADR 0044). "Not a priority" makes it
          fainter, gives it an arrow and sinks it with anything stacked on it
          (ADR 0026, ADR 0046). -->
+    <!-- Lines between the three groups: what to do with the card, how much it
+         matters, and where it sits. The menu hides a line when the group
+         above it is empty. -->
+    <div id="menu-separator-priority" class="menu-separator" role="separator"></div>
     <button id="menu-priority-high" type="button" class="menu-item" role="menuitem">High priority</button>
     <button id="menu-priority-normal" type="button" class="menu-item" role="menuitem">Normal priority</button>
     <button id="menu-priority-low" type="button" class="menu-item" role="menuitem">Not a priority</button>
+    <div id="menu-separator-move" class="menu-separator" role="separator"></div>
     <button id="menu-move" type="button" class="menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="false">
       <span class="menu-label">Move to</span>
       <!-- Shown while the card sits where the reader put it, not where the
@@ -256,6 +261,8 @@
             <button id="find-whole-word" type="button" class="find-option find-option-word" aria-pressed="false"
               aria-label="Match whole word">ab</button>
           </div>
+          <!-- While a search is typed: how many cards it left. -->
+          <span id="find-count" class="find-count" aria-live="polite"></span>
         </div>
 
         <!-- The order the board reads in, at the top of the page where it is
@@ -444,6 +451,9 @@
              GitHub says nothing about it, so the board says what it saw, and
              links the page where the organisation's owners approve it
              (ADR 0041). -->
+        <!-- A token whose read failed says so here, never as an empty board
+             (ADR 0007). -->
+        <div id="token-failures" class="approval-list" hidden></div>
         <div id="token-approval" class="approval-list" hidden></div>
 
         <!-- An empty board has several causes, and "nothing is assigned to you"

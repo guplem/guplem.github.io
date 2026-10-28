@@ -66,12 +66,12 @@ import {
   readRange,
 } from "./doneRange.js";
 import {
-  AUTOMATIC,
   COLUMNS,
   attentionFor,
   columnFor,
   handMove,
   groupIntoColumns,
+  emptyColumnText,
   moveOptions,
   stateLabel,
 } from "./columns.js";
@@ -117,6 +117,7 @@ import {
   describeCleanup,
   describeLastRefresh,
   describeOpened,
+  describeFinished,
   describeReading,
   escapeHtml,
   movedByHandTip,
@@ -141,6 +142,7 @@ import {
   sayAwaitingApproval,
   sayEmptyBoard,
   summariseChecks,
+  describeMatches,
 } from "./messages.js";
 import { CONNECTION_CHECKS, PERMISSIONS, REQUIRED_PERMISSIONS, permissionFor } from "./permissions.js";
 import { READ_STEPS, readProgress, readingNow, stepsDone } from "./readProgress.js";
@@ -230,7 +232,7 @@ import {
   readRelationship,
 } from "./relationships.js";
 import { encodeTokenBackup, looksLikeBackup, readTokenBackup } from "./tokenBackup.js";
-import { describeTokenReach, suggestedTokenName } from "./tokenIdentity.js";
+import { describeTokenReach, failedReads, suggestedTokenName } from "./tokenIdentity.js";
 import {
   KIND_ICONS,
   countByKind,
@@ -409,7 +411,7 @@ let statusListening = false;
  * one replaces it, because it says something is still true ("Reading
  * GitHub...", a save that does not get through).
  */
-function setStatus(text, { passing = false } = {}) {
+function setStatus(text, { passing = false, action = null } = {}) {
   const line = element("board-status");
   if (!statusListening) {
     statusListening = true;
@@ -425,6 +427,19 @@ function setStatus(text, { passing = false } = {}) {
   clearTimeout(statusTimer);
   line.removeAttribute("data-leaving");
   line.textContent = text;
+  // One press that undoes what the line reports, at its end. It goes with the
+  // line, and the next line replaces it.
+  if (action && text !== "") {
+    const press = document.createElement("button");
+    press.type = "button";
+    press.className = "snackbar-action";
+    press.textContent = action.label;
+    press.addEventListener("click", () => {
+      setStatus("");
+      action.run();
+    });
+    line.append(press);
+  }
   statusPassing = passing && text !== "" ? text : null;
   if (statusPassing !== null) holdStatus();
 }
@@ -872,16 +887,16 @@ function buildWorkItemCard(
   // "Sub-issue of", not "Part of": the card has to say what the relationship is
   // as well as which issue it is with, because the reader meets this card in a
   // column, away from its parent (ADR 0010).
-  if (relationship.parent && shows("links")) {
-    card.append(buildLinkLine("Sub-issue of", [relationship.parent]));
-  }
-
+  // The links sit in their own section under a thin line, one row each: the
+  // relationship on the left, the items it names on the right.
+  const relations = document.createElement("div");
+  relations.className = "issue-relations";
   const blockers = openBlockers(relationship);
-  if (blockers.length > 0 && shows("links")) {
-    card.append(buildLinkLine("Blocked by", blockers));
-  }
+  if (blockers.length > 0 && shows("links")) relations.append(buildLinkLine("Blocked by", blockers));
+  if (relationship.parent && shows("links")) relations.append(buildLinkLine("Sub-issue of", [relationship.parent]));
+  if (relationship.subIssues.total > 0 && shows("children")) relations.append(buildChildren(item, relationship.subIssues));
+  if (relations.childElementCount > 0) card.append(relations);
 
-  if (relationship.subIssues.total > 0 && shows("children")) card.append(buildChildren(item, relationship.subIssues));
 
   // The box is not there until there is a note in it, or until the reader asks
   // for one from the menu. An empty box on every card is forty invitations to
@@ -980,6 +995,16 @@ function buildWorkItemCard(
       if (showFaces) foot.append(faces);
     }
     if (foot.childElementCount > 0) card.append(foot);
+  }
+
+  // The last column is a log, so each of its cards says when the work landed
+  // (ADR 0017).
+  const landed = area === "done" ? describeFinished(item, Date.now()) : "";
+  if (landed !== "") {
+    const line = document.createElement("p");
+    line.className = "issue-landed";
+    line.append(drawIcon(["M20 6 9 17l-5-5"]), document.createTextNode(landed));
+    card.append(line);
   }
 
   return card;
@@ -1378,32 +1403,94 @@ function buildChevronDown() {
 }
 
 /** The open filter menu's rows: one per choice, each a box the reader ticks. */
+/** What the reader typed in the open filter menu's find box. */
+let filterFind = "";
+
+/** How many options a filter menu holds before it offers a find box. */
+const FILTER_FIND_FROM = 6;
+
 function fillFilterMenu() {
   const menu = filterMenus(state.items, state).find((one) => one.id === state.filterMenuId);
   const list = element("filter-menu");
   list.setAttribute("aria-label", menu ? menu.label : "Filter");
-  list.replaceChildren(
-    ...(menu?.options ?? []).map((option) => {
-      const row = document.createElement("button");
-      row.type = "button";
-      row.className = "menu-item filter-option";
-      row.setAttribute("role", "menuitemcheckbox");
-      row.setAttribute("aria-checked", option.chosen ? "true" : "false");
-      const box = document.createElement("span");
-      box.className = "filter-box";
-      box.append(drawIcon(["m5 12 5 5 9-10"], "icon filter-tick"));
-      const label = document.createElement("span");
-      label.className = "menu-label";
-      label.textContent = option.text;
-      row.append(box, label);
-      row.addEventListener("click", () => {
+  // A redraw after a tick keeps the words in the find box, and the focus.
+  const finding = document.activeElement?.classList.contains("filter-find") ?? false;
+
+  const rows = (menu?.options ?? []).map((option) => {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "menu-item filter-option";
+    row.setAttribute("role", "menuitemcheckbox");
+    row.setAttribute("aria-checked", option.chosen ? "true" : "false");
+    row.dataset.text = option.text.toLowerCase();
+    const box = document.createElement("span");
+    box.className = "filter-box";
+    box.append(drawIcon(["m5 12 5 5 9-10"], "icon filter-tick"));
+    const label = document.createElement("span");
+    label.className = "menu-label";
+    label.textContent = option.text;
+    // How much of the board carries this value, before it is chosen.
+    const matches = document.createElement("span");
+    matches.className = "filter-matches";
+    matches.textContent = String(option.matches);
+    row.append(box, label, matches);
+    row.addEventListener("click", () => {
+      const field = filterListOf(menu.id);
+      state[field] = toggleInList(state[field], option.key);
+      afterFilterChange();
+    });
+    return row;
+  });
+  const narrow = () => {
+    const words = filterFind.trim().toLowerCase();
+    for (const row of rows) row.hidden = words !== "" && !row.dataset.text.includes(words);
+  };
+
+  const parts = [];
+  if (rows.length >= FILTER_FIND_FROM) {
+    const find = document.createElement("input");
+    find.type = "search";
+    find.className = "input filter-find";
+    find.placeholder = `Find a ${menu.label.toLowerCase()}`;
+    find.setAttribute("aria-label", find.placeholder);
+    find.autocomplete = "off";
+    find.value = filterFind;
+    find.addEventListener("input", () => {
+      filterFind = find.value;
+      narrow();
+    });
+    parts.push(find);
+    if (finding) queueMicrotask(() => find.focus());
+  }
+  parts.push(...rows);
+  narrow();
+
+  // The foot: how two choices in this menu combine, and, once something in it
+  // is chosen, a way to empty this one filter without touching the others.
+  if (menu) {
+    const foot = document.createElement("div");
+    foot.className = "filter-foot";
+    const hint = document.createElement("span");
+    hint.textContent = menu.hint;
+    foot.append(hint);
+    if (menu.count > 0) {
+      const clear = document.createElement("button");
+      clear.type = "button";
+      clear.className = "filter-menu-clear";
+      clear.textContent = "Clear";
+      clear.addEventListener("click", () => {
         const field = filterListOf(menu.id);
-        state[field] = toggleInList(state[field], option.key);
+        // Every issue field shares one list, so a field menu takes out its own
+        // values only; any other menu owns its whole list.
+        const own = new Set(menu.options.map((option) => option.key));
+        state[field] = field === "fields" ? state[field].filter((key) => !own.has(key)) : [];
         afterFilterChange();
       });
-      return row;
-    }),
-  );
+      foot.append(clear);
+    }
+    parts.push(buildMenuSeparator(), foot);
+  }
+  list.replaceChildren(...parts);
 }
 
 function afterFilterChange() {
@@ -1613,10 +1700,21 @@ function fitNote(note) {
   note.style.height = `${note.scrollHeight + (note.offsetHeight - note.clientHeight)}px`;
 }
 
+/** The speech bubble in the corner of a note: the reader's own words. */
+const NOTE_BUBBLE_PATH = "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z";
+
 /** How long an emptied note box takes to fold away. `style.css` holds the same number. */
 const NOTE_LEAVE_MS = 200;
 
 function buildNoteBox(item, written) {
+  // The box, a speech bubble in its corner, and one quiet line under it that
+  // shows while the reader writes: who sees the note, and that it saves itself.
+  const box = document.createElement("div");
+  box.className = "note-box";
+  const hint = document.createElement("p");
+  hint.className = "note-hint";
+  hint.textContent = "Only you see this. It saves by itself.";
+
   const note = document.createElement("textarea");
   note.className = "input note";
   note.id = `note-${item.key}`;
@@ -1628,6 +1726,8 @@ function buildNoteBox(item, written) {
   // Whether this box has held words this visit. A box opened from the menu and
   // left empty held no note, so it closes without a word in the status line.
   let held = hasNoteText(written);
+  // The last words the box held, for the line's "Undo" once it is emptied.
+  let lastWords = held ? written : "";
 
   // While the reader is in the box, a redraw keeps it, even emptied.
   note.addEventListener("focus", () => state.notesOpen.add(item.key));
@@ -1636,7 +1736,10 @@ function buildNoteBox(item, written) {
     state.board = writeNote(state.board, item.key, note.value, new Date().toISOString());
     scheduleSave();
     fitNote(note);
-    if (hasNoteText(note.value)) held = true;
+    if (hasNoteText(note.value)) {
+      held = true;
+      lastWords = note.value;
+    }
   });
 
   // Emptied and left, the note is gone, so the box folds away and the status
@@ -1652,13 +1755,29 @@ function buildNoteBox(item, written) {
       scheduleSave();
     }
     state.notesOpen.delete(item.key);
-    if (held) setStatus(noteRemovedStatus(item), { passing: true });
-    note.classList.add("is-leaving");
+    if (held) {
+      const words = lastWords;
+      setStatus(noteRemovedStatus(item), {
+        passing: true,
+        action: {
+          label: "Undo",
+          run: () => {
+            state.board = writeNote(state.board, item.key, words, new Date().toISOString());
+            scheduleSave();
+            renderBoard();
+          },
+        },
+      });
+    }
+    // A height to fold from: an `auto` height does not animate.
+    box.style.height = `${box.offsetHeight}px`;
+    box.classList.add("is-leaving");
     // A timer, not `animationend`: with reduced motion there is no animation,
     // and the box must still go.
-    setTimeout(() => note.remove(), NOTE_LEAVE_MS);
+    setTimeout(() => box.remove(), NOTE_LEAVE_MS);
   });
-  return note;
+  box.append(drawIcon([NOTE_BUBBLE_PATH], "icon note-icon"), note, hint);
+  return box;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1874,38 +1993,75 @@ function fillMoveMenu() {
   const item = state.menuItem;
   const submenu = element("card-submenu");
   if (!item) return submenu.replaceChildren();
-  const options = moveOptions(item, readRelationship(state.links, item.key), readColumn(state.board, item.key));
+  const menu = moveOptions(item, readRelationship(state.links, item.key), readColumn(state.board, item.key));
 
-  submenu.replaceChildren(
-    ...options.map((option) => {
-      const choice = document.createElement("button");
-      choice.type = "button";
-      choice.className = option.current ? "menu-item is-current" : "menu-item";
-      choice.setAttribute("role", "menuitemradio");
-      choice.setAttribute("aria-checked", option.current ? "true" : "false");
+  // One write for every way out: the column picked, or "" for the rules.
+  // The card may leave the reader's view, so the snackbar says where it went.
+  const choose = (columnId, label) => {
+    state.board = writeColumn(state.board, item.key, columnId, new Date().toISOString());
+    scheduleSave();
+    closeCardMenu();
+    renderBoard();
+    setStatus(cardMovedStatus(item, label), { passing: true });
+  };
 
-      const mark = document.createElement("span");
-      mark.className = "menu-mark";
-      mark.textContent = option.current ? "✓" : "";
-      const label = document.createElement("span");
-      label.textContent = option.label;
-      choice.append(mark, label);
+  const heading = document.createElement("div");
+  heading.className = "menu-heading";
+  heading.setAttribute("role", "presentation");
+  heading.textContent = "Put this card in";
 
-      choice.addEventListener("click", () => {
-        state.board = writeColumn(
-          state.board,
-          item.key,
-          option.id === AUTOMATIC ? "" : option.id,
-          new Date().toISOString(),
-        );
-        scheduleSave();
-        closeCardMenu();
-        renderBoard();
-        setStatus(cardMovedStatus(item, option.label), { passing: true });
-      });
-      return choice;
-    }),
-  );
+  const rows = menu.columns.map((option) => {
+    const choice = document.createElement("button");
+    choice.type = "button";
+    choice.className = option.current ? "menu-item is-current" : "menu-item";
+    choice.setAttribute("role", "menuitemradio");
+    choice.setAttribute("aria-checked", option.current ? "true" : "false");
+
+    // The dot wears the colour the reader gave that column, so the menu and
+    // the board agree on which place is which (ADR 0024).
+    const dot = document.createElement("span");
+    dot.className = "menu-column-dot";
+    paint(dot, option.id);
+    const label = document.createElement("span");
+    label.className = "menu-label";
+    label.textContent = option.label;
+    choice.append(dot, label);
+    if (option.current) choice.append(drawIcon(["M5 12l5 5 9-10"], "icon menu-check"));
+
+    // Picking the column the card already sits in changes nothing, so it only
+    // closes the menu: on the rules it must not turn into a hand move.
+    choice.addEventListener("click", () => (option.current ? closeCardMenu() : choose(option.id, option.label)));
+    return choice;
+  });
+
+  // The foot says who put the card where it is. A card the reader moved gets
+  // the way back to the rules, one click away (ADR 0011).
+  let foot;
+  if (menu.moved) {
+    foot = document.createElement("button");
+    foot.type = "button";
+    foot.className = "menu-item";
+    foot.setAttribute("role", "menuitem");
+    const label = document.createElement("span");
+    label.className = "menu-label";
+    label.textContent = `Hand back to the rules (${menu.automatic.label})`;
+    foot.append(drawIcon(["M3 12a9 9 0 1 0 3-6.7", "M3 4v5h5"]), label);
+    foot.addEventListener("click", () => choose("", menu.automatic.label));
+  } else {
+    foot = document.createElement("p");
+    foot.className = "menu-note";
+    foot.textContent = "The rules put it here.";
+  }
+
+  submenu.replaceChildren(heading, ...rows, buildMenuSeparator(), foot);
+}
+
+/** A thin line between two groups of rows in a menu. */
+function buildMenuSeparator() {
+  const line = document.createElement("div");
+  line.className = "menu-separator";
+  line.setAttribute("role", "separator");
+  return line;
 }
 
 function closeCardMenu() {
@@ -1913,9 +2069,9 @@ function closeCardMenu() {
   element("card-menu").hidePopover();
 }
 
-/** One line of links on a card: a label, then each linked item. */
+/** One row of links on a card: a label, then each linked item as a chip. */
 function buildLinkLine(label, links) {
-  const line = document.createElement("p");
+  const line = document.createElement("div");
   line.className = "issue-links";
 
   const name = document.createElement("span");
@@ -1928,8 +2084,11 @@ function buildLinkLine(label, links) {
     anchor.href = link.url;
     anchor.target = "_blank";
     anchor.rel = "noopener";
-    anchor.className = "issue-link";
+    anchor.className = "issue-link link-chip";
     anchor.textContent = `#${link.number} ${link.title}`;
+    // The chip is one line and may cut the title short, so resting on it
+    // gives the whole of it.
+    explain(anchor, `#${link.number} ${link.title}`);
     // Point at the card this line names, so hovering the line finds it
     // (ADR 0035).
     anchor.dataset.pointsAt = link.id;
@@ -1950,29 +2109,39 @@ function buildChildRow({ item: child, columnId }) {
   const row = document.createElement("li");
   row.className = "child";
 
+  // A dot in the colour of the column the child sits in, like its pill; an
+  // unasked child keeps a hollow one (ADR 0010, ADR 0032).
+  const dot = document.createElement("span");
+  dot.className = "child-dot";
+  if (columnId !== "") {
+    dot.setAttribute("data-column", columnId);
+    paint(dot, columnId);
+  }
+
   const link = document.createElement("a");
   link.className = "issue-link child-title";
   link.dataset.pointsAt = child.key;
   link.href = child.url;
   link.target = "_blank";
   link.rel = "noopener";
-  link.textContent = `#${child.number} ${child.title}`;
-  explain(link, child.title);
+  const number = document.createElement("span");
+  number.className = "child-number";
+  number.textContent = `#${child.number}`;
+  link.append(number, document.createTextNode(` ${child.title}`));
+  explain(link, `#${child.number} ${child.title}`);
 
-  row.append(link);
+  row.append(dot, link);
 
   // Only a child the board actually asked GitHub about gets a state. It asks
   // about one batch of children, so a board with a great many says nothing
   // about the last of them rather than reading them all as "To do" (ADR 0010).
   if (columnId !== "") {
-    const badge = document.createElement("span");
-    badge.className = "badge badge-outline child-state";
-    badge.textContent = stateLabel(columnId);
-    // The colour the reader painted that column, so the state on a child reads
-    // as the place it would sit rather than as a word to be looked up
+    // The state in quiet words: the dot already carries the column's colour
     // (ADR 0024, ADR 0032).
-    paint(badge, columnId);
-    row.append(badge);
+    const where = document.createElement("span");
+    where.className = "child-state";
+    where.textContent = stateLabel(columnId);
+    row.append(where);
   }
   return row;
 }
@@ -2032,44 +2201,44 @@ function buildChildren(item, subIssues) {
   const rows = childRows(subIssues.children);
   const progress = childrenProgress(subIssues);
 
+  // "Children" and how many are closed on one line, the pills under it, and
+  // the list, when it is open, under the pills. The press that opens or shuts
+  // the list closes the section, so it stays where the reader's eye ends.
   const heading = document.createElement("p");
-  heading.className = "issue-links children-head";
+  heading.className = "children-head";
   const label = document.createElement("span");
   label.className = "link-label";
   label.textContent = "Children";
-
-  const pills = document.createElement("span");
-  pills.className = "child-pills";
-  pills.replaceChildren(...rows.map(buildChildPill));
-
   const value = document.createElement("span");
   value.className = "children-count";
   value.textContent = progress.label;
-  explain(value, `${progress.done} of ${progress.total} closed`);
+  heading.append(label, value);
 
-  heading.append(label, pills, value);
-  box.append(heading);
+  const pills = document.createElement("div");
+  pills.className = "child-pills";
+  pills.replaceChildren(...rows.map(buildChildPill));
+  box.append(heading, pills);
 
   const open = state.childrenOpen.has(item.key);
+  if (open && rows.length > 0) {
+    const list = document.createElement("ul");
+    list.className = "children";
+    list.replaceChildren(...rows.map(buildChildRow));
+    box.append(list);
+  }
+
   if (rows.length > 0) {
     const toggle = document.createElement("button");
     toggle.type = "button";
     toggle.className = "button button-ghost children-toggle";
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    toggle.append(buildChevron(open), document.createTextNode(childrenToggleLabel(open, rows.length)));
+    toggle.append(document.createTextNode(childrenToggleLabel(open, rows.length)), buildChevron(open));
     toggle.addEventListener("click", () => {
       if (open) state.childrenOpen.delete(item.key);
       else state.childrenOpen.add(item.key);
       renderBoard();
     });
     box.append(toggle);
-  }
-
-  if (open && rows.length > 0) {
-    const list = document.createElement("ul");
-    list.className = "children";
-    list.replaceChildren(...rows.map(buildChildRow));
-    box.append(list);
   }
 
   // Only what GitHub did not answer with at all. The children in the list are
@@ -2231,7 +2400,7 @@ function chooseDoneRange(range) {
 }
 
 /** One column: its name, how much is in it, and the cards. */
-function buildColumn({ column, groups }, counted, emptyText = "Nothing here") {
+function buildColumn({ column, groups }, counted, emptyText = emptyColumnText(column.id)) {
   const section = document.createElement("section");
   section.className = "column";
   section.dataset.columnId = column.id;
@@ -2532,6 +2701,9 @@ function renderBoard() {
   const shownBoard = board
     .filter(({ column }) => readAreaShown(state.board, column.id))
     .map(({ column, groups }) => ({ column, groups: searchGroups(groups, search) }));
+  // How many cards the search left, inside the find box (ADR 0038).
+  element("find-count").textContent =
+    search === null ? "" : describeMatches(found.length + shownBoard.reduce((sum, { groups }) => sum + groups.length, 0));
   fitColumns(shownBoard.length);
   element("board-columns").replaceChildren(
     ...shownBoard.map((one) => buildColumn(one, countFor[one.column.id], search ? "No match" : undefined)),
@@ -2554,7 +2726,11 @@ function renderBoard() {
   // rather than read as broken.
   const everyColumnHidden = shownBoard.length === 0;
   const owners = [...new Set(state.tokens.flatMap((entry) => entry.owners))];
-  element("board-empty").hidden = visible.length > 0 && !missed && !everyColumnHidden;
+  // When no token could read GitHub, the failure callouts above say why, and
+  // an empty board must not add "nothing is assigned to you" (ADR 0007).
+  const failures = failedReads(state.tokens, state.checks);
+  const nothingRead = state.tokens.length > 0 && failures.length === state.tokens.length;
+  element("board-empty").hidden = (visible.length > 0 && !missed && !everyColumnHidden) || (nothingRead && !missed);
   element("board-empty-reason").textContent = missed
     ? `Nothing on the board matches "${state.findText.trim()}".`
     : everyColumnHidden
@@ -2565,14 +2741,47 @@ function renderBoard() {
   // "Add a token owned by the organisation" is the wrong advice to a reader
   // who already did, and whose token waits for approval (ADR 0041).
   element("board-empty-hint").hidden =
-    hiddenByFilters || missed || everyColumnHidden || awaitingApprovalTokens().length > 0;
+    hiddenByFilters || missed || everyColumnHidden || nothingRead || awaitingApprovalTokens().length > 0;
   const openSettings = element("empty-open-settings");
-  openSettings.hidden = (hiddenByFilters || missed) && !everyColumnHidden;
+  // The callout above says what went wrong and offers the way out.
+  openSettings.hidden = ((hiddenByFilters || missed) && !everyColumnHidden) || nothingRead;
   openSettings.textContent = everyColumnHidden ? "Show a column in Settings" : "Add a token in Settings";
   openSettings.dataset.section = everyColumnHidden ? "appearance" : "tokens";
   element("clear-filters").hidden = !narrowed || missed;
   element("clear-find").hidden = !missed;
+  renderFailures(failures);
   renderApproval();
+}
+
+/**
+ * One callout for each token whose read failed: which token, GitHub's reason,
+ * and the way to Settings. It sits above the board, not only on an empty one:
+ * with two tokens, the board still shows the first token's work while the
+ * second one has expired (ADR 0007).
+ */
+function renderFailures(failures) {
+  const list = element("token-failures");
+  list.hidden = failures.length === 0;
+  list.replaceChildren(
+    ...failures.map(({ entry, index, detail }) => {
+      const callout = document.createElement("div");
+      callout.className = "callout callout-failure";
+      const title = document.createElement("p");
+      title.className = "callout-title";
+      title.textContent = `The token "${entry.name || suggestedTokenName(entry, index)}" could not read GitHub.`;
+      const reason = document.createElement("p");
+      reason.textContent = detail;
+      const actions = document.createElement("p");
+      const fix = document.createElement("button");
+      fix.type = "button";
+      fix.className = "button button-primary";
+      fix.textContent = "Fix the token in Settings";
+      fix.addEventListener("click", () => showView("settings", "tokens"));
+      actions.append(fix);
+      callout.append(title, reason, actions);
+      return callout;
+    }),
+  );
 }
 
 /** The saved tokens that may wait for an organisation's approval, in list order. */
@@ -4473,7 +4682,10 @@ function start() {
   element("clear-board-filters").addEventListener("click", clearFilters);
   const filterMenu = element("filter-menu");
   filterMenu.addEventListener("beforetoggle", (event) => {
-    if (event.newState === "open") fillFilterMenu();
+    if (event.newState !== "open") return;
+    // A menu opens with an empty find box.
+    filterFind = "";
+    fillFilterMenu();
   });
   filterMenu.addEventListener("toggle", (event) => {
     const open = event.newState === "open";
@@ -4566,6 +4778,11 @@ function start() {
         element(`menu-priority-${priority}`).hidden = !rows.priorities.includes(priority);
       }
       move.hidden = !rows.move;
+      // A line between groups, and only between groups that are both shown.
+      const actions = rows.note || rows.copies.length > 0;
+      const ranks = rows.priorities.length > 0;
+      element("menu-separator-priority").hidden = !(actions && ranks);
+      element("menu-separator-move").hidden = !(rows.move && (actions || ranks));
       move.querySelector(".menu-dot").hidden = !rows.moved;
       explain(move, rows.moved ? movedTip(state.menuItem, column) : "");
     }

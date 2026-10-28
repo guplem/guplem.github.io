@@ -26,8 +26,9 @@ fine-grained token, and GitHub has said the permission may come back one day.
 **One dot on every pull request card, beside the "PR" badge.** Green every run
 passed, red one came back red, grey they are still running. A commit nothing has
 run on draws no dot, because nothing ran is not a pass. Resting on it gives the
-breakdown in words, worst first: "Checks: 2 failed, 1 still running, 5 passed."
-The same sentence is on the dot for a screen reader, because a colour is not an
+breakdown in words, worst first, one line each under the heading "Checks on
+the last commit": "2 failed", "1 still running", "5 passed".
+The same words are on the dot for a screen reader, because a colour is not an
 answer for everybody (ADR 0004).
 
 **The checks are read from the Actions API**, `GET /repos/{owner}/{repo}/actions/

@@ -44,6 +44,9 @@ after the order, the grouping and the counts.
 - **The review row hides when nothing in it matches**, and a column with no
   match says "No match". When nothing on the whole board matches, the empty
   callout says so and offers "Clear the search".
+- **The box says how many cards match** ("1 match", "N matches", from
+  `describeMatches` in `messages.js`) while text is typed, beside the match
+  options.
 - **`/` reaches the box from anywhere on the board**, as on GitHub, unless the
   reader is typing somewhere else. Escape empties it.
 

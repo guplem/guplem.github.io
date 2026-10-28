@@ -179,26 +179,37 @@ export function boardFilterCount(chosen = {}) {
 export function filterMenus(items, chosen) {
   const list = Array.isArray(items) ? items : [];
   const picked = chosen && typeof chosen === "object" ? chosen : {};
-  const menu = (id, label, values, chosenKeys, least) => {
+  // `narrow` answers the list one value alone would leave, so each option can
+  // say how much work carries it; `plural` names the things the menu holds.
+  const menu = (id, label, plural, values, chosenKeys, least, narrow) => {
     const wanted = new Set(asList(chosenKeys));
-    const options = values.map(({ key, text }) => ({ key, text, chosen: wanted.has(key) }));
+    const options = values.map(({ key, text }) => ({ key, text, chosen: wanted.has(key), matches: narrow(key).length }));
     const count = id.startsWith("field:") ? options.filter((one) => one.chosen).length : wanted.size;
-    return options.length >= least || count > 0 ? [{ id, label, options, count }] : [];
+    const hint = `Two ${plural} match either`;
+    return options.length >= least || count > 0 ? [{ id, label, options, count, hint }] : [];
   };
   const plain = (names) => names.map((name) => ({ key: name, text: name }));
   return [
-    ...menu("repository", "Repository", plain(availableRepositories(list)), picked.repositories, 2),
+    ...menu("repository", "Repository", "repositories", plain(availableRepositories(list)), picked.repositories, 2, (key) =>
+      filterWorkItems(list, { repositories: [key] }),
+    ),
     ...menu(
       "reviewer",
       "Reviewer",
+      "reviewers",
       availableReviewers(list).map((person) => ({ key: person.login, text: person.name || person.login })),
       picked.reviewers,
       2,
+      (key) => filterByPerson(list, [key], "reviewers"),
     ),
-    ...menu("label", "Label", plain(availableLabels(list)), picked.labels, 1),
-    ...menu("milestone", "Milestone", plain(availableMilestones(list)), picked.milestones, 1),
+    ...menu("label", "Label", "labels", plain(availableLabels(list)), picked.labels, 1, (key) =>
+      filterWorkItems(list, { labels: [key] }),
+    ),
+    ...menu("milestone", "Milestone", "milestones", plain(availableMilestones(list)), picked.milestones, 1, (key) =>
+      filterWorkItems(list, { milestones: [key] }),
+    ),
     ...availableFieldFilters(list).flatMap((field) =>
-      menu(`field:${field.name}`, field.name, field.values, picked.fields, 1),
+      menu(`field:${field.name}`, field.name, "values", field.values, picked.fields, 1, (key) => filterByFields(list, [key])),
     ),
   ];
 }

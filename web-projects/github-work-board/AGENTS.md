@@ -49,7 +49,7 @@ It is the short procedure for all of the above.
 | `appearance.js` | Yes | The colours a column can be painted, light or dark, and how many shown columns share the window (ADR 0024) |
 | `refresh.js` | Yes | How often the board asks GitHub again, and when a tick is due (ADR 0025) |
 | `doneRange.js` | Yes | Which days the last column is about: the presets, every midnight boundary in the reader's clock, the words in its heading, and the written form a link carries (ADR 0034) |
-| `children.js` | Yes | The order the children of an issue read in, the count of closed ones beside their pills, and the words on the press that opens the list (ADR 0032) |
+| `children.js` | Yes | The order the children of an issue read in, the "N of M closed" count beside their pills, and the words on the press that opens the list (ADR 0032) |
 | `counting.js` | Yes | What each part of the board counts, the number in the tab, and what a count leaves out (ADR 0030) |
 | `copyActions.js` | Yes | The lines the reader copies from a card, the one line a new board starts with, the placeholders they can carry, filling one in, the parts of the board each line is offered in, the order the reader puts them in, and the icon each line wears (ADR 0031, ADR 0046) |
 | `people.js` | Yes | Who a card is about, what the board waits on each of them for, and who other than the reader shares the work, for the "+N" mark (ADR 0028) |
@@ -58,7 +58,7 @@ It is the short procedure for all of the above.
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it (with a letter on a level that branches), with the bottom's name, and which stack each card lights up with (ADR 0020, ADR 0027) |
-| `filters.js` | Yes | Narrowing by kind, repository, label, milestone, issue field and person, the menus the filter bar offers (`filterMenus`) and the count of chosen values (ADR 0009, ADR 0028, ADR 0045, ADR 0047, ADR 0049) |
+| `filters.js` | Yes | Narrowing by kind, repository, label, milestone, issue field and person, the menus the filter bar offers (`filterMenus`, with a card count `matches` on each option and a `hint`) and the count of chosen values (ADR 0009, ADR 0028, ADR 0045, ADR 0047, ADR 0049) |
 | `fields.js` | Yes | The issue fields set on an issue, read from the answer the board already has: their words, which of them a filter offers, and narrowing by them (ADR 0047) |
 | `settingsSections.js` | Yes | The sections of Settings with their permanent ids, the section each sub-screen goes back to, and the written list of settings the search finds (ADR 0048) |
 | `cardParts.js` | Yes | The parts of a card the reader can hide in Settings, with their permanent ids (ADR 0047) |
@@ -66,18 +66,18 @@ It is the short procedure for all of the above.
 | `boardSearch.js` | Yes | The find box: part of a number, a pasted GitHub link or words, the match-case and whole-word choices, and which cards stay (ADR 0038) |
 | `skeletons.js` | Yes | How many placeholders to draw while the board waits (ADR 0004) |
 | `readProgress.js` | Yes | How full the thin bar at the top of the window is, one step per call of each token, counted over every token at once, and which step the read waits on (ADR 0039, ADR 0040) |
-| `tokenIdentity.js` | Yes | Masking a token, naming it, and saying what it reached (ADR 0007) |
+| `tokenIdentity.js` | Yes | Masking a token, naming it, saying what it reached, and which tokens failed to read (`failedReads`, ADR 0007) |
 | `approval.js` | Yes | Whether a token that found nothing may wait for an organisation's approval, which organisation, and the page where its owners approve it (ADR 0041) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
 | `relationships.js` | Yes | GitHub's own links between items, the children of an issue, which linked pull request an item is read from, and nesting a pull request under its issue (ADR 0010, ADR 0028) |
-| `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, what to call that column away from the board, and the two names a moved card's dot says (ADR 0011, ADR 0046) |
+| `columns.js` | Yes | Which column a piece of work is in, by rule or by the reader's hand, what to call that column away from the board, the two names a moved card's dot says, the rows of the "Put this card in" submenu (`moveOptions`), and the words of an empty column (`emptyColumnText`) (ADR 0011, ADR 0046) |
 | `checks.js` | Yes | How the checks on the last commit are going: the workflow runs counted into one verdict, when to ask GitHub again, and the sentence behind the dot (ADR 0037) |
 | `attention.js` | Yes | The three reasons a pull request wants its author (conflicts, red checks, changes requested), with the words and the icon each pill draws, and the rank the smart order reads them in (ADR 0011, ADR 0026) |
 | `urlState.js` | Yes | The open view, the order and the filters in the address bar, and nothing else (root ADR 0006) |
 | `permissions.js` | Yes | The one list of what the board asks GitHub for, and whether a saved token is behind it (ADR 0005) |
 | `githubErrors.js` | Yes | A failed call into a sentence that names the missing permission |
 | `settings.js` | Yes | The list of tokens and the choices kept only in this browser (refresh schedule, last counts; the retired `filtersOpen` key stays only in `LEGACY_KEYS`, so sign-out clears it), through an injected storage (ADR 0007, ADR 0025, ADR 0049) |
-| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), how long a review card has been open (`describeOpened`), what a running read waits on (ADR 0039), whether the notes are syncing (ADR 0019), what the cleanup found (ADR 0043), the confirmations the snackbar gives after an action, and how long a passing line stays there (ADR 0004) |
+| `messages.js` | Yes | Every sentence the page says, the one HTML escaper, the folded-row summary, how long ago the board read (ADR 0029), how long a review card has been open (`describeOpened`), how long ago a finished card landed (`describeFinished`, ADR 0017), the find box's match count (`describeMatches`, ADR 0038), what a running read waits on (ADR 0039), whether the notes are syncing (ADR 0019), what the cleanup found (ADR 0043), the confirmations the snackbar gives after an action, and how long a passing line stays there (ADR 0004) |
 | `deployStamp.js` | Yes | The "deployed at" line (root ADR 0013) |
 | `style.css` | - | The design system: colour roles, one radius, and the five parts every screen is built from (ADR 0004) |
 | `gateway.js` | No | The **only** file that calls the network |
@@ -558,7 +558,7 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   answered work sits in "Needs attention" for ever. A test pins both names.
 - **A column id is written into `board.json`** the moment a card is moved by
   hand, so it is as permanent as a storage key. The reader's move always beats
-  the rule, and "Automatic" hands it back.
+  the rule, and "Hand back to the rules" hands it back.
 - **`[hidden]` needs the `!important` rule at the top of `style.css`.** The
   browser hides `[hidden]` with a rule of its own, and any author rule setting
   `display` beats it. This page sets `display` on buttons, filter groups and
@@ -681,7 +681,7 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   `snackbarHoldMs`. A new action whose result is not plain at the pointer
   (a copy, a removal, a card that moves out of sight) confirms itself this
   way, with its words in `messages.js`; never repeat a token in the line. The
-  snackbar sits outside every view, so it speaks on every screen. Call it without `passing` for a line that is still true
+  snackbar sits outside every view, so it speaks on every screen. Add `action` (`{ passing, action }`) for a line with one press, such as the "Undo" on a removed note. Call it without `passing` for a line that is still true
   (a read under way, a save that does not get through): that one stays until
   the next `setStatus` replaces it. Mark a still-true line as passing and the
   warning vanishes while the fault is still there (ADR 0004).

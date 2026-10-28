@@ -28,11 +28,19 @@ done", said how much was left and nothing about what it was (2026-09).
   the whole answer to "how is this going", in one line, and it wears the same
   colours as the board the reader already reads (ADR 0024). Each pill is a link
   to that child, and hovering it says which issue it is and where it sits.
+- **The links and the children share one section, `.issue-relations`, under a
+  thin line.** A link row ("Blocked by", "Sub-issue of") is a label column and
+  a one-line chip with the full title in its tooltip. The children have the
+  heading "Children" and the count "3 of 7 closed", with the pills on their own
+  line.
 - **The count sits beside the pills: closed out of total.** Both numbers come
   from GitHub's own summary, so they count every child, including the ones past
   the twenty the board asks about. "Closed" is closed for any reason: work that
   was finished and work that was dropped are both off the list of things left
   to do.
+- **A list row shows a dot in the child's column colour, the number, the title
+  (two lines at most) and the state in quiet words, with no badge.** The press
+  that shows or hides the list sits after the list.
 - **The list is folded away until somebody presses for it, and then all of it
   shows.** The pills answer the question a glance asks, so the rows are the
   detail, and a reader who asks for the detail wants the whole of it rather
