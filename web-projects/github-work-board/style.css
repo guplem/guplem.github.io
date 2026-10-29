@@ -2497,6 +2497,35 @@ span.skeleton-ghost:not(.badge, .segment, .avatar) {
   text-overflow: ellipsis;
 }
 
+/* On the board the repository name is a filter chip that reads as plain text
+ * until the pointer finds it (ADR 0049). */
+button.issue-repo {
+  font: inherit;
+  color: inherit;
+  padding: 0 0.25rem;
+  margin: 0 -0.25rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+button.issue-repo:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+button.issue-repo:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 1px;
+}
+
+button.issue-repo[aria-pressed="true"] {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
 .issue-number {
   color: hsl(var(--foreground) / 0.7);
 }
@@ -3095,6 +3124,37 @@ span.skeleton-ghost:not(.badge, .segment, .avatar) {
 .issue-labels > .badge-outline {
   border-radius: 0.375rem;
   color: hsl(var(--foreground) / 0.72);
+}
+
+/* On the board a label is a filter chip, pressed like a field value (ADR 0049). */
+.issue-labels > button.badge-outline {
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.issue-labels > button.badge-outline:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.issue-labels > button.badge-outline:active {
+  transform: translateY(1px);
+}
+
+.issue-labels > button.badge-outline:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 1px;
+}
+
+.issue-labels > button.badge-outline[aria-pressed="true"] {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.issue-labels > button.badge-outline[aria-pressed="true"]:hover {
+  background-color: hsl(var(--primary) / 0.88);
 }
 
 /* The issue fields that are set, in a row under the labels (ADR 0047). The

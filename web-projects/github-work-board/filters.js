@@ -128,6 +128,16 @@ export function availableMilestones(items) {
   return sortedUnique(names.filter((name) => typeof name === "string" && name !== ""));
 }
 
+/** The tooltip on a card's label, which is a filter chip (ADR 0049). */
+export function labelFilterTip(name, pressed) {
+  return pressed ? `Show everything again, not only ${name}` : `Show only the work labelled ${name}`;
+}
+
+/** The tooltip on a card's repository name, which is a filter chip (ADR 0049). */
+export function repositoryFilterTip(name, pressed) {
+  return pressed ? `Show everything again, not only ${name}` : `Show only the work in ${name}`;
+}
+
 /** A value added when it is missing, removed when it is there. The list is not changed. */
 export function toggleInList(list, value) {
   const current = asList(list);
