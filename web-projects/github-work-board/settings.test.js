@@ -225,6 +225,18 @@ describe("the remembered counts", () => {
     expect(readLastCounts(storage)).toEqual({ items: 4 });
   });
 
+  // The filter bar's placeholder draws one button per menu, at the width of
+  // its name, so the names are remembered too (ADR 0004, ADR 0049).
+  test("keep a list of names beside the counts", () => {
+    saveLastCounts(storage, { items: 3, menus: ["Repository", "Label"] });
+    expect(readLastCounts(storage)).toEqual({ items: 3, menus: ["Repository", "Label"] });
+  });
+
+  test("a list that holds anything but names is dropped", () => {
+    storage.setItem(STORAGE_KEYS.lastCounts, JSON.stringify({ items: 3, menus: ["Label", 4], assignees: "ana" }));
+    expect(readLastCounts(storage)).toEqual({ items: 3 });
+  });
+
   // Signing out throws away what the board knew, and how big it was is part of
   // that: the next reader on this browser is not the same person.
   test("forgetAllTokens clears them", () => {

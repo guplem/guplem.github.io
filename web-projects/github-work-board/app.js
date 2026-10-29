@@ -170,7 +170,7 @@ import {
   saveRepo as saveCloudRepo,
   saveToken as saveCloudToken,
 } from "../cloud-storage/cloudSettings.js";
-import { skeletonColumnCounts, skeletonCount } from "./skeletons.js";
+import { skeletonCardShape, skeletonColumns, skeletonCount, skeletonFilterLabels } from "./skeletons.js";
 import {
   describeStackPosition,
   orderItemsForMerging,
@@ -294,6 +294,8 @@ const state = {
   // Which stack each card on screen belongs to, keyed by item, valued by the
   // key of the stack's bottom. Read while a card is built (ADR 0027).
   stackRoots: {},
+  // How many cards each shown column held at the last draw, for the placeholders (ADR 0004).
+  drawnColumns: {},
   // Where each card on the board sits in its stack, keyed by item. The review
   // row works this out for itself, over its own cards (ADR 0020, ADR 0027).
   stackBadges: {},
@@ -1023,30 +1025,157 @@ function buildSkeletonBar(width, extra = "") {
 }
 
 /**
- * A placeholder for one segment of a switch. It carries the real label, unseen,
- * so the switch already has its real width; only the pressed one is a grey bar.
+ * A segment of a switch while the board waits. A word the board already knows
+ * ("All", "Everyone") is drawn for real, pressed or not, and cannot be pressed
+ * yet. A word that comes from GitHub, such as a person's name, is grey.
  */
-function buildSkeletonSegment(label, pressed) {
-  const slot = document.createElement("span");
-  slot.className = pressed ? "skeleton skeleton-segment" : "skeleton-segment";
-  slot.setAttribute("aria-hidden", "true");
-  slot.textContent = label;
-  return slot;
+function buildSkeletonSegment(label, pressed, { known = true } = {}) {
+  const segment = known ? document.createElement("button") : buildGhost("span", "segment", label);
+  if (known) {
+    segment.type = "button";
+    segment.className = "segment";
+    segment.disabled = true;
+    segment.textContent = label;
+  }
+  segment.setAttribute("aria-pressed", pressed ? "true" : "false");
+  return segment;
 }
 
-/** A placeholder in the shape of a work item card. */
-function buildSkeletonCard() {
+/**
+ * A grey copy of one real part: the same element and classes, with words of
+ * about the right length, unseen. The page's own CSS sizes and places it, so
+ * the placeholder has the shape of the part that replaces it (ADR 0004).
+ */
+function buildGhost(tag, className, words = "") {
+  const part = document.createElement(tag);
+  part.className = `${className} skeleton-ghost`.trim();
+  part.textContent = words;
+  part.setAttribute("aria-hidden", "true");
+  return part;
+}
+
+/** Words of about the length the real ones had, for a ghost to carry. */
+const GHOST_WORDS = {
+  repository: "owner/repository",
+  number: "#1234",
+  title: "A title of about this length here",
+  labels: ["a label", "another"],
+  fields: ["Field value", "Field 3", "Field value"],
+  person: "Person",
+  age: "Opened 9 days ago",
+};
+
+/**
+ * A placeholder in the shape of a work item card, built from the card's own
+ * classes: the kind and the repository, the title, then the rows of labels and
+ * fields that most cards carried last time (`shape`). A review card ends with
+ * whose work it is and how long it has been open, like the real one.
+ */
+function buildSkeletonCard({ shape = { labels: true, fields: false }, review = false } = {}) {
+  const shows = (part) => readCardPartShown(state.board, part);
   const card = document.createElement("li");
   card.className = "issue skeleton-card";
+
   const where = document.createElement("p");
   where.className = "issue-where";
-  where.append(buildSkeletonBar("2.5rem", "skeleton-pill"), buildSkeletonBar("9rem"));
-  const title = document.createElement("p");
-  title.append(buildSkeletonBar("70%", "skeleton-title"));
-  const note = document.createElement("p");
-  note.append(buildSkeletonBar("100%", "skeleton-note"));
-  card.append(where, title, note);
+  where.append(
+    buildGhost("span", "kind-mark skeleton-icon"),
+    buildGhost("span", "issue-repo", GHOST_WORDS.repository),
+    buildGhost("span", "issue-number", GHOST_WORDS.number),
+  );
+
+  const title = document.createElement("span");
+  title.className = "issue-title";
+  title.append(buildGhost("span", "", GHOST_WORDS.title));
+  card.append(where, title);
+
+  const tags = document.createElement("div");
+  tags.className = "issue-tags";
+  if (shape.labels && shows("labels")) {
+    const labels = document.createElement("p");
+    labels.className = "issue-labels";
+    labels.append(...GHOST_WORDS.labels.map((words) => buildGhost("span", "badge badge-outline", words)));
+    tags.append(labels);
+  }
+  // A review card never carries the fields: a pull request has none.
+  if (shape.fields && shows("fields") && !review) {
+    const fields = document.createElement("p");
+    fields.className = "issue-fields";
+    fields.append(...GHOST_WORDS.fields.map((words) => buildGhost("span", "badge badge-field", words)));
+    tags.append(fields);
+  }
+
+  if (review) {
+    if (tags.childElementCount > 0) card.append(tags);
+    const foot = document.createElement("div");
+    foot.className = "issue-foot issue-foot-review";
+    if (shows("people")) {
+      const who = document.createElement("span");
+      who.className = "issue-who";
+      const faces = document.createElement("p");
+      faces.className = "issue-people";
+      faces.append(buildGhost("span", "avatar"));
+      who.append(faces, buildGhost("span", "issue-who-name", GHOST_WORDS.person));
+      foot.append(who);
+    }
+    foot.append(buildGhost("span", "issue-age", GHOST_WORDS.age));
+    card.append(foot);
+  } else if (tags.childElementCount > 0) {
+    const foot = document.createElement("div");
+    foot.className = "issue-foot";
+    foot.append(tags);
+    card.append(foot);
+  }
   return card;
+}
+
+/**
+ * A placeholder column: the real heading, name and colour included, because
+ * the board knows those before GitHub answers. Only the count and the cards
+ * are grey. A column that was empty last time draws its dashed box (ADR 0004).
+ */
+function buildSkeletonColumn(column, cards, shape) {
+  const section = document.createElement("section");
+  section.className = "column";
+  section.dataset.columnId = column.id;
+  const head = document.createElement("div");
+  head.className = "column-head";
+  const name = document.createElement("h3");
+  name.className = "column-name";
+  name.textContent = column.id === "done" ? rangeLabel(state.doneRange, new Date()) : column.label;
+  head.append(name, buildGhost("span", "badge column-count", "0"));
+  if (column.id === "done") {
+    const { toggle } = buildDoneRange();
+    toggle.disabled = true;
+    head.append(toggle);
+  }
+  section.append(head);
+  if (cards === 0) {
+    section.append(buildGhost("p", "column-empty", emptyColumnText(column.id)));
+  } else {
+    const list = document.createElement("ul");
+    list.className = "issues";
+    list.replaceChildren(...times(cards, () => buildSkeletonCard({ shape })));
+    section.append(list);
+  }
+  paint(section, column.id);
+  return section;
+}
+
+/**
+ * A placeholder filter button: the real button, with the menu's real name
+ * unseen, so it has the real width (ADR 0049).
+ */
+function buildSkeletonFilterButton(label) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "button button-outline filter-button skeleton-ghost";
+  button.disabled = true;
+  button.setAttribute("aria-hidden", "true");
+  const name = document.createElement("span");
+  name.textContent = label;
+  button.append(name, buildChevronDown());
+  return button;
 }
 
 /** A placeholder in the shape of a token row: a name box, a line of facts, a button. */
@@ -1087,47 +1216,51 @@ const times = (count, make) => Array.from({ length: count }, make);
  */
 function renderLoading() {
   const last = readLastCounts(storage);
+  const shape = skeletonCardShape(last);
   // A row that was empty last time stays hidden while the board waits, so the
   // placeholders match what is coming (ADR 0004, ADR 0013).
   // A part the reader hid gets no placeholder either.
   showReviewRow(last.reviews !== 0 && readAreaShown(state.board, REVIEW_ROW_ID));
+  paint(element("reviews"), REVIEW_ROW_ID);
   element("reviews-empty").hidden = true;
-  element("reviews-count").replaceChildren(buildSkeletonBar("0.75rem"));
-  element("reviews-list").replaceChildren(...times(skeletonCount(last.reviews, 2), buildSkeletonCard));
+  element("reviews-count").replaceChildren(buildGhost("span", "", "0"));
+  element("reviews-count").classList.add("skeleton-ghost");
+  element("reviews-list").replaceChildren(
+    ...times(skeletonCount(last.reviews, 2), () => buildSkeletonCard({ shape, review: true })),
+  );
+  element("reviews-list").style.minHeight = last.reviewsHeight > 0 ? `${last.reviewsHeight}px` : "";
+  // The switch for whose work a review is, with the names it held last time.
+  const assignees = Array.isArray(last.assignees) ? last.assignees : [];
+  element("assignee-group").hidden = assignees.length < 2;
+  element("assignee-filters").replaceChildren(
+    buildSkeletonSegment("Everyone", state.assignees.length === 0),
+    ...assignees.map((name) => buildSkeletonSegment(name, false, { known: false })),
+  );
 
   const shownColumns = COLUMNS.filter((column) => readAreaShown(state.board, column.id));
   const columns = element("board-columns");
   columns.setAttribute("aria-busy", "true");
   fitColumns(shownColumns.length);
-  // Spread what was there last time across the columns, unevenly, so the
-  // placeholder looks like a board and is about its height (ADR 0004).
-  const cardCounts = skeletonColumnCounts(last.items, shownColumns.length);
+  // What each column held last time, so each placeholder column is about the
+  // height of the real one (ADR 0004).
+  const cardCounts = skeletonColumns(
+    last,
+    shownColumns.map((column) => column.id),
+  );
   columns.replaceChildren(
-    ...shownColumns.map((column, index) => {
-      const section = document.createElement("section");
-      section.className = "column";
-      const head = document.createElement("div");
-      head.className = "column-head";
-      head.append(buildSkeletonBar("7rem", "skeleton-title"), buildSkeletonBar("1.5rem", "skeleton-pill"));
-      const list = document.createElement("ul");
-      list.className = "issues";
-      list.replaceChildren(...times(cardCounts[index], buildSkeletonCard));
-      section.append(head, list);
-      return section;
-    }),
+    ...shownColumns.map((column, index) =>
+      buildSkeletonColumn(column, cardCounts[index], skeletonCardShape(last, column.id)),
+    ),
   );
   element("board-empty").hidden = true;
 
-  // One placeholder button per menu the bar held last time, so the bar does
-  // not grow when the real menus land (ADR 0004, ADR 0049).
-  const menus =
-    (last.repositories > 1 ? 1 : 0) + (last.labels > 0 ? 1 : 0) + (last.milestones > 0 ? 1 : 0) + (last.fields ?? 0);
-  // The switch keeps its real labels, unseen, so it is already its real width,
-  // and only the pressed tab shimmers: one selector, where it will sit.
+  // One placeholder button per menu the bar held last time, each as wide as
+  // its name, so the bar does not move when the real menus land (ADR 0004,
+  // ADR 0049). The kind switch is drawn for real: its words never change.
   element("kind-filters").replaceChildren(
     ...KIND_FILTERS.map((kind) => buildSkeletonSegment(kind.label, state.kind === kind.id)),
   );
-  element("filter-menus").replaceChildren(...times(menus, () => buildSkeletonBar("6.5rem", "skeleton-button")));
+  element("filter-menus").replaceChildren(...skeletonFilterLabels(last).map(buildSkeletonFilterButton));
   element("clear-board-filters").hidden = true;
 
   element("tokens").replaceChildren(
@@ -2674,6 +2807,7 @@ function renderBoard() {
   showReviewRow(reviewRowShown && reviewsNotOnBoard.length > 0 && (search === null || found.length > 0));
   element("reviews-empty").hidden = waiting.length > 0;
   const stacked = stackPositions(waiting);
+  element("reviews-list").style.removeProperty("min-height");
   element("reviews-list").replaceChildren(
     ...found.map((item) =>
       buildWorkItemCard(item, {
@@ -2710,10 +2844,26 @@ function renderBoard() {
   const countFor = Object.fromEntries(counts.parts.map((part) => [part.id, part]));
 
   const reviewCount = element("reviews-count");
+  reviewCount.classList.remove("skeleton-ghost");
   reviewCount.textContent = String(countFor[REVIEW_ROW_ID]?.count ?? waiting.length);
   const leftOut = describeExcluded(countFor[REVIEW_ROW_ID]?.excluded ?? 0);
   explain(reviewCount, leftOut);
 
+  // How many cards each shown column holds before a search, and how many of
+  // them carry labels and fields, which the next wait for GitHub draws: a
+  // column of pull requests has no row of fields (ADR 0004).
+  state.drawnColumns = Object.fromEntries(
+    board
+      .filter(({ column }) => readAreaShown(state.board, column.id))
+      .flatMap(({ column, groups }) => {
+        const items = groups.map((group) => group.item);
+        return [
+          [`column:${column.id}`, items.length],
+          [`labels:${column.id}`, items.filter((item) => item.labels.length > 0 || item.milestone).length],
+          [`fields:${column.id}`, items.filter((item) => (item.fields ?? []).length > 0).length],
+        ];
+      }),
+  );
   const shownBoard = board
     .filter(({ column }) => readAreaShown(state.board, column.id))
     .map(({ column, groups }) => ({ column, groups: searchGroups(groups, search) }));
@@ -3361,6 +3511,17 @@ function showBootStep(id) {
 const BOOT_FILL_MS = 450;
 
 /**
+ * The review row's height, which the next wait keeps free: one title on two
+ * lines makes every card in the row taller, and a count cannot know that
+ * (ADR 0004). A board still behind the start-up screen measures 0, so the last
+ * good number stays until it can be read.
+ */
+function measuredReviewsHeight() {
+  if (element("reviews").hidden) return 0;
+  return element("reviews-list").offsetHeight || (readLastCounts(storage).reviewsHeight ?? 0);
+}
+
+/**
  * Take the start-up screen away, because the screen it was waiting for is ready.
  *
  * One place does this, and it is `showView`: the start-up screen is up until
@@ -3380,7 +3541,13 @@ function finishBoot() {
   if (!boot || boot.hidden || boot.dataset.finishing) return;
   boot.dataset.finishing = "true";
   const hideBoot = () => {
+    if (boot.hidden) return;
     boot.hidden = true;
+    // The first read ended behind this screen, where the review row measured
+    // nothing, so it is measured now that the board is on the page.
+    if (!state.loading && state.lastReadAt) {
+      saveLastCounts(storage, { ...readLastCounts(storage), reviewsHeight: measuredReviewsHeight() });
+    }
   };
   if (!fill) return hideBoot();
   fill.addEventListener("transitionend", hideBoot, { once: true });
@@ -4160,6 +4327,13 @@ async function connectAll({ quiet = false } = {}) {
       milestones: availableMilestones(state.items).length,
       fields: availableFieldFilters(state.items).length,
       tokens: state.tokens.length,
+      // The shape of the board, so the next wait draws the same shape (ADR 0004).
+      ...state.drawnColumns,
+      reviewsHeight: measuredReviewsHeight(),
+      withLabels: state.items.filter((item) => item.labels.length > 0 || item.milestone).length,
+      withFields: state.items.filter((item) => (item.fields ?? []).length > 0).length,
+      menus: filterMenus(state.items, state).map((menu) => menu.label),
+      assignees: availableAssignees(withoutItems(state.reviews, state.items)).map((person) => person.name),
     });
     // Only when something is wrong. A board that saves itself is the ordinary
     // case, and a line that says so on every read is a line nobody reads. The

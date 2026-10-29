@@ -64,7 +64,7 @@ It is the short procedure for all of the above.
 | `cardParts.js` | Yes | The parts of a card the reader can hide in Settings, with their permanent ids (ADR 0047) |
 | `milestones.js` | Yes | The milestone a piece of work is in, read from the answer the board already has: its share closed and the words on its pill (ADR 0045) |
 | `boardSearch.js` | Yes | The find box: part of a number, a pasted GitHub link or words, the match-case and whole-word choices, and which cards stay (ADR 0038) |
-| `skeletons.js` | Yes | How many placeholders to draw while the board waits, and their uneven spread across the columns (ADR 0004) |
+| `skeletons.js` | Yes | What to draw while the board waits: how many placeholders, how many cards in each column, which rows a card carries, and which filter menus the bar shows (ADR 0004) |
 | `readProgress.js` | Yes | How full the thin bar at the top of the window is, one step per call of each token, counted over every token at once, and which step the read waits on (ADR 0039, ADR 0040) |
 | `tokenIdentity.js` | Yes | Masking a token, naming it, saying what it reached, and which tokens failed to read (`failedReads`, ADR 0007) |
 | `approval.js` | Yes | Whether a token that found nothing may wait for an organisation's approval, which organisation, and the page where its owners approve it (ADR 0041) |
@@ -679,6 +679,15 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   the long one (ADR 0023, ADR 0048).
 - **The order lives in the masthead**, beside the way to Settings, and is
   hidden on the screens it does not govern (ADR 0023).
+- **A board placeholder is the real part in grey, never a free-standing
+  bar.** `buildGhost` in `app.js` builds the same element with the same
+  classes, and `.skeleton-ghost` hides its words and paints it grey. Build a
+  new board placeholder the same way, and draw for real what the board knows
+  before GitHub answers (a column's name and colour, a switch's fixed words).
+  The shape comes from `readLastCounts`, which also keeps lists of names (the
+  filter menus, the review row's people) and per-column keys
+  (`column:<id>`, `labels:<id>`, `fields:<id>`). A new remembered key is
+  written in the one `saveLastCounts` call in `connectAll` (ADR 0004).
 - **A placeholder mirrors the row it replaces, line for line.** A token row is
   two stacked lines and two buttons, so its placeholder is too. Two bars appended
   to a plain `div` render as one line with no gap, which is what the first

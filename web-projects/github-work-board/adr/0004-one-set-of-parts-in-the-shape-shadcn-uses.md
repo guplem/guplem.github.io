@@ -80,9 +80,19 @@ held last time, kept in storage by `settings.js` and clamped by `skeletons.js`,
 so a reader with eleven items sees eleven placeholders and the page barely moves
 when the real eleven land. A spinner says "something is happening"; a
 placeholder says "this is what is coming, and this is how much of it".
-A switch draws one placeholder, where its pressed tab will sit, and keeps its
-real labels unseen so it is already its real width. Three grey bars in a row
-read as three things loading, not as one switch.
+**A placeholder is the real part, in grey.** Each one is built from the same
+element and classes as the part that replaces it, with words of about the right
+length made unseen (`buildGhost` in `app.js`, `.skeleton-ghost` in
+`style.css`). The page's own rules then size and place it, so it cannot drift
+from the real part when that part changes. What the board knows before GitHub
+answers is drawn for real: a column's name and colour, the review row's colour,
+the words of the kind switch and "Everyone". Only what comes from GitHub is
+grey. Besides the counts, the board remembers the shape of the last answer:
+the names of the filter menus (so each grey button has its real width), the
+names in the review row's switch, how many cards each column held and how many
+of them carried labels or fields, and the height of the review row. A column
+that was empty draws its dashed box. Measured on a desktop window, every part
+above the columns now lands within 1 pixel of where the real one appears.
 
 **Every part answers the pointer and the keyboard.** A hover state on every
 button variant, a press state, a focus ring that stays readable on any surface,
@@ -109,7 +119,11 @@ system, or it gets designed differently.
 the last visit, so the first visit guesses, and a board that changed a lot
 between visits still jumps. That is accepted: being close most of the time beats
 being empty every time. A placeholder must never be reachable, so it takes no
-pointer events and answers no hover.
+pointer events and answers no hover. A grey part keeps the real part's
+classes, so a rule that colours a badge or a label would show through; the
+`.skeleton-ghost` rule uses `!important` on its colours for that reason. The
+review row's height is read off the page, so it is saved only once the board is
+on screen: behind the start-up screen it measures 0.
 
 **Movement is the only thing a reader who asked for less of it loses.** The
 placeholder stays; its sweep stops. A reader who turned motion down still needs

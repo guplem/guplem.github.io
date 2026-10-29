@@ -174,7 +174,8 @@ export function saveAutoRefresh(storage, choice) {
 }
 
 /**
- * How many of each thing the board held last time.
+ * How many of each thing the board held last time, and the names of the
+ * filter menus and of the people in the review row's switch.
  *
  * It is remembered for one reason: the placeholders drawn while the board waits
  * for GitHub are the right size, so the page barely moves when the real thing
@@ -193,6 +194,9 @@ export function readLastCounts(storage) {
   const counts = {};
   for (const [name, value] of Object.entries(stored)) {
     if (Number.isFinite(value) && value >= 0) counts[name] = value;
+    // A list of names, such as the filter menus, so a placeholder can carry
+    // the real words and have their real width.
+    if (Array.isArray(value) && value.every((one) => typeof one === "string")) counts[name] = value;
   }
   return counts;
 }
