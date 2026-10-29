@@ -1,5 +1,13 @@
 import { describe, expect, test } from "bun:test";
-import { MOST_SKELETONS, SKELETON_FALLBACK, skeletonColumnCounts, skeletonCount } from "./skeletons.js";
+import {
+  MOST_SKELETONS,
+  SKELETON_FALLBACK,
+  skeletonCardShape,
+  skeletonColumnCounts,
+  skeletonColumns,
+  skeletonCount,
+  skeletonFilterLabels,
+} from "./skeletons.js";
 
 describe("skeletonCount", () => {
   // The point of remembering the last count is that the placeholder is the
@@ -57,5 +65,81 @@ describe("skeletonColumnCounts", () => {
   // into a wall of grey boxes.
   test("draws no more than a capped board would", () => {
     expect(skeletonColumnCounts(500, 6)).toEqual(skeletonColumnCounts(MOST_SKELETONS, 6));
+  });
+});
+
+describe("skeletonColumns", () => {
+  // The board remembers how many cards each column held, so each placeholder
+  // column is the height the real one will be.
+  test("draws what each column held last time", () => {
+    const last = { items: 13, "column:todo": 8, "column:ongoing": 3, "column:needs-changes": 0 };
+    expect(skeletonColumns(last, ["todo", "ongoing", "needs-changes"])).toEqual([8, 3, 0]);
+  });
+
+  // A column that was empty is drawn empty, with the dashed box the real one
+  // shows, so nothing grows or shrinks when the answer lands.
+  test("keeps an empty column empty", () => {
+    expect(skeletonColumns({ "column:done": 0 }, ["done"])).toEqual([0]);
+  });
+
+  test("caps a busy column", () => {
+    expect(skeletonColumns({ "column:todo": 90 }, ["todo"])).toEqual([MOST_SKELETONS]);
+  });
+
+  // A board saved before the columns were remembered still gets a board shape.
+  test("falls back to the uneven spread when a column is not remembered", () => {
+    expect(skeletonColumns({ items: 12, "column:todo": 4 }, ["todo", "ongoing"])).toEqual(skeletonColumnCounts(12, 2));
+  });
+});
+
+describe("skeletonFilterLabels", () => {
+  // Each placeholder button carries the real name, unseen, so it has the real
+  // width, and there is one per menu that was there.
+  test("uses the menus the bar held last time", () => {
+    expect(skeletonFilterLabels({ menus: ["Repository", "Reviewer", "Effort"] })).toEqual([
+      "Repository",
+      "Reviewer",
+      "Effort",
+    ]);
+  });
+
+  test("guesses the menus from the counts on an older board", () => {
+    expect(skeletonFilterLabels({ repositories: 2, labels: 3, milestones: 0, fields: 2 })).toEqual([
+      "Repository",
+      "Label",
+      "Field",
+      "Field",
+    ]);
+  });
+
+  test("draws no menu when nothing is known", () => {
+    expect(skeletonFilterLabels({})).toEqual([]);
+  });
+});
+
+describe("skeletonCardShape", () => {
+  // A placeholder card carries the rows most real cards carried, so it is
+  // about their height.
+  test("carries the rows that most cards carried", () => {
+    expect(skeletonCardShape({ items: 10, withLabels: 9, withFields: 6 })).toEqual({ labels: true, fields: true });
+    expect(skeletonCardShape({ items: 10, withLabels: 2, withFields: 0 })).toEqual({ labels: false, fields: false });
+  });
+
+  test("guesses a row of labels when nothing is known", () => {
+    expect(skeletonCardShape({})).toEqual({ labels: true, fields: false });
+  });
+});
+
+describe("skeletonCardShape for one column", () => {
+  // Pull requests carry no issue fields, so a column of pull requests must not
+  // draw a row of them while the column of issues beside it does.
+  test("reads the column's own rows when they are remembered", () => {
+    const last = { items: 10, withLabels: 10, withFields: 8, "column:ongoing": 3, "labels:ongoing": 3, "fields:ongoing": 0 };
+    expect(skeletonCardShape(last, "ongoing")).toEqual({ labels: true, fields: false });
+  });
+
+  test("falls back to the whole board for a column it does not know", () => {
+    const last = { items: 10, withLabels: 10, withFields: 8 };
+    expect(skeletonCardShape(last, "todo")).toEqual({ labels: true, fields: true });
   });
 });

@@ -41,3 +41,54 @@ export function skeletonColumnCounts(lastKnown, columns) {
     return Math.min(MOST_SKELETONS, Math.max(1, Math.round(share * weight)));
   });
 }
+
+/**
+ * How many placeholder cards to draw in each shown column, from what each
+ * column held last time (`column:<id>` in the remembered counts).
+ *
+ * A column that was empty stays empty, because the real one will most likely
+ * draw its dashed box again. A board saved before the columns were remembered
+ * falls back to the uneven spread above.
+ */
+export function skeletonColumns(last, columnIds) {
+  const known = columnIds.map((id) => last?.[`column:${id}`]);
+  if (!known.every(Number.isFinite)) return skeletonColumnCounts(last?.items, columnIds.length);
+  return known.map((count) => Math.min(MOST_SKELETONS, Math.max(0, Math.round(count))));
+}
+
+/**
+ * The names of the filter menus to draw while the board waits.
+ *
+ * Each placeholder button carries its real name, unseen, so the bar has its
+ * real width and the menus do not move when they land (ADR 0049). A board
+ * saved before the names were remembered guesses them from the counts.
+ */
+export function skeletonFilterLabels(last) {
+  if (Array.isArray(last?.menus)) return last.menus;
+  return [
+    ...(last?.repositories > 1 ? ["Repository"] : []),
+    ...(last?.labels > 0 ? ["Label"] : []),
+    ...(last?.milestones > 0 ? ["Milestone"] : []),
+    ...Array.from({ length: Number.isFinite(last?.fields) ? last.fields : 0 }, () => "Field"),
+  ];
+}
+
+/**
+ * Which rows a placeholder card carries under its title: the row of labels and
+ * the row of issue fields, each when most cards carried it last time.
+ *
+ * With a column id, the column's own memory (`labels:<id>` and `fields:<id>`
+ * beside `column:<id>`) decides, because a column of pull requests carries no
+ * issue fields while a column of issues does. Without one, or for a column the
+ * board does not remember, the whole board decides.
+ */
+export function skeletonCardShape(last, columnId = "") {
+  const inColumn = last?.[`column:${columnId}`];
+  const own = columnId !== "" && Number.isFinite(inColumn) && inColumn > 0;
+  const items = own ? inColumn : last?.items;
+  if (!Number.isFinite(items) || items === 0) return { labels: true, fields: false };
+  const most = (count) => Number.isFinite(count) && count * 2 >= items;
+  return own
+    ? { labels: most(last[`labels:${columnId}`]), fields: most(last[`fields:${columnId}`]) }
+    : { labels: most(last.withLabels), fields: most(last.withFields) };
+}

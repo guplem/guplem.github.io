@@ -306,6 +306,19 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(quiet).toContain("animation: none");
   });
 
+  // A board placeholder is the real part in grey, so the page's own rules
+  // size it and it cannot drift from the part that replaces it. A free-standing
+  // bar of a guessed width is what made the filter bar and the cards jump.
+  test("the board's placeholders are grey copies of the real parts (ADR 0004)", () => {
+    const app = read("app.js");
+    const start = app.indexOf("function renderLoading()");
+    const loading = app.slice(start, app.indexOf("\n}\n", start));
+    expect(loading).not.toContain("buildSkeletonBar");
+    expect(loading).toContain("buildSkeletonColumn");
+    expect(css).toContain(".skeleton-ghost");
+    expect(css.slice(css.indexOf("prefers-reduced-motion"))).toContain(".skeleton-ghost");
+  });
+
   test("the card's own button and its menu answer hover, a press and a focus", () => {
     expect(css).toContain(".icon-button:hover");
     expect(css).toContain(".icon-button:active");
