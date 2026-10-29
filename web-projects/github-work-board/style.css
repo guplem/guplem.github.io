@@ -2539,6 +2539,19 @@ button.issue-repo[aria-pressed="true"] {
   margin: 0.5rem 0 0;
 }
 
+/* A thin line closes the flags row when more of the card follows it, so the
+ * state of the work stands apart from what it is about. The links section
+ * then sits under that line and draws no second one. */
+.issue-flags:not(:last-child) {
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.issue-flags + .issue-relations {
+  border-top: 0;
+  padding-top: 0;
+}
+
 .badge-draft {
   background: hsl(var(--foreground) / 0.07);
   color: hsl(var(--muted-foreground));
