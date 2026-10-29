@@ -873,17 +873,15 @@ function buildWorkItemCard(
     flags.append(draft);
   }
 
-  if (isBlocked(relationship)) {
-    const blocked = document.createElement("span");
-    blocked.className = "badge badge-blocked";
-    blocked.textContent = "Blocked";
-    flags.append(blocked);
-  }
-
   for (const id of attentionFor(item, relationship)) {
     const reason = attentionReason(id);
     if (reason) flags.append(buildAttentionPill(reason));
   }
+
+  // A blocked card names what blocks it in the same red pill, so the state and
+  // its cause read as one thing (ADR 0032). It comes last, so its chips take
+  // the room left on the row. With the links hidden, the pill says "Blocked".
+  if (isBlocked(relationship)) flags.append(buildBlockedBy(openBlockers(relationship), shows("links")));
   if (flags.childElementCount > 0) card.append(flags);
 
   // "Sub-issue of", not "Part of": the card has to say what the relationship is
@@ -893,8 +891,6 @@ function buildWorkItemCard(
   // relationship on the left, the items it names on the right.
   const relations = document.createElement("div");
   relations.className = "issue-relations";
-  const blockers = openBlockers(relationship);
-  if (blockers.length > 0 && shows("links")) relations.append(buildLinkLine("Blocked by", blockers));
   if (relationship.parent && shows("links")) relations.append(buildLinkLine("Sub-issue of", [relationship.parent]));
   if (relationship.subIssues.total > 0 && shows("children")) relations.append(buildChildren(item, relationship.subIssues));
   if (relations.childElementCount > 0) card.append(relations);
@@ -2228,22 +2224,41 @@ function buildLinkLine(label, links) {
   name.textContent = label;
   line.append(name);
 
-  for (const link of links) {
-    const anchor = document.createElement("a");
-    anchor.href = link.url;
-    anchor.target = "_blank";
-    anchor.rel = "noopener";
-    anchor.className = "issue-link link-chip";
-    anchor.textContent = `#${link.number} ${link.title}`;
-    // The chip is one line and may cut the title short, so resting on it
-    // gives the whole of it.
-    explain(anchor, `#${link.number} ${link.title}`);
-    // Point at the card this line names, so hovering the line finds it
-    // (ADR 0035).
-    anchor.dataset.pointsAt = link.id;
-    line.append(anchor);
-  }
+  for (const link of links) line.append(buildLinkChip(link));
   return line;
+}
+
+/**
+ * The red pill of a blocked card, followed by one chip per open blocker. With
+ * the links hidden, the pill alone, and it says "Blocked" (ADR 0032).
+ */
+function buildBlockedBy(blockers, withLinks) {
+  const group = document.createElement("span");
+  group.className = "blocked-by";
+
+  const pill = document.createElement("span");
+  pill.className = "badge badge-blocked";
+  pill.textContent = withLinks ? "Blocked by" : "Blocked";
+  group.append(pill);
+
+  if (withLinks) for (const link of blockers) group.append(buildLinkChip(link));
+  return group;
+}
+
+function buildLinkChip(link) {
+  const anchor = document.createElement("a");
+  anchor.href = link.url;
+  anchor.target = "_blank";
+  anchor.rel = "noopener";
+  anchor.className = "issue-link link-chip";
+  anchor.textContent = `#${link.number} ${link.title}`;
+  // The chip is one line and may cut the title short, so resting on it
+  // gives the whole of it.
+  explain(anchor, `#${link.number} ${link.title}`);
+  // Point at the card this chip names, so hovering the chip finds it
+  // (ADR 0035).
+  anchor.dataset.pointsAt = link.id;
+  return anchor;
 }
 
 /**

@@ -2505,6 +2505,7 @@ span.skeleton-ghost:not(.badge, .segment, .avatar) {
 .issue-flags {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 0.3125rem;
   margin: 0.5rem 0 0;
 }
@@ -3364,7 +3365,8 @@ button.milestone-name[aria-pressed="true"]:hover {
 }
 
 /* A linked item: a quiet chip on one line, cut short with an ellipsis. */
-.issue-relations .link-chip {
+.issue-relations .link-chip,
+.blocked-by .link-chip {
   grid-column: 2;
   justify-self: start;
   max-width: 100%;
@@ -3381,7 +3383,9 @@ button.milestone-name[aria-pressed="true"]:hover {
 }
 
 .issue-relations .link-chip:hover,
-.issue-relations .link-chip:focus-visible {
+.issue-relations .link-chip:focus-visible,
+.blocked-by .link-chip:hover,
+.blocked-by .link-chip:focus-visible {
   border-color: hsl(var(--foreground) / 0.35);
   background: hsl(var(--muted) / 0.6);
   color: hsl(var(--foreground));
@@ -3610,6 +3614,28 @@ button.milestone-name[aria-pressed="true"]:hover {
   background: hsl(var(--destructive) / 0.11);
   color: hsl(var(--destructive));
   font-weight: 600;
+}
+
+/* The pill and the chips of what blocks the card, last on the flags row. The
+ * group takes the room left on the row. Each chip wraps only when less than
+ * 8rem is left, and otherwise grows to its title and cuts it short. */
+.blocked-by {
+  display: flex;
+  flex: 1 1 12rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3125rem;
+  min-width: 0;
+}
+
+.blocked-by .badge-blocked {
+  flex: 0 0 auto;
+}
+
+.blocked-by .link-chip {
+  flex: 1 1 8rem;
+  min-width: 0;
+  max-width: max-content;
 }
 
 /* Why a card is in "Needs attention" (ADR 0011). Three reasons, one look: all
