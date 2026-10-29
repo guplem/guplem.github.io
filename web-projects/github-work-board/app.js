@@ -108,6 +108,8 @@ import {
   filterByPerson,
   filterMenus,
   filterWorkItems,
+  labelFilterTip,
+  repositoryFilterTip,
   toggleInList,
 } from "./filters.js";
 import { describeFailure, describeMissingPermission } from "./githubErrors.js";
@@ -612,6 +614,30 @@ function buildFieldPill(field, canFilter) {
 }
 
 /**
+ * One label on a card. On the board it is a filter chip: a press narrows the
+ * board to the work with that label, and it is pressed while it does
+ * (ADR 0049).
+ *
+ * @param canFilter false on a review card, which the board's filters never narrow
+ */
+function buildLabelChip(name, canFilter) {
+  const chip = document.createElement(canFilter ? "button" : "span");
+  chip.className = "badge badge-outline";
+  chip.textContent = name;
+  if (canFilter) {
+    const pressed = state.labels.includes(name);
+    chip.type = "button";
+    chip.setAttribute("aria-pressed", pressed ? "true" : "false");
+    explain(chip, labelFilterTip(name, pressed));
+    chip.addEventListener("click", () => {
+      state.labels = toggleInList(state.labels, name);
+      afterFilterChange();
+    });
+  }
+  return chip;
+}
+
+/**
  * The milestone a card is in, as one pill with two halves (ADR 0045).
  *
  * The icon and the share are a link to the milestone on GitHub. The name
@@ -789,9 +815,22 @@ function buildWorkItemCard(
   // A nested pull request is almost always in its issue's own repository, so
   // the name is repetition taking the width the title needs. It stays one
   // hover away (ADR 0018).
-  const where = document.createElement("span");
+  // Only the board's filters can narrow by it, so on a review card the name is
+  // text, the way a milestone's name is (ADR 0009, ADR 0049).
+  const canFilter = people !== "assignees";
+  const where = document.createElement(canFilter && !compact ? "button" : "span");
   where.className = "issue-repo";
   where.textContent = compact ? "" : item.repository;
+  if (canFilter && !compact) {
+    const pressed = state.repositories.includes(item.repository);
+    where.type = "button";
+    where.setAttribute("aria-pressed", pressed ? "true" : "false");
+    explain(where, repositoryFilterTip(item.repository, pressed));
+    where.addEventListener("click", () => {
+      state.repositories = toggleInList(state.repositories, item.repository);
+      afterFilterChange();
+    });
+  }
   const number = document.createElement("span");
   number.className = "issue-number";
   number.textContent = `#${item.number}`;
@@ -908,20 +947,16 @@ function buildWorkItemCard(
   const tags = document.createElement("div");
   tags.className = "issue-tags";
 
-  // The milestone closes the labels. Only the board's filters can narrow by
-  // it, so a review card's pill links and does not filter (ADR 0009, ADR 0045).
+  // The milestone closes the labels. Each label, like the milestone's name,
+  // filters the board. Only the board's filters can narrow by them, so on a
+  // review card they are text (ADR 0009, ADR 0045, ADR 0049).
   const labelList = shows("labels") ? item.labels : [];
   const milestone = shows("milestone") ? item.milestone : null;
   if (labelList.length > 0 || milestone) {
     const labels = document.createElement("p");
     labels.className = "issue-labels";
-    for (const label of labelList) {
-      const chip = document.createElement("span");
-      chip.className = "badge badge-outline";
-      chip.textContent = label.name;
-      labels.append(chip);
-    }
-    if (milestone) labels.append(buildMilestonePill(milestone, people !== "assignees"));
+    for (const label of labelList) labels.append(buildLabelChip(label.name, canFilter));
+    if (milestone) labels.append(buildMilestonePill(milestone, canFilter));
     tags.append(labels);
   }
 
@@ -932,7 +967,7 @@ function buildWorkItemCard(
   if (fields.length > 0) {
     const row = document.createElement("p");
     row.className = "issue-fields";
-    for (const field of fields) row.append(buildFieldPill(field, people !== "assignees"));
+    for (const field of fields) row.append(buildFieldPill(field, canFilter));
     tags.append(row);
   }
 

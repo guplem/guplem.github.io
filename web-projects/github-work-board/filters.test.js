@@ -12,7 +12,9 @@ import {
   availableReviewers,
   filterByPerson,
   filterWorkItems,
+  labelFilterTip,
   readKind,
+  repositoryFilterTip,
   toggleInList,
 } from "./filters.js";
 
@@ -390,5 +392,19 @@ describe("filterMenus: the menus the filter bar offers", () => {
     expect(boardFilterCount({ kind: "all", labels: ["bug"], assignees: ["ana"] })).toBe(1);
     expect(boardFilterCount({ kind: "issue", reviewers: ["bo"] })).toBe(2);
     expect(boardFilterCount({ kind: "all" })).toBe(0);
+  });
+});
+
+// A label or a repository on a card is a filter chip, like a milestone's name
+// (ADR 0045, ADR 0049). The tooltip says what a press does.
+describe("the words on a card's filter chips", () => {
+  test("a label says it shows only the work with that label, and how to undo it", () => {
+    expect(labelFilterTip("bug", false)).toBe("Show only the work labelled bug");
+    expect(labelFilterTip("bug", true)).toBe("Show everything again, not only bug");
+  });
+
+  test("a repository says it shows only the work in that repository, and how to undo it", () => {
+    expect(repositoryFilterTip("me/alpha", false)).toBe("Show only the work in me/alpha");
+    expect(repositoryFilterTip("me/alpha", true)).toBe("Show everything again, not only me/alpha");
   });
 });
