@@ -29,8 +29,11 @@ done", said how much was left and nothing about what it was (2026-09).
   colours as the board the reader already reads (ADR 0024). Each pill is a link
   to that child, and hovering it says which issue it is and where it sits.
 - **The links and the children share one section, `.issue-relations`, under a
-  thin line.** A link row ("Blocked by", "Sub-issue of") is a label column and
-  a one-line chip with the full title in its tooltip. The children have the
+  thin line.** A link row ("Sub-issue of") is a label column and
+  a one-line chip with the full title in its tooltip. What blocks the card is
+  not a row there: the red pill on the flags row under the title says "Blocked
+  by" and the blockers' chips follow it on that row, so the state and its cause
+  read as one thing. With the links hidden, the pill alone says "Blocked". The children have the
   heading "Children" and the count "3 of 7 closed", with the pills on their own
   line.
 - **The count sits beside the pills: closed out of total.** Both numbers come

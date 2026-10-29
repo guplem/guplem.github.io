@@ -19,8 +19,9 @@ reference to another item is the same question, asked about one card.
 **Point at anything that names another item, and the card it names lights up.**
 
 - **Every reference points at a key**, in one attribute, `data-points-at`: a
-  child's pill, a child's row in the unfolded list, and every link on a
-  "Blocked by" or "Sub-issue of" line. **Every card says which item it is**, in
+  child's pill, a child's row in the unfolded list, every link on a "Sub-issue
+  of" line, and every chip after the "Blocked by" pill. **Every card says which
+  item it is**, in
   `data-key`. One listener for the page reads the first and lights the second,
   the same shape ADR 0027 chose, because the board is rebuilt on every render
   and a listener on a card would have to be given again each time.
