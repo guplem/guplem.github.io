@@ -757,6 +757,17 @@ describe("the review row is ordered by the same rules as a column (ADR 0016, ADR
     expect(source).toMatch(/sinkBlocked\(\s*raiseNeedsAttention\(/);
   });
 
+  // The work that blocks other work climbs before the attention raise and the
+  // blocked sink. Both of those keep the order handed in, so a blocker still
+  // reads before what it blocks inside each half. Move this pass after the
+  // sink and a blocked blocker climbs over the free work; drop it and a card
+  // reads above its own blocker again (ADR 0050).
+  test("the board raises blocking work first, so a blocker reads before what it blocks", () => {
+    const source = read("app.js");
+    expect(source.match(/raiseBlockingWork\(/g) ?? []).toHaveLength(1);
+    expect(source).toMatch(/raiseNeedsAttention\(\s*raiseBlockingWork\(\s*orderStacksForMerging\(plain\)/);
+  });
+
   // One pass belongs to the row alone, on purpose. A pull request the reader
   // reviewed before is half-done work, so it reads before a review nobody has
   // started. The board holds the reader's own work, not reviews, so it has

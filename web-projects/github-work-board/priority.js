@@ -21,7 +21,9 @@
 // marking the nested one only makes it fainter. Mark the card itself to move it.
 //
 // A card that GitHub says is blocked sinks too, below the work that can start
-// now, by the same move (`sinkBlocked`).
+// now, by the same move (`sinkBlocked`). Before that, the cards that block
+// other work climb, the ones that hold up most first, so a blocker always reads
+// before the card it blocks (`raiseBlockingWork`, ADR 0050).
 //
 // Three things rise, by the opposite move: on the board the work that wants its
 // author, ranked (`raiseNeedsAttention`), in the review row a pull request the reader reviewed
@@ -187,6 +189,87 @@ function sinkWithWhatWaitsOnIt(groups, named) {
 
   const sunk = new Set(list.filter(sinks));
   return [...list.filter((group) => !sunk.has(group)), ...list.filter((group) => sunk.has(group))];
+}
+
+/**
+ * The same groups, with the cards that hold up other work moved up, the ones
+ * that hold up most first.
+ *
+ * "Holds up" is counted through the chain: a card that blocks one card, which
+ * blocks two more, holds up three. Counted that way, a blocker always holds up
+ * more than the card it blocks, so a blocker always reads before it, and a
+ * chain reads in the order its links can start (ADR 0050).
+ *
+ * Only the cards on this list count. A blocker that is somebody else's work is
+ * not here to move, and a card the filters hid is not the reader's question.
+ *
+ * **A stack climbs whole, in merge order**, by the most that any card in it
+ * holds up, for the reason the attention raise gives (ADR 0016). A blocker
+ * named by a pull request nested in a card counts for that card, because the
+ * card is what moves.
+ *
+ * This runs before the attention raise, so the work that wants its author
+ * still reads first, and before the blocked sink, so a card nobody can start
+ * still goes below the work that can start now. The sinks keep the order handed
+ * in, so inside the blocked half a blocker still reads before what it blocks.
+ *
+ * @param groups `{item, children}` pairs, already in the reader's chosen order
+ * @param blockers a Map from a key to the keys of the open work blocking it
+ * @returns a new array holding exactly the same groups
+ */
+export function raiseBlockingWork(groups, blockers) {
+  const list = (Array.isArray(groups) ? groups : []).filter((one) => one && typeof one === "object");
+  const found = blockers instanceof Map ? blockers : new Map();
+  if (found.size === 0) return [...list];
+
+  // Every key a card carries, its nested pull requests included, names the
+  // stack that card is in, by the card at the bottom of it.
+  const bottom = bottomOf(list);
+  const stackOf = new Map();
+  for (const group of list) {
+    const keys = [group.item?.key, ...(Array.isArray(group.children) ? group.children : []).map((child) => child?.key)];
+    for (const key of keys) if (key) stackOf.set(key, bottom.get(group));
+  }
+
+  // Which stacks each stack holds up directly. A stack never holds up itself.
+  const holdsUp = new Map();
+  for (const [key, ids] of found) {
+    const held = stackOf.get(key);
+    if (!held || !Array.isArray(ids)) continue;
+    for (const id of ids) {
+      const holder = stackOf.get(id);
+      if (!holder || holder === held) continue;
+      if (!holdsUp.has(holder)) holdsUp.set(holder, new Set());
+      holdsUp.get(holder).add(held);
+    }
+  }
+  if (holdsUp.size === 0) return [...list];
+
+  const size = new Map();
+  for (const group of list) size.set(bottom.get(group), (size.get(bottom.get(group)) ?? 0) + 1);
+
+  // How many cards each stack holds up, through the chain. The seen set counts
+  // a card reached two ways once, and breaks a ring, which GitHub refuses but a
+  // stale answer must never turn into a hung page.
+  const heldCount = new Map();
+  for (const start of size.keys()) {
+    const seen = new Set([start]);
+    const queue = [start];
+    let count = 0;
+    while (queue.length > 0) {
+      for (const next of holdsUp.get(queue.shift()) ?? []) {
+        if (seen.has(next)) continue;
+        seen.add(next);
+        count += size.get(next) ?? 0;
+        queue.push(next);
+      }
+    }
+    heldCount.set(start, count);
+  }
+
+  // `sort` is stable, so the order handed in holds between equal counts and
+  // inside each stack.
+  return [...list].sort((one, two) => heldCount.get(bottom.get(two)) - heldCount.get(bottom.get(one)));
 }
 
 /**

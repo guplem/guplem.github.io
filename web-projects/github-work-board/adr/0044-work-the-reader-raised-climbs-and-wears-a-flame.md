@@ -43,10 +43,11 @@ still reads first, and a blocked card still reads last.
 | Pass | Board | Review row |
 |---|---|---|
 | 1 | Stacks in merge order | Stacks in merge order |
-| 2 | Red checks rise | Reviews the reader started rise (ADR 0042) |
-| 3 | Blocked work sinks | - |
-| 4 | **High priority rises** | **High priority rises** |
-| 5 | Not a priority sinks | Not a priority sinks |
+| 2 | Blocking work rises (ADR 0050) | - |
+| 3 | Red checks rise | Reviews the reader started rise (ADR 0042) |
+| 4 | Blocked work sinks | - |
+| 5 | **High priority rises** | **High priority rises** |
+| 6 | Not a priority sinks | Not a priority sinks |
 
 - **After the rules**, so the reader's hand beats them: a blocked card the
   reader raised reads first.

@@ -311,6 +311,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [github-work-board 0047](web-projects/github-work-board/adr/0047-issue-fields-come-free-and-the-reader-chooses-what-a-card-shows.md) | Issue fields come free with each issue, and the reader chooses what a card shows |
 | [github-work-board 0048](web-projects/github-work-board/adr/0048-settings-is-split-into-sections-and-the-section-is-in-the-link.md) | Settings is split into sections, the section is in the link, and a search finds any setting |
 | [github-work-board 0049](web-projects/github-work-board/adr/0049-the-filters-are-one-bar-a-kind-switch-and-one-menu-per-filter.md) | The filters are one bar, a kind switch and one menu per filter |
+| [github-work-board 0050](web-projects/github-work-board/adr/0050-a-blocker-reads-before-the-work-it-blocks.md) | A blocker reads before the work it blocks, and the one that holds up most reads first |
 | [wildfire-watch 0001](web-projects/wildfire-watch/adr/0001-demo-data-behind-the-real-data-shapes.md) | Keep a demo mode on invented data, in the same shapes as the live data |
 | [wildfire-watch 0002](web-projects/wildfire-watch/adr/0002-copy-the-fire-files-with-a-scheduled-action.md) | Copy the fire files with a scheduled GitHub Action, and read the copy |
 | [wildfire-watch 0003](web-projects/wildfire-watch/adr/0003-live-mode-reads-keyless-sources-and-names-each-one.md) | The live mode reads only keyless sources, and each layer names its source |
