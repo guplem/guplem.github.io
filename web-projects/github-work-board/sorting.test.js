@@ -38,6 +38,7 @@ describe("describeSort", () => {
       "Oldest first",
       "merge order",
       "Changes requested",
+      "blocks other work",
       "Blocked",
       "high priority",
       "not a priority",

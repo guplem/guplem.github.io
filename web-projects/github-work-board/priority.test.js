@@ -9,6 +9,7 @@ import {
   raiseHighPriority,
   raiseHighPriorityItems,
   raiseReviewedBeforeItems,
+  raiseBlockingWork,
   sinkBlocked,
   sinkLowPriority,
   sinkLowPriorityItems,
@@ -475,5 +476,122 @@ describe("PRIORITY_PATHS", () => {
   // second picture for the same mark.
   test("high priority is still the flame", () => {
     expect(PRIORITY_PATHS[HIGH][0]).toStartWith("M8.5 14.5");
+  });
+});
+
+describe("raiseBlockingWork", () => {
+  const issue = (key) => ({ item: { key, kind: "issue", repository: "me/repo", number: 1 }, children: [] });
+
+  test("nothing blocks anything, nothing moves", () => {
+    const list = [issue("a"), issue("b")];
+    expect(keys(raiseBlockingWork(list, new Map()))).toEqual(["a", "b"]);
+    expect(keys(raiseBlockingWork(list, null))).toEqual(["a", "b"]);
+  });
+
+  // The case that started this: a card above the card that blocks it. Work
+  // cannot start before its blocker ends, so the blocker reads first.
+  test("a blocker reads before the card it blocks", () => {
+    const list = [issue("blocked"), issue("blocker")];
+    const blockers = new Map([["blocked", ["blocker"]]]);
+    expect(keys(raiseBlockingWork(list, blockers))).toEqual(["blocker", "blocked"]);
+  });
+
+  // A chain counts all the way down: the first link holds up every card after
+  // it, so it reads first, and the rest follow in the order they can start.
+  test("a chain reads in the order its links can start", () => {
+    const list = [issue("c"), issue("b"), issue("a")];
+    const blockers = new Map([
+      ["c", ["b"]],
+      ["b", ["a"]],
+    ]);
+    expect(keys(raiseBlockingWork(list, blockers))).toEqual(["a", "b", "c"]);
+  });
+
+  // "Blocks more" is counted through the chain, not one step: a card that
+  // holds up one card which holds up two more holds up three.
+  test("the card that holds up more work reads first, counted through the chain", () => {
+    const list = [issue("wide"), issue("deep"), issue("w1"), issue("w2"), issue("d1"), issue("d2"), issue("d3")];
+    const blockers = new Map([
+      ["w1", ["wide"]],
+      ["w2", ["wide"]],
+      ["d1", ["deep"]],
+      ["d2", ["d1"]],
+      ["d3", ["d2"]],
+    ]);
+    expect(keys(raiseBlockingWork(list, blockers))).toEqual(["deep", "wide", "d1", "d2", "w1", "w2", "d3"]);
+  });
+
+  // A card held up by two paths is still one card.
+  test("a card reached two ways counts once", () => {
+    const list = [issue("x"), issue("top"), issue("left"), issue("right"), issue("end")];
+    const blockers = new Map([
+      ["left", ["top"]],
+      ["right", ["top"]],
+      ["end", ["left", "right"]],
+    ]);
+    const order = keys(raiseBlockingWork(list, blockers));
+    expect(order[0]).toBe("top");
+    expect(order.indexOf("end")).toBeGreaterThan(order.indexOf("left"));
+    expect(order.indexOf("end")).toBeGreaterThan(order.indexOf("right"));
+  });
+
+  test("the order handed in holds between cards that hold up the same amount", () => {
+    const list = [issue("a"), issue("b"), issue("c"), issue("d")];
+    const blockers = new Map([
+      ["c", ["b"]],
+      ["d", ["a"]],
+    ]);
+    expect(keys(raiseBlockingWork(list, blockers))).toEqual(["a", "b", "c", "d"]);
+  });
+
+  // A blocker that is not on this list is somebody else's work: it holds up
+  // nothing the reader can reorder.
+  test("a blocker off the list changes nothing", () => {
+    const list = [issue("a"), issue("b")];
+    const blockers = new Map([["a", ["elsewhere"]]]);
+    expect(keys(raiseBlockingWork(list, blockers))).toEqual(["a", "b"]);
+  });
+
+  // GitHub refuses a ring, but a stale answer must never hang the page.
+  test("a ring of blockers does not hang, and keeps every card", () => {
+    const list = [issue("a"), issue("b"), issue("free")];
+    const blockers = new Map([
+      ["a", ["b"]],
+      ["b", ["a"]],
+    ]);
+    expect(keys(raiseBlockingWork(list, blockers)).sort()).toEqual(["a", "b", "free"]);
+  });
+
+  // A pull request nested in an issue travels in that issue's card, so a
+  // blocker named by the nested one still points at the card.
+  test("a blocker nested in a card counts for the card", () => {
+    const host = { item: { key: "host", kind: "issue" }, children: [{ key: "nested", kind: "pull-request" }] };
+    const list = [issue("blocked"), host];
+    const blockers = new Map([["blocked", ["nested"]]]);
+    expect(keys(raiseBlockingWork(list, blockers))).toEqual(["host", "blocked"]);
+  });
+
+  // Nothing in a stack merges before the card below it (ADR 0016), so a stack
+  // climbs whole, in merge order, by the most that any card in it holds up.
+  test("a stack climbs whole, in merge order", () => {
+    const list = [
+      issue("blocked"),
+      group("one", { head: "one", base: "main", number: 1 }),
+      group("two", { head: "two", base: "one", number: 2 }),
+    ];
+    const blockers = new Map([["blocked", ["two"]]]);
+    expect(keys(raiseBlockingWork(list, blockers))).toEqual(["one", "two", "blocked"]);
+  });
+
+  // The case in the report: both cards are blocked and sink together, and the
+  // blocker must still read first inside the sunk half.
+  test("after the blocked sink, a blocked blocker still reads first", () => {
+    const list = [issue("free"), issue("7110"), issue("7108")];
+    const blockers = new Map([
+      ["7110", ["7108"]],
+      ["7108", ["7107"]],
+    ]);
+    const order = sinkBlocked(raiseBlockingWork(list, blockers), new Set(["7110", "7108"]));
+    expect(keys(order)).toEqual(["free", "7108", "7110"]);
   });
 });

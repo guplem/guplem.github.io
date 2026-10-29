@@ -211,6 +211,7 @@ import {
   LOW,
   NORMAL,
   PRIORITY_PATHS,
+  raiseBlockingWork,
   raiseHighPriority,
   raiseHighPriorityItems,
   raiseNeedsAttention,
@@ -2753,6 +2754,19 @@ function blockedKeys(items) {
 }
 
 /**
+ * The open work blocking each card, keyed by the card. The blocking pass reads
+ * it to put a blocker before the card it blocks (ADR 0050).
+ */
+function blockersByKey(items) {
+  const found = new Map();
+  for (const item of items) {
+    const ids = item ? openBlockers(readRelationship(state.links, item.key)).map((link) => link.id) : [];
+    if (ids.length > 0) found.set(item.key, ids);
+  }
+  return found;
+}
+
+/**
  * Put the list on the screen in the chosen order.
  *
  * Called on load, when the order changes, and after a note is written, because
@@ -2782,6 +2796,9 @@ function renderBoard() {
   // of them along: those cannot merge first, so leaving them up would show work
   // that reads as ready and is not (ADR 0016, ADR 0026). Like the stack pass,
   // only the smart order does this.
+  // Then the cards that hold up other work climb, the ones that hold up most
+  // first, counted through the chain, so a blocker always reads before the card
+  // it blocks (ADR 0050).
   // Then the cards that want their author climb to the top of their column:
   // changes requested first, then a red check, then a conflict. A red check no
   // longer moves a card out of the column it belongs in (ADR 0011), so this is
@@ -2798,7 +2815,10 @@ function renderBoard() {
       ? sinkLowPriority(
           raiseHighPriority(
             sinkBlocked(
-              raiseNeedsAttention(orderStacksForMerging(plain), attentionByKey(plainItems)),
+              raiseNeedsAttention(
+                raiseBlockingWork(orderStacksForMerging(plain), blockersByKey(plainItems)),
+                attentionByKey(plainItems),
+              ),
               blockedKeys(plainItems),
             ),
             priorityKeys(plainItems, HIGH),

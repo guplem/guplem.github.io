@@ -35,11 +35,12 @@ const KNOWN = new Set(SORT_OPTIONS.map((option) => option.id));
 
 // Everything the smart order does, in the order the board applies it. The
 // name stays short and the list goes in the tooltip, because no name of one
-// line can carry seven rules (ADR 0020). Change this list with the passes in
+// line can carry eight rules (ADR 0020). Change this list with the passes in
 // `renderBoard`, or the tooltip promises an order the board does not draw.
 const SMART_ORDER_RULES = [
   "Oldest first, so the work that waited longest is cleared first.",
   "A stack of pull requests reads in merge order, bottom first.",
+  "Work that blocks other work climbs, the one that holds up most first, so a blocker reads before what it blocks.",
   "Work that wants you goes to the top: Changes requested, then failed checks, then conflicts.",
   "Blocked work goes to the bottom, because nobody can start it.",
   "Work you marked high priority climbs to the top, with its stack.",
