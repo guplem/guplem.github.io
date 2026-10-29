@@ -830,6 +830,19 @@ describe("a milestone named in a link keeps its name (ADR 0009, ADR 0045)", () =
   });
 });
 
+// Everything on a card that the filter bar offers is also a press on the card:
+// the milestone's name, a field value, a reviewer's face, a label and the
+// repository. Labels were plain text for months while every pill beside them
+// filtered, and nothing failed (ADR 0049).
+describe("a card's labels and repository filter the board (ADR 0045, ADR 0049)", () => {
+  test("app.js toggles every filter list the bar offers from a card", () => {
+    const app = read("app.js");
+    for (const list of ["repositories", "labels", "milestones", "fields", "reviewers"]) {
+      expect(app).toContain(`state.${list} = toggleInList(state.${list},`);
+    }
+  });
+});
+
 // A filter the link carries and start-up never reads is worse than no filter:
 // the board opens unfiltered, and the next change of order rewrites the link
 // without it. The two person filters were lost this way, with every test green,

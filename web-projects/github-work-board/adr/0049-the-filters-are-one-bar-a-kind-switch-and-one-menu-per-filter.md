@@ -45,9 +45,13 @@ heading.** `filters.js` holds the rules, and `app.js` draws them.
 
 ## Consequences
 
-**A press on a card's pill still works.** A milestone, a field value or a
-reviewer's face presses the same choice, and the menu then shows it as
-chosen.
+**A press on a card's pill still works.** A label, the repository name, a
+milestone, a field value or a reviewer's face presses the same choice, and
+the menu then shows it as chosen. Every value a menu offers is also a press
+on the card that carries it. Labels and the repository name were plain text
+for a while, so `invariants.test.js` now checks that `app.js` toggles each
+of these lists from a card. On a review card they stay text, because the
+board's filters never narrow the review row (ADR 0009).
 
 **A chosen value the list no longer offers stays chosen but may not be
 listed.** ADR 0009 accepts this, and "Clear filters" is the way out of an
