@@ -60,7 +60,8 @@ bun -e 'const fs=require("fs");for(const f of fs.readdirSync("data/projects")){i
 - **Tags reflect Guillem's work**: skills represent technologies Guillem personally worked with, not technologies present in the final product. The purpose of tags is to let people find projects where Guillem used a specific technology.
 - **Vibe Coded projects**: always include the "Vibe Coded" tag. Add an area tag (e.g. "Frontend", "UI/UX", "Architecture") ONLY for areas where Guillem gave substantial creative or architectural direction (shaped the design, behavior, or structure through iteration), NOT for technology that merely appears in the AI's output. A single-prompt experiment gets "Vibe Coded" alone. Never tag raw output tech the agent wrote (e.g. "React", "PowerShell", "HTML/CSS", "JS/TS"). Use "AI Integration" only when AI is a feature of the final product (e.g. AI opponents), not because AI was the build tool. Keep prose consistent with tags: do not write "I built X with React" if React is not tagged as Guillem's work. Describe vibe-coded output in the third person ("The game is built with…").
 - **Consistent naming**: skill names must exactly match those used in other projects (e.g. "JS/TS" not "JavaScript", "AI Integration" not "AI"). Grep existing project files to confirm spelling.
-- **Types**: valid values are `Web`, `Mobile App`, `Videogame`, `Misceallaneous` (note: intentional legacy spelling), `Minecraft`. Assign one or more as appropriate.
+- **Types**: valid values are `Web`, `Mobile App`, `Videogame`, `Misceallaneous` (note: intentional legacy spelling), `Minecraft`, `Blog`. Assign one or more as appropriate. `data/projects.test.js` holds the same list.
+- **`Education`**: tag a project with this skill when it teaches the reader something step by step (a tutorial, a course, a guide).
 
 ## Field Reference
 
@@ -72,6 +73,14 @@ See `schemas/project.schema.json` for the full typed schema. Key points:
 - `types` and `skills` must use consistent naming across projects (check existing files for spelling)
 - `links[].type` maps to an icon file at `resources/images/icons/{type}.webp`
 - A project with a post on the blog links it as `{ "type": "blog", "url": "blog/<slug>/" }`, right after its main link, and the post links back to the project with a `post-project` line under its subtitle
+
+## Blog Posts as Projects
+
+A substantial blog post is portfolio work, so it appears in "My Work". A post is substantial when it took real work: a tutorial, a fact-checked study, a post with its own drawings or interactive parts. A short, simple post (such as `why-a-blog-now/`) stays on the blog only.
+
+- **A post about an existing project:** add `Blog` to that project's `types`, and add the `blog` link right after its main link. Do not create a second card. `ai-world-gen.json` is the example.
+- **A post that stands alone:** create a project file for it with `"types": ["Blog"]`, and make the post's URL its first link (type `blog`). A post in two languages is one card: the first link goes to the original post, the second to the translation. `your-first-ai-agent-tutorial.json` is the example.
+- Take the card image from the post's own main drawing, finished (a screenshot with reduced motion shows the final frame).
 
 ## Gotchas
 

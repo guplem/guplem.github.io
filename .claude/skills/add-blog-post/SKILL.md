@@ -62,6 +62,8 @@ For every drawing: inline SVG with `role="img"`, a `<title>`, and a `<desc>` tha
 
 When the post is about a project, link both ways: the `post-project` line in the post, and a `{ "type": "blog", "url": "blog/<slug>/" }` entry in the project's `data/projects/*.json` right after its main link (see `data/AGENTS.md`), then regenerate the SEO blocks.
 
+**Add the post to the portfolio when it is substantial.** A post is substantial when it took real work: a tutorial, a fact-checked study, its own drawings or interactive parts. Ask the owner, using `AskUserQuestion`, only when it is not clear. For a substantial post, follow `data/AGENTS.md` "Blog Posts as Projects": add `Blog` to the `types` of the project the post is about, or create a new project file with `"types": ["Blog"]` and the post as its first link. Add the `Education` skill when the post teaches step by step. Leave a short, simple post on the blog only.
+
 ## 5. Write `blog/<slug>/style.css`
 
 - Give the post a look that serves its story: a map table, a letter on paper, a lab notebook. Scope every rule under a class on `<body>`.
@@ -98,4 +100,4 @@ Run the **validate** agent. The drift tests, `scripts/blogPosts.test.js` (anchor
 
 ## 9. Report
 
-List the files created or changed (`blog/<slug>/index.html`, `blog/<slug>/style.css`, any new image, `blog/index.html`, `blog/feed.xml`, `sitemap.xml`, and the project JSON when linked). Name the URL of the post, the reading time, and the fact-check items that you did not apply.
+List the files created or changed (`blog/<slug>/index.html`, `blog/<slug>/style.css`, any new image, `blog/index.html`, `blog/feed.xml`, `sitemap.xml`, and the project JSON when linked or when the post got its own card). Name the URL of the post, the reading time, and the fact-check items that you did not apply.
