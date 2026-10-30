@@ -1,0 +1,18 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Blog"],
+  "date": "2026",
+  "title": "Your First AI Agent Lives in a Folder",
+  "description": [
+    "*Your First AI Agent Lives in a Folder* is an **interactive tutorial**, in Spanish and English, for people who have never coded. Step by step, the reader turns a chat with an AI into their own **agent**: a folder with instructions, memory and skills.",
+    "I designed the path and the examples: the reader picks an app and an example, and the page shows only those steps. **Animated drawings** explain each idea, and every example folder is ready to download."
+  ],
+  "skills": ["Education", "Vibe Coded", "UI/UX", "Localization"],
+  "image": "resources/images/projects/tuPrimerAgente.webp",
+  "imageStretched": true,
+  "imageAlt": "A drawing from the tutorial: a browser chat forgets what the student said yesterday, while an agent in a folder reads its progress file and remembers",
+  "links": [
+    { "type": "blog", "url": "blog/tu-primer-agente/" },
+    { "type": "blog", "url": "blog/your-first-agent/" }
+  ]
+}

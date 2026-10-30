@@ -17,7 +17,7 @@
         "type": "string"
       },
       "minItems": 1,
-      "examples": [["Web"], ["Mobile App"], ["Videogame"], ["Misceallaneous"]]
+      "examples": [["Web"], ["Mobile App"], ["Videogame"], ["Misceallaneous"], ["Blog"]]
     },
     "date": {
       "type": "string",
