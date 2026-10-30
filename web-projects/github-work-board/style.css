@@ -3676,6 +3676,19 @@ button.milestone-name[aria-pressed="true"]:hover {
   right: 0.3125rem;
 }
 
+/* A nested card with a mark: the mark takes the nested corner, and the menu
+ * button moves one place left of it. This rule must come after the one above,
+ * which has the same weight as the priority rule and would otherwise put the
+ * button back under the flame, where it cannot be pressed (ADR 0044). */
+.issues.nested .issue[data-priority] > .priority-mark {
+  top: 0.3125rem;
+  right: 0.3125rem;
+}
+
+.issues.nested .issue[data-priority] > .icon-button {
+  right: 2.0625rem;
+}
+
 .issues.nested .issue:hover {
   transform: none;
   box-shadow: var(--shadow-sm);

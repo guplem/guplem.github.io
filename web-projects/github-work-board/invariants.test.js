@@ -648,6 +648,18 @@ describe("only the smart order moves a card the reader pushed down (ADR 0026)", 
     }
   });
 
+  // The bug this caught: `.issues.nested .icon-button` has the same weight as
+  // `.issue[data-priority] > .icon-button` and comes later in the file, so on a
+  // nested pull request with a mark the menu button stayed in the corner. The
+  // flame sat on top of it, and the menu could not be opened (ADR 0044).
+  test("the menu button on a nested marked card moves aside, after the nested rule", () => {
+    const css = read("style.css");
+    const nested = css.indexOf(".issues.nested .icon-button {");
+    const moved = css.indexOf(".issues.nested .issue[data-priority] > .icon-button {");
+    expect(nested).toBeGreaterThan(-1);
+    expect(moved).toBeGreaterThan(nested);
+  });
+
   // Fainter is not an order, so it is the one half that every order gets.
   test("the faint card is drawn whatever the order", () => {
     expect(source).toMatch(/data-priority/);
