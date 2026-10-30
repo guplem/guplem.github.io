@@ -14,6 +14,7 @@ export {
   workMatchesText,
   workMatchesTagFilters,
   nextTagFilterState,
+  nextCardTagFilterState,
 } from "./textCore.js";
 
 // Cache to store JSON data for faster subsequent access

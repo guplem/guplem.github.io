@@ -5,7 +5,7 @@ import {
   excludedWorkTypes,
   includedWorkSkills,
   excludedWorkSkills,
-  onClickWorkSkill,
+  onClickCardSkill,
   getWorkSearchQuery,
   paintTagFilterButton,
 } from "./workFilters.js";
@@ -160,10 +160,11 @@ async function createWorkCard(work, index) {
     skillsElement.classList.add("workSkills");
     for (const skill of work.skills) {
       const skillId = textUtils.idFromText(skill);
-      const skillButton = uiUtils.createButton(skill, () => onClickWorkSkill(skillId, "myWorkFiltered"));
-      // The card chips share the filter row's three states, so one skill
-      // never looks different in the two places.
-      paintTagFilterButton(skillButton, "skills", skillId, skill);
+      const skillButton = uiUtils.createButton(skill, () => onClickCardSkill(skillId, "myWorkFiltered"));
+      // The card chips share the filter row's look, so one skill never looks
+      // different in the two places. A card chip only toggles include: only
+      // the filter rows can exclude a tag (root ADR 0014).
+      paintTagFilterButton(skillButton, "skills", skillId, skill, { onCard: true });
       skillsElement.appendChild(skillButton);
     }
     workElement.appendChild(skillsElement);

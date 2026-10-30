@@ -116,8 +116,11 @@ export function setTagFilterState(group, tagId, state) {
  * @param {FilterGroup} group
  * @param {string} tagId
  * @param {string} label - the tag's human-readable name
+ * @param {{ onCard?: boolean }} [options] - `onCard` marks a chip inside a work
+ *   card, which only toggles include (`nextCardTagFilterState`), so its
+ *   tooltip names that click instead of the exclude step
  */
-export function paintTagFilterButton(button, group, tagId, label) {
+export function paintTagFilterButton(button, group, tagId, label, { onCard = false } = {}) {
   const state = getTagFilterState(group, tagId);
 
   button.dataset.tagId = tagId;
@@ -132,7 +135,9 @@ export function paintTagFilterButton(button, group, tagId, label) {
   // does, because the third state is not a common one.
   const description = {
     none: `Show only ${label} projects`,
-    include: `Showing only ${label} projects. Click to hide them instead.`,
+    include: onCard
+      ? `Showing only ${label} projects. Click to clear this filter.`
+      : `Showing only ${label} projects. Click to hide them instead.`,
     exclude: `Hiding ${label} projects. Click to clear this filter.`,
   }[state];
   button.setAttribute("aria-label", description);
@@ -269,6 +274,18 @@ export function onClickWorkType(workTypeId, navigateTo) {
  */
 export function onClickWorkSkill(workSkillId, navigateTo) {
   cycleTagFilter("skills", workSkillId, navigateTo);
+}
+
+/**
+ * Handle a click on a skill chip inside a work card. Unlike the filter row, it
+ * only toggles include on and off (`nextCardTagFilterState`): an exclude from
+ * here would hide the card under the pointer with no visible feedback.
+ * @param {string} workSkillId
+ * @param {string} navigateTo
+ */
+export function onClickCardSkill(workSkillId, navigateTo) {
+  setTagFilterState("skills", workSkillId, textUtils.nextCardTagFilterState(getTagFilterState("skills", workSkillId)));
+  document?.getElementById(navigateTo)?.scrollIntoView({ behavior: "smooth" });
 }
 
 /**
