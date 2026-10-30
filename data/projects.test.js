@@ -44,7 +44,7 @@ const ALLOWED_LINK_KEYS = new Set(["type", "url"]);
 // The exact type values used across the data. Extending this list is a
 // deliberate decision (a genuinely new project category) -- see data/CLAUDE.md.
 // "Misceallaneous" is intentional legacy spelling.
-const ALLOWED_TYPES = new Set(["Web", "Mobile App", "Videogame", "Misceallaneous", "Minecraft"]);
+const ALLOWED_TYPES = new Set(["Web", "Mobile App", "Videogame", "Misceallaneous", "Minecraft", "Blog"]);
 
 /**
  * The project data filenames physically present in data/projects/, excluding

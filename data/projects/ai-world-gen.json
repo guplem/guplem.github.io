@@ -1,6 +1,6 @@
 {
   "$schema": "../schemas/project.schema.json",
-  "types": ["Web"],
+  "types": ["Web", "Blog"],
   "date": "2026",
   "title": "AI World Gen",
   "description": [
