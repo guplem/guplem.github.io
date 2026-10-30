@@ -1,0 +1,180 @@
+<!doctype html>
+<!--
+  Source of the portfolio image resources/images/projects/yourFirstAgent.webp.
+  Re-render it with:
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/yourFirstAgent/ --out resources/images/projects/yourFirstAgent.webp --width 1280 --height 800 --quality 80
+  drawing.webp and folder.webp are element screenshots of blog/your-first-agent/,
+  taken at device scale 2 with reduced motion (so the drawing shows its last frame),
+  after a click on the "Student" example:
+    drawing.webp: the first drawing, `figure.forget svg`
+    folder.webp: the folder at the end of step 8, `.folder-now[data-folder-step=paso-8] .explorer`
+  The palette and the font are the tutorial's own (blog/tu-primer-agente/style.css).
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Your first AI agent portfolio image</title>
+    <style>
+      @font-face {
+        font-family: "Plus Jakarta Sans";
+        src: url("../../../../fonts/PlusJakartaSans-Latin.woff2") format("woff2");
+        font-weight: 200 800;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+        color: #1c2422;
+        background:
+          radial-gradient(circle at 96% 4%, rgba(29, 107, 102, 0.2), transparent 40%),
+          radial-gradient(circle at 0% 100%, rgba(29, 107, 102, 0.12), transparent 45%),
+          #f7f8f7;
+      }
+      .caption {
+        position: absolute;
+        left: 80px;
+        top: 56px;
+        width: 720px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 19px;
+        font-weight: 600;
+        color: #5d6966;
+      }
+      .brand svg {
+        width: 30px;
+        height: 30px;
+        padding: 6px;
+        border-radius: 9px;
+        background: #1d6b66;
+        stroke: #ffffff;
+      }
+      h1 {
+        margin-top: 18px;
+        font-size: 62px;
+        line-height: 1.04;
+        font-weight: 800;
+        letter-spacing: -2px;
+      }
+      .accent {
+        color: #1d6b66;
+      }
+      .sub {
+        margin-top: 16px;
+        font-size: 22px;
+        line-height: 1.4;
+        color: #5d6966;
+      }
+      /* The eight steps of the tutorial, as the contents list names them. */
+      .steps {
+        position: absolute;
+        right: 70px;
+        top: 64px;
+        width: 330px;
+        padding: 20px 22px;
+        border-radius: 18px;
+        background: #ffffff;
+        box-shadow:
+          0 18px 50px rgba(28, 36, 34, 0.12),
+          0 0 0 1px #e1e6e4;
+        list-style: none;
+        counter-reset: step;
+      }
+      .steps li {
+        counter-increment: step;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 5px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #1c2422;
+      }
+      .steps li::before {
+        content: counter(step);
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        font-size: 13px;
+        font-weight: 700;
+        color: #ffffff;
+        background: #1d6b66;
+      }
+      .steps li.todo::before {
+        color: #1d6b66;
+        background: #e3f0ee;
+      }
+      .steps li.todo {
+        color: #5d6966;
+      }
+      .steps code {
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 14px;
+      }
+      /* drawing.webp is 1280 x 752 (the 640 x 376 drawing at scale 2). */
+      .drawing {
+        position: absolute;
+        left: 60px;
+        top: 356px;
+        width: 680px;
+        height: 480px;
+        border-radius: 22px;
+        background: #ffffff url("drawing.webp") 20px 22px / 640px auto no-repeat;
+        box-shadow:
+          0 30px 80px rgba(28, 36, 34, 0.16),
+          0 0 0 1px #e1e6e4;
+      }
+      /* folder.webp is 1344 x 630 (the 672 x 315 explorer at scale 2). */
+      .folder {
+        position: absolute;
+        right: 48px;
+        top: 468px;
+        width: 480px;
+        height: 225px;
+        border-radius: 14px;
+        background: #ffffff url("folder.webp") 0 0 / 480px auto no-repeat;
+        box-shadow:
+          0 30px 70px rgba(28, 36, 34, 0.22),
+          0 0 0 1px #e1e6e4;
+        transform: rotate(-2deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="caption">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
+        A blog tutorial · in English and Spanish
+      </div>
+      <h1>Your first AI agent<br />lives in a <span class="accent">folder</span></h1>
+      <p class="sub">From a chat that forgets to an agent that remembers.<br />No coding: instructions, memory and skills, step by step.</p>
+    </div>
+    <ol class="steps" aria-label="The eight steps of the tutorial">
+      <li>Choose your app</li>
+      <li>Create the folder</li>
+      <li>Open the folder and say hello</li>
+      <li>Instructions: <code>AGENTS.md</code></li>
+      <li class="todo">Memory: data</li>
+      <li class="todo">Skills</li>
+      <li class="todo">Tools: scripts</li>
+      <li class="todo">Results: exports</li>
+    </ol>
+    <div class="drawing" role="img" aria-label="A browser chat forgets what the student said yesterday, while an agent in a folder reads its progress file and remembers"></div>
+    <div class="folder" role="img" aria-label="The finished agent folder: AGENTS.md, data, skills, scripts and exports, each in its own colour"></div>
+  </body>
+</html>
