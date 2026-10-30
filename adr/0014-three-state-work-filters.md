@@ -17,6 +17,8 @@ Ship both, because each one covers the other's weakness.
 
 **Every chip holds three states.** One click cycles the chip: none -> include -> exclude -> none. `nextTagFilterState()` in `js/utils/textCore.js` holds that cycle, and `workMatchesTagFilters()` holds the rule: a work must carry at least one tag of every non-empty include list, and no excluded tag at all. An exclusion always wins over an inclusion. Both functions are pure and Bun-tested (root ADR 0012).
 
+**A chip on a card only toggles include.** The skill chips inside each work card take two states: one click sets "include", the next sets "none". `nextCardTagFilterState()` in `js/utils/textCore.js` holds that toggle. A card chip never sets "exclude", because an excluded tag hides the very card that the visitor just clicked. The chip vanishes under the pointer, and the visitor gets no sign of what happened. Only the filter rows above the grid can exclude a tag, and there the chip stays in view with its new look.
+
 **One button drives the "Vibe Coded" chip.** The "Hide vibe coded" button in `index.html` sets that chip to "exclude", and the chip visibly changes with it. So the button both answers the common request in one click and shows the visitor that the third state exists. The button names its target skill in `data-tag-id`, so `index.html` decides which skill it hides, and it stays hidden while no project carries that skill.
 
 **The chip's state is a value, not a flag.** Each chip carries `data-tag-filter="include"` or `data-tag-filter="exclude"`, and carries no such attribute while it filters nothing. A boolean `selected` attribute cannot hold three states, and CSS matches `[selected]` by presence, so a value inside it would still apply the "include" look. This follows `data-collapsed` on the works grid wrapper.
@@ -40,7 +42,8 @@ Ship both, because each one covers the other's weakness.
 
 **Negative:**
 
-- A second click no longer clears a chip. A visitor who wants to clear one chip clicks it twice more, or clears every filter at once.
+- A chip on a card and the same chip in the filter row answer a click differently: the card chip clears an "include", and the row chip turns it into an "exclude". Each tooltip names what the next click does.
+- A second click no longer clears a filter row chip. A visitor who wants to clear one chip clicks it twice more, or clears every filter at once.
 - The "exclude" look needs no new palette colour, so it says "excluded" with a fill, a dashed border and a strike-through, instead of with the red that a reader may expect.
 - Nothing checks that the button's `data-tag-id` still matches a skill in `data/`. A renamed skill leaves the button hidden, which is silent but visible on the page.
 - Filter state lives in memory only. A reload clears it, and a visitor cannot share a filtered view by URL. Root ADR 0006 keeps URL state for `web-projects/`, and the main site holds no user state worth persisting.

@@ -131,6 +131,19 @@ export function nextTagFilterState(current) {
 }
 
 /**
+ * The state a tag filter takes after one click on a chip inside a work card.
+ * A card chip only toggles must-include on and off: it never moves a tag to
+ * must-exclude. That click would hide the card under the pointer, so the
+ * visitor would see the chip vanish with no sign of what happened. Only the
+ * filter rows can exclude a tag. Any unknown state counts as "none".
+ * @param {TagFilterState | undefined} current
+ * @returns {TagFilterState}
+ */
+export function nextCardTagFilterState(current) {
+  return current === "include" ? "none" : "include";
+}
+
+/**
  * Whether a work passes the type and skill chip filters. Two rules:
  * a work must carry at least one tag of every non-empty include list (OR
  * inside a group, AND between the two groups), and a work must carry no

@@ -157,7 +157,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Filter normalization:** `idFromText()` in `textUtils.js` strips punctuation/spaces/special chars and capitalizes -- used for element IDs and type/skill button filter matching. Must be consistent across button-based filter code. The free-text work search (`workMatchesText` in `textUtils.js`) intentionally does NOT use `idFromText()` -- it matches raw lowercase substrings so users can type naturally.
 
-**Three-state work filters:** every type and skill chip cycles none -> include -> exclude -> none, and carries its state as a value in `data-tag-filter`, never in a boolean `selected` attribute (see ADR 0014 and `js/layoutBuilder/AGENTS.md`).
+**Three-state work filters:** every type and skill chip in the filter rows cycles none -> include -> exclude -> none (a chip on a work card only toggles include), and carries its state as a value in `data-tag-filter`, never in a boolean `selected` attribute (see ADR 0014 and `js/layoutBuilder/AGENTS.md`).
 
 **Masonry layout:** Work cards use JS-based column balancing (not CSS Grid). `displayFilteredWorks()` recalculates on resize (debounced 100ms).
 

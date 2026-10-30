@@ -8,6 +8,7 @@ import {
   workMatchesText,
   workMatchesTagFilters,
   nextTagFilterState,
+  nextCardTagFilterState,
   markdownToPlainText,
 } from "./textCore.js";
 
@@ -117,6 +118,24 @@ describe("nextTagFilterState", () => {
 
   it("treats an unknown state as unused", () => {
     expect(nextTagFilterState(undefined)).toBe("include");
+  });
+});
+
+describe("nextCardTagFilterState", () => {
+  it("turns an unused filter into must-include", () => {
+    expect(nextCardTagFilterState("none")).toBe("include");
+  });
+
+  it("turns must-include back into unused, never into must-exclude", () => {
+    expect(nextCardTagFilterState("include")).toBe("none");
+  });
+
+  it("turns must-exclude into must-include", () => {
+    expect(nextCardTagFilterState("exclude")).toBe("include");
+  });
+
+  it("treats an unknown state as unused", () => {
+    expect(nextCardTagFilterState(undefined)).toBe("include");
   });
 });
 
