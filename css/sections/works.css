@@ -171,12 +171,12 @@
   display: none;
 }
 
-/* Collapse behavior */
+/* Collapse behavior. The open state has no max-height, so the change snaps
+   open on purpose: a max-height transition to "none" never animates. */
 #myWorkSkills[collapsed="true"] {
   max-height: 99px;
   overflow: hidden;
   position: relative;
-  transition: max-height var(--duration-slow) var(--ease-out);
 }
 
 #myWorkSkills[collapsed="true"]::before {
@@ -188,14 +188,11 @@
   background: linear-gradient(to top, var(--bg-white) 30%, transparent);
   pointer-events: none;
   z-index: 1;
-  transition: opacity var(--duration-slow) var(--ease-out);
 }
 
 #myWorkSkills[collapsed="false"] {
-  /* max-height: 600px; */
   overflow: hidden;
   position: relative;
-  transition: max-height var(--duration-slow) var(--ease-out);
 }
 
 #myWorkSkills[collapsed="false"]::before {
@@ -206,7 +203,6 @@
   height: 0;
   background: transparent;
   pointer-events: none;
-  transition: opacity var(--duration-slow) var(--ease-out);
 }
 
 #collapseButton {
@@ -256,6 +252,9 @@
 .work-grid-wrapper {
   position: relative;
   overflow: hidden;
+  /* interface-rule-exception: "Show more projects" must push the sections
+     below it down as the grid grows, which only a layout property does. It
+     plays only on a click, so the layout cost is rare. */
   transition: max-height var(--duration-slow) var(--ease-out);
 }
 

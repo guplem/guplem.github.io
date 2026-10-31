@@ -289,6 +289,18 @@ describe("each rule catches what it guards", () => {
     expect(transitionAll(firstRule("a { transition: color 1s ease-out; }"))).toHaveLength(0);
   });
 
+  it("flags a keyframe on a layout property and passes transform", () => {
+    expect(keyframeOnLayoutProperty(firstRule("@keyframes x { 0% { top: 0; } }"))).toHaveLength(1);
+    expect(keyframeOnLayoutProperty(firstRule("@keyframes x { 0% { transform: none; } }"))).toHaveLength(0);
+    expect(keyframeOnLayoutProperty(firstRule("@keyframes x { 0% { --fade: 0px; } }"))).toHaveLength(0);
+  });
+
+  it("flags a transition on a layout property and passes transform", () => {
+    expect(transitionOnLayoutProperty(firstRule("a { transition: top 80ms ease-out, color 1s; }"))).toHaveLength(1);
+    expect(transitionOnLayoutProperty(firstRule("a { transition-property: max-height; }"))).toHaveLength(1);
+    expect(transitionOnLayoutProperty(firstRule("a { transition: transform 80ms, scale 1s; }"))).toHaveLength(0);
+  });
+
 });
 
 describe("the main site follows the rules", () => {
@@ -302,6 +314,14 @@ describe("the main site follows the rules", () => {
 
   it("never transitions all", () => {
     expect(problemsAcrossSheets(transitionAll)).toEqual([]);
+  });
+
+  it("animates no layout property in a keyframe", () => {
+    expect(problemsAcrossSheets(keyframeOnLayoutProperty)).toEqual([]);
+  });
+
+  it("moves no layout property with a transition", () => {
+    expect(problemsAcrossSheets(transitionOnLayoutProperty)).toEqual([]);
   });
 
 });
