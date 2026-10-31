@@ -348,6 +348,14 @@ describe("touch behaviour in css/global/base.css", () => {
   const baseRules = readCssRules(read("css/global/base.css"));
   const declared = (rule, property) => rule.declarations.find((declaration) => declaration.property === property)?.value;
 
+  it("gives every form field 16px text on a touch screen, so iOS does not zoom in", () => {
+    const rule = baseRules.find(
+      (candidate) => candidate.parents.some((parent) => /\(pointer:\s*coarse\)/.test(parent)) && ["input", "textarea", "select"].every((tag) => candidate.selector.includes(tag))
+    );
+    expect(rule).toBeDefined();
+    expect(declared(rule, "font-size")).toMatch(/^(16px|1rem) !important$/);
+  });
+
   it("removes the browser's tap flash", () => {
     const html = baseRules.find((rule) => rule.selector === "html" && declared(rule, "-webkit-tap-highlight-color"));
     expect(declared(html, "-webkit-tap-highlight-color")).toBe("transparent");

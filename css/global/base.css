@@ -106,6 +106,18 @@ a:active {
   opacity: 0.7;
 }
 
+/* iOS zooms into a field whose text is under 16px when it gets focus, and
+   does not zoom back. A touch screen gets 16px; a mouse keeps each field's
+   own size. !important because this file loads first, so a class such as
+   .filter-search would win otherwise. */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
 /* === Selection === */
 ::selection {
   background: rgba(var(--accent-rgb), 0.15);
