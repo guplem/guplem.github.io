@@ -14,7 +14,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { markdownToPlainText, capitalizeFirstLetter } from "../js/utils/textCore.js";
-import { selectWebProjects, sortByDateDescending } from "../web-projects/discovery.js";
+import { selectWebProjects, sortByDateDescending, entranceDelayMs } from "../web-projects/discovery.js";
 import { loadPosts, sortByPublishedDescending } from "./blogPosts.js";
 import { loadInfo, loadWorks } from "./portfolioData.js";
 
@@ -126,8 +126,10 @@ export function markdownToBlockHtml(markdown) {
 /**
  * The about block: each aboutMe entry as structured blocks (headings,
  * paragraphs, links, bold), so crawlers and no-JS visitors get the real
- * structure. Swapped (not adopted) at load: the section sits behind the
- * scroll-reveal, so the swap is invisible and needs no exact mirror.
+ * structure. Swapped (not adopted) at load: the section sits below the
+ * hero, so the swap is out of sight on a normal load. A deep link
+ * (/#aboutMe) or a restored scroll can show it; the swap keeps the same
+ * structure, so the site accepts it, and it needs no exact mirror.
  * @param {{ aboutMe: string[] }} info the parsed data/info.json
  * @returns {string}
  */
@@ -204,7 +206,7 @@ export function buildWorksHtml(works) {
 export function buildWebProjectsIndexHtml(works) {
   return selectWebProjects(works)
     .map((project, index) => {
-      const parts = [`<article class="project-card" style="animation-delay: ${index * 50}ms">`];
+      const parts = [`<article class="project-card" style="animation-delay: ${entranceDelayMs(index)}ms">`];
       if (project.image) {
         const src = project.image.startsWith("http") ? project.image : `../${project.image}`;
         const alt = project.imageAlt || `Screenshot of ${project.title}`;

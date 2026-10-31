@@ -20,8 +20,10 @@
   color: var(--text-muted);
 }
 
-.back-link:hover {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .back-link:hover {
+    color: var(--accent);
+  }
 }
 
 /* === Header === */
@@ -89,6 +91,8 @@ main {
    height under the box is always enough. */
 body.searching main {
   padding-top: var(--sp-md);
+  /* interface-rule-exception: the box needs one whole screen under it once
+     the address bar hides, which is the largest viewport, so vh, not svh. */
   min-height: 100vh;
 }
 
@@ -136,12 +140,28 @@ body.searching main {
   transition:
     transform var(--duration-normal) var(--ease-out),
     box-shadow var(--duration-normal) var(--ease-out);
-  animation: cardIn 0.4s var(--ease-out) both;
+  animation: cardIn 0.3s var(--ease-out) backwards;
 }
 
-.project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/* Under reduced motion every card appears at once: base.css shortens the
+   entrance but leaves the inline stagger delay. */
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    animation-delay: 0s !important;
+  }
+}
+
+/* Once the visitor types in the search box, no card replays its entrance
+   when the search shows it again (app.js adds the class). */
+.projects-grid.entrance-done .project-card {
+  animation: none;
 }
 
 /* .project-card sets display:flex, which overrides the browser's default
@@ -157,8 +177,10 @@ body.searching main {
   transition: transform 0.5s var(--ease-out);
 }
 
-.project-card:hover .project-image {
-  transform: scale(1.03);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-image {
+    transform: scale(1.03);
+  }
 }
 
 .project-body {
@@ -185,8 +207,10 @@ body.searching main {
   inset: 0;
 }
 
-.project-card:hover .project-title-link {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-title-link {
+    color: var(--accent);
+  }
 }
 
 .project-date {

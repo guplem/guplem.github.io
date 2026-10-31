@@ -33,9 +33,11 @@ html {
   border-radius: var(--radius-full);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--scroll-thumb-hover, var(--accent));
-  background-clip: padding-box;
+@media (hover: hover) and (pointer: fine) {
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover, var(--accent));
+    background-clip: padding-box;
+  }
 }
 
 /* === Top bar (same shape as the Playground's) === */
@@ -59,9 +61,11 @@ html {
   color: var(--text-muted);
 }
 
-.back-link:hover,
-.feed-link:hover {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .back-link:hover,
+  .feed-link:hover {
+    color: var(--accent);
+  }
 }
 
 /* === Index page header === */
@@ -117,9 +121,11 @@ html {
     box-shadow var(--duration-normal) var(--ease-out);
 }
 
-.post-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) and (pointer: fine) {
+  .post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 .post-card-date {
@@ -148,8 +154,10 @@ html {
   inset: 0;
 }
 
-.post-card:hover .post-card-title a {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .post-card:hover .post-card-title a {
+    color: var(--accent);
+  }
 }
 
 .post-card-summary {
@@ -165,14 +173,18 @@ html {
   text-decoration: none;
 }
 
-.heading-anchor:hover {
-  color: inherit;
+@media (hover: hover) and (pointer: fine) {
+  .heading-anchor:hover {
+    color: inherit;
+  }
 }
 
-.heading-anchor:hover::after {
-  content: " #";
-  opacity: 0.45;
-  font-weight: 400;
+@media (hover: hover) and (pointer: fine) {
+  .heading-anchor:hover::after {
+    content: " #";
+    opacity: 0.45;
+    font-weight: 400;
+  }
 }
 
 .post h2[id],
@@ -195,8 +207,10 @@ html {
   font-weight: 600;
 }
 
-.post-byline a:hover {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .post-byline a:hover {
+    color: var(--accent);
+  }
 }
 
 .page-footer {

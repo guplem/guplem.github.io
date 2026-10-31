@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The phone's browser bar takes the hero's colour (--bg-dark). -->
+    <meta name="theme-color" content="#bccbde" />
     <link rel="icon" href="resources/images/webicon.webp" />
     <!-- Static SEO metadata: crawlers read these before any JS runs. The JS in
          js/layoutBuilder/dataFiller.js rewrites title/description from
@@ -49,7 +51,7 @@
     <link rel="stylesheet" href="css/sections/contact.css" />
   </head>
 
-  <body>
+  <body ontouchstart="">
     <nav id="siteNav">
       <div class="nav-inner">
         <div class="nav-scroller">
@@ -878,6 +880,8 @@
 <!-- END GENERATED:WORKS -->
           </div>
         </div>
+        <!-- Shown by workCards.js when the filters and the search leave no project. -->
+        <p id="myWorkNoResults" class="works-empty" hidden>No project matches these filters. Try another word, or clear the filters.</p>
         <button id="worksExpandButton" class="works-expand-btn">Show More Projects</button>
         <!-- Navigation affordances, like the top nav links: site chrome, not
              portfolio content, so they stay in the HTML and not in
@@ -931,7 +935,6 @@
     <script type="module" src="js/planetSimulation/simulation.js" defer></script>
     <script type="module" src="js/layoutBuilder/dataFiller.js" defer></script>
     <script type="module" src="js/layoutBuilder/structure.js" defer></script>
-    <script type="module" src="js/effects/init.js" defer></script>
     <script type="module" src="js/customScroll.js" defer></script>
   </body>
 </html>

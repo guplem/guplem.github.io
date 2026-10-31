@@ -4,8 +4,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* svh is the screen with the address bar showing. It never changes while
+     the reader scrolls, so nothing below the hero moves; dvh would. */
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
   overflow: hidden;
   background: var(--bg-dark);
 }
@@ -70,8 +72,18 @@
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-#scrollCue:hover {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  #scrollCue:hover {
+    color: var(--accent);
+  }
+}
+
+/* Under reduced motion the cue appears at once, not after its 1s delay:
+   base.css shortens the animation but leaves the delay. */
+@media (prefers-reduced-motion: reduce) {
+  #scrollCue {
+    animation-delay: 0s;
+  }
 }
 
 .scroll-label {
@@ -92,23 +104,26 @@
 .scroll-line::after {
   content: "";
   position: absolute;
-  top: -100%;
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: var(--accent);
+  transform: translateY(-100%);
   animation: scrollPulse 2s var(--ease-out) infinite 2s;
 }
 
+/* The pulse moves with transform, never top: a loop on a layout property
+   makes the browser lay the page out again on every frame. */
 @keyframes scrollPulse {
   0% {
-    top: -100%;
+    transform: translateY(-100%);
   }
   50% {
-    top: 100%;
+    transform: translateY(100%);
   }
   100% {
-    top: 100%;
+    transform: translateY(100%);
   }
 }
 

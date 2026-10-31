@@ -9,13 +9,20 @@ import {
   getWorkSearchQuery,
   paintTagFilterButton,
 } from "./workFilters.js";
+import { cardEntranceDelayMs, playsCardEntrance } from "./cardEntrance.js";
 
 const WORK_GRID_MAX_HEIGHT = 1400;
+
+// How many renders of the grid have started. Only the first plays the
+// entrance (see cardEntrance.js).
+let renderCount = 0;
 
 /**
  * Display filtered works in a masonry layout
  */
 export async function displayFilteredWorks() {
+  const withEntrance = playsCardEntrance(renderCount);
+  renderCount++;
   const { filteredWorks } = await getFilteredWorks();
 
   const allWorksElement = uiUtils.getElement("myWorkFiltered");
@@ -46,11 +53,15 @@ export async function displayFilteredWorks() {
   });
 
   for (let i = 0; i < filteredWorks.length; i++) {
-    const workElement = await createWorkCard(filteredWorks[i], i);
+    const workElement = await createWorkCard(filteredWorks[i], withEntrance ? i : null);
     const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
     columns[shortestColumnIndex].appendChild(workElement);
     columnHeights[shortestColumnIndex] += workElement.offsetHeight;
   }
+
+  // A filter or a search can leave no project; say so instead of a blank gap.
+  const noResults = document.getElementById("myWorkNoResults");
+  if (noResults) noResults.hidden = filteredWorks.length > 0;
 
   updateWorksExpandButton();
 }
@@ -89,16 +100,18 @@ export async function getFilteredWorks(includeSelected = true) {
 /**
  * Create a single work card element
  * @param {any} work
- * @param {number} index - for staggered animation
+ * @param {number | null} entranceIndex - the card's place in the entrance stagger, or null for no entrance
  * @returns {Promise<HTMLDivElement>}
  */
-async function createWorkCard(work, index) {
+async function createWorkCard(work, entranceIndex) {
   const workElement = document.createElement("div");
   workElement.classList.add("work");
   workElement.tabIndex = 0;
   workElement.setAttribute("aria-label", work.title);
-  // Stagger entrance animation
-  workElement.style.animationDelay = `${index * 50}ms`;
+  if (entranceIndex !== null) {
+    workElement.classList.add("is-entering");
+    workElement.style.animationDelay = `${cardEntranceDelayMs(entranceIndex)}ms`;
+  }
 
   // The image and the title link to the project's primary link (if any) as
   // real anchors, so crawlers can discover the target pages (issue #37).

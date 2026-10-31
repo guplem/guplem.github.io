@@ -11,6 +11,9 @@ html {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* No grey flash on tap: buttons and links answer a press themselves (see
+     "Touch" below). */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -59,7 +62,9 @@ a {
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-a:hover { color: var(--accent); }
+@media (hover: hover) and (pointer: fine) {
+  a:hover { color: var(--accent); }
+}
 
 /* Animated underline on inline text links */
 p a {
@@ -72,8 +77,45 @@ p a {
   padding-bottom: 1px;
 }
 
-p a:hover {
-  background-size: 100% 1.5px;
+@media (hover: hover) and (pointer: fine) {
+  p a:hover {
+    background-size: 100% 1.5px;
+  }
+}
+
+/* === Touch ===
+   A button reacts the moment a finger lands, not when it lifts. iOS applies
+   :active only when a touchstart listener exists, so every page that loads
+   this file carries ontouchstart="" on <body>. manipulation stops a quick
+   second tap (the three-state chips) from zooming, and user-select stops a
+   long press from selecting a button's label. scale, not transform, so it
+   adds to the transform a button already has. */
+button {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: scale var(--duration-fast) var(--ease-out);
+}
+
+button:not(:disabled):active {
+  scale: 0.97;
+}
+
+/* A link can be a whole line of text, so it dims instead of shrinking. */
+a:active {
+  opacity: 0.7;
+}
+
+/* iOS zooms into a field whose text is under 16px when it gets focus, and
+   does not zoom back. A touch screen gets 16px; a mouse keeps each field's
+   own size. !important because this file loads first, so a class such as
+   .filter-search would win otherwise. */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }
 
 /* === Selection === */

@@ -6,7 +6,7 @@
 // whose link points into web-projects/ makes it appear here with no edits.
 
 import { marked } from "https://esm.sh/marked@17.0.5/es2022/marked.bundle.mjs";
-import { selectWebProjects, projectMatchesQuery, hasSearchText, shouldPinSearchToTop } from "./discovery.js";
+import { selectWebProjects, projectMatchesQuery, hasSearchText, shouldPinSearchToTop, entranceDelayMs } from "./discovery.js";
 
 marked.setOptions({ breaks: true });
 
@@ -51,7 +51,7 @@ async function loadAllWorks() {
 async function createProjectCard(project, index) {
   const card = document.createElement("article");
   card.className = "project-card";
-  card.style.animationDelay = `${index * 50}ms`;
+  card.style.animationDelay = `${entranceDelayMs(index)}ms`;
 
   if (project.image) {
     const image = document.createElement("img");
@@ -176,6 +176,10 @@ function setupSearch(entries) {
   let previousQuery = input.value;
 
   input.addEventListener("input", () => {
+    // A card that the search hides gets display: none, and showing it again
+    // would replay its entrance. The first keystroke ends the entrance for
+    // good: search is keyboard input, and it gets no motion.
+    document.getElementById("projectsGrid")?.classList.add("entrance-done");
     const query = input.value;
     let visibleCount = 0;
     for (const { project, element } of entries) {

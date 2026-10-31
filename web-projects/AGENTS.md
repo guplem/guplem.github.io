@@ -29,6 +29,7 @@ Collection of small, standalone web projects -- games, tools, experiments, demos
   - `app.js` filters the cards and sets the `searching` class **before** it scrolls. The browser scrolls against the height the page has at that moment.
 
   The scroll passes `behavior: "smooth"` and must keep its own `prefers-reduced-motion` check: an explicit `behavior` in JavaScript wins over the `scroll-behavior` that `css/global/base.css` sets.
+- **The card entrance plays once.** Its stagger comes from `entranceDelayMs()` in `discovery.js`, which `app.js` and the static fallback both read. The first keystroke adds `entrance-done` to the grid, so a card that a search hides and shows again does not replay it (root ADR 0018).
 - **On a phone, a search also shortens every card** to the title and one line of the description, with no image, so the visitor scans the whole result list at once. This is pure CSS in `style.css`: `body.searching` inside a `@media (max-width: 767px)` block, which is the site's phone breakpoint. Both conditions carry meaning. A phone with an empty box keeps the full cards, and a big screen keeps them during a search too. `body.searching` now drives two features, the pin and the short card, so treat that class as a contract and not as a local detail.
 - Do **not** make individual projects depend on the index, and do not import the index's files into a project.
 

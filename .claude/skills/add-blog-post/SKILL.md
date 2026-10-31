@@ -48,7 +48,7 @@ Copy the `<head>` from a reference post and set:
 - the `BlogPosting` JSON-LD block with the same headline, description, date and author
 - the font preload and `fonts.css` at `../../resources/fonts/InterVariable.woff2` and `../../css/global/fonts.css`, then `variables.css`, `base.css`, `../blog.css`, `style.css`
 
-Build the body in this order (the reference posts show each part):
+Open the body as `<body ontouchstart="" class="<post-class>">`: iOS shows the press state only with a touch listener, and `scripts/interfaceRules.test.js` checks it. Build the body in this order (the reference posts show each part):
 
 1. The `.topbar` with the back link to `../` and the feed link.
 2. `<article class="post">` with `.post-header`: kicker, `<h1>`, standfirst, then a `<p class="post-project">` link when the post is about a project ("Try <Project> →"), then `.post-byline` (author link, `<time>`, reading time).

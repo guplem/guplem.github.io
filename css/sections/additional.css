@@ -48,16 +48,9 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   background-color: #c2dde6;
-  transition: transform var(--duration-slow) var(--ease-out),
-              box-shadow var(--duration-slow) var(--ease-out);
   justify-self: center;
   width: 220px;
   height: auto;
-}
-
-.additional-grid img:hover {
-  transform: scale(1.03);
-  box-shadow: var(--shadow-lg);
 }
 
 @media (min-width: 768px) {

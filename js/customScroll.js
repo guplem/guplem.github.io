@@ -13,27 +13,31 @@
       z-index: 200;
       pointer-events: none;
     }
+    /* The thumb moves with translate and widens with scale: top, width and
+       right would lay the page out again on every scroll frame. A scale of
+       4/3 turns 6px into 8px around the same centre. */
     .custom-scroll__thumb {
       position: absolute;
+      top: 0;
       right: 4px;
       width: 6px;
       border-radius: 3px;
       background: rgba(0, 0, 0, 0.2);
       pointer-events: auto;
       cursor: grab;
-      transition: top 80ms ease-out, background 150ms ease-out, width 150ms ease-out, right 150ms ease-out;
+      transition: translate 80ms ease-out, background 150ms ease-out, scale 150ms ease-out;
     }
-    .custom-scroll__thumb:hover {
-      background: rgba(0, 0, 0, 0.35);
-      width: 8px;
-      right: 3px;
+    @media (hover: hover) and (pointer: fine) {
+      .custom-scroll__thumb:hover {
+        background: rgba(0, 0, 0, 0.35);
+        scale: 1.3333 1;
+      }
     }
     .custom-scroll__thumb.dragging {
       background: rgba(0, 0, 0, 0.4);
-      width: 8px;
-      right: 3px;
+      scale: 1.3333 1;
       cursor: grabbing;
-      transition: background 150ms ease-out, width 150ms ease-out, right 150ms ease-out;
+      transition: background 150ms ease-out, scale 150ms ease-out;
     }
   `;
   document.head.appendChild(style);
@@ -67,7 +71,7 @@
     if (doc <= view) { thumb.style.display = "none"; return; }
     thumb.style.display = "";
     thumb.style.height = thumbH + "px";
-    thumb.style.top = padding + (window.scrollY / maxScroll) * maxThumbTop + "px";
+    thumb.style.translate = `0 ${padding + (window.scrollY / maxScroll) * maxThumbTop}px`;
   }
 
   function scheduleUpdate() {
@@ -93,7 +97,7 @@
     e.preventDefault();
     const { thumbH, maxThumbTop, maxScroll, padding } = getMetrics();
     const newTop = Math.min(Math.max(0, e.clientY - dragOffsetY - padding), maxThumbTop);
-    thumb.style.top = padding + newTop + "px";
+    thumb.style.translate = `0 ${padding + newTop}px`;
     window.scrollTo(0, (newTop / maxThumbTop) * maxScroll);
   });
 

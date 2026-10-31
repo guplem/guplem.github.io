@@ -59,6 +59,7 @@ A post may hold more files next to these: its own scripts (`tutorial.js`), a pur
 
 ### Page mechanics
 
+- **Every post's `<body>` carries `ontouchstart=""`.** `base.css` removes the tap flash and answers a press with `:active`, which iOS applies only when a touch listener exists. `scripts/interfaceRules.test.js` checks every post.
 - **The head carries the record.** Every post has `og:title` (the bare title, no site suffix), `description`, `article:published_time` as a full UTC instant (`2026-09-20T12:00:00Z`), `canonical`, and a `BlogPosting` JSON-LD block that repeats the same values. The generators throw when a required tag is missing.
 - **Every section heading is an anchor.** Each `h2` to `h4` of a post carries a unique kebab-case `id` and wraps its text in `<a class="heading-anchor" href="#that-id">`, so a tap puts the section in the address bar the way Wikipedia does, with no script. `scripts/blogPosts.test.js` checks every post. The look lives in `blog.css`. Keep an `id` when you rename a heading: other pages may link it.
 - **A contents list is a `<details class="toc" id="contents">` of plain links**, so it works with no script. From 1280px wide it sits fixed in the top left corner; below that it is a folded box, with a `.toc-jump` button that jumps back to it. A short inline script may only open it on a wide screen and mark the section being read (`aria-current`); copy it from a reference post. Add every new `h2` to the list: `scripts/blogPosts.test.js` fails when one is missing.

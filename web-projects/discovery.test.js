@@ -8,6 +8,7 @@ import {
   filterProjectsByText,
   hasSearchText,
   shouldPinSearchToTop,
+  entranceDelayMs,
 } from "./discovery.js";
 
 describe("localWebProjectPath", () => {
@@ -253,5 +254,17 @@ describe("shouldPinSearchToTop", () => {
   it("does not pin when nothing changes", () => {
     expect(shouldPinSearchToTop("", "")).toBe(false);
     expect(shouldPinSearchToTop("game", "game")).toBe(false);
+  });
+});
+
+describe("entranceDelayMs", () => {
+  it("staggers the cards by 30ms each, from 0", () => {
+    expect(entranceDelayMs(0)).toBe(0);
+    expect(entranceDelayMs(3)).toBe(90);
+  });
+
+  it("caps the stagger at 300ms, so the last card does not wait over a second", () => {
+    expect(entranceDelayMs(10)).toBe(300);
+    expect(entranceDelayMs(23)).toBe(300);
   });
 });
