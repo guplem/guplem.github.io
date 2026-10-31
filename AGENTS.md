@@ -157,7 +157,10 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Filter normalization:** `idFromText()` in `textUtils.js` strips punctuation/spaces/special chars and capitalizes -- used for element IDs and type/skill button filter matching. Must be consistent across button-based filter code. The free-text work search (`workMatchesText` in `textUtils.js`) intentionally does NOT use `idFromText()` -- it matches raw lowercase substrings so users can type naturally.
 
-**Interface rules (phones and motion):** `scripts/interfaceRules.test.js` fails on an ungated `:hover`, `transition: all`, motion on a layout property, an unstable `100vh`/`100dvh`, a missing touch rule in `base.css`, or a page that blocks zoom; exempt one spot only with an `interface-rule-exception: <reason>` comment (ADR 0018). Two rules no test can judge: give new motion a named purpose (feedback, a state change, where a thing came from), never play it on a surface used often (filters, search, keyboard, scroll reveals), and keep UI motion under 300ms; and check a touch change on a real phone, because desktop emulation shows none of these problems.
+**Interface rules (phones and motion):** `scripts/interfaceRules.test.js` guards the phone and motion rules of the shared CSS (ADR 0018). It fails on an ungated `:hover`, `transition: all`, motion on a layout property, or an unstable `100vh` or `100dvh`. It also fails on a missing touch rule in `base.css` and on a page that blocks zoom. To exempt one spot, put an `interface-rule-exception: <reason>` comment right before it. No test can judge three rules, so follow them by hand:
+- Give new motion a named purpose: feedback, a state change, or where a thing came from.
+- Never play motion on a surface used often: filters, search, keyboard actions, scroll reveals. Keep each animation and each stagger under 300ms.
+- Check a touch change on a real phone. Desktop emulation shows none of these problems.
 
 **Three-state work filters:** every type and skill chip in the filter rows cycles none -> include -> exclude -> none (a chip on a work card only toggles include), and carries its state as a value in `data-tag-filter`, never in a boolean `selected` attribute (see ADR 0014 and `js/layoutBuilder/AGENTS.md`).
 
