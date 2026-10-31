@@ -524,7 +524,9 @@
   margin-bottom: 4px;
 }
 
-/* Entrance animation for cards */
+/* Entrance animation for cards. Only the first render of the grid carries
+   .is-entering: a filter, a search or a resize shows the cards at once
+   (js/layoutBuilder/cardEntrance.js). */
 @keyframes cardIn {
   from {
     opacity: 0;
@@ -536,6 +538,6 @@
   }
 }
 
-.work {
+.work.is-entering {
   animation: cardIn 0.4s var(--ease-out) both;
 }
