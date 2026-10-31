@@ -4,7 +4,8 @@
   "date": "2026",
   "title": "Eva",
   "image": "resources/images/projects/eva.webp",
-  "imageAlt": "Eva's web app in dark mode: a list of chats on the left, a chat in the middle with Eva's answer, and the chat's engine, model and context use on the right",
+  "imageStretched": true,
+  "imageAlt": "Headline \"An AI assistant that lives on your computer\" next to Eva's face, a black visor with two happy blue eyes in a white ring, above a screenshot of her chat page in dark mode",
   "description": [
     "*Eva* is a **personal AI assistant** that runs on my own computer. She works over my **vault**, a **git repository** of plain-text notes, and I talk to her through a **web app** and a **Telegram bot**.",
     "I design and build her as the next version of my earlier assistant, *Wall-I*. She is a **super harness**: she runs coding agents such as **Claude Code**, hands them project work, and sends **scheduled messages**.",
