@@ -587,7 +587,7 @@
 }
 
 .work.is-entering {
-  animation: cardIn 0.3s var(--ease-out) both;
+  animation: cardIn 0.3s var(--ease-out) backwards;
 }
 
 /* base.css shortens every animation under reduced motion, but not its
