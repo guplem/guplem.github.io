@@ -78,6 +78,14 @@
   }
 }
 
+/* Under reduced motion the cue appears at once, not after its 1s delay:
+   base.css shortens the animation but leaves the delay. */
+@media (prefers-reduced-motion: reduce) {
+  #scrollCue {
+    animation-delay: 0s;
+  }
+}
+
 .scroll-label {
   font-size: 0.7rem;
   font-weight: 600;

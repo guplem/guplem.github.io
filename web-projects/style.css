@@ -150,6 +150,14 @@ body.searching main {
   }
 }
 
+/* Under reduced motion every card appears at once: base.css shortens the
+   entrance but leaves the inline stagger delay. */
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    animation-delay: 0s !important;
+  }
+}
+
 /* Once the visitor types in the search box, no card replays its entrance
    when the search shows it again (app.js adds the class). */
 .projects-grid.entrance-done .project-card {

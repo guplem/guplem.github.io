@@ -582,3 +582,12 @@
 .work.is-entering {
   animation: cardIn 0.4s var(--ease-out) both;
 }
+
+/* base.css shortens every animation under reduced motion, but not its
+   delay, so a card would still wait for its stagger. !important beats the
+   inline delay that workCards.js sets. */
+@media (prefers-reduced-motion: reduce) {
+  .work.is-entering {
+    animation-delay: 0s !important;
+  }
+}
