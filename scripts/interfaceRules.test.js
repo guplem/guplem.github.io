@@ -378,12 +378,24 @@ describe("touch behaviour in css/global/base.css", () => {
 describe("page heads", () => {
   const pages = ["index.html", "404.html", "PdP.html", "WhatIsNextTerms.html", "blog/index.html", "web-projects/index.html", ...loadPosts(repoRoot).map((post) => `blog/${post.slug}/index.html`)];
 
+  it.each(pages)("%s fits the phone's width and lets the reader zoom", (page) => {
+    const viewport = read(page).match(/<meta\s+name="viewport"\s+content="([^"]*)"/);
+    expect(viewport).not.toBeNull();
+    expect(viewport[1]).toContain("width=device-width");
+    expect(viewport[1]).not.toMatch(/maximum-scale|user-scalable\s*=\s*no/);
+  });
+
   it.each(pages.filter((page) => /css\/global\/base\.css/.test(read(page))))("%s listens for touches, so iOS applies :active", (page) => {
     // base.css removes the tap flash and answers a press with :active, but iOS
     // Safari applies :active only when a touchstart listener exists.
     expect(read(page).match(/<body[^>]*>/)?.[0]).toContain(' ontouchstart=""');
   });
 
+  it("colours the phone's browser bar like the top of the main page", () => {
+    const heroColour = read("css/global/variables.css").match(/--bg-dark:\s*(#[0-9a-f]{6})/i)[1];
+    const themeColour = read("index.html").match(/<meta\s+name="theme-color"\s+content="([^"]*)"/);
+    expect(themeColour?.[1].toLowerCase()).toBe(heroColour.toLowerCase());
+  });
 });
 
 describe("card entrances", () => {
