@@ -20,15 +20,15 @@ A rule written only in prose drifts: the next change adds an ungated hover, and 
 It also checks these points:
 
 - `css/global/base.css` holds the touch rules: no tap flash, a press state on buttons and links, `touch-action: manipulation`, and 16px form fields on a touch screen.
-- Every main-site page has a viewport tag that allows zoom.
+- Every main-site page and every blog post has a viewport tag that allows zoom.
 - Every page that loads `base.css` has `ontouchstart=""` on `<body>`.
 - `index.html` has a `theme-color` equal to `--bg-dark`.
 
 **One escape hatch, with a reason.** A comment holding `interface-rule-exception: <reason>` right before a rule or a declaration exempts it. Two exist. The "Show more projects" `max-height` transition must push the sections below it down. The Playground's `100vh` search height needs the largest viewport.
 
-**Motion needs a purpose.** The entrance of the work cards plays on the first render only, and it lasts 300ms. Its stagger stops at 300ms (`js/layoutBuilder/cardEntrance.js`). The Playground repeats the numbers in `web-projects/discovery.js`, and the guard test keeps them equal. The scroll reveal is gone. A hover moves nothing that is not a link or a button.
+**Motion needs a purpose.** The entrance of the work cards plays on the first render only, and it lasts 300ms. Its stagger stops at 300ms (`js/layoutBuilder/cardEntrance.js`). The Playground repeats the numbers in `web-projects/discovery.js`, and the guard test keeps them equal. The scroll reveal is gone. A hover moves only a link, a button or a project card.
 
-**Scope.** The rules cover the main site and the shared skeleton. A web-project or a blog post's own `style.css` owns its look and is not read.
+**Scope.** The CSS rules cover the main site and the shared skeleton. A web-project or a blog post's own `style.css` owns its look, so the test does not read it. The head checks also cover the blog posts, and the touch-listener check covers every page that loads `base.css`.
 
 **Rejected alternative:** copy the skills into the repository. They are long, they cover stacks this site does not use, and an agent would read them as instructions to follow everywhere. The test and a few lines in `AGENTS.md` carry what applies.
 

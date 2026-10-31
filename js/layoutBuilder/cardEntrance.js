@@ -21,7 +21,7 @@ export function cardEntranceDelayMs(index) {
 /**
  * Returns whether a render of the grid plays the entrance. Only the first one
  * does; later renders answer a filter, a search or a resize.
- * @param {number} previousRenders - how many renders finished before this one
+ * @param {number} previousRenders - how many renders started before this one
  * @returns {boolean}
  */
 export function playsCardEntrance(previousRenders) {

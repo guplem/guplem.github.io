@@ -159,7 +159,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Interface rules (phones and motion):** `scripts/interfaceRules.test.js` guards the phone and motion rules of the shared CSS (ADR 0018). It fails on an ungated `:hover`, `transition: all`, motion on a layout property, or an unstable `100vh` or `100dvh`. It also fails on a missing touch rule in `base.css` and on a page that blocks zoom. To exempt one spot, put an `interface-rule-exception: <reason>` comment right before it. No test can judge three rules, so follow them by hand:
 - Give new motion a named purpose: feedback, a state change, or where a thing came from.
-- Never play motion on a surface used often: filters, search, keyboard actions, scroll reveals. Keep each animation and each stagger under 300ms.
+- Never play an entrance or a reveal on a surface used often: filters, search, keyboard actions, scrolling. Press feedback on a button is the exception. Keep an entrance and a stagger at 300ms or less.
 - Check a touch change on a real phone. Desktop emulation shows none of these problems.
 
 **Three-state work filters:** every type and skill chip in the filter rows cycles none -> include -> exclude -> none (a chip on a work card only toggles include), and carries its state as a value in `data-tag-filter`, never in a boolean `selected` attribute (see ADR 0014 and `js/layoutBuilder/AGENTS.md`).

@@ -129,7 +129,7 @@ export function markdownToBlockHtml(markdown) {
  * structure. Swapped (not adopted) at load: the section sits below the
  * hero, so the swap is out of sight on a normal load. A deep link
  * (/#aboutMe) or a restored scroll can show it; the swap keeps the same
- * structure, so that is accepted and it needs no exact mirror.
+ * structure, so the site accepts it, and it needs no exact mirror.
  * @param {{ aboutMe: string[] }} info the parsed data/info.json
  * @returns {string}
  */
