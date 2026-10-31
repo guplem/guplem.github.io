@@ -282,6 +282,13 @@ describe("each rule catches what it guards", () => {
     expect(ungatedHover(firstRule("@media (hover: hover) and (pointer: fine) { a:hover { color: red; } }"))).toHaveLength(0);
   });
 
+  it("flags transition: all, alone or in a list", () => {
+    expect(transitionAll(firstRule("a { transition: all 1s; }"))).toHaveLength(1);
+    expect(transitionAll(firstRule("a { transition: color 1s, all 2s; }"))).toHaveLength(1);
+    expect(transitionAll(firstRule("a { transition-property: all; }"))).toHaveLength(1);
+    expect(transitionAll(firstRule("a { transition: color 1s ease-out; }"))).toHaveLength(0);
+  });
+
 });
 
 describe("the main site follows the rules", () => {
@@ -291,6 +298,10 @@ describe("the main site follows the rules", () => {
 
   it("gates every hover behind a mouse, so a tap does not leave it stuck", () => {
     expect(problemsAcrossSheets(ungatedHover)).toEqual([]);
+  });
+
+  it("never transitions all", () => {
+    expect(problemsAcrossSheets(transitionAll)).toEqual([]);
   });
 
 });
