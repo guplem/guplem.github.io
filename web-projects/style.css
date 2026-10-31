@@ -91,6 +91,8 @@ main {
    height under the box is always enough. */
 body.searching main {
   padding-top: var(--sp-md);
+  /* interface-rule-exception: the box needs one whole screen under it once
+     the address bar hides, which is the largest viewport, so vh, not svh. */
   min-height: 100vh;
 }
 

@@ -4,8 +4,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* svh is the screen with the address bar showing. It never changes while
+     the reader scrolls, so nothing below the hero moves; dvh would. */
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
   overflow: hidden;
   background: var(--bg-dark);
 }

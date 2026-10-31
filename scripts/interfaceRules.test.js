@@ -23,7 +23,7 @@ const EXCEPTION_MARK = "interface-rule-exception:";
 // === A small CSS reader ===
 
 /**
- * Split text on a separator that sits outside parentheses and quotes.
+ * Split text on a separator that sits outside parentheses, quotes and comments.
  * @param {string} text
  * @param {string} separator
  * @returns {string[]}
@@ -35,6 +35,11 @@ function splitTopLevel(text, separator) {
   let start = 0;
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
+    if (!quote && text.startsWith("/*", i)) {
+      const end = text.indexOf("*/", i + 2);
+      i = end < 0 ? text.length : end + 1;
+      continue;
+    }
     if (quote) {
       if (char === quote) quote = "";
       continue;
@@ -265,6 +270,11 @@ describe("the CSS reader", () => {
     expect(rule.declarations.map((declaration) => declaration.property)).toEqual(["background", "color"]);
   });
 
+  it("keeps a semicolon inside a comment out of the split", () => {
+    const [rule] = readCssRules("a { /* one; two */ height: 100vh; height: 100svh; }");
+    expect(rule.declarations.map((declaration) => declaration.value)).toEqual(["100vh", "100svh"]);
+  });
+
   it("marks a rule or a declaration that carries the exception comment", () => {
     const [rule] = readCssRules(`/* ${EXCEPTION_MARK} test */ a:hover { /* ${EXCEPTION_MARK} test */ height: 100vh; color: red; }`);
     expect(rule.exempt).toBe(true);
@@ -301,6 +311,11 @@ describe("each rule catches what it guards", () => {
     expect(transitionOnLayoutProperty(firstRule("a { transition: transform 80ms, scale 1s; }"))).toHaveLength(0);
   });
 
+  it("flags 100dvh and a bare 100vh, and passes a 100vh fallback before 100svh", () => {
+    expect(unstableViewportHeight(firstRule("a { height: 100dvh; }"))).toHaveLength(1);
+    expect(unstableViewportHeight(firstRule("a { min-height: 100vh; }"))).toHaveLength(1);
+    expect(unstableViewportHeight(firstRule("a { height: 100vh; height: 100svh; }"))).toHaveLength(0);
+  });
 });
 
 describe("the main site follows the rules", () => {
@@ -324,6 +339,9 @@ describe("the main site follows the rules", () => {
     expect(problemsAcrossSheets(transitionOnLayoutProperty)).toEqual([]);
   });
 
+  it("gives no first screen a height that changes while the reader scrolls", () => {
+    expect(problemsAcrossSheets(unstableViewportHeight)).toEqual([]);
+  });
 });
 
 describe("touch behaviour in css/global/base.css", () => {
