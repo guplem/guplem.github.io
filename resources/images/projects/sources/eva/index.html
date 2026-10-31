@@ -1,0 +1,164 @@
+<!doctype html>
+<!--
+  Source of the portfolio image resources/images/projects/eva.webp.
+  Re-render it with:
+    bun scripts/captureProjectImage.js --page resources/images/projects/sources/eva/ --out resources/images/projects/eva.webp --width 1280 --height 800 --quality 80
+  screenshot.webp is docs/design/eve/screenshots/chat-computer-dark.webp from
+  github.com/guplem/eva (the chat page in dark mode, with example data).
+  The face is EVE's visor with the happy face: the .mk and .e-joy rules are a
+  copy of src/frontends/web/visor.css, and the colours are the dark tokens of
+  docs/design/eve/README.md for the default seed, EVE blue #2aa8ff, which is
+  oklch(0.707 0.164 245). The white shell ring is the one of the logo,
+  docs/design/eve/eva.svg.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Eva portfolio image</title>
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("../../../../fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      :root {
+        --h: 245;
+        --eye: oklch(0.87 0.13 var(--h));
+        --glow: oklch(0.74 0.164 var(--h));
+        --visor: oklch(0.26 0.02 var(--h));
+        --visor2: oklch(0.07 0.01 var(--h));
+        --shell: #ffffff;
+        --accent-ink: oklch(0.82 0.164 var(--h));
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: #f4f4f5;
+        background:
+          radial-gradient(circle at 86% 18%, oklch(0.74 0.164 var(--h) / 0.32), transparent 40%),
+          radial-gradient(circle at 4% 100%, oklch(0.74 0.164 var(--h) / 0.14), transparent 42%),
+          oklch(0.16 0.02 var(--h));
+      }
+      .caption {
+        position: absolute;
+        left: 90px;
+        right: 420px;
+        top: 48px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #a1a1aa;
+      }
+      h1 {
+        margin-top: 16px;
+        font-size: 58px;
+        line-height: 1.05;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+      .accent {
+        color: var(--accent-ink);
+      }
+      .sub {
+        margin-top: 12px;
+        font-size: 22px;
+        color: #a1a1aa;
+      }
+      /* The screenshot is 1280 px wide; the frame shows it at 1100 px. */
+      .shot {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 1100px;
+        height: 488px;
+        transform: translateX(-50%);
+        overflow: hidden;
+        border-radius: 14px 14px 0 0;
+        background: #0d1620 url("screenshot.webp") 0 0 / 1100px auto no-repeat;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+      /* The face sits over the top edge of the frame. */
+      .mk.hero {
+        position: absolute;
+        right: 110px;
+        top: 104px;
+        z-index: 1;
+        font-size: 236px;
+        box-shadow:
+          0 0 0 0.1em var(--shell),
+          0 0.12em 0.4em 0.02em oklch(0.05 0.02 var(--h) / 0.7),
+          0 0 0.6em 0.05em oklch(0.74 0.164 var(--h) / 0.35);
+      }
+
+      /* From here on: a copy of visor.css (.mk, .mk .eyes, .mk i, .mk.e-joy), with no motion. */
+      .mk {
+        font-size: 36px;
+        width: 1em;
+        height: 0.9em;
+        border-radius: 50% 50% 46% 46% / 55% 55% 45% 45%;
+        background: radial-gradient(ellipse at 50% 22%, var(--visor), var(--visor2) 72%);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.16em;
+        flex: none;
+        position: relative;
+      }
+      .mk .eyes {
+        display: flex;
+        align-items: center;
+        gap: 0.16em;
+        filter: drop-shadow(0 0 0.05em var(--eye)) drop-shadow(0 0 0.14em var(--glow));
+      }
+      .mk i {
+        display: block;
+        position: relative;
+        width: 0.26em;
+        height: 0.16em;
+        border-radius: 50%;
+        background-color: var(--eye);
+      }
+      .mk i:first-child {
+        rotate: var(--r1, 14deg);
+      }
+      .mk i:last-child {
+        rotate: var(--r2, -14deg);
+      }
+      .mk.e-joy {
+        --r1: 0deg;
+        --r2: 0deg;
+      }
+      .mk.e-joy i {
+        height: 0.24em;
+        width: 0.27em;
+        -webkit-mask: radial-gradient(ellipse 60% 62% at 50% 110%, transparent 98%, #000 100%);
+        mask: radial-gradient(ellipse 60% 62% at 50% 110%, transparent 98%, #000 100%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="caption">
+      <div class="brand"><span class="mk s" aria-hidden="true"><span class="eyes"><i></i><i></i></span></span>Eva · open source, for Windows and Linux</div>
+      <h1>An AI assistant that lives on <span class="accent">your computer</span></h1>
+      <p class="sub">She works over your notes, runs coding agents, and talks on Telegram.</p>
+    </div>
+    <div class="shot" role="img" aria-label="Eva's chat page in dark mode"></div>
+    <div class="mk hero e-joy" role="img" aria-label="EVE's face, with happy eyes"><span class="eyes"><i></i><i></i></span></div>
+  </body>
+</html>
