@@ -277,6 +277,13 @@
   opacity: 1;
 }
 
+/* The line that replaces the grid when no project matches. */
+.works-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--sp-lg) var(--sp-md);
+}
+
 .works-expand-btn {
   display: block;
   margin: var(--sp-md) auto 0;

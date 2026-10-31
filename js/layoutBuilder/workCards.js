@@ -59,6 +59,10 @@ export async function displayFilteredWorks() {
     columnHeights[shortestColumnIndex] += workElement.offsetHeight;
   }
 
+  // A filter or a search can leave no project; say so instead of a blank gap.
+  const noResults = document.getElementById("myWorkNoResults");
+  if (noResults) noResults.hidden = filteredWorks.length > 0;
+
   updateWorksExpandButton();
 }
 
