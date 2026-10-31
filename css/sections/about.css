@@ -36,14 +36,6 @@
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
   /* background-color: #bccbde;  */ /* f4f5f7 */
-  transition:
-    transform var(--duration-slow) var(--ease-out),
-    box-shadow var(--duration-slow) var(--ease-out);
-}
-
-.about-photo img:hover {
-  transform: scale(1.03) rotate(1deg);
-  box-shadow: var(--shadow-xl), var(--shadow-glow);
 }
 
 /* Text */
