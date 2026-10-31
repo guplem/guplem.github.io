@@ -52,10 +52,63 @@
   }
 }
 
+/* On a phone the cards become one grouped list: one white panel, one row per
+   contact, icon on the left and an arrow on the right. The rows share one width,
+   so the uneven bubbles of the desktop layout do not appear. */
 @media (max-width: 600px) {
-  .contact-card {
+  .contact-row {
     flex-direction: column;
-    padding: 14px 18px;
-    font-size: 0.85rem;
+    flex-wrap: nowrap;
+    gap: 0;
+    max-width: 420px;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .contact-card {
+    gap: 14px;
+    min-height: 52px;
+    padding: 12px 18px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 0.95rem;
+    text-align: left;
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .contact-card + .contact-card {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .contact-card img {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .contact-card span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact-card::after {
+    content: "\2197";
+    flex-shrink: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* Feedback: the row tints while the finger presses it. */
+  .contact-card:active {
+    background: rgba(var(--accent-rgb), 0.08);
   }
 }
