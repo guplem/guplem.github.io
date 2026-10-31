@@ -15,6 +15,7 @@ A rule written only in prose drifts: the next change adds an ungated hover, and 
 - a `:hover` rule outside `@media (hover: hover) and (pointer: fine)`;
 - `transition: all`;
 - a keyframe or a transition that moves a layout property (`top`, `width`, `max-height`, `margin` and the like);
+- a keyframe or a transition on `box-shadow`. A shadow change repaints its element on every frame and waits for the main thread. Put the shadow on a pseudo-element and animate its `opacity` (issue #425);
 - `100dvh`, or a `100vh` that is not a fallback line before `100svh`.
 
 It also checks these points:
