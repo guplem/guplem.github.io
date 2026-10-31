@@ -6,7 +6,9 @@
 // reader scrolls, a form field never makes iOS zoom, and no page blocks zoom.
 //
 // One escape hatch: a comment holding `interface-rule-exception: <reason>`
-// right before a rule or a declaration exempts it. Write the reason.
+// on the line above a rule or a declaration exempts it. Write the reason. A
+// comment at the end of a line exempts the next declaration, not that one.
+// The reader handles plain CSS: a nested style rule fails its own test.
 
 import { describe, it, expect } from "bun:test";
 import { readFileSync, readdirSync } from "node:fs";
@@ -58,7 +60,7 @@ function splitTopLevel(text, separator) {
 
 /**
  * @typedef {{ property: string, value: string, exempt: boolean }} Declaration
- * @typedef {{ selector: string, parents: string[], exempt: boolean, declarations: Declaration[] }} CssRule
+ * @typedef {{ selector: string, parents: string[], exempt: boolean, nested: boolean, declarations: Declaration[] }} CssRule
  */
 
 /**
@@ -74,7 +76,7 @@ function readDeclarations(body) {
       const text = chunk.replace(/\/\*[\s\S]*?\*\//g, "").trim();
       const colon = text.indexOf(":");
       if (colon < 0) return null;
-      return { property: text.slice(0, colon).trim().toLowerCase(), value: text.slice(colon + 1).trim(), exempt };
+      return { property: text.slice(0, colon).trim().toLowerCase(), value: text.slice(colon + 1).trim().toLowerCase(), exempt };
     })
     .filter((declaration) => declaration !== null);
 }
@@ -112,13 +114,26 @@ export function readCssRules(css) {
         continue;
       }
       let depth = 1;
+      let nested = false;
+      let quote = "";
       let j = i + 1;
       while (j < css.length && depth > 0) {
-        if (css[j] === "{") depth++;
-        else if (css[j] === "}") depth--;
+        if (!quote && css.startsWith("/*", j)) {
+          const end = css.indexOf("*/", j + 2);
+          j = end < 0 ? css.length : end + 2;
+          continue;
+        }
+        const inner = css[j];
+        if (quote) {
+          if (inner === quote) quote = "";
+        } else if (inner === '"' || inner === "'") quote = inner;
+        else if (inner === "{") {
+          depth++;
+          nested = true;
+        } else if (inner === "}") depth--;
         j++;
       }
-      rules.push({ selector: prelude, parents: [...parents], exempt, declarations: readDeclarations(css.slice(i + 1, j - 1)) });
+      rules.push({ selector: prelude, parents: [...parents], exempt, nested, declarations: readDeclarations(css.slice(i + 1, j - 1)) });
       i = j;
       continue;
     }
@@ -150,11 +165,16 @@ function inlineStyles(html) {
   return [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((match) => match[1]).join("\n");
 }
 
+// The main site's own pages. Blog posts are not here: each owns its look.
+const MAIN_SITE_PAGES = ["index.html", "404.html", "PdP.html", "WhatIsNextTerms.html", "blog/index.html", "web-projects/index.html"];
+
 /** @returns {{ name: string, css: string }[]} */
 function inScopeStyleSheets() {
   const cssFolder = (folder) =>
-    readdirSync(join(repoRoot, folder))
+    readdirSync(join(repoRoot, folder), { recursive: true })
+      .map(String)
       .filter((file) => file.endsWith(".css"))
+      .sort()
       .map((file) => ({ name: `${folder}/${file}`, css: read(`${folder}/${file}`) }));
   const customScroll = read("js/customScroll.js");
   const injected = customScroll.match(/style\.textContent = `([\s\S]*?)`;/);
@@ -164,9 +184,9 @@ function inScopeStyleSheets() {
     { name: "blog/blog.css", css: read("blog/blog.css") },
     { name: "web-projects/style.css", css: read("web-projects/style.css") },
     { name: "js/customScroll.js (injected style)", css: injected ? injected[1] : "" },
-    // Only 404.html has a <style> block today; a page that adds one is read
-    // without a change here.
-    ...["index.html", "404.html", "blog/index.html", "web-projects/index.html"]
+    // Only 404.html has a <style> block today; a main-site page that adds one
+    // is read without a change here.
+    ...MAIN_SITE_PAGES
       .map((page) => ({ name: `${page} (<style>)`, css: inlineStyles(read(page)) }))
       .filter(({ css }) => css.trim() !== ""),
   ];
@@ -189,41 +209,50 @@ function problemsAcrossSheets(findProblems) {
 /** @param {CssRule} rule */
 export function ungatedHover(rule) {
   if (rule.exempt || !rule.selector.includes(":hover")) return [];
-  const gated = rule.parents.some((parent) => /\(hover:\s*hover\)/.test(parent) && /\(pointer:\s*fine\)/.test(parent));
+  // A comma in a media query means "or", so every query must need a mouse.
+  const needsMouse = (query) => !/^\s*not\b/.test(query) && /\(hover:\s*hover\)/.test(query) && /\(pointer:\s*fine\)/.test(query);
+  const gated = rule.parents.some(
+    (parent) => parent.startsWith("@media") && splitTopLevel(parent.replace(/^@media\s*/, ""), ",").every(needsMouse)
+  );
   return gated ? [] : [`"${rule.selector}" needs @media (hover: hover) and (pointer: fine)`];
-}
-
-/** @param {CssRule} rule */
-export function transitionAll(rule) {
-  return rule.declarations
-    .filter((declaration) => !declaration.exempt)
-    .filter(
-      (declaration) =>
-        (declaration.property === "transition" && splitTopLevel(declaration.value, ",").some((part) => /^\s*all\b/.test(part))) ||
-        (declaration.property === "transition-property" && /\ball\b/.test(declaration.value))
-    )
-    .map(() => `"${rule.selector}" transitions "all"; list the properties`);
-}
-
-const LAYOUT_PROPERTY = /^(top|right|bottom|left|inset.*|width|height|min-width|min-height|max-width|max-height|margin.*|padding.*|border-width)$/;
-
-/** @param {CssRule} rule */
-export function keyframeOnLayoutProperty(rule) {
-  if (!rule.parents.some((parent) => parent.startsWith("@keyframes"))) return [];
-  return rule.declarations
-    .filter((declaration) => !declaration.exempt && LAYOUT_PROPERTY.test(declaration.property))
-    .map((declaration) => `keyframe "${rule.selector}" animates ${declaration.property}; use transform`);
 }
 
 /**
  * Read the property names a `transition` or `transition-property` animates.
+ * The parts of the shorthand come in any order: the property is the one word
+ * that is not a time, an easing or a keyword, and a part with no property
+ * animates "all".
  * @param {Declaration} declaration
  * @returns {string[]}
  */
 function transitionedProperties(declaration) {
-  if (declaration.property === "transition-property") return declaration.value.split(",").map((part) => part.trim());
-  if (declaration.property !== "transition") return [];
-  return splitTopLevel(declaration.value, ",").map((part) => part.trim().split(/\s+/)[0]);
+  const property = declaration.property.replace(/^-(webkit|moz|ms|o)-/, "");
+  if (property === "transition-property") return declaration.value.split(",").map((part) => part.trim());
+  if (property !== "transition") return [];
+  const notAProperty = /^(-?[\d.]+m?s|ease|ease-in|ease-out|ease-in-out|linear|step-start|step-end|normal|allow-discrete|initial|inherit|unset|revert|none|(cubic-bezier|steps|linear|var)\(.*\))$/;
+  return splitTopLevel(declaration.value, ",").map((part) => {
+    const words = splitTopLevel(part.trim(), " ").map((word) => word.trim()).filter(Boolean);
+    return words.find((word) => !notAProperty.test(word)) ?? "all";
+  });
+}
+
+/** @param {CssRule} rule */
+export function transitionAll(rule) {
+  if (rule.exempt) return [];
+  return rule.declarations
+    .filter((declaration) => !declaration.exempt && transitionedProperties(declaration).includes("all"))
+    .map(() => `"${rule.selector}" transitions "all"; list the properties`);
+}
+
+const LAYOUT_PROPERTY =
+  /^(top|right|bottom|left|inset.*|width|height|(min|max)-(width|height)|(min|max)-(block|inline)-size|block-size|inline-size|margin.*|padding.*|border(-(top|right|bottom|left|block|inline))?(-width)?|font-size|gap|row-gap|column-gap|flex|flex-basis|grid-template-(rows|columns))$/;
+
+/** @param {CssRule} rule */
+export function keyframeOnLayoutProperty(rule) {
+  if (rule.exempt || !rule.parents.some((parent) => /^@(-\w+-)?keyframes\b/.test(parent))) return [];
+  return rule.declarations
+    .filter((declaration) => !declaration.exempt && LAYOUT_PROPERTY.test(declaration.property))
+    .map((declaration) => `keyframe "${rule.selector}" animates ${declaration.property}; use transform`);
 }
 
 /** @param {CssRule} rule */
@@ -275,6 +304,17 @@ describe("the CSS reader", () => {
     expect(rule.declarations.map((declaration) => declaration.value)).toEqual(["100vh", "100svh"]);
   });
 
+  it("skips braces inside comments and strings", () => {
+    const rules = readCssRules('a { /* { */ color: red; } b { content: "}"; transition: all 1s; } c:hover { color: blue; }');
+    expect(rules.map((rule) => rule.selector)).toEqual(["a", "b", "c:hover"]);
+    expect(rules[1].declarations.map((declaration) => declaration.property)).toEqual(["content", "transition"]);
+  });
+
+  it("marks a rule that nests another rule, which it cannot read", () => {
+    const [rule] = readCssRules(".x { &:hover { color: red; } }");
+    expect(rule.nested).toBe(true);
+  });
+
   it("marks a rule or a declaration that carries the exception comment", () => {
     const [rule] = readCssRules(`/* ${EXCEPTION_MARK} test */ a:hover { /* ${EXCEPTION_MARK} test */ height: 100vh; color: red; }`);
     expect(rule.exempt).toBe(true);
@@ -285,6 +325,37 @@ describe("the CSS reader", () => {
 
 describe("each rule catches what it guards", () => {
   const firstRule = (css) => readCssRules(css)[0];
+
+  it("reads a transition's parts in any order, and a part with no property as all", () => {
+    expect(transitionAll(firstRule("a { transition: 0.2s ease all; }"))).toHaveLength(1);
+    expect(transitionAll(firstRule("a { transition: 200ms ease-out; }"))).toHaveLength(1);
+    expect(transitionAll(firstRule("a { transition: ALL 1s; }"))).toHaveLength(1);
+    expect(transitionAll(firstRule("a { -webkit-transition: all 1s; }"))).toHaveLength(1);
+    expect(transitionOnLayoutProperty(firstRule("a { transition: 0.3s height; }"))).toHaveLength(1);
+    expect(transitionAll(firstRule("a { transition: opacity 0.2s cubic-bezier(0.2, 1, 0.3, 1) 50ms; }"))).toHaveLength(0);
+  });
+
+  it("knows the layout properties that an accordion or a gap animates", () => {
+    for (const property of ["grid-template-rows", "flex-basis", "font-size", "gap", "border-top-width", "block-size"]) {
+      expect(transitionOnLayoutProperty(firstRule(`a { transition: ${property} 1s; }`))).toHaveLength(1);
+    }
+    expect(keyframeOnLayoutProperty(firstRule("@-webkit-keyframes x { 0% { top: 0; } }"))).toHaveLength(1);
+  });
+
+  it("accepts a hover gate only when every query in it needs a mouse", () => {
+    expect(ungatedHover(firstRule("@media (hover: hover) and (pointer: fine), (max-width: 600px) { a:hover { color: red; } }"))).toHaveLength(1);
+    expect(ungatedHover(firstRule("@media not all and (hover: hover) and (pointer: fine) { a:hover { color: red; } }"))).toHaveLength(1);
+    expect(ungatedHover(firstRule("@media (pointer: fine) and (hover: hover) { a:hover { color: red; } }"))).toHaveLength(0);
+  });
+
+  it("reads 100DVH in capitals", () => {
+    expect(unstableViewportHeight(firstRule("a { height: 100DVH; }"))).toHaveLength(1);
+  });
+
+  it("honours a rule-level exception in every check", () => {
+    const exempt = firstRule(`/* ${EXCEPTION_MARK} test */ a { transition: all 1s; }`);
+    expect(transitionAll(exempt)).toHaveLength(0);
+  });
 
   it("flags an ungated hover and passes a gated one", () => {
     expect(ungatedHover(firstRule("a:hover { color: red; }"))).toHaveLength(1);
@@ -321,6 +392,10 @@ describe("each rule catches what it guards", () => {
 describe("the main site follows the rules", () => {
   it("reads every in-scope style sheet", () => {
     for (const { name, css } of styleSheets) expect({ name, empty: css.trim() === "" }).toEqual({ name, empty: false });
+  });
+
+  it("uses only plain CSS rules that the reader can check", () => {
+    expect(problemsAcrossSheets((rule) => (rule.nested ? [`"${rule.selector}" nests a rule; write it flat`] : []))).toEqual([]);
   });
 
   it("gates every hover behind a mouse, so a tap does not leave it stuck", () => {
@@ -376,7 +451,7 @@ describe("touch behaviour in css/global/base.css", () => {
 });
 
 describe("page heads", () => {
-  const pages = ["index.html", "404.html", "PdP.html", "WhatIsNextTerms.html", "blog/index.html", "web-projects/index.html", ...loadPosts(repoRoot).map((post) => `blog/${post.slug}/index.html`)];
+  const pages = [...MAIN_SITE_PAGES, ...loadPosts(repoRoot).map((post) => `blog/${post.slug}/index.html`)];
 
   it.each(pages)("%s fits the phone's width and lets the reader zoom", (page) => {
     const viewport = read(page).match(/<meta\s+name="viewport"\s+content="([^"]*)"/);
