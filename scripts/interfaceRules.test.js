@@ -230,9 +230,14 @@ function transitionedProperties(declaration) {
   if (property === "transition-property") return declaration.value.split(",").map((part) => part.trim());
   if (property !== "transition") return [];
   const notAProperty = /^(-?[\d.]+m?s|ease|ease-in|ease-out|ease-in-out|linear|step-start|step-end|normal|allow-discrete|initial|inherit|unset|revert|none|(cubic-bezier|steps|linear|var)\(.*\))$/;
-  return splitTopLevel(declaration.value, ",").map((part) => {
+  const value = declaration.value.replace(/!important/g, "").trim();
+  if (value === "none") return [];
+  return splitTopLevel(value, ",").flatMap((part) => {
     const words = splitTopLevel(part.trim(), " ").map((word) => word.trim()).filter(Boolean);
-    return words.find((word) => !notAProperty.test(word)) ?? "all";
+    const property = words.find((word) => !notAProperty.test(word));
+    if (property) return [property];
+    // A var() can hold the property, so this reader cannot judge the part.
+    return words.some((word) => word.startsWith("var(")) ? [] : ["all"];
   });
 }
 
@@ -333,6 +338,12 @@ describe("each rule catches what it guards", () => {
     expect(transitionAll(firstRule("a { -webkit-transition: all 1s; }"))).toHaveLength(1);
     expect(transitionOnLayoutProperty(firstRule("a { transition: 0.3s height; }"))).toHaveLength(1);
     expect(transitionAll(firstRule("a { transition: opacity 0.2s cubic-bezier(0.2, 1, 0.3, 1) 50ms; }"))).toHaveLength(0);
+  });
+
+  it("reads transition: none, a var() and !important without a false alarm or a miss", () => {
+    expect(transitionAll(firstRule("a { transition: none; }"))).toHaveLength(0);
+    expect(transitionAll(firstRule("a { transition: var(--t); }"))).toHaveLength(0);
+    expect(transitionAll(firstRule("a { transition: 200ms !important; }"))).toHaveLength(1);
   });
 
   it("knows the layout properties that an accordion or a gap animates", () => {
@@ -460,7 +471,18 @@ describe("page heads", () => {
     expect(viewport[1]).not.toMatch(/maximum-scale|user-scalable\s*=\s*no/);
   });
 
-  it.each(pages.filter((page) => /css\/global\/base\.css/.test(read(page))))("%s listens for touches, so iOS applies :active", (page) => {
+  // Every page in the repository that loads base.css, wherever it lives.
+  const baseCssPages = readdirSync(repoRoot, { recursive: true })
+    .map(String)
+    .filter((file) => file.endsWith(".html") && !file.split(/[\\/]/).some((part) => part.startsWith(".") || part === "node_modules"))
+    .filter((file) => /css\/global\/base\.css/.test(read(file)))
+    .sort();
+
+  it("finds the pages that load base.css", () => {
+    expect(baseCssPages).toContain("index.html");
+  });
+
+  it.each(baseCssPages)("%s listens for touches, so iOS applies :active", (page) => {
     // base.css removes the tap flash and answers a press with :active, but iOS
     // Safari applies :active only when a touchstart listener exists.
     expect(read(page).match(/<body[^>]*>/)?.[0]).toContain(' ontouchstart=""');
