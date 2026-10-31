@@ -14,7 +14,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { markdownToPlainText, capitalizeFirstLetter } from "../js/utils/textCore.js";
-import { selectWebProjects, sortByDateDescending } from "../web-projects/discovery.js";
+import { selectWebProjects, sortByDateDescending, entranceDelayMs } from "../web-projects/discovery.js";
 import { loadPosts, sortByPublishedDescending } from "./blogPosts.js";
 import { loadInfo, loadWorks } from "./portfolioData.js";
 
@@ -204,7 +204,7 @@ export function buildWorksHtml(works) {
 export function buildWebProjectsIndexHtml(works) {
   return selectWebProjects(works)
     .map((project, index) => {
-      const parts = [`<article class="project-card" style="animation-delay: ${index * 50}ms">`];
+      const parts = [`<article class="project-card" style="animation-delay: ${entranceDelayMs(index)}ms">`];
       if (project.image) {
         const src = project.image.startsWith("http") ? project.image : `../${project.image}`;
         const alt = project.imageAlt || `Screenshot of ${project.title}`;

@@ -144,6 +144,12 @@ body.searching main {
   box-shadow: var(--shadow-lg);
 }
 
+/* Once the visitor types in the search box, no card replays its entrance
+   when the search shows it again (app.js adds the class). */
+.projects-grid.entrance-done .project-card {
+  animation: none;
+}
+
 /* .project-card sets display:flex, which overrides the browser's default
    [hidden] { display: none }, so the search filter needs this explicitly. */
 .project-card[hidden] {

@@ -186,3 +186,17 @@ export function hasSearchText(query) {
 export function shouldPinSearchToTop(previousQuery, nextQuery) {
   return !hasSearchText(previousQuery) && hasSearchText(nextQuery);
 }
+
+/**
+ * How long the card at `index` waits before its entrance starts: 30ms per
+ * card, capped at 300ms, so a group entrance stays inside its budget. The
+ * main page uses the same numbers (js/layoutBuilder/cardEntrance.js), and
+ * scripts/interfaceRules.test.js keeps the two equal. app.js and the static
+ * fallback in scripts/generateSeoBlocks.js both read it, so the two mirrors
+ * cannot drift apart.
+ * @param {number} index - the card's position in the list
+ * @returns {number}
+ */
+export function entranceDelayMs(index) {
+  return Math.min(index * 30, 300);
+}
