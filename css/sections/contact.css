@@ -23,17 +23,33 @@
   color: var(--text-body);
   font-weight: 500;
   font-size: 0.9rem;
+  position: relative;
   transition: transform var(--duration-normal) var(--ease-out),
-              box-shadow var(--duration-normal) var(--ease-out),
               border-color var(--duration-fast) var(--ease-out);
+}
+
+/* The hover shadow and glow live on ::after, and only its opacity animates,
+   so the card never repaints on hover (issue #425). */
+.contact-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .contact-card:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-lg), var(--shadow-glow);
     border-color: rgba(var(--accent-rgb), 0.15);
     color: var(--text-primary);
+  }
+
+  .contact-card:hover::after {
+    opacity: 1;
   }
 }
 
