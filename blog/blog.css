@@ -116,15 +116,30 @@ html {
   box-shadow: var(--shadow-sm);
   padding: var(--sp-md) var(--sp-lg);
   position: relative;
-  transition:
-    transform var(--duration-normal) var(--ease-out),
-    box-shadow var(--duration-normal) var(--ease-out);
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+/* The hover shadow lives on ::before and only its opacity animates, so the
+   card never repaints on hover (issue #425). ::after belongs to the title
+   link, which covers the card. */
+.post-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .post-card:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
+  }
+
+  .post-card:hover::before {
+    opacity: 1;
   }
 }
 

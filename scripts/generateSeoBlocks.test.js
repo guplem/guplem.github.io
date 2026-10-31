@@ -220,6 +220,10 @@ describe("buildWebProjectsIndexHtml", () => {
     expect(html).not.toContain("External");
   });
 
+  it("puts the image in the frame that clips its hover zoom, like app.js does", () => {
+    expect(buildWebProjectsIndexHtml(works)).toContain(`<div class="project-image-frame"><img class="project-image"`);
+  });
+
   it("prefixes site-root image paths with ../ like app.js does", () => {
     expect(buildWebProjectsIndexHtml(works)).toContain(`<img class="project-image" src="../resources/images/projects/local.webp"`);
   });
