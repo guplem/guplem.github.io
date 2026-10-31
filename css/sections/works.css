@@ -249,10 +249,16 @@
   z-index: 1;
 }
 
-/* Work grid wrapper (collapsible) */
+/* Work grid wrapper (collapsible). overflow: hidden clips the collapsed grid,
+   and it would clip a hovered card's shadow too. The padding gives the shadow
+   room inside the clip, and the negative margin cancels the padding, so the
+   cards do not move. --sp-md matches the section's side padding, so the
+   wrapper never reaches past the screen edge. */
 .work-grid-wrapper {
   position: relative;
   overflow: hidden;
+  padding: var(--sp-md);
+  margin: calc(-1 * var(--sp-md));
   /* interface-rule-exception: "Show more projects" must push the sections
      below it down as the grid grows, which only a layout property does. It
      plays only on a click, so the layout cost is rare. */

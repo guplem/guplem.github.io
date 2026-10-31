@@ -217,8 +217,9 @@ function updateWorksExpandButton() {
   const grid = document.getElementById("myWorkFiltered");
   if (!wrapper || !button || !grid) return;
 
-  const contentHeight = grid.scrollHeight;
-  const needsCollapse = contentHeight > WORK_GRID_MAX_HEIGHT;
+  // The wrapper's scrollHeight counts its shadow padding as well as the grid,
+  // which is the height its max-height has to hold.
+  const needsCollapse = wrapper.scrollHeight > WORK_GRID_MAX_HEIGHT;
 
   if (!needsCollapse) {
     wrapper.setAttribute("data-collapsed", "false");
@@ -253,9 +254,7 @@ function toggleWorksExpand() {
   const isCollapsed = wrapper.getAttribute("data-collapsed") === "true";
 
   if (isCollapsed) {
-    const grid = document.getElementById("myWorkFiltered");
-    const fullHeight = grid ? grid.scrollHeight : wrapper.scrollHeight;
-    wrapper.style.maxHeight = fullHeight + "px";
+    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
     wrapper.setAttribute("data-collapsed", "false");
     button.textContent = "Show Less Projects";
     // After transition, remove max-height so content isn't clipped on reflow
