@@ -135,7 +135,7 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 ### CSS Structure
 
 - `css/global/variables.css` -- Design tokens: palette (`--bg-dark`, `--accent`, `--accent-secondary`), spacing, typography, shadows, radii, transitions
-- `css/global/layout.css` -- Navigation, section containers, scroll-reveal animations
+- `css/global/layout.css` -- Navigation, section containers, section headers
 - `css/global/base.css` -- Base typography
 - `css/sections/` -- Per-section styles (hero, works, about, contact, additional)
 

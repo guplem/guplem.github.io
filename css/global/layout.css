@@ -164,15 +164,3 @@
   border-radius: 2px;
   margin: var(--sp-xs) auto 0;
 }
-
-/* === Scroll Reveal === */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}

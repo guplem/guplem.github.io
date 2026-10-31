@@ -126,8 +126,10 @@ export function markdownToBlockHtml(markdown) {
 /**
  * The about block: each aboutMe entry as structured blocks (headings,
  * paragraphs, links, bold), so crawlers and no-JS visitors get the real
- * structure. Swapped (not adopted) at load: the section sits behind the
- * scroll-reveal, so the swap is invisible and needs no exact mirror.
+ * structure. Swapped (not adopted) at load: the section sits below the
+ * hero, so the swap is out of sight on a normal load. A deep link
+ * (/#aboutMe) or a restored scroll can show it; the swap keeps the same
+ * structure, so that is accepted and it needs no exact mirror.
  * @param {{ aboutMe: string[] }} info the parsed data/info.json
  * @returns {string}
  */
