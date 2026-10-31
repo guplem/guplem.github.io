@@ -70,8 +70,10 @@
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-#scrollCue:hover {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  #scrollCue:hover {
+    color: var(--accent);
+  }
 }
 
 .scroll-label {

@@ -20,8 +20,10 @@
   color: var(--text-muted);
 }
 
-.back-link:hover {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .back-link:hover {
+    color: var(--accent);
+  }
 }
 
 /* === Header === */
@@ -139,9 +141,11 @@ body.searching main {
   animation: cardIn 0.4s var(--ease-out) both;
 }
 
-.project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 /* Once the visitor types in the search box, no card replays its entrance
@@ -163,8 +167,10 @@ body.searching main {
   transition: transform 0.5s var(--ease-out);
 }
 
-.project-card:hover .project-image {
-  transform: scale(1.03);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-image {
+    transform: scale(1.03);
+  }
 }
 
 .project-body {
@@ -191,8 +197,10 @@ body.searching main {
   inset: 0;
 }
 
-.project-card:hover .project-title-link {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-title-link {
+    color: var(--accent);
+  }
 }
 
 .project-date {

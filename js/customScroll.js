@@ -23,10 +23,12 @@
       cursor: grab;
       transition: top 80ms ease-out, background 150ms ease-out, width 150ms ease-out, right 150ms ease-out;
     }
-    .custom-scroll__thumb:hover {
-      background: rgba(0, 0, 0, 0.35);
-      width: 8px;
-      right: 3px;
+    @media (hover: hover) and (pointer: fine) {
+      .custom-scroll__thumb:hover {
+        background: rgba(0, 0, 0, 0.35);
+        width: 8px;
+        right: 3px;
+      }
     }
     .custom-scroll__thumb.dragging {
       background: rgba(0, 0, 0, 0.4);

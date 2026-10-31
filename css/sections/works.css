@@ -79,9 +79,11 @@
   box-shadow: 0 2px 12px rgba(var(--accent-rgb), 0.3);
 }
 
-.filter-row--primary button:hover:not([data-tag-filter]) {
-  background: var(--bg-dark);
-  border-color: var(--bg-dark);
+@media (hover: hover) and (pointer: fine) {
+  .filter-row--primary button:hover:not([data-tag-filter]) {
+    background: var(--bg-dark);
+    border-color: var(--bg-dark);
+  }
 }
 
 /* Skill buttons (secondary) */
@@ -102,9 +104,11 @@
   border-color: var(--accent-secondary);
 }
 
-.filter-row--secondary button:hover:not([data-tag-filter]):not(#collapseButton) {
-  color: var(--text-body);
-  background: rgba(0, 0, 0, 0.06);
+@media (hover: hover) and (pointer: fine) {
+  .filter-row--secondary button:hover:not([data-tag-filter]):not(#collapseButton) {
+    color: var(--text-body);
+    background: rgba(0, 0, 0, 0.06);
+  }
 }
 
 /* "Must exclude" chips. The fill says the chip still filters; the dashed
@@ -128,9 +132,11 @@
   border-color: rgba(0, 0, 0, 0.06);
 }
 
-.filters .filter-toggle:hover {
-  background: var(--bg-dark);
-  border-color: var(--bg-dark);
+@media (hover: hover) and (pointer: fine) {
+  .filters .filter-toggle:hover {
+    background: var(--bg-dark);
+    border-color: var(--bg-dark);
+  }
 }
 
 /* Pressed, it matches the chip it drives, so the two read as one state. */
@@ -148,8 +154,10 @@
   text-underline-offset: 3px;
 }
 
-.filters .filter-clear:hover {
-  color: var(--text-body);
+@media (hover: hover) and (pointer: fine) {
+  .filters .filter-clear:hover {
+    color: var(--text-body);
+  }
 }
 
 /* A hidden control must stay out of the flex row, whatever else styles it. */
@@ -224,9 +232,11 @@
   order: 999;
 }
 
-#collapseButton:hover {
-  color: var(--accent);
-  border-color: rgba(var(--accent-rgb), 0.2);
+@media (hover: hover) and (pointer: fine) {
+  #collapseButton:hover {
+    color: var(--accent);
+    border-color: rgba(var(--accent-rgb), 0.2);
+  }
 }
 
 /* Soft transition to next section */
@@ -277,9 +287,11 @@
   transition: all var(--duration-fast) var(--ease-out);
 }
 
-.works-expand-btn:hover {
-  color: var(--accent);
-  border-color: rgba(var(--accent-rgb), 0.2);
+@media (hover: hover) and (pointer: fine) {
+  .works-expand-btn:hover {
+    color: var(--accent);
+    border-color: rgba(var(--accent-rgb), 0.2);
+  }
 }
 
 .works-expand-btn[hidden] {
@@ -309,8 +321,10 @@
   transition: background var(--duration-fast) var(--ease-out);
 }
 
-.works-doorway:hover {
-  background: rgba(var(--accent-rgb), 0.06);
+@media (hover: hover) and (pointer: fine) {
+  .works-doorway:hover {
+    background: rgba(var(--accent-rgb), 0.06);
+  }
 }
 
 .works-doorway-label {
@@ -325,8 +339,10 @@
   transition: transform var(--duration-fast) var(--ease-out);
 }
 
-.works-doorway:hover .works-doorway-arrow {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  .works-doorway:hover .works-doorway-arrow {
+    transform: translateX(4px);
+  }
 }
 
 .works-doorway-hint {
@@ -363,9 +379,11 @@
     box-shadow var(--duration-normal) var(--ease-out);
 }
 
-.work:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) and (pointer: fine) {
+  .work:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 /* Card image */
@@ -377,8 +395,10 @@
   transition: transform 0.5s var(--ease-out);
 }
 
-.work:hover .workImage {
-  transform: scale(1.03);
+@media (hover: hover) and (pointer: fine) {
+  .work:hover .workImage {
+    transform: scale(1.03);
+  }
 }
 
 /* Anchor wrapping the image (real link since issue #37): behave like the
@@ -418,8 +438,10 @@
   color: inherit;
 }
 
-.work .workTitleLink:hover h3 {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .work .workTitleLink:hover h3 {
+    color: var(--accent);
+  }
 }
 
 .work .workDate {
@@ -486,9 +508,11 @@
   text-decoration: line-through;
 }
 
-.work .workSkills button:hover:not([data-tag-filter]) {
-  background: var(--bg-dark);
-  color: var(--text-body);
+@media (hover: hover) and (pointer: fine) {
+  .work .workSkills button:hover:not([data-tag-filter]) {
+    background: var(--bg-dark);
+    color: var(--text-body);
+  }
 }
 
 /* Card links */
@@ -504,8 +528,10 @@
   transition: transform var(--duration-fast) var(--ease-spring);
 }
 
-.work .workLinks a:hover {
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .work .workLinks a:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .work .workLinks img {
@@ -515,8 +541,10 @@
   transition: opacity var(--duration-fast) var(--ease-out);
 }
 
-.work .workLinks a:hover img {
-  opacity: 0.8;
+@media (hover: hover) and (pointer: fine) {
+  .work .workLinks a:hover img {
+    opacity: 0.8;
+  }
 }
 
 /* Card spacing for non-image children (the anchor-wrapped image included) */

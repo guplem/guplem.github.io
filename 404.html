@@ -51,9 +51,11 @@
         font-weight: 600;
         transition: background var(--duration-fast) var(--ease-out);
       }
-      .not-found-links a:hover {
-        background: var(--accent-secondary);
-        color: var(--bg-white);
+      @media (hover: hover) and (pointer: fine) {
+        .not-found-links a:hover {
+          background: var(--accent-secondary);
+          color: var(--bg-white);
+        }
       }
     </style>
   </head>

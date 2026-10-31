@@ -28,11 +28,13 @@
               border-color var(--duration-fast) var(--ease-out);
 }
 
-.contact-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
-  border-color: rgba(var(--accent-rgb), 0.15);
-  color: var(--text-primary);
+@media (hover: hover) and (pointer: fine) {
+  .contact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    border-color: rgba(var(--accent-rgb), 0.15);
+    color: var(--text-primary);
+  }
 }
 
 .contact-card img {
@@ -43,9 +45,11 @@
               transform var(--duration-fast) var(--ease-spring);
 }
 
-.contact-card:hover img {
-  opacity: 0.9;
-  transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .contact-card:hover img {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
 }
 
 @media (max-width: 600px) {

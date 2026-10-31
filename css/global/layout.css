@@ -51,7 +51,9 @@
   flex-shrink: 0;
 }
 
-.nav-logo:hover { color: var(--accent); }
+@media (hover: hover) and (pointer: fine) {
+  .nav-logo:hover { color: var(--accent); }
+}
 
 /* On narrow screens the whole menu (logo and links) scrolls sideways, and
    each edge fades out while there is hidden content beyond it. The scroller
@@ -115,9 +117,11 @@
               background var(--duration-fast) var(--ease-out);
 }
 
-.nav-links a:hover {
-  color: var(--text-primary);
-  background: rgba(0, 0, 0, 0.04);
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a:hover {
+    color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.04);
+  }
 }
 
 /* === Sections === */
