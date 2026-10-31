@@ -42,7 +42,9 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  /* z-index keeps the glow above the next card in the row. */
   .contact-card:hover {
+    z-index: 1;
     transform: translateY(-3px);
     border-color: rgba(var(--accent-rgb), 0.15);
     color: var(--text-primary);

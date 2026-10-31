@@ -415,8 +415,11 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  /* z-index keeps the hovered card's shadow above its neighbours; it stays
+     under the collapsed grid's fade, which comes later at the same level. */
   .work:hover {
     transform: translateY(-4px);
+    z-index: 1;
   }
 
   .work:hover::after {
