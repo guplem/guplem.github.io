@@ -61,7 +61,12 @@ async function createProjectCard(project, index) {
     image.src = project.image.startsWith("http") ? project.image : `../${project.image}`;
     image.alt = project.imageAlt || `Screenshot of ${project.title}`;
     image.loading = "lazy";
-    card.appendChild(image);
+    // The frame clips the hover zoom, so the card itself can leave its hover
+    // shadow unclipped (style.css).
+    const frame = document.createElement("div");
+    frame.className = "project-image-frame";
+    frame.appendChild(image);
+    card.appendChild(frame);
   }
 
   const body = document.createElement("div");

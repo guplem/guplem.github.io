@@ -2,8 +2,9 @@
 // pages, not each web-project or blog post). They turn into tests the parts of
 // Emil Kowalski's interface skills that a machine can check: a phone never
 // keeps a hover look after a tap, no transition animates "all", no keyframe
-// or transition moves a layout property, a first screen never changes height while the
-// reader scrolls, a form field never makes iOS zoom, and no page blocks zoom.
+// or transition moves a layout property or a box-shadow, a first screen
+// never changes height while the reader scrolls, a form field never makes
+// iOS zoom, and no page blocks zoom.
 //
 // One escape hatch: a comment holding `interface-rule-exception: <reason>`
 // on the line above a rule or a declaration exempts it. Write the reason. A
@@ -269,6 +270,23 @@ export function transitionOnLayoutProperty(rule) {
     .map((property) => `"${rule.selector}" transitions ${property}; use transform, translate or scale`);
 }
 
+/**
+ * A box-shadow repaints its element on every frame of a transition, and it
+ * waits for the main thread. Animate the opacity of a pseudo-element that
+ * holds the shadow instead (issue #425).
+ * @param {CssRule} rule
+ */
+export function shadowInMotion(rule) {
+  if (rule.exempt) return [];
+  const inKeyframe = rule.parents.some((parent) => /^@(-\w+-)?keyframes\b/.test(parent));
+  const transitioned = rule.declarations
+    .filter((declaration) => !declaration.exempt)
+    .flatMap((declaration) => transitionedProperties(declaration))
+    .filter((property) => property === "box-shadow");
+  const animated = inKeyframe ? rule.declarations.filter((declaration) => !declaration.exempt && declaration.property === "box-shadow") : [];
+  return [...transitioned, ...animated].map(() => `"${rule.selector}" moves box-shadow; fade a pseudo-element that holds the shadow`);
+}
+
 /** @param {CssRule} rule */
 export function unstableViewportHeight(rule) {
   if (rule.exempt) return [];
@@ -393,6 +411,12 @@ describe("each rule catches what it guards", () => {
     expect(transitionOnLayoutProperty(firstRule("a { transition: transform 80ms, scale 1s; }"))).toHaveLength(0);
   });
 
+  it("flags a box-shadow in a transition or a keyframe, and passes opacity", () => {
+    expect(shadowInMotion(firstRule("a { transition: transform 1s, box-shadow 1s; }"))).toHaveLength(1);
+    expect(shadowInMotion(firstRule("@keyframes x { to { box-shadow: 0 0 4px red; } }"))).toHaveLength(1);
+    expect(shadowInMotion(firstRule("a { box-shadow: 0 0 4px red; transition: opacity 1s; }"))).toHaveLength(0);
+  });
+
   it("flags 100dvh and a bare 100vh, and passes a 100vh fallback before 100svh", () => {
     expect(unstableViewportHeight(firstRule("a { height: 100dvh; }"))).toHaveLength(1);
     expect(unstableViewportHeight(firstRule("a { min-height: 100vh; }"))).toHaveLength(1);
@@ -423,6 +447,10 @@ describe("the main site follows the rules", () => {
 
   it("moves no layout property with a transition", () => {
     expect(problemsAcrossSheets(transitionOnLayoutProperty)).toEqual([]);
+  });
+
+  it("moves no box-shadow, so a hover never waits for a repaint", () => {
+    expect(problemsAcrossSheets(shadowInMotion)).toEqual([]);
   });
 
   it("gives no first screen a height that changes while the reader scrolls", () => {

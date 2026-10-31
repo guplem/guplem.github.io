@@ -210,7 +210,7 @@ export function buildWebProjectsIndexHtml(works) {
       if (project.image) {
         const src = project.image.startsWith("http") ? project.image : `../${project.image}`;
         const alt = project.imageAlt || `Screenshot of ${project.title}`;
-        parts.push(`<img class="project-image" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" />`);
+        parts.push(`<div class="project-image-frame"><img class="project-image" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" /></div>`);
       }
       parts.push(`<div class="project-body">`);
       parts.push(`<h3 class="project-title"><a class="project-title-link" href="${escapeHtml(project.path)}">${escapeHtml(project.title)}</a></h3>`);

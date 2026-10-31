@@ -20,9 +20,7 @@
   border-radius: var(--radius-full);
   background: var(--bg-light);
   color: var(--text-body);
-  transition:
-    border-color var(--duration-fast) var(--ease-out),
-    box-shadow var(--duration-fast) var(--ease-out);
+  transition: border-color var(--duration-fast) var(--ease-out);
 }
 
 .filter-search::placeholder {
@@ -60,7 +58,6 @@
     background-color var(--duration-fast) var(--ease-out),
     color var(--duration-fast) var(--ease-out),
     border-color var(--duration-fast) var(--ease-out),
-    box-shadow var(--duration-fast) var(--ease-out),
     scale var(--duration-fast) var(--ease-out);
   position: relative;
 }
@@ -249,10 +246,16 @@
   z-index: 1;
 }
 
-/* Work grid wrapper (collapsible) */
+/* Work grid wrapper (collapsible). overflow: hidden clips the collapsed grid,
+   and it would clip a hovered card's shadow too. The padding gives the shadow
+   room inside the clip, and the negative margin cancels the padding, so the
+   cards do not move. --sp-md matches the section's side padding, so the
+   wrapper never reaches past the screen edge. */
 .work-grid-wrapper {
   position: relative;
   overflow: hidden;
+  padding: var(--sp-md);
+  margin: calc(-1 * var(--sp-md));
   /* interface-rule-exception: "Show more projects" must push the sections
      below it down as the grid grows, which only a layout property does. It
      plays only on a click, so the layout cost is rare. */
@@ -383,22 +386,44 @@
   gap: var(--sp-sm);
 }
 
-/* === Work Card === */
+/* === Work Card ===
+   The hover shadow lives on ::after, and only its opacity animates. A
+   box-shadow transition repaints the whole card, image included, on every
+   frame, and it waits for the main thread; right after load that thread is
+   busy, so the card stuttered or stuck lifted (issue #425). transform and
+   opacity run on the compositor. The card does not clip its overflow, or it
+   would clip that shadow: the image frame clips the image instead. */
 .work {
+  position: relative;
   background: white;
   border-radius: var(--radius-lg);
-  overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: var(--shadow-sm);
-  transition:
-    transform var(--duration-normal) var(--ease-out),
-    box-shadow var(--duration-normal) var(--ease-out);
+  overflow-wrap: break-word;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.work::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
+  /* z-index keeps the hovered card's shadow above its neighbours; it stays
+     under the collapsed grid's fade, which comes later at the same level. */
   .work:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    z-index: 1;
+  }
+
+  .work:hover::after {
+    opacity: 1;
   }
 }
 
@@ -411,21 +436,24 @@
   transition: transform 0.5s var(--ease-out);
 }
 
+/* Only an image that is a link zooms: a hover moves only what a click can
+   follow (root ADR 0018). */
 @media (hover: hover) and (pointer: fine) {
-  .work:hover .workImage {
+  .work:hover .workImageLink .workImage {
     transform: scale(1.03);
   }
 }
 
-/* Anchor wrapping the image (real link since issue #37): behave like the
-   block-level image it contains, and clip the hover zoom */
-.work .workImageLink {
-  display: block;
-  overflow: hidden;
+/* The image sits at the top of the card, so it takes the card's top corners
+   (one pixel less, for the border). The anchor around it (a real link since
+   issue #37) clips the hover zoom. */
+.work .workImageLink,
+.work > .workImage {
+  border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
 }
 
-/* Image container clips the zoom */
-.work > img {
+.work .workImageLink {
+  display: block;
   overflow: hidden;
 }
 
