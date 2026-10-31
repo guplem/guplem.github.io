@@ -348,10 +348,33 @@ describe("touch behaviour in css/global/base.css", () => {
   const baseRules = readCssRules(read("css/global/base.css"));
   const declared = (rule, property) => rule.declarations.find((declaration) => declaration.property === property)?.value;
 
+  it("removes the browser's tap flash", () => {
+    const html = baseRules.find((rule) => rule.selector === "html" && declared(rule, "-webkit-tap-highlight-color"));
+    expect(declared(html, "-webkit-tap-highlight-color")).toBe("transparent");
+  });
+
+  it("answers a press on a button and on a link, now that the tap flash is gone", () => {
+    const pressed = (tag) => baseRules.find((rule) => splitTopLevel(rule.selector, ",").some((part) => part.trim().startsWith(tag) && part.includes(":active")));
+    expect(declared(pressed("button"), "scale")).toBeDefined();
+    expect(declared(pressed("a"), "opacity")).toBeDefined();
+  });
+
+  it("lets a button take quick taps without a zoom or a text selection", () => {
+    const button = baseRules.find((rule) => rule.selector === "button");
+    expect(declared(button, "touch-action")).toBe("manipulation");
+    expect(declared(button, "user-select")).toBe("none");
+    expect(declared(button, "-webkit-user-select")).toBe("none");
+  });
 });
 
 describe("page heads", () => {
   const pages = ["index.html", "404.html", "PdP.html", "WhatIsNextTerms.html", "blog/index.html", "web-projects/index.html", ...loadPosts(repoRoot).map((post) => `blog/${post.slug}/index.html`)];
+
+  it.each(pages.filter((page) => /css\/global\/base\.css/.test(read(page))))("%s listens for touches, so iOS applies :active", (page) => {
+    // base.css removes the tap flash and answers a press with :active, but iOS
+    // Safari applies :active only when a touchstart listener exists.
+    expect(read(page).match(/<body[^>]*>/)?.[0]).toContain(' ontouchstart=""');
+  });
 
 });
 

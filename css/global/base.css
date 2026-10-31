@@ -11,6 +11,9 @@ html {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* No grey flash on tap: buttons and links answer a press themselves (see
+     "Touch" below). */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -78,6 +81,29 @@ p a {
   p a:hover {
     background-size: 100% 1.5px;
   }
+}
+
+/* === Touch ===
+   A button reacts the moment a finger lands, not when it lifts. iOS applies
+   :active only when a touchstart listener exists, so every page that loads
+   this file carries ontouchstart="" on <body>. manipulation stops a quick
+   second tap (the three-state chips) from zooming, and user-select stops a
+   long press from selecting a button's label. scale, not transform, so it
+   adds to the transform a button already has. */
+button {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: scale var(--duration-fast) var(--ease-out);
+}
+
+button:not(:disabled):active {
+  scale: 0.97;
+}
+
+/* A link can be a whole line of text, so it dims instead of shrinking. */
+a:active {
+  opacity: 0.7;
 }
 
 /* === Selection === */
