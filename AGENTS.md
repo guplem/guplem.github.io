@@ -105,7 +105,7 @@ python -m http.server 8000
 ```
 No linter or package manager for the main site. Web-projects use Bun's test runner (`bun test`) for their pure logic -- see `web-projects/AGENTS.md`.
 
-**CI:** `.github/workflows/test.yml` runs `bun test .` (the whole suite: web-projects tests, the data validation test, the `textCore` tests, and the `scripts/` tests -- the SEO-artifact drift tests, the font, web-project tab-icon and report-link guard tests, and the portfolio-image capture script's own tests), plus the blog's tests (`blog/tu-primer-agente/agentCore.test.js`, and `examples.test.js`, which keeps each example folder and its zip identical) on every pull request and push to `main`, and it is a required status check on `main` -- a PR with a failing test cannot be merged. Keep tests green; a new web-project's tests are picked up automatically. See ADR 0009.
+**CI:** `.github/workflows/test.yml` runs `bun test .` (the whole suite: web-projects tests, the data validation test, the `textCore` tests, and the `scripts/` tests -- the SEO-artifact drift tests, the font, web-project tab-icon, report-link and interface-rule guard tests, and the portfolio-image capture script's own tests), plus the blog's tests (`blog/tu-primer-agente/agentCore.test.js`, and `examples.test.js`, which keeps each example folder and its zip identical) on every pull request and push to `main`, and it is a required status check on `main` -- a PR with a failing test cannot be merged. Keep tests green; a new web-project's tests are picked up automatically. See ADR 0009.
 
 Whenever you need to confirm the code still passes, delegate to the `validate` agent (it runs the checks the way CI does).
 
@@ -157,6 +157,8 @@ All JS uses ES6 modules (`type="module"` with `defer`). Key modules:
 
 **Filter normalization:** `idFromText()` in `textUtils.js` strips punctuation/spaces/special chars and capitalizes -- used for element IDs and type/skill button filter matching. Must be consistent across button-based filter code. The free-text work search (`workMatchesText` in `textUtils.js`) intentionally does NOT use `idFromText()` -- it matches raw lowercase substrings so users can type naturally.
 
+**Interface rules (phones and motion):** `scripts/interfaceRules.test.js` fails on an ungated `:hover`, `transition: all`, motion on a layout property, an unstable `100vh`/`100dvh`, a missing touch rule in `base.css`, or a page that blocks zoom; exempt one spot only with an `interface-rule-exception: <reason>` comment (ADR 0018). Two rules no test can judge: give new motion a named purpose (feedback, a state change, where a thing came from), never play it on a surface used often (filters, search, keyboard, scroll reveals), and keep UI motion under 300ms; and check a touch change on a real phone, because desktop emulation shows none of these problems.
+
 **Three-state work filters:** every type and skill chip in the filter rows cycles none -> include -> exclude -> none (a chip on a work card only toggles include), and carries its state as a value in `data-tag-filter`, never in a boolean `selected` attribute (see ADR 0014 and `js/layoutBuilder/AGENTS.md`).
 
 **Masonry layout:** Work cards use JS-based column balancing (not CSS Grid). `displayFilteredWorks()` recalculates on resize (debounced 100ms).
@@ -207,6 +209,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [0015](adr/0015-blog-posts-are-plain-html-read-from-the-page.md) | Blog posts are plain HTML, and the post's own head is its only metadata record |
 | [0016](adr/0016-shared-cloud-storage-for-web-projects.md) | Shared cloud storage for web-projects: one token, one private repository, one folder per project, and a local mirror as the fallback |
 | [0017](adr/0017-peer-to-peer-sync-for-web-projects-with-one-host.md) | Peer-to-peer sync for web-projects: WebRTC paired by hand, one authoritative host, the shared `online-sync/` module |
+| [0018](adr/0018-interface-rules-for-phones-and-motion.md) | Interface rules for phones and motion, guarded by `scripts/interfaceRules.test.js` |
 
 ### Per-project ADRs
 
