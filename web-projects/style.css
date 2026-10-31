@@ -140,7 +140,7 @@ body.searching main {
   transition:
     transform var(--duration-normal) var(--ease-out),
     box-shadow var(--duration-normal) var(--ease-out);
-  animation: cardIn 0.4s var(--ease-out) both;
+  animation: cardIn 0.3s var(--ease-out) both;
 }
 
 @media (hover: hover) and (pointer: fine) {
