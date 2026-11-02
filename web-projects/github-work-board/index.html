@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="430" />
-  <meta name="deploy-date" content="2026-11-02T12:07:08.000Z" />
+  <meta name="deploy-pull-request" content="431" />
+  <meta name="deploy-date" content="2026-11-02T12:07:51.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -229,7 +229,7 @@
        the window's edges on every screen while the page itself stays centred
        at reading width. It scrolls away with everything else (ADR 0023). -->
   <header class="masthead">
-    <div>
+    <div class="masthead-start">
       <h1>
         <!-- The mark the browser tab wears, drawn inline like every icon here. -->
         <span class="brand-mark" aria-hidden="true">
@@ -240,13 +240,13 @@
              where it comes from (ADR 0030). -->
         <span id="board-total" class="board-total" hidden></span>
       </h1>
-    </div>
-    <div class="masthead-controls">
+
       <!-- Find one piece of work: a number keeps the issues and pull
            requests whose number holds it and hides every other card, in the
            column it sits in. Words find titles. Two presses beside it match
            the case and whole words, both off by default. It hides cards
-           only, and lives for this visit (ADR 0038). -->
+           only, and lives for this visit (ADR 0038). It sits beside the
+           name, on the left, where a reader looks for a search box. -->
       <div class="find-control" id="find-control" role="search" hidden>
         <label class="visually-hidden" for="find">Find on the board</label>
         <svg class="icon find-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -265,7 +265,8 @@
         <!-- While a search is typed: how many cards it left. -->
         <span id="find-count" class="find-count" aria-live="polite"></span>
       </div>
-
+    </div>
+    <div class="masthead-controls">
       <!-- The order the board reads in, at the top of the page where it is
            looked for (ADR 0023). It belongs to the board, so it is not on
            the other screens. -->
