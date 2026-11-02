@@ -48,7 +48,8 @@ after the order, the grouping and the counts.
   `describeMatches` in `messages.js`) while text is typed, beside the match
   options.
 - **`/` reaches the box from anywhere on the board**, as on GitHub, unless the
-  reader is typing somewhere else. Escape empties it.
+  reader is typing somewhere else. Escape empties it, and so does the "×"
+  press that the box shows beside the match options while text is typed.
 
 ## Consequences
 

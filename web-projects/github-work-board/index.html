@@ -257,6 +257,13 @@
           spellcheck="false" placeholder="Find #number or words" />
         <kbd class="find-key" aria-hidden="true">/</kbd>
         <div class="find-options">
+          <!-- Empties the box in one press. Drawn only while text is typed,
+               like the count (ADR 0038). -->
+          <button id="find-clear" type="button" class="find-option find-clear" aria-label="Clear the search">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
           <button id="find-match-case" type="button" class="find-option" aria-pressed="false"
             aria-label="Match case">Aa</button>
           <button id="find-whole-word" type="button" class="find-option find-option-word" aria-pressed="false"
