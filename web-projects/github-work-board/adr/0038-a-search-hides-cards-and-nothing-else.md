@@ -17,6 +17,9 @@ columns and their headings stay, so the one card left sits in the column that
 it is in. `boardSearch.js` holds the rules, and `app.js` applies them last,
 after the order, the grouping and the counts.
 
+- **The box sits on the left of the masthead, beside the board's name.** A
+  reader looks for a search box there. Among the controls on the right it
+  read as one more setting and was easy to miss.
 - **A number finds every number that holds it.** "31" keeps #31, #312 and
   #131, so the board narrows as the reader types, the same way words do. A
   leading `#` is allowed.
