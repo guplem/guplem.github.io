@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
-  KIND_ICONS,
+  WORK_ICONS,
+  workIcon,
   countByKind,
   workState,
   finishedAt,
@@ -107,6 +108,15 @@ describe("normalizeWorkItem", () => {
   test("work in no milestone says so with null", () => {
     expect(normalizeWorkItem(RAW_ISSUE).milestone).toBe(null);
     expect(normalizeWorkItem({ ...RAW_ISSUE, milestone: null }).milestone).toBe(null);
+  });
+
+  // GitHub draws an issue closed as not planned with its own grey icon, so
+  // the board keeps the reason it was closed.
+  test("reads whether an issue was closed as not planned", () => {
+    expect(normalizeWorkItem({ ...RAW_ISSUE, state: "closed", state_reason: "not_planned" }).notPlanned).toBe(true);
+    expect(normalizeWorkItem({ ...RAW_ISSUE, state: "closed", state_reason: "duplicate" }).notPlanned).toBe(true);
+    expect(normalizeWorkItem({ ...RAW_ISSUE, state: "closed", state_reason: "completed" }).notPlanned).toBe(false);
+    expect(normalizeWorkItem(RAW_ISSUE).notPlanned).toBe(false);
   });
 
   test("reads whether a pull request is still a draft", () => {
@@ -356,42 +366,77 @@ describe("who a work item belongs to", () => {
   });
 });
 
-// A card says what kind of work it is with an icon, the way GitHub does, and
-// the icon's colour says where that work stands: open, a draft, merged or
-// closed. The word ("Issue", "Pull request") is still there for a screen
-// reader and on the pointer.
+// A card says what kind of work it is with an icon, the way GitHub does. Like
+// GitHub, the shape and the colour both say where that work stands, so a draft
+// needs no "Draft" pill. The word is still there for a screen reader and on
+// the pointer.
 describe("workState: where a piece of work stands, for its icon", () => {
-  const base = { kind: "issue", state: "open", isDraft: false, mergedAt: "" };
+  const base = { kind: "issue", state: "open", isDraft: false, notPlanned: false, mergedAt: "" };
+  const pull = { ...base, kind: "pull-request" };
 
   test("open work is open", () => {
     expect(workState(base)).toBe("open");
-    expect(workState({ ...base, kind: "pull-request" })).toBe("open");
+    expect(workState(pull)).toBe("open");
   });
 
   test("a draft pull request is a draft", () => {
-    expect(workState({ ...base, kind: "pull-request", isDraft: true })).toBe("draft");
+    expect(workState({ ...pull, isDraft: true })).toBe("draft");
   });
 
-  test("a merged pull request is merged, and a closed issue is closed", () => {
-    expect(workState({ ...base, kind: "pull-request", state: "closed", mergedAt: "2026-10-28T10:00:00Z" })).toBe("merged");
-    expect(workState({ ...base, state: "closed" })).toBe("closed");
+  test("a merged pull request is merged", () => {
+    expect(workState({ ...pull, state: "closed", mergedAt: "2026-10-28T10:00:00Z" })).toBe("merged");
   });
 
   // Closed without merging never lands (ADR 0017), and it must not wear the
-  // merged colour.
+  // merged colour. GitHub draws it red, with a cross.
   test("a pull request closed without merging is closed, not merged", () => {
-    expect(workState({ ...base, kind: "pull-request", state: "closed" })).toBe("closed");
+    expect(workState({ ...pull, state: "closed" })).toBe("closed");
+    expect(workState({ ...pull, state: "closed", isDraft: true })).toBe("closed");
+  });
+
+  test("an issue closed as done is completed, and one closed as not planned is not planned", () => {
+    expect(workState({ ...base, state: "closed" })).toBe("completed");
+    expect(workState({ ...base, state: "closed", notPlanned: true })).toBe("not-planned");
   });
 
   test("anything unreadable reads as open", () => {
     expect(workState(null)).toBe("open");
   });
+});
 
-  test("each kind of work has an icon, drawn from paths on a 24 by 24 grid", () => {
-    for (const kind of ["issue", "pull-request"]) {
-      expect(Array.isArray(KIND_ICONS[kind])).toBe(true);
-      expect(KIND_ICONS[kind].length).toBeGreaterThan(0);
-      for (const d of KIND_ICONS[kind]) expect(d).toMatch(/^[Mm]/);
+describe("workIcon: the shape GitHub draws for each state", () => {
+  const base = { kind: "issue", state: "open", isDraft: false, notPlanned: false, mergedAt: "" };
+  const pull = { ...base, kind: "pull-request" };
+
+  test("each state of each kind has its own shape", () => {
+    const shapes = [
+      workIcon(base),
+      workIcon({ ...base, state: "closed" }),
+      workIcon({ ...base, state: "closed", notPlanned: true }),
+      workIcon(pull),
+      workIcon({ ...pull, isDraft: true }),
+      workIcon({ ...pull, state: "closed", mergedAt: "2026-10-28T10:00:00Z" }),
+      workIcon({ ...pull, state: "closed" }),
+    ];
+    expect(new Set(shapes.map((paths) => paths.join("|"))).size).toBe(shapes.length);
+  });
+
+  // The bug this pins: a draft drew the same shape as an open pull request,
+  // with only a greyer colour to tell them apart.
+  test("a draft does not draw the open pull request's shape", () => {
+    expect(workIcon({ ...pull, isDraft: true })).not.toEqual(workIcon(pull));
+  });
+
+  test("anything unreadable draws an open issue", () => {
+    expect(workIcon(null)).toEqual(WORK_ICONS.issue.open);
+  });
+
+  test("every shape is paths on a 24 by 24 grid", () => {
+    for (const kind of Object.keys(WORK_ICONS)) {
+      for (const paths of Object.values(WORK_ICONS[kind])) {
+        expect(paths.length).toBeGreaterThan(0);
+        for (const d of paths) expect(d).toMatch(/^[Mm]/);
+      }
     }
   });
 });

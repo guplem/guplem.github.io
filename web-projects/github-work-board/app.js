@@ -122,6 +122,7 @@ import {
   describeLastRefresh,
   describeOpened,
   describeFinished,
+  describeWorkKind,
   describeReading,
   escapeHtml,
   movedByHandTip,
@@ -247,7 +248,7 @@ import {
 import { encodeTokenBackup, looksLikeBackup, readTokenBackup } from "./tokenBackup.js";
 import { describeTokenReach, failedReads, suggestedTokenName } from "./tokenIdentity.js";
 import {
-  KIND_ICONS,
+  workIcon,
   countByKind,
   finishedBetween,
   normalizeWorkItems,
@@ -872,10 +873,11 @@ function buildWorkItemCard(
   card.append(more);
   if (priority !== NORMAL) card.append(buildPriorityMark(priority));
 
-  // The kind as an icon, the way GitHub draws it, coloured by where the work
-  // stands. The word is there for a screen reader and on the pointer.
-  const kindWord = item.kind === "pull-request" ? (item.isDraft ? "Draft pull request" : "Pull request") : "Issue";
-  const kind = drawIcon(KIND_ICONS[item.kind] ?? KIND_ICONS.issue, `icon kind-icon kind-${workState(item)}`);
+  // The kind as an icon, the way GitHub draws it: its shape and its colour
+  // both say where the work stands, so a draft needs no pill of its own. The
+  // words are there for a screen reader and on the pointer.
+  const kindWord = describeWorkKind(item);
+  const kind = drawIcon(workIcon(item), `icon kind-icon kind-${workState(item)}`);
   kind.setAttribute("aria-hidden", "false");
   kind.setAttribute("role", "img");
   kind.setAttribute("aria-label", kindWord);
@@ -946,7 +948,7 @@ function buildWorkItemCard(
   card.append(link);
 
   // What the work is waiting on, under the title where the eye lands next:
-  // the stack it is in, a draft, a blocker, and the reasons it wants its
+  // the stack it is in, a blocker, and the reasons it wants its
   // author. Drawn on every card that has one, wherever it sits: a card the
   // reader moved by hand still conflicts (ADR 0011).
   const flags = document.createElement("p");
@@ -976,13 +978,6 @@ function buildWorkItemCard(
 
     inStack.append(which, position);
     flags.append(inStack);
-  }
-
-  if (item.isDraft) {
-    const draft = document.createElement("span");
-    draft.className = "badge badge-draft";
-    draft.textContent = "Draft";
-    flags.append(draft);
   }
 
   for (const id of attentionFor(item, relationship)) {
