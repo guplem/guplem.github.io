@@ -246,7 +246,13 @@ import {
   readRelationship,
 } from "./relationships.js";
 import { encodeTokenBackup, looksLikeBackup, readTokenBackup } from "./tokenBackup.js";
-import { describeTokenReach, failedReads, suggestedTokenName } from "./tokenIdentity.js";
+import {
+  describeTokenFound,
+  describeTokenReach,
+  failedReads,
+  offersTokenSettings,
+  suggestedTokenName,
+} from "./tokenIdentity.js";
 import {
   workIcon,
   countByKind,
@@ -581,6 +587,16 @@ function buildCheckRow({ label, ok, detail, skipped = false }) {
     why.className = "check-detail";
     why.textContent = detail;
     body.append(why);
+  }
+  // A row that asks the reader to change the token carries the way to do it.
+  if (offersTokenSettings({ ok })) {
+    const link = document.createElement("a");
+    link.className = "check-link";
+    link.href = TOKEN_STATUS_URL;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "Open GitHub's token settings";
+    body.append(link);
   }
   row.append(mark, body);
   return row;
@@ -1281,13 +1297,18 @@ function buildSkeletonFilterButton(label) {
   return button;
 }
 
-/** A placeholder in the shape of a token row: a name box, a line of facts, a button. */
+/** A placeholder in the shape of a token row: a label, a name box, two lines of facts, two buttons. */
 function buildSkeletonTokenRow() {
   const row = document.createElement("li");
   row.className = "token-row skeleton-card";
   const lines = document.createElement("div");
   lines.className = "token-lines";
-  lines.append(buildSkeletonBar("11rem", "skeleton-input"), buildSkeletonBar("60%"));
+  lines.append(
+    buildSkeletonBar("9rem"),
+    buildSkeletonBar("11rem", "skeleton-input"),
+    buildSkeletonBar("45%"),
+    buildSkeletonBar("60%"),
+  );
   const actions = document.createElement("div");
   actions.className = "token-actions";
   actions.append(buildSkeletonBar("3.5rem", "skeleton-button"), buildSkeletonBar("5.5rem", "skeleton-button"));
@@ -1789,14 +1810,26 @@ function buildTokenRow(entry, index) {
   name.type = "text";
   name.value = entry.name || suggestion;
   name.placeholder = suggestion;
-  name.setAttribute("aria-label", "Name for this token");
+  name.id = `token-name-${entry.id}`;
   // On change, not on input: renaming must not save on every keystroke, and the
   // row must not be rebuilt under the cursor.
   name.addEventListener("change", () => {
     state.tokens = renameToken(state.tokens, entry.id, name.value);
     saveTokens(storage, state.tokens);
   });
-  reach.append(name);
+  // A visible label, so the box reads as the reader's own name for the token
+  // and not as something GitHub said (ADR 0007).
+  const label = document.createElement("label");
+  label.className = "token-name-label";
+  label.htmlFor = name.id;
+  label.textContent = "Your name for this token";
+  reach.append(label, name);
+
+  // Where the token found work: the one fact the board knows about its reach.
+  const found = document.createElement("p");
+  found.className = "token-found";
+  found.textContent = describeTokenFound(entry);
+  reach.append(found);
 
   const detail = document.createElement("p");
   detail.className = "check-detail";

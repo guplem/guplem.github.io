@@ -67,7 +67,7 @@ It is the short procedure for all of the above.
 | `boardSearch.js` | Yes | The find box: part of a number, a pasted GitHub link or words, the match-case and whole-word choices, and which cards stay (ADR 0038) |
 | `skeletons.js` | Yes | What to draw while the board waits: how many placeholders, how many cards in each column, which rows a card carries, and which filter menus the bar shows (ADR 0004) |
 | `readProgress.js` | Yes | How full the thin bar at the top of the window is, one step per call of each token, counted over every token at once, and which step the read waits on (ADR 0039, ADR 0040) |
-| `tokenIdentity.js` | Yes | Masking a token, naming it, saying what it reached, and which tokens failed to read (`failedReads`, ADR 0007) |
+| `tokenIdentity.js` | Yes | Masking a token, naming it, saying where it found work (`describeTokenFound`), which check rows link to GitHub's token page (`offersTokenSettings`), and which tokens failed to read (`failedReads`, ADR 0005, ADR 0007) |
 | `approval.js` | Yes | Whether a token that found nothing may wait for an organisation's approval, which organisation, and the page where its owners approve it (ADR 0041) |
 | `tokenBackup.js` | Yes | Every token as one text, and reading that text back (ADR 0015) |
 | `relationships.js` | Yes | GitHub's own links between items, the children of an issue, which linked pull request an item is read from, and nesting a pull request under its issue (ADR 0010, ADR 0028) |
@@ -707,7 +707,8 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   (`column:<id>`, `labels:<id>`, `fields:<id>`). A new remembered key is
   written in the one `saveLastCounts` call in `connectAll` (ADR 0004).
 - **A placeholder mirrors the row it replaces, line for line.** A token row is
-  two stacked lines and two buttons, so its placeholder is too. Two bars appended
+  a label, a name box, two lines of facts and its buttons, so its placeholder
+  is too (`buildSkeletonTokenRow`). Two bars appended
   to a plain `div` render as one line with no gap, which is what the first
   version did: give the container `.token-lines` (ADR 0004).
 - **The board's status line is a snackbar, and only a passing line leaves on

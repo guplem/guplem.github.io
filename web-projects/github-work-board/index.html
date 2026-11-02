@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="433" />
-  <meta name="deploy-date" content="2026-11-02T12:11:20.000Z" />
+  <meta name="deploy-pull-request" content="432" />
+  <meta name="deploy-date" content="2026-11-02T12:11:13.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -544,7 +544,9 @@
             <h3 class="card-title" tabindex="-1">Tokens that read your work</h3>
             <p class="lead">
               These tokens fetch your issues and pull requests. Each one reaches one owner, your account or one
-              organisation. Opening this section tries every permission the board needs on every token, and each one
+              organisation, so a person with work in both needs two tokens: one for the account and one for each
+              organisation. GitHub does not say which owner a token belongs to, so give each one a name you will
+              recognise. Opening this section tries every permission the board needs on every token, and each one
               says what it could do and what to add if it could not. They save nothing: saving is the job of Cloud storage.
             </p>
           </div>

@@ -58,7 +58,13 @@ failed:
 
 So the name is the reader's. The board fills it in from where the token found
 work, shows the token masked (`••••aohu`) so a row can be matched against
-GitHub's own list, and never overwrites a name the reader typed.
+GitHub's own list, and never overwrites a name the reader typed. The box has a
+visible label, "Your name for this token", so it does not read as something
+GitHub said. A line under it says where the token found work
+(`describeTokenFound`). That is a fact about what it read, not about its owner:
+every token reads public repositories, so one owner can show on two tokens.
+The lead of the section says that one token per owner is normal, so a reader
+with two tokens does not take it for a mistake.
 
 **An empty board says how far it can see.** `sayEmptyBoard` never says "nothing
 is assigned to you" on its own: it always names how many tokens are in use and

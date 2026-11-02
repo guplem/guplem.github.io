@@ -1,5 +1,13 @@
 import { describe, expect, test } from "bun:test";
-import { MASK, describeTokenReach, failedReads, maskToken, suggestedTokenName } from "./tokenIdentity.js";
+import {
+  MASK,
+  describeTokenFound,
+  describeTokenReach,
+  failedReads,
+  maskToken,
+  offersTokenSettings,
+  suggestedTokenName,
+} from "./tokenIdentity.js";
 
 describe("maskToken", () => {
   // Enough to tell two tokens apart against GitHub's own list, and obviously a
@@ -92,5 +100,36 @@ describe("failedReads", () => {
   test("never throws, whatever it is handed", () => {
     expect(failedReads(null, null)).toEqual([]);
     expect(failedReads(tokens, { a: "nonsense" })).toEqual([]);
+  });
+});
+
+// The reader cannot tell two tokens apart from their names alone. Where each
+// one found work is the one fact the board knows about its reach, so it gets
+// a line of its own (ADR 0007).
+describe("describeTokenFound", () => {
+  test("names every owner the token found work in", () => {
+    expect(describeTokenFound({ owners: ["Galtea-AI"] })).toBe("Found work in Galtea-AI");
+    expect(describeTokenFound({ owners: ["Galtea-AI", "guplem"] })).toBe("Found work in Galtea-AI and guplem");
+    expect(describeTokenFound({ owners: ["a", "b", "c"] })).toBe("Found work in a, b and c");
+  });
+
+  test("says so when the token found no work, or has not read yet", () => {
+    expect(describeTokenFound({ owners: [] })).toBe("Found no work yet");
+    expect(describeTokenFound(null)).toBe("Found no work yet");
+  });
+});
+
+// A row that asks the reader to change the token on GitHub carries the link
+// to GitHub's token page, so nobody has to look for it.
+describe("offersTokenSettings", () => {
+  test("a failed row and an optional permission left out offer the link", () => {
+    expect(offersTokenSettings({ ok: false })).toBe(true);
+    expect(offersTokenSettings({ ok: false, skipped: true })).toBe(true);
+  });
+
+  test("a passed row, or one still asking, does not", () => {
+    expect(offersTokenSettings({ ok: true })).toBe(false);
+    expect(offersTokenSettings({ ok: null })).toBe(false);
+    expect(offersTokenSettings(null)).toBe(false);
   });
 });

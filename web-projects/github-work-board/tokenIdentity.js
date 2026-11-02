@@ -50,6 +50,28 @@ export function describeTokenReach({ token, itemCount = 0 } = {}) {
   return [maskToken(token), found, "reads your work"].filter((part) => part !== "").join(" · ");
 }
 
+/**
+ * The line that says where a token found work: the one fact the board knows
+ * about its reach. GitHub does not say which owner a token belongs to, so this
+ * is where it found work and not what it is scoped to. A token also reads
+ * every public repository, so one owner can show on two tokens (ADR 0007).
+ */
+export function describeTokenFound(entry) {
+  const owners = Array.isArray(entry?.owners) ? entry.owners.filter((one) => typeof one === "string" && one !== "") : [];
+  if (owners.length === 0) return "Found no work yet";
+  if (owners.length === 1) return `Found work in ${owners[0]}`;
+  return `Found work in ${owners.slice(0, -1).join(", ")} and ${owners[owners.length - 1]}`;
+}
+
+/**
+ * Whether a check row asks the reader to change the token on GitHub, and so
+ * carries the link to GitHub's token page: a row that failed, and an optional
+ * permission the token goes without (ADR 0051).
+ */
+export function offersTokenSettings(row) {
+  return row !== null && typeof row === "object" && row.ok === false;
+}
+
 /** The checks whose failure means the token read nothing for the board. */
 const READ_CHECKS = new Set(["identity", "issues"]);
 

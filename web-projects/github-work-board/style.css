@@ -1078,6 +1078,35 @@ textarea.input {
   flex: 1 1 auto;
 }
 
+.token-name-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+}
+
+.token-found {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* The way to GitHub's token page, under a row that asks for a change there. */
+.check-link {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: hsl(var(--foreground));
+  text-underline-offset: 2px;
+}
+
+.check-link:hover {
+  color: hsl(var(--primary) / 0.8);
+}
+
+.check-link:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
 .token-name,
 .copy-action-name {
   max-width: 18rem;
