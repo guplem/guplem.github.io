@@ -4909,6 +4909,15 @@ function start() {
       renderBoard();
     });
   }
+  // The "×" inside the box empties it and keeps the focus there, so the reader
+  // can type the next search at once.
+  const findClear = element("find-clear");
+  explain(findClear, "Clear the search");
+  findClear.addEventListener("mousedown", (event) => event.preventDefault());
+  findClear.addEventListener("click", () => {
+    clearFind();
+    findField.focus();
+  });
   element("clear-find").addEventListener("click", () => {
     clearFind();
     findField.focus();

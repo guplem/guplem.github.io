@@ -850,7 +850,7 @@ textarea.input {
   position: relative;
   display: flex;
   align-items: center;
-  width: 18rem;
+  width: 19.5rem;
   max-width: 100%;
 }
 
@@ -891,7 +891,7 @@ textarea.input {
  * beside the match options. */
 .find-count {
   position: absolute;
-  right: 3.875rem;
+  right: 5.625rem;
   display: none;
   pointer-events: none;
   font-size: 0.75rem;
@@ -904,7 +904,7 @@ textarea.input {
 }
 
 .find-input:not(:placeholder-shown) {
-  padding-right: 9.5rem;
+  padding-right: 11.25rem;
 }
 
 /* The hint is for a reader who has not started typing yet. */
@@ -938,6 +938,20 @@ textarea.input {
   line-height: 1;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* The clear press: only while text is typed, so an empty box shows no "×". */
+.find-clear {
+  display: none;
+}
+
+.find-clear .icon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.find-input:not(:placeholder-shown) ~ .find-options .find-clear {
+  display: grid;
 }
 
 .find-option-word {

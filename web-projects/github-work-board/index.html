@@ -229,7 +229,7 @@
        the window's edges on every screen while the page itself stays centred
        at reading width. It scrolls away with everything else (ADR 0023). -->
   <header class="masthead">
-    <div class="masthead-start">
+    <div>
       <h1>
         <!-- The mark the browser tab wears, drawn inline like every icon here. -->
         <span class="brand-mark" aria-hidden="true">
@@ -240,13 +240,13 @@
              where it comes from (ADR 0030). -->
         <span id="board-total" class="board-total" hidden></span>
       </h1>
-
+    </div>
+    <div class="masthead-controls">
       <!-- Find one piece of work: a number keeps the issues and pull
            requests whose number holds it and hides every other card, in the
            column it sits in. Words find titles. Two presses beside it match
            the case and whole words, both off by default. It hides cards
-           only, and lives for this visit (ADR 0038). It sits beside the
-           name, on the left, where a reader looks for a search box. -->
+           only, and lives for this visit (ADR 0038). -->
       <div class="find-control" id="find-control" role="search" hidden>
         <label class="visually-hidden" for="find">Find on the board</label>
         <svg class="icon find-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -257,6 +257,13 @@
           spellcheck="false" placeholder="Find #number or words" />
         <kbd class="find-key" aria-hidden="true">/</kbd>
         <div class="find-options">
+          <!-- Empties the box in one press. Drawn only while text is typed,
+               like the count (ADR 0038). -->
+          <button id="find-clear" type="button" class="find-option find-clear" aria-label="Clear the search">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
           <button id="find-match-case" type="button" class="find-option" aria-pressed="false"
             aria-label="Match case">Aa</button>
           <button id="find-whole-word" type="button" class="find-option find-option-word" aria-pressed="false"
@@ -265,8 +272,7 @@
         <!-- While a search is typed: how many cards it left. -->
         <span id="find-count" class="find-count" aria-live="polite"></span>
       </div>
-    </div>
-    <div class="masthead-controls">
+
       <!-- The order the board reads in, at the top of the page where it is
            looked for (ADR 0023). It belongs to the board, so it is not on
            the other screens. -->
