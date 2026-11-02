@@ -282,6 +282,20 @@ describe("every control answers the pointer and the keyboard (ADR 0004)", () => 
     expect(page.indexOf('<header class="masthead">')).toBeLessThan(page.indexOf('<div class="page">'));
   });
 
+  // The find box sits on the left, beside the board's name, where a reader
+  // looks for a search box. A merge once moved it back among the controls on
+  // the right, and nothing failed (ADR 0038).
+  test("the find box sits beside the name, not among the controls", () => {
+    const page = read("index.html");
+    const masthead = page.slice(page.indexOf('<header class="masthead">'), page.indexOf("</header>"));
+    const start = masthead.indexOf('<div class="masthead-start">');
+    const controls = masthead.indexOf('<div class="masthead-controls">');
+    const find = masthead.indexOf('id="find-control"');
+    expect(start).toBeGreaterThan(-1);
+    expect(find).toBeGreaterThan(start);
+    expect(find).toBeLessThan(controls);
+  });
+
   // Without this one rule, every element the page hides with `hidden` and also
   // gives a `display` to stays on screen: an empty filter row, a "clear the
   // filters" button with no filters, a settings button inside settings. The
