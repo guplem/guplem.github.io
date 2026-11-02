@@ -16,9 +16,10 @@ guide:
 | REST `core` | the same | 1 call, only for a token that found no work: does it reach a private repository (ADR 0041) |
 | REST `search` | 30 a **minute** | 1 call: the pull requests waiting for your review |
 | GraphQL | 5000 points an hour | 1 call, or 2: the links between items, then the children of any issue that has them |
+| GraphQL | the same | 1 call: the projects each item is in, at the same time as the links (ADR 0051) |
 
 The board holds a list of tokens, not one (ADR 0007), and a refresh asks every
-one of them. So the cost is five calls per token, per refresh, and six when
+one of them. So the cost is six calls per token, per refresh, and seven when
 something on the board has children. A token that found no work adds one more.
 
 Two tokens on the shortest schedule spend 720 of the 5000 core calls an hour,
@@ -40,9 +41,11 @@ largest batch it ever sends, which is 100 items:
 | The links, as the query stands today, re-measured on 2026-09-23 | 18 |
 | The second call, about the children, one batch at most | 18 |
 
-So a refresh costs at most 36 points for a token, and the shortest schedule
-spends 4320 of the 5000 points an hour. The first row is what the query used to
-cost: cutting the closing pull requests from twenty to five is what paid for
+So the relationships cost at most 36 points for a token. The projects query adds
+1 point (ADR 0051), so a refresh costs at most 37 points, and the shortest
+schedule spends 4440 of the 5000 points an hour.
+
+The first row is what the query used to cost: cutting the closing pull requests from twenty to five is what paid for
 the children, and nothing reads past the merged one or the first open one
 (ADR 0010). `refresh.test.js` holds this arithmetic as a test too.
 

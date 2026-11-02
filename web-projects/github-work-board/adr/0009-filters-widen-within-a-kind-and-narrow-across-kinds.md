@@ -23,7 +23,7 @@ clicks a second label almost always means "and also show me these".
 **Within one kind of filter, the chosen values widen. Across the kinds, each one
 narrows.**
 
-- Two labels means *either*. Two repositories means *either*. So do two milestones.
+- Two labels means *either*. Two repositories means *either*. So do two milestones, and two projects (ADR 0051).
 - A kind and a repository chosen together means *both must hold*.
 
 That is what a person means by clicking, and it is the only combination in which
@@ -32,9 +32,9 @@ adding a second chip inside a group can never shrink the list.
 **Only offer a filter the list can actually use.** The repository chips are built
 from the repositories the items are actually in, the label chips from the labels
 they actually carry, and the milestone chips from the milestones they are in
-(ADR 0045). A filter that can only ever empty the board is noise, so the
-repository group stays hidden until there are at least two, and the label group
-and the milestone group until there is at least one.
+(ADR 0045), and the project chips from the projects they are in (ADR 0051). A filter that can only ever empty the board is noise, so the
+repository group stays hidden until there are at least two, and the label, milestone and project groups
+until there is at least one.
 
 **The chosen filters live in the address bar**, beside the view and the sort
 order (root ADR 0006), as one parameter per item: `?kind=issue&repo=me%2Fa&label=bug`.

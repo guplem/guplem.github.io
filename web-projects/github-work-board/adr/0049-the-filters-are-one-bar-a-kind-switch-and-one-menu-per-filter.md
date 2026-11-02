@@ -22,7 +22,7 @@ heading.** `filters.js` holds the rules, and `app.js` draws them.
   requests. "All" is the absence of a kind filter, so it is not a chip and
   narrows nothing.
 - **Each kind of filter is one dropdown button.** The kinds are Repository,
-  Reviewer, Label, Milestone, and one per issue field. A press opens one
+  Reviewer, Label, Milestone, Project (ADR 0051), and one per issue field. A press opens one
   shared popover, `#filter-menu`, in the top layer (ADR 0012). It holds one
   checkbox per value, and a "Clear filters" action.
 - **Each option shows how many cards carry it** (`matches` on each option from

@@ -26,6 +26,8 @@ const REPOSITORY_PARAM = "repo";
 const LABEL_PARAM = "label";
 // A milestone is chosen by its name, like a label (ADR 0045).
 const MILESTONE_PARAM = "milestone";
+// A project is chosen by its name too, one parameter each (ADR 0051).
+const PROJECT_PARAM = "project";
 // A field value is chosen by its field's name and its words, `Effort: 3`,
 // one parameter each (ADR 0047).
 const FIELD_PARAM = "field";
@@ -69,6 +71,7 @@ export function readStateFromSearch(search) {
     repositories: readList(params, REPOSITORY_PARAM),
     labels: readList(params, LABEL_PARAM),
     milestones: readList(params, MILESTONE_PARAM),
+    projects: readList(params, PROJECT_PARAM),
     fields: readList(params, FIELD_PARAM),
     assignees: readList(params, ASSIGNEE_PARAM),
     reviewers: readList(params, REVIEWER_PARAM),
@@ -85,6 +88,7 @@ export function buildSearch({
   repositories,
   labels,
   milestones,
+  projects,
   fields,
   assignees,
   reviewers,
@@ -110,6 +114,9 @@ export function buildSearch({
   }
   for (const name of Array.isArray(milestones) ? milestones : []) {
     if (typeof name === "string" && name !== "") params.append(MILESTONE_PARAM, name);
+  }
+  for (const name of Array.isArray(projects) ? projects : []) {
+    if (typeof name === "string" && name !== "") params.append(PROJECT_PARAM, name);
   }
   for (const key of Array.isArray(fields) ? fields : []) {
     if (typeof key === "string" && key !== "") params.append(FIELD_PARAM, key);

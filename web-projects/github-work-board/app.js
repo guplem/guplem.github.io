@@ -80,6 +80,7 @@ import {
   fetchAssignedIssues,
   fetchFinishedWork,
   fetchItemStates,
+  fetchProjects,
   fetchRelationships,
   fetchReviewRequests,
   fetchFirstRepository,
@@ -102,6 +103,7 @@ import {
   availableAssignees,
   availableLabels,
   availableMilestones,
+  availableProjects,
   availableRepositories,
   availableReviewers,
   boardFilterCount,
@@ -205,6 +207,14 @@ import {
 } from "./settingsSections.js";
 import { availableFieldFilters, fieldFilterKey, fieldText, isFilterableField } from "./fields.js";
 import { MILESTONE_PATHS, milestoneFilterTip, milestoneLinkTip, milestoneProgress } from "./milestones.js";
+import {
+  PROJECT_PATHS,
+  applyProjects,
+  normalizeProjects,
+  projectFilterTip,
+  projectLinkTip,
+  readProjectsAnswer,
+} from "./projects.js";
 import { initialsOf, otherPeople, othersBadge, othersHeading, personLabel } from "./people.js";
 import {
   HIGH,
@@ -356,6 +366,9 @@ const state = {
   // Chosen by name, like a label, from the filter group or a card's pill
   // (ADR 0045).
   milestones: [],
+  // Chosen by name, like a milestone, from the filter menu or a card's pill
+  // (ADR 0051).
+  projects: [],
   // Issue field values the board is narrowed to, as `Effort: 3` (ADR 0047).
   fields: [],
   // Two filters over two lists: the row of reviews narrows by whose work each
@@ -526,21 +539,37 @@ function fillTokenGuides() {
   const guide = element("token-guide");
   for (const slot of document.querySelectorAll(".token-guide-slot")) {
     const copy = guide.content.cloneNode(true);
-    copy.querySelector(".permissions").replaceChildren(...REQUIRED_PERMISSIONS.map(buildPermissionRow));
+    // GitHub's form keeps the two kinds in two lists, so the guide does too
+    // (ADR 0051).
+    const ownedBy = (owner) => REQUIRED_PERMISSIONS.filter((one) => one.owner === owner).map(buildPermissionRow);
+    copy.querySelector(".permissions").replaceChildren(...ownedBy("repository"));
+    copy.querySelector(".organisation-permissions").replaceChildren(...ownedBy("organisation"));
     slot.replaceChildren(copy);
   }
 }
 
-function buildCheckRow({ label, ok, detail }) {
+function buildCheckRow({ label, ok, detail, skipped = false }) {
   const row = document.createElement("li");
   // Three answers: it worked, it did not, or the board is asking right now.
   // Nothing stays unanswered, because Settings proves every permission
   // (ADR 0005).
-  row.className = ok === true ? "check ok" : ok === false ? "check failed" : "check unchecked";
+  // A fourth: an optional permission the token goes without (ADR 0051).
+  row.className = skipped
+    ? "check skipped"
+    : ok === true
+      ? "check ok"
+      : ok === false
+        ? "check failed"
+        : "check unchecked";
   const mark = document.createElement("span");
-  mark.className =
-    ok === true ? "badge badge-success" : ok === false ? "badge badge-destructive" : "badge badge-outline";
-  mark.textContent = ok === true ? "Done" : ok === false ? "Fix" : "Asking";
+  mark.className = skipped
+    ? "badge badge-outline"
+    : ok === true
+      ? "badge badge-success"
+      : ok === false
+        ? "badge badge-destructive"
+        : "badge badge-outline";
+  mark.textContent = skipped ? "Optional" : ok === true ? "Done" : ok === false ? "Fix" : "Asking";
   const body = document.createElement("div");
   const name = document.createElement("p");
   name.className = "check-label";
@@ -676,6 +705,49 @@ function buildMilestonePill(milestone, canFilter) {
     explain(name, milestoneFilterTip(milestone, pressed));
     name.addEventListener("click", () => {
       state.milestones = toggleInList(state.milestones, milestone.title);
+      afterFilterChange();
+    });
+  }
+
+  pill.append(link, name);
+  return pill;
+}
+
+/**
+ * One GitHub project a card is in, as a pill with two halves, like the
+ * milestone's (ADR 0045, ADR 0051).
+ *
+ * The icon is a link to the project on GitHub. The name narrows the board to
+ * that project, and is pressed while it does.
+ *
+ * @param project `{title, url}`
+ * @param canFilter false on a review card, which the board's filters never narrow
+ */
+function buildProjectPill(project, canFilter) {
+  const pill = document.createElement("span");
+  pill.className = "badge badge-milestone badge-project";
+
+  const link = document.createElement(project.url === "" ? "span" : "a");
+  link.className = "milestone-link project-link";
+  if (project.url !== "") {
+    link.href = project.url;
+    link.target = "_blank";
+    link.rel = "noopener";
+  }
+  link.append(drawIcon(PROJECT_PATHS));
+  link.setAttribute("aria-label", projectLinkTip(project));
+  explain(link, projectLinkTip(project));
+
+  const name = document.createElement(canFilter ? "button" : "span");
+  name.className = "milestone-name project-name";
+  name.textContent = project.title;
+  if (canFilter) {
+    const pressed = state.projects.includes(project.title);
+    name.type = "button";
+    name.setAttribute("aria-pressed", pressed ? "true" : "false");
+    explain(name, projectFilterTip(project, pressed));
+    name.addEventListener("click", () => {
+      state.projects = toggleInList(state.projects, project.title);
       afterFilterChange();
     });
   }
@@ -948,16 +1020,20 @@ function buildWorkItemCard(
   const tags = document.createElement("div");
   tags.className = "issue-tags";
 
-  // The milestone closes the labels. Each label, like the milestone's name,
-  // filters the board. Only the board's filters can narrow by them, so on a
-  // review card they are text (ADR 0009, ADR 0045, ADR 0049).
+  // The milestone, then the projects, close the labels. Each label, like the
+  // milestone's name and each project's name, filters the board. Only the
+  // board's filters can narrow by them, so on a review card they are text
+  // (ADR 0009, ADR 0045, ADR 0049, ADR 0051).
   const labelList = shows("labels") ? item.labels : [];
   const milestone = shows("milestone") ? item.milestone : null;
-  if (labelList.length > 0 || milestone) {
+  // The projects follow the milestone, one pill each (ADR 0051).
+  const projects = shows("projects") ? (item.projects ?? []) : [];
+  if (labelList.length > 0 || milestone || projects.length > 0) {
     const labels = document.createElement("p");
     labels.className = "issue-labels";
     for (const label of labelList) labels.append(buildLabelChip(label.name, canFilter));
     if (milestone) labels.append(buildMilestonePill(milestone, canFilter));
+    for (const project of projects) labels.append(buildProjectPill(project, canFilter));
     tags.append(labels);
   }
 
@@ -1503,7 +1579,13 @@ function buildSegment(label, pressed, onPress) {
 }
 
 /** The list in state that one filter menu chooses into. */
-const FILTER_LISTS = { repository: "repositories", reviewer: "reviewers", label: "labels", milestone: "milestones" };
+const FILTER_LISTS = {
+  repository: "repositories",
+  reviewer: "reviewers",
+  label: "labels",
+  milestone: "milestones",
+  project: "projects",
+};
 
 function filterListOf(menuId) {
   return menuId.startsWith("field:") ? "fields" : FILTER_LISTS[menuId];
@@ -1685,6 +1767,7 @@ function clearFilters() {
   state.repositories = [];
   state.labels = [];
   state.milestones = [];
+  state.projects = [];
   state.fields = [];
   state.assignees = [];
   state.reviewers = [];
@@ -1800,7 +1883,7 @@ function buildTokenRow(entry, index) {
   const summary = document.createElement("summary");
   summary.className = "token-checks-summary";
   summary.textContent = summariseChecks(proved);
-  if (proved.some((one) => one?.ok !== true)) fold.classList.add("has-trouble");
+  if (proved.some((one) => one?.ok !== true && one?.skipped !== true)) fold.classList.add("has-trouble");
   const list = document.createElement("ul");
   list.className = "checks";
   list.replaceChildren(...proved.map(buildCheckRow));
@@ -2929,7 +3012,7 @@ function renderBoard() {
         const items = groups.map((group) => group.item);
         return [
           [`column:${column.id}`, items.length],
-          [`labels:${column.id}`, items.filter((item) => item.labels.length > 0 || item.milestone).length],
+          [`labels:${column.id}`, items.filter((item) => item.labels.length > 0 || item.milestone || (item.projects ?? []).length > 0).length],
           [`fields:${column.id}`, items.filter((item) => (item.fields ?? []).length > 0).length],
         ];
       }),
@@ -4018,9 +4101,10 @@ function showNotice(where, text) {
  */
 async function inspectToken(entry, onStep = () => {}) {
   const rows = [];
-  const [identity, work, reviewCheck, checksCheck] = CONNECTION_CHECKS;
+  const [identity, work, reviewCheck, checksCheck, projectsCheck] = CONNECTION_CHECKS;
   let updated = { ...entry, owners: [], itemCount: 0 };
   let links = {};
+  let projects = {};
 
   // What landed in the days the last column is about. A second question,
   // because the first one asks only for open work and a merged pull request is
@@ -4042,14 +4126,14 @@ async function inspectToken(entry, onStep = () => {}) {
 
   if (!viewer.ok) {
     rows.push({ id: identity.id, label: identity.label, ok: false, detail: describeFailure({ ...viewer, need: identity.need }) });
-    return { entry: updated, login: "", raw: [], rows, links, reviews: [], approval: null };
+    return { entry: updated, login: "", raw: [], rows, links, projects, reviews: [], approval: null };
   }
   const login = viewer.data?.login ?? "";
   rows.push({ id: identity.id, label: identity.label, ok: true, detail: `Signed in as ${login}.` });
 
   if (!answer.ok) {
     rows.push({ id: work.id, label: work.label, ok: false, detail: describeFailure({ ...answer, need: work.need }) });
-    return { entry: updated, login, raw: [], rows, links, reviews: [], approval: null };
+    return { entry: updated, login, raw: [], rows, links, projects, reviews: [], approval: null };
   }
   const raw = Array.isArray(answer.data) ? answer.data : [];
   const items = normalizeWorkItems(raw);
@@ -4087,14 +4171,18 @@ async function inspectToken(entry, onStep = () => {}) {
   onStep("approval");
 
   // The relationships of this token's own items, with this token: a node id
-  // from one owner is not readable by another owner's token (ADR 0010).
-  const linked = await fetchRelationships(
-    entry.token,
-    [...items, ...finished, ...reviews].map((item) => item.key),
-    login,
-  );
+  // from one owner is not readable by another owner's token (ADR 0010). The
+  // projects of the same items go at the same time, in a query of their own,
+  // because their permission is optional and a refusal must cost the
+  // projects alone (ADR 0051).
+  const keys = [...items, ...finished, ...reviews].map((item) => item.key);
+  const [linked, projected] = await Promise.all([
+    stepWhenDone("relationships", fetchRelationships(entry.token, keys, login)),
+    stepWhenDone("projects", fetchProjects(entry.token, keys)),
+  ]);
   links = linked.ok ? normalizeRelationships(linked.data) : {};
-  onStep("relationships");
+  const projectAnswer = projected.ok ? readProjectsAnswer(projected.data) : null;
+  projects = projectAnswer ? normalizeProjects(projectAnswer.nodes) : {};
   const checked = await readChecks(entry.token, links);
   onStep("checks");
   links = applyCheckSummaries(links, state.checksBySha);
@@ -4135,7 +4223,39 @@ async function inspectToken(entry, onStep = () => {}) {
           : checked.detail,
   });
 
-  return { entry: updated, login, raw: [...raw, ...finishedRaw], rows, links, reviews, approval };
+  rows.push(projectsRow(projectsCheck, projected, projectAnswer, projects));
+
+  return { entry: updated, login, raw: [...raw, ...finishedRaw], rows, links, projects, reviews, approval };
+}
+
+/**
+ * The row that says whether a token read the projects (ADR 0051).
+ *
+ * The permission is optional, so a token without it is `skipped`: it is not a
+ * failure, it does not fold the token open as trouble, and the row says what
+ * granting it would add. Only a call that never got an answer is a failure.
+ */
+function projectsRow(check, answer, read, byId) {
+  const base = { id: check.id, label: check.label };
+  if (!answer.ok) return { ...base, ok: false, detail: describeFailure({ ...answer, need: check.need }) };
+  if (!read.granted) {
+    return {
+      ...base,
+      ok: false,
+      skipped: true,
+      detail:
+        "Optional, and not granted. Give this token the organisation permission Projects: read to see the projects on each card.",
+    };
+  }
+  const named = new Set(Object.values(byId).flatMap((list) => list.map((one) => one.title)));
+  return {
+    ...base,
+    ok: true,
+    detail:
+      named.size === 0
+        ? "None of this token's work is in a project it can read."
+        : `Your work is in ${named.size} ${named.size === 1 ? "project" : "projects"}: ${[...named].join(", ")}.`,
+  };
 }
 
 /**
@@ -4176,7 +4296,7 @@ async function askAboutApproval(entry, login) {
  * presses the button there, never on a refresh.
  */
 async function checkToken(entry) {
-  const [identity, work, reviews, checks] = CONNECTION_CHECKS;
+  const [identity, work, reviews, checks, projectsCheck] = CONNECTION_CHECKS;
   const said = (check, answer, detail) => ({
     id: check.id,
     label: check.label,
@@ -4220,6 +4340,24 @@ async function checkToken(entry) {
   } else {
     const runs = await fetchWorkflowRuns(entry.token, first);
     rows.push(said(checks, runs, `Read the workflow runs in ${first}.`));
+  }
+
+  // The projects are read through the work, so a token with no work has
+  // nothing to ask about. One batch is enough to prove the permission.
+  if (mine.length === 0) {
+    rows.push({
+      id: projectsCheck.id,
+      label: projectsCheck.label,
+      ok: null,
+      detail: "No work to read the projects of, so nothing was asked.",
+    });
+  } else {
+    const projected = await fetchProjects(
+      entry.token,
+      mine.slice(0, 100).map((item) => item.key),
+    );
+    const read = projected.ok ? readProjectsAnswer(projected.data) : null;
+    rows.push(projectsRow(projectsCheck, projected, read, read ? normalizeProjects(read.nodes) : {}));
   }
   return rows;
 }
@@ -4328,6 +4466,7 @@ async function connectAll({ quiet = false } = {}) {
     const everything = [];
     const waiting = [];
     let links = {};
+    let projects = {};
     const asked = state.tokens;
     const tokenCount = asked.length;
     // The steps each token has finished, in list order, for the bar and the
@@ -4368,6 +4507,7 @@ async function connectAll({ quiet = false } = {}) {
       if (result.approval) awaitingApproval.set(entry.id, result.approval);
       waiting.push(...(result.reviews ?? []));
       links = { ...links, ...(result.links ?? {}) };
+      projects = { ...projects, ...(result.projects ?? {}) };
     }
     state.readers = readers;
     state.checks = checks;
@@ -4375,11 +4515,11 @@ async function connectAll({ quiet = false } = {}) {
     state.links = links;
     // Through the same step as the board's own items: a review card needs the
     // branch names to know it is one of a stack (ADR 0020).
-    state.reviews = applyPullRequestState(uniqueByKey(waiting), links);
+    state.reviews = applyProjects(applyPullRequestState(uniqueByKey(waiting), links), projects);
 
     saveTokens(storage, state.tokens);
     // Merging here, not per token, is what removes an item two tokens both see.
-    state.items = applyPullRequestState(normalizeWorkItems(everything), links);
+    state.items = applyProjects(applyPullRequestState(normalizeWorkItems(everything), links), projects);
 
     state.loading = false;
     state.lastReadAt = Date.now();
@@ -4395,12 +4535,15 @@ async function connectAll({ quiet = false } = {}) {
       repositories: availableRepositories(state.items).length,
       labels: availableLabels(state.items).length,
       milestones: availableMilestones(state.items).length,
+      projects: availableProjects(state.items).length,
       fields: availableFieldFilters(state.items).length,
       tokens: state.tokens.length,
       // The shape of the board, so the next wait draws the same shape (ADR 0004).
       ...state.drawnColumns,
       reviewsHeight: measuredReviewsHeight(),
-      withLabels: state.items.filter((item) => item.labels.length > 0 || item.milestone).length,
+      withLabels: state.items.filter(
+        (item) => item.labels.length > 0 || item.milestone || (item.projects ?? []).length > 0,
+      ).length,
       withFields: state.items.filter((item) => (item.fields ?? []).length > 0).length,
       menus: filterMenus(state.items, state).map((menu) => menu.label),
       assignees: availableAssignees(withoutItems(state.reviews, state.items)).map((person) => person.name),
@@ -4679,6 +4822,7 @@ function start() {
   state.repositories = asked.repositories;
   state.labels = asked.labels;
   state.milestones = asked.milestones;
+  state.projects = asked.projects;
   state.fields = asked.fields;
   state.assignees = asked.assignees;
   state.reviewers = asked.reviewers;

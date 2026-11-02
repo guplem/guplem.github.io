@@ -12,6 +12,7 @@ const DEFAULTS = {
   repositories: [],
   labels: [],
   milestones: [],
+  projects: [],
   fields: [],
   assignees: [],
   reviewers: [],
@@ -106,6 +107,13 @@ describe("readStateFromSearch", () => {
     expect(buildSearch({ milestones: ["Sprint 12", "v1, final"] })).toBe("?milestone=Sprint+12&milestone=v1%2C+final");
   });
 
+  // A project is chosen by its name, one parameter each, like a milestone
+  // (ADR 0051). The name `project` is permanent: it travels in saved links.
+  test("reads and writes one parameter per chosen project", () => {
+    expect(buildSearch({ projects: ["Iteration board", "Road, map"] })).toBe("?project=Iteration+board&project=Road%2C+map");
+    expect(readStateFromSearch("?project=Iteration+board")).toEqual({ ...DEFAULTS, projects: ["Iteration board"] });
+  });
+
   // A field value is chosen by its field's name and its words, one parameter
   // each, like a label (ADR 0047).
   test("reads and writes one parameter per chosen field value", () => {
@@ -159,6 +167,7 @@ describe("buildSearch", () => {
       repositories: ["me/a"],
       labels: ["bug"],
       milestones: ["Sprint 12"],
+      projects: ["Iteration board"],
       fields: ["Effort: 3", "Priority: P1"],
       assignees: ["ana"],
       reviewers: ["leo"],

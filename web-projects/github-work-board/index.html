@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="428" />
-  <meta name="deploy-date" content="2026-10-31T21:31:46.000Z" />
+  <meta name="deploy-pull-request" content="429" />
+  <meta name="deploy-date" content="2026-11-02T11:53:37.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -95,6 +95,19 @@
         <p>Set each of these. Leave every other permission alone.</p>
         <!-- Filled from REQUIRED_PERMISSIONS, never written here (ADR 0005). -->
         <ul class="permissions"></ul>
+      </div>
+    </div>
+
+    <div class="action">
+      <p class="action-label">Organization permissions (optional)</p>
+      <div class="action-body">
+        <p>
+          Only on a token whose owner is an organisation. Set this to see on each card the GitHub projects the
+          work is in. A token without it works as before. A project owned by a personal account never shows:
+          GitHub does not let a fine-grained token read one.
+        </p>
+        <!-- Filled from REQUIRED_PERMISSIONS, never written here (ADR 0005, ADR 0051). -->
+        <ul class="organisation-permissions"></ul>
       </div>
     </div>
 

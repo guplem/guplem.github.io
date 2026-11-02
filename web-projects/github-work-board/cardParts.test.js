@@ -9,6 +9,7 @@ describe("the parts of a card the reader can hide", () => {
     expect(CARD_PARTS.map((part) => part.id)).toEqual([
       "labels",
       "milestone",
+      "projects",
       "fields",
       "people",
       "links",

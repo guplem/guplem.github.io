@@ -65,6 +65,7 @@ describe("the top bar says how far a read has gone (ADR 0039)", () => {
       "reviews",
       "approval",
       "relationships",
+      "projects",
       "checks",
     ]);
   });

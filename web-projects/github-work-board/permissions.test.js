@@ -6,8 +6,20 @@ describe("REQUIRED_PERMISSIONS", () => {
   // asks for Contents on its own token. A token that only reads work no
   // longer needs it.
   test("asks for what reading work needs, and not for Contents", () => {
-    expect(REQUIRED_PERMISSIONS.map((one) => one.id)).toEqual(["metadata", "issues", "pull-requests", "actions"]);
-    expect(CONNECTION_CHECKS.map((one) => one.id)).toEqual(["identity", "issues", "reviews", "checks"]);
+    expect(REQUIRED_PERMISSIONS.map((one) => one.id)).toEqual(["metadata", "issues", "pull-requests", "actions", "projects"]);
+    expect(CONNECTION_CHECKS.map((one) => one.id)).toEqual(["identity", "issues", "reviews", "checks", "projects"]);
+  });
+
+  // Projects is the one permission a token may go without (ADR 0051). Every
+  // token made before it still works, and a token for a personal account has
+  // no organisation permissions to grant at all.
+  test("only Projects is optional, and it is the only organisation permission", () => {
+    expect(REQUIRED_PERMISSIONS.filter((one) => one.optional === true).map((one) => one.id)).toEqual(["projects"]);
+    expect(REQUIRED_PERMISSIONS.filter((one) => one.owner === "organisation").map((one) => one.id)).toEqual([
+      "projects",
+    ]);
+    for (const one of REQUIRED_PERMISSIONS.filter((p) => p.id !== "projects")) expect(one.owner).toBe("repository");
+    expect(CONNECTION_CHECKS.filter((one) => one.optional === true).map((one) => one.id)).toEqual(["projects"]);
   });
 
   test("every entry carries what the setup guide has to show", () => {

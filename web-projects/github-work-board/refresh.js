@@ -14,6 +14,7 @@
 // | REST `core` | the same | 1 call for each commit the board has no final answer about its checks yet (ADR 0037) |
 // | REST `search` | 30 a **minute** | 1 call: the pull requests waiting for your review |
 // | GraphQL | 5000 points an hour | 1 or 2 calls: the links between items, then the children of any issue that has them |
+// | GraphQL | the same | 1 call: the projects each item is in, at the same time as the links (ADR 0051) |
 //
 // **The checks row is the only one that grows with the board.** It is one call
 // per pull request on the first read, and after that only the ones still
@@ -27,8 +28,10 @@
 //
 // **GraphQL is charged by size, not by call.** Its budget is points, and the
 // points come from how much a query could return rather than from how much it
-// did. Both numbers below were measured with `rateLimit(dryRun: true)` on the
-// board's own query, at the largest batch it ever sends.
+// did. The relationship numbers below were measured with
+// `rateLimit(dryRun: true)` on the board's own query, at the largest batch it
+// ever sends. The projects number was worked out from GitHub's published rule
+// and still wants that measure (ADR 0051).
 //
 // **An id here is written into `board.json`** the moment somebody picks one, so
 // it is as permanent as a colour id or a storage key.
@@ -75,7 +78,13 @@ export const GRAPHQL_BUDGET_PER_HOUR = 5000;
  * What one refresh spends of it, for one token, on the largest board there is.
  *
  * 18 points for a full batch of 100 items, and at most one more batch of the
- * same size for their children, so 36 is the worst a refresh can cost. The
+ * same size for their children, so 36 is the worst the relationships cost.
+ * The projects add 1. GitHub's rule counts one request for each object a
+ * connection hangs from, and charges one point per 100 requests. The
+ * projects query has one connection, `projectItems`, under 100 items, and
+ * nothing nested under it: 100 requests, 1 point (ADR 0051). That makes 37.
+ * The same rule gives about 23 for the relationship query, against the 18
+ * measured, so it errs high. The
  * board asks about one batch of children and no more, which is what keeps this
  * number a number rather than "however many children the reader has".
  *
@@ -84,7 +93,7 @@ export const GRAPHQL_BUDGET_PER_HOUR = 5000;
  * nobody asked it again. The cost is worked out from the query alone, so
  * `rateLimit(dryRun: true)` answers it without a real board (ADR 0010).
  */
-export const GRAPHQL_POINTS_PER_TOKEN = 36;
+export const GRAPHQL_POINTS_PER_TOKEN = 37;
 
 const BY_ID = new Map(REFRESH_CHOICES.map((one) => [one.id, one]));
 

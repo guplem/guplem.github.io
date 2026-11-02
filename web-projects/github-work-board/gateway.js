@@ -332,6 +332,51 @@ export async function fetchRelationships(token, ids, login = "") {
 }
 
 /**
+ * The GitHub projects each item is in, by name and link (ADR 0051).
+ *
+ * **A query of its own, never a field in the relationship query.**
+ * `projectItems` needs the organisation permission "Projects: read", which is
+ * optional. GitHub refuses an item the token may not read with an `errors`
+ * entry and a null in its place, and a null inside a list it promises is
+ * never empty climbs up to the whole node. In the relationship query that
+ * would take the item's parent, blockers and pull requests with it. Here it
+ * takes the projects and nothing else.
+ *
+ * Ten projects for each item: nobody files one issue in more. A full batch
+ * costs about one point, because `projectItems` is the only connection and
+ * nothing is nested under it (ADR 0025, `GRAPHQL_POINTS_PER_TOKEN`). Only the
+ * name and the link are asked for; a project's own fields are not read
+ * (ADR 0047). Never nest a connection under it without measuring again.
+ *
+ * The answer is the whole GraphQL body, `{ data, errors }`, so
+ * `projects.readProjectsAnswer` can tell a missing permission from a project
+ * that is simply out of reach. A batch that fails keeps the batches before it.
+ */
+const PROJECTS_QUERY = `query($ids: [ID!]!) {
+  nodes(ids: $ids) {
+    ... on Issue { id projectItems(first: 10) { nodes { project { id title url closed } } } }
+    ... on PullRequest { id projectItems(first: 10) { nodes { project { id title url closed } } } }
+  }
+}`;
+
+export async function fetchProjects(token, ids) {
+  const wanted = Array.isArray(ids) ? ids.filter((id) => typeof id === "string" && id !== "") : [];
+  const nodes = [];
+  const errors = [];
+  for (let start = 0; start < wanted.length; start += RELATIONSHIP_BATCH) {
+    const answer = await call(token, "/graphql", {
+      method: "POST",
+      need: PERMISSIONS.projectsRead,
+      body: { query: PROJECTS_QUERY, variables: { ids: wanted.slice(start, start + RELATIONSHIP_BATCH) } },
+    });
+    if (!answer.ok) return start === 0 ? answer : { ok: true, data: { data: { nodes }, errors } };
+    nodes.push(...(Array.isArray(answer.data?.data?.nodes) ? answer.data.data.nodes : []));
+    if (Array.isArray(answer.data?.errors)) errors.push(...answer.data.errors);
+  }
+  return { ok: true, data: { data: { nodes }, errors } };
+}
+
+/**
  * Whether each item a note is filed under is still open, for the suggested
  * cleanup (ADR 0043).
  *

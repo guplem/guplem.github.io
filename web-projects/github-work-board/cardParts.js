@@ -12,6 +12,7 @@
 export const CARD_PARTS = [
   { id: "labels", label: "Labels", says: "the labels on the work" },
   { id: "milestone", label: "Milestone", says: "the milestone the work is in, and how far it has gone" },
+  { id: "projects", label: "Projects", says: "the GitHub projects the work is in" },
   { id: "fields", label: "Fields", says: "the issue fields that are set, such as the effort or the priority" },
   { id: "people", label: "People", says: "the faces of the people in the review, or whose work it is" },
   { id: "links", label: "Parent and blockers", says: "the issue this one is a sub-issue of, and what blocks it" },

@@ -56,6 +56,14 @@ describe("summariseChecks", () => {
     expect(summariseChecks([ok("Sign in"), bad("Work"), bad("Notes")])).toBe("2 of 3 checks did not pass");
   });
 
+  // An optional permission the token goes without is not a failure, and it
+  // must not fold the row open as trouble (ADR 0051).
+  test("leaves out an optional permission the token goes without", () => {
+    const off = { label: "Projects", ok: false, skipped: true, detail: "Not granted." };
+    expect(summariseChecks([ok("Sign in"), ok("Work"), off])).toBe("All 2 checks passed");
+    expect(summariseChecks([ok("Sign in"), bad("Work"), off])).toBe("Work did not pass");
+  });
+
   test("says so when there is nothing to show", () => {
     expect(summariseChecks([])).toBe("Not connected yet");
     expect(summariseChecks(null)).toBe("Not connected yet");

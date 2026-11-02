@@ -66,6 +66,7 @@ const READ_STEP_WORDS = new Map([
   ["reviews", "Reading the reviews waiting for you"],
   ["approval", "Checking whether a token waits for an organisation to approve it"],
   ["relationships", "Reading how the items link to each other"],
+  ["projects", "Reading the projects your work is in"],
   ["checks", "Reading the checks on your pull requests"],
 ]);
 
@@ -328,8 +329,11 @@ export function movedByHandTip(chosenLabel, automaticLabel) {
  * one failure is named rather than counted (ADR 0018).
  */
 export function summariseChecks(rows) {
-  const list = (Array.isArray(rows) ? rows : []).filter((one) => one && typeof one === "object");
-  if (list.length === 0) return "Not connected yet";
+  const given = (Array.isArray(rows) ? rows : []).filter((one) => one && typeof one === "object");
+  if (given.length === 0) return "Not connected yet";
+  // An optional permission the token goes without is neither a pass nor a
+  // failure: the reader chose to leave it out (ADR 0051).
+  const list = given.filter((one) => one.skipped !== true);
 
   // A check the board had nothing to run against is neither: the reader may
   // simply have no pull request with checks on it yet. Counting it as a pass

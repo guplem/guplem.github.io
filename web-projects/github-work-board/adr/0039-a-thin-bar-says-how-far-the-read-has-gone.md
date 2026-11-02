@@ -3,11 +3,11 @@
 ## Context
 
 A full read of GitHub can take several seconds. For each token, `inspectToken`
-makes six calls: who the token belongs to, the open work, the finished work,
-the reviews, the relationships and the checks. The first four go together, and
-every token reads at the same time (ADR 0040). A later change added a seventh
-step, the approval question (ADR 0041), which only a token that found no work
-makes as a call. The board draws nothing new
+makes seven calls: who the token belongs to, the open work, the finished work,
+the reviews, the relationships, the projects (ADR 0051) and the checks. The
+first four go together, and the relationships and the projects go together.
+Every token reads at the same time (ADR 0040). An eighth step, the approval
+question (ADR 0041), is a call only for a token that found no work. The board draws nothing new
 until the last call ends.
 
 During that wait the reader saw placeholders (ADR 0004) and nothing that moved

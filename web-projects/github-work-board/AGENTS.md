@@ -58,10 +58,11 @@ It is the short procedure for all of the above.
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it (with a letter on a level that branches), with the bottom's name, and which stack each card lights up with (ADR 0020, ADR 0027) |
-| `filters.js` | Yes | Narrowing by kind, repository, label, milestone, issue field and person, the menus the filter bar offers (`filterMenus`, with a card count `matches` on each option and a `hint`) and the count of chosen values (ADR 0009, ADR 0028, ADR 0045, ADR 0047, ADR 0049) |
+| `filters.js` | Yes | Narrowing by kind, repository, label, milestone, project, issue field and person, the menus the filter bar offers (`filterMenus`, with a card count `matches` on each option and a `hint`) and the count of chosen values (ADR 0009, ADR 0028, ADR 0045, ADR 0047, ADR 0049, ADR 0051) |
 | `fields.js` | Yes | The issue fields set on an issue, read from the answer the board already has: their words, which of them a filter offers, and narrowing by them (ADR 0047) |
 | `settingsSections.js` | Yes | The sections of Settings with their permanent ids, the section each sub-screen goes back to, and the written list of settings the search finds (ADR 0048) |
 | `cardParts.js` | Yes | The parts of a card the reader can hide in Settings, with their permanent ids (ADR 0047) |
+| `projects.js` | Yes | The GitHub projects a piece of work is in, by name and link, read from the projects query: a missing permission told apart from a project out of reach (`readProjectsAnswer`), and the words on its pill (ADR 0051) |
 | `milestones.js` | Yes | The milestone a piece of work is in, read from the answer the board already has: its share closed and the words on its pill (ADR 0045) |
 | `boardSearch.js` | Yes | The find box: part of a number, a pasted GitHub link or words, the match-case and whole-word choices, and which cards stay (ADR 0038) |
 | `skeletons.js` | Yes | What to draw while the board waits: how many placeholders, how many cards in each column, which rows a card carries, and which filter menus the bar shows (ADR 0004) |
@@ -84,8 +85,8 @@ It is the short procedure for all of the above.
 | `app.js` | No | The page: listens, calls the modules above, builds elements |
 | `invariants.test.js` | - | The decisions that must not be undone by accident (ADR 0003) |
 
-Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseBlockingWork`, `priority.raiseNeedsAttention`, `priority.sinkBlocked`, `priority.raiseHighPriority` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done" newest first) → the parts the reader hid are dropped (ADR 0024) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
-Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.raiseReviewedBeforeItems` → `priority.raiseHighPriorityItems` → `priority.sinkLowPriorityItems` (the last four only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
+Data flow, reading: `app.js` → `gateway.fetchAssignedIssues` (open work) and `gateway.fetchFinishedWork` (closed inside the chosen range, following its pages, ADR 0017 and ADR 0034) → `workItems.normalizeWorkItems` and `workItems.finishedBetween` → `gateway.fetchRelationships` (which asks a second time about the children it just heard of) and, at the same time, `gateway.fetchProjects` → `projects.readProjectsAnswer` → `projects.applyProjects` (ADR 0051) → `filters.filterWorkItems` → `filters.filterByPerson` (reviewers) → `sorting.sortWorkItems` → `relationships.groupByLinkedIssue` → `stacks.orderStacksForMerging`, `priority.raiseBlockingWork`, `priority.raiseNeedsAttention`, `priority.sinkBlocked`, `priority.raiseHighPriority` and `priority.sinkLowPriority` (smart order only, in that order) → `columns.groupIntoColumns` (also reorders "Done" newest first) → the parts the reader hid are dropped (ADR 0024) → `boardSearch.searchGroups` (only while the find box holds text, and then `filters.filterWorkItems` and `filters.filterByPerson` are skipped, ADR 0038) → elements.
+Data flow, the review row: `gateway.fetchReviewRequests` → `workItems.uniqueByKey` → `relationships.applyPullRequestState` → `projects.applyProjects` → `filters.filterByPerson` (assignees) → `sorting.sortWorkItems` with `reviewSortId` → `stacks.orderItemsForMerging` → `priority.raiseReviewedBeforeItems` → `priority.raiseHighPriorityItems` → `priority.sinkLowPriorityItems` (the last four only in the smart order) → `stacks.stackPositions` for the badge → `boardSearch.searchItems` (only while the find box holds text; the assignee filter is skipped then) → cards.
 Data flow, asking again: a 5 second tick, or a tab coming back into view → `refresh.refreshDue` → `connectAll({ quiet: true })`, which is the same read with no placeholders and no "Reading GitHub..." status line (ADR 0025). The read bar still shows (ADR 0039).
 Data flow, the cleanup: opening `?view=cleanup` or pressing "Check again" → `cleanup.cleanupCandidates` → `gateway.fetchItemStates` for every token at once → `cleanup.readItemStates` (token-list order) → `cleanup.cleanupSuggestions` → rows. Delete → `cleanup.deleteNotes`; Keep → `boardDocument.writeNoteSuggested` (ADR 0043).
 Data flow, saving: a keystroke, a card moved, a colour, a part of the board or of a card shown or hidden, the theme, a priority mark, a counting choice or a line the reader copies → the matching `boardDocument.write*` → `store.write(state.board)`, which mirrors the document at once and, after a rest, merges and saves it through the shared cloud storage (`../cloud-storage/cloudStore.js`, root ADR 0016).
@@ -107,10 +108,10 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   seeing `hidden`. To force the page's own view, inject a `<script>` element
   with the override as its text, which runs in the page's world. Measure what
   fires, not when.
-- **One refresh costs five GitHub calls for each token, and six when
+- **One refresh costs six GitHub calls for each token, and seven when
   something on the board has children**, plus one for a token that found
-  nothing (ADR 0041), and the tight budget is `search` at 30
-  a minute, not `core` at 5000 an hour. A new call in the connect path
+  nothing (ADR 0041). The sixth is the projects query (ADR 0051). The tight
+  budget is `search` at 30 a minute, not `core` at 5000 an hour. A new call in the connect path
   multiplies by the number of tokens and by the refresh rate. Do that
   arithmetic in `refresh.test.js` before you add one.
 - **Every token reads at the same time, and so do a token's first four
@@ -341,6 +342,23 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
 - **The milestone comes free with each item.** The issues and search answers
   carry it, counts included, so the pill costs no call. Never ask the
   milestones endpoint for it (ADR 0045).
+- **The projects are a GraphQL query of their own, never a field in the
+  relationship query.** `projectItems` needs the optional organisation
+  permission "Projects: read". A refusal puts a null where GitHub promised a
+  list, and that null takes the whole node with it: inside the relationship
+  query it would erase every parent, blocker and pull request on a token
+  without the permission. `invariants.test.js` fails when the relationship
+  query asks for `projectItems` (ADR 0051).
+- **Projects is the one optional permission.** `optional: true` and
+  `owner: "organisation"` mark it in `REQUIRED_PERMISSIONS`. A check row for it
+  that is not granted carries `skipped: true`: it wears "Optional", stays out of
+  `summariseChecks`, and does not fold the token open as trouble. The setup
+  guide lists the organisation permissions in their own step, as GitHub's form
+  does (ADR 0051).
+- **A fine-grained token can never read a project a personal account owns.**
+  GitHub lists it among the limits of fine-grained tokens, and no permission
+  opens it. Such a project is simply absent from the answer, so the board
+  cannot say that it exists (ADR 0051).
 - **The issue fields come free with each issue, too.** `GET /issues` sends
   them inline as `issue_field_values`, under the `Issues: read` permission the
   board already has. Never ask GraphQL or the project API for them: project
@@ -795,6 +813,7 @@ Check `performance.getEntriesByType("resource")` for a `transferSize` of 0, and
 | [0048](adr/0048-settings-is-split-into-sections-and-the-section-is-in-the-link.md) | Settings is split into sections, the section is in the link, and a search finds any setting |
 | [0049](adr/0049-the-filters-are-one-bar-a-kind-switch-and-one-menu-per-filter.md) | The filters are one bar, a kind switch and one menu per filter |
 | [0050](adr/0050-a-blocker-reads-before-the-work-it-blocks.md) | A blocker reads before the work it blocks, and the one that holds up most reads first |
+| [0051](adr/0051-the-projects-are-a-pill-and-their-permission-is-optional.md) | The projects are a pill and a filter, and their permission is optional |
 
 ## What is not built yet
 
@@ -803,5 +822,5 @@ private notes, sorting, the filters and the settings screen are built.
 Still to come, roughly in this order: dragging a card instead of choosing its
 column from a dropdown, custom tags, and a "what's next" queue, which the
 blocked marking and the columns now make answerable. Every new view state goes in the address bar
-beside `view`, `section`, `sort`, `kind`, `repo`, `label`, `milestone`, `field`, `assignee` and `reviewer`, and the tokens never do.
+beside `view`, `section`, `sort`, `kind`, `repo`, `label`, `milestone`, `project`, `field`, `assignee` and `reviewer`, and the tokens never do.
 The find box is the one exception, on purpose (ADR 0038).
