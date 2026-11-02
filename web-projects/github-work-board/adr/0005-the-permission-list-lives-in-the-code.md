@@ -53,6 +53,10 @@ nobody is looking at.
   the pass asks GitHub for any one repository the token reaches and tries it
   there. A token that reaches no repository at all is broken, and the row says
   exactly that.
+- **A row that asks for a change on GitHub carries the link to GitHub's
+  token page** (`offersTokenSettings`): a failed row, and an optional
+  permission the token goes without. GitHub has no link to one token, so it
+  opens the list, where the reader finds the token by the name they gave it.
 - **A failed row names the permission and its level, spelled as GitHub's own
   form spells them, and says what stops working.** "Resource not accessible by
   personal access token" is what GitHub answers, and the reader is looking at a
