@@ -7,6 +7,7 @@ import {
   describeLastRefresh,
   describeOpened,
   describeFinished,
+  describeWorkKind,
   describeReading,
   movedByHandTip,
   noteMenuLabel,
@@ -597,5 +598,22 @@ describe("describeOpened: how long a pull request has been open", () => {
 
   test("a clock that moved backwards never says the future", () => {
     expect(describeOpened("2026-10-29T12:00:00Z", now)).toBe("Opened just now");
+  });
+});
+
+// The kind icon now says the state by its shape, so the words a screen reader
+// hears and the pointer shows must say the state too.
+describe("describeWorkKind: the words behind the kind icon", () => {
+  const issue = { kind: "issue", state: "open", isDraft: false, notPlanned: false, mergedAt: "" };
+  const pull = { ...issue, kind: "pull-request" };
+
+  test("names the kind and where the work stands", () => {
+    expect(describeWorkKind(issue)).toBe("Open issue");
+    expect(describeWorkKind({ ...issue, state: "closed" })).toBe("Closed issue");
+    expect(describeWorkKind({ ...issue, state: "closed", notPlanned: true })).toBe("Issue closed as not planned");
+    expect(describeWorkKind(pull)).toBe("Open pull request");
+    expect(describeWorkKind({ ...pull, isDraft: true })).toBe("Draft pull request");
+    expect(describeWorkKind({ ...pull, state: "closed", mergedAt: "2026-10-28T10:00:00Z" })).toBe("Merged pull request");
+    expect(describeWorkKind({ ...pull, state: "closed" })).toBe("Closed pull request");
   });
 });

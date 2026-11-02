@@ -2492,13 +2492,21 @@ span.skeleton-ghost:not(.badge, .segment, .avatar) {
   color: hsl(var(--success));
 }
 
-.kind-draft {
+/* GitHub's colours for where the work stands: grey for a draft and for an
+ * issue closed as not planned, purple for work that landed, red for a pull
+ * request closed without merging. */
+.kind-draft,
+.kind-not-planned {
   color: hsl(var(--muted-foreground));
 }
 
 .kind-merged,
-.kind-closed {
+.kind-completed {
   color: hsl(262 60% 52%);
+}
+
+.kind-closed {
+  color: hsl(var(--destructive));
 }
 
 .issue-repo {
@@ -2561,11 +2569,6 @@ button.issue-repo[aria-pressed="true"] {
 .issue-flags + .issue-relations {
   border-top: 0;
   padding-top: 0;
-}
-
-.badge-draft {
-  background: hsl(var(--foreground) / 0.07);
-  color: hsl(var(--muted-foreground));
 }
 
 /* The foot of a card: what the work is about on the left, who it is with on
