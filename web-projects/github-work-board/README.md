@@ -124,7 +124,7 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   whole number (`ab`); both are off until you press them. Words find titles
   too. The filters step aside while you search, and Escape brings the whole
   board back.
-- **Filter by kind, repository, label, milestone or issue field.** Two labels means either of
+- **Filter by kind, repository, label, milestone, project or issue field.** Two labels means either of
   them; a kind plus a repository means both. The filters go into the address bar
   too, so "everything tagged urgent in this repository" is a link. One bar
   holds a switch for All, Issues or Pull requests, and one menu for each
@@ -135,13 +135,19 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   milestone and shows how much of it is closed. Press the icon or the number to
   open the milestone on GitHub; press the name to show only that milestone's
   work.
+- **See the GitHub projects on each card.** A pill after the milestone names
+  each project the work is in. Press the icon to open the project on GitHub;
+  press the name to show only that project's work. This needs the optional
+  `Projects` permission on a token whose owner is an organisation. A
+  fine-grained token can never read a project owned by a personal account, so
+  such a project does not show.
 - **See the issue fields on each card.** The fields your organisation set on an
   issue, such as the effort or the priority, show as small pills under the
   labels. Press a number or an option to show only the work with that value.
   They come with the issues the board already reads, so they cost no extra
   call and no extra permission. Pull requests have no issue fields.
 - **Choose what each card shows.** In Settings, under "How the board looks",
-  switch the labels, the milestone, the fields, the people, the parent and
+  switch the labels, the milestone, the projects, the fields, the people, the parent and
   blockers, or the sub-issues off. The choice is saved with your half of the
   board, so it follows you to every machine.
 - **A smart order, which is what the board opens on.** Oldest first, so the
@@ -248,6 +254,10 @@ empty and the board suggests one from wherever the token finds work.
      - `Issues` → Read-only
      - `Pull requests` → Read-only
      - `Actions` → Read-only
+   - **Organization permissions (optional, only for a token whose owner is an
+     organisation):** set this one if you want each card to name the GitHub
+     projects its work is in. A token without it works exactly as before.
+     - `Projects` → Read-only
    - **Expiration:** pick a date. 90 days is a good default.
 
 2. **Paste the token into the page** and press Connect. The page checks each

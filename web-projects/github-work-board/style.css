@@ -637,7 +637,8 @@ textarea.input {
 
 /* The permission rows, built from `permissions.js`. Name, level and reason each
  * hold their own column so the three are read as a table, not as prose. */
-.permissions {
+.permissions,
+.organisation-permissions {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -3322,6 +3323,12 @@ button.milestone-name[aria-pressed="true"] {
 
 button.milestone-name[aria-pressed="true"]:hover {
   background-color: hsl(var(--primary) / 0.88);
+}
+
+/* A project pill wears the milestone pill's two halves, with no share to
+ * fill behind the link half (ADR 0051). */
+.project-link {
+  background-image: none;
 }
 
 /* A note at rest is a soft box with a speech bubble in its corner, so it

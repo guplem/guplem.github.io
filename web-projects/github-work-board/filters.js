@@ -1,5 +1,5 @@
 // Narrowing the list: by kind, by repository, by label, by milestone, by
-// issue field (`fields.js`), and by person.
+// project, by issue field (`fields.js`), and by person.
 //
 // Two rules, and they pull in opposite directions on purpose:
 //
@@ -35,13 +35,15 @@ function asList(value) {
 }
 
 /** The items still worth showing. The list handed in is not changed or reordered. */
-export function filterWorkItems(items, { kind, repositories, labels, milestones, fields } = {}) {
+export function filterWorkItems(items, { kind, repositories, labels, milestones, projects, fields } = {}) {
   const list = Array.isArray(items) ? items : [];
   const wantedKind = readKind(kind);
   const wantedRepositories = new Set(asList(repositories));
   const wantedLabels = new Set(asList(labels));
   // By name, across repositories, the way a label is chosen (ADR 0045).
   const wantedMilestones = new Set(asList(milestones));
+  // By name too: one project holds work from many repositories (ADR 0051).
+  const wantedProjects = new Set(asList(projects));
 
   // Each field is a kind of its own: two values of one field widen, two
   // fields narrow (ADR 0047).
@@ -53,6 +55,10 @@ export function filterWorkItems(items, { kind, repositories, labels, milestones,
       if (!carried.some((label) => wantedLabels.has(label?.name))) return false;
     }
     if (wantedMilestones.size > 0 && !wantedMilestones.has(item?.milestone?.title)) return false;
+    if (wantedProjects.size > 0) {
+      const carried = Array.isArray(item?.projects) ? item.projects : [];
+      if (!carried.some((project) => wantedProjects.has(project?.title))) return false;
+    }
     return true;
   });
 }
@@ -128,6 +134,13 @@ export function availableMilestones(items) {
   return sortedUnique(names.filter((name) => typeof name === "string" && name !== ""));
 }
 
+/** Every project the list is in, each once, by name (ADR 0051). */
+export function availableProjects(items) {
+  const list = Array.isArray(items) ? items : [];
+  const names = list.flatMap((item) => (Array.isArray(item?.projects) ? item.projects.map((one) => one?.title) : []));
+  return sortedUnique(names.filter((name) => typeof name === "string" && name !== ""));
+}
+
 /** The tooltip on a card's label, which is a filter chip (ADR 0049). */
 export function labelFilterTip(name, pressed) {
   return pressed ? `Show everything again, not only ${name}` : `Show only the work labelled ${name}`;
@@ -150,12 +163,13 @@ export function toggleInList(list, value) {
  * The "clear" button appears only when this is more than zero, so it is what
  * gives the reader a way out of a list they have filtered down to nothing.
  */
-export function activeFilterCount({ kind, repositories, labels, milestones, fields, assignees, reviewers } = {}) {
+export function activeFilterCount({ kind, repositories, labels, milestones, projects, fields, assignees, reviewers } = {}) {
   return (
     (readKind(kind) === DEFAULT_KIND ? 0 : 1) +
     asList(repositories).length +
     asList(labels).length +
     asList(milestones).length +
+    asList(projects).length +
     asList(fields).length +
     asList(assignees).length +
     asList(reviewers).length
@@ -177,14 +191,14 @@ export function boardFilterCount(chosen = {}) {
  * list actually holds (ADR 0009, ADR 0049).
  *
  * A repository or a reviewer is offered only when there are two to choose
- * between, because one can never narrow anything; a label, a milestone or an
- * issue field is offered from one, because it narrows the work that lacks it.
+ * between, because one can never narrow anything; a label, a milestone, a
+ * project or an issue field is offered from one, because it narrows the work that lacks it.
  * A menu the reader chose from always stays, so a choice can be seen and
  * undone. Each option says whether it is chosen, and `count` is how many are.
  *
  * @param items the board's work items
  * @param chosen the reader's filters: `repositories`, `reviewers`, `labels`,
- *   `milestones` and `fields`, each a list of keys
+ *   `milestones`, `projects` and `fields`, each a list of keys
  */
 export function filterMenus(items, chosen) {
   const list = Array.isArray(items) ? items : [];
@@ -217,6 +231,9 @@ export function filterMenus(items, chosen) {
     ),
     ...menu("milestone", "Milestone", "milestones", plain(availableMilestones(list)), picked.milestones, 1, (key) =>
       filterWorkItems(list, { milestones: [key] }),
+    ),
+    ...menu("project", "Project", "projects", plain(availableProjects(list)), picked.projects, 1, (key) =>
+      filterWorkItems(list, { projects: [key] }),
     ),
     ...availableFieldFilters(list).flatMap((field) =>
       menu(`field:${field.name}`, field.name, "values", field.values, picked.fields, 1, (key) => filterByFields(list, [key])),

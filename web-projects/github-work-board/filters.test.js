@@ -8,6 +8,7 @@ import {
   filterMenus,
   availableLabels,
   availableMilestones,
+  availableProjects,
   availableRepositories,
   availableReviewers,
   filterByPerson,
@@ -128,6 +129,49 @@ describe("availableRepositories and availableLabels", () => {
     expect(availableLabels([item({ labels: [] })])).toEqual([]);
     expect(availableLabels(null)).toEqual([]);
     expect(availableRepositories(null)).toEqual([]);
+  });
+});
+
+describe("by project", () => {
+  const inProjects = (key, repository, ...titles) =>
+    item({ key, repository, projects: titles.map((title) => ({ title, url: "" })) });
+  const BOARD_A = inProjects("a", "me/alpha", "Iteration board");
+  const BOTH = inProjects("b", "me/beta", "Iteration board", "Roadmap");
+  const ROADMAP = inProjects("r", "me/alpha", "Roadmap");
+  const NONE = inProjects("n", "me/alpha");
+  const all = [BOARD_A, BOTH, ROADMAP, NONE];
+
+  // A project is chosen by its name, like a milestone (ADR 0045, ADR 0051).
+  test("keeps the work in the chosen project, in every repository", () => {
+    expect(keys(filterWorkItems(all, { projects: ["Iteration board"] }))).toEqual(["a", "b"]);
+  });
+
+  // Within one kind the chosen values widen (ADR 0009).
+  test("two projects means either", () => {
+    expect(keys(filterWorkItems(all, { projects: ["Iteration board", "Roadmap"] }))).toEqual(["a", "b", "r"]);
+  });
+
+  // Across kinds each one narrows (ADR 0009).
+  test("a project and a repository means both", () => {
+    expect(keys(filterWorkItems(all, { projects: ["Roadmap"], repositories: ["me/alpha"] }))).toEqual(["r"]);
+  });
+
+  // An item the board never asked about carries no `projects` at all.
+  test("work with no projects read is kept until a project is chosen", () => {
+    const unknown = item({ key: "u" });
+    expect(keys(filterWorkItems([unknown], {}))).toEqual(["u"]);
+    expect(keys(filterWorkItems([unknown], { projects: ["Roadmap"] }))).toEqual([]);
+  });
+
+  test("offers each project once, in a readable order", () => {
+    expect(availableProjects(all)).toEqual(["Iteration board", "Roadmap"]);
+    expect(availableProjects([NONE])).toEqual([]);
+    expect(availableProjects(null)).toEqual([]);
+  });
+
+  test("a project chosen counts as a narrowing", () => {
+    expect(activeFilterCount({ projects: ["Roadmap"] })).toBe(1);
+    expect(boardFilterCount({ projects: ["Roadmap", "Iteration board"] })).toBe(2);
   });
 });
 
@@ -384,6 +428,23 @@ describe("filterMenus: the menus the filter bar offers", () => {
       {},
     );
     expect(menus.map((menu) => menu.id)).toEqual(["repository", "reviewer", "label", "milestone"]);
+  });
+
+  // The project menu comes after the milestone, and is offered from one
+  // project, because one project narrows the work outside it (ADR 0051).
+  test("a project menu follows the milestone, offered from one project", () => {
+    const menus = filterMenus(
+      [
+        item({ key: "x", milestone: { title: "v1" }, projects: [{ title: "Board", url: "" }] }),
+        item({ key: "y", projects: [] }),
+      ],
+      { projects: ["Board"] },
+    );
+    expect(menus.map((menu) => menu.id)).toEqual(["milestone", "project"]);
+    const projects = menus.find((menu) => menu.id === "project");
+    expect(projects.label).toBe("Project");
+    expect(projects.options).toEqual([{ key: "Board", text: "Board", chosen: true, matches: 1 }]);
+    expect(projects.count).toBe(1);
   });
 
   // The board's own count leaves the review row's assignees out: they narrow

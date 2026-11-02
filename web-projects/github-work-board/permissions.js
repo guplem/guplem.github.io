@@ -23,15 +23,24 @@ export const PERMISSIONS = {
   issuesRead: "Issues: read",
   pullRequestsRead: "Pull requests: read",
   actionsRead: "Actions: read",
+  projectsRead: "Projects: read",
 };
 
 /**
  * The permissions the reader has to grant, exactly as GitHub's own token form
  * labels them. `level` is one of "Read-only" or "Read and write".
+ *
+ * `owner` says which list of GitHub's form holds it: "repository" or
+ * "organisation". `optional` marks the one permission a token may go without:
+ * Projects. A token without it reads everything else as before and shows no
+ * projects, so no token made before it has to be made again. A token for a
+ * personal account has no organisation permissions to grant at all
+ * (ADR 0051).
  */
 export const REQUIRED_PERMISSIONS = [
   {
     id: "metadata",
+    owner: "repository",
     name: "Metadata",
     level: "Read-only",
     why: "GitHub asks for it on every fine-grained token",
@@ -39,6 +48,7 @@ export const REQUIRED_PERMISSIONS = [
   },
   {
     id: "issues",
+    owner: "repository",
     name: "Issues",
     level: "Read-only",
     why: "the board reads the issues assigned to you",
@@ -46,6 +56,7 @@ export const REQUIRED_PERMISSIONS = [
   },
   {
     id: "pull-requests",
+    owner: "repository",
     name: "Pull requests",
     level: "Read-only",
     why: "the board shows the pull requests assigned to you, beside your issues",
@@ -53,10 +64,20 @@ export const REQUIRED_PERMISSIONS = [
   },
   {
     id: "actions",
+    owner: "repository",
     name: "Actions",
     level: "Read-only",
     why: "the board says how the checks on a pull request are going, and this is the only door GitHub opens to a fine-grained token",
     without: "Without it, the board cannot say how the checks on a pull request are going.",
+  },
+  {
+    id: "projects",
+    owner: "organisation",
+    optional: true,
+    name: "Projects",
+    level: "Read-only",
+    why: "optional: the board names the GitHub projects each piece of work is in. Only a token for an organisation has it",
+    without: "Without it, the board works as before, but it cannot say which projects the work is in.",
   },
 ];
 
@@ -98,5 +119,13 @@ export const CONNECTION_CHECKS = [
     label: "Read how the checks on a pull request are going",
     need: PERMISSIONS.actionsRead,
     permission: "actions",
+  },
+  {
+    id: "projects",
+    label: "Read the projects your work is in",
+    need: PERMISSIONS.projectsRead,
+    permission: "projects",
+    // Not granting it is a choice, not a failure (ADR 0051).
+    optional: true,
   },
 ];

@@ -1,9 +1,10 @@
 // How far a read of GitHub has gone, for the thin bar at the top of the window.
 //
 // The read is not one call. For each token, `inspectToken` in `app.js` makes
-// six calls: the first four together, then the relationships, then the
-// checks. A token that found no work makes one more, the approval question
-// (ADR 0041), and that step counts for every token. Every token reads at the
+// seven calls: the first four together, then the relationships and the
+// projects together (ADR 0051), then the checks. A token that found no work
+// makes one more, the approval question (ADR 0041), and that step counts for
+// every token. Every token reads at the
 // same time (ADR 0040). So the bar can move by real steps instead of a timer
 // that guesses (ADR 0039).
 //
@@ -19,6 +20,7 @@ export const READ_STEPS = [
   "reviews",
   "approval",
   "relationships",
+  "projects",
   "checks",
 ];
 

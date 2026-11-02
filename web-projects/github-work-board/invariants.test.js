@@ -537,6 +537,29 @@ describe("the checks are read where a fine-grained token can read them (ADR 0037
   });
 });
 
+describe("the projects are asked for apart, and are optional (ADR 0051)", () => {
+  // `projectItems` needs the optional "Projects: read". A refusal nulls the
+  // whole node it sits in, so inside the relationship query it would take
+  // every parent, blocker and pull request with it, on every token without
+  // the permission, and nothing would say why.
+  test("the relationship query never asks for the projects", () => {
+    const gateway = read("gateway.js");
+    const relationships = gateway.slice(
+      gateway.indexOf("const RELATIONSHIPS_QUERY"),
+      gateway.indexOf("export const RELATIONSHIP_BATCH"),
+    );
+    expect(relationships.length).toBeGreaterThan(0);
+    expect(relationships).not.toContain("projectItems");
+    expect(gateway).toContain("const PROJECTS_QUERY");
+  });
+
+  // Every token made before the feature lacks it. A required permission would
+  // tell each of them that something is broken.
+  test("Projects stays optional", () => {
+    expect(REQUIRED_PERMISSIONS.find((one) => one.name === "Projects")?.optional).toBe(true);
+  });
+});
+
 describe("a sort order named in a link keeps its name (ADR 0006)", () => {
   // The chosen order travels in the address bar, so a renamed id silently
   // breaks every link anybody saved or shared.

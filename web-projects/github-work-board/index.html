@@ -99,6 +99,19 @@
     </div>
 
     <div class="action">
+      <p class="action-label">Organization permissions (optional)</p>
+      <div class="action-body">
+        <p>
+          Only on a token whose owner is an organisation. Set this to see on each card the GitHub projects the
+          work is in. A token without it works as before. A project owned by a personal account never shows:
+          GitHub does not let a fine-grained token read one.
+        </p>
+        <!-- Filled from REQUIRED_PERMISSIONS, never written here (ADR 0005, ADR 0051). -->
+        <ul class="organisation-permissions"></ul>
+      </div>
+    </div>
+
+    <div class="action">
       <p class="action-label">Expiration</p>
       <div class="action-body">
         <p>Pick a date. 90 days is a good default: a token that never expires is one you cannot lose track of.</p>
