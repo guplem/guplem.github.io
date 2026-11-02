@@ -4,7 +4,7 @@
 // reaches the screen through `textContent` everywhere except the deploy line,
 // which needs a link inside a sentence and therefore needs `escapeHtml`.
 
-import { finishedAt } from "./workItems.js";
+import { finishedAt, workState } from "./workItems.js";
 
 export const MESSAGES = {
   "ui.deployed": "Deployed {date} by pull request {pr}.",
@@ -132,6 +132,29 @@ export function describeLastRefresh(lastAt, now) {
  */
 export function describeOpened(createdAt, now) {
   return describeSince("Opened", createdAt, now);
+}
+
+const WORK_KIND_WORDS = {
+  issue: {
+    open: "Open issue",
+    completed: "Closed issue",
+    "not-planned": "Issue closed as not planned",
+  },
+  "pull-request": {
+    open: "Open pull request",
+    draft: "Draft pull request",
+    merged: "Merged pull request",
+    closed: "Closed pull request",
+  },
+};
+
+/**
+ * The words behind a card's kind icon, for a screen reader and the pointer.
+ * The icon says the state by its shape, so the words say it too.
+ */
+export function describeWorkKind(item) {
+  const kind = item?.kind === "pull-request" ? "pull-request" : "issue";
+  return WORK_KIND_WORDS[kind][workState(item)] ?? WORK_KIND_WORDS[kind].open;
 }
 
 /**

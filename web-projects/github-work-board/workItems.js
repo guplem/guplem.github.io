@@ -52,6 +52,9 @@ export function normalizeWorkItem(raw) {
     key,
     kind: isPullRequest ? "pull-request" : "issue",
     isDraft: isPullRequest && raw.draft === true,
+    // GitHub draws an issue closed as not planned (or as a duplicate) grey,
+    // apart from one closed as done, so the board keeps the reason.
+    notPlanned: !isPullRequest && (raw.state_reason === "not_planned" || raw.state_reason === "duplicate"),
     number: Number.isInteger(raw.number) ? raw.number : 0,
     title: typeof raw.title === "string" ? raw.title : "",
     repository: readRepository(raw),
@@ -184,33 +187,65 @@ export function finishedBetween(items, since, until) {
 // Where a day starts and stops is `doneRange.js`, which owns every boundary
 // the last column is measured by, in the reader's own clock (ADR 0034).
 
+const CIRCLE = "M21 12a9 9 0 1 1-18 0a9 9 0 1 1 18 0Z";
+const TOP_LEFT_RING = "M8.5 5.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z";
+const BOTTOM_LEFT_RING = "M8.5 18.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z";
+const BOTTOM_RIGHT_RING = "M20.5 18.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z";
+const LEFT_BRANCH = "M6 8v8";
+
 /**
- * The icon for each kind of work, as SVG paths on a 24 by 24 grid, drawn by
- * `drawIcon` in `app.js`. An open circle with a dot is an issue; three rings
- * joined by a branch is a pull request, the shapes GitHub uses, so a reader
- * who knows GitHub reads them without the word.
+ * The icon for each kind of work in each state, as SVG paths on a 24 by 24
+ * grid, drawn by `drawIcon` in `app.js`. They copy the shapes GitHub uses, so
+ * a reader who knows GitHub reads them without the word: a circle with a dot
+ * is an open issue, a tick or a slash closes it, three rings joined by a
+ * branch is a pull request, two dots above the right ring make it a draft, a
+ * cross closes it, and a branch that curves out to a third ring merges it.
  */
-export const KIND_ICONS = {
-  issue: ["M21 12a9 9 0 1 1-18 0a9 9 0 1 1 18 0Z", "M13 12a1 1 0 1 1-2 0a1 1 0 1 1 2 0Z"],
-  "pull-request": [
-    "M8.5 5.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z",
-    "M8.5 18.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z",
-    "M20.5 18.5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z",
-    "M6 8v8",
-    "M18 16V9a3 3 0 0 0-3-3h-4",
-    "m13 3-3 3 3 3",
-  ],
+export const WORK_ICONS = {
+  issue: {
+    open: [CIRCLE, "M13 12a1 1 0 1 1-2 0a1 1 0 1 1 2 0Z"],
+    completed: [CIRCLE, "m8.5 12 2.5 2.5 4.5-5"],
+    "not-planned": [CIRCLE, "m8 16 8-8"],
+  },
+  "pull-request": {
+    open: [TOP_LEFT_RING, BOTTOM_LEFT_RING, BOTTOM_RIGHT_RING, LEFT_BRANCH, "M18 16V9a3 3 0 0 0-3-3h-4", "m13 3-3 3 3 3"],
+    draft: [
+      TOP_LEFT_RING,
+      BOTTOM_LEFT_RING,
+      BOTTOM_RIGHT_RING,
+      LEFT_BRANCH,
+      "M19 5.5a1 1 0 1 1-2 0a1 1 0 1 1 2 0Z",
+      "M19 11a1 1 0 1 1-2 0a1 1 0 1 1 2 0Z",
+    ],
+    merged: [
+      TOP_LEFT_RING,
+      BOTTOM_LEFT_RING,
+      "M20.5 12a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0Z",
+      LEFT_BRANCH,
+      "M6 8a4 4 0 0 0 4 4h5.5",
+    ],
+    closed: [TOP_LEFT_RING, BOTTOM_LEFT_RING, BOTTOM_RIGHT_RING, LEFT_BRANCH, "M18 11v5", "m15.5 3.5 5 5", "m20.5 3.5-5 5"],
+  },
 };
 
 /**
- * Where a piece of work stands, for the colour of its icon: open, a draft,
- * merged, or closed. A pull request closed without merging is closed, never
- * merged, because it never landed (ADR 0017).
+ * Where a piece of work stands, for the shape and the colour of its icon. A
+ * pull request is open, a draft, merged, or closed. A pull request closed
+ * without merging is closed, never merged, because it never landed (ADR 0017).
+ * An issue is open, completed, or not planned.
  */
 export function workState(item) {
   if (!isPlainObject(item)) return "open";
+  const isPullRequest = item.kind === "pull-request";
   if (item.state === "closed") {
-    return item.kind === "pull-request" && typeof item.mergedAt === "string" && item.mergedAt !== "" ? "merged" : "closed";
+    if (isPullRequest) return typeof item.mergedAt === "string" && item.mergedAt !== "" ? "merged" : "closed";
+    return item.notPlanned === true ? "not-planned" : "completed";
   }
-  return item.kind === "pull-request" && item.isDraft === true ? "draft" : "open";
+  return isPullRequest && item.isDraft === true ? "draft" : "open";
+}
+
+/** The icon's paths for a piece of work, from its kind and its state. */
+export function workIcon(item) {
+  const kind = isPlainObject(item) && item.kind === "pull-request" ? "pull-request" : "issue";
+  return WORK_ICONS[kind][workState(item)] ?? WORK_ICONS[kind].open;
 }
