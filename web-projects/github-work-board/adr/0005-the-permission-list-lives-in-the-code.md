@@ -61,6 +61,12 @@ nobody is looking at.
   checks on a pull request are going.` Every entry carries that `without`
   sentence, and a test requires it.
 
+**One permission may be optional** (ADR 0051). Projects carries
+`optional: true`: a token without it is not broken, its row in Settings says
+"Optional" instead of "Fix", and the token does not fold open as trouble.
+Every other permission stays required. An optional permission still has a
+`CONNECTION_CHECKS` entry, so Settings still says whether the token has it.
+
 **So: adding a call that needs new access means adding one entry to
 `REQUIRED_PERMISSIONS`, and one to `CONNECTION_CHECKS`.** The guide, the README
 check and what Settings says all follow. This is written into `AGENTS.md` and

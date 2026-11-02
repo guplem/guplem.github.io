@@ -8,7 +8,7 @@ how far that milestone has gone, and to narrow the board to one milestone.
 
 Three questions decide the design:
 
-- **What does it cost?** One refresh already costs five GitHub calls for each
+- **What does it cost?** One refresh already cost five GitHub calls for each
   token, and the search budget is tight (ADR 0025). A call for each milestone
   would multiply that cost.
 - **What does a press do?** The reader wants two things from one pill: go to

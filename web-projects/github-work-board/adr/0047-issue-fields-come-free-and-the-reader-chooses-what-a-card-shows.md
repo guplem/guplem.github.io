@@ -34,7 +34,9 @@ item. The feature adds no call, no GraphQL field and no permission.
 "Projects: read", which every reader would have to add. A fine-grained token
 cannot read a project that a user account owns at all. They also cost a
 nested GraphQL connection on every refresh. Issue fields answer the reader's
-case (the effort on an issue) for free.
+case (the effort on an issue) for free. The **name** of each project the work
+is in is read since ADR 0051, behind an optional permission and in a query of
+its own; the project fields stay rejected.
 
 **A pull request has no issue fields.** GitHub does not put them on a pull
 request, so its list is empty.
@@ -65,7 +67,8 @@ later on top of the same `fields` list.
 
 **The reader chooses which parts of a card are drawn.** Settings has a list
 "What each card shows", with one switch per part: labels, milestone, fields,
-people, parent and blockers, and sub-issues. The title, the kind, the pills
+people, parent and blockers, and sub-issues. ADR 0051 added a switch for the
+projects. The title, the kind, the pills
 that say what wants doing, and the note always stay, because they are the
 card.
 
