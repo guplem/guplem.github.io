@@ -90,20 +90,25 @@
     </div>
 
     <div class="action">
-      <p class="action-label">Repository permissions</p>
+      <p class="action-label">Permissions: the Repositories tab</p>
       <div class="action-body">
-        <p>Set each of these. Leave every other permission alone.</p>
+        <p>
+          In the <strong>Permissions</strong> box, open the <strong>Repositories</strong> tab. Press
+          <strong>Add permissions</strong>, add each of these, and set it to Read-only. Leave every other
+          permission alone.
+        </p>
         <!-- Filled from REQUIRED_PERMISSIONS, never written here (ADR 0005). -->
         <ul class="permissions"></ul>
       </div>
     </div>
 
     <div class="action">
-      <p class="action-label">Organization permissions (optional)</p>
+      <p class="action-label">Permissions: the Organizations tab (optional)</p>
       <div class="action-body">
         <p>
-          Only on a token whose owner is an organisation. Set this to see on each card the GitHub projects the
-          work is in. A token without it works as before. A project owned by a personal account never shows:
+          Only on a token whose owner is an organisation. In the same box, open the <strong>Organizations</strong>
+          tab, press <strong>Add permissions</strong>, add this one and set it to Read-only. It shows on each card
+          the GitHub projects the work is in. A token without it works as before. A project owned by a personal account never shows:
           GitHub does not let a fine-grained token read one.
         </p>
         <!-- Filled from REQUIRED_PERMISSIONS, never written here (ADR 0005, ADR 0051). -->

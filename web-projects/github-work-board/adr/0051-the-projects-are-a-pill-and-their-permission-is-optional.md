@@ -37,9 +37,9 @@ Four questions decide the design:
 mark. A token without it reads everything else as before and shows no
 projects. So no reader has to make a token again, and a token for a personal
 account, which has no organisation permissions at all, is not broken. The
-setup guide lists it in its own step, "Organization permissions (optional)",
-because GitHub's form keeps it in that list, apart from the repository
-permissions.
+setup guide lists it in its own step, "Permissions: the Organizations tab
+(optional)", because GitHub's form keeps it on that tab, apart from the
+repository permissions.
 
 **A token without it is told so, and is not reported as broken.** Its row in
 Settings wears "Optional", not "Fix". `summariseChecks` leaves a `skipped` row
