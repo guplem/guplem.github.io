@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="434" />
-  <meta name="deploy-date" content="2026-11-02T12:58:16.000Z" />
+  <meta name="deploy-pull-request" content="435" />
+  <meta name="deploy-date" content="2026-11-02T13:01:09.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -90,20 +90,25 @@
     </div>
 
     <div class="action">
-      <p class="action-label">Repository permissions</p>
+      <p class="action-label">Permissions: the Repositories tab</p>
       <div class="action-body">
-        <p>Set each of these. Leave every other permission alone.</p>
+        <p>
+          In the <strong>Permissions</strong> box, open the <strong>Repositories</strong> tab. Press
+          <strong>Add permissions</strong>, add each of these, and give it the access shown beside it. Leave every other
+          permission alone.
+        </p>
         <!-- Filled from REQUIRED_PERMISSIONS, never written here (ADR 0005). -->
         <ul class="permissions"></ul>
       </div>
     </div>
 
     <div class="action">
-      <p class="action-label">Organization permissions (optional)</p>
+      <p class="action-label">Permissions: the Organizations tab (optional)</p>
       <div class="action-body">
         <p>
-          Only on a token whose owner is an organisation. Set this to see on each card the GitHub projects the
-          work is in. A token without it works as before. A project owned by a personal account never shows:
+          Only on a token whose owner is an organisation. In the same box, open the <strong>Organizations</strong>
+          tab, press <strong>Add permissions</strong>, add this one with the access shown beside it. It shows on each card
+          the GitHub projects the work is in. A token without it works as before. A project owned by a personal account never shows:
           GitHub does not let a fine-grained token read one.
         </p>
         <!-- Filled from REQUIRED_PERMISSIONS, never written here (ADR 0005, ADR 0051). -->

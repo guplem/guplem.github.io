@@ -249,13 +249,14 @@ empty and the board suggests one from wherever the token finds work.
 
    - **Repository access:** choose **Only select repositories**, then select
      every repository whose issues you want on the board.
-   - **Repository permissions:** set each of these and leave the rest alone.
+   - **Permissions, the Repositories tab:** press **Add permissions**, add
+     each of these, and leave the rest alone.
      - `Metadata` → Read-only
      - `Issues` → Read-only
      - `Pull requests` → Read-only
      - `Actions` → Read-only
-   - **Organization permissions (optional, only for a token whose owner is an
-     organisation):** set this one if you want each card to name the GitHub
+   - **Permissions, the Organizations tab (optional, only for a token whose
+     owner is an organisation):** press **Add permissions** and add this one if you want each card to name the GitHub
      projects its work is in. A token without it works exactly as before.
      - `Projects` → Read-only
    - **Expiration:** pick a date. 90 days is a good default.
