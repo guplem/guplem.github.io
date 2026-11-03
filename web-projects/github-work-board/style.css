@@ -3299,8 +3299,11 @@ button.badge-field[aria-pressed="true"] .field-name {
 
 /* The milestone, after the labels (ADR 0045). Filled where a label is only
  * outlined, so the two never read as the same kind of thing. Two halves: the
- * icon and the share link to GitHub, the name filters the board. */
+ * icon and the share link to GitHub, the name filters the board. When the
+ * name breaks onto two lines, both halves stretch to the pill's height, so
+ * the share's fill and the hover colour cover the whole half, not one line. */
 .badge-milestone {
+  align-items: stretch;
   padding: 0;
   overflow: hidden;
   border-color: hsl(var(--border));
