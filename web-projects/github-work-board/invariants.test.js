@@ -1334,6 +1334,15 @@ describe("a card is never wider than its column (ADR 0018)", () => {
     const title = [...css.matchAll(/\n\.issue-title\s*\{([^}]*)\}/g)].map((match) => match[1]).join("");
     expect(title).toContain("overflow-wrap: anywhere");
   });
+
+  // This one really happened too. A milestone name that broke onto two lines
+  // made the pill two lines tall, but `.badge` centres its children, so the
+  // share half stayed one line tall. Its green fill and its hover colour
+  // covered a strip in the middle of the pill, not the whole half (ADR 0045).
+  test("both halves of a milestone pill fill its full height", () => {
+    const rule = css.match(/\n\.badge-milestone\s*\{([^}]*)\}/)?.[1] ?? "";
+    expect(rule).toContain("align-items: stretch");
+  });
 });
 
 describe("the snackbar speaks on every screen (ADR 0004)", () => {
