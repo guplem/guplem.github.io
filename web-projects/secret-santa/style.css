@@ -322,7 +322,8 @@ textarea.input::placeholder { white-space: nowrap; overflow: hidden; text-overfl
   transition: transform 0.15s var(--ease-out), background-color 0.2s;
 }
 .icon-btn:active { transform: scale(0.9); }
-.icon-btn[aria-expanded="true"] { background: var(--gold); color: var(--bg); }
+/* An open exclusion list reads as "forbidden": a red ring that matches the 🚫 sign. */
+.icon-btn[aria-expanded="true"] { background: rgba(255, 77, 109, 0.22); box-shadow: inset 0 0 0 2px var(--red); }
 
 .rules-panel { padding: 0 12px 12px; border-top: 1px solid var(--card-border); }
 .rules-panel p { margin: 10px 0 8px; font-size: 0.85rem; color: var(--muted); }
