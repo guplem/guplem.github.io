@@ -89,7 +89,16 @@ a { color: var(--gold); }
   max-width: 640px;
   margin: 0 auto;
   padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
 }
+main { flex: 1; display: flex; flex-direction: column; }
+/* A participant sees no footer, and the receive view fills the screen: the
+   present and the answer sit in its middle, and "organise your own" sits at
+   the very bottom. */
+body.is-receive .footer { display: none; }
+.view.receive { flex: 1; display: flex; flex-direction: column; }
 
 .masthead {
   display: flex;
@@ -417,7 +426,7 @@ textarea.input::placeholder { white-space: nowrap; overflow: hidden; text-overfl
 
 .subtle-link { color: var(--muted); font-size: 0.85rem; }
 
-.create-own { margin: 72px 0 0; text-align: center; font-size: 0.8rem; opacity: 0.7; }
+.create-own { margin: auto 0 0; padding-top: 48px; text-align: center; font-size: 0.8rem; opacity: 0.7; }
 .create-own .subtle-link { font-size: inherit; }
 
 /* --- the warning dialog --------------------------------------------------- */
@@ -441,7 +450,7 @@ textarea.input::placeholder { white-space: nowrap; overflow: hidden; text-overfl
 
 /* --- receive: the present ------------------------------------------------- */
 
-.reveal { display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 8px; }
+.reveal { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .hello { font-size: clamp(1.6rem, 7vw, 2.3rem); margin: 0; }
 
 .gift {
@@ -535,7 +544,7 @@ textarea.input::placeholder { white-space: nowrap; overflow: hidden; text-overfl
 }
 #hide { margin-top: 24px; }
 /* Small and far down on purpose: changing who you are should take a moment. */
-.not-me { margin: 56px 0 0; max-width: 34ch; font-size: 0.75rem; opacity: 0.6; }
+.not-me { margin: 40px 0 0; max-width: 34ch; font-size: 0.75rem; opacity: 0.6; }
 .not-me .subtle-link { font-size: inherit; }
 
 /* --- footer --------------------------------------------------------------- */

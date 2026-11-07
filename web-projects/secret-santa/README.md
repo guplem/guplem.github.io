@@ -9,7 +9,7 @@ Draw Secret Santa names with exclusions and share one link. Each person picks th
 - Add people one by one or paste a whole list.
 - Tap who each person must not give to. Exclusions can work both ways, for couples.
 - Add an optional note of up to 100 characters (budget, date, place, a joke). It shows after the name is revealed.
-- "Make the link" opens a share screen: copy the link in one tap, or copy a ready-made message in Catalan, Spanish or English, then send it on WhatsApp or another app.
+- "Make the link" opens a share screen: copy the link in one tap, or copy a ready-made message in Catalan, Spanish or English, then send it through your phone's share menu, to any app.
 - One share link holds the whole event and a fresh seed for every draw. Every phone works out the same result, and the result itself is never in the link.
 - A warning names the person before anything is shown, so nobody spoils the surprise by mistake.
 - This device remembers who you are for each draw. Open the link again and you go straight to your own present. A small link at the bottom lets you change who you are if you picked the wrong name.

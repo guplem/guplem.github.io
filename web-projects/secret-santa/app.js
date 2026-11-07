@@ -122,6 +122,8 @@ function draftUrl() {
 }
 
 function render() {
+  // The receive view carries no footer: it holds only what a participant needs.
+  document.body.classList.toggle("is-receive", state.view === "receive");
   $("view-create").hidden = state.view !== "create";
   $("view-receive").hidden = state.view !== "receive";
   if (state.view === "create") renderCreate();
@@ -347,7 +349,11 @@ function renderShare() {
   link.textContent = message.slice(cut + 1);
   $("message-preview").replaceChildren(text, link);
   $("whatsapp").href = whatsappUrl(currentMessage());
-  $("share-native").hidden = typeof navigator.share !== "function";
+  // The phone's own share menu offers every app. A browser without one gets a
+  // WhatsApp link instead.
+  const canShare = typeof navigator.share === "function";
+  $("share-native").hidden = !canShare;
+  $("whatsapp").hidden = canShare;
 }
 
 async function copyText(text, fallbackInput) {
@@ -492,7 +498,6 @@ function renderReceive() {
   if (revealing) {
     const giver = Number($("receive-reveal").dataset.giver);
     $("hello").textContent = say("receive.hello", { name: event.names[giver] });
-    $("remembered").textContent = say("receive.remembered", { name: event.names[giver] });
   }
 }
 
