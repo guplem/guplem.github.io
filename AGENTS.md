@@ -82,6 +82,7 @@ When adding new content, ask: "Would a human need this to get started?" (README)
 | `web-projects/sudoku-screenshot-coach/AGENTS.md` | sudoku-screenshot-coach: module map, the technique/explanation contract, vision gotchas |
 | `web-projects/wildfire-watch/AGENTS.md` | wildfire-watch: the two modes, module map, the feed pipeline, the never-fake-fires rules, the wind-direction and map-pane gotchas |
 | `web-projects/spanish-random-word/AGENTS.md` | spanish-random-word: module map, the one-rules-module rule, the Wiktionary dump and rate-limit gotchas |
+| `web-projects/secret-santa/AGENTS.md` | secret-santa: module map, the permanent-draw rule, the URL parameters |
 | `web-projects/unit-converter/AGENTS.md` | unit-converter: module map, the one-input-box contract, unit-catalogue and number-parsing gotchas |
 | `web-projects/mancala/AGENTS.md` | mancala: the engine contract both rule sets answer, how to add a third, the Ba-awa traps |
 | `web-projects/global-news-map/AGENTS.md` | global-news-map: module map, the CORS and UTC gotchas, how a story gets its pin |
@@ -327,6 +328,7 @@ Reference a project ADR with its project so the number is unambiguous (path, or 
 | [ai-world-gen 0003](web-projects/ai-world-gen/adr/0003-one-tileset-and-a-tag-between-the-vocabulary-and-the-tile.md) | One tileset for every setting, a visual tag between the vocabulary and the tile, and art styles that read the tag |
 | [ai-world-gen 0004](web-projects/ai-world-gen/adr/0004-ship-the-vocabulary-for-every-preset-and-let-the-reader-edit-it.md) | Ship the vocabulary for every preset, and let the reader edit it on the setup screen |
 | [ai-world-gen 0005](web-projects/ai-world-gen/adr/0005-the-map-is-evaluated-against-specifications-in-galtea.md) | The map is evaluated against written specifications, in Galtea, before every iteration |
+| [secret-santa 0001](web-projects/secret-santa/adr/0001-the-link-carries-the-event-and-the-seed-never-the-result.md) | The link carries the event and the seed, never the result, and the draw output is permanent |
 | [terrain-print 0001](web-projects/terrain-print/adr/0001-read-heights-the-browser-can-reach-at-the-resolution-the-print-shows.md) | Read heights from sources the browser can reach, at the resolution the print can show |
 | [terrain-print 0002](web-projects/terrain-print/adr/0002-measure-a-tiled-copy-against-the-nasa-file-before-trusting-it.md) | Measure a tiled copy against the NASA file before trusting it |
 | [terrain-print 0003](web-projects/terrain-print/adr/0003-mesh-pieces-with-marching-squares-on-the-height-grid.md) | Mesh every piece with marching squares on the height grid |
