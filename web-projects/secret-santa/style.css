@@ -113,6 +113,10 @@ body.is-receive .footer { display: none; }
   font-size: clamp(1.5rem, 5vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.02em;
+}
+/* The gradient sits on the words only. On the whole heading, the tilting
+   present showed a corner of it as a white triangle. */
+.brand-text {
   background: linear-gradient(90deg, var(--text), var(--gold));
   -webkit-background-clip: text;
   background-clip: text;
@@ -120,7 +124,6 @@ body.is-receive .footer { display: none; }
 }
 .brand-icon {
   display: inline-block;
-  color: initial;
   animation: bob 3s ease-in-out infinite;
 }
 @keyframes bob {
