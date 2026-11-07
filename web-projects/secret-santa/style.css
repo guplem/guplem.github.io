@@ -567,6 +567,9 @@ textarea.input::placeholder { white-space: nowrap; overflow: hidden; text-overfl
   to { background-position: -200% 0; }
 }
 #hide { margin-top: 24px; }
+/* Small and far down on purpose: changing who you are should take a moment. */
+.not-me { margin: 56px 0 0; max-width: 34ch; font-size: 0.75rem; opacity: 0.6; }
+.not-me .subtle-link { font-size: inherit; }
 
 /* --- footer --------------------------------------------------------------- */
 

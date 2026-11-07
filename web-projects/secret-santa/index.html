@@ -149,6 +149,7 @@
 
         <div id="receive-reveal" class="reveal" hidden>
           <h2 id="hello" class="hello"></h2>
+          <p id="remembered" class="hint center"></p>
           <p id="gift-hint" class="muted center" data-i18n="receive.tapGift">Tap the present to open it</p>
           <button type="button" id="gift" class="gift">
             <span class="sr-only" data-i18n="receive.giftLabel">Open the present</span>
@@ -160,7 +161,8 @@
             <p id="recipient" class="recipient"></p>
             <p class="hint" data-i18n="receive.keepSecret">Keep it secret!</p>
           </div>
-          <button type="button" id="hide" class="btn btn-ghost" data-i18n="receive.hide">Hide and go back</button>
+          <button type="button" id="hide" class="btn btn-ghost" hidden data-i18n="receive.hide">Hide it</button>
+          <p class="not-me"><a href="#" id="not-me" class="subtle-link" data-i18n="receive.notMe">I'm so sorry, I picked the wrong name and it won't happen again. Let me change who I am</a></p>
         </div>
       </section>
     </main>

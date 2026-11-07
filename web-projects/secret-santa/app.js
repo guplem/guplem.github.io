@@ -17,12 +17,15 @@ import { LANGUAGES, detectLanguage, translate } from "./i18n.js";
 import { EVENT_PARAM, buildShareUrl, decodeEvent, encodeEvent, readEventFromSearch } from "./urlState.js";
 import { readStamp, renderDeployLine } from "./deployStamp.js";
 import { burstConfetti, buzz, startSnow } from "./effects.js";
+import { forgetGiver, recallGiver, rememberGiver } from "./memory.js";
+import { browserStorage } from "../cloud-storage/cloudSettings.js";
 
 const DRAFT_PARAM = "draft";
 const DRAFT_SEED = "-";
 const MIN_PEOPLE = 3;
 
 const $ = (id) => document.getElementById(id);
+const storage = browserStorage();
 
 const state = {
   lang: detectLanguage(navigator.languages ?? [navigator.language]),
@@ -130,6 +133,7 @@ function setMode(mode, { push = true } = {}) {
   }
   resetReveal();
   renderMode();
+  renderReceive();
   window.scrollTo({ top: 0 });
 }
 
@@ -379,12 +383,17 @@ function wireCreate() {
 
 // --- receive -------------------------------------------------------------------
 
-function resetReveal() {
+function closeGift() {
   const gift = $("gift");
   gift.classList.remove("open");
   gift.hidden = false;
   $("gift-hint").hidden = false;
   $("answer").hidden = true;
+  $("hide").hidden = true;
+}
+
+function resetReveal() {
+  closeGift();
   $("receive-reveal").hidden = true;
   $("receive-reveal").dataset.giver = "";
 }
@@ -398,6 +407,15 @@ function renderReceive() {
   $("receive-error").textContent = say("receive.badLink");
   $("receive-pick").hidden = !event || revealing;
   if (!event) return;
+
+  // This device already knows who opened this draw: go straight to their present.
+  if (!revealing && state.mode === "receive") {
+    const remembered = recallGiver(storage, event);
+    if (remembered !== null) {
+      startReveal(remembered);
+      return;
+    }
+  }
 
   $("event-name").textContent = event.title || say("app.name");
   const list = $("names");
@@ -417,6 +435,7 @@ function renderReceive() {
   if (revealing) {
     const giver = Number($("receive-reveal").dataset.giver);
     $("hello").textContent = say("receive.hello", { name: event.names[giver] });
+    $("remembered").textContent = say("receive.remembered", { name: event.names[giver] });
   }
 }
 
@@ -430,7 +449,9 @@ function askWho(giver) {
   const dialog = $("warning");
   dialog.returnValue = "";
   dialog.onclose = () => {
-    if (dialog.returnValue === "ok") startReveal(giver);
+    if (dialog.returnValue !== "ok") return;
+    rememberGiver(storage, state.event, giver);
+    startReveal(giver);
   };
   dialog.showModal();
   $("warning-cancel").focus();
@@ -467,12 +488,22 @@ function openGift() {
   setTimeout(() => {
     gift.hidden = true;
     $("answer").hidden = false;
+    $("hide").hidden = false;
   }, reduced ? 0 : 650);
 }
 
 function wireReceive() {
   $("gift").addEventListener("click", openGift);
+  // "Hide" closes the present again. The person stays on their own screen,
+  // because this device remembers who they are.
   $("hide").addEventListener("click", () => {
+    closeGift();
+    window.scrollTo({ top: 0 });
+  });
+  // The one way back to the name list, kept small on purpose.
+  $("not-me").addEventListener("click", (event) => {
+    event.preventDefault();
+    forgetGiver(storage, state.event);
     resetReveal();
     renderReceive();
     window.scrollTo({ top: 0 });

@@ -147,11 +147,21 @@ export const MESSAGES = {
   "receive.giftLabel": { ca: "Obrir el regal", es: "Abrir el regalo", en: "Open the present" },
   "receive.youGiveTo": { ca: "Fas el regal a…", es: "Le haces el regalo a…", en: "You give a present to…" },
   "receive.keepSecret": {
-    ca: "Guarda el secret! Amaga'l abans de deixar el mòbil a ningú.",
-    es: "¡Guarda el secreto! Ocúltalo antes de dejarle el móvil a nadie.",
-    en: "Keep it secret! Hide it before you hand your phone to anyone.",
+    ca: "Guarda el secret! Amaga'l abans de deixar el mòbil a ningú. Si tornes a obrir l'enllaç, et portarà directament aquí.",
+    es: "¡Guarda el secreto! Ocúltalo antes de dejarle el móvil a nadie. Si vuelves a abrir el enlace, te traerá directamente aquí.",
+    en: "Keep it secret! Hide it before you hand your phone to anyone. Open the link again and it brings you straight back here.",
   },
-  "receive.hide": { ca: "Amagar i tornar", es: "Ocultar y volver", en: "Hide and go back" },
+  "receive.hide": { ca: "Amagar-ho", es: "Ocultarlo", en: "Hide it" },
+  "receive.remembered": {
+    ca: "Aquest dispositiu recorda que ets {name}.",
+    es: "Este dispositivo recuerda que eres {name}.",
+    en: "This device remembers that you are {name}.",
+  },
+  "receive.notMe": {
+    ca: "Ho sento molt, m'he equivocat i no tornarà a passar. Deixa'm canviar qui soc",
+    es: "Lo siento mucho, me he equivocado y no volverá a ocurrir. Déjame cambiar quién soy",
+    en: "I'm so sorry, I picked the wrong name and it won't happen again. Let me change who I am",
+  },
   "receive.noEvent": {
     ca: "Obre l'enllaç que t'ha enviat qui organitza el sorteig, o enganxa'l aquí.",
     es: "Abre el enlace que te ha enviado quien organiza el sorteo, o pégalo aquí.",

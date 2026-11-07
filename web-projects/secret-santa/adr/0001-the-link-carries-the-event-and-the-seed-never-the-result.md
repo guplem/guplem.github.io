@@ -18,7 +18,7 @@ The draw first tries up to 5,000 shuffles of the whole list and keeps the first 
 
 The create screen makes a new seed (`newSeed()`, eight characters from `crypto.getRandomValues`) on every press of "Draw names" and "Draw again".
 
-The page trusts people. Anyone can tap any name. Before it shows anything, a warning names the person twice and asks them to go on only if they are that person.
+The page trusts people. Anyone can tap any name. Before it shows anything, a warning names the person twice and asks them to go on only if they are that person. After the confirmation, this device remembers the choice for that draw (`memory.js`), so the person does not pick again. The memory uses the same draw identity as the result, without the title, so it never travels in the link.
 
 ## Consequences
 
