@@ -33,7 +33,7 @@ export const MESSAGES = {
   "app.language": { ca: "Idioma", es: "Idioma", en: "Language" },
   "mode.label": { ca: "Mode", es: "Modo", en: "Mode" },
   "mode.create": { ca: "Crear", es: "Crear", en: "Create" },
-  "mode.receive": { ca: "Rebre sorpresa", es: "Recibir sorpresa", en: "Get my surprise" },
+  "mode.receive": { ca: "A qui regalo?", es: "¿A quién regalo?", en: "Who do I give to?" },
 
   // --- create ------------------------------------------------------------------
   "create.heading": { ca: "Organitza el sorteig", es: "Organiza el sorteo", en: "Set up the draw" },

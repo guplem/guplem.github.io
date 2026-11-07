@@ -4,7 +4,7 @@ Draw Secret Santa names with exclusions and share one link. Each person picks th
 
 ## Features
 
-- Two modes: **Create** and **Get my surprise**.
+- Two modes: **Create** and **Who do I give to?**.
 - Add people one by one or paste a whole list.
 - Tap who each person must not give to. Exclusions can work both ways, for couples.
 - One share link holds the whole event and a fresh seed for every draw. Every phone works out the same result, and the result itself is never in the link.

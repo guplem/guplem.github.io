@@ -1,15 +1,15 @@
 // The page: DOM glue over the pure modules.
 //
 // Two modes share one page. "Create" edits a draft (names, forbidden pairs and
-// an optional title) and makes the share link. "Get my surprise" reads the
+// an optional title) and makes the share link. "Who do I give to?" reads the
 // event from the link, lets a person pick who they are, warns them, and reveals
 // their match. All logic worth testing lives in draw.js, editor.js,
 // urlState.js and i18n.js; this file only reads the DOM and writes it.
 //
 // The URL holds the state (root ADR 0006):
-//   ?e=<event>      a drawn event, opened in "Get my surprise"
+//   ?e=<event>      a drawn event, opened in "Who do I give to?"
 //   ?draft=<event>  the create screen's draft, so a reload keeps the list
-//   ?mode=receive   the "Get my surprise" tab with no event yet
+//   ?mode=receive   the "Who do I give to?" tab with no event yet
 
 import { drawAssignments, findBlockedPeople, hashString, newSeed } from "./draw.js";
 import { addPeople, forbiddenFor, isForbidden, removePerson, toggleForbidden } from "./editor.js";
@@ -38,7 +38,7 @@ const state = {
   /** The last draw made on the create screen: { seed }, or null. */
   drawn: null,
   stale: false,
-  /** The event read from a link, for "Get my surprise". */
+  /** The event read from a link, for "Who do I give to?". */
   event: null,
   eventError: false,
 };
