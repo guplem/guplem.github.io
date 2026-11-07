@@ -1,5 +1,7 @@
 // The link: the whole event lives in one URL parameter, `e`.
 //
+// The event is { title, note, names, forbidden, seed }. The note is optional.
+//
 // The parameter holds a small JSON document, written as base64url so the link
 // stays one unbroken word in a chat message. Base64 also keeps the names from
 // being read at a glance in the address bar. It is not a secret: the result is
@@ -11,6 +13,13 @@ export const EVENT_PARAM = "e";
 /** The format version, so a later change can still read old links. */
 const VERSION = 1;
 const MAX_NAME_LENGTH = 40;
+/** The longest note the organiser can add. It shows after the reveal. */
+export const MAX_NOTE_LENGTH = 100;
+
+/** Cut a text to `max` characters without splitting an emoji in two. */
+export function clip(text, max) {
+  return Array.from(text).slice(0, max).join("");
+}
 
 function toBase64Url(text) {
   const bytes = new TextEncoder().encode(text);
@@ -26,8 +35,12 @@ function fromBase64Url(text) {
 }
 
 /** Write an event as URL-safe text. */
-export function encodeEvent({ title = "", names, forbidden, seed }) {
-  return toBase64Url(JSON.stringify({ v: VERSION, t: title, n: names, x: forbidden, s: seed }));
+export function encodeEvent({ title = "", note = "", names, forbidden, seed }) {
+  const data = { v: VERSION, t: title, n: names, x: forbidden, s: seed };
+  // The note is optional and was added after the first release, so a link
+  // without one stays exactly as it was.
+  if (note) data.m = clip(note, MAX_NOTE_LENGTH);
+  return toBase64Url(JSON.stringify(data));
 }
 
 /**
@@ -50,7 +63,13 @@ export function decodeEvent(text) {
   const forbidden = (Array.isArray(data.x) ? data.x : []).filter(
     (pair) => Array.isArray(pair) && pair.length === 2 && inRange(pair[0]) && inRange(pair[1]) && pair[0] !== pair[1],
   );
-  return { title: typeof data.t === "string" ? data.t : "", names, forbidden, seed };
+  return {
+    title: typeof data.t === "string" ? data.t : "",
+    note: typeof data.m === "string" ? clip(data.m, MAX_NOTE_LENGTH) : "",
+    names,
+    forbidden,
+    seed,
+  };
 }
 
 /** The link to share: this page's address with only the event in it. */

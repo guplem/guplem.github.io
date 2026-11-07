@@ -47,8 +47,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="437" />
-  <meta name="deploy-date" content="2026-11-07T16:53:21.000Z" />
+  <meta name="deploy-pull-request" content="438" />
+  <meta name="deploy-date" content="2026-11-07T18:49:13.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="style.css" />
   <script type="module" src="app.js" defer></script>
@@ -60,109 +60,131 @@
 
   <div class="page">
     <header class="masthead">
-      <h1 class="brand"><span class="brand-icon" aria-hidden="true">🎁</span> <span data-i18n="app.name">Secret Santa</span></h1>
+      <h1 class="brand"><span class="brand-icon" aria-hidden="true">🎁</span> <span class="brand-text" data-i18n="app.name">Secret Santa</span></h1>
       <div class="lang" id="lang-picker" role="group" aria-label="Language"></div>
     </header>
 
-    <nav class="modes" id="modes" role="tablist" aria-label="Mode">
-      <span class="modes-pill" aria-hidden="true"></span>
-      <button type="button" role="tab" id="tab-create" data-mode="create" data-i18n="mode.create">Create</button>
-      <button type="button" role="tab" id="tab-receive" data-mode="receive" data-i18n="mode.receive">Who do I give to?</button>
-    </nav>
-
     <main>
-      <!-- CREATE ----------------------------------------------------------- -->
-      <section id="view-create" class="view" hidden>
-        <div class="card">
-          <h2 data-i18n="create.heading">Set up the draw</h2>
-          <p class="muted" data-i18n="create.intro">Add the people, mark who may not give to whom, and share the link.</p>
-
-          <label class="field-label" for="event-title" data-i18n="create.titleLabel">Event name (optional)</label>
-          <input id="event-title" class="input" type="text" maxlength="60" autocomplete="off" />
-
-          <label class="field-label" for="name-input" data-i18n="create.peopleLabel">Who is taking part?</label>
-          <form id="add-form" class="add-row">
-            <textarea id="name-input" class="input" rows="1" autocomplete="off" autocapitalize="words" enterkeyhint="done"></textarea>
-            <button type="submit" class="btn btn-ghost" data-i18n="create.add">Add</button>
-          </form>
-          <p class="hint" data-i18n="create.nameHint">You can also paste a list separated by commas or new lines.</p>
-
-          <label class="switch">
-            <input type="checkbox" id="mutual" checked />
-            <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
-            <span data-i18n="create.mutual">Exclusions work both ways (handy for couples)</span>
-          </label>
-        </div>
-
-        <div class="people-head">
-          <span id="people-count" class="people-count"></span>
-        </div>
-        <ul id="people" class="people"></ul>
-        <p id="people-empty" class="empty" data-i18n="create.empty">Nobody yet. Start with yourself!</p>
-
-        <p id="create-error" class="error" role="alert" hidden></p>
-
-        <div class="draw-bar">
-          <button type="button" id="draw" class="btn btn-primary btn-big">
-            <span aria-hidden="true">✨</span> <span data-i18n="create.draw">Draw names</span>
-          </button>
-        </div>
-
-        <div id="result" class="card result" hidden>
-          <div class="result-burst" aria-hidden="true">🎉</div>
-          <h2 data-i18n="create.doneTitle">Names drawn!</h2>
-          <p class="muted" data-i18n="create.doneBody">Send this link to the group.</p>
-          <label class="field-label" for="share-link" data-i18n="create.linkLabel">Link to share</label>
-          <div class="link-row">
-            <input id="share-link" class="input mono" type="text" readonly />
-            <button type="button" id="copy" class="btn btn-ghost" data-i18n="create.copy">Copy</button>
-          </div>
-          <div class="result-actions">
-            <button type="button" id="share" class="btn btn-primary" hidden data-i18n="create.share">Share</button>
-            <a id="open-link" class="btn btn-ghost" href="#" target="_blank" rel="noopener" data-i18n="create.open">Open as a participant</a>
-            <button type="button" id="redraw" class="btn btn-ghost"><span aria-hidden="true">🎲</span> <span data-i18n="create.redraw">Draw again</span></button>
-          </div>
-          <p class="hint" data-i18n="create.redrawNote">Each draw uses a new seed.</p>
-          <p class="hint mono" id="seed-line"></p>
-        </div>
-        <p id="stale" class="notice" hidden data-i18n="create.stale">You changed the list. Draw again to get a new link.</p>
-      </section>
-
-      <!-- RECEIVE ---------------------------------------------------------- -->
-      <section id="view-receive" class="view" hidden>
-        <div id="receive-nolink" class="card" hidden>
-          <p data-i18n="receive.noEvent">Open the link the organiser sent you, or paste it here.</p>
-          <form id="paste-form" class="link-row">
-            <input id="paste-link" class="input mono" type="url" autocomplete="off" />
-            <button type="submit" class="btn btn-primary" data-i18n="receive.go">Open</button>
-          </form>
-          <p id="receive-error" class="error" role="alert" hidden></p>
-        </div>
-
+      <!-- RECEIVE: what a person sees when they open a shared link. Kept as
+           simple as possible: pick your name, confirm, open the present. -->
+      <section id="view-receive" class="view receive" hidden>
         <div id="receive-pick" hidden>
           <p class="event-title" id="event-name"></p>
           <h2 class="big-question" data-i18n="receive.whoAreYou">Who are you?</h2>
-          <p class="muted center" data-i18n="receive.pickHint">Tap your own name. Only yours!</p>
+          <p class="lead center" data-i18n="receive.pickHint">Tap your own name. Only yours!</p>
           <ul id="names" class="names"></ul>
-          <p class="center"><a href="#" id="edit-draw" class="subtle-link" data-i18n="receive.edit">Organising? Edit the list and make a new draw</a></p>
         </div>
 
         <div id="receive-reveal" class="reveal" hidden>
           <h2 id="hello" class="hello"></h2>
-          <p id="remembered" class="hint center"></p>
-          <p id="gift-hint" class="muted center" data-i18n="receive.tapGift">Tap the present to open it</p>
+          <p id="gift-hint" class="lead center" data-i18n="receive.tapGift">Tap the present to open it</p>
           <button type="button" id="gift" class="gift">
             <span class="sr-only" data-i18n="receive.giftLabel">Open the present</span>
             <span class="gift-lid"><span class="gift-bow"></span></span>
             <span class="gift-box"></span>
           </button>
           <div id="answer" class="answer" hidden>
-            <p class="muted" data-i18n="receive.youGiveTo">You give a present to…</p>
+            <p class="lead" data-i18n="receive.youGiveTo">You give a present to…</p>
             <p id="recipient" class="recipient"></p>
+            <div id="note-card" class="note-card" hidden>
+              <p class="note-label"><span aria-hidden="true">📝</span> <span data-i18n="receive.noteLabel">A note from the organiser</span></p>
+              <p id="note-text" class="note-text"></p>
+            </div>
             <p class="hint" data-i18n="receive.keepSecret">Keep it secret!</p>
           </div>
           <button type="button" id="hide" class="btn btn-ghost" hidden data-i18n="receive.hide">Hide it</button>
-          <p class="not-me"><a href="#" id="not-me" class="subtle-link" data-i18n="receive.notMe">I'm so sorry, I picked the wrong name and it won't happen again. Let me change who I am</a></p>
+          <p class="not-me"><a href="#" id="not-me" class="subtle-link" data-i18n="receive.notMe">Let me change who I am</a></p>
+        </div>
+
+        <div id="receive-error" class="card center" hidden>
+          <div class="dialog-icon" aria-hidden="true">😕</div>
+          <p id="receive-error-text"></p>
+        </div>
+
+        <p class="create-own"><a href="#" id="create-own" class="subtle-link" data-i18n="receive.createOwn">Want to organise your own Secret Santa? Tap here</a></p>
+      </section>
+
+      <!-- CREATE: the organiser's editor, then the share screen. -->
+      <section id="view-create" class="view" hidden>
+        <div id="editor">
+          <div class="card">
+            <div class="card-head">
+              <h2 data-i18n="create.heading">Organise your Secret Santa</h2>
+              <button type="button" id="clear" class="btn btn-small" data-i18n="create.clear">Start over</button>
+            </div>
+            <p class="muted" data-i18n="create.intro">Type the names, mark who may not give to whom, and make the link for the group.</p>
+
+            <h3 class="step" data-i18n="create.step1">1. Who is taking part?</h3>
+            <form id="add-form" class="add-row">
+              <textarea id="name-input" class="input" rows="1" autocomplete="off" autocapitalize="words" enterkeyhint="done"></textarea>
+              <button type="submit" class="btn btn-ghost" data-i18n="create.add">Add</button>
+            </form>
+            <p class="hint" data-i18n="create.nameHint">You can also paste a list separated by commas or new lines.</p>
+
+            <label class="switch">
+              <input type="checkbox" id="mutual" checked />
+              <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+              <span data-i18n="create.mutual">Exclusions work both ways (handy for couples)</span>
+            </label>
+          </div>
+
+          <div class="people-head"><span id="people-count" class="people-count"></span></div>
+          <ul id="people" class="people"></ul>
+          <p id="people-empty" class="empty" data-i18n="create.empty">Nobody yet. Start with yourself!</p>
+
+          <div class="card details">
+            <h3 class="step" data-i18n="create.step2">2. Details (optional)</h3>
+            <label class="field-label" for="event-title" data-i18n="create.titleLabel">Event name</label>
+            <input id="event-title" class="input" type="text" maxlength="60" autocomplete="off" />
+            <label class="field-label" for="event-note" data-i18n="create.noteLabel">Note shown after the name is revealed</label>
+            <textarea id="event-note" class="input" rows="2" maxlength="100"></textarea>
+            <p class="hint note-meta"><span data-i18n="create.noteHint">Ideas: budget, date, place, or a joke.</span> <span id="note-count" class="note-count"></span></p>
+          </div>
+
+          <p id="create-error" class="error" role="alert" hidden></p>
+
+          <div class="draw-bar">
+            <button type="button" id="generate" class="btn btn-primary btn-big">
+              <span aria-hidden="true">✨</span> <span data-i18n="create.generate">Make the link</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="share-view" class="share" hidden>
+          <div class="card center">
+            <div class="result-burst" aria-hidden="true">🎉</div>
+            <h2 data-i18n="share.title">Done! Here is your link</h2>
+            <p class="muted" data-i18n="share.intro">Send it to the group.</p>
+            <label class="sr-only" for="share-link" data-i18n="share.linkLabel">Link to the draw</label>
+            <input id="share-link" class="input mono link-box" type="text" readonly />
+            <button type="button" id="copy-link" class="btn btn-primary btn-big">
+              <span aria-hidden="true">📋</span> <span data-i18n="share.copyLink">Copy the link</span>
+            </button>
+
+            <div class="with-text">
+              <p class="step" data-i18n="share.withText">Or copy it with a message for the group</p>
+              <div class="lang msg-lang" id="message-lang" role="group" aria-label="Message language"></div>
+              <p id="message-preview" class="message-preview"></p>
+              <button type="button" id="copy-message" class="btn btn-ghost">
+                <span aria-hidden="true">💬</span> <span data-i18n="share.copyMessage">Copy the message</span>
+              </button>
+            </div>
+
+            <div id="share-next" class="share-next" hidden>
+              <p id="copied-text" data-i18n="share.copied">Copied! Now paste it in the group chat, or send it straight away:</p>
+              <div class="share-buttons">
+                <button type="button" id="share-native" class="btn btn-primary btn-big-ish" hidden><span aria-hidden="true">📤</span> <span data-i18n="share.native">Share</span></button>
+                <a id="whatsapp" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener" hidden><span aria-hidden="true">🟢</span> <span data-i18n="share.whatsapp">WhatsApp</span></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="share-secondary">
+            <button type="button" id="edit" class="btn btn-ghost"><span aria-hidden="true">✏️</span> <span data-i18n="share.edit">Edit the draw</span></button>
+            <a id="preview-link" class="btn btn-ghost" href="#" target="_blank" rel="noopener"><span aria-hidden="true">👀</span> <span data-i18n="share.preview">Try it as a participant</span></a>
+          </div>
+          <p class="center"><button type="button" id="redraw" class="link-button"><span aria-hidden="true">🎲</span> <span data-i18n="share.redraw">Draw again</span></button></p>
+          <p class="hint center" data-i18n="share.redrawNote">Drawing again changes the result, and the old link stops matching.</p>
         </div>
       </section>
     </main>
@@ -185,8 +207,8 @@
       <h2 id="warning-title"></h2>
       <p id="warning-body"></p>
       <div class="dialog-actions">
-        <button value="cancel" class="btn btn-ghost" id="warning-cancel"></button>
-        <button value="ok" class="btn btn-primary" id="warning-ok"></button>
+        <button value="cancel" class="btn btn-ghost btn-big-ish" id="warning-cancel"></button>
+        <button value="ok" class="btn btn-primary btn-big-ish" id="warning-ok"></button>
       </div>
     </form>
   </dialog>

@@ -31,24 +31,21 @@ export const MESSAGES = {
     en: "Draw Secret Santa names with exclusions and share one link. Each person picks who they are and sees only who they give a present to.",
   },
   "app.language": { ca: "Idioma", es: "Idioma", en: "Language" },
-  "mode.label": { ca: "Mode", es: "Modo", en: "Mode" },
-  "mode.create": { ca: "Crear", es: "Crear", en: "Create" },
-  "mode.receive": { ca: "A qui regalo?", es: "¿A quién regalo?", en: "Who do I give to?" },
 
-  // --- create ------------------------------------------------------------------
-  "create.heading": { ca: "Organitza el sorteig", es: "Organiza el sorteo", en: "Set up the draw" },
+  // --- create: the editor --------------------------------------------------------
+  "create.heading": { ca: "Organitza el teu amic invisible", es: "Organiza tu amigo invisible", en: "Organise your Secret Santa" },
   "create.intro": {
-    ca: "Afegeix les persones, marca qui no pot regalar a qui i comparteix l'enllaç.",
-    es: "Añade a las personas, marca quién no puede regalar a quién y comparte el enlace.",
-    en: "Add the people, mark who may not give to whom, and share the link.",
+    ca: "Escriu els noms, marca qui no pot regalar a qui i genera l'enllaç per al grup.",
+    es: "Escribe los nombres, marca quién no puede regalar a quién y genera el enlace para el grupo.",
+    en: "Type the names, mark who may not give to whom, and make the link for the group.",
   },
-  "create.titleLabel": { ca: "Nom de l'esdeveniment (opcional)", es: "Nombre del evento (opcional)", en: "Event name (optional)" },
-  "create.titlePlaceholder": { ca: "Amic invisible de Nadal", es: "Amigo invisible de Navidad", en: "Christmas Secret Santa" },
-  "create.peopleLabel": { ca: "Qui hi participa?", es: "¿Quién participa?", en: "Who is taking part?" },
+  "create.clear": { ca: "Començar de zero", es: "Empezar de cero", en: "Start over" },
+  "create.clearConfirm": { ca: "Segur? Toca un altre cop", es: "¿Seguro? Toca otra vez", en: "Sure? Tap again" },
+  "create.step1": { ca: "1. Qui hi participa?", es: "1. ¿Quién participa?", en: "1. Who is taking part?" },
   "create.namePlaceholder": {
-    ca: "Escriu un nom i prem Intro",
-    es: "Escribe un nombre y pulsa Intro",
-    en: "Type a name and press Enter",
+    ca: "Escriu un nom",
+    es: "Escribe un nombre",
+    en: "Type a name",
   },
   "create.nameHint": {
     ca: "També pots enganxar una llista separada per comes o salts de línia.",
@@ -77,7 +74,25 @@ export const MESSAGES = {
     es: "Restricciones en las dos direcciones (ideal para parejas)",
     en: "Exclusions work both ways (handy for couples)",
   },
-  "create.draw": { ca: "Fer el sorteig", es: "Hacer el sorteo", en: "Draw names" },
+  "create.step2": { ca: "2. Detalls (opcional)", es: "2. Detalles (opcional)", en: "2. Details (optional)" },
+  "create.titleLabel": { ca: "Nom de l'esdeveniment", es: "Nombre del evento", en: "Event name" },
+  "create.titlePlaceholder": { ca: "Amic invisible de Nadal", es: "Amigo invisible de Navidad", en: "Christmas Secret Santa" },
+  "create.noteLabel": {
+    ca: "Nota que es veurà després de descobrir el nom",
+    es: "Nota que se verá después de descubrir el nombre",
+    en: "Note shown after the name is revealed",
+  },
+  "create.notePlaceholder": {
+    ca: "Pressupost màxim 20 €. Ens veiem el 24 a casa l'Anna!",
+    es: "Presupuesto máximo 20 €. ¡Nos vemos el 24 en casa de Anna!",
+    en: "Budget up to 20 €. See you on the 24th at Anna's!",
+  },
+  "create.noteHint": {
+    ca: "Idees: pressupost, data, lloc o una broma.",
+    es: "Ideas: presupuesto, fecha, lugar o una broma.",
+    en: "Ideas: budget, date, place, or a joke.",
+  },
+  "create.generate": { ca: "Generar l'enllaç", es: "Generar el enlace", en: "Make the link" },
   "create.needMore": {
     ca: "Calen almenys 3 persones.",
     es: "Hacen falta al menos 3 personas.",
@@ -98,34 +113,44 @@ export const MESSAGES = {
     es: "Con estas restricciones no hay ningún sorteo posible. Prueba a quitar alguna.",
     en: "No draw fits these exclusions. Try removing some.",
   },
-  "create.doneTitle": { ca: "Sorteig fet!", es: "¡Sorteo hecho!", en: "Names drawn!" },
-  "create.doneBody": {
-    ca: "Envia aquest enllaç al grup. Cadascú triarà qui és i veurà només el seu destinatari.",
-    es: "Envía este enlace al grupo. Cada persona elegirá quién es y verá solo a su destinatario.",
-    en: "Send this link to the group. Each person picks who they are and sees only their own match.",
+
+  // --- create: the share screen --------------------------------------------------
+  "share.title": { ca: "Llest! Aquest és el teu enllaç", es: "¡Listo! Este es tu enlace", en: "Done! Here is your link" },
+  "share.intro": {
+    ca: "Envia'l al grup. Cadascú triarà qui és i veurà només a qui li fa el regal.",
+    es: "Envíalo al grupo. Cada persona elegirá quién es y verá solo a quién le hace el regalo.",
+    en: "Send it to the group. Each person picks who they are and sees only who they give to.",
   },
-  "create.linkLabel": { ca: "Enllaç per compartir", es: "Enlace para compartir", en: "Link to share" },
-  "create.copy": { ca: "Copiar", es: "Copiar", en: "Copy" },
-  "create.copied": { ca: "Copiat!", es: "¡Copiado!", en: "Copied!" },
-  "create.share": { ca: "Compartir", es: "Compartir", en: "Share" },
-  "create.shareText": {
-    ca: "Obre l'enllaç, tria qui ets i descobreix a qui fas el regal 🎁",
-    es: "Abre el enlace, elige quién eres y descubre a quién haces el regalo 🎁",
-    en: "Open the link, pick who you are and find out who you give a present to 🎁",
+  "share.linkLabel": { ca: "Enllaç del sorteig", es: "Enlace del sorteo", en: "Link to the draw" },
+  "share.copyLink": { ca: "Copiar l'enllaç", es: "Copiar el enlace", en: "Copy the link" },
+  "share.withText": {
+    ca: "O copia'l amb un missatge per al grup",
+    es: "O cópialo con un mensaje para el grupo",
+    en: "Or copy it with a message for the group",
   },
-  "create.redraw": { ca: "Tornar a sortejar", es: "Volver a sortear", en: "Draw again" },
-  "create.redrawNote": {
-    ca: "Cada sorteig fa servir una llavor nova, així que el resultat canvia i l'enllaç antic deixa de valer.",
-    es: "Cada sorteo usa una semilla nueva, así que el resultado cambia y el enlace antiguo deja de valer.",
-    en: "Each draw uses a new seed, so the result changes and the old link no longer matches.",
+  "share.messageLanguage": { ca: "Idioma del missatge", es: "Idioma del mensaje", en: "Message language" },
+  "share.copyMessage": { ca: "Copiar el missatge", es: "Copiar el mensaje", en: "Copy the message" },
+  "share.copied": {
+    ca: "Copiat! Ara enganxa'l al xat del grup, o comparteix-lo directament:",
+    es: "¡Copiado! Ahora pégalo en el chat del grupo, o compártelo directamente:",
+    en: "Copied! Now paste it in the group chat, or share it straight away:",
   },
-  "create.open": { ca: "Obrir com a participant", es: "Abrir como participante", en: "Open as a participant" },
-  "create.stale": {
-    ca: "Has canviat la llista. Torna a fer el sorteig per obtenir un enllaç nou.",
-    es: "Has cambiado la lista. Vuelve a hacer el sorteo para obtener un enlace nuevo.",
-    en: "You changed the list. Draw again to get a new link.",
+  "share.copiedShort": { ca: "Copiat!", es: "¡Copiado!", en: "Copied!" },
+  "share.whatsapp": { ca: "WhatsApp", es: "WhatsApp", en: "WhatsApp" },
+  "share.native": { ca: "Compartir", es: "Compartir", en: "Share" },
+  "share.edit": { ca: "Editar el sorteig", es: "Editar el sorteo", en: "Edit the draw" },
+  "share.preview": { ca: "Provar-ho com a participant", es: "Probarlo como participante", en: "Try it as a participant" },
+  "share.redraw": { ca: "Tornar a sortejar", es: "Volver a sortear", en: "Draw again" },
+  "share.redrawNote": {
+    ca: "Tornar a sortejar crea un enllaç nou amb un altre resultat. L'enllaç antic continuarà obrint-se, però els seus resultats no quadraran amb els del nou. Envia només un dels dos al grup.",
+    es: "Volver a sortear crea un enlace nuevo con otro resultado. El enlace antiguo seguirá abriéndose, pero sus resultados no cuadrarán con los del nuevo. Envía solo uno de los dos al grupo.",
+    en: "Drawing again makes a new link with a different result. The old link still opens, but its results will not match the new one. Send only one of them to the group.",
   },
-  "create.seed": { ca: "Llavor: {seed}", es: "Semilla: {seed}", en: "Seed: {seed}" },
+  "share.message": {
+    ca: "🎁 {title}\nJa tenim el sorteig de l'amic invisible! Obre l'enllaç, toca el teu nom i descobreix a qui fas el regal. No miris el de ningú altre 🤫",
+    es: "🎁 {title}\n¡Ya tenemos el sorteo del amigo invisible! Abre el enlace, toca tu nombre y descubre a quién le haces el regalo. No mires el de nadie más 🤫",
+    en: "🎁 {title}\nThe Secret Santa draw is ready! Open the link, tap your name and find out who you give a present to. Don't peek at anyone else's 🤫",
+  },
 
   // --- receive -----------------------------------------------------------------
   "receive.whoAreYou": { ca: "Qui ets?", es: "¿Quién eres?", en: "Who are you?" },
@@ -146,43 +171,32 @@ export const MESSAGES = {
   "receive.tapGift": { ca: "Toca el regal per obrir-lo", es: "Toca el regalo para abrirlo", en: "Tap the present to open it" },
   "receive.giftLabel": { ca: "Obrir el regal", es: "Abrir el regalo", en: "Open the present" },
   "receive.youGiveTo": { ca: "Fas el regal a…", es: "Le haces el regalo a…", en: "You give a present to…" },
+  "receive.noteLabel": { ca: "Nota de l'organització", es: "Nota de la organización", en: "A note from the organiser" },
   "receive.keepSecret": {
-    ca: "Guarda el secret! Amaga'l abans de deixar el mòbil a ningú. Si tornes a obrir l'enllaç, et portarà directament aquí.",
-    es: "¡Guarda el secreto! Ocúltalo antes de dejarle el móvil a nadie. Si vuelves a abrir el enlace, te traerá directamente aquí.",
-    en: "Keep it secret! Hide it before you hand your phone to anyone. Open the link again and it brings you straight back here.",
+    ca: "Guarda el secret! Si tornes a obrir l'enllaç, et portarà directament aquí.",
+    es: "¡Guarda el secreto! Si vuelves a abrir el enlace, te traerá directamente aquí.",
+    en: "Keep it secret! Open the link again and it brings you straight back here.",
   },
   "receive.hide": { ca: "Amagar-ho", es: "Ocultarlo", en: "Hide it" },
-  "receive.remembered": {
-    ca: "Aquest dispositiu recorda que ets {name}.",
-    es: "Este dispositivo recuerda que eres {name}.",
-    en: "This device remembers that you are {name}.",
-  },
   "receive.notMe": {
     ca: "Ho sento molt, m'he equivocat i no tornarà a passar. Deixa'm canviar qui soc",
     es: "Lo siento mucho, me he equivocado y no volverá a ocurrir. Déjame cambiar quién soy",
     en: "I'm so sorry, I picked the wrong name and it won't happen again. Let me change who I am",
   },
-  "receive.noEvent": {
-    ca: "Obre l'enllaç que t'ha enviat qui organitza el sorteig, o enganxa'l aquí.",
-    es: "Abre el enlace que te ha enviado quien organiza el sorteo, o pégalo aquí.",
-    en: "Open the link the organiser sent you, or paste it here.",
-  },
-  "receive.pastePlaceholder": { ca: "Enganxa l'enllaç aquí", es: "Pega el enlace aquí", en: "Paste the link here" },
-  "receive.go": { ca: "Obrir", es: "Abrir", en: "Open" },
   "receive.badLink": {
-    ca: "Aquest enllaç no és d'un sorteig vàlid. Demana'n un de nou.",
-    es: "Este enlace no es de un sorteo válido. Pide uno nuevo.",
-    en: "This link is not a valid draw. Ask for a new one.",
+    ca: "Aquest enllaç no és d'un sorteig vàlid. Demana'n un de nou a qui l'organitza.",
+    es: "Este enlace no es de un sorteo válido. Pide uno nuevo a quien lo organiza.",
+    en: "This link is not a valid draw. Ask the organiser for a new one.",
   },
   "receive.impossible": {
     ca: "Aquest sorteig no té cap resultat possible. Demana a qui l'organitza que el refaci.",
     es: "Este sorteo no tiene ningún resultado posible. Pide a quien lo organiza que lo rehaga.",
     en: "This draw has no possible result. Ask the organiser to redo it.",
   },
-  "receive.edit": {
-    ca: "Organitzes tu? Edita la llista i fes un sorteig nou",
-    es: "¿Organizas tú? Edita la lista y haz un sorteo nuevo",
-    en: "Organising? Edit the list and make a new draw",
+  "receive.createOwn": {
+    ca: "Vols organitzar el teu propi amic invisible? Toca aquí",
+    es: "¿Quieres organizar tu propio amigo invisible? Toca aquí",
+    en: "Want to organise your own Secret Santa? Tap here",
   },
 
   // --- footer ------------------------------------------------------------------
