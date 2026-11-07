@@ -4,13 +4,14 @@
 // result. Each phone works the result out again from those three.
 
 import { describe, expect, test } from "bun:test";
-import { encodeEvent, decodeEvent, buildShareUrl, readEventFromSearch, cleanNames } from "./urlState.js";
+import { encodeEvent, decodeEvent, buildShareUrl, readEventFromSearch, cleanNames, MAX_NOTE_LENGTH } from "./urlState.js";
 
 const EVENT = {
   title: "Nadal 2026 🎄",
   names: ["Anna", "Bernat", "Carla", "Jürgen", "Núria"],
   forbidden: [[0, 1], [1, 0], [3, 4]],
   seed: "abc12345",
+  note: "",
 };
 
 describe("encodeEvent and decodeEvent", () => {
@@ -20,6 +21,18 @@ describe("encodeEvent and decodeEvent", () => {
 
   test("write URL-safe text only", () => {
     expect(encodeEvent(EVENT)).toMatch(/^[A-Za-z0-9_-]+$/);
+  });
+
+  test("carry a short note, cut to the maximum length", () => {
+    expect(decodeEvent(encodeEvent({ ...EVENT, note: "Máx. 20 € 🎁" })).note).toBe("Máx. 20 € 🎁");
+    const long = decodeEvent(encodeEvent({ ...EVENT, note: "x".repeat(300) })).note;
+    expect(long.length).toBe(MAX_NOTE_LENGTH);
+  });
+
+  test("read a link made before notes existed as an event with no note", () => {
+    // A version-1 link from the first release: no `m` field.
+    const old = "eyJ2IjoxLCJ0IjoiIiwibiI6WyJBIiwiQiIsIkMiXSwieCI6W10sInMiOiJhYmMifQ";
+    expect(decodeEvent(old)).toEqual({ title: "", note: "", names: ["A", "B", "C"], forbidden: [], seed: "abc" });
   });
 
   test("keep an empty title", () => {

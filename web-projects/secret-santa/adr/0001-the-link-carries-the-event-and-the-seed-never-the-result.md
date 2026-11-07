@@ -10,9 +10,9 @@ The owner asked for the second way: every run gets a new seed, the state lives i
 
 ## Decision
 
-The `e` parameter holds the event: the title, the names in list order, the forbidden pairs and the seed, as base64url JSON (`urlState.js`). It never holds the result.
+The `e` parameter holds the event: the title, the names in list order, the forbidden pairs, the seed, and an optional note of at most 100 characters (`m`), as base64url JSON (`urlState.js`). It never holds the result. A link without `m` reads as an event with no note, so links made before the note existed still work.
 
-`drawAssignments(names, forbidden, seed)` in `draw.js` computes the result. It seeds a mulberry32 generator with the FNV-1a hash of `canonicalEvent(names, forbidden, seed)`. That text sorts the pairs and removes repeats, so the pair order in the link does not matter. The title is not part of it, so a title edit keeps the draw.
+`drawAssignments(names, forbidden, seed)` in `draw.js` computes the result. It seeds a mulberry32 generator with the FNV-1a hash of `canonicalEvent(names, forbidden, seed)`. That text sorts the pairs and removes repeats, so the pair order in the link does not matter. The title and the note are not part of it, so an edit to them keeps the draw.
 
 The draw first tries up to 5,000 shuffles of the whole list and keeps the first one that fits the rules. That gives every valid draw the same chance. When the exclusions are so tight that shuffles keep failing, an exact backtracking search takes over. It is a little less even, but it always finds a draw when one exists.
 

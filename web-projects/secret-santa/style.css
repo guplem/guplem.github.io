@@ -139,43 +139,6 @@ a { color: var(--gold); }
 }
 .lang button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
 
-/* --- mode switch ---------------------------------------------------------- */
-
-.modes {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding: 5px;
-  margin-bottom: 20px;
-  border-radius: 999px;
-  background: var(--card);
-  border: 1px solid var(--card-border);
-}
-.modes button {
-  position: relative;
-  z-index: 1;
-  border: 0;
-  background: transparent;
-  padding: 10px 8px;
-  font-weight: 700;
-  color: var(--muted);
-  cursor: pointer;
-  transition: color 0.25s;
-}
-.modes button[aria-selected="true"] { color: #fff; }
-.modes-pill {
-  position: absolute;
-  top: 5px;
-  bottom: 5px;
-  left: 5px;
-  width: calc(50% - 5px);
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--red), var(--red-2));
-  box-shadow: 0 6px 20px rgba(255, 77, 109, 0.35);
-  transition: transform 0.35s var(--ease-spring);
-}
-.modes[data-mode="receive"] .modes-pill { transform: translateX(100%); }
-
 /* --- cards and fields ----------------------------------------------------- */
 
 .view { animation: view-in 0.3s var(--ease-out); }
@@ -254,7 +217,8 @@ textarea.input::placeholder { white-space: nowrap; overflow: hidden; text-overfl
   .btn-ghost:hover { background: rgba(255, 255, 255, 0.14); }
   .btn-primary:hover:not(:disabled) { transform: translateY(-1px); }
   .lang button:hover { color: var(--text); }
-  .modes button:hover { color: var(--text); }
+  .link-button:hover, .subtle-link:hover { color: var(--text); }
+  .btn-whatsapp:hover { background: #1ebe5b; }
   .chip:hover { border-color: var(--muted); }
   .name-btn:hover { transform: translateY(-2px); border-color: var(--gold); }
   .gift:hover .gift-lid { transform: translateY(-4px) rotate(-2deg); }
@@ -453,6 +417,9 @@ textarea.input::placeholder { white-space: nowrap; overflow: hidden; text-overfl
 
 .subtle-link { color: var(--muted); font-size: 0.85rem; }
 
+.create-own { margin: 72px 0 0; text-align: center; font-size: 0.8rem; opacity: 0.7; }
+.create-own .subtle-link { font-size: inherit; }
+
 /* --- the warning dialog --------------------------------------------------- */
 
 .dialog {
@@ -590,4 +557,86 @@ textarea.input::placeholder { white-space: nowrap; overflow: hidden; text-overfl
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* --- receive: large and plain, so anyone can use it ------------------------ */
+
+.receive { font-size: 1.1rem; }
+.lead { color: var(--muted); font-size: 1.1rem; margin: 6px 0; }
+.receive .event-title { font-size: 1rem; }
+.receive .names { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.receive .name-btn { min-height: 64px; padding: 14px; font-size: 1.2rem; }
+.receive .name-btn .avatar { width: 40px; height: 40px; }
+.btn-big-ish { padding: 14px 20px; font-size: 1.05rem; }
+
+.note-card {
+  margin: 8px auto 14px;
+  max-width: 34ch;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 201, 77, 0.1);
+  border: 1px dashed rgba(255, 201, 77, 0.55);
+  text-align: left;
+}
+.note-label { margin: 0 0 4px; font-size: 0.8rem; font-weight: 700; color: var(--gold); }
+.note-text { margin: 0; font-size: 1.1rem; overflow-wrap: anywhere; white-space: pre-line; }
+
+/* --- create: editor extras ------------------------------------------------ */
+
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.btn-small { flex: none; padding: 6px 12px; font-size: 0.8rem; font-weight: 600; background: transparent; color: var(--muted); }
+.btn-small.armed { background: rgba(255, 77, 109, 0.2); border-color: var(--red); color: #ffd0d9; }
+.step { margin: 18px 0 8px; font-size: 1rem; font-weight: 800; }
+.card .step:first-of-type { margin-top: 18px; }
+.details { margin-top: 18px; }
+.details .step { margin-top: 0; }
+.note-meta { display: flex; justify-content: space-between; gap: 10px; }
+.note-count { flex: none; font-variant-numeric: tabular-nums; }
+
+/* --- create: the share screen --------------------------------------------- */
+
+.share .card { animation: pop-in 0.5s var(--ease-spring); }
+.link-box { margin: 16px 0 12px; text-align: center; }
+.with-text { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--card-border); }
+.with-text .step { margin-top: 0; }
+.msg-lang { display: inline-flex; margin-bottom: 10px; }
+.message-preview {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.25);
+  text-align: left;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.preview-url {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--gold);
+  text-decoration: underline;
+}
+.share-next {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.5);
+}
+.share-next p { margin: 0 0 10px; font-weight: 600; }
+.share-next.pop { animation: pop-in 0.3s var(--ease-spring); }
+.share-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.btn-whatsapp { border-color: transparent; background: #25d366; color: #06301a; }
+.share-secondary { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 18px; }
+.link-button {
+  border: 0;
+  background: none;
+  padding: 8px;
+  margin-top: 10px;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
 }

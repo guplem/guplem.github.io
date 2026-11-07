@@ -55,7 +55,7 @@ describe("translate", () => {
   });
 
   test("falls back to English, then to the key", () => {
-    expect(translate("xx", "create.draw")).toBe(MESSAGES["create.draw"].en);
+    expect(translate("xx", "create.generate")).toBe(MESSAGES["create.generate"].en);
     expect(translate("en", "no.such.key")).toBe("no.such.key");
   });
 });
