@@ -98,7 +98,9 @@ import {
 } from "./approval.js";
 import {
   DEFAULT_KIND,
+  DEFAULT_REVIEW_DRAFTS,
   KIND_FILTERS,
+  REVIEW_DRAFT_FILTERS,
   activeFilterCount,
   availableAssignees,
   availableLabels,
@@ -109,6 +111,7 @@ import {
   boardFilterCount,
   filterByPerson,
   filterMenus,
+  filterReviewDrafts,
   filterWorkItems,
   labelFilterTip,
   repositoryFilterTip,
@@ -386,6 +389,8 @@ const state = {
   // pull request is, and the board narrows by who is in the review (ADR 0028).
   assignees: [],
   reviewers: [],
+  // Whether the review row leaves out the drafts: "all" or "ready".
+  reviewDrafts: DEFAULT_REVIEW_DRAFTS,
   // Which filter menu is open, and the button that opened it (ADR 0049).
   filterMenuId: null,
   filterMenuAnchor: null,
@@ -1378,6 +1383,10 @@ function renderLoading() {
     buildSkeletonSegment("Everyone", state.assignees.length === 0),
     ...assignees.map((name) => buildSkeletonSegment(name, false, { known: false })),
   );
+  // The draft switch has fixed words, so it is drawn for real (ADR 0004).
+  element("review-draft-filters").replaceChildren(
+    ...REVIEW_DRAFT_FILTERS.map((one) => buildSkeletonSegment(one.label, state.reviewDrafts === one.id)),
+  );
 
   const shownColumns = COLUMNS.filter((column) => readAreaShown(state.board, column.id));
   const columns = element("board-columns");
@@ -1666,6 +1675,16 @@ function renderFilters() {
       }),
     ),
   );
+
+  // Every review, or only the ones that are not drafts.
+  element("review-draft-filters").replaceChildren(
+    ...REVIEW_DRAFT_FILTERS.map((one) =>
+      buildSegment(one.label, state.reviewDrafts === one.id, () => {
+        state.reviewDrafts = one.id;
+        afterFilterChange();
+      }),
+    ),
+  );
 }
 
 /** One button in the filter bar. It opens the shared menu, filled for it. */
@@ -1805,6 +1824,7 @@ function clearFilters() {
   state.fields = [];
   state.assignees = [];
   state.reviewers = [];
+  state.reviewDrafts = DEFAULT_REVIEW_DRAFTS;
   afterFilterChange();
 }
 
@@ -2915,6 +2935,7 @@ function renderBoard() {
     : filterByPerson(filterWorkItems(state.items, state), state.reviewers, "reviewers");
   element("board-filters").classList.toggle("filters-set-aside", search !== null);
   element("assignee-group").classList.toggle("filters-set-aside", search !== null);
+  element("review-draft-group").classList.toggle("filters-set-aside", search !== null);
   const ordered = sortWorkItems(visible, state.sortId, hasNote);
   // The stack pass runs on the grouped board, not on the items: a pull request
   // travels inside the card of the issue it closes, so the card is what moves.
@@ -2960,7 +2981,9 @@ function renderBoard() {
   // made it puts the longest-waiting first (ADR 0013).
   const reviewsNotOnBoard = withoutItems(state.reviews, state.items);
   const queued = sortWorkItems(
-    search ? reviewsNotOnBoard : filterByPerson(reviewsNotOnBoard, state.assignees, "assignees"),
+    search
+      ? reviewsNotOnBoard
+      : filterReviewDrafts(filterByPerson(reviewsNotOnBoard, state.assignees, "assignees"), state.reviewDrafts),
     reviewSortId(state.sortId),
     hasNote,
   );
@@ -3000,8 +3023,9 @@ function renderBoard() {
   // A part the reader hid in Settings is not drawn, and nothing in it is found.
   const reviewRowShown = readAreaShown(state.board, REVIEW_ROW_ID);
   const found = reviewRowShown ? searchItems(waiting, search) : [];
-  // The row hides only when nothing waits at all. When the assignee filter
-  // empties it, the row stays, so the chip that undoes the filter stays too.
+  // The row hides only when nothing waits at all. When the assignee filter or
+  // the draft switch empties it, the row stays, so the chip that undoes the
+  // filter stays too.
   // A search that finds nothing in the row hides the row, because the reader
   // asked to see one card and nothing else.
   showReviewRow(reviewRowShown && reviewsNotOnBoard.length > 0 && (search === null || found.length > 0));
@@ -4873,6 +4897,7 @@ function start() {
   state.fields = asked.fields;
   state.assignees = asked.assignees;
   state.reviewers = asked.reviewers;
+  state.reviewDrafts = asked.reviewDrafts;
   state.doneRange = asked.doneRange;
   renderFilters();
   const sortField = element("sort");

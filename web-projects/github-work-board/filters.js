@@ -30,6 +30,32 @@ export function readKind(value) {
   return typeof value === "string" && KNOWN_KINDS.has(value) ? value : DEFAULT_KIND;
 }
 
+/**
+ * Whether the review row shows the drafts. Named in links, so an id is never
+ * changed. "ready" leaves the drafts out: a draft says "not ready yet", so a
+ * reader clearing their reviews may want only the work that asks for them now.
+ */
+export const DEFAULT_REVIEW_DRAFTS = "all";
+
+export const REVIEW_DRAFT_FILTERS = [
+  { id: "all", label: "All" },
+  { id: "ready", label: "Not drafts" },
+];
+
+const KNOWN_REVIEW_DRAFTS = new Set(REVIEW_DRAFT_FILTERS.map((one) => one.id));
+
+/** One of the draft choices above, whatever was asked for. */
+export function readReviewDrafts(value) {
+  return typeof value === "string" && KNOWN_REVIEW_DRAFTS.has(value) ? value : DEFAULT_REVIEW_DRAFTS;
+}
+
+/** The review row's pull requests, with the drafts left out when the reader asked. Order is kept. */
+export function filterReviewDrafts(items, choice) {
+  const list = Array.isArray(items) ? items : [];
+  if (readReviewDrafts(choice) !== "ready") return [...list];
+  return list.filter((item) => item?.isDraft !== true);
+}
+
 function asList(value) {
   return Array.isArray(value) ? value.filter((one) => typeof one === "string" && one !== "") : [];
 }
@@ -163,9 +189,20 @@ export function toggleInList(list, value) {
  * The "clear" button appears only when this is more than zero, so it is what
  * gives the reader a way out of a list they have filtered down to nothing.
  */
-export function activeFilterCount({ kind, repositories, labels, milestones, projects, fields, assignees, reviewers } = {}) {
+export function activeFilterCount({
+  kind,
+  repositories,
+  labels,
+  milestones,
+  projects,
+  fields,
+  assignees,
+  reviewers,
+  reviewDrafts,
+} = {}) {
   return (
     (readKind(kind) === DEFAULT_KIND ? 0 : 1) +
+    (readReviewDrafts(reviewDrafts) === DEFAULT_REVIEW_DRAFTS ? 0 : 1) +
     asList(repositories).length +
     asList(labels).length +
     asList(milestones).length +
@@ -179,11 +216,11 @@ export function activeFilterCount({ kind, repositories, labels, milestones, proj
 /**
  * How many of the board's own narrowings are in force.
  *
- * The assignee control narrows the review row, not the board, so the count
- * on the filter bar leaves it out (ADR 0049).
+ * The assignee control and the draft choice narrow the review row, not the
+ * board, so the count on the filter bar leaves them out (ADR 0049).
  */
 export function boardFilterCount(chosen = {}) {
-  return activeFilterCount({ ...chosen, assignees: [] });
+  return activeFilterCount({ ...chosen, assignees: [], reviewDrafts: DEFAULT_REVIEW_DRAFTS });
 }
 
 /**

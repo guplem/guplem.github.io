@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { DEFAULT_RANGE } from "./doneRange.js";
-import { DEFAULT_KIND } from "./filters.js";
+import { DEFAULT_KIND, DEFAULT_REVIEW_DRAFTS } from "./filters.js";
 import { DEFAULT_SECTION } from "./settingsSections.js";
 import { DEFAULT_SORT_ID } from "./sorting.js";
 import { DEFAULT_VIEW, VIEWS, buildSearch, readStateFromSearch } from "./urlState.js";
@@ -16,6 +16,7 @@ const DEFAULTS = {
   fields: [],
   assignees: [],
   reviewers: [],
+  reviewDrafts: DEFAULT_REVIEW_DRAFTS,
   doneRange: DEFAULT_RANGE,
   section: DEFAULT_SECTION,
 };
@@ -171,6 +172,7 @@ describe("buildSearch", () => {
       fields: ["Effort: 3", "Priority: P1"],
       assignees: ["ana"],
       reviewers: ["leo"],
+      reviewDrafts: "ready",
       doneRange: "2026-09-15..2026-09-19",
       section: DEFAULT_SECTION,
     };
@@ -236,5 +238,19 @@ describe("the range of the Done column", () => {
     expect(readStateFromSearch("?done=2026-09-19").doneRange).toBe("2026-09-19..2026-09-19");
     expect(readStateFromSearch("?done=whenever").doneRange).toBe("today");
     expect(readStateFromSearch("").doneRange).toBe("today");
+  });
+});
+
+describe("the review row's draft choice", () => {
+  // `?reviews=ready` keeps the drafts out of the review row. The name is
+  // permanent, because it travels in saved links.
+  test("round-trips 'ready' as `reviews=ready`", () => {
+    expect(buildSearch({ ...DEFAULTS, reviewDrafts: "ready" })).toBe("?reviews=ready");
+    expect(readStateFromSearch("?reviews=ready")).toEqual({ ...DEFAULTS, reviewDrafts: "ready" });
+  });
+
+  test("the default is left out of the link", () => {
+    expect(buildSearch({ ...DEFAULTS, reviewDrafts: "all" })).toBe("");
+    expect(readStateFromSearch("?reviews=whatever").reviewDrafts).toBe("all");
   });
 });

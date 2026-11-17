@@ -15,7 +15,7 @@
 // back button should return to.
 
 import { DEFAULT_RANGE, isDefaultRange, readRange } from "./doneRange.js";
-import { DEFAULT_KIND, readKind } from "./filters.js";
+import { DEFAULT_KIND, DEFAULT_REVIEW_DRAFTS, readKind, readReviewDrafts } from "./filters.js";
 import { DEFAULT_SECTION, readSection } from "./settingsSections.js";
 import { DEFAULT_SORT_ID, readSortId } from "./sorting.js";
 
@@ -40,6 +40,9 @@ const FIELD_PARAM = "field";
 const DONE_PARAM = "done";
 const ASSIGNEE_PARAM = "assignee";
 const REVIEWER_PARAM = "reviewer";
+// Whether the review row leaves out the drafts: `reviews=ready`. Permanent,
+// because it travels in saved links.
+const REVIEW_DRAFTS_PARAM = "reviews";
 // Which section of Settings is open. Written only while Settings is, because
 // it means nothing anywhere else (ADR 0048).
 const SECTION_PARAM = "section";
@@ -75,6 +78,7 @@ export function readStateFromSearch(search) {
     fields: readList(params, FIELD_PARAM),
     assignees: readList(params, ASSIGNEE_PARAM),
     reviewers: readList(params, REVIEWER_PARAM),
+    reviewDrafts: readReviewDrafts(params.get(REVIEW_DRAFTS_PARAM)),
     doneRange: readRange(params.get(DONE_PARAM) ?? DEFAULT_RANGE),
     section: readSection(params.get(SECTION_PARAM)),
   };
@@ -92,6 +96,7 @@ export function buildSearch({
   fields,
   assignees,
   reviewers,
+  reviewDrafts,
   doneRange,
   section,
 } = {}) {
@@ -127,6 +132,10 @@ export function buildSearch({
   }
   for (const login of Array.isArray(reviewers) ? reviewers : []) {
     if (typeof login === "string" && login !== "") params.append(REVIEWER_PARAM, login);
+  }
+
+  if (readReviewDrafts(reviewDrafts) !== DEFAULT_REVIEW_DRAFTS) {
+    params.append(REVIEW_DRAFTS_PARAM, readReviewDrafts(reviewDrafts));
   }
 
   if (!isDefaultRange(doneRange)) params.append(DONE_PARAM, readRange(doneRange));

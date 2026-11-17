@@ -56,7 +56,8 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   truth about the list you are reading.
 - **What is waiting on you, above everything else.** A row of the pull requests
   where somebody asked for your review, longest-waiting first, because those
-  cost other people time rather than yours.
+  cost other people time rather than yours. A switch in its heading hides the
+  drafts, so you see only the pull requests that are ready for you.
 - **What you finished today**, in the last column: everything of yours that
   merged or closed since midnight, newest first. A pull request closed without
   merging never appears, because it did not ship.

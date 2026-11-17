@@ -53,8 +53,8 @@
   <!-- Which pull request published this file. Never hand-edit: written by
        `bun scripts/generateDeployStamp.js` and checked on every pull request. -->
   <!-- BEGIN GENERATED:DEPLOY -->
-  <meta name="deploy-pull-request" content="442" />
-  <meta name="deploy-date" content="2026-11-17T10:51:00.000Z" />
+  <meta name="deploy-pull-request" content="444" />
+  <meta name="deploy-date" content="2026-11-17T14:09:52.000Z" />
 <!-- END GENERATED:DEPLOY -->
   <link rel="stylesheet" href="../cloud-storage/cloudSettingsPanel.css" />
   <link rel="stylesheet" href="style.css" />
@@ -462,13 +462,17 @@
           <div class="column-head reviews-head">
             <h3 class="column-name" id="reviews-heading">Waiting for your review</h3>
             <span id="reviews-count" class="badge column-count">0</span>
-            <!-- The one filter this row has: whose work each pull request is
+            <!-- The first filter this row has: whose work each pull request is
                  (ADR 0009, ADR 0028). It is hidden until two people appear. -->
             <div class="reviews-filters" id="assignee-group" hidden>
               <div class="segmented" id="assignee-filters" role="group" aria-label="Assignee"></div>
             </div>
+            <!-- Every review, or only the ones that are not drafts. -->
+            <div class="review-draft-group" id="review-draft-group">
+              <div class="segmented" id="review-draft-filters" role="group" aria-label="Drafts"></div>
+            </div>
           </div>
-          <p id="reviews-empty" class="column-empty" hidden>No review waiting for you matches the assignee filter.</p>
+          <p id="reviews-empty" class="column-empty" hidden>No review waiting for you matches these filters.</p>
           <ul id="reviews-list" class="issues reviews-list"></ul>
         </section>
 
