@@ -382,6 +382,9 @@ const state = {
   projects: [],
   // Issue field values the board is narrowed to, as `Effort: 3` (ADR 0047).
   fields: [],
+  // Where the work stands against its "blocked by" links, by the ids in
+  // `BLOCKING_FILTERS`. Read with `state.links` (ADR 0052).
+  blocking: [],
   // Two filters over two lists: the row of reviews narrows by whose work each
   // pull request is, and the board narrows by who is in the review (ADR 0028).
   assignees: [],
@@ -1619,6 +1622,7 @@ const FILTER_LISTS = {
   label: "labels",
   milestone: "milestones",
   project: "projects",
+  blocking: "blocking",
 };
 
 function filterListOf(menuId) {
@@ -1803,6 +1807,7 @@ function clearFilters() {
   state.milestones = [];
   state.projects = [];
   state.fields = [];
+  state.blocking = [];
   state.assignees = [];
   state.reviewers = [];
   afterFilterChange();
@@ -4871,6 +4876,7 @@ function start() {
   state.milestones = asked.milestones;
   state.projects = asked.projects;
   state.fields = asked.fields;
+  state.blocking = asked.blocking;
   state.assignees = asked.assignees;
   state.reviewers = asked.reviewers;
   state.doneRange = asked.doneRange;

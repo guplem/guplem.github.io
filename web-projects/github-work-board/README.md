@@ -124,13 +124,16 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   whole number (`ab`); both are off until you press them. Words find titles
   too. The filters step aside while you search, and Escape or the `×` in the
   box brings the whole board back.
-- **Filter by kind, repository, label, milestone, project or issue field.** Two labels means either of
+- **Filter by kind, repository, label, milestone, project, issue field or blocking.** Two labels means either of
   them; a kind plus a repository means both. The filters go into the address bar
   too, so "everything tagged urgent in this repository" is a link. One bar
   holds a switch for All, Issues or Pull requests, and one menu for each
   other filter. A badge on a menu says how many values you chose, each option says how many cards carry it, and a long menu has a find box. "Clear"
   resets one filter and "Clear filters" resets them all, so a long list of values does not push the columns
   down.
+- **Hide the work nobody can start yet.** The "Blocking" menu reads GitHub's
+  "blocked by" links. Choose "Not blocked" to hide every blocked card, "Blocked"
+  to see only those, or "Blocks other work" to find what holds up the rest.
 - **See the milestone on each card.** A pill after the labels names the
   milestone and shows how much of it is closed. Press the icon or the number to
   open the milestone on GitHub; press the name to show only that milestone's

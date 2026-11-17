@@ -14,6 +14,7 @@ const DEFAULTS = {
   milestones: [],
   projects: [],
   fields: [],
+  blocking: [],
   assignees: [],
   reviewers: [],
   doneRange: DEFAULT_RANGE,
@@ -169,6 +170,7 @@ describe("buildSearch", () => {
       milestones: ["Sprint 12"],
       projects: ["Iteration board"],
       fields: ["Effort: 3", "Priority: P1"],
+      blocking: ["not-blocked"],
       assignees: ["ana"],
       reviewers: ["leo"],
       doneRange: "2026-09-15..2026-09-19",
@@ -236,5 +238,13 @@ describe("the range of the Done column", () => {
     expect(readStateFromSearch("?done=2026-09-19").doneRange).toBe("2026-09-19..2026-09-19");
     expect(readStateFromSearch("?done=whenever").doneRange).toBe("today");
     expect(readStateFromSearch("").doneRange).toBe("today");
+  });
+});
+
+describe("the blocking filter in the link (ADR 0052)", () => {
+  test("the parameter is `blocking`, one per state, and it reads back", () => {
+    expect(buildSearch({ blocking: ["not-blocked", "blocking"] })).toBe("?blocking=not-blocked&blocking=blocking");
+    expect(readStateFromSearch("?blocking=not-blocked").blocking).toEqual(["not-blocked"]);
+    expect(readStateFromSearch("").blocking).toEqual([]);
   });
 });

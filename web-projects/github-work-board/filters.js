@@ -1,5 +1,5 @@
 // Narrowing the list: by kind, by repository, by label, by milestone, by
-// project, by issue field (`fields.js`), and by person.
+// project, by issue field (`fields.js`), by blocking, and by person.
 //
 // Two rules, and they pull in opposite directions on purpose:
 //
@@ -13,6 +13,7 @@
 // board can be sent to yourself or bookmarked. See ADR 0009.
 
 import { availableFieldFilters, filterByFields } from "./fields.js";
+import { openBlockers, readRelationship } from "./relationships.js";
 
 /** The kinds a person can ask for. Named in links, so an id is never changed. */
 export const DEFAULT_KIND = "all";
@@ -34,8 +35,62 @@ function asList(value) {
   return Array.isArray(value) ? value.filter((one) => typeof one === "string" && one !== "") : [];
 }
 
+/**
+ * Where a piece of work stands against GitHub's "blocked by" links (ADR 0052).
+ * Named in links, so an id is never changed. "Not blocked" is the one a
+ * reader picks to hide the work nobody can start yet.
+ */
+export const BLOCKING_FILTERS = [
+  { id: "not-blocked", label: "Not blocked" },
+  { id: "blocked", label: "Blocked" },
+  { id: "blocking", label: "Blocks other work" },
+];
+
+const KNOWN_BLOCKING = new Set(BLOCKING_FILTERS.map((one) => one.id));
+
+/** The blocking states asked for, with any id the page does not know left out. */
+function readBlocking(value) {
+  return asList(value).filter((one) => KNOWN_BLOCKING.has(one));
+}
+
+function openBlockerIds(links, key) {
+  return openBlockers(readRelationship(links, key)).map((link) => link.id);
+}
+
+/**
+ * The blocking states of each item, keyed by the item, each a Set of ids.
+ *
+ * - **Blocked**: an open blocker, read through `openBlockers`, the rule that
+ *   draws the "Blocked" pill. A pull request is as blocked as an issue it
+ *   would close, because it travels in that issue's card (ADR 0016).
+ * - **Not blocked**: everything else, work with no relationships read included.
+ * - **Blocks other work**: an open blocker of another item in the list. Only
+ *   the work handed in counts, as in the smart order (ADR 0050).
+ *
+ * @param items the board's work items
+ * @param links the relationships, keyed by node id (ADR 0010)
+ */
+export function blockingStates(items, links) {
+  const list = (Array.isArray(items) ? items : []).filter((item) => item && typeof item.key === "string");
+  const holdingUp = new Set();
+  for (const item of list) {
+    for (const id of openBlockerIds(links, item.key)) if (id !== item.key) holdingUp.add(id);
+  }
+  const states = new Map();
+  for (const item of list) {
+    const closes = Array.isArray(readRelationship(links, item.key).closes) ? readRelationship(links, item.key).closes : [];
+    const blocked =
+      openBlockerIds(links, item.key).length > 0 ||
+      (item.kind === "pull-request" && closes.some((issue) => openBlockerIds(links, issue?.id).length > 0));
+    const own = new Set([blocked ? "blocked" : "not-blocked"]);
+    if (holdingUp.has(item.key)) own.add("blocking");
+    states.set(item.key, own);
+  }
+  return states;
+}
+
 /** The items still worth showing. The list handed in is not changed or reordered. */
-export function filterWorkItems(items, { kind, repositories, labels, milestones, projects, fields } = {}) {
+export function filterWorkItems(items, { kind, repositories, labels, milestones, projects, fields, blocking, links } = {}) {
   const list = Array.isArray(items) ? items : [];
   const wantedKind = readKind(kind);
   const wantedRepositories = new Set(asList(repositories));
@@ -44,6 +99,9 @@ export function filterWorkItems(items, { kind, repositories, labels, milestones,
   const wantedMilestones = new Set(asList(milestones));
   // By name too: one project holds work from many repositories (ADR 0051).
   const wantedProjects = new Set(asList(projects));
+  // Read from GitHub's links, over the whole list handed in (ADR 0052).
+  const wantedBlocking = readBlocking(blocking);
+  const states = wantedBlocking.length > 0 ? blockingStates(list, links) : null;
 
   // Each field is a kind of its own: two values of one field widen, two
   // fields narrow (ADR 0047).
@@ -59,6 +117,7 @@ export function filterWorkItems(items, { kind, repositories, labels, milestones,
       const carried = Array.isArray(item?.projects) ? item.projects : [];
       if (!carried.some((project) => wantedProjects.has(project?.title))) return false;
     }
+    if (states && !wantedBlocking.some((id) => states.get(item?.key)?.has(id))) return false;
     return true;
   });
 }
@@ -163,7 +222,17 @@ export function toggleInList(list, value) {
  * The "clear" button appears only when this is more than zero, so it is what
  * gives the reader a way out of a list they have filtered down to nothing.
  */
-export function activeFilterCount({ kind, repositories, labels, milestones, projects, fields, assignees, reviewers } = {}) {
+export function activeFilterCount({
+  kind,
+  repositories,
+  labels,
+  milestones,
+  projects,
+  fields,
+  blocking,
+  assignees,
+  reviewers,
+} = {}) {
   return (
     (readKind(kind) === DEFAULT_KIND ? 0 : 1) +
     asList(repositories).length +
@@ -171,6 +240,7 @@ export function activeFilterCount({ kind, repositories, labels, milestones, proj
     asList(milestones).length +
     asList(projects).length +
     asList(fields).length +
+    readBlocking(blocking).length +
     asList(assignees).length +
     asList(reviewers).length
   );
@@ -198,7 +268,8 @@ export function boardFilterCount(chosen = {}) {
  *
  * @param items the board's work items
  * @param chosen the reader's filters: `repositories`, `reviewers`, `labels`,
- *   `milestones`, `projects` and `fields`, each a list of keys
+ *   `milestones`, `projects`, `fields` and `blocking`, each a list of keys,
+ *   and `links`, the relationships the blocking menu reads (ADR 0052)
  */
 export function filterMenus(items, chosen) {
   const list = Array.isArray(items) ? items : [];
@@ -213,6 +284,21 @@ export function filterMenus(items, chosen) {
     return options.length >= least || count > 0 ? [{ id, label, options, count, hint }] : [];
   };
   const plain = (names) => names.map((name) => ({ key: name, text: name }));
+  // The blocking menu offers a state only while some work carries it, or
+  // while it is chosen. A board where nothing is blocked and nothing blocks
+  // gets no menu: "Not blocked" alone could narrow nothing (ADR 0052).
+  const states = [...blockingStates(list, picked.links).values()];
+  const carried = (id) => states.filter((one) => one.has(id)).length;
+  const chosenBlocking = new Set(readBlocking(picked.blocking));
+  const blockingValues = BLOCKING_FILTERS.filter((one) => carried(one.id) > 0 || chosenBlocking.has(one.id)).map(
+    (one) => ({ key: one.id, text: one.label }),
+  );
+  const blockingMenu =
+    carried("blocked") + carried("blocking") > 0 || chosenBlocking.size > 0
+      ? menu("blocking", "Blocking", "states", blockingValues, [...chosenBlocking], 1, (key) =>
+          filterWorkItems(list, { blocking: [key], links: picked.links }),
+        )
+      : [];
   return [
     ...menu("repository", "Repository", "repositories", plain(availableRepositories(list)), picked.repositories, 2, (key) =>
       filterWorkItems(list, { repositories: [key] }),
@@ -238,5 +324,6 @@ export function filterMenus(items, chosen) {
     ...availableFieldFilters(list).flatMap((field) =>
       menu(`field:${field.name}`, field.name, "values", field.values, picked.fields, 1, (key) => filterByFields(list, [key])),
     ),
+    ...blockingMenu,
   ];
 }

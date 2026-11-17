@@ -17,7 +17,7 @@ import { SORT_OPTIONS, reviewSortId } from "./sorting.js";
 import { DEFAULT_RANGE, RANGE_PRESETS, readRange } from "./doneRange.js";
 import { buildSearch, readStateFromSearch } from "./urlState.js";
 import { COLUMN_IDS } from "./columns.js";
-import { KIND_FILTERS } from "./filters.js";
+import { BLOCKING_FILTERS, KIND_FILTERS } from "./filters.js";
 import { normalizeWorkItem } from "./workItems.js";
 import { PERMISSIONS, REQUIRED_PERMISSIONS } from "./permissions.js";
 import { LEGACY_KEYS, STORAGE_KEYS } from "./settings.js";
@@ -871,6 +871,12 @@ describe("a filter named in a link keeps its name (ADR 0009)", () => {
   // breaks every link anybody saved.
   test("these are the kinds, and an id is never renamed", () => {
     expect(KIND_FILTERS.map((one) => one.id)).toEqual(["all", "issue", "pull-request"]);
+  });
+
+  // `?blocking=not-blocked` is how a reader hides the work nobody can start,
+  // and that link is saved (ADR 0052).
+  test("these are the blocking states, and an id is never renamed", () => {
+    expect(BLOCKING_FILTERS.map((one) => one.id)).toEqual(["not-blocked", "blocked", "blocking"]);
   });
 
   // The two ids that also name a work item's own kind. Renaming one of these

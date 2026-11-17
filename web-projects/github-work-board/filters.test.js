@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import {
+  BLOCKING_FILTERS,
   DEFAULT_KIND,
   KIND_FILTERS,
   activeFilterCount,
@@ -11,6 +12,7 @@ import {
   availableProjects,
   availableRepositories,
   availableReviewers,
+  blockingStates,
   filterByPerson,
   filterWorkItems,
   labelFilterTip,
@@ -467,5 +469,95 @@ describe("the words on a card's filter chips", () => {
   test("a repository says it shows only the work in that repository, and how to undo it", () => {
     expect(repositoryFilterTip("me/alpha", false)).toBe("Show only the work in me/alpha");
     expect(repositoryFilterTip("me/alpha", true)).toBe("Show everything again, not only me/alpha");
+  });
+});
+
+// The reader wants to hide the work nobody can start yet. GitHub's "blocked
+// by" links say which that is, and the same links say which work holds up
+// other work on the board (ADR 0052).
+describe("by blocking", () => {
+  const FREE = item({ key: "free" });
+  const BLOCKED = item({ key: "blocked" });
+  const BLOCKER = item({ key: "blocker" });
+  const LONE_PULL = item({ key: "pr", kind: "pull-request" });
+  const links = {
+    blocked: { blockedBy: [{ id: "blocker", state: "open" }, { id: "gone", state: "closed" }] },
+    free: { blockedBy: [{ id: "old", state: "closed" }] },
+    // A pull request is as blocked as the issue it would close.
+    pr: { closes: [{ id: "blocked", state: "open" }] },
+  };
+  const list = [FREE, BLOCKED, BLOCKER, LONE_PULL];
+
+  test("the ids are permanent, because a link carries them", () => {
+    expect(BLOCKING_FILTERS.map((one) => one.id)).toEqual(["not-blocked", "blocked", "blocking"]);
+  });
+
+  test("each item is free, blocked, or holds up other work", () => {
+    const states = blockingStates(list, links);
+    expect([...states.get("free")]).toEqual(["not-blocked"]);
+    expect([...states.get("blocked")]).toEqual(["blocked"]);
+    expect([...states.get("blocker")]).toEqual(["not-blocked", "blocking"]);
+    expect([...states.get("pr")]).toEqual(["blocked"]);
+  });
+
+  test("only an open blocker blocks", () => {
+    expect(keys(filterWorkItems(list, { blocking: ["blocked"], links }))).toEqual(["blocked", "pr"]);
+  });
+
+  test("'not blocked' hides the work nobody can start", () => {
+    expect(keys(filterWorkItems(list, { blocking: ["not-blocked"], links }))).toEqual(["free", "blocker"]);
+  });
+
+  test("a blocker that is somebody else's work does not count", () => {
+    const states = blockingStates([BLOCKED], links);
+    expect([...states.get("blocked")]).toEqual(["blocked"]);
+    expect(keys(filterWorkItems([FREE], { blocking: ["blocking"], links }))).toEqual([]);
+  });
+
+  test("two states widen, and a state and a kind narrow", () => {
+    expect(keys(filterWorkItems(list, { blocking: ["blocked", "blocking"], links }))).toEqual([
+      "blocked",
+      "blocker",
+      "pr",
+    ]);
+    expect(keys(filterWorkItems(list, { blocking: ["blocked"], kind: "issue", links }))).toEqual(["blocked"]);
+  });
+
+  test("an unknown state in a link narrows nothing", () => {
+    expect(keys(filterWorkItems(list, { blocking: ["nonsense"], links }))).toEqual(keys(list));
+    expect(activeFilterCount({ blocking: ["nonsense"] })).toBe(0);
+  });
+
+  test("with no relationships read, everything is free", () => {
+    expect(keys(filterWorkItems(list, { blocking: ["not-blocked"] }))).toEqual(keys(list));
+  });
+
+  test("a chosen state counts as a narrowing", () => {
+    expect(activeFilterCount({ blocking: ["not-blocked", "blocking"] })).toBe(2);
+    expect(boardFilterCount({ blocking: ["blocked"] })).toBe(1);
+  });
+
+  test("the menu lists the states the board holds, with their counts", () => {
+    const menu = filterMenus(list, { links, blocking: ["not-blocked"] }).find((one) => one.id === "blocking");
+    expect(menu.label).toBe("Blocking");
+    expect(menu.count).toBe(1);
+    expect(menu.hint).toBe("Two states match either");
+    expect(menu.options).toEqual([
+      { key: "not-blocked", text: "Not blocked", chosen: true, matches: 2 },
+      { key: "blocked", text: "Blocked", chosen: false, matches: 2 },
+      { key: "blocking", text: "Blocks other work", chosen: false, matches: 1 },
+    ]);
+  });
+
+  test("a board where nothing is blocked offers no menu", () => {
+    expect(filterMenus([FREE], { links }).map((one) => one.id)).not.toContain("blocking");
+  });
+
+  test("a chosen state stays in the menu, even when nothing carries it", () => {
+    const menu = filterMenus([FREE], { links, blocking: ["blocked"] }).find((one) => one.id === "blocking");
+    expect(menu.options.map((one) => [one.key, one.matches])).toEqual([
+      ["not-blocked", 1],
+      ["blocked", 0],
+    ]);
   });
 });
