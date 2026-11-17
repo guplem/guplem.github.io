@@ -1508,6 +1508,10 @@ span.skeleton-ghost:not(.badge, .segment, .avatar) {
   gap: 0.75rem;
   overflow-x: auto;
   overscroll-behavior-x: contain;
+  /* A scrolling row clips on top too, so the room a card lifts into on hover
+   * is padded in and taken back with a negative margin. */
+  padding-top: 0.25rem;
+  margin-top: -0.25rem;
   padding-bottom: 0.25rem;
 }
 

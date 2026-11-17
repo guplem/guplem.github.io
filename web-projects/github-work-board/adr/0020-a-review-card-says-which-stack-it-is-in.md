@@ -100,3 +100,12 @@ is "Smart order" and its tooltip lists every rule (`describeSort` in
 date order, so nobody who asked for a date order lost one. **Rejected: naming the
 stack by its branch.** A branch name is long, and the bottom's number is
 already a link the reader can follow.
+
+## Addendum: a stacked pull request whose neighbours are not on screen
+
+A pull request can sit on a branch whose pull request the board is not showing
+(it does not wait on the reader, or it is somebody else's). The card then
+shows a plain `Stack` pill, with no number or position, because nothing can be
+counted. The sign is that its base branch is not the repository's default
+branch (`defaultBranchRef`, read with each pull request). `unseenStackBase` in
+`stacks.js` decides it. An unknown default branch shows no pill.

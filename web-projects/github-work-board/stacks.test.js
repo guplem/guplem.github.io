@@ -6,6 +6,7 @@ import {
   stackLights,
   stackPositions,
   stackedUnder,
+  unseenStackBase,
 } from "./stacks.js";
 
 /** A pull request as the board holds one, with the two branch names that make a stack. */
@@ -410,5 +411,34 @@ describe("orderItemsForMerging", () => {
     const row = [pull(2, "b", "a"), pull(1, "a", "main")];
     orderItemsForMerging(row);
     expect(numbers(row)).toEqual([2, 1]);
+  });
+});
+
+// A pull request can sit on a branch whose pull request the board is not
+// showing (it is not waiting on the reader, or it is somebody else's). The
+// badge must still say it is stacked. The only honest sign is that its base
+// is not the repository's default branch.
+describe("unseenStackBase", () => {
+  const top = (over = {}) => pull(2, "feat-b", "feat-a", { defaultBranch: "main", ...over });
+
+  test("a pull request that targets a non-default branch nobody on screen owns is stacked on an unseen one", () => {
+    expect(unseenStackBase(top(), [top()])).toBe("feat-a");
+  });
+
+  test("a pull request that targets the default branch is not stacked", () => {
+    expect(unseenStackBase(top({ baseRefName: "main" }), [])).toBe(null);
+  });
+
+  test("a pull request whose base is owned by a card on screen already has a badge, so it is not unseen", () => {
+    const bottom = pull(1, "feat-a", "main", { defaultBranch: "main" });
+    expect(unseenStackBase(top(), [bottom, top()])).toBe(null);
+  });
+
+  test("an unknown default branch claims nothing", () => {
+    expect(unseenStackBase(top({ defaultBranch: "" }), [])).toBe(null);
+  });
+
+  test("an issue is never stacked", () => {
+    expect(unseenStackBase(issue(5, { baseRefName: "x", defaultBranch: "main" }), [])).toBe(null);
   });
 });

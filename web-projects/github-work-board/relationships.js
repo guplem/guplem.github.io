@@ -116,6 +116,10 @@ function readLink(value) {
     // read from these and from nothing else (ADR 0016).
     headRefName: typeof value.headRefName === "string" ? value.headRefName : "",
     baseRefName: typeof value.baseRefName === "string" ? value.baseRefName : "",
+    // The repository's default branch. A base that is not it means a stack,
+    // even when the other pull request is not on screen (ADR 0020).
+    defaultBranch:
+      typeof value.repository?.defaultBranchRef?.name === "string" ? value.repository.defaultBranchRef.name : "",
     askedAgain: askedToLookAgain(value.latestOpinionatedReviews?.nodes, value.reviewRequests?.nodes),
     // Everybody in the review, and what each of them is doing about it. The
     // card draws them so the reader can see who is blocking it and who they
@@ -302,6 +306,7 @@ export function applyPullRequestState(items, byId) {
       reviewRequestCount: self.reviewRequestCount,
       headRefName: self.headRefName,
       baseRefName: self.baseRefName,
+      defaultBranch: self.defaultBranch,
       askedAgain: self.askedAgain,
       reviewers: self.reviewers,
       reviewedByReader: self.reviewedByReader,
