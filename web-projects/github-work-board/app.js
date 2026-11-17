@@ -182,6 +182,7 @@ import {
   orderStacksForMerging,
   stackLights,
   stackPositions,
+  unseenStackBase,
 } from "./stacks.js";
 import { MENU_ICON_PATHS, cardMenuRows } from "./cardMenu.js";
 import { TOOLTIP_DELAY_MS, tipPlacement } from "./tooltip.js";
@@ -319,6 +320,9 @@ const state = {
   // Where each card on the board sits in its stack, keyed by item. The review
   // row works this out for itself, over its own cards (ADR 0020, ADR 0027).
   stackBadges: {},
+  // Every work item on screen, in any list. A card whose base branch one of
+  // these adds is stacked on something shown (ADR 0020).
+  shownItems: [],
   menuItem: null,
   menuAnchor: null,
   // The line in Settings the icon picker is pointed at, and the press that
@@ -994,6 +998,20 @@ function buildWorkItemCard(
 
     inStack.append(which, position);
     flags.append(inStack);
+  } else {
+    // Stacked on a pull request the board is not showing: there is no number
+    // or position to count, but the pill still says it is not on the main branch.
+    const base = unseenStackBase(item, state.shownItems);
+    if (base !== null) {
+      const inStack = document.createElement("span");
+      inStack.className = "badge badge-stack";
+      const which = document.createElement("span");
+      which.className = "stack-number";
+      which.textContent = "Stack";
+      explain(which, `Targets the branch ${base}, not the main branch. It is stacked on a pull request that is not on the board.`);
+      inStack.append(which);
+      flags.append(inStack);
+    }
   }
 
   for (const id of attentionFor(item, relationship)) {
@@ -2975,6 +2993,7 @@ function renderBoard() {
   // review row counts the review row: each one is the truth about the list the
   // reader is looking at (ADR 0020).
   state.stackBadges = stackPositions(onBoard);
+  state.shownItems = uniqueByKey([...onBoard, ...waiting]);
   // The search hides cards and nothing else. The badges and the counts are
   // worked out over the whole board, so finding one card does not rename the
   // tab or renumber a stack (ADR 0038).

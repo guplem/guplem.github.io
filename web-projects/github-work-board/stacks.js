@@ -63,6 +63,29 @@ export function stackedUnder(group, groups) {
 }
 
 /**
+ * The base branch of a pull request that is stacked on one the board is not
+ * showing, or null.
+ *
+ * A stack badge needs the other pull requests on screen to count them. A pull
+ * request can still be stacked when they are not: it is not waiting on the
+ * reader, or it belongs to somebody else. The one honest sign left is that its
+ * base is not the repository's default branch. An unknown default branch
+ * claims nothing.
+ *
+ * @param item the work item
+ * @param shown every work item on screen, in any list
+ */
+export function unseenStackBase(item, shown) {
+  if (!item || item.kind !== "pull-request") return null;
+  const base = typeof item.baseRefName === "string" ? item.baseRefName.trim() : "";
+  const main = typeof item.defaultBranch === "string" ? item.defaultBranch.trim() : "";
+  if (base === "" || main === "" || base === main) return null;
+  const groups = (Array.isArray(shown) ? shown : []).map((one) => ({ item: one, children: [] }));
+  const self = { item, children: [] };
+  return stackedUnder(self, [self, ...groups]) === null ? base : null;
+}
+
+/**
  * The same groups, with every stack read bottom first and kept together.
  *
  * **A stack sits where its bottom sat.** The top of a stack cannot merge until

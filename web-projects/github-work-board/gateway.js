@@ -250,7 +250,7 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!, $login: String, $knowsReader: B
       closedByPullRequestsReferences(first: 5, includeClosedPrs: true) {
         nodes {
           id number title state url merged reviewDecision mergeable headRefName baseRefName
-          repository { nameWithOwner }
+          repository { nameWithOwner defaultBranchRef { name } }
           commits(last: 1) { nodes { commit { oid } } }
           reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
           latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
@@ -268,7 +268,7 @@ const RELATIONSHIPS_QUERY = `query($ids: [ID!]!, $login: String, $knowsReader: B
       mergeable
       headRefName
       baseRefName
-      repository { nameWithOwner }
+      repository { nameWithOwner defaultBranchRef { name } }
       commits(last: 1) { nodes { commit { oid } } }
       reviewRequests(first: 20) { totalCount nodes { requestedReviewer { ... on User { login name avatarUrl } } } }
       latestOpinionatedReviews(first: 20) { nodes { state author { login avatarUrl ... on User { name } } } }
