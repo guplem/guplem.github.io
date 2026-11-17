@@ -2955,6 +2955,16 @@ button.issue-repo[aria-pressed="true"] {
   margin-left: auto;
 }
 
+/* Every review, or only the ones that are not drafts. It takes the right end
+ * when the assignee switch is hidden, and sits beside it otherwise. */
+.review-draft-group {
+  margin-left: auto;
+}
+
+.reviews-filters:not([hidden]) + .review-draft-group {
+  margin-left: 0;
+}
+
 .reviews-head {
   flex-wrap: wrap;
   justify-content: flex-start;

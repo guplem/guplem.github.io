@@ -39,6 +39,14 @@ repository on it.
   assignee filter: a filter that empties the row leaves it on screen, so the
   chip that undoes the filter stays reachable. While the board loads, the row
   stays hidden when it was empty last time (ADR 0004).
+- **A switch leaves out the drafts: "All" or "Not drafts".** A draft says "not
+  ready yet", so a reader clearing their reviews may want only the work that
+  asks for them now. "All" is the default, so nothing is hidden until the reader
+  asks. The choice travels in the link as `reviews=ready`, and that name is
+  permanent. The draft mark comes from the search answer itself (`draft`), so
+  the switch costs no call. Like the assignee filter, it steps aside while the
+  find box holds text (ADR 0038), and the filter bar's count leaves it out,
+  because it narrows the row and not the board (ADR 0049).
 - **The cards carry no move menu.** There is no column to move somebody else's
   pull request into: this row is ordered by how long a review has waited, and
   nothing in it sits in a column.

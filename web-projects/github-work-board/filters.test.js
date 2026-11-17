@@ -2,6 +2,10 @@ import { describe, expect, test } from "bun:test";
 import {
   BLOCKING_FILTERS,
   DEFAULT_KIND,
+  DEFAULT_REVIEW_DRAFTS,
+  REVIEW_DRAFT_FILTERS,
+  filterReviewDrafts,
+  readReviewDrafts,
   KIND_FILTERS,
   activeFilterCount,
   availableAssignees,
@@ -559,5 +563,39 @@ describe("by blocking", () => {
       ["not-blocked", 1],
       ["blocked", 0],
     ]);
+  });
+});
+
+// The review row can leave out the drafts. A draft says "not ready yet", so a
+// reader clearing their reviews may want only the work that asks for them now.
+describe("the review row can leave out drafts", () => {
+  const ready = { key: "a", kind: "pull-request", isDraft: false };
+  const draft = { key: "b", kind: "pull-request", isDraft: true };
+
+  test("shows every pull request by default", () => {
+    expect(DEFAULT_REVIEW_DRAFTS).toBe("all");
+    expect(filterReviewDrafts([ready, draft], DEFAULT_REVIEW_DRAFTS)).toEqual([ready, draft]);
+  });
+
+  test("'ready' leaves out the drafts and keeps the order", () => {
+    expect(filterReviewDrafts([draft, ready], "ready")).toEqual([ready]);
+  });
+
+  // The choice travels in the link, so an id is never renamed.
+  test("these are the choices, and an id is never renamed", () => {
+    expect(REVIEW_DRAFT_FILTERS.map((one) => one.id)).toEqual(["all", "ready"]);
+  });
+
+  test("an unknown choice reads as the default", () => {
+    expect(readReviewDrafts("nonsense")).toBe("all");
+    expect(readReviewDrafts(undefined)).toBe("all");
+    expect(readReviewDrafts("ready")).toBe("ready");
+  });
+
+  // The choice narrows the review row, not the board, so the count on the
+  // filter bar leaves it out, exactly like the assignee (ADR 0049).
+  test("counts as a filter, but not as one of the board's own", () => {
+    expect(activeFilterCount({ reviewDrafts: "ready" })).toBe(1);
+    expect(boardFilterCount({ reviewDrafts: "ready" })).toBe(0);
   });
 });
