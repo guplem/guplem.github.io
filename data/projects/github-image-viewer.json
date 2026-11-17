@@ -1,0 +1,18 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Image Viewer for GitHub",
+  "image": "resources/images/projects/github-image-viewer.webp",
+  "imageAlt": "Image Viewer for GitHub store graphic: a screenshot from a pull request open in a floating viewer, with steps to click an image, move with the arrow keys, and close with Esc",
+  "description": [
+    "*Image Viewer for GitHub* is a **Chrome extension, published on the Chrome Web Store**. On GitHub pull requests and issues, a click on an image opens it in a **floating viewer** on top of the page, instead of a new tab.",
+    "The arrow keys move between the images of that one comment. The viewer shows the position, such as 3 / 7, the **alt text**, the size and the format. Zoom with the mouse wheel, and close with Esc.",
+    "It asks for no permission, and nothing leaves the browser."
+  ],
+  "skills": ["Vibe Coded", "UI/UX"],
+  "links": [
+    { "url": "https://chromewebstore.google.com/detail/ciejgnmafcdnpabcaiadepcicplllnpj" },
+    { "type": "github", "url": "https://github.com/guplem/github-image-viewer" }
+  ]
+}
