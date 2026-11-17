@@ -1,0 +1,18 @@
+{
+  "$schema": "../schemas/project.schema.json",
+  "types": ["Web"],
+  "date": "2026",
+  "title": "Table Export for Grafana",
+  "image": "resources/images/projects/grafana-table-export.webp",
+  "imageAlt": "Table Export for Grafana graphic: a Grafana Explore query result with the Export menu open, listing Markdown, CSV, TSV, JSON and plain-text formats",
+  "description": [
+    "*Table Export for Grafana* is a **Chrome extension** for Grafana Explore. It adds an **Export** button above each result table that exports the full result, not only the rows on screen, as **Markdown**, **CSV**, **TSV**, **JSON** or a plain-text table.",
+    "Copy it, or download a file. It works at once on **Grafana Cloud**, and any other Grafana turns on with one click. Nothing leaves the browser.",
+    "It is not in the Chrome Web Store yet. Install it from the [latest release](https://github.com/guplem/grafana-table-export/releases/latest)."
+  ],
+  "skills": ["Vibe Coded", "UI/UX"],
+  "links": [
+    { "type": "github", "url": "https://github.com/guplem/grafana-table-export" },
+    { "type": "download", "url": "https://github.com/guplem/grafana-table-export/releases/latest" }
+  ]
+}
