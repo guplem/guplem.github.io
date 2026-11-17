@@ -22,7 +22,8 @@ heading.** `filters.js` holds the rules, and `app.js` draws them.
   requests. "All" is the absence of a kind filter, so it is not a chip and
   narrows nothing.
 - **Each kind of filter is one dropdown button.** The kinds are Repository,
-  Reviewer, Label, Milestone, Project (ADR 0051), and one per issue field. A press opens one
+  Reviewer, Label, Milestone, Project (ADR 0051), one per issue field, and
+  Blocking (ADR 0052). A press opens one
   shared popover, `#filter-menu`, in the top layer (ADR 0012). It holds one
   checkbox per value, and a "Clear filters" action.
 - **Each option shows how many cards carry it** (`matches` on each option from
@@ -48,7 +49,7 @@ heading.** `filters.js` holds the rules, and `app.js` draws them.
 **A press on a card's pill still works.** A label, the repository name, a
 milestone, a field value or a reviewer's face presses the same choice, and
 the menu then shows it as chosen. Every value a menu offers is also a press
-on the card that carries it. Labels and the repository name were plain text
+on the card that carries it, except a blocking state (ADR 0052). Labels and the repository name were plain text
 for a while, so `invariants.test.js` now checks that `app.js` toggles each
 of these lists from a card. On a review card they stay text, because the
 board's filters never narrow the review row (ADR 0009).

@@ -31,6 +31,9 @@ const PROJECT_PARAM = "project";
 // A field value is chosen by its field's name and its words, `Effort: 3`,
 // one parameter each (ADR 0047).
 const FIELD_PARAM = "field";
+// Where the work stands against its "blocked by" links, by the permanent ids
+// in `BLOCKING_FILTERS` (ADR 0052).
+const BLOCKING_PARAM = "blocking";
 // Two filters over two different lists, so two names. `assignee` narrows the
 // row of pull requests waiting on the reader, by whose work each one is.
 // `reviewer` narrows the reader's own board, by who is in the review
@@ -76,6 +79,7 @@ export function readStateFromSearch(search) {
     milestones: readList(params, MILESTONE_PARAM),
     projects: readList(params, PROJECT_PARAM),
     fields: readList(params, FIELD_PARAM),
+    blocking: readList(params, BLOCKING_PARAM),
     assignees: readList(params, ASSIGNEE_PARAM),
     reviewers: readList(params, REVIEWER_PARAM),
     reviewDrafts: readReviewDrafts(params.get(REVIEW_DRAFTS_PARAM)),
@@ -94,6 +98,7 @@ export function buildSearch({
   milestones,
   projects,
   fields,
+  blocking,
   assignees,
   reviewers,
   reviewDrafts,
@@ -125,6 +130,9 @@ export function buildSearch({
   }
   for (const key of Array.isArray(fields) ? fields : []) {
     if (typeof key === "string" && key !== "") params.append(FIELD_PARAM, key);
+  }
+  for (const id of Array.isArray(blocking) ? blocking : []) {
+    if (typeof id === "string" && id !== "") params.append(BLOCKING_PARAM, id);
   }
 
   for (const login of Array.isArray(assignees) ? assignees : []) {

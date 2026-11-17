@@ -58,7 +58,7 @@ It is the short procedure for all of the above.
 | `tooltip.js` | Yes | Where a tooltip goes, and how long a pointer rests first (ADR 0033) |
 | `titles.js` | Yes | A title split from the change it announces, and the icon for each kind (ADR 0021) |
 | `stacks.js` | Yes | Which pull request sits on which, the order a stack merges in for the board and for the review row (ADR 0016), and where each one sits in it (with a letter on a level that branches), with the bottom's name, and which stack each card lights up with (ADR 0020, ADR 0027) |
-| `filters.js` | Yes | Narrowing by kind, repository, label, milestone, project, issue field and person, the review row's draft switch (`filterReviewDrafts`), the menus the filter bar offers (`filterMenus`, with a card count `matches` on each option and a `hint`) and the count of chosen values (ADR 0009, ADR 0028, ADR 0045, ADR 0047, ADR 0049, ADR 0051) |
+| `filters.js` | Yes | Narrowing by kind, repository, label, milestone, project, issue field, blocking state (`blockingStates`, ADR 0052) and person, the review row's draft switch (`filterReviewDrafts`), the menus the filter bar offers (`filterMenus`, with a card count `matches` on each option and a `hint`) and the count of chosen values (ADR 0009, ADR 0028, ADR 0045, ADR 0047, ADR 0049, ADR 0051, ADR 0052) |
 | `fields.js` | Yes | The issue fields set on an issue, read from the answer the board already has: their words, which of them a filter offers, and narrowing by them (ADR 0047) |
 | `settingsSections.js` | Yes | The sections of Settings with their permanent ids, the section each sub-screen goes back to, and the written list of settings the search finds (ADR 0048) |
 | `cardParts.js` | Yes | The parts of a card the reader can hide in Settings, with their permanent ids (ADR 0047) |
@@ -592,6 +592,11 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
   saved to `board.json`: they are GitHub's data, not the reader's.
 - **Only an open blocker blocks.** A closed one is history, and counting it
   would leave half the board marked "Blocked" for ever.
+- **The blocking filter is the one filter that reads `state.links`, not the
+  item.** `filterWorkItems` and `filterMenus` take the links in the same
+  object as the chosen values, which is why `app.js` hands them `state`
+  whole. A pull request takes the blocked state of an issue it closes, or
+  "Not blocked" would leave it alone on the board (ADR 0052).
 - **GraphQL answers 200 with an `errors` array** when part of a query fails,
   unlike every REST path in `gateway.js`. Keep the nodes that came back.
 - **Nothing tells you which owner a token is scoped to.** `GET /user/repos`
@@ -815,6 +820,7 @@ Check `performance.getEntriesByType("resource")` for a `transferSize` of 0, and
 | [0049](adr/0049-the-filters-are-one-bar-a-kind-switch-and-one-menu-per-filter.md) | The filters are one bar, a kind switch and one menu per filter |
 | [0050](adr/0050-a-blocker-reads-before-the-work-it-blocks.md) | A blocker reads before the work it blocks, and the one that holds up most reads first |
 | [0051](adr/0051-the-projects-are-a-pill-and-their-permission-is-optional.md) | The projects are a pill and a filter, and their permission is optional |
+| [0052](adr/0052-the-blocking-filter-reads-githubs-links.md) | The blocking filter reads GitHub's links, and "Not blocked" hides what nobody can start |
 
 ## What is not built yet
 
@@ -823,5 +829,5 @@ private notes, sorting, the filters and the settings screen are built.
 Still to come, roughly in this order: dragging a card instead of choosing its
 column from a dropdown, custom tags, and a "what's next" queue, which the
 blocked marking and the columns now make answerable. Every new view state goes in the address bar
-beside `view`, `section`, `sort`, `kind`, `repo`, `label`, `milestone`, `project`, `field`, `assignee`, `reviewer` and `reviews`, and the tokens never do.
+beside `view`, `section`, `sort`, `kind`, `repo`, `label`, `milestone`, `project`, `field`, `blocking`, `assignee`, `reviewer` and `reviews`, and the tokens never do.
 The find box is the one exception, on purpose (ADR 0038).
