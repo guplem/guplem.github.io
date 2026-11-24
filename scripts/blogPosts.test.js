@@ -59,6 +59,17 @@ describe("sortByPublishedDescending", () => {
     expect(sortByPublishedDescending(input).map((post) => post.slug)).toEqual(["newer", "older"]);
     expect(input[0]).toBe(older);
   });
+
+  // Two posts can share a publish time (one tutorial in two languages does).
+  // Without a tiebreak their order follows the order the disk lists folders
+  // in, which differs between machines, so the generated feed, sitemap and
+  // blog index failed their drift tests on CI and passed locally.
+  it("orders posts with the same publish time by slug, whatever order they arrive in", () => {
+    const one = { slug: "tu-primer-agente", published: "2026-10-25T14:00:00Z" };
+    const two = { slug: "your-first-agent", published: "2026-10-25T14:00:00Z" };
+    expect(sortByPublishedDescending([two, one]).map((post) => post.slug)).toEqual(["tu-primer-agente", "your-first-agent"]);
+    expect(sortByPublishedDescending([one, two]).map((post) => post.slug)).toEqual(["tu-primer-agente", "your-first-agent"]);
+  });
 });
 
 describe("loadPosts (the committed posts)", () => {
