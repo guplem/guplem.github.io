@@ -72,16 +72,16 @@ them for.
 ## The other pass: the work that wants its author climbs
 
 **In the smart order, a card that wants its author goes to the top of its
-column.** A red check no longer moves a card out of the column it belongs in: a
-reviewer who has been asked outranks it (ADR 0011). So the check has to be
+column.** A red check or a conflict no longer moves a card out of the column it
+belongs in: a reviewer who has been asked outranks both (ADR 0011). So the check has to be
 visible some other way inside that column, and this is it. The work that needs a
 push is the first thing read there.
 
 **The three reasons rise in a fixed rank: changes requested, then a red check,
 then a conflict.** `ATTENTION_RANK` in `attention.js` holds it, and
-`raiseNeedsAttention` applies it. A conflict and changes requested put a card in
-"Needs attention" by themselves (ADR 0011), so the rank mostly decides how that
-column reads. Changes requested come first because a reviewer is a person who
+`raiseNeedsAttention` applies it. Changes requested put a card in "Needs
+attention" by themselves, and a conflict or a red check does so when nobody is
+asked to review (ADR 0011), so the rank mostly decides how that column reads. Changes requested come first because a reviewer is a person who
 waits on the author. A red check comes next, and a conflict last. Inside each
 rank, the order the reader chose holds. A card with two reasons ranks by the
 higher one.

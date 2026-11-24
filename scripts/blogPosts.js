@@ -62,13 +62,15 @@ export function readPostMetadata(html, slug) {
 }
 
 /**
- * A copy of the posts, newest first.
- * @template {{published: string}} T
+ * A copy of the posts, newest first. Posts with the same publish time sort by
+ * slug, so the order never depends on the order the disk lists folders in:
+ * that order differs between machines, and the generated files must not.
+ * @template {{published: string, slug: string}} T
  * @param {T[]} posts
  * @returns {T[]}
  */
 export function sortByPublishedDescending(posts) {
-  return [...posts].sort((a, b) => b.published.localeCompare(a.published));
+  return [...posts].sort((a, b) => b.published.localeCompare(a.published) || (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0));
 }
 
 /**

@@ -72,15 +72,16 @@ server, no account to make here, and nothing is stored anywhere except GitHub.
   moves it by hand when GitHub's answer is not the truth, and hands it back to
   the rules with one click.
 - **One column for everything waiting on you.** "Needs attention" holds the
-  work you cannot hand on: the branch conflicts, a reviewer asked for changes
-  and is still waiting, or a check came back red with nobody else to wait for.
+  work you cannot hand on: a reviewer asked for changes and is still waiting,
+  or the branch conflicts or a check came back red with nobody else to wait for.
   Each card says which of the three it is, with a pill you can hover for what to
   do about it. A card with all three says all three. In the smart order the
   column reads changes requested first, then red checks, then conflicts.
-- **A red check does not pull a card out of "Awaiting review".** Somebody is
-  reading it, and that is the longer wait, so the column keeps saying so. In the
-  smart order the card climbs to the top of its column instead, and its "Checks
-  failed" pill says why.
+- **A red check or a conflict does not pull a card out of "Awaiting review".**
+  Somebody is reading it, and that is the longer wait, so the column keeps
+  saying so. You fix a conflict once, after the reviewer answers, not every
+  time the target branch moves. In the smart order the card climbs to the top
+  of its column instead, and its "Checks failed" or "Conflicts" pill says why.
 - **A dot beside the PR badge says how the checks on a pull request are
   going.** Green when every run passed, red when one came back red, grey
   while they are still running. Rest on it for the breakdown: how many
