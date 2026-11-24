@@ -277,9 +277,9 @@ export function raiseBlockingWork(groups, blockers) {
  * the rank `ATTENTION_RANK` gives: changes requested first, then a red check,
  * then a conflict.
  *
- * A red check no longer moves a card out of the column it belongs in: a
- * reviewer who has been asked is the more useful thing for a column to say
- * (ADR 0011). So the check has to be visible some other way inside that column,
+ * A red check or a conflict no longer moves a card out of the column it belongs
+ * in: a reviewer who has been asked is the more useful thing for a column to say
+ * (ADR 0011). So the reason has to be visible some other way inside that column,
  * and this is it. In "Needs attention" the same pass puts the three reasons in
  * the order the reader works through them (ADR 0026).
  *

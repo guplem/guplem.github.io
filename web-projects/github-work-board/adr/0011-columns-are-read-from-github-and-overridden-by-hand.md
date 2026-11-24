@@ -30,8 +30,8 @@ Six columns, in the order work travels:
 |---|---|
 | To do | Assigned, with no pull request |
 | Ongoing | A pull request exists, nobody asked to review it |
-| Needs attention | The branch conflicts, a reviewer asked for changes and has not been asked to look again, or a check came back red with nobody else waited on |
-| Awaiting review | A reviewer was asked by name, no verdict yet, red checks or not |
+| Needs attention | A reviewer asked for changes and has not been asked to look again, or the branch conflicts or a check came back red with nobody else waited on |
+| Awaiting review | A reviewer was asked by name, no verdict yet, conflicts or red checks or not |
 | Ready to merge | Approved |
 | Done today | Finished inside the chosen range, since midnight by default (ADR 0017, ADR 0034) |
 
@@ -55,20 +55,28 @@ on somebody else" run on from there. The order is only how the columns read:
 the ids are what `board.json` stores, and they never move.
 
 **The order of the rules is the decision**, because an item answers several at
-once. Finished work wins over everything: it is over (ADR 0017). Then a conflict
-and changes requested, because no other person's move changes either: the merge
-cannot happen, or a reviewer has asked for work.
+once. Finished work wins over everything: it is over (ADR 0017). Then changes
+requested, because no other person's move changes it: a reviewer has asked for
+work.
 
-**Then a reviewer who has been asked, and only then a red check.** Both are
-true at once often enough to matter, and the column answers the more useful
-question: what is this waiting on? The author can push a fix while the review
-runs, and the review is the longer wait. The card draws its "Checks failed"
-pill wherever it sits, so nothing is hidden by this, and in the smart order a
-card with a red check climbs to the top of its column (ADR 0026), which is
-where the reader meets it first.
+**Then a reviewer who has been asked, and only then a conflict or a red
+check.** Each is true at once with a pending review often enough to matter, and
+the column answers the more useful question: what is this waiting on? The
+author can push a fix while the review runs, and the review is the longer wait.
+The card draws its "Conflicts" and "Checks failed" pills wherever it sits, so
+nothing is hidden by this, and in the smart order such a card climbs to the top
+of its column (ADR 0026), which is where the reader meets it first.
 
-**A red check with nobody waited on still wants the author**, and it beats an
-approval: approved work that does not build is not ready to merge.
+**A conflict waits for the verdict too** (changed 2026-11). The first version
+put a conflict ahead of a pending review, because no review makes the merge
+possible. In a busy repository the target branch moves all day, so the card
+left "Awaiting review" again and again, and the author fixed the same branch
+many times before anybody had read it. A fix after the verdict is needed only
+once, and it can carry the reviewer's changes with it.
+
+**A conflict or a red check with nobody waited on still wants the author**, and
+it beats an approval: approved work that does not merge or does not build is
+not ready to merge.
 
 **A conflict and a red check are read from GitHub, never worked out here.**
 `mergeable` answers `CONFLICTING` when the branch and its target changed the

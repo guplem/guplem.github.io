@@ -162,11 +162,26 @@ describe("automaticColumn", () => {
     expect(automaticColumn(issue(), links([waiting]))).toBe("awaiting-review");
   });
 
-  // A conflict is not the same: the merge itself cannot happen, so no review
-  // moves it forward.
-  test("a conflict still beats a reviewer who has been asked", () => {
-    const stuck = linkedPull({ reviewRequestCount: 1, mergeable: "CONFLICTING" });
-    expect(automaticColumn(issue(), links([stuck]))).toBe("needs-changes");
+  // A conflict waits for the verdict too. In a busy repository the target
+  // branch moves all day, so a conflict that pulled the card out of "Awaiting
+  // review" would send the author to fix it again and again while the reviewer
+  // has not answered. Fixed once, after the verdict, is enough (ADR 0011).
+  test("a reviewer who has been asked beats a conflict", () => {
+    const waiting = linkedPull({ reviewRequestCount: 1, mergeable: "CONFLICTING" });
+    expect(automaticColumn(issue(), links([waiting]))).toBe("awaiting-review");
+    expect(automaticColumn(pull({ ...waiting, key: "PR_1" }), null)).toBe("awaiting-review");
+  });
+
+  // The card still says why it would want its author, wherever it sits.
+  test("a conflict waiting on a reviewer still carries its pill", () => {
+    const waiting = linkedPull({ reviewRequestCount: 1, mergeable: "CONFLICTING" });
+    expect(attentionFor(issue(), links([waiting]))).toEqual(["conflicts"]);
+  });
+
+  // Once the reviewer has answered, the conflict is the author's move again.
+  test("a conflict beats an approval", () => {
+    const approved = linkedPull({ reviewDecision: "APPROVED", mergeable: "CONFLICTING" });
+    expect(automaticColumn(issue(), links([approved]))).toBe("needs-changes");
   });
 
   // The reviewer asked for work and has not been asked to look again, so the

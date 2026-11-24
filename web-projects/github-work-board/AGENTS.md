@@ -170,10 +170,12 @@ Data flow, saving: a keystroke, a card moved, a colour, a part of the board or o
 - **`.badge` is `inline-flex`, so whitespace between two child elements
   disappears.** A badge built from two spans needs a `gap`, not a space in the
   text (ADR 0027).
-- **A red check does not move a card out of "Awaiting review" any more.** It
-  climbs to the top of its column instead, in the smart order, and the card's
-  own "Checks failed" pill is what says why (ADR 0011, ADR 0026). A change that
-  "restores" the old column rule hides work in the column nobody watches.
+- **A red check or a conflict does not move a card out of "Awaiting review".**
+  It climbs to the top of its column instead, in the smart order, and the card's
+  own "Checks failed" or "Conflicts" pill is what says why (ADR 0011, ADR 0026).
+  Only a verdict (approval or changes requested) hands the card back to its
+  author. A conflict that "restores" the old rule sends the author to fix the
+  same branch again and again in a busy repository before anybody reviews it.
 - **The smart order ranks the three attention reasons in a different order from
   the pills.** `ATTENTION_RANK` puts changes requested first, then a red check,
   then a conflict; `ATTENTION_REASONS` draws the pills worst first, conflict
