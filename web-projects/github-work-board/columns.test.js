@@ -184,6 +184,49 @@ describe("automaticColumn", () => {
     expect(automaticColumn(issue(), links([approved]))).toBe("needs-changes");
   });
 
+  // A repository can ask for two approvals, and GitHub then keeps the verdict
+  // at REVIEW_REQUIRED after the first one, with the second reviewer still in
+  // the request list. One approval is the signal the reader acts on: the work
+  // is one press away, and only the reader knows whether the second matters.
+  test("one approval is ready to merge, even with another reviewer still asked", () => {
+    const one = linkedPull({ reviewDecision: "REVIEW_REQUIRED", reviewRequestCount: 1, approvals: 1 });
+    expect(automaticColumn(issue(), links([one]))).toBe("ready-to-merge");
+    expect(automaticColumn(pull({ ...one, key: "PR_1" }), null)).toBe("ready-to-merge");
+  });
+
+  // A repository with no review rule answers no verdict at all.
+  test("one approval with no verdict from GitHub is ready to merge", () => {
+    expect(automaticColumn(issue(), links([linkedPull({ approvals: 1 })]))).toBe("ready-to-merge");
+  });
+
+  test("GitHub's own approval with another reviewer still asked is ready to merge", () => {
+    const approved = linkedPull({ reviewDecision: "APPROVED", reviewRequestCount: 1 });
+    expect(automaticColumn(issue(), links([approved]))).toBe("ready-to-merge");
+  });
+
+  // An approval is a verdict, and a verdict hands a conflict back to its author.
+  test("one approval with a conflict or a red check needs attention", () => {
+    const conflict = linkedPull({ reviewRequestCount: 1, approvals: 1, mergeable: "CONFLICTING" });
+    const red = linkedPull({ reviewRequestCount: 1, approvals: 1, checks: { verdict: "failed" } });
+    expect(automaticColumn(issue(), links([conflict]))).toBe("needs-changes");
+    expect(automaticColumn(issue(), links([red]))).toBe("needs-changes");
+  });
+
+  // GitHub blocks the merge while a request for changes stands, so another
+  // reviewer's approval does not make the work ready. Answered changes wait on
+  // the reviewer who asked for them.
+  test("an approval does not beat changes requested, answered or not", () => {
+    const waiting = linkedPull({ reviewDecision: "CHANGES_REQUESTED", approvals: 1 });
+    const answered = linkedPull({
+      reviewDecision: "CHANGES_REQUESTED",
+      reviewRequestCount: 1,
+      askedAgain: true,
+      approvals: 1,
+    });
+    expect(automaticColumn(issue(), links([waiting]))).toBe("needs-changes");
+    expect(automaticColumn(issue(), links([answered]))).toBe("awaiting-review");
+  });
+
   // The reviewer asked for work and has not been asked to look again, so the
   // move is the author's whatever else is true.
   test("changes requested still beats a reviewer who has been asked", () => {

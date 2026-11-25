@@ -67,6 +67,12 @@ export function askedToLookAgain(reviews, requests) {
   return asked.length > 0 && asked.every((login) => waiting.has(login));
 }
 
+/** How many of `latestOpinionatedReviews.nodes` are an approval. */
+export function countApprovals(reviews) {
+  return (Array.isArray(reviews) ? reviews : []).filter((review) => isPlainObject(review) && review.state === "APPROVED")
+    .length;
+}
+
 /**
  * What the checks on a pull request's last commit add up to.
  *
@@ -121,6 +127,11 @@ function readLink(value) {
     defaultBranch:
       typeof value.repository?.defaultBranchRef?.name === "string" ? value.repository.defaultBranchRef.name : "",
     askedAgain: askedToLookAgain(value.latestOpinionatedReviews?.nodes, value.reviewRequests?.nodes),
+    // How many reviewers' latest verdict is an approval. One is enough for
+    // "Ready to merge": GitHub keeps `reviewDecision` at REVIEW_REQUIRED until
+    // the repository's own count is met, and that count is not readable with
+    // the permissions this board asks for (ADR 0011).
+    approvals: countApprovals(value.latestOpinionatedReviews?.nodes),
     // Everybody in the review, and what each of them is doing about it. The
     // card draws them so the reader can see who is blocking it and who they
     // can chase (ADR 0028).
@@ -308,6 +319,7 @@ export function applyPullRequestState(items, byId) {
       baseRefName: self.baseRefName,
       defaultBranch: self.defaultBranch,
       askedAgain: self.askedAgain,
+      approvals: self.approvals,
       reviewers: self.reviewers,
       reviewedByReader: self.reviewedByReader,
     };

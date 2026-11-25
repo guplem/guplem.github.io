@@ -282,6 +282,29 @@ describe("the people in a pull request's review (ADR 0028)", () => {
     ]);
   });
 
+  // One approval is enough for "Ready to merge" (ADR 0011), and GitHub's
+  // verdict stays at REVIEW_REQUIRED until the repository's count is met, so
+  // the approvals are counted from each reviewer's latest verdict.
+  test("counts the approvals, one per reviewer, on the card and on the link", () => {
+    const links = normalizeRelationships(
+      graph({
+        latestOpinionatedReviews: {
+          nodes: [
+            { state: "APPROVED", author: { login: "ana" } },
+            { state: "COMMENTED", author: { login: "ivan" } },
+            { state: "APPROVED", author: { login: "eva" } },
+            { state: "DISMISSED", author: { login: "leo" } },
+            null,
+          ],
+        },
+      }),
+    );
+    const [item] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], links);
+    expect(item.approvals).toBe(2);
+    const [none] = applyPullRequestState([{ key: "PR_1", kind: "pull-request" }], normalizeRelationships(graph({})));
+    expect(none.approvals).toBe(0);
+  });
+
   // The review row puts a pull request the reader already reviewed above one
   // they never opened (ADR 0042). The query counts the reader's own submitted
   // reviews, a plain comment included, which `latestOpinionatedReviews` leaves out.

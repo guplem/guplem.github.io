@@ -83,6 +83,7 @@ const NONE = {
   reviewDecision: "",
   reviewRequestCount: 0,
   askedAgain: false,
+  approvals: 0,
   mergeable: "",
   checks: null,
   exists: false,
@@ -96,6 +97,7 @@ function readState(source, merged) {
     reviewDecision: typeof source.reviewDecision === "string" ? source.reviewDecision : "",
     reviewRequestCount: Number.isFinite(source.reviewRequestCount) ? source.reviewRequestCount : 0,
     askedAgain: source.askedAgain === true,
+    approvals: Number.isFinite(source.approvals) ? source.approvals : 0,
     // What GitHub says about the merge, and what the board worked out about the
     // checks on the last commit. Both put a card in "Needs attention"
     // (ADR 0011, ADR 0037).
@@ -116,14 +118,19 @@ function readState(source, merged) {
  *    work, so the card is with its author. Changes requested that have been
  *    answered is not changes requested at all: the reviewer was asked again,
  *    so the wait is theirs.
- * 3. **A reviewer who has been asked beats a conflict and a red check.** All
+ * 3. **One approval is a verdict, and it beats a reviewer still asked.** A
+ *    repository can want two approvals, and GitHub keeps its verdict at
+ *    REVIEW_REQUIRED until both arrive, with the second reviewer still asked.
+ *    The reader acts on the first one, so the card is ready to merge, unless
+ *    a conflict or a red check hands it back to the author.
+ * 4. **A reviewer who has been asked beats a conflict and a red check.** All
  *    are real, and the column answers the more useful question: what is this
  *    waiting on? In a busy repository the target branch moves all day, so a
  *    conflict that left this column would have the author fix it again and
  *    again before any verdict. The card draws its pills wherever it sits, so
  *    nothing is hidden, and in the smart order it climbs to the top of the
  *    column (ADR 0011, ADR 0026).
- * 4. **A conflict or a red check with nobody waited on** is the author's move,
+ * 5. **A conflict or a red check with nobody waited on** is the author's move,
  *    approval or no approval, so approved work that conflicts or has a red
  *    check is not ready to merge.
  */
@@ -139,6 +146,10 @@ export function automaticColumn(item, relationship) {
   // Changes nobody has answered want the person who wrote the work, and no
   // review moves them (ADR 0011).
   if (changesRequested(pull)) return "needs-changes";
+  // One approval is a verdict. A request for changes that still stands, even
+  // one the author answered, blocks the merge on GitHub, so it is never ready
+  // (ADR 0011).
+  if (approved(pull)) return reasons.length > 0 ? "needs-changes" : "ready-to-merge";
   // Only somebody actually being asked counts. `REVIEW_REQUIRED` does not: it
   // is the branch rule saying the repository wants a review before a merge, so
   // every open pull request in such a repository carries it, including one
@@ -148,8 +159,13 @@ export function automaticColumn(item, relationship) {
   // author's move, and it beats an approval: such work cannot merge. The
   // author fixes a conflict once, after the verdict (ADR 0011).
   if (reasons.length > 0) return "needs-changes";
-  if (pull.reviewDecision === "APPROVED") return "ready-to-merge";
   return "ongoing";
+}
+
+/** GitHub's own approval, or at least one reviewer's, with no changes standing. */
+function approved(pull) {
+  if (pull.reviewDecision === "CHANGES_REQUESTED") return false;
+  return pull.reviewDecision === "APPROVED" || pull.approvals > 0;
 }
 
 /**
