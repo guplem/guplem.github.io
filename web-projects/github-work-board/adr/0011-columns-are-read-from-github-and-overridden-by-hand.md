@@ -32,7 +32,7 @@ Six columns, in the order work travels:
 | Ongoing | A pull request exists, nobody asked to review it |
 | Needs attention | A reviewer asked for changes and has not been asked to look again, or the branch conflicts or a check came back red with nobody else waited on |
 | Awaiting review | A reviewer was asked by name, no verdict yet, conflicts or red checks or not |
-| Ready to merge | Approved |
+| Ready to merge | Approved by GitHub or by at least one reviewer, no changes requested, no conflict, no red check |
 | Done today | Finished inside the chosen range, since midnight by default (ADR 0017, ADR 0034) |
 
 **One column holds everything that wants the author** (added 2026-09). A
@@ -58,6 +58,25 @@ the ids are what `board.json` stores, and they never move.
 once. Finished work wins over everything: it is over (ADR 0017). Then changes
 requested, because no other person's move changes it: a reviewer has asked for
 work.
+
+**Then one approval, ahead of a reviewer still asked** (added 2026-11). A
+repository can want two approvals or more. GitHub then keeps `reviewDecision`
+at `REVIEW_REQUIRED` after the first one, and the second reviewer stays in
+`reviewRequests`, so the card sat in "Awaiting review" with an approval on it.
+The reader acts on the first approval: they chase the second reviewer, or they
+merge. So the board counts the approvals itself, one per reviewer, from
+`latestOpinionatedReviews` (`approvals`, read by `countApprovals` in
+`relationships.js`), and one is enough. An approval is a verdict, so a conflict
+or a red check then hands the card to its author. A request for changes that
+still stands, answered or not, beats any approval, because GitHub blocks the
+merge while it stands.
+
+The count GitHub wants is not read. Classic branch protection needs the
+"Administration" permission to read, which no reader should grant to a board.
+Rulesets are readable with "Metadata" (`GET /repos/{owner}/{repo}/rules/branches/{branch}`),
+but only for repositories that use rulesets, and at one more call for each
+target branch on every refresh. Read that count only if "one approval" turns
+out to be wrong often enough to pay for it.
 
 **Then a reviewer who has been asked, and only then a conflict or a red
 check.** Each is true at once with a pending review often enough to matter, and
@@ -177,8 +196,10 @@ a chosen project, and a mapping from that project's columns to these; it is
 worth doing when somebody asks for it. **Rejected: computing the review verdict
 from the review list.** `reviewDecision` already does it, and doing it again
 would be a second, worse copy of GitHub's rules. That rejection stands, and the
-re-request rule above does not break it: the verdict still comes from
-`reviewDecision`, and the reviews are read only for the names attached to it.
+re-request rule and the approval count above do not break it: the verdict still
+comes from `reviewDecision`. The reviews add two facts GitHub's verdict hides:
+the names attached to it, and whether anybody approved before the repository's
+count was met.
 **Rejected: treating any pending review request as an answer to the changes.**
 A new reviewer asked while the first reviewer's changes are still outstanding
 is not the work being answered, and reading it as one empties "Needs attention"
