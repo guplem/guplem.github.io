@@ -258,12 +258,18 @@ describe("automaticColumn", () => {
 
   // Somebody can approve and somebody else can ask for changes. The work to do
   // is the changes, so that is the column it belongs in.
-  test("changes requested beats an approval, and merged beats everything", () => {
+  test("changes requested beats an approval", () => {
     const both = linkedPull({ reviewDecision: "CHANGES_REQUESTED", reviewRequestCount: 2 });
     expect(automaticColumn(issue(), links([both]))).toBe("needs-changes");
-    expect(automaticColumn(issue(), links([both, linkedPull({ id: "PR_2", merged: true, state: "closed" })]))).toBe(
-      "done",
-    );
+  });
+
+  // An open issue with a merged pull request and an open one was reopened for
+  // more work, and the open one is that work. "Done" would hide it.
+  test("an open issue with an open pull request is not done, even next to a merged one", () => {
+    const open = linkedPull({ reviewDecision: "CHANGES_REQUESTED", reviewRequestCount: 2 });
+    const merged = linkedPull({ id: "PR_2", merged: true, state: "closed" });
+    expect(automaticColumn(issue(), links([open, merged]))).toBe("needs-changes");
+    expect(automaticColumn(issue(), links([merged, open]))).toBe("needs-changes");
   });
 
   // A pull request somebody closed without merging is abandoned work. Reading

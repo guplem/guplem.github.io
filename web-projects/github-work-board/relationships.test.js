@@ -537,14 +537,25 @@ describe("pullRequestFor", () => {
     expect(pullRequestFor(issueItem(), rel([open]))).toBe(open);
   });
 
-  // The same order the column rule reads in: a merged one is the answer, and
-  // a closed unmerged one is abandoned work that counts for nothing.
-  test("a merged pull request wins, and an abandoned one counts for nothing", () => {
+  // The same order the column rule reads in: an open one is the work still
+  // going on, a merged one answers only when nothing is open, and a closed
+  // unmerged one is abandoned work that counts for nothing.
+  test("a merged pull request answers when nothing is open, and an abandoned one counts for nothing", () => {
     const merged = linked({ id: "PR_merged", merged: true, state: "closed" });
-    const open = linked({ id: "PR_open" });
-    expect(pullRequestFor(issueItem(), rel([open, merged]))).toBe(merged);
+    expect(pullRequestFor(issueItem(), rel([merged]))).toBe(merged);
     const abandoned = linked({ id: "PR_dead", state: "closed", merged: false });
     expect(pullRequestFor(issueItem(), rel([abandoned]))).toBeNull();
+  });
+
+  // The real case: an issue was closed by a merged pull request for the API,
+  // then reopened for the dashboard part, which a second pull request still
+  // builds. GitHub lists both as closing it. Reading the merged one put the
+  // issue in "Done" while its work was still open.
+  test("an open pull request beats a merged one, because the work is not over", () => {
+    const merged = linked({ id: "PR_merged", merged: true, state: "closed" });
+    const open = linked({ id: "PR_open" });
+    expect(pullRequestFor(issueItem(), rel([merged, open]))).toBe(open);
+    expect(pullRequestFor(issueItem(), rel([open, merged]))).toBe(open);
   });
 
   test("work with no pull request answers with nothing", () => {
