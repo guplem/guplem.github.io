@@ -268,10 +268,14 @@ export function isBlocked(relationship) {
  * there is none.
  *
  * For a pull request, itself. For an issue, the pull requests GitHub says would
- * close it: the merged one if there is one, and otherwise the open one. A pull
- * request that was closed without merging is abandoned work and counts for
- * nothing: reading it as progress would park the issue in a column it is not in
- * (ADR 0011).
+ * close it: the open one if there is one, and otherwise the merged one. An open
+ * one beats a merged one because the work is not over: an issue that a merged
+ * pull request closed and somebody reopened for more work lists both, and the
+ * merged one would put it in "Done". A merged one still answers alone, because
+ * a pull request merged into a branch that is not the default leaves its issue
+ * open. A pull request that was closed without merging is abandoned work and
+ * counts for nothing: reading it as progress would park the issue in a column
+ * it is not in (ADR 0011).
  *
  * One rule, asked twice: `columns.js` asks it for the column, and the card asks
  * it for the people, because the people a card draws are the people in that
@@ -280,7 +284,7 @@ export function isBlocked(relationship) {
 export function pullRequestFor(item, relationship) {
   if (item?.kind === "pull-request") return item;
   const linked = Array.isArray(relationship?.closedBy) ? relationship.closedBy : [];
-  return linked.find((one) => one.merged) ?? linked.find((one) => one.state === "open") ?? null;
+  return linked.find((one) => one.state === "open") ?? linked.find((one) => one.merged) ?? null;
 }
 
 /**

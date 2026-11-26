@@ -35,6 +35,14 @@ Six columns, in the order work travels:
 | Ready to merge | Approved by GitHub or by at least one reviewer, no changes requested, no conflict, no red check |
 | Done today | Finished inside the chosen range, since midnight by default (ADR 0017, ADR 0034) |
 
+**An issue reads the pull request that would close it** (added 2026-11). An
+open one beats a merged one. An issue that a merged pull request closed and
+somebody reopened for more work lists both, and the open one is that work.
+A merged one answers when nothing is open, because a pull request merged into
+a branch that is not the default leaves its issue open. A pull request closed
+without merging counts for nothing. `pullRequestFor` in `relationships.js`
+holds the rule.
+
 **One column holds everything that wants the author** (added 2026-09). A
 reviewer asking for changes, a check that went red and a branch that no longer
 merges are one sentence: the work cannot go forward until the person who wrote
